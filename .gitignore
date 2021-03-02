@@ -10,6 +10,7 @@ lerna-debug.log*
 .eslintrc.js
 .prettierrc.json
 .stylelintrc.js
+webpack.config.js
 cypress.json
 cypress/intergration/examples/
 
