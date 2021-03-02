@@ -102,3 +102,19 @@ dist
 
 # TernJS port file
 .tern-port
+
+# macOS #
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Stores VSCode versions used for testing VSCode extensions
+.vscode-test
+
+### vscode ###
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+*.code-workspace
