@@ -75,7 +75,24 @@ context('Actions', () => {
     cy.get('.clip .save-button').first().should('not.exist');
   });
 
-  it('검색 모달창 열고 검색창에 검색어 입력(100개이상있는거), 검색버튼 클릭, 10개 확인 스크롤, 20개 확인 스크롤, (11번 확인) 110개 가져오고, 저장버튼 100개 누르고 이후 누르는건 저장안됨. (데이터 길이 100그대로인지 확인)', () => {});
+  it('검색 모달창 열고 검색창에 검색어 입력(100개이상있는거), 검색버튼 클릭, 10개 확인 스크롤, 20개 확인 스크롤, (11번 확인) 110개 가져오고, 저장버튼 100개 누르고 이후 누르는건 저장안됨. (데이터 길이 100그대로인지 확인)', () => {
+    cy.get('#search-button').click();
+    cy.get('#search-youtube-input').type('우테코');
+    cy.get('#search-youtube-button').click();
+    for (let videos = 10; videos <= 110; videos += 10) {
+      cy.wait(1000);
+      cy.get('.clip').should('have.length', videos);
+      cy.get('#search-video-wrapper').scrollTo('bottom');
+    }
+    cy.get('.save-button').each(button => {
+      cy.wrap(button).click();
+    });
+    cy.window()
+      .its('localStorage')
+      .invoke('getItem', 'myVideo')
+      .should('have.length', '100');
+  });
+
   it('검색 모달창 열고 검색 입력창에 최근 검색어 storage의 가장 마지막 text가 있고 동영상 목록이 있어야 한다.', () => {});
   it('검색 모달창 열고 검색창에 검색어 입력, 검색버튼 클릭, 동영상 목록 보여진다.', () => {});
   it('검색 모달창 열고 검색창에 검색1 검색버튼, 2, 3, 4 해서, 최근검색어에 4, 3, 2 있어야 한다.', () => {});
