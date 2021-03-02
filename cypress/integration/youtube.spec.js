@@ -14,14 +14,14 @@ context('Actions', () => {
     cy.get('#search-button').click();
     cy.get('.video-wrapper').children().should('not.exist');
     cy.get('#search-youtube-input').type('우테코');
-    cy.get('#search-youtube-button').type({ enter });
+    cy.get('#search-youtube-button').type('{enter}');
     cy.get('.video-wrapper').children().should('exist');
   });
 
   it('검색 모달창 열고 검색창에 검색어 입력, 검색버튼 클릭하면 비디오 요소에 .skeleton 클래스명이 존재. n초후, .skeleton 클래스명 없음', () => {
     cy.get('#search-button').click();
-    // cy.get('#search-youtube-input').type('우테코');
-    // cy.get('#search-youtube-button').click();
+    cy.get('#search-youtube-input').type('우테코');
+    cy.get('#search-youtube-button').click();
     cy.get('.clip').each(clip => {
       cy.wrap(clip).should('have.class', 'skeleton');
     });
@@ -31,7 +31,13 @@ context('Actions', () => {
     });
   });
 
-  it('검색 모달창 열고 검색창에 결과없는 검색어 입력, 검색버튼 누르면, 결과없음 이미지가 보여진다.', () => {});
+  it('검색 모달창 열고 검색창에 결과없는 검색어 입력, 검색버튼 누르면, 결과없음 이미지가 보여진다.', () => {
+    cy.get('#search-button').click();
+    cy.get('#search-youtube-input').type('skdnaskfbalsdkf');
+    cy.get('#search-youtube-button').click();
+    cy.get('#not-found').should('exist');
+  });
+
   it('검색 모달창 열고 검색창에 검색어 입력, 검색버튼 클릭, 동영상 요소 10개 존재.', () => {});
   it('검색 모달창 열고 검색창에 검색어 입력(100개이상있는거), 검색버튼 클릭, 10개 확인 스크롤, 20개 확인 스크롤, (5번 확인)', () => {});
   it('검색 모달창 열고 검색창에 검색입력, 첫번째 동영상 저장, webstorage에 데이터 길이 1인지 확인.', () => {});
