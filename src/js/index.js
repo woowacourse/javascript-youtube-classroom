@@ -15,3 +15,7 @@ const onModalClose = () => {
 
 $searchButton.addEventListener('click', onModalShow);
 $modalClose.addEventListener('click', onModalClose);
+
+$('#youtube-search-form').addEventListener('submit', (event) => {
+  event.preventDefault();
+});
