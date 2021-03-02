@@ -47,4 +47,14 @@ describe('유튜브 강의실 영상 검색 모달', () => {
 
     cy.get('.chip').first().should('have.text', searchTerm2);
   })
+
+  it('사용자가 검색어를 아무것도 입력하지 않았을 때, 아무반응도 일어나지 않는다.', () => {
+    const searchTerm = '  ';
+
+    cy.get('#search-button').click();
+    cy.get('#youtube-search-input').type(searchTerm);
+    cy.get('#youtube-search-button').click();
+
+    cy.get('.chip').first().should('not.have.text', searchTerm);
+  })
 });
