@@ -57,4 +57,19 @@ describe('유튜브 강의실 영상 검색 모달', () => {
 
     cy.get('.chip').first().should('not.have.text', searchTerm);
   })
+
+  it('사용자가 영상 저장 버튼을 누르면, 해당 저장 버튼이 사라지고, 우측 위 저장된 영상 개수가 1 증가한다.', () => {
+    const searchTerm = '서니';
+    cy.get('#saved-video-count').invoke('text').then($el => {
+      const prevSavedVideoCount = $el;
+      cy.get('#search-button').click();
+      cy.get('#youtube-search-input').type(searchTerm);
+      cy.get('#youtube-search-button').click();
+
+      cy.get('.js-save-btn').first().click();
+
+      cy.get('.js-save-btn').should('not.be.visible');
+      cy.get('#saved-video-count').should('have.text', `${Number(prevSavedVideoCount) + 1}`)
+    });
+  })
 });
