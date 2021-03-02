@@ -1,14 +1,12 @@
 .video-wrapper {
   display: grid;
-  grid-template-columns: repeat(auto-fill, 236px);
-  grid-row-gap: 0px;
-  grid-column-gap: 4px;
+  grid-template-columns: repeat(auto-fill, 230px);
+  grid-row-gap: 15px;
+  grid-column-gap: 10px;
   justify-content: center;
 }
 
 .clip {
-  height: 219px;
-  cursor: pointer;
   text-decoration: none;
 }
 
@@ -53,6 +51,12 @@
   color: #606060;
   display: block;
   width: 100%;
+}
+
+.clip .content-container .channel-name:focus,
+.clip .content-container .channel-name:hover {
+  color: #010101;
+  text-decoration: underline;
 }
 
 .clip .content-container .meta p {
