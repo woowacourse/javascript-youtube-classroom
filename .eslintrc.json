@@ -1,0 +1,18 @@
+{
+  "env": {
+    "browser": true
+  },
+  "extends": ["airbnb-base", "plugin:prettier/recommended"],
+  "plugins": ["prettier"],
+  "parserOptions": {
+    "sourceType": "module"
+  },
+  "ignorePatterns": ["cypress/"],
+  "rules": {
+    "no-new": "off",
+    "no-return-assign": "off",
+    "no-param-reassign": "off",
+    "import/extensions": "off",
+    "import/prefer-default-export": "off"
+  }
+}
