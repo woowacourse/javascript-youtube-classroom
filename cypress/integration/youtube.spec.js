@@ -38,7 +38,13 @@ context('Actions', () => {
     cy.get('#not-found').should('exist');
   });
 
-  it('검색 모달창 열고 검색창에 검색어 입력, 검색버튼 클릭, 동영상 요소 10개 존재.', () => {});
+  it('검색 모달창 열고 검색창에 검색어 입력, 검색버튼 클릭, 동영상 요소 10개 존재.', () => {
+    cy.get('#search-button').click();
+    cy.get('#search-youtube-input').type('우테코');
+    cy.get('#search-youtube-button').click();
+    cy.get('.clip').should('have.length', '10');
+  });
+
   it('검색 모달창 열고 검색창에 검색어 입력(100개이상있는거), 검색버튼 클릭, 10개 확인 스크롤, 20개 확인 스크롤, (5번 확인)', () => {});
   it('검색 모달창 열고 검색창에 검색입력, 첫번째 동영상 저장, webstorage에 데이터 길이 1인지 확인.', () => {});
   it('검색 모달창 열고 검색창에 검색입력, 첫번째 동영상 저장, 저장버튼 안보이는지 확인', () => {});
