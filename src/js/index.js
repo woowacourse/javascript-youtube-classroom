@@ -1,3 +1,5 @@
+import Search from "./search/Search.js";
+
 const $searchButton = document.querySelector("#search-button");
 const $modalClose = document.querySelector(".modal-close");
 const $modal = document.querySelector(".modal");
@@ -12,3 +14,5 @@ const onModalClose = () => {
 
 $searchButton.addEventListener("click", onModalShow);
 $modalClose.addEventListener("click", onModalClose);
+
+new Search().init();
