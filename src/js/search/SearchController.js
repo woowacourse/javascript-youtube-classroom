@@ -10,7 +10,7 @@ export default class SearchController {
 
   searchVideos(keyword) {
     const params = {
-      ["part"]: "snippet",
+      part: "snippet",
       key: YOUTUBE_API_KEY,
       q: keyword,
       maxResults: 10,
