@@ -5,6 +5,7 @@ module.exports = {
     es2021: true,
     node: true,
   },
+  ignorePatterns: ['cypress/'],
   extends: ['eslint:recommended', 'plugin:prettier/recommended'],
   parserOptions: {
     ecmaVersion: 12,
