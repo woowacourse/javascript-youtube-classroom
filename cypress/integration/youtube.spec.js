@@ -9,7 +9,13 @@ context('Actions', () => {
     cy.get('#search-youtube-button').click();
     cy.get('.clip').children().should('exist');
   });
-  it('검색 모달창 열고 검색창에 검색어 입력, 엔터 클릭, 동영상 목록 보여진다', () => {});
+  it('검색 모달창 열고 검색창에 검색어 입력, 엔터 입력, 동영상 목록 보여진다', () => {
+    cy.get('#search-button').click();
+    cy.get('.clip').children().should('not.exist');
+    cy.get('#search-youtube-input').type('우테코');
+    cy.get('#search-youtube-button').type({ enter });
+    cy.get('.clip').children().should('exist');
+  });
   it('검색 모달창 열고 검색창에 검색어 입력, 검색버튼 클릭하면 비디오 요소에 .skeleton 클래스명이 존재. n초후, .skeleton 클래스명 없음', () => {});
   it('검색 모달창 열고 검색창에 결과없는 검색어 입력, 검색버튼 누르면, 결과없음 이미지가 보여진다.', () => {});
   it('검색 모달창 열고 검색창에 검색어 입력, 검색버튼 클릭, 동영상 요소 10개 존재.', () => {});
