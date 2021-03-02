@@ -11,6 +11,8 @@
   "ignorePatterns": ["node_modules/"],
   "rules": {
     "max-depth": 2,
-    "prettier/prettier": "error"
+    "prettier/prettier": "error",
+    "class-methods-use-this": "off",
+    "max-lens": 80
   }
 }
