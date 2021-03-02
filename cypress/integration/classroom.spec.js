@@ -8,6 +8,16 @@ describe('나만의 유튜브 강의실 Test', () => {
     cy.get('.modal').should('be.visible');
   });
 
+  it('modal이 나타난 상태에서, dimmer나 닫기 버튼을 누르면, modal이 사라진다.', () => {
+    cy.get('#search-button').click();
+    cy.get('.modal-close').click();
+    cy.get('.modal').should('be.not.visible');
+
+    cy.get('#search-button').click();
+    cy.get('.modal').click('topLeft');
+    cy.get('.modal').should('be.not.visible');
+  });
+
   it('유튜브 검색 modal에서 검색어를 입력하고 검색 버튼을 누르면, 검색 결과를 10개까지 보여준다.', () => {
     cy.get('#search-button').click();
     cy.get('#youtube-search-keyword-input').type('BTS');
