@@ -103,6 +103,6 @@ dist
 # TernJS port file
 .tern-port
 
-./cypress/fixtures
-./cypress/plugins
-./cypress/support
+cypress/fixtures
+cypress/plugins
+cypress/support
