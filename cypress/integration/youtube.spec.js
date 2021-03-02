@@ -56,7 +56,16 @@ context('Actions', () => {
     }
   });
 
-  it('검색 모달창 열고 검색창에 검색입력, 첫번째 동영상 저장, webstorage에 데이터 길이 1인지 확인.', () => {});
+  it('검색 모달창 열고 검색창에 검색입력, 첫번째 동영상 저장, webstorage에 데이터 있는지 확인.', () => {
+    cy.get('#search-button').click();
+    cy.get('#search-youtube-input').type('우테코');
+    cy.get('#search-youtube-button').click();
+    cy.get('.save-button').first().click();
+    cy.window()
+      .its('localStorage')
+      .invoke('getItem', 'myVideo')
+      .should('not.empty');
+  });
   it('검색 모달창 열고 검색창에 검색입력, 첫번째 동영상 저장, 저장버튼 안보이는지 확인', () => {});
   it('검색 모달창 열고 검색창에 검색어 입력(100개이상있는거), 검색버튼 클릭, 10개 확인 스크롤, 20개 확인 스크롤, (11번 확인) 110개 가져오고, 저장버튼 100개 누르고 이후 누르는건 저장안됨. (데이터 길이 100그대로인지 확인)', () => {});
   it('검색 모달창 열고 검색 입력창에 최근 검색어 storage의 가장 마지막 text가 있고 동영상 목록이 있어야 한다.', () => {});
