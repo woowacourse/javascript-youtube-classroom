@@ -5,6 +5,8 @@ const $ = (selector) => {
 
 const elements = {
   $searchForm: $("#search-form"),
+  $searchResults: $("#search-results"),
+  $notFound: $("#not-found"),
 };
 
 export default elements;
