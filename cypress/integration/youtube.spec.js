@@ -104,6 +104,19 @@ context('Actions', () => {
     cy.get('#search-video-wrapper').children().should('exist');
   });
 
-  it('검색 모달창 열고 검색창에 검색어 입력, 검색버튼 클릭, 동영상 목록 보여진다.', () => {});
-  it('검색 모달창 열고 검색창에 검색1 검색버튼, 2, 3, 4 해서, 최근검색어에 4, 3, 2 있어야 한다.', () => {});
+  it('검색 모달창 열고 검색창에 검색1 검색버튼, 2, 3, 4 해서, 최근검색어에 4, 3, 2 있어야 한다.', () => {
+    const searchKeywords = ['우테코', '메이커준', '테크코스', '코로나'];
+    cy.get('#search-button').click();
+
+    searchKeywords.forEach(keyword => {
+      cy.get('#search-youtube-input').type(keyword);
+      cy.get('#search-youtube-button').click();
+    });
+    cy.get('.chip').should('have.length', '3');
+    cy.get('.chip').each((chip, i) =>
+      cy
+        .wrap(chip)
+        .should('have.text', searchKeywords[searchKeywords.length - i])
+    );
+  });
 });
