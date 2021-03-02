@@ -1,0 +1,16 @@
+{
+  "editor.tabSize": 2,
+  "editor.insertSpaces": true,
+  "editor.minimap.maxColumn": 80,
+  "editor.formatOnSave": true,
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": true
+  },
+  "editor.detectIndentation": true,
+  "liveServer.settings.donotShowInfoMsg": true,
+  "liveshare.authenticationProvider": "GitHub",
+  "liveServer.settings.CustomBrowser": "chrome:PrivateMode",
+  "window.zoomLevel": 1,
+  "files.insertFinalNewline": true,
+  "prettier.packageManager": "yarn"
+}

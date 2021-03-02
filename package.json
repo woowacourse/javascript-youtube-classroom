@@ -1,0 +1,17 @@
+{
+  "name": "javascript-youtube-classroom",
+  "version": "1.0.0",
+  "main": "src/js/index.js",
+  "repository": "https://github.com/jum0/javascript-youtube-classroom.git",
+  "author": "jum0 <wnsah052@naver.com>",
+  "license": "MIT",
+  "devDependencies": {
+    "cypress": "^6.6.0",
+    "eslint": "^7.21.0",
+    "eslint-config-airbnb-base": "^14.2.1",
+    "eslint-config-prettier": "^8.1.0",
+    "eslint-plugin-cypress": "^2.11.2",
+    "eslint-plugin-import": "^2.22.1",
+    "prettier": "2.2.1"
+  }
+}
