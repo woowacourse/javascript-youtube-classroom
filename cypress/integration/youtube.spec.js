@@ -4,18 +4,18 @@ context('Actions', () => {
   });
   it('검색 모달창 열고 검색창에 검색어 입력, 검색버튼 클릭, 동영상 목록 보여진다.', () => {
     cy.get('#search-button').click();
-    cy.get('.video-wrapper').children().should('not.exist');
+    cy.get('#search-video-wrapper').children().should('not.exist');
     cy.get('#search-youtube-input').type('우테코');
     cy.get('#search-youtube-button').click();
-    cy.get('.video-wrapper').children().should('exist');
+    cy.get('#search-video-wrapper').children().should('exist');
   });
 
   it('검색 모달창 열고 검색창에 검색어 입력, 엔터 입력, 동영상 목록 보여진다', () => {
     cy.get('#search-button').click();
-    cy.get('.video-wrapper').children().should('not.exist');
+    cy.get('#search-video-wrapper').children().should('not.exist');
     cy.get('#search-youtube-input').type('우테코');
     cy.get('#search-youtube-button').type('{enter}');
-    cy.get('.video-wrapper').children().should('exist');
+    cy.get('#search-video-wrapper').children().should('exist');
   });
 
   it('검색 모달창 열고 검색창에 검색어 입력, 검색버튼 클릭하면 비디오 요소에 .skeleton 클래스명이 존재. n초후, .skeleton 클래스명 없음', () => {
@@ -45,7 +45,17 @@ context('Actions', () => {
     cy.get('.clip').should('have.length', '10');
   });
 
-  it('검색 모달창 열고 검색창에 검색어 입력(100개이상있는거), 검색버튼 클릭, 10개 확인 스크롤, 20개 확인 스크롤, (5번 확인)', () => {});
+  it('검색 모달창 열고 검색창에 검색어 입력(100개이상있는거), 검색버튼 클릭, 10개 확인 스크롤, 20개 확인 스크롤, (5번 확인)', () => {
+    cy.get('#search-button').click();
+    cy.get('#search-youtube-input').type('우테코');
+    cy.get('#search-youtube-button').click();
+    for (let videos = 10; videos <= 50; videos += 10) {
+      cy.wait(1000);
+      cy.get('.clip').should('have.length', videos);
+      cy.get('#search-video-wrapper').scrollTo('bottom');
+    }
+  });
+
   it('검색 모달창 열고 검색창에 검색입력, 첫번째 동영상 저장, webstorage에 데이터 길이 1인지 확인.', () => {});
   it('검색 모달창 열고 검색창에 검색입력, 첫번째 동영상 저장, 저장버튼 안보이는지 확인', () => {});
   it('검색 모달창 열고 검색창에 검색어 입력(100개이상있는거), 검색버튼 클릭, 10개 확인 스크롤, 20개 확인 스크롤, (11번 확인) 110개 가져오고, 저장버튼 100개 누르고 이후 누르는건 저장안됨. (데이터 길이 100그대로인지 확인)', () => {});
