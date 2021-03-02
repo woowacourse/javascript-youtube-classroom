@@ -1,0 +1,26 @@
+{
+  "name": "javascript-youtube-classroom",
+  "version": "1.0.0",
+  "description": "<p align=\"middle\" >\r   <img width=\"200px;\" src=\"./src/images/readme/laptop_with_youtube_logo.png\"/>\r </p>\r <h2 align=\"middle\">level1 - 나만의 유튜브 강의실</h2>\r <p align=\"middle\">자바스크립트와 외부 API를 이용해 구현 하는 나만의 유튜브 강의실</p>\r <p align=\"middle\">\r   <img src=\"https://img.shields.io/badge/version-1.0.0-blue?style=flat-square\" alt=\"template version\"/>\r   <img src=\"https://img.shields.io/badge/language-html-red.svg?style=flat-square\"/>\r   <img src=\"https://img.shields.io/badge/language-css-blue.svg?style=flat-square\"/>\r   <img src=\"https://img.shields.io/badge/language-js-yellow.svg?style=flat-square\"/>\r   <a href=\"https://github.com/daybrush/moveable/blob/master/LICENSE\" target=\"_blank\">\r     <img src=\"https://img.shields.io/github/license/daybrush/moveable.svg?style=flat-square&label=license&color=08CE5D\"/>\r   </a>\r </p>",
+  "main": "index.js",
+  "scripts": {
+    "test": "cypress open"
+  },
+  "repository": "git+https://github.com/swon3210/javascript-youtube-classroom.git",
+  "keywords": [],
+  "author": "swon3210 <swon3210@gmail.com>",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/swon3210/javascript-youtube-classroom/issues"
+  },
+  "homepage": "https://github.com/swon3210/javascript-youtube-classroom#readme",
+  "devDependencies": {
+    "cypress": "^6.6.0",
+    "eslint": "^7.21.0",
+    "eslint-config-prettier": "^8.1.0",
+    "eslint-plugin-prettier": "^3.3.1",
+    "prettier": "^2.2.1",
+    "stylelint": "^13.11.0",
+    "stylelint-config-standard": "^20.0.0"
+  }
+}

@@ -6,6 +6,13 @@ yarn-debug.log*
 yarn-error.log*
 lerna-debug.log*
 
+# linter
+.eslintrc.js
+.prettierrc.json
+.stylelintrc.js
+cypress.json
+cypress/intergration/examples/
+
 # Diagnostic reports (https://nodejs.org/api/report.html)
 report.[0-9]*.[0-9]*.[0-9]*.[0-9]*.json
 
