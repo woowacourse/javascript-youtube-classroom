@@ -1,4 +1,5 @@
 import { MAX_RESULT_COUNT } from '../../src/js/constants.js';
+import { getItemFromLocalStorage } from '../../src/js/utils/localStorage.js';
 
 describe('검색 모달 테스트', () => {
   beforeEach(() => {
@@ -43,7 +44,7 @@ describe('검색 모달 테스트', () => {
     cy.get('#search-result-video-wrapper').find('img').should('have.attr', 'src').should('include', 'not_found');
   });
 
-  it('스크롤 바를 끝까지 이동시킬 경우, 다음 10개 아이템을 추가로 불러온다.', () => {
+  it('스크롤바를 최하단으로 이동시킬 경우, 다음 10개 아이템을 추가로 화면에 표시한다.', () => {
     cy.get('#search-button').click();
     cy.get('#search-keyword-input').type(KEYWORD);
     cy.get('#search-keyword-form').submit();
@@ -52,5 +53,22 @@ describe('검색 모달 테스트', () => {
     cy.get('#search-result-video-wrapper')
       .children()
       .should('have.length', MAX_RESULT_COUNT * 2);
+  });
+
+  it('저장버튼을 누르면 localStorage에 해당 영상이 저장된다.', () => {
+    const FIRST_INDEX = 0;
+
+    cy.get('#search-button').click();
+    cy.get('#search-keyword-input').type(KEYWORD);
+    cy.get('#search-keyword-form').submit();
+
+    cy.get('.save-button')
+      .eq(FIRST_INDEX)
+      .click()
+      .invoke('attr', 'data-video-id')
+      .then((storedVideoId) => {
+        const list = JSON.parse(localStorage.getItem('videosToWatch'));
+        expect(list[FIRST_INDEX].videoId).to.eq(storedVideoId);
+      });
   });
 });
