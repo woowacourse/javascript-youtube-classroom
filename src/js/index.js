@@ -1,31 +1,31 @@
 import { $ } from './utils.js';
 import { searchYoutube, searchYoutubeById, searchYoutubeDummyData } from './api.js';
-import { ALERT_MESSAGE } from './constants.js';
+import { ALERT_MESSAGE, SELECTORS, LOCAL_STORAGE_KEYS } from './constants.js';
 import Store from './store.js';
 
-const $searchButton = document.querySelector('#search-button');
-const $modalClose = document.querySelector('.modal-close');
-const $modal = document.querySelector('.modal');
+const $searchButton = document.querySelector(SELECTORS.ID.SEARCH_BUTTON);
+const $modalClose = document.querySelector(SELECTORS.CLASS.MODAL_CLOSE);
+const $modal = document.querySelector(SELECTORS.CLASS.MODAL);
 const store = new Store();
 let pageToken;
 
 const onModalShow = () => {
-  $modal.classList.add('open');
+  $modal.classList.add(SELECTORS.STATUS.MODAL_OPEN);
 };
 
 const onModalClose = () => {
-  $modal.classList.remove('open');
+  $modal.classList.remove(SELECTORS.STATUS.MODAL_OPEN);
 };
 
 $searchButton.addEventListener('click', onModalShow);
 $modalClose.addEventListener('click', onModalClose);
 
 const showSnackbar = (message, second = 3) => {
-  $('#snackbar').textContent = message;
-  $('#snackbar').classList.add('show');
+  $(SELECTORS.ID.SNACKBAR).textContent = message;
+  $(SELECTORS.ID.SNACKBAR).classList.add(SELECTORS.STATUS.SNACKBAR_SHOW);
 
   setTimeout(() => {
-    $('#snackbar').classList.remove('show');
+    $(SELECTORS.ID.SNACKBAR).classList.remove(SELECTORS.STATUS.SNACKBAR_SHOW);
   }, second * 1000);
 };
 
@@ -46,7 +46,7 @@ const renderSearchResult = (result) => {
     .map((item) => {
       const { channelId, title, channelTitle, publishedAt } = item.snippet;
       const { videoId } = item.id;
-      const isSaved = store.load('watchList').includes(videoId);
+      const isSaved = store.load(LOCAL_STORAGE_KEYS.WATCH_LIST).includes(videoId);
 
       return `
         <article class="clip d-flex flex-col">
@@ -62,7 +62,7 @@ const renderSearchResult = (result) => {
           </div>
           <div class="content-container pt-2 px-1 d-flex flex-col justify-between flex-1">
             <div>
-              <h3>${title}</h3>
+              <h3 class="video-title">${title}</h3>
               <a
                 href="https://www.youtube.com/channel/${channelId}"
                 target="_blank"
@@ -83,7 +83,7 @@ const renderSearchResult = (result) => {
     })
     .join('');
 
-  $('.youtube-search-result-list').insertAdjacentHTML('beforeend', resultTemplate);
+  $(SELECTORS.CLASS.YOUTUBE_SEARCH_RESULT_LIST).insertAdjacentHTML('beforeend', resultTemplate);
 };
 
 const renderSavedVideos = (items) => {
@@ -91,7 +91,7 @@ const renderSavedVideos = (items) => {
     .map((item) => {
       const { channelId, title, channelTitle, publishedAt } = item.snippet;
       const { videoId } = item.id;
-      $('.watch-list').insertAdjacentHTML(
+      $(SELECTORS.CLASS.WATCH_LIST).insertAdjacentHTML(
         'beforeend',
         `<article class="clip d-flex flex-col">
         <div class="preview-container">
@@ -106,7 +106,7 @@ const renderSavedVideos = (items) => {
         </div>
         <div class="content-container pt-2 px-1 d-flex flex-col justify-between flex-1">
           <div>
-            <h3>${title}</h3>
+            <h3 class="video-title">${title}</h3>
             <a
               href="https://www.youtube.com/channel/${channelId}"
               target="_blank"
@@ -130,10 +130,10 @@ const renderSavedVideos = (items) => {
     })
     .join('');
 
-  $('.watch-list').insertAdjacentHTML('beforeend', resultTemplate);
+  $(SELECTORS.CLASS.WATCH_LIST).insertAdjacentHTML('beforeend', resultTemplate);
 };
 
-$('#youtube-search-form').addEventListener('submit', async (event) => {
+$(SELECTORS.ID.YOUTUBE_SEARCH_FORM).addEventListener('submit', async (event) => {
   event.preventDefault();
 
   const keyword = event.target.elements.keyword.value;
@@ -142,8 +142,9 @@ $('#youtube-search-form').addEventListener('submit', async (event) => {
     return;
   }
 
-  $('.youtube-search-result').innerHTML = `<div class="youtube-search-result-list video-wrapper"></div>`;
-  renderSkeletonUI('.youtube-search-result-list', 10);
+  $(SELECTORS.CLASS.YOUTUBE_SEARCH_RESULT).scrollTo(0, 0);
+  $(SELECTORS.CLASS.YOUTUBE_SEARCH_RESULT).innerHTML = `<div class="youtube-search-result-list video-wrapper"></div>`;
+  renderSkeletonUI(SELECTORS.CLASS.YOUTUBE_SEARCH_RESULT_LIST, 10);
 
   // TODO: 테스트 코드 - 추후 삭제 요망
   let response;
@@ -156,7 +157,7 @@ $('#youtube-search-form').addEventListener('submit', async (event) => {
   // const response = await searchYoutube(keyword);
 
   if (response.pageInfo.totalResults === 0) {
-    $('.youtube-search-result').innerHTML = `
+    $(SELECTORS.CLASS.YOUTUBE_SEARCH_RESULT).innerHTML = `
       <div class="no-result">
         <img src="./src/images/status/not_found.png" alt="검색 결과 없음" />
         <p><strong>검색 결과가 없습니다</strong></p>
@@ -169,21 +170,20 @@ $('#youtube-search-form').addEventListener('submit', async (event) => {
 
   pageToken = response.nextPageToken;
 
-  $('.youtube-search-result').scrollTo(0, 0);
-  $('.youtube-search-result').innerHTML = `<div class="youtube-search-result-list video-wrapper"></div>`;
+  $(SELECTORS.CLASS.YOUTUBE_SEARCH_RESULT).innerHTML = `<div class="youtube-search-result-list video-wrapper"></div>`;
 
   renderSearchResult(searchResult);
 });
 
 // TODO: 과도한 scroll 이벤트 방지를 위해 debounce 적용 필요
-$('.youtube-search-result').addEventListener('scroll', async (event) => {
+$(SELECTORS.CLASS.YOUTUBE_SEARCH_RESULT).addEventListener('scroll', async (event) => {
   const $videoWrapper = event.target;
   const isScrollBottom =
     Math.round($videoWrapper.scrollTop) === $videoWrapper.scrollHeight - $videoWrapper.offsetHeight;
 
   if (isScrollBottom) {
-    const keyword = $('#youtube-search-keyword-input').value;
-    const response = await searchYoutubeDummyData(keyword, pageToken);
+    const keyword = $(SELECTORS.ID.YOUTUBE_SEARCH_KEYWORD_INPUT).value;
+    const response = await searchYoutubeDummyData();
     const searchResult = response.items;
 
     pageToken = response.nextPageToken;
@@ -191,23 +191,23 @@ $('.youtube-search-result').addEventListener('scroll', async (event) => {
   }
 });
 
-$('.youtube-search-result').addEventListener('click', async (event) => {
+$(SELECTORS.CLASS.YOUTUBE_SEARCH_RESULT).addEventListener('click', async (event) => {
   const selectedVideoId = event.target.dataset.videoId;
   const $selectedButton = event.target;
-  console.log(selectedVideoId);
+
   if (!event.target.classList.contains('btn-save')) return;
 
-  store.pushItem('watchList', selectedVideoId);
+  store.pushItem(LOCAL_STORAGE_KEYS.WATCH_LIST, selectedVideoId);
   showSnackbar(ALERT_MESSAGE.VIDEO_SAVED);
-  $selectedButton.classList.add('hidden');
+  $selectedButton.classList.add(SELECTORS.STATUS.HIDDEN);
 
   const selectedVideo = await searchYoutubeById([selectedVideoId]);
   renderSavedVideos(selectedVideo.items);
 });
 
 const initVideos = async () => {
-  const ids = store.load('watchList');
-  renderSkeletonUI('.watch-list', ids.length);
+  const ids = store.load(LOCAL_STORAGE_KEYS.WATCH_LIST);
+  renderSkeletonUI(SELECTORS.CLASS.WATCH_LIST, ids.length);
   const selectedVideos = await searchYoutubeById(ids);
   $('main').innerHTML = `<div class="watch-list video-wrapper"></div>`;
   renderSavedVideos(selectedVideos.items);

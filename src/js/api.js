@@ -21,7 +21,7 @@ export const searchYoutubeById = async (ids = []) => {
 };
 
 // TODO: 테스트 코드 - 추후 삭제 요망
-export const searchYoutubeDummyData = async (isEmpty) => {
+export const searchYoutubeDummyData = async (isEmpty = false) => {
   await sleep(500);
   if (isEmpty) {
     return JSON.parse(`
