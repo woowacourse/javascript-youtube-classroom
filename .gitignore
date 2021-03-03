@@ -106,3 +106,4 @@ dist
 cypress/fixtures
 cypress/plugins
 cypress/support
+temp.js
