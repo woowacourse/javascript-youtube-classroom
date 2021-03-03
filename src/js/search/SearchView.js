@@ -9,6 +9,9 @@ export default class SearchView {
   }
 
   showSearchResults(items) {
+    hideElement(elements.$notFound);
+    showElement(elements.$searchResults);
+
     elements.$searchResults.innerHTML = items
       .map((item) => getVideoClipTemplate(item))
       .join("");

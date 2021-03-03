@@ -5,7 +5,7 @@ function parseDate(dateString) {
 }
 
 export default function getVideoClipTemplate(item) {
-  return `<article class="clip">
+  return `<article class="clip mt-10">
   <div class="preview-container">
     <iframe
       width="100%"
