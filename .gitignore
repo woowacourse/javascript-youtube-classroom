@@ -107,3 +107,6 @@ dist
 cypress/fixtures/*
 cypress/plugins/*
 cypress/support/*
+
+# Key
+key.js

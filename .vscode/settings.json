@@ -10,7 +10,6 @@
   "liveServer.settings.donotShowInfoMsg": true,
   "liveshare.authenticationProvider": "GitHub",
   "liveServer.settings.CustomBrowser": "chrome:PrivateMode",
-  "window.zoomLevel": 1,
   "files.insertFinalNewline": true,
   "prettier.packageManager": "yarn"
 }
