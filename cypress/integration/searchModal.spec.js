@@ -8,14 +8,14 @@ describe('검색 모달 테스트', () => {
   const KEYWORD = '테코톡';
   const KEYWORD_FOR_NO_RESULT = 'dsflmkfsdlkjweljksf';
 
-  it('검색 모달에서 엔터키를 누르면 검색 키워드가 제출된다.', () => {
+  it('검색 모달에서 "엔터키"를 누르면, 최초 검색 결과 10개가 화면에 표시된다.', () => {
     cy.get('#search-button').click();
     cy.get('#search-keyword-input').type(KEYWORD).type('{enter}');
 
     cy.get('#search-result-video-wrapper').children().should('have.length', MAX_RESULT_COUNT);
   });
 
-  it('검색 모달에서 검색 버튼을 클릭하면 검색 키워드가 제출된다.', () => {
+  it('검색 모달에서 "검색 버튼"을 클릭하면, 최초 검색 결과 10개가 화면에 표시된다.', () => {
     cy.get('#search-button').click();
     cy.get('#search-keyword-input').type(KEYWORD);
     cy.get('#search-keyword-button').click();
@@ -39,6 +39,18 @@ describe('검색 모달 테스트', () => {
     cy.get('#search-button').click();
     cy.get('#search-keyword-input').type(KEYWORD_FOR_NO_RESULT);
     cy.get('#search-keyword-form').submit();
+
     cy.get('#search-result-video-wrapper').find('img').should('have.attr', 'src').should('include', 'not_found');
+  });
+
+  it('스크롤 바를 끝까지 이동시킬 경우, 다음 10개 아이템을 추가로 불러온다.', () => {
+    cy.get('#search-button').click();
+    cy.get('#search-keyword-input').type(KEYWORD);
+    cy.get('#search-keyword-form').submit();
+
+    cy.scrollTo('bottom');
+    cy.get('#search-result-video-wrapper')
+      .children()
+      .should('have.length', MAX_RESULT_COUNT * 2);
   });
 });
