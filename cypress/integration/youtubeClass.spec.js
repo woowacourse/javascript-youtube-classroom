@@ -11,7 +11,7 @@ context('유튜브 강의실 테스트', () => {
       const now = new Date().getTime();
       cy.clock(now);
       click(`#${SELECTOR_ID.SEARCH_FORM_SUBMIT}`);
-      cy.tick(2000);
+      cy.tick(10000);
       cy.get(`#${SELECTOR_ID.VIDEO_WRAPPER} .${SELECTOR_CLASS.CLIP}`)
         .its('length')
         .should('be.gt', 0);
@@ -20,11 +20,9 @@ context('유튜브 강의실 테스트', () => {
     it('검색 모달에 다시 접근했을 때 이전의 검색 결과를 보여준다.', () => {
       click(`#${SELECTOR_ID.SEARCH_BUTTON}`);
       type(`#${SELECTOR_ID.SEARCH_FORM_INPUT}`, '우아한');
-      const now = new Date().getTime();
-      cy.clock(now);
       click(`#${SELECTOR_ID.SEARCH_FORM_SUBMIT}`);
-      cy.tick(2000);
-      click(`#${SELECTOR_ID.MODAL_CLOSE_BUTTON}`);
+      cy.wait(3000);
+      cy.reload();
       click(`#${SELECTOR_ID.SEARCH_BUTTON}`);
       cy.get(`#${SELECTOR_ID.VIDEO_WRAPPER} .${SELECTOR_CLASS.CLIP}`)
         .its('length')

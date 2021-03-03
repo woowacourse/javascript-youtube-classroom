@@ -4,7 +4,8 @@
   "description": "My Own Youtube Class Room",
   "main": "index.js",
   "scripts": {
-    "build": "webpack -w",
+    "build": "webpack",
+    "watch": "webpack -w",
     "test": "cypress open"
   },
   "repository": "git+https://github.com/swon3210/javascript-youtube-classroom.git",

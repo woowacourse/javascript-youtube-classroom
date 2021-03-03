@@ -20,3 +20,7 @@ export const STYLE_CLASS = Object.freeze({
 export const YOUTUBE = Object.freeze({
   MAX_RESULT_COUNT: 10,
 });
+
+export const LOCAL_STORAGE_KEY = Object.freeze({
+  PREVIOUS_SEARCH_RESULTS: 'previous_search_results',
+});
