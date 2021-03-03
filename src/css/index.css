@@ -29,3 +29,11 @@ a {
   max-height: 500px;
   overflow: auto;
 }
+
+.no-result {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}

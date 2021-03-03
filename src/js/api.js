@@ -10,7 +10,22 @@ export const searchYoutube = async (keyword, pageToken = '') => {
   return response.json();
 };
 
-export const searchYoutubeDummyData = async (keyword, pageToken = '') => {
+// TODO: 테스트 코드 - 추후 삭제 요망
+export const searchYoutubeDummyData = async (keyword, pageToken = '', isEmpty) => {
   await sleep(500);
+  if (isEmpty) {
+    return JSON.parse(`
+      {
+        "kind": "youtube#searchListResponse",
+        "etag": "aAoE_May7GgRH79SFKG9Byh3Z_A",
+        "regionCode": "KR",
+        "pageInfo": {
+            "totalResults": 0,
+            "resultsPerPage": 0
+        },
+        "items": []
+      }
+    `);
+  }
   return dummyData[0];
 };

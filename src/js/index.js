@@ -80,7 +80,24 @@ $('#youtube-search-form').addEventListener('submit', async (event) => {
   renderSkeletonUI();
 
   const keyword = event.target.elements.keyword.value;
-  const response = await searchYoutubeDummyData(keyword);
+
+  // TODO: 테스트 코드 - 추후 삭제 요망
+  let response;
+  if (keyword === '무야호') {
+    response = await searchYoutubeDummyData(keyword);
+  } else {
+    response = await searchYoutubeDummyData(keyword, '', true);
+  }
+
+  if (response.pageInfo.totalResults === 0) {
+    $('.youtube-search-result').innerHTML = `
+      <div class="no-result">
+        <img src="./src/images/status/not_found.png" alt="검색 결과 없음" />
+        <p><strong>검색 결과가 없습니다</strong></p>
+      </div>
+    `;
+    return;
+  }
 
   const searchResult = response.items;
 
