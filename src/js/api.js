@@ -10,8 +10,18 @@ export const searchYoutube = async (keyword, pageToken = '') => {
   return response.json();
 };
 
+export const searchYoutubeById = async (ids = []) => {
+  if (ids.length <= 0) return;
+  const idsListString = ids.join(',');
+  const response = await fetch(
+    `https://www.googleapis.com/youtube/v3/videos?part=snippet&type=video&key=${YOUTUBE_API_KEY}&id=${idsListString}`
+  );
+
+  return response.json();
+};
+
 // TODO: 테스트 코드 - 추후 삭제 요망
-export const searchYoutubeDummyData = async (keyword, pageToken = '', isEmpty) => {
+export const searchYoutubeDummyData = async (isEmpty) => {
   await sleep(500);
   if (isEmpty) {
     return JSON.parse(`

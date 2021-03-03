@@ -27,7 +27,7 @@ describe('나만의 유튜브 강의실 Test', () => {
     cy.get('.modal .video-wrapper .clip').should('have.length', 10);
   });
 
-  it.only('검색어가 비어있는 상태에서 검색 버튼을 누르면, 스낵바 경고 메시지가 나타난다.', () => {
+  it('검색어가 비어있는 상태에서 검색 버튼을 누르면, 스낵바 경고 메시지가 나타난다.', () => {
     cy.get('#search-button').click();
     cy.get('#youtube-search-form').submit();
     cy.get('#snackbar')
@@ -56,8 +56,8 @@ describe('나만의 유튜브 강의실 Test', () => {
     cy.get('.chip').first().should('have.text', keyword);
   });
 
-  it('각 검색 결과 동영상의 저장 버튼을 누르면 볼 영상 목록의 마지막에 저장한 동영상이 추가된다.', () => {
-    const keyword = 'BTS';
+  it.only('각 검색 결과 동영상의 저장 버튼을 누르면 볼 영상 목록의 마지막에 저장한 동영상이 추가된다.', () => {
+    const keyword = '무야호';
     cy.get('#search-button').click();
     cy.get('#youtube-search-keyword-input').type(keyword);
     cy.get('#youtube-search-form').submit();

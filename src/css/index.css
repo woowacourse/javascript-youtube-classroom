@@ -37,3 +37,7 @@ a {
   align-items: center;
   flex-direction: column;
 }
+
+.hidden {
+  visibility: hidden;
+}
