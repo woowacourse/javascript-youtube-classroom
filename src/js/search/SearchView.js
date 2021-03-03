@@ -8,12 +8,20 @@ export default class SearchView {
     showElement(elements.$notFound);
   }
 
-  showSearchResults(items) {
+  showSearchResults(items, pageToken = "") {
     hideElement(elements.$notFound);
     showElement(elements.$searchResults);
 
-    elements.$searchResults.innerHTML = items
-      .map((item) => getVideoClipTemplate(item))
-      .join("");
+    if (!pageToken) {
+      elements.$searchResults.innerHTML = "";
+    }
+
+    elements.$searchResults.appendChild(this.appendVideoClips(items));
+  }
+
+  appendVideoClips(items) {
+    const fragment = document.createDocumentFragment();
+    items.forEach((item) => fragment.append(getVideoClipTemplate(item)));
+    return fragment;
   }
 }

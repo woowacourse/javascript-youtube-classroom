@@ -6,5 +6,5 @@ export const API = {
 };
 
 export const VIDEOS = {
-  SEARCH_MAX_RESULT: 5,
+  SEARCH_MAX_RESULT: 10,
 };

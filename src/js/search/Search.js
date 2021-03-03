@@ -8,11 +8,19 @@ export default class Search {
 
   init() {
     elements.$searchForm.addEventListener("submit", this.onSearch.bind(this));
+    elements.$searchResults.addEventListener(
+      "scroll",
+      this.onScroll.bind(this)
+    );
   }
 
   onSearch(e) {
     e.preventDefault();
     const searchKeyword = e.target.elements["search-keyword"].value;
     this.searchController.searchVideos(searchKeyword);
+  }
+
+  onScroll(e) {
+    this.searchController.addVideos(e.target);
   }
 }
