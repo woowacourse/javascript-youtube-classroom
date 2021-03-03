@@ -1,3 +1,4 @@
+import getVideoClipTemplate from "../templates/videoClipTemplate.js";
 import { hideElement, showElement } from "../utils/dom.js";
 import elements from "../utils/elements.js";
 
@@ -8,6 +9,8 @@ export default class SearchView {
   }
 
   showSearchResults(items) {
-    console.log(items);
+    elements.$searchResults.innerHTML = items
+      .map((item) => getVideoClipTemplate(item))
+      .join("");
   }
 }
