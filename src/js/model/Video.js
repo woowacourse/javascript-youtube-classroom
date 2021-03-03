@@ -6,7 +6,7 @@ export default class Video {
     this.channelTitle = item.snippet.channelTitle;
     this.channelId = item.snippet.channelId;
     this.channelUrl = this.parseChannelUrl();
-    this.uploadTime = this.parseVideoUploadDate(item.snippet.publishedTime);
+    this.uploadTime = this.parseVideoUploadDate(item.snippet.publishTime);
   }
 
   parseVideoEmbedUrl() {
