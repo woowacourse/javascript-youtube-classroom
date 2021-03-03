@@ -1,7 +1,7 @@
 import {
   NUM_OF_CLIP_PER_FETCH,
   MAX_NUM_OF_SAVED_CLIP,
-  NUM_OF_SAVED_RECENT_SEARCH_KEYWORD,
+  NUM_OF_SEARCH_KEYWORD_HISTORY,
   LOCAL_STORAGE_CLIP_KEY,
   SNACKBAR_MESSAGE,
 } from '../../src/js/constants/index.js';
@@ -57,8 +57,8 @@ describe('유튜브 검색 테스트', () => {
     cy.get('.js-clip-save-button').eq(0).should('not.be.visible');
   });
 
-  it(`최근 검색 키워드를 ${NUM_OF_SAVED_RECENT_SEARCH_KEYWORD}개까지 화면상의 검색창 하단에 보여준다.`, () => {
-    const dummies = Array(NUM_OF_SAVED_RECENT_SEARCH_KEYWORD)
+  it(`최근 검색 키워드를 ${NUM_OF_SEARCH_KEYWORD_HISTORY}개까지 화면상의 검색창 하단에 보여준다.`, () => {
+    const dummies = Array(NUM_OF_SEARCH_KEYWORD_HISTORY)
       .fill()
       .map((v, i) => `keyword${i}`);
 
@@ -67,7 +67,7 @@ describe('유튜브 검색 테스트', () => {
     });
 
     cy.get('.chip').each(($el, index) => {
-      cy.wrap($el).should('have.text', dummies[NUM_OF_SAVED_RECENT_SEARCH_KEYWORD - index - 1]);
+      cy.wrap($el).should('have.text', dummies[NUM_OF_SEARCH_KEYWORD_HISTORY - index - 1]);
     });
   });
 

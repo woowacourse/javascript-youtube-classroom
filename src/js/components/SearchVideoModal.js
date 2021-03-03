@@ -1,9 +1,11 @@
-import { $ } from "../util/index.js";
+import { SearchVideoInput } from './index.js';
+import { $ } from '../util/index.js';
 
 export class SearchVideoModal {
   constructor() {
     this.$modal = $('.js-search-video-modal');
     this.$closeButton = $('.js-search-modal-close-button');
+    this.searchVideoInput = new SearchVideoInput();
     this.initEvent();
   }
 
@@ -13,9 +15,9 @@ export class SearchVideoModal {
 
   openModal() {
     this.$modal.classList.add('open');
-  };
+  }
 
   closeModal() {
     this.$modal.classList.remove('open');
-  };
+  }
 }
