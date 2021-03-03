@@ -1,16 +1,20 @@
 import { $ } from './utils/dom.js';
+import YoutubeController from './YoutubeController.js';
 
-const $searchButton = document.querySelector('#search-button');
-const $modalClose = document.querySelector('.modal-close');
-const $modal = document.querySelector('.modal');
+const youtubeController = new YoutubeController();
+youtubeController.init();
 
-const onModalShow = () => {
-  $modal.classList.add('open');
-};
+// const $searchButton = document.querySelector('#search-button');
+// const $modalClose = document.querySelector('.modal-close');
+// const $modal = document.querySelector('.modal');
 
-const onModalClose = () => {
-  $modal.classList.remove('open');
-};
+// const onModalShow = () => {
+//   $modal.classList.add('open');
+// };
 
-$searchButton.addEventListener('click', onModalShow);
-$modalClose.addEventListener('click', onModalClose);
+// const onModalClose = () => {
+//   $modal.classList.remove('open');
+// };
+
+// $searchButton.addEventListener('click', onModalShow);
+// $modalClose.addEventListener('click', onModalClose);

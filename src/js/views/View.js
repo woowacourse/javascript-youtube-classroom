@@ -5,13 +5,13 @@ export default class View {
   }
 
   on(event, eventHandler) {
-    this.$element.addEventListener(event, eventHandler);
+    this.$element.setEvent(event, eventHandler);
     return this;
   }
 
   emit(event, data) {
     const newEvent = new CustomEvent(event, { detail: data });
-    this.$element.dispatchEvent(newEvent);
+    this.$element.dispatch(newEvent);
     return this;
   }
 }

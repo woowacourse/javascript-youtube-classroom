@@ -2,6 +2,19 @@ export const $ = (function () {
   const constructor = function (selector) {
     if (!selector) return;
     this.elements = document.querySelectorAll(selector);
+    this.element = document.querySelector(selector);
+  };
+
+  constructor.prototype.setEvent = function (event, eventHandler) {
+    this.each((target) => {
+      target.addEventListener(event, eventHandler);
+    });
+  };
+
+  constructor.prototype.dispatch = function (newEvent) {
+    this.each((target) => {
+      target.dispatchEvent(newEvent);
+    });
   };
 
   constructor.prototype.each = function (callBack) {
