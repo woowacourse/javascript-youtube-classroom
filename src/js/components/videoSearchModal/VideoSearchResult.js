@@ -22,10 +22,12 @@ export default class VideoSearchResult {
     console.log('PreState : ', preStates.searchedVideos);
     console.log('State: ', states.searchedVideos);
     if (preStates.searchedVideos !== states.searchedVideos) {
-      let template = '';
-      states.searchedVideos.forEach((video) => {
-        template += `${video}`;
-      });
+      const template = states.searchedVideos
+        .map((video) => {
+          return `${video}`;
+        })
+        .join('');
+      console.log(template);
       this.$searchedVideoWrapper.innerHTML += template;
     }
   }
