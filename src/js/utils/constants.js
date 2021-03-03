@@ -4,3 +4,7 @@ export const API = {
     SEARCH: "search",
   },
 };
+
+export const VIDEOS = {
+  SEARCH_MAX_RESULT: 5,
+};

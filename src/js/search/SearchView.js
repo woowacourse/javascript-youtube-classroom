@@ -6,4 +6,8 @@ export default class SearchView {
     hideElement(elements.$searchResults);
     showElement(elements.$notFound);
   }
+
+  showSearchResults(items) {
+    console.log(items);
+  }
 }
