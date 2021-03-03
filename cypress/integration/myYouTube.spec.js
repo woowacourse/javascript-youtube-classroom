@@ -30,4 +30,11 @@ describe('simba-tube', () => {
       'rgb(179, 234, 242)',
     );
   });
+
+  it('현재 검색한 검색어가 최근 검색어 목록에 남는다.', () => {
+    cy.get('#search-btn').click();
+    cy.get('#modal-search-input').type('불닭');
+    cy.get('#modal-search-button').click();
+    cy.get('.chip').eq(0).should('have.text', '불닭');
+  });
 });
