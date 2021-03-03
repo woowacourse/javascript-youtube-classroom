@@ -1,14 +1,15 @@
 import { api } from '../api/youtubeAPI.js';
 
 class YoutubeModel {
+  #videoInfos;
+
   constructor() {
-    this.videoInfos = [];
+    this.#videoInfos = [];
   }
 
-  getVideoIdBySearch = async ({ query, max = 10 }) => {
+  getVideoInfosBySearch = async ({ query, max = 10 }) => {
     await api.fetchVideoItems({ query, max }).then(json => {
-      this.videoInfos = json.items.map(item => {
-        console.log(item.snippet);
+      this.#videoInfos = json.items.map(item => {
         return {
           url: item.id.videoId,
           title: item.snippet.title,
@@ -18,8 +19,11 @@ class YoutubeModel {
         };
       });
     });
-    console.log(this.videoInfos);
   };
+
+  get videoInfos() {
+    return this.#videoInfos;
+  }
 }
 
 export default YoutubeModel;
