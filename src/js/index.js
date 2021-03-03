@@ -1,14 +1,12 @@
-const $searchButton = document.querySelector("#search-button");
-const $modalClose = document.querySelector(".modal-close");
-const $modal = document.querySelector(".modal");
+import { $ } from './utils/elements.js';
 
-const onModalShow = () => {
-  $modal.classList.add("open");
-};
+const $searchButton = $('#search-button');
+const $searchModal = $('#video-search-modal');
+const $modalCloseButton = $('#modal-close-button');
 
-const onModalClose = () => {
-  $modal.classList.remove("open");
-};
-
-$searchButton.addEventListener("click", onModalShow);
-$modalClose.addEventListener("click", onModalClose);
+$searchButton.addEventListener('click', () =>
+  $searchModal.classList.add('open')
+);
+$modalCloseButton.addEventListener('click', () =>
+  $searchModal.classList.remove('open')
+);
