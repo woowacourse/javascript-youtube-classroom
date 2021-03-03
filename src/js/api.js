@@ -1,4 +1,5 @@
 import { YOUTUBE_API_KEY } from './config.js';
+import { dummyData } from './dummy.js';
 
 export const searchYoutube = async (keyword, pageToken = '') => {
   const response = await fetch(
@@ -6,4 +7,8 @@ export const searchYoutube = async (keyword, pageToken = '') => {
   );
 
   return response.json();
+};
+
+export const searchYoutubeDummyData = async (keyword, pageToken = '') => {
+  return dummyData[0];
 };

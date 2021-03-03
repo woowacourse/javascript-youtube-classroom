@@ -1,5 +1,5 @@
 import { $ } from './utils.js';
-import { searchYoutube } from './api.js';
+import { searchYoutube, searchYoutubeDummyData } from './api.js';
 
 const $searchButton = document.querySelector('#search-button');
 const $modalClose = document.querySelector('.modal-close');
@@ -16,6 +16,18 @@ const onModalClose = () => {
 
 $searchButton.addEventListener('click', onModalShow);
 $modalClose.addEventListener('click', onModalClose);
+
+const renderSkeletonUI = () => {
+  const skeletonUITemplate = `
+    <div class="skeleton">
+      <div class="image"></div>
+      <p class="line"></p>
+      <p class="line"></p>
+    </div>
+  `.repeat(10);
+
+  $('.youtube-search-result-list').insertAdjacentHTML('beforeend', skeletonUITemplate);
+};
 
 const renderSearchResult = (result) => {
   const resultTemplate = result
@@ -58,29 +70,25 @@ const renderSearchResult = (result) => {
     })
     .join('');
 
-  $('.youtube-search-result').insertAdjacentHTML(
-    'beforeend',
-    `
-    <div class="video-wrapper"></div>
-  `
-  );
-  $('.video-wrapper').insertAdjacentHTML('beforeend', resultTemplate);
+  $('.youtube-search-result-list').insertAdjacentHTML('beforeend', resultTemplate);
 };
 
 $('#youtube-search-form').addEventListener('submit', async (event) => {
   event.preventDefault();
 
+  $('.youtube-search-result').innerHTML = `<div class="youtube-search-result-list video-wrapper"></div>`;
+  renderSkeletonUI();
+
   const keyword = event.target.elements.keyword.value;
-  const response = await searchYoutube(keyword);
+  const response = await searchYoutubeDummyData(keyword);
+
   const searchResult = response.items;
 
   pageToken = response.nextPageToken;
 
-  if ($('.video-wrapper')) {
-    $('.video-wrapper').remove();
-  }
-
   $('.youtube-search-result').scrollTo(0, 0);
+  $('.youtube-search-result').innerHTML = `<div class="youtube-search-result-list video-wrapper"></div>`;
+
   renderSearchResult(searchResult);
 });
 
@@ -92,7 +100,7 @@ $('.youtube-search-result').addEventListener('scroll', async (event) => {
 
   if (isScrollBottom) {
     const keyword = $('#youtube-search-keyword-input').value;
-    const response = await searchYoutube(keyword, pageToken);
+    const response = await searchYoutubeDummyData(keyword, pageToken);
     const searchResult = response.items;
 
     pageToken = response.nextPageToken;
