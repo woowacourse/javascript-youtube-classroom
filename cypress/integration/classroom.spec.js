@@ -31,12 +31,15 @@ describe('나만의 유튜브 강의실 Test', () => {
     cy.get('#snackbar').should('be.visible').should('have.text', '검색어를 입력해주세요.');
   });
 
-  it('유튜브 검색 modal에서 검색 결과 스크롤 바를 끝까지 이동시켰을 경우, 그 다음 10개의 검색 결과를 추가로 보여준다.', () => {
+  it.only('유튜브 검색 modal에서 검색 결과 스크롤 바를 끝까지 이동시켰을 경우, 그 다음 10개의 검색 결과를 추가로 보여준다.', () => {
     cy.get('#search-button').click();
     cy.get('#youtube-search-keyword-input').type('BTS');
     cy.get('#youtube-search-form').submit();
-    cy.get('.modal').scrollTo('bottom');
-    cy.get('.modal .video-wrapper .clip').should('have.length', 20);
+
+    cy.get('.modal .video-wrapper .clip').should('have.length', 10).then(() => {
+      cy.get('.youtube-search-result-container').scrollTo('bottom');
+      cy.get('.modal .video-wrapper .clip').should('have.length', 20);
+    });
   });
 
   it('검색한 검색어는 최근 검색어에 추가된다.', () => {

@@ -4,6 +4,7 @@ import { searchYoutube } from './api.js';
 const $searchButton = document.querySelector('#search-button');
 const $modalClose = document.querySelector('.modal-close');
 const $modal = document.querySelector('.modal');
+let pageToken;
 
 const onModalShow = () => {
   $modal.classList.add('open');
@@ -31,8 +32,8 @@ const renderSearchResult = (result) => {
               src="https://www.youtube.com/embed/${videoId}"
               frameborder="0"
               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-              allowfullscreen
-            ></iframe>
+              allowfullscreen>
+            </iframe>
           </div>
           <div class="content-container pt-2 px-1 d-flex flex-col justify-between flex-1">
             <div>
@@ -57,7 +58,13 @@ const renderSearchResult = (result) => {
     })
     .join('');
 
-  $('.youtube-search-result').innerHTML = resultTemplate;
+  $('.youtube-search-result').insertAdjacentHTML(
+    'beforeend',
+    `
+    <div class="video-wrapper"></div>
+  `
+  );
+  $('.video-wrapper').insertAdjacentHTML('beforeend', resultTemplate);
 };
 
 $('#youtube-search-form').addEventListener('submit', async (event) => {
@@ -67,5 +74,28 @@ $('#youtube-search-form').addEventListener('submit', async (event) => {
   const response = await searchYoutube(keyword);
   const searchResult = response.items;
 
+  pageToken = response.nextPageToken;
+
+  if ($('.video-wrapper')) {
+    $('.video-wrapper').remove();
+  }
+
+  $('.youtube-search-result').scrollTo(0, 0);
   renderSearchResult(searchResult);
+});
+
+// TODO: 과도한 scroll 이벤트 방지를 위해 debounce 적용 필요
+$('.youtube-search-result').addEventListener('scroll', async (event) => {
+  const $videoWrapper = event.target;
+  const isScrollBottom =
+    Math.round($videoWrapper.scrollTop) === $videoWrapper.scrollHeight - $videoWrapper.offsetHeight;
+
+  if (isScrollBottom) {
+    const keyword = $('#youtube-search-keyword-input').value;
+    const response = await searchYoutube(keyword, pageToken);
+    const searchResult = response.items;
+
+    pageToken = response.nextPageToken;
+    renderSearchResult(searchResult);
+  }
 });
