@@ -5,6 +5,9 @@
   "repository": "https://github.com/jum0/javascript-youtube-classroom.git",
   "author": "jum0 <wnsah052@naver.com>",
   "license": "MIT",
+  "scripts": {
+    "pre-commit": "yarn eslint . && yarn prettier --write ."
+  },
   "devDependencies": {
     "cypress": "^6.6.0",
     "eslint": "^7.21.0",
