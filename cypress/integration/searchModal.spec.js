@@ -1,5 +1,4 @@
-import { MAX_RESULT_COUNT } from '../../src/js/constants.js';
-import { getItemFromLocalStorage } from '../../src/js/utils/localStorage.js';
+import { MAX_RESULT_COUNT, STORAGE_CAPACITY_FULL } from '../../src/js/constants.js';
 
 describe('검색 모달 테스트', () => {
   beforeEach(() => {
@@ -70,5 +69,30 @@ describe('검색 모달 테스트', () => {
         const list = JSON.parse(localStorage.getItem('videosToWatch'));
         expect(list[FIRST_INDEX].videoId).to.eq(storedVideoId);
       });
+  });
+});
+
+describe('예외 처리 테스트', () => {
+  beforeEach(() => {
+    cy.visit('http://localhost:5500/');
+  });
+
+  it('100개의 영상을 저장했을 때, 더 저장하려고 시도할 경우 저장용량 초과 메세지를 표시한다.', () => {
+    cy.get('#search-button').click();
+    cy.get('#search-keyword-input').type(KEYWORD);
+    cy.get('#search-keyword-form').submit();
+
+    for (let i = 0; i < 11; i++) {
+      cy.scrollTo('bottom');
+      cy.wait(500);
+    }
+    cy.get('.save-button').each(($el, i) => {
+      if (i >= 100) {
+        return;
+      }
+      $el.click();
+    });
+    cy.get('.save-button').eq[100].click();
+    cy.get('#snackbar').contains(STORAGE_CAPACITY_FULL);
   });
 });
