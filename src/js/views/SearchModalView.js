@@ -4,7 +4,16 @@ import View from './View.js';
 export default class SearchModalView extends View {
   constructor($element) {
     super($element);
-    // const $modalClose = document.querySelector('.modal-close');
+    this.closeButton = $('.modal-close');
+
+    this.bindModalEvents();
+  }
+
+  bindModalEvents() {
+    this.closeButton.setEvent('click', () => {
+      this.closeModal();
+      this.emit('closeModal');
+    });
   }
 
   openModal() {
@@ -14,5 +23,4 @@ export default class SearchModalView extends View {
   closeModal() {
     this.$element.removeClass('open');
   }
-  // $modalClose.addEventListener('click', onModalClose);
 }

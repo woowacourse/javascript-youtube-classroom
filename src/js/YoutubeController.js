@@ -10,7 +10,14 @@ export default class YoutubeController {
   }
 
   init() {
+    this.bindEvents();
+  }
+
+  bindEvents() {
     this.navigationView.on('clickNavTab', (e) => this.changeNavTab(e.detail));
+    this.searchModalView.on('closeModal', () =>
+      this.changeNavTab($('#saved-btn')),
+    );
   }
 
   changeNavTab(currentTab) {
