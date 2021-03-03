@@ -12,13 +12,13 @@ export default class NavigationView extends View {
   bindTabEvents() {
     this.tabButtons.each((button) => {
       button.addEventListener('click', () => {
-        this.emit('clickNavTab', button);
+        this.emit('clickNavTab', $(`#${button.id}`));
       });
     });
   }
 
   toggleTabColor(prevTab, currentTab) {
-    prevTab.classList.remove('bg-cyan-100');
-    currentTab.classList.add('bg-cyan-100');
+    prevTab.removeClass('bg-cyan-100');
+    currentTab.addClass('bg-cyan-100');
   }
 }

@@ -2,18 +2,19 @@ export const $ = (function () {
   const constructor = function (selector) {
     if (!selector) return;
     this.elements = document.querySelectorAll(selector);
-    this.element = document.querySelector(selector);
+    this.element =
+      this.elements.length === 1 && document.querySelector(selector);
   };
 
   constructor.prototype.setEvent = function (event, eventHandler) {
-    this.each((target) => {
-      target.addEventListener(event, eventHandler);
+    this.each((element) => {
+      element.addEventListener(event, eventHandler);
     });
   };
 
   constructor.prototype.dispatch = function (newEvent) {
-    this.each((target) => {
-      target.dispatchEvent(newEvent);
+    this.each((element) => {
+      element.dispatchEvent(newEvent);
     });
   };
 
@@ -32,6 +33,14 @@ export const $ = (function () {
 
   constructor.prototype.hide = function () {
     this.each((element) => element.classList.add('d-none'));
+  };
+
+  constructor.prototype.addClass = function (className) {
+    this.each((element) => element.classList.add(className));
+  };
+
+  constructor.prototype.removeClass = function (className) {
+    this.each((element) => element.classList.remove(className));
   };
 
   const instantiate = function (selector) {
