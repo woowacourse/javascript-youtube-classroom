@@ -1,4 +1,4 @@
-<p align="middle" >
+c<p align="middle" >
   <img width="200px;" src="./src/images/readme/laptop_with_youtube_logo.png"/>
 </p>
 <h2 align="middle">level1 - 나만의 유튜브 강의실</h2>
@@ -36,7 +36,7 @@
 ### ✅ TODO(FEAT) - step1
 - [x] eslint, prettier, cypress 환경설정
 - [x] TODO 작성   
-- [ ] 클릭한 탭의 색을 하이라이트한다.
+- [x] 클릭한 탭의 색을 하이라이트한다.
 - [ ] `동영상 검색` 버튼을 누르면 검색 모달 창이 열린다.
 - [ ] 최근 검색어에 목록에 최근 검색한 검색어가 3개 뜬다. 
 - [ ] 가장 마지막에 검색한 검색 결과 동영상들을 보여준다. 

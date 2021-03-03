@@ -1,4 +1,4 @@
-describe('racing-game', () => {
+describe('simba-tube', () => {
   beforeEach(() => {
     cy.visit('http://localhost:5500/');
     cy.window().then((win) => cy.stub(win, 'alert').as('windowAlert'));
