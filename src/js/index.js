@@ -1,5 +1,6 @@
 import { $ } from './utils.js';
 import { searchYoutube, searchYoutubeDummyData } from './api.js';
+import { ALERT_MESSAGE } from './constants.js';
 
 const $searchButton = document.querySelector('#search-button');
 const $modalClose = document.querySelector('.modal-close');
@@ -16,6 +17,15 @@ const onModalClose = () => {
 
 $searchButton.addEventListener('click', onModalShow);
 $modalClose.addEventListener('click', onModalClose);
+
+const showSnackbar = (message, second = 3) => {
+  $('#snackbar').textContent = message;
+  $('#snackbar').classList.add('show');
+
+  setTimeout(() => {
+    $('#snackbar').classList.remove('show');
+  }, second * 1000);
+};
 
 const renderSkeletonUI = () => {
   const skeletonUITemplate = `
@@ -76,10 +86,14 @@ const renderSearchResult = (result) => {
 $('#youtube-search-form').addEventListener('submit', async (event) => {
   event.preventDefault();
 
+  const keyword = event.target.elements.keyword.value;
+  if (!keyword) {
+    showSnackbar(ALERT_MESSAGE.EMPTY_SEARCH_KEYWORD);
+    return;
+  }
+
   $('.youtube-search-result').innerHTML = `<div class="youtube-search-result-list video-wrapper"></div>`;
   renderSkeletonUI();
-
-  const keyword = event.target.elements.keyword.value;
 
   // TODO: 테스트 코드 - 추후 삭제 요망
   let response;
