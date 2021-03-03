@@ -1,8 +1,12 @@
 import { YOUTUBE_API_KEY } from '../../../env.js';
 
 class YoutubeModel {
+  constructor() {
+    this.videoIds = [];
+  }
+
   getVideoBySearch = ({ query, max = 10 }) => {
-    const videos = fetch(
+    const videoItems = fetch(
       `https://www.googleapis.com/youtube/v3/search?key=${YOUTUBE_API_KEY}&q=${query}&max_results=${max}&type=video&videoEmbeddable=true`,
       {
         method: 'GET',
@@ -13,7 +17,18 @@ class YoutubeModel {
           return response.json();
         }
       })
-      .then(myjson => console.log(myjson));
+      .then(json => {
+        console.log(json.items);
+        this.getVideoById(json.items);
+      });
+
+    return videoItems;
+  };
+
+  getVideoById = items => {
+    this.videoIds = items.map(item => {
+      return item.id.videoId;
+    });
   };
 }
 
