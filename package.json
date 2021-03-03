@@ -6,7 +6,7 @@
   "author": "yungo1846 <yungo1468@naver.com>",
   "license": "MIT",
   "devDependencies": {
-    "cypress": "6.5.0",
+    "cypress": "6.4.0",
     "eslint": "^7.21.0",
     "eslint-config-prettier": "^8.1.0",
     "eslint-plugin-prettier": "^3.3.1",
