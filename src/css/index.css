@@ -24,3 +24,7 @@ a {
 .opacity-hover:hover {
   opacity: 1;
 }
+
+.--hidden {
+  display: none;
+}
