@@ -3,16 +3,19 @@ import VideoSearchModal from './videoSearchModal/videoSearchModal.js';
 export default class App {
   constructor($target) {
     this.$target = $target;
+    this.states = {
+      searchedVideos: [],
+    };
   }
 
   run() {
-    this.render();
+    this.initRender();
     this.mount();
     this.selectorDOM();
     this.bindEvent();
   }
 
-  render() {
+  initRender() {
     this.$target.innerHTML = `
     <div class="d-flex justify-center mt-5 w-100">
     <div class="w-100">

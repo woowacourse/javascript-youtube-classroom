@@ -1,15 +1,58 @@
+import YoutubeAPIManager from '../../model/YoutubeAPIManager.js';
+import { store } from '../../index.js';
+import { addVideos } from '../../redux/action.js';
+
 export default class VideoSearchBar {
-  constructor($target) {
+  constructor($target, $props) {
     this.$target = $target;
-    this.render();
+    this.$props = $props;
+    this.initRender();
+    this.selectDOM();
+    this.bindEvent();
+    this.setup();
+  }
+
+  setup() {
+    store.subscribe(this.render.bind(this));
   }
 
   render() {
+    console.log('render');
+  }
+
+  initRender() {
     this.$target.innerHTML = `
-      <form class="d-flex">
-        <input id="youtube-search-input" type="text" class="w-100 mr-2 pl-2" placeholder="검색" />
-        <button id="youtube-search-button" type="button" class="btn bg-cyan-500">검색</button>
+      <form id="youtube-search-form" class="d-flex">
+        <input id="youtube-search-input" name="youtube-search-input" type="text" class="w-100 mr-2 pl-2" placeholder="검색" />
+        <button id="youtube-search-button" type="submit" class="btn bg-cyan-500">검색</button>
       </form>
     `;
+  }
+
+  selectDOM() {
+    this.$videoSearchForm = document.querySelector('#youtube-search-form');
+    this.$videoSearchInput = document.querySelector('#youtube-search-input');
+    this.$videoSearchButton = document.querySelector('#youtube-search-button');
+  }
+
+  bindEvent() {
+    this.$videoSearchForm.addEventListener('submit', this.onSubmit.bind(this));
+  }
+
+  onSubmit(e) {
+    e.preventDefault();
+    const searchTerm = e.target.elements['youtube-search-input'].value;
+
+    if (searchTerm.trim(' ') === '') {
+      console.log('empty nono');
+      return;
+    }
+
+    this.$props.youtubeAPIManager.setSearchTerm(searchTerm);
+    const items = this.$props.youtubeAPIManager
+      .requestVideos()
+      .then((items) => {
+        store.dispatch(addVideos(items));
+      });
   }
 }

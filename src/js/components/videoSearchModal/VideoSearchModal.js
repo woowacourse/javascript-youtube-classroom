@@ -1,18 +1,26 @@
 import VideoSearchBar from './VideoSearchBar.js';
 import SearchTermHistory from './SearchTermHistory.js';
 import VideoSearchResult from './VideoSearchResult.js';
+import { store } from '../../index.js';
+import YoutubeAPIManager from '../../model/YoutubeAPIManager.js';
 
 export default class VideoSearchModal {
   constructor($target) {
     this.$target = $target;
     this.$modalClose = document.querySelector('.modal-close');
-    this.render();
+    this.setup();
+    this.initRender();
     this.mount();
     this.selectDOM();
     this.bindEvent();
   }
 
-  render() {
+  setup() {
+    store.subscribe(this.render.bind(this));
+    this.youtubeAPIManager = new YoutubeAPIManager();
+  }
+
+  initRender() {
     this.$target.innerHTML = `
     <div class="modal-inner p-8">
         <button class="modal-close">
@@ -33,10 +41,23 @@ export default class VideoSearchModal {
     </div>`;
   }
 
+  render() {
+    console.log('render');
+  }
+
   mount() {
-    this.videoSearchBar = new VideoSearchBar(document.querySelector('#video-search-bar'));
-    this.searchTermHistory = new SearchTermHistory(document.querySelector('#search-term-history'));
-    this.videoSearchResult = new VideoSearchResult(document.querySelector('#video-search-result'));
+    this.videoSearchBar = new VideoSearchBar(
+      document.querySelector('#video-search-bar'),
+      { youtubeAPIManager: this.youtubeAPIManager }
+    );
+    this.searchTermHistory = new SearchTermHistory(
+      document.querySelector('#search-term-history'),
+      { youtubeAPIManager: this.youtubeAPIManager }
+    );
+    this.videoSearchResult = new VideoSearchResult(
+      document.querySelector('#video-search-result'),
+      { youtubeAPIManager: this.youtubeAPIManager }
+    );
   }
 
   selectDOM() {
@@ -44,14 +65,14 @@ export default class VideoSearchModal {
   }
 
   bindEvent() {
-    this.$modalClose.addEventListener('click', this.onModalClose.bind(this))
+    this.$modalClose.addEventListener('click', this.onModalClose.bind(this));
   }
 
   onModalShow() {
-    this.$target.classList.add("open");
-  };
+    this.$target.classList.add('open');
+  }
 
   onModalClose() {
-    this.$target.classList.remove("open");
-  };
+    this.$target.classList.remove('open');
+  }
 }
