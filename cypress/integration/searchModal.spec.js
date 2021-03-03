@@ -6,6 +6,7 @@ describe('검색 모달 테스트', () => {
   });
 
   const KEYWORD = '테코톡';
+  const KEYWORD_FOR_NO_RESULT = 'dsflmkfsdlkjweljksf';
 
   it('검색 모달에서 엔터키를 누르면 검색 키워드가 제출된다.', () => {
     cy.get('#search-button').click();
@@ -32,5 +33,12 @@ describe('검색 모달 테스트', () => {
     cy.get('.video-title').each(($el) => cy.wrap($el).should('have.class', 'line'));
     cy.get('.channel-title').each(($el) => cy.wrap($el).should('have.class', 'line'));
     cy.get('.published-at').each(($el) => cy.wrap($el).should('have.class', 'line'));
+  });
+
+  it('검색결과가 없는 경우, 결과없음 이미지가 화면에 표시된다.', () => {
+    cy.get('#search-button').click();
+    cy.get('#search-keyword-input').type(KEYWORD_FOR_NO_RESULT);
+    cy.get('#search-keyword-form').submit();
+    cy.get('#search-result-video-wrapper').find('img').should('have.attr', 'src').should('include', 'not_found');
   });
 });
