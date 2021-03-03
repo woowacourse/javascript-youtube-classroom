@@ -14,4 +14,9 @@ describe('simba-tube', () => {
       );
     });
   });
+
+  it('동영상 검색 버튼을 클릭하면 모달 창이 열린다.', () => {
+    cy.get('#search-btn').click();
+    cy.get('.modal').should('be.visible');
+  });
 });
