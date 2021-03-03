@@ -7,6 +7,6 @@ describe('Youtube classroom test', () => {
     cy.get('#search-button').click();
     cy.get('#video-search-input').type('로이드');
     cy.get('#video-search-submit').click();
-    cy.get('#video-search-result video').should('have.length', 10);
+    cy.get('#video-search-result .video').should('have.length', 10);
   });
 });

@@ -107,3 +107,5 @@ cypress/fixtures
 cypress/plugins
 cypress/support
 temp.js
+
+src/js/apiKey.js
