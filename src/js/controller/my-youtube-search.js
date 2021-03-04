@@ -20,7 +20,11 @@ class MyYoutubeSearchController {
     const query = this.getSearchInput();
     await this.youtube.getVideoInfosBySearch({ query });
 
-    this.view.renderVideoArticles(this.youtube.videoInfos);
+    this.youtube.videoInfos.forEach(info => {
+      const save = this.storage.findVideoByInfo(info);
+      this.view.renderVideoArticle(info, save);
+    });
+
     if (this.youtube.videoInfos.length === 0) {
       this.view.renderNotFound();
     }
@@ -30,6 +34,7 @@ class MyYoutubeSearchController {
 
   saveVideo = e => {
     const videoInfo = JSON.parse(e.target.dataset.info);
+    e.target.classList.add('invisible');
     this.storage.saveVideo(videoInfo);
   };
 
