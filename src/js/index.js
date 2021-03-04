@@ -35,6 +35,7 @@ export default class App {
     this.$searchButton = $('#search-button');
     this.$modalCloseButton = $('#modal-close-button');
     this.$storedVideoCount = $('#stored-video-count');
+    this.$snackbar = $('#snackbar');
   }
 
   attachEvents() {
@@ -43,6 +44,14 @@ export default class App {
     this.$searchKeywordForm.addEventListener('submit', this.onSearchKeyword.bind(this));
     this.$searchSection.addEventListener('scroll', this.onRequestNextResult.bind(this));
     this.$searchResultWrapper.addEventListener('click', this.onSaveVideo.bind(this));
+  }
+
+  showSnackbar(message) {
+    this.$snackbar.innerText = message;
+    this.$snackbar.classList.add('show');
+    setTimeout(() => {
+      this.$snackbar.classList.remove('show');
+    }, 2000);
   }
 
   onSaveVideo({ target }) {
@@ -58,6 +67,13 @@ export default class App {
       channelTitle: $saveButton.dataset.channelTitle,
       publishedAt: $saveButton.dataset.publishedAt,
     };
+
+    const storedCount = this.videoStorage.getStoredVideoCount();
+
+    if (storedCount >= MAX_VIDEO_STORAGE_CAPACITY) {
+      this.showSnackbar(STORAGE_CAPACITY_FULL);
+      return;
+    }
 
     this.videoStorage.addVideo(VIDEOS_TO_WATCH, video);
     this.showCurrentStoredVideoCount();

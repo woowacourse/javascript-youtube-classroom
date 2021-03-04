@@ -1,12 +1,17 @@
-import { MAX_RESULT_COUNT, STORAGE_CAPACITY_FULL } from '../../src/js/constants.js';
+import {
+  MAX_RECENT_KEYWORD_COUNT,
+  MAX_RESULT_COUNT,
+  MAX_VIDEO_STORAGE_CAPACITY,
+  STORAGE_CAPACITY_FULL,
+  VIDEOS_TO_WATCH,
+} from '../../src/js/constants.js';
 
 describe('검색 모달 테스트', () => {
+  const KEYWORD = '테코톡';
+
   beforeEach(() => {
     cy.visit('http://localhost:5500/');
   });
-
-  const KEYWORD = '테코톡';
-  const KEYWORD_FOR_NO_RESULT = 'dsflmkfsdlkjweljksf';
 
   it('검색 모달에서 "엔터키"를 누르면, 최초 검색 결과 10개가 화면에 표시된다.', () => {
     cy.get('#search-button').click();
@@ -36,6 +41,8 @@ describe('검색 모달 테스트', () => {
   });
 
   it('검색결과가 없는 경우, 결과없음 이미지가 화면에 표시된다.', () => {
+    const KEYWORD_FOR_NO_RESULT = 'dsflmkfsdlkjweljksf';
+
     cy.get('#search-button').click();
     cy.get('#search-keyword-input').type(KEYWORD_FOR_NO_RESULT);
     cy.get('#search-keyword-form').submit();
@@ -52,7 +59,7 @@ describe('검색 모달 테스트', () => {
     cy.get('#search-section article').should('have.length', MAX_RESULT_COUNT * 2);
   });
 
-  it.only('저장버튼을 누르면 localStorage에 해당 영상이 저장된다.', () => {
+  it('저장버튼을 누르면 localStorage에 해당 영상이 저장된다.', () => {
     const FIRST_INDEX = 0;
 
     cy.get('#search-button').click();
@@ -64,7 +71,7 @@ describe('검색 모달 테스트', () => {
       .click()
       .invoke('attr', 'data-video-id')
       .then((storedVideoId) => {
-        const list = JSON.parse(localStorage.getItem('videosToWatch'));
+        const list = JSON.parse(localStorage.getItem(VIDEOS_TO_WATCH));
         expect(list[FIRST_INDEX].videoId).to.be.equal(storedVideoId);
       });
   });
@@ -93,7 +100,7 @@ describe('검색 모달 테스트', () => {
 
     cy.get('#recent-keyword')
       .siblings()
-      .should('have.length', 3)
+      .should('have.length', MAX_RECENT_KEYWORD_COUNT)
       .each(($el, i) => {
         cy.wrap($el).should('have.text', KEYWORDS[TRY_COUNT - 1 - i]);
       });
@@ -101,26 +108,30 @@ describe('검색 모달 테스트', () => {
 });
 
 describe('예외 처리 테스트', () => {
+  const KEYWORD = 'javascript';
+
   beforeEach(() => {
     cy.visit('http://localhost:5500/');
   });
 
-  it('100개의 영상을 저장했을 때, 더 저장하려고 시도할 경우 저장용량 초과 메세지를 표시한다.', () => {
+  it.only('100개의 영상을 저장했을 때, 더 저장하려고 시도할 경우 저장용량 초과 메세지를 표시한다.', () => {
     cy.get('#search-button').click();
     cy.get('#search-keyword-input').type(KEYWORD);
     cy.get('#search-keyword-form').submit();
 
-    for (let i = 0; i < 11; i++) {
-      cy.scrollTo('bottom');
-      cy.wait(500);
+    for (let i = 0; i < 10; i++) {
+      cy.get('.modal').scrollTo('bottom');
+      cy.wait(2000);
     }
     cy.get('.save-button').each(($el, i) => {
-      if (i >= 100) {
+      if (i >= MAX_VIDEO_STORAGE_CAPACITY) {
+        $el.click();
+        cy.wrap($el).should(be.visible);
+        cy.get('#snackbar').contains(STORAGE_CAPACITY_FULL);
         return;
       }
       $el.click();
+      cy.wait(500);
     });
-    cy.get('.save-button').eq[100].click();
-    cy.get('#snackbar').contains(STORAGE_CAPACITY_FULL);
   });
 });
