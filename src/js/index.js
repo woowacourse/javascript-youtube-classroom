@@ -32,7 +32,7 @@ dom.$videoSearchForm.addEventListener('submit', async e => {
 
   const keyword = e.target.elements['video-search-input'].value;
   state.addLatestKeyword(keyword);
-  dom.$latestKeywordList.innerHTML = createKeywordList();
+  dom.$latestKeywordList.innerHTML = createKeywordList(state.latestKeywords);
   dom.$videoSearchResult.innerHTML = createVideoSkeletonTemplate();
   const { nextPageToken, items: resultItems } = await fetchSearchResult(
     keyword
@@ -40,7 +40,7 @@ dom.$videoSearchForm.addEventListener('submit', async e => {
 
   state.setNextPageToken(nextPageToken);
   dom.$videoSearchResult.innerHTML = resultItems.length
-    ? createVideoListTemplate(resultItems)
+    ? createVideoListTemplate(resultItems, state.videoInfos)
     : createNotFoundTemplate();
 });
 
@@ -72,17 +72,17 @@ dom.$videoSearchResult.addEventListener('click', e => {
   const videoInfo = createVideoInfo($video.dataset);
 
   state.addVideoInfo(videoInfo);
-  dom.$videoList.innerHTML = createVideoListTemplate([...state.videoInfos]);
+  dom.$videoList.innerHTML = createVideoListTemplate(
+    [...state.videoInfos],
+    state.videoInfos
+  );
   e.target.hidden = true;
-
-  dom.$savedVideoCount.innerHTML = state.videoInfos.length;
 });
 
 function initState() {
   state.setLatestKeywords(
     JSON.parse(localStorage.getItem('latestKeywords')) ?? []
   );
-  dom.$latestKeywordList.innerHTML = createKeywordList();
 }
 
 window.onload = function () {
@@ -99,7 +99,10 @@ window.onload = function () {
     );
 
     state.setNextPageToken(nextPageToken);
-    dom.$videoSearchResult.innerHTML += createVideoListTemplate(searchResult);
+    dom.$videoSearchResult.innerHTML += createVideoListTemplate(
+      searchResult,
+      state.videoInfos
+    );
   }, options);
 
   observer.observe(dom.$endPoint);

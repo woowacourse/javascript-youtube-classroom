@@ -1,5 +1,3 @@
-import state from '../state.js';
-
 function createVideoSnippetTemplate({ id, snippet }, isSaved = false) {
   return `<article class="clip js-video"
             data-video-id=${id.videoId}
@@ -45,16 +43,18 @@ function createVideoSnippetTemplate({ id, snippet }, isSaved = false) {
           </article>`;
 }
 
-function isSavedVideo(item) {
-  return [...state.videoInfos].some(
+function isSavedVideo(item, videoInfos) {
+  return [...videoInfos].some(
     videoInfo => videoInfo.id.videoId === item.id.videoId
   );
 }
 
-function createVideoListTemplate(resultItems = []) {
+function createVideoListTemplate(resultItems = [], videoInfos) {
   return `<div class="video-wrapper">
             ${resultItems
-              .map(item => createVideoSnippetTemplate(item, isSavedVideo(item)))
+              .map(item =>
+                createVideoSnippetTemplate(item, isSavedVideo(item, videoInfos))
+              )
               .join('')}
           </div>`;
 }

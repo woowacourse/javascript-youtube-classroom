@@ -1,12 +1,10 @@
-import state from '../state.js';
-
 function createKeywordChip(keyword) {
   return `<span class="js-latest-keyword chip">${keyword}</span>`;
 }
 
-function createKeywordList() {
+function createKeywordList(latestKeywords) {
   return `<span class="text-gray-700">최근 검색어: </span>
-  ${state.latestKeywords
+  ${latestKeywords
     .map(keyword => createKeywordChip(keyword))
     .reverse()
     .join('')}`;

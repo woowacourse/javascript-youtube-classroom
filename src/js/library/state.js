@@ -1,4 +1,5 @@
 import dom from './DOMelements.js';
+import createKeywordList from './templates/keywordList.js';
 
 const state = {
   videoInfos: new Set(),
@@ -6,6 +7,7 @@ const state = {
   latestKeywords: [],
   addVideoInfos(...newVideoInfos) {
     newVideoInfos.forEach(newVideoInfo => this.videoInfos.add(newVideoInfo));
+    localStorage.setItem('videoInfos', JSON.stringify(this.videoInfos));
     dom.$savedVideoCount.innerHTML = state.videoInfos.length;
   },
   setNextPageToken(newToken) {
@@ -21,6 +23,7 @@ const state = {
     }
     this.latestKeywords.push(newKeyword);
     localStorage.setItem('latestKeywords', JSON.stringify(this.latestKeywords));
+    dom.$latestKeywordList.innerHTML = createKeywordList(this.latestKeywords);
   },
   setLatestKeywords(newKeywords) {
     this.latestKeywords = newKeywords;
