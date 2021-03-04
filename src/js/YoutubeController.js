@@ -37,6 +37,8 @@ export default class YoutubeController {
   }
 
   changeNavTab(currentTab) {
+    this.nextPageToken = null;
+
     this.navigationView.toggleTabColor(this.selectedTab, currentTab);
     this.selectedTab = currentTab;
 

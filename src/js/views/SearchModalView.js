@@ -28,8 +28,6 @@ export default class SearchModalView extends View {
       e.preventDefault();
 
       this.searchKeyword = e.target.elements.search.value;
-
-      this.clearVideoClips();
       this.emit('submitSearch', this.searchKeyword);
     });
   }
@@ -78,9 +76,16 @@ export default class SearchModalView extends View {
   openModal() {
     this.$element.addClass('open');
     this.updateSavedCount();
+    this.clearVideoClips();
 
     const latestKeyword = $('#chip-1').getText();
-    if (latestKeyword) this.emit('openModal', latestKeyword);
+
+    if (latestKeyword) {
+      this.searchKeyword = latestKeyword;
+
+      $('#modal-search-input').setValue(latestKeyword);
+      this.emit('openModal', latestKeyword);
+    }
   }
 
   updateSavedCount() {
