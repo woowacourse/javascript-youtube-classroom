@@ -5,6 +5,7 @@ import {
   addSearchHistory,
   updateRequestPending,
 } from '../../redux/action.js';
+import { localStorageManager } from '../App.js';
 
 export default class VideoSearchBar {
   constructor($target, $props) {
@@ -48,6 +49,19 @@ export default class VideoSearchBar {
     );
   }
 
+  saveHistory(searchTerm) {
+    const history = localStorageManager.getItem('searchHistory');
+    const indexOfSearchTerm = history.indexOf(searchTerm);
+    if (indexOfSearchTerm !== -1) {
+      history.splice(indexOfSearchTerm, 1);
+      history.unshift(searchTerm);
+      localStorageManager.setItem('searchHistory', history);
+      return;
+    }
+    history.unshift(searchTerm);
+    localStorageManager.setItem('searchHistory', history.slice(0, 3));
+  }
+
   onRequestVideo(e) {
     e.preventDefault();
     const searchTerm = e.target.elements['youtube-search-input'].value;
@@ -56,6 +70,7 @@ export default class VideoSearchBar {
       return;
     }
 
+    this.saveHistory(searchTerm);
     store.dispatch(addSearchHistory(searchTerm));
     store.dispatch(updateRequestPending(true));
     this.$props.youtubeAPIManager.setSearchTerm(searchTerm);

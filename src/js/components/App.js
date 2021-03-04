@@ -7,9 +7,9 @@ export default class App {
     this.$target = $target;
     this.states = {
       searchedVideos: [],
-      searchHistory: [],
+      searchHistory: localStorageManager.getItem('searchHistory'),
       requestPending: false,
-      savedVideoCount: localStorageManager.getItem().length,
+      savedVideoCount: localStorageManager.getItem('videos').length,
     };
   }
 

@@ -24,12 +24,6 @@ export default class VideoSearchResult {
   }
 
   skeletonTemplate() {
-    // return `<div class="skeleton">
-    //           <div class="image"></div>
-    //           <p class="line"></p>
-    //           <p class="line"></p>
-    //         </div>
-    //         `.repeat(10);
     const fragment = document.createDocumentFragment();
     const skeleton = document.createElement('div');
     const img = document.createElement('div');
@@ -119,7 +113,7 @@ export default class VideoSearchResult {
     this.$target.innerHTML = `
         <div class="d-flex justify-end text-gray-700">
           저장된 영상 갯수: <span id="saved-video-count">${
-            localStorageManager.getItem().length
+            localStorageManager.getItem('videos').length
           }</span>개
         </div>
         <section id="searched-video-wrapper" class="video-wrapper">

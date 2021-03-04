@@ -39,7 +39,7 @@ export default class Video {
   }
 
   isSavedVideo() {
-    const videos = localStorageManager.getItem();
+    const videos = localStorageManager.getItem('videos');
     for (const key in videos) {
       if (this.videoId === videos[key].videoId) return true;
     }
@@ -109,7 +109,7 @@ export default class Video {
     button.textContent = '⬇️ 저장';
     button.onclick = (e) => {
       console.log('button clicked');
-      const savedVideos = localStorageManager.getItem();
+      const savedVideos = localStorageManager.getItem('videos');
       if (savedVideos.length >= 100) {
         alert(
           '동영상은 100개까지 저장할 수 있습니다. 저장된 동영상을 지워주세요.'
@@ -117,7 +117,7 @@ export default class Video {
         return;
       }
       savedVideos.push(this.toJson());
-      localStorageManager.setItem(savedVideos);
+      localStorageManager.setItem('videos', savedVideos);
       e.target.classList.add('d-none');
       store.dispatch(increaseSavedVideoCount());
     };
