@@ -14,7 +14,11 @@ class StorageModel {
     const myVideo = JSON.parse(localStorage.getItem('myVideo'));
     myVideo.push(json);
     localStorage.setItem('myVideo', JSON.stringify(myVideo));
-    console.log(JSON.parse(localStorage.getItem('myVideo')));
+  };
+
+  // info를 받아 getItem해서 getItem에 해당 요소가 있는지 반환 (T/F)
+  findVideoByInfo = info => {
+    return JSON.parse(localStorage.getItem('myVideo')).includes(info);
   };
 }
 
