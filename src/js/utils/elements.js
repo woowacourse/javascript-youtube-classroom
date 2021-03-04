@@ -8,6 +8,7 @@ const elements = {
   $searchResults: $("#search-results"),
   $notFound: $("#not-found"),
   $keywordHistory: $("#keyword-history"),
+  $savedVideoCount: $("#saved-video-count"),
 };
 
 export default elements;

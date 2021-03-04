@@ -54,6 +54,10 @@ export default class SearchController {
   saveVideo(videoId) {
     videos.setSavedVideos(videoId);
     this.searchView.hideSavedVideoButton(videoId);
-    // 2. 저장개수를 보여주는것
+    this.showSavedVideoCount();
+  }
+
+  showSavedVideoCount() {
+    this.searchView.showSavedVideoCount();
   }
 }

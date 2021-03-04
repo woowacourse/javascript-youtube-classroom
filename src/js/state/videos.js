@@ -5,9 +5,9 @@ const videos = {
   recentVideos: [],
 
   setFetchedVideos(videoItems) {
-    const parsedVideoItems = videoItems.map((videoItem) =>
-      this.parseVideoItem(videoItem)
-    );
+    const parsedVideoItems = videoItems
+      .filter((videoItem) => videoItem.id.videoId)
+      .map((videoItem) => this.parseVideoItem(videoItem));
     this.recentVideos = parsedVideoItems;
     this.fetchedVideos = [...this.fetchedVideos, ...parsedVideoItems];
   },
@@ -29,6 +29,10 @@ const videos = {
     const videos = localStorage.getItem(STORAGE_NAME.SAVED_VIDEOS);
 
     return videos ? JSON.parse(videos) : [];
+  },
+
+  getSavedVideoCount() {
+    return this.getSavedVideos().length;
   },
 
   selectVideoItemById(videoId) {

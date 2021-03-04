@@ -34,6 +34,11 @@ export default class SearchView {
     elements.$keywordHistory.innerHTML = getKeywordHistoryTemplate();
   }
 
+  showSavedVideoCount() {
+    console.log(videos.getSavedVideoCount());
+    elements.$savedVideoCount.innerText = `저장된 영상 개수: ${videos.getSavedVideoCount()}개`;
+  }
+
   hideSavedVideoButton(videoId) {
     const currentSaveButton = Array.from($("button[data-video-id]")).find(
       ($saveButton) => $saveButton.dataset.videoId === videoId

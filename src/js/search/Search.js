@@ -49,6 +49,7 @@ export default class Search {
     elements.$searchForm.elements["search-keyword"].focus();
 
     this.searchController.updateKeywordHistory();
+    this.searchController.showSavedVideoCount();
   }
 
   onClickSearchModalCloseButton() {
