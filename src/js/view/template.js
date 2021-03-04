@@ -24,7 +24,9 @@ export const searchVideoTemplate = info => {
                         <p class="line">${info.publishTime}</p>
                     </div>
                     <div class="d-flex justify-end">
-                        <button class="btn">⬇️ 저장</button>
+                        <button class="btn js-save-button" data-info='${JSON.stringify(
+                          info
+                        ).replace("'", '&#039;')}'>⬇️ 저장</button>
                     </div>
                 </div>
             </div>

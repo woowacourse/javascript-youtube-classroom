@@ -1,14 +1,16 @@
 import { $, $$ } from '../utils/util.js';
 class MyYoutubeSearchController {
-  constructor(model, view) {
-    this.model = model;
+  constructor(youtube, storage, view) {
+    this.youtube = youtube;
+    this.storage = storage;
     this.view = view;
   }
 
-  init() {
+  init = () => {
+    this.storage.init();
     this.handleSearch();
     this.handleModalScroll();
-  }
+  };
 
   getSearchInput = () => {
     return $('#search-youtube-input').value;
@@ -16,13 +18,25 @@ class MyYoutubeSearchController {
 
   getVideosBySearch = async () => {
     const query = this.getSearchInput();
-    await this.model.getVideoInfosBySearch({ query });
+    await this.youtube.getVideoInfosBySearch({ query });
 
-    this.view.renderVideoArticles(this.model.videoInfos);
-    if (this.model.videoInfos.length === 0) {
+    this.view.renderVideoArticles(this.youtube.videoInfos);
+    if (this.youtube.videoInfos.length === 0) {
       this.view.renderNotFound();
     }
     this.handleIframeLoad();
+    this.handleSaveVideo();
+  };
+
+  saveVideo = e => {
+    const videoInfo = JSON.parse(e.target.dataset.info);
+    this.storage.saveVideo(videoInfo);
+  };
+
+  handleSaveVideo = () => {
+    $$('.js-save-button').forEach(save => {
+      save.addEventListener('click', event => this.saveVideo(event));
+    });
   };
 
   handleSearch = () => {
