@@ -12,4 +12,5 @@ export const VIDEOS = {
 
 export const STORAGE_NAME = {
   KEYWORDS: "keywords",
+  SAVED_VIDEOS: "saved_videos",
 };

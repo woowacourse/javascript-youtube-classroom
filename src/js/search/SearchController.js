@@ -3,6 +3,7 @@ import { API, YOUTUBE_URL } from "../utils/constants.js";
 import { getSearchQueryString } from "../queries/searchQuery.js";
 import scrollEventLock from "../state/scrollEventLock.js";
 import searchHistory from "../state/searchHistory.js";
+import videos from "../state/videos.js";
 
 export default class SearchController {
   constructor() {
@@ -29,17 +30,8 @@ export default class SearchController {
 
       this.searchView.showNotFoundImg();
     } else {
-      const searchResults = videoItems.map((videoItem) => {
-        return {
-          videoId: videoItem.id.videoId,
-          title: videoItem.snippet.title,
-          channelId: videoItem.snippet.channelId,
-          channelTitle: videoItem.snippet.channelTitle,
-          publishedAt: videoItem.snippet.publishedAt,
-        };
-      });
-
-      this.searchView.showSearchResults(searchResults);
+      videos.setFetchedVideos(videoItems);
+      this.searchView.showSearchResults();
       searchHistory.setPageToken(this.nextPageToken);
     }
   }
@@ -57,5 +49,11 @@ export default class SearchController {
 
   updateKeywordHistory() {
     this.searchView.showKeywordHistory();
+  }
+
+  saveVideo(videoId) {
+    videos.setSavedVideos(videoId);
+    this.searchView.hideSavedVideoButton(videoId);
+    // 2. 저장개수를 보여주는것
   }
 }

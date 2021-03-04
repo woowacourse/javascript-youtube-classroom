@@ -1,7 +1,8 @@
 import searchHistory from "../state/searchHistory.js";
+import videos from "../state/videos.js";
 import getKeywordHistoryTemplate from "../templates/keywordHistoryTemplate.js";
 import getVideoClipTemplate from "../templates/videoClipTemplate.js";
-import { hideElement, showElement } from "../utils/dom.js";
+import { $, hideElement, showElement } from "../utils/dom.js";
 import elements from "../utils/elements.js";
 
 export default class SearchView {
@@ -10,7 +11,7 @@ export default class SearchView {
     showElement(elements.$notFound);
   }
 
-  showSearchResults(items) {
+  showSearchResults() {
     hideElement(elements.$notFound);
     showElement(elements.$searchResults);
 
@@ -18,7 +19,9 @@ export default class SearchView {
       elements.$searchResults.innerHTML = "";
     }
 
-    elements.$searchResults.appendChild(this.appendVideoClips(items));
+    elements.$searchResults.appendChild(
+      this.appendVideoClips(videos.getRecentVideos())
+    );
   }
 
   appendVideoClips(items) {
@@ -29,5 +32,12 @@ export default class SearchView {
 
   showKeywordHistory() {
     elements.$keywordHistory.innerHTML = getKeywordHistoryTemplate();
+  }
+
+  hideSavedVideoButton(videoId) {
+    const currentSaveButton = Array.from($("button[data-video-id]")).find(
+      ($saveButton) => $saveButton.dataset.videoId === videoId
+    );
+    hideElement(currentSaveButton);
   }
 }

@@ -32,7 +32,12 @@ export default function getVideoClipTemplate(item) {
           <p>${parseDate(item.publishedAt)}</p>
         </div>
         <div class="d-flex justify-end">
-          <button data-video-id=${item.videoId} class="btn">⬇️ 저장</button>
+          <button 
+            data-video-id=${item.videoId} 
+            class="btn ${item.saved ? "d-none-hard" : ""}"
+            >
+            ⬇️ 저장
+          </button>
         </div>
       </div>
     </div>`;

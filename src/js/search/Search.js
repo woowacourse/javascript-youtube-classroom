@@ -23,6 +23,11 @@ export default class Search {
       "scroll",
       this.onScroll.bind(this)
     );
+
+    elements.$searchResults.addEventListener(
+      "click",
+      this.onClickSaveVideoButton.bind(this)
+    );
   }
 
   onSearch(e) {
@@ -48,5 +53,10 @@ export default class Search {
 
   onClickSearchModalCloseButton() {
     closeModal(elements.$searchModal);
+  }
+
+  onClickSaveVideoButton(e) {
+    if (!e.target.dataset.videoId) return;
+    this.searchController.saveVideo(e.target.dataset.videoId);
   }
 }
