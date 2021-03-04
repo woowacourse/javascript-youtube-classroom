@@ -5,6 +5,8 @@ import {
   setSavedVideoId,
   getSavedVideoIds,
 } from './utils/localStorage.js';
+import { isEmptySearchKeyword } from './utils/validator.js';
+import { ALERT_MESSAGES } from './utils/constants.js';
 import { searchRequest, videoRequest } from '../js/request.js';
 import NavigationView from './views/NavigationView.js';
 import SearchModalView from './views/SearchModalView.js';
@@ -72,6 +74,11 @@ export default class YoutubeController {
   }
 
   searchVideo(keyword) {
+    if (isEmptySearchKeyword(keyword)) {
+      alert(ALERT_MESSAGES.EMPTY_SEARCH_KEYWORD);
+      return;
+    }
+
     setRecentChip(keyword);
     this.searchModalView.updateChips(getRecentKeywords());
     this.searchModalView.startSearch();

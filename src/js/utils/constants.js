@@ -9,3 +9,7 @@ export const VALUE = {
   CLIPS_PER_SCROLL: 10,
   THROTTLE_TIME: 1000,
 };
+
+export const ALERT_MESSAGES = {
+  EMPTY_SEARCH_KEYWORD: '검색어를 입력해주세요',
+};
