@@ -4,7 +4,13 @@ class MyYoutubeView {
   renderVideoArticles = infos => {
     const $searchVideoWrapper = $('#search-video-wrapper');
     infos.forEach(info => {
-      $searchVideoWrapper.innerHTML += searchVideoTemplate(info);
+      // TODO : util화 하기
+      const parser = new DOMParser();
+
+      $searchVideoWrapper.append(
+        parser.parseFromString(searchVideoTemplate(info), 'text/html').body
+          .firstElementChild
+      );
     });
   };
 
