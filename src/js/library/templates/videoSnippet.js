@@ -24,7 +24,7 @@ function createVideoSnippetTemplate({ id, snippet }) {
                   <p>${snippet.publishTime}</p>
                 </div>
                 <div class="d-flex justify-end">
-                  <button class="btn">⬇️ 저장</button>
+                  <button class="btn js-save-button">⬇️ 저장</button>
                 </div>
               </div>
             </div>
