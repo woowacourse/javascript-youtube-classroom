@@ -13,7 +13,6 @@ export const onModalShow = () => {
   const recentSearchResults = localStorage.get('recentSearchResults');
 
   openModal();
-  console.log(recentKeywords);
   renderRecentKeywords(recentKeywords);
   renderSaveVideoCount(savedClips);
 

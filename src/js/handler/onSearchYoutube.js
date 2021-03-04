@@ -38,8 +38,6 @@ export const onSearchYoutube = async (event) => {
 
   hideElement($skeletonWrapper);
 
-  console.log(videoItems);
-
   if (videoItems.length === 0) {
     showElement($('[data-js=youtube-search-modal__not-found]'));
     clearSearchResult();
