@@ -1,10 +1,12 @@
 import MyYoutubeSearchController from './controller/my-youtube-search.js';
+import StorageModel from './model/storage.js';
 import YoutubeModel from './model/youtube.js';
 import MyYoutubeView from './view/my-youtube.js';
 
-const model = new YoutubeModel();
+const youtube = new YoutubeModel();
+const storage = new StorageModel();
 const view = new MyYoutubeView();
-const controller = new MyYoutubeSearchController(model, view);
+const controller = new MyYoutubeSearchController(youtube, storage, view);
 controller.init();
 
 const $searchButton = document.querySelector('#search-button');
