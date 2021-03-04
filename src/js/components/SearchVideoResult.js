@@ -1,12 +1,13 @@
-import { $ } from '../util/index.js';
+import { $, hideElement } from '../util/index.js';
 import { getSearchVideoByKeyword } from '../util/index.js';
 
 export class SearchVideoResult {
-  constructor({ searchKeywordHistoryManager }) {
-    this.$wrapper = $('.js-video-result-wrapper');
+  constructor({ searchKeywordHistoryManager, savedVideoManager }) {
     this.$container = $('.js-video-result-container');
+    this.$wrapper = $('.js-video-result-wrapper');
 
     this.searchKeywordHistoryManager = searchKeywordHistoryManager;
+    this.savedVideoManager = savedVideoManager;
     this.searchKeywordHistoryManager.subscribe(this.reset.bind(this));
     this.searchKeywordHistoryManager.subscribe(this.fetchSearchResultData.bind(this));
 
@@ -17,6 +18,7 @@ export class SearchVideoResult {
 
   initEvent() {
     this.$container.addEventListener('scroll', this.handleContainerScroll.bind(this));
+    this.$wrapper.addEventListener('click', this.handleSaveVideo.bind(this));
   }
 
   async handleContainerScroll({ target }) {
@@ -44,6 +46,23 @@ export class SearchVideoResult {
     }
   }
 
+  handleSaveVideo({ target }) {
+    if (target.classList.contains('js-clip-save-button')) {
+      const videoData = target.dataset;
+
+      this.savedVideoManager.saveVideo({
+        videoId: videoData.videoId,
+        title: videoData.title,
+        channelId: videoData.channelId,
+        channelTitle: videoData.channelTitle,
+        publishDate: videoData.publishDate,
+        isCompleted: false,
+      });
+
+      hideElement(target);
+    }
+  }
+
   setState({ searchResultData }) {
     this.searchResultData = searchResultData;
     this.render();
@@ -53,7 +72,15 @@ export class SearchVideoResult {
     this.$wrapper.innerHTML = '';
   }
 
+  formatDateTime(inputDateTime) {
+    const dateTime = new Date(inputDateTime);
+
+    return `${dateTime.getFullYear()}년 ${dateTime.getMonth()}월 ${dateTime.getDate()}일`;
+  }
+
   makeTemplate({ id, snippet }) {
+    const date = this.formatDateTime(snippet.publishTime);
+
     return `
       <section class="video-wrapper mt-8">
         <article class="clip">
@@ -78,10 +105,17 @@ export class SearchVideoResult {
               ${snippet.channelTitle}
               </a>
               <div class="meta">
-                <p>${snippet.publishTime}</p>
+                <p>${date}</p>
               </div>
               <div class="d-flex justify-end">
-                <button class="js-clip-save-button btn" data-clip-id="${id.videoId}">⬇️ 저장</button>
+                <button 
+                  class="js-clip-save-button btn" 
+                  data-video-id="${id.videoId}" 
+                  data-title="${snippet.title}" 
+                  data-channel-id="${snippet.channelId}" 
+                  data-channel-title="${snippet.channelTitle}" 
+                  data-publish-date="${date}"
+                >⬇️ 저장</button>
               </div>
             </div>
           </div>
