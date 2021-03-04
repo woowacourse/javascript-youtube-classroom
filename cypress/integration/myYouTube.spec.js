@@ -53,11 +53,21 @@ describe('simba-tube', () => {
     cy.get('.not-found').should('be.visible');
   });
 
-  it.only('검색 후 스크롤를 끝까지 이동시킬 경우 api 추가 요청을 통해 검색 결과를 10개씩 더 보여준다.', () => {
+  it('검색 후 스크롤를 끝까지 이동시킬 경우 api 추가 요청을 통해 검색 결과를 10개씩 더 보여준다.', () => {
     cy.get('#search-btn').click();
     cy.get('#modal-search-input').type('방탄소년단');
     cy.get('#modal-search-button').click();
     cy.get('#modal-videos').scrollTo('bottom');
     cy.get('#modal-videos').find('.clip').should('have.length', 20);
+  });
+
+  it.only('검색 결과 동영상의 저장 버튼을 누르면 저장한 동영상들을 볼 영상 목록에 보여준다.', () => {
+    cy.get('#search-btn').click();
+    cy.get('#modal-search-input').type('방탄소년단');
+    cy.get('#modal-search-button').click();
+    cy.get('.clip-save-btn').eq(0).click();
+
+    cy.get('#saved-video-count').should('have.text', 1);
+    cy.get('#main-videos').find('.clip').should('have.length', 1);
   });
 });
