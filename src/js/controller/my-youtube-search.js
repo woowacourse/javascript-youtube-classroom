@@ -11,7 +11,7 @@ class MyYoutubeSearchController {
     this.storage.init();
     this.view.init();
     this.handleSearch();
-    this.handleModalScroll();
+    this.handleSearchModalScroll();
   };
 
   getSearchInput = () => {
@@ -41,7 +41,7 @@ class MyYoutubeSearchController {
       this.view.renderVideoArticle(info, isSaved);
     });
 
-    this.handleIframeLoad();
+    this.handleVideoLoad();
     this.handleSaveVideo();
   };
 
@@ -78,15 +78,13 @@ class MyYoutubeSearchController {
     });
   };
 
-  handleIframeLoad = () => {
-    // TODO : handleVideoLoad로 바꾸기
+  handleVideoLoad = () => {
     $$('.clip iframe').forEach(iframe => {
       iframe.addEventListener('load', event => this.removeSkeleton(event));
     });
   };
 
-  handleModalScroll = () => {
-    // TODO :  handleSearchModalScroll 로 바꾸기
+  handleSearchModalScroll = () => {
     $('#search-video-wrapper').addEventListener('scroll', event => {
       // 아래 메서드화, util화 하면서 getScrollTop, getDocumentHeight 같은거를 유틸화해두고, 메서드에선 그거 불러와서 addVideoSearch 수행
       if (
