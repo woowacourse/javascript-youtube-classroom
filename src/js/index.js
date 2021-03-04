@@ -1,19 +1,15 @@
-import {
-  API_SEARCH_ENDPOINT,
-  YOUTUBE_VIDEO_ENDPOINT,
-  YOUTUBE_CHANNEL_ENDPOINT,
-  PART_TYPE,
-  SEARCH_TYPE_VIDEO,
-  MAX_RESULT_COUNT,
-  REGION_CODE,
-} from './constants.js';
+import { API_SEARCH_ENDPOINT, PART_TYPE, SEARCH_TYPE_VIDEO, MAX_RESULT_COUNT, REGION_CODE } from './constants.js';
+import { skeletonTemplate } from './layout/skeleton.js';
+import { formatDateKR } from './utils/formatDate.js';
+import { getThumbnailTemplate, getChannelTitleTemplate } from './layout/searchResult.js';
 import { YOUTUBE_API_KEY } from './env.js';
+import { $, $$ } from './utils/DOM.js';
 
 export default function App() {
-  const $searchSection = document.querySelector('#search-section');
-  const $searchKeywordForm = document.querySelector('#search-keyword-form');
-  const $searchButton = document.querySelector('#search-button');
-  const $modalCloseButton = document.querySelector('#modal-close-button');
+  const $searchSection = $('#search-section');
+  const $searchKeywordForm = $('#search-keyword-form');
+  const $searchButton = $('#search-button');
+  const $modalCloseButton = $('#modal-close-button');
 
   const onShowModal = () => {
     $searchSection.classList.add('open');
@@ -51,60 +47,43 @@ export default function App() {
       videoTitle: item.snippet.title,
       channelId: item.snippet.channelId,
       channelTitle: item.snippet.channelTitle,
-      publishedAt: item.snippet.publishedAt,
+      publishedAt: formatDateKR(item.snippet.publishedAt),
     }));
   };
 
-  const getSearchResultTemplate = ({ videoId, videoTitle, channelId, channelTitle, publishedAt }) => {
-    return `
-        <article class="clip">
-        <div class="preview-container image">
-          <iframe
-            width="100%"
-            height="118"
-            src=${YOUTUBE_VIDEO_ENDPOINT}${videoId}
-            frameborder="0"
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-            allowfullscreen>
-          </iframe>
-        </div>
-        <div class="content-container pt-2 px-1">
-          <h3 class="video-title line">${videoTitle}</h3>
-          <div class="channel-title line">
-            <a
-              href=${YOUTUBE_CHANNEL_ENDPOINT}${channelId}
-              target="_blank"
-              class="channel-name mt-1"
-            >
-              ${channelTitle}
-            </a>
-            <div class="published-at meta line">
-              <p>${publishedAt}</p>
-            </div>
-            <div class="d-flex justify-end">
-              <button class="save-button btn" 
-              data-video-id="${videoId}"
-              data-video-title="${videoTitle}"
-              data-channel-id="${channelId}" 
-              data-channel-title="${channelTitle}"
-              data-published-at="${publishedAt}"
-              >⬇️ 저장</button>
-            </div>
-          </div>
-        </div>
-      </article>
-    `;
+  const storeVideoData = ($element, videoData) => {
+    $element.dataset.videoId = videoData.videoId;
+    $element.dataset.videoTitle = videoData.videoTitle;
+    $element.dataset.channelId = videoData.channelId;
+    $element.dataset.channelTitle = videoData.channelTitle;
+    $element.dataset.publishedAt = videoData.publishedAt;
   };
 
-  const renderSearchResult = (articlesInfo) => {
-    const $videoWrapper = document.querySelector('#search-result-video-wrapper');
+  const renderSkeleton = () => {
+    const $searchResultWrapper = $('#search-result-wrapper');
 
-    $videoWrapper.innerHTML = articlesInfo.map((articleInfo) => getSearchResultTemplate(articleInfo)).join('');
+    $searchResultWrapper.innerHTML = skeletonTemplate.repeat(MAX_RESULT_COUNT);
+  };
+
+  const renderSearchResult = (videoList) => {
+    const $searchResultWrapper = $('#search-result-wrapper');
+
+    $searchResultWrapper.classList.remove('skeleton');
+    $searchResultWrapper.querySelectorAll('article').forEach(($article, i) => {
+      const video = videoList[i];
+
+      $article.querySelector('.preview-container').innerHTML = getThumbnailTemplate(video.videoId);
+      $article.querySelector('.video-title').innerText = video.videoTitle;
+      $article.querySelector('.channel-title').innerHTML = getChannelTitleTemplate(video.channelId, video.channelTitle);
+      $article.querySelector('.published-at').innerText = video.publishedAt;
+      storeVideoData($article.querySelector('.save-button'), video);
+    });
   };
 
   const onSearchKeyword = (e) => {
     e.preventDefault();
 
+    renderSkeleton();
     const url = getURLQueryStringApplied({
       part: PART_TYPE,
       q: e.target.elements['search-keyword-input'].value,
@@ -117,7 +96,7 @@ export default function App() {
       .then((response) => {
         return processJSON(response);
       })
-      .then((articlesInfo) => renderSearchResult(articlesInfo))
+      .then((videoList) => renderSearchResult(videoList))
       .catch((error) => console.error(error));
   };
 
