@@ -1,4 +1,6 @@
 export default function clipMaker(video, type) {
+  const { isModal, isSaved } = type;
+
   return `
     <article class="clip">
       <div class="preview-container">
@@ -26,15 +28,20 @@ export default function clipMaker(video, type) {
           </div>
         </div>
         </div>
-      ${type.isModal ? saveButtonTemplate(video.id) : buttonPackTemplate()}
+      ${isModal ? saveButtonTemplate(video.id, isSaved) : buttonPackTemplate()}
     </article>
   `;
 }
 
-function saveButtonTemplate(videoId) {
+function saveButtonTemplate(videoId, isSaved) {
   return `
     <div class="d-flex justify-end clip-save">
-      <button data-video-id="${videoId}" class="btn clip-save-btn">⬇️ 저장</button>
+      <button 
+        data-video-id="${videoId}" 
+        class="btn clip-save-btn" 
+        ${isSaved ? 'disabled' : ''}
+      >⬇️ 저장
+      </button>
     </div>
   `;
 }

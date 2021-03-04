@@ -57,6 +57,10 @@ export const $ = (function () {
     return this.element.innerText;
   };
 
+  constructor.prototype.setText = function (text) {
+    return (this.element.innerText = text);
+  };
+
   const instantiate = function (selector) {
     return new constructor(selector);
   };

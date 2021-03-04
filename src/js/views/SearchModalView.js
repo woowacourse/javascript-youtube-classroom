@@ -1,7 +1,7 @@
 import { $ } from '../utils/dom.js';
 import { VALUE } from '../utils/constants.js';
 import clipMaker from '../utils/clipMaker.js';
-import { getRecentKeywords } from '../utils/localStorage.js';
+import { getRecentKeywords, getSavedVideoIds } from '../utils/localStorage.js';
 import View from './View.js';
 
 export default class SearchModalView extends View {
@@ -53,8 +53,11 @@ export default class SearchModalView extends View {
 
   bindSaveEvent() {
     $('.clip-save-btn').setEvent('click', (e) => {
+      e.target.setAttribute('disabled', true);
       const videoId = e.target.dataset.videoId;
+
       this.emit('clickSaveButton', videoId);
+      this.updateSavedCount();
     });
   }
 
@@ -74,10 +77,16 @@ export default class SearchModalView extends View {
 
   openModal() {
     this.$element.addClass('open');
+    this.updateSavedCount();
 
     const latestKeyword = $('#chip-1').getText();
-
     if (latestKeyword) this.emit('openModal', latestKeyword);
+  }
+
+  updateSavedCount() {
+    const savedVideoIds = getSavedVideoIds();
+
+    $('#saved-video-count').setText(savedVideoIds.length);
   }
 
   closeModal() {
@@ -86,8 +95,14 @@ export default class SearchModalView extends View {
 
   renderVideoClips(videos) {
     $('.skeleton').hide();
+
+    const savedVideoIds = getSavedVideoIds();
     const videoClips = videos
-      .map((video) => clipMaker(video, { isModal: true }))
+      .map((video) => {
+        const isSaved = savedVideoIds.includes(video.id);
+
+        return clipMaker(video, { isModal: true, isSaved: isSaved });
+      })
       .join('');
     this.modalVideos.addInnerHTML(videoClips);
     this.bindSaveEvent();
@@ -99,7 +114,7 @@ export default class SearchModalView extends View {
 
   skeletonTemplate() {
     return `
-      <div class="skeleton" loading="lazy">
+      <div class="skeleton">
         <div class="image"></div>
         <p class="line"></p>
         <p class="line"></p>
