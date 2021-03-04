@@ -51,4 +51,12 @@ describe('Youtube classroom test', () => {
     cy.get('#video-search-submit').click();
     cy.get('#video-not-found').should('be.exist');
   });
+
+  it('스크롤 시, 추가로 동영상 리스트 10개를 보여준다.', () => {
+    cy.get('#search-button').click();
+    cy.get('#video-search-input').type('로이드');
+    cy.get('#video-search-submit').click();
+    cy.get('.modal-inner').scrollTo('bottom');
+    cy.get('#video-search-modal .video-wrapper').should('have.length', 2);
+  });
 });
