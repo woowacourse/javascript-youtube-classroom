@@ -91,6 +91,12 @@ export default class App {
     this.$searchSection.classList.add('open');
     this.showCurrentStoredVideoCount();
     this.renderRecentKeyword();
+    this.#keyword = this.videoStorage.getMostRecentKeyword();
+
+    if (this.#keyword === '') {
+      return;
+    }
+    this.renderFirstSearchGroup();
   }
 
   onCloseModal() {
@@ -193,9 +199,16 @@ export default class App {
     e.preventDefault();
 
     this.#keyword = e.target.elements['search-keyword-input'].value;
+    if (this.#keyword === '') {
+      return;
+    }
+
     this.videoStorage.addRecentKeyword(this.#keyword);
     this.renderRecentKeyword();
+    this.renderFirstSearchGroup();
+  }
 
+  renderFirstSearchGroup() {
     this.#groupIndex = -1;
     this.#nextPageToken = '';
     this.$searchResultWrapper.innerHTML = '';
@@ -204,7 +217,6 @@ export default class App {
 
   renderSearchGroup() {
     this.renderSkeleton();
-
     const url = this.getRequestURL({
       part: PART_TYPE,
       q: this.#keyword,

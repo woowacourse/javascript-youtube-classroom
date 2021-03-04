@@ -29,8 +29,10 @@ describe('검색 모달 테스트', () => {
   });
 
   it('검색 키워드 제출 후, 데이터를 불러오기 전이면 skeleton UI가 화면에 표시된다.', () => {
+    const ANOTHER_KEYWORD = '우아한 형제들';
+
     cy.get('#search-button').click();
-    cy.get('#search-keyword-input').type(KEYWORD);
+    cy.get('#search-keyword-input').type(ANOTHER_KEYWORD);
     cy.get('#search-keyword-form').submit();
 
     cy.get('.search-result-group').should('have.class', 'skeleton');
@@ -76,19 +78,18 @@ describe('검색 모달 테스트', () => {
       });
   });
 
-  it('검색 모달에 다시 접근했을 때, 가장 마지막에 검색한 결과를 화면에 표시한다.', () => {
+  it.only('검색 모달에 다시 접근했을 때, 가장 마지막에 검색한 결과를 화면에 표시한다.', () => {
     cy.get('#search-button').click();
     cy.get('#search-keyword-input').type(KEYWORD);
     cy.get('#search-keyword-form').submit();
-    cy.get('#modal-close-button').click();
+    cy.reload();
 
     cy.get('#search-button').click();
-    cy.get('#search-result-wrapper')
-      .invoke('attr', 'data-search-keyword')
-      .then((keyword) => expect(keyword).to.be.equal(KEYWORD));
+    cy.get('#recent-keyword').eq(0).should('have.text', KEYWORD);
+    cy.get('#search-section article').should('have.length', MAX_RESULT_COUNT);
   });
 
-  it.only('키워드 4개를 연속해서 검색했을 때, 최근 검색키워드 3개를 검색창 하단에 보여준다.', () => {
+  it('키워드 4개를 연속해서 검색했을 때, 최근 검색키워드 3개를 검색창 하단에 보여준다.', () => {
     const KEYWORDS = ['쿠팡', '네이버', '토스', '우아한형제들'];
     const TRY_COUNT = KEYWORDS.length;
 

@@ -62,4 +62,12 @@ export default class VideoLocalStorage {
     recentKeywords.unshift(keyword);
     this.setItem(RECENT_KEYWORDS, recentKeywords.slice(0, MAX_RECENT_KEYWORD_COUNT));
   }
+
+  getMostRecentKeyword() {
+    try {
+      return this.getList(RECENT_KEYWORDS)[0];
+    } catch (e) {
+      return '';
+    }
+  }
 }
