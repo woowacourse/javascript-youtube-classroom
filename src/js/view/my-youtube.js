@@ -1,5 +1,9 @@
 import { $ } from '../utils/util.js';
-import { searchNotFoundTemplate, searchVideoTemplate } from './template.js';
+import {
+  searchNotFoundTemplate,
+  searchVideoTemplate,
+  recentKeywordsTemplate,
+} from './template.js';
 class MyYoutubeView {
   renderVideoArticle = (info, save) => {
     const $searchVideoWrapper = $('#search-video-wrapper');
@@ -20,6 +24,11 @@ class MyYoutubeView {
   renderSkeletonArticles = () => {
     const $searchVideoWrapper = $('#search-video-wrapper');
     $searchVideoWrapper.innerHTML = videoSkeletonTemplate().repeat(10);
+  };
+
+  renderRecentKeywordSection = keywords => {
+    const $recentKeywordsSection = $('#recent-keywords');
+    $recentKeywordsSection.innerHTML = recentKeywordsTemplate(keywords);
   };
 
   resetView = () => {
