@@ -10,10 +10,8 @@ export default class NavigationView extends View {
   }
 
   bindTabEvents() {
-    this.tabButtons.each((button) => {
-      button.addEventListener('click', () => {
-        this.emit('clickNavTab', $(`#${button.id}`));
-      });
+    this.tabButtons.setEvent('click', (e) => {
+      this.emit('clickNavTab', $(`#${e.target.id}`));
     });
   }
 
