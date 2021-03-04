@@ -7,6 +7,7 @@ class MyYoutubeSearchController {
 
   init() {
     this.handleSearch();
+    this.view.renderNotFound();
   }
 
   getSearchInput = () => {

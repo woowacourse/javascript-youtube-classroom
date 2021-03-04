@@ -30,3 +30,9 @@ export const searchVideoTemplate = info => {
             </div>
             </article>`;
 };
+
+export const searchNotFoundTemplate = () => {
+  return `
+        <img id="search-not-found" src="./src/images/status/not_found.png" />
+    `;
+};
