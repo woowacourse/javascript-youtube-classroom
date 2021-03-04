@@ -4,11 +4,34 @@ import { getSearchVideoByKeyword } from '../util/index.js';
 export class SearchVideoResult {
   constructor({ searchKeywordHistoryManager }) {
     this.$wrapper = $('.js-video-result-wrapper');
+    this.$container = $('.js-video-result-container');
 
     this.searchKeywordHistoryManager = searchKeywordHistoryManager;
+    this.searchKeywordHistoryManager.subscribe(this.reset.bind(this));
     this.searchKeywordHistoryManager.subscribe(this.fetchSearchResultData.bind(this));
 
     this.searchResultData = {};
+
+    this.initEvent();
+  }
+
+  initEvent() {
+    this.$container.addEventListener('scroll', this.handleContainerScroll.bind(this));
+  }
+
+  async handleContainerScroll({ target }) {
+    if (target.scrollHeight - target.scrollTop === target.clientHeight) {
+      try {
+        const searchResultData = await getSearchVideoByKeyword(
+          this.searchKeywordHistoryManager.getLastKeyword(),
+          this.searchResultData.nextPageToken
+        );
+
+        this.setState({ searchResultData });
+      } catch (e) {
+        console.error(e);
+      }
+    }
   }
 
   async fetchSearchResultData() {
@@ -24,6 +47,10 @@ export class SearchVideoResult {
   setState({ searchResultData }) {
     this.searchResultData = searchResultData;
     this.render();
+  }
+
+  reset() {
+    this.$wrapper.innerHTML = '';
   }
 
   makeTemplate({ id, snippet }) {
@@ -64,6 +91,9 @@ export class SearchVideoResult {
   }
 
   render() {
-    this.$wrapper.innerHTML = this.searchResultData.items.map(item => this.makeTemplate(item)).join('');
+    this.$wrapper.insertAdjacentHTML(
+      'beforeend',
+      this.searchResultData.items.map(item => this.makeTemplate(item)).join('')
+    );
   }
 }
