@@ -1,3 +1,5 @@
+import state from '../../src/js/library/state.js';
+
 describe('Youtube classroom test', () => {
   beforeEach(() => {
     cy.visit('http://127.0.0.1:5500');
@@ -58,5 +60,22 @@ describe('Youtube classroom test', () => {
     cy.get('#video-search-submit').click();
     cy.get('.modal-inner').scrollTo('bottom');
     cy.get('#video-search-modal .video-wrapper').should('have.length', 2);
+  });
+
+  it('저장 가능한 최대 동영상 갯수는 100개이다.', () => {
+    // api 호출의 한계로 테스트를 할 때는, MAX_SAVE_COUNT는 1로 설정 후 테스트를 진행한다.
+    const alertStub = cy.stub();
+
+    cy.get('#search-button').click();
+    cy.get('#video-search-input').type('로이드');
+    cy.get('#video-search-submit').click();
+    cy.get('.js-save-button').eq(0).click();
+    cy.get('.js-save-button').eq(1).click();
+
+    cy.on('window:alert', alertStub).then(() => {
+      expect(alertStub.getCall(0)).to.be.calledWith(
+        '최대 저장 개수는 100개입니다.'
+      );
+    });
   });
 });
