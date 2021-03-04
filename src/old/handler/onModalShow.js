@@ -1,4 +1,4 @@
-import { openModal } from '../view/viewModal';
+import { openModal } from '../../js/view/modal';
 import { $ } from 'old/utils/querySelector';
 import localStorage from 'old/utils/localStorage';
 
@@ -45,14 +45,6 @@ const searchResultClipTemplate = (video, index, isSaved = false) => {
   `;
 };
 
-const recentKeywordsLabel = () => {
-  return `<span class="text-gray-700">최근 검색어: </span>`;
-};
-
-const recentKeywordTemplate = (keyword) => {
-  return `<a class="chip">${keyword}</a>`;
-};
-
 const setVideoItems = (videoItems) => {
   const $videoWrapper = $('[data-js=youtube-search-modal__video-wrapper]');
   const savedClips = localStorage.get('savedClips') ?? [];
@@ -74,23 +66,6 @@ const setRecentSearchResult = () => {
   }
 
   setVideoItems(recentSearchResult);
-};
-
-const setRecentKeywords = () => {
-  console.log('init');
-  const recentKeywords = localStorage.get('recentKeywords') ?? [];
-  console.log(recentKeywords);
-
-  $('[data-js="youtube-search-modal__recent-keywords"]').innerHTML =
-    recentKeywordsLabel() + recentKeywords.map(recentKeywordTemplate).join('');
-};
-
-const setSaveVideoCount = () => {
-  const saveClips = localStorage.get('savedClips') ?? [];
-
-  $(
-    '[data-js="youtube-search-modal__save-video-count"]',
-  ).innerText = `저장된 영상 갯수: ${saveClips.length}개`;
 };
 
 export const onModalShow = () => {
