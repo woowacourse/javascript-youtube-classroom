@@ -62,8 +62,8 @@ class MyYoutubeSearchController {
   };
 
   removeSkeleton = event => {
-    //TODO : event.target.parentNode.parentNode 변수화
-    event.target.parentNode.parentNode.classList.remove('skeleton');
+    const article = event.target.parentNode.parentNode;
+    article.classList.remove('skeleton');
   };
 
   handleSaveVideo = () => {
