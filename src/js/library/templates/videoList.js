@@ -1,3 +1,5 @@
+import state from '../state.js';
+
 function createVideoSnippetTemplate({ id, snippet }, isSaved = false) {
   return `<article class="clip js-video"
             data-video-id=${id.videoId}
@@ -43,9 +45,23 @@ function createVideoSnippetTemplate({ id, snippet }, isSaved = false) {
           </article>`;
 }
 
+function isSavedVideo(item) {
+  return [...state.videoInfos].some(
+    videoInfo => videoInfo.id.videoId === item.id.videoId
+  );
+}
+
+function createVideoListTemplate(resultItems) {
+  return `<div class="video-wrapper">
+            ${resultItems
+              .map(item => createVideoSnippetTemplate(item, isSavedVideo(item)))
+              .join('')}
+          </div>`;
+}
+
 /*
  * data-attirbue 로 다 할당
  * 이미 존재하는 속성들을 그대로 활용 (선택자 접근, 문자열 파싱)
  */
 
-export default createVideoSnippetTemplate;
+export default createVideoListTemplate;

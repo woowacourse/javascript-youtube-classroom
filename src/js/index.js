@@ -1,7 +1,7 @@
 import API_KEY from './apiKey.js';
 import YOUTUBE_SEARCH_API from './library/constants/api.js';
 import dom from './library/DOMelements.js';
-import createVideoSnippetTemplate from './library/templates/videoSnippet.js';
+import createVideoListTemplate from './library/templates/videoList.js';
 import createVideoSkeletonTemplate from './library/templates/videoSkeleton.js';
 import state from './library/state.js';
 import createNotFoundTemplate from './library/templates/notFound.js';
@@ -20,19 +20,6 @@ function fetchSearchResult(keyword) {
   );
 }
 
-function isSavedVideo(item) {
-  return [...state.videoInfos].some(
-    videoInfo => videoInfo.id.videoId === item.id.videoId
-  );
-}
-function createSearchResultTemplate(resultItems) {
-  return `<div class="video-wrapper">
-            ${resultItems
-              .map(item => createVideoSnippetTemplate(item, isSavedVideo(item)))
-              .join('')}
-          </div>`;
-}
-
 dom.$videoSearchForm.addEventListener('submit', async e => {
   e.preventDefault();
 
@@ -40,7 +27,7 @@ dom.$videoSearchForm.addEventListener('submit', async e => {
   dom.$videoSearchResult.innerHTML = createVideoSkeletonTemplate();
   const { items: resultItems } = await fetchSearchResult(keyword);
   dom.$videoSearchResult.innerHTML = resultItems.length
-    ? createSearchResultTemplate(resultItems)
+    ? createVideoListTemplate(resultItems)
     : createNotFoundTemplate();
 });
 
@@ -65,8 +52,7 @@ dom.$videoSearchResult.addEventListener('click', e => {
   const videoInfo = createVideoInfo($video.dataset);
 
   state.addVideoInfo(videoInfo);
-  dom.$videoList.innerHTML = [...state.videoInfos]
-    .map(videoInfo => createVideoSnippetTemplate(videoInfo, true))
-    .join('');
+  dom.$videoList.innerHTML = createVideoListTemplate([...state.videoInfos]);
+
   e.target.hidden = true;
 });
