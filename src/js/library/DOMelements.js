@@ -9,6 +9,7 @@ const dom = {
   $videoSearchResult: $('#video-search-result'),
   $videoList: $('#video-list'),
   $endPoint: $('#end-point'),
+  $latestKeywordList: $('#latest-keyword-list'),
 };
 
 export default dom;

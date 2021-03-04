@@ -5,6 +5,7 @@ import createVideoListTemplate from './library/templates/videoList.js';
 import createVideoSkeletonTemplate from './library/templates/videoSkeleton.js';
 import state from './library/state.js';
 import createNotFoundTemplate from './library/templates/notFound.js';
+import createKeywordList from './library/templates/keywordList.js';
 
 dom.$searchButton.addEventListener('click', () =>
   dom.$searchModal.classList.add('open')
@@ -26,7 +27,8 @@ dom.$videoSearchForm.addEventListener('submit', async e => {
   e.preventDefault();
 
   const keyword = e.target.elements['video-search-input'].value;
-  state.setKeyword(keyword);
+  state.addLatestKeyword(keyword);
+  dom.$latestKeywordList.innerHTML = createKeywordList();
   dom.$videoSearchResult.innerHTML = createVideoSkeletonTemplate();
   const { nextPageToken, items: resultItems } = await fetchSearchResult(
     keyword
@@ -70,7 +72,7 @@ dom.$videoSearchResult.addEventListener('click', e => {
   e.target.hidden = true;
 });
 
-window.onload = (function () {
+window.onload = function () {
   const options = {
     root: dom.$searchModal,
     rootMargin: '0px',
@@ -79,7 +81,7 @@ window.onload = (function () {
 
   const observer = new IntersectionObserver(async () => {
     const { nextPageToken, items: searchResult } = await fetchSearchResult(
-      state.keyword,
+      state.latestKeywords[state.latestKeywords.length - 1],
       state.nextPageToken
     );
 
@@ -88,4 +90,4 @@ window.onload = (function () {
   }, options);
 
   observer.observe(dom.$endPoint);
-})();
+};

@@ -1,7 +1,7 @@
 const state = {
   videoInfos: new Set(),
   nextPageToken: '',
-  keyword: '',
+  latestKeywords: [],
   addVideoInfo(newVideoInfo) {
     this.videoInfos.add(newVideoInfo);
   },
@@ -11,8 +11,15 @@ const state = {
   setNextPageToken(newToken) {
     this.nextPageToken = newToken;
   },
-  setKeyword(newKeyword) {
-    this.keyword = newKeyword;
+  addLatestKeyword(newKeyword) {
+    const targetIdx = this.latestKeywords.indexOf(newKeyword);
+
+    if (targetIdx > -1) {
+      this.latestKeywords.splice(targetIdx, 1);
+    } else if (this.latestKeywords.length === 3) {
+      this.latestKeywords.shift();
+    }
+    this.latestKeywords.push(newKeyword);
   },
 };
 
