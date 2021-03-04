@@ -67,8 +67,20 @@ describe('검색 모달 테스트', () => {
       .invoke('attr', 'data-video-id')
       .then((storedVideoId) => {
         const list = JSON.parse(localStorage.getItem('videosToWatch'));
-        expect(list[FIRST_INDEX].videoId).to.eq(storedVideoId);
+        expect(list[FIRST_INDEX].videoId).to.be.equal(storedVideoId);
       });
+  });
+
+  it('검색 모달에 다시 접근했을 때, 가장 마지막에 검색한 결과를 화면에 표시한다.', () => {
+    cy.get('#search-button').click();
+    cy.get('#search-keyword-input').type(KEYWORD);
+    cy.get('#search-keyword-form').submit();
+    cy.get('#modal-close-button').click();
+
+    cy.get('#search-button').click();
+    cy.get('#search-result-video-wrapper')
+      .invoke('attr', 'data-search-keyword')
+      .then((keyword) => expect(keyword).to.be.equal(KEYWORD));
   });
 });
 
