@@ -17,8 +17,6 @@ export const onModalScroll = async () => {
 
   showElement($skeletonWrapper);
 
-  $skeletonWrapper.classList.remove('d-none');
-
   const keyword = localStorage.get('currentKeyword');
   const pageToken = localStorage.get('nextPageToken')
     ? `&pageToken=${localStorage.get('nextPageToken')}`

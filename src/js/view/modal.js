@@ -1,6 +1,6 @@
 import { $ } from '../utils/querySelector.js';
 
-const $modal = document.querySelector('[data-js="youtube-search-modal"]');
+const $modal = $('[data-js="youtube-search-modal"]');
 
 const searchResultClipTemplate = (video, index, isSaved = false) => {
   const [year, month, day] = new Date(video.snippet.publishTime)

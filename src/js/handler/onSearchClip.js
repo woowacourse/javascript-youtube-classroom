@@ -10,7 +10,7 @@ import {
 
 const getRecentKeywords = (keyword) => {
   const keywords = localStorage.get('recentKeywords') ?? [];
-  if (keywords.length >= 3) {
+  if (keywords.length >= YOUTUBE.MAXMIMUM_RECENT_KEYWORD_LENGTH) {
     keywords.splice(2);
   }
 
