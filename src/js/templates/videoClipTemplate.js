@@ -1,7 +1,55 @@
+import loadingSearchResults from "../state/loadingSearchResults.js";
+
 function parseDate(dateString) {
   const [year, month, date] = dateString.split("T")[0].split("-");
 
   return `${year}년 ${month}월 ${date}일`;
+}
+
+function getSrcDocTemplate(item) {
+  return `
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        overflow: hidden;
+      }
+
+      body {
+        height: 100%;
+      }
+
+      span {
+        position: absolute;
+        top: -390%;
+        left: 45%;
+        color: rgba(238, 238, 238, 0.9);
+        font-size: 2rem;
+        transition: transform 0.2s ease-in-out
+      }
+
+      span:hover {
+        transform: scale(1.6);
+      }
+
+      .embeded-clip {
+        position: relative;
+        width:236px;
+        height:120px;
+        cursor: pointer;
+      }
+
+      .embeded-clip img{
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+    </style>
+    <a href='https://www.youtube.com/embed/${item.videoId}' class='embeded-clip'>
+      <img src='${item.thumbnail}'><span>►</span>
+    </a>
+
+  `;
 }
 
 export default function getVideoClipTemplate(item) {
@@ -13,10 +61,13 @@ export default function getVideoClipTemplate(item) {
       <iframe
         width="100%"
         height="118"
+        onload="() => ${loadingSearchResults.load()}"
+        srcdoc="${getSrcDocTemplate(item)}"
         src="https://www.youtube.com/embed/${item.videoId}"
         frameborder="0"
         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-        allowfullscreen></iframe>
+        allowfullscreen>
+        </iframe>
     </div>
     <div class="content-container pt-2 px-1">
       <h3>${item.title}</h3>

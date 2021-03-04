@@ -48,6 +48,7 @@ const videos = {
       channelId: videoItem.snippet.channelId,
       channelTitle: videoItem.snippet.channelTitle,
       publishedAt: videoItem.snippet.publishedAt,
+      thumbnail: videoItem.snippet.thumbnails.medium.url,
       saved: this.isSavedVideo(videoItem.id.videoId),
       watched: false,
       liked: false,
