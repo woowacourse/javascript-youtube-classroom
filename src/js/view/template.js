@@ -1,3 +1,5 @@
+import { escapeApostrophe } from '../utils/util.js';
+
 // TODO : 템플릿도 나중에 폴더만들어서 사용되는 곳대로 나누기
 export const searchVideoTemplate = (info, save) => {
   return `<article class="clip skeleton">
@@ -27,10 +29,8 @@ export const searchVideoTemplate = (info, save) => {
                     <div class="d-flex justify-end">
                         <button class="btn js-save-button ${
                           save ? 'invisible' : ''
-                        }" data-info='${JSON.stringify(info).replace(
-    // TODO : util화하기 - escapeString
-    /'/gi,
-    '&#039;'
+                        }" data-info='${escapeApostrophe(
+    info
   )}'>⬇️ 저장</button>
                     </div>
                 </div>
