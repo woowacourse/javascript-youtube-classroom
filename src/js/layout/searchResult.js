@@ -30,6 +30,6 @@ export const resultNotFoundTemplate = `
   </p>
 `;
 
-export const getRecentKeywordTemplate = (recentKeywords) => {
+export const getRecentKeywordsTemplate = (recentKeywords) => {
   return recentKeywords.map((keyword) => `<a class="chip">${keyword}</a>`).join('');
 };

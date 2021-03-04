@@ -3,9 +3,9 @@ import { MAX_RECENT_KEYWORD_COUNT, VIDEOS_TO_WATCH, VIDEOS_WATCHED, RECENT_KEYWO
 /*
   로컬스토리지 데이터 저장구조
   {
-    videosToWatch: [ { videoId: , ... } ... ],
-    videosWatched: [ { videoId: , ... } ... ],
-    recentKeywords: [ keyword1, keyword2, keyword3 ],
+    videosToWatch: [ { videoId: 'TVUNi0zi1yw', ... }, ... ],
+    videosWatched: [ { videoId: '0nxsS4B85E8', ... }, ... ],
+    recentKeywords: [ 'keyword1', 'keyword2', 'keyword3' ],
   {
 */
 
