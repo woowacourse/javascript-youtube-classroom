@@ -6,8 +6,11 @@ import {
   myVideoInfosTemplate,
 } from './template.js';
 
-// class 명 SearchView 같은걸로 바꾸기
-class MyYoutubeView {
+class SearchView {
+  init = () => {
+    this.renderMyVideoInfosSection(0);
+  };
+
   renderVideoArticle = (info, save) => {
     const $searchVideoWrapper = $('#search-video-wrapper');
     $searchVideoWrapper.append(
@@ -32,6 +35,7 @@ class MyYoutubeView {
 
   renderMyVideoInfosSection = length => {
     const $myVideoInfosSection = $('#my-video-infos');
+    console.log($myVideoInfosSection);
     $myVideoInfosSection.innerHTML = myVideoInfosTemplate(length);
   };
 
@@ -39,8 +43,6 @@ class MyYoutubeView {
     const $searchVideoWrapper = $('#search-video-wrapper');
     $searchVideoWrapper.innerHTML = '';
   };
-
-  // TODO : view init 만들어주기
 }
 
-export default MyYoutubeView;
+export default SearchView;

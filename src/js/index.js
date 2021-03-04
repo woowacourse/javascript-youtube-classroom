@@ -1,11 +1,11 @@
 import MyYoutubeSearchController from './controller/my-youtube-search.js';
 import StorageModel from './model/storage.js';
 import YoutubeModel from './model/youtube.js';
-import MyYoutubeView from './view/my-youtube.js';
+import SearchView from './view/search.js';
 
 const youtube = new YoutubeModel();
 const storage = new StorageModel();
-const view = new MyYoutubeView();
+const view = new SearchView();
 const controller = new MyYoutubeSearchController(youtube, storage, view);
 controller.init();
 
