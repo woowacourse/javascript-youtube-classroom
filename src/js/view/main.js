@@ -1,4 +1,4 @@
-import { $ } from 'old/utils/querySelector';
+import { $ } from '../utils/querySelector.js';
 
 const savedClipTemplate = (video) => {
   const [year, month, day] = new Date(video.snippet.publishTime)
@@ -44,33 +44,10 @@ const savedClipTemplate = (video) => {
 `;
 };
 
-const loadSavedClips = () => {
-  const savedClips = localStorage.get('savedClips') ?? [];
-
+export const renderSavedClips = (savedClips) => {
   $(
     '[data-js=saved-page__video-wrapper]',
   ).innerHTML = savedClips
     .map((savedClip, index) => savedClipTemplate(savedClip, index))
     .join('');
-};
-
-export const handleSave = ({ target }) => {
-  if (target.dataset.js !== 'save-button') {
-    return;
-  }
-
-  const clipIndex = target.dataset.clipIndex;
-  const recentSearchResult = localStorage.get('recentSearchResult') ?? [];
-  const savedClips = localStorage.get('savedClips') ?? [];
-
-  if (savedClips.length >= YOUTUBE.MAXIMUM_SAVE_CLIPS) {
-    alert('클립을 100개 이상 저장할 수 없습니다');
-    return;
-  }
-
-  localStorage.set('savedClips', [
-    ...savedClips,
-    recentSearchResult[clipIndex],
-  ]);
-  loadSavedClips();
 };

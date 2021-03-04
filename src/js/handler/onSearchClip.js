@@ -18,7 +18,7 @@ const getRecentKeywords = (keyword) => {
   return keywords;
 };
 
-export const onSearchYoutube = async (event) => {
+export const onSearchClip = async (event) => {
   event.preventDefault();
 
   const $skeletonWrapper = $(

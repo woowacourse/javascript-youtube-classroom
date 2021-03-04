@@ -1,8 +1,9 @@
 import { onModalShow } from './handler/onModalShow.js';
 import { closeModal } from './view/modal.js';
 import { $ } from './utils/querySelector.js';
-import { onSearchYoutube } from './handler/onSearchYoutube.js';
+import { onSearchClip } from './handler/onSearchClip.js';
 import { onModalScroll } from './handler/onModalScroll.js';
+import { onSaveClip } from './handler/onSaveClip.js';
 
 let timer;
 const throttling = (func) => {
@@ -19,12 +20,15 @@ export const YoutubeClassRoom = () => {
   $('.modal-close').addEventListener('click', closeModal);
   $('[data-js="youtube-search-modal__form"]').addEventListener(
     'submit',
-    onSearchYoutube,
+    onSearchClip,
   );
-
   document.addEventListener('scroll', () => {
     throttling(onModalScroll);
   });
+  $('[data-js="youtube-search-modal__video-wrapper"]').addEventListener(
+    'click',
+    onSaveClip,
+  );
 };
 
 window.onload = () => {
