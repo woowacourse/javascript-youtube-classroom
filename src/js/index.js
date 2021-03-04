@@ -6,6 +6,7 @@ const model = new YoutubeModel();
 const view = new MyYoutubeView();
 const controller = new MyYoutubeSearchController(model, view);
 controller.init();
+
 const $searchButton = document.querySelector('#search-button');
 const $modalClose = document.querySelector('.modal-close');
 const $modal = document.querySelector('.modal');

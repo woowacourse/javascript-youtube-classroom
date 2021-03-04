@@ -7,6 +7,16 @@ class MyYoutubeView {
       $searchVideoWrapper.innerHTML += searchVideoTemplate(info);
     });
   };
+
+  renderSkeletonArticles = () => {
+    const $searchVideoWrapper = $('#search-video-wrapper');
+    $searchVideoWrapper.innerHTML = videoSkeletonTemplate().repeat(10);
+  };
+
+  resetView = () => {
+    const $searchVideoWrapper = $('#search-video-wrapper');
+    $searchVideoWrapper.innerHTML = '';
+  };
 }
 
 export default MyYoutubeView;
