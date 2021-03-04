@@ -46,7 +46,7 @@ const $modalVideoWrapper = $(CLASSNAME.MODAL_VIDEO_WRAPPER);
 const $notFoundImg = $(CLASSNAME.NOT_FOUND_IMAGE);
 const $keywordHistorySection = $(CLASSNAME.KEYWORD_HISTORY_SECTION);
 
-const keywordHistory = [];
+let keywordHistory = [];
 
 const onModalShow = () => {
   $modal.classList.add(CLASSNAME.OPEN);
@@ -77,7 +77,7 @@ const handleFormSubmit = async (event) => {
 
     $input.value = "";
 
-    // keyword 추가
+    keywordHistory = keywordHistory.filter((keyword) => keyword !== query);
     keywordHistory.push(query);
     if (keywordHistory.length > MAX_KEYWORDS_COUNT) {
       keywordHistory.shift();
