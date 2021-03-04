@@ -1,3 +1,4 @@
+import searchHistory from "../state/searchHistory.js";
 import getVideoClipTemplate from "../templates/videoClipTemplate.js";
 import { hideElement, showElement } from "../utils/dom.js";
 import elements from "../utils/elements.js";
@@ -8,11 +9,11 @@ export default class SearchView {
     showElement(elements.$notFound);
   }
 
-  showSearchResults(items, pageToken = "") {
+  showSearchResults(items) {
     hideElement(elements.$notFound);
     showElement(elements.$searchResults);
 
-    if (!pageToken) {
+    if (searchHistory.getPageToken() === "") {
       elements.$searchResults.innerHTML = "";
     }
 

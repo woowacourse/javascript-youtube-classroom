@@ -1,30 +1,29 @@
 import SearchView from "./SearchView.js";
 import { API, YOUTUBE_URL } from "../utils/constants.js";
 import { getSearchQueryString } from "../queries/searchQuery.js";
-import pageToken from "../state/pageToken.js";
 import scrollEventLock from "../state/scrollEventLock.js";
+import searchHistory from "../state/searchHistory.js";
 
 export default class SearchController {
   constructor() {
     this.searchView = new SearchView();
+    this.nextPageToken = "";
   }
 
-  async searchVideos(keyword) {
-    this.keyword = keyword;
-
+  async searchVideos() {
     const res = await fetch(
-      `${YOUTUBE_URL}/${API.GET.SEARCH}?${getSearchQueryString(keyword)}`
+      `${YOUTUBE_URL}/${API.GET.SEARCH}?${getSearchQueryString()}`
     );
     if (!res.ok) throw new Error(res.status);
     const { items, nextPageToken } = await res.json();
 
-    pageToken.set(nextPageToken);
+    this.nextPageToken = nextPageToken;
     this.fetchVideos(items);
   }
 
   fetchVideos(videoItems) {
     if (videoItems.length === 0) {
-      if (pageToken.get()) {
+      if (searchHistory.getPageToken()) {
         return;
       }
 
@@ -40,7 +39,8 @@ export default class SearchController {
         };
       });
 
-      this.searchView.showSearchResults(searchResults, pageToken.get());
+      this.searchView.showSearchResults(searchResults);
+      searchHistory.setPageToken(this.nextPageToken);
     }
   }
 
@@ -50,7 +50,7 @@ export default class SearchController {
 
     if (isBottom && !scrollEventLock.isLocked()) {
       scrollEventLock.lock();
-      await this.searchVideos(this.keyword);
+      await this.searchVideos();
       scrollEventLock.unlock();
     }
   }

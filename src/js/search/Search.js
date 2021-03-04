@@ -1,5 +1,6 @@
 import SearchController from "./SearchController.js";
 import elements from "../utils/elements.js";
+import searchHistory from "../state/searchHistory.js";
 
 export default class Search {
   constructor() {
@@ -17,7 +18,10 @@ export default class Search {
   onSearch(e) {
     e.preventDefault();
     const searchKeyword = e.target.elements["search-keyword"].value;
-    this.searchController.searchVideos(searchKeyword);
+
+    searchHistory.resetPageToken();
+    searchHistory.setKeyword(searchKeyword);
+    this.searchController.searchVideos();
   }
 
   onScroll(e) {

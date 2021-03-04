@@ -1,4 +1,4 @@
-export default {
+const scrollEventLock = {
   scrollEventLock: false,
 
   isLocked() {
@@ -13,3 +13,5 @@ export default {
     this.scrollEventLock = false;
   },
 };
+
+export default scrollEventLock;
