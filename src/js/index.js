@@ -207,8 +207,11 @@ $(SELECTORS.CLASS.YOUTUBE_SEARCH_RESULT).addEventListener('click', async (event)
 
 const initVideos = async () => {
   const ids = store.load(LOCAL_STORAGE_KEYS.WATCH_LIST);
+  if (!ids || ids.length <= 0) return;
+
   renderSkeletonUI(SELECTORS.CLASS.WATCH_LIST, ids.length);
   const selectedVideos = await searchYoutubeById(ids);
+
   $('main').innerHTML = `<div class="watch-list video-wrapper"></div>`;
   renderSavedVideos(selectedVideos.items);
 };
