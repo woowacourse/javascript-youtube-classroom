@@ -1,6 +1,6 @@
 # youtube API_KEY
 .env
-./src/js/apiKey.js
+src/js/apiKey.js
 
 #cypress examples
 cypress/integration/examples

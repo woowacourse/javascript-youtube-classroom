@@ -23,5 +23,18 @@ context("모달을 통한 비디오 검색", () => {
     });
   });
 
-  describe("검색 결과가 없는 경우", () => {});
+  describe("검색 결과가 없는 경우", () => {
+    before(() => {
+      cy.visit("http://127.0.0.1:5500");
+    });
+
+    it("모달창이 띄워진 상황에서, 검색 창에 검색어를 입력한 후 검색 버튼을 눌렀을 때, 검색 결과가 없을 경우 검색 결과 모달에 검색 결과 없음 이미지가 출력된다.", () => {
+      cy.get(".menu-section__video-search-btn").click();
+      cy.get(".search-modal__input").type(
+        "ㅏㅁㄴ이ㅏㅓ리마어리ㅏㅁ 넝리멎댤 ㅣ나어리ㅏ넝림 ㅣㅏㄴ얼",
+      );
+      cy.get(".search-modal__btn").click();
+      cy.get(".no-result-image").should("to.be.exist");
+    });
+  });
 });

@@ -1,6 +1,5 @@
 import { $ } from "../utils/dom.js";
 import { API_KEY } from "../apiKey.js";
-
 class SearchModal {
   constructor() {
     this.initState();
@@ -79,9 +78,11 @@ class SearchModal {
   }
 
   render() {
-    this.$videoWrapper.innerHTML = this.videos
-      .map(video => createSearchedVideoTemplate(video))
-      .join("");
+    this.videos.length
+      ? (this.$videoWrapper.innerHTML = this.videos
+          .map(video => createSearchedVideoTemplate(video))
+          .join(""))
+      : (this.$videoWrapper.innerHTML = createNoSearchResultTemplate());
   }
 
   showModal() {
@@ -120,6 +121,9 @@ const createSearchedVideoTemplate = video => `
     </div>
   </div>
 </article>`;
+
+const createNoSearchResultTemplate = () =>
+  `<div class='no-search-result'><img class='no-result-image' src='src/images/status/not_found.png' alt='결과 없음'><p>검색 결과가 존재하지 않습니다.</p></div>`;
 
 const changeDateFormat = publishedAt => {
   const date = new Date(publishedAt);
