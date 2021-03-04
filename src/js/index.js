@@ -2,6 +2,7 @@ import API_KEY from './apiKey.js';
 import YOUTUBE_SEARCH_API from './library/constants/api.js';
 import dom from './library/DOMelements.js';
 import createVideoSnippetTemplate from './library/templates/videoSnippet.js';
+import createVideoSkeletonTemplate from './library/templates/videoSkeleton.js';
 import state from './library/state.js';
 
 dom.$searchButton.addEventListener('click', () =>
@@ -28,8 +29,9 @@ dom.$videoSearchForm.addEventListener('submit', async e => {
   e.preventDefault();
 
   const keyword = e.target.elements['video-search-input'].value;
-  dom.$videoSearchResult.innerHTML = '';
+  dom.$videoSearchResult.innerHTML = createVideoSkeletonTemplate().repeat(10);
   const { items: resultItems } = await fetchSearchResult(keyword);
+  // TODO: 결과 없음 이미지 출력 (resultItems가 빈 배열임)
   dom.$videoSearchResult.innerHTML = resultItems
     .map(item => createVideoSnippetTemplate(item, isSavedVideo(item)))
     .join('');
