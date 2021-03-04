@@ -19,11 +19,11 @@ export default class YoutubeController {
 
   bindEvents() {
     this.navigationView.on('clickNavTab', (e) => this.changeNavTab(e.detail));
-    this.searchModalView.on('closeModal', () =>
-      this.changeNavTab($('#saved-btn')),
-    );
-    this.searchModalView.on('submitSearch', (e) => this.searchVideo(e.detail));
-    this.searchModalView.on('scrollResult', (e) => this.searchVideo(e.detail));
+    this.searchModalView
+      .on('openModal', (e) => this.searchVideo(e.detail))
+      .on('submitSearch', (e) => this.searchVideo(e.detail))
+      .on('scrollResult', (e) => this.searchVideo(e.detail))
+      .on('closeModal', () => this.changeNavTab($('#saved-btn')));
   }
 
   changeNavTab(currentTab) {

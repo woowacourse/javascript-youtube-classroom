@@ -51,6 +51,12 @@ export const $ = (function () {
     this.each((element) => element.classList.remove(className));
   };
 
+  constructor.prototype.getText = function (className) {
+    if (!this.element) return;
+
+    return this.element.innerText;
+  };
+
   const instantiate = function (selector) {
     return new constructor(selector);
   };

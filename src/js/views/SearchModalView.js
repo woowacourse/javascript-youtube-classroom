@@ -2,7 +2,7 @@ import { $ } from '../utils/dom.js';
 import { VALUE } from '../utils/constants.js';
 import clipMaker from '../utils/clipMaker.js';
 import View from './View.js';
-// import notFoundImg from '../../images/status/not_found.png';
+
 export default class SearchModalView extends View {
   constructor($element) {
     super($element);
@@ -12,6 +12,7 @@ export default class SearchModalView extends View {
     this.modalVideos = $('#modal-videos');
     this.searchKeyword;
 
+    this.updateChips();
     this.bindModalEvents();
     this.bindScrollEvent();
   }
@@ -27,6 +28,7 @@ export default class SearchModalView extends View {
 
       this.searchKeyword = e.target.elements.search.value;
 
+      this.clearVideoClips();
       this.emit('submitSearch', this.searchKeyword);
       this.setRecentChip();
       this.updateChips();
@@ -34,7 +36,7 @@ export default class SearchModalView extends View {
   }
 
   bindScrollEvent() {
-    let throttle; // null
+    let throttle;
 
     this.modalVideos.setEvent('scroll', (e) => {
       if (throttle) return;
@@ -51,9 +53,7 @@ export default class SearchModalView extends View {
   }
 
   setRecentChip() {
-    const recentKeywords = localStorage.getItem('searchKeyword')
-      ? JSON.parse(localStorage.getItem('searchKeyword'))
-      : [];
+    const recentKeywords = this.getRecentKeywords();
 
     if (recentKeywords.includes(this.searchKeyword)) {
       return;
@@ -69,18 +69,30 @@ export default class SearchModalView extends View {
 
   chipTemplate(recentKeywords) {
     return recentKeywords
-      .map((keyword) => `<a class="chip">${keyword}</a>`)
+      .map(
+        (keyword, idx) => `<a id="chip-${idx + 1}" class="chip">${keyword}</a>`,
+      )
       .join('');
   }
 
   updateChips() {
-    const recentKeywords = JSON.parse(localStorage.getItem('searchKeyword'));
+    const recentKeywords = this.getRecentKeywords();
 
     $('#chip-container').setInnerHTML(this.chipTemplate(recentKeywords));
   }
 
+  getRecentKeywords() {
+    return localStorage.getItem('searchKeyword')
+      ? JSON.parse(localStorage.getItem('searchKeyword'))
+      : [];
+  }
+
   openModal() {
     this.$element.addClass('open');
+
+    const latestKeyword = $('#chip-1').getText();
+
+    if (latestKeyword) this.emit('openModal', latestKeyword);
   }
 
   closeModal() {
@@ -90,7 +102,11 @@ export default class SearchModalView extends View {
   renderVideoClips(videos) {
     $('.skeleton').hide();
     const videoClips = videos.map((video) => clipMaker(video)).join('');
-    $('#modal-videos').addInnerHTML(videoClips);
+    this.modalVideos.addInnerHTML(videoClips);
+  }
+
+  clearVideoClips() {
+    this.modalVideos.setInnerHTML('');
   }
 
   skeletonTemplate() {
@@ -104,7 +120,7 @@ export default class SearchModalView extends View {
   }
 
   startSearch() {
-    $('#modal-videos').addInnerHTML(
+    this.modalVideos.addInnerHTML(
       this.skeletonTemplate().repeat(VALUE.CLIPS_PER_SCROLL),
     );
   }
