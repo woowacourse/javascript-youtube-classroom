@@ -7,12 +7,13 @@
   "parserOptions": {
     "sourceType": "module"
   },
-  "ignorePatterns": ["cypress/"],
+  "ignorePatterns": ["cypress/", "dist/"],
   "rules": {
     "no-new": "off",
     "no-return-assign": "off",
     "no-param-reassign": "off",
     "import/extensions": "off",
+    "class-methods-use-this": "off",
     "import/prefer-default-export": "off"
   }
 }

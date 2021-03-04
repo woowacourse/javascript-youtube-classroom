@@ -109,3 +109,4 @@ dist
 cypress/fixtures/*
 cypress/plugins/*
 cypress/support/*
+env.js
