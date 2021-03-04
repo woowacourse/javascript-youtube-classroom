@@ -12,6 +12,13 @@ const searchedVideoReducer = (states, { type, payload }) => {
 const searchHistoryReducer = (states, { type, payload }) => {
   switch (type) {
     case ADD_SEARCH_TERM:
+      const newStates = [...states];
+      const indexOfSearchTerm = newStates.indexOf(payload.searchTerm);
+      if (indexOfSearchTerm !== -1) {
+        newStates.splice(indexOfSearchTerm, 1);
+        newStates.unshift(payload.searchTerm);
+        return newStates;
+      }
       return [payload.searchTerm, ...states].slice(0, 3);
     default:
       return states;
