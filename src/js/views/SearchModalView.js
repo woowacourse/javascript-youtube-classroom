@@ -2,7 +2,7 @@ import { $ } from '../utils/dom.js';
 import { VALUE } from '../utils/constants.js';
 import clipMaker from '../utils/clipMaker.js';
 import View from './View.js';
-
+// import notFoundImg from '../../images/status/not_found.png';
 export default class SearchModalView extends View {
   constructor($element) {
     super($element);
@@ -83,6 +83,15 @@ export default class SearchModalView extends View {
   startSearch() {
     $('#modal-videos').setInnerHTML(
       this.skeletonTemplate().repeat(VALUE.CLIPS_PER_SCROLL),
+    );
+  }
+
+  showNoResult() {
+    $('#modal-videos').setInnerHTML(
+      `
+        <div class="empty"></div>
+        <img class="not-found" src="./src/images/status/not_found.png"></img>
+      `,
     );
   }
 }

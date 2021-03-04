@@ -34,14 +34,20 @@ export default class YoutubeController {
   }
 
   generateVideos(items) {
+    if (items.length === 0) {
+      this.searchModalView.showNoResult();
+      return;
+    }
+
     this.videos = [
       ...items.map((item) => new Video(item.id.videoId, item.snippet)),
     ];
+
     this.searchModalView.renderVideoClips(this.videos);
   }
 
   searchVideo(keyword) {
     this.searchModalView.startSearch();
-    // searchRequest(keyword, this.generateVideos.bind(this));
+    searchRequest(keyword, this.generateVideos.bind(this));
   }
 }
