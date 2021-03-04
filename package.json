@@ -6,7 +6,8 @@
   "author": "jum0 <wnsah052@naver.com>",
   "license": "MIT",
   "scripts": {
-    "pre-commit": "yarn eslint . && yarn prettier --write ."
+    "pre-commit": "yarn eslint . && yarn prettier --write .",
+    "test": "yarn cypress open"
   },
   "devDependencies": {
     "cypress": "^6.6.0",
