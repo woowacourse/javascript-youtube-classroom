@@ -83,6 +83,7 @@ function initState() {
   state.setLatestKeywords(
     JSON.parse(localStorage.getItem('latestKeywords')) ?? []
   );
+  state.setVideoInfos(JSON.parse(localStorage.getItem('videoInfos')) ?? []);
 }
 
 window.onload = function () {

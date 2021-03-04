@@ -5,10 +5,14 @@ const state = {
   videoInfos: new Set(),
   nextPageToken: '',
   latestKeywords: [],
-  addVideoInfos(...newVideoInfos) {
-    newVideoInfos.forEach(newVideoInfo => this.videoInfos.add(newVideoInfo));
-    localStorage.setItem('videoInfos', JSON.stringify(this.videoInfos));
-    dom.$savedVideoCount.innerHTML = state.videoInfos.length;
+  addVideoInfo(newVideoInfo) {
+    this.videoInfos.add(newVideoInfo);
+    localStorage.setItem('videoInfos', JSON.stringify([...this.videoInfos]));
+    dom.$savedVideoCount.innerHTML = this.videoInfos.size;
+  },
+  setVideoInfos(newVideoInfos) {
+    this.videoInfos = new Set(newVideoInfos);
+    dom.$savedVideoCount.innerHTML = this.videoInfos.size;
   },
   setNextPageToken(newToken) {
     this.nextPageToken = newToken;
