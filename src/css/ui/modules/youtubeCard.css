@@ -66,3 +66,7 @@
   display: inline-block;
   color: #606060;
 }
+
+.clip .save-button.stored {
+  visibility: hidden;
+}

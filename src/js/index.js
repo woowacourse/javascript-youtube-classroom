@@ -1,16 +1,26 @@
-import { API_SEARCH_ENDPOINT, PART_TYPE, SEARCH_TYPE_VIDEO, MAX_RESULT_COUNT, REGION_CODE } from './constants.js';
+import VideoLocalStorage from './models/localStorage.js';
+import {
+  API_SEARCH_ENDPOINT,
+  PART_TYPE,
+  SEARCH_TYPE_VIDEO,
+  MAX_RESULT_COUNT,
+  REGION_CODE,
+  VIDEOS_TO_WATCH,
+  STORAGE_CAPACITY_FULL,
+  MAX_VIDEO_STORAGE_CAPACITY,
+} from './constants.js';
+import { getThumbnailTemplate, getChannelTitleTemplate, resultNotFoundTemplate } from './layout/searchResult.js';
 import { getSkeletonTemplate } from './layout/skeleton.js';
 import { formatDateKR } from './utils/formatDate.js';
-import { getThumbnailTemplate, getChannelTitleTemplate, resultNotFoundTemplate } from './layout/searchResult.js';
-import { YOUTUBE_API_KEY } from './env.js';
 import { $, isEndOfPage } from './utils/DOM.js';
+import { YOUTUBE_API_KEY } from './env.js';
 export default class App {
   #groupIndex;
   #keyword;
   #nextPageToken;
 
   constructor() {
-    this.#nextPageToken = '';
+    this.videoStorage = new VideoLocalStorage();
   }
 
   init() {
@@ -24,6 +34,7 @@ export default class App {
     this.$searchKeywordForm = $('#search-keyword-form');
     this.$searchButton = $('#search-button');
     this.$modalCloseButton = $('#modal-close-button');
+    this.$storedVideoCount = $('#stored-video-count');
   }
 
   attachEvents() {
@@ -31,14 +42,36 @@ export default class App {
     this.$modalCloseButton.addEventListener('click', this.onCloseModal.bind(this));
     this.$searchKeywordForm.addEventListener('submit', this.onSearchKeyword.bind(this));
     this.$searchSection.addEventListener('scroll', this.onRequestNextResult.bind(this));
+    this.$searchResultWrapper.addEventListener('click', this.onSaveVideo.bind(this));
+  }
+
+  onSaveVideo({ target }) {
+    if (target.type !== 'button') {
+      return;
+    }
+
+    const $saveButton = target;
+    const video = {
+      videoId: $saveButton.dataset.videoId,
+      videoTitle: $saveButton.dataset.videoTitle,
+      channelId: $saveButton.dataset.channelId,
+      channelTitle: $saveButton.dataset.channelTitle,
+      publishedAt: $saveButton.dataset.publishedAt,
+    };
+
+    this.videoStorage.addVideo(VIDEOS_TO_WATCH, video);
+    this.showCurrentStoredVideoCount();
+    $saveButton.classList.add('stored');
   }
 
   onShowModal() {
     this.$searchSection.classList.add('open');
+    this.showCurrentStoredVideoCount();
   }
 
   onCloseModal() {
     this.$searchSection.classList.remove('open');
+    this.$searchKeywordForm.reset();
   }
 
   onRequestNextResult() {
@@ -46,6 +79,10 @@ export default class App {
       return;
     }
     this.renderSearchGroup();
+  }
+
+  showCurrentStoredVideoCount() {
+    this.$storedVideoCount.innerText = this.videoStorage.getStoredVideoCount();
   }
 
   async request(url) {
@@ -105,12 +142,20 @@ export default class App {
     }
     this.$currentGroup.querySelectorAll('article').forEach(($article, i) => {
       const video = videoList[i];
+      const $saveButton = $article.querySelector('.save-button');
 
       $article.querySelector('.preview-container').innerHTML = getThumbnailTemplate(video.videoId);
       $article.querySelector('.video-title').innerText = video.videoTitle;
       $article.querySelector('.channel-title').innerHTML = getChannelTitleTemplate(video.channelId, video.channelTitle);
       $article.querySelector('.published-at').innerText = video.publishedAt;
-      this.storeVideoData($article.querySelector('.save-button'), video);
+      this.storeVideoData($saveButton, video);
+
+      if (!this.videoStorage.isStoredVideo(video.videoId)) {
+        $saveButton.classList.remove('stored');
+        return;
+      }
+
+      $saveButton.classList.add('stored');
     });
   }
 
@@ -119,7 +164,8 @@ export default class App {
 
     this.#keyword = e.target.elements['search-keyword-input'].value;
     this.#groupIndex = -1;
-
+    this.#nextPageToken = '';
+    this.$searchResultWrapper.innerHTML = '';
     this.renderSearchGroup();
   }
 

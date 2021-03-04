@@ -8,7 +8,7 @@ const skeletonUnitTemplate = `
       <div class="channel-title line mt-1"></div>
       <div class="published-at meta line"></div>
       <div class="d-flex justify-end">
-        <button class="save-button btn">⬇️ 저장</button>
+        <button type="button" class="save-button btn">⬇️ 저장</button>
       </div>
     </div>
   </article>
