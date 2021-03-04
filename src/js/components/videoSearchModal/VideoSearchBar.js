@@ -16,8 +16,10 @@ export default class VideoSearchBar {
     store.subscribe(this.render.bind(this));
   }
 
-  render() {
-    console.log('render');
+  render(preStates, states) {
+    if (preStates.searchHistory !== states.searchHistory) {
+      this.$videoSearchInput.value = states.searchHistory[0];
+    }
   }
 
   initRender() {
@@ -50,10 +52,8 @@ export default class VideoSearchBar {
 
     store.dispatch(addSearchHistory(searchTerm));
     this.$props.youtubeAPIManager.setSearchTerm(searchTerm);
-    const items = this.$props.youtubeAPIManager
-      .requestVideos()
-      .then((items) => {
-        store.dispatch(addVideos(items));
-      });
+    this.$props.youtubeAPIManager.requestVideos().then((items) => {
+      store.dispatch(addVideos(items));
+    });
   }
 }

@@ -1,8 +1,10 @@
 import { store } from '../../index.js';
+import { addSearchHistory, addVideos } from '../../redux/action.js';
 
 export default class SearchTermHistory {
-  constructor($target) {
+  constructor($target, $props) {
     this.$target = $target;
+    this.$props = $props;
     this.initRender();
     this.setup();
     this.selectDOM();
@@ -12,12 +14,29 @@ export default class SearchTermHistory {
     store.subscribe(this.render.bind(this));
   }
 
+  onClick(e) {
+    const searchTerm = e.target.textContent;
+    store.dispatch(addSearchHistory(searchTerm));
+    this.$props.youtubeAPIManager.setSearchTerm(searchTerm);
+    this.$props.youtubeAPIManager.requestVideos().then((items) => {
+      store.dispatch(addVideos(items));
+    });
+  }
+
   render(preStates, states) {
     if (preStates.searchHistory !== states.searchHistory) {
-      const template = states.searchHistory
-        .map((searchTerm) => `<a class="chip">${searchTerm}</a>`)
-        .join('');
-      this.$chips.innerHTML = template;
+      const frag = document.createDocumentFragment();
+
+      states.searchHistory.forEach((history) => {
+        const button = document.createElement('button');
+        button.classList.add('chip');
+        button.textContent = history;
+        button.addEventListener('click', this.onClick.bind(this));
+        frag.appendChild(button);
+      });
+
+      this.$chips.innerHTML = '';
+      this.$chips.appendChild(frag);
     }
   }
 

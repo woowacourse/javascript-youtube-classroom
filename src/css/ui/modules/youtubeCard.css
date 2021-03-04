@@ -5,6 +5,7 @@
   grid-column-gap: 4px;
   justify-content: center;
   overflow: scroll;
+  height: 50vh;
 }
 
 .clip {

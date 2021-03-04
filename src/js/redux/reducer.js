@@ -3,7 +3,7 @@ import { ADD_VIDEOS, ADD_SEARCH_TERM } from './actionType.js';
 const searchedVideoReducer = (states, { type, payload }) => {
   switch (type) {
     case ADD_VIDEOS:
-      return [...states, ...payload.videos];
+      return [...payload.videos];
     default:
       return states;
   }

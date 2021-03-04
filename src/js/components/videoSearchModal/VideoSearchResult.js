@@ -19,15 +19,16 @@ export default class VideoSearchResult {
   }
 
   render(preStates, states) {
-    console.log('PreState : ', preStates.searchedVideos);
-    console.log('State: ', states.searchedVideos);
+    if (preStates.searchHistory !== states.searchHistory) {
+      this.$searchedVideoWrapper.innerHTML = '';
+    }
+
     if (preStates.searchedVideos !== states.searchedVideos) {
       const template = states.searchedVideos
         .map((video) => {
           return `${video}`;
         })
         .join('');
-      console.log(template);
       this.$searchedVideoWrapper.innerHTML += template;
     }
   }
