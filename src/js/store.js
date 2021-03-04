@@ -1,11 +1,15 @@
+import { LOCAL_STORAGE_KEYS } from './constants.js';
+
 export default class Store {
   constructor() {
     this.init();
   }
 
   init() {
-    if (localStorage.length <= 0) {
-      this.save('watchList', []);
+    // TODO: localStorage가 초기화되는 조건 수정 필요
+    if (localStorage.length <= 1) {
+      this.save(LOCAL_STORAGE_KEYS.WATCH_LIST, []);
+      this.save(LOCAL_STORAGE_KEYS.RECENT_KEYWORD_LIST, []);
     }
   }
 

@@ -16,6 +16,7 @@ export const SELECTORS = {
     YOUTUBE_SEARCH_RESULT: '.youtube-search-result',
     BTN_SAVE: '.btn-save',
     VIDEO_TITLE: '.video-title',
+    RECENT_KEYWORD_LIST: '.recent-keyword-list',
   },
   ID: {
     SEARCH_BUTTON: '#search-button',
@@ -32,4 +33,5 @@ export const SELECTORS = {
 
 export const LOCAL_STORAGE_KEYS = {
   WATCH_LIST: 'watchList',
+  RECENT_KEYWORD_LIST: 'recentKeywordList',
 };

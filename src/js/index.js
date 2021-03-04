@@ -137,10 +137,29 @@ $(SELECTORS.ID.YOUTUBE_SEARCH_FORM).addEventListener('submit', async (event) => 
   event.preventDefault();
 
   const keyword = event.target.elements.keyword.value;
+
   if (!keyword) {
     showSnackbar(ALERT_MESSAGE.EMPTY_SEARCH_KEYWORD);
     return;
   }
+
+  let recentKeywordList = store.load(LOCAL_STORAGE_KEYS.RECENT_KEYWORD_LIST);
+  recentKeywordList = recentKeywordList.filter((item) => item !== keyword);
+
+  if (recentKeywordList.length >= 3) {
+    recentKeywordList.pop();
+  }
+
+  recentKeywordList.unshift(keyword);
+  store.save(LOCAL_STORAGE_KEYS.RECENT_KEYWORD_LIST, recentKeywordList);
+
+  $(SELECTORS.CLASS.RECENT_KEYWORD_LIST).innerHTML = recentKeywordList
+    .map(
+      (item) => `
+        <a class="chip">${item}</a>
+      `
+    )
+    .join('');
 
   $(SELECTORS.CLASS.YOUTUBE_SEARCH_RESULT).scrollTo(0, 0);
   $(SELECTORS.CLASS.YOUTUBE_SEARCH_RESULT).innerHTML = `<div class="youtube-search-result-list video-wrapper"></div>`;
