@@ -1,5 +1,5 @@
 import SearchView from "./SearchView.js";
-import { API, YOUTUBE_URL } from "../utils/constants.js";
+import { ALERT_MESSAGE, API, VIDEOS, YOUTUBE_URL } from "../utils/constants.js";
 import { getSearchQueryString } from "../queries/searchQuery.js";
 import scrollEventLock from "../state/scrollEventLock.js";
 import searchHistory from "../state/searchHistory.js";
@@ -52,6 +52,11 @@ export default class SearchController {
   }
 
   saveVideo(videoId) {
+    if (videos.getSavedVideoCount() >= VIDEOS.SAVED_VIDEOS_MAX_COUNT) {
+      alert(ALERT_MESSAGE.SAVE_COUNT_EXCEEDED_ERROR);
+      return;
+    }
+
     videos.setSavedVideos(videoId);
     this.searchView.hideSavedVideoButton(videoId);
     this.showSavedVideoCount();
