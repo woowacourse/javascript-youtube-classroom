@@ -8,7 +8,7 @@ class YoutubeModel {
     this.#videoInfos = [];
   }
 
-  getVideoInfosBySearch = async ({ query, max = 10 }) => {
+  getVideoInfosBySearch = async ({ query, max = 2 }) => {
     await api.fetchVideoItems({ query, max }).then(json => {
       this.#videoInfos = json.items.map(item => {
         return {
