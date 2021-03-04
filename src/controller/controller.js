@@ -10,7 +10,7 @@ import {
   setLocalStorageItem,
   getLocalStorageItem,
 } from '../storage/localStorage.js';
-import { LOCAL_STORAGE_KEY } from '../constants.js';
+import { LOCAL_STORAGE_KEY, SELECTOR_ID } from '../constants.js';
 
 function onModalOpen() {
   view.openModal();
@@ -31,6 +31,10 @@ function onVideoSearch(event) {
   view.renderSkeletonItems();
   getVideosAsync($searchFormInput.value).then(videos => {
     view.renderVideoItems(videos);
+    if (videos.length === 0) {
+      view.showElementBySelector(`#${SELECTOR_ID.NOT_FOUND_CONTENT}`);
+      return;
+    }
     setLocalStorageItem(LOCAL_STORAGE_KEY.PREVIOUS_SEARCH_RESULTS, videos);
   });
 }

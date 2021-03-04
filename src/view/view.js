@@ -1,6 +1,7 @@
 import { $modal, $videoWrapper } from '../elements.js';
 import { STYLE_CLASS } from '../constants.js';
 import { getVideoListTemplate, getSkeletonListTemplate } from './templates.js';
+import { $ } from '../utils/querySelector.js';
 
 const view = {
   openModal() {
@@ -14,6 +15,9 @@ const view = {
   },
   renderSkeletonItems() {
     $videoWrapper.innerHTML = getSkeletonListTemplate();
+  },
+  showElementBySelector(selector) {
+    $(selector).classList.remove('removed');
   },
 };
 
