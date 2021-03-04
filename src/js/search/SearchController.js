@@ -22,7 +22,10 @@ export default class SearchController {
     const res = await fetch(
       `${YOUTUBE_URL}/${API.GET.SEARCH}?${getSearchQueryString()}`
     );
-    if (!res.ok) throw new Error(res.status);
+    if (!res.ok) {
+      this.searchView.showHTTPErrorWarning(res.status);
+      throw new Error(res.status);
+    }
     const { items, nextPageToken } = await res.json();
 
     this.nextPageToken = nextPageToken;

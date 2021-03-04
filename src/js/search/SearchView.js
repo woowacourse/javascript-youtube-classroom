@@ -52,4 +52,10 @@ export default class SearchView {
     );
     hideElement(currentSaveButton);
   }
+
+  showHTTPErrorWarning(status) {
+    hideElement(elements.$skeletonSearchResults);
+    showElement(elements.$searchResults);
+    elements.$searchResults.innerHTML = `<h3>${status}<h3>`;
+  }
 }
