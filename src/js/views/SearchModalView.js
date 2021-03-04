@@ -6,9 +6,14 @@ import View from './View.js';
 export default class SearchModalView extends View {
   constructor($element) {
     super($element);
+
     this.closeButton = $('.modal-close');
     this.searchForm = $('#modal-search-form');
+    this.modalVideos = $('#modal-videos');
+    this.searchKeyword;
+
     this.bindModalEvents();
+    this.bindScrollEvent();
   }
 
   bindModalEvents() {
@@ -20,20 +25,37 @@ export default class SearchModalView extends View {
     this.searchForm.setEvent('submit', (e) => {
       e.preventDefault();
 
-      const searchKeyword = e.target.elements.search.value;
+      this.searchKeyword = e.target.elements.search.value;
 
-      this.emit('submitSearch', searchKeyword);
-      this.setRecentChip(searchKeyword);
+      this.emit('submitSearch', this.searchKeyword);
+      this.setRecentChip();
       this.updateChips();
     });
   }
 
-  setRecentChip(searchKeyword) {
+  bindScrollEvent() {
+    let throttle; // null
+
+    this.modalVideos.setEvent('scroll', (e) => {
+      if (throttle) return;
+
+      const { scrollTop, scrollHeight, offsetHeight } = e.target;
+      if (scrollTop === scrollHeight - offsetHeight) {
+        throttle = setTimeout(() => {
+          throttle = null;
+        }, VALUE.THROTTLE_TIME);
+
+        this.emit('scrollResult', this.searchKeyword);
+      }
+    });
+  }
+
+  setRecentChip() {
     const recentKeywords = localStorage.getItem('searchKeyword')
       ? JSON.parse(localStorage.getItem('searchKeyword'))
       : [];
 
-    if (recentKeywords.includes(searchKeyword)) {
+    if (recentKeywords.includes(this.searchKeyword)) {
       return;
     }
 
@@ -41,7 +63,7 @@ export default class SearchModalView extends View {
       recentKeywords.pop();
     }
 
-    recentKeywords.unshift(searchKeyword);
+    recentKeywords.unshift(this.searchKeyword);
     localStorage.setItem('searchKeyword', JSON.stringify(recentKeywords));
   }
 
@@ -66,13 +88,14 @@ export default class SearchModalView extends View {
   }
 
   renderVideoClips(videos) {
+    $('.skeleton').hide();
     const videoClips = videos.map((video) => clipMaker(video)).join('');
-    $('#modal-videos').setInnerHTML(videoClips);
+    $('#modal-videos').addInnerHTML(videoClips);
   }
 
   skeletonTemplate() {
     return `
-      <div class="skeleton">
+      <div class="skeleton" loading="lazy">
         <div class="image"></div>
         <p class="line"></p>
         <p class="line"></p>
@@ -81,13 +104,13 @@ export default class SearchModalView extends View {
   }
 
   startSearch() {
-    $('#modal-videos').setInnerHTML(
+    $('#modal-videos').addInnerHTML(
       this.skeletonTemplate().repeat(VALUE.CLIPS_PER_SCROLL),
     );
   }
 
   showNoResult() {
-    $('#modal-videos').setInnerHTML(
+    this.modalVideos.setInnerHTML(
       `
         <div class="empty"></div>
         <img class="not-found" src="./src/images/status/not_found.png"></img>

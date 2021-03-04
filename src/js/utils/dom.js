@@ -39,6 +39,10 @@ export const $ = (function () {
     this.each((element) => (element.innerHTML = template));
   };
 
+  constructor.prototype.addInnerHTML = function (template) {
+    this.each((element) => (element.innerHTML += template));
+  };
+
   constructor.prototype.addClass = function (className) {
     this.each((element) => element.classList.add(className));
   };
