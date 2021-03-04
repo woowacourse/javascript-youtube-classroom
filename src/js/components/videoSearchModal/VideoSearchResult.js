@@ -1,10 +1,13 @@
 import { store } from '../../index.js';
+import { addVideos } from '../../redux/action.js';
 
 export default class VideoSearchResult {
-  constructor($target) {
+  constructor($target, $props) {
     this.$target = $target;
+    this.$props = $props;
     this.initRender();
     this.selectDOM();
+    this.bindEvent();
     this.setup();
   }
 
@@ -41,5 +44,19 @@ export default class VideoSearchResult {
         <section id="searched-video-wrapper" class="video-wrapper">
         </section>
     `;
+  }
+
+  bindEvent() {
+    this.$searchedVideoWrapper.addEventListener('scroll', (e) => {
+      const $videoWrapper = e.target;
+      if (
+        $videoWrapper.scrollHeight - $videoWrapper.scrollTop ===
+        $videoWrapper.clientHeight
+      ) {
+        this.$props.youtubeAPIManager.requestVideos().then((items) => {
+          store.dispatch(addVideos(items));
+        });
+      }
+    });
   }
 }
