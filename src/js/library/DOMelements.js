@@ -7,6 +7,7 @@ const dom = {
   $modalCloseButton: $('#modal-close-button'),
   $videoSearchForm: $('#video-search-form'),
   $videoSearchResult: $('#video-search-result'),
+  $videoList: $('#video-list'),
 };
 
 export default dom;
