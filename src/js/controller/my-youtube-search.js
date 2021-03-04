@@ -17,6 +17,7 @@ class MyYoutubeSearchController {
   };
 
   getVideosBySearch = async () => {
+    this.view.resetView();
     const query = this.getSearchInput();
     await this.youtube.getVideoInfosBySearch({ query });
 
