@@ -27,7 +27,7 @@ export const searchVideoTemplate = (info, save) => {
                         <button class="btn js-save-button ${
                           save ? 'invisible' : ''
                         }" data-info='${JSON.stringify(info).replace(
-    "'",
+    /'/gi,
     '&#039;'
   )}'>⬇️ 저장</button>
                     </div>
