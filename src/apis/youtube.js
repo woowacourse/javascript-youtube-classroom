@@ -1,6 +1,6 @@
 import { YOUTUBE } from '../constants.js';
 
-export async function getVideosAsync(searchKeyword) {
+export async function getVideosByKeyword(searchKeyword, pageToken) {
   const query = {
     part: 'snippet',
     q: searchKeyword,
@@ -11,9 +11,12 @@ export async function getVideosAsync(searchKeyword) {
   };
   const response = await (
     await fetch(
-      `https://www.googleapis.com/youtube/v3/search?${parseQuery(query)}`
+      `https://www.googleapis.com/youtube/v3/search?${parseQuery(query)}${
+        pageToken ? `&pageToken=${pageToken}` : ''
+      }`
     )
   ).json();
+  const { nextPageToken } = response;
   const videos = response.items.map(({ id, snippet }) => ({
     videoId: id.videoId,
     title: snippet.title,
@@ -21,7 +24,10 @@ export async function getVideosAsync(searchKeyword) {
     publishedAt: snippet.publishedAt,
   }));
 
-  return videos;
+  return {
+    nextPageToken,
+    videos,
+  };
 }
 
 function parseQuery(query) {

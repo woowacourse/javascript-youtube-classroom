@@ -7,10 +7,12 @@ export const SELECTOR_ID = Object.freeze({
   MODAL_CLOSE_BUTTON: 'modal__close-button',
   VIDEO_WRAPPER: 'video-wrapper',
   NOT_FOUND_CONTENT: 'not-found-content',
+  SEARCH_RESULT_INTERSECTOR: 'search-result__intersector',
 });
 
 export const SELECTOR_CLASS = Object.freeze({
   CLIP: 'clip',
+  SKELETON: 'skeleton',
 });
 
 export const STYLE_CLASS = Object.freeze({

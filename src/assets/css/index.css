@@ -24,3 +24,12 @@ a {
 .opacity-hover:hover {
   opacity: 1;
 }
+
+#search-result {
+  height: 300px;
+  overflow-y: scroll;
+}
+
+#search-result__intersector {
+  height: 30px;
+}

@@ -4,8 +4,6 @@
   grid-row-gap: 10px;
   grid-column-gap: 14px;
   justify-content: center;
-  height: fit-content;
-  max-height: 50vh;
 }
 
 .clip {

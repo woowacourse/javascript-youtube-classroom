@@ -11,7 +11,7 @@ const view = {
     $modal.classList.remove(STYLE_CLASS.OPEN);
   },
   renderVideoItems(videos) {
-    $videoWrapper.innerHTML = getVideoListTemplate(videos);
+    $videoWrapper.insertAdjacentHTML('beforeend', getVideoListTemplate(videos));
   },
   renderSkeletonItems() {
     $videoWrapper.innerHTML = getSkeletonListTemplate();
@@ -20,7 +20,14 @@ const view = {
     $(selector).classList.remove('removed');
   },
   hideElementBySelector(selector) {
-    $(selector).classList.add('removed');
+    const target = $(selector);
+    if (Array.isArray(target)) {
+      target.forEach(item => {
+        item.classList.add('removed');
+      });
+      return;
+    }
+    target.classList.add('removed');
   },
 };
 
