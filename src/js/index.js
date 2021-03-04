@@ -53,14 +53,20 @@ function createVideoInfo({
 }
 
 dom.$videoSearchResult.addEventListener('click', e => {
-  if (!e.target.classList.contains('js-save-button')) return;
+  if (!e.target.classList.contains('js-save-button')) {
+    return;
+  }
+  if (state.videoInfos.size >= 1) {
+    alert('최대 저장 개수는 100개입니다.');
+
+    return;
+  }
 
   const $video = e.target.closest('.js-video');
   const videoInfo = createVideoInfo($video.dataset);
 
   state.addVideoInfo(videoInfo);
   dom.$videoList.innerHTML = createVideoListTemplate([...state.videoInfos]);
-
   e.target.hidden = true;
 });
 
