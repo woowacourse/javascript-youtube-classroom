@@ -1,3 +1,7 @@
+import {
+  setJSONToLocalStorage,
+  getJSONFromLocalStorage,
+} from '../utils/util.js';
 class StorageModel {
   #myVideo;
   #keywords;
@@ -8,22 +12,20 @@ class StorageModel {
   }
 
   init() {
-    localStorage.setItem('myVideo', JSON.stringify(this.#myVideo));
-    localStorage.setItem('keywords', JSON.stringify(this.#keywords));
+    setJSONToLocalStorage('myVideo', this.#myVideo);
+    setJSONToLocalStorage('keywords', this.#keywords);
   }
 
   saveVideo = json => {
-    // TODO : util에 addItem(변수명, 넣어줄요소) 만들기
-    // TODO : myVideo 변수 대신 this.#myVideo 사용하기
-    const myVideo = JSON.parse(localStorage.getItem('myVideo'));
+    this.#myVideo = getJSONFromLocalStorage('myVideo');
     if (myVideo.length === 100) return;
-    myVideo.push(json);
-    localStorage.setItem('myVideo', JSON.stringify(myVideo));
+    this.#myVideo.push(json);
+    setJSONToLocalStorage('myVideo', this.#myVideo);
   };
 
   findVideoByInfo = info => {
     return (
-      JSON.parse(localStorage.getItem('myVideo')).filter(
+      getJSONFromLocalStorage('myVideo').filter(
         myVideo => info.channelUrl === myVideo.channelUrl
       ).length > 0
     );
@@ -31,22 +33,20 @@ class StorageModel {
 
   saveRecentKeyword = keyword => {
     // TODO : getITem setITem util 화
-    const recentKeywords = JSON.parse(localStorage.getItem('keywords'));
     // TODO : 0, 3 상수화. 0빼도되나?, 3항연산자 대신 if문으로 할수있으면.
-    const newKeywords = [...new Set([keyword, ...recentKeywords])].slice(
-      0,
-      recentKeywords.length < 3 ? recentKeywords.length + 1 : 3
-    );
+    this.#keywords = [
+      ...new Set([keyword, ...getJSONFromLocalStorage('keywords')]),
+    ].slice(0, this.#keywords < 3 ? this.#keywords.length + 1 : 3);
 
-    localStorage.setItem('keywords', JSON.stringify(newKeywords));
+    setJSONToLocalStorage('keywords', this.#keywords);
   };
 
   get savedVideoLength() {
-    return JSON.parse(localStorage.getItem('myVideo')).length;
+    return getJSONFromLocalStorage('myVideo').length;
   }
 
   get recentKeywords() {
-    return JSON.parse(localStorage.getItem('keywords'));
+    return getJSONFromLocalStorage('keywords');
   }
 }
 
