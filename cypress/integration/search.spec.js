@@ -85,5 +85,24 @@ describe("유투브 검색 API를 이용하여 영상들을 검색할 수 있다
           expect($keyword.text()).to.be.equal(updatedKeywords[index]);
         });
     });
+
+    it("최초 검색결과는 10개까지만 보여준다. 더 많은 데이터는 스크롤을 내릴 때 추가로 10개씩 불러온다", () => {
+      const keyword = "주모";
+
+      cy.get(`.${CLASSNAME.YOUTUBE_SEARCH_FORM_INPUT}`).type(keyword);
+      cy.get(`.${CLASSNAME.YOUTUBE_SEARCH_FORM_BUTTON}`).click();
+      cy.get(`.${CLASSNAME.MODAL_VIDEO_WRAPPER}`)
+        .children()
+        .should("have.length", 10);
+      cy.get(`.${CLASSNAME.MODAL_VIDEO_WRAPPER}`)
+        .children("article.clip:last-child")
+        .scrollIntoView()
+        .then(() => {
+          // cy.wait(3000);
+          cy.get(`.${CLASSNAME.MODAL_VIDEO_WRAPPER}`)
+            .children()
+            .should("have.length", 20);
+        });
+    });
   });
 });
