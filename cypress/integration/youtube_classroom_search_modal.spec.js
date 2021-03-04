@@ -55,24 +55,37 @@ describe('유튜브 강의실 영상 검색 모달', () => {
   //   cy.get('.chip').first().should('have.text', searchTerm3);
   // });
 
-  it('사용자가 최근 검색어에 있는 검색어로 검색했을 때, 해당 검색어가 최근 검색어의 맨 앞에 위치하고, 최근 검색어의 길이는 변화가 없다.', () => {
-    const searchTerm = '서니';
-    const searchTerm1 = '도비';
+  // it('사용자가 최근 검색어에 있는 검색어로 검색했을 때, 해당 검색어가 최근 검색어의 맨 앞에 위치하고, 최근 검색어의 길이는 변화가 없다.', () => {
+  //   const searchTerm = '서니';
+  //   const searchTerm1 = '도비';
 
+  //   cy.get('#search-button').click();
+  //   cy.get('#youtube-search-input').type(searchTerm);
+  //   cy.get('#youtube-search-button').click();
+
+  //   cy.get('#youtube-search-input').clear();
+  //   cy.get('#youtube-search-input').type(searchTerm1);
+  //   cy.get('#youtube-search-button').click();
+
+  //   cy.get('#youtube-search-input').clear();
+  //   cy.get('#youtube-search-input').type(searchTerm);
+  //   cy.get('#youtube-search-button').click();
+
+  //   cy.get('.chip').first().should('have.text', searchTerm);
+  //   cy.get('.chip').should('have.length', 2);
+  // });
+
+  it('검색 결과가 없는 경우 결과 없음 이미지를 추가하여, 사용자에게 메시지를 보여준다.', () => {
+    const searchTerm =
+      '뜌ㅔㄹㄱ쀼ㅖㄹ또ㅕ뺴오ㅓ@~언뮴나ㅓㅓㅓㅓㅓㅓㅓㅓㅒㅛ*ㅉ요*ㅁ노쳔뮤촡뮻';
+    const imgUrl = './src/images/status/not_found.png';
     cy.get('#search-button').click();
     cy.get('#youtube-search-input').type(searchTerm);
     cy.get('#youtube-search-button').click();
 
-    cy.get('#youtube-search-input').clear();
-    cy.get('#youtube-search-input').type(searchTerm1);
-    cy.get('#youtube-search-button').click();
-
-    cy.get('#youtube-search-input').clear();
-    cy.get('#youtube-search-input').type(searchTerm);
-    cy.get('#youtube-search-button').click();
-
-    cy.get('.chip').first().should('have.text', searchTerm);
-    cy.get('.chip').should('have.length', 2);
+    cy.get('#searched-video-wrapper')
+      .find('img')
+      .should('have.attr', 'src', imgUrl);
   });
 
   // it('사용자가 최근 검색어를 클릭하면 해당 검색어로 새로 검색이 된다.', () => {
