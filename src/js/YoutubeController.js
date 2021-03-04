@@ -41,6 +41,7 @@ export default class YoutubeController {
   }
 
   searchVideo(keyword) {
-    searchRequest(keyword, this.generateVideos.bind(this));
+    this.searchModalView.startSearch();
+    // searchRequest(keyword, this.generateVideos.bind(this));
   }
 }

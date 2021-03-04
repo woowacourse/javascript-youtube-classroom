@@ -1,4 +1,5 @@
 import { $ } from '../utils/dom.js';
+import { VALUE } from '../utils/constants.js';
 import clipMaker from '../utils/clipMaker.js';
 import View from './View.js';
 
@@ -36,7 +37,7 @@ export default class SearchModalView extends View {
       return;
     }
 
-    if (recentKeywords.length >= 3) {
+    if (recentKeywords.length >= VALUE.KEYWORD_COUNT) {
       recentKeywords.pop();
     }
 
@@ -66,6 +67,22 @@ export default class SearchModalView extends View {
 
   renderVideoClips(videos) {
     const videoClips = videos.map((video) => clipMaker(video)).join('');
-    $('.video-wrapper').setInnerHTML(videoClips);
+    $('#modal-videos').setInnerHTML(videoClips);
+  }
+
+  skeletonTemplate() {
+    return `
+      <div class="skeleton">
+        <div class="image"></div>
+        <p class="line"></p>
+        <p class="line"></p>
+      </div>
+    `;
+  }
+
+  startSearch() {
+    $('#modal-videos').setInnerHTML(
+      this.skeletonTemplate().repeat(VALUE.CLIPS_PER_SCROLL),
+    );
   }
 }
