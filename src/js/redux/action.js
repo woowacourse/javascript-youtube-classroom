@@ -1,4 +1,4 @@
-import { ADD_VIDEOS } from './actionType.js';
+import { ADD_VIDEOS, ADD_SEARCH_TERM } from './actionType.js';
 import Video from '../model/Video.js';
 
 export const addVideos = (items) => {
@@ -12,6 +12,15 @@ export const addVideos = (items) => {
     type: ADD_VIDEOS,
     payload: {
       videos,
+    },
+  };
+};
+
+export const addSearchHistory = (searchTerm) => {
+  return {
+    type: ADD_SEARCH_TERM,
+    payload: {
+      searchTerm,
     },
   };
 };

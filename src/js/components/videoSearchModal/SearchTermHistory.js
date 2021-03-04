@@ -5,22 +5,32 @@ export default class SearchTermHistory {
     this.$target = $target;
     this.initRender();
     this.setup();
+    this.selectDOM();
   }
 
   setup() {
     store.subscribe(this.render.bind(this));
   }
 
-  render() {
-    console.log('render');
+  render(preStates, states) {
+    if (preStates.searchHistory !== states.searchHistory) {
+      const template = states.searchHistory
+        .map((searchTerm) => `<a class="chip">${searchTerm}</a>`)
+        .join('');
+      this.$chips.innerHTML = template;
+    }
   }
 
+  // TODO : 최초 Render시 기존에 저장된 히스토리가 있는지 확인해야함.
   initRender() {
     this.$target.innerHTML = `
       <span class="text-gray-700">최근 검색어: </span>
-      <a class="chip">메이커준</a>
-      <a class="chip">우아한테크코스</a>
-      <a class="chip">우아한형제들</a>
+      <div class="chips">
+      </div>
     `;
+  }
+
+  selectDOM() {
+    this.$chips = this.$target.querySelector('.chips');
   }
 }

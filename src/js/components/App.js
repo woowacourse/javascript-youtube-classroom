@@ -5,6 +5,7 @@ export default class App {
     this.$target = $target;
     this.states = {
       searchedVideos: [],
+      searchHistory: [],
     };
   }
 

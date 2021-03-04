@@ -1,6 +1,6 @@
 import YoutubeAPIManager from '../../model/YoutubeAPIManager.js';
 import { store } from '../../index.js';
-import { addVideos } from '../../redux/action.js';
+import { addVideos, addSearchHistory } from '../../redux/action.js';
 
 export default class VideoSearchBar {
   constructor($target, $props) {
@@ -48,6 +48,7 @@ export default class VideoSearchBar {
       return;
     }
 
+    store.dispatch(addSearchHistory(searchTerm));
     this.$props.youtubeAPIManager.setSearchTerm(searchTerm);
     const items = this.$props.youtubeAPIManager
       .requestVideos()
