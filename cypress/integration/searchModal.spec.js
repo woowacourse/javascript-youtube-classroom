@@ -82,6 +82,24 @@ describe('검색 모달 테스트', () => {
       .invoke('attr', 'data-search-keyword')
       .then((keyword) => expect(keyword).to.be.equal(KEYWORD));
   });
+
+  it('키워드 4개를 연속해서 검색했을 때, 최근 검색키워드 3개를 검색창 하단에 보여준다.', () => {
+    const KEYWORDS = ['우아한형제들', '네이버', '쿠팡', '토스'];
+    const TRY_COUNT = KEYWORDS.length;
+
+    cy.get('#search-button').click();
+    KEYWORDS.forEach((keyword) => {
+      cy.get('#search-keyword-input').clear().type(keyword);
+      cy.get('#search-keyword-form').submit();
+    });
+
+    cy.get('#recent-keyword')
+      .siblings()
+      .should('have.length', 3)
+      .each(($el, i) => {
+        cy.wrap($el).should('have.text', KEYWORDS[TRY_COUNT - 1 - i]);
+      });
+  });
 });
 
 describe('예외 처리 테스트', () => {
