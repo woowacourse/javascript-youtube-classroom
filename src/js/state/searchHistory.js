@@ -1,7 +1,6 @@
 import { STORAGE_NAME, VIDEOS } from "../utils/constants.js";
 
 const searchHistory = {
-  keywords: [],
   pageToken: "",
 
   setKeyword(newKeyword) {
