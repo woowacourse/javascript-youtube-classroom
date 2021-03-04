@@ -63,3 +63,8 @@
   margin: 0;
   color: #606060;
 }
+
+.video-wrapper img {
+  grid-column-start: 2;
+  grid-column-end: 3;
+}

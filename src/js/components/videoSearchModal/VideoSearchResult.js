@@ -32,7 +32,11 @@ export default class VideoSearchResult {
           return `${video}`;
         })
         .join('');
-      this.$searchedVideoWrapper.innerHTML += template;
+
+      this.$searchedVideoWrapper.innerHTML +=
+        template !== ''
+          ? template
+          : `<img class="w-100" src="./src/images/status/not_found.png" alt="not found"/>`;
     }
   }
 
