@@ -1,4 +1,4 @@
-import { $ } from '../utils/util.js';
+import { $, parseDOMFromString } from '../utils/util.js';
 import {
   searchNotFoundTemplate,
   searchVideoTemplate,
@@ -10,12 +10,8 @@ import {
 class MyYoutubeView {
   renderVideoArticle = (info, save) => {
     const $searchVideoWrapper = $('#search-video-wrapper');
-
-    // TODO : domparser util화 하기
-    const parser = new DOMParser();
     $searchVideoWrapper.append(
-      parser.parseFromString(searchVideoTemplate(info, save), 'text/html').body
-        .firstElementChild
+      parseDOMFromString(searchVideoTemplate(info, save))
     );
   };
 
