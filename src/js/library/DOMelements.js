@@ -8,6 +8,7 @@ const dom = {
   $videoSearchForm: $('#video-search-form'),
   $videoSearchResult: $('#video-search-result'),
   $videoList: $('#video-list'),
+  $endPoint: $('#end-point'),
 };
 
 export default dom;

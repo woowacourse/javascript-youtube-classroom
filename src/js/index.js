@@ -14,18 +14,25 @@ dom.$modalCloseButton.addEventListener('click', () =>
   dom.$searchModal.classList.remove('open')
 );
 
-function fetchSearchResult(keyword) {
-  return fetch(`${YOUTUBE_SEARCH_API}&key=${API_KEY}&q=${keyword}`).then(data =>
-    data.json()
-  );
+function fetchSearchResult(keyword, nextPageToken = '') {
+  return fetch(
+    `${YOUTUBE_SEARCH_API}&key=${API_KEY}&pageToken=${nextPageToken}&q=${keyword}`
+  )
+    .then(data => data.json())
+    .catch(e => console.error(e));
 }
 
 dom.$videoSearchForm.addEventListener('submit', async e => {
   e.preventDefault();
 
   const keyword = e.target.elements['video-search-input'].value;
+  state.setKeyword(keyword);
   dom.$videoSearchResult.innerHTML = createVideoSkeletonTemplate();
-  const { items: resultItems } = await fetchSearchResult(keyword);
+  const { nextPageToken, items: resultItems } = await fetchSearchResult(
+    keyword
+  );
+
+  state.setNextPageToken(nextPageToken);
   dom.$videoSearchResult.innerHTML = resultItems.length
     ? createVideoListTemplate(resultItems)
     : createNotFoundTemplate();
@@ -56,3 +63,23 @@ dom.$videoSearchResult.addEventListener('click', e => {
 
   e.target.hidden = true;
 });
+
+window.onload = (function () {
+  const options = {
+    root: dom.$searchModal,
+    rootMargin: '0px',
+    threshold: 0.85,
+  };
+
+  const observer = new IntersectionObserver(async () => {
+    const { nextPageToken, items: searchResult } = await fetchSearchResult(
+      state.keyword,
+      state.nextPageToken
+    );
+
+    state.setNextPageToken(nextPageToken);
+    dom.$videoSearchResult.innerHTML += createVideoListTemplate(searchResult);
+  }, options);
+
+  observer.observe(dom.$endPoint);
+})();
