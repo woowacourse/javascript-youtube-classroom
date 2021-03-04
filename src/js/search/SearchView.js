@@ -35,7 +35,6 @@ export default class SearchView {
   }
 
   showSavedVideoCount() {
-    console.log(videos.getSavedVideoCount());
     elements.$savedVideoCount.innerText = `저장된 영상 개수: ${videos.getSavedVideoCount()}개`;
   }
 
