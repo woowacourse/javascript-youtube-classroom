@@ -18,7 +18,7 @@ describe('Youtube classroom test', () => {
       cy.get('#search-button').click();
       cy.get('#video-search-input').type('로이드');
       cy.get('#video-search-submit').click();
-      cy.get('.js-save-button').eq(0).click({ force: true }); // TODO: 현재 저장버튼이 다른 요소에 가려져 에러가 남
+      cy.get('.js-save-button').eq(0).click();
       cy.get('#modal-close-button').click();
       cy.get('#search-button').click();
       cy.get('#video-list .js-video').should('have.length', videoCount + 1);
@@ -29,12 +29,19 @@ describe('Youtube classroom test', () => {
     cy.get('#search-button').click();
     cy.get('#video-search-input').type('로이드');
     cy.get('#video-search-submit').click();
-    cy.get('.js-save-button').eq(0).click({ force: true });
+    cy.get('.js-save-button').eq(0).click();
     cy.get('.js-save-button').eq(0).should('not.be.visible');
 
     cy.get('#video-search-input').clear();
     cy.get('#video-search-input').type('로이드');
     cy.get('#video-search-submit').click();
     cy.get('.js-save-button').eq(0).should('not.be.visible');
+  });
+
+  it('결과 노출 전까지 skeleton UI를 보여준다.', () => {
+    cy.get('#search-button').click();
+    cy.get('#video-search-input').type('로이드');
+    cy.get('#video-search-submit').click();
+    cy.get('#video-search-result .skeleton').should('be.exist');
   });
 });
