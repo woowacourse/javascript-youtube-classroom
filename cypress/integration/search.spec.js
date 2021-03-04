@@ -30,7 +30,7 @@ describe("유투브 검색 API를 이용하여 영상들을 검색할 수 있다
         .should("have.length", 0);
     });
 
-    it.only("검색을 한 경우, 최근 검색 키워드가 추가된다.", () => {
+    it("검색을 한 경우, 최근 검색 키워드가 추가된다.", () => {
       const keywords = ["우아한테크코스", "주모", "동동"];
 
       keywords.forEach((keyword, i) => {
@@ -63,7 +63,27 @@ describe("유투브 검색 API를 이용하여 영상들을 검색할 수 있다
     });
 
     it("최근 검색 키워드를 다시 검색한 경우, 이전의 키워드가 삭제되고 최근 검색 키워드에 다시 추가된다", () => {
-      // TODO
+      const keywords = ["우아한테크코스", "주모", "동동"];
+
+      keywords.forEach((keyword) => {
+        cy.get(`.${CLASSNAME.YOUTUBE_SEARCH_FORM_INPUT}`).type(keyword);
+        cy.get(`.${CLASSNAME.YOUTUBE_SEARCH_FORM_BUTTON}`).click();
+      });
+
+      const duplicatedKeyword = "주모";
+      const updatedKeywords = ["우아한테크코스", "동동", "주모"];
+
+      cy.get(`.${CLASSNAME.YOUTUBE_SEARCH_FORM_INPUT}`).type(duplicatedKeyword);
+      cy.get(`.${CLASSNAME.YOUTUBE_SEARCH_FORM_BUTTON}`).click();
+
+      // eslint-disable-next-line cypress/no-unnecessary-waiting
+      cy.wait(3000);
+      cy.get(`.${CLASSNAME.KEYWORD_HISTORY_SECTION}`)
+        .children("a.chip")
+        .should("have.length", MAX_KEYWORDS_COUNT)
+        .each(($keyword, index) => {
+          expect($keyword.text()).to.be.equal(updatedKeywords[index]);
+        });
     });
   });
 });
