@@ -51,7 +51,7 @@ function isSavedVideo(item) {
   );
 }
 
-function createVideoListTemplate(resultItems) {
+function createVideoListTemplate(resultItems = []) {
   return `<div class="video-wrapper">
             ${resultItems
               .map(item => createVideoSnippetTemplate(item, isSavedVideo(item)))

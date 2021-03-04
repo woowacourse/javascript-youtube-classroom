@@ -1,12 +1,12 @@
+import dom from './DOMelements.js';
+
 const state = {
   videoInfos: new Set(),
   nextPageToken: '',
   latestKeywords: [],
-  addVideoInfo(newVideoInfo) {
-    this.videoInfos.add(newVideoInfo);
-  },
-  setVideoInfos(newVideoInfos) {
-    this.videoInfos = new Set(newVideoInfos);
+  addVideoInfos(...newVideoInfos) {
+    newVideoInfos.forEach(newVideoInfo => this.videoInfos.add(newVideoInfo));
+    dom.$savedVideoCount.innerHTML = state.videoInfos.length;
   },
   setNextPageToken(newToken) {
     this.nextPageToken = newToken;
@@ -20,6 +20,10 @@ const state = {
       this.latestKeywords.shift();
     }
     this.latestKeywords.push(newKeyword);
+    localStorage.setItem('latestKeywords', JSON.stringify(this.latestKeywords));
+  },
+  setLatestKeywords(newKeywords) {
+    this.latestKeywords = newKeywords;
   },
 };
 

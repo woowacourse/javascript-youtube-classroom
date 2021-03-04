@@ -19,8 +19,12 @@ function fetchSearchResult(keyword, nextPageToken = '') {
   return fetch(
     `${YOUTUBE_SEARCH_API}&key=${API_KEY}&pageToken=${nextPageToken}&q=${keyword}`
   )
-    .then(data => data.json())
-    .catch(e => console.error(e));
+    .then(data => {
+      return data.json();
+    })
+    .catch(e => {
+      console.error(e);
+    });
 }
 
 dom.$videoSearchForm.addEventListener('submit', async e => {
@@ -70,7 +74,16 @@ dom.$videoSearchResult.addEventListener('click', e => {
   state.addVideoInfo(videoInfo);
   dom.$videoList.innerHTML = createVideoListTemplate([...state.videoInfos]);
   e.target.hidden = true;
+
+  dom.$savedVideoCount.innerHTML = state.videoInfos.length;
 });
+
+function initState() {
+  state.setLatestKeywords(
+    JSON.parse(localStorage.getItem('latestKeywords')) ?? []
+  );
+  dom.$latestKeywordList.innerHTML = createKeywordList();
+}
 
 window.onload = function () {
   const options = {
@@ -91,3 +104,5 @@ window.onload = function () {
 
   observer.observe(dom.$endPoint);
 };
+
+initState();

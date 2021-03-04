@@ -3,13 +3,14 @@ const $ = selector => document.querySelector(selector);
 
 const dom = {
   $searchButton: $('#search-button'),
+  $videoList: $('#video-list'),
   $searchModal: $('#video-search-modal'),
   $modalCloseButton: $('#modal-close-button'),
   $videoSearchForm: $('#video-search-form'),
   $videoSearchResult: $('#video-search-result'),
-  $videoList: $('#video-list'),
   $endPoint: $('#end-point'),
   $latestKeywordList: $('#latest-keyword-list'),
+  $savedVideoCount: $('#saved-video-count'),
 };
 
 export default dom;
