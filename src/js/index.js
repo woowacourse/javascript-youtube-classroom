@@ -57,6 +57,12 @@ const onModalClose = () => {
   $modal.classList.remove(CLASSNAME.OPEN);
 };
 
+const URL = (query, nextPageToken = "") =>
+  `https://www.googleapis.com/youtube/v3/search?part=snippet&maxResults=10&regionCode=kr&safeSearch=strict&pageToken=${nextPageToken}&q=${query}}&key=${API_KEY}`;
+
+let currentNextPageToken = "";
+let currentQuery = "";
+
 const handleFormSubmit = async (event) => {
   event.preventDefault();
 
@@ -66,11 +72,10 @@ const handleFormSubmit = async (event) => {
     },
   } = event;
   const { value: query } = $input;
+  currentQuery = query;
 
   try {
-    const response = await fetch(
-      `https://www.googleapis.com/youtube/v3/search?part=snippet&maxResults=10&regionCode=kr&safeSearch=strict&q=${query}}&key=${API_KEY}`
-    );
+    const response = await fetch(URL(query));
 
     if (!response.ok) {
       throw new Error(response.statusText);
@@ -90,7 +95,9 @@ const handleFormSubmit = async (event) => {
       .map((keyword) => `<a class="chip">${keyword}</a>`)
       .join("");
 
-    const { items } = await response.json();
+    const { nextPageToken, items } = await response.json();
+    currentNextPageToken = nextPageToken;
+
     const clipInfos = items.map(
       ({
         id: { videoId },
@@ -120,6 +127,56 @@ const handleFormSubmit = async (event) => {
   }
 };
 
+let throttle;
+const handlePageScroll = () => {
+  if (
+    $modalInner.scrollTop + $modalInner.clientHeight <=
+    $modalInner.scrollHeight * 0.7
+  ) {
+    return;
+  }
+
+  if (throttle) {
+    return;
+  }
+
+  throttle = setTimeout(async () => {
+    throttle = null;
+
+    try {
+      const response = await fetch(URL(currentQuery, currentNextPageToken));
+
+      if (!response.ok) {
+        throw new Error(response.statusText);
+      }
+
+      const { nextPageToken, items } = await response.json();
+      currentNextPageToken = nextPageToken;
+
+      const clipInfos = items.map(
+        ({
+          id: { videoId },
+          snippet: { title, channelId, channelTitle, publishedAt },
+        }) => ({
+          videoId,
+          title,
+          channelId,
+          channelTitle,
+          publishedAt,
+        })
+      );
+
+      $modalVideoWrapper.innerHTML += clipInfos
+        .map((clipInfo) => TEMPLATE(clipInfo))
+        .join("");
+    } catch (error) {
+      // eslint-disable-next-line no-console
+      console.error(error);
+    }
+  }, 1000);
+};
+
 $videoSearchTab.addEventListener("click", onModalShow);
 $modalClose.addEventListener("click", onModalClose);
 $youtubeSearchForm.addEventListener("submit", handleFormSubmit);
+$modalInner.addEventListener("scroll", handlePageScroll);
