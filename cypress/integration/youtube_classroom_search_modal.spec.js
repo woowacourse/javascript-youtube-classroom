@@ -55,6 +55,26 @@ describe('유튜브 강의실 영상 검색 모달', () => {
   //   cy.get('.chip').first().should('have.text', searchTerm3);
   // });
 
+  it('사용자가 최근 검색어에 있는 검색어로 검색했을 때, 해당 검색어가 최근 검색어의 맨 앞에 위치하고, 최근 검색어의 길이는 변화가 없다.', () => {
+    const searchTerm = '서니';
+    const searchTerm1 = '도비';
+
+    cy.get('#search-button').click();
+    cy.get('#youtube-search-input').type(searchTerm);
+    cy.get('#youtube-search-button').click();
+
+    cy.get('#youtube-search-input').clear();
+    cy.get('#youtube-search-input').type(searchTerm1);
+    cy.get('#youtube-search-button').click();
+
+    cy.get('#youtube-search-input').clear();
+    cy.get('#youtube-search-input').type(searchTerm);
+    cy.get('#youtube-search-button').click();
+
+    cy.get('.chip').first().should('have.text', searchTerm);
+    cy.get('.chip').should('have.length', 2);
+  });
+
   // it('사용자가 최근 검색어를 클릭하면 해당 검색어로 새로 검색이 된다.', () => {
   //   const searchTerm = '치킨';
   //   const searchTerm1 = '도비';
@@ -125,17 +145,17 @@ describe('유튜브 강의실 영상 검색 모달', () => {
   //       });
   //   });
 
-  it('사용자가 스크롤을 내리면, 밑에 영상이 추가된다.', () => {
-    const searchTerm = '서니';
-    cy.get('#search-button').click();
-    cy.get('#youtube-search-input').type(searchTerm);
-    cy.get('#youtube-search-button').click();
-    cy.get('#searched-video-wrapper').trigger('scroll');
-    cy.wait(1000);
-    cy.get('.clip').its('length').should('be.gt', 10);
-    // TODO : 만약 더이상 영상이 없으면 없습니다가 뜨는지 확인해야함
-    cy.get('.clip').its('length').should('be.lte', 20);
-  });
+  // it('사용자가 스크롤을 내리면, 밑에 영상이 추가된다.', () => {
+  //   const searchTerm = '서니';
+  //   cy.get('#search-button').click();
+  //   cy.get('#youtube-search-input').type(searchTerm);
+  //   cy.get('#youtube-search-button').click();
+  //   cy.get('#searched-video-wrapper').trigger('scroll');
+  //   cy.wait(1000);
+  //   cy.get('.clip').its('length').should('be.gt', 10);
+  //   // TODO : 만약 더이상 영상이 없으면 없습니다가 뜨는지 확인해야함
+  //   cy.get('.clip').its('length').should('be.lte', 20);
+  // });
 
   //   it('사용자가 모달창을 끄고, 다시 켰을 때 기존 검색 결과가 유지된다.', () => {
   //     const searchTerm = '서니';
