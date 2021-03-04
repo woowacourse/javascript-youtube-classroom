@@ -44,4 +44,11 @@ describe('Youtube classroom test', () => {
     cy.get('#video-search-submit').click();
     cy.get('#video-search-result .skeleton').should('be.exist');
   });
+
+  it('결과가 없을 경우, 결과 없음 이미지를 보여준다.', () => {
+    cy.get('#search-button').click();
+    cy.get('#video-search-input').type('||||||||||');
+    cy.get('#video-search-submit').click();
+    cy.get('#video-not-found').should('be.exist');
+  });
 });
