@@ -19,6 +19,10 @@ class MyYoutubeSearchController {
 
   getVideosBySearch = async () => {
     this.view.resetView();
+    this.addVideosBySearch();
+  };
+
+  addVideosBySearch = async () => {
     const query = this.getSearchInput();
     this.storage.saveRecentKeyword(query);
     this.getRecentKeyword();
@@ -75,7 +79,7 @@ class MyYoutubeSearchController {
       )
         return;
 
-      this.getVideosBySearch();
+      this.addVideosBySearch();
       // fetch
     });
   };
