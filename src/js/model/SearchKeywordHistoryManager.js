@@ -13,6 +13,14 @@ export class SearchKeywordHistoryManager {
     this.subscribers.splice(subscriberIndex, 1);
   }
 
+  getSearchKeywordHistory() {
+    return [...this.searchKeywordHistory];
+  }
+
+  getLastKeyword() {
+    return this.searchKeywordHistory[0];
+  }
+
   // TODO : 중복 검사 추가
   updateKeywordHistory(newKeyword) {
     this.setState({ searchKeywordHistory: [newKeyword, ...this.searchKeywordHistory].slice(0, 3) });
@@ -20,7 +28,7 @@ export class SearchKeywordHistoryManager {
 
   setState({ searchKeywordHistory }) {
     this.searchKeywordHistory = searchKeywordHistory;
-    console.log(this.searchKeywordHistory);
+
     this.notify();
   }
 

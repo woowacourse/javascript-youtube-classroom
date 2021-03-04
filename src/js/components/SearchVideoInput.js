@@ -1,13 +1,13 @@
-import { $, getSearchVideoByKeyword } from '../util/index.js';
-import { SearchKeywordHistoryManager } from '../model/index.js';
+import { $ } from '../util/index.js';
 
 export class SearchVideoInput {
-  constructor() {
+  constructor({ searchKeywordHistoryManager }) {
     this.$searchVideoForm = $('.js-search-video-form');
     this.$searchKeywordHistoryList = $('.js-search-keyword-history-list');
-    this.searchKeywordHistoryManager = new SearchKeywordHistoryManager();
+
+    this.searchKeywordHistoryManager = searchKeywordHistoryManager;
     this.searchKeywordHistoryManager.subscribe(this.render.bind(this));
-    this.nextPageToken = '';
+
     this.initEvent();
   }
 
@@ -15,20 +15,16 @@ export class SearchVideoInput {
     this.$searchVideoForm.addEventListener('submit', this.handleSearchVideoSubmit.bind(this));
   }
 
-  async handleSearchVideoSubmit(event) {
+  handleSearchVideoSubmit(event) {
     event.preventDefault();
+
     const searchInput = event.target.searchInput.value;
-    const resultData = await getSearchVideoByKeyword(searchInput);
-    this.setState({ nextPageToken: resultData.nextPageToken });
     this.searchKeywordHistoryManager.updateKeywordHistory(searchInput);
   }
 
-  setState({ nextPageToken }) {
-    this.nextPageToken = nextPageToken;
-  }
-
   render() {
-    this.$searchKeywordHistoryList.innerHTML = this.searchKeywordHistoryManager.searchKeywordHistory
+    this.$searchKeywordHistoryList.innerHTML = this.searchKeywordHistoryManager
+      .getSearchKeywordHistory()
       .map(keyword => `<li class="mr-2"><a class="chip">${keyword}</a></li>`)
       .join('');
   }

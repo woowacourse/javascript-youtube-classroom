@@ -1,11 +1,16 @@
-import { SearchVideoInput } from './index.js';
+import { SearchVideoInput, SearchVideoResult } from './index.js';
+import { SearchKeywordHistoryManager } from '../model/index.js';
 import { $ } from '../util/index.js';
 
 export class SearchVideoModal {
   constructor() {
     this.$modal = $('.js-search-video-modal');
     this.$closeButton = $('.js-search-modal-close-button');
-    this.searchVideoInput = new SearchVideoInput();
+
+    this.searchKeywordHistoryManager = new SearchKeywordHistoryManager();
+    this.searchVideoInput = new SearchVideoInput({ searchKeywordHistoryManager: this.searchKeywordHistoryManager });
+    this.searchVideoResult = new SearchVideoResult({ searchKeywordHistoryManager: this.searchKeywordHistoryManager });
+
     this.initEvent();
   }
 

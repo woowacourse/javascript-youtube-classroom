@@ -1,4 +1,3 @@
-import { App } from './components/index.js'
+import { App } from './components/index.js';
 
 const app = new App();
-

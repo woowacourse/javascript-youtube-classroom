@@ -1,4 +1,4 @@
-import { $ } from "../util/index.js";
+import { $ } from '../util/index.js';
 
 export class Navigation {
   constructor({ handleOpenModal }) {
@@ -22,6 +22,6 @@ export class Navigation {
         this.handleOpenModal();
         return;
       }
-    })
+    });
   }
 }

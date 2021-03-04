@@ -1,4 +1,4 @@
-import { Navigation, SearchVideoModal } from './index.js'
+import { Navigation, SearchVideoModal } from './index.js';
 
 export class App {
   constructor() {
@@ -9,5 +9,4 @@ export class App {
   handleOpenModal() {
     this.searchVideoModal.openModal();
   }
-
 }
