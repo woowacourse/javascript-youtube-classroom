@@ -55,24 +55,24 @@ describe('유튜브 강의실 영상 검색 모달', () => {
   //   cy.get('.chip').first().should('have.text', searchTerm3);
   // });
 
-  it('사용자가 최근 검색어를 클릭하면 해당 검색어로 새로 검색이 된다.', () => {
-    const searchTerm = '치킨';
-    const searchTerm1 = '도비';
+  // it('사용자가 최근 검색어를 클릭하면 해당 검색어로 새로 검색이 된다.', () => {
+  //   const searchTerm = '치킨';
+  //   const searchTerm1 = '도비';
 
-    cy.get('#search-button').click();
-    cy.get('#youtube-search-input').type(searchTerm);
-    cy.get('#youtube-search-button').click();
+  //   cy.get('#search-button').click();
+  //   cy.get('#youtube-search-input').type(searchTerm);
+  //   cy.get('#youtube-search-button').click();
 
-    cy.get('#youtube-search-input').clear();
-    cy.get('#youtube-search-input').type(searchTerm1);
-    cy.get('#youtube-search-button').click();
-    cy.wait(1000);
-    cy.get('.chip').last().click({ force: true });
-    cy.wait(3000);
-    cy.get('.modal .video-title').each(($elem) => {
-      cy.wrap($elem).contains(searchTerm);
-    });
-  });
+  //   cy.get('#youtube-search-input').clear();
+  //   cy.get('#youtube-search-input').type(searchTerm1);
+  //   cy.get('#youtube-search-button').click();
+  //   cy.wait(1000);
+  //   cy.get('.chip').last().click({ force: true });
+  //   cy.wait(3000);
+  //   cy.get('.modal .video-title').each(($elem) => {
+  //     cy.wrap($elem).contains(searchTerm);
+  //   });
+  // });
 
   //   it('사용자가 검색어를 아무것도 입력하지 않았을 때, 아무반응도 일어나지 않는다.', () => {
   //     const searchTerm = '  ';
@@ -125,17 +125,17 @@ describe('유튜브 강의실 영상 검색 모달', () => {
   //       });
   //   });
 
-  //   it('사용자가 스크롤을 내리면, 밑에 영상이 추가된다.', () => {
-  //     const searchTerm = '서니';
-  //     cy.get('#search-button').click();
-  //     cy.get('#youtube-search-input').type(searchTerm);
-  //     cy.get('#youtube-search-button').click();
-
-  //     cy.get('.modal .video-wrapper').scrollTo('bottom');
-  //     // 검색결과가 받아지길 기다리기
-  //     cy.get('.clip').its('length').should('be.gte', 10);
-  //     cy.get('.clip').its('length').should('be.lte', 20);
-  //   });
+  it('사용자가 스크롤을 내리면, 밑에 영상이 추가된다.', () => {
+    const searchTerm = '서니';
+    cy.get('#search-button').click();
+    cy.get('#youtube-search-input').type(searchTerm);
+    cy.get('#youtube-search-button').click();
+    cy.get('#searched-video-wrapper').trigger('scroll');
+    cy.wait(1000);
+    cy.get('.clip').its('length').should('be.gt', 10);
+    // TODO : 만약 더이상 영상이 없으면 없습니다가 뜨는지 확인해야함
+    cy.get('.clip').its('length').should('be.lte', 20);
+  });
 
   //   it('사용자가 모달창을 끄고, 다시 켰을 때 기존 검색 결과가 유지된다.', () => {
   //     const searchTerm = '서니';
