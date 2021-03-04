@@ -1,13 +1,12 @@
 .video-wrapper {
   display: grid;
   grid-template-columns: repeat(auto-fill, 236px);
-  grid-row-gap: 0px;
+  grid-row-gap: 10px;
   grid-column-gap: 4px;
   justify-content: center;
 }
 
 .clip {
-  height: 219px;
   cursor: pointer;
   text-decoration: none;
 }
