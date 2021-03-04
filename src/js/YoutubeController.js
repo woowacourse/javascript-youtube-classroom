@@ -37,7 +37,7 @@ export default class YoutubeController {
     this.videos = [
       ...items.map((item) => new Video(item.id.videoId, item.snippet)),
     ];
-    console.log(this.videos);
+    this.searchModalView.renderVideoClips(this.videos);
   }
 
   searchVideo(keyword) {

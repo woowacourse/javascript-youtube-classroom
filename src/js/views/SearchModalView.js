@@ -1,5 +1,5 @@
 import { $ } from '../utils/dom.js';
-import { searchRequest } from '../../js/request.js';
+import clipMaker from '../utils/clipMaker.js';
 import View from './View.js';
 
 export default class SearchModalView extends View {
@@ -62,5 +62,10 @@ export default class SearchModalView extends View {
 
   closeModal() {
     this.$element.removeClass('open');
+  }
+
+  renderVideoClips(videos) {
+    const videoClips = videos.map((video) => clipMaker(video)).join('');
+    $('.video-wrapper').setInnerHTML(videoClips);
   }
 }
