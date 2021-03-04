@@ -52,4 +52,12 @@ describe('simba-tube', () => {
 
     cy.get('.not-found').should('be.visible');
   });
+
+  it.only('검색 후 스크롤를 끝까지 이동시킬 경우 api 추가 요청을 통해 검색 결과를 10개씩 더 보여준다.', () => {
+    cy.get('#search-btn').click();
+    cy.get('#modal-search-input').type('방탄소년단');
+    cy.get('#modal-search-button').click();
+    cy.get('#modal-videos').scrollTo('bottom');
+    cy.get('#modal-videos').find('.clip').should('have.length', 20);
+  });
 });
