@@ -1,4 +1,4 @@
-import CLASSNAME from "./constants.js";
+import { CLASSNAME, MAX_KEYWORDS_COUNT } from "./constants.js";
 import API_KEY from "./key.js";
 import { $ } from "./querySelector.js";
 
@@ -44,6 +44,9 @@ const $videoSearchTab = $(CLASSNAME.VIDEO_SEARCH_TAB);
 const $youtubeSearchForm = $(CLASSNAME.YOUTUBE_SEARCH_FORM);
 const $modalVideoWrapper = $(CLASSNAME.MODAL_VIDEO_WRAPPER);
 const $notFoundImg = $(CLASSNAME.NOT_FOUND_IMAGE);
+const $keywordHistorySection = $(CLASSNAME.KEYWORD_HISTORY_SECTION);
+
+const keywordHistory = [];
 
 const onModalShow = () => {
   $modal.classList.add(CLASSNAME.OPEN);
@@ -58,20 +61,32 @@ const handleFormSubmit = async (event) => {
 
   const {
     target: {
-      elements: {
-        [CLASSNAME.YOUTUBE_SEARCH_FORM_INPUT]: { value: query },
-      },
+      elements: { [CLASSNAME.YOUTUBE_SEARCH_FORM_INPUT]: $input },
     },
   } = event;
+  const { value: query } = $input;
 
   try {
     const response = await fetch(
-      `https://www.googleapis.com/youtube/v3/search?part=snippet&maxResults=10&regionCode=kr&safeSearch=strict&q=${query}}&key=${API_KEY}`
+      `https://www.googleapis.com/youtube/v3/search?part=snippet&maxResults=2&regionCode=kr&safeSearch=strict&q=${query}}&key=${API_KEY}`
     );
 
     if (!response.ok) {
       throw new Error(response.statusText);
     }
+
+    $input.value = "";
+
+    // keyword 추가
+    keywordHistory.push(query);
+    if (keywordHistory.length > MAX_KEYWORDS_COUNT) {
+      keywordHistory.shift();
+    }
+
+    $keywordHistorySection.innerHTML = `<span class="text-gray-700">최근 검색어: </span>`;
+    $keywordHistorySection.innerHTML += keywordHistory
+      .map((keyword) => `<a class="chip">${keyword}</a>`)
+      .join("");
 
     const { items } = await response.json();
     const clipInfos = items.map(
