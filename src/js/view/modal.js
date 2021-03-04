@@ -72,6 +72,15 @@ export const renderSaveVideoCount = (saveClips) => {
   ).innerText = `저장된 영상 갯수: ${saveClips.length}개`;
 };
 
+export const renderExtraClips = (videoItems, savedClipIds) => {
+  $('[data-js=youtube-search-modal__video-wrapper]').innerHTML += videoItems
+    .map((video, index) => {
+      const isSaved = savedClipIds.includes(video.id.videoId);
+      return searchResultClipTemplate(video, index, isSaved);
+    })
+    .join('');
+};
+
 export const renderClips = (videoItems, savedClipIds) => {
   $('[data-js=youtube-search-modal__video-wrapper]').innerHTML = videoItems
     .map((video, index) => {

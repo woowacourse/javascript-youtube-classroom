@@ -83,6 +83,7 @@ const setRecentSearchResult = () => {
 
   setVideoItems(recentSearchResult);
 };
+
 const lazyLoading = async () => {
   const { scrollTop, scrollHeight, clientHeight } = document.documentElement;
 
