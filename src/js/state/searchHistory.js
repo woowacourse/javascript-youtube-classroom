@@ -3,14 +3,13 @@ import { STORAGE_NAME, VIDEOS } from "../utils/constants.js";
 const searchHistory = {
   pageToken: "",
 
-  setKeyword(newKeyword) {
-    const keywords = this.getKeywordAll();
-
-    if (keywords.includes(newKeyword)) {
+  setKeyword(input) {
+    const newKeyword = input.trim();
+    if (this.getKeywordAll().includes(newKeyword)) {
       this.removeKeyword(newKeyword);
     }
 
-    const updatedKeywords = [newKeyword, ...keywords];
+    const updatedKeywords = [newKeyword, ...this.getKeywordAll()];
     localStorage.setItem(
       STORAGE_NAME.KEYWORDS,
       JSON.stringify(updatedKeywords.slice(0, VIDEOS.KEYWORD_HISTORY_LENGTH))
