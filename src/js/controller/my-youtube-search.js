@@ -9,9 +9,9 @@ class MyYoutubeSearchController {
 
   init = () => {
     this.storage.init();
+    this.view.init();
     this.handleSearch();
     this.handleModalScroll();
-    this.view.renderMyVideoInfosSection(0); // TODO : this.view.init 으로 빼기
   };
 
   getSearchInput = () => {
