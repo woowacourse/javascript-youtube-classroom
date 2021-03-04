@@ -1,6 +1,7 @@
 import SearchController from "./SearchController.js";
 import elements from "../utils/elements.js";
 import searchHistory from "../state/searchHistory.js";
+import { openModal, closeModal } from "../utils/dom.js";
 
 export default class Search {
   constructor() {
@@ -8,6 +9,15 @@ export default class Search {
   }
 
   init() {
+    elements.$searchButton.addEventListener(
+      "click",
+      this.onClickSearchButton.bind(this)
+    );
+    elements.$searchModalClose.addEventListener(
+      "click",
+      this.onClickSearchModalCloseButton
+    );
+
     elements.$searchForm.addEventListener("submit", this.onSearch.bind(this));
     elements.$searchResults.addEventListener(
       "scroll",
@@ -27,5 +37,16 @@ export default class Search {
 
   onScroll(e) {
     this.searchController.addVideos(e.target);
+  }
+
+  onClickSearchButton() {
+    openModal(elements.$searchModal);
+    elements.$searchForm.elements["search-keyword"].focus();
+
+    this.searchController.updateKeywordHistory();
+  }
+
+  onClickSearchModalCloseButton() {
+    closeModal(elements.$searchModal);
   }
 }

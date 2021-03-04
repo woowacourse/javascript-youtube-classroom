@@ -4,6 +4,9 @@ const $ = (selector) => {
 };
 
 const elements = {
+  $searchButton: $("#search-button"),
+  $searchModal: $("#search-modal"),
+  $searchModalClose: $("#search-modal-close"),
   $searchForm: $("#search-form"),
   $searchResults: $("#search-results"),
   $notFound: $("#not-found"),
