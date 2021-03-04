@@ -3,9 +3,15 @@ import { getSkeletonTemplate } from './layout/skeleton.js';
 import { formatDateKR } from './utils/formatDate.js';
 import { getThumbnailTemplate, getChannelTitleTemplate, resultNotFoundTemplate } from './layout/searchResult.js';
 import { YOUTUBE_API_KEY } from './env.js';
-import { $ } from './utils/DOM.js';
+import { $, isEndOfPage } from './utils/DOM.js';
 export default class App {
   #groupIndex;
+  #keyword;
+  #nextPageToken;
+
+  constructor() {
+    this.#nextPageToken = '';
+  }
 
   init() {
     this.selectDOMs();
@@ -24,6 +30,7 @@ export default class App {
     this.$searchButton.addEventListener('click', this.onShowModal.bind(this));
     this.$modalCloseButton.addEventListener('click', this.onCloseModal.bind(this));
     this.$searchKeywordForm.addEventListener('submit', this.onSearchKeyword.bind(this));
+    this.$searchSection.addEventListener('scroll', this.onRequestNextResult.bind(this));
   }
 
   onShowModal() {
@@ -32,6 +39,13 @@ export default class App {
 
   onCloseModal() {
     this.$searchSection.classList.remove('open');
+  }
+
+  onRequestNextResult() {
+    if (!isEndOfPage(this.$searchSection)) {
+      return;
+    }
+    this.renderSearchGroup();
   }
 
   async request(url) {
@@ -57,6 +71,8 @@ export default class App {
   }
 
   processJSON(rawData) {
+    this.#nextPageToken = rawData.nextPageToken;
+
     return rawData.items.map((item) => ({
       videoId: item.id.videoId,
       videoTitle: item.snippet.title,
@@ -101,14 +117,22 @@ export default class App {
   onSearchKeyword(e) {
     e.preventDefault();
 
+    this.#keyword = e.target.elements['search-keyword-input'].value;
     this.#groupIndex = -1;
+
+    this.renderSearchGroup();
+  }
+
+  renderSearchGroup() {
     this.renderSkeleton();
+
     const url = this.getRequestURL({
       part: PART_TYPE,
-      q: e.target.elements['search-keyword-input'].value,
+      q: this.#keyword,
       type: SEARCH_TYPE_VIDEO,
       maxResults: MAX_RESULT_COUNT,
       regionCode: REGION_CODE,
+      pageToken: this.#nextPageToken,
     });
 
     this.request(url)
