@@ -14,13 +14,13 @@ class StorageModel {
 
   saveVideo = json => {
     // TODO : util에 addItem(변수명, 넣어줄요소) 만들기
+    // TODO : myVideo 변수 대신 this.#myVideo 사용하기
     const myVideo = JSON.parse(localStorage.getItem('myVideo'));
     if (myVideo.length === 100) return;
     myVideo.push(json);
     localStorage.setItem('myVideo', JSON.stringify(myVideo));
   };
 
-  // info를 받아 getItem해서 getItem에 해당 요소가 있는지 반환 (T/F)
   findVideoByInfo = info => {
     return (
       JSON.parse(localStorage.getItem('myVideo')).filter(
@@ -30,12 +30,12 @@ class StorageModel {
   };
 
   saveRecentKeyword = keyword => {
-    // get set util 화
+    // TODO : getITem setITem util 화
     const recentKeywords = JSON.parse(localStorage.getItem('keywords'));
-    recentKeywords.unshift(keyword);
-    const newKeywords = [...new Set(recentKeywords)].slice(
+    // TODO : 0, 3 상수화. 0빼도되나?, 3항연산자 대신 if문으로 할수있으면.
+    const newKeywords = [...new Set([keyword, ...recentKeywords])].slice(
       0,
-      recentKeywords.length < 3 ? recentKeywords.length : 3
+      recentKeywords.length < 3 ? recentKeywords.length + 1 : 3
     );
 
     localStorage.setItem('keywords', JSON.stringify(newKeywords));
