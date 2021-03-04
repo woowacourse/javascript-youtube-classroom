@@ -157,26 +157,34 @@ describe('유튜브 강의실 영상 검색 모달', () => {
   //     });
   // });
 
-  //   it('사용자가 영상 저장 버튼을 눌렀을때, 현재 저장된 영상이 100개 이상인 경우, 저장불가 alert이 노출된다.', () => {
-  //     // TODO: video id를 어디다 저장할지 정해야함
-  //     const searchTerm = '서니';
-  //     const alertStub = cy.stub();
+  it('사용자가 영상 저장 버튼을 눌렀을때, 현재 저장된 영상이 100개 이상인 경우, 저장불가 alert이 노출된다.', () => {
+    // TODO: video id를 어디다 저장할지 정해야함
+    const searchTerm = '서니';
+    const alertStub = cy.stub();
 
-  //     // 저장소에 video 100개 저장
-  //     cy.get('#search-button').click();
-  //     cy.get('#youtube-search-input').type(searchTerm);
-  //     cy.get('#youtube-search-button').click();
+    const array = [];
+    for (let i = 0; i < 100; i++) {
+      array.push(JSON.stringify({ videoId: '1234' }));
+    }
+    localStorage.setItem('videos', JSON.stringify(array));
 
-  //     cy.on('window:alert', alertStub);
-  //     cy.get('.save-btn')
-  //       .click()
-  //       .then(() => {
-  //         // 저장소에 video가 100개 이상인지 체크
-  //       })
-  //       .then(() => {
-  //         expect(alertStub.getCall(0)).to.be.calledWith('저장할 수 없습니다');
-  //       });
-  //   });
+    // 저장소에 video 100개 저장
+    cy.get('#search-button').click();
+    cy.get('#youtube-search-input').type(searchTerm);
+    cy.get('#youtube-search-button').click();
+
+    cy.wait(10000);
+
+    cy.on('window:alert', alertStub);
+    cy.get('.save-btn')
+      .first()
+      .click()
+      .then(() => {
+        expect(alertStub.getCall(0)).to.be.calledWith(
+          '동영상은 100개까지 저장할 수 있습니다. 저장된 동영상을 지워주세요.'
+        );
+      });
+  });
 
   // it('사용자가 스크롤을 내리면, 밑에 영상이 추가된다.', () => {
   //   const searchTerm = '서니';
@@ -202,21 +210,21 @@ describe('유튜브 강의실 영상 검색 모달', () => {
   //     // 최근 검색어 첫번째와, 모달이 닫히기 전 검색어와 같은지 체크
   //   });
 
-  it('각 영상이 제목, 작성자, 날짜가 제대로 화면에 표시되는지 확인한다.', () => {
-    const searchTerm = '서니';
-    cy.get('#search-button').click();
-    cy.get('#youtube-search-input').type(searchTerm);
-    cy.get('#youtube-search-button').click();
+  // it('각 영상이 제목, 작성자, 날짜가 제대로 화면에 표시되는지 확인한다.', () => {
+  //   const searchTerm = '서니';
+  //   cy.get('#search-button').click();
+  //   cy.get('#youtube-search-input').type(searchTerm);
+  //   cy.get('#youtube-search-button').click();
 
-    // TODO : 실제 값과 일치하는지 확인하는 법 찾아보기
-    cy.wait(7000);
-    cy.get('.modal .clip').each((clip) => {
-      cy.wrap(clip).children('.preview-container').should('exist');
-      cy.wrap(clip).find('.video-title').should('exist');
-      cy.wrap(clip).find('.channel-name').should('exist');
-      cy.wrap(clip).find('.meta').should('exist');
-    });
-  });
+  //   // TODO : 실제 값과 일치하는지 확인하는 법 찾아보기
+  //   cy.wait(7000);
+  //   cy.get('.modal .clip').each((clip) => {
+  //     cy.wrap(clip).children('.preview-container').should('exist');
+  //     cy.wrap(clip).find('.video-title').should('exist');
+  //     cy.wrap(clip).find('.channel-name').should('exist');
+  //     cy.wrap(clip).find('.meta').should('exist');
+  //   });
+  // });
 
   // it('각 영상이 제목, 작성자, 날짜가 제대로 화면에 표시되는지 확인한다.', () => {
   //   const searchTerm = '서니';
