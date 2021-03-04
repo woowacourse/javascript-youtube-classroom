@@ -28,6 +28,14 @@ context('유튜브 강의실 테스트', () => {
         .its('length')
         .should('be.gt', 0);
     });
+
+    it('검색 결과가 없는 경우 결과 없음 이미지를 추가하여, 사용자에게 메시지를 보여준다.', () => {
+      click(`#${SELECTOR_ID.SEARCH_BUTTON}`);
+      type(`#${SELECTOR_ID.SEARCH_FORM_INPUT}`, 'dsvkasdvklasdlkdv');
+      click(`#${SELECTOR_ID.SEARCH_FORM_SUBMIT}`);
+      cy.wait(3000);
+      cy.get(`#${SELECTOR_ID.NOT_FOUND_CONTENT}`).should('be.visible');
+    });
   });
 });
 

@@ -6,6 +6,7 @@ export const SELECTOR_ID = Object.freeze({
   MODAL: 'modal',
   MODAL_CLOSE_BUTTON: 'modal__close-button',
   VIDEO_WRAPPER: 'video-wrapper',
+  NOT_FOUND_CONTENT: 'not-found-content',
 });
 
 export const SELECTOR_CLASS = Object.freeze({
