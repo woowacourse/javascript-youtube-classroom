@@ -26,15 +26,15 @@ export default function clipMaker(video, type) {
           </div>
         </div>
         </div>
-      ${type.isModal ? saveButtonTemplate() : buttonPackTemplate()}
+      ${type.isModal ? saveButtonTemplate(video.id) : buttonPackTemplate()}
     </article>
   `;
 }
 
-function saveButtonTemplate() {
+function saveButtonTemplate(videoId) {
   return `
     <div class="d-flex justify-end clip-save">
-      <button class="btn">⬇️ 저장</button>
+      <button data-video-id="${videoId}" class="btn clip-save-btn">⬇️ 저장</button>
     </div>
   `;
 }

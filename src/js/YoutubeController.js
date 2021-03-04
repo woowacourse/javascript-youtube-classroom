@@ -1,7 +1,13 @@
 import { $ } from './utils/dom.js';
+import {
+  setRecentChip,
+  getRecentKeywords,
+  setSavedVideos,
+} from './utils/localStorage.js';
 import { searchRequest } from '../js/request.js';
 import NavigationView from './views/NavigationView.js';
 import SearchModalView from './views/SearchModalView.js';
+import SavedVideosView from './views/SavedVideosView.js';
 import Video from '../js/models/Video.js';
 
 export default class YoutubeController {
@@ -23,6 +29,7 @@ export default class YoutubeController {
       .on('openModal', (e) => this.searchVideo(e.detail))
       .on('submitSearch', (e) => this.searchVideo(e.detail))
       .on('scrollResult', (e) => this.searchVideo(e.detail))
+      .on('clickSaveButton', (e) => this.saveVideo(e.detail))
       .on('closeModal', () => this.changeNavTab($('#saved-btn')));
   }
 
@@ -52,7 +59,13 @@ export default class YoutubeController {
     this.searchModalView.renderVideoClips(newVideos);
   }
 
+  saveVideo(videoId) {
+    setSavedVideos(videoId);
+  }
+
   searchVideo(keyword) {
+    setRecentChip(keyword);
+    this.searchModalView.updateChips(getRecentKeywords());
     this.searchModalView.startSearch();
     searchRequest(keyword, this.nextPageToken, this.generateVideos.bind(this));
   }

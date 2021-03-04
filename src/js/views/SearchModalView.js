@@ -1,6 +1,7 @@
 import { $ } from '../utils/dom.js';
 import { VALUE } from '../utils/constants.js';
 import clipMaker from '../utils/clipMaker.js';
+import { getRecentKeywords } from '../utils/localStorage.js';
 import View from './View.js';
 
 export default class SearchModalView extends View {
@@ -30,8 +31,6 @@ export default class SearchModalView extends View {
 
       this.clearVideoClips();
       this.emit('submitSearch', this.searchKeyword);
-      this.setRecentChip();
-      this.updateChips();
     });
   }
 
@@ -52,19 +51,11 @@ export default class SearchModalView extends View {
     });
   }
 
-  setRecentChip() {
-    const recentKeywords = this.getRecentKeywords();
-
-    if (recentKeywords.includes(this.searchKeyword)) {
-      return;
-    }
-
-    if (recentKeywords.length >= VALUE.KEYWORD_COUNT) {
-      recentKeywords.pop();
-    }
-
-    recentKeywords.unshift(this.searchKeyword);
-    localStorage.setItem('searchKeyword', JSON.stringify(recentKeywords));
+  bindSaveEvent() {
+    $('.clip-save-btn').setEvent('click', (e) => {
+      const videoId = e.target.dataset.videoId;
+      this.emit('clickSaveButton', videoId);
+    });
   }
 
   chipTemplate(recentKeywords) {
@@ -76,15 +67,9 @@ export default class SearchModalView extends View {
   }
 
   updateChips() {
-    const recentKeywords = this.getRecentKeywords();
+    const recentKeywords = getRecentKeywords();
 
     $('#chip-container').setInnerHTML(this.chipTemplate(recentKeywords));
-  }
-
-  getRecentKeywords() {
-    return localStorage.getItem('searchKeyword')
-      ? JSON.parse(localStorage.getItem('searchKeyword'))
-      : [];
   }
 
   openModal() {
@@ -102,9 +87,10 @@ export default class SearchModalView extends View {
   renderVideoClips(videos) {
     $('.skeleton').hide();
     const videoClips = videos
-      .map((video) => clipMaker(video, { isModal: false }))
+      .map((video) => clipMaker(video, { isModal: true }))
       .join('');
     this.modalVideos.addInnerHTML(videoClips);
+    this.bindSaveEvent();
   }
 
   clearVideoClips() {
