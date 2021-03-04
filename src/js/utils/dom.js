@@ -1,3 +1,8 @@
+export const $ = (selector) => {
+  const selected = document.querySelectorAll(selector);
+  return selected.length === 1 ? selected[0] : selected;
+};
+
 export const showElement = ($target) => {
   $target.classList.remove("d-none-hard");
 };
