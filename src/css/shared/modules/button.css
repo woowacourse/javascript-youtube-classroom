@@ -7,3 +7,7 @@
   border-style: none;
   cursor: pointer;
 }
+
+.save-btn:hover {
+  background-color: #cfcfcf;
+}
