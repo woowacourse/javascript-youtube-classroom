@@ -18,6 +18,12 @@ function fetchSearchResult(keyword) {
   );
 }
 
+function isSavedVideo(item) {
+  return [...state.videoInfos].some(
+    videoInfo => videoInfo.id.videoId === item.id.videoId
+  );
+}
+
 dom.$videoSearchForm.addEventListener('submit', async e => {
   e.preventDefault();
 
@@ -25,7 +31,7 @@ dom.$videoSearchForm.addEventListener('submit', async e => {
   dom.$videoSearchResult.innerHTML = '';
   const { items: resultItems } = await fetchSearchResult(keyword);
   dom.$videoSearchResult.innerHTML = resultItems
-    .map(item => createVideoSnippetTemplate(item))
+    .map(item => createVideoSnippetTemplate(item, isSavedVideo(item)))
     .join('');
 });
 

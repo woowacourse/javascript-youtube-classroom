@@ -30,13 +30,14 @@ function createVideoSnippetTemplate({ id, snippet }, isSaved = false) {
                 <div class="meta">
                   <p>${snippet.publishTime}</p>
                 </div>
-                ${
-                  isSaved
-                    ? ''
-                    : `<div class="d-flex justify-end">
-                    <button class="btn js-save-button">⬇️ 저장</button>
-                  </div>`
-                }
+                <div class="d-flex justify-end">
+                  <button 
+                    class="btn js-save-button" 
+                    ${isSaved ? 'hidden' : ''}
+                    >
+                      ⬇️ 저장
+                  </button>
+                </div>
               </div>
             </div>
           </article>`;
