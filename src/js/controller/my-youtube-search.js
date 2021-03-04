@@ -10,6 +10,7 @@ class MyYoutubeSearchController {
     this.storage.init();
     this.handleSearch();
     this.handleModalScroll();
+    this.view.renderMyVideoInfosSection(0);
   };
 
   getSearchInput = () => {
@@ -44,6 +45,7 @@ class MyYoutubeSearchController {
     const videoInfo = JSON.parse(e.target.dataset.info);
     e.target.classList.add('invisible');
     this.storage.saveVideo(videoInfo);
+    this.view.renderMyVideoInfosSection(this.storage.savedVideoLength);
   };
 
   handleSaveVideo = () => {

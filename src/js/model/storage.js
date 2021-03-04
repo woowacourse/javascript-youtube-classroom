@@ -41,6 +41,10 @@ class StorageModel {
     localStorage.setItem('keywords', JSON.stringify(newKeywords));
   };
 
+  get savedVideoLength() {
+    return JSON.parse(localStorage.getItem('myVideo')).length;
+  }
+
   get recentKeywords() {
     return JSON.parse(localStorage.getItem('keywords'));
   }
