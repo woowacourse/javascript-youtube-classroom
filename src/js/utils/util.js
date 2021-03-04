@@ -10,3 +10,11 @@ export const parseDOMFromString = string => {
   const parser = new DOMParser();
   return parser.parseFromString(string, 'text/html').body.firstElementChild;
 };
+
+export const setJSONToLocalStorage = (key, value) => {
+  localStorage.setItem(key, JSON.stringify(value));
+};
+
+export const getJSONfromLocalStorage = key => {
+  return JSON.parse(localStorage.getItem(key));
+};
