@@ -1,3 +1,8 @@
+#search-video-wrapper {
+  height: 500px;
+  overflow-y: scroll;
+}
+
 #search-video-wrapper #search-not-found {
   width: 100%;
   grid-column-start: 2;

@@ -7,6 +7,7 @@ class MyYoutubeSearchController {
 
   init() {
     this.handleSearch();
+    this.handleModalScroll();
   }
 
   getSearchInput = () => {
@@ -34,6 +35,12 @@ class MyYoutubeSearchController {
   handleIframeLoad = () => {
     $$('.clip iframe').forEach(iframe => {
       iframe.addEventListener('load', event => this.removeSkeleton(event));
+    });
+  };
+
+  handleModalScroll = () => {
+    $('#search-video-wrapper').addEventListener('scroll', () => {
+      console.log('스크롤중...');
     });
   };
 
