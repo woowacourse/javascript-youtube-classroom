@@ -80,3 +80,12 @@ export const renderClips = (videoItems, savedClipIds) => {
     })
     .join('');
 };
+
+export const setRecentKeywords = (recentKeywords) => {
+  $('[data-js="youtube-search-modal__recent-keywords"]').innerHTML =
+    recentKeywordsLabel() + recentKeywords.map(recentKeywordTemplate).join('');
+};
+
+export const clearSearchResult = () => {
+  $('[data-js=youtube-search-modal__video-wrapper]').innerHTML = '';
+};

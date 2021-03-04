@@ -95,9 +95,8 @@ export const handleSearchItem = async (event) => {
   const $skeletonWrapper = $(
     '[data-js=youtube-search-modal__skeleton-wrapper]',
   );
-  const $input = $('[data-js=youtube-search-modal__input]');
-
   showElement($skeletonWrapper);
+  const $input = $('[data-js=youtube-search-modal__input]');
 
   const keyword = $input.value;
   const URL = `/search?&part=snippet&maxResults=${YOUTUBE.NUMBER_TO_LOAD}&q=${keyword}&key=${API_KEY}`;
@@ -109,6 +108,7 @@ export const handleSearchItem = async (event) => {
   if (videoItems.length === 0) {
     $('data-js=youtube-search-modal__not-found').classList.remove('d-none');
   }
+
   setVideoItems(videoItems);
 
   localStorage.set('recentKeywords', keyword);

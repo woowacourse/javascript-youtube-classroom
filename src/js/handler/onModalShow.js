@@ -10,13 +10,14 @@ export const onModalShow = () => {
   const savedClips = localStorage.get('savedClips') ?? [];
   const savedClipIds = savedClips.map((savedClip) => savedClip.id.videoId);
   const recentKeywords = localStorage.get('recentKeywords') ?? [];
-  const recentSearchResult = localStorage.get('recentSearchResult');
+  const recentSearchResults = localStorage.get('recentSearchResults');
 
   openModal();
+  console.log(recentKeywords);
   renderRecentKeywords(recentKeywords);
   renderSaveVideoCount(savedClips);
 
-  if (recentSearchResult) {
+  if (recentSearchResults) {
     renderClips(recentSearchResults, savedClipIds);
   }
 };
