@@ -1,4 +1,4 @@
-function createVideoSkeletonTemplate() {
+function createSkeletonClipTemplate() {
   return `<article class="clip skeleton">
             <div class="preview-container image">
               <div ></div>
@@ -12,6 +12,12 @@ function createVideoSkeletonTemplate() {
               </div>
             </div>
           </article>`;
+}
+
+function createVideoSkeletonTemplate() {
+  return `<div class="video-wrapper">
+            ${createSkeletonClipTemplate().repeat(10)}
+          </div>`;
 }
 
 export default createVideoSkeletonTemplate;

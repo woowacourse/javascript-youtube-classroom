@@ -4,6 +4,7 @@ import dom from './library/DOMelements.js';
 import createVideoSnippetTemplate from './library/templates/videoSnippet.js';
 import createVideoSkeletonTemplate from './library/templates/videoSkeleton.js';
 import state from './library/state.js';
+import createNotFoundTemplate from './library/templates/notFound.js';
 
 dom.$searchButton.addEventListener('click', () =>
   dom.$searchModal.classList.add('open')
@@ -24,17 +25,23 @@ function isSavedVideo(item) {
     videoInfo => videoInfo.id.videoId === item.id.videoId
   );
 }
+function createSearchResultTemplate(resultItems) {
+  return `<div class="video-wrapper">
+            ${resultItems
+              .map(item => createVideoSnippetTemplate(item, isSavedVideo(item)))
+              .join('')}
+          </div>`;
+}
 
 dom.$videoSearchForm.addEventListener('submit', async e => {
   e.preventDefault();
 
   const keyword = e.target.elements['video-search-input'].value;
-  dom.$videoSearchResult.innerHTML = createVideoSkeletonTemplate().repeat(10);
+  dom.$videoSearchResult.innerHTML = createVideoSkeletonTemplate();
   const { items: resultItems } = await fetchSearchResult(keyword);
-  // TODO: 결과 없음 이미지 출력 (resultItems가 빈 배열임)
-  dom.$videoSearchResult.innerHTML = resultItems
-    .map(item => createVideoSnippetTemplate(item, isSavedVideo(item)))
-    .join('');
+  dom.$videoSearchResult.innerHTML = resultItems.length
+    ? createSearchResultTemplate(resultItems)
+    : createNotFoundTemplate();
 });
 
 function createVideoInfo({
