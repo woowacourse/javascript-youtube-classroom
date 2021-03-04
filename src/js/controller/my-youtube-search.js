@@ -23,6 +23,7 @@ class MyYoutubeSearchController {
 
     this.youtube.videoInfos.forEach(info => {
       const save = this.storage.findVideoByInfo(info);
+      console.log(save);
       this.view.renderVideoArticle(info, save);
     });
 
