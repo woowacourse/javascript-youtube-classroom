@@ -2,6 +2,7 @@ import {
   ADD_VIDEOS,
   ADD_SEARCH_TERM,
   UPDATE_REQUEST_PENDING,
+  INCREASE_SAVED_VIDEO_COUNT,
 } from './actionType.js';
 
 const searchedVideoReducer = (states, { type, payload }) => {
@@ -29,6 +30,7 @@ const searchHistoryReducer = (states, { type, payload }) => {
   }
 };
 
+// TODO : state로 네이밍 통일
 const requestPendingReducer = (states, { type, payload }) => {
   switch (type) {
     case UPDATE_REQUEST_PENDING:
@@ -39,11 +41,21 @@ const requestPendingReducer = (states, { type, payload }) => {
   }
 };
 
+const savedVideoCountReducer = (state, { type }) => {
+  switch (type) {
+    case INCREASE_SAVED_VIDEO_COUNT:
+      return state + 1;
+    default:
+      return state;
+  }
+};
+
 const combineReducers = (states, action) => {
   return {
     searchedVideos: searchedVideoReducer(states.searchedVideos, action),
     searchHistory: searchHistoryReducer(states.searchHistory, action),
     requestPending: requestPendingReducer(states.requestPending, action),
+    savedVideoCount: savedVideoCountReducer(states.savedVideoCount, action),
   };
 };
 

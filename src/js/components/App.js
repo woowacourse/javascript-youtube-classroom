@@ -1,5 +1,7 @@
-import VideoSearchModal from './videoSearchModal/videoSearchModal.js';
+import LocalStorageManager from '../model/LocalStorageManager.js';
+import VideoSearchModal from './videoSearchModal/VideoSearchModal.js';
 
+export const localStorageManager = new LocalStorageManager();
 export default class App {
   constructor($target) {
     this.$target = $target;
@@ -7,6 +9,7 @@ export default class App {
       searchedVideos: [],
       searchHistory: [],
       requestPending: false,
+      savedVideoCount: localStorageManager.getItem().length,
     };
   }
 

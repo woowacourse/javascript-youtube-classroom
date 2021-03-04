@@ -1,5 +1,6 @@
 import { store } from '../../index.js';
 import { addVideos, updateRequestPending } from '../../redux/action.js';
+import { localStorageManager } from '../App.js';
 
 export default class VideoSearchResult {
   constructor($target, $props) {
@@ -19,15 +20,33 @@ export default class VideoSearchResult {
     this.$searchedVideoWrapper = document.querySelector(
       '#searched-video-wrapper'
     );
+    this.$savedVideoCount = document.querySelector('#saved-video-count');
   }
 
   skeletonTemplate() {
-    return `<div class="skeleton">
-              <div class="image"></div>
-              <p class="line"></p>
-              <p class="line"></p>
-            </div>
-            `.repeat(10);
+    // return `<div class="skeleton">
+    //           <div class="image"></div>
+    //           <p class="line"></p>
+    //           <p class="line"></p>
+    //         </div>
+    //         `.repeat(10);
+    const fragment = document.createDocumentFragment();
+    const skeleton = document.createElement('div');
+    const img = document.createElement('div');
+    const line = document.createElement('p');
+
+    skeleton.classList.add('skeleton');
+    img.classList.add('image');
+    line.classList.add('line');
+    skeleton.appendChild(img.cloneNode(true));
+    skeleton.appendChild(line.cloneNode(true));
+    skeleton.appendChild(line.cloneNode(true));
+
+    for (let i = 0; i < 10; i++) {
+      fragment.appendChild(skeleton.cloneNode(true));
+    }
+    console.log(fragment);
+    return fragment;
   }
 
   displayClips() {
@@ -66,11 +85,17 @@ export default class VideoSearchResult {
       this.$searchedVideoWrapper.innerHTML = ``;
     }
 
+    if (preStates.savedVideoCount !== states.savedVideoCount) {
+      console.log(states.savedVideoCount);
+      this.$savedVideoCount.textContent = states.savedVideoCount;
+    }
+
     if (
       preStates.requestPending !== states.requestPending &&
       states.requestPending
     ) {
-      this.$searchedVideoWrapper.innerHTML += `${this.skeletonTemplate()}`;
+      this.$searchedVideoWrapper.appendChild(this.skeletonTemplate());
+      // this.$searchedVideoWrapper.innerHTML += `${this.skeletonTemplate()}`;
     }
 
     // TODO : iframe reload 문제 해결
@@ -93,7 +118,9 @@ export default class VideoSearchResult {
   initRender() {
     this.$target.innerHTML = `
         <div class="d-flex justify-end text-gray-700">
-          저장된 영상 갯수: <span id="saved-video-count">50</span>개
+          저장된 영상 갯수: <span id="saved-video-count">${
+            localStorageManager.getItem().length
+          }</span>개
         </div>
         <section id="searched-video-wrapper" class="video-wrapper">
         </section>
@@ -112,7 +139,6 @@ export default class VideoSearchResult {
           store.dispatch(updateRequestPending(false));
           store.dispatch(addVideos(items));
         });
-        ///////////////////////////
       }
     });
   }
