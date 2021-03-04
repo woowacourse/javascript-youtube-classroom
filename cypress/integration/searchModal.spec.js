@@ -88,8 +88,8 @@ describe('검색 모달 테스트', () => {
       .then((keyword) => expect(keyword).to.be.equal(KEYWORD));
   });
 
-  it('키워드 4개를 연속해서 검색했을 때, 최근 검색키워드 3개를 검색창 하단에 보여준다.', () => {
-    const KEYWORDS = ['우아한형제들', '네이버', '쿠팡', '토스'];
+  it.only('키워드 4개를 연속해서 검색했을 때, 최근 검색키워드 3개를 검색창 하단에 보여준다.', () => {
+    const KEYWORDS = ['쿠팡', '네이버', '토스', '우아한형제들'];
     const TRY_COUNT = KEYWORDS.length;
 
     cy.get('#search-button').click();
@@ -99,7 +99,7 @@ describe('검색 모달 테스트', () => {
     });
 
     cy.get('#recent-keyword')
-      .siblings()
+      .children()
       .should('have.length', MAX_RECENT_KEYWORD_COUNT)
       .each(($el, i) => {
         cy.wrap($el).should('have.text', KEYWORDS[TRY_COUNT - 1 - i]);
@@ -114,7 +114,7 @@ describe('예외 처리 테스트', () => {
     cy.visit('http://localhost:5500/');
   });
 
-  it.only('100개의 영상을 저장했을 때, 더 저장하려고 시도할 경우 저장용량 초과 메세지를 표시한다.', () => {
+  it('100개의 영상을 저장했을 때, 더 저장하려고 시도할 경우 저장용량 초과 메세지를 표시한다.', () => {
     cy.get('#search-button').click();
     cy.get('#search-keyword-input').type(KEYWORD);
     cy.get('#search-keyword-form').submit();

@@ -1,4 +1,4 @@
-import { MAX_RECENT_KEYWORD_COUNT, VIDEOS_TO_WATCH, VIDEOS_WATCHED } from '../constants.js';
+import { MAX_RECENT_KEYWORD_COUNT, VIDEOS_TO_WATCH, VIDEOS_WATCHED, RECENT_KEYWORDS } from '../constants.js';
 
 /*
   로컬스토리지 데이터 저장구조
@@ -10,35 +10,35 @@ import { MAX_RECENT_KEYWORD_COUNT, VIDEOS_TO_WATCH, VIDEOS_WATCHED } from '../co
 */
 
 export default class VideoLocalStorage {
-  getVideo(key) {
+  getItem(key) {
     return localStorage.getItem(key);
   }
 
-  setVideo(key, list) {
+  setItem(key, list) {
     localStorage.setItem(key, JSON.stringify(list));
   }
 
-  getVideoList(key) {
+  getList(key) {
     try {
-      return JSON.parse(this.getVideo(key)) || [];
+      return JSON.parse(this.getItem(key)) || [];
     } catch (e) {
       return [];
     }
   }
 
   addVideo(key, target) {
-    const list = this.getVideoList(key);
+    const list = this.getList(key);
 
     list.push(target);
-    this.setVideo(key, list);
+    this.setItem(key, list);
   }
 
   removeVideo(key, targetIdKey, targetIdValue) {
-    const list = this.getVideoList(key);
+    const list = this.getList(key);
     const target = list.find((video) => video[targetIdKey] === targetIdValue);
     const index = list.indexOf(target);
 
-    this.setVideo(key, list.splice(index, 1));
+    this.setItem(key, list.splice(index, 1));
     return target;
   }
 
@@ -49,19 +49,17 @@ export default class VideoLocalStorage {
   }
 
   getStoredVideoCount() {
-    return this.getVideoList(VIDEOS_TO_WATCH).length + this.getVideoList(VIDEOS_WATCHED);
-  }
-
-  addRecentKeyword(keyword) {
-    const key = 'recentKeywords';
-    const recentKeywords = this.getVideoList(key);
-
-    recentKeywords.unshift(keyword);
-
-    this.setItem(key, this.recentKeywords.slice(0, MAX_RECENT_KEYWORD_COUNT));
+    return this.getList(VIDEOS_TO_WATCH).length + this.getList(VIDEOS_WATCHED);
   }
 
   isStoredVideo(id) {
-    return this.getVideoList(VIDEOS_TO_WATCH).some((video) => video.videoId === id);
+    return this.getList(VIDEOS_TO_WATCH).some((video) => video.videoId === id);
+  }
+
+  addRecentKeyword(keyword) {
+    const recentKeywords = this.getList(RECENT_KEYWORDS);
+
+    recentKeywords.unshift(keyword);
+    this.setItem(RECENT_KEYWORDS, recentKeywords.slice(0, MAX_RECENT_KEYWORD_COUNT));
   }
 }

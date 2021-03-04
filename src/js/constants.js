@@ -10,5 +10,6 @@ export const REGION_CODE = 'KR';
 
 export const VIDEOS_TO_WATCH = 'videosToWatch';
 export const VIDEOS_WATCHED = 'videosWatched';
+export const RECENT_KEYWORDS = 'recentKeywords';
 
 export const STORAGE_CAPACITY_FULL = `최대 영상 저장갯수 ${MAX_VIDEO_STORAGE_CAPACITY}개가 다 찼습니다.`;

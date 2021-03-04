@@ -6,10 +6,16 @@ import {
   MAX_RESULT_COUNT,
   REGION_CODE,
   VIDEOS_TO_WATCH,
+  RECENT_KEYWORDS,
   STORAGE_CAPACITY_FULL,
   MAX_VIDEO_STORAGE_CAPACITY,
 } from './constants.js';
-import { getThumbnailTemplate, getChannelTitleTemplate, resultNotFoundTemplate } from './layout/searchResult.js';
+import {
+  getThumbnailTemplate,
+  getChannelTitleTemplate,
+  resultNotFoundTemplate,
+  getRecentKeywordTemplate,
+} from './layout/searchResult.js';
 import { getSkeletonTemplate } from './layout/skeleton.js';
 import { formatDateKR } from './utils/formatDate.js';
 import { $, isEndOfPage } from './utils/DOM.js';
@@ -33,6 +39,7 @@ export default class App {
     this.$searchResultWrapper = $('#search-result-wrapper');
     this.$searchKeywordForm = $('#search-keyword-form');
     this.$searchButton = $('#search-button');
+    this.$recentKeyword = $('#recent-keyword');
     this.$modalCloseButton = $('#modal-close-button');
     this.$storedVideoCount = $('#stored-video-count');
     this.$snackbar = $('#snackbar');
@@ -83,6 +90,7 @@ export default class App {
   onShowModal() {
     this.$searchSection.classList.add('open');
     this.showCurrentStoredVideoCount();
+    this.renderRecentKeyword();
   }
 
   onCloseModal() {
@@ -175,10 +183,19 @@ export default class App {
     });
   }
 
+  renderRecentKeyword() {
+    const recentKeywords = this.videoStorage.getList(RECENT_KEYWORDS);
+
+    this.$recentKeyword.innerHTML = getRecentKeywordTemplate(recentKeywords);
+  }
+
   onSearchKeyword(e) {
     e.preventDefault();
 
     this.#keyword = e.target.elements['search-keyword-input'].value;
+    this.videoStorage.addRecentKeyword(this.#keyword);
+    this.renderRecentKeyword();
+
     this.#groupIndex = -1;
     this.#nextPageToken = '';
     this.$searchResultWrapper.innerHTML = '';
