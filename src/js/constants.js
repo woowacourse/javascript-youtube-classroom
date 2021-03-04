@@ -12,6 +12,7 @@ export const SELECTORS = {
     MODAL_CLOSE: '.modal-close',
     MODAL: '.modal',
     WATCH_LIST: '.watch-list',
+    YOUTUBE_SEARCH_FORM_CONTAINER: '.youtube-search-form-container',
     YOUTUBE_SEARCH_RESULT_LIST: '.youtube-search-result-list',
     YOUTUBE_SEARCH_RESULT: '.youtube-search-result',
     BTN_SAVE: '.btn-save',
