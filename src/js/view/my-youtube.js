@@ -3,6 +3,7 @@ import {
   searchNotFoundTemplate,
   searchVideoTemplate,
   recentKeywordsTemplate,
+  myVideoInfosTemplate,
 } from './template.js';
 class MyYoutubeView {
   renderVideoArticle = (info, save) => {
@@ -29,6 +30,11 @@ class MyYoutubeView {
   renderRecentKeywordSection = keywords => {
     const $recentKeywordsSection = $('#recent-keywords');
     $recentKeywordsSection.innerHTML = recentKeywordsTemplate(keywords);
+  };
+
+  renderMyVideoInfosSection = length => {
+    const $myVideoInfosSection = $('#my-video-infos');
+    $myVideoInfosSection.innerHTML = myVideoInfosTemplate(length);
   };
 
   resetView = () => {

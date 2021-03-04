@@ -37,9 +37,7 @@ export const searchVideoTemplate = (info, save) => {
 };
 
 export const searchNotFoundTemplate = () => {
-  return `
-        <img id="search-not-found" src="./src/images/status/not_found.png" />
-    `;
+  return `<img id="search-not-found" src="./src/images/status/not_found.png" />`;
 };
 
 export const recentKeywordsTemplate = keywords => {
@@ -52,4 +50,10 @@ export const recentKeywordsTemplate = keywords => {
       .join('')}
 
     `;
+};
+
+export const myVideoInfosTemplate = length => {
+  return `<div class="d-flex justify-end text-gray-700">
+            저장된 영상 갯수: ${length}개
+          </div>`;
 };
