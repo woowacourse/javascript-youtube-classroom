@@ -16,7 +16,6 @@ export default class VideoSearchModal {
   }
 
   setup() {
-    store.subscribe(this.render.bind(this));
     this.youtubeAPIManager = new YoutubeAPIManager();
   }
 
@@ -39,10 +38,6 @@ export default class VideoSearchModal {
         </section>
       </div>
     </div>`;
-  }
-
-  render() {
-    console.log('render');
   }
 
   mount() {

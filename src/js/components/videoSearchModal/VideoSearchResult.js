@@ -39,7 +39,6 @@ export default class VideoSearchResult {
     for (let i = 0; i < 10; i++) {
       fragment.appendChild(skeleton.cloneNode(true));
     }
-    console.log(fragment);
     return fragment;
   }
 
@@ -76,11 +75,10 @@ export default class VideoSearchResult {
 
   render(preStates, states) {
     if (preStates.searchHistory !== states.searchHistory) {
-      this.$searchedVideoWrapper.innerHTML = ``;
+      this.$searchedVideoWrapper.innerHTML = '';
     }
 
     if (preStates.savedVideoCount !== states.savedVideoCount) {
-      console.log(states.savedVideoCount);
       this.$savedVideoCount.textContent = states.savedVideoCount;
     }
 
@@ -89,10 +87,8 @@ export default class VideoSearchResult {
       states.requestPending
     ) {
       this.$searchedVideoWrapper.appendChild(this.skeletonTemplate());
-      // this.$searchedVideoWrapper.innerHTML += `${this.skeletonTemplate()}`;
     }
 
-    // TODO : iframe reload 문제 해결
     if (preStates.searchedVideos !== states.searchedVideos) {
       if (states.searchedVideos.length === 0) {
         this.$searchedVideoWrapper.innerHTML = `<img class="w-100" src="./src/images/status/not_found.png" alt="not found"/>`;

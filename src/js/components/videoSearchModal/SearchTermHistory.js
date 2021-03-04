@@ -25,6 +25,7 @@ export default class SearchTermHistory {
     store.dispatch(updateRequestPending(true));
     this.$props.youtubeAPIManager.setSearchTerm(searchTerm);
     this.$props.youtubeAPIManager.requestVideos().then((items) => {
+      store.dispatch(updateRequestPending(false));
       store.dispatch(addVideos(items));
     });
   }

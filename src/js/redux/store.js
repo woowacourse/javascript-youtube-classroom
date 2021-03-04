@@ -34,8 +34,6 @@ export default class Store {
   }
 
   dispatch(action) {
-    console.log('Action : ', action);
-    console.log('State : ', this.states);
     this.preStates = this.states;
     this.states = this.reduce(this.states, action);
     this.notifySubscribers();

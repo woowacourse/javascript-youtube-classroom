@@ -5,39 +5,37 @@ import {
   INCREASE_SAVED_VIDEO_COUNT,
 } from './actionType.js';
 
-const searchedVideoReducer = (states, { type, payload }) => {
+const searchedVideoReducer = (state, { type, payload }) => {
   switch (type) {
     case ADD_VIDEOS:
       return [...payload.videos];
     default:
-      return states;
+      return state;
   }
 };
 
-const searchHistoryReducer = (states, { type, payload }) => {
+const searchHistoryReducer = (state, { type, payload }) => {
   switch (type) {
     case ADD_SEARCH_TERM:
-      const newStates = [...states];
+      const newStates = [...state];
       const indexOfSearchTerm = newStates.indexOf(payload.searchTerm);
       if (indexOfSearchTerm !== -1) {
         newStates.splice(indexOfSearchTerm, 1);
         newStates.unshift(payload.searchTerm);
         return newStates;
       }
-      return [payload.searchTerm, ...states].slice(0, 3);
+      return [payload.searchTerm, ...state].slice(0, 3);
     default:
-      return states;
+      return state;
   }
 };
 
-// TODO : state로 네이밍 통일
-const requestPendingReducer = (states, { type, payload }) => {
+const requestPendingReducer = (state, { type, payload }) => {
   switch (type) {
     case UPDATE_REQUEST_PENDING:
-      console.log('reducer : ', payload.pendingState);
       return payload.pendingState;
     default:
-      return states;
+      return state;
   }
 };
 
