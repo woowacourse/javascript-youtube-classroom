@@ -23,7 +23,7 @@ export const onModalScroll = async () => {
     : '';
 
   const response = await request(keyword, pageToken);
-  const recentSearchResults = localStorage.get('recentSearchResults');
+  const recentSearchResults = localStorage.get('recentSearchResults') ?? [];
   const savedClips = localStorage.get('savedClips') ?? [];
   const savedClipIds = savedClips.map((savedClip) => savedClip.id.videoId);
 

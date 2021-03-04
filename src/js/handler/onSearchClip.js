@@ -1,5 +1,6 @@
-import { request } from '../utils/fetch.js';
 import { $ } from '../utils/querySelector.js';
+import { YOUTUBE } from '../utils/constant.js';
+import { request } from '../utils/fetch.js';
 import { showElement, hideElement } from '../utils/setAttribute.js';
 import localStorage from '../utils/localStorage.js';
 import {
@@ -52,4 +53,5 @@ export const onSearchClip = async (event) => {
 
   const recentKeywords = localStorage.get('recentKeywords') ?? [];
   renderRecentKeywords(recentKeywords);
+  $input.value = '';
 };

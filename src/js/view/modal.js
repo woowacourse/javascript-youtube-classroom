@@ -8,7 +8,7 @@ const searchResultClipTemplate = (video, index, isSaved = false) => {
     .split('.');
 
   return `
-    <article class="clip">
+    <article class="clip" data-js="youtube-search-modal__clip">
       <div class="preview-container">
         <iframe 
           width="100%"
@@ -58,7 +58,7 @@ const recentKeywordsLabel = () => {
 };
 
 const recentKeywordTemplate = (keyword) => {
-  return `<a class="chip">${keyword}</a>`;
+  return `<a class="chip" data-js="youtube-search-modal__chip">${keyword}</a>`;
 };
 
 export const renderRecentKeywords = (recentKeywords) => {
