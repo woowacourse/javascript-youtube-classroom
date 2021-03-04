@@ -224,6 +224,14 @@ $(SELECTORS.CLASS.YOUTUBE_SEARCH_RESULT).addEventListener('click', async (event)
   renderSavedVideos(selectedVideo.items);
 });
 
+$(SELECTORS.CLASS.RECENT_KEYWORD_LIST).addEventListener('click', (event) => {
+  if (event.target.classList.contains('chip')) {
+    const keyword = event.target.textContent;
+    $(SELECTORS.ID.YOUTUBE_SEARCH_KEYWORD_INPUT).value = keyword;
+    $(SELECTORS.ID.YOUTUBE_SEARCH_FORM).requestSubmit();
+  }
+});
+
 const initVideos = async () => {
   const ids = store.load(LOCAL_STORAGE_KEYS.WATCH_LIST);
   if (!ids || ids.length <= 0) return;
