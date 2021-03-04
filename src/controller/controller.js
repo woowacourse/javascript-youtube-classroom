@@ -28,6 +28,7 @@ function onModalClose() {
 
 function onVideoSearch(event) {
   event.preventDefault();
+  view.hideElementBySelector(`#${SELECTOR_ID.NOT_FOUND_CONTENT}`);
   view.renderSkeletonItems();
   getVideosAsync($searchFormInput.value).then(videos => {
     view.renderVideoItems(videos);

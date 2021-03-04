@@ -19,6 +19,9 @@ const view = {
   showElementBySelector(selector) {
     $(selector).classList.remove('removed');
   },
+  hideElementBySelector(selector) {
+    $(selector).classList.add('removed');
+  },
 };
 
 export default view;

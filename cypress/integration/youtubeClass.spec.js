@@ -36,6 +36,18 @@ context('유튜브 강의실 테스트', () => {
       cy.wait(3000);
       cy.get(`#${SELECTOR_ID.NOT_FOUND_CONTENT}`).should('be.visible');
     });
+
+    it('최초 검색결과는 10개까지만 보여준다. 더 많은 데이터는 스크롤을 내릴 때 추가로 불러온다.', () => {
+      click(`#${SELECTOR_ID.SEARCH_BUTTON}`);
+      type(`#${SELECTOR_ID.SEARCH_FORM_INPUT}`, '우아한');
+      click(`#${SELECTOR_ID.SEARCH_FORM_SUBMIT}`);
+      cy.wait(3000);
+      cy.get(`.${SELECTOR_CLASS.CLIP}`).last().scrollIntoView();
+      cy.wait(3000);
+      cy.get(`#${SELECTOR_ID.VIDEO_WRAPPER} .${SELECTOR_CLASS.CLIP}`)
+        .its('length')
+        .should('be.gt', 10);
+    });
   });
 });
 
