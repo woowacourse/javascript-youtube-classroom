@@ -37,4 +37,11 @@ describe('simba-tube', () => {
     cy.get('#modal-search-button').click();
     cy.get('.chip').eq(0).should('have.text', '불닭');
   });
+
+  it('youtube api에서 결과를 가져오는 동안 skeleton card UI로 로딩 화면을 보여준다.', () => {
+    cy.get('#search-btn').click();
+    cy.get('#modal-search-input').type('불닭');
+    cy.get('#modal-search-button').click();
+    cy.get('.skeleton').should('be.visible');
+  });
 });
