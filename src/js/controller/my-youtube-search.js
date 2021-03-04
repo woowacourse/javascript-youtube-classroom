@@ -7,7 +7,6 @@ class MyYoutubeSearchController {
 
   init() {
     this.handleSearch();
-    this.view.renderNotFound();
   }
 
   getSearchInput = () => {
@@ -19,11 +18,15 @@ class MyYoutubeSearchController {
     await this.model.getVideoInfosBySearch({ query });
 
     this.view.renderVideoArticles(this.model.videoInfos);
+    if (this.model.videoInfos.length === 0) {
+      this.view.renderNotFound();
+    }
     this.handleIframeLoad();
   };
 
   handleSearch = () => {
-    $('#search-youtube-button').addEventListener('click', () => {
+    $('#search-youtube-form').addEventListener('submit', event => {
+      event.preventDefault();
       this.getVideosBySearch();
     });
   };
