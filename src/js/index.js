@@ -1,5 +1,5 @@
 import { onModalShow } from './handler/onModalShow.js';
-import { closeModal } from './view/viewModal.js';
+import { closeModal } from './view/modal.js';
 import { $ } from './utils/querySelector.js';
 
 export const YoutubeClassRoom = () => {
