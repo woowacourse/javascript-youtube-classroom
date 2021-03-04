@@ -21,6 +21,7 @@ export default class Search {
 
     searchHistory.resetPageToken();
     searchHistory.setKeyword(searchKeyword);
+    this.searchController.updateKeywordHistory();
     this.searchController.searchVideos();
   }
 

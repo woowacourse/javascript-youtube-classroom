@@ -54,4 +54,8 @@ export default class SearchController {
       scrollEventLock.unlock();
     }
   }
+
+  updateKeywordHistory() {
+    this.searchView.showKeywordHistory();
+  }
 }

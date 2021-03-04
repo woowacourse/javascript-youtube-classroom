@@ -7,6 +7,7 @@ const elements = {
   $searchForm: $("#search-form"),
   $searchResults: $("#search-results"),
   $notFound: $("#not-found"),
+  $keywordHistory: $("#keyword-history"),
 };
 
 export default elements;
