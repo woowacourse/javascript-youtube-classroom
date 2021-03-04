@@ -1,31 +1,39 @@
+import { STORAGE_NAME, VIDEOS } from "../utils/constants.js";
+
 const searchHistory = {
   keywords: [],
   pageToken: "",
 
   setKeyword(newKeyword) {
-    if (this.keywords.includes(newKeyword)) {
+    const keywords = this.getKeywordAll();
+
+    if (keywords.includes(newKeyword)) {
       this.removeKeyword(newKeyword);
     }
 
-    this.keywords = [newKeyword, ...this.keywords];
-
-    while (this.keywords.length > 3) {
-      this.keywords.pop();
-    }
+    const updatedKeywords = [newKeyword, ...keywords];
+    localStorage.setItem(
+      STORAGE_NAME.KEYWORDS,
+      JSON.stringify(updatedKeywords.slice(0, VIDEOS.KEYWORD_HISTORY_LENGTH))
+    );
   },
 
   getKeyword() {
-    return this.keywords[0];
+    return this.getKeywordAll()[0];
   },
 
   getKeywordAll() {
-    return this.keywords;
+    const keyword = localStorage.getItem(STORAGE_NAME.KEYWORDS);
+
+    return keyword ? JSON.parse(keyword) : [];
   },
 
   removeKeyword(prevKeyword) {
-    this.keywords = this.keywords.filter(
+    const keywords = this.getKeywordAll().filter(
       (currentKeyword) => currentKeyword !== prevKeyword
     );
+
+    localStorage.setItem(STORAGE_NAME.KEYWORDS, JSON.stringify(keywords));
   },
 
   setPageToken(newToken) {
