@@ -14,7 +14,7 @@ export default class SearchController {
 
   async searchVideos() {
     if (searchHistory.getPageToken() === "") {
-      // this.searchView.resetSearchResults();
+      this.searchView.resetSearchResults();
       loadingSearchResults.resetLoadCount();
       this.searchView.showSkeletonClip();
     }
