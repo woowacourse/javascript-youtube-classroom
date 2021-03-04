@@ -6,6 +6,7 @@ const elements = {
   $searchModalClose: $("#search-modal-close"),
   $searchForm: $("#search-form"),
   $searchResults: $("#search-results"),
+  $skeletonSearchResults: $("#skeleton-search-results"),
   $notFound: $("#not-found"),
   $keywordHistory: $("#keyword-history"),
   $savedVideoCount: $("#saved-video-count"),

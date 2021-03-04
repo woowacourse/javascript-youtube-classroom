@@ -1,25 +1,24 @@
 .skeleton {
   background-color: #e7e7e7;
   overflow: hidden;
-  position: relative;
 }
 
-.skeleton .image {
-  width: 219px;
+.skeleton.image {
+  width: 236px;
   height: 118px;
 }
 
-.skeleton .line {
-  width: 219px;
+.skeleton.line {
+  width: 236px;
   height: 16px;
 }
 
-.skeleton .short-line {
+.skeleton.short-line {
   width: 110px;
   height: 16px;
 }
 
-.skeleton .skeleton-btn {
+.skeleton.skeleton-btn {
   width: 80px;
   height: 36px;
 }

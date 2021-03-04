@@ -1,7 +1,12 @@
 import SearchController from "./SearchController.js";
 import elements from "../utils/elements.js";
 import searchHistory from "../state/searchHistory.js";
-import { openModal, closeModal } from "../utils/dom.js";
+import {
+  openModal,
+  closeModal,
+  showElement,
+  hideElement,
+} from "../utils/dom.js";
 
 export default class Search {
   constructor() {
@@ -27,6 +32,11 @@ export default class Search {
     elements.$searchResults.addEventListener(
       "click",
       this.onClickSaveVideoButton.bind(this)
+    );
+
+    elements.$searchResults.addEventListener(
+      "loadSearchAll",
+      this.onLoadSearchAll
     );
   }
 
@@ -59,5 +69,10 @@ export default class Search {
   onClickSaveVideoButton(e) {
     if (!e.target.dataset.videoId) return;
     this.searchController.saveVideo(e.target.dataset.videoId);
+  }
+
+  onLoadSearchAll() {
+    hideElement(elements.$skeletonSearchResults);
+    showElement(elements.$searchResults);
   }
 }

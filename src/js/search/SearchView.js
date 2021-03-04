@@ -8,15 +8,15 @@ import elements from "../utils/elements.js";
 export default class SearchView {
   showNotFoundImg() {
     hideElement(elements.$searchResults);
+    hideElement(elements.$skeletonSearchResults);
     showElement(elements.$notFound);
   }
 
   showSearchResults() {
     hideElement(elements.$notFound);
-    showElement(elements.$searchResults);
 
     if (searchHistory.getPageToken() === "") {
-      elements.$searchResults.innerHTML = "";
+      this.resetSearchResults();
     }
 
     elements.$searchResults.appendChild(
@@ -36,6 +36,14 @@ export default class SearchView {
 
   showSavedVideoCount() {
     elements.$savedVideoCount.innerText = `저장된 영상 개수: ${videos.getSavedVideoCount()}개`;
+  }
+
+  showSkeletonClip() {
+    showElement(elements.$skeletonSearchResults);
+  }
+
+  resetSearchResults() {
+    elements.$searchResults.innerHTML = "";
   }
 
   hideSavedVideoButton(videoId) {

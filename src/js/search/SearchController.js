@@ -4,6 +4,7 @@ import { getSearchQueryString } from "../queries/searchQuery.js";
 import scrollEventLock from "../state/scrollEventLock.js";
 import searchHistory from "../state/searchHistory.js";
 import videos from "../state/videos.js";
+import loadingSearchResults from "../state/loadingSearchResults.js";
 
 export default class SearchController {
   constructor() {
@@ -12,6 +13,12 @@ export default class SearchController {
   }
 
   async searchVideos() {
+    if (searchHistory.getPageToken() === "") {
+      // this.searchView.resetSearchResults();
+      loadingSearchResults.resetLoadCount();
+      this.searchView.showSkeletonClip();
+    }
+
     const res = await fetch(
       `${YOUTUBE_URL}/${API.GET.SEARCH}?${getSearchQueryString()}`
     );
