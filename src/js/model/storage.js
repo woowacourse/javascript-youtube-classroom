@@ -1,12 +1,15 @@
 class StorageModel {
   #myVideo;
+  #keywords;
 
   constructor() {
     this.#myVideo = [];
+    this.#keywords = [];
   }
 
   init() {
     localStorage.setItem('myVideo', JSON.stringify(this.#myVideo));
+    localStorage.setItem('keywords', JSON.stringify(this.#keywords));
   }
 
   saveVideo = json => {
@@ -25,6 +28,22 @@ class StorageModel {
       ).length > 0
     );
   };
+
+  saveRecentKeyword = keyword => {
+    // get set util 화
+    const recentKeywords = JSON.parse(localStorage.getItem('keywords'));
+    recentKeywords.unshift(keyword);
+    const newKeywords = [...new Set(recentKeywords)].slice(
+      0,
+      recentKeywords.length < 3 ? recentKeywords.length : 3
+    );
+
+    localStorage.setItem('keywords', JSON.stringify(newKeywords));
+  };
+
+  get recentKeywords() {
+    return JSON.parse(localStorage.getItem('keywords'));
+  }
 }
 
 export default StorageModel;

@@ -19,11 +19,13 @@ class MyYoutubeSearchController {
   getVideosBySearch = async () => {
     this.view.resetView();
     const query = this.getSearchInput();
+    this.storage.saveRecentKeyword(query);
+    this.getRecentKeyword();
     await this.youtube.getVideoInfosBySearch({ query });
 
     this.youtube.videoInfos.forEach(info => {
       const save = this.storage.findVideoByInfo(info);
-      console.log(save);
+
       this.view.renderVideoArticle(info, save);
     });
 
@@ -32,6 +34,10 @@ class MyYoutubeSearchController {
     }
     this.handleIframeLoad();
     this.handleSaveVideo();
+  };
+
+  getRecentKeyword = () => {
+    this.view.renderRecentKeywordSection(this.storage.recentKeywords);
   };
 
   saveVideo = e => {
