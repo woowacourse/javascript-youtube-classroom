@@ -1,3 +1,4 @@
+// TODO : 템플릿도 나중에 폴더만들어서 사용되는 곳대로 나누기
 export const searchVideoTemplate = (info, save) => {
   return `<article class="clip skeleton">
             <div class="preview-container image">
@@ -27,6 +28,7 @@ export const searchVideoTemplate = (info, save) => {
                         <button class="btn js-save-button ${
                           save ? 'invisible' : ''
                         }" data-info='${JSON.stringify(info).replace(
+    // TODO : util화하기 - escapeString
     /'/gi,
     '&#039;'
   )}'>⬇️ 저장</button>

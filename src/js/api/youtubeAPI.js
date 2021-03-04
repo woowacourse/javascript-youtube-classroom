@@ -11,6 +11,7 @@ export const api = {
     )
       .then(response => response.ok && response.json())
       .catch(error => {
+        // TODO : 에러처리 - if response.ok 이용해서
         console.log(error);
       });
   },
