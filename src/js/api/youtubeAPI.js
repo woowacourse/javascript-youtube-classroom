@@ -8,11 +8,14 @@ export const api = {
       {
         method: 'GET',
       }
-    )
-      .then(response => response.ok && response.json())
-      .catch(error => {
-        // TODO : 에러처리 - if response.ok 이용해서
-        console.log(error);
-      });
+    ).then(response => {
+      if (response.ok) {
+        return response.json();
+      } else {
+        alert(
+          `데이터 불러오기 실패! : 에러코드 - ${response.status} \n다시 검색해주세요!`
+        );
+      }
+    });
   },
 };
