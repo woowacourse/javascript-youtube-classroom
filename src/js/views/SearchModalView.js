@@ -101,7 +101,9 @@ export default class SearchModalView extends View {
 
   renderVideoClips(videos) {
     $('.skeleton').hide();
-    const videoClips = videos.map((video) => clipMaker(video)).join('');
+    const videoClips = videos
+      .map((video) => clipMaker(video, { isModal: false }))
+      .join('');
     this.modalVideos.addInnerHTML(videoClips);
   }
 

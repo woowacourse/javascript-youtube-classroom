@@ -1,4 +1,4 @@
-export default function clipMaker(video) {
+export default function clipMaker(video, type) {
   return `
     <article class="clip">
       <div class="preview-container">
@@ -25,7 +25,27 @@ export default function clipMaker(video) {
             <p>${video.publishedAt}</p>
           </div>
         </div>
-      </div>
+        </div>
+      ${type.isModal ? saveButtonTemplate() : buttonPackTemplate()}
     </article>
+  `;
+}
+
+function saveButtonTemplate() {
+  return `
+    <div class="d-flex justify-end clip-save">
+      <button class="btn">⬇️ 저장</button>
+    </div>
+  `;
+}
+
+function buttonPackTemplate() {
+  return `
+    <div>
+      <span class="opacity-hover">✅</span>
+      <span class="opacity-hover">👍</span>
+      <span class="opacity-hover">💬</span>
+      <span class="opacity-hover">🗑️</span>
+    </div>
   `;
 }
