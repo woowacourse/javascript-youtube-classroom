@@ -24,4 +24,17 @@ describe('Youtube classroom test', () => {
       cy.get('#video-list .js-video').should('have.length', videoCount + 1);
     });
   });
+
+  it('이미 저장된 영상은 검색결과에서 저장 버튼이 나타나지 않는다.', () => {
+    cy.get('#search-button').click();
+    cy.get('#video-search-input').type('로이드');
+    cy.get('#video-search-submit').click();
+    cy.get('.js-save-button').eq(0).click({ force: true });
+    cy.get('.js-save-button').eq(0).should('not.be.visible');
+
+    cy.get('#video-search-input').clear();
+    cy.get('#video-search-input').type('로이드');
+    cy.get('#video-search-submit').click();
+    cy.get('.js-save-button').eq(0).should('not.be.visible');
+  });
 });

@@ -22,8 +22,8 @@ dom.$videoSearchForm.addEventListener('submit', async e => {
   e.preventDefault();
 
   const keyword = e.target.elements['video-search-input'].value;
+  dom.$videoSearchResult.innerHTML = '';
   const { items: resultItems } = await fetchSearchResult(keyword);
-
   dom.$videoSearchResult.innerHTML = resultItems
     .map(item => createVideoSnippetTemplate(item))
     .join('');
