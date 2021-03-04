@@ -37,4 +37,36 @@ context("모달을 통한 비디오 검색", () => {
       cy.get(".no-result-image").should("to.be.exist");
     });
   });
+
+  describe("스크롤을 끝까지 내리는 경우", () => {
+    beforeEach(() => {
+      cy.visit("http://127.0.0.1:5500");
+    });
+
+    // TODO: 테스트 코드 수정 필요
+    it("10개 이상의 검색 결과가 있는 상태에서 스크롤을 끝까지 내릴 경우, 그 다음 검색 결과가 누적되어 20개 이하의 결과가 출력된다.", () => {
+      cy.get(".menu-section__video-search-btn").click();
+      cy.get(".search-modal__input").type("스낵랩");
+      cy.get(".search-modal__btn").click();
+      cy.get(".search-modal__scroll-area").scrollTo("bottom", { ensureScrollable: false });
+      cy.get(".search-modal__video-wrapper")
+        .find(".clip")
+        .its("length")
+        .should("be.gte", 10)
+        .and("be.lte", 20);
+    });
+
+    it("10개 이하의 검색 결과가 있는 상태에서 스크롤을 끝까지 내릴 경우, 검색 결과의 변화가 없어야한다.", () => {
+      cy.get(".menu-section__video-search-btn").click();
+      cy.get(".search-modal__input").type("ㄻㄴㅇㄹㄴㅇㄹㄴㅇㅁㄹㄴㅁㅇㄹㄴㅇㅁㄻㄹ");
+      cy.get(".search-modal__btn").click();
+      cy.get(".search-modal__video-wrapper")
+        .find(".clip")
+        .its("length")
+        .then(size => {
+          cy.get(".search-modal__video-wrapper").scrollTo("bottom", { ensureScrollable: false });
+          cy.get(".search-modal__video-wrapper").find(".clip").its("length").should("to.be", size);
+        });
+    });
+  });
 });

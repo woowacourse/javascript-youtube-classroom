@@ -1,18 +1,24 @@
 import { $ } from "../utils/dom.js";
 import { API_KEY } from "../apiKey.js";
+
 class SearchModal {
   constructor() {
     this.initState();
     this.selectDOM();
     this.bindEvent();
+    this.initObserver();
   }
 
   initState() {
+    this.keyword = "";
     this.videos = [];
+    this.nextPageToken = "";
   }
 
-  setState({ videos }) {
+  setState({ keyword, videos, nextPageToken }) {
+    this.keyword = keyword ?? this.keyword;
     this.videos = videos ?? this.videos;
+    this.nextPageToken = nextPageToken ?? this.nextPageToken;
 
     this.render();
   }
@@ -21,6 +27,8 @@ class SearchModal {
     this.$target = $(".search-modal");
     this.$searchInput = $(".search-modal__input");
     this.$videoWrapper = $(".search-modal__video-wrapper");
+    this.$scrollArea = $(".search-modal__scroll-area");
+    this.$moreArea = $(".search-modal__more-area");
   }
 
   bindEvent() {
@@ -29,6 +37,19 @@ class SearchModal {
 
       this.handleSearchKeyword();
     });
+  }
+
+  initObserver() {
+    this.observer = new IntersectionObserver(
+      ([{ isIntersecting }]) => {
+        if (isIntersecting) {
+          this.handleLoadMore();
+        }
+      },
+      { root: this.$scrollArea },
+    );
+
+    this.observer.observe(this.$moreArea);
   }
 
   showLoadingAnimation() {
@@ -62,7 +83,7 @@ class SearchModal {
       return;
     }
 
-    const { items } = await res.json();
+    const { items, nextPageToken } = await res.json();
 
     const videos = items.map(
       ({ id: { videoId }, snippet: { channelId, channelTitle, publishedAt, title } }) => ({
@@ -74,7 +95,37 @@ class SearchModal {
       }),
     );
 
-    this.setState({ videos });
+    this.setState({ keyword, videos, nextPageToken });
+  }
+
+  async handleLoadMore() {
+    if (!this.$target.classList.contains("open")) {
+      return;
+    }
+
+    const res = await fetch(
+      `https://content.googleapis.com/youtube/v3/search?part=snippet&q=${encodeURI(
+        this.keyword,
+      )}&maxResults=10&pageToken=${this.nextPageToken}&key=${API_KEY}`,
+    );
+
+    if (!res.ok) {
+      return;
+    }
+
+    const { items, nextPageToken } = await res.json();
+
+    const nextVideos = items.map(
+      ({ id: { videoId }, snippet: { channelId, channelTitle, publishedAt, title } }) => ({
+        videoId,
+        channelId,
+        channelTitle,
+        publishedAt,
+        title,
+      }),
+    );
+
+    this.setState({ videos: [...this.videos, ...nextVideos], nextPageToken });
   }
 
   render() {
