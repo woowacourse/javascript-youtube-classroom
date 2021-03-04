@@ -39,9 +39,25 @@ class MyYoutubeSearchController {
   };
 
   handleModalScroll = () => {
-    $('#search-video-wrapper').addEventListener('scroll', () => {
-      console.log('스크롤중...');
+    $('#search-video-wrapper').addEventListener('scroll', event => {
+      if (
+        this.getScrollTop(event.target) <
+        this.getDocumentHeight() - $('#search-video-wrapper').clientHeight
+      )
+        return;
+
+      this.getVideosBySearch();
+      // fetch
     });
+  };
+
+  getScrollTop = target => {
+    return target.scrollTop;
+  };
+
+  getDocumentHeight = () => {
+    const body = $('#search-video-wrapper');
+    return Math.max(body.scrollHeight, body.offsetHeight);
   };
 
   removeSkeleton = event => {
