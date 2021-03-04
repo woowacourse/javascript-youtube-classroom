@@ -25,14 +25,14 @@ a {
   opacity: 1;
 }
 
+button:hover {
+  background-color: rgb(179, 234, 242);
+}
+
 .save-btn {
   position: absolute;
   bottom: 10px;
   right: 0px;
-}
-
-.save-btn:hover {
-  background-color: rgb(0, 188, 212);
 }
 
 .video-info {

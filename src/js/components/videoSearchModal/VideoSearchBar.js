@@ -1,6 +1,10 @@
 import YoutubeAPIManager from '../../model/YoutubeAPIManager.js';
 import { store } from '../../index.js';
-import { addVideos, addSearchHistory } from '../../redux/action.js';
+import {
+  addVideos,
+  addSearchHistory,
+  updateRequestPending,
+} from '../../redux/action.js';
 
 export default class VideoSearchBar {
   constructor($target, $props) {
@@ -38,21 +42,25 @@ export default class VideoSearchBar {
   }
 
   bindEvent() {
-    this.$videoSearchForm.addEventListener('submit', this.onSubmit.bind(this));
+    this.$videoSearchForm.addEventListener(
+      'submit',
+      this.onRequestVideo.bind(this)
+    );
   }
 
-  onSubmit(e) {
+  onRequestVideo(e) {
     e.preventDefault();
     const searchTerm = e.target.elements['youtube-search-input'].value;
 
     if (searchTerm.trim(' ') === '') {
-      console.log('empty nono');
       return;
     }
 
     store.dispatch(addSearchHistory(searchTerm));
+    store.dispatch(updateRequestPending(true));
     this.$props.youtubeAPIManager.setSearchTerm(searchTerm);
     this.$props.youtubeAPIManager.requestVideos().then((items) => {
+      store.dispatch(updateRequestPending(false));
       store.dispatch(addVideos(items));
     });
   }

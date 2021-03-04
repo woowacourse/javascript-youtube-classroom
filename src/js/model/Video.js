@@ -22,30 +22,77 @@ export default class Video {
     return `${newDate.getFullYear()}년 ${newDate.getMonth()}월 ${newDate.getDate()}일`;
   }
 
-  toString() {
-    return `
-    <article class="clip">
-    <div class="preview-container">
-      <iframe width="100%" height="118" src="${this.videoEmbedUrl}" frameborder="0"
-        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-        allowfullscreen></iframe>
-    </div>
-    <div class="content-container pt-2 d-flex flex-col justify-between w-100">
-    
-      <div class="d-flex flex-col video-info">
-        <h3 class="video-title">${this.videoTitle}</h3>
-        <a href="${this.channelUrl}" target="_blank"
-          class="channel-name mt-1">
-          ${this.channelTitle}
-        </a>
-        <div class="meta">
-          <p>${this.uploadTime}</p>
-        </div>
-      </div>
+  createTemplate() {
+    const fragment = document.createDocumentFragment();
+    const clip = document.createElement('article');
+    clip.classList.add(...['clip', 'd-none']);
 
-      <button type="button" class="save-btn btn">⬇️ 저장</button>
-    </div>
-  </article>
-    `;
+    const previewContainer = document.createElement('div');
+    previewContainer.classList.add(...['preview-container']);
+
+    const iframe = document.createElement('iframe');
+    iframe.width = '100%';
+    iframe.height = '118';
+    iframe.src = `${this.videoEmbedUrl}`;
+    iframe.frameBorder = '0';
+    iframe.allow =
+      'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture';
+    iframe.allowFullscreen = 'true';
+    iframe.onload = (e) => {
+      e.target.classList.add('loaded');
+    };
+
+    previewContainer.appendChild(iframe);
+
+    const contentContainer = document.createElement('div');
+    contentContainer.classList.add(
+      ...[
+        'content-container',
+        'pt-2',
+        'd-flex',
+        'flex-col',
+        'justify-between',
+        'w-100',
+      ]
+    );
+
+    const videoInfo = document.createElement('div');
+    videoInfo.classList.add(...['d-flex', 'flex-col', 'video-info']);
+
+    const videoTitle = document.createElement('h3');
+    videoTitle.classList.add(...['video-title']);
+    videoTitle.textContent = this.videoTitle;
+
+    const channelUrl = document.createElement('a');
+    channelUrl.href = this.channelUrl;
+    channelUrl.target = '_blank';
+    channelUrl.classList.add(...['channel-name', 'mt-1']);
+    channelUrl.textContent = this.channelTitle;
+
+    const meta = document.createElement('div');
+    meta.classList.add('meta');
+
+    const uploadTime = document.createElement('p');
+    uploadTime.textContent = this.uploadTime;
+    uploadTime.classList.add('line');
+
+    meta.appendChild(uploadTime);
+
+    const button = document.createElement('button');
+    button.classList.add(...['save-btn', 'btn']);
+    button.textContent = '⬇️ 저장';
+
+    videoInfo.appendChild(videoTitle);
+    videoInfo.appendChild(channelUrl);
+    videoInfo.appendChild(meta);
+    contentContainer.appendChild(videoInfo);
+    contentContainer.appendChild(button);
+
+    clip.appendChild(previewContainer);
+    clip.appendChild(contentContainer);
+
+    fragment.appendChild(clip);
+
+    return fragment;
   }
 }

@@ -64,8 +64,17 @@ export default class VideoSearchModal {
     this.$modalClose = document.querySelector('.modal-close');
   }
 
+  onClickOutsideModal(e) {
+    if (e.target.closest('.modal-inner')) return;
+    this.onModalClose();
+  }
+
   bindEvent() {
     this.$modalClose.addEventListener('click', this.onModalClose.bind(this));
+    this.$target.addEventListener(
+      'mousedown',
+      this.onClickOutsideModal.bind(this)
+    );
   }
 
   onModalShow() {

@@ -14,9 +14,10 @@ export default class SearchTermHistory {
     store.subscribe(this.render.bind(this));
   }
 
-  onClick(e) {
+  onRequestVideo(e) {
     const searchTerm = e.target.textContent;
     store.dispatch(addSearchHistory(searchTerm));
+    store.dispatch(updateRequestPending(false));
     this.$props.youtubeAPIManager.setSearchTerm(searchTerm);
     this.$props.youtubeAPIManager.requestVideos().then((items) => {
       store.dispatch(addVideos(items));
@@ -31,7 +32,7 @@ export default class SearchTermHistory {
         const button = document.createElement('button');
         button.classList.add('chip');
         button.textContent = history;
-        button.addEventListener('click', this.onClick.bind(this));
+        button.addEventListener('click', this.onRequestVideo.bind(this));
         frag.appendChild(button);
       });
 

@@ -1,4 +1,8 @@
-import { ADD_VIDEOS, ADD_SEARCH_TERM } from './actionType.js';
+import {
+  ADD_VIDEOS,
+  ADD_SEARCH_TERM,
+  UPDATE_REQUEST_PENDING,
+} from './actionType.js';
 import Video from '../model/Video.js';
 
 export const addVideos = (items) => {
@@ -21,6 +25,16 @@ export const addSearchHistory = (searchTerm) => {
     type: ADD_SEARCH_TERM,
     payload: {
       searchTerm,
+    },
+  };
+};
+
+export const updateRequestPending = (pendingState) => {
+  console.log('Action : ', pendingState);
+  return {
+    type: UPDATE_REQUEST_PENDING,
+    payload: {
+      pendingState,
     },
   };
 };

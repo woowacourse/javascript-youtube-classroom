@@ -1,5 +1,5 @@
 import { store } from '../../index.js';
-import { addVideos } from '../../redux/action.js';
+import { addVideos, updateRequestPending } from '../../redux/action.js';
 
 export default class VideoSearchResult {
   constructor($target, $props) {
@@ -21,22 +21,72 @@ export default class VideoSearchResult {
     );
   }
 
+  skeletonTemplate() {
+    return `<div class="skeleton">
+              <div class="image"></div>
+              <p class="line"></p>
+              <p class="line"></p>
+            </div>
+            `.repeat(10);
+  }
+
+  displayClips() {
+    const $clips = this.$searchedVideoWrapper.querySelectorAll('.clip');
+    $clips.forEach((clip) => {
+      if (!clip.classList.contains('d-none')) return;
+      clip.classList.remove('d-none');
+    });
+  }
+
+  removeSkeletons() {
+    const $skeltons = this.$searchedVideoWrapper.querySelectorAll('.skeleton');
+    $skeltons.forEach((skeleton) => {
+      skeleton.remove();
+    });
+  }
+
+  async waitUntilAllVideoLoaded() {
+    return await new Promise((resolve) => {
+      const interval = setInterval(() => {
+        const $iframes = this.$searchedVideoWrapper.querySelectorAll('iframe');
+        const condition = Array.from($iframes).every((preview) =>
+          preview.classList.contains('loaded')
+        );
+        if (!condition) return;
+        this.displayClips();
+        this.removeSkeletons();
+        clearInterval(interval);
+        resolve();
+      }, 1500);
+    });
+  }
+
   render(preStates, states) {
     if (preStates.searchHistory !== states.searchHistory) {
-      this.$searchedVideoWrapper.innerHTML = '';
+      this.$searchedVideoWrapper.innerHTML = ``;
     }
 
-    if (preStates.searchedVideos !== states.searchedVideos) {
-      const template = states.searchedVideos
-        .map((video) => {
-          return `${video}`;
-        })
-        .join('');
+    if (
+      preStates.requestPending !== states.requestPending &&
+      states.requestPending
+    ) {
+      this.$searchedVideoWrapper.innerHTML += `${this.skeletonTemplate()}`;
+    }
 
-      this.$searchedVideoWrapper.innerHTML +=
-        template !== ''
-          ? template
-          : `<img class="w-100" src="./src/images/status/not_found.png" alt="not found"/>`;
+    // TODO : iframe reload 문제 해결
+    if (preStates.searchedVideos !== states.searchedVideos) {
+      if (states.searchedVideos.length === 0) {
+        this.$searchedVideoWrapper.innerHTML = `<img class="w-100" src="./src/images/status/not_found.png" alt="not found"/>`;
+        return;
+      }
+
+      const fragment = document.createDocumentFragment();
+      states.searchedVideos.forEach((video) => {
+        fragment.appendChild(video.createTemplate());
+      });
+
+      this.$searchedVideoWrapper.appendChild(fragment);
+      this.waitUntilAllVideoLoaded();
     }
   }
 
@@ -57,9 +107,12 @@ export default class VideoSearchResult {
         $videoWrapper.scrollHeight - $videoWrapper.scrollTop ===
         $videoWrapper.clientHeight
       ) {
+        store.dispatch(updateRequestPending(true));
         this.$props.youtubeAPIManager.requestVideos().then((items) => {
+          store.dispatch(updateRequestPending(false));
           store.dispatch(addVideos(items));
         });
+        ///////////////////////////
       }
     });
   }

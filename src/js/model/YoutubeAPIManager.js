@@ -17,7 +17,8 @@ export default class YoutubeAPIManager {
 
     return (
       `https://www.googleapis.com/youtube/v3/search?` +
-      `part=snippet&key=${MY_KEY}&q=${this.searchTerm}&maxResults=${MAX_RESULT}&type=video&${pageTokenQuery}`
+      `part=snippet&key=${MY_KEY}
+      &q=${this.searchTerm}&maxResults=${MAX_RESULT}&type=video&${pageTokenQuery}`
     );
   }
 

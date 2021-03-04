@@ -1,4 +1,8 @@
-import { ADD_VIDEOS, ADD_SEARCH_TERM } from './actionType.js';
+import {
+  ADD_VIDEOS,
+  ADD_SEARCH_TERM,
+  UPDATE_REQUEST_PENDING,
+} from './actionType.js';
 
 const searchedVideoReducer = (states, { type, payload }) => {
   switch (type) {
@@ -25,10 +29,21 @@ const searchHistoryReducer = (states, { type, payload }) => {
   }
 };
 
+const requestPendingReducer = (states, { type, payload }) => {
+  switch (type) {
+    case UPDATE_REQUEST_PENDING:
+      console.log('reducer : ', payload.pendingState);
+      return payload.pendingState;
+    default:
+      return states;
+  }
+};
+
 const combineReducers = (states, action) => {
   return {
     searchedVideos: searchedVideoReducer(states.searchedVideos, action),
     searchHistory: searchHistoryReducer(states.searchHistory, action),
+    requestPending: requestPendingReducer(states.requestPending, action),
   };
 };
 
