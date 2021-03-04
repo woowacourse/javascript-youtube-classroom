@@ -44,4 +44,12 @@ describe('simba-tube', () => {
     cy.get('#modal-search-button').click();
     cy.get('.skeleton').should('be.visible');
   });
+
+  it('검색 결과가 없는 경우 결과 없음 이미지를 보여준다. ', () => {
+    cy.get('#search-btn').click();
+    cy.get('#modal-search-input').type('sadffsdasdb');
+    cy.get('#modal-search-button').click();
+
+    cy.get('.not-found').should('be.visible');
+  });
 });
