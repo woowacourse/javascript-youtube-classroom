@@ -6,6 +6,14 @@
   justify-content: center;
 }
 
+.search-result-group {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, 230px);
+  grid-row-gap: 50px;
+  grid-column-gap: 12px;
+  justify-content: center;
+}
+
 .clip {
   height: 219px;
   cursor: pointer;

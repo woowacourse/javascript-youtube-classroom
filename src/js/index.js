@@ -1,25 +1,40 @@
 import { API_SEARCH_ENDPOINT, PART_TYPE, SEARCH_TYPE_VIDEO, MAX_RESULT_COUNT, REGION_CODE } from './constants.js';
-import { skeletonTemplate } from './layout/skeleton.js';
+import { getSkeletonTemplate } from './layout/skeleton.js';
 import { formatDateKR } from './utils/formatDate.js';
-import { getThumbnailTemplate, getChannelTitleTemplate } from './layout/searchResult.js';
+import { getThumbnailTemplate, getChannelTitleTemplate, resultNotFoundTemplate } from './layout/searchResult.js';
 import { YOUTUBE_API_KEY } from './env.js';
-import { $, $$ } from './utils/DOM.js';
+import { $ } from './utils/DOM.js';
+export default class App {
+  #groupIndex;
 
-export default function App() {
-  const $searchSection = $('#search-section');
-  const $searchKeywordForm = $('#search-keyword-form');
-  const $searchButton = $('#search-button');
-  const $modalCloseButton = $('#modal-close-button');
+  init() {
+    this.selectDOMs();
+    this.attachEvents();
+  }
 
-  const onShowModal = () => {
-    $searchSection.classList.add('open');
-  };
+  selectDOMs() {
+    this.$searchSection = $('#search-section');
+    this.$searchResultWrapper = $('#search-result-wrapper');
+    this.$searchKeywordForm = $('#search-keyword-form');
+    this.$searchButton = $('#search-button');
+    this.$modalCloseButton = $('#modal-close-button');
+  }
 
-  const onCloseModal = () => {
-    $searchSection.classList.remove('open');
-  };
+  attachEvents() {
+    this.$searchButton.addEventListener('click', this.onShowModal.bind(this));
+    this.$modalCloseButton.addEventListener('click', this.onCloseModal.bind(this));
+    this.$searchKeywordForm.addEventListener('submit', this.onSearchKeyword.bind(this));
+  }
 
-  const request = async (url) => {
+  onShowModal() {
+    this.$searchSection.classList.add('open');
+  }
+
+  onCloseModal() {
+    this.$searchSection.classList.remove('open');
+  }
+
+  async request(url) {
     try {
       const response = await fetch(url, {
         method: 'GET',
@@ -31,17 +46,17 @@ export default function App() {
     } catch (e) {
       console.error(e);
     }
-  };
+  }
 
-  const getURLQueryStringApplied = (queryStrings) => {
+  getRequestURL(queryStrings) {
     const queryStringFlattened = Object.keys(queryStrings)
       .map((key) => `&${key}=${queryStrings[key]}`)
       .join('');
 
     return `${API_SEARCH_ENDPOINT}?key=${YOUTUBE_API_KEY}`.concat(queryStringFlattened);
-  };
+  }
 
-  const processJSON = (rawData) => {
+  processJSON(rawData) {
     return rawData.items.map((item) => ({
       videoId: item.id.videoId,
       videoTitle: item.snippet.title,
@@ -49,42 +64,46 @@ export default function App() {
       channelTitle: item.snippet.channelTitle,
       publishedAt: formatDateKR(item.snippet.publishedAt),
     }));
-  };
+  }
 
-  const storeVideoData = ($element, videoData) => {
+  storeVideoData($element, videoData) {
     $element.dataset.videoId = videoData.videoId;
     $element.dataset.videoTitle = videoData.videoTitle;
     $element.dataset.channelId = videoData.channelId;
     $element.dataset.channelTitle = videoData.channelTitle;
     $element.dataset.publishedAt = videoData.publishedAt;
-  };
+  }
 
-  const renderSkeleton = () => {
-    const $searchResultWrapper = $('#search-result-wrapper');
+  renderSkeleton() {
+    this.#groupIndex += 1;
+    this.$searchResultWrapper.innerHTML += getSkeletonTemplate(this.#groupIndex);
+  }
 
-    $searchResultWrapper.innerHTML = skeletonTemplate.repeat(MAX_RESULT_COUNT);
-  };
+  renderSearchResult(videoList) {
+    this.$currentGroup = $(`[data-group-index="${this.#groupIndex}"]`);
+    this.$currentGroup.classList.remove('skeleton');
 
-  const renderSearchResult = (videoList) => {
-    const $searchResultWrapper = $('#search-result-wrapper');
-
-    $searchResultWrapper.classList.remove('skeleton');
-    $searchResultWrapper.querySelectorAll('article').forEach(($article, i) => {
+    if (videoList.length === 0) {
+      this.$searchResultWrapper.innerHTML = resultNotFoundTemplate;
+      return;
+    }
+    this.$currentGroup.querySelectorAll('article').forEach(($article, i) => {
       const video = videoList[i];
 
       $article.querySelector('.preview-container').innerHTML = getThumbnailTemplate(video.videoId);
       $article.querySelector('.video-title').innerText = video.videoTitle;
       $article.querySelector('.channel-title').innerHTML = getChannelTitleTemplate(video.channelId, video.channelTitle);
       $article.querySelector('.published-at').innerText = video.publishedAt;
-      storeVideoData($article.querySelector('.save-button'), video);
+      this.storeVideoData($article.querySelector('.save-button'), video);
     });
-  };
+  }
 
-  const onSearchKeyword = (e) => {
+  onSearchKeyword(e) {
     e.preventDefault();
 
-    renderSkeleton();
-    const url = getURLQueryStringApplied({
+    this.#groupIndex = -1;
+    this.renderSkeleton();
+    const url = this.getRequestURL({
       part: PART_TYPE,
       q: e.target.elements['search-keyword-input'].value,
       type: SEARCH_TYPE_VIDEO,
@@ -92,17 +111,14 @@ export default function App() {
       regionCode: REGION_CODE,
     });
 
-    request(url)
+    this.request(url)
       .then((response) => {
-        return processJSON(response);
+        return this.processJSON(response);
       })
-      .then((videoList) => renderSearchResult(videoList))
+      .then((videoList) => this.renderSearchResult(videoList))
       .catch((error) => console.error(error));
-  };
-
-  $searchButton.addEventListener('click', onShowModal);
-  $modalCloseButton.addEventListener('click', onCloseModal);
-  $searchKeywordForm.addEventListener('submit', onSearchKeyword);
+  }
 }
 
-App();
+const app = new App();
+app.init();

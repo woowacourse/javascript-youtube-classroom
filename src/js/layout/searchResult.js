@@ -23,3 +23,9 @@ export const getChannelTitleTemplate = (channelId, channelTitle) => {
     </a>
   `;
 };
+
+export const resultNotFoundTemplate = `
+  <p align="center">
+    <img src="src/images/status/not_found.png" alt="not found"/>
+  </p>
+`;
