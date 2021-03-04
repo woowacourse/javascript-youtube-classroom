@@ -8,9 +8,14 @@ export const API = {
 export const VIDEOS = {
   SEARCH_MAX_RESULT: 10,
   KEYWORD_HISTORY_LENGTH: 3,
+  SAVED_VIDEOS_MAX_COUNT: 100,
 };
 
 export const STORAGE_NAME = {
   KEYWORDS: "keywords",
   SAVED_VIDEOS: "saved_videos",
+};
+
+export const ALERT_MESSAGE = {
+  SAVE_COUNT_EXCEEDED_ERROR: "비디오 저장은 100개까지만 가능합니다.",
 };

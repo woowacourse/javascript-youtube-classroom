@@ -34,7 +34,7 @@ export default function getVideoClipTemplate(item) {
         <div class="d-flex justify-end">
           <button 
             data-video-id=${item.videoId} 
-            class="btn ${item.saved ? "d-none-hard" : ""}"
+            class="btn save-btn ${item.saved ? "d-none-hard" : ""}"
             >
             ⬇️ 저장
           </button>
