@@ -1,5 +1,6 @@
 const CLASSNAME = Object.freeze({
   MODAL: "modal",
+  MODAL_INNER: "modal-inner",
   MODAL_CLOSE: "modal-close",
   VIDEO_SEARCH_TAB: "js-video-search-tab",
   YOUTUBE_SEARCH_FORM: "js-youtube-search-form",
@@ -11,6 +12,7 @@ const CLASSNAME = Object.freeze({
 
   OPEN: "open",
   HIDDEN: "--hidden",
+  HEIGHT_85_PERCENT: "h-85",
 });
 const MAX_KEYWORDS_COUNT = 3;
 

@@ -39,6 +39,7 @@ const TEMPLATE = ({ videoId, title, channelId, channelTitle, publishedAt }) => `
 </article>`;
 
 const $modal = $(CLASSNAME.MODAL);
+const $modalInner = $(CLASSNAME.MODAL_INNER);
 const $modalClose = $(CLASSNAME.MODAL_CLOSE);
 const $videoSearchTab = $(CLASSNAME.VIDEO_SEARCH_TAB);
 const $youtubeSearchForm = $(CLASSNAME.YOUTUBE_SEARCH_FORM);
@@ -68,7 +69,7 @@ const handleFormSubmit = async (event) => {
 
   try {
     const response = await fetch(
-      `https://www.googleapis.com/youtube/v3/search?part=snippet&maxResults=2&regionCode=kr&safeSearch=strict&q=${query}}&key=${API_KEY}`
+      `https://www.googleapis.com/youtube/v3/search?part=snippet&maxResults=10&regionCode=kr&safeSearch=strict&q=${query}}&key=${API_KEY}`
     );
 
     if (!response.ok) {
@@ -76,6 +77,7 @@ const handleFormSubmit = async (event) => {
     }
 
     $input.value = "";
+    $modalInner.classList.add(CLASSNAME.HEIGHT_85_PERCENT);
 
     keywordHistory = keywordHistory.filter((keyword) => keyword !== query);
     keywordHistory.push(query);
@@ -113,7 +115,8 @@ const handleFormSubmit = async (event) => {
       .join("");
     $notFoundImg.classList.add(CLASSNAME.HIDDEN);
   } catch (error) {
-    // console.error(error);
+    // eslint-disable-next-line no-console
+    console.error(error);
   }
 };
 
