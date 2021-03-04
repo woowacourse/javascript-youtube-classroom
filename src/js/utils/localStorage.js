@@ -21,14 +21,14 @@ export function getRecentKeywords() {
     : [];
 }
 
-export function setSavedVideos(videoId) {
-  const savedVideos = getSavedVideos();
+export function setSavedVideoId(videoId) {
+  const savedVideos = getSavedVideoIds();
 
   savedVideos.push(videoId);
   localStorage.setItem('savedVideos', JSON.stringify(savedVideos));
 }
 
-export function getSavedVideos() {
+export function getSavedVideoIds() {
   return localStorage.getItem('savedVideos')
     ? JSON.parse(localStorage.getItem('savedVideos'))
     : [];

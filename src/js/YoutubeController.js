@@ -2,9 +2,10 @@ import { $ } from './utils/dom.js';
 import {
   setRecentChip,
   getRecentKeywords,
-  setSavedVideos,
+  setSavedVideoId,
+  getSavedVideoIds,
 } from './utils/localStorage.js';
-import { searchRequest } from '../js/request.js';
+import { searchRequest, videoRequest } from '../js/request.js';
 import NavigationView from './views/NavigationView.js';
 import SearchModalView from './views/SearchModalView.js';
 import SavedVideosView from './views/SavedVideosView.js';
@@ -17,10 +18,12 @@ export default class YoutubeController {
     this.selectedTab = $('#saved-btn');
     this.navigationView = new NavigationView($('#nav-bar'));
     this.searchModalView = new SearchModalView($('.modal'));
+    this.savedVideosView = new SavedVideosView($('#main-videos'));
   }
 
   init() {
     this.bindEvents();
+    this.loadSavedVideos();
   }
 
   bindEvents() {
@@ -60,7 +63,10 @@ export default class YoutubeController {
   }
 
   saveVideo(videoId) {
-    setSavedVideos(videoId);
+    const videoToSave = this.videos.find((video) => video.id === videoId);
+
+    this.savedVideosView.addSavedVideoClip(videoToSave);
+    setSavedVideoId(videoId);
   }
 
   searchVideo(keyword) {
@@ -68,5 +74,23 @@ export default class YoutubeController {
     this.searchModalView.updateChips(getRecentKeywords());
     this.searchModalView.startSearch();
     searchRequest(keyword, this.nextPageToken, this.generateVideos.bind(this));
+  }
+
+  generateSavedVideos(response) {
+    const { items } = response;
+
+    const savedVideos = [
+      ...items.map((item) => new Video(item.id, item.snippet)),
+    ];
+
+    this.savedVideosView.renderSavedVideoClips(savedVideos);
+  }
+
+  loadSavedVideos() {
+    const savedVideoIds = getSavedVideoIds();
+
+    if (savedVideoIds.length === 0) return;
+
+    videoRequest(savedVideoIds, this.generateSavedVideos.bind(this));
   }
 }
