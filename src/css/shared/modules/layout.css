@@ -7,6 +7,14 @@
   position: absolute;
 }
 
+.ab-bottom0 {
+  bottom: 0;
+}
+
+.ab-right15 {
+  right: 15px;
+}
+
 .fixed {
   position: fixed;
 }

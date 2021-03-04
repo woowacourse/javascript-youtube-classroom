@@ -1,5 +1,5 @@
-@import "./shared/index.css";
-@import "./ui/index.css";
+@import './shared/index.css';
+@import './ui/index.css';
 
 html,
 body {
@@ -23,4 +23,18 @@ a {
 
 .opacity-hover:hover {
   opacity: 1;
+}
+
+.save-btn {
+  position: absolute;
+  bottom: 10px;
+  right: 0px;
+}
+
+.save-btn:hover {
+  background-color: rgb(0, 188, 212);
+}
+
+.video-info {
+  height: 110px;
 }

@@ -24,28 +24,28 @@ export default class Video {
 
   toString() {
     return `
-      <article class="clip">
-      <div class="preview-container">
-        <iframe width="100%" height="118" src="${this.videoEmbedUrl}" frameborder="0"
-          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-          allowfullscreen></iframe>
-      </div>
-      <div class="content-container pt-2 px-1">
-        <h3 class="js-video-title">${this.videoTitle}</h3>
-        <div>
-          <a href="${this.channelUrl}" target="_blank"
-            class="channel-name mt-1">
-            ${this.channelTitle}
-          </a>
-          <div class="meta">
-            <p>${this.uploadTime}</p>
-          </div>
-          <div class="d-flex justify-end">
-            <button class="js-save-btn btn">⬇️ 저장</button>
-          </div>
+    <article class="clip">
+    <div class="preview-container">
+      <iframe width="100%" height="118" src="${this.videoEmbedUrl}" frameborder="0"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+        allowfullscreen></iframe>
+    </div>
+    <div class="content-container pt-2 d-flex flex-col justify-between w-100">
+    
+      <div class="d-flex flex-col video-info">
+        <h3 class="video-title">${this.videoTitle}</h3>
+        <a href="${this.channelUrl}" target="_blank"
+          class="channel-name mt-1">
+          ${this.channelTitle}
+        </a>
+        <div class="meta">
+          <p>${this.uploadTime}</p>
         </div>
       </div>
-    </article>
+
+      <button type="button" class="save-btn btn">⬇️ 저장</button>
+    </div>
+  </article>
     `;
   }
 }
