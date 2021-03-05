@@ -41,9 +41,9 @@ describe("lotto 미션 테스트", () => {
   it("최근 검색어는 중복된 단어가 없다.", () => {
     cy.get("#search-form > input").clear();
     cy.get("#search-form > input").type("우리땅");
-    cy.get("#keyword-history > a").eq(0).should("have.text", "우리땅");
+    cy.get("#keyword-history > li > a").eq(0).should("have.text", "우리땅");
 
-    cy.get("#keyword-history > a").each(($keyword, i, collection) => {
+    cy.get("#keyword-history > li > a").each(($keyword, i, collection) => {
       expect(Array.from(collection).slice(i).includes($keyword)).to.be.false;
     });
   });
