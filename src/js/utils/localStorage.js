@@ -4,7 +4,7 @@ export function setRecentChip(keyword) {
   const recentKeywords = getRecentKeywords();
 
   if (recentKeywords.includes(keyword)) {
-    return;
+    recentKeywords.splice(recentKeywords.indexOf(keyword), 1);
   }
 
   if (recentKeywords.length >= VALUE.KEYWORD_COUNT) {
@@ -23,6 +23,8 @@ export function getRecentKeywords() {
 
 export function setSavedVideoId(videoId) {
   const savedVideos = getSavedVideoIds();
+
+  if (savedVideos.includes(videoId)) return;
 
   savedVideos.push(videoId);
   localStorage.setItem('savedVideos', JSON.stringify(savedVideos));

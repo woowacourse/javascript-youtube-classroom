@@ -40,7 +40,7 @@ export const $ = (function () {
   };
 
   constructor.prototype.addInnerHTML = function (template) {
-    this.each((element) => (element.innerHTML += template));
+    this.each((element) => element.insertAdjacentHTML('beforeend', template));
   };
 
   constructor.prototype.addClass = function (className) {

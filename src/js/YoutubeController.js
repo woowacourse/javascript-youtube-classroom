@@ -33,20 +33,37 @@ export default class YoutubeController {
     this.searchModalView
       .on('openModal', (e) => this.searchVideo(e.detail))
       .on('submitSearch', (e) => this.searchVideo(e.detail))
-      .on('scrollResult', (e) => this.searchVideo(e.detail))
+      .on('scrollResult', (e) => this.scrollVideo(e.detail))
       .on('clickSaveButton', (e) => this.saveVideo(e.detail))
+      .on('clickChip', (e) => this.searchVideo(e.detail))
       .on('closeModal', () => this.changeNavTab($('#saved-btn')));
   }
 
   changeNavTab(currentTab) {
-    this.nextPageToken = null;
-
     this.navigationView.toggleTabColor(this.selectedTab, currentTab);
     this.selectedTab = currentTab;
 
     if (currentTab.element.id === 'search-btn') {
       this.searchModalView.openModal();
     }
+  }
+
+  generateSavedVideos(response) {
+    const { items } = response;
+
+    const savedVideos = [
+      ...items.map((item) => new Video(item.id, item.snippet)),
+    ];
+
+    this.savedVideosView.renderSavedVideoClips(savedVideos);
+  }
+
+  loadSavedVideos() {
+    const savedVideoIds = getSavedVideoIds();
+
+    if (savedVideoIds.length === 0) return;
+
+    videoRequest(savedVideoIds, this.generateSavedVideos.bind(this));
   }
 
   generateVideos(response) {
@@ -66,14 +83,14 @@ export default class YoutubeController {
     this.searchModalView.renderVideoClips(newVideos);
   }
 
-  saveVideo(videoId) {
-    const videoToSave = this.videos.find((video) => video.id === videoId);
-
-    this.savedVideosView.addSavedVideoClip(videoToSave);
-    setSavedVideoId(videoId);
+  scrollVideo(keyword) {
+    this.searchModalView.startSearch();
+    searchRequest(keyword, this.nextPageToken, this.generateVideos.bind(this));
   }
 
   searchVideo(keyword) {
+    this.nextPageToken = null;
+
     if (isEmptySearchKeyword(keyword)) {
       alert(ALERT_MESSAGES.EMPTY_SEARCH_KEYWORD);
       return;
@@ -81,25 +98,15 @@ export default class YoutubeController {
 
     setRecentChip(keyword);
     this.searchModalView.updateChips(getRecentKeywords());
+    this.searchModalView.clearVideoClips();
     this.searchModalView.startSearch();
     searchRequest(keyword, this.nextPageToken, this.generateVideos.bind(this));
   }
 
-  generateSavedVideos(response) {
-    const { items } = response;
+  saveVideo(videoId) {
+    const videoToSave = this.videos.find((video) => video.id === videoId);
 
-    const savedVideos = [
-      ...items.map((item) => new Video(item.id, item.snippet)),
-    ];
-
-    this.savedVideosView.renderSavedVideoClips(savedVideos);
-  }
-
-  loadSavedVideos() {
-    const savedVideoIds = getSavedVideoIds();
-
-    if (savedVideoIds.length === 0) return;
-
-    videoRequest(savedVideoIds, this.generateSavedVideos.bind(this));
+    this.savedVideosView.addSavedVideoClip(videoToSave);
+    setSavedVideoId(videoId);
   }
 }
