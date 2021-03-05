@@ -26,3 +26,8 @@ export const isScrollUnfinished = (document, target) => {
       document.clientHeight
   );
 };
+
+export const convertDateFormat = publishedDate => {
+  const date = new Date(publishedDate);
+  return `${date.getFullYear()}년 ${date.getMonth() + 1}월 ${date.getDate()}일`;
+};
