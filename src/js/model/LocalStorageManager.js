@@ -1,8 +1,10 @@
+import { LOCALSTORAGE_KEYS } from '../constants/constants.js';
+
 export default class LocalStorageManager {
   constructor() {
     this.key = {
-      videos: 'videos',
-      searchHistory: 'searchHistory',
+      videos: LOCALSTORAGE_KEYS.VIDEOS,
+      searchHistory: LOCALSTORAGE_KEYS.SEARCH_HISTORY,
     };
     this.init();
   }

@@ -13,5 +13,5 @@ export const ERROR_MESSAGE = {
 
 export const LOCALSTORAGE_KEYS = {
   VIDEOS: 'videos',
-  SEARCH_HISTORY: 'videos',
+  SEARCH_HISTORY: 'searchHistory',
 };

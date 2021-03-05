@@ -2,6 +2,7 @@ import Component from '../../core/Component.js';
 import { store } from '../../index.js';
 import { localStorageManager } from '../App.js';
 import { $, createElement } from '../../utils/utils.js';
+import { LOCALSTORAGE_KEYS } from '../../constants/constants.js';
 
 export default class SearchTermHistory extends Component {
   setup() {
@@ -19,7 +20,9 @@ export default class SearchTermHistory extends Component {
     const chips = createElement({ tag: 'div', classes: ['chips'] });
 
     chips.appendChild(
-      this.chipsTemplate(localStorageManager.getItem('searchHistory'))
+      this.chipsTemplate(
+        localStorageManager.getItem(LOCALSTORAGE_KEYS.SEARCH_HISTORY)
+      )
     );
 
     fragment.appendChild(searchHistory);
@@ -59,12 +62,17 @@ export default class SearchTermHistory extends Component {
   // TODO: 중복되는 로직 추출
   onRequestVideo(event) {
     const searchTerm = event.target.textContent;
-    const history = localStorageManager.getItem('searchHistory');
+    const history = localStorageManager.getItem(
+      LOCALSTORAGE_KEYS.SEARCH_HISTORY
+    );
     const indexOfSearchTerm = history.indexOf(searchTerm);
 
     history.splice(indexOfSearchTerm, 1);
     history.unshift(searchTerm);
-    localStorageManager.setItem('searchHistory', history.slice(0, 3));
+    localStorageManager.setItem(
+      LOCALSTORAGE_KEYS.SEARCH_HISTORY,
+      history.slice(0, 3)
+    );
 
     this.$props.requestVideos(searchTerm);
   }

@@ -2,6 +2,7 @@ import Component from '../../core/Component.js';
 import { store } from '../../index.js';
 import { localStorageManager } from '../App.js';
 import { $, isEmptyString } from '../../utils/utils.js';
+import { LOCALSTORAGE_KEYS } from '../../constants/constants.js';
 
 export default class VideoSearchBar extends Component {
   setup() {
@@ -40,7 +41,9 @@ export default class VideoSearchBar extends Component {
   }
 
   saveHistoryToLocalStorage(searchTerm) {
-    const history = localStorageManager.getItem('searchHistory');
+    const history = localStorageManager.getItem(
+      LOCALSTORAGE_KEYS.SEARCH_HISTORY
+    );
 
     if (history.includes(searchTerm)) {
       const indexOfSearchTerm = history.indexOf(searchTerm);
@@ -49,7 +52,10 @@ export default class VideoSearchBar extends Component {
     }
 
     history.unshift(searchTerm);
-    localStorageManager.setItem('searchHistory', history.slice(0, 3));
+    localStorageManager.setItem(
+      LOCALSTORAGE_KEYS.SEARCH_HISTORY,
+      history.slice(0, 3)
+    );
   }
 
   onRequestVideo(event) {
