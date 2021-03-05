@@ -1,6 +1,16 @@
-import { $modal, $videoWrapper } from '../elements.js';
+import {
+  $modal,
+  $searchResultVideoWrapper,
+  $searchQueries,
+} from '../elements.js';
 import { STYLE_CLASS } from '../constants.js';
-import { getVideoListTemplate, getSkeletonListTemplate } from './templates.js';
+import {
+  getVideoListTemplate,
+  getSkeletonListTemplate,
+  getSelectedVideoListTemplate,
+  getSearchQueriesTemplate,
+  getSearchQueryTemplate,
+} from './templates.js';
 import { $ } from '../utils/querySelector.js';
 
 const view = {
@@ -10,11 +20,23 @@ const view = {
   closeModal() {
     $modal.classList.remove(STYLE_CLASS.OPEN);
   },
-  renderVideoItems(videos) {
-    $videoWrapper.insertAdjacentHTML('beforeend', getVideoListTemplate(videos));
+  insertVideoItems($element, videos) {
+    $element.insertAdjacentHTML('beforeend', getVideoListTemplate(videos));
+  },
+  renderVideoItems($element, videos) {
+    $element.innerHTML = getVideoListTemplate(videos);
+  },
+  insertSelectedVideoItems($element, videos) {
+    $element.insertAdjacentHTML(
+      'beforeend',
+      getSelectedVideoListTemplate(videos)
+    );
+  },
+  renderSelectedVideoItems($element, videos) {
+    $element.innerHTML = getSelectedVideoListTemplate(videos);
   },
   renderSkeletonItems() {
-    $videoWrapper.innerHTML = getSkeletonListTemplate();
+    $searchResultVideoWrapper.innerHTML = getSkeletonListTemplate();
   },
   showElementBySelector(selector) {
     $(selector).classList.remove('removed');
@@ -28,6 +50,24 @@ const view = {
       return;
     }
     target.classList.add('removed');
+  },
+  showElement($element) {
+    $element.classList.remove('removed');
+  },
+  hideElement($element) {
+    $element.classList.add('removed');
+  },
+  insertSearchQueries(queries) {
+    $searchQueries.insertAdjacentHTML(
+      'beforeend',
+      getSearchQueriesTemplate(queries)
+    );
+  },
+  insertSearchQuery(query) {
+    $searchQueries.insertAdjacentHTML(
+      'beforeend',
+      getSearchQueryTemplate(query)
+    );
   },
 };
 

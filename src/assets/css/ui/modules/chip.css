@@ -1,4 +1,4 @@
-.chip {
+.search-queries__chip {
   padding: 0 12px;
   background-color: #efefef;
   border-radius: 100px;
@@ -11,7 +11,7 @@
   border: none;
 }
 
-.chip .icon {
+.search-queries__chip .icon {
   font-size: 16px;
   color: rgba(0, 0, 0, 0.54);
   width: 20px;
