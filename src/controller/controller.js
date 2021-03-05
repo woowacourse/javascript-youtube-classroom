@@ -55,7 +55,7 @@ function onModalOpen() {
   );
   if (prevSearchResult) {
     view.renderVideoItems(prevSearchResult.videos);
-    view.showElementBySelector(`#${SELECTOR_ID.SEARCH_RESULT_INTERSECTOR}`);
+    view.showElementBySelector(`#${SELECTOR_ID.SERACH_RESULT_INTERSECTOR}`);
     model.setNextPageToken(prevSearchResult.nextPageToken);
     model.setLastQuery(prevSearchResult.lastQuery);
   }
@@ -82,7 +82,7 @@ function onVideoSearch(event) {
       return;
     }
     view.renderVideoItems(videos);
-    view.showElementBySelector(`#${SELECTOR_ID.SEARCH_RESULT_INTERSECTOR}`);
+    view.showElementBySelector(`#${SELECTOR_ID.SERACH_RESULT_INTERSECTOR}`);
     setLocalStorageItem(LOCAL_STORAGE_KEY.PREVIOUS_SEARCH_RESULTS, {
       lastQuery: model.getLastQuery(),
       videos,

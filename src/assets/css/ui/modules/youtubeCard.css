@@ -11,13 +11,13 @@
   text-decoration: none;
 }
 
-.clip .preview-container {
+.clip .clip__preview {
   width: 100%;
   height: 120px;
   position: relative;
 }
 
-.clip .preview-container img {
+.clip .clip__preview img {
   width: 100%;
   height: 100%;
   object-fit: cover;
@@ -31,11 +31,11 @@
   bottom: 0;
 }
 
-.clip .content-container {
+.clip .clip__content {
   position: relative;
 }
 
-.clip .content-container h3 {
+.clip .clip__content h3 {
   display: -webkit-box;
   margin: 0;
   font-size: 14px;
@@ -47,14 +47,14 @@
   color: #0a0a0a;
 }
 
-.clip .content-container .channel-name {
+.clip .clip__content .channel-name {
   font-size: 12px;
   color: #606060;
   display: block;
   width: 100%;
 }
 
-.clip .content-container .meta p {
+.clip .clip__content .meta p {
   font-size: 12px;
   display: inline-block;
   margin: 0;

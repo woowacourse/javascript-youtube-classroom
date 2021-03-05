@@ -5,9 +5,11 @@ export const SELECTOR_ID = Object.freeze({
   SEARCH_FORM_SUBMIT: 'search-form__submit',
   MODAL: 'modal',
   MODAL_CLOSE_BUTTON: 'modal__close-button',
+  SEARCH_RESULT_VIDEO_WRAPPER: 'search-result__video-wrapper',
   VIDEO_WRAPPER: 'video-wrapper',
   NOT_FOUND_CONTENT: 'not-found-content',
-  SEARCH_RESULT_INTERSECTOR: 'search-result__intersector',
+  CLIP_SAVE_BUTTON: 'clip__save-button',
+  SERACH_RESULT_INTERSECTOR: 'search-result__intersector',
 });
 
 export const SELECTOR_CLASS = Object.freeze({

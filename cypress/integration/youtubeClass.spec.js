@@ -1,18 +1,23 @@
 import { SELECTOR_ID, SELECTOR_CLASS } from '../../src/constants.js';
 
+const waitTime = 2000;
+
 context('유튜브 강의실 테스트', () => {
   beforeEach(() => {
     cy.visit('http://localhost:5500');
+    cy.clearLocalStorage();
+    cy.reload();
   });
   describe('검색', () => {
     it('검색 모달에서 검색어를 바탕으로 영상을 검색하여 그 결과를 보여준다.', () => {
       click(`#${SELECTOR_ID.SEARCH_BUTTON}`);
       type(`#${SELECTOR_ID.SEARCH_FORM_INPUT}`, '우아한');
       const now = new Date().getTime();
-      cy.clock(now);
       click(`#${SELECTOR_ID.SEARCH_FORM_SUBMIT}`);
-      cy.tick(10000);
-      cy.get(`#${SELECTOR_ID.VIDEO_WRAPPER} .${SELECTOR_CLASS.CLIP}`)
+      cy.wait(waitTime);
+      cy.get(
+        `#${SELECTOR_ID.SEARCH_RESULT_VIDEO_WRAPPER} .${SELECTOR_CLASS.CLIP}`
+      )
         .its('length')
         .should('be.gt', 0);
     });
@@ -21,10 +26,12 @@ context('유튜브 강의실 테스트', () => {
       click(`#${SELECTOR_ID.SEARCH_BUTTON}`);
       type(`#${SELECTOR_ID.SEARCH_FORM_INPUT}`, '우아한');
       click(`#${SELECTOR_ID.SEARCH_FORM_SUBMIT}`);
-      cy.wait(3000);
+      cy.wait(waitTime);
       cy.reload();
       click(`#${SELECTOR_ID.SEARCH_BUTTON}`);
-      cy.get(`#${SELECTOR_ID.VIDEO_WRAPPER} .${SELECTOR_CLASS.CLIP}`)
+      cy.get(
+        `#${SELECTOR_ID.SEARCH_RESULT_VIDEO_WRAPPER} .${SELECTOR_CLASS.CLIP}`
+      )
         .its('length')
         .should('be.gt', 0);
     });
@@ -33,7 +40,7 @@ context('유튜브 강의실 테스트', () => {
       click(`#${SELECTOR_ID.SEARCH_BUTTON}`);
       type(`#${SELECTOR_ID.SEARCH_FORM_INPUT}`, 'dsvkasdvklasdlkdv');
       click(`#${SELECTOR_ID.SEARCH_FORM_SUBMIT}`);
-      cy.wait(3000);
+      cy.wait(waitTime);
       cy.get(`#${SELECTOR_ID.NOT_FOUND_CONTENT}`).should('be.visible');
     });
 
@@ -41,12 +48,28 @@ context('유튜브 강의실 테스트', () => {
       click(`#${SELECTOR_ID.SEARCH_BUTTON}`);
       type(`#${SELECTOR_ID.SEARCH_FORM_INPUT}`, '우아한');
       click(`#${SELECTOR_ID.SEARCH_FORM_SUBMIT}`);
-      cy.wait(3000);
+      cy.wait(waitTime);
       cy.get(`.${SELECTOR_CLASS.CLIP}`).last().scrollIntoView();
-      cy.wait(3000);
-      cy.get(`#${SELECTOR_ID.VIDEO_WRAPPER} .${SELECTOR_CLASS.CLIP}`)
+      cy.wait(waitTime);
+      cy.get(
+        `#${SELECTOR_ID.SEARCH_RESULT_VIDEO_WRAPPER} .${SELECTOR_CLASS.CLIP}`
+      )
         .its('length')
         .should('be.gt', 10);
+    });
+
+    it('검색한 영상들 중 특정 영상 데이터를 저장 버튼을 눌러 저장할 수 있다.', () => {
+      click(`#${SELECTOR_ID.SEARCH_BUTTON}`);
+      type(`#${SELECTOR_ID.SEARCH_FORM_INPUT}`, '우아한');
+      click(`#${SELECTOR_ID.SEARCH_FORM_SUBMIT}`);
+      cy.wait(waitTime);
+      cy.get(`.${SELECTOR_ID.CLIP_SAVE_BUTTON}`).then(elements => {
+        click(elements[0]);
+      });
+      click(`#${SELECTOR_ID.MODAL_CLOSE_BUTTON}`);
+      cy.get(`#${SELECTOR_ID.VIDEO_WRAPPER} .${SELECTOR_CLASS.CLIP}`)
+        .its('length')
+        .should('be.gt', 0);
     });
   });
 });

@@ -7,7 +7,7 @@ export function getVideoListTemplate(videoItems) {
 function getVideoItemTemplate(videoItem) {
   return `
   <article class="clip">
-    <div class="preview-container">
+    <div class="clip__preview">
       <iframe
         width="100%"
         height="118"
@@ -17,7 +17,7 @@ function getVideoItemTemplate(videoItem) {
         allowfullscreen
       ></iframe>
     </div>
-    <div class="content-container pt-2 px-1">
+    <div class="clip__content pt-2 px-1">
       <h3>${videoItem.title}</h3>
       <div>
         <a
@@ -31,7 +31,7 @@ function getVideoItemTemplate(videoItem) {
           <p>${videoItem.publishedAt}</p>
         </div>
         <div class="d-flex justify-end">
-          <button class="btn">⬇️ 저장</button>
+          <button class="btn clip__save-button">⬇️ 저장</button>
         </div>
       </div>
     </div>

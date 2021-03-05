@@ -21,9 +21,9 @@
             </nav>
           </header>
           <main class="mt-10">
-            <section class="video-wrapper">
+            <section id="video-wrapper" class="video-wrapper">
               <article class="clip">
-                <div class="preview-container">
+                <div class="clip__preview">
                   <iframe
                     width="100%"
                     height="118"
@@ -33,7 +33,7 @@
                     allowfullscreen
                   ></iframe>
                 </div>
-                <div class="content-container pt-2 px-1">
+                <div class="clip__content pt-2 px-1">
                   <h3>아두이노 무드등</h3>
                   <div>
                     <a
@@ -105,7 +105,10 @@
               />
               <p>검색 결과를 찾을 수가 없습니다.</p>
             </div>
-            <section id="video-wrapper" class="video-wrapper my-5"></section>
+            <section
+              id="search-result__video-wrapper"
+              class="video-wrapper my-5"
+            ></section>
             <div id="search-result__intersector" class="removed"></div>
           </section>
         </div>
