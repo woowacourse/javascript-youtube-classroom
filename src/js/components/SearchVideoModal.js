@@ -8,7 +8,10 @@ export class SearchVideoModal {
     this.$closeButton = $('.js-search-modal-close-button');
 
     this.searchKeywordHistoryManager = new SearchKeywordHistoryManager();
-    this.searchVideoInput = new SearchVideoInput({ searchKeywordHistoryManager: this.searchKeywordHistoryManager });
+    this.searchVideoInput = new SearchVideoInput({
+      searchKeywordHistoryManager: this.searchKeywordHistoryManager,
+      savedVideoManager,
+    });
     this.searchVideoResult = new SearchVideoResult({
       searchKeywordHistoryManager: this.searchKeywordHistoryManager,
       savedVideoManager,
