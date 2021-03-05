@@ -104,6 +104,10 @@ export class SearchVideoResult {
   }
 
   render() {
+    if (!this.$wrapper.hasChildNodes() && this.searchResultData.items.length === 0) {
+      this.$container.innerHTML =
+        '<img src="./src/images/status/not_found.png" class="d-block m-auto" alt="not found"/>';
+    }
     this.$wrapper.insertAdjacentHTML(
       'beforeend',
       this.searchResultData.items.map(item => this.makeTemplate(item)).join('')

@@ -9,10 +9,10 @@ export class SearchVideoModal {
 
     this.searchKeywordHistoryManager = new SearchKeywordHistoryManager();
     this.searchVideoInput = new SearchVideoInput({ searchKeywordHistoryManager: this.searchKeywordHistoryManager });
-    // this.searchVideoResult = new SearchVideoResult({
-    //   searchKeywordHistoryManager: this.searchKeywordHistoryManager,
-    //   savedVideoManager,
-    // });
+    this.searchVideoResult = new SearchVideoResult({
+      searchKeywordHistoryManager: this.searchKeywordHistoryManager,
+      savedVideoManager,
+    });
 
     this.initEvent();
   }
