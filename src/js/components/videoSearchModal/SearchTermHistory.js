@@ -4,13 +4,12 @@ import {
   addVideos,
   updateRequestPending,
 } from '../../redux/action.js';
-import { localStorageManager } from '../App.js';
+import { localStorageManager, youtubeAPIManager } from '../App.js';
 import { ERROR_MESSAGE } from '../../constants/constants.js';
 
 export default class SearchTermHistory {
-  constructor($target, $props) {
+  constructor($target) {
     this.$target = $target;
-    this.$props = $props;
     this.initRender();
     this.selectDOM();
     this.setup();
@@ -26,8 +25,8 @@ export default class SearchTermHistory {
     store.dispatch(addSearchHistory(searchTerm));
     store.dispatch(updateRequestPending(true));
 
-    this.$props.youtubeAPIManager.setSearchTerm(searchTerm);
-    this.$props.youtubeAPIManager
+    youtubeAPIManager.setSearchTerm(searchTerm);
+    youtubeAPIManager
       .requestVideos()
       .then((items) => {
         store.dispatch(updateRequestPending(false));
@@ -58,7 +57,6 @@ export default class SearchTermHistory {
     }
   }
 
-  // TODO : 최초 Render시 기존에 저장된 히스토리가 있는지 확인해야함.
   initRender() {
     const fragment = document.createDocumentFragment();
     const searchHistory = document.createElement('span');

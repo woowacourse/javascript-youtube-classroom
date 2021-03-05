@@ -1,7 +1,9 @@
 import LocalStorageManager from '../model/LocalStorageManager.js';
+import YoutubeAPIManager from '../model/YoutubeAPIManager.js';
 import VideoSearchModal from './videoSearchModal/VideoSearchModal.js';
 
 export const localStorageManager = new LocalStorageManager();
+export const youtubeAPIManager = new YoutubeAPIManager();
 export default class App {
   constructor($target) {
     this.$target = $target;

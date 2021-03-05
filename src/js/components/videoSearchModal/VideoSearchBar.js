@@ -4,13 +4,12 @@ import {
   addSearchHistory,
   updateRequestPending,
 } from '../../redux/action.js';
-import { localStorageManager } from '../App.js';
+import { localStorageManager, youtubeAPIManager } from '../App.js';
 import { ERROR_MESSAGE } from '../../constants/constants.js';
 
 export default class VideoSearchBar {
-  constructor($target, $props) {
+  constructor($target) {
     this.$target = $target;
-    this.$props = $props;
     this.initRender();
     this.selectDOM();
     this.bindEvent();
@@ -76,8 +75,8 @@ export default class VideoSearchBar {
     store.dispatch(addSearchHistory(searchTerm));
     store.dispatch(updateRequestPending(true));
 
-    this.$props.youtubeAPIManager.setSearchTerm(searchTerm);
-    this.$props.youtubeAPIManager
+    youtubeAPIManager.setSearchTerm(searchTerm);
+    youtubeAPIManager
       .requestVideos()
       .then((items) => {
         store.dispatch(updateRequestPending(false));

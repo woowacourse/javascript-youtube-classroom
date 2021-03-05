@@ -8,15 +8,10 @@ export default class VideoSearchModal {
   constructor($target) {
     this.$target = $target;
     this.$modalClose = document.querySelector('.modal-close');
-    this.setup();
     this.initRender();
     this.mount();
     this.selectDOM();
     this.bindEvent();
-  }
-
-  setup() {
-    this.youtubeAPIManager = new YoutubeAPIManager();
   }
 
   initRender() {
@@ -42,18 +37,15 @@ export default class VideoSearchModal {
 
   mount() {
     this.videoSearchBar = new VideoSearchBar(
-      document.querySelector('#video-search-bar'),
-      { youtubeAPIManager: this.youtubeAPIManager }
+      document.querySelector('#video-search-bar')
     );
 
     this.searchTermHistory = new SearchTermHistory(
-      document.querySelector('#search-term-history'),
-      { youtubeAPIManager: this.youtubeAPIManager }
+      document.querySelector('#search-term-history')
     );
 
     this.videoSearchResult = new VideoSearchResult(
-      document.querySelector('#video-search-result'),
-      { youtubeAPIManager: this.youtubeAPIManager }
+      document.querySelector('#video-search-result')
     );
   }
 
