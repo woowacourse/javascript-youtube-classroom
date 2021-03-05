@@ -1,10 +1,13 @@
 import SearchView from "./SearchView.js";
-import { ALERT_MESSAGE, API, VIDEOS, YOUTUBE_URL } from "../utils/constants.js";
-import { getSearchQueryString } from "../queries/searchQuery.js";
+
 import scrollEventLock from "../state/scrollEventLock.js";
 import searchHistory from "../state/searchHistory.js";
 import videos from "../state/videos.js";
 import loadingSearchResults from "../state/loadingSearchResults.js";
+
+import { API, YOUTUBE_URL } from "../utils/constants.js";
+
+import { getSearchQueryString } from "../queries/searchQuery.js";
 
 export default class SearchController {
   constructor() {
@@ -12,38 +15,51 @@ export default class SearchController {
     this.nextPageToken = "";
   }
 
+  readySearch() {
+    this.searchView.resetSearchResults();
+    loadingSearchResults.resetLoadCount();
+    this.searchView.showSkeletonClip();
+  }
+
   async searchVideos() {
     if (searchHistory.getPageToken() === "") {
-      this.searchView.resetSearchResults();
-      loadingSearchResults.resetLoadCount();
-      this.searchView.showSkeletonClip();
+      this.readySearch();
     }
+    const videoItems = await this.getSearchResult();
 
+    if (videoItems.length === 0) {
+      this.fetchNotFoundImg();
+    } else {
+      this.fetchVideos(videoItems);
+    }
+  }
+
+  async getSearchResult() {
     const res = await fetch(
       `${YOUTUBE_URL}/${API.GET.SEARCH}?${getSearchQueryString()}`
     );
     if (!res.ok) {
-      this.searchView.showHTTPErrorWarning(res.status);
       throw new Error(res.status);
     }
-    const { items, nextPageToken } = await res.json();
 
+    const { items, nextPageToken } = await res.json();
     this.nextPageToken = nextPageToken;
-    this.fetchVideos(items);
+
+    return items;
+  }
+
+  fetchNotFoundImg() {
+    if (this.isScrolled()) {
+      return;
+    }
+
+    this.searchView.showNotFoundImg();
   }
 
   fetchVideos(videoItems) {
-    if (videoItems.length === 0) {
-      if (searchHistory.getPageToken()) {
-        return;
-      }
-
-      this.searchView.showNotFoundImg();
-    } else {
-      videos.setFetchedVideos(videoItems);
-      this.searchView.showSearchResults();
-      searchHistory.setPageToken(this.nextPageToken);
-    }
+    videos.setFetchedVideos(videoItems);
+    this.searchView.showSearchResults();
+    searchHistory.setPageToken(this.nextPageToken);
   }
 
   async addVideos($target) {
@@ -57,16 +73,7 @@ export default class SearchController {
     }
   }
 
-  updateKeywordHistory() {
-    this.searchView.showKeywordHistory();
-  }
-
   saveVideo(videoId) {
-    if (videos.getSavedVideoCount() >= VIDEOS.SAVED_VIDEOS_MAX_COUNT) {
-      alert(ALERT_MESSAGE.SAVE_COUNT_EXCEEDED_ERROR);
-      return;
-    }
-
     videos.setSavedVideos(videoId);
     this.searchView.hideSavedVideoButton(videoId);
     this.showSavedVideoCount();
@@ -74,5 +81,13 @@ export default class SearchController {
 
   showSavedVideoCount() {
     this.searchView.showSavedVideoCount();
+  }
+
+  updateKeywordHistory() {
+    this.searchView.showKeywordHistory();
+  }
+
+  isScrolled() {
+    return searchHistory.getPageToken() !== "";
   }
 }

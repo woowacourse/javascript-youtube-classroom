@@ -1,12 +1,20 @@
 import searchHistory from "../state/searchHistory.js";
 import videos from "../state/videos.js";
+
 import getKeywordHistoryTemplate from "../templates/keywordHistoryTemplate.js";
 import getVideoClipTemplate from "../templates/videoClipTemplate.js";
-import { VIDEOS } from "../utils/constants.js";
+
 import { $, hideElement, showElement } from "../utils/dom.js";
+import { VIDEOS } from "../utils/constants.js";
 import elements from "../utils/elements.js";
 
 export default class SearchView {
+  resetSearchResults() {
+    elements.$searchResults.innerHTML = "";
+    hideElement(elements.$searchResults);
+    hideElement(elements.$notFound);
+  }
+
   showNotFoundImg() {
     hideElement(elements.$searchResults);
     hideElement(elements.$skeletonSearchResults);
@@ -45,22 +53,11 @@ export default class SearchView {
     showElement(elements.$skeletonSearchResults);
   }
 
-  resetSearchResults() {
-    elements.$searchResults.innerHTML = "";
-    hideElement(elements.$searchResults);
-    hideElement(elements.$notFound);
-  }
-
   hideSavedVideoButton(videoId) {
     const currentSaveButton = Array.from($("button[data-video-id]")).find(
       ($saveButton) => $saveButton.dataset.videoId === videoId
     );
-    hideElement(currentSaveButton);
-  }
 
-  showHTTPErrorWarning(status) {
-    hideElement(elements.$skeletonSearchResults);
-    showElement(elements.$searchResults);
-    elements.$searchResults.innerHTML = `<h3>${status}<h3>`;
+    hideElement(currentSaveButton);
   }
 }

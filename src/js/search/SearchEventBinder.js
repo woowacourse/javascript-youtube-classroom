@@ -1,6 +1,10 @@
 import SearchController from "./SearchController.js";
-import elements from "../utils/elements.js";
+
 import searchHistory from "../state/searchHistory.js";
+import videos from "../state/videos.js";
+
+import elements from "../utils/elements.js";
+import { ALERT_MESSAGE, VIDEOS } from "../utils/constants.js";
 import {
   openModal,
   closeModal,
@@ -8,12 +12,12 @@ import {
   hideElement,
 } from "../utils/dom.js";
 
-export default class Search {
+export default class SearchEventBinder {
   constructor() {
     this.searchController = new SearchController();
   }
 
-  init() {
+  bindEvents() {
     elements.$searchButton.addEventListener(
       "click",
       this.onClickSearchButton.bind(this)
@@ -28,15 +32,14 @@ export default class Search {
       "scroll",
       this.onScroll.bind(this)
     );
-
-    elements.$searchResults.addEventListener(
-      "click",
-      this.onClickSaveVideoButton.bind(this)
-    );
-
     elements.$searchResults.addEventListener(
       "loadSearchAll",
       this.onLoadSearchAll
+    );
+
+    elements.$searchResults.addEventListener(
+      "click",
+      this.onClickSaveVideoButtons.bind(this)
     );
   }
 
@@ -66,13 +69,21 @@ export default class Search {
     closeModal(elements.$searchModal);
   }
 
-  onClickSaveVideoButton(e) {
-    if (!e.target.dataset.videoId) return;
-    this.searchController.saveVideo(e.target.dataset.videoId);
-  }
-
   onLoadSearchAll() {
     hideElement(elements.$skeletonSearchResults);
     showElement(elements.$searchResults);
+  }
+
+  onClickSaveVideoButtons(e) {
+    if (!e.target.dataset.videoId) {
+      return;
+    }
+
+    if (videos.getSavedVideoCount() >= VIDEOS.SAVED_VIDEOS_MAX_COUNT) {
+      alert(ALERT_MESSAGE.SAVE_COUNT_EXCEEDED_ERROR);
+      return;
+    }
+
+    this.searchController.saveVideo(e.target.dataset.videoId);
   }
 }
