@@ -1,5 +1,5 @@
 import {
-  NUM_OF_CLIP_PER_FETCH,
+  NUM_OF_VIDEO_PER_FETCH,
   MAX_NUM_OF_SAVED_VIDEO,
   NUM_OF_SEARCH_KEYWORD_HISTORY,
   LOCAL_STORAGE_SAVED_VIDEO_KEY,
@@ -27,18 +27,18 @@ describe('유튜브 검색 테스트', () => {
     cy.get('.js-not-found-image').should('be.visible');
   });
 
-  it(`최초 검색결과는 ${NUM_OF_CLIP_PER_FETCH}개까지만 보여준다.`, () => {
+  it(`최초 검색결과는 ${NUM_OF_VIDEO_PER_FETCH}개까지만 보여준다.`, () => {
     const searchInput = '테코톡';
 
     cy.get('.js-search-input').type(searchInput);
     cy.get('.js-search-submit').click();
     cy.get('.chip').eq(0).contain(searchInput);
-    cy.get('.clip').should('have.length', NUM_OF_CLIP_PER_FETCH);
+    cy.get('.clip').should('have.length', NUM_OF_VIDEO_PER_FETCH);
   });
 
-  it(`스크롤을 끝까지 내렸을 때, 추가로 ${NUM_OF_CLIP_PER_FETCH}개의 검색 결과를 가지고 온다.`, () => {
+  it(`스크롤을 끝까지 내렸을 때, 추가로 ${NUM_OF_VIDEO_PER_FETCH}개의 검색 결과를 가지고 온다.`, () => {
     cy.get('.modal').scrollTo('bottom');
-    cy.get('.clip').should('have.length', NUM_OF_CLIP_PER_FETCH * 2);
+    cy.get('.clip').should('have.length', NUM_OF_VIDEO_PER_FETCH * 2);
   });
 
   it('동영상의 저장 버튼을 누르면, 동영상의 id를 localStorage에 저장한다.', () => {

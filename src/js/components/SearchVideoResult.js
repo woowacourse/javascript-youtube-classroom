@@ -1,10 +1,19 @@
-import { $, hideElement } from '../util/index.js';
-import { getSearchVideoByKeyword, formatDateTime } from '../util/index.js';
+import {
+  $,
+  hideElement,
+  showElement,
+  getSearchVideoByKeyword,
+  formatDateTime,
+  renderSkeleton,
+  removeSkeleton,
+} from '../util/index.js';
+import { NUM_OF_VIDEO_PER_FETCH } from '../constants/index.js';
 
 export class SearchVideoResult {
   constructor({ searchKeywordHistoryManager, savedVideoManager }) {
     this.$container = $('.js-video-result-container');
     this.$wrapper = $('.js-video-result-wrapper');
+    this.$notFoundImage = $('.js-not-found-image');
 
     this.searchKeywordHistoryManager = searchKeywordHistoryManager;
     this.savedVideoManager = savedVideoManager;
@@ -24,10 +33,12 @@ export class SearchVideoResult {
   async handleContainerScroll({ target }) {
     if (target.scrollHeight - target.scrollTop === target.clientHeight) {
       try {
+        renderSkeleton(this.$wrapper, NUM_OF_VIDEO_PER_FETCH);
         const searchResultData = await getSearchVideoByKeyword(
           this.searchKeywordHistoryManager.getLastKeyword(),
           this.searchResultData.nextPageToken
         );
+        removeSkeleton(this.$wrapper);
 
         this.setState({ searchResultData });
       } catch (e) {
@@ -38,7 +49,9 @@ export class SearchVideoResult {
 
   async fetchSearchResultData() {
     try {
+      renderSkeleton(this.$wrapper, NUM_OF_VIDEO_PER_FETCH);
       const searchResultData = await getSearchVideoByKeyword(this.searchKeywordHistoryManager.getLastKeyword());
+      removeSkeleton(this.$wrapper);
       this.setState({ searchResultData });
     } catch (e) {
       console.error(e);
@@ -105,9 +118,11 @@ export class SearchVideoResult {
 
   render() {
     if (!this.$wrapper.hasChildNodes() && this.searchResultData.items.length === 0) {
-      this.$container.innerHTML =
-        '<img src="./src/images/status/not_found.png" class="d-block m-auto" alt="not found"/>';
+      showElement(this.$notFoundImage);
+      return;
     }
+
+    hideElement(this.$notFoundImage);
     this.$wrapper.insertAdjacentHTML(
       'beforeend',
       this.searchResultData.items.map(item => this.makeTemplate(item)).join('')

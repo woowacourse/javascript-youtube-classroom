@@ -1,4 +1,4 @@
-import { getVideoByIdList, formatDateTime, $ } from '../util/index.js';
+import { getVideoByIdList, formatDateTime, $, renderSkeleton } from '../util/index.js';
 
 export class SavedVideo {
   constructor({ savedVideoManager, isCompleted }) {
@@ -13,6 +13,7 @@ export class SavedVideo {
 
   async fetchSavedVideoData() {
     try {
+      renderSkeleton(this.$savedVideoWrapper, this.savedVideoManager.getSavedVideos().length);
       const savedVideoData = await getVideoByIdList(this.savedVideoManager.getSavedVideoIdList());
       this.setState({ savedVideoData });
     } catch (e) {
