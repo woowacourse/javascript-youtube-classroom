@@ -41,3 +41,11 @@ a {
 .hidden {
   visibility: hidden;
 }
+
+.d-none {
+  display: none;
+}
+
+.saved-video-count {
+  margin-left: 0.5rem;
+}

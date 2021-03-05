@@ -24,6 +24,7 @@ describe('나만의 유튜브 강의실 Test', () => {
     cy.get(SELECTORS.ID.SEARCH_BUTTON).click();
     cy.get(SELECTORS.ID.YOUTUBE_SEARCH_KEYWORD_INPUT).type('무야호');
     cy.get(SELECTORS.ID.YOUTUBE_SEARCH_FORM).submit();
+    cy.wait(3000);
     cy.get(SELECTORS.CLASS.YOUTUBE_SEARCH_RESULT_LIST).children().should('have.length', 10);
   });
 
@@ -35,16 +36,19 @@ describe('나만의 유튜브 강의실 Test', () => {
       .should('have.text', ALERT_MESSAGE.EMPTY_SEARCH_KEYWORD);
   });
 
-  it.only('유튜브 검색 modal에서 검색 결과 스크롤 바를 끝까지 이동시켰을 경우, 그 다음 10개의 검색 결과를 추가로 보여준다.', () => {
+  it('유튜브 검색 modal에서 검색 결과 스크롤 바를 끝까지 이동시켰을 경우, 그 다음 10개의 검색 결과를 추가로 보여준다.', () => {
     cy.get(SELECTORS.ID.SEARCH_BUTTON).click();
     cy.get(SELECTORS.ID.YOUTUBE_SEARCH_KEYWORD_INPUT).type('무야호');
     cy.get(SELECTORS.ID.YOUTUBE_SEARCH_FORM).submit();
+
+    cy.wait(3000);
 
     cy.get(SELECTORS.CLASS.YOUTUBE_SEARCH_RESULT_LIST)
       .children()
       .should('have.length', 10)
       .then(() => {
         cy.get(SELECTORS.CLASS.YOUTUBE_SEARCH_RESULT).scrollTo('bottom');
+        cy.wait(3000);
         cy.get(`${SELECTORS.CLASS.YOUTUBE_SEARCH_RESULT_LIST} .clip`).should('have.length', 20);
       });
   });

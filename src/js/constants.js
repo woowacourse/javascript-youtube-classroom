@@ -11,12 +11,15 @@ export const SELECTORS = {
   CLASS: {
     MODAL_CLOSE: '.modal-close',
     MODAL: '.modal',
+    WATCH_LIST_CONTAINER: '.watch-list-container',
     WATCH_LIST: '.watch-list',
+    YOUTUBE_SEARCH_FORM_CONTAINER: '.youtube-search-form-container',
     YOUTUBE_SEARCH_RESULT_LIST: '.youtube-search-result-list',
     YOUTUBE_SEARCH_RESULT: '.youtube-search-result',
     BTN_SAVE: '.btn-save',
     VIDEO_TITLE: '.video-title',
     RECENT_KEYWORD_LIST: '.recent-keyword-list',
+    SAVED_VIDEO_COUNT: '.saved-video-count',
   },
   ID: {
     SEARCH_BUTTON: '#search-button',

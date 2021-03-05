@@ -18,7 +18,7 @@
               <button id="search-button" class="btn mx-1">🔍 동영상 검색</button>
             </nav>
           </header>
-          <main class="mt-10">
+          <main class="watch-list-container mt-10">
             <section class="video-wrapper watch-list"></section>
           </main>
         </div>
@@ -33,22 +33,17 @@
           <header>
             <h2 class="text-center">🔎 유튜브 검색</h2>
           </header>
-          <form id="youtube-search-form" class="d-flex">
-            <input
-              type="text"
-              id="youtube-search-keyword-input"
-              class="w-100 mr-2 pl-2"
-              name="keyword"
-              placeholder="검색"
-            />
-            <button type="submit" class="btn bg-cyan-500">검색</button>
-          </form>
+          <div class="youtube-search-form-container"></div>
           <section class="mt-2">
             <span class="text-gray-700">최근 검색어: </span>
             <div class="recent-keyword-list d-inline-block"></div>
           </section>
-          <div class="d-flex justify-end text-gray-700">저장된 영상 갯수: 0개</div>
-          <section class="youtube-search-result"></section>
+          <div class="d-flex justify-end text-gray-700">
+            저장된 영상 갯수: <span class="saved-video-count">0</span>개
+          </div>
+          <section class="youtube-search-result">
+            <div class="youtube-search-result-list video-wrapper"></div>
+          </section>
         </div>
       </div>
       <div id="snackbar"></div>
