@@ -8,7 +8,7 @@ import {
 
 class SearchView {
   init = () => {
-    this.renderMyVideoInfosSection(0);
+    this.renderSavedVideoCountSection(0);
   };
 
   renderVideoArticle = (info, save) => {
@@ -33,7 +33,7 @@ class SearchView {
     $recentKeywordsSection.innerHTML = recentKeywordsTemplate(keywords);
   };
 
-  renderMyVideoInfosSection = length => {
+  renderSavedVideoCountSection = length => {
     const $myVideoInfosSection = $('#my-video-infos');
     console.log($myVideoInfosSection);
     $myVideoInfosSection.innerHTML = myVideoInfosTemplate(length);
