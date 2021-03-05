@@ -84,10 +84,9 @@ export default class VideoSearchModal extends Component {
   requestVideos(searchTerm) {
     if (searchTerm) {
       store.dispatch(addSearchHistory(searchTerm));
+      youtubeAPIManager.setSearchTerm(searchTerm);
     }
     store.dispatch(updateRequestPending(true));
-
-    youtubeAPIManager.setSearchTerm(searchTerm);
     youtubeAPIManager
       .requestVideos()
       .then((videoInfos) => {
