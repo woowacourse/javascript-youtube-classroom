@@ -37,6 +37,13 @@ function renderSavedVideoList(videoInfos) {
   dom.$videoList.innerHTML = createSavedVideoListTemplate(videoInfos);
 }
 
+function appendVideos(searchResult, videoInfos) {
+  dom.$videoSearchResult.innerHTML += createVideoListTemplate(
+    searchResult,
+    videoInfos
+  );
+}
+
 export {
   openModal,
   closeModal,
@@ -45,4 +52,5 @@ export {
   renderVideoLoader,
   renderVideoSearchResult,
   renderSavedVideoList,
+  appendVideos,
 };

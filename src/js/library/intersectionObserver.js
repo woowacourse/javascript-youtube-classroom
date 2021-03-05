@@ -1,7 +1,7 @@
-import dom, { $ } from './DOMelements.js';
+import { appendVideos } from '../viewController.js';
+import { $ } from './DOMelements.js';
 import fetchSearchResult from './searchAPI.js';
 import state from './state.js';
-import { createVideoListTemplate } from './templates/videoList.js';
 
 export function initInfiniteScroll() {
   const $lastVideo = $('#video-search-result .js-video:last-child');
@@ -12,26 +12,21 @@ export function initInfiniteScroll() {
 
 async function searchMoreVideos(entries) {
   const [$lastVideo] = entries;
+  if (!$lastVideo.isIntersecting) return;
 
-  if ($lastVideo.isIntersecting) {
-    state.intersectionObserver.disconnect();
+  state.intersectionObserver.disconnect();
 
-    const { nextPageToken, items: searchResult } = await fetchSearchResult(
-      state.latestKeywords[state.latestKeywords.length - 1],
-      state.nextPageToken
-    );
+  const { nextPageToken, items } = await fetchSearchResult(
+    state.latestKeywords[state.latestKeywords.length - 1],
+    state.nextPageToken
+  );
 
-    state.setNextPageToken(nextPageToken);
-    dom.$videoSearchResult.innerHTML += createVideoListTemplate(
-      searchResult,
-      state.videoInfos
-    );
-    const last = document.querySelector(
-      '#video-search-result .js-video:last-child'
-    );
+  state.setNextPageToken(nextPageToken);
+  appendVideos(items, state.videoInfos);
 
-    state.intersectionObserver.observe(last);
-  }
+  const $newLastVideo = $('#video-search-result .js-video:last-child');
+
+  state.intersectionObserver.observe($newLastVideo);
 }
 
 function createIntersectionObserver() {
