@@ -43,6 +43,7 @@ export default class Video {
     for (const key in videos) {
       if (this.videoId === videos[key].videoId) return true;
     }
+
     return false;
   }
 
@@ -114,6 +115,7 @@ export default class Video {
         alert(
           '동영상은 100개까지 저장할 수 있습니다. 저장된 동영상을 지워주세요.'
         );
+
         return;
       }
       savedVideos.push(this.toJson());

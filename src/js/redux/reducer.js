@@ -19,11 +19,14 @@ const searchHistoryReducer = (state, { type, payload }) => {
     case ADD_SEARCH_TERM:
       const newStates = [...state];
       const indexOfSearchTerm = newStates.indexOf(payload.searchTerm);
+
       if (indexOfSearchTerm !== -1) {
         newStates.splice(indexOfSearchTerm, 1);
         newStates.unshift(payload.searchTerm);
+
         return newStates;
       }
+
       return [payload.searchTerm, ...state].slice(0, 3);
     default:
       return state;

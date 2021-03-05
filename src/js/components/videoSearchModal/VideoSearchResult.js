@@ -39,11 +39,13 @@ export default class VideoSearchResult {
     for (let i = 0; i < 10; i++) {
       fragment.appendChild(skeleton.cloneNode(true));
     }
+
     return fragment;
   }
 
   displayClips() {
     const $clips = this.$searchedVideoWrapper.querySelectorAll('.clip');
+
     $clips.forEach((clip) => {
       if (!clip.classList.contains('d-none')) return;
       clip.classList.remove('d-none');
@@ -52,6 +54,7 @@ export default class VideoSearchResult {
 
   removeSkeletons() {
     const $skeltons = this.$searchedVideoWrapper.querySelectorAll('.skeleton');
+
     $skeltons.forEach((skeleton) => {
       skeleton.remove();
     });
@@ -64,6 +67,7 @@ export default class VideoSearchResult {
         const condition = Array.from($iframes).every((preview) =>
           preview.classList.contains('loaded')
         );
+
         if (!condition) return;
         this.displayClips();
         this.removeSkeletons();
@@ -92,10 +96,12 @@ export default class VideoSearchResult {
     if (preStates.searchedVideos !== states.searchedVideos) {
       if (states.searchedVideos.length === 0) {
         this.$searchedVideoWrapper.innerHTML = `<img class="w-100" src="./src/images/status/not_found.png" alt="not found"/>`;
+
         return;
       }
 
       const fragment = document.createDocumentFragment();
+
       states.searchedVideos.forEach((video) => {
         fragment.appendChild(video.createTemplate());
       });

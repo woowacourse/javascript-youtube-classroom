@@ -45,10 +45,12 @@ export default class VideoSearchModal {
       document.querySelector('#video-search-bar'),
       { youtubeAPIManager: this.youtubeAPIManager }
     );
+
     this.searchTermHistory = new SearchTermHistory(
       document.querySelector('#search-term-history'),
       { youtubeAPIManager: this.youtubeAPIManager }
     );
+
     this.videoSearchResult = new VideoSearchResult(
       document.querySelector('#video-search-result'),
       { youtubeAPIManager: this.youtubeAPIManager }

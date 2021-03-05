@@ -2,6 +2,7 @@ export default class Store {
   static singletonStore = null;
   constructor() {
     if (Store.singletonStore) return Store.singletonStore;
+
     this.subscribers = [];
     this.states = {};
     Store.singletonStore = this;

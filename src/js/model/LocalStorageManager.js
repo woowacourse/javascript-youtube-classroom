@@ -11,6 +11,7 @@ export default class LocalStorageManager {
     if (this.getItem(this.key.videos) === null) {
       this.setItem(this.key.videos, []);
     }
+
     if (this.getItem(this.key.searchHistory) === null) {
       this.setItem(this.key.searchHistory, []);
     }

@@ -6,6 +6,7 @@ export const store = new Store();
 
 document.addEventListener('DOMContentLoaded', () => {
   const app = new App(document.querySelector('#app'));
+
   store.setup(app.states, reduce);
   app.run();
 });

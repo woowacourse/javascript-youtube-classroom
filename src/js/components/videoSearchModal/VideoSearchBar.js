@@ -56,8 +56,10 @@ export default class VideoSearchBar {
       history.splice(indexOfSearchTerm, 1);
       history.unshift(searchTerm);
       localStorageManager.setItem('searchHistory', history);
+
       return;
     }
+
     history.unshift(searchTerm);
     localStorageManager.setItem('searchHistory', history.slice(0, 3));
   }
