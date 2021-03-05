@@ -106,9 +106,7 @@ export class SearchVideoResult {
               <div class="meta">
                 <p>${formatDateTime(snippet.publishedAt)}</p>
               </div>
-              <div class="d-flex justify-end">
-                <button class="js-clip-save-button btn" data-video-id="${id.videoId}">⬇️ 저장</button>
-              </div>
+              ${this.makeSaveButtonTemplete(id.videoId)}
             </div>
           </div>
         </article>
@@ -116,9 +114,22 @@ export class SearchVideoResult {
     `;
   }
 
+  makeSaveButtonTemplete(videoId) {
+    if (this.savedVideoManager.getSavedVideoIdList().includes(videoId)) {
+      return '';
+    }
+
+    return `
+      <div class="d-flex justify-end">
+        <button class="js-clip-save-button btn" data-video-id="${videoId}">⬇️ 저장</button>
+      </div>
+    `;
+  }
+
   render() {
     if (!this.$wrapper.hasChildNodes() && this.searchResultData.items.length === 0) {
       showElement(this.$notFoundImage);
+
       return;
     }
 
