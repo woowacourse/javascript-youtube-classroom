@@ -2,6 +2,7 @@ import {
   setJSONToLocalStorage,
   getJSONFromLocalStorage,
 } from '../utils/util.js';
+import { SEARCH } from '../constants/constant.js';
 class StorageModel {
   #myVideo;
   #keywords;
@@ -32,21 +33,26 @@ class StorageModel {
   };
 
   saveRecentKeyword = keyword => {
-    // TODO : getITem setITem util 화
-    // TODO : 0, 3 상수화. 0빼도되나?, 3항연산자 대신 if문으로 할수있으면.
     this.#keywords = [
       ...new Set([keyword, ...getJSONFromLocalStorage('keywords')]),
-    ].slice(0, this.#keywords < 3 ? this.#keywords.length + 1 : 3);
+    ];
+
+    if (this.#keywords.length > SEARCH.RECENT_KEYWORD_MAX_LENGTH) {
+      this.#keywords = this.#keywords.slice(
+        0,
+        SEARCH.RECENT_KEYWORD_MAX_LENGTH
+      );
+    }
 
     setJSONToLocalStorage('keywords', this.#keywords);
   };
 
   get savedVideoLength() {
-    return getJSONFromLocalStorage('myVideo').length;
+    return this.#myVideo.length;
   }
 
   get recentKeywords() {
-    return getJSONFromLocalStorage('keywords');
+    return this.#keywords;
   }
 }
 
