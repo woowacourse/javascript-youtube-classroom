@@ -2,11 +2,17 @@
   display: grid;
   grid-template-columns: repeat(auto-fill, 230px);
   grid-row-gap: 50px;
-  grid-column-gap: 12px;
+  grid-column-gap: 6px;
   justify-content: center;
 }
 
+#search-result-wrapper {
+  overflow-y: scroll;
+  height: 70vh;
+}
+
 .search-result-group {
+  margin: 0 6px;
   display: contents;
 }
 

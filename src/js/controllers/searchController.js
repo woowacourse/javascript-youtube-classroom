@@ -20,7 +20,7 @@ export default class SearchController {
     this.view.$modalCloseButton.addEventListener('click', this.onCloseModal.bind(this));
     this.view.$searchKeywordForm.addEventListener('submit', this.onRequestSearchKeyword.bind(this));
     this.view.$recentKeywords.addEventListener('click', this.onRequestSearchRecentKeyword.bind(this));
-    this.view.$searchSection.addEventListener('scroll', this.onRequestNextResult.bind(this));
+    this.view.$searchResultWrapper.addEventListener('scroll', this.onRequestNextResult.bind(this));
     this.view.$searchResultWrapper.addEventListener('click', this.onRequestSaveVideo.bind(this));
   }
 
@@ -41,7 +41,7 @@ export default class SearchController {
   }
 
   onRequestNextResult() {
-    if (!isEndOfPage(this.view.$searchSection)) {
+    if (!isEndOfPage(this.view.$searchResultWrapper)) {
       return;
     }
     this.showSearchGroup();
