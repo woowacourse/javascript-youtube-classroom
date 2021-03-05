@@ -6,6 +6,7 @@ import {
 } from '../../redux/action.js';
 import { localStorageManager, youtubeAPIManager } from '../App.js';
 import { ERROR_MESSAGE } from '../../constants/constants.js';
+import { $ } from '../../utils/utils.js';
 
 export default class VideoSearchBar {
   constructor($target) {
@@ -36,9 +37,9 @@ export default class VideoSearchBar {
   }
 
   selectDOM() {
-    this.$videoSearchForm = document.querySelector('#youtube-search-form');
-    this.$videoSearchInput = document.querySelector('#youtube-search-input');
-    this.$videoSearchButton = document.querySelector('#youtube-search-button');
+    this.$videoSearchForm = $('#youtube-search-form');
+    this.$videoSearchInput = $('#youtube-search-input');
+    this.$videoSearchButton = $('#youtube-search-button');
   }
 
   bindEvent() {

@@ -1,6 +1,7 @@
 import LocalStorageManager from '../model/LocalStorageManager.js';
 import YoutubeAPIManager from '../model/YoutubeAPIManager.js';
 import VideoSearchModal from './videoSearchModal/VideoSearchModal.js';
+import { $ } from '../utils/utils.js';
 
 export const localStorageManager = new LocalStorageManager();
 export const youtubeAPIManager = new YoutubeAPIManager();
@@ -47,13 +48,11 @@ export default class App {
   }
 
   mount() {
-    this.viewSearchModal = new VideoSearchModal(
-      document.querySelector('.modal')
-    );
+    this.viewSearchModal = new VideoSearchModal($('.modal'));
   }
 
   selectorDOM() {
-    this.$searchButton = document.querySelector('#search-button');
+    this.$searchButton = $('#search-button');
   }
 
   bindEvent() {

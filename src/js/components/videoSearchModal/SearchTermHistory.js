@@ -6,6 +6,7 @@ import {
 } from '../../redux/action.js';
 import { localStorageManager, youtubeAPIManager } from '../App.js';
 import { ERROR_MESSAGE } from '../../constants/constants.js';
+import { $ } from '../../utils/utils.js';
 
 export default class SearchTermHistory {
   constructor($target) {
@@ -77,6 +78,6 @@ export default class SearchTermHistory {
   }
 
   selectDOM() {
-    this.$chips = this.$target.querySelector('.chips');
+    this.$chips = $('.chips', this.$target);
   }
 }

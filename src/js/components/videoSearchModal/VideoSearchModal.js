@@ -1,13 +1,12 @@
 import VideoSearchBar from './VideoSearchBar.js';
 import SearchTermHistory from './SearchTermHistory.js';
 import VideoSearchResult from './VideoSearchResult.js';
-import { store } from '../../index.js';
-import YoutubeAPIManager from '../../model/YoutubeAPIManager.js';
+import { $ } from '../../utils/utils.js';
 
 export default class VideoSearchModal {
   constructor($target) {
     this.$target = $target;
-    this.$modalClose = document.querySelector('.modal-close');
+    this.$modalClose = $('.modal-close');
     this.initRender();
     this.mount();
     this.selectDOM();
@@ -36,21 +35,15 @@ export default class VideoSearchModal {
   }
 
   mount() {
-    this.videoSearchBar = new VideoSearchBar(
-      document.querySelector('#video-search-bar')
-    );
+    this.videoSearchBar = new VideoSearchBar($('#video-search-bar'));
 
-    this.searchTermHistory = new SearchTermHistory(
-      document.querySelector('#search-term-history')
-    );
+    this.searchTermHistory = new SearchTermHistory($('#search-term-history'));
 
-    this.videoSearchResult = new VideoSearchResult(
-      document.querySelector('#video-search-result')
-    );
+    this.videoSearchResult = new VideoSearchResult($('#video-search-result'));
   }
 
   selectDOM() {
-    this.$modalClose = document.querySelector('.modal-close');
+    this.$modalClose = $('.modal-close');
   }
 
   onClickOutsideModal(e) {
