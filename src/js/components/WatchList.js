@@ -66,9 +66,7 @@ export default class WatchList extends Observer {
     if (!watchList || watchList.length <= 0) return;
 
     renderSkeletonUI(SELECTORS.CLASS.WATCH_LIST, watchList.length);
-
     const { items } = await searchYoutubeById(watchList);
-
     clearElement(SELECTORS.CLASS.WATCH_LIST);
 
     this.renderSavedVideos(items);

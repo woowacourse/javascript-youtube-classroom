@@ -15,7 +15,7 @@ export const SELECTORS = {
     WATCH_LIST_CONTAINER: '.watch-list-container',
     WATCH_LIST: '.watch-list',
     YOUTUBE_SEARCH_FORM_CONTAINER: '.youtube-search-form-container',
-    YOUTUBE_SEARCH_RESULT_LIST: '.youtube-search-result-list',
+    YOUTUBE_SEARCH_RESULT_CONTAINER: '.youtube-search-result-container',
     YOUTUBE_SEARCH_RESULT: '.youtube-search-result',
     BTN_SAVE: '.btn-save',
     VIDEO_TITLE: '.video-title',

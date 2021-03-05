@@ -1,5 +1,5 @@
 import { searchYoutube, searchYoutubeDummyData } from '../api.js';
-import { $, showSnackbar, renderSkeletonUI, formatDate } from '../utils.js';
+import { $, showSnackbar, renderSkeletonUI, formatDate, closeModal } from '../utils.js';
 import { ALERT_MESSAGE, SELECTORS, LOCAL_STORAGE_KEYS } from '../constants.js';
 import Observer from '../lib/Observer.js';
 
@@ -12,7 +12,7 @@ export default class YoutubeSearchManager extends Observer {
     this.selector = SELECTORS.CLASS.YOUTUBE_SEARCH_FORM_CONTAINER;
   }
 
-  getTemplate() {
+  getFormTemplate() {
     return `
       <form id="youtube-search-form" class="d-flex">
         <input
@@ -83,7 +83,7 @@ export default class YoutubeSearchManager extends Observer {
   }
 
   render() {
-    $(this.selector).innerHTML = this.getTemplate();
+    $(this.selector).innerHTML = this.getFormTemplate();
 
     this.renderRecentKeywordList();
     this.renderSavedVideoCount();
@@ -91,7 +91,7 @@ export default class YoutubeSearchManager extends Observer {
   }
 
   renderResults(template) {
-    $(SELECTORS.CLASS.YOUTUBE_SEARCH_RESULT_LIST).insertAdjacentHTML('beforeend', template);
+    $(SELECTORS.CLASS.YOUTUBE_SEARCH_RESULT).insertAdjacentHTML('beforeend', template);
   }
 
   renderRecentKeywordList() {
@@ -109,96 +109,109 @@ export default class YoutubeSearchManager extends Observer {
     $(SELECTORS.CLASS.SAVED_VIDEO_COUNT).textContent = this.store.get()[LOCAL_STORAGE_KEYS.WATCH_LIST].length;
   }
 
-  bindEvents() {
-    // TODO: 일부 너무 긴 메소드들 하위 메소드 여러 개로 분리
-    $(SELECTORS.ID.YOUTUBE_SEARCH_FORM).addEventListener('submit', async (event) => {
-      event.preventDefault();
+  renderEmptySearchResult() {
+    $(SELECTORS.CLASS.YOUTUBE_SEARCH_RESULT_CONTAINER).innerHTML = `
+      <div class="youtube-search-result video-wrapper"></div>
+    `;
+  }
 
-      const keyword = event.target.elements.keyword.value;
-      if (!keyword) {
-        showSnackbar(ALERT_MESSAGE.EMPTY_SEARCH_KEYWORD);
-        return;
-      }
+  updateRecentKeywordList(keyword) {
+    let { recentKeywordList } = this.store.get();
+    recentKeywordList = recentKeywordList.filter((item) => item !== keyword);
 
-      $(SELECTORS.CLASS.YOUTUBE_SEARCH_RESULT).innerHTML = `
-        <div class="youtube-search-result-list video-wrapper"></div>
-      `;
+    if (recentKeywordList.length >= 3) {
+      recentKeywordList.pop();
+    }
+    recentKeywordList.unshift(keyword);
 
-      renderSkeletonUI(SELECTORS.CLASS.YOUTUBE_SEARCH_RESULT_LIST, 8);
+    this.store.update({
+      [LOCAL_STORAGE_KEYS.RECENT_KEYWORD_LIST]: recentKeywordList,
+    });
+  }
 
-      const response = await searchYoutube(keyword);
+  async handleSearch(event) {
+    event.preventDefault();
+
+    const keyword = event.target.elements.keyword.value;
+    if (!keyword) {
+      showSnackbar(ALERT_MESSAGE.EMPTY_SEARCH_KEYWORD);
+      return;
+    }
+
+    this.renderEmptySearchResult();
+    renderSkeletonUI(SELECTORS.CLASS.YOUTUBE_SEARCH_RESULT, 8);
+
+    const response = await searchYoutube(keyword);
+    this.pageToken = response.nextPageToken;
+
+    this.updateRecentKeywordList(keyword);
+
+    if (response.pageInfo.totalResults === 0) {
+      $(SELECTORS.CLASS.YOUTUBE_SEARCH_RESULT_CONTAINER).innerHTML = this.getNoResultTemplate();
+      return;
+    }
+
+    this.renderEmptySearchResult();
+
+    $(SELECTORS.CLASS.YOUTUBE_SEARCH_RESULT_CONTAINER).scrollTo(0, 0);
+
+    const template = this.getResultTemplate(response.items);
+    this.renderResults(template);
+  }
+
+  async handleScroll(event) {
+    const $videoWrapper = event.target;
+    const isScrollBottom =
+      Math.round($videoWrapper.scrollTop) === $videoWrapper.scrollHeight - $videoWrapper.offsetHeight;
+
+    if (isScrollBottom) {
+      const keyword = $(SELECTORS.ID.YOUTUBE_SEARCH_KEYWORD_INPUT).value;
+      const response = await searchYoutube(keyword, this.pageToken);
       this.pageToken = response.nextPageToken;
-
-      let { recentKeywordList } = this.store.get();
-      recentKeywordList = recentKeywordList.filter((item) => item !== keyword);
-
-      if (recentKeywordList.length >= 3) {
-        recentKeywordList.pop();
-      }
-
-      recentKeywordList.unshift(keyword);
-      this.store.update({
-        [LOCAL_STORAGE_KEYS.RECENT_KEYWORD_LIST]: recentKeywordList,
-      });
-
-      if (response.pageInfo.totalResults === 0) {
-        $(SELECTORS.CLASS.YOUTUBE_SEARCH_RESULT).innerHTML = this.getNoResultTemplate();
-        return;
-      }
-
-      $(SELECTORS.CLASS.YOUTUBE_SEARCH_RESULT).innerHTML = `
-        <div class="youtube-search-result-list video-wrapper"></div>
-      `;
-
-      $(SELECTORS.CLASS.YOUTUBE_SEARCH_RESULT).scrollTo(0, 0);
 
       const template = this.getResultTemplate(response.items);
       this.renderResults(template);
+    }
+  }
+
+  async handleSaveVideo(event) {
+    const selectedVideoId = event.target.dataset.videoId;
+    const $selectedButton = event.target;
+
+    if (!event.target.classList.contains('btn-save')) return;
+
+    this.store.update({
+      [LOCAL_STORAGE_KEYS.WATCH_LIST]: [...this.store.get()[LOCAL_STORAGE_KEYS.WATCH_LIST], selectedVideoId],
     });
+
+    $selectedButton.classList.add(SELECTORS.STATUS.HIDDEN);
+
+    showSnackbar(ALERT_MESSAGE.VIDEO_SAVED);
+  }
+
+  handleClickRecentKeyword(event) {
+    if (event.target.classList.contains('chip')) {
+      const keyword = event.target.textContent;
+      $(SELECTORS.ID.YOUTUBE_SEARCH_KEYWORD_INPUT).value = keyword;
+      $(SELECTORS.ID.YOUTUBE_SEARCH_FORM).requestSubmit();
+    }
+  }
+
+  handleClickDimmer(event) {
+    if (event.target.classList.contains('modal')) {
+      closeModal();
+    }
+  }
+
+  bindEvents() {
+    // TODO: 일부 너무 긴 메소드들 하위 메소드 여러 개로 분리
+    $(SELECTORS.ID.YOUTUBE_SEARCH_FORM).addEventListener('submit', this.handleSearch.bind(this));
 
     // TODO: 과도한 scroll 이벤트 방지를 위해 debounce 적용 필요
-    $(SELECTORS.CLASS.YOUTUBE_SEARCH_RESULT).addEventListener('scroll', async (event) => {
-      const $videoWrapper = event.target;
-      const isScrollBottom =
-        Math.round($videoWrapper.scrollTop) === $videoWrapper.scrollHeight - $videoWrapper.offsetHeight;
-
-      if (isScrollBottom) {
-        const keyword = $(SELECTORS.ID.YOUTUBE_SEARCH_KEYWORD_INPUT).value;
-        const response = await searchYoutube(keyword, this.pageToken);
-        this.pageToken = response.nextPageToken;
-
-        const template = this.getResultTemplate(response.items);
-        this.renderResults(template);
-      }
-    });
-
-    $(SELECTORS.CLASS.YOUTUBE_SEARCH_RESULT).addEventListener('click', async (event) => {
-      const selectedVideoId = event.target.dataset.videoId;
-      const $selectedButton = event.target;
-
-      if (!event.target.classList.contains('btn-save')) return;
-
-      this.store.update({
-        [LOCAL_STORAGE_KEYS.WATCH_LIST]: [...this.store.get()[LOCAL_STORAGE_KEYS.WATCH_LIST], selectedVideoId],
-      });
-
-      showSnackbar(ALERT_MESSAGE.VIDEO_SAVED);
-      $selectedButton.classList.add(SELECTORS.STATUS.HIDDEN);
-    });
-
-    $(SELECTORS.CLASS.RECENT_KEYWORD_LIST).addEventListener('click', (event) => {
-      if (event.target.classList.contains('chip')) {
-        const keyword = event.target.textContent;
-        $(SELECTORS.ID.YOUTUBE_SEARCH_KEYWORD_INPUT).value = keyword;
-        $(SELECTORS.ID.YOUTUBE_SEARCH_FORM).requestSubmit();
-      }
-    });
-
-    $(SELECTORS.CLASS.MODAL).addEventListener('click', (event) => {
-      if (event.target.classList.contains('modal')) {
-        $(SELECTORS.CLASS.MODAL).classList.remove(SELECTORS.STATUS.MODAL_OPEN);
-      }
-    });
+    $(SELECTORS.CLASS.YOUTUBE_SEARCH_RESULT_CONTAINER).addEventListener('scroll', this.handleScroll.bind(this));
+    $(SELECTORS.CLASS.YOUTUBE_SEARCH_RESULT_CONTAINER).addEventListener('click', this.handleSaveVideo.bind(this));
+    $(SELECTORS.CLASS.RECENT_KEYWORD_LIST).addEventListener('click', this.handleClickRecentKeyword.bind(this));
+    $(SELECTORS.CLASS.MODAL).addEventListener('click', this.handleClickDimmer.bind(this));
   }
 
   update() {

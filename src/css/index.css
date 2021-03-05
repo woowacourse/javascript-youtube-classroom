@@ -25,7 +25,7 @@ a {
   opacity: 1;
 }
 
-.youtube-search-result {
+.youtube-search-result-container {
   max-height: 500px;
   overflow: auto;
 }

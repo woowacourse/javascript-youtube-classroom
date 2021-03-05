@@ -37,3 +37,11 @@ export const formatDate = (publishedAt) => {
   const [year, month, day] = date.split('-');
   return `${year}년 ${month}월 ${day}일`;
 };
+
+export const openModal = () => {
+  $(SELECTORS.CLASS.MODAL).classList.add(SELECTORS.STATUS.MODAL_OPEN);
+};
+
+export const closeModal = () => {
+  $(SELECTORS.CLASS.MODAL).classList.remove(SELECTORS.STATUS.MODAL_OPEN);
+};
