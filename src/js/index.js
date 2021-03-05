@@ -33,15 +33,15 @@ dom.$videoSearchForm.addEventListener('submit', async e => {
   const keyword = e.target.elements['video-search-input'].value;
   state.addLatestKeyword(keyword);
   dom.$latestKeywordList.innerHTML = createKeywordList(state.latestKeywords);
-  dom.$videoSearchResult.innerHTML = createVideoSkeletonTemplate();
-  const { nextPageToken, items: resultItems } = await fetchSearchResult(
-    keyword
-  );
+  dom.$videoSearchResult.innerHTML = createNotFoundTemplate(); //createVideoSkeletonTemplate();
+  // const { nextPageToken, items: resultItems } = await fetchSearchResult(
+  //   keyword
+  // );
 
-  state.setNextPageToken(nextPageToken);
-  dom.$videoSearchResult.innerHTML = resultItems.length
-    ? createVideoListTemplate(resultItems, state.videoInfos)
-    : createNotFoundTemplate();
+  // state.setNextPageToken(nextPageToken);
+  // dom.$videoSearchResult.innerHTML = resultItems.length
+  //   ? createVideoListTemplate(resultItems, state.videoInfos)
+  //   : createNotFoundTemplate();
 });
 
 function createVideoInfo({
@@ -86,27 +86,27 @@ function initState() {
   state.setVideoInfos(JSON.parse(localStorage.getItem('videoInfos')) ?? []);
 }
 
-window.onload = function () {
-  const options = {
-    root: dom.$searchModal,
-    rootMargin: '0px',
-    threshold: 0.85,
-  };
+// window.onload = function () {
+//   const options = {
+//     root: dom.$searchModal,
+//     rootMargin: '0px',
+//     threshold: 0.85,
+//   };
 
-  const observer = new IntersectionObserver(async () => {
-    const { nextPageToken, items: searchResult } = await fetchSearchResult(
-      state.latestKeywords[state.latestKeywords.length - 1],
-      state.nextPageToken
-    );
+//   const observer = new IntersectionObserver(async () => {
+//     const { nextPageToken, items: searchResult } = await fetchSearchResult(
+//       state.latestKeywords[state.latestKeywords.length - 1],
+//       state.nextPageToken
+//     );
 
-    state.setNextPageToken(nextPageToken);
-    dom.$videoSearchResult.innerHTML += createVideoListTemplate(
-      searchResult,
-      state.videoInfos
-    );
-  }, options);
+//     state.setNextPageToken(nextPageToken);
+//     dom.$videoSearchResult.innerHTML += createVideoListTemplate(
+//       searchResult,
+//       state.videoInfos
+//     );
+//   }, options);
 
-  observer.observe(dom.$endPoint);
-};
+//   observer.observe(dom.$endPoint);
+// };
 
 initState();

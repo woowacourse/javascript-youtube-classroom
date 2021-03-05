@@ -15,9 +15,7 @@ function createSkeletonClipTemplate() {
 }
 
 function createVideoSkeletonTemplate() {
-  return `<div class="video-wrapper">
-            ${createSkeletonClipTemplate().repeat(10)}
-          </div>`;
+  return createSkeletonClipTemplate().repeat(10);
 }
 
 export default createVideoSkeletonTemplate;

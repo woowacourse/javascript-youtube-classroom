@@ -1,9 +1,9 @@
 function createNotFoundTemplate() {
   return `
-    <div id="video-not-found" class="w-100 d-flex flex-col items-center">
+    <div id="video-not-found" class="stretch d-flex flex-col items-center">
       <img
         src="./src/images/status/not_found.png"
-        width="240px"
+        width="100px"
         alt="not found"
       />
       <h2>검색결과가 없습니다.</h2>
