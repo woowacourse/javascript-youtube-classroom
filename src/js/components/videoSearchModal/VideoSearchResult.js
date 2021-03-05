@@ -10,9 +10,9 @@ export default class VideoSearchResult extends Component {
   initRender() {
     this.$target.innerHTML = `
         <div class="d-flex justify-end text-gray-700">
-          저장된 영상 갯수: <span id="saved-video-count">${
+          저장된 영상 갯수 : <span id="saved-video-count">${
             localStorageManager.getItem('videos').length
-          }</span>개
+          }</span>/100 개
         </div>
         <section id="searched-video-wrapper" class="video-wrapper">
         </section>
