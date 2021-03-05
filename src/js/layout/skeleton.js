@@ -14,9 +14,9 @@ const skeletonUnitTemplate = `
   </article>
 `;
 
-export const getSkeletonTemplate = (index) => {
+export const getSkeletonTemplate = () => {
   return `
-    <div class="search-result-group skeleton" data-group-index=${index}>
+    <div class="search-result-group skeleton">
       ${skeletonUnitTemplate.repeat(MAX_RESULT_COUNT)}
     </div>
   `;

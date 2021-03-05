@@ -76,7 +76,7 @@ export default class SearchController {
     const storedCount = this.storage.getStoredVideoCount();
 
     if (storedCount >= MAX_VIDEO_STORAGE_CAPACITY) {
-      this.view.showSnackbar(STORAGE_CAPACITY_FULL);
+      this.view.renderSnackbar(STORAGE_CAPACITY_FULL);
       return;
     }
 
@@ -99,14 +99,13 @@ export default class SearchController {
   }
 
   showSkeleton() {
-    this.model.incrementGroupIndex();
-    this.view.renderSkeleton(this.model.getGroupIndex());
+    this.view.renderSkeleton();
   }
 
   showSearchResult() {
     const searchResult = this.model.getSearchResult();
 
-    this.view.setCurrentGroupElements(this.model.getGroupIndex());
+    this.view.setCurrentGroupElements();
     this.view.renderSkeletonRemoved();
 
     if (searchResult.length === 0) {

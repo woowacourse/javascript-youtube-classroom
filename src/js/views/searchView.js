@@ -29,8 +29,8 @@ export default class SearchView {
     this.$searchResultWrapper.innerHTML = '';
   }
 
-  setCurrentGroupElements(groupIndex) {
-    this.$currentGroup = $(`[data-group-index="${groupIndex}"]`);
+  setCurrentGroupElements() {
+    this.$currentGroup = $('.search-result-group.skeleton');
     this.$currentGroupVideos = this.$currentGroup.querySelectorAll('article');
   }
 
@@ -43,7 +43,7 @@ export default class SearchView {
     this.$saveButton = $saveButton;
   }
 
-  showSnackbar(message) {
+  renderSnackbar(message) {
     const snackbarShowTime = 2000;
 
     this.$snackbar.innerText = message;
@@ -57,8 +57,8 @@ export default class SearchView {
     this.$storedVideoCount.innerText = count;
   }
 
-  renderSkeleton(groupIndex) {
-    this.$searchResultWrapper.innerHTML += getSkeletonTemplate(groupIndex);
+  renderSkeleton() {
+    this.$searchResultWrapper.innerHTML += getSkeletonTemplate();
   }
 
   renderSkeletonRemoved() {

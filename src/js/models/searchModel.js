@@ -5,7 +5,6 @@ import { request } from '../utils/request.js';
 
 export default class SearchModel {
   initSearchResult() {
-    this.groupIndex = -1;
     this.nextPageToken = '';
   }
 
@@ -15,14 +14,6 @@ export default class SearchModel {
 
   setKeyword(keyword) {
     this.keyword = keyword;
-  }
-
-  getGroupIndex() {
-    return this.groupIndex;
-  }
-
-  incrementGroupIndex() {
-    this.groupIndex += 1;
   }
 
   getSearchApiURI() {
