@@ -5,6 +5,7 @@ const state = {
   videoInfos: new Set(),
   nextPageToken: '',
   latestKeywords: [],
+
   addVideoInfo(newVideoInfo) {
     this.videoInfos.add(newVideoInfo);
     localStorage.setItem('videoInfos', JSON.stringify([...this.videoInfos]));
@@ -31,6 +32,7 @@ const state = {
   },
   setLatestKeywords(newKeywords) {
     this.latestKeywords = newKeywords;
+    dom.$latestKeywordList.innerHTML = createKeywordList(this.latestKeywords);
   },
 };
 
