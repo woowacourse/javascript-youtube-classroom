@@ -1,4 +1,5 @@
 // TODO : 제일마지막에 상수화. 숫자, 셀렉터 / 파일명좀 바꿀수 있으면 바꾸기 ㅎㅎ.. /모달도 좀 넣어주자
+import { CLASS, SEARCH, SELECTOR } from '../constants/constant.js';
 import { $, $$, isScrollUnfinished } from '../utils/util.js';
 class SearchController {
   constructor(youtube, storage, view) {
@@ -46,14 +47,15 @@ class SearchController {
   };
 
   saveVideo = e => {
-    e.target.classList.add('invisible');
+    e.target.classList.add(CLASS.INVISIBLE);
     const videoInfo = JSON.parse(e.target.dataset.info);
     this.storage.saveVideo(videoInfo);
+
     this.view.renderSavedVideoCountSection(this.storage.savedVideoCount);
   };
 
   fetchVideo = event => {
-    const searchVideoWrapper = $('#search-video-wrapper');
+    const searchVideoWrapper = $(SELECTOR.SEARCH_VIDEO_WRAPPER);
     if (isScrollUnfinished(searchVideoWrapper, event.target)) return;
 
     this.addVideosBySearch();
@@ -61,29 +63,31 @@ class SearchController {
 
   removeSkeleton = event => {
     const article = event.target.parentNode.parentNode;
-    article.classList.remove('skeleton');
+    article.classList.remove(CLASS.SKELETON);
   };
 
   handleSaveVideo = () => {
-    [...$$('.js-save-button')].slice(-10).forEach(save => {
-      save.addEventListener('click', event => this.saveVideo(event));
-    });
+    [...$$(SELECTOR.SAVE_VIDEO_BUTTON)]
+      .slice(-SEARCH.FETCH_VIDEO_LENGTH)
+      .forEach(save => {
+        save.addEventListener('click', event => this.saveVideo(event));
+      });
   };
 
   handleSearch = () => {
-    $('#search-youtube-form').addEventListener('submit', event => {
+    $(SELECTOR.SEARCH_YOUTUBE_FORM).addEventListener('submit', event => {
       this.getVideosBySearch(event);
     });
   };
 
   handleVideoLoad = () => {
-    $$('.clip iframe').forEach(iframe => {
+    $$(SELECTOR.VIDEO_IFRAME).forEach(iframe => {
       iframe.addEventListener('load', event => this.removeSkeleton(event));
     });
   };
 
   handleSearchModalScroll = () => {
-    $('#search-video-wrapper').addEventListener('scroll', event => {
+    $(SELECTOR.SEARCH_VIDEO_WRAPPER).addEventListener('scroll', event => {
       this.fetchVideo(event);
     });
   };

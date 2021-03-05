@@ -2,7 +2,7 @@ import {
   setJSONToLocalStorage,
   getJSONFromLocalStorage,
 } from '../utils/util.js';
-import { SEARCH } from '../constants/constant.js';
+import { SEARCH, STORAGE } from '../constants/constant.js';
 class StorageModel {
   #myVideo;
   #keywords;
@@ -13,20 +13,20 @@ class StorageModel {
   }
 
   init() {
-    setJSONToLocalStorage('myVideo', this.#myVideo);
-    setJSONToLocalStorage('keywords', this.#keywords);
+    setJSONToLocalStorage(STORAGE.KEY_MY_VIDEO, this.#myVideo);
+    setJSONToLocalStorage(STORAGE.KEY_KEYWORDS, this.#keywords);
   }
 
   saveVideo = json => {
-    this.#myVideo = getJSONFromLocalStorage('myVideo');
-    if (this.#myVideo.length === 100) return;
+    this.#myVideo = getJSONFromLocalStorage(STORAGE.KEY_MY_VIDEO);
+    if (this.#myVideo.length === STORAGE.MAX_SAVED_VIDEO_LENGTH) return;
     this.#myVideo.push(json);
-    setJSONToLocalStorage('myVideo', this.#myVideo);
+    setJSONToLocalStorage(STORAGE.KEY_MY_VIDEO, this.#myVideo);
   };
 
   findVideoByInfo = info => {
     return (
-      getJSONFromLocalStorage('myVideo').filter(
+      getJSONFromLocalStorage(STORAGE.KEY_MY_VIDEO).filter(
         myVideo => info.channelUrl === myVideo.channelUrl
       ).length > 0
     );
@@ -34,7 +34,7 @@ class StorageModel {
 
   saveRecentKeyword = keyword => {
     this.#keywords = [
-      ...new Set([keyword, ...getJSONFromLocalStorage('keywords')]),
+      ...new Set([keyword, ...getJSONFromLocalStorage(STORAGE.KEY_KEYWORDS)]),
     ];
 
     if (this.#keywords.length > SEARCH.RECENT_KEYWORD_MAX_LENGTH) {
@@ -44,7 +44,7 @@ class StorageModel {
       );
     }
 
-    setJSONToLocalStorage('keywords', this.#keywords);
+    setJSONToLocalStorage(STORAGE.KEY_KEYWORDS, this.#keywords);
   };
 
   get savedVideoCount() {
