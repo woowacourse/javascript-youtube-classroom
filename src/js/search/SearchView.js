@@ -2,6 +2,7 @@ import searchHistory from "../state/searchHistory.js";
 import videos from "../state/videos.js";
 import getKeywordHistoryTemplate from "../templates/keywordHistoryTemplate.js";
 import getVideoClipTemplate from "../templates/videoClipTemplate.js";
+import { VIDEOS } from "../utils/constants.js";
 import { $, hideElement, showElement } from "../utils/dom.js";
 import elements from "../utils/elements.js";
 
@@ -17,6 +18,7 @@ export default class SearchView {
 
     if (searchHistory.getPageToken() === "") {
       this.resetSearchResults();
+      hideElement(elements.$searchResults);
     }
 
     elements.$searchResults.appendChild(
@@ -35,7 +37,11 @@ export default class SearchView {
   }
 
   showSavedVideoCount() {
-    elements.$savedVideoCount.innerText = `저장된 영상 개수: ${videos.getSavedVideoCount()}개`;
+    elements.$savedVideoCount.innerText = `
+      저장된 영상 개수: ${videos.getSavedVideoCount()} / ${
+      VIDEOS.SAVED_VIDEOS_MAX_COUNT
+    } 개
+    `;
   }
 
   showSkeletonClip() {
