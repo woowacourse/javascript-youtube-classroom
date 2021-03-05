@@ -50,10 +50,16 @@ function isSavedVideo(item, videoInfos) {
 }
 
 function createVideoListTemplate(resultItems = [], videoInfos) {
-  return resultItems
+  return [...resultItems]
     .map(item =>
       createVideoSnippetTemplate(item, isSavedVideo(item, videoInfos))
     )
+    .join('');
+}
+
+function createSavedVideoListTemplate(savedVideoInfos = []) {
+  return [...savedVideoInfos]
+    .map(item => createVideoSnippetTemplate(item))
     .join('');
 }
 
@@ -62,4 +68,4 @@ function createVideoListTemplate(resultItems = [], videoInfos) {
  * 이미 존재하는 속성들을 그대로 활용 (선택자 접근, 문자열 파싱)
  */
 
-export default createVideoListTemplate;
+export { createVideoListTemplate, createSavedVideoListTemplate };

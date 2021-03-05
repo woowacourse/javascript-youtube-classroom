@@ -1,5 +1,8 @@
-import dom from './DOMelements.js';
-import createKeywordList from './templates/keywordList.js';
+import {
+  renderSavedVideoCount,
+  renderSavedVideoList,
+  renderLatestKeywordList,
+} from '../viewController.js';
 
 const state = {
   videoInfos: new Set(),
@@ -10,11 +13,15 @@ const state = {
   addVideoInfo(newVideoInfo) {
     this.videoInfos.add(newVideoInfo);
     localStorage.setItem('videoInfos', JSON.stringify([...this.videoInfos]));
-    dom.$savedVideoCount.innerHTML = this.videoInfos.size;
+
+    renderSavedVideoCount(this.videoInfos.size);
+    renderSavedVideoList(this.videoInfos);
   },
   setVideoInfos(newVideoInfos) {
     this.videoInfos = new Set(newVideoInfos);
-    dom.$savedVideoCount.innerHTML = this.videoInfos.size;
+
+    renderSavedVideoCount(this.videoInfos.size);
+    renderSavedVideoList(this.videoInfos);
   },
   setNextPageToken(newToken) {
     this.nextPageToken = newToken;
@@ -29,11 +36,13 @@ const state = {
     }
     this.latestKeywords.push(newKeyword);
     localStorage.setItem('latestKeywords', JSON.stringify(this.latestKeywords));
-    dom.$latestKeywordList.innerHTML = createKeywordList(this.latestKeywords);
+
+    renderLatestKeywordList(this.latestKeywords);
   },
   setLatestKeywords(newKeywords) {
     this.latestKeywords = newKeywords;
-    dom.$latestKeywordList.innerHTML = createKeywordList(this.latestKeywords);
+
+    renderLatestKeywordList(this.latestKeywords);
   },
   setIntersectionObserver(observer) {
     this.intersectionObserver = observer;

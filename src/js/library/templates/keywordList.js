@@ -1,13 +1,13 @@
-function createKeywordChip(keyword) {
+function createKeywordChipTemplate(keyword) {
   return `<span class="js-latest-keyword chip">${keyword}</span>`;
 }
 
-function createKeywordList(latestKeywords) {
+function createKeywordListTemplate(latestKeywords = []) {
   return `<span class="text-gray-700">최근 검색어: </span>
   ${latestKeywords
-    .map(keyword => createKeywordChip(keyword))
+    .map(keyword => createKeywordChipTemplate(keyword))
     .reverse()
     .join('')}`;
 }
 
-export default createKeywordList;
+export default createKeywordListTemplate;

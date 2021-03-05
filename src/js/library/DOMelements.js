@@ -1,8 +1,8 @@
-const $ = selector => document.querySelector(selector);
+export const $ = selector => document.querySelector(selector);
 // const $$ = selector => document.querySelectorAll(selector);
 
 const dom = {
-  $searchButton: $('#search-button'),
+  $modalOpenButton: $('#search-button'),
   $videoList: $('#video-list'),
   $searchModal: $('#video-search-modal'),
   $modalCloseButton: $('#modal-close-button'),
