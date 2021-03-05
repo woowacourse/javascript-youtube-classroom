@@ -1,3 +1,5 @@
+import formatDate from '../utils/date.js';
+
 function createVideoSnippetTemplate({ id, snippet }, isSaved = false) {
   return `<article class="clip js-video"
             data-video-id=${id.videoId}
@@ -28,7 +30,7 @@ function createVideoSnippetTemplate({ id, snippet }, isSaved = false) {
                 ${decodeURIComponent(snippet.channelTitle)}
                 </a>
                 <div class="meta">
-                  <p>${snippet.publishTime}</p>
+                  <p>${formatDate(snippet.publishTime)}</p>
                 </div>
                 <div class="d-flex justify-end">
                   <button 
@@ -59,7 +61,7 @@ function createVideoListTemplate(resultItems = [], videoInfos) {
 
 function createSavedVideoListTemplate(savedVideoInfos = []) {
   return [...savedVideoInfos]
-    .map(item => createVideoSnippetTemplate(item))
+    .map(item => createVideoSnippetTemplate(item, true))
     .join('');
 }
 
