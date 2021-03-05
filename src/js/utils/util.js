@@ -19,7 +19,7 @@ export const getJSONFromLocalStorage = key => {
   return JSON.parse(localStorage.getItem(key));
 };
 
-export const isScrollBottom = (document, target) => {
+export const isScrollUnfinished = (document, target) => {
   return (
     target.scrollTop <
     Math.max(document.scrollHeight, document.offsetHeight) -

@@ -1,5 +1,5 @@
 // TODO : 제일마지막에 상수화. 숫자, 셀렉터 / 파일명좀 바꿀수 있으면 바꾸기 ㅎㅎ.. /모달도 좀 넣어주자
-import { $, $$, isScrollBottom } from '../utils/util.js';
+import { $, $$, isScrollUnfinished } from '../utils/util.js';
 class SearchController {
   constructor(youtube, storage, view) {
     this.youtube = youtube;
@@ -54,7 +54,7 @@ class SearchController {
 
   fetchVideo = event => {
     const searchVideoWrapper = $('#search-video-wrapper');
-    if (!isScrollBottom(searchVideoWrapper, event.target)) return;
+    if (isScrollUnfinished(searchVideoWrapper, event.target)) return;
 
     this.addVideosBySearch();
   };
@@ -65,7 +65,7 @@ class SearchController {
   };
 
   handleSaveVideo = () => {
-    $$('.js-save-button').forEach(save => {
+    [...$$('.js-save-button')].slice(-10).forEach(save => {
       save.addEventListener('click', event => this.saveVideo(event));
     });
   };
