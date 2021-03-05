@@ -19,7 +19,7 @@ class StorageModel {
 
   saveVideo = json => {
     this.#myVideo = getJSONFromLocalStorage('myVideo');
-    if (myVideo.length === 100) return;
+    if (this.#myVideo.length === 100) return;
     this.#myVideo.push(json);
     setJSONToLocalStorage('myVideo', this.#myVideo);
   };
