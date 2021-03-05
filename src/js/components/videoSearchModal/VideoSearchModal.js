@@ -2,6 +2,14 @@ import VideoSearchBar from './VideoSearchBar.js';
 import SearchTermHistory from './SearchTermHistory.js';
 import VideoSearchResult from './VideoSearchResult.js';
 import { $ } from '../../utils/utils.js';
+import { youtubeAPIManager } from '../App.js';
+import { store } from '../../index.js';
+import {
+  addSearchHistory,
+  updateRequestPending,
+  updateVideosToBeShown,
+} from '../../redux/action.js';
+import { ERROR_MESSAGE } from '../../constants/constants.js';
 
 export default class VideoSearchModal {
   constructor($target) {
@@ -35,20 +43,21 @@ export default class VideoSearchModal {
   }
 
   mount() {
-    this.videoSearchBar = new VideoSearchBar($('#video-search-bar'));
+    this.videoSearchBar = new VideoSearchBar($('#video-search-bar'), {
+      requestVideos: this.requestVideos.bind(this),
+    });
 
-    this.searchTermHistory = new SearchTermHistory($('#search-term-history'));
+    this.searchTermHistory = new SearchTermHistory($('#search-term-history'), {
+      requestVideos: this.requestVideos.bind(this),
+    });
 
-    this.videoSearchResult = new VideoSearchResult($('#video-search-result'));
+    this.videoSearchResult = new VideoSearchResult($('#video-search-result'), {
+      requestVideos: this.requestVideos.bind(this),
+    });
   }
 
   selectDOM() {
     this.$modalClose = $('.modal-close');
-  }
-
-  onClickOutsideModal(e) {
-    if (e.target.closest('.modal-inner')) return;
-    this.onModalClose();
   }
 
   bindEvent() {
@@ -59,11 +68,34 @@ export default class VideoSearchModal {
     );
   }
 
+  onClickOutsideModal(event) {
+    if (event.target.closest('.modal-inner')) {
+      return;
+    }
+    this.onModalClose();
+  }
+
   onModalShow() {
     this.$target.classList.add('open');
   }
 
   onModalClose() {
     this.$target.classList.remove('open');
+  }
+
+  requestVideos(searchTerm) {
+    if (searchTerm) {
+      store.dispatch(addSearchHistory(searchTerm));
+    }
+    store.dispatch(updateRequestPending(true));
+
+    youtubeAPIManager.setSearchTerm(searchTerm);
+    youtubeAPIManager
+      .requestVideos()
+      .then((videoInfos) => {
+        store.dispatch(updateRequestPending(false));
+        store.dispatch(updateVideosToBeShown(videoInfos));
+      })
+      .catch((error) => alert(ERROR_MESSAGE.EXCEED_API_REQUEST_COUNT(error)));
   }
 }

@@ -1,30 +1,19 @@
 import { store } from '../../index.js';
-import {
-  addVideos,
-  addSearchHistory,
-  updateRequestPending,
-} from '../../redux/action.js';
-import { localStorageManager, youtubeAPIManager } from '../App.js';
-import { ERROR_MESSAGE } from '../../constants/constants.js';
-import { $ } from '../../utils/utils.js';
+import { localStorageManager } from '../App.js';
+import { $, isEmptyString } from '../../utils/utils.js';
 
 export default class VideoSearchBar {
-  constructor($target) {
+  constructor($target, $props) {
     this.$target = $target;
+    this.$props = $props;
+    this.setup();
     this.initRender();
     this.selectDOM();
     this.bindEvent();
-    this.setup();
   }
 
   setup() {
     store.subscribe(this.render.bind(this));
-  }
-
-  render(preStates, states) {
-    if (preStates.searchHistory !== states.searchHistory) {
-      this.$videoSearchInput.value = states.searchHistory[0];
-    }
   }
 
   initRender() {
@@ -49,40 +38,38 @@ export default class VideoSearchBar {
     );
   }
 
-  saveHistory(searchTerm) {
-    const history = localStorageManager.getItem('searchHistory');
-    const indexOfSearchTerm = history.indexOf(searchTerm);
-    if (indexOfSearchTerm !== -1) {
-      history.splice(indexOfSearchTerm, 1);
-      history.unshift(searchTerm);
-      localStorageManager.setItem('searchHistory', history);
+  render(preStates, states) {
+    // TODO: 조건문을 의미를 명확하게 전달 될 수 있도록 바꾸기 (ex. isUpdated)
+    if (preStates.searchHistory !== states.searchHistory) {
+      const latestSearchHistory = states.searchHistory[0];
 
-      return;
+      this.$videoSearchInput.value = latestSearchHistory;
+    }
+  }
+
+  saveHistoryToLocalStorage(searchTerm) {
+    const history = localStorageManager.getItem('searchHistory');
+
+    if (history.includes(searchTerm)) {
+      const indexOfSearchTerm = history.indexOf(searchTerm);
+
+      history.splice(indexOfSearchTerm, 1);
     }
 
     history.unshift(searchTerm);
     localStorageManager.setItem('searchHistory', history.slice(0, 3));
   }
 
-  onRequestVideo(e) {
-    e.preventDefault();
-    const searchTerm = e.target.elements['youtube-search-input'].value;
+  onRequestVideo(event) {
+    event.preventDefault();
+    const searchTerm = event.target.elements['youtube-search-input'].value;
 
-    if (searchTerm.trim(' ') === '') {
+    if (isEmptyString(searchTerm)) {
       return;
     }
 
-    this.saveHistory(searchTerm);
-    store.dispatch(addSearchHistory(searchTerm));
-    store.dispatch(updateRequestPending(true));
+    this.saveHistoryToLocalStorage(searchTerm);
 
-    youtubeAPIManager.setSearchTerm(searchTerm);
-    youtubeAPIManager
-      .requestVideos()
-      .then((items) => {
-        store.dispatch(updateRequestPending(false));
-        store.dispatch(addVideos(items));
-      })
-      .catch((error) => alert(ERROR_MESSAGE.EXCEED_API_REQUEST_COUNT(error)));
+    this.$props.requestVideos(searchTerm);
   }
 }

@@ -12,3 +12,7 @@ export const createElement = ({ tag = 'div', classes = [], textContent }) => {
   element.textContent = textContent ?? '';
   return element;
 };
+
+export const isEmptyString = (string) => {
+  return string.trim() === '';
+};

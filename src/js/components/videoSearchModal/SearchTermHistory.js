@@ -1,64 +1,18 @@
 import { store } from '../../index.js';
-import {
-  addSearchHistory,
-  addVideos,
-  updateRequestPending,
-} from '../../redux/action.js';
-import { localStorageManager, youtubeAPIManager } from '../App.js';
-import { ERROR_MESSAGE } from '../../constants/constants.js';
+import { localStorageManager } from '../App.js';
 import { $, createElement } from '../../utils/utils.js';
 
 export default class SearchTermHistory {
-  constructor($target) {
+  constructor($target, $props) {
     this.$target = $target;
+    this.$props = $props;
+    this.setup();
     this.initRender();
     this.selectDOM();
-    this.setup();
   }
 
   setup() {
     store.subscribe(this.render.bind(this));
-  }
-
-  onRequestVideo(e) {
-    const searchTerm = e.target.textContent;
-
-    store.dispatch(addSearchHistory(searchTerm));
-    store.dispatch(updateRequestPending(true));
-
-    youtubeAPIManager.setSearchTerm(searchTerm);
-    youtubeAPIManager
-      .requestVideos()
-      .then((items) => {
-        store.dispatch(updateRequestPending(false));
-        store.dispatch(addVideos(items));
-      })
-      .catch((error) => alert(ERROR_MESSAGE.EXCEED_API_REQUEST_COUNT(error)));
-  }
-
-  chipsTemplate(searchHistory) {
-    const fragment = document.createDocumentFragment();
-
-    searchHistory.forEach((history) => {
-      const button = createElement({
-        tag: 'button',
-        classes: ['chip'],
-        textContent: history,
-      });
-
-      button.addEventListener('click', this.onRequestVideo.bind(this));
-      fragment.appendChild(button);
-    });
-
-    return fragment;
-  }
-
-  render(preStates, states) {
-    if (preStates.searchHistory !== states.searchHistory) {
-      this.$chips.innerHTML = '';
-      this.$chips.appendChild(this.chipsTemplate(states.searchHistory));
-      localStorageManager.setItem('searchHistory', states.searchHistory);
-    }
   }
 
   initRender() {
@@ -83,5 +37,41 @@ export default class SearchTermHistory {
 
   selectDOM() {
     this.$chips = $('.chips', this.$target);
+  }
+
+  render(preStates, states) {
+    if (preStates.searchHistory !== states.searchHistory) {
+      this.$chips.innerHTML = '';
+      this.$chips.appendChild(this.chipsTemplate(states.searchHistory));
+    }
+  }
+
+  chipsTemplate(searchHistory) {
+    const fragment = document.createDocumentFragment();
+
+    searchHistory.forEach((history) => {
+      const button = createElement({
+        tag: 'button',
+        classes: ['chip'],
+        textContent: history,
+      });
+
+      button.addEventListener('click', this.onRequestVideo.bind(this));
+      fragment.appendChild(button);
+    });
+
+    return fragment;
+  }
+
+  onRequestVideo(event) {
+    const searchTerm = event.target.textContent;
+    const history = localStorageManager.getItem('searchHistory');
+    const indexOfSearchTerm = history.indexOf(searchTerm);
+
+    history.splice(indexOfSearchTerm, 1);
+    history.unshift(searchTerm);
+    localStorageManager.setItem('searchHistory', history.slice(0, 3));
+
+    this.$props.requestVideos(searchTerm);
   }
 }

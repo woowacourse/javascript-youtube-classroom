@@ -1,5 +1,5 @@
 import {
-  ADD_VIDEOS,
+  UPDATE_VIDEOS_TO_BE_SHOWN,
   ADD_SEARCH_TERM,
   UPDATE_REQUEST_PENDING,
   INCREASE_SAVED_VIDEO_COUNT,
@@ -7,7 +7,7 @@ import {
 
 const searchedVideoReducer = (state, { type, payload }) => {
   switch (type) {
-    case ADD_VIDEOS:
+    case UPDATE_VIDEOS_TO_BE_SHOWN:
       return [...payload.videos];
     default:
       return state;

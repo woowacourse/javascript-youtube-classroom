@@ -1,11 +1,10 @@
 import { store } from '../../index.js';
-import { addVideos, updateRequestPending } from '../../redux/action.js';
-import { localStorageManager, youtubeAPIManager } from '../App.js';
-import { ERROR_MESSAGE } from '../../constants/constants.js';
+import { localStorageManager } from '../App.js';
 import { $, $$, createElement } from '../../utils/utils.js';
 export default class VideoSearchResult {
-  constructor($target) {
+  constructor($target, $props) {
     this.$target = $target;
+    this.$props = $props;
     this.initRender();
     this.selectDOM();
     this.bindEvent();
@@ -126,16 +125,7 @@ export default class VideoSearchResult {
         $videoWrapper.scrollHeight - $videoWrapper.scrollTop ===
         $videoWrapper.clientHeight
       ) {
-        store.dispatch(updateRequestPending(true));
-        youtubeAPIManager
-          .requestVideos()
-          .then((items) => {
-            store.dispatch(updateRequestPending(false));
-            store.dispatch(addVideos(items));
-          })
-          .catch((error) =>
-            alert(ERROR_MESSAGE.EXCEED_API_REQUEST_COUNT(error))
-          );
+        this.$props.requestVideos();
       }
     });
   }

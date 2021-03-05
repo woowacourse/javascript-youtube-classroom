@@ -1,12 +1,12 @@
 import {
-  ADD_VIDEOS,
+  UPDATE_VIDEOS_TO_BE_SHOWN,
   ADD_SEARCH_TERM,
   UPDATE_REQUEST_PENDING,
   INCREASE_SAVED_VIDEO_COUNT,
 } from './actionType.js';
 import Video from '../model/Video.js';
 
-export const addVideos = (items) => {
+export const updateVideosToBeShown = (items) => {
   const videos = [];
 
   items.forEach((item) => {
@@ -14,7 +14,7 @@ export const addVideos = (items) => {
   });
 
   return {
-    type: ADD_VIDEOS,
+    type: UPDATE_VIDEOS_TO_BE_SHOWN,
     payload: {
       videos,
     },
