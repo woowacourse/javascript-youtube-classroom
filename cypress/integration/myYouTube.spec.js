@@ -61,7 +61,7 @@ describe('simba-tube', () => {
     cy.get('#modal-videos').find('.clip').should('have.length', 20);
   });
 
-  it.only('검색 결과 동영상의 저장 버튼을 누르면 저장한 동영상들을 볼 영상 목록에 보여준다.', () => {
+  it('검색 결과 동영상의 저장 버튼을 누르면 저장한 동영상들을 볼 영상 목록에 보여준다.', () => {
     cy.get('#search-btn').click();
     cy.get('#modal-search-input').type('방탄소년단');
     cy.get('#modal-search-button').click();
@@ -69,5 +69,19 @@ describe('simba-tube', () => {
 
     cy.get('#saved-video-count').should('have.text', 1);
     cy.get('#main-videos').find('.clip').should('have.length', 1);
+  });
+
+  it.only('최근 검색어 클릭 시 해당 검색어로 검색을 한다.', () => {
+    cy.get('#search-btn').click();
+    cy.get('#modal-search-input').type('방탄소년단');
+    cy.get('#modal-search-button').click();
+
+    cy.get('#modal-search-input').clear().type('데이식스');
+    cy.get('#modal-search-button').click();
+
+    cy.get('#chip-1').should('have.text', '데이식스');
+    cy.get('#chip-2').click();
+    cy.get('#modal-search-input').should('have.value', '방탄소년단');
+    cy.get('#chip-1').should('have.text', '방탄소년단');
   });
 });
