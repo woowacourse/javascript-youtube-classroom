@@ -29,6 +29,7 @@ class SearchModal {
     this.$videoWrapper = $(".search-modal__video-wrapper");
     this.$scrollArea = $(".search-modal__scroll-area");
     this.$moreArea = $(".search-modal__more-area");
+    this.$modalCloseBtn = $(".modal-close");
   }
 
   bindEvent() {
@@ -37,6 +38,8 @@ class SearchModal {
 
       this.handleSearchKeyword();
     });
+
+    this.$modalCloseBtn.addEventListener("click", this.handleModalClose.bind(this));
   }
 
   initObserver() {
@@ -128,6 +131,10 @@ class SearchModal {
     this.setState({ videos: [...this.videos, ...nextVideos], nextPageToken });
   }
 
+  handleModalClose() {
+    this.hideModal();
+  }
+
   render() {
     this.videos.length
       ? (this.$videoWrapper.innerHTML = this.videos
@@ -138,6 +145,10 @@ class SearchModal {
 
   showModal() {
     this.$target.classList.add("open");
+  }
+
+  hideModal() {
+    this.$target.classList.remove("open");
   }
 }
 
