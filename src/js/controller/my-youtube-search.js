@@ -49,7 +49,7 @@ class MyYoutubeSearchController {
     e.target.classList.add('invisible');
     const videoInfo = JSON.parse(e.target.dataset.info);
     this.storage.saveVideo(videoInfo);
-    this.view.renderMyVideoInfosSection(this.storage.savedVideoLength); // TODO :renderMyVideoInfosSection 이름 바꾸기. Length count 로 바꾸기
+    this.view.renderSavedVideoCountSection(this.storage.savedVideoCount);
   };
 
   fetchVideo = event => {

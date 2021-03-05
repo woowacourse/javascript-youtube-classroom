@@ -47,7 +47,7 @@ class StorageModel {
     setJSONToLocalStorage('keywords', this.#keywords);
   };
 
-  get savedVideoLength() {
+  get savedVideoCount() {
     return this.#myVideo.length;
   }
 
