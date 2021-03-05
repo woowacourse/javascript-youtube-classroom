@@ -33,15 +33,24 @@ dom.$videoSearchForm.addEventListener('submit', async e => {
   const keyword = e.target.elements['video-search-input'].value;
   state.addLatestKeyword(keyword);
   dom.$latestKeywordList.innerHTML = createKeywordList(state.latestKeywords);
-  dom.$videoSearchResult.innerHTML = createNotFoundTemplate(); //createVideoSkeletonTemplate();
-  // const { nextPageToken, items: resultItems } = await fetchSearchResult(
-  //   keyword
-  // );
+  dom.$videoSearchResult.innerHTML = createVideoSkeletonTemplate();
+  const { nextPageToken, items: resultItems } = await fetchSearchResult(
+    keyword
+  );
 
-  // state.setNextPageToken(nextPageToken);
-  // dom.$videoSearchResult.innerHTML = resultItems.length
-  //   ? createVideoListTemplate(resultItems, state.videoInfos)
-  //   : createNotFoundTemplate();
+  state.setNextPageToken(nextPageToken);
+  dom.$videoSearchResult.innerHTML = resultItems.length
+    ? createVideoListTemplate(resultItems, state.videoInfos)
+    : createNotFoundTemplate();
+
+  if (resultItems.length) {
+    const last = document.querySelector(
+      '#video-search-result .js-video:last-child'
+    );
+
+    state.intersectionObserver.disconnect();
+    state.intersectionObserver.observe(last);
+  }
 });
 
 function createVideoInfo({
@@ -64,7 +73,6 @@ dom.$videoSearchResult.addEventListener('click', e => {
   }
   if (state.videoInfos.size >= 1) {
     alert('최대 저장 개수는 100개입니다.');
-
     return;
   }
 
@@ -79,34 +87,44 @@ dom.$videoSearchResult.addEventListener('click', e => {
   e.target.hidden = true;
 });
 
+function createIntersectionObserver() {
+  const options = {
+    root: document.getElementsByClassName('modal-inner')[0],
+    rootMargin: '0px',
+    threshold: 0.85,
+  };
+
+  return new IntersectionObserver(async entries => {
+    const $lastVideo = entries[0];
+
+    if ($lastVideo.isIntersecting) {
+      state.intersectionObserver.disconnect();
+
+      const { nextPageToken, items: searchResult } = await fetchSearchResult(
+        state.latestKeywords[state.latestKeywords.length - 1],
+        state.nextPageToken
+      );
+
+      state.setNextPageToken(nextPageToken);
+      dom.$videoSearchResult.innerHTML += createVideoListTemplate(
+        searchResult,
+        state.videoInfos
+      );
+      const last = document.querySelector(
+        '#video-search-result .js-video:last-child'
+      );
+
+      state.intersectionObserver.observe(last);
+    }
+  }, options);
+}
+
 function initState() {
   state.setLatestKeywords(
     JSON.parse(localStorage.getItem('latestKeywords')) ?? []
   );
   state.setVideoInfos(JSON.parse(localStorage.getItem('videoInfos')) ?? []);
+  state.setIntersectionObserver(createIntersectionObserver());
 }
-
-// window.onload = function () {
-//   const options = {
-//     root: dom.$searchModal,
-//     rootMargin: '0px',
-//     threshold: 0.85,
-//   };
-
-//   const observer = new IntersectionObserver(async () => {
-//     const { nextPageToken, items: searchResult } = await fetchSearchResult(
-//       state.latestKeywords[state.latestKeywords.length - 1],
-//       state.nextPageToken
-//     );
-
-//     state.setNextPageToken(nextPageToken);
-//     dom.$videoSearchResult.innerHTML += createVideoListTemplate(
-//       searchResult,
-//       state.videoInfos
-//     );
-//   }, options);
-
-//   observer.observe(dom.$endPoint);
-// };
 
 initState();

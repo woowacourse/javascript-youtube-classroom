@@ -5,6 +5,7 @@ const state = {
   videoInfos: new Set(),
   nextPageToken: '',
   latestKeywords: [],
+  intersectionObserver: {},
 
   addVideoInfo(newVideoInfo) {
     this.videoInfos.add(newVideoInfo);
@@ -33,6 +34,9 @@ const state = {
   setLatestKeywords(newKeywords) {
     this.latestKeywords = newKeywords;
     dom.$latestKeywordList.innerHTML = createKeywordList(this.latestKeywords);
+  },
+  setIntersectionObserver(observer) {
+    this.intersectionObserver = observer;
   },
 };
 
