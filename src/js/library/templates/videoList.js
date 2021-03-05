@@ -18,14 +18,14 @@ function createVideoSnippetTemplate({ id, snippet }, isSaved = false) {
               ></iframe>
             </div>
             <div class="content-container pt-2 px-1">
-              <h3>${snippet.title}</h3>
+              <h3>${decodeURIComponent(snippet.title)}</h3>
               <div>
                 <a
                   href="https://www.youtube.com/channel/${snippet.channelId}"
                   target="_blank"
                   class="channel-name mt-1"
                 >
-                ${snippet.channelTitle}
+                ${decodeURIComponent(snippet.channelTitle)}
                 </a>
                 <div class="meta">
                   <p>${snippet.publishTime}</p>
