@@ -100,6 +100,8 @@ export default class YoutubeController {
     this.searchModalView.updateChips(getRecentKeywords());
     this.searchModalView.clearVideoClips();
     this.searchModalView.startSearch();
+    this.searchModalView.scrollToTop();
+
     searchRequest(keyword, this.nextPageToken, this.generateVideos.bind(this));
   }
 

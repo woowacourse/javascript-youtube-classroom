@@ -70,21 +70,6 @@ export default class SearchModalView extends View {
     });
   }
 
-  chipTemplate(recentKeywords) {
-    return recentKeywords
-      .map(
-        (keyword, idx) => `<a id="chip-${idx + 1}" class="chip">${keyword}</a>`,
-      )
-      .join('');
-  }
-
-  updateChips() {
-    const recentKeywords = getRecentKeywords();
-    $('#chip-container').setInnerHTML(this.chipTemplate(recentKeywords));
-
-    this.bindChipsEvent();
-  }
-
   openModal() {
     this.$element.addClass('open');
     this.updateSavedCount();
@@ -106,8 +91,39 @@ export default class SearchModalView extends View {
     $('#saved-video-count').setText(savedVideoIds.length);
   }
 
-  closeModal() {
-    this.$element.removeClass('open');
+  chipTemplate(recentKeywords) {
+    return recentKeywords
+      .map(
+        (keyword, idx) => `<a id="chip-${idx + 1}" class="chip">${keyword}</a>`,
+      )
+      .join('');
+  }
+
+  updateChips() {
+    const recentKeywords = getRecentKeywords();
+    $('#chip-container').setInnerHTML(this.chipTemplate(recentKeywords));
+
+    this.bindChipsEvent();
+  }
+
+  scrollToTop() {
+    this.modalVideos.each((container) => (container.scrollTop = 0));
+  }
+
+  skeletonTemplate() {
+    return `
+      <div class="skeleton">
+        <div class="image"></div>
+        <p class="line"></p>
+        <p class="line"></p>
+      </div>
+    `;
+  }
+
+  startSearch() {
+    this.modalVideos.addInnerHTML(
+      this.skeletonTemplate().repeat(VALUE.CLIPS_PER_SCROLL),
+    );
   }
 
   renderVideoClips(videos) {
@@ -129,22 +145,6 @@ export default class SearchModalView extends View {
     this.modalVideos.setInnerHTML('');
   }
 
-  skeletonTemplate() {
-    return `
-      <div class="skeleton">
-        <div class="image"></div>
-        <p class="line"></p>
-        <p class="line"></p>
-      </div>
-    `;
-  }
-
-  startSearch() {
-    this.modalVideos.addInnerHTML(
-      this.skeletonTemplate().repeat(VALUE.CLIPS_PER_SCROLL),
-    );
-  }
-
   showNoResult() {
     this.modalVideos.setInnerHTML(
       `
@@ -152,5 +152,9 @@ export default class SearchModalView extends View {
         <img class="not-found" src="./src/images/status/not_found.png"></img>
       `,
     );
+  }
+
+  closeModal() {
+    this.$element.removeClass('open');
   }
 }
