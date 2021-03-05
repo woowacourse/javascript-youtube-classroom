@@ -4,6 +4,7 @@ import handleVideoSave from './handlers/videoSave.js';
 import createIntersectionObserver from './library/intersectionObserver.js';
 import state from './library/state.js';
 import { openModal, closeModal } from './viewController.js';
+import handleLatestKeywordSearch from './handlers/latestKeywordSearch.js';
 
 function initState() {
   const videoInfos = JSON.parse(localStorage.getItem('videoInfos')) ?? [];
@@ -21,6 +22,7 @@ function initEvent() {
   dom.$modalCloseButton.addEventListener('click', closeModal);
   dom.$videoSearchForm.addEventListener('submit', handleVideoSearch);
   dom.$videoSearchResult.addEventListener('click', handleVideoSave);
+  dom.$latestKeywordList.addEventListener('click', handleLatestKeywordSearch);
 }
 
 export { initState, initEvent };
