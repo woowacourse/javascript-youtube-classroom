@@ -1,5 +1,5 @@
 // TODO : 제일마지막에 상수화. 숫자, 셀렉터 / 파일명좀 바꿀수 있으면 바꾸기 ㅎㅎ.. /모달도 좀 넣어주자
-import { $, $$ } from '../utils/util.js';
+import { $, $$, isScrollBottom } from '../utils/util.js';
 class MyYoutubeSearchController {
   constructor(youtube, storage, view) {
     this.youtube = youtube;
@@ -52,13 +52,11 @@ class MyYoutubeSearchController {
     this.view.renderMyVideoInfosSection(this.storage.savedVideoLength); // TODO :renderMyVideoInfosSection 이름 바꾸기. Length count 로 바꾸기
   };
 
-  getScrollTop = target => {
-    return target.scrollTop;
-  };
+  fetchVideo = event => {
+    const searchVideoWrapper = $('#search-video-wrapper');
+    if (!isScrollBottom(searchVideoWrapper, event.target)) return;
 
-  getDocumentHeight = () => {
-    const body = $('#search-video-wrapper');
-    return Math.max(body.scrollHeight, body.offsetHeight);
+    this.addVideosBySearch();
   };
 
   removeSkeleton = event => {
@@ -86,15 +84,7 @@ class MyYoutubeSearchController {
 
   handleSearchModalScroll = () => {
     $('#search-video-wrapper').addEventListener('scroll', event => {
-      // 아래 메서드화, util화 하면서 getScrollTop, getDocumentHeight 같은거를 유틸화해두고, 메서드에선 그거 불러와서 addVideoSearch 수행
-      if (
-        this.getScrollTop(event.target) <
-        this.getDocumentHeight() - $('#search-video-wrapper').clientHeight
-      )
-        return;
-
-      this.addVideosBySearch();
-      // fetch
+      this.fetchVideo(event);
     });
   };
 }
