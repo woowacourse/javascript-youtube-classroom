@@ -1,6 +1,11 @@
 import { localStorageManager } from '../components/App.js';
 import { store } from '../index.js';
 import { increaseSavedVideoCount } from '../redux/action.js';
+import {
+  VALUES,
+  ERROR_MESSAGE,
+  LOCALSTORAGE_KEYS,
+} from '../constants/constants.js';
 
 export default class Video {
   constructor(item) {
@@ -23,6 +28,7 @@ export default class Video {
 
   parseVideoUploadDate(date) {
     const newDate = new Date(date);
+
     return `${newDate.getFullYear()}년 ${newDate.getMonth()}월 ${newDate.getDate()}일`;
   }
 
@@ -39,12 +45,29 @@ export default class Video {
   }
 
   isSavedVideo() {
-    const videos = localStorageManager.getItem('videos');
+    const videos = localStorageManager.getItem(LOCALSTORAGE_KEYS.VIDEOS);
+
     for (const key in videos) {
       if (this.videoId === videos[key].videoId) return true;
     }
 
     return false;
+  }
+
+  onSaveVideo(event) {
+    const savedVideos = localStorageManager.getItem(LOCALSTORAGE_KEYS.VIDEOS);
+
+    if (savedVideos.length >= VALUES.MAXIMUM_VIDEO_SAVE_COUNT) {
+      alert(ERROR_MESSAGE.MAXIMUM_VIDEO_SAVE_COUNT_ERROR);
+
+      return;
+    }
+
+    savedVideos.push(this.toJson());
+    localStorageManager.setItem(LOCALSTORAGE_KEYS.VIDEOS, savedVideos);
+
+    event.target.classList.add('d-none');
+    store.dispatch(increaseSavedVideoCount());
   }
 
   createTemplate() {
@@ -108,21 +131,7 @@ export default class Video {
     button.classList.add(...['save-btn', 'btn']);
     if (this.isSavedVideo()) button.classList.add('d-none');
     button.textContent = '⬇️ 저장';
-    button.onclick = (e) => {
-      console.log('button clicked');
-      const savedVideos = localStorageManager.getItem('videos');
-      if (savedVideos.length >= 100) {
-        alert(
-          '동영상은 100개까지 저장할 수 있습니다. 저장된 동영상을 지워주세요.'
-        );
-
-        return;
-      }
-      savedVideos.push(this.toJson());
-      localStorageManager.setItem('videos', savedVideos);
-      e.target.classList.add('d-none');
-      store.dispatch(increaseSavedVideoCount());
-    };
+    button.onclick = this.onSaveVideo.bind(this);
 
     videoInfo.appendChild(videoTitle);
     videoInfo.appendChild(channelUrl);

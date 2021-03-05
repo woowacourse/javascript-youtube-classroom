@@ -1,5 +1,5 @@
 import { MY_KEY } from '../key.js';
-import { MAX_RESULT } from '../constants/constants.js';
+import { MAX_RESULT, ERROR_MESSAGE } from '../constants/constants.js';
 
 export default class YoutubeAPIManager {
   constructor() {
@@ -25,12 +25,14 @@ export default class YoutubeAPIManager {
   async requestVideos() {
     const url = this.createRequestUrl(this.searchTerm, this.pageToken);
 
-    const res = await fetch(url, { method: 'GET' }).then((data) => {
-      if (!data.ok) {
-        throw new Error(data.status);
-      }
-      return data.json();
-    });
+    const res = await fetch(url, { method: 'GET' })
+      .then((data) => {
+        if (!data.ok) {
+          throw new Error(data.status);
+        }
+        return data.json();
+      })
+      .catch((error) => alert(ERROR_MESSAGE.EXCEED_API_REQUEST_COUNT(error)));
 
     this.pageToken = res.nextPageToken;
 

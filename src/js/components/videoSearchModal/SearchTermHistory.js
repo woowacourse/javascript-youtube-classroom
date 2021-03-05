@@ -5,6 +5,7 @@ import {
   updateRequestPending,
 } from '../../redux/action.js';
 import { localStorageManager } from '../App.js';
+import { ERROR_MESSAGE } from '../../constants/constants.js';
 
 export default class SearchTermHistory {
   constructor($target, $props) {
@@ -21,13 +22,18 @@ export default class SearchTermHistory {
 
   onRequestVideo(e) {
     const searchTerm = e.target.textContent;
+
     store.dispatch(addSearchHistory(searchTerm));
     store.dispatch(updateRequestPending(true));
+
     this.$props.youtubeAPIManager.setSearchTerm(searchTerm);
-    this.$props.youtubeAPIManager.requestVideos().then((items) => {
-      store.dispatch(updateRequestPending(false));
-      store.dispatch(addVideos(items));
-    });
+    this.$props.youtubeAPIManager
+      .requestVideos()
+      .then((items) => {
+        store.dispatch(updateRequestPending(false));
+        store.dispatch(addVideos(items));
+      })
+      .catch((error) => alert(ERROR_MESSAGE.EXCEED_API_REQUEST_COUNT(error)));
   }
 
   chipsTemplate(searchHistory) {
