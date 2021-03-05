@@ -21,9 +21,15 @@ export class SearchKeywordHistoryManager {
     return this.searchKeywordHistory[0];
   }
 
-  // TODO : 중복 검사 추가
   updateKeywordHistory(newKeyword) {
-    this.setState({ searchKeywordHistory: [newKeyword, ...this.searchKeywordHistory].slice(0, 3) });
+    const index = this.searchKeywordHistory.indexOf(newKeyword);
+    const temp = [...this.searchKeywordHistory];
+
+    if (index !== -1) {
+      temp.splice(index, 1);
+    }
+
+    this.setState({ searchKeywordHistory: [newKeyword, ...temp].slice(0, 3) });
   }
 
   setState({ searchKeywordHistory }) {
