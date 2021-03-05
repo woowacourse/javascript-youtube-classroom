@@ -1,5 +1,5 @@
 import { api } from '../api/youtubeAPI.js';
-import { dummyData } from '../../../dummy-data.js';
+
 class YoutubeModel {
   #videoInfos;
   #nextPageToken;
@@ -25,6 +25,10 @@ class YoutubeModel {
       });
     });
   };
+
+  resetNextPageToken() {
+    this.#nextPageToken = '';
+  }
 
   get videoInfos() {
     return this.#videoInfos;
