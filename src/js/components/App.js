@@ -5,7 +5,7 @@ class App {
   constructor() {}
 
   init() {
-    this.menuSection = new MenuSection(this.openModal.bind(this));
+    this.menuSection = new MenuSection({ openModal: this.openModal.bind(this) });
     this.searchModal = new SearchModal();
   }
 

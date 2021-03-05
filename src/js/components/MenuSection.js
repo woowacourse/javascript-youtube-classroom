@@ -1,8 +1,8 @@
 import { $ } from "../utils/dom.js";
 
 class MenuSection {
-  constructor(openModal) {
-    this.openModal = openModal;
+  constructor(props) {
+    this.props = props;
     this.selectDOM();
     this.bindEvent();
   }
@@ -25,11 +25,23 @@ class MenuSection {
       "menu-section__video-search-btn",
     ];
 
-    const selectedBtn = menuNames.find(name => target.classList.contains(name));
+    const selectedMenu = menuNames.find(name => target.classList.contains(name));
 
-    if (selectedBtn === "menu-section__video-search-btn") {
-      this.openModal();
-    }
+    this.getMatchedAction(selectedMenu)();
+  }
+
+  getMatchedAction(selectedMenu) {
+    const menuAction = {
+      ["menu-section__watch-later-btn"]: () => {
+        console.log("볼 영상");
+      },
+      ["menu-section__watched-btn"]: () => {
+        console.log("본 영상");
+      },
+      ["menu-section__video-search-btn"]: this.props.openModal,
+    };
+
+    return menuAction[selectedMenu];
   }
 }
 export default MenuSection;
