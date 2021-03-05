@@ -31,3 +31,9 @@ export const renderSkeletonUI = (selector, repeatCount) => {
 export const clearElement = (selector) => {
   $(selector).innerHTML = '';
 };
+
+export const formatDate = (publishedAt) => {
+  const date = publishedAt.split('T')[0];
+  const [year, month, day] = date.split('-');
+  return `${year}년 ${month}월 ${day}일`;
+};

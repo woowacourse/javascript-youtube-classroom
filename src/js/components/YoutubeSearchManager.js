@@ -1,5 +1,5 @@
 import { searchYoutube, searchYoutubeDummyData } from '../api.js';
-import { $, showSnackbar, renderSkeletonUI } from '../utils.js';
+import { $, showSnackbar, renderSkeletonUI, formatDate } from '../utils.js';
 import { ALERT_MESSAGE, SELECTORS, LOCAL_STORAGE_KEYS } from '../constants.js';
 import Observer from '../lib/Observer.js';
 
@@ -44,6 +44,8 @@ export default class YoutubeSearchManager extends Observer {
         const { watchList } = this.store.get();
         const isSaved = watchList.includes(videoId);
 
+        const dateString = formatDate(publishedAt);
+
         return `
             <article class="clip d-flex flex-col">
               <div class="preview-container">
@@ -67,7 +69,7 @@ export default class YoutubeSearchManager extends Observer {
                     ${channelTitle}
                   </a>
                   <div class="meta">
-                    <p>${publishedAt}</p>
+                    <p>${dateString}</p>
                   </div>
                 </div>
                 <div class="d-flex justify-end">
@@ -189,6 +191,12 @@ export default class YoutubeSearchManager extends Observer {
         const keyword = event.target.textContent;
         $(SELECTORS.ID.YOUTUBE_SEARCH_KEYWORD_INPUT).value = keyword;
         $(SELECTORS.ID.YOUTUBE_SEARCH_FORM).requestSubmit();
+      }
+    });
+
+    $(SELECTORS.CLASS.MODAL).addEventListener('click', (event) => {
+      if (event.target.classList.contains('modal')) {
+        $(SELECTORS.CLASS.MODAL).classList.remove(SELECTORS.STATUS.MODAL_OPEN);
       }
     });
   }

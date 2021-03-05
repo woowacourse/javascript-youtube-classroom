@@ -1,4 +1,4 @@
-import { $, renderSkeletonUI, clearElement } from '../utils.js';
+import { $, renderSkeletonUI, clearElement, formatDate } from '../utils.js';
 import { SELECTORS, LOCAL_STORAGE_KEYS } from '../constants.js';
 import { searchYoutubeById } from '../api.js';
 import Observer from '../lib/Observer.js';
@@ -16,6 +16,8 @@ export default class WatchList extends Observer {
       .map((item) => {
         const { channelId, title, channelTitle, publishedAt } = item.snippet;
         const { id } = item;
+
+        const dateString = formatDate(publishedAt);
 
         $(SELECTORS.CLASS.WATCH_LIST).insertAdjacentHTML(
           'beforeend',
@@ -41,7 +43,7 @@ export default class WatchList extends Observer {
                   ${channelTitle}
                 </a>
                 <div class="meta">
-                  <p>${publishedAt}</p>
+                  <p>${dateString}</p>
                 </div>
                 <div>
                   <span class="opacity-hover">✅</span>

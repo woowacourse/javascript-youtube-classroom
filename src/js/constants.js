@@ -11,6 +11,7 @@ export const SELECTORS = {
   CLASS: {
     MODAL_CLOSE: '.modal-close',
     MODAL: '.modal',
+    MODAL_INNER: '.modal-inner',
     WATCH_LIST_CONTAINER: '.watch-list-container',
     WATCH_LIST: '.watch-list',
     YOUTUBE_SEARCH_FORM_CONTAINER: '.youtube-search-form-container',
