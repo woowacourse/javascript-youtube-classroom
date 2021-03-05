@@ -14,17 +14,16 @@ class YoutubeModel {
 
     await api.fetchVideoItems({ query, nextPageToken, max }).then(json => {
       this.#nextPageToken = json.nextPageToken;
-      this.#videoInfos = json.items.map(item => {
+      this.#videoInfos = json.map(item => {
         return {
-          url: item.id.videoId,
-          title: item.snippet.title,
-          channelUrl: item.snippet.channelId,
-          channelTitle: item.snippet.channelTitle,
-          publishTime: item.snippet.publishTime,
+          url: item.url,
+          title: item.title,
+          channelUrl: item.channelUrl,
+          channelTitle: item.channelTitle,
+          publishTime: item.publishTime,
         };
       });
     });
-    // this.#videoInfos = dummyData;
   };
 
   get videoInfos() {
