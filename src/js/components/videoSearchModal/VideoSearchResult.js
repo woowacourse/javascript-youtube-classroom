@@ -2,7 +2,7 @@ import { store } from '../../index.js';
 import { addVideos, updateRequestPending } from '../../redux/action.js';
 import { localStorageManager, youtubeAPIManager } from '../App.js';
 import { ERROR_MESSAGE } from '../../constants/constants.js';
-import { $, $$ } from '../../utils/utils.js';
+import { $, $$, createElement } from '../../utils/utils.js';
 export default class VideoSearchResult {
   constructor($target) {
     this.$target = $target;
@@ -23,20 +23,17 @@ export default class VideoSearchResult {
 
   skeletonTemplate() {
     const fragment = document.createDocumentFragment();
-    const skeleton = document.createElement('div');
-    const img = document.createElement('div');
-    const line = document.createElement('p');
+    const skeleton = createElement({ tag: 'div', classes: ['skeleton'] });
+    const img = createElement({ tag: 'div', classes: ['image'] });
+    const line = createElement({ tag: 'p', classes: ['line'] });
 
-    skeleton.classList.add('skeleton');
-    img.classList.add('image');
-    line.classList.add('line');
     skeleton.appendChild(img.cloneNode(true));
     skeleton.appendChild(line.cloneNode(true));
     skeleton.appendChild(line.cloneNode(true));
 
-    for (let i = 0; i < 10; i++) {
+    Array.from({ length: 10 }).forEach(() => {
       fragment.appendChild(skeleton.cloneNode(true));
-    }
+    });
 
     return fragment;
   }

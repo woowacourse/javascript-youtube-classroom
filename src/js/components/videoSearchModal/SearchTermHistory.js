@@ -6,7 +6,7 @@ import {
 } from '../../redux/action.js';
 import { localStorageManager, youtubeAPIManager } from '../App.js';
 import { ERROR_MESSAGE } from '../../constants/constants.js';
-import { $ } from '../../utils/utils.js';
+import { $, createElement } from '../../utils/utils.js';
 
 export default class SearchTermHistory {
   constructor($target) {
@@ -40,9 +40,12 @@ export default class SearchTermHistory {
     const fragment = document.createDocumentFragment();
 
     searchHistory.forEach((history) => {
-      const button = document.createElement('button');
-      button.classList.add('chip');
-      button.textContent = history;
+      const button = createElement({
+        tag: 'button',
+        classes: ['chip'],
+        textContent: history,
+      });
+
       button.addEventListener('click', this.onRequestVideo.bind(this));
       fragment.appendChild(button);
     });
@@ -60,12 +63,13 @@ export default class SearchTermHistory {
 
   initRender() {
     const fragment = document.createDocumentFragment();
-    const searchHistory = document.createElement('span');
-    searchHistory.classList.add('text-gray-700');
-    searchHistory.textContent = '최근 검색어: ';
+    const searchHistory = createElement({
+      tag: 'span',
+      classes: ['text-gray-700'],
+      textContent: '최근 검색어: ',
+    });
 
-    const chips = document.createElement('div');
-    chips.classList.add('chips');
+    const chips = createElement({ tag: 'div', classes: ['chips'] });
 
     chips.appendChild(
       this.chipsTemplate(localStorageManager.getItem('searchHistory'))

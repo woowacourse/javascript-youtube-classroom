@@ -6,6 +6,7 @@ import {
   ERROR_MESSAGE,
   LOCALSTORAGE_KEYS,
 } from '../constants/constants.js';
+import { createElement } from '../utils/utils.js';
 
 export default class Video {
   constructor(item) {
@@ -72,11 +73,13 @@ export default class Video {
 
   createTemplate() {
     const fragment = document.createDocumentFragment();
-    const clip = document.createElement('article');
-    clip.classList.add(...['clip', 'd-none']);
+    const clip = createElement({ tag: 'article', classes: ['clip', 'd-none'] });
+    // clip.classList.add(...['clip', 'd-none']);
 
-    const previewContainer = document.createElement('div');
-    previewContainer.classList.add(...['preview-container']);
+    const previewContainer = createElement({
+      tag: 'div',
+      classes: ['preview-container'],
+    });
 
     const iframe = document.createElement('iframe');
     iframe.width = '100%';
@@ -92,46 +95,57 @@ export default class Video {
 
     previewContainer.appendChild(iframe);
 
-    const contentContainer = document.createElement('div');
-    contentContainer.classList.add(
-      ...[
+    const contentContainer = createElement({
+      tag: 'div',
+      classes: [
         'content-container',
         'pt-2',
         'd-flex',
         'flex-col',
         'justify-between',
         'w-100',
-      ]
-    );
+      ],
+    });
 
-    const videoInfo = document.createElement('div');
-    videoInfo.classList.add(...['d-flex', 'flex-col', 'video-info']);
+    const videoInfo = createElement({
+      tag: 'div',
+      classes: ['d-flex', 'flex-col', 'video-info'],
+    });
 
     // TODO: 텍스트 인코딩 깨지는거 해결하기
-    const videoTitle = document.createElement('h3');
-    videoTitle.classList.add(...['video-title']);
-    videoTitle.textContent = this.videoTitle;
+    const videoTitle = createElement({
+      tag: 'h3',
+      classes: ['video-title'],
+      textContent: this.videoTitle,
+    });
 
-    const channelUrl = document.createElement('a');
+    const channelUrl = createElement({
+      tag: 'a',
+      classes: ['channel-name', 'mt-1'],
+      textContent: this.channelTitle,
+    });
     channelUrl.href = this.channelUrl;
     channelUrl.target = '_blank';
-    channelUrl.classList.add(...['channel-name', 'mt-1']);
-    channelUrl.textContent = this.channelTitle;
 
-    const meta = document.createElement('div');
-    meta.classList.add('meta');
+    const meta = createElement({ tag: 'div', classes: ['meta'] });
 
-    const uploadTime = document.createElement('p');
-    uploadTime.textContent = this.uploadTime;
-    uploadTime.classList.add('line');
+    const uploadTime = createElement({
+      tag: 'p',
+      classes: ['line'],
+      textContent: this.uploadTime,
+    });
 
     meta.appendChild(uploadTime);
 
-    const button = document.createElement('button');
-    button.classList.add(...['save-btn', 'btn']);
-    if (this.isSavedVideo()) button.classList.add('d-none');
-    button.textContent = '⬇️ 저장';
+    const button = createElement({
+      tag: 'button',
+      classes: ['save-btn', 'btn'],
+      textContent: '⬇️ 저장',
+    });
     button.onclick = this.onSaveVideo.bind(this);
+    if (this.isSavedVideo()) {
+      button.classList.add('d-none');
+    }
 
     videoInfo.appendChild(videoTitle);
     videoInfo.appendChild(channelUrl);
