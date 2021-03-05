@@ -22,6 +22,7 @@ class SearchController {
   getVideosBySearch = async event => {
     event.preventDefault();
     this.view.resetView();
+    this.youtube.resetNextPageToken();
     this.addVideosBySearch();
   };
 
