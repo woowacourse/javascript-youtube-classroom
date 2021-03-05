@@ -154,7 +154,7 @@ const createSearchedVideoTemplate = video => `
     ></iframe>
   </div>
   <div class="content-container pt-2 px-1">
-    <h3>${video.title}</h3> //title
+    <h3>${video.title}</h3>
     <div>
       <a
         href="https://www.youtube.com/channel/${video.channelId}"
