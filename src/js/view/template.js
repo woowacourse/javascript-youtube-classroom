@@ -47,7 +47,7 @@ export const recentKeywordsTemplate = keywords => {
     <span class="text-gray-700">최근 검색어: </span>
     ${keywords
       .map(keyword => {
-        return `<a class="chip">${keyword}</a>`;
+        return `<a class="chip ml-2">${keyword}</a>`;
       })
       .join('')}
 

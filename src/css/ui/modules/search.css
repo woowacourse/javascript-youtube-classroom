@@ -8,3 +8,9 @@
   grid-column-start: 2;
   grid-column-end: 4;
 }
+
+#recent-keywords {
+  min-height: 32px;
+  display: flex;
+  align-items: center;
+}
