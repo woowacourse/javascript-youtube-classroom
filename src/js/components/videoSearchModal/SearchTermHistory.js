@@ -1,16 +1,9 @@
+import Component from '../../core/Component.js';
 import { store } from '../../index.js';
 import { localStorageManager } from '../App.js';
 import { $, createElement } from '../../utils/utils.js';
 
-export default class SearchTermHistory {
-  constructor($target, $props) {
-    this.$target = $target;
-    this.$props = $props;
-    this.setup();
-    this.initRender();
-    this.selectDOM();
-  }
-
+export default class SearchTermHistory extends Component {
   setup() {
     store.subscribe(this.render.bind(this));
   }
@@ -63,6 +56,7 @@ export default class SearchTermHistory {
     return fragment;
   }
 
+  // TODO: 중복되는 로직 추출
   onRequestVideo(event) {
     const searchTerm = event.target.textContent;
     const history = localStorageManager.getItem('searchHistory');

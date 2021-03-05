@@ -1,17 +1,9 @@
+import Component from '../../core/Component.js';
 import { store } from '../../index.js';
 import { localStorageManager } from '../App.js';
 import { $, isEmptyString } from '../../utils/utils.js';
 
-export default class VideoSearchBar {
-  constructor($target, $props) {
-    this.$target = $target;
-    this.$props = $props;
-    this.setup();
-    this.initRender();
-    this.selectDOM();
-    this.bindEvent();
-  }
-
+export default class VideoSearchBar extends Component {
   setup() {
     store.subscribe(this.render.bind(this));
   }

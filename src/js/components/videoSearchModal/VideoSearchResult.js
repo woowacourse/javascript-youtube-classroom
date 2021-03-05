@@ -1,23 +1,40 @@
+import Component from '../../core/Component.js';
 import { store } from '../../index.js';
 import { localStorageManager } from '../App.js';
 import { $, $$, createElement } from '../../utils/utils.js';
-export default class VideoSearchResult {
-  constructor($target, $props) {
-    this.$target = $target;
-    this.$props = $props;
-    this.initRender();
-    this.selectDOM();
-    this.bindEvent();
-    this.setup();
-  }
-
+export default class VideoSearchResult extends Component {
   setup() {
     store.subscribe(this.render.bind(this));
+  }
+
+  initRender() {
+    this.$target.innerHTML = `
+        <div class="d-flex justify-end text-gray-700">
+          저장된 영상 갯수: <span id="saved-video-count">${
+            localStorageManager.getItem('videos').length
+          }</span>개
+        </div>
+        <section id="searched-video-wrapper" class="video-wrapper">
+        </section>
+    `;
   }
 
   selectDOM() {
     this.$searchedVideoWrapper = $('#searched-video-wrapper');
     this.$savedVideoCount = $('#saved-video-count');
+  }
+
+  // TODO: scroll 이벤트 감지하는 방법 바꾸기
+  bindEvent() {
+    this.$searchedVideoWrapper.addEventListener('scroll', (e) => {
+      const $videoWrapper = e.target;
+      if (
+        $videoWrapper.scrollHeight - $videoWrapper.scrollTop ===
+        $videoWrapper.clientHeight
+      ) {
+        this.$props.requestVideos();
+      }
+    });
   }
 
   skeletonTemplate() {
@@ -103,30 +120,5 @@ export default class VideoSearchResult {
       this.$searchedVideoWrapper.appendChild(fragment);
       this.waitUntilAllVideoLoaded();
     }
-  }
-
-  initRender() {
-    this.$target.innerHTML = `
-        <div class="d-flex justify-end text-gray-700">
-          저장된 영상 갯수: <span id="saved-video-count">${
-            localStorageManager.getItem('videos').length
-          }</span>개
-        </div>
-        <section id="searched-video-wrapper" class="video-wrapper">
-        </section>
-    `;
-  }
-
-  // TODO: scroll 이벤트 감지하는 방법 바꾸기
-  bindEvent() {
-    this.$searchedVideoWrapper.addEventListener('scroll', (e) => {
-      const $videoWrapper = e.target;
-      if (
-        $videoWrapper.scrollHeight - $videoWrapper.scrollTop ===
-        $videoWrapper.clientHeight
-      ) {
-        this.$props.requestVideos();
-      }
-    });
   }
 }

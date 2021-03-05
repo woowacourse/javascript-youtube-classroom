@@ -9,14 +9,14 @@ import {
 import { createElement } from '../utils/utils.js';
 
 export default class Video {
-  constructor(item) {
-    this.videoId = item.id.videoId;
-    this.videoTitle = item.snippet.title;
+  constructor(videoInfo) {
+    this.videoId = videoInfo.id.videoId;
+    this.videoTitle = videoInfo.snippet.title;
     this.videoEmbedUrl = this.parseVideoEmbedUrl();
-    this.channelTitle = item.snippet.channelTitle;
-    this.channelId = item.snippet.channelId;
+    this.channelTitle = videoInfo.snippet.channelTitle;
+    this.channelId = videoInfo.snippet.channelId;
     this.channelUrl = this.parseChannelUrl();
-    this.uploadTime = this.parseVideoUploadDate(item.snippet.publishTime);
+    this.uploadTime = this.parseVideoUploadDate(videoInfo.snippet.publishTime);
   }
 
   parseVideoEmbedUrl() {

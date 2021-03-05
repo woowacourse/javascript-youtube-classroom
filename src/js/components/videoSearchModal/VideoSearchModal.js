@@ -1,6 +1,7 @@
 import VideoSearchBar from './VideoSearchBar.js';
 import SearchTermHistory from './SearchTermHistory.js';
 import VideoSearchResult from './VideoSearchResult.js';
+import Component from '../../core/Component.js';
 import { $ } from '../../utils/utils.js';
 import { youtubeAPIManager } from '../App.js';
 import { store } from '../../index.js';
@@ -11,14 +12,11 @@ import {
 } from '../../redux/action.js';
 import { ERROR_MESSAGE } from '../../constants/constants.js';
 
-export default class VideoSearchModal {
+export default class VideoSearchModal extends Component {
   constructor($target) {
-    this.$target = $target;
+    super($target);
     this.$modalClose = $('.modal-close');
-    this.initRender();
     this.mount();
-    this.selectDOM();
-    this.bindEvent();
   }
 
   initRender() {

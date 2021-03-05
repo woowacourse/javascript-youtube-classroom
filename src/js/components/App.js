@@ -19,7 +19,7 @@ export default class App {
   run() {
     this.initRender();
     this.mount();
-    this.selectorDOM();
+    this.selectDOM();
     this.bindEvent();
   }
 
@@ -51,7 +51,7 @@ export default class App {
     this.viewSearchModal = new VideoSearchModal($('.modal'));
   }
 
-  selectorDOM() {
+  selectDOM() {
     this.$searchButton = $('#search-button');
   }
 

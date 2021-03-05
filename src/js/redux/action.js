@@ -1,10 +1,10 @@
+import Video from '../model/Video.js';
 import {
   UPDATE_VIDEOS_TO_BE_SHOWN,
   ADD_SEARCH_TERM,
   UPDATE_REQUEST_PENDING,
   INCREASE_SAVED_VIDEO_COUNT,
 } from './actionType.js';
-import Video from '../model/Video.js';
 
 export const updateVideosToBeShown = (items) => {
   const videos = [];
