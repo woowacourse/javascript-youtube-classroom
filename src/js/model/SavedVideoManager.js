@@ -24,6 +24,10 @@ export class SavedVideoManager {
     return [...this.savedVideos];
   }
 
+  getSavedVideoIdList() {
+    return this.savedVideos.map(video => video.id);
+  }
+
   setState({ savedVideos }) {
     this.savedVideos = savedVideos;
     setLocalStorageItem({ key: LOCAL_STORAGE_SAVED_VIDEO_KEY, item: this.savedVideos });

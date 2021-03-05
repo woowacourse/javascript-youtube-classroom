@@ -1,5 +1,5 @@
 import { $, hideElement } from '../util/index.js';
-import { getSearchVideoByKeyword } from '../util/index.js';
+import { getSearchVideoByKeyword, formatDateTime } from '../util/index.js';
 
 export class SearchVideoResult {
   constructor({ searchKeywordHistoryManager, savedVideoManager }) {
@@ -48,14 +48,8 @@ export class SearchVideoResult {
 
   handleSaveVideo({ target }) {
     if (target.classList.contains('js-clip-save-button')) {
-      const videoData = target.dataset;
-
       this.savedVideoManager.saveVideo({
-        videoId: videoData.videoId,
-        title: videoData.title,
-        channelId: videoData.channelId,
-        channelTitle: videoData.channelTitle,
-        publishDate: videoData.publishDate,
+        id: target.dataset.videoId,
         isCompleted: false,
       });
 
@@ -72,15 +66,7 @@ export class SearchVideoResult {
     this.$wrapper.innerHTML = '';
   }
 
-  formatDateTime(inputDateTime) {
-    const dateTime = new Date(inputDateTime);
-
-    return `${dateTime.getFullYear()}년 ${dateTime.getMonth()}월 ${dateTime.getDate()}일`;
-  }
-
   makeTemplate({ id, snippet }) {
-    const date = this.formatDateTime(snippet.publishTime);
-
     return `
       <section class="video-wrapper mt-8">
         <article class="clip">
@@ -105,17 +91,10 @@ export class SearchVideoResult {
               ${snippet.channelTitle}
               </a>
               <div class="meta">
-                <p>${date}</p>
+                <p>${formatDateTime(snippet.publishedAt)}</p>
               </div>
               <div class="d-flex justify-end">
-                <button 
-                  class="js-clip-save-button btn" 
-                  data-video-id="${id.videoId}" 
-                  data-title="${snippet.title}" 
-                  data-channel-id="${snippet.channelId}" 
-                  data-channel-title="${snippet.channelTitle}" 
-                  data-publish-date="${date}"
-                >⬇️ 저장</button>
+                <button class="js-clip-save-button btn" data-video-id="${id.videoId}">⬇️ 저장</button>
               </div>
             </div>
           </div>
