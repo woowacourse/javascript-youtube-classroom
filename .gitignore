@@ -118,9 +118,5 @@ dist
 !.vscode/extensions.json
 *.code-workspace
 
-### package-lock.json ###
-
-package-lock.json
-
 ### Dummy Data ###
 *dummyData.js
