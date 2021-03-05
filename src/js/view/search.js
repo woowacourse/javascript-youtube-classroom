@@ -35,7 +35,6 @@ class SearchView {
 
   renderSavedVideoCountSection = length => {
     const $myVideoInfosSection = $('#my-video-infos');
-    console.log($myVideoInfosSection);
     $myVideoInfosSection.innerHTML = myVideoInfosTemplate(length);
   };
 
