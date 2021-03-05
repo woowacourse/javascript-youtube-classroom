@@ -1,4 +1,5 @@
 import { escapeApostrophe } from '../utils/util.js';
+import { CLASS } from '../constants/constant.js';
 
 // TODO : 템플릿도 나중에 폴더만들어서 사용되는 곳대로 나누기
 export const searchVideoTemplate = (info, save) => {
@@ -28,7 +29,7 @@ export const searchVideoTemplate = (info, save) => {
                     </div>
                     <div class="d-flex justify-end">
                         <button class="btn js-save-button ${
-                          save ? 'invisible' : ''
+                          save ? CLASS.INVISIBLE : ''
                         }" data-info='${escapeApostrophe(
     info
   )}'>⬇️ 저장</button>
