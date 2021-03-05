@@ -59,6 +59,17 @@ export default class SearchModalView extends View {
     });
   }
 
+  bindChipsEvent() {
+    $('.chip').setEvent('click', (e) => {
+      const chipText = e.target.innerText;
+      $('#modal-search-input').setValue(chipText);
+      this.searchKeyword = chipText;
+      this.clearVideoClips();
+
+      this.emit('clickChip', chipText);
+    });
+  }
+
   chipTemplate(recentKeywords) {
     return recentKeywords
       .map(
@@ -69,8 +80,9 @@ export default class SearchModalView extends View {
 
   updateChips() {
     const recentKeywords = getRecentKeywords();
-
     $('#chip-container').setInnerHTML(this.chipTemplate(recentKeywords));
+
+    this.bindChipsEvent();
   }
 
   openModal() {
