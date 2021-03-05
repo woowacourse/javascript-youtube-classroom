@@ -1,4 +1,4 @@
-import { escapeApostrophe } from '../utils/util.js';
+import { convertDateFormat, escapeApostrophe } from '../utils/util.js';
 import { CLASS } from '../constants/constant.js';
 
 // TODO : 템플릿도 나중에 폴더만들어서 사용되는 곳대로 나누기
@@ -25,7 +25,9 @@ export const searchVideoTemplate = (info, save) => {
                         ${info.channelTitle}
                     </a>
                     <div class="meta">
-                        <p class="line">${info.publishTime}</p>
+                        <p class="line">${convertDateFormat(
+                          info.publishTime
+                        )}</p>
                     </div>
                     <div class="d-flex justify-end">
                         <button class="btn js-save-button ${
