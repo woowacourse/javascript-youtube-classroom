@@ -14,11 +14,8 @@ export default class SearchView {
   }
 
   showSearchResults() {
-    hideElement(elements.$notFound);
-
     if (searchHistory.getPageToken() === "") {
       this.resetSearchResults();
-      hideElement(elements.$searchResults);
     }
 
     elements.$searchResults.appendChild(
@@ -50,6 +47,8 @@ export default class SearchView {
 
   resetSearchResults() {
     elements.$searchResults.innerHTML = "";
+    hideElement(elements.$searchResults);
+    hideElement(elements.$notFound);
   }
 
   hideSavedVideoButton(videoId) {
