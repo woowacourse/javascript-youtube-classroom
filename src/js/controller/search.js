@@ -1,6 +1,6 @@
 // TODO : 제일마지막에 상수화. 숫자, 셀렉터 / 파일명좀 바꿀수 있으면 바꾸기 ㅎㅎ.. /모달도 좀 넣어주자
 import { $, $$, isScrollBottom } from '../utils/util.js';
-class MyYoutubeSearchController {
+class SearchController {
   constructor(youtube, storage, view) {
     this.youtube = youtube;
     this.storage = storage;
@@ -89,4 +89,4 @@ class MyYoutubeSearchController {
   };
 }
 
-export default MyYoutubeSearchController;
+export default SearchController;
