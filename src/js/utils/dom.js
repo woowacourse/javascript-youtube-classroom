@@ -39,12 +39,30 @@ export const $ = (function () {
     this.each((element) => (element.innerHTML = template));
   };
 
+  constructor.prototype.addInnerHTML = function (template) {
+    this.each((element) => element.insertAdjacentHTML('beforeend', template));
+  };
+
   constructor.prototype.addClass = function (className) {
     this.each((element) => element.classList.add(className));
   };
 
   constructor.prototype.removeClass = function (className) {
     this.each((element) => element.classList.remove(className));
+  };
+
+  constructor.prototype.getText = function (className) {
+    if (!this.element) return;
+
+    return this.element.innerText;
+  };
+
+  constructor.prototype.setText = function (text) {
+    return (this.element.innerText = text);
+  };
+
+  constructor.prototype.setValue = function (value) {
+    return (this.element.value = value);
   };
 
   const instantiate = function (selector) {
