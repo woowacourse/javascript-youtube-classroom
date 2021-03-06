@@ -15,12 +15,12 @@ import { ERROR_MESSAGE } from '../../constants/constants.js';
 export default class VideoSearchModal extends Component {
   constructor($target) {
     super($target);
-    this.$modalClose = $('.modal-close');
     this.mount();
   }
 
   initRender() {
     this.$target.innerHTML = `
+    <div class="video-search-overlay w-100" data-action="modal-close"></div>
     <div class="modal-inner p-8">
         <button class="modal-close">
           <svg viewbox="0 0 40 40">
@@ -67,10 +67,9 @@ export default class VideoSearchModal extends Component {
   }
 
   onClickOutsideModal(event) {
-    if (event.target.closest('.modal-inner')) {
-      return;
+    if (event.target.dataset.action === 'modal-close') {
+      this.onModalClose();
     }
-    this.onModalClose();
   }
 
   onModalShow() {
@@ -93,6 +92,8 @@ export default class VideoSearchModal extends Component {
         store.dispatch(updateRequestPending(false));
         store.dispatch(updateVideosToBeShown(videoInfos));
       })
-      .catch((error) => alert(ERROR_MESSAGE.EXCEED_API_REQUEST_COUNT(error)));
+      .catch((error) => {
+        alert(error)
+      });
   }
 }

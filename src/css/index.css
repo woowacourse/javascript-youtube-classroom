@@ -38,3 +38,9 @@ button:hover {
 .video-info {
   height: 110px;
 }
+
+.video-search-overlay {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+}

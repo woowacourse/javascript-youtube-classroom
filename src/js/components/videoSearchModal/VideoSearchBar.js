@@ -9,10 +9,12 @@ export default class VideoSearchBar extends Component {
     store.subscribe(this.render.bind(this));
   }
 
+  // TODO :  input Focusing
+  // TODO : '               ' string error 처리
   initRender() {
     this.$target.innerHTML = `
       <form id="youtube-search-form" class="d-flex">
-        <input id="youtube-search-input" name="youtube-search-input" type="text" class="w-100 mr-2 pl-2" placeholder="검색" />
+        <input id="youtube-search-input" name="youtube-search-input" type="text" class="w-100 mr-2 pl-2" placeholder="검색" required/>
         <button id="youtube-search-button" type="submit" class="btn bg-cyan-500">검색</button>
       </form>
     `;
