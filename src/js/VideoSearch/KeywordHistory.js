@@ -1,5 +1,5 @@
-import { CLASSNAME, MAX_KEYWORDS_COUNT } from "../constants.js";
-import { $ } from "../querySelector.js";
+import { CLASSNAME, MAX_KEYWORDS_COUNT, MESSAGE } from "../constants.js";
+import { $ } from "../utils/querySelector.js";
 import store from "../store.js";
 
 export default class KeywordHistory {
@@ -7,10 +7,15 @@ export default class KeywordHistory {
     this.$keywordHistorySection = $(CLASSNAME.KEYWORD_HISTORY_SECTION);
     this.keywordHistory = [];
 
-    store.addStateListener("query", this.addKeyword.bind(this));
+    store.addMessageListener(
+      MESSAGE.KEYWORD_SUBMITTED,
+      this.addKeyword.bind(this)
+    );
   }
 
-  addKeyword(query) {
+  addKeyword({ query }) {
+    // console.log(`[KeywordHistory] MESSAGE.KEYWORD_SUBMITTED received `);
+
     this.keywordHistory = this.keywordHistory.filter(
       (keyword) => keyword !== query
     );

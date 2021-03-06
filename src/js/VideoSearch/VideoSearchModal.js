@@ -1,9 +1,8 @@
 import { CLASSNAME } from "../constants.js";
-import { $ } from "../querySelector.js";
+import { $ } from "../utils/querySelector.js";
 import SearchForm from "./SearchForm.js";
 import KeywordHistory from "./KeywordHistory.js";
 import VideoWrapper from "./VideoWrapper.js";
-import store from "../store.js";
 
 export default class VideoSearchModal {
   constructor() {
@@ -16,10 +15,6 @@ export default class VideoSearchModal {
     this.videoWrapper = new VideoWrapper();
 
     this.$modalClose.addEventListener("click", this.close.bind(this));
-
-    store.addStateListener("items", () => {
-      this.$modalInner.classList.add(CLASSNAME.HEIGHT_85_PERCENT);
-    });
   }
 
   open() {

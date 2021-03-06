@@ -1,4 +1,4 @@
-import { CLASSNAME } from "./constants.js";
+import { CLASSNAME } from "../constants.js";
 
 export const $ = (parameter) => {
   const selector = Object.values(CLASSNAME).includes(parameter)

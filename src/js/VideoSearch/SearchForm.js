@@ -1,8 +1,8 @@
-import { CLASSNAME } from "../constants.js";
-import { $ } from "../querySelector.js";
+import { CLASSNAME, MESSAGE } from "../constants.js";
+import { $ } from "../utils/querySelector.js";
 import store from "../store.js";
-import { URL } from "../utils/URL.js";
-// import dummyFetch from "../dummyFetch.js";
+// import { URL } from "../utils/URL.js";
+import dummyFetch from "../dummyFetch.js";
 
 export default class SearchForm {
   constructor() {
@@ -20,19 +20,25 @@ export default class SearchForm {
 
     const query = this.$youtubeSearchFormInput.value;
 
+    store.postMessage(MESSAGE.KEYWORD_SUBMITTED, { query });
+
+    // console.log(`[SearchForm] MESSAGE.KEYWORD_SUBMITTED post `);
+
     try {
-      const response = await fetch(URL(query));
-      // const response = await dummyFetch(query);
+      // const response = await fetch(URL(query));
+      const response = await dummyFetch(query);
 
       if (!response.ok) {
         throw new Error(response.statusText);
       }
 
-      this.$youtubeSearchFormInput.value = "";
-
       const { nextPageToken, items } = await response.json();
 
-      store.setState({ query, nextPageToken, items });
+      store.postMessage(MESSAGE.DATA_LOADED, { query, nextPageToken, items });
+
+      // console.log(`[SearchForm] MESSAGE.DATA_LOADED post `);
+
+      this.$youtubeSearchFormInput.value = "";
     } catch (error) {
       // eslint-disable-next-line no-console
       console.error(error);

@@ -1,97 +1,47 @@
-import { CLASSNAME } from "../constants.js";
-import { URL } from "../utils/URL.js";
-import { $ } from "../querySelector.js";
+import { CLASSNAME, MESSAGE, MAX_RESULTS_COUNT } from "../constants.js";
+// import { URL } from "../utils/URL.js";
+import { $ } from "../utils/querySelector.js";
 import dummyFetch from "../dummyFetch.js";
 import store from "../store.js";
-
-const TEMPLATE = ({ videoId, title, channelId, channelTitle, publishedAt }) => `
-<article class="clip">
-<div class="preview-container">
-  <iframe
-    width="100%"
-    height="118"
-    src="https://www.youtube.com/embed/${videoId}"
-    frameborder="0"
-    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-    allowfullscreen
-  ></iframe>
-</div>
-<div class="content-container pt-2 px-1">
-  <h3>${title}</h3>
-  <div>
-    <a
-      href="https://www.youtube.com/channel/${channelId}"
-      target="_blank"
-      class="channel-name mt-1"
-    >
-      ${channelTitle}
-    </a>
-    <div class="meta">
-      <p>${new Date(publishedAt).toLocaleDateString("ko-KR", {
-        year: "numeric",
-        month: "long",
-        day: "numeric",
-      })}</p>
-    </div>
-    <div class="d-flex justify-end">
-      <button class="btn">⬇️ 저장</button>
-    </div>
-  </div>
-</div>
-</article>`;
+import { SKELETON_TEMPLATE, render } from "../utils/videoInfo.js";
 
 export default class VideoWrapper {
   constructor() {
     this.$modalVideoWrapper = $(CLASSNAME.MODAL_VIDEO_WRAPPER);
     this.$notFoundImg = $(CLASSNAME.NOT_FOUND_IMAGE);
-    this.query = "";
-    this.nextPageToken = "";
+    this.currentQuery = "";
+    this.currentNextPageToken = "";
 
-    store.addStateListener("items", (items) => {
-      if (items.length === 0) {
-        this.$notFoundImg.classList.remove(CLASSNAME.HIDDEN);
-        this.$modalVideoWrapper.innerHTML = "";
-        return;
-      }
+    store.addMessageListener(
+      MESSAGE.KEYWORD_SUBMITTED,
+      this.mountTemplate.bind(this)
+    );
+    store.addMessageListener(MESSAGE.DATA_LOADED, this.attachData.bind(this));
 
-      const clipInfos = items.map(
-        ({
-          id: { videoId },
-          snippet: { title, channelId, channelTitle, publishedAt },
-        }) => ({
-          videoId,
-          title,
-          channelId,
-          channelTitle,
-          publishedAt,
-        })
-      );
-
-      store.addStateListener("query", (query) => {
-        if (query !== this.query) {
-          this.$modalVideoWrapper.innerHTML = "";
-        }
-        this.query = query;
-      });
-
-      store.addStateListener("nextPageToken", (nextPageToken) => {
-        this.nextPageToken = nextPageToken;
-      });
-
-      clipInfos.forEach((clipInfo) => {
-        this.$modalVideoWrapper.insertAdjacentHTML(
-          "beforeEnd",
-          TEMPLATE(clipInfo)
-        );
-      });
-      this.$notFoundImg.classList.add(CLASSNAME.HIDDEN);
-    });
-
-    this.throttle = null;
     this.$modalVideoWrapper.addEventListener(
       "scroll",
       this.handlePageScroll.bind(this)
     );
+  }
+
+  mountTemplate() {
+    // console.log(`[VideoWrapper] MESSAGE.KEYWORD_SUBMITTED received `);
+
+    Array.from({ length: MAX_RESULTS_COUNT }).forEach(() => {
+      this.$modalVideoWrapper.insertAdjacentHTML(
+        "beforeEnd",
+        SKELETON_TEMPLATE
+      );
+    });
+  }
+
+  attachData({ query, nextPageToken, items }) {
+    // console.log(`[VideoWrapper] MESSAGE.DATA_LOADED received `);
+
+    this.currentQuery = query;
+    this.currentNextPageToken = nextPageToken;
+
+    this.render(items);
   }
 
   handlePageScroll() {
@@ -110,25 +60,42 @@ export default class VideoWrapper {
     this.throttle = setTimeout(async () => {
       this.throttle = null;
 
-      try {
-        // const response = await dummyFetch(
-        //   this.currentQuery,
-        //   this.currentNextPageToken
-        // );
-
-        const response = await fetch(URL(this.query, this.nextPageToken));
-
-        if (!response.ok) {
-          throw new Error(response.statusText);
-        }
-
-        const { nextPageToken, items } = await response.json();
-
-        store.setState({ nextPageToken, items });
-      } catch (error) {
-        // eslint-disable-next-line no-console
-        console.error(error);
-      }
+      this.loadData();
     }, 500);
+  }
+
+  async loadData() {
+    this.mountTemplate();
+
+    try {
+      const response = await dummyFetch(
+        this.currentQuery,
+        this.currentNextPageToken
+      );
+      // const response = await fetch(URL(this.query, this.nextPageToken));
+
+      if (!response.ok) {
+        throw new Error(response.statusText);
+      }
+
+      const { nextPageToken, items } = await response.json();
+
+      this.currentNextPageToken = nextPageToken;
+
+      this.render(items);
+    } catch (error) {
+      // eslint-disable-next-line no-console
+      console.error(error);
+    }
+  }
+
+  render(items) {
+    const $$videos = Array.from(this.$modalVideoWrapper.children).slice(
+      -MAX_RESULTS_COUNT
+    );
+
+    Array.from({ length: MAX_RESULTS_COUNT })
+      .map((_, i) => [$$videos[i], items[i]])
+      .forEach(([$video, item]) => render($video, item));
   }
 }

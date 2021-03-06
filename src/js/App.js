@@ -1,5 +1,5 @@
 import { CLASSNAME } from "./constants.js";
-import { $ } from "./querySelector.js";
+import { $ } from "./utils/querySelector.js";
 import VideoSearchModal from "./VideoSearch/VideoSearchModal.js";
 
 export default class App {

@@ -1,27 +1,19 @@
+import { MESSAGE } from "./constants.js";
+
 class Store {
   constructor() {
-    this.state = { query: "", nextPageToken: "", items: [] };
-
     this.listeners = {
-      query: [],
-      nextPageToken: [],
-      items: [],
+      [MESSAGE.KEYWORD_SUBMITTED]: [],
+      [MESSAGE.DATA_LOADED]: [],
     };
   }
 
-  setState(state) {
-    const previousState = this.state;
-    this.state = { ...this.state, ...state };
-
-    Object.keys(this.state)
-      .filter((key) => this.state[key] !== previousState[key])
-      .forEach((key) => {
-        this.listeners[key].forEach((listener) => listener(this.state[key]));
-      });
+  postMessage(message, data) {
+    this.listeners[message].forEach((listener) => listener(data));
   }
 
-  addStateListener(stateType, stateHandler) {
-    this.listeners[stateType].push(stateHandler);
+  addMessageListener(message, messageHandler) {
+    this.listeners[message].push(messageHandler);
   }
 }
 
