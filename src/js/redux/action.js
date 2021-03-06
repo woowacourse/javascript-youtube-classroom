@@ -7,12 +7,8 @@ import {
 } from './actionType.js';
 
 export const updateVideosToBeShown = (items) => {
-  const videos = [];
-
-  items.forEach((item) => {
-    videos.push(new Video(item));
-  });
-
+  const videos = items.map(item => new Video(item));
+  
   return {
     type: UPDATE_VIDEOS_TO_BE_SHOWN,
     payload: {
