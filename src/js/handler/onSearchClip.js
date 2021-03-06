@@ -31,7 +31,8 @@ export const onSearchClip = async (event) => {
   );
   showElement($skeletonWrapper);
 
-  const $input = $('[data-js=youtube-search-modal__input]');
+  const $input = event.target.elements['youtube-search-modal__input'];
+
   const keyword = $input.value;
   if (isEmpty(keyword)) {
     alert(ERROR_MESSAGE.EMPTY_KEYWORD);
