@@ -16,7 +16,9 @@ export default class App {
       searchedVideos: [],
       searchHistory: localStorageGetItem(LOCALSTORAGE_KEYS.SEARCH_HISTORY),
       requestPending: false,
-      savedVideoCount: localStorageGetItem(LOCALSTORAGE_KEYS.VIDEOS).length,
+      savedVideoCount: Object.keys(
+        localStorageGetItem(LOCALSTORAGE_KEYS.VIDEOS)
+      ).length,
     };
   }
 
@@ -29,11 +31,11 @@ export default class App {
 
   localStorageSetup() {
     if (localStorageGetItem(LOCALSTORAGE_KEYS.VIDEOS) === null) {
-      localStorageSetItem(LOCALSTORAGE_KEYS.VIDEOS, []);
+      localStorageSetItem(LOCALSTORAGE_KEYS.VIDEOS, {});
     }
 
     if (localStorageGetItem(LOCALSTORAGE_KEYS.SEARCH_HISTORY) === null) {
-      localStorageSetItem(LOCALSTORAGE_KEYS.SEARCH_HISTORY, []);
+      localStorageSetItem(LOCALSTORAGE_KEYS.SEARCH_HISTORY, {});
     }
   }
 

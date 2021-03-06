@@ -41,7 +41,6 @@ export default class Video {
 
   toJSON() {
     return {
-      videoId: this.videoId,
       videoTitle: this.videoTitle,
       videoEmbedURL: this.videoEmbedURL,
       channelTitle: this.channelTitle,
@@ -56,7 +55,7 @@ export default class Video {
     const videos = localStorageGetItem(LOCALSTORAGE_KEYS.VIDEOS);
 
     for (const key in videos) {
-      if (this.videoId === videos[key].videoId) return true;
+      if (videos[this.videoId]) return true;
     }
 
     return false;
@@ -65,13 +64,16 @@ export default class Video {
   onSaveVideo(event) {
     const savedVideos = localStorageGetItem(LOCALSTORAGE_KEYS.VIDEOS);
 
-    if (savedVideos.length >= VALUES.MAXIMUM_VIDEO_SAVE_COUNT) {
+    if (Object.keys(savedVideos).length >= VALUES.MAXIMUM_VIDEO_SAVE_COUNT) {
       alert(ERROR_MESSAGE.MAXIMUM_VIDEO_SAVE_COUNT_ERROR);
 
       return;
     }
 
-    savedVideos.push(this.toJSON());
+    const newObject = {};
+    newObject[this.videoId] = this.toJSON();
+
+    Object.assign(savedVideos, newObject);
     localStorageSetItem(LOCALSTORAGE_KEYS.VIDEOS, savedVideos);
 
     event.target.classList.add('d-none');
