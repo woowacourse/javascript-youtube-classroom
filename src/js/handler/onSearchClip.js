@@ -47,7 +47,7 @@ export const onSearchClip = async (event) => {
 
   storage.set(LOCAL_STORAGE_KEY.RECENT_KETWORDS, getRecentKeywords(keyword));
   storage.set(LOCAL_STORAGE_KEY.CURRENT_KEYWORD, keyword);
-  storage.set(LOCAL_STORAGE_KEY.NEXT_PAGE_TOKEN, response.nextPageToken);
+  storage.set(LOCAL_STORAGE_KEY.NEXT_PAGE_TOKEN, response.nextPageToken || '');
   storage.set(LOCAL_STORAGE_KEY.RECENT_SEARCH_RESULTS, videoItems);
 
   hideElement($skeletonWrapper);

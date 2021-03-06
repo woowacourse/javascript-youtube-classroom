@@ -11,17 +11,14 @@ export const closeModal = () => {
   $modal.classList.remove('open');
 };
 
-const recentKeywordsLabel = () => {
-  return `<span class="text-gray-700">최근 검색어: </span>`;
-};
-
 const recentKeywordTemplate = (keyword) => {
   return `<a class="chip" data-js="youtube-search-modal__chip">${keyword}</a>`;
 };
 
 export const renderRecentKeywords = (recentKeywords) => {
-  $('[data-js="youtube-search-modal__recent-keywords"]').innerHTML =
-    recentKeywordsLabel() + recentKeywords.map(recentKeywordTemplate).join('');
+  $(
+    '[data-js="youtube-search-modal__chip-container"]',
+  ).innerHTML = recentKeywords.map(recentKeywordTemplate).join('');
 };
 
 export const renderSaveVideoCount = (saveClips) => {
