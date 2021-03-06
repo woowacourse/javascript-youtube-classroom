@@ -4,6 +4,9 @@ import { $ } from './utils/querySelector.js';
 import { onSearchClip } from './handler/onSearchClip.js';
 import { onModalScroll } from './handler/onModalScroll.js';
 import { onSaveClip } from './handler/onSaveClip.js';
+import { renderSavedClips } from './view/main.js';
+import storage from './utils/localStorage.js';
+import { LOCAL_STORAGE_KEY } from './utils/constant.js';
 
 let timer;
 const throttling = (func) => {
@@ -33,4 +36,7 @@ export const YoutubeClassRoom = () => {
 
 window.onload = () => {
   YoutubeClassRoom();
+
+  const savedClips = storage.get(LOCAL_STORAGE_KEY.SAVED_CLIPS) ?? [];
+  renderSavedClips(savedClips);
 };

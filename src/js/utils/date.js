@@ -1,5 +1,5 @@
 export default {
-  toYMDArray = (date) => {
+  toYMDArray: (date) => {
     return new Date(date).toLocaleDateString('ko-KR').split('.');
-  }
-}
+  },
+};
