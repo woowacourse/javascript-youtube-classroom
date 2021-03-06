@@ -52,7 +52,7 @@ describe('검색 모달 테스트', () => {
     cy.get('#search-result-wrapper').find('img').should('have.attr', 'src').should('include', 'not_found');
   });
 
-  it.only('스크롤바를 최하단으로 이동시킬 경우, 다음 10개 아이템을 추가로 화면에 표시한다.', () => {
+  it('스크롤바를 최하단으로 이동시킬 경우, 다음 10개 아이템을 추가로 화면에 표시한다.', () => {
     cy.get('#search-button').click();
     cy.get('#search-keyword-input').type(KEYWORD);
     cy.get('#search-keyword-form').submit();
