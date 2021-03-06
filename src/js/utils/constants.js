@@ -12,5 +12,3 @@ export const ALERT_MESSAGE = Object.freeze({
 export const STORAGE = Object.freeze({
   VIDEO_IDS: "videoIds",
 });
-
-export const BASE_URL = "https://content.googleapis.com/youtube/v3";

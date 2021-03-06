@@ -1,6 +1,7 @@
 import { $ } from "../utils/dom.js";
 import { API_KEY } from "../apiKey.js";
 import { STANDARD_NUMS, ALERT_MESSAGE, STORAGE } from "../utils/constants.js";
+import { api } from "../utils/api.js";
 
 // dummy API Response 사용할 경우
 // import { dummyResponse } from "../utils/dummy.js";
@@ -95,36 +96,29 @@ class SearchModal {
 
     this.showLoadingAnimation();
 
-    const res = await fetch(
-      `https://content.googleapis.com/youtube/v3/search?part=snippet&q=${encodeURI(
-        keyword,
-      )}&maxResults=10&key=${API_KEY}`,
-    );
+    try {
+      // dummy API Response 사용할 경우
+      // const { items, nextPageToken } = dummyResponse;
+      const { items, nextPageToken } = await api.searchVideo(keyword);
 
-    if (!res.ok) {
-      return;
+      const videos = items.map(
+        ({ id: { videoId }, snippet: { channelId, channelTitle, publishedAt, title } }) => ({
+          videoId,
+          channelId,
+          channelTitle,
+          publishedAt,
+          title,
+          isSaved: this.savedVideoIds.includes(videoId),
+        }),
+      );
+
+      const keywordHistory = [keyword, ...this.keywordHistory];
+      keywordHistory.splice(STANDARD_NUMS.MAX_SAVE_KEYWORD_COUNT, 1);
+
+      this.setState({ keyword, keywordHistory, videos, nextPageToken });
+    } catch (err) {
+      console.error(err);
     }
-
-    const { items, nextPageToken } = await res.json();
-
-    // dummy API Response 사용할 경우
-    // const { items, nextPageToken } = dummyResponse;
-
-    const videos = items.map(
-      ({ id: { videoId }, snippet: { channelId, channelTitle, publishedAt, title } }) => ({
-        videoId,
-        channelId,
-        channelTitle,
-        publishedAt,
-        title,
-        isSaved: this.savedVideoIds.includes(videoId),
-      }),
-    );
-
-    const keywordHistory = [keyword, ...this.keywordHistory];
-    keywordHistory.splice(STANDARD_NUMS.MAX_SAVE_KEYWORD_COUNT, 1);
-
-    this.setState({ keyword, keywordHistory, videos, nextPageToken });
   }
 
   async handleLoadMore() {
@@ -132,30 +126,24 @@ class SearchModal {
       return;
     }
 
-    const res = await fetch(
-      `https://content.googleapis.com/youtube/v3/search?part=snippet&q=${encodeURI(
-        this.keyword,
-      )}&maxResults=10&pageToken=${this.nextPageToken}&key=${API_KEY}`,
-    );
+    try {
+      const { items, nextPageToken } = await api.searchNextVideo(this.keyword, this.nextPageToken);
 
-    if (!res.ok) {
-      return;
+      const nextVideos = items.map(
+        ({ id: { videoId }, snippet: { channelId, channelTitle, publishedAt, title } }) => ({
+          videoId,
+          channelId,
+          channelTitle,
+          publishedAt,
+          title,
+          isSaved: this.savedVideoIds.includes(videoId),
+        }),
+      );
+
+      this.setState({ videos: [...this.videos, ...nextVideos], nextPageToken });
+    } catch (err) {
+      console.error(err);
     }
-
-    const { items, nextPageToken } = await res.json();
-
-    const nextVideos = items.map(
-      ({ id: { videoId }, snippet: { channelId, channelTitle, publishedAt, title } }) => ({
-        videoId,
-        channelId,
-        channelTitle,
-        publishedAt,
-        title,
-        isSaved: this.savedVideoIds.includes(videoId),
-      }),
-    );
-
-    this.setState({ videos: [...this.videos, ...nextVideos], nextPageToken });
   }
 
   handleCloseModal() {

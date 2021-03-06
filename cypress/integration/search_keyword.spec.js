@@ -81,7 +81,6 @@ context("모달을 통한 비디오 검색", () => {
       cy.visit("http://127.0.0.1:5500");
     });
 
-    // TODO: 테스트 코드 수정 필요
     it("10개 이상의 검색 결과가 있는 상태에서 스크롤을 끝까지 내릴 경우, 그 다음 검색 결과가 누적되어 20개 이하의 결과가 출력된다.", () => {
       cy.get(".menu-section__video-search-btn").click();
       cy.get(".search-modal__input").type("스낵랩");
@@ -110,7 +109,7 @@ context("모달을 통한 비디오 검색", () => {
     });
   });
 
-  describe.only("최근 검색어 관리", () => {
+  describe("최근 검색어 관리", () => {
     beforeEach(() => {
       cy.visit("http://127.0.0.1:5500");
     });
