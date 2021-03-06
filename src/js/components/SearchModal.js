@@ -231,18 +231,19 @@ const createSearchedVideoTemplate = video => `
         <p>${changeDateFormat(video.publishedAt)}</p>
       </div>
       <div class="d-flex justify-end">
-
         <button class="clip__save-btn btn ${video.isSaved ? "hidden" : ""}" data-video-id="${
   video.videoId
 }">⬇️ 저장</button>
-
       </div>
     </div>
   </div>
 </article>`;
 
 const createNoSearchResultTemplate = () =>
-  `<div class='no-search-result'><img class='no-result-image' src='src/images/status/not_found.png' alt='결과 없음'><p>검색 결과가 존재하지 않습니다.</p></div>`;
+  `<div class='d-flex flex-col justify-center items-center no-search-result'>
+    <img class='d-block no-result-image' src='src/images/status/not_found.png' alt='결과 없음'>
+    <p>검색 결과가 존재하지 않습니다.</p>
+  </div>`;
 
 const createKeywordHistoryTemplate = keywords => `
   <span class="text-gray-700">최근 검색어: </span>

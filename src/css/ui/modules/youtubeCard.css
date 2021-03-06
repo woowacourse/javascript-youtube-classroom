@@ -1,6 +1,6 @@
 .video-wrapper {
   display: grid;
-  grid-template-columns: repeat(auto-fill, 236px);
+  grid-template-columns: repeat(auto-fit, 236px);
   grid-row-gap: 0px;
   grid-column-gap: 4px;
   justify-content: center;
@@ -60,4 +60,8 @@
   display: inline-block;
   margin: 0;
   color: #606060;
+}
+
+.no-result-image {
+  height: 230px;
 }
