@@ -1,5 +1,5 @@
 import { $ } from '../utils/querySelector.js';
-import { YOUTUBE } from '../utils/constant.js';
+import { YOUTUBE, ERROR_MESSAGE } from '../utils/constant.js';
 import { request } from '../utils/fetch.js';
 import { showElement, hideElement } from '../utils/setAttribute.js';
 import localStorage from '../utils/localStorage.js';
@@ -19,6 +19,10 @@ const getRecentKeywords = (keyword) => {
   return keywords;
 };
 
+const isEmpty = (value) => {
+  return value.trim('').length < 1;
+};
+
 export const onSearchClip = async (event) => {
   event.preventDefault();
 
@@ -29,6 +33,10 @@ export const onSearchClip = async (event) => {
 
   const $input = $('[data-js=youtube-search-modal__input]');
   const keyword = $input.value;
+  if (isEmpty(keyword)) {
+    alert(ERROR_MESSAGE.EMPTY_KEYWORD);
+  }
+
   const response = await request(keyword);
   const videoItems = response.items;
 

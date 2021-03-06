@@ -7,4 +7,5 @@ export const YOUTUBE = {
 export const ERROR_MESSAGE = {
   EXCEED_MAXIMUM_CLIP_COUNT:
     '최대 저장 가능 갯수를 초과했습니다. (최대 저장 가능 갯수: 100개)',
+  EMPTY_KEYWORD: '검색 키워드가 비어있습니다.',
 };
