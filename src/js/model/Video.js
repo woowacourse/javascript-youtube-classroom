@@ -15,7 +15,7 @@ export default class Video {
     this.channelTitle = videoInfo.snippet.channelTitle;
     this.channelId = videoInfo.snippet.channelId;
     this.channelUrl = this.createChannelUrl();
-    this.uploadTime = this.createVideoUploadDate(videoInfo.snippet.publishTime);
+    this.uploadTime = this.createVideoUploadDate(videoInfo.snippet.publishedAt);
   }
 
   createVideoEmbedUrl() {
@@ -27,9 +27,11 @@ export default class Video {
   }
 
   createVideoUploadDate(date) {
-    const newDate = new Date(date);
-
-    return `${newDate.getFullYear()}년 ${newDate.getMonth()}월 ${newDate.getDate()}일`;
+    if(Date.parse(date)){
+      const newDate = new Date(date);
+      return `${newDate.getFullYear()}년 ${newDate.getMonth()}월 ${newDate.getDate()}일`;
+    }
+    return ''
   }
 
   toJSON() {
