@@ -1,5 +1,6 @@
 import { $ } from "../utils/dom.js";
 import { API_KEY } from "../apiKey.js";
+import { STANDARD_NUMS, ALERT_MESSAGE, STORAGE } from "../utils/constants.js";
 
 // dummy API Response 사용할 경우
 // import { dummyResponse } from "../utils/dummy.js";
@@ -15,7 +16,7 @@ class SearchModal {
     this.keyword = "";
     this.keywordHistory = [];
     this.videos = [];
-    this.savedVideoIds = JSON.parse(localStorage.getItem("videoIds")) || [];
+    this.savedVideoIds = JSON.parse(localStorage.getItem(STORAGE.VIDEO_IDS)) || [];
     this.nextPageToken = "";
   }
 
@@ -78,14 +79,17 @@ class SearchModal {
       <p class="line"></p>
     </div>`;
 
-    this.$videoWrapper.insertAdjacentHTML("beforeend", skeletonCardTemplate.repeat(10));
+    this.$videoWrapper.insertAdjacentHTML(
+      "beforeend",
+      skeletonCardTemplate.repeat(STANDARD_NUMS.LOAD_CLIP_COUNT),
+    );
   }
 
   async handleSearchKeyword() {
     const keyword = this.$searchInput.value.trim();
 
     if (keyword.length === 0) {
-      alert("검색어를 입력해주세요");
+      alert(ALERT_MESSAGE.EMPTY_KEYWORD_INPUT);
       return;
     }
 
@@ -118,7 +122,7 @@ class SearchModal {
     );
 
     const keywordHistory = [keyword, ...this.keywordHistory];
-    keywordHistory.splice(3, 1);
+    keywordHistory.splice(STANDARD_NUMS.MAX_SAVE_KEYWORD_COUNT, 1);
 
     this.setState({ keyword, keywordHistory, videos, nextPageToken });
   }
@@ -159,8 +163,8 @@ class SearchModal {
   }
 
   handleSaveVideo(savedVideoId) {
-    if (this.savedVideoIds.length === 1) {
-      alert("최대 저장 가능 영상 개수는 100개입니다.");
+    if (this.savedVideoIds.length === STANDARD_NUMS.MAX_SAVE_VIDEO_COUNT) {
+      alert(ALERT_MESSAGE.OVER_MAX_SAVE_VIDEO_COUNT);
 
       return;
     }
@@ -184,12 +188,12 @@ class SearchModal {
           .join(""))
       : (this.$videoWrapper.innerHTML = createNoSearchResultTemplate());
 
-    this.$savedVideoCount.textContent = `저장된 영상 갯수: ${this.savedVideoIds.length}/100개`;
+    this.$savedVideoCount.textContent = `저장된 영상 갯수: ${this.savedVideoIds.length}/${STANDARD_NUMS.MAX_SAVE_VIDEO_COUNT}개`;
     this.$keywordHistory.innerHTML = createKeywordHistoryTemplate(this.keywordHistory);
   }
 
   setStorage(videoIds) {
-    localStorage.setItem("videoIds", JSON.stringify(videoIds));
+    localStorage.setItem(STORAGE.VIDEO_IDS, JSON.stringify(videoIds));
   }
 
   showModal() {
