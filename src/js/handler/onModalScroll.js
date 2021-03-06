@@ -5,8 +5,8 @@ import { $ } from '../utils/querySelector.js';
 import { hideElement, showElement } from '../utils/setAttribute.js';
 import { renderExtraClips } from '../view/modal.js';
 
-export const onModalScroll = async () => {
-  const { scrollTop, scrollHeight, clientHeight } = document.documentElement;
+export const onModalScroll = async (event) => {
+  const { scrollTop, scrollHeight, clientHeight } = event.target;
 
   if (scrollTop + clientHeight < scrollHeight - 5) {
     return;

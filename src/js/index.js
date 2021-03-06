@@ -24,8 +24,8 @@ export const YoutubeClassRoom = () => {
   );
   $('[data-js="youtube-search-modal__inner"]').addEventListener(
     'scroll',
-    () => {
-      throttling(onModalScroll);
+    (event) => {
+      throttling(onModalScroll, event);
     },
   );
   $('[data-js="youtube-search-modal__video-wrapper"]').addEventListener(

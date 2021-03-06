@@ -1,9 +1,9 @@
 let timer;
-export const throttling = (func) => {
+export const throttling = (func, event) => {
   if (!timer) {
     timer = setTimeout(() => {
       timer = null;
-      func();
-    }, 2000);
+      func(event);
+    }, 3000);
   }
 };
