@@ -12,10 +12,11 @@ export default class VideoWrapper {
     this.currentQuery = "";
     this.currentNextPageToken = "";
 
-    store.addMessageListener(
-      MESSAGE.KEYWORD_SUBMITTED,
-      this.mountTemplate.bind(this)
-    );
+    store.addMessageListener(MESSAGE.KEYWORD_SUBMITTED, ({ query }) => {
+      this.$modalVideoWrapper.innerHTML = "";
+      this.currentQuery = query;
+      this.mountTemplate();
+    });
     store.addMessageListener(MESSAGE.DATA_LOADED, this.attachData.bind(this));
 
     this.$modalVideoWrapper.addEventListener(
