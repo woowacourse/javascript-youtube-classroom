@@ -35,7 +35,7 @@ export class SearchVideoInput {
   }
 
   renderNumOfSavedVideo() {
-    this.$numOfSavedVideo.innerText = ` ${
+    this.$numOfSavedVideo.innerText = `${
       this.savedVideoManager.getSavedVideoIdList().length
     }/${MAX_NUM_OF_SAVED_VIDEO}`;
   }

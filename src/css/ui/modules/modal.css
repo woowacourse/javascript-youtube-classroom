@@ -20,13 +20,11 @@
 .modal-inner {
   transition: top 0.25s ease;
   width: 1080px;
-  height: 80%;
+  height: 70%;
   margin: auto;
-  overflow: auto;
   background: #fff;
   border-radius: 5px;
   position: relative;
-  overflow: auto;
 }
 
 .modal-close {
@@ -39,6 +37,12 @@
   background: no-repeat;
   border: none;
   padding: 0;
+}
+
+.video-result-container {
+  margin-top: 10px;
+  height: calc(100% - 220px);
+  overflow-y: auto;
 }
 
 svg {

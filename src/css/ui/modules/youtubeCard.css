@@ -7,7 +7,6 @@
 }
 
 .clip {
-  cursor: pointer;
   text-decoration: none;
 }
 
@@ -59,4 +58,12 @@
   display: inline-block;
   margin: 0;
   color: #606060;
+}
+
+.align-self-end {
+  align-self: end;
+}
+
+.justify-self-end {
+  justify-self: end;
 }

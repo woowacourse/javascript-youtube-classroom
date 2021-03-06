@@ -81,8 +81,8 @@ export class SearchVideoResult {
 
   makeTemplate({ id, snippet }) {
     return `
-      <section class="video-wrapper mt-8">
-        <article class="clip">
+      <article class="clip d-flex flex-col justify-between">
+        <div class="content-container pt-2 px-1">
           <div class="preview-container">
             <iframe
               width="100%"
@@ -93,7 +93,7 @@ export class SearchVideoResult {
               allowfullscreen
             ></iframe>
           </div>
-          <div class="content-container pt-2 px-1">
+          <div class="snippset-container px-1 py-2">
             <h3>${snippet.title}</h3>
             <div>
               <a
@@ -106,22 +106,20 @@ export class SearchVideoResult {
               <div class="meta">
                 <p>${formatDateTime(snippet.publishedAt)}</p>
               </div>
-              ${this.makeSaveButtonTemplete(id.videoId)}
             </div>
           </div>
-        </article>
-      </section>
+        </div>
+        ${this.makeSaveButtonTemplete(id.videoId)}
+      </article>
     `;
   }
 
   makeSaveButtonTemplete(videoId) {
-    if (this.savedVideoManager.getSavedVideoIdList().includes(videoId)) {
-      return '';
-    }
-
     return `
-      <div class="d-flex justify-end">
-        <button class="js-clip-save-button btn" data-video-id="${videoId}">⬇️ 저장</button>
+      <div class="mb-6 d-flex justify-end">
+        <button class="js-clip-save-button btn" data-video-id="${videoId}" ${
+      this.savedVideoManager.getSavedVideoIdList().includes(videoId) ? 'disabled' : ''
+    }>⬇️ 저장 </button>
       </div>
     `;
   }

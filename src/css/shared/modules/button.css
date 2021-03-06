@@ -8,7 +8,12 @@
   cursor: pointer;
 }
 
+.btn:disabled {
+  cursor: default;
+}
+
 .emoji-btn {
+  cursor: pointer;
   border: 0;
   background-color: transparent;
   padding: 0;
