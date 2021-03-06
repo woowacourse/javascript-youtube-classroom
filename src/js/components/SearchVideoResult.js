@@ -122,7 +122,7 @@ export class SearchVideoResult {
   makeSaveButtonTemplete(videoId) {
     return `
       <div class="mb-6 d-flex justify-end">
-        <button class="js-clip-save-button btn" data-video-id="${videoId}" ${
+        <button type="button" class="js-clip-save-button btn" data-video-id="${videoId}" ${
       this.savedVideoManager.getSavedVideoIdList().includes(videoId) ? 'disabled' : ''
     }>⬇️ 저장 </button>
       </div>

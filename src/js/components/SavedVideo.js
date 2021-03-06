@@ -59,10 +59,10 @@ export class SavedVideo {
           </div>
         </div>
         <ul class="list-style-none p-0 mt-3 mb-6 d-flex">
-          <li class="mr-2"><button class="emoji-btn opacity-hover">✅</button></li>
-          <li class="mr-2"><button class="emoji-btn opacity-hover">👍</button></li>
-          <li class="mr-2"><button class="emoji-btn opacity-hover">💬</button></li>
-          <li class="mr-2"><button class="emoji-btn opacity-hover">🗑️</button></li>
+          <li class="mr-2"><button type="button" class="emoji-btn opacity-hover">✅</button></li>
+          <li class="mr-2"><button type="button" class="emoji-btn opacity-hover">👍</button></li>
+          <li class="mr-2"><button type="button" class="emoji-btn opacity-hover">💬</button></li>
+          <li class="mr-2"><button type="button" class="emoji-btn opacity-hover">🗑️</button></li>
         </ul>
       </article>
     `;
