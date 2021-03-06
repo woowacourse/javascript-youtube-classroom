@@ -108,3 +108,6 @@ youtubeAPI.js
 cypress/fixtures/
 cypress/plugins/
 cypress/support/
+
+# Vscode
+.vscode/
