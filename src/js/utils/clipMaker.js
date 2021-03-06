@@ -19,6 +19,7 @@ export default function clipMaker(video, type) {
           <a
             href="https://www.youtube.com/channel/${video.channelId}"
             target="_blank"
+            rel="noopener noreferrer"
             class="channel-name mt-1"
           >
             ${video.channelTitle}
@@ -36,7 +37,8 @@ export default function clipMaker(video, type) {
 function saveButtonTemplate(videoId, isSaved) {
   return `
     <div class="d-flex justify-end clip-save">
-      <button 
+      <button
+        type="button"
         data-video-id="${videoId}" 
         class="btn clip-save-btn" 
         ${isSaved ? 'disabled' : ''}
