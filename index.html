@@ -13,16 +13,19 @@
           <header class="my-4">
             <h2 class="text-center font-bold">👩🏻‍💻 나만의 유튜브 강의실 👨🏻‍💻</h2>
             <nav id="nav-bar" class="d-flex justify-center">
-              <button id="saved-btn" class="nav-btn btn bg-cyan-100 mx-1">👁️ 볼 영상</button>
-              <button id="watched-btn" class="nav-btn btn mx-1">✅ 본 영상</button>
+              <button id="saved-btn" class="nav-btn btn bg-cyan-100 mx-1">
+                👁️ 볼 영상
+              </button>
+              <button id="watched-btn" class="nav-btn btn mx-1">
+                ✅ 본 영상
+              </button>
               <button id="search-btn" class="nav-btn btn mx-1">
                 🔍 동영상 검색
               </button>
             </nav>
           </header>
           <main class="mt-10">
-            <section id="main-videos" class="video-wrapper">
-            </section>
+            <section id="main-videos" class="video-wrapper"></section>
           </main>
         </div>
       </div>
@@ -37,8 +40,16 @@
             <h2 class="text-center">🔎 유튜브 검색</h2>
           </header>
           <form id="modal-search-form" class="d-flex">
-            <input id="modal-search-input" type="text" name="search" class="w-100 mr-2 pl-2" placeholder="검색" />
-            <button id="modal-search-button" type="submit" class="btn bg-cyan-500">검색</button>
+            <input
+              id="modal-search-input"
+              type="text"
+              name="search"
+              class="w-100 mr-2 pl-2"
+              placeholder="검색"
+            />
+            <button id="modal-search-button" class="btn bg-cyan-500">
+              검색
+            </button>
           </form>
           <section class="mt-2 d-flex items-center">
             <span class="text-gray-700">최근 검색어: </span>
@@ -48,8 +59,7 @@
             <div class="d-flex justify-end text-gray-700">
               저장된 영상 개수: <span id="saved-video-count"></span>개
             </div>
-            <section id="modal-videos" class="video-wrapper">
-            </section>
+            <section id="modal-videos" class="video-wrapper"></section>
           </section>
         </div>
       </div>
