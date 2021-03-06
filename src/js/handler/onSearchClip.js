@@ -65,14 +65,15 @@ const setSearchResult = (response) => {
 
 const searchRequest = async (keyword) => {
   const $skeletonWrapper = $(
-    '[data-js=youtube-search-modal__skeleton-wrapper]',
+    '[data-js="youtube-search-modal__skeleton-wrapper"]',
   );
 
   showElement($skeletonWrapper);
-
   if (isEmpty(keyword)) {
     alert(ERROR_MESSAGE.EMPTY_KEYWORD);
   }
+
+  $('[data-js=youtube-search-modal__video-wrapper]').innerHTML = '';
 
   const response = await request(keyword);
 
