@@ -44,6 +44,7 @@ export const clipTemplate = (video, index, type) => {
             <a
               href="https://www.youtube.com/channel/UC-mOekGSesms0agFntnQang"
               target="_blank"
+              rel="noopener noreferer nofollow"
               class="channel-name mt-1"
             >
               ${video.snippet.channelTitle}
