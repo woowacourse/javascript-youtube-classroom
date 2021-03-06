@@ -10,7 +10,6 @@ import {
   updateRequestPending,
   updateVideosToBeShown,
 } from '../../redux/action.js';
-import { ERROR_MESSAGE } from '../../constants/constants.js';
 
 export default class VideoSearchModal extends Component {
   constructor($target) {
@@ -74,6 +73,7 @@ export default class VideoSearchModal extends Component {
 
   onModalShow() {
     this.$target.classList.add('open');
+    this.videoSearchBar.$videoSearchInput.focus();
   }
 
   onModalClose() {

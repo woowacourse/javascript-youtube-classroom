@@ -8,7 +8,6 @@ export default class VideoSearchBar extends Component {
     store.subscribe(this.render.bind(this));
   }
 
-  // TODO :  input Focusing
   // TODO : '               ' string error 처리
   initRender() {
     this.$target.innerHTML = `
