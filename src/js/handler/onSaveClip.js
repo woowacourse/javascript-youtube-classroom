@@ -5,6 +5,7 @@ import {
   LOCAL_STORAGE_KEY,
   YOUTUBE,
 } from '../utils/constant.js';
+import { hideElement } from '../utils/setAttribute.js';
 
 export const onSaveClip = ({ target }) => {
   if (target.dataset.js !== 'save-button') {
@@ -21,6 +22,8 @@ export const onSaveClip = ({ target }) => {
     alert(ERROR_MESSAGE.EXCEED_MAXIMUM_CLIP_COUNT);
     return;
   }
+
+  hideElement(target);
 
   savedClips.push(savedClip);
   storage.set(LOCAL_STORAGE_KEY.SAVED_CLIPS, savedClips);
