@@ -1,18 +1,22 @@
-import LocalStorageManager from '../model/LocalStorageManager.js';
 import YoutubeAPIManager from '../model/YoutubeAPIManager.js';
 import VideoSearchModal from './videoSearchModal/VideoSearchModal.js';
-import { $ } from '../utils/utils.js';
+import { $, localStorageSetItem, localStorageGetItem } from '../utils/utils.js';
+import { LOCALSTORAGE_KEYS } from '../constants/constants.js';
 
-export const localStorageManager = new LocalStorageManager();
 export const youtubeAPIManager = new YoutubeAPIManager();
 export default class App {
   constructor($target) {
     this.$target = $target;
+    this.setup()
+  }
+
+  setup(){
+    this.localStorageSetup();
     this.states = {
       searchedVideos: [],
-      searchHistory: localStorageManager.getItem('searchHistory'),
+      searchHistory: localStorageGetItem('searchHistory'),
       requestPending: false,
-      savedVideoCount: localStorageManager.getItem('videos').length,
+      savedVideoCount: localStorageGetItem('videos').length,
     };
   }
 
@@ -21,6 +25,17 @@ export default class App {
     this.mount();
     this.selectDOM();
     this.bindEvent();
+  }
+
+  localStorageSetup(){
+      if (localStorageGetItem(LOCALSTORAGE_KEYS.VIDEOS) === null) {
+        localStorageSetItem(LOCALSTORAGE_KEYS.VIDEOS, []);
+      }
+
+      if (localStorageGetItem(LOCALSTORAGE_KEYS.SEARCH_HISTORY) === null) {
+        localStorageSetItem(LOCALSTORAGE_KEYS.SEARCH_HISTORY, []);
+      }
+    
   }
 
   initRender() {

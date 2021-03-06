@@ -1,4 +1,3 @@
-import { localStorageManager } from '../components/App.js';
 import { store } from '../index.js';
 import { increaseSavedVideoCount } from '../redux/action.js';
 import {
@@ -6,7 +5,7 @@ import {
   ERROR_MESSAGE,
   LOCALSTORAGE_KEYS,
 } from '../constants/constants.js';
-import { createElement } from '../utils/utils.js';
+import { createElement, localStorageGetItem, localStorageSetItem } from '../utils/utils.js';
 
 export default class Video {
   constructor(videoInfo) {
@@ -46,7 +45,7 @@ export default class Video {
   }
 
   isSavedVideo() {
-    const videos = localStorageManager.getItem(LOCALSTORAGE_KEYS.VIDEOS);
+    const videos = localStorageGetItem(LOCALSTORAGE_KEYS.VIDEOS);
 
     for (const key in videos) {
       if (this.videoId === videos[key].videoId) return true;
@@ -56,7 +55,7 @@ export default class Video {
   }
 
   onSaveVideo(event) {
-    const savedVideos = localStorageManager.getItem(LOCALSTORAGE_KEYS.VIDEOS);
+    const savedVideos = localStorageGetItem(LOCALSTORAGE_KEYS.VIDEOS);
 
     if (savedVideos.length >= VALUES.MAXIMUM_VIDEO_SAVE_COUNT) {
       alert(ERROR_MESSAGE.MAXIMUM_VIDEO_SAVE_COUNT_ERROR);
@@ -65,7 +64,7 @@ export default class Video {
     }
 
     savedVideos.push(this.toJson());
-    localStorageManager.setItem(LOCALSTORAGE_KEYS.VIDEOS, savedVideos);
+    localStorageSetItem(LOCALSTORAGE_KEYS.VIDEOS, savedVideos);
 
     event.target.classList.add('d-none');
     store.dispatch(increaseSavedVideoCount());

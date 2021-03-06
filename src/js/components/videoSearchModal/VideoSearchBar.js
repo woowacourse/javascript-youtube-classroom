@@ -1,7 +1,6 @@
 import Component from '../../core/Component.js';
 import { store } from '../../index.js';
-import { localStorageManager } from '../App.js';
-import { $, isEmptyString } from '../../utils/utils.js';
+import { $, isEmptyString, localStorageGetItem, localStorageSetItem } from '../../utils/utils.js';
 import { LOCALSTORAGE_KEYS } from '../../constants/constants.js';
 
 export default class VideoSearchBar extends Component {
@@ -43,7 +42,7 @@ export default class VideoSearchBar extends Component {
   }
 
   saveHistoryToLocalStorage(searchTerm) {
-    const history = localStorageManager.getItem(
+    const history = localStorageGetItem(
       LOCALSTORAGE_KEYS.SEARCH_HISTORY
     );
 
@@ -54,7 +53,7 @@ export default class VideoSearchBar extends Component {
     }
 
     history.unshift(searchTerm);
-    localStorageManager.setItem(
+    localStorageSetItem(
       LOCALSTORAGE_KEYS.SEARCH_HISTORY,
       history.slice(0, 3)
     );
