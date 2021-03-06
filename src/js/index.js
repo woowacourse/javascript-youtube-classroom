@@ -10,15 +10,24 @@ import { LOCAL_STORAGE_KEY } from './utils/constant.js';
 import { throttling } from './utils/throttling.js';
 
 export const YoutubeClassRoom = () => {
-  $('#search-button').addEventListener('click', onModalShow);
-  $('.modal-close').addEventListener('click', closeModal);
+  $('[data-js="navigator__search-button"]').addEventListener(
+    'click',
+    onModalShow,
+  );
+  $('[data-js="youtube-serach-modal__close"]').addEventListener(
+    'click',
+    closeModal,
+  );
   $('[data-js="youtube-search-modal__form"]').addEventListener(
     'submit',
     onSearchClip,
   );
-  document.addEventListener('scroll', () => {
-    throttling(onModalScroll);
-  });
+  $('[data-js="youtube-search-modal__inner"]').addEventListener(
+    'scroll',
+    () => {
+      throttling(onModalScroll);
+    },
+  );
   $('[data-js="youtube-search-modal__video-wrapper"]').addEventListener(
     'click',
     onSaveClip,
