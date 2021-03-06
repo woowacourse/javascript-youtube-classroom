@@ -119,3 +119,8 @@
 .content-evenly {
   align-content: space-around;
 }
+
+/* Overflow */
+.overflow-y-auto {
+  overflow-y: auto;
+}

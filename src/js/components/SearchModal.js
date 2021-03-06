@@ -1,6 +1,8 @@
 import { $ } from "../utils/dom.js";
 import { API_KEY } from "../apiKey.js";
-import { dummyResponse } from "../utils/dummy.js";
+
+// dummy API Response 사용할 경우
+// import { dummyResponse } from "../utils/dummy.js";
 class SearchModal {
   constructor() {
     this.initState();
@@ -46,7 +48,7 @@ class SearchModal {
       this.handleSearchKeyword();
     });
 
-    this.$modalCloseBtn.addEventListener("click", this.handleModalClose.bind(this));
+    this.$modalCloseBtn.addEventListener("click", this.handleCloseModal.bind(this));
 
     this.$videoWrapper.addEventListener("click", e => {
       if (!e.target.classList.contains("clip__save-btn")) return;
@@ -89,19 +91,20 @@ class SearchModal {
 
     this.showLoadingAnimation();
 
-    // const res = await fetch(
-    //   `https://content.googleapis.com/youtube/v3/search?part=snippet&q=${encodeURI(
-    //     keyword,
-    //   )}&maxResults=10&key=${API_KEY}`,
-    // );
+    const res = await fetch(
+      `https://content.googleapis.com/youtube/v3/search?part=snippet&q=${encodeURI(
+        keyword,
+      )}&maxResults=10&key=${API_KEY}`,
+    );
 
-    // if (!res.ok) {
-    //   return;
-    // }
+    if (!res.ok) {
+      return;
+    }
 
-    // const { items, nextPageToken } = await res.json();
+    const { items, nextPageToken } = await res.json();
 
-    const { items, nextPageToken } = dummyResponse;
+    // dummy API Response 사용할 경우
+    // const { items, nextPageToken } = dummyResponse;
 
     const videos = items.map(
       ({ id: { videoId }, snippet: { channelId, channelTitle, publishedAt, title } }) => ({
@@ -117,7 +120,7 @@ class SearchModal {
     const keywordHistory = [keyword, ...this.keywordHistory];
     keywordHistory.splice(3, 1);
 
-    this.setState({ keyword, videos, nextPageToken, keywordHistory });
+    this.setState({ keyword, keywordHistory, videos, nextPageToken });
   }
 
   async handleLoadMore() {
@@ -151,7 +154,7 @@ class SearchModal {
     this.setState({ videos: [...this.videos, ...nextVideos], nextPageToken });
   }
 
-  handleModalClose() {
+  handleCloseModal() {
     this.hideModal();
   }
 
@@ -162,8 +165,8 @@ class SearchModal {
       return;
     }
 
-    const newSavedVideoIds = [...this.savedVideoIds, savedVideoId];
-    const newVideos = [...this.videos].map(video => {
+    const savedVideoIds = [...this.savedVideoIds, savedVideoId];
+    const videos = [...this.videos].map(video => {
       if (video.videoId === savedVideoId) {
         video.isSaved = true;
       }
@@ -171,7 +174,7 @@ class SearchModal {
       return video;
     });
 
-    this.setState({ savedVideoIds: newSavedVideoIds, videos: newVideos });
+    this.setState({ videos, savedVideoIds });
   }
 
   render() {
