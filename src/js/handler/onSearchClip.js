@@ -41,33 +41,57 @@ const renderResult = (videoItems) => {
   renderClips(videoItems, savedClipIds);
 };
 
-export const onSearchClip = async (event) => {
-  event.preventDefault();
+const setSearchKeyword = (keyword) => {
+  storage.set(LOCAL_STORAGE_KEY.RECENT_KETWORDS, getRecentKeywords(keyword));
+  storage.set(LOCAL_STORAGE_KEY.CURRENT_KEYWORD, keyword);
+};
 
+const setSearchResult = (response) => {
+  const { items, nextPageToken } = response;
+
+  storage.set(LOCAL_STORAGE_KEY.NEXT_PAGE_TOKEN, nextPageToken || '');
+  storage.set(LOCAL_STORAGE_KEY.RECENT_SEARCH_RESULTS, items);
+
+  const recentKeywords = storage.get(LOCAL_STORAGE_KEY.RECENT_KETWORDS) ?? [];
+
+  renderRecentKeywords(recentKeywords);
+  renderResult(items);
+};
+
+const searchRequest = async (keyword) => {
   const $skeletonWrapper = $(
     '[data-js=youtube-search-modal__skeleton-wrapper]',
   );
-  showElement($skeletonWrapper);
 
-  const $input = event.target.elements['youtube-search-modal__input'];
-  const keyword = $input.value;
+  showElement($skeletonWrapper);
 
   if (isEmpty(keyword)) {
     alert(ERROR_MESSAGE.EMPTY_KEYWORD);
   }
 
   const response = await request(keyword);
-  const videoItems = response.items;
 
-  storage.set(LOCAL_STORAGE_KEY.RECENT_KETWORDS, getRecentKeywords(keyword));
-  storage.set(LOCAL_STORAGE_KEY.CURRENT_KEYWORD, keyword);
-  storage.set(LOCAL_STORAGE_KEY.NEXT_PAGE_TOKEN, response.nextPageToken || '');
-  storage.set(LOCAL_STORAGE_KEY.RECENT_SEARCH_RESULTS, videoItems);
-
-  renderResult(videoItems);
   hideElement($skeletonWrapper);
 
-  const recentKeywords = storage.get(LOCAL_STORAGE_KEY.RECENT_KETWORDS) ?? [];
-  renderRecentKeywords(recentKeywords);
+  setSearchKeyword(keyword);
+  setSearchResult(response);
+};
+
+export const onSearchClip = (event) => {
+  event.preventDefault();
+
+  const $input = event.target.elements['youtube-search-modal__input'];
+  const keyword = $input.value;
+  searchRequest(keyword);
+
   $input.value = '';
+};
+
+export const onSearchByKeyword = ({ target }) => {
+  if (target.dataset.js !== 'youtube-search-modal__chip') {
+    return;
+  }
+
+  const keyword = target.innerText;
+  searchRequest(keyword);
 };

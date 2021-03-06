@@ -3,7 +3,7 @@ import storage from './utils/localStorage.js';
 import { throttling } from './utils/throttling.js';
 import { LOCAL_STORAGE_KEY } from './utils/constant.js';
 import { onModalShow } from './handler/onModalShow.js';
-import { onSearchClip } from './handler/onSearchClip.js';
+import { onSearchByKeyword, onSearchClip } from './handler/onSearchClip.js';
 import { onModalScroll } from './handler/onModalScroll.js';
 import { onSaveClip } from './handler/onSaveClip.js';
 import { onModalClose } from './handler/onModalClose.js';
@@ -18,6 +18,10 @@ export const YoutubeClassRoom = () => {
     'submit',
     onSearchClip,
   );
+  $('[data-js="youtube-search-modal__chip-container"]').addEventListener(
+    'click',
+    onSearchByKeyword,
+  );
   $('[data-js="youtube-search-modal__inner"]').addEventListener(
     'scroll',
     (event) => {
@@ -28,6 +32,7 @@ export const YoutubeClassRoom = () => {
     'click',
     onSaveClip,
   );
+
   window.addEventListener('click', onModalClose);
 };
 
