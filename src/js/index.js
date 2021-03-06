@@ -1,14 +1,13 @@
-const $searchButton = document.querySelector("#search-button");
-const $modalClose = document.querySelector(".modal-close");
-const $modal = document.querySelector(".modal");
+import App from './components/App.js';
+import Store from './redux/store.js';
+import reduce from './redux/reducer.js';
+import { $ } from '../js/utils/utils.js';
 
-const onModalShow = () => {
-  $modal.classList.add("open");
-};
+export const store = new Store();
 
-const onModalClose = () => {
-  $modal.classList.remove("open");
-};
+document.addEventListener('DOMContentLoaded', () => {
+  const app = new App($('#app'));
 
-$searchButton.addEventListener("click", onModalShow);
-$modalClose.addEventListener("click", onModalClose);
+  store.setup(app.states, reduce);
+  app.run();
+});
