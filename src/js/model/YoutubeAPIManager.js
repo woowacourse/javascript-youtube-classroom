@@ -16,6 +16,7 @@ export default class YoutubeAPIManager {
     const requestURL = `https://www.googleapis.com/youtube/v3/search?`;
     const searchParams = new URLSearchParams("part=snippet&type=video");
 
+    searchParams.set('q', this.searchTerm);
     searchParams.set('key', MY_KEY);
     searchParams.set('maxResults', MAX_RESULT);
   
@@ -28,7 +29,6 @@ export default class YoutubeAPIManager {
 
   async requestVideos() {
     const url = this.createRequestURL(this.searchTerm, this.pageToken);
-
     const res = await fetch(url)
       .then((data) => {
         if (!data.ok) {

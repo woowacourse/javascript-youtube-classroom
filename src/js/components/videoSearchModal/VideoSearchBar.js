@@ -61,7 +61,7 @@ export default class VideoSearchBar extends Component {
 
   onRequestVideo(event) {
     event.preventDefault();
-    const searchTerm = event.target.elements['youtube-search-input'].value;
+    const searchTerm = event.target.elements['youtube-search-input'].value.trim();
 
     if (isEmptyString(searchTerm)) {
       return;

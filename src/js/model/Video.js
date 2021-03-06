@@ -16,6 +16,7 @@ export default class Video {
     this.channelId = videoInfo.snippet.channelId;
     this.channelURL = this.createChannelURL();
     this.uploadTime = this.createVideoUploadDate(videoInfo.snippet.publishedAt);
+    this.thumbnailURL = videoInfo.snippet.thumbnails.default.url;
   }
 
   createVideoEmbedURL() {
@@ -43,6 +44,7 @@ export default class Video {
       channelId: this.channelId,
       channelURL: this.channelURL,
       uploadTime: this.uploadTime,
+      thumbnailURL: this.thumbnailURL
     };
   }
 
@@ -72,6 +74,53 @@ export default class Video {
     store.dispatch(increaseSavedVideoCount());
   }
 
+
+  createIframeSrcdocTemplate() {
+    return `
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        overflow: hidden;
+      }
+
+      body {
+        height: 100%;
+      }
+
+      span {
+        position: absolute;
+        top: -290%;
+        left: 45%;
+        color: rgba(238, 238, 238, 0.9);
+        font-size: 2rem;
+        transition: transform 0.2s ease-in-out;
+      }
+
+      span:hover {
+        transform: scale(1.6);
+      }
+
+      a {
+        width: 236px;
+        height: 118px;
+        position: relative;
+        cursor: pointer;
+      }
+      
+      img{
+        width:100%; 
+        height:118px;
+        object-fit: cover;
+      }
+
+    </style>
+    <a href="${this.videoEmbedURL}?autoplay=1">
+      <img src="${this.thumbnailURL}" alt="${this.videoTitle} thumbnail"/>
+      <span>►</span>
+    </a>`
+  }
+
   createTemplate() {
     const fragment = document.createDocumentFragment();
     const clip = createElement({ tag: 'article', classes: ['clip', 'd-none'] });
@@ -83,7 +132,8 @@ export default class Video {
 
     const iframe = document.createElement('iframe');
     iframe.width = '100%';
-    iframe.height = '118';
+    iframe.height = '118px';
+    iframe.srcdoc = this.createIframeSrcdocTemplate();
     iframe.src = `${this.videoEmbedURL}`;
     iframe.frameBorder = '0';
     iframe.allow =
