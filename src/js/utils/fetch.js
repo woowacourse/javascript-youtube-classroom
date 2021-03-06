@@ -4,9 +4,9 @@ import { YOUTUBE } from './constant.js';
 const BASE_URL = `https://www.googleapis.com/youtube/v3/search?&part=snippet`;
 
 export const request = async (keyword, pageToken = '') => {
-  const URL = `&maxResults=${YOUTUBE.NUMBER_TO_LOAD}&q=${keyword}&key=${API_KEY}${pageToken}`;
+  const options = `&maxResults=${YOUTUBE.NUMBER_TO_LOAD}&q=${keyword}&key=${API_KEY}&pageToken=${pageToken}`;
   try {
-    const response = await fetch(`${BASE_URL}${URL}`);
+    const response = await fetch(`${BASE_URL}${options}`);
     if (!response.ok) {
       throw new Error(response.status);
     }

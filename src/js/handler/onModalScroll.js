@@ -16,11 +16,8 @@ export const onModalScroll = async () => {
   );
 
   showElement($skeletonWrapper);
-
   const keyword = localStorage.get('currentKeyword');
-  const pageToken = localStorage.get('nextPageToken')
-    ? `&pageToken=${localStorage.get('nextPageToken')}`
-    : '';
+  const pageToken = localStorage.get('nextPageToken') ?? '';
 
   const response = await request(keyword, pageToken);
   const recentSearchResults = localStorage.get('recentSearchResults') ?? [];
