@@ -27,6 +27,20 @@ const isEmpty = (value) => {
   return value.trim('').length < 1;
 };
 
+const renderResult = (videoItems) => {
+  if (videoItems.length === 0) {
+    showElement($('[data-js=youtube-search-modal__not-found]'));
+    clearSearchResult();
+    return;
+  }
+
+  const savedClips = storage.get(LOCAL_STORAGE_KEY.SAVED_CLIPS) ?? [];
+  const savedClipIds = savedClips.map((savedClip) => savedClip.id.videoId);
+
+  hideElement($('[data-js=youtube-search-modal__not-found]'));
+  renderClips(videoItems, savedClipIds);
+};
+
 export const onSearchClip = async (event) => {
   event.preventDefault();
 
@@ -36,8 +50,8 @@ export const onSearchClip = async (event) => {
   showElement($skeletonWrapper);
 
   const $input = event.target.elements['youtube-search-modal__input'];
-
   const keyword = $input.value;
+
   if (isEmpty(keyword)) {
     alert(ERROR_MESSAGE.EMPTY_KEYWORD);
   }
@@ -50,19 +64,8 @@ export const onSearchClip = async (event) => {
   storage.set(LOCAL_STORAGE_KEY.NEXT_PAGE_TOKEN, response.nextPageToken || '');
   storage.set(LOCAL_STORAGE_KEY.RECENT_SEARCH_RESULTS, videoItems);
 
+  renderResult(videoItems);
   hideElement($skeletonWrapper);
-
-  if (videoItems.length === 0) {
-    showElement($('[data-js=youtube-search-modal__not-found]'));
-    clearSearchResult();
-    return;
-  }
-
-  hideElement($('[data-js=youtube-search-modal__not-found]'));
-
-  const savedClips = storage.get(LOCAL_STORAGE_KEY.SAVED_CLIPS) ?? [];
-  const savedClipIds = savedClips.map((savedClip) => savedClip.id.videoId);
-  renderClips(videoItems, savedClipIds);
 
   const recentKeywords = storage.get(LOCAL_STORAGE_KEY.RECENT_KETWORDS) ?? [];
   renderRecentKeywords(recentKeywords);
