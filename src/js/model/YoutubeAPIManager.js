@@ -28,11 +28,13 @@ export default class YoutubeAPIManager {
     const res = await fetch(url, { method: 'GET' })
       .then((data) => {
         if (!data.ok) {
-          throw new Error(data.status);
+          if (data.status === 403) {
+            throw new Error(ERROR_MESSAGE.EXCEED_API_REQUEST_COUNT(data.status));
+          }
+          throw new Error(ERROR_MESSAGE.API_REQUEST_ERROR(data.status));
         }
         return data.json();
       })
-      .catch((error) => alert(ERROR_MESSAGE.EXCEED_API_REQUEST_COUNT(error)));
 
     this.pageToken = res.nextPageToken;
 
