@@ -15,6 +15,11 @@ import {
 
 const getRecentKeywords = (keyword) => {
   const keywords = storage.get(LOCAL_STORAGE_KEY.RECENT_KETWORDS) ?? [];
+
+  if (keywords.includes(keyword)) {
+    keywords.splice(keywords.indexOf(keyword), 1);
+  }
+
   if (keywords.length >= YOUTUBE.MAXMIMUM_RECENT_KEYWORD_LENGTH) {
     keywords.splice(2);
   }
