@@ -1,7 +1,13 @@
+import { getLocalStorageItem, setLocalStorageItem } from '../util/index.js';
+import { LOCAL_STORAGE_SEARCH_KEYWORD_HISTORY_KEY } from '../constants/index.js';
+
 export class SearchKeywordHistoryManager {
   constructor() {
     this.subscribers = [];
-    this.searchKeywordHistory = [];
+    this.searchKeywordHistory = getLocalStorageItem({
+      key: LOCAL_STORAGE_SEARCH_KEYWORD_HISTORY_KEY,
+      defaultValue: [],
+    });
   }
 
   subscribe(subscriber) {
@@ -34,6 +40,7 @@ export class SearchKeywordHistoryManager {
 
   setState({ searchKeywordHistory }) {
     this.searchKeywordHistory = searchKeywordHistory;
+    setLocalStorageItem({ key: LOCAL_STORAGE_SEARCH_KEYWORD_HISTORY_KEY, item: this.searchKeywordHistory });
 
     this.notify();
   }

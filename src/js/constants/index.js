@@ -3,5 +3,6 @@ export {
   MAX_NUM_OF_SAVED_VIDEO,
   NUM_OF_SEARCH_KEYWORD_HISTORY,
   LOCAL_STORAGE_SAVED_VIDEO_KEY,
+  LOCAL_STORAGE_SEARCH_KEYWORD_HISTORY_KEY,
 } from './standard.js';
 export { SNACKBAR_MESSAGE } from './snackbarMessage.js';
