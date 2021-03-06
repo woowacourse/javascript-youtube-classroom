@@ -1,7 +1,7 @@
 /// <reference types="cypress" />
 
 context("모달을 통한 비디오 검색", () => {
-  describe("검색 결과가 있는 경우", () => {
+  describe.only("검색 결과가 있는 경우", () => {
     before(() => {
       cy.visit("http://127.0.0.1:5500");
     });
@@ -20,6 +20,13 @@ context("모달을 통한 비디오 검색", () => {
 
     it("10개 이하의 검색 결과가 출력된 경우, 로딩 애니메이션이 사라진다.", () => {
       cy.get(".skeleton").should("not.exist");
+    });
+
+    it("비디오 저장 버튼을 누를 경우, 해당 비디오의 저장 버튼이 사라지고 저장된 동영상 개수에 반영된다.", () => {
+      cy.clearLocalStorage("videoIds");
+      cy.get(".clip__save-btn").not(".hidden").eq(0).click();
+      cy.get(".clip__save-btn").eq(0).should("not.to.be.visible");
+      cy.get(".search-modal__saved-video-count").should("have.text", `저장된 영상 갯수: 1개`);
     });
   });
 

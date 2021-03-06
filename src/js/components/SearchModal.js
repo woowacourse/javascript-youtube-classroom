@@ -1,6 +1,6 @@
 import { $ } from "../utils/dom.js";
 import { API_KEY } from "../apiKey.js";
-
+import { dummyResponse } from "../utils/dummy.js";
 class SearchModal {
   constructor() {
     this.initState();
@@ -13,14 +13,17 @@ class SearchModal {
     this.keyword = "";
     this.videos = [];
     this.nextPageToken = "";
+    this.savedVideoIds = JSON.parse(localStorage.getItem("videoIds")) || [];
   }
 
-  setState({ keyword, videos, nextPageToken }) {
+  setState({ keyword, videos, nextPageToken, savedVideoIds }) {
     this.keyword = keyword ?? this.keyword;
     this.videos = videos ?? this.videos;
     this.nextPageToken = nextPageToken ?? this.nextPageToken;
+    this.savedVideoIds = savedVideoIds ?? this.savedVideoIds;
 
     this.render();
+    this.setStorage(this.savedVideoIds);
   }
 
   selectDOM() {
@@ -30,6 +33,7 @@ class SearchModal {
     this.$scrollArea = $(".search-modal__scroll-area");
     this.$moreArea = $(".search-modal__more-area");
     this.$modalCloseBtn = $(".modal-close");
+    this.$savedVideoCountArea = $(".search-modal__saved-video-count");
   }
 
   bindEvent() {
@@ -40,6 +44,12 @@ class SearchModal {
     });
 
     this.$modalCloseBtn.addEventListener("click", this.handleModalClose.bind(this));
+
+    this.$videoWrapper.addEventListener("click", e => {
+      if (!e.target.classList.contains("clip__save-btn")) return;
+
+      this.handleSaveVideo(e.target.dataset.videoId);
+    });
   }
 
   initObserver() {
@@ -76,17 +86,19 @@ class SearchModal {
 
     this.showLoadingAnimation();
 
-    const res = await fetch(
-      `https://content.googleapis.com/youtube/v3/search?part=snippet&q=${encodeURI(
-        keyword,
-      )}&maxResults=10&key=${API_KEY}`,
-    );
+    // const res = await fetch(
+    //   `https://content.googleapis.com/youtube/v3/search?part=snippet&q=${encodeURI(
+    //     keyword,
+    //   )}&maxResults=10&key=${API_KEY}`,
+    // );
 
-    if (!res.ok) {
-      return;
-    }
+    // if (!res.ok) {
+    //   return;
+    // }
 
-    const { items, nextPageToken } = await res.json();
+    // const { items, nextPageToken } = await res.json();
+
+    const { items, nextPageToken } = dummyResponse;
 
     const videos = items.map(
       ({ id: { videoId }, snippet: { channelId, channelTitle, publishedAt, title } }) => ({
@@ -95,6 +107,7 @@ class SearchModal {
         channelTitle,
         publishedAt,
         title,
+        isSaved: this.savedVideoIds.includes(videoId),
       }),
     );
 
@@ -125,6 +138,7 @@ class SearchModal {
         channelTitle,
         publishedAt,
         title,
+        isSaved: this.savedVideoIds.includes(videoId),
       }),
     );
 
@@ -135,12 +149,31 @@ class SearchModal {
     this.hideModal();
   }
 
+  handleSaveVideo(savedVideoId) {
+    const newSavedVideoIds = [...this.savedVideoIds, savedVideoId];
+    const newVideos = [...this.videos].map(video => {
+      if (video.videoId === savedVideoId) {
+        video.isSaved = true;
+      }
+
+      return video;
+    });
+
+    this.setState({ savedVideoIds: newSavedVideoIds, videos: newVideos });
+  }
+
   render() {
     this.videos.length
       ? (this.$videoWrapper.innerHTML = this.videos
           .map(video => createSearchedVideoTemplate(video))
           .join(""))
       : (this.$videoWrapper.innerHTML = createNoSearchResultTemplate());
+
+    this.$savedVideoCountArea.textContent = `저장된 영상 갯수: ${this.savedVideoIds.length}개`;
+  }
+
+  setStorage(videoIds) {
+    localStorage.setItem("videoIds", JSON.stringify(videoIds));
   }
 
   showModal() {
@@ -178,7 +211,11 @@ const createSearchedVideoTemplate = video => `
         <p>${changeDateFormat(video.publishedAt)}</p>
       </div>
       <div class="d-flex justify-end">
-        <button class="btn">⬇️ 저장</button>
+
+        <button class="clip__save-btn btn ${video.isSaved ? "hidden" : ""}" data-video-id="${
+  video.videoId
+}">⬇️ 저장</button>
+
       </div>
     </div>
   </div>
