@@ -31,7 +31,7 @@ async function searchMoreVideos(entries) {
 
 function createIntersectionObserver() {
   const options = {
-    root: document.getElementsByClassName('modal-inner')[0],
+    root: $('.modal-inner'),
     rootMargin: '0px',
     threshold: 0.85,
   };

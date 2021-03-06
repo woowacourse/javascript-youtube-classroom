@@ -7,6 +7,7 @@ import { openModal, closeModal } from './viewController.js';
 import handleLatestKeywordSearch from './handlers/latestKeywordSearch.js';
 
 function initState() {
+  // TODO: localStorage에서 가져온 videoInfos 업데이트(ex. 제목, 채널명 ..)
   const videoInfos = JSON.parse(localStorage.getItem('videoInfos')) ?? [];
   const latestKeywords =
     JSON.parse(localStorage.getItem('latestKeywords')) ?? [];

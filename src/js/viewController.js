@@ -1,3 +1,5 @@
+// TODO: 컴포넌트 영역 별로 코드 분리
+
 import dom from './library/DOMelements.js';
 import createKeywordListTemplate from './library/templates/keywordList.js';
 import createNotFoundTemplate from './library/templates/notFound.js';

@@ -1,3 +1,5 @@
+// TODO: 도메인 별로 상태객체
+
 import {
   renderSavedVideoCount,
   renderSavedVideoList,
