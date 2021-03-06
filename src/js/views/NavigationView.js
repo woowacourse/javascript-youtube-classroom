@@ -10,8 +10,16 @@ export default class NavigationView extends View {
   }
 
   bindTabEvents() {
-    this.tabButtons.setEvent('click', (e) => {
-      this.emit('clickNavTab', $(`#${e.target.id}`));
+    $('#saved-btn').setEvent('click', () => {
+      this.emit('clickSavedTab');
+    });
+
+    $('#watched-btn').setEvent('click', () => {
+      this.emit('clickWatchedTab');
+    });
+
+    $('#search-btn').setEvent('click', () => {
+      this.emit('clickSearchTab');
     });
   }
 

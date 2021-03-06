@@ -29,23 +29,37 @@ export default class YoutubeController {
   }
 
   bindEvents() {
-    this.navigationView.on('clickNavTab', (e) => this.changeNavTab(e.detail));
+    this.navigationView
+      .on('clickSaveTab', () => this.focusSavedTab())
+      .on('clickWatchedTab', () => this.focusWatchedTab())
+      .on('clickSearchTab', () => this.focusSearchTab());
     this.searchModalView
       .on('openModal', (e) => this.searchVideo(e.detail))
       .on('submitSearch', (e) => this.searchVideo(e.detail))
       .on('scrollResult', (e) => this.scrollVideo(e.detail))
       .on('clickSaveButton', (e) => this.saveVideo(e.detail))
       .on('clickChip', (e) => this.searchVideo(e.detail))
-      .on('closeModal', () => this.changeNavTab($('#saved-btn')));
+      .on('closeModal', () => this.changeNavTab());
   }
 
-  changeNavTab(currentTab) {
+  focusSavedTab() {
+    // TODO: saved tab 이동 시 기능 구현
+    this.changeNavTab($('#saved-btn'));
+  }
+
+  focusWatchedTab() {
+    // TODO: watched tab 이동 시 기능 구현
+    this.changeNavTab($('#watched-btn'));
+  }
+
+  focusSearchTab() {
+    this.searchModalView.openModal();
+    this.changeNavTab($('#search-btn'));
+  }
+
+  changeNavTab(currentTab = $('#saved-btn')) {
     this.navigationView.toggleTabColor(this.selectedTab, currentTab);
     this.selectedTab = currentTab;
-
-    if (currentTab.element.id === 'search-btn') {
-      this.searchModalView.openModal();
-    }
   }
 
   generateSavedVideos(response) {
