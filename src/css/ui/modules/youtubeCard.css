@@ -1,7 +1,7 @@
 .video-wrapper {
   display: grid;
   grid-template-columns: repeat(auto-fill, 236px);
-  grid-row-gap: 0px;
+  grid-row-gap: 35px;
   grid-column-gap: 4px;
   justify-content: center;
 }
@@ -46,6 +46,7 @@
   -webkit-line-clamp: 2;
   overflow: hidden;
   color: #0a0a0a;
+  height: 2.6rem;
 }
 
 .clip .content-container .channel-name {

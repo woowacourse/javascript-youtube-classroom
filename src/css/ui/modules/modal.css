@@ -18,13 +18,14 @@
 }
 
 .modal-inner {
-  transition: top 0.25s ease;
   width: 960px;
+  height: 90%;
   margin: auto;
   overflow: auto;
   background: #fff;
   border-radius: 5px;
   position: relative;
+  transition: top 0.25s ease;
 }
 
 .modal-close {
