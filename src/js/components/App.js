@@ -14,9 +14,9 @@ export default class App {
     this.localStorageSetup();
     this.states = {
       searchedVideos: [],
-      searchHistory: localStorageGetItem('searchHistory'),
+      searchHistory: localStorageGetItem(LOCALSTORAGE_KEYS.SEARCH_HISTORY),
       requestPending: false,
-      savedVideoCount: localStorageGetItem('videos').length,
+      savedVideoCount: localStorageGetItem(LOCALSTORAGE_KEYS.VIDEOS).length,
     };
   }
 

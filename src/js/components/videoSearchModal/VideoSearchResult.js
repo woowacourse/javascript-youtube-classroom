@@ -75,11 +75,11 @@ export default class VideoSearchResult extends Component {
     return await new Promise((resolve) => {
       const interval = setInterval(() => {
         const $iframes = $$('iframe', this.$searchedVideoWrapper);
-        const condition = Array.from($iframes).every((preview) =>
+        const isIframeAllLoaded = Array.from($iframes).every((preview) =>
           preview.classList.contains('loaded')
         );
 
-        if (!condition) return;
+        if (!isIframeAllLoaded) return;
         this.displayClips();
         this.removeSkeletons();
         clearInterval(interval);
