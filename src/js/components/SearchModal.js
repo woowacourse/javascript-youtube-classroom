@@ -156,6 +156,12 @@ class SearchModal {
   }
 
   handleSaveVideo(savedVideoId) {
+    if (this.savedVideoIds.length === 1) {
+      alert("최대 저장 가능 영상 개수는 100개입니다.");
+
+      return;
+    }
+
     const newSavedVideoIds = [...this.savedVideoIds, savedVideoId];
     const newVideos = [...this.videos].map(video => {
       if (video.videoId === savedVideoId) {
@@ -175,7 +181,7 @@ class SearchModal {
           .join(""))
       : (this.$videoWrapper.innerHTML = createNoSearchResultTemplate());
 
-    this.$savedVideoCount.textContent = `저장된 영상 갯수: ${this.savedVideoIds.length}개`;
+    this.$savedVideoCount.textContent = `저장된 영상 갯수: ${this.savedVideoIds.length}/100개`;
     this.$keywordHistory.innerHTML = createKeywordHistoryTemplate(this.keywordHistory);
   }
 
