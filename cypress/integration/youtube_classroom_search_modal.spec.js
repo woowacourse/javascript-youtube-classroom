@@ -6,12 +6,16 @@ describe('유튜브 강의실 영상 검색 모달', () => {
   it('사용자가 검색 버튼을 누르고, 검색어를 입력하고, 검색 버튼을 눌렀을 때, 검색 결과가 화면에 나타난다.', () => {
     const searchTerm = '치킨';
 
+    cy.intercept({
+      url: 'https://www.googleapis.com/youtube/v3/search?',
+      query: { q: searchTerm },
+    }).as('search');
+
     cy.get('#search-button').click();
     cy.get('#youtube-search-input').type(searchTerm);
     cy.get('#youtube-search-button').click();
 
-    // TODO : cypress 로 데이터 요청 이후 테스트 하는 방법으로 교체하기
-    cy.wait(5000);
+    cy.wait('@search');
 
     cy.get('.clip').its('length').should('be.gt', 0);
     cy.get('.clip').its('length').should('be.lte', 10);
@@ -24,13 +28,18 @@ describe('유튜브 강의실 영상 검색 모달', () => {
   it('사용자가 검색 했을 때, 검색결과가 나오기 이전에 로딩중임을 skeleton UI로 보여주는지 확인한다.', () => {
     const searchTerm = '서니';
 
+    cy.intercept({
+      url: 'https://www.googleapis.com/youtube/v3/search?',
+      query: { q: searchTerm },
+    }).as('search');
+
     cy.get('#search-button').click();
     cy.get('#youtube-search-input').type(searchTerm);
     cy.get('#youtube-search-button').click();
 
     cy.get('.skeleton').should('exist');
-    // TODO : cypress 로 데이터 요청 이후 테스트 하는 방법으로 교체하기
-    cy.wait(10000);
+
+    cy.wait('@search');
 
     cy.get('.skeleton').should('not.exist');
 
@@ -81,9 +90,17 @@ describe('유튜브 강의실 영상 검색 모달', () => {
     const searchTerm =
       '뜌ㅔㄹㄱ쀼ㅖㄹ또ㅕ뺴오ㅓ@~언뮴나ㅓㅓㅓㅓㅓㅓㅓㅓㅒㅛ*ㅉ요*ㅁ노쳔뮤촡뮻';
     const imgUrl = './src/images/status/not_found.png';
+
+    cy.intercept({
+      url: 'https://www.googleapis.com/youtube/v3/search?',
+      query: { q: searchTerm },
+    }).as('search');
+
     cy.get('#search-button').click();
     cy.get('#youtube-search-input').type(searchTerm);
     cy.get('#youtube-search-button').click();
+
+    cy.wait('@search');
 
     cy.get('#searched-video-wrapper')
       .find('img')
@@ -91,21 +108,37 @@ describe('유튜브 강의실 영상 검색 모달', () => {
   });
 
   it('사용자가 최근 검색어를 클릭하면 해당 검색어로 새로 검색이 된다.', () => {
-    const searchTerm = '치킨';
-    const searchTerm1 = '도비';
+    const searchTerm1 = '치킨';
+    const searchTerm2 = '도비';
+
+    cy.intercept({
+      url: 'https://www.googleapis.com/youtube/v3/search?',
+      query: { q: searchTerm1 },
+    }).as('search1');
+
+    cy.intercept({
+      url: 'https://www.googleapis.com/youtube/v3/search?',
+      query: { q: searchTerm2 },
+    }).as('search2');
 
     cy.get('#search-button').click();
-    cy.get('#youtube-search-input').type(searchTerm);
-    cy.get('#youtube-search-button').click();
-
-    cy.get('#youtube-search-input').clear();
     cy.get('#youtube-search-input').type(searchTerm1);
     cy.get('#youtube-search-button').click();
-    cy.wait(1000);
+
+    cy.wait('@search1');
+
+    cy.get('#youtube-search-input').clear();
+    cy.get('#youtube-search-input').type(searchTerm2);
+    cy.get('#youtube-search-button').click();
+
+    cy.wait('@search2');
+
     cy.get('.chip').last().click({ force: true });
-    cy.wait(3000);
+
+    cy.wait('@search1');
+
     cy.get('.modal .video-title').each(($elem) => {
-      cy.wrap($elem).contains(searchTerm);
+      cy.wrap($elem).contains(searchTerm1);
     });
   });
 
@@ -121,6 +154,12 @@ describe('유튜브 강의실 영상 검색 모달', () => {
 
   it('사용자가 영상 저장 버튼을 누르면, 해당 저장 버튼이 사라지고, 우측 위 저장된 영상 개수가 1 증가한다.', () => {
     const searchTerm = '도비';
+
+    cy.intercept({
+      url: 'https://www.googleapis.com/youtube/v3/search?',
+      query: { q: searchTerm },
+    }).as('search');
+
     cy.get('#saved-video-count')
       .invoke('text')
       .then(($el) => {
@@ -129,7 +168,7 @@ describe('유튜브 강의실 영상 검색 모달', () => {
         cy.get('#youtube-search-input').type(searchTerm);
         cy.get('#youtube-search-button').click();
 
-        cy.wait(10000);
+        cy.wait('@search');
 
         cy.get('.save-btn').first().click();
 
@@ -151,12 +190,16 @@ describe('유튜브 강의실 영상 검색 모달', () => {
     }
     localStorage.setItem('videos', JSON.stringify(array));
 
-    // 저장소에 video 100개 저장
+    cy.intercept({
+      url: 'https://www.googleapis.com/youtube/v3/search?',
+      query: { q: searchTerm },
+    }).as('search');
+
     cy.get('#search-button').click();
     cy.get('#youtube-search-input').type(searchTerm);
     cy.get('#youtube-search-button').click();
 
-    cy.wait(10000);
+    cy.wait('@search');
 
     cy.on('window:alert', alertStub);
     cy.get('.save-btn')
@@ -171,36 +214,53 @@ describe('유튜브 강의실 영상 검색 모달', () => {
 
   it('사용자가 스크롤을 내리면, 밑에 영상이 추가된다.', () => {
     const searchTerm = '서니';
+    cy.intercept({
+      url: 'https://www.googleapis.com/youtube/v3/search?',
+      query: { q: searchTerm },
+    }).as('search');
     cy.get('#search-button').click();
     cy.get('#youtube-search-input').type(searchTerm);
     cy.get('#youtube-search-button').click();
+    cy.wait('@search');
     cy.get('#searched-video-wrapper').trigger('scroll');
-    cy.wait(1000);
+    cy.wait('@search');
     cy.get('.clip').its('length').should('be.gt', 10);
     cy.get('.clip').its('length').should('be.lte', 20);
   });
 
   it('사용자가 모달창을 끄고, 다시 켰을 때 기존 검색 결과가 유지된다.', () => {
     const searchTerm = '서니';
+
+    cy.intercept({
+      url: 'https://www.googleapis.com/youtube/v3/search?',
+      query: { q: searchTerm },
+    }).as('search');
+
     cy.get('#search-button').click();
     cy.get('#youtube-search-input').type(searchTerm);
     cy.get('#youtube-search-button').click();
 
+    cy.wait('@search');
+
     cy.get('.modal-close').click();
     cy.get('#search-button').click();
 
-    // 최근 검색어 첫번째와, 모달이 닫히기 전 검색어와 같은지 체크
     cy.get('#youtube-search-input').should('have.value', searchTerm);
   });
 
   it('각 영상이 제목, 작성자, 날짜가 제대로 화면에 표시되는지 확인한다.', () => {
     const searchTerm = '서니';
+
+    cy.intercept({
+      url: 'https://www.googleapis.com/youtube/v3/search?',
+      query: { q: searchTerm },
+    }).as('search');
+
     cy.get('#search-button').click();
     cy.get('#youtube-search-input').type(searchTerm);
     cy.get('#youtube-search-button').click();
 
-    // TODO : 실제 값과 일치하는지 확인하는 법 찾아보기
-    cy.wait(10000);
+    cy.wait('@search');
     cy.get('.modal .clip').each((clip) => {
       cy.wrap(clip).children('.preview-container').should('exist');
       cy.wrap(clip).find('.video-title').should('exist');
