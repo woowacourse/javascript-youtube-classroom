@@ -93,7 +93,9 @@ export default class VideoSearchModal extends Component {
         store.dispatch(updateVideosToBeShown(videoInfos));
       })
       .catch((error) => {
-        alert(error)
+        this.videoSearchResult.removeSkeletons();
+        store.dispatch(updateRequestPending(false));
+        alert(error);
       });
   }
 }
