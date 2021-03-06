@@ -11,16 +11,18 @@ class SearchModal {
 
   initState() {
     this.keyword = "";
+    this.keywordHistory = [];
     this.videos = [];
-    this.nextPageToken = "";
     this.savedVideoIds = JSON.parse(localStorage.getItem("videoIds")) || [];
+    this.nextPageToken = "";
   }
 
-  setState({ keyword, videos, nextPageToken, savedVideoIds }) {
+  setState({ keyword, keywordHistory, videos, savedVideoIds, nextPageToken }) {
     this.keyword = keyword ?? this.keyword;
+    this.keywordHistory = keywordHistory ?? this.keywordHistory;
     this.videos = videos ?? this.videos;
-    this.nextPageToken = nextPageToken ?? this.nextPageToken;
     this.savedVideoIds = savedVideoIds ?? this.savedVideoIds;
+    this.nextPageToken = nextPageToken ?? this.nextPageToken;
 
     this.render();
     this.setStorage(this.savedVideoIds);
@@ -33,7 +35,8 @@ class SearchModal {
     this.$scrollArea = $(".search-modal__scroll-area");
     this.$moreArea = $(".search-modal__more-area");
     this.$modalCloseBtn = $(".modal-close");
-    this.$savedVideoCountArea = $(".search-modal__saved-video-count");
+    this.$savedVideoCount = $(".search-modal__saved-video-count");
+    this.$keywordHistory = $(".search-modal__keyword-history");
   }
 
   bindEvent() {
@@ -111,7 +114,10 @@ class SearchModal {
       }),
     );
 
-    this.setState({ keyword, videos, nextPageToken });
+    const keywordHistory = [keyword, ...this.keywordHistory];
+    keywordHistory.splice(3, 1);
+
+    this.setState({ keyword, videos, nextPageToken, keywordHistory });
   }
 
   async handleLoadMore() {
@@ -169,7 +175,8 @@ class SearchModal {
           .join(""))
       : (this.$videoWrapper.innerHTML = createNoSearchResultTemplate());
 
-    this.$savedVideoCountArea.textContent = `저장된 영상 갯수: ${this.savedVideoIds.length}개`;
+    this.$savedVideoCount.textContent = `저장된 영상 갯수: ${this.savedVideoIds.length}개`;
+    this.$keywordHistory.innerHTML = createKeywordHistoryTemplate(this.keywordHistory);
   }
 
   setStorage(videoIds) {
@@ -223,6 +230,11 @@ const createSearchedVideoTemplate = video => `
 
 const createNoSearchResultTemplate = () =>
   `<div class='no-search-result'><img class='no-result-image' src='src/images/status/not_found.png' alt='결과 없음'><p>검색 결과가 존재하지 않습니다.</p></div>`;
+
+const createKeywordHistoryTemplate = keywords => `
+  <span class="text-gray-700">최근 검색어: </span>
+  ${keywords.map(keyword => `<a class="keyword-history__keyword chip">${keyword}</a>`).join("")}
+`;
 
 const changeDateFormat = publishedAt => {
   const date = new Date(publishedAt);

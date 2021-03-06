@@ -1,7 +1,7 @@
 /// <reference types="cypress" />
 
-context("모달을 통한 비디오 검색", () => {
-  describe.only("검색 결과가 있는 경우", () => {
+context.only("모달을 통한 비디오 검색", () => {
+  describe("검색 결과가 있는 경우", () => {
     before(() => {
       cy.visit("http://127.0.0.1:5500");
     });
@@ -23,7 +23,6 @@ context("모달을 통한 비디오 검색", () => {
     });
 
     it("비디오 저장 버튼을 누를 경우, 해당 비디오의 저장 버튼이 사라지고 저장된 동영상 개수에 반영된다.", () => {
-      cy.clearLocalStorage("videoIds");
       cy.get(".clip__save-btn").not(".hidden").eq(0).click();
       cy.get(".clip__save-btn").eq(0).should("not.to.be.visible");
       cy.get(".search-modal__saved-video-count").should("have.text", `저장된 영상 갯수: 1개`);
@@ -73,6 +72,64 @@ context("모달을 통한 비디오 검색", () => {
         .then(size => {
           cy.get(".search-modal__video-wrapper").scrollTo("bottom", { ensureScrollable: false });
           cy.get(".search-modal__video-wrapper").find(".clip").its("length").should("to.be", size);
+        });
+    });
+  });
+
+  describe("최근 검색어 관리", () => {
+    beforeEach(() => {
+      cy.visit("http://127.0.0.1:5500");
+    });
+
+    it("검색 창에 검색어를 입력한 후 검색 버튼을 눌렀을 때, 최근 검색어가 추가된다.", () => {
+      cy.get(".menu-section__video-search-btn").click();
+      cy.get(".search-modal__input").type("스낵랩");
+      cy.get(".search-modal__btn").click();
+      cy.get(".keyword-history__keyword").eq(0).should("have.text", "스낵랩");
+    });
+
+    it("검색을 3번 이상 수행했을 때, 최근 검색어는 3개까지 저장된다. 최근 검색어는 좌측에 추가되고, 3개 이상의 검색어가 존재할 경우 가장 오래된 검색어는 사라진다.", () => {
+      cy.get(".menu-section__video-search-btn").click();
+      cy.get(".search-modal__input").type("맥도날드");
+      cy.get(".search-modal__btn").click();
+
+      cy.get(".search-modal__input").clear();
+      cy.get(".search-modal__input").type("버거킹");
+      cy.get(".search-modal__btn").click();
+
+      cy.get(".search-modal__input").clear();
+      cy.get(".search-modal__input").type("롯데리아");
+      cy.get(".search-modal__btn").click();
+
+      cy.get(".search-modal__input").clear();
+      cy.get(".search-modal__input").type("맘스터치");
+      cy.get(".search-modal__btn").click();
+
+      cy.get(".keyword-history__keyword").should("have.length", 3);
+      cy.get(".keyword-history__keyword").eq(0).should("have.text", "맘스터치");
+      cy.get(".keyword-history__keyword").eq(1).should("have.text", "롯데리아");
+      cy.get(".keyword-history__keyword").eq(2).should("have.text", "버거킹");
+    });
+
+    it.only("검색을 수행한 이후 검색 창을 닫고 다시 열 경우, 가장 최근의 검색 결과를 보여준다.", () => {
+      cy.get(".menu-section__video-search-btn").click();
+      cy.get(".search-modal__input").type("스낵랩");
+      cy.get(".search-modal__btn").click();
+
+      cy.get(".search-modal__video-wrapper")
+        .find(".clip")
+        .then($clip => {
+          const firstClipSrc = $clip.eq(0).find("iframe").attr("src");
+          const lastClipSrc = $clip.eq(-1).find("iframe").attr("src");
+
+          cy.get(".modal-close").click();
+          cy.get(".menu-section__video-search-btn").click();
+          cy.get(".search-modal__video-wrapper")
+            .find(".clip")
+            .then($clip_ => {
+              expect($clip_.eq(0).find("iframe").attr("src")).to.equal(firstClipSrc);
+              expect($clip_.eq(-1).find("iframe").attr("src")).to.equal(lastClipSrc);
+            });
         });
     });
   });
