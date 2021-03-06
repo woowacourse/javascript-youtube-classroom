@@ -1,5 +1,6 @@
+import { LOCAL_STORAGE_KEY } from '../utils/constant.js';
 import { request } from '../utils/fetch.js';
-import localStorage from '../utils/localStorage.js';
+import storage from '../utils/localStorage.js';
 import { $ } from '../utils/querySelector.js';
 import { hideElement, showElement } from '../utils/setAttribute.js';
 import { renderExtraClips } from '../view/modal.js';
@@ -16,16 +17,17 @@ export const onModalScroll = async () => {
   );
 
   showElement($skeletonWrapper);
-  const keyword = localStorage.get('currentKeyword');
-  const pageToken = localStorage.get('nextPageToken') ?? '';
+  const keyword = storage.get(LOCAL_STORAGE_KEY.CURRENT_KEYWORD);
+  const pageToken = storage.get(LOCAL_STORAGE_KEY.NEXT_PAGE_TOKEN) ?? '';
 
   const response = await request(keyword, pageToken);
-  const recentSearchResults = localStorage.get('recentSearchResults') ?? [];
-  const savedClips = localStorage.get('savedClips') ?? [];
+  const recentSearchResults =
+    storage.get(LOCAL_STORAGE_KEY.RECENT_SEARCH_RESULTS) ?? [];
+  const savedClips = storage.get(LOCAL_STORAGE_KEY.SAVED_CLIPS) ?? [];
   const savedClipIds = savedClips.map((savedClip) => savedClip.id.videoId);
 
   recentSearchResults.push(...response.items);
-  localStorage.set('recentSearchResults', recentSearchResults);
+  storage.set(LOCAL_STORAGE_KEY.RECENT_SEARCH_RESULTS, recentSearchResults);
 
   hideElement($skeletonWrapper);
   renderExtraClips(recentSearchResults, savedClipIds);

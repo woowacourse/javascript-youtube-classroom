@@ -1,4 +1,5 @@
-import localStorage from '../utils/localStorage.js';
+import { LOCAL_STORAGE_KEY } from '../utils/constant.js';
+import storage from '../utils/localStorage.js';
 import {
   openModal,
   renderClips,
@@ -7,10 +8,12 @@ import {
 } from '../view/modal.js';
 
 export const onModalShow = () => {
-  const savedClips = localStorage.get('savedClips') ?? [];
+  const savedClips = storage.get(LOCAL_STORAGE_KEY.SAVED_CLIPS) ?? [];
   const savedClipIds = savedClips.map((savedClip) => savedClip.id.videoId);
-  const recentKeywords = localStorage.get('recentKeywords') ?? [];
-  const recentSearchResults = localStorage.get('recentSearchResults');
+  const recentKeywords = storage.get(LOCAL_STORAGE_KEY.RECENT_KETWORDS) ?? [];
+  const recentSearchResults = storage.get(
+    LOCAL_STORAGE_KEY.RECENT_SEARCH_RESULTS,
+  );
 
   openModal();
   renderRecentKeywords(recentKeywords);
