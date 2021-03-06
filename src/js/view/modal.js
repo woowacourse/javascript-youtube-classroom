@@ -1,12 +1,15 @@
 import { $ } from '../utils/querySelector.js';
+import date from '../utils/date.js';
 
 const $modal = $('[data-js="youtube-search-modal"]');
 
-const searchResultClipTemplate = (video, index, isSaved = false) => {
-  const [year, month, day] = new Date(video.snippet.publishTime)
-    .toLocaleDateString()
-    .split('.');
+const YMDtemplate = (time) => {
+  const [year, month, day] = date.toYMDArray(time);
 
+  return `<p>${year}년 ${month}월 ${day}일</p>`;
+};
+
+const searchResultClipTemplate = (video, index, isSaved = false) => {
   return `
     <article class="clip" data-js="youtube-search-modal__clip">
       <div class="preview-container">
@@ -30,7 +33,7 @@ const searchResultClipTemplate = (video, index, isSaved = false) => {
             ${video.snippet.channelTitle}
           </a>
           <div class="meta">
-            <p>${year}년 ${month}월 ${day}일</p>
+            ${YMDtemplate(video.snippet.publishTime)}
           </div>
           <div class="d-flex justify-end">
           ${
