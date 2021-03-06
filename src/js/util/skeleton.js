@@ -7,7 +7,7 @@ const skeletonTemplate = `
 `;
 
 export const renderSkeleton = ($target, repeatNumber) => {
-  $target.innerHTML = skeletonTemplate.repeat(repeatNumber);
+  $target.insertAdjacentHTML('beforeend', skeletonTemplate.repeat(repeatNumber));
 };
 
 export const removeSkeleton = $target => {

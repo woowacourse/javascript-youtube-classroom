@@ -18,7 +18,6 @@ export class SavedVideo {
       this.setState({ savedVideoData });
     } catch (e) {
       console.error(e);
-      // TODO: 오류났음 보여주는 메세지 띄우기
     }
   }
 

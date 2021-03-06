@@ -6,8 +6,9 @@ import {
   formatDateTime,
   renderSkeleton,
   removeSkeleton,
+  throttle,
 } from '../util/index.js';
-import { NUM_OF_VIDEO_PER_FETCH } from '../constants/index.js';
+import { NUM_OF_VIDEO_PER_FETCH, SCROLL_THRTOTTLE_DELAY } from '../constants/index.js';
 
 export class SearchVideoResult {
   constructor({ searchKeywordHistoryManager, savedVideoManager }) {
@@ -16,9 +17,9 @@ export class SearchVideoResult {
     this.$notFoundImage = $('.js-not-found-image');
 
     this.searchKeywordHistoryManager = searchKeywordHistoryManager;
-    this.savedVideoManager = savedVideoManager;
     this.searchKeywordHistoryManager.subscribe(this.reset.bind(this));
     this.searchKeywordHistoryManager.subscribe(this.fetchSearchResultData.bind(this));
+    this.savedVideoManager = savedVideoManager;
 
     this.searchResultData = {};
 
@@ -26,24 +27,28 @@ export class SearchVideoResult {
   }
 
   initEvent() {
-    this.$container.addEventListener('scroll', this.handleContainerScroll.bind(this));
+    this.$container.addEventListener('scroll', this.throttleScroll.bind(this));
     this.$wrapper.addEventListener('click', this.handleSaveVideo.bind(this));
   }
 
-  async handleContainerScroll({ target }) {
-    if (target.scrollHeight - target.scrollTop === target.clientHeight) {
-      try {
-        renderSkeleton(this.$wrapper, NUM_OF_VIDEO_PER_FETCH);
-        const searchResultData = await getSearchVideoByKeyword(
-          this.searchKeywordHistoryManager.getLastKeyword(),
-          this.searchResultData.nextPageToken
-        );
-        removeSkeleton(this.$wrapper);
+  throttleScroll({ target }) {
+    if (target.scrollTop === target.scrollHeight - target.offsetHeight) {
+      throttle(this.handleContainerScroll.bind(this, target), SCROLL_THRTOTTLE_DELAY);
+    }
+  }
 
-        this.setState({ searchResultData });
-      } catch (e) {
-        console.error(e);
-      }
+  async handleContainerScroll() {
+    try {
+      renderSkeleton(this.$wrapper, NUM_OF_VIDEO_PER_FETCH);
+      const searchResultData = await getSearchVideoByKeyword(
+        this.searchKeywordHistoryManager.getLastKeyword(),
+        this.searchResultData.nextPageToken
+      );
+      removeSkeleton(this.$wrapper);
+
+      this.setState({ searchResultData });
+    } catch (e) {
+      console.error(e);
     }
   }
 
@@ -66,7 +71,7 @@ export class SearchVideoResult {
         isCompleted: false,
       });
 
-      hideElement(target);
+      target.disabled = true;
     }
   }
 
