@@ -25,7 +25,7 @@ export default class YoutubeAPIManager {
   async requestVideos() {
     const url = this.createRequestUrl(this.searchTerm, this.pageToken);
 
-    const res = await fetch(url, { method: 'GET' })
+    const res = await fetch(url)
       .then((data) => {
         if (!data.ok) {
           if (data.status === 403) {
