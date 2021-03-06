@@ -1,5 +1,5 @@
 import { onModalShow } from './handler/onModalShow.js';
-import { closeModal } from './view/modal.js';
+
 import { $ } from './utils/querySelector.js';
 import { onSearchClip } from './handler/onSearchClip.js';
 import { onModalScroll } from './handler/onModalScroll.js';
@@ -8,6 +8,7 @@ import { renderSavedClips } from './view/main.js';
 import storage from './utils/localStorage.js';
 import { LOCAL_STORAGE_KEY } from './utils/constant.js';
 import { throttling } from './utils/throttling.js';
+import { onModalClose } from './handler/onModalClose.js';
 
 export const YoutubeClassRoom = () => {
   $('[data-js="navigator__search-button"]').addEventListener(
@@ -16,7 +17,7 @@ export const YoutubeClassRoom = () => {
   );
   $('[data-js="youtube-serach-modal__close"]').addEventListener(
     'click',
-    closeModal,
+    onModalClose,
   );
   $('[data-js="youtube-search-modal__form"]').addEventListener(
     'submit',
