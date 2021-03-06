@@ -1,13 +1,18 @@
 .video-wrapper {
   display: grid;
-  grid-template-columns: repeat(auto-fill, 236px);
-  grid-row-gap: 0px;
+  grid-template-columns: repeat(auto-fill, 230px);
+  grid-row-gap: 10px;
   grid-column-gap: 4px;
   justify-content: center;
 }
 
+.modal-inner .video-wrapper {
+  overflow-y: auto;
+  height: 65vh;
+}
+
 .clip {
-  height: 219px;
+  height: 250px;
   cursor: pointer;
   text-decoration: none;
 }

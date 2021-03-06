@@ -43,7 +43,6 @@ const TEMPLATE = ({ videoId, title, channelId, channelTitle, publishedAt }) => `
 export default class VideoWrapper {
   constructor() {
     this.$modalVideoWrapper = $(CLASSNAME.MODAL_VIDEO_WRAPPER);
-    this.$modalInner = $(CLASSNAME.MODAL_INNER);
     this.$notFoundImg = $(CLASSNAME.NOT_FOUND_IMAGE);
     this.query = "";
     this.nextPageToken = "";
@@ -89,7 +88,7 @@ export default class VideoWrapper {
     });
 
     this.throttle = null;
-    this.$modalInner.addEventListener(
+    this.$modalVideoWrapper.addEventListener(
       "scroll",
       this.handlePageScroll.bind(this)
     );
@@ -97,8 +96,9 @@ export default class VideoWrapper {
 
   handlePageScroll() {
     if (
-      this.$modalInner.scrollTop + this.$modalInner.clientHeight <=
-      this.$modalInner.scrollHeight * 0.7
+      this.$modalVideoWrapper.scrollTop +
+        this.$modalVideoWrapper.clientHeight <=
+      this.$modalVideoWrapper.scrollHeight * 0.7
     ) {
       return;
     }
