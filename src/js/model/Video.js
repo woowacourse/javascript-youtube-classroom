@@ -11,28 +11,28 @@ export default class Video {
   constructor(videoInfo) {
     this.videoId = videoInfo.id.videoId;
     this.videoTitle = videoInfo.snippet.title;
-    this.videoEmbedUrl = this.parseVideoEmbedUrl();
+    this.videoEmbedUrl = this.createVideoEmbedUrl();
     this.channelTitle = videoInfo.snippet.channelTitle;
     this.channelId = videoInfo.snippet.channelId;
-    this.channelUrl = this.parseChannelUrl();
-    this.uploadTime = this.parseVideoUploadDate(videoInfo.snippet.publishTime);
+    this.channelUrl = this.createChannelUrl();
+    this.uploadTime = this.createVideoUploadDate(videoInfo.snippet.publishTime);
   }
 
-  parseVideoEmbedUrl() {
+  createVideoEmbedUrl() {
     return `https://www.youtube.com/embed/${this.videoId}`;
   }
 
-  parseChannelUrl() {
+  createChannelUrl() {
     return `https://www.youtube.com/channel/${this.channelId}`;
   }
 
-  parseVideoUploadDate(date) {
+  createVideoUploadDate(date) {
     const newDate = new Date(date);
 
     return `${newDate.getFullYear()}년 ${newDate.getMonth()}월 ${newDate.getDate()}일`;
   }
 
-  toJson() {
+  toJSON() {
     return {
       videoId: this.videoId,
       videoTitle: this.videoTitle,
@@ -63,7 +63,7 @@ export default class Video {
       return;
     }
 
-    savedVideos.push(this.toJson());
+    savedVideos.push(this.toJSON());
     localStorageSetItem(LOCALSTORAGE_KEYS.VIDEOS, savedVideos);
 
     event.target.classList.add('d-none');
@@ -73,7 +73,6 @@ export default class Video {
   createTemplate() {
     const fragment = document.createDocumentFragment();
     const clip = createElement({ tag: 'article', classes: ['clip', 'd-none'] });
-    // clip.classList.add(...['clip', 'd-none']);
 
     const previewContainer = createElement({
       tag: 'div',
