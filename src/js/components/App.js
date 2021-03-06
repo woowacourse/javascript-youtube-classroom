@@ -7,10 +7,10 @@ export const youtubeAPIManager = new YoutubeAPIManager();
 export default class App {
   constructor($target) {
     this.$target = $target;
-    this.setup()
+    this.setup();
   }
 
-  setup(){
+  setup() {
     this.localStorageSetup();
     this.states = {
       searchedVideos: [],
@@ -27,15 +27,14 @@ export default class App {
     this.bindEvent();
   }
 
-  localStorageSetup(){
-      if (localStorageGetItem(LOCALSTORAGE_KEYS.VIDEOS) === null) {
-        localStorageSetItem(LOCALSTORAGE_KEYS.VIDEOS, []);
-      }
+  localStorageSetup() {
+    if (localStorageGetItem(LOCALSTORAGE_KEYS.VIDEOS) === null) {
+      localStorageSetItem(LOCALSTORAGE_KEYS.VIDEOS, []);
+    }
 
-      if (localStorageGetItem(LOCALSTORAGE_KEYS.SEARCH_HISTORY) === null) {
-        localStorageSetItem(LOCALSTORAGE_KEYS.SEARCH_HISTORY, []);
-      }
-    
+    if (localStorageGetItem(LOCALSTORAGE_KEYS.SEARCH_HISTORY) === null) {
+      localStorageSetItem(LOCALSTORAGE_KEYS.SEARCH_HISTORY, []);
+    }
   }
 
   initRender() {
@@ -45,9 +44,9 @@ export default class App {
       <header class="my-4">
         <h2 class="text-center font-bold">👩🏻‍💻 나만의 유튜브 강의실 👨🏻‍💻</h2>
         <nav class="d-flex justify-center">
-          <button class="btn mx-1" disabled>👁️ 볼 영상</button>
-          <button class="btn mx-1" disabled>✅ 본 영상</button>
-          <button id="search-button" class="btn mx-1">
+          <button class="btn mx-1 disabled-btn">👁️ 볼 영상</button>
+          <button class="btn mx-1 disabled-btn">✅ 본 영상</button>
+          <button id="search-button" class="btn mx-1 clickable-btn">
             🔍 동영상 검색
           </button>
         </nav>

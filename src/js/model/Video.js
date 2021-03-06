@@ -5,7 +5,11 @@ import {
   ERROR_MESSAGE,
   LOCALSTORAGE_KEYS,
 } from '../constants/constants.js';
-import { createElement, localStorageGetItem, localStorageSetItem } from '../utils/utils.js';
+import {
+  createElement,
+  localStorageGetItem,
+  localStorageSetItem,
+} from '../utils/utils.js';
 
 export default class Video {
   constructor(videoInfo) {
@@ -28,11 +32,11 @@ export default class Video {
   }
 
   createVideoUploadDate(date) {
-    if(Date.parse(date)){
+    if (Date.parse(date)) {
       const newDate = new Date(date);
       return `${newDate.getFullYear()}년 ${newDate.getMonth()}월 ${newDate.getDate()}일`;
     }
-    return ''
+    return '';
   }
 
   toJSON() {
@@ -44,7 +48,7 @@ export default class Video {
       channelId: this.channelId,
       channelURL: this.channelURL,
       uploadTime: this.uploadTime,
-      thumbnailURL: this.thumbnailURL
+      thumbnailURL: this.thumbnailURL,
     };
   }
 
@@ -73,7 +77,6 @@ export default class Video {
     event.target.classList.add('d-none');
     store.dispatch(increaseSavedVideoCount());
   }
-
 
   createIframeSrcdocTemplate() {
     return `
@@ -118,7 +121,7 @@ export default class Video {
     <a href="${this.videoEmbedURL}?autoplay=1">
       <img src="${this.thumbnailURL}" alt="${this.videoTitle} thumbnail"/>
       <span>►</span>
-    </a>`
+    </a>`;
   }
 
   createTemplate() {
@@ -176,7 +179,7 @@ export default class Video {
     });
     channelURL.href = this.channelURL;
     channelURL.target = '_blank';
-    channelURL.rel = "noopener";
+    channelURL.rel = 'noopener';
 
     const meta = createElement({ tag: 'div', classes: ['meta'] });
 
@@ -190,7 +193,7 @@ export default class Video {
 
     const button = createElement({
       tag: 'button',
-      classes: ['save-btn', 'btn'],
+      classes: ['save-btn', 'btn', 'clickable-btn'],
       textContent: '⬇️ 저장',
     });
     button.onclick = this.onSaveVideo.bind(this);
