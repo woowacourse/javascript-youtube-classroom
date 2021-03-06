@@ -27,7 +27,7 @@ class StorageModel {
   findVideoByInfo = info => {
     return (
       getJSONFromLocalStorage(STORAGE.KEY_MY_VIDEO).filter(
-        myVideo => info.channelUrl === myVideo.channelUrl
+        myVideo => info.url === myVideo.url
       ).length > 0
     );
   };
