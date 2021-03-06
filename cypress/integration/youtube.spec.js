@@ -5,6 +5,7 @@ import {
   LOCAL_STORAGE_SAVED_VIDEO_KEY,
   SNACKBAR_MESSAGE,
 } from '../../src/js/constants/index.js';
+import { SavedVideoManager } from '../../src/js/model/index.js';
 
 describe('유튜브 검색 테스트', () => {
   before(() => {
@@ -23,21 +24,22 @@ describe('유튜브 검색 테스트', () => {
     const searchInput = 'aefasfase';
 
     cy.get('.js-search-input').type(searchInput).type('{enter}');
-    cy.get('.chip').eq(0).contain(searchInput);
+    cy.get('.chip').first().should('have.text', searchInput);
     cy.get('.js-not-found-image').should('be.visible');
   });
 
   it(`최초 검색결과는 ${NUM_OF_VIDEO_PER_FETCH}개까지만 보여준다.`, () => {
     const searchInput = '테코톡';
 
+    cy.get('.js-search-input').clear();
     cy.get('.js-search-input').type(searchInput);
     cy.get('.js-search-submit').click();
-    cy.get('.chip').eq(0).contain(searchInput);
+    cy.get('.chip').first().should('have.text', searchInput);
     cy.get('.clip').should('have.length', NUM_OF_VIDEO_PER_FETCH);
   });
 
   it(`스크롤을 끝까지 내렸을 때, 추가로 ${NUM_OF_VIDEO_PER_FETCH}개의 검색 결과를 가지고 온다.`, () => {
-    cy.get('.modal').scrollTo('bottom');
+    cy.get('.video-result-container').scrollTo('bottom');
     cy.get('.clip').should('have.length', NUM_OF_VIDEO_PER_FETCH * 2);
   });
 
@@ -48,13 +50,13 @@ describe('유튜브 검색 테스트', () => {
       const savedCilpList = localStorage.getItem(LOCAL_STORAGE_SAVED_VIDEO_KEY);
       const clipId = document.querySelector('.js-clip-save-button').dataset.clipId;
 
-      expect(savedCilpList.includes(clipId)).to.equal(true);
-      cy.get('.js-num-of-saved-clip').should('have.text', `1/${MAX_NUM_OF_SAVED_VIDEO}`);
+      expect(savedCilpList[0].id === clipId).to.equal(true);
+      cy.get('.js-num-of-saved-video').should('have.text', `1/${MAX_NUM_OF_SAVED_VIDEO}`);
     });
   });
 
-  it('동영상이 이미 저장된 경우에는 저장버튼이 보이지 않게 한다.', () => {
-    cy.get('.js-clip-save-button').eq(0).should('not.be.visible');
+  it('동영상이 이미 저장된 경우에는 저장버튼을 누를 수 없게 한다.', () => {
+    cy.get('.js-clip-save-button').eq(0).should('be.disabled');
   });
 
   it(`최근 검색 키워드를 ${NUM_OF_SEARCH_KEYWORD_HISTORY}개까지 화면상의 검색창 하단에 보여준다.`, () => {
@@ -63,6 +65,7 @@ describe('유튜브 검색 테스트', () => {
       .map((v, i) => `keyword${i}`);
 
     dummies.forEach(keyword => {
+      cy.get('.js-search-input').clear();
       cy.get('.js-search-input').type(keyword).type('{enter}');
     });
 
@@ -75,6 +78,7 @@ describe('유튜브 검색 테스트', () => {
     const keyword = '우테코';
 
     cy.document().then(document => {
+      cy.get('.js-search-input').clear();
       cy.get('.js-search-input').type(keyword).type('{enter}');
 
       const searchResult = document.querySelector('.modal');
@@ -87,13 +91,12 @@ describe('유튜브 검색 테스트', () => {
     });
   });
 
-  it(`저장된 동영상의 개수가 ${MAX_NUM_OF_SAVED_VIDEO}개일 때, 동영상 저장 버튼을 누르면 하단에 snackbar를 통해 안내 메세지를 띄운다.`, () => {
+  it(`저장된 동영상의 개수가 ${MAX_NUM_OF_SAVED_VIDEO}개일 때, 동영상 저장 버튼을 누르면 alert를 띄운다.`, () => {
     localStorage.clear();
-    const dummies = Array(MAX_NUM_OF_SAVED_VIDEO).fill('0');
-    localStorage.setItem(LOCAL_STORAGE_SAVED_VIDEO_KEY, dummies);
+    const dummies = Array(MAX_NUM_OF_SAVED_VIDEO).fill({ id: '000', isCompleted: false });
+    const savedVideoManager = new SavedVideoManager(dummies);
 
-    cy.get('.js-clip-save-button').eq(0).click();
-    cy.get('.snackbar').should('be.visible').should('have.text', SNACKBAR_MESSAGE.OVER_MAX_NUM_OF_SAVED_VIDEO);
+    savedVideoManager.saveVideo({ id: '000', isCompleted: false });
   });
 
   localStorage.setItem(LOCAL_STORAGE_SAVED_VIDEO_KEY, original);

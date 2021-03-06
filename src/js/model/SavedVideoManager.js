@@ -2,9 +2,9 @@ import { LOCAL_STORAGE_SAVED_VIDEO_KEY, SNACKBAR_MESSAGE, MAX_NUM_OF_SAVED_VIDEO
 import { getLocalStorageItem, setLocalStorageItem } from '../util/index.js';
 
 export class SavedVideoManager {
-  constructor() {
+  constructor(defaultValue = []) {
     this.subscribers = [];
-    this.savedVideos = getLocalStorageItem({ key: LOCAL_STORAGE_SAVED_VIDEO_KEY, defaultValue: [] });
+    this.savedVideos = getLocalStorageItem({ key: LOCAL_STORAGE_SAVED_VIDEO_KEY, defaultValue });
   }
 
   subscribe(subscriber) {

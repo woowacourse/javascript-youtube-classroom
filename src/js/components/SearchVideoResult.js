@@ -130,7 +130,7 @@ export class SearchVideoResult {
   }
 
   render() {
-    if (!this.$wrapper.hasChildNodes() && this.searchResultData.items.length === 0) {
+    if (this.$wrapper.querySelectorAll('.clip').length === 0 && this.searchResultData.items.length === 0) {
       showElement(this.$notFoundImage);
 
       return;
