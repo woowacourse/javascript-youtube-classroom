@@ -124,6 +124,7 @@ export default class Video {
     });
     channelUrl.href = this.channelUrl;
     channelUrl.target = '_blank';
+    channelUrl.rel = "noopener";
 
     const meta = createElement({ tag: 'div', classes: ['meta'] });
 
