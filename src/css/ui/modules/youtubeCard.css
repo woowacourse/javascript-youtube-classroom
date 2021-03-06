@@ -1,7 +1,6 @@
 .video-wrapper {
   display: grid;
   grid-template-columns: repeat(auto-fill, 236px);
-  /* grid-template-rows: repeat(auto-fill, 254px); */
   grid-row-gap: 0px;
   grid-column-gap: 4px;
   justify-content: center;
