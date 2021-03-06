@@ -1,6 +1,7 @@
-export const API_SEARCH_ENDPOINT = 'https://www.googleapis.com/youtube/v3/search';
+export const API_SEARCH_ENDPOINT = 'https://optimistic-khorana-9d30c5.netlify.app/youtube/search';
 export const YOUTUBE_VIDEO_ENDPOINT = 'https://www.youtube.com/embed/';
 export const YOUTUBE_CHANNEL_ENDPOINT = 'https://www.youtube.com/channel/';
+
 export const PART_TYPE = 'snippet';
 export const MAX_RESULT_COUNT = 10;
 export const MAX_RECENT_KEYWORD_COUNT = 3;
