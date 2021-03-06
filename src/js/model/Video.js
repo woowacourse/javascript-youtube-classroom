@@ -11,18 +11,18 @@ export default class Video {
   constructor(videoInfo) {
     this.videoId = videoInfo.id.videoId;
     this.videoTitle = videoInfo.snippet.title;
-    this.videoEmbedUrl = this.createVideoEmbedUrl();
+    this.videoEmbedURL = this.createVideoEmbedURL();
     this.channelTitle = videoInfo.snippet.channelTitle;
     this.channelId = videoInfo.snippet.channelId;
-    this.channelUrl = this.createChannelUrl();
+    this.channelURL = this.createChannelURL();
     this.uploadTime = this.createVideoUploadDate(videoInfo.snippet.publishedAt);
   }
 
-  createVideoEmbedUrl() {
+  createVideoEmbedURL() {
     return `https://www.youtube.com/embed/${this.videoId}`;
   }
 
-  createChannelUrl() {
+  createChannelURL() {
     return `https://www.youtube.com/channel/${this.channelId}`;
   }
 
@@ -38,10 +38,10 @@ export default class Video {
     return {
       videoId: this.videoId,
       videoTitle: this.videoTitle,
-      videoEmbedUrl: this.videoEmbedUrl,
+      videoEmbedURL: this.videoEmbedURL,
       channelTitle: this.channelTitle,
       channelId: this.channelId,
-      channelUrl: this.channelUrl,
+      channelURL: this.channelURL,
       uploadTime: this.uploadTime,
     };
   }
@@ -84,7 +84,7 @@ export default class Video {
     const iframe = document.createElement('iframe');
     iframe.width = '100%';
     iframe.height = '118';
-    iframe.src = `${this.videoEmbedUrl}`;
+    iframe.src = `${this.videoEmbedURL}`;
     iframe.frameBorder = '0';
     iframe.allow =
       'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture';
@@ -119,14 +119,14 @@ export default class Video {
       textContent: this.videoTitle,
     });
 
-    const channelUrl = createElement({
+    const channelURL = createElement({
       tag: 'a',
       classes: ['channel-name', 'mt-1'],
       textContent: this.channelTitle,
     });
-    channelUrl.href = this.channelUrl;
-    channelUrl.target = '_blank';
-    channelUrl.rel = "noopener";
+    channelURL.href = this.channelURL;
+    channelURL.target = '_blank';
+    channelURL.rel = "noopener";
 
     const meta = createElement({ tag: 'div', classes: ['meta'] });
 
@@ -149,7 +149,7 @@ export default class Video {
     }
 
     videoInfo.appendChild(videoTitle);
-    videoInfo.appendChild(channelUrl);
+    videoInfo.appendChild(channelURL);
     videoInfo.appendChild(meta);
     contentContainer.appendChild(videoInfo);
     contentContainer.appendChild(button);

@@ -12,18 +12,22 @@ export default class YoutubeAPIManager {
     this.pageToken = '';
   }
 
-  createRequestUrl() {
-    const pageTokenQuery = this.pageToken ? `pageToken=${this.pageToken}` : '';
+  createRequestURL() {
+    const requestURL = `https://www.googleapis.com/youtube/v3/search?`;
+    const searchParams = new URLSearchParams("part=snippet&type=video");
 
-    return (
-      `https://www.googleapis.com/youtube/v3/search?` +
-      `part=snippet&key=${MY_KEY}
-      &q=${this.searchTerm}&maxResults=${MAX_RESULT}&type=video&${pageTokenQuery}`
-    );
+    searchParams.set('key', MY_KEY);
+    searchParams.set('maxResults', MAX_RESULT);
+  
+    if(this.pageToken) {
+      searchParams.set('pageToken', this.pageToken);
+    }
+
+    return `${requestURL}${searchParams}`
   }
 
   async requestVideos() {
-    const url = this.createRequestUrl(this.searchTerm, this.pageToken);
+    const url = this.createRequestURL(this.searchTerm, this.pageToken);
 
     const res = await fetch(url)
       .then((data) => {
