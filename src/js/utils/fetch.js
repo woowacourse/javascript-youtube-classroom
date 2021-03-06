@@ -1,12 +1,6 @@
-import { API_KEY } from './env.js';
-import { YOUTUBE } from './constant.js';
-
-const BASE_URL = `https://www.googleapis.com/youtube/v3/search?&part=snippet`;
-
-export const request = async (keyword, pageToken = '') => {
-  const options = `&maxResults=${YOUTUBE.NUMBER_TO_LOAD}&q=${keyword}&key=${API_KEY}&pageToken=${pageToken}`;
+export const request = async (url) => {
   try {
-    const response = await fetch(`${BASE_URL}${options}`);
+    const response = await fetch(url);
     if (!response.ok) {
       throw new Error(response.status);
     }

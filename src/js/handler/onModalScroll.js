@@ -1,9 +1,11 @@
-import { LOCAL_STORAGE_KEY } from '../utils/constant.js';
+import { YOUTUBE, LOCAL_STORAGE_KEY, SEARCH_URL } from '../utils/constant.js';
 import { request } from '../utils/fetch.js';
 import storage from '../utils/localStorage.js';
 import { $ } from '../utils/querySelector.js';
 import { hideElement, showElement } from '../utils/setAttribute.js';
 import { renderExtraClips } from '../view/modal.js';
+import { getQueryString } from '../utils/getQueryString.js';
+import { API_KEY } from '../utils/env.js';
 
 export const onModalScroll = async (event) => {
   const { scrollTop, scrollHeight, clientHeight } = event.target;
@@ -20,7 +22,14 @@ export const onModalScroll = async (event) => {
   const keyword = storage.get(LOCAL_STORAGE_KEY.CURRENT_KEYWORD);
   const pageToken = storage.get(LOCAL_STORAGE_KEY.NEXT_PAGE_TOKEN) ?? '';
 
-  const response = await request(keyword, pageToken);
+  const queryString = getQueryString({
+    part: 'snippet',
+    maxResults: YOUTUBE.NUMBER_TO_LOAD,
+    q: keyword,
+    key: API_KEY,
+    pageToken,
+  });
+  const response = await request(SEARCH_URL + queryString);
   const recentSearchResults =
     storage.get(LOCAL_STORAGE_KEY.RECENT_SEARCH_RESULTS) ?? [];
   const savedClips = storage.get(LOCAL_STORAGE_KEY.SAVED_CLIPS) ?? [];

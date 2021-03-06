@@ -1,9 +1,12 @@
 import { $ } from '../utils/querySelector.js';
+import { getQueryString } from '../utils/getQueryString.js';
 import {
   YOUTUBE,
   ERROR_MESSAGE,
   LOCAL_STORAGE_KEY,
+  SEARCH_URL,
 } from '../utils/constant.js';
+import { API_KEY } from '../utils/env.js';
 import { request } from '../utils/fetch.js';
 import { showElement, hideElement } from '../utils/setAttribute.js';
 import storage from '../utils/localStorage.js';
@@ -75,7 +78,14 @@ const searchRequest = async (keyword) => {
 
   $('[data-js=youtube-search-modal__video-wrapper]').innerHTML = '';
 
-  const response = await request(keyword);
+  const queryString = getQueryString({
+    part: 'snippet',
+    maxResults: YOUTUBE.NUMBER_TO_LOAD,
+    q: keyword,
+    key: API_KEY,
+  });
+  console.log(queryString);
+  const response = await request(SEARCH_URL + queryString);
 
   hideElement($skeletonWrapper);
 
