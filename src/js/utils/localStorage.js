@@ -1,7 +1,7 @@
-import { VALUE } from './constants.js';
+import { VALUE, STORAGE_KEYS } from './constants.js';
 
 export function setRecentChip(keyword) {
-  const recentKeywords = getRecentKeywords();
+  const recentKeywords = getValidJson(STORAGE_KEYS.RECENT_KEYWORDS, []);
 
   if (recentKeywords.includes(keyword)) {
     recentKeywords.splice(recentKeywords.indexOf(keyword), 1);
@@ -12,26 +12,31 @@ export function setRecentChip(keyword) {
   }
 
   recentKeywords.unshift(keyword);
-  localStorage.setItem('searchKeyword', JSON.stringify(recentKeywords));
-}
-
-export function getRecentKeywords() {
-  return localStorage.getItem('searchKeyword')
-    ? JSON.parse(localStorage.getItem('searchKeyword'))
-    : [];
+  localStorage.setItem(
+    STORAGE_KEYS.RECENT_KEYWORDS,
+    JSON.stringify(recentKeywords),
+  );
 }
 
 export function setSavedVideoId(videoId) {
-  const savedVideos = getSavedVideoIds();
+  const savedVideoIds = getValidJson(STORAGE_KEYS.SAVED_VIDEO_IDS, []);
 
-  if (savedVideos.includes(videoId)) return;
+  if (savedVideoIds.includes(videoId)) return;
 
-  savedVideos.push(videoId);
-  localStorage.setItem('savedVideos', JSON.stringify(savedVideos));
+  savedVideoIds.push(videoId);
+  localStorage.setItem(
+    STORAGE_KEYS.SAVED_VIDEO_IDS,
+    JSON.stringify(savedVideoIds),
+  );
 }
 
-export function getSavedVideoIds() {
-  return localStorage.getItem('savedVideos')
-    ? JSON.parse(localStorage.getItem('savedVideos'))
-    : [];
+export function getValidJson(str, defaultValue) {
+  try {
+    const parsedStr = JSON.parse(localStorage.getItem(str));
+
+    if (parsedStr) return parsedStr;
+  } catch (e) {
+    return defaultValue;
+  }
+  return defaultValue;
 }

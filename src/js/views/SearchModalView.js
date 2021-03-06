@@ -1,7 +1,7 @@
 import { $ } from '../utils/dom.js';
-import { VALUE } from '../utils/constants.js';
+import { VALUE, STORAGE_KEYS } from '../utils/constants.js';
 import clipMaker from '../utils/clipMaker.js';
-import { getRecentKeywords, getSavedVideoIds } from '../utils/localStorage.js';
+import { getValidJson } from '../utils/localStorage.js';
 import View from './View.js';
 
 export default class SearchModalView extends View {
@@ -86,7 +86,7 @@ export default class SearchModalView extends View {
   }
 
   updateSavedCount() {
-    const savedVideoIds = getSavedVideoIds();
+    const savedVideoIds = getValidJson(STORAGE_KEYS.SAVED_VIDEO_IDS, []);
 
     $('#saved-video-count').setText(savedVideoIds.length);
   }
@@ -100,7 +100,7 @@ export default class SearchModalView extends View {
   }
 
   updateChips() {
-    const recentKeywords = getRecentKeywords();
+    const recentKeywords = getValidJson(STORAGE_KEYS.RECENT_KEYWORDS, []);
     $('#chip-container').setInnerHTML(this.chipTemplate(recentKeywords));
 
     this.bindChipsEvent();
@@ -129,7 +129,7 @@ export default class SearchModalView extends View {
   renderVideoClips(videos) {
     $('.skeleton').hide();
 
-    const savedVideoIds = getSavedVideoIds();
+    const savedVideoIds = getValidJson(STORAGE_KEYS.SAVED_VIDEO_IDS, []);
     const videoClips = videos
       .map((video) => {
         const isSaved = savedVideoIds.includes(video.id);

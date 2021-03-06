@@ -13,3 +13,8 @@ export const VALUE = {
 export const ALERT_MESSAGES = {
   EMPTY_SEARCH_KEYWORD: '검색어를 입력해주세요',
 };
+
+export const STORAGE_KEYS = {
+  RECENT_KEYWORDS: 'recentKeywords',
+  SAVED_VIDEO_IDS: 'savedVideoIds',
+};

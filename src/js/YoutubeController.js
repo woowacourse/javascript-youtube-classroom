@@ -1,12 +1,11 @@
 import { $ } from './utils/dom.js';
 import {
+  getValidJson,
   setRecentChip,
-  getRecentKeywords,
   setSavedVideoId,
-  getSavedVideoIds,
 } from './utils/localStorage.js';
 import { isEmptySearchKeyword } from './utils/validator.js';
-import { ALERT_MESSAGES } from './utils/constants.js';
+import { ALERT_MESSAGES, STORAGE_KEYS } from './utils/constants.js';
 import { searchRequest, videoRequest } from '../js/request.js';
 import NavigationView from './views/NavigationView.js';
 import SearchModalView from './views/SearchModalView.js';
@@ -73,7 +72,7 @@ export default class YoutubeController {
   }
 
   loadSavedVideos() {
-    const savedVideoIds = getSavedVideoIds();
+    const savedVideoIds = getValidJson(STORAGE_KEYS.SAVED_VIDEO_IDS, []);
 
     if (savedVideoIds.length === 0) return;
 
@@ -110,8 +109,10 @@ export default class YoutubeController {
       return;
     }
 
+    const recentKeywords = getValidJson(STORAGE_KEYS.RECENT_KEYWORDS, []);
+
     setRecentChip(keyword);
-    this.searchModalView.updateChips(getRecentKeywords());
+    this.searchModalView.updateChips(recentKeywords);
     this.searchModalView.clearVideoClips();
     this.searchModalView.startSearch();
     this.searchModalView.scrollToTop();

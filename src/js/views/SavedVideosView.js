@@ -1,5 +1,4 @@
 import { $ } from '../utils/dom.js';
-import { getSavedVideoIds } from '../utils/localStorage.js';
 import clipMaker from '../utils/clipMaker.js';
 import View from './View.js';
 
