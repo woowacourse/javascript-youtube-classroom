@@ -8,6 +8,7 @@
     "sourceType": "module"
   },
   "ignorePatterns": ["cypress/", "dist/"],
+  "parser": "babel-eslint",
   "rules": {
     "no-new": "off",
     "no-return-assign": "off",
