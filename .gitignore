@@ -109,3 +109,5 @@ cypress/support
 temp.js
 
 src/js/apiKey.js
+public
+*.cache
