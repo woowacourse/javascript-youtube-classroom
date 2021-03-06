@@ -1,6 +1,5 @@
 import { API_SEARCH_ENDPOINT, PART_TYPE, SEARCH_TYPE_VIDEO, MAX_RESULT_COUNT, REGION_CODE } from '../constants.js';
 import { formatDateKR } from '../utils/formatDate.js';
-import { YOUTUBE_API_KEY } from '../env.js';
 import { request } from '../utils/request.js';
 
 export default class SearchModel {
@@ -26,15 +25,15 @@ export default class SearchModel {
       pageToken: this.nextPageToken,
     };
 
-    const queryStringFlattened = Object.keys(options)
-      .map((key) => `&${key}=${options[key]}`)
-      .join('');
+    const queryStringFlattened = Object.entries(options)
+      .map(([key, value]) => `${key}=${value}`)
+      .join('&');
 
-    return `${API_SEARCH_ENDPOINT}?key=${YOUTUBE_API_KEY}`.concat(queryStringFlattened);
+    return `${API_SEARCH_ENDPOINT}?${queryStringFlattened}`;
   }
 
   requestSearchResult() {
-    return request(this.getSearchApiURI()).then((response) => {
+    return request(this.getSearchApiURI(), 'GET').then((response) => {
       this.setSearchResult(response);
     });
   }
