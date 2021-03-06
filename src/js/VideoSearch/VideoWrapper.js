@@ -36,13 +36,17 @@ export default class VideoWrapper {
     });
   }
 
-  attachData({ query, nextPageToken, items }) {
+  attachData({ nextPageToken, items }) {
     // console.log(`[VideoWrapper] MESSAGE.DATA_LOADED received `);
-
-    this.currentQuery = query;
     this.currentNextPageToken = nextPageToken;
 
-    this.render(items);
+    const $$videos = Array.from(this.$modalVideoWrapper.children).slice(
+      -MAX_RESULTS_COUNT
+    );
+
+    Array.from({ length: MAX_RESULTS_COUNT })
+      .map((_, i) => [$$videos[i], items[i]])
+      .forEach(([$video, item]) => render($video, item));
   }
 
   handlePageScroll() {
@@ -54,9 +58,7 @@ export default class VideoWrapper {
       return;
     }
 
-    if (this.throttle) {
-      return;
-    }
+    if (this.throttle) return;
 
     this.throttle = setTimeout(async () => {
       this.throttle = null;
@@ -81,22 +83,10 @@ export default class VideoWrapper {
 
       const { nextPageToken, items } = await response.json();
 
-      this.currentNextPageToken = nextPageToken;
-
-      this.render(items);
+      this.attachData({ nextPageToken, items });
     } catch (error) {
       // eslint-disable-next-line no-console
       console.error(error);
     }
-  }
-
-  render(items) {
-    const $$videos = Array.from(this.$modalVideoWrapper.children).slice(
-      -MAX_RESULTS_COUNT
-    );
-
-    Array.from({ length: MAX_RESULTS_COUNT })
-      .map((_, i) => [$$videos[i], items[i]])
-      .forEach(([$video, item]) => render($video, item));
   }
 }

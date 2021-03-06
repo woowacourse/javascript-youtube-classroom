@@ -34,7 +34,7 @@ export default class SearchForm {
 
       const { nextPageToken, items } = await response.json();
 
-      store.postMessage(MESSAGE.DATA_LOADED, { query, nextPageToken, items });
+      store.postMessage(MESSAGE.DATA_LOADED, { nextPageToken, items });
 
       // console.log(`[SearchForm] MESSAGE.DATA_LOADED post `);
 
