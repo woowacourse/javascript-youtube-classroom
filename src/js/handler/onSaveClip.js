@@ -1,4 +1,4 @@
-import { renderSavedClips } from '../view/main.js';
+import { renderSavedClip } from '../view/main.js';
 import storage from '../utils/localStorage.js';
 import {
   ERROR_MESSAGE,
@@ -14,6 +14,7 @@ export const onSaveClip = ({ target }) => {
   const clipIndex = target.dataset.clipIndex;
   const recentSearchResults =
     storage.get(LOCAL_STORAGE_KEY.RECENT_SEARCH_RESULTS) ?? [];
+  const savedClip = recentSearchResults[clipIndex];
   const savedClips = storage.get(LOCAL_STORAGE_KEY.SAVED_CLIPS) ?? [];
 
   if (savedClips.length >= YOUTUBE.MAXIMUM_SAVE_CLIPS) {
@@ -21,8 +22,8 @@ export const onSaveClip = ({ target }) => {
     return;
   }
 
-  savedClips.push(recentSearchResults[clipIndex]);
+  savedClips.push(savedClip);
   storage.set(LOCAL_STORAGE_KEY.SAVED_CLIPS, savedClips);
 
-  renderSavedClips(savedClips);
+  renderSavedClip(savedClip, savedClips.length - 1);
 };

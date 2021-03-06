@@ -28,12 +28,17 @@ export const renderSaveVideoCount = (saveClips) => {
 };
 
 export const renderExtraClips = (videoItems, savedClipIds) => {
-  $('[data-js=youtube-search-modal__video-wrapper]').innerHTML += videoItems
+  const extraClips = videoItems
     .map((video, index) => {
       const isSaved = savedClipIds.includes(video.id.videoId);
       return clipTemplate(video, index, { isModal: true, isSaved });
     })
     .join('');
+
+  $('[data-js=youtube-search-modal__video-wrapper]').insertAdjacentHTML(
+    'beforeend',
+    extraClips,
+  );
 };
 
 export const renderClips = (videoItems, savedClipIds) => {
