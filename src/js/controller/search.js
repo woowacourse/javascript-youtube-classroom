@@ -63,7 +63,7 @@ class SearchController {
   };
 
   removeSkeleton = event => {
-    const article = event.target.parentNode.parentNode;
+    const article = event.target.closest('article');
     article.classList.remove(CLASS.SKELETON);
   };
 
