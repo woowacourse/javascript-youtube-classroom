@@ -50,6 +50,12 @@ class SearchModal {
       this.handleSearchKeyword();
     });
 
+    this.$target.addEventListener("click", e => {
+      if (!e.target.classList.contains("search-modal")) return;
+
+      this.handleCloseModal();
+    });
+
     this.$modalCloseBtn.addEventListener("click", this.handleCloseModal.bind(this));
 
     this.$videoWrapper.addEventListener("click", e => {
