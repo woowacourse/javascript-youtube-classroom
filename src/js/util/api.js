@@ -1,16 +1,32 @@
 import { NUM_OF_VIDEO_PER_FETCH } from '../constants/index.js';
 import { YOUTUBE_API_KEY } from '../../../env.js';
 
-const END_POINT = 'https://www.googleapis.com/youtube/v3';
+const END_POINT = 'https://www.googleapis.com/';
 
 export const getSearchVideoByKeyword = async (keyword, pageToken = '') => {
-  return await fetch(
-    `${END_POINT}/search?part=snippet&q=${keyword}&maxResults=${NUM_OF_VIDEO_PER_FETCH}&type=video&videoEmbeddable=true&pageToken=${pageToken}&key=${YOUTUBE_API_KEY}`
-  ).then(Response => Response.json());
+  const searchURL = new URL('/youtube/v3/search', END_POINT);
+  const params = new URLSearchParams({
+    part: 'snippet',
+    q: keyword,
+    maxResults: NUM_OF_VIDEO_PER_FETCH,
+    type: 'video',
+    videoEmbeddable: true,
+    pageToken,
+    key: YOUTUBE_API_KEY,
+  });
+  searchURL.search = params.toString();
+
+  return await fetch(searchURL.href).then(Response => Response.json());
 };
 
 export const getVideoByIdList = async idList => {
-  return await fetch(`${END_POINT}/videos?part=snippet&id=${idList.join(',')}&key=${YOUTUBE_API_KEY}`).then(Response =>
-    Response.json()
-  );
+  const videoURL = new URL('/youtube/v3/videos', END_POINT);
+  const params = new URLSearchParams({
+    part: 'snippet',
+    id: idList.join(','),
+    key: YOUTUBE_API_KEY,
+  });
+  videoURL.search = params.toString();
+
+  return await fetch(videoURL.href).then(Response => Response.json());
 };

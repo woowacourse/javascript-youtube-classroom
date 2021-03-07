@@ -87,7 +87,7 @@ export class SearchVideoResult {
   makeTemplate(videoData) {
     return getVideoTemplate({
       videoData,
-      buttonTemplate: this.makeSaveButtonTemplete(videoData.videoId),
+      buttonTemplate: this.makeSaveButtonTemplete(videoData.id.videoId),
     });
   }
 
