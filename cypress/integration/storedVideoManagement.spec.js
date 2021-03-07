@@ -1,7 +1,8 @@
 import { VIDEOS_TO_WATCH, VIDEOS_WATCHED } from '../../src/js/constants';
+import { $$ } from '../../src/js/utils/DOM';
 
 describe('저장된 비디오 관리 기능 테스트', () => {
-  beforeEach(() => {
+  before(() => {
     cy.visit('http://localhost:5500/');
   });
 
@@ -29,8 +30,21 @@ describe('저장된 비디오 관리 기능 테스트', () => {
     });
 
     cy.reload();
-    cy.get('.js-stored-videos h3').each(($el, index) => {
+    cy.get('.js-stored-videos .js-video-title').each(($el, index) => {
       cy.wrap($el).should('have.text', storedVideoTitles[index]);
     });
+  });
+
+  it('영상 카드의 시청완료 체크버튼을 클릭하면, 해당 영상이 시청중인 영상에서 시청완료 영상으로 옮겨진다.', () => {
+    cy.get('.js-stored-videos .watching')
+      .eq(0)
+      .then(($el) => {
+        cy.wrap($el).get('.js-check-button').click();
+
+        cy.wrap($el).should('have.class', 'watched');
+        cy.wrap($el).should('not.be.visible');
+        cy.get('.js-watched-menu-button').click();
+        cy.wrap($el).should('be.visible');
+      });
   });
 });
