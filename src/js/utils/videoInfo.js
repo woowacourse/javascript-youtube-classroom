@@ -1,4 +1,5 @@
-import { CLASSNAME } from "../constants.js";
+import { CLASSNAME, MESSAGE } from "../constants.js";
+import deliveryMan from "../deliveryMan.js";
 
 export const SKELETON_TEMPLATE = `
 <article class="clip skeleton">
@@ -24,8 +25,8 @@ width="100%"
       <p class="js-published-at">
       </p>
     </div>
-    <div class="d-flex justify-end --hidden js-save-button-wrapper">
-      <button class="btn">⬇️ 저장</button> 
+    <div class="d-flex justify-end --hidden js-save-video-button-wrapper">
+      <button class="btn js-save-video-button">⬇️ 저장</button> 
     </div>
   </div>
 </div>
@@ -47,11 +48,13 @@ const createVideoInfo = (item) => {
 };
 
 const removeSkeletonUI = ($video) => {
-  $video
-    .querySelector(`.${CLASSNAME.SAVE_BUTTON_WRAPPER}`)
-    .classList.remove(CLASSNAME.HIDDEN);
+  const $saveVideoButtonWrapper = $video.querySelector(
+    `.${CLASSNAME.SAVE_VIDEO_BUTTON_WRAPPER}`
+  );
 
-  $video.classList.remove("skeleton");
+  $saveVideoButtonWrapper.classList.remove(CLASSNAME.HIDDEN);
+
+  $video.classList.remove(CLASSNAME.SKELETON);
 };
 
 export const render = ($video, item) => {
@@ -67,6 +70,9 @@ export const render = ($video, item) => {
   const $videoTitle = $video.querySelector(`.${CLASSNAME.VIDEO_TITLE}`);
   const $channelTitle = $video.querySelector(`.${CLASSNAME.CHANNEL_TITLE}`);
   const $publishedAt = $video.querySelector(`.${CLASSNAME.PUBLISHED_AT}`);
+  const $saveVideoButton = $video.querySelector(
+    `.${CLASSNAME.SAVE_VIDEO_BUTTON}`
+  );
 
   $iframe.src = `https://www.youtube.com/embed/${videoId}`;
 
@@ -79,6 +85,17 @@ export const render = ($video, item) => {
     year: "numeric",
     month: "long",
     day: "numeric",
+  });
+
+  $saveVideoButton.dataset.videoId = videoId;
+
+  // console.log(`[videoInfo] HIDE_IF_VIDEO_IS_SAVED post videoId: `, videoId);
+  deliveryMan.dispatchMessage(MESSAGE.HIDE_IF_VIDEO_IS_SAVED, {
+    videoId,
+    callback: () => {
+      // console.log("[callback invoked] $saveVideoButton: ", $saveVideoButton);
+      $saveVideoButton.classList.add(CLASSNAME.HIDDEN);
+    },
   });
 
   removeSkeletonUI($video);

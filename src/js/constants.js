@@ -15,20 +15,31 @@ const CLASSNAME = Object.freeze({
   VIDEO_TITLE: "js-video-title",
   CHANNEL_TITLE: "js-channel-title",
   PUBLISHED_AT: "js-published-at",
-  SAVE_BUTTON_WRAPPER: "js-save-button-wrapper",
+  SAVE_VIDEO_BUTTON_WRAPPER: "js-save-video-button-wrapper",
+  SAVE_VIDEO_BUTTON: "js-save-video-button",
+  SAVED_VIDEOS_COUNT: "js-saved-videos-count",
+  MAX_SAVED_VIDEOS_COUNT: "js-max-saved-videos-count",
   OPEN: "open",
   HIDDEN: "--hidden",
-  HEIGHT_85_PERCENT: "h-85",
+  SKELETON: "skeleton",
 });
 
 const MESSAGE = Object.freeze({
   KEYWORD_SUBMITTED: "KEYWORD_SUBMITTED",
   DATA_LOADED: "DATA_LOADED",
+  VIDEO_SAVED: "VIDEO_SAVED",
+  HIDE_IF_VIDEO_IS_SAVED: "HIDE_IF_VIDEO_IS_SAVED",
 });
 
 const MAX_KEYWORDS_COUNT = 3;
 
 const MAX_RESULTS_COUNT = 10;
+
+const MAX_SAVED_VIDEOS_COUNT = 100;
+
+const SCROLL_EVENT_THRESHOLD = 0.7;
+
+const THROTTLE_TIME_IN_MS = 500;
 
 const API_END_POINT = (query, nextPageToken = "") =>
   `https://www.googleapis.com/youtube/v3/search?part=snippet&maxResults=${MAX_RESULTS_COUNT}&regionCode=kr&safeSearch=strict&pageToken=${nextPageToken}&q=${query}}&key=${API_KEY}`;
@@ -37,6 +48,9 @@ export {
   CLASSNAME,
   MAX_KEYWORDS_COUNT,
   MAX_RESULTS_COUNT,
+  MAX_SAVED_VIDEOS_COUNT,
   MESSAGE,
   API_END_POINT,
+  SCROLL_EVENT_THRESHOLD,
+  THROTTLE_TIME_IN_MS,
 };

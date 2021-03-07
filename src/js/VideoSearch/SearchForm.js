@@ -1,7 +1,7 @@
 import { CLASSNAME, MESSAGE, API_END_POINT } from "../constants.js";
 import { $ } from "../utils/querySelector.js";
-import store from "../store.js";
-// import dummyFetch from "../dummyFetch.js";
+import deliveryMan from "../deliveryMan.js";
+import dummyFetch from "../dummyFetch.js";
 
 export default class SearchForm {
   constructor() {
@@ -19,13 +19,13 @@ export default class SearchForm {
 
     const query = this.$youtubeSearchFormInput.value;
 
-    store.postMessage(MESSAGE.KEYWORD_SUBMITTED, { query });
-
     // console.log(`[SearchForm] MESSAGE.KEYWORD_SUBMITTED post `);
 
+    deliveryMan.dispatchMessage(MESSAGE.KEYWORD_SUBMITTED, { query });
+
     try {
-      const response = await fetch(API_END_POINT(query));
-      // const response = await dummyFetch(query);
+      // const response = await fetch(API_END_POINT(query));
+      const response = await dummyFetch(query);
 
       if (!response.ok) {
         throw new Error(response.statusText);
@@ -33,9 +33,16 @@ export default class SearchForm {
 
       const { nextPageToken, items } = await response.json();
 
-      store.postMessage(MESSAGE.DATA_LOADED, { nextPageToken, items });
+      // console.log(
+      //   `[SearchForm] MESSAGE.DATA_LOADED post: `,
+      //   nextPageToken,
+      //   items
+      // );
 
-      // console.log(`[SearchForm] MESSAGE.DATA_LOADED post `);
+      deliveryMan.dispatchMessage(MESSAGE.DATA_LOADED, {
+        nextPageToken,
+        items,
+      });
 
       this.$youtubeSearchFormInput.value = "";
     } catch (error) {

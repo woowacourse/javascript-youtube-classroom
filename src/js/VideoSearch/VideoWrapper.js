@@ -3,10 +3,12 @@ import {
   MESSAGE,
   MAX_RESULTS_COUNT,
   API_END_POINT,
+  SCROLL_EVENT_THRESHOLD,
+  THROTTLE_TIME_IN_MS,
 } from "../constants.js";
 import { $ } from "../utils/querySelector.js";
-// import dummyFetch from "../dummyFetch.js";
-import store from "../store.js";
+import dummyFetch from "../dummyFetch.js";
+import deliveryMan from "../deliveryMan.js";
 import { SKELETON_TEMPLATE, render } from "../utils/videoInfo.js";
 
 export default class VideoWrapper {
@@ -16,7 +18,7 @@ export default class VideoWrapper {
     this.currentQuery = "";
     this.currentNextPageToken = "";
 
-    store.addMessageListener(MESSAGE.KEYWORD_SUBMITTED, ({ query }) => {
+    deliveryMan.addMessageListener(MESSAGE.KEYWORD_SUBMITTED, ({ query }) => {
       // console.log(`[VideoWrapper] MESSAGE.KEYWORD_SUBMITTED received `);
 
       this.$notFoundImg.classList.add(CLASSNAME.HIDDEN);
@@ -24,7 +26,7 @@ export default class VideoWrapper {
       this.currentQuery = query;
       this.mountTemplate();
     });
-    store.addMessageListener(
+    deliveryMan.addMessageListener(
       MESSAGE.DATA_LOADED,
       ({ nextPageToken, items }) => {
         // console.log(`[VideoWrapper] MESSAGE.DATA_LOADED received `);
@@ -45,6 +47,26 @@ export default class VideoWrapper {
       "scroll",
       this.handlePageScroll.bind(this)
     );
+
+    this.$modalVideoWrapper.addEventListener("click", (event) => {
+      if (!event.target.classList.contains(CLASSNAME.SAVE_VIDEO_BUTTON)) {
+        return;
+      }
+
+      this.saveVideo(event.target);
+    });
+  }
+
+  // eslint-disable-next-line class-methods-use-this
+  saveVideo($button) {
+    const { videoId } = $button.dataset;
+
+    // console.log(
+    //   `[VideoWrapper] MESSAGE.VIDEO_SAVED post. videoId: `,
+    //   videoId
+    // );
+    deliveryMan.dispatchMessage(MESSAGE.VIDEO_SAVED, { videoId });
+    $button.classList.add(CLASSNAME.HIDDEN);
   }
 
   mountTemplate() {
@@ -72,7 +94,7 @@ export default class VideoWrapper {
     if (
       this.$modalVideoWrapper.scrollTop +
         this.$modalVideoWrapper.clientHeight <=
-      this.$modalVideoWrapper.scrollHeight * 0.7
+      this.$modalVideoWrapper.scrollHeight * SCROLL_EVENT_THRESHOLD
     ) {
       return;
     }
@@ -83,20 +105,20 @@ export default class VideoWrapper {
       this.throttle = null;
 
       this.loadData();
-    }, 500);
+    }, THROTTLE_TIME_IN_MS);
   }
 
   async loadData() {
     this.mountTemplate();
 
     try {
-      // const response = await dummyFetch(
-      //   this.currentQuery,
-      //   this.currentNextPageToken
-      // );
-      const response = await fetch(
-        API_END_POINT(this.currentQuery, this.currentNextPageToken)
+      const response = await dummyFetch(
+        this.currentQuery,
+        this.currentNextPageToken
       );
+      // const response = await fetch(
+      //   API_END_POINT(this.currentQuery, this.currentNextPageToken)
+      // );
 
       if (!response.ok) {
         throw new Error(response.statusText);

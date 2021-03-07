@@ -1,13 +1,13 @@
 import { CLASSNAME, MAX_KEYWORDS_COUNT, MESSAGE } from "../constants.js";
 import { $ } from "../utils/querySelector.js";
-import store from "../store.js";
+import deliveryMan from "../deliveryMan.js";
 
 export default class KeywordHistory {
   constructor() {
     this.$keywordHistorySection = $(CLASSNAME.KEYWORD_HISTORY_SECTION);
     this.keywordHistory = [];
 
-    store.addMessageListener(
+    deliveryMan.addMessageListener(
       MESSAGE.KEYWORD_SUBMITTED,
       this.addKeyword.bind(this)
     );
