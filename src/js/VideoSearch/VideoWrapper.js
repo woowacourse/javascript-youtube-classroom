@@ -2,7 +2,7 @@ import {
   CLASSNAME,
   MESSAGE,
   MAX_RESULTS_COUNT,
-  API_END_POINT,
+  // API_END_POINT,
   SCROLL_EVENT_THRESHOLD,
   THROTTLE_TIME_IN_MS,
 } from "../constants.js";
@@ -65,7 +65,7 @@ export default class VideoWrapper {
     //   `[VideoWrapper] MESSAGE.VIDEO_SAVED post. videoId: `,
     //   videoId
     // );
-    deliveryMan.dispatchMessage(MESSAGE.VIDEO_SAVED, { videoId });
+    deliveryMan.deliverMessage(MESSAGE.SAVE_VIDEO_BUTTON_CLICKED, { videoId });
     $button.classList.add(CLASSNAME.HIDDEN);
   }
 

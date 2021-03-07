@@ -1,10 +1,11 @@
 import API_KEY from "./key.js";
 
 const CLASSNAME = Object.freeze({
+  WATCH_LATER_TAB: "js-watch-later-tab",
+  VIDEO_SEARCH_TAB: "js-video-search-tab",
   MODAL: "modal",
   MODAL_INNER: "modal-inner",
   MODAL_CLOSE: "modal-close",
-  VIDEO_SEARCH_TAB: "js-video-search-tab",
   YOUTUBE_SEARCH_FORM: "js-youtube-search-form",
   YOUTUBE_SEARCH_FORM_INPUT: "js-youtube-search-form__input",
   YOUTUBE_SEARCH_FORM_BUTTON: "js-youtube-search-form__button",
@@ -27,8 +28,16 @@ const CLASSNAME = Object.freeze({
 const MESSAGE = Object.freeze({
   KEYWORD_SUBMITTED: "KEYWORD_SUBMITTED",
   DATA_LOADED: "DATA_LOADED",
+  SAVE_VIDEO_BUTTON_CLICKED: "SAVE_VIDEO_BUTTON_CLICKED",
   VIDEO_SAVED: "VIDEO_SAVED",
   HIDE_IF_VIDEO_IS_SAVED: "HIDE_IF_VIDEO_IS_SAVED",
+});
+
+const LOCAL_STORAGE_KEY = Object.freeze({
+  SAVED_VIDEO_IDS: "savedVideoIds",
+  SAVED_VIDEOS_COUNT: "savedVideosCount",
+  KEYWORD_HISTORY: "keywordHistory",
+  QUERY: "query",
 });
 
 const MAX_KEYWORDS_COUNT = 3;
@@ -53,4 +62,5 @@ export {
   API_END_POINT,
   SCROLL_EVENT_THRESHOLD,
   THROTTLE_TIME_IN_MS,
+  LOCAL_STORAGE_KEY,
 };

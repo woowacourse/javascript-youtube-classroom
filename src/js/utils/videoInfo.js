@@ -90,7 +90,7 @@ export const render = ($video, item) => {
   $saveVideoButton.dataset.videoId = videoId;
 
   // console.log(`[videoInfo] HIDE_IF_VIDEO_IS_SAVED post videoId: `, videoId);
-  deliveryMan.dispatchMessage(MESSAGE.HIDE_IF_VIDEO_IS_SAVED, {
+  deliveryMan.deliverMessage(MESSAGE.HIDE_IF_VIDEO_IS_SAVED, {
     videoId,
     callback: () => {
       // console.log("[callback invoked] $saveVideoButton: ", $saveVideoButton);
