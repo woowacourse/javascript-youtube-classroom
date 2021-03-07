@@ -1,5 +1,6 @@
 // TODO: 컴포넌트 영역 별로 코드 분리
 
+import { MAX_SAVED_VIDEO_COUNT } from './library/constants/classroom.js';
 import dom from './library/DOMelements.js';
 import createKeywordListTemplate from './library/templates/keywordList.js';
 import createNotFoundTemplate from './library/templates/notFound.js';
@@ -18,7 +19,7 @@ function closeModal() {
 }
 
 function renderSavedVideoCount(count) {
-  dom.$savedVideoCount.innerText = count;
+  dom.$savedVideoCount.innerText = `${count} / ${MAX_SAVED_VIDEO_COUNT}`;
 }
 
 function renderLatestKeywordList(latestKeywords) {
