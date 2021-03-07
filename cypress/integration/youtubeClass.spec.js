@@ -1,4 +1,4 @@
-import { SELECTOR_ID, SELECTOR_CLASS } from '../../src/constants.js';
+import { SELECTOR_ID, SELECTOR_CLASS, SETTINGS } from '../../src/constants.js';
 
 const waitTime = 2000;
 
@@ -9,6 +9,29 @@ context('유튜브 강의실 테스트', () => {
     cy.reload();
   });
   describe('검색', () => {
+    it('최근 검색한 3가지 검색 키워드를 볼 수 있다.', () => {
+      click(`#${SELECTOR_ID.SEARCH_BUTTON}`);
+      type(`#${SELECTOR_ID.SEARCH_FORM_INPUT}`, '우아한1');
+      click(`#${SELECTOR_ID.SEARCH_FORM_SUBMIT}`);
+      clearInput(`#${SELECTOR_ID.SEARCH_FORM_INPUT}`);
+
+      type(`#${SELECTOR_ID.SEARCH_FORM_INPUT}`, '우아한2');
+      click(`#${SELECTOR_ID.SEARCH_FORM_SUBMIT}`);
+      clearInput(`#${SELECTOR_ID.SEARCH_FORM_INPUT}`);
+
+      type(`#${SELECTOR_ID.SEARCH_FORM_INPUT}`, '우아한3');
+      click(`#${SELECTOR_ID.SEARCH_FORM_SUBMIT}`);
+      clearInput(`#${SELECTOR_ID.SEARCH_FORM_INPUT}`);
+
+      type(`#${SELECTOR_ID.SEARCH_FORM_INPUT}`, '우아한4');
+      click(`#${SELECTOR_ID.SEARCH_FORM_SUBMIT}`);
+      clearInput(`#${SELECTOR_ID.SEARCH_FORM_INPUT}`);
+
+      cy.get(`.${SELECTOR_CLASS.SEARCH_QUERIES_CHIP}`)
+        .its('length')
+        .should('be.equal', SETTINGS.MAX_SAVED_SEARCH_QUERY_COUNT);
+    });
+
     it('검색한 영상들 중 특정 영상 데이터를 저장 버튼을 눌러 저장할 수 있다.', () => {
       click(`#${SELECTOR_ID.SEARCH_BUTTON}`);
       type(`#${SELECTOR_ID.SEARCH_FORM_INPUT}`, '우아한');
@@ -80,4 +103,8 @@ function click(selector) {
 
 function type(selector, value) {
   return cy.get(selector).type(value);
+}
+
+function clearInput(selector) {
+  return cy.get(selector).clear();
 }
