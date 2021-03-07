@@ -1,4 +1,4 @@
-.skeleton .image,
+.skeleton .image::after,
 .skeleton .line::after {
   background-image: linear-gradient(
     90deg,
@@ -9,12 +9,14 @@
   animation: refresh 2s infinite ease-out;
 }
 
-.skeleton .line {
+.skeleton .line,
+.skeleton .image {
   visibility: hidden;
   position: relative;
 }
 
-.skeleton .line::after {
+.skeleton .line::after,
+.skeleton .image::after {
   width: 100%;
   height: 100%;
   visibility: visible;
