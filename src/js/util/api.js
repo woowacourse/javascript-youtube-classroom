@@ -1,5 +1,4 @@
 import { NUM_OF_VIDEO_PER_FETCH } from '../constants/index.js';
-import { YOUTUBE_API_KEY } from '../../../env.js';
 
 const END_POINT = 'https://yungo1846-youtube-demo.netlify.app/';
 
@@ -12,7 +11,6 @@ export const getSearchVideoByKeyword = async (keyword, pageToken = '') => {
     type: 'video',
     videoEmbeddable: true,
     pageToken,
-    key: YOUTUBE_API_KEY,
   });
   searchURL.search = params.toString();
 
@@ -20,11 +18,10 @@ export const getSearchVideoByKeyword = async (keyword, pageToken = '') => {
 };
 
 export const getVideoByIdList = async idList => {
-  const videoURL = new URL('/youtube/v3/videos', END_POINT);
+  const videoURL = new URL('/.netlify/functions/youtube/videos', END_POINT);
   const params = new URLSearchParams({
     part: 'snippet',
     id: idList.join(','),
-    key: YOUTUBE_API_KEY,
   });
   videoURL.search = params.toString();
 
