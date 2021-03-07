@@ -13,8 +13,8 @@ class StorageModel {
   }
 
   init() {
-    setJSONToLocalStorage(STORAGE.KEY_MY_VIDEO, this.#myVideo);
-    setJSONToLocalStorage(STORAGE.KEY_KEYWORDS, this.#keywords);
+    this.#myVideo = getJSONFromLocalStorage(STORAGE.KEY_MY_VIDEO);
+    this.#keywords = getJSONFromLocalStorage(STORAGE.KEY_KEYWORDS);
   }
 
   saveVideo = json => {
