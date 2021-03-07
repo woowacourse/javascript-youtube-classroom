@@ -1,6 +1,6 @@
 import state from '../library/state.js';
 import $ from '../library/utils/DOM.js';
-import fetchSearchResult from '../library/searchAPI.js';
+import { fetchSearchResult } from '../library/API.js';
 import {
   renderVideoLoader,
   renderVideoSearchResult,

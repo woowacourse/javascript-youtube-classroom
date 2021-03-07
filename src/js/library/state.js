@@ -1,8 +1,8 @@
 // TODO: 도메인 별로 상태객체
 
+import { renderSavedVideoList } from '../viewControllers/app.js';
 import {
   renderSavedVideoCount,
-  renderSavedVideoList,
   renderLatestKeywordList,
 } from '../viewControllers/searchModal.js';
 import { MAX_LATEST_KEYWORD_COUNT } from './constants/classroom.js';

@@ -1,4 +1,3 @@
-const YOUTUBE_SEARCH_BASE_URL =
-  'https://www.googleapis.com/youtube/v3/search?part=snippet&order=viewCount';
+const YOUTUBE_BASE_URL = 'https://www.googleapis.com/youtube/v3';
 
-export default YOUTUBE_SEARCH_BASE_URL;
+export default YOUTUBE_BASE_URL;
