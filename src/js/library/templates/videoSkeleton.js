@@ -1,4 +1,4 @@
-import { FETCH_VIDEO_COUNT } from '../constants/classroom';
+import { FETCH_VIDEO_COUNT } from '../constants/classroom.js';
 
 function createSkeletonClipTemplate() {
   return `<article class="clip skeleton">
