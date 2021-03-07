@@ -29,3 +29,7 @@ export const URL = {
   YOUTUBE_VIDEOS: 'https://www.googleapis.com/youtube/v3/videos?',
   DUMMY_SEARCH: 'https://dawon.pythonanywhere.com/videos/',
 };
+
+export const ERROR_MESSAGE = {
+  OVER_MAX_VIDEO_LENGTH: '볼 영상은 최대 100개까지만 저장할 수 있습니다!',
+};
