@@ -3,21 +3,21 @@ context('Actions', () => {
     cy.visit('http://127.0.0.1:5500/');
   });
   it('검색 모달창 열고 검색창에 검색어 입력, 검색버튼 클릭, 동영상 목록 보여진다.', () => {
-    cy.get('#search-button').click();
+    cy.get('#search-modal-button').click();
     cy.get('#search-video-wrapper').children().should('not.exist');
     cy.get('#search-youtube-input').type('우테코');
     cy.get('#search-youtube-button').click();
     cy.get('#search-video-wrapper').children().should('exist');
   });
   it('검색 모달창 열고 검색창에 검색어 입력, 엔터 입력, 동영상 목록 보여진다', () => {
-    cy.get('#search-button').click();
+    cy.get('#search-modal-button').click();
     cy.get('#search-video-wrapper').children().should('not.exist');
     cy.get('#search-youtube-input').type('우테코');
     cy.get('#search-youtube-button').type('{enter}');
     cy.get('#search-video-wrapper').children().should('exist');
   });
   it('검색 모달창 열고 검색창에 검색어 입력, 검색버튼 클릭하면 비디오 요소에 .skeleton 클래스명이 존재. n초후, .skeleton 클래스명 없음', () => {
-    cy.get('#search-button').click();
+    cy.get('#search-modal-button').click();
     cy.get('#search-youtube-input').type('우테코');
     cy.get('#search-youtube-button').click();
     cy.get('.clip').each(clip => {
@@ -29,19 +29,19 @@ context('Actions', () => {
     });
   });
   it('검색 모달창 열고 검색창에 결과없는 검색어 입력, 검색버튼 누르면, 결과없음 이미지가 보여진다.', () => {
-    cy.get('#search-button').click();
+    cy.get('#search-modal-button').click();
     cy.get('#search-youtube-input').type('skdnaskfbalsdkf');
     cy.get('#search-youtube-button').click();
     cy.get('#search-not-found').should('exist');
   });
   it('검색 모달창 열고 검색창에 검색어 입력, 검색버튼 클릭, 동영상 요소 10개 존재.', () => {
-    cy.get('#search-button').click();
+    cy.get('#search-modal-button').click();
     cy.get('#search-youtube-input').type('우테코');
     cy.get('#search-youtube-button').click();
     cy.get('#search-video-wrapper .clip').should('have.length', '10');
   });
   it('검색 모달창 열고 검색창에 검색어 입력(100개이상있는거), 검색버튼 클릭, 10개 확인 스크롤, 20개 확인 스크롤, (5번 확인)', () => {
-    cy.get('#search-button').click();
+    cy.get('#search-modal-button').click();
     cy.get('#search-youtube-input').type('우테코');
     cy.get('#search-youtube-button').click();
     for (let videos = 10; videos <= 50; videos += 10) {
@@ -52,7 +52,7 @@ context('Actions', () => {
     }
   });
   it('검색 모달창 열고 검색창에 검색입력, 첫번째 동영상 저장, webstorage에 데이터 있는지 확인.', () => {
-    cy.get('#search-button').click();
+    cy.get('#search-modal-button').click();
     cy.get('#search-youtube-input').type('우테코');
     cy.get('#search-youtube-button').click();
     cy.get('.js-save-button').first().click();
@@ -62,7 +62,7 @@ context('Actions', () => {
       .should('not.empty');
   });
   it('검색 모달창 열고 검색창에 검색입력, 첫번째 동영상 저장, 저장버튼 안보이는지 확인', () => {
-    cy.get('#search-button').click();
+    cy.get('#search-modal-button').click();
     cy.get('#search-youtube-input').type('우테코');
     cy.get('#search-youtube-button').click();
     cy.get('.js-save-button').first().click();
@@ -71,7 +71,7 @@ context('Actions', () => {
       .should('have.class', 'invisible');
   });
   it('검색 모달창 열고 검색창에 검색어 입력(100개이상있는거), 검색버튼 클릭, 10개 확인 스크롤, 20개 확인 스크롤, (11번 확인) 110개 가져오고, 저장버튼 100개 누르고 이후 누르는건 저장안됨. (데이터 길이 100그대로인지 확인)', () => {
-    cy.get('#search-button').click();
+    cy.get('#search-modal-button').click();
     cy.get('#search-youtube-input').type('우테코');
     cy.get('#search-youtube-button').click();
     for (let videos = 10; videos <= 110; videos += 10) {
@@ -92,18 +92,18 @@ context('Actions', () => {
       });
   });
   it('검색 모달창 열고 검색 입력창에 최근 검색어 storage의 가장 마지막 text가 있고 동영상 목록이 있어야 한다.', () => {
-    cy.get('#search-button').click();
+    cy.get('#search-modal-button').click();
     cy.get('#search-youtube-input').type('우테코');
     cy.get('#search-youtube-button').click();
     cy.get('.modal-close').first().click();
-    cy.get('#search-button').click();
+    cy.get('#search-modal-button').click();
     cy.get('#search-youtube-input').should('have.value', '우테코');
     cy.get('#search-youtube-button').click();
     cy.get('#search-video-wrapper').children().should('exist');
   });
   it('검색 모달창 열고 검색창에 4개의 검색어를 입력했을때, 최근 검색어 목록에 3개의 검색어가 있어야 한다.', () => {
     const searchKeywords = ['우테코', '메이커준', '테크코스', '코로나'];
-    cy.get('#search-button').click();
+    cy.get('#search-modal-button').click();
     searchKeywords.forEach(keyword => {
       cy.get('#search-youtube-input').type(keyword);
       cy.get('#search-youtube-button').click();

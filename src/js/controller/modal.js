@@ -17,8 +17,8 @@ class ModalController {
   };
 
   handleModalOpen = () => {
-    const $searchButton = $('#search-button');
-    $searchButton.addEventListener('click', () => this.onModalShow());
+    const $searchModalButton = $('#search-modal-button');
+    $searchModalButton.addEventListener('click', () => this.onModalShow());
   };
 
   handleModalClose = () => {
@@ -26,4 +26,5 @@ class ModalController {
     $modalClose.addEventListener('click', () => this.onModalClose());
   };
 }
+
 export default ModalController;
