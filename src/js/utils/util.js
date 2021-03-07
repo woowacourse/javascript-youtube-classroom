@@ -16,7 +16,11 @@ export const setJSONToLocalStorage = (key, value) => {
 };
 
 export const getJSONFromLocalStorage = key => {
-  return JSON.parse(localStorage.getItem(key));
+  try {
+    return JSON.parse(localStorage.getItem(key));
+  } catch (e) {
+    return {};
+  }
 };
 
 export const isScrollUnfinished = (document, target) => {
