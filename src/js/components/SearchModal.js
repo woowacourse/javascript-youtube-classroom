@@ -3,6 +3,7 @@ import { API_KEY } from "../apiKey.js";
 import { STANDARD_NUMS, ALERT_MESSAGE, STORAGE } from "../utils/constants.js";
 import { api } from "../utils/api.js";
 import { setLocalStorage, getLocalStorage } from "../utils/localStorage.js";
+import { changeDateFormat } from "../utils/common.js";
 
 // dummy API Response 사용할 경우
 // import { dummyResponse } from "../utils/dummy.js";
@@ -241,14 +242,5 @@ const createKeywordHistoryTemplate = keywords => `
   <span class="text-gray-700">최근 검색어: </span>
   ${keywords.map(keyword => `<a class="keyword-history__keyword chip">${keyword}</a>`).join("")}
 `;
-
-const changeDateFormat = publishedAt => {
-  const date = new Date(publishedAt);
-  const year = date.getFullYear();
-  const month = date.getMonth();
-  const day = date.getDay();
-
-  return `${year}년 ${month}월 ${day}일`;
-};
 
 export default SearchModal;
