@@ -1,7 +1,15 @@
 export const getLocalStorageItem = ({ key, defaultValue }) => {
   const storedData = localStorage.getItem(key);
 
-  return storedData ? JSON.parse(storedData) : defaultValue;
+  if (!storedData) {
+    return defaultValue;
+  }
+
+  try {
+    return JSON.parse(storedData);
+  } catch {
+    throw new Error('Stored data is not JSON format.');
+  }
 };
 
 export const setLocalStorageItem = ({ key, item }) => {
