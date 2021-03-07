@@ -1,3 +1,5 @@
+import { ERROR_MESSAGE } from '../../src/js/constants/constant';
+
 context('Actions', () => {
   beforeEach(() => {
     cy.visit('http://127.0.0.1:5500/');
@@ -84,12 +86,12 @@ context('Actions', () => {
       cy.wait(500);
       cy.wrap(button).click();
     });
-    cy.window()
-      .its('localStorage')
-      .invoke('getItem', 'myVideo')
-      .then(myVideo => {
-        cy.wrap(JSON.parse(myVideo)).should('have.length', '100');
-      });
+
+    cy.window().then(window => cy.stub(window, 'alert').as('alert'));
+    cy.get('@alert').should(
+      'be.calledWith',
+      ERROR_MESSAGE.OVER_MAX_VIDEO_LENGTH
+    );
   });
   it('검색 모달창 열고 검색 입력창에 최근 검색어 storage의 가장 마지막 text가 있고 동영상 목록이 있어야 한다.', () => {
     cy.get('#search-modal-button').click();
