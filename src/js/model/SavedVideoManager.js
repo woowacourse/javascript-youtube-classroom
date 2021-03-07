@@ -13,6 +13,11 @@ export class SavedVideoManager {
 
   unsubscribe(subscriber) {
     const subscriberIndex = this.subscribers.indexOf(subscriber);
+
+    if (subscriberIndex === -1) {
+      return;
+    }
+
     this.subscribers.splice(subscriberIndex, 1);
   }
 
