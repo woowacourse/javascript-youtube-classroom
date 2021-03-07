@@ -1,4 +1,5 @@
-import { getVideoByIdList, formatDateTime, $, renderSkeleton } from '../util/index.js';
+import { getVideoTemplate } from '../constants/index.js';
+import { getVideoByIdList, $, renderSkeleton } from '../util/index.js';
 
 export class SavedVideo {
   constructor({ savedVideoManager, isCompleted }) {
@@ -28,44 +29,21 @@ export class SavedVideo {
     this.render();
   }
 
-  makeTemplate({ id, snippet }) {
+  makeTemplate(videoData) {
+    return getVideoTemplate({
+      videoData,
+      buttonTemplate: this.getButtonTemplate(),
+    });
+  }
+
+  getButtonTemplate() {
     return `
-      <article class="clip d-flex flex-col justify-between">
-        <div class="content-container">
-          <div class="preview-container">
-            <iframe
-              width="100%"
-              height="118"
-              src="https://www.youtube.com/embed/${id}"
-              frameborder="0"
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-              allowfullscreen
-            ></iframe>
-          </div>
-          <div class="snippset-container px-1 py-2">
-            <h3>${snippet.title}</h3>
-            <div>
-              <a
-                href="https://www.youtube.com/channel/${snippet.channelId}"
-                target="_blank"
-                rel="noopener noreferer"
-                class="channel-name mt-1"
-              >
-              ${snippet.channelTitle}
-              </a>
-              <div class="meta">
-                <p>${formatDateTime(snippet.publishedAt)}</p>
-              </div>
-            </div>
-          </div>
-        </div>
-        <ul class="list-style-none p-0 mt-3 mb-6 d-flex">
-          <li class="mr-2"><button type="button" class="emoji-btn opacity-hover">✅</button></li>
-          <li class="mr-2"><button type="button" class="emoji-btn opacity-hover">👍</button></li>
-          <li class="mr-2"><button type="button" class="emoji-btn opacity-hover">💬</button></li>
-          <li class="mr-2"><button type="button" class="emoji-btn opacity-hover">🗑️</button></li>
-        </ul>
-      </article>
+      <ul class="list-style-none p-0 mt-3 mb-6 d-flex">
+        <li class="mr-2"><button type="button" class="emoji-btn opacity-hover">✅</button></li>
+        <li class="mr-2"><button type="button" class="emoji-btn opacity-hover">👍</button></li>
+        <li class="mr-2"><button type="button" class="emoji-btn opacity-hover">💬</button></li>
+        <li class="mr-2"><button type="button" class="emoji-btn opacity-hover">🗑️</button></li>
+      </ul>
     `;
   }
 
@@ -80,8 +58,8 @@ export class SavedVideo {
       .map(video => video.id);
 
     this.$savedVideoWrapper.innerHTML = this.savedVideoData.items
-      .filter(video => filteredVideoIdList.includes(video.id))
-      .map(video => this.makeTemplate(video))
+      .filter(item => filteredVideoIdList.includes(item.id))
+      .map(item => this.makeTemplate(item))
       .join('');
   }
 }
