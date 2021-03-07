@@ -13,6 +13,7 @@ class SearchController {
     this.view.init();
     this.handleSearch();
     this.handleSearchModalScroll();
+    this.handleSaveVideo();
   };
 
   getSearchInput = () => {
@@ -44,7 +45,6 @@ class SearchController {
     });
 
     this.handleVideoLoad();
-    this.handleSaveVideo();
   };
 
   saveVideo = e => {
@@ -68,11 +68,11 @@ class SearchController {
   };
 
   handleSaveVideo = () => {
-    [...$$(SELECTOR.SAVE_VIDEO_BUTTON)]
-      .slice(-SEARCH.FETCH_VIDEO_LENGTH)
-      .forEach(save => {
-        save.addEventListener('click', event => this.saveVideo(event));
-      });
+    $('#search-video-wrapper').addEventListener('click', event => {
+      if (event.target.classList.contains('js-save-button')) {
+        this.saveVideo(event);
+      }
+    });
   };
 
   handleSearch = () => {
