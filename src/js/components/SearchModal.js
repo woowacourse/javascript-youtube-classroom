@@ -2,6 +2,7 @@ import { $ } from "../utils/dom.js";
 import { API_KEY } from "../apiKey.js";
 import { STANDARD_NUMS, ALERT_MESSAGE, STORAGE } from "../utils/constants.js";
 import { api } from "../utils/api.js";
+import { setLocalStorage, getLocalStorage } from "../utils/localStorage.js";
 
 // dummy API Response 사용할 경우
 // import { dummyResponse } from "../utils/dummy.js";
@@ -17,7 +18,7 @@ class SearchModal {
     this.keyword = "";
     this.keywordHistory = [];
     this.videos = [];
-    this.savedVideoIds = JSON.parse(localStorage.getItem(STORAGE.VIDEO_IDS)) || [];
+    this.savedVideoIds = getLocalStorage(STORAGE.VIDEO_IDS, []);
     this.nextPageToken = "";
   }
 
@@ -29,7 +30,7 @@ class SearchModal {
     this.nextPageToken = nextPageToken ?? this.nextPageToken;
 
     this.render();
-    this.setStorage(this.savedVideoIds);
+    setLocalStorage(STORAGE.VIDEO_IDS, this.savedVideoIds);
   }
 
   selectDOM() {
@@ -184,10 +185,6 @@ class SearchModal {
 
     this.$savedVideoCount.textContent = `저장된 영상 갯수: ${this.savedVideoIds.length}/${STANDARD_NUMS.MAX_SAVE_VIDEO_COUNT}개`;
     this.$keywordHistory.innerHTML = createKeywordHistoryTemplate(this.keywordHistory);
-  }
-
-  setStorage(videoIds) {
-    localStorage.setItem(STORAGE.VIDEO_IDS, JSON.stringify(videoIds));
   }
 
   showModal() {
