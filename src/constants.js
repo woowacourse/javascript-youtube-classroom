@@ -16,6 +16,7 @@ export const SELECTOR_CLASS = Object.freeze({
   CLIP: 'clip',
   SKELETON: 'skeleton',
   CLIP_SAVE_BUTTON: 'clip__save-button',
+  SEARCH_QUERIES_CHIP: 'search-queries__chip',
 });
 
 export const STYLE_CLASS = Object.freeze({
@@ -29,6 +30,7 @@ export const YOUTUBE = Object.freeze({
 
 export const SETTINGS = Object.freeze({
   MAX_SAVE_COUNT: 100,
+  MAX_SAVED_SEARCH_QUERY_COUNT: 3,
 });
 
 export const LOCAL_STORAGE_KEY = Object.freeze({

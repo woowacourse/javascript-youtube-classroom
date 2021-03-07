@@ -9,7 +9,6 @@ import {
   getSkeletonListTemplate,
   getSelectedVideoListTemplate,
   getSearchQueriesTemplate,
-  getSearchQueryTemplate,
 } from './templates.js';
 import { $ } from '../utils/querySelector.js';
 
@@ -57,17 +56,8 @@ const view = {
   hideElement($element) {
     $element.classList.add('removed');
   },
-  insertSearchQueries(queries) {
-    $searchQueries.insertAdjacentHTML(
-      'beforeend',
-      getSearchQueriesTemplate(queries)
-    );
-  },
-  insertSearchQuery(query) {
-    $searchQueries.insertAdjacentHTML(
-      'beforeend',
-      getSearchQueryTemplate(query)
-    );
+  renderSearchQueries(queries) {
+    $searchQueries.innerHTML = getSearchQueriesTemplate(queries);
   },
 };
 

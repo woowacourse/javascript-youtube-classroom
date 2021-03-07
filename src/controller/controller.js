@@ -39,7 +39,8 @@ const controller = {
   },
   initSearchQueries() {
     const searchQueries = getLocalStorageItem(LOCAL_STORAGE_KEY.SEARCH_QUERIES);
-    view.insertSearchQueries(searchQueries);
+    searchQueries.reverse();
+    view.renderSearchQueries(searchQueries);
   },
   initVideos() {
     const videos = getLocalStorageItem(LOCAL_STORAGE_KEY.VIDEOS_TO_WATCH);
@@ -65,16 +66,17 @@ function onModalOpen() {
   const prevSearchResult = getLocalStorageItem(
     LOCAL_STORAGE_KEY.PREVIOUS_SEARCH_RESULTS
   );
-  if (prevSearchResult) {
-    const processedVideos = prevSearchResult.videos.map(video => ({
-      ...video,
-      isSaved: isVideoToWatch(video.videoId),
-    }));
-    view.insertVideoItems($searchResultVideoWrapper, processedVideos);
-    view.showElementBySelector(`#${SELECTOR_ID.SERACH_RESULT_INTERSECTOR}`);
-    model.setNextPageToken(prevSearchResult.nextPageToken);
-    model.setLastQuery(prevSearchResult.lastQuery);
+  if (!prevSearchResult?.videos) {
+    return;
   }
+  const processedVideos = prevSearchResult.videos.map(video => ({
+    ...video,
+    isSaved: isVideoToWatch(video.videoId),
+  }));
+  view.insertVideoItems($searchResultVideoWrapper, processedVideos);
+  view.showElementBySelector(`#${SELECTOR_ID.SERACH_RESULT_INTERSECTOR}`);
+  model.setNextPageToken(prevSearchResult.nextPageToken);
+  model.setLastQuery(prevSearchResult.lastQuery);
 }
 
 function onModalClose() {
@@ -97,8 +99,19 @@ function onVideoSearch(event) {
       view.showElementBySelector(`#${SELECTOR_ID.NOT_FOUND_CONTENT}`);
       return;
     }
+    if (!getLocalStorageItem(LOCAL_STORAGE_KEY.SEARCH_QUERIES)) {
+      return;
+    }
+
+    const queries = getLocalStorageItem(
+      LOCAL_STORAGE_KEY.SEARCH_QUERIES
+    ).filter(query => input !== query);
+    setLocalStorageItem(LOCAL_STORAGE_KEY.SEARCH_QUERIES, queries);
     pushLocalStorageItem(LOCAL_STORAGE_KEY.SEARCH_QUERIES, input);
-    view.insertSearchQuery(input);
+    const reversedQueries = getLocalStorageItem(
+      LOCAL_STORAGE_KEY.SEARCH_QUERIES
+    ).reverse();
+    view.renderSearchQueries(reversedQueries);
     const processedVideos = videos.map(video => ({
       ...video,
       isSaved: isVideoToWatch(video.videoId),
