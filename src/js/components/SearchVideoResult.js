@@ -104,6 +104,7 @@ export class SearchVideoResult {
               <a
                 href="https://www.youtube.com/channel/${snippet.channelId}"
                 target="_blank"
+                rel="noopener noreferer"
                 class="channel-name mt-1"
               >
               ${snippet.channelTitle}
