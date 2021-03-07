@@ -211,6 +211,7 @@ const createSearchedVideoTemplate = video => `
       <a
         href="https://www.youtube.com/channel/${video.channelId}"
         target="_blank"
+        rel="noopener noreferrer nofollow"
         class="channel-name mt-1"
       >
       ${video.channelTitle}
