@@ -47,6 +47,11 @@ function appendVideos(searchResult, videoInfos) {
   );
 }
 
+function search(keyword) {
+  dom.$videoSearchForm.elements['video-search-input'].value = keyword;
+  dom.$videoSearchForm.elements['video-search-submit'].click();
+}
+
 export {
   openModal,
   closeModal,
@@ -56,4 +61,5 @@ export {
   renderVideoSearchResult,
   renderSavedVideoList,
   appendVideos,
+  search,
 };

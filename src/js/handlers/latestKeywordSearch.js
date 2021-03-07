@@ -1,12 +1,11 @@
-import dom from '../library/DOMelements.js';
+import { search } from '../viewController.js';
 
-function handleLatestKeywordSearch(e) {
-  if (!e.target.classList.contains('js-latest-keyword')) return;
+function handleLatestKeywordSearch({ target }) {
+  if (!target.classList.contains('js-latest-keyword')) return;
 
-  const latestKeyword = e.target.innerText;
+  const latestKeyword = target.innerText;
 
-  dom.$videoSearchForm.elements['video-search-input'].value = latestKeyword;
-  dom.$videoSearchForm.elements['video-search-submit'].click();
+  search(latestKeyword);
 }
 
 export default handleLatestKeywordSearch;
