@@ -1,5 +1,4 @@
 export const $ = selector => document.querySelector(selector);
-// const $$ = selector => document.querySelectorAll(selector);
 
 const dom = {
   $modalOpenButton: $('#search-button'),

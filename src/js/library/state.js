@@ -5,6 +5,7 @@ import {
   renderSavedVideoList,
   renderLatestKeywordList,
 } from '../viewController.js';
+import { MAX_LATEST_KEYWORD_COUNT } from './constants/classroom.js';
 
 const state = {
   videoInfos: new Set(),
@@ -33,7 +34,7 @@ const state = {
 
     if (targetIdx > -1) {
       this.latestKeywords.splice(targetIdx, 1);
-    } else if (this.latestKeywords.length === 3) {
+    } else if (this.latestKeywords.length === MAX_LATEST_KEYWORD_COUNT) {
       this.latestKeywords.shift();
     }
     this.latestKeywords.push(newKeyword);

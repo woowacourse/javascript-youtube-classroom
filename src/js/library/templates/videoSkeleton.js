@@ -1,3 +1,5 @@
+import { FETCH_VIDEO_COUNT } from '../constants/classroom';
+
 function createSkeletonClipTemplate() {
   return `<article class="clip skeleton">
             <div class="preview-container image">
@@ -15,7 +17,7 @@ function createSkeletonClipTemplate() {
 }
 
 function createVideoSkeletonTemplate() {
-  return createSkeletonClipTemplate().repeat(10);
+  return createSkeletonClipTemplate().repeat(FETCH_VIDEO_COUNT);
 }
 
 export default createVideoSkeletonTemplate;

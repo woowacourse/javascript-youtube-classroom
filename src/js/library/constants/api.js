@@ -1,4 +1,4 @@
-const YOUTUBE_SEARCH_API =
-  'https://www.googleapis.com/youtube/v3/search?part=snippet&maxResults=10&order=viewCount';
+const YOUTUBE_SEARCH_BASE_URL =
+  'https://www.googleapis.com/youtube/v3/search?part=snippet&order=viewCount';
 
-export default YOUTUBE_SEARCH_API;
+export default YOUTUBE_SEARCH_BASE_URL;

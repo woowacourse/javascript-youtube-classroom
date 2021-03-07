@@ -1,3 +1,5 @@
+import { EXCEED_SAVED_VIDEO_COUNT_MSG } from '../library/constants/alertMessage.js';
+import { MAX_SAVED_VIDEO_COUNT } from '../library/constants/classroom.js';
 import state from '../library/state.js';
 
 function createVideoInfo(videoDataset) {
@@ -18,8 +20,8 @@ function saveVideo($video) {
 
 function handleVideoSave({ target }) {
   if (!target.classList.contains('js-save-button')) return;
-  if (state.videoInfos.size >= 1) {
-    alert('최대 저장 개수는 100개입니다.');
+  if (state.videoInfos.size >= MAX_SAVED_VIDEO_COUNT) {
+    alert(EXCEED_SAVED_VIDEO_COUNT_MSG);
 
     return;
   }
