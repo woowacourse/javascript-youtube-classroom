@@ -9,150 +9,88 @@ import {
 } from '../elements.js';
 import view from '../view/view.js';
 import { getVideosByKeyword } from '../apis/youtube.js';
-import {
-  setLocalStorageItem,
-  getLocalStorageItem,
-  pushLocalStorageItem,
-} from '../storage/localStorage.js';
-import {
-  LOCAL_STORAGE_KEY,
-  SETTINGS,
-  SELECTOR_ID,
-  SELECTOR_CLASS,
-} from '../constants.js';
-import { model } from '../store.js';
+import prevSearchResult from '../storage/prevSearchResult.js';
+import searchQuery from '../storage/searchQuery.js';
+import videoToWatch from '../storage/videoToWatch.js';
+import { SETTINGS, SELECTOR_CLASS } from '../constants.js';
+import controllerUtil from './controllerUtil.js';
 
-const controller = {
-  initEventListeners() {
-    const observer = new IntersectionObserver(entries => {
-      entries.forEach(entry => {
-        if (entry.intersectionRatio > 0) {
-          onAdditionalVideosLoad();
-        }
-      });
-    });
-    observer.observe($searchResultIntersector);
-    $searchResultVideoWrapper.addEventListener('click', onSelectedVideoSave);
-    $searchButton.addEventListener('click', onModalOpen);
-    $modalCloseButton.addEventListener('click', onModalClose);
-    $searchForm.addEventListener('submit', onVideoSearch);
-  },
-  initSearchQueries() {
-    const searchQueries = getLocalStorageItem(LOCAL_STORAGE_KEY.SEARCH_QUERIES);
-    searchQueries.reverse();
-    view.renderSearchQueries(searchQueries);
-  },
-  initVideos() {
-    const videos = getLocalStorageItem(LOCAL_STORAGE_KEY.VIDEOS_TO_WATCH);
-    view.renderSelectedVideoItems($videoWrapper, videos);
-  },
-};
-
-function onAdditionalVideosLoad() {
-  getVideosByKeyword(model.getLastQuery(), model.getNextPageToken()).then(
-    ({ videos, nextPageToken }) => {
-      view.insertVideoItems($searchResultVideoWrapper, videos);
-      if (videos.length === 0) {
-        view.showElementBySelector(`#${SELECTOR_ID.NOT_FOUND_CONTENT}`);
-        return;
-      }
-      model.setNextPageToken(nextPageToken);
-    }
+async function onAdditionalVideosLoad() {
+  const { videos, nextPageToken } = await getVideosByKeyword(
+    prevSearchResult.getLastQuery(),
+    prevSearchResult.getNextPageToken()
   );
+  controllerUtil.loadAdditionalVideos(videos);
+  prevSearchResult.setNextPageToken(nextPageToken);
 }
 
 function onModalOpen() {
   view.openModal();
-  const prevSearchResult = getLocalStorageItem(
-    LOCAL_STORAGE_KEY.PREVIOUS_SEARCH_RESULTS
-  );
-  if (!prevSearchResult?.videos) {
+  const videos = prevSearchResult.getSearchedVideos();
+  if (videos.length === 0) {
     return;
   }
-  const processedVideos = prevSearchResult.videos.map(video => ({
-    ...video,
-    isSaved: isVideoToWatch(video.videoId),
-  }));
-  view.insertVideoItems($searchResultVideoWrapper, processedVideos);
-  view.showElementBySelector(`#${SELECTOR_ID.SERACH_RESULT_INTERSECTOR}`);
-  model.setNextPageToken(prevSearchResult.nextPageToken);
-  model.setLastQuery(prevSearchResult.lastQuery);
+  controllerUtil.loadPrevSearchedVideos(videos);
+  controllerUtil.savePrevSearchInfo(
+    prevSearchResult.getLastQuery(),
+    prevSearchResult.getNextPageToken()
+  );
 }
 
 function onModalClose() {
   view.closeModal();
 }
 
-function onVideoSearch(event) {
+async function onVideoSearch(event) {
   event.preventDefault();
   const input = $searchFormInput.value;
-  if (input === model.getLastQuery()) {
+  if (input === prevSearchResult.getLastQuery()) {
     return;
   }
-  view.hideElementBySelector(`#${SELECTOR_ID.NOT_FOUND_CONTENT}`);
-  view.renderSkeletonItems();
-  getVideosByKeyword(input).then(({ videos, nextPageToken }) => {
-    model.setLastQuery(input);
-    model.setNextPageToken(nextPageToken);
-    view.hideElementBySelector(`.${SELECTOR_CLASS.SKELETON}`);
-    if (videos.length === 0) {
-      view.showElementBySelector(`#${SELECTOR_ID.NOT_FOUND_CONTENT}`);
-      return;
-    }
-    if (!getLocalStorageItem(LOCAL_STORAGE_KEY.SEARCH_QUERIES)) {
-      return;
-    }
+  view.initSearchResult();
+  const { videos, nextPageToken } = await getVideosByKeyword(input);
+  if (videos.length === 0) {
+    view.showNotFountContent();
+    return;
+  }
+  view.hideSkeletons();
+  controllerUtil.pushSearchQuery(input);
+  controllerUtil.loadSearchResult(videos);
 
-    const queries = getLocalStorageItem(
-      LOCAL_STORAGE_KEY.SEARCH_QUERIES
-    ).filter(query => input !== query);
-    setLocalStorageItem(LOCAL_STORAGE_KEY.SEARCH_QUERIES, queries);
-    pushLocalStorageItem(LOCAL_STORAGE_KEY.SEARCH_QUERIES, input);
-    const reversedQueries = getLocalStorageItem(
-      LOCAL_STORAGE_KEY.SEARCH_QUERIES
-    ).reverse();
-    view.renderSearchQueries(reversedQueries);
-    const processedVideos = videos.map(video => ({
-      ...video,
-      isSaved: isVideoToWatch(video.videoId),
-    }));
-    view.insertVideoItems($searchResultVideoWrapper, processedVideos);
-    view.showElementBySelector(`#${SELECTOR_ID.SERACH_RESULT_INTERSECTOR}`);
-    setLocalStorageItem(LOCAL_STORAGE_KEY.PREVIOUS_SEARCH_RESULTS, {
-      lastQuery: model.getLastQuery(),
-      videos,
-      nextPageToken,
-    });
-  });
+  controllerUtil.savePrevSearchInfo(input, nextPageToken);
+  prevSearchResult.setVideos(videos);
 }
 
 function onSelectedVideoSave({ target }) {
-  if (
-    !target.classList.contains(SELECTOR_CLASS.CLIP_SAVE_BUTTON) ||
-    getLocalStorageItem(LOCAL_STORAGE_KEY.VIDEOS_TO_WATCH).length >
-      SETTINGS.MAX_SAVE_COUNT
-  ) {
+  if (!target.classList.contains(SELECTOR_CLASS.CLIP_SAVE_BUTTON)) {
     return;
   }
-
-  const videosToWatch = getLocalStorageItem(LOCAL_STORAGE_KEY.VIDEOS_TO_WATCH);
-  const newVideo = {
-    title: target.dataset.title,
-    channelTitle: target.dataset.channelTitle,
-    publishedAt: target.dataset.publishedAt,
-    videoId: target.dataset.videoId,
-    isSaved: true,
-  };
-  view.hideElement(target);
-  videosToWatch.push(newVideo);
-  setLocalStorageItem(LOCAL_STORAGE_KEY.VIDEOS_TO_WATCH, videosToWatch);
-  view.renderSelectedVideoItems($videoWrapper, videosToWatch);
+  if (videoToWatch.getVideos().length > SETTINGS.MAX_SAVE_COUNT) {
+    return;
+  }
+  view.hideVideoSaveButton(target);
+  videoToWatch.pushVideo(controllerUtil.getNewVideo(target.dataset));
+  view.renderSelectedVideoItems($videoWrapper, videoToWatch.getVideos());
 }
 
-function isVideoToWatch(videoId) {
-  return getLocalStorageItem(LOCAL_STORAGE_KEY.VIDEOS_TO_WATCH).some(
-    video => video.videoId === videoId
-  );
-}
+const controller = {
+  initEventListeners() {
+    controllerUtil.setObserver(
+      $searchResultIntersector,
+      onAdditionalVideosLoad
+    );
+    $searchResultVideoWrapper.addEventListener('click', onSelectedVideoSave);
+    $searchButton.addEventListener('click', onModalOpen);
+    $modalCloseButton.addEventListener('click', onModalClose);
+    $searchForm.addEventListener('submit', onVideoSearch);
+  },
+  initSearchQueries() {
+    //TODO: css로 reverse 처리
+    view.renderSearchQueries(searchQuery.getQueries().reverse());
+  },
+  initVideos() {
+    view.renderSelectedVideoItems($videoWrapper, videoToWatch.getVideos());
+  },
+};
 
 export default controller;

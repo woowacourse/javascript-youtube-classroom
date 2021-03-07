@@ -3,14 +3,14 @@ import {
   $searchResultVideoWrapper,
   $searchQueries,
 } from '../elements.js';
-import { STYLE_CLASS } from '../constants.js';
+import { STYLE_CLASS, SELECTOR_ID, SELECTOR_CLASS } from '../constants.js';
 import {
   getVideoListTemplate,
   getSkeletonListTemplate,
   getSelectedVideoListTemplate,
   getSearchQueriesTemplate,
 } from './templates.js';
-import { $ } from '../utils/querySelector.js';
+import viewUtil from './viewUtil.js';
 
 const view = {
   openModal() {
@@ -19,17 +19,12 @@ const view = {
   closeModal() {
     $modal.classList.remove(STYLE_CLASS.OPEN);
   },
-  insertVideoItems($element, videos) {
-    $element.insertAdjacentHTML('beforeend', getVideoListTemplate(videos));
+  initSearchResult() {
+    view.hideElementBySelector(`#${SELECTOR_ID.NOT_FOUND_CONTENT}`);
+    view.renderSkeletonItems();
   },
   renderVideoItems($element, videos) {
     $element.innerHTML = getVideoListTemplate(videos);
-  },
-  insertSelectedVideoItems($element, videos) {
-    $element.insertAdjacentHTML(
-      'beforeend',
-      getSelectedVideoListTemplate(videos)
-    );
   },
   renderSelectedVideoItems($element, videos) {
     $element.innerHTML = getSelectedVideoListTemplate(videos);
@@ -37,27 +32,30 @@ const view = {
   renderSkeletonItems() {
     $searchResultVideoWrapper.innerHTML = getSkeletonListTemplate();
   },
-  showElementBySelector(selector) {
-    $(selector).classList.remove('removed');
-  },
-  hideElementBySelector(selector) {
-    const target = $(selector);
-    if (Array.isArray(target)) {
-      target.forEach(item => {
-        item.classList.add('removed');
-      });
-      return;
-    }
-    target.classList.add('removed');
-  },
-  showElement($element) {
-    $element.classList.remove('removed');
-  },
-  hideElement($element) {
-    $element.classList.add('removed');
-  },
   renderSearchQueries(queries) {
     $searchQueries.innerHTML = getSearchQueriesTemplate(queries);
+  },
+  renderSearchedVideos(processedVideos) {
+    view.insertVideoItems($searchResultVideoWrapper, processedVideos);
+    view.showElementBySelector(`#${SELECTOR_ID.SERACH_RESULT_INTERSECTOR}`);
+  },
+  insertVideoItems($element, videos) {
+    $element.insertAdjacentHTML('beforeend', getVideoListTemplate(videos));
+  },
+  insertSelectedVideoItems($element, videos) {
+    $element.insertAdjacentHTML(
+      'beforeend',
+      getSelectedVideoListTemplate(videos)
+    );
+  },
+  showNotFountContent() {
+    viewUtil.showElementBySelector(`#${SELECTOR_ID.NOT_FOUND_CONTENT}`);
+  },
+  hideSkeletons() {
+    view.hideElementBySelector(`.${SELECTOR_CLASS.SKELETON}`);
+  },
+  hideVideoSaveButton(target) {
+    view.hideElement(target);
   },
 };
 
