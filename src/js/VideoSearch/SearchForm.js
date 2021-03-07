@@ -1,8 +1,7 @@
-import { CLASSNAME, MESSAGE } from "../constants.js";
+import { CLASSNAME, MESSAGE, API_END_POINT } from "../constants.js";
 import { $ } from "../utils/querySelector.js";
 import store from "../store.js";
-// import { URL } from "../utils/URL.js";
-import dummyFetch from "../dummyFetch.js";
+// import dummyFetch from "../dummyFetch.js";
 
 export default class SearchForm {
   constructor() {
@@ -25,8 +24,8 @@ export default class SearchForm {
     // console.log(`[SearchForm] MESSAGE.KEYWORD_SUBMITTED post `);
 
     try {
-      // const response = await fetch(URL(query));
-      const response = await dummyFetch(query);
+      const response = await fetch(API_END_POINT(query));
+      // const response = await dummyFetch(query);
 
       if (!response.ok) {
         throw new Error(response.statusText);
