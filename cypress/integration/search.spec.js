@@ -1,3 +1,4 @@
+/* eslint-disable cypress/no-unnecessary-waiting */
 import { CLASSNAME, MAX_KEYWORDS_COUNT } from "../../src/js/constants.js";
 
 describe("유투브 검색 API를 이용하여 영상들을 검색할 수 있다.", () => {
@@ -7,7 +8,7 @@ describe("유투브 검색 API를 이용하여 영상들을 검색할 수 있다
       cy.get(`.${CLASSNAME.VIDEO_SEARCH_TAB}`).click();
     });
 
-    it("검색 결과가 없는 경우, 검색 결과 없음 이미지가 나타난다.", () => {
+    it.skip("검색 결과가 없는 경우, 검색 결과 없음 이미지가 나타난다.", () => {
       cy.get(`.${CLASSNAME.YOUTUBE_SEARCH_FORM_INPUT}`).type("./");
       cy.get(`.${CLASSNAME.YOUTUBE_SEARCH_FORM_BUTTON}`).click();
       cy.get(`.${CLASSNAME.MODAL_VIDEO_WRAPPER}`)
@@ -41,19 +42,20 @@ describe("유투브 검색 API를 이용하여 영상들을 검색할 수 있다
           .should("have.length", i + 1)
           .last()
           .invoke("text")
-          .then((text) => expect(text).to.be.equal(keyword));
+          .then((text) => {
+            cy.wait(1000);
+            expect(text).to.be.equal(keyword);
+          });
       });
 
       const fourthKeyword = "배민";
       const updatedKeywords = [...keywords, fourthKeyword].slice(
         -MAX_KEYWORDS_COUNT
       );
-      const DELAY = 3000;
 
       cy.get(`.${CLASSNAME.YOUTUBE_SEARCH_FORM_INPUT}`).type(fourthKeyword);
       cy.get(`.${CLASSNAME.YOUTUBE_SEARCH_FORM_BUTTON}`).click();
-      // eslint-disable-next-line cypress/no-unnecessary-waiting
-      cy.wait(DELAY);
+      cy.wait(3000);
       cy.get(`.${CLASSNAME.KEYWORD_HISTORY_SECTION}`)
         .children("a.chip")
         .should("have.length", MAX_KEYWORDS_COUNT)
@@ -68,6 +70,7 @@ describe("유투브 검색 API를 이용하여 영상들을 검색할 수 있다
       keywords.forEach((keyword) => {
         cy.get(`.${CLASSNAME.YOUTUBE_SEARCH_FORM_INPUT}`).type(keyword);
         cy.get(`.${CLASSNAME.YOUTUBE_SEARCH_FORM_BUTTON}`).click();
+        cy.wait(2000);
       });
 
       const duplicatedKeyword = "주모";
@@ -76,7 +79,6 @@ describe("유투브 검색 API를 이용하여 영상들을 검색할 수 있다
       cy.get(`.${CLASSNAME.YOUTUBE_SEARCH_FORM_INPUT}`).type(duplicatedKeyword);
       cy.get(`.${CLASSNAME.YOUTUBE_SEARCH_FORM_BUTTON}`).click();
 
-      // eslint-disable-next-line cypress/no-unnecessary-waiting
       cy.wait(3000);
       cy.get(`.${CLASSNAME.KEYWORD_HISTORY_SECTION}`)
         .children("a.chip")
@@ -98,11 +100,19 @@ describe("유투브 검색 API를 이용하여 영상들을 검색할 수 있다
         .children("article.clip:last-child")
         .scrollIntoView()
         .then(() => {
-          // cy.wait(3000);
           cy.get(`.${CLASSNAME.MODAL_VIDEO_WRAPPER}`)
             .children()
             .should("have.length", 20);
         });
+    });
+
+    it("검색 직후 skeleton UI가 나타나고, 데이터 로드된 후 skeleton UI가 사라진다.", () => {
+      cy.get(`.${CLASSNAME.YOUTUBE_SEARCH_FORM_INPUT}`).type("우테코");
+      cy.get(`.${CLASSNAME.YOUTUBE_SEARCH_FORM_BUTTON}`).click();
+      cy.get(".modal .skeleton").should("have.length", 10);
+      cy.wait(3000);
+
+      cy.get(".modal .skeleton").should("have.length", 0);
     });
   });
 });
