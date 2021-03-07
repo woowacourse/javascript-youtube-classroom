@@ -1,26 +1,28 @@
 import { fetchSearchResult } from '../library/API.js';
-import state from '../library/state.js';
 import { appendVideos } from '../viewControllers/searchModal.js';
 import $ from '../library/utils/DOM.js';
+import latestKeywords from '../library/states/latestKeywords.js';
+import videoInfos from '../library/states/videoInfos.js';
+import pageToken from '../library/states/pageToken.js';
 
 async function handleMoreVideoLoading(entries) {
   const [$lastVideo] = entries;
 
   if (!$lastVideo.isIntersecting) return;
 
-  state.intersectionObserver.disconnect();
+  this.disconnect();
 
   const { nextPageToken, items } = await fetchSearchResult(
-    state.latestKeywords[state.latestKeywords.length - 1],
-    state.nextPageToken
+    latestKeywords.get()[latestKeywords.get().length - 1],
+    pageToken.get()
   );
 
-  state.setNextPageToken(nextPageToken);
-  appendVideos(items, state.videoInfos);
+  pageToken.set(nextPageToken);
+  appendVideos(items, videoInfos.get());
 
   const $newLastVideo = $('#video-search-result .js-video:last-child');
 
-  state.intersectionObserver.observe($newLastVideo);
+  this.observe($newLastVideo);
 }
 
 export default handleMoreVideoLoading;
