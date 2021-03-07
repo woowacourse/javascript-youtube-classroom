@@ -58,11 +58,11 @@ export const $ = (function () {
   };
 
   constructor.prototype.setText = function (text) {
-    return (this.element.innerText = text);
+    this.element.innerText = text;
   };
 
   constructor.prototype.setValue = function (value) {
-    return (this.element.value = value);
+    this.element.value = value;
   };
 
   const instantiate = function (selector) {

@@ -1,5 +1,6 @@
 import { $ } from '../utils/dom.js';
 import { VALUE, STORAGE_KEYS } from '../utils/constants.js';
+import throttle from '../utils/throttle.js';
 import clipMaker from '../utils/clipMaker.js';
 import { getValidJson } from '../utils/localStorage.js';
 import View from './View.js';
@@ -33,20 +34,16 @@ export default class SearchModalView extends View {
   }
 
   bindScrollEvent() {
-    let throttle;
+    this.modalVideos.setEvent(
+      'scroll',
+      throttle(function (event) {
+        const { scrollTop, scrollHeight, offsetHeight } = event.target;
 
-    this.modalVideos.setEvent('scroll', (e) => {
-      if (throttle) return;
-
-      const { scrollTop, scrollHeight, offsetHeight } = e.target;
-      if (scrollTop === scrollHeight - offsetHeight) {
-        throttle = setTimeout(() => {
-          throttle = null;
-        }, VALUE.THROTTLE_TIME);
-
-        this.emit('scrollResult', this.searchKeyword);
-      }
-    });
+        if (scrollTop === scrollHeight - offsetHeight) {
+          this.emit('scrollResult', this.searchKeyword);
+        }
+      }, VALUE.THROTTLE_TIME).bind(this),
+    );
   }
 
   bindSaveEvent() {
