@@ -17,16 +17,11 @@ function generateSearchURL(keyword, pageToken) {
   return SEARCH_URL + searchParams;
 }
 
-export function searchRequest(keyword, pageToken, callback) {
+export async function searchRequest(keyword, pageToken) {
   const requestURL = generateSearchURL(keyword, pageToken);
+  const response = await fetch(requestURL).then((response) => response.json());
 
-  fetch(requestURL)
-    .then((response) => {
-      return response.json();
-    })
-    .then((res) => {
-      callback(res);
-    });
+  return response;
 }
 
 function generateVideoURL(videoIds) {
@@ -39,14 +34,9 @@ function generateVideoURL(videoIds) {
   return VIDEO_URL + searchParams;
 }
 
-export function videoRequest(videoIds, callback) {
+export async function videoRequest(videoIds) {
   const requestURL = generateVideoURL(videoIds);
+  const response = await fetch(requestURL).then((response) => response.json());
 
-  fetch(requestURL)
-    .then((response) => {
-      return response.json();
-    })
-    .then((res) => {
-      callback(res);
-    });
+  return response;
 }

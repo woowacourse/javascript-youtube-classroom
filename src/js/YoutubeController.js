@@ -71,12 +71,13 @@ export default class YoutubeController {
     this.savedVideosView.renderSavedVideoClips(savedVideos);
   }
 
-  loadSavedVideos() {
+  async loadSavedVideos() {
     const savedVideoIds = getValidJson(STORAGE_KEYS.SAVED_VIDEO_IDS, []);
 
     if (savedVideoIds.length === 0) return;
 
-    videoRequest(savedVideoIds, this.generateSavedVideos.bind(this));
+    const response = await videoRequest(savedVideoIds);
+    this.generateSavedVideos(response);
   }
 
   generateVideos(response) {
@@ -96,12 +97,13 @@ export default class YoutubeController {
     this.searchModalView.renderVideoClips(newVideos);
   }
 
-  scrollVideo(keyword) {
+  async scrollVideo(keyword) {
     this.searchModalView.startSearch();
-    searchRequest(keyword, this.nextPageToken, this.generateVideos.bind(this));
+    const response = await searchRequest(keyword, this.nextPageToken);
+    this.generateVideos(response);
   }
 
-  searchVideo(keyword) {
+  async searchVideo(keyword) {
     this.nextPageToken = null;
 
     if (isEmptySearchKeyword(keyword)) {
@@ -117,7 +119,8 @@ export default class YoutubeController {
     this.searchModalView.startSearch();
     this.searchModalView.scrollToTop();
 
-    searchRequest(keyword, this.nextPageToken, this.generateVideos.bind(this));
+    const response = await searchRequest(keyword, this.nextPageToken);
+    this.generateVideos(response);
   }
 
   saveVideo(videoId) {
