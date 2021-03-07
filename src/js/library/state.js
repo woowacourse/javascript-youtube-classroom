@@ -4,7 +4,7 @@ import {
   renderSavedVideoCount,
   renderSavedVideoList,
   renderLatestKeywordList,
-} from '../viewController.js';
+} from '../viewControllers/searchModal.js';
 import { MAX_LATEST_KEYWORD_COUNT } from './constants/classroom.js';
 
 const state = {

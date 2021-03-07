@@ -1,4 +1,4 @@
-import { search } from '../viewController.js';
+import { search } from '../viewControllers/searchModal.js';
 
 function handleLatestKeywordSearch({ target }) {
   if (!target.classList.contains('js-latest-keyword')) return;

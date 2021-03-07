@@ -1,9 +1,9 @@
-import dom from './library/DOMelements.js';
+import $ from './library/utils/DOM.js';
 import handleVideoSearch from './handlers/videoSearch.js';
 import handleVideoSave from './handlers/videoSave.js';
 import createIntersectionObserver from './library/intersectionObserver.js';
 import state from './library/state.js';
-import { openModal, closeModal } from './viewController.js';
+import { openModal, closeModal } from './viewControllers/app.js';
 import handleLatestKeywordSearch from './handlers/latestKeywordSearch.js';
 
 function initState() {
@@ -19,11 +19,14 @@ function initState() {
 }
 
 function initEvent() {
-  dom.$modalOpenButton.addEventListener('click', openModal);
-  dom.$modalCloseButton.addEventListener('click', closeModal);
-  dom.$videoSearchForm.addEventListener('submit', handleVideoSearch);
-  dom.$videoSearchResult.addEventListener('click', handleVideoSave);
-  dom.$latestKeywordList.addEventListener('click', handleLatestKeywordSearch);
+  $('#search-button').addEventListener('click', openModal);
+  $('#modal-close-button').addEventListener('click', closeModal);
+  $('#video-search-form').addEventListener('submit', handleVideoSearch);
+  $('#video-search-result').addEventListener('click', handleVideoSave);
+  $('#latest-keyword-list').addEventListener(
+    'click',
+    handleLatestKeywordSearch
+  );
 }
 
 export { initState, initEvent };
