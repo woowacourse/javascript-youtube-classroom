@@ -37,6 +37,7 @@ describe("유투브 검색 API를 이용하여 영상들을 검색할 수 있다
       keywords.forEach((keyword, i) => {
         cy.get(`.${CLASSNAME.YOUTUBE_SEARCH_FORM_INPUT}`).type(keyword);
         cy.get(`.${CLASSNAME.YOUTUBE_SEARCH_FORM_BUTTON}`).click();
+
         cy.get(`.${CLASSNAME.KEYWORD_HISTORY_SECTION}`)
           .children("a.chip")
           .should("have.length", i + 1)
@@ -113,6 +114,21 @@ describe("유투브 검색 API를 이용하여 영상들을 검색할 수 있다
       cy.wait(3000);
 
       cy.get(".modal .skeleton").should("have.length", 0);
+    });
+
+    it("검색어를 검색한 후 각 비디오의 저장버튼을 누르면, 저장된 영상 갯수가 1씩 증가한다", () => {
+      cy.get(`.${CLASSNAME.SAVED_VIDEOS_COUNT}`).should("have.text", 0);
+      cy.get(`.${CLASSNAME.YOUTUBE_SEARCH_FORM_INPUT}`).type("wow");
+      cy.get(`.${CLASSNAME.YOUTUBE_SEARCH_FORM_BUTTON}`).click();
+
+      cy.get(`.${CLASSNAME.SAVE_VIDEO_BUTTON}`).each(($btn, index) => {
+        cy.wrap($btn).click();
+        cy.wrap($btn).should("not.be.visible");
+        cy.get(`.${CLASSNAME.SAVED_VIDEOS_COUNT}`).should(
+          "have.text",
+          index + 1
+        );
+      });
     });
   });
 });
