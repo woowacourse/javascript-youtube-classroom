@@ -21,6 +21,7 @@ class StorageModel {
     this.#myVideo = getJSONFromLocalStorage(STORAGE.KEY_MY_VIDEO);
     if (this.#myVideo.length === STORAGE.MAX_SAVED_VIDEO_LENGTH) return;
     this.#myVideo.push(json);
+    console.log(this.#myVideo);
     setJSONToLocalStorage(STORAGE.KEY_MY_VIDEO, this.#myVideo);
   };
 
