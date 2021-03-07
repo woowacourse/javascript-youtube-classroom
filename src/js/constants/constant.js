@@ -23,3 +23,9 @@ export const CLASS = {
   SKELETON: 'skeleton',
   INVISIBLE: 'invisible',
 };
+
+export const URL = {
+  YOUTUBE_SEARCH: 'https://www.googleapis.com/youtube/v3/search?',
+  YOUTUBE_VIDEOS: 'https://www.googleapis.com/youtube/v3/videos?',
+  DUMMY_SEARCH: 'https://dawon.pythonanywhere.com/videos/',
+};
