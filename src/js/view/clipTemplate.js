@@ -33,6 +33,7 @@ export const clipTemplate = (video, index, type) => {
         isModal ? 'youtube-search-modal__clip' : 'saved-page__clip'
       }
         data-iswatched=${video.isWatched}
+        data-clip-index=${index}
       >
         <div class="preview-container">
           <iframe 
@@ -58,7 +59,7 @@ export const clipTemplate = (video, index, type) => {
             <div class="meta">
               ${YMDtemplate(video.snippet.publishTime)}
             </div>
-            <div class="d-flex justify-end" data-clip-index=${index}>
+            <div class="d-flex justify-end">
              ${buttonTemplate(index, type)}            
             </div>
           </div>
