@@ -10,11 +10,11 @@ const buttonTemplate = (index, type) => {
   }
 
   return `
-    <div>
-      <span class="opacity-hover">✅</span>
-      <span class="opacity-hover">👍</span>
-      <span class="opacity-hover">💬</span>
-      <span class="opacity-hover">🗑️</span>
+    <div data-js="saved-clip-button-container">
+      <span class="opacity-hover" data-js="saved-clip-button-container__check">✅</span>
+      <span class="opacity-hover" data-js="saved-clip-button-container__like">👍</span>
+      <span class="opacity-hover" data-js="saved-clip-button-container__comment">💬</span>
+      <span class="opacity-hover" data-js="saved-clip-button-container__delete">🗑️</span>
     </div>
   `;
 };
