@@ -26,9 +26,9 @@ const searchHistory = {
     return keyword ? JSON.parse(keyword) : [];
   },
 
-  removeKeyword(prevKeyword) {
+  removeKeyword(target) {
     const keywords = this.getKeywordAll().filter(
-      (currentKeyword) => currentKeyword !== prevKeyword
+      (currentKeyword) => currentKeyword !== target
     );
 
     localStorage.setItem(STORAGE_NAME.KEYWORDS, JSON.stringify(keywords));
