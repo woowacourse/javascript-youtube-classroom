@@ -1,4 +1,3 @@
-import VideoLocalStorage from '../models/localStorage.js';
 import {
   getThumbnailTemplate,
   getChannelTitleTemplate,
@@ -7,6 +6,7 @@ import {
 } from '../layout/searchResult.js';
 import { getSkeletonTemplate } from '../layout/skeleton.js';
 import { $ } from '../utils/DOM.js';
+import { SNACKBAR_SHOW_TIME } from '../constants.js';
 
 export default class SearchView {
   constructor() {
@@ -43,13 +43,11 @@ export default class SearchView {
   }
 
   renderSnackbar(message) {
-    const snackbarShowTime = 2000;
-
     this.$snackbar.innerText = message;
     this.$snackbar.classList.add('show');
     setTimeout(() => {
       this.$snackbar.classList.remove('show');
-    }, snackbarShowTime);
+    }, SNACKBAR_SHOW_TIME);
   }
 
   renderStoredVideoCount(count) {
