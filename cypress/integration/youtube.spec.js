@@ -33,7 +33,11 @@ describe('saved-video-ui', () => {
     cy.get('#saved-video-wrapper article').should('have.length', '1');
   });
 
-  it('저장한 영상의 "삭제" 버튼 클릭, "정말로 삭제하시겠습니까?" confirm 창 보여진다', () => {});
+  it('저장한 영상의 "삭제" 버튼 클릭, "정말로 삭제하시겠습니까?" confirm 창 보여진다', () => {
+    cy.window().then(window => cy.stub(window, 'confirm').as('confirm'));
+    cy.get('.video-info-buttons .delete').first().click();
+    cy.get('@confirm').should('be.calledWith', '정말로 삭제하시겠습니까?');
+  });
   it('저장한 영상 삭제 확인 누르면, "영상이 삭제되었습니다" 라는 스낵바 div가 3초간 보여지고, 저장한 영상 목록의 길이가 0이여야 한다.', () => {});
 });
 
