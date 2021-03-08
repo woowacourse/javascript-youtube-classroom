@@ -39,3 +39,7 @@ export const LOCAL_STORAGE_KEYS = {
   WATCH_LIST: 'watchList',
   RECENT_KEYWORD_LIST: 'recentKeywordList',
 };
+
+export const SERACH_RESULT = {
+  SKELETON_UI_COUNT: 8,
+};

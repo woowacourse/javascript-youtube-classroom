@@ -22,7 +22,13 @@ export default class Store extends Subject {
   }
 
   load(key) {
-    return JSON.parse(localStorage.getItem(key));
+    const value = localStorage.getItem(key);
+
+    try {
+      return JSON.parse(value);
+    } catch (error) {
+      return value;
+    }
   }
 
   update(data = {}) {

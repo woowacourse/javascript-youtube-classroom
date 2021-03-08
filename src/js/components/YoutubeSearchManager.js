@@ -1,6 +1,13 @@
 import { searchYoutube, searchYoutubeDummyData } from '../api.js';
 import { $, showSnackbar, renderSkeletonUI, formatDate, closeModal } from '../utils.js';
-import { ALERT_MESSAGE, SELECTORS, LOCAL_STORAGE_KEYS } from '../constants.js';
+import { ALERT_MESSAGE, SELECTORS, LOCAL_STORAGE_KEYS, SERACH_RESULT } from '../constants.js';
+import {
+  getVideoTemplate,
+  getFormTemplate,
+  getNoResultTemplate,
+  getEmptySearchResultTemplate,
+  getRecentKeywordTemplate,
+} from '../templates.js';
 import Observer from '../lib/Observer.js';
 
 export default class YoutubeSearchManager extends Observer {
@@ -12,78 +19,25 @@ export default class YoutubeSearchManager extends Observer {
     this.selector = SELECTORS.CLASS.YOUTUBE_SEARCH_FORM_CONTAINER;
   }
 
-  getFormTemplate() {
-    return `
-      <form id="youtube-search-form" class="d-flex">
-        <input
-          type="text"
-          id="youtube-search-keyword-input"
-          class="w-100 mr-2 pl-2"
-          name="keyword"
-          placeholder="검색"
-        />
-        <button type="submit" class="btn bg-cyan-500">검색</button>
-      </form>
-    `;
-  }
-
-  getNoResultTemplate() {
-    return `
-      <div class="no-result">
-        <img src="./src/images/status/not_found.png" alt="검색 결과 없음" />
-        <p><strong>검색 결과가 없습니다</strong></p>
-      </div>
-    `;
-  }
-
   getResultTemplate(result) {
     return result
       .map((item) => {
         const { channelId, title, channelTitle, publishedAt } = item.snippet;
-        const { videoId } = item.id;
+        const id = item.id.videoId;
         const { watchList } = this.store.get();
-        const isSaved = watchList.includes(videoId);
-
+        const isSaved = watchList.includes(id);
         const dateString = formatDate(publishedAt);
 
-        return `
-            <article class="clip d-flex flex-col">
-              <div class="preview-container">
-                <iframe
-                  width="100%"
-                  height="118"
-                  src="https://www.youtube.com/embed/${videoId}"
-                  frameborder="0"
-                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                  allowfullscreen>
-                </iframe>
-              </div>
-              <div class="content-container pt-2 px-1 d-flex flex-col justify-between flex-1">
-                <div>
-                  <h3 class="video-title">${title}</h3>
-                  <a
-                    href="https://www.youtube.com/channel/${channelId}"
-                    target="_blank"
-                    class="channel-name mt-1"
-                  >
-                    ${channelTitle}
-                  </a>
-                  <div class="meta">
-                    <p>${dateString}</p>
-                  </div>
-                </div>
-                <div class="d-flex justify-end">
-                  <button class="btn btn-save ${isSaved ? 'hidden' : ''}" data-video-id="${videoId}">⬇️ 저장</button>
-                </div>
-              </div>
-            </article>
-          `;
+        const video = { id, title, channelId, channelTitle, dateString };
+        const options = { containsSaveButton: !isSaved };
+
+        return getVideoTemplate(video, options);
       })
       .join('');
   }
 
   render() {
-    $(this.selector).innerHTML = this.getFormTemplate();
+    $(this.selector).innerHTML = getFormTemplate();
 
     this.renderRecentKeywordList();
     this.renderSavedVideoCount();
@@ -94,14 +48,14 @@ export default class YoutubeSearchManager extends Observer {
     $(SELECTORS.CLASS.YOUTUBE_SEARCH_RESULT).insertAdjacentHTML('beforeend', template);
   }
 
+  renderNoResult() {
+    $(SELECTORS.CLASS.YOUTUBE_SEARCH_RESULT_CONTAINER).innerHTML = getNoResultTemplate();
+  }
+
   renderRecentKeywordList() {
     const { recentKeywordList } = this.store.get();
     $(SELECTORS.CLASS.RECENT_KEYWORD_LIST).innerHTML = recentKeywordList
-      .map(
-        (item) => `
-          <a class="chip">${item}</a>
-        `
-      )
+      .map((keyword) => getRecentKeywordTemplate(keyword))
       .join('');
   }
 
@@ -110,9 +64,7 @@ export default class YoutubeSearchManager extends Observer {
   }
 
   renderEmptySearchResult() {
-    $(SELECTORS.CLASS.YOUTUBE_SEARCH_RESULT_CONTAINER).innerHTML = `
-      <div class="youtube-search-result video-wrapper"></div>
-    `;
+    $(SELECTORS.CLASS.YOUTUBE_SEARCH_RESULT_CONTAINER).innerHTML = getEmptySearchResultTemplate();
   }
 
   updateRecentKeywordList(keyword) {
@@ -133,30 +85,35 @@ export default class YoutubeSearchManager extends Observer {
     event.preventDefault();
 
     const keyword = event.target.elements.keyword.value;
+
     if (!keyword) {
       showSnackbar(ALERT_MESSAGE.EMPTY_SEARCH_KEYWORD);
       return;
     }
 
     this.renderEmptySearchResult();
-    renderSkeletonUI(SELECTORS.CLASS.YOUTUBE_SEARCH_RESULT, 8);
+    renderSkeletonUI(SELECTORS.CLASS.YOUTUBE_SEARCH_RESULT, SERACH_RESULT.SKELETON_UI_COUNT);
 
-    const response = await searchYoutube(keyword);
-    this.pageToken = response.nextPageToken;
+    try {
+      const response = await searchYoutube(keyword);
+      this.pageToken = response.nextPageToken;
+      this.updateRecentKeywordList(keyword);
 
-    this.updateRecentKeywordList(keyword);
+      if (response.pageInfo.totalResults === 0) {
+        this.renderNoResult();
+        return;
+      }
 
-    if (response.pageInfo.totalResults === 0) {
-      $(SELECTORS.CLASS.YOUTUBE_SEARCH_RESULT_CONTAINER).innerHTML = this.getNoResultTemplate();
-      return;
+      this.renderEmptySearchResult();
+      $(SELECTORS.CLASS.YOUTUBE_SEARCH_RESULT_CONTAINER).scrollTo(0, 0);
+
+      const template = this.getResultTemplate(response.items);
+      this.renderResults(template);
+    } catch (error) {
+      this.renderEmptySearchResult();
+
+      showSnackbar(error.message);
     }
-
-    this.renderEmptySearchResult();
-
-    $(SELECTORS.CLASS.YOUTUBE_SEARCH_RESULT_CONTAINER).scrollTo(0, 0);
-
-    const template = this.getResultTemplate(response.items);
-    this.renderResults(template);
   }
 
   async handleScroll(event) {
@@ -166,19 +123,24 @@ export default class YoutubeSearchManager extends Observer {
 
     if (isScrollBottom) {
       const keyword = $(SELECTORS.ID.YOUTUBE_SEARCH_KEYWORD_INPUT).value;
-      const response = await searchYoutube(keyword, this.pageToken);
-      this.pageToken = response.nextPageToken;
 
-      const template = this.getResultTemplate(response.items);
-      this.renderResults(template);
+      try {
+        const response = await searchYoutube(keyword, this.pageToken);
+        this.pageToken = response.nextPageToken;
+
+        const template = this.getResultTemplate(response.items);
+        this.renderResults(template);
+      } catch (error) {
+        showSnackbar(error.message);
+      }
     }
   }
 
   async handleSaveVideo(event) {
-    const selectedVideoId = event.target.dataset.videoId;
-    const $selectedButton = event.target;
-
     if (!event.target.classList.contains('btn-save')) return;
+
+    const $selectedButton = event.target;
+    const selectedVideoId = $selectedButton.dataset.videoId;
 
     this.store.update({
       [LOCAL_STORAGE_KEYS.WATCH_LIST]: [...this.store.get()[LOCAL_STORAGE_KEYS.WATCH_LIST], selectedVideoId],
