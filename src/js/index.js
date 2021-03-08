@@ -9,6 +9,7 @@ import { onSaveClip } from './handler/onSaveClip.js';
 import { onModalClose } from './handler/onModalClose.js';
 import { renderSavedClips } from './view/main.js';
 import { hideElement, showElement } from './utils/setAttribute.js';
+import { onToggleRenderedClips } from './handler/onToggleRenderedClips.js';
 import { setMockData } from '../mock.js';
 
 const initDisplay = () => {
@@ -47,8 +48,10 @@ export const YoutubeClassRoom = () => {
     'click',
     onSaveClip,
   );
+  $('[data-js="navigator"]').addEventListener('click', onToggleRenderedClips);
 
   window.addEventListener('click', onModalClose);
+  setMockData();
 };
 
 window.onload = () => {
