@@ -1,3 +1,4 @@
 import SearchEventController from "./search/SearchEventController.js";
 
-new SearchEventController().bindEvents();
+const searchEventController = new SearchEventController();
+searchEventController.bindEvents();
