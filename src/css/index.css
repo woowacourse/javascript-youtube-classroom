@@ -45,4 +45,13 @@ button:hover {
   outline: 0;
   background: none;
   cursor: pointer;
+  opacity: 50%;
+}
+
+.management-buttons button:hover {
+  opacity: 100%;
+}
+
+.video-list {
+  height: none;
 }

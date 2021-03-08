@@ -19,6 +19,7 @@ export default class Video {
     channelId,
     publishedAt,
     thumbnailURL,
+    watched = false,
   }) {
     this.videoId = videoId;
     this.videoTitle = videoTitle;
@@ -28,6 +29,7 @@ export default class Video {
     this.channelURL = this.createChannelURL();
     this.uploadTime = this.createVideoUploadDate(publishedAt);
     this.thumbnailURL = thumbnailURL;
+    this.watched = watched;
   }
 
   createVideoEmbedURL() {
@@ -55,6 +57,7 @@ export default class Video {
       channelURL: this.channelURL,
       uploadTime: this.uploadTime,
       thumbnailURL: this.thumbnailURL,
+      watched: this.watched,
     };
   }
 
@@ -136,6 +139,11 @@ export default class Video {
       clip.classList.add('d-none');
     }
 
+    // 초기 생성 : 볼 영상 기준
+    if (pageType === 'management' && this.watched) {
+      clip.classList.add('d-none');
+    }
+
     clip.dataset.videoId = this.videoId;
 
     const previewContainer = createElement({
@@ -155,6 +163,8 @@ export default class Video {
     iframe.onload = (e) => {
       e.target.classList.add('loaded');
     };
+    // TODO: intersection observer 이용해서 수정하기
+    iframe.loading = 'lazy';
 
     previewContainer.appendChild(iframe);
 

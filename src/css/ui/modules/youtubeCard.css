@@ -4,8 +4,11 @@
   grid-row-gap: 2px;
   grid-column-gap: 4px;
   justify-content: center;
-  overflow: scroll;
-  height: 500px;
+}
+
+#searched-video-wrapper {
+  overflow-y: scroll;
+  height: 60vh;
 }
 
 .clip {

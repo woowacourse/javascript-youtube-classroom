@@ -71,11 +71,21 @@ export default class App {
 
   selectDOM() {
     this.$searchButton = $('#search-button');
+    this.$watchLaterButton = $('#watch-later-button');
+    this.$watchedButton = $('#watched-button');
   }
 
   bindEvent() {
     this.$searchButton.addEventListener('click', () =>
       this.viewSearchModal.onModalShow()
     );
+
+    this.$watchLaterButton.addEventListener('click', () => {
+      this.videoList.render();
+    });
+
+    this.$watchedButton.addEventListener('click', () => {
+      this.videoList.render();
+    });
   }
 }
