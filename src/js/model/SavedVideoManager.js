@@ -42,27 +42,28 @@ export class SavedVideoManager {
 
     this.setState({
       key: SAVED_VIDEO_SUBSCRIBER_KEY.SAVE,
+      videoId,
       savedVideos: { ...this.savedVideos, [videoId]: { isChecked: false } },
     });
   }
 
   deleteVideo(videoId) {
-    const temp = { ...this.saveVideos };
+    const temp = { ...this.savedVideos };
     delete temp[videoId];
 
     this.setState({
       key: SAVED_VIDEO_SUBSCRIBER_KEY.DELETE,
-      saveVideos: temp,
+      savedVideos: temp,
     });
   }
 
   checkVideo(videoId) {
-    const temp = { ...this.saveVideos };
+    const temp = { ...this.savedVideos };
     temp[videoId].isChecked = !temp[videoId].isChecked;
 
     this.setState({
       key: SAVED_VIDEO_SUBSCRIBER_KEY.CHECK,
-      saveVideos: temp,
+      savedVideos: temp,
     });
   }
 
@@ -74,18 +75,18 @@ export class SavedVideoManager {
     return Object.keys(this.savedVideos);
   }
 
-  setState({ key, savedVideos }) {
-    if (this.savedVideos === saveVideos) {
+  setState({ key, videoId, savedVideos }) {
+    if (this.savedVideos === savedVideos) {
       return;
     }
 
     this.savedVideos = savedVideos;
     setLocalStorageItem({ key: LOCAL_STORAGE_SAVED_VIDEO_KEY, item: this.savedVideos });
 
-    this.notify(key);
+    this.notify(key, videoId);
   }
 
-  notify(key) {
-    this.subscribers[key].forEach(subscriber => subscriber());
+  notify(key, videoId) {
+    this.subscribers[key].forEach(subscriber => subscriber(videoId));
   }
 }
