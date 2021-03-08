@@ -12,7 +12,6 @@
   "rules": {
     "max-depth": 2,
     "prettier/prettier": "error",
-    "class-methods-use-this": "off",
     "max-lens": 80
   }
 }
