@@ -10,14 +10,22 @@ describe('saved-video-ui', () => {
   });
 
   it('동영상 검색, 첫번째 영상 저장버튼 클릭, 사이트 새로고침시, 저장한 영상 목록의 길이가 1이여야 한다.', () => {
-    cy.get('#saved-video-wrapper article').should('have.length', '1');
     cy.get('#search-modal-button').click();
     cy.get('#search-youtube-input').type('우테코');
     cy.get('#search-youtube-button').click();
-    cy.wait(10000);
     cy.get('.js-save-button').first().click();
+    cy.get('#saved-video-wrapper article').should('have.length', '1');
   });
-  it('저장한 영상의 "본 영상" 버튼을 클릭, "선택한 영상을 본 영상 목록에 저장했습니다" 라는 스낵바 div 3초간 보여진다.', () => {});
+
+  it('저장한 영상의 "본 영상" 버튼을 클릭, "선택한 영상을 본 영상 목록에 저장했습니다" 라는 스낵바 div 3초간 보여진다.', () => {
+    cy.get('.video-info-buttons .watched').first().click();
+    cy.get('#snackbar')
+      .should('have.class', 'show')
+      .and('have.text', '선택한 영상을 본 영상 목록에 저장했습니다.');
+    cy.wait(3000);
+    cy.get('#snackbar').should('not.have.class', 'show');
+  });
+
   it('본 영상 으로 영상 이동하면, "볼 영상 목록" 버튼 클릭하면 해당 영상 안보이고, "본 영상 목록" 버튼 클릭하면, 해당 영상이 보인다.', () => {});
   it('저장한 영상의 "삭제" 버튼 클릭, "정말로 삭제하시겠습니까?" confirm 창 보여진다', () => {});
   it('저장한 영상 삭제 확인 누르면, "영상이 삭제되었습니다" 라는 스낵바 div가 3초간 보여지고, 저장한 영상 목록의 길이가 0이여야 한다.', () => {});
