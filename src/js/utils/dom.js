@@ -1,6 +1,8 @@
 export const $ = (function () {
   const constructor = function (selector) {
-    if (!selector) return;
+    if (!selector) {
+      throw new Error('Custom DOM Library Error: selector must be declared!');
+    }
     this.elements = document.querySelectorAll(selector);
     this.element =
       this.elements.length === 1 && document.querySelector(selector);
@@ -18,11 +20,13 @@ export const $ = (function () {
     });
   };
 
-  constructor.prototype.each = function (callBack) {
-    if (!callBack || typeof callBack !== 'function') {
-      return;
+  constructor.prototype.each = function (callback) {
+    if (!callback || typeof callback !== 'function') {
+      throw new Error(
+        'Custom DOM Library Error: callback function must be declared!',
+      );
     }
-    this.elements.forEach((element, idx) => callBack(element, idx));
+    this.elements.forEach((element, idx) => callback(element, idx));
 
     return this;
   };
@@ -51,18 +55,20 @@ export const $ = (function () {
     this.each((element) => element.classList.remove(className));
   };
 
-  constructor.prototype.getText = function (className) {
-    if (!this.element) return;
+  constructor.prototype.getText = function () {
+    if (!this.element) {
+      throw new Error('Custom DOM Library Error: no element existing!');
+    }
 
     return this.element.innerText;
   };
 
   constructor.prototype.setText = function (text) {
-    return (this.element.innerText = text);
+    this.element.innerText = text;
   };
 
   constructor.prototype.setValue = function (value) {
-    return (this.element.value = value);
+    this.element.value = value;
   };
 
   const instantiate = function (selector) {

@@ -1,5 +1,6 @@
 import { $ } from '../utils/dom.js';
 import { VALUE, STORAGE_KEYS } from '../utils/constants.js';
+import throttle from '../utils/throttle.js';
 import clipMaker from '../utils/clipMaker.js';
 import { getValidJson } from '../utils/localStorage.js';
 import View from './View.js';
@@ -33,20 +34,16 @@ export default class SearchModalView extends View {
   }
 
   bindScrollEvent() {
-    let throttle;
+    this.modalVideos.setEvent(
+      'scroll',
+      throttle(function (event) {
+        const { scrollTop, scrollHeight, offsetHeight } = event.target;
 
-    this.modalVideos.setEvent('scroll', (e) => {
-      if (throttle) return;
-
-      const { scrollTop, scrollHeight, offsetHeight } = e.target;
-      if (scrollTop === scrollHeight - offsetHeight) {
-        throttle = setTimeout(() => {
-          throttle = null;
-        }, VALUE.THROTTLE_TIME);
-
-        this.emit('scrollResult', this.searchKeyword);
-      }
-    });
+        if (scrollTop === scrollHeight - offsetHeight) {
+          this.emit('scrollResult', this.searchKeyword);
+        }
+      }, VALUE.THROTTLE_TIME).bind(this),
+    );
   }
 
   bindSaveEvent() {
@@ -75,13 +72,16 @@ export default class SearchModalView extends View {
     this.updateSavedCount();
     this.clearVideoClips();
 
-    const latestKeyword = $('#chip-1').getText();
+    try {
+      const latestKeyword = $('#chip-1').getText();
 
-    if (latestKeyword) {
       this.searchKeyword = latestKeyword;
-
       $('#modal-search-input').setValue(latestKeyword);
+
       this.emit('openModal', latestKeyword);
+    } catch (err) {
+      console.error(err);
+      return;
     }
   }
 
@@ -149,7 +149,7 @@ export default class SearchModalView extends View {
     this.modalVideos.setInnerHTML(
       `
         <div class="empty"></div>
-        <img class="not-found" src="./src/images/status/not_found.png"></img>
+        <img class="not-found" src="./src/images/status/not_found.png" alt="not-found-img"></img>
       `,
     );
   }

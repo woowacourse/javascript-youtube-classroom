@@ -12,10 +12,7 @@ export function setRecentChip(keyword) {
   }
 
   recentKeywords.unshift(keyword);
-  localStorage.setItem(
-    STORAGE_KEYS.RECENT_KEYWORDS,
-    JSON.stringify(recentKeywords),
-  );
+  localStorage.setItem(STORAGE_KEYS.RECENT_KEYWORDS, recentKeywords);
 }
 
 export function setSavedVideoId(videoId) {
@@ -24,17 +21,14 @@ export function setSavedVideoId(videoId) {
   if (savedVideoIds.includes(videoId)) return;
 
   savedVideoIds.push(videoId);
-  localStorage.setItem(
-    STORAGE_KEYS.SAVED_VIDEO_IDS,
-    JSON.stringify(savedVideoIds),
-  );
+  localStorage.setItem(STORAGE_KEYS.SAVED_VIDEO_IDS, savedVideoIds);
 }
 
 export function getValidJson(str, defaultValue) {
   try {
-    const parsedStr = JSON.parse(localStorage.getItem(str));
+    const items = localStorage.getItem(str);
 
-    if (parsedStr) return parsedStr;
+    if (items) return items.split(',');
   } catch (e) {
     return defaultValue;
   }

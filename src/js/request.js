@@ -1,36 +1,42 @@
 import youtubeKey from '../../youtubeAPI.js';
-import { SEARCH_URL, VIDEO_URL } from '../js/utils/constants.js';
+import { SEARCH_URL, VIDEO_URL, VALUE } from '../js/utils/constants.js';
 
 function generateSearchURL(keyword, pageToken) {
-  return pageToken
-    ? `${SEARCH_URL}&key=${youtubeKey}&q=${keyword}&pageToken=${pageToken}`
-    : `${SEARCH_URL}&key=${youtubeKey}&q=${keyword}`;
+  const searchParams = new URLSearchParams({
+    key: youtubeKey,
+    type: 'video',
+    part: 'snippet',
+    maxResults: VALUE.CLIPS_PER_SCROLL,
+    q: keyword,
+  });
+
+  if (pageToken) {
+    searchParams.set('pageToken', pageToken);
+  }
+
+  return SEARCH_URL + searchParams;
 }
 
-export function searchRequest(keyword, pageToken, callback) {
+export async function searchRequest(keyword, pageToken) {
   const requestURL = generateSearchURL(keyword, pageToken);
+  const response = await fetch(requestURL).then((response) => response.json());
 
-  fetch(requestURL)
-    .then((response) => {
-      return response.json();
-    })
-    .then((res) => {
-      callback(res);
-    });
+  return response;
 }
 
 function generateVideoURL(videoIds) {
-  return `${VIDEO_URL}&key=${youtubeKey}&id=${videoIds.join(',')}`;
+  const searchParams = new URLSearchParams({
+    key: youtubeKey,
+    part: 'snippet',
+    id: videoIds.join(','),
+  });
+
+  return VIDEO_URL + searchParams;
 }
 
-export function videoRequest(videoIds, callback) {
+export async function videoRequest(videoIds) {
   const requestURL = generateVideoURL(videoIds);
+  const response = await fetch(requestURL).then((response) => response.json());
 
-  fetch(requestURL)
-    .then((response) => {
-      return response.json();
-    })
-    .then((res) => {
-      callback(res);
-    });
+  return response;
 }
