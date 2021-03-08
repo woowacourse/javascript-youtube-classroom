@@ -1,12 +1,11 @@
 import { $ } from "../utils/dom.js";
-import { API_KEY } from "../apiKey.js";
 import { STANDARD_NUMS, ALERT_MESSAGE, STORAGE } from "../utils/constants.js";
 import { api } from "../utils/api.js";
 import { setLocalStorage, getLocalStorage } from "../utils/localStorage.js";
 import { changeDateFormat } from "../utils/common.js";
 
 // dummy API Response 사용할 경우
-// import { dummyResponse } from "../utils/dummy.js";
+// import { dummySearchedData } from "../utils/dummy.js";
 class SearchModal {
   constructor() {
     this.initState();
@@ -65,6 +64,12 @@ class SearchModal {
 
       this.handleSaveVideo(e.target.dataset.videoId);
     });
+
+    this.$keywordHistory.addEventListener("click", e => {
+      if (!e.target.classList.contains("keyword-history__keyword")) return;
+
+      this.handleSearchClickedHistory(e.target.innerText);
+    });
   }
 
   initObserver() {
@@ -106,7 +111,7 @@ class SearchModal {
 
     try {
       // dummy API Response 사용할 경우
-      // const { items, nextPageToken } = dummyResponse;
+      // const { items, nextPageToken } = dummySearchedData;
       const { items, nextPageToken } = await api.searchVideo(keyword);
 
       const videos = items.map(
@@ -120,7 +125,10 @@ class SearchModal {
         }),
       );
 
-      const keywordHistory = [keyword, ...this.keywordHistory];
+      const keywordHistory = [
+        keyword,
+        ...this.keywordHistory.filter(_keyword => _keyword !== keyword),
+      ];
       keywordHistory.splice(STANDARD_NUMS.MAX_SAVE_KEYWORD_COUNT, 1);
 
       this.setState({ keyword, keywordHistory, videos, nextPageToken });
@@ -175,6 +183,12 @@ class SearchModal {
     });
 
     this.setState({ videos, savedVideoIds });
+  }
+
+  handleSearchClickedHistory(keyword) {
+    this.$searchInput.value = keyword;
+
+    this.handleSearchKeyword();
   }
 
   render() {
