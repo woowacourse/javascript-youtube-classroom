@@ -1,6 +1,9 @@
+import { CONFIRM_MESSAGE } from '../../src/js/utils/constant';
+
 describe('나만의 유튜브 강의실 메인 페이지 테스트', () => {
   beforeEach(() => {
     cy.visit('/');
+    cy.clearLocalStorage('savedClips');
   });
 
   it('페이지 접속시 기본 메인화면이 "볼 영상"인지 테스트한다. ', () => {
@@ -8,7 +11,6 @@ describe('나만의 유튜브 강의실 메인 페이지 테스트', () => {
   });
 
   it('저장한 동영상이 없을 경우 "동영상 없음"을 표시하는 상태를 보여주는지 테스트한다.', () => {
-    cy.clearLocalStorage('savedClips');
     cy.get('[data-js="saved-page__not-found"]').should('be.visible');
   });
 
@@ -29,4 +31,16 @@ describe('나만의 유튜브 강의실 메인 페이지 테스트', () => {
     cy.get('[data-js="saved-page__clip"]').shoulde('be.visible');
   });
 
+  it('영상 카드의 🗑️ 버튼 클릭시, 저장된 리스트에서 영상이 삭제되는지 테스트한다.', () => {
+    const stub = cy.stub();
+    cy.on('window:confirm', stub);
+    // 더미 동영상 데이터 삽입
+    cy.reload(); // -> 새로고침
+    cy.get('[data-js="saved-clip-button-container__delete"]')
+      .click()
+      .then(() => {
+        expect(stub.getCall(0)).to.be.calledWith(CONFIRM_MESSAGE.DELETE_CLIP);
+      });
+    cy.get('[data-js="saved-page__clip"]').shoulde('not.be.visible');
+  });
 });

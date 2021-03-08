@@ -12,6 +12,10 @@ export const ERROR_MESSAGE = {
   EMPTY_KEYWORD: '검색 키워드가 비어있습니다.',
 };
 
+export const CONFIRM_MESSAGE = {
+  DELETE_CLIP: '해당 클립을 삭제하시겠습니까?',
+};
+
 export const LOCAL_STORAGE_KEY = {
   CURRENT_KEYWORD: 'currentKeyword',
   RECENT_KETWORDS: 'recentKeywords',
