@@ -31,16 +31,18 @@ button:hover {
 
 .save-btn {
   position: absolute;
-  bottom: 10px;
   right: 0px;
-}
-
-.video-info {
-  height: 110px;
 }
 
 .video-search-overlay {
   position: absolute;
   top: 0;
   bottom: 0;
+}
+
+.management-buttons button {
+  border: 0;
+  outline: 0;
+  background: none;
+  cursor: pointer;
 }

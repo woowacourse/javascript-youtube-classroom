@@ -13,7 +13,6 @@ export default class VideoSearchResult extends Component {
   }
 
   initRender() {
-    console.log(Object.keys(LOCALSTORAGE_KEYS.VIDEOS).length);
     this.$target.innerHTML = `
         <div class="d-flex justify-end text-gray-700">
           저장된 영상 갯수 : <span id="saved-video-count">${
@@ -120,7 +119,7 @@ export default class VideoSearchResult extends Component {
       const fragment = document.createDocumentFragment();
 
       states.searchedVideos.forEach((video) => {
-        fragment.appendChild(video.createTemplate());
+        fragment.appendChild(video.createTemplate('search'));
       });
 
       this.$searchedVideoWrapper.appendChild(fragment);

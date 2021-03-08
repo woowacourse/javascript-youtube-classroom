@@ -7,7 +7,28 @@ import {
 } from './actionType.js';
 
 export const updateVideosToBeShown = (items) => {
-  const videos = items.map((item) => new Video(item));
+  const videos = items.map(
+    ({
+      id: { videoId },
+      snippet: {
+        title: videoTitle,
+        channelTitle,
+        channelId,
+        publishedAt,
+        thumbnails: {
+          default: { url: thumbnailURL },
+        },
+      },
+    }) =>
+      new Video({
+        videoId,
+        videoTitle,
+        channelTitle,
+        channelId,
+        publishedAt,
+        thumbnailURL,
+      })
+  );
 
   return {
     type: UPDATE_VIDEOS_TO_BE_SHOWN,

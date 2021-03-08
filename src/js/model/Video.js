@@ -12,15 +12,22 @@ import {
 } from '../utils/utils.js';
 
 export default class Video {
-  constructor(videoInfo) {
-    this.videoId = videoInfo.id.videoId;
-    this.videoTitle = videoInfo.snippet.title;
+  constructor({
+    videoId,
+    videoTitle,
+    channelTitle,
+    channelId,
+    publishedAt,
+    thumbnailURL,
+  }) {
+    this.videoId = videoId;
+    this.videoTitle = videoTitle;
     this.videoEmbedURL = this.createVideoEmbedURL();
-    this.channelTitle = videoInfo.snippet.channelTitle;
-    this.channelId = videoInfo.snippet.channelId;
+    this.channelTitle = channelTitle;
+    this.channelId = channelId;
     this.channelURL = this.createChannelURL();
-    this.uploadTime = this.createVideoUploadDate(videoInfo.snippet.publishedAt);
-    this.thumbnailURL = videoInfo.snippet.thumbnails.default.url;
+    this.uploadTime = this.createVideoUploadDate(publishedAt);
+    this.thumbnailURL = thumbnailURL;
   }
 
   createVideoEmbedURL() {
@@ -121,9 +128,15 @@ export default class Video {
     </a>`;
   }
 
-  createTemplate() {
+  createTemplate(pageType = 'management') {
     const fragment = document.createDocumentFragment();
-    const clip = createElement({ tag: 'article', classes: ['clip', 'd-none'] });
+    const clip = createElement({ tag: 'article', classes: ['clip'] });
+
+    if (pageType !== 'management') {
+      clip.classList.add('d-none');
+    }
+
+    clip.dataset.videoId = this.videoId;
 
     const previewContainer = createElement({
       tag: 'div',
@@ -188,21 +201,18 @@ export default class Video {
 
     meta.appendChild(uploadTime);
 
-    const button = createElement({
-      tag: 'button',
-      classes: ['save-btn', 'btn'],
-      textContent: '⬇️ 저장',
-    });
-    button.onclick = this.onSaveVideo.bind(this);
-    if (this.isSavedVideo()) {
-      button.classList.add('d-none');
-    }
+    const buttonContainer =
+      pageType === 'management'
+        ? this.createManagementButtonSetTemplate()
+        : this.createSaveButtonTemplate();
 
     videoInfo.appendChild(videoTitle);
     videoInfo.appendChild(channelURL);
     videoInfo.appendChild(meta);
     contentContainer.appendChild(videoInfo);
-    contentContainer.appendChild(button);
+    // 저장 버튼 혹은 [저장, 좋아요, 코멘트, 삭제 ] 버튼 셋
+
+    contentContainer.appendChild(buttonContainer);
 
     clip.appendChild(previewContainer);
     clip.appendChild(contentContainer);
@@ -210,5 +220,63 @@ export default class Video {
     fragment.appendChild(clip);
 
     return fragment;
+  }
+
+  createSaveButtonTemplate() {
+    const buttonContainer = createElement({
+      tag: 'span',
+      classes: ['relative'],
+    });
+
+    const button = createElement({
+      tag: 'button',
+      classes: ['save-btn', 'btn'],
+      textContent: '⬇️ 저장',
+    });
+
+    button.onclick = this.onSaveVideo.bind(this);
+    if (this.isSavedVideo()) {
+      button.classList.add('d-none');
+    }
+
+    buttonContainer.appendChild(button);
+
+    return buttonContainer;
+  }
+
+  // TODO: 현재 state 따라서 opacity 조정.
+  createManagementButtonSetTemplate() {
+    const buttonContainer = createElement({
+      tag: 'span',
+      classes: ['management-buttons'],
+    });
+
+    const watchedButton = createElement({
+      tag: 'button',
+      classes: ['watched-button'],
+      textContent: '✅',
+    });
+    const likeButton = createElement({
+      tag: 'button',
+      classes: ['like-button'],
+      textContent: '👍',
+    });
+    const commentButton = createElement({
+      tag: 'button',
+      classes: ['comment-button'],
+      textContent: '💬',
+    });
+    const deleteButton = createElement({
+      tag: 'button',
+      classes: ['delete-button'],
+      textContent: '🗑️',
+    });
+
+    buttonContainer.appendChild(watchedButton);
+    buttonContainer.appendChild(likeButton);
+    buttonContainer.appendChild(commentButton);
+    buttonContainer.appendChild(deleteButton);
+
+    return buttonContainer;
   }
 }

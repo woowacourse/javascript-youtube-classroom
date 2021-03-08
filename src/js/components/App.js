@@ -1,5 +1,6 @@
 import YoutubeAPIManager from '../model/YoutubeAPIManager.js';
 import VideoSearchModal from './videoSearchModal/VideoSearchModal.js';
+import VideoList from './videoList/VideoList.js';
 import { $, localStorageSetItem, localStorageGetItem } from '../utils/utils.js';
 import { LOCALSTORAGE_KEYS } from '../constants/constants.js';
 
@@ -64,6 +65,7 @@ export default class App {
   }
 
   mount() {
+    this.videoList = new VideoList($('.video-wrapper'));
     this.viewSearchModal = new VideoSearchModal($('.modal'));
   }
 
