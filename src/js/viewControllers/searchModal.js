@@ -1,9 +1,9 @@
 import $ from '../utils/DOM.js';
 import { MAX_SAVED_VIDEO_COUNT } from '../constants/classroom.js';
-import createNotFoundTemplate from '../templates/notFound.js';
 import createKeywordListTemplate from '../templates/keywordList.js';
 import { createVideoListTemplate } from '../templates/videoList.js';
 import createVideoSkeletonTemplate from '../templates/videoSkeleton.js';
+import notFoundTemplate from '../templates/notFound.js';
 
 const $savedVideoCount = $('#saved-video-count');
 const $latestKeywordList = $('#latest-keyword-list');
@@ -25,7 +25,7 @@ function renderVideoLoader() {
 function renderVideoSearchResult(resultItems, videoInfos) {
   $videoSearchResult.innerHTML = resultItems.length
     ? createVideoListTemplate(resultItems, videoInfos)
-    : createNotFoundTemplate();
+    : notFoundTemplate;
 }
 
 function appendVideos(searchResult, videoInfos) {
