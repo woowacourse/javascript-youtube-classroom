@@ -35,7 +35,7 @@ export default class App {
     }
 
     if (localStorageGetItem(LOCALSTORAGE_KEYS.SEARCH_HISTORY) === null) {
-      localStorageSetItem(LOCALSTORAGE_KEYS.SEARCH_HISTORY, {});
+      localStorageSetItem(LOCALSTORAGE_KEYS.SEARCH_HISTORY, []);
     }
   }
 
