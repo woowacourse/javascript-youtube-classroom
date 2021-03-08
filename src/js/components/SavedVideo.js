@@ -1,14 +1,18 @@
+import { SAVED_VIDEO_SUBSCRIBER_KEY } from '../model/index.js';
 import { getVideoTemplate } from '../constants/index.js';
 import { getVideoByIdList, $, renderSkeleton } from '../util/index.js';
 
 export class SavedVideo {
-  constructor({ savedVideoManager, isCompleted }) {
+  constructor({ savedVideoManager, isChecked }) {
     this.$savedVideoWrapper = $('.js-saved-video-wrapper');
 
     this.savedVideoManager = savedVideoManager;
-    this.savedVideoManager.subscribe(this.fetchSavedVideoData.bind(this));
+    this.savedVideoManager.subscribe({
+      key: SAVED_VIDEO_SUBSCRIBER_KEY.SAVE,
+      subscriber: this.fetchSavedVideoData.bind(this),
+    });
 
-    this.isCompleted = isCompleted;
+    this.isChecked = isChecked;
     this.savedVideoData = this.fetchSavedVideoData();
   }
 
@@ -22,8 +26,8 @@ export class SavedVideo {
     }
   }
 
-  setState({ isCompleted, savedVideoData }) {
-    this.isCompleted = isCompleted ?? this.isCompleted;
+  setState({ isChecked, savedVideoData }) {
+    this.isChecked = isChecked ?? this.isChecked;
     this.savedVideoData = savedVideoData ?? this.savedVideoData;
 
     this.render();
@@ -52,10 +56,10 @@ export class SavedVideo {
       return;
     }
 
+    const savedVideos = this.savedVideoManager.getSavedVideos();
     const filteredVideoIdList = this.savedVideoManager
-      .getSavedVideos()
-      .filter(video => video.isCompleted === this.isCompleted)
-      .map(video => video.id);
+      .getSavedVideoIdList()
+      .filter(id => savedVideos[id].isChecked === this.isChecked);
 
     this.$savedVideoWrapper.innerHTML = this.savedVideoData.items
       .filter(item => filteredVideoIdList.includes(item.id))
