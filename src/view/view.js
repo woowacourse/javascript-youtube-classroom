@@ -2,6 +2,7 @@ import {
   $modal,
   $searchResultVideoWrapper,
   $searchQueries,
+  $videoWrapper,
 } from '../elements.js';
 import { STYLE_CLASS, SELECTOR_ID, SELECTOR_CLASS } from '../constants.js';
 import {
@@ -20,14 +21,11 @@ const view = {
     $modal.classList.remove(STYLE_CLASS.OPEN);
   },
   initSearchResult() {
-    view.hideElementBySelector(`#${SELECTOR_ID.NOT_FOUND_CONTENT}`);
+    viewUtil.hideElementBySelector(`#${SELECTOR_ID.NOT_FOUND_CONTENT}`);
     view.renderSkeletonItems();
   },
-  renderVideoItems($element, videos) {
-    $element.innerHTML = getVideoListTemplate(videos);
-  },
-  renderSelectedVideoItems($element, videos) {
-    $element.innerHTML = getSelectedVideoListTemplate(videos);
+  renderSelectedVideoItems(videos) {
+    $videoWrapper.innerHTML = getSelectedVideoListTemplate(videos);
   },
   renderSkeletonItems() {
     $searchResultVideoWrapper.innerHTML = getSkeletonListTemplate();
@@ -36,26 +34,27 @@ const view = {
     $searchQueries.innerHTML = getSearchQueriesTemplate(queries);
   },
   renderSearchedVideos(processedVideos) {
-    view.insertVideoItems($searchResultVideoWrapper, processedVideos);
-    view.showElementBySelector(`#${SELECTOR_ID.SERACH_RESULT_INTERSECTOR}`);
+    view.insertVideoItems(processedVideos);
+    viewUtil.showElementBySelector(`#${SELECTOR_ID.SERACH_RESULT_INTERSECTOR}`);
   },
-  insertVideoItems($element, videos) {
-    $element.insertAdjacentHTML('beforeend', getVideoListTemplate(videos));
-  },
-  insertSelectedVideoItems($element, videos) {
-    $element.insertAdjacentHTML(
+  insertVideoItems(videos) {
+    console.log(videos);
+    $searchResultVideoWrapper.insertAdjacentHTML(
       'beforeend',
-      getSelectedVideoListTemplate(videos)
+      getVideoListTemplate(videos)
     );
   },
   showNotFountContent() {
     viewUtil.showElementBySelector(`#${SELECTOR_ID.NOT_FOUND_CONTENT}`);
   },
+  showSearchResultIntersector() {
+    viewUtil.showElementBySelector(`#${SELECTOR_ID.SERACH_RESULT_INTERSECTOR}`);
+  },
   hideSkeletons() {
-    view.hideElementBySelector(`.${SELECTOR_CLASS.SKELETON}`);
+    viewUtil.hideElementBySelector(`.${SELECTOR_CLASS.SKELETON}`);
   },
   hideVideoSaveButton(target) {
-    view.hideElement(target);
+    viewUtil.hideElement(target);
   },
 };
 

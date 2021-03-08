@@ -5,7 +5,6 @@ import {
   $searchFormInput,
   $searchResultIntersector,
   $searchResultVideoWrapper,
-  $videoWrapper,
 } from '../elements.js';
 import view from '../view/view.js';
 import { getVideosByKeyword } from '../apis/youtube.js';
@@ -70,7 +69,7 @@ function onSelectedVideoSave({ target }) {
   }
   view.hideVideoSaveButton(target);
   videoToWatch.pushVideo(controllerUtil.getNewVideo(target.dataset));
-  view.renderSelectedVideoItems($videoWrapper, videoToWatch.getVideos());
+  view.renderSelectedVideoItems(videoToWatch.getVideos());
 }
 
 const controller = {
@@ -85,11 +84,10 @@ const controller = {
     $searchForm.addEventListener('submit', onVideoSearch);
   },
   initSearchQueries() {
-    //TODO: css로 reverse 처리
-    view.renderSearchQueries(searchQuery.getQueries().reverse());
+    view.renderSearchQueries(searchQuery.getQueries());
   },
   initVideos() {
-    view.renderSelectedVideoItems($videoWrapper, videoToWatch.getVideos());
+    view.renderSelectedVideoItems(videoToWatch.getVideos());
   },
 };
 
