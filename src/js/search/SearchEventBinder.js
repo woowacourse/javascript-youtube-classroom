@@ -31,7 +31,7 @@ export default class SearchEventBinder {
     elements.$searchForm.addEventListener("submit", this.onSearch.bind(this));
     elements.$keywordHistory.addEventListener(
       "click",
-      this.onHistorySearch.bind(this)
+      this.onClickKeywordHistory.bind(this)
     );
     elements.$searchResults.addEventListener(
       "scroll",
@@ -54,9 +54,15 @@ export default class SearchEventBinder {
     this.searchController.searchVideos(searchKeyword);
   }
 
-  onHistorySearch(e) {
-    const searchKeyword = e.target.dataset.keyword;
-    this.searchController.searchVideos(searchKeyword);
+  onClickKeywordHistory(e) {
+    // TODO : dataset이 없는 경우 error 처리 어떻게 할것인가
+    if (e.target.classList.contains("js-remove-btn")) {
+      this.searchController.removeKeywordHistoryChip(e.target.dataset.keyword);
+    }
+
+    if (e.target.classList.contains("icon")) {
+      this.searchController.searchVideos(e.target.dataset.keyword);
+    }
   }
 
   onScroll(e) {

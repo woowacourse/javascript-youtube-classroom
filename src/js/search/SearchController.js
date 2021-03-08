@@ -92,6 +92,11 @@ export default class SearchController {
     this.searchView.showSavedVideoCount();
   }
 
+  removeKeywordHistoryChip(keyword) {
+    searchHistory.removeKeyword(keyword);
+    this.updateKeywordHistory();
+  }
+
   updateKeywordHistory() {
     this.searchView.showKeywordHistory();
   }

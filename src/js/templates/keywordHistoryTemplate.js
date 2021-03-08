@@ -5,7 +5,14 @@ export default function getKeywordHistoryTemplate() {
     .getKeywordAll()
     .map(
       (keyword) =>
-        `<li data-keyword=${keyword}><a class="chip"><div class="icon">${keyword}</div></a></li>`
+        `<li>
+          <a class="chip">
+            <div class="icon" data-keyword=${keyword}>${keyword}</div>
+            <button type="button" class="small-btn">
+              <i class="fas fa-window-close ml-2 js-remove-btn" data-keyword=${keyword}></i>
+            </button>
+          </a>
+        </li>`
     )
     .join("");
 }
