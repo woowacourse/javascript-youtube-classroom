@@ -15,20 +15,22 @@ export default class SearchView {
     hideElement(elements.$notFound);
   }
 
-  showNotFoundImg() {
+  showNotFoundImg(pageToken) {
+    if (pageToken !== "") {
+      return;
+    }
+
     hideElement(elements.$searchResults);
     hideElement(elements.$skeletonSearchResults);
     showElement(elements.$notFound);
   }
 
-  showSearchResults() {
-    if (searchHistory.getPageToken() === "") {
+  showSearchResults(recentVideos, pageToken) {
+    if (pageToken === "") {
       this.resetSearchResults();
     }
 
-    elements.$searchResults.appendChild(
-      this.appendVideoClips(videos.getRecentVideos())
-    );
+    elements.$searchResults.appendChild(this.appendVideoClips(recentVideos));
   }
 
   appendVideoClips(items) {

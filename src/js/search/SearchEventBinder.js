@@ -66,7 +66,7 @@ export default class SearchEventBinder {
   }
 
   onScroll(e) {
-    this.searchController.addVideos(e.target);
+    this.searchController.addVideosByScroll(e.target);
   }
 
   onClickSearchButton() {

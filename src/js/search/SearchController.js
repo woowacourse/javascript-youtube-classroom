@@ -19,30 +19,29 @@ export default class SearchController {
     searchHistory.resetPageToken();
     searchHistory.setKeyword(searchKeyword);
     this.updateKeywordHistory();
-    this.fetchVideos();
+    this.updateSearchResultView();
   }
 
-  // TODO : naming
-  loadingSearch() {
+  activateSearchLoading() {
     this.searchView.resetSearchResults();
     loadingSearchResults.resetLoadCount();
     this.searchView.showSkeletonClip();
   }
 
-  async fetchVideos() {
+  async updateSearchResultView() {
     if (searchHistory.getPageToken() === "") {
-      this.loadingSearch();
+      this.activateSearchLoading();
     }
-    const videoItems = await this.getSearchResult();
+    const videoItems = await this.fetchSearchResult();
 
     if (videoItems.length === 0) {
-      this.fetchNotFoundImg();
+      this.searchView.showNotFoundImg(searchHistory.getPageToken());
     } else {
-      this.renderVideos(videoItems);
+      this.attachVideos(videoItems);
     }
   }
 
-  async getSearchResult() {
+  async fetchSearchResult() {
     const res = await fetch(
       `${YOUTUBE_URL}/${API.GET.SEARCH}?${getSearchQueryString()}`
     );
@@ -56,28 +55,22 @@ export default class SearchController {
     return items;
   }
 
-  fetchNotFoundImg() {
-    if (this.isScrolled()) {
-      return;
-    }
-
-    this.searchView.showNotFoundImg();
-  }
-
-  // TODO : naming
-  renderVideos(videoItems) {
+  attachVideos(videoItems) {
     videos.setFetchedVideos(videoItems);
-    this.searchView.showSearchResults();
+    this.searchView.showSearchResults(
+      videos.getRecentVideos(),
+      searchHistory.getPageToken()
+    );
     searchHistory.setPageToken(this.nextPageToken);
   }
 
-  async addVideos($target) {
+  async addVideosByScroll($target) {
     const { clientHeight, scrollTop, scrollHeight } = $target;
     const isBottom = clientHeight + scrollTop >= scrollHeight - 5;
 
     if (isBottom && !scrollEventLock.isLocked()) {
       scrollEventLock.lock();
-      await this.fetchVideos();
+      await this.updateSearchResultView();
       scrollEventLock.unlock();
     }
   }
@@ -99,9 +92,5 @@ export default class SearchController {
 
   updateKeywordHistory() {
     this.searchView.showKeywordHistory();
-  }
-
-  isScrolled() {
-    return searchHistory.getPageToken() !== "";
   }
 }
