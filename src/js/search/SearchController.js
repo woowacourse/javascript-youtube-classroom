@@ -100,6 +100,7 @@ export default class SearchController {
   cancelSavedVideo(videoId) {
     videos.removeSavedVideo(videoId);
     this.searchView.showSaveButton(videoId);
+    this.showSavedVideoCount();
   }
 
   showSavedVideoCount() {
