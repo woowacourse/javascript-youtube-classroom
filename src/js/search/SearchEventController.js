@@ -107,15 +107,19 @@ export default class SearchEventController {
   }
 
   onClickSaveVideoButtons(e) {
-    if (!e.target.dataset.videoId) {
+    const { videoId } = e.target.dataset;
+    if (!videoId) {
       return;
     }
 
-    if (videos.getSavedVideoCount() >= VIDEOS.SAVED_VIDEOS_MAX_COUNT) {
-      alert(ALERT_MESSAGE.SAVE_COUNT_EXCEEDED_ERROR);
-      return;
+    if (e.target.dataset.videoSaved === "") {
+      if (videos.getSavedVideoCount() >= VIDEOS.SAVED_VIDEOS_MAX_COUNT) {
+        alert(ALERT_MESSAGE.SAVE_COUNT_EXCEEDED_ERROR);
+        return;
+      }
+      this.searchController.saveVideo(videoId);
+    } else {
+      this.searchController.cancelSavedVideo(videoId);
     }
-
-    this.searchController.saveVideo(e.target.dataset.videoId);
   }
 }

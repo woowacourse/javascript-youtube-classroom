@@ -60,6 +60,17 @@ const videos = {
       (savedVideo) => savedVideo.videoId === videoId
     );
   },
+
+  removeSavedVideo(videoId) {
+    const filteredVideos = this.getSavedVideos().filter(
+      (video) => video.videoId !== videoId
+    );
+
+    localStorage.setItem(
+      STORAGE_NAME.SAVED_VIDEOS,
+      JSON.stringify(filteredVideos)
+    );
+  },
 };
 
 export default videos;

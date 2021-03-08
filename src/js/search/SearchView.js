@@ -55,12 +55,28 @@ export default class SearchView {
     showElement(elements.$skeletonSearchResults);
   }
 
-  hideSavedVideoButton(videoId) {
-    const currentSaveButton = Array.from($("button[data-video-id]")).find(
-      ($saveButton) => $saveButton.dataset.videoId === videoId
+  selectSaveButton(videoId, isSaved = false) {
+    return Array.from($("button[data-video-id]")).find(
+      ($saveButton) =>
+        $saveButton.dataset.videoId === videoId &&
+        $saveButton.dataset.videoSaved === (isSaved ? "saved" : "")
     );
+  }
+
+  showSaveCancelButton(videoId) {
+    const currentSaveButton = this.selectSaveButton(videoId);
+    const currentSaveCancelButton = this.selectSaveButton(videoId, true);
 
     hideElement(currentSaveButton);
+    showElement(currentSaveCancelButton);
+  }
+
+  showSaveButton(videoId) {
+    const currentSaveButton = this.selectSaveButton(videoId);
+    const currentSaveCancelButton = this.selectSaveButton(videoId, true);
+
+    hideElement(currentSaveCancelButton);
+    showElement(currentSaveButton);
   }
 
   setSearchInputValue(searchKeyword) {

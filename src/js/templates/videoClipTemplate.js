@@ -81,10 +81,18 @@ function getVideoClipInnerTemplate(item) {
         </div>
         <div class="d-flex justify-end">
           <button 
-            data-video-id=${item.videoId} 
-            class="btn save-btn ${item.saved ? "d-none-hard" : ""}"
+            data-video-id=${item.videoId}
+            data-video-saved=""
+            class="btn save-btn bg-cyan-500 ${item.saved ? "d-none-hard" : ""}"
             >
             ⬇️ 저장
+          </button>
+          <button 
+            data-video-id=${item.videoId}
+            data-video-saved="saved" 
+            class="btn saved-btn ${item.saved ? "" : "d-none-hard"}"
+            >
+            저장 취소
           </button>
         </div>
       </div>
