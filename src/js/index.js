@@ -57,4 +57,7 @@ export const YoutubeClassRoom = () => {
 window.onload = () => {
   YoutubeClassRoom();
   initDisplay();
+  onToggleRenderedClips({
+    target: $('[data-js="navigator__unwatched-button"]'),
+  });
 };
