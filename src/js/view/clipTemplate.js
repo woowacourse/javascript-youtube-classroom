@@ -27,11 +27,15 @@ const YMDtemplate = (time) => {
 
 export const clipTemplate = (video, index, type) => {
   const { isModal } = type;
+  console.log(video);
+  console.log(video.isWatched);
 
   return `
       <article class="clip" data-js=${
         isModal ? 'youtube-search-modal__clip' : 'saved-page__clip'
-      }>
+      }
+        data-iswatched=${video.isWatched}
+      >
         <div class="preview-container">
           <iframe 
             width="100%"
