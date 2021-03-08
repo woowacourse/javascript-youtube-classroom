@@ -74,7 +74,10 @@ export default class YoutubeController {
   async loadSavedVideos() {
     const savedVideoIds = getValidJson(STORAGE_KEYS.SAVED_VIDEO_IDS, []);
 
-    if (savedVideoIds.length === 0) return;
+    if (savedVideoIds.length === 0) {
+      this.savedVideosView.showNoVideos();
+      return;
+    }
 
     const response = await videoRequest(savedVideoIds);
     this.generateSavedVideos(response);
