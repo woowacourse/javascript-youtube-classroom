@@ -40,3 +40,7 @@ export const LOCAL_STORAGE_KEY = Object.freeze({
   LAST_QUERY: 'last_query',
   NEXT_PAGE_TOKEN: 'next_page_token',
 });
+
+export const ALERT_MESSAGE = {
+  SAVE_LIMIT_EXCEEDED: `${SETTINGS.MAX_SAVE_COUNT}개 보다 많은 영상을 저장할 수 없습니다.`,
+};

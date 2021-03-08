@@ -38,7 +38,6 @@ const view = {
     viewUtil.showElementBySelector(`#${SELECTOR_ID.SERACH_RESULT_INTERSECTOR}`);
   },
   insertVideoItems(videos) {
-    console.log(videos);
     $searchResultVideoWrapper.insertAdjacentHTML(
       'beforeend',
       getVideoListTemplate(videos)
@@ -49,6 +48,9 @@ const view = {
   },
   showSearchResultIntersector() {
     viewUtil.showElementBySelector(`#${SELECTOR_ID.SERACH_RESULT_INTERSECTOR}`);
+  },
+  showMessage(message) {
+    alert(message);
   },
   hideSkeletons() {
     viewUtil.hideElementBySelector(`.${SELECTOR_CLASS.SKELETON}`);

@@ -11,7 +11,7 @@ import { getVideosByKeyword } from '../apis/youtube.js';
 import prevSearchResult from '../storage/prevSearchResult.js';
 import searchQuery from '../storage/searchQuery.js';
 import videoToWatch from '../storage/videoToWatch.js';
-import { SETTINGS, SELECTOR_CLASS } from '../constants.js';
+import { SETTINGS, SELECTOR_CLASS, ALERT_MESSAGE } from '../constants.js';
 import controllerUtil from './controllerUtil.js';
 
 async function onAdditionalVideosLoad() {
@@ -64,7 +64,8 @@ function onSelectedVideoSave({ target }) {
   if (!target.classList.contains(SELECTOR_CLASS.CLIP_SAVE_BUTTON)) {
     return;
   }
-  if (videoToWatch.getVideos().length > SETTINGS.MAX_SAVE_COUNT) {
+  if (videoToWatch.getVideos().length === SETTINGS.MAX_SAVE_COUNT) {
+    view.showMessage(ALERT_MESSAGE.SAVE_LIMIT_EXCEEDED);
     return;
   }
   view.hideVideoSaveButton(target);
