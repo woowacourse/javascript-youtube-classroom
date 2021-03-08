@@ -1,12 +1,13 @@
 import { renderLatestKeywordList } from '../../viewControllers/searchModal.js';
 import { MAX_LATEST_KEYWORD_COUNT } from '../constants/classroom.js';
+import { LATEST_KEYWORDS } from '../constants/localStorage.js';
 import { getLocalStorage, setLocalStorage } from '../utils/localStorage.js';
 
 const latestKeywords = {
   value: [],
 
   init() {
-    this.set(getLocalStorage('latestKeywords') ?? []);
+    this.set(getLocalStorage(LATEST_KEYWORDS) ?? []);
   },
 
   get() {
@@ -28,7 +29,7 @@ const latestKeywords = {
       this.value.shift();
     }
     this.value.push(newKeyword);
-    setLocalStorage('latestKeywords', this.value ?? []);
+    setLocalStorage(LATEST_KEYWORDS, this.value ?? []);
 
     renderLatestKeywordList(this.value);
   },
