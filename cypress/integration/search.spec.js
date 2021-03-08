@@ -1,6 +1,6 @@
 import { YOUTUBE } from '../../src/js/utils/constant.js';
 
-describe('유튜브 검색 테스트', () => {
+describe('나만의 유튜브 강의실 검색 테스트', () => {
   beforeEach(() => {
     cy.visit('/');
     cy.get('#search-button').click();
