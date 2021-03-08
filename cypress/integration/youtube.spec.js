@@ -26,7 +26,13 @@ describe('saved-video-ui', () => {
     cy.get('#snackbar').should('not.have.class', 'show');
   });
 
-  it('본 영상 으로 영상 이동하면, "볼 영상 목록" 버튼 클릭하면 해당 영상 안보이고, "본 영상 목록" 버튼 클릭하면, 해당 영상이 보인다.', () => {});
+  it('본 영상 으로 영상 이동하면, "볼 영상 목록" 버튼 클릭하면 해당 영상 안보이고, "본 영상 목록" 버튼 클릭하면, 해당 영상이 보인다.', () => {
+    cy.get('#towatch-videos-button').click();
+    cy.get('#saved-video-wrapper article').should('have.length', '0');
+    cy.get('#watched-videos-button').click();
+    cy.get('#saved-video-wrapper article').should('have.length', '1');
+  });
+
   it('저장한 영상의 "삭제" 버튼 클릭, "정말로 삭제하시겠습니까?" confirm 창 보여진다', () => {});
   it('저장한 영상 삭제 확인 누르면, "영상이 삭제되었습니다" 라는 스낵바 div가 3초간 보여지고, 저장한 영상 목록의 길이가 0이여야 한다.', () => {});
 });
