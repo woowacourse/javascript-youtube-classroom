@@ -16,13 +16,16 @@
           <nav class="d-flex justify-center">
             <ul class="list-style-none d-flex p-0">
               <li>
-                <button type="button" class="js-uncompleted-video-button btn bg-cyan-100 mx-1">👁️ 볼 영상</button>
+                <button type="button" class="js-unchecked-video-button btn bg-cyan-100 mx-1">👁️ 볼 영상</button>
               </li>
-              <li><button type="button" class="js-completed-video-button btn mx-1">✅ 본 영상</button></li>
+              <li><button type="button" class="js-checked-video-button btn mx-1">✅ 본 영상</button></li>
               <li><button type="button" class="js-search-button btn mx-1">🔍 동영상 검색</button></li>
             </ul>
           </nav>
           <main class="mt-10">
+            <div class="text-center">
+              <img class="js-empty-image d-none" src="./src/images/status/empty.jpg" alt="There are no saved videos">
+            </div>
             <section class="js-saved-video-wrapper video-wrapper"></section>
           </main>
         </div>
