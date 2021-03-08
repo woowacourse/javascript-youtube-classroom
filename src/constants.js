@@ -14,6 +14,8 @@ export const SELECTOR_ID = Object.freeze({
   WATCHING_VIDEO_BUTTON: 'watching-video-button',
   WATCHED_VIDEO_BUTTON: 'watched-video-button',
   SEARCH_BUTTON: 'search-button',
+
+  EMPTY_VIDEO_TO_WATCH: 'empty-video-to-watch',
 });
 
 export const SELECTOR_CLASS = Object.freeze({

@@ -12244,12 +12244,18 @@ var SELECTOR_ID = Object.freeze({
   SEARCH_RESULT_VIDEO_WRAPPER: 'search-result__video-wrapper',
   VIDEO_WRAPPER: 'video-wrapper',
   NOT_FOUND_CONTENT: 'not-found-content',
+<<<<<<< HEAD
   SEARCH_RESULT_INTERSECTOR: 'search-result__intersector',
   SEARCH_QUERIES: 'search-queries',
   SAVED_VIDEO_COUNT: 'saved-video-count',
   WATCHING_VIDEO_BUTTON: 'watching-video-button',
   WATCHED_VIDEO_BUTTON: 'watched-video-button',
   SEARCH_BUTTON: 'search-button'
+=======
+  SERACH_RESULT_INTERSECTOR: 'search-result__intersector',
+  SEARCH_QUERIES: 'search-queries',
+  EMPTY_VIDEO_TO_WATCH: 'empty-video-to-watch'
+>>>>>>> 6fff230... test: 볼 영상에 저장된 영상이 없으면 이를 화면상의 이미지로 알려준다.
 });
 var SELECTOR_CLASS = Object.freeze({
   CLIP: 'clip',
