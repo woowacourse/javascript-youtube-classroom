@@ -29,6 +29,10 @@ export default class SearchEventBinder {
     );
 
     elements.$searchForm.addEventListener("submit", this.onSearch.bind(this));
+    elements.$keywordHistory.addEventListener(
+      "click",
+      this.onHistorySearch.bind(this)
+    );
     elements.$searchResults.addEventListener(
       "scroll",
       this.onScroll.bind(this)
@@ -47,11 +51,12 @@ export default class SearchEventBinder {
   onSearch(e) {
     e.preventDefault();
     const searchKeyword = e.target.elements["search-keyword"].value;
+    this.searchController.searchVideos(searchKeyword);
+  }
 
-    searchHistory.resetPageToken();
-    searchHistory.setKeyword(searchKeyword);
-    this.searchController.updateKeywordHistory();
-    this.searchController.searchVideos();
+  onHistorySearch(e) {
+    const searchKeyword = e.target.dataset.keyword;
+    this.searchController.searchVideos(searchKeyword);
   }
 
   onScroll(e) {
