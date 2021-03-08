@@ -114,8 +114,9 @@ describe('유튜브 강의실 관리 기능', () => {
       });
   });
 
-  it("'볼 영상'에 있는 비디오의 '본 영상 체크 버튼 ✅'을 누르면 화면에서 사라지고, '본영상으로 저장에 성공 했습니다'라는 문구를 `snackbar`를 통해 보여준다.", () => {
-    cy.get('.video-wrapper')
+  it("'볼 영상'에 있는 비디오의 '본 영상 체크 버튼 ✅'을 누르면 화면에서 사라지고, '설정이 완료되었습니다.'라는 문구를 `snackbar`를 통해 보여준다.", async () => {
+    await cy
+      .get('.video-wrapper')
       .children('.clip')
       .not('.d-none')
       .first()
@@ -124,6 +125,6 @@ describe('유튜브 강의실 관리 기능', () => {
 
     cy.get('#snackbar')
       .should('be.visible')
-      .should('have.text', '본영상으로 저장에 성공 했습니다');
+      .should('have.text', '설정이 완료되었습니다.');
   });
 });
