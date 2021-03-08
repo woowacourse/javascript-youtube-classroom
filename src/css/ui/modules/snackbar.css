@@ -5,8 +5,8 @@
   background-color: #333;
   color: #fff;
   text-align: center;
-  border-radius: 2px;
-  padding: 16px;
+  border-radius: 8px 8px 0px 0px;
+  padding: 20px 28px;
   position: fixed;
   z-index: 3;
   left: 50%;

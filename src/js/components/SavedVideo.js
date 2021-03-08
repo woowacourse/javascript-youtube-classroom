@@ -1,5 +1,5 @@
 import { SAVED_VIDEO_SUBSCRIBER_KEY } from '../model/index.js';
-import { getVideoTemplate, SNACKBAR_MESSAGE } from '../constants/index.js';
+import { getVideoTemplate, SNACKBAR_MESSAGE, CONFIRM_MESSAGE } from '../constants/index.js';
 import {
   getVideoByIdList,
   $,
@@ -8,6 +8,7 @@ import {
   showSnackbar,
   showElement,
   hideElement,
+  customConfirm,
 } from '../util/index.js';
 
 export class SavedVideo {
@@ -46,12 +47,14 @@ export class SavedVideo {
     }
 
     if (target.classList.contains('js-delete-button')) {
-      this.savedVideoManager.deleteVideo(target.closest('ul').dataset.videoId);
-      target.closest('article').remove();
-
       if (this.$savedVideoWrapper.children.length === 0) {
         showElement(this.$emptyImage);
       }
+      customConfirm(CONFIRM_MESSAGE.DELETE_VIDEO, () => {
+        this.savedVideoManager.deleteVideo(target.closest('ul').dataset.videoId);
+        target.closest('article').remove();
+        showSnackbar(SNACKBAR_MESSAGE.DELETE_SUCCESS);
+      });
     }
   }
 

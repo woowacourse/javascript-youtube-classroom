@@ -5,3 +5,4 @@ export { formatDateTime } from './general.js';
 export { renderSkeleton, removeSkeleton } from './skeleton.js';
 export { throttle } from './throttle.js';
 export { showSnackbar } from './snackbar.js';
+export { customConfirm } from './customConfirm.js';
