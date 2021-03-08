@@ -10,6 +10,7 @@ import { LOCALSTORAGE_KEYS } from '../../constants/constants.js';
 export default class VideoList extends Component {
   setup() {
     this.savedVideos = localStorageGetItem(LOCALSTORAGE_KEYS.VIDEOS);
+    this.filter = 'watchLater';
   }
 
   initRender() {
@@ -34,7 +35,13 @@ export default class VideoList extends Component {
     }
   }
 
-  // watch-later / watched 필터링 => 렌더 따로 해주기.
+  setFilter(filter) {
+    if (this.filter !== filter) {
+      this.render();
+    }
+    this.filter = filter ?? 'watchLater';
+  }
+
   render() {
     $$('.clip', this.$target).forEach(($clip) => {
       $clip.classList.toggle('d-none');
@@ -51,6 +58,18 @@ export default class VideoList extends Component {
         localStorageSetItem(LOCALSTORAGE_KEYS.VIDEOS, this.savedVideos);
 
         clip.classList.toggle('d-none');
+      } else if (event.target.classList.contains('delete-button')) {
+        const clip = event.target.closest('.clip');
+
+        if (
+          confirm('정말로 삭제하시겠습니까?') &&
+          this.savedVideos[clip.dataset.videoId]
+        ) {
+          delete this.savedVideos[clip.dataset.videoId];
+          localStorageSetItem(LOCALSTORAGE_KEYS.VIDEOS, this.savedVideos);
+
+          clip.remove();
+        }
       }
     });
   }

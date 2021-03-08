@@ -81,11 +81,11 @@ export default class App {
     );
 
     this.$watchLaterButton.addEventListener('click', () => {
-      this.videoList.render();
+      this.videoList.setFilter('watchLater');
     });
 
     this.$watchedButton.addEventListener('click', () => {
-      this.videoList.render();
+      this.videoList.setFilter('watched');
     });
   }
 }
