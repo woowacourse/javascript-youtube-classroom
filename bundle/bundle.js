@@ -12235,7 +12235,8 @@ var SELECTOR_ID = Object.freeze({
   VIDEO_WRAPPER: 'video-wrapper',
   NOT_FOUND_CONTENT: 'not-found-content',
   SERACH_RESULT_INTERSECTOR: 'search-result__intersector',
-  SEARCH_QUERIES: 'search-queries'
+  SEARCH_QUERIES: 'search-queries',
+  EMPTY_VIDEO_TO_WATCH: 'empty-video-to-watch'
 });
 var SELECTOR_CLASS = Object.freeze({
   CLIP: 'clip',

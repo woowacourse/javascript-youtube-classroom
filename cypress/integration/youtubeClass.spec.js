@@ -9,6 +9,11 @@ context('유튜브 강의실 테스트', () => {
     cy.reload();
   });
   describe('검색', () => {
+    it('볼 영상에 저장된 영상이 없으면 이를 알려준다.', () => {
+      cy.get(`.${SELECTOR_CLASS.CLIP}`).should('not.exist');
+      cy.get(`#${SELECTOR_ID.EMPTY_VIDEO_TO_WATCH}`).should('be.visible');
+    });
+
     it('최근 검색한 3가지 검색 키워드를 볼 수 있다.', () => {
       click(`#${SELECTOR_ID.SEARCH_BUTTON}`);
       type(`#${SELECTOR_ID.SEARCH_FORM_INPUT}`, '우아한1');
