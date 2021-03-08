@@ -1,6 +1,6 @@
 import { SAVED_VIDEO_SUBSCRIBER_KEY } from '../model/index.js';
-import { getVideoTemplate } from '../constants/index.js';
-import { getVideoByIdList, $, renderSkeleton, removeSkeleton } from '../util/index.js';
+import { getVideoTemplate, SNACKBAR_MESSAGE } from '../constants/index.js';
+import { getVideoByIdList, $, renderSkeleton, removeSkeleton, showSnackbar } from '../util/index.js';
 
 export class SavedVideo {
   constructor({ savedVideoManager, isChecked }) {
@@ -29,6 +29,7 @@ export class SavedVideo {
     if (target.classList.contains('js-check-button')) {
       this.savedVideoManager.checkVideo(target.closest('ul').dataset.videoId);
       target.closest('article').remove();
+      showSnackbar(this.isChecked ? SNACKBAR_MESSAGE.UNCHECK_VIDEO_SUCCESS : SNACKBAR_MESSAGE.CHECK_VIDEO_SUCCESS);
     }
 
     if (target.classList.contains('js-delete-button')) {
@@ -42,6 +43,7 @@ export class SavedVideo {
       return await getVideoByIdList(idList);
     } catch (e) {
       console.error(e);
+      showSnackbar(SNACKBAR_MESSAGE.API_REQUEST_FAILURE);
     }
   }
 
