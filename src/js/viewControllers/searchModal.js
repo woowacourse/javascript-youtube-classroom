@@ -1,9 +1,9 @@
-import $ from '../library/utils/DOM.js';
-import { MAX_SAVED_VIDEO_COUNT } from '../library/constants/classroom.js';
-import createNotFoundTemplate from '../library/templates/notFound.js';
-import createKeywordListTemplate from '../library/templates/keywordList.js';
-import { createVideoListTemplate } from '../library/templates/videoList.js';
-import createVideoSkeletonTemplate from '../library/templates/videoSkeleton.js';
+import $ from '../utils/DOM.js';
+import { MAX_SAVED_VIDEO_COUNT } from '../constants/classroom.js';
+import createNotFoundTemplate from '../templates/notFound.js';
+import createKeywordListTemplate from '../templates/keywordList.js';
+import { createVideoListTemplate } from '../templates/videoList.js';
+import createVideoSkeletonTemplate from '../templates/videoSkeleton.js';
 
 const $savedVideoCount = $('#saved-video-count');
 const $latestKeywordList = $('#latest-keyword-list');

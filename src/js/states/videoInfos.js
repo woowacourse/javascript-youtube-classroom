@@ -1,5 +1,5 @@
-import { renderSavedVideoList } from '../../viewControllers/app.js';
-import { renderSavedVideoCount } from '../../viewControllers/searchModal.js';
+import { renderSavedVideoList } from '../viewControllers/app.js';
+import { renderSavedVideoCount } from '../viewControllers/searchModal.js';
 import { fetchLatestVideoInfos } from '../API.js';
 import { VIDEO_INFOS } from '../constants/localStorage.js';
 import { getLocalStorage, setLocalStorage } from '../utils/localStorage.js';

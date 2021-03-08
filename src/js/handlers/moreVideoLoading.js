@@ -1,9 +1,9 @@
-import { fetchSearchResult } from '../library/API.js';
+import { fetchSearchResult } from '../API.js';
 import { appendVideos } from '../viewControllers/searchModal.js';
-import $ from '../library/utils/DOM.js';
-import latestKeywords from '../library/states/latestKeywords.js';
-import videoInfos from '../library/states/videoInfos.js';
-import pageToken from '../library/states/pageToken.js';
+import $ from '../utils/DOM.js';
+import latestKeywords from '../states/latestKeywords.js';
+import videoInfos from '../states/videoInfos.js';
+import pageToken from '../states/pageToken.js';
 
 async function handleMoreVideoLoading(entries) {
   const [$lastVideo] = entries;

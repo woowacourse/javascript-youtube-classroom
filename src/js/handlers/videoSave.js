@@ -1,6 +1,6 @@
-import { EXCEED_SAVED_VIDEO_COUNT_MSG } from '../library/constants/alertMessage.js';
-import { MAX_SAVED_VIDEO_COUNT } from '../library/constants/classroom.js';
-import videoInfos from '../library/states/videoInfos.js';
+import { EXCEED_SAVED_VIDEO_COUNT_MSG } from '../constants/alertMessage.js';
+import { MAX_SAVED_VIDEO_COUNT } from '../constants/classroom.js';
+import videoInfos from '../states/videoInfos.js';
 
 function createVideoInfo(videoDataset) {
   const { videoId, title, channelId, channelTitle, publishTime } = videoDataset;

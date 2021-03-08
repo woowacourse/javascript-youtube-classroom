@@ -1,5 +1,5 @@
-import $ from '../library/utils/DOM.js';
-import { createSavedVideoListTemplate } from '../library/templates/videoList.js';
+import $ from '../utils/DOM.js';
+import { createSavedVideoListTemplate } from '../templates/videoList.js';
 
 const $searchModal = $('#video-search-modal');
 const $videoList = $('#video-list');

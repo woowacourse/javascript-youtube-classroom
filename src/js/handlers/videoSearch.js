@@ -1,13 +1,13 @@
-import $ from '../library/utils/DOM.js';
-import { fetchSearchResult } from '../library/API.js';
+import $ from '../utils/DOM.js';
+import { fetchSearchResult } from '../API.js';
 import {
   renderVideoLoader,
   renderVideoSearchResult,
 } from '../viewControllers/searchModal.js';
-import intersectionObserver from '../library/states/intersectionObserver.js';
-import pageToken from '../library/states/pageToken.js';
-import latestKeywords from '../library/states/latestKeywords.js';
-import videoInfos from '../library/states/videoInfos.js';
+import intersectionObserver from '../states/intersectionObserver.js';
+import pageToken from '../states/pageToken.js';
+import latestKeywords from '../states/latestKeywords.js';
+import videoInfos from '../states/videoInfos.js';
 
 function initInfiniteScroll() {
   const $lastVideo = $('#video-search-result .js-video:last-child');

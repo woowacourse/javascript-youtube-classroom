@@ -1,4 +1,4 @@
-import { renderLatestKeywordList } from '../../viewControllers/searchModal.js';
+import { renderLatestKeywordList } from '../viewControllers/searchModal.js';
 import { MAX_LATEST_KEYWORD_COUNT } from '../constants/classroom.js';
 import { LATEST_KEYWORDS } from '../constants/localStorage.js';
 import { getLocalStorage, setLocalStorage } from '../utils/localStorage.js';

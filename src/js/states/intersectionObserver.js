@@ -1,4 +1,4 @@
-import handleMoreVideoLoading from '../../handlers/moreVideoLoading.js';
+import handleMoreVideoLoading from '../handlers/moreVideoLoading.js';
 import $ from '../utils/DOM.js';
 
 const intersectionObserver = {

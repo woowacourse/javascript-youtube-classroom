@@ -1,5 +1,5 @@
-import API_KEY from '../apiKey.js';
-import YOUTUBE_BASE_URL from './constants/API.js';
+import API_KEY from './apiKey.js';
+import { YOUTUBE_BASE_URL } from './constants/API.js';
 import { FETCH_VIDEO_COUNT } from './constants/classroom.js';
 
 function fetchSearchResult(keyword, nextPageToken = '') {
