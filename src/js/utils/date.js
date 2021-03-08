@@ -1,4 +1,4 @@
-import { NAN_CHARACTER } from '../constants/classroom';
+import { NAN_CHARACTER } from '../constants/classroom.js';
 
 function formatDate(dateString) {
   const d = new Date(dateString);

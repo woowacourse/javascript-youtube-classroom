@@ -1,5 +1,3 @@
-import state from '../../src/js/library/state.js';
-
 describe('Youtube classroom test', () => {
   beforeEach(() => {
     cy.visit('http://127.0.0.1:5500');
