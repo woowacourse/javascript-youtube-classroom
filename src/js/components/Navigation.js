@@ -1,9 +1,9 @@
 import { $ } from '../util/index.js';
 
 export class Navigation {
-  constructor({ handleIsCompleted, handleOpenModal }) {
+  constructor({ handleIsChecked, handleOpenModal }) {
     this.$navigation = $('nav');
-    this.handleIsCompleted = handleIsCompleted;
+    this.handleIsChecked = handleIsChecked;
     this.handleOpenModal = handleOpenModal;
 
     this.initEvent();
@@ -12,12 +12,12 @@ export class Navigation {
   initEvent() {
     this.$navigation.addEventListener('click', ({ target }) => {
       if (target.classList.contains('js-uncompleted-video-button')) {
-        this.handleIsCompleted(false);
+        this.handleIsChecked(false);
         return;
       }
 
       if (target.classList.contains('js-completed-video-button')) {
-        this.handleIsCompleted(true);
+        this.handleIsChecked(true);
         return;
       }
 

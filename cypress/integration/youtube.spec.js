@@ -125,10 +125,10 @@ describe('유튜브 검색 테스트', () => {
 
   it(`저장된 동영상의 개수가 ${MAX_NUM_OF_SAVED_VIDEO}개일 때, 동영상 저장 버튼을 누르면 snackbar에 메세지를 띄운다.`, () => {
     localStorage.clear();
-    const dummies = Array(MAX_NUM_OF_SAVED_VIDEO).fill({ id: '000', isCompleted: false });
+    const dummies = Array(MAX_NUM_OF_SAVED_VIDEO).fill({ id: '000', isChecked: false });
     const savedVideoManager = new SavedVideoManager(dummies);
 
-    savedVideoManager.saveVideo({ id: '000', isCompleted: false });
+    savedVideoManager.saveVideo({ id: '000', isChecked: false });
     cy.get('.js-snackbar').should('have.text', SNACKBAR_MESSAGE.OVER_MAX_NUM_OF_SAVED_VIDEO);
   });
 

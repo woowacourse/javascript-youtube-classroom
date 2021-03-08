@@ -65,10 +65,7 @@ export class SearchVideoResult {
 
   handleSaveVideo({ target }) {
     if (target.classList.contains('js-clip-save-button')) {
-      this.savedVideoManager.saveVideo({
-        id: target.dataset.videoId,
-        isCompleted: false,
-      });
+      this.savedVideoManager.saveVideo(target.dataset.videoId);
 
       target.disabled = true;
     }
