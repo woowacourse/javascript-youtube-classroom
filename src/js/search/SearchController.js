@@ -15,22 +15,30 @@ export default class SearchController {
     this.nextPageToken = "";
   }
 
-  readySearch() {
+  searchVideos(searchKeyword) {
+    searchHistory.resetPageToken();
+    searchHistory.setKeyword(searchKeyword);
+    this.updateKeywordHistory();
+    this.fetchVideos();
+  }
+
+  // TODO : naming
+  loadingSearch() {
     this.searchView.resetSearchResults();
     loadingSearchResults.resetLoadCount();
     this.searchView.showSkeletonClip();
   }
 
-  async searchVideos() {
+  async fetchVideos() {
     if (searchHistory.getPageToken() === "") {
-      this.readySearch();
+      this.loadingSearch();
     }
     const videoItems = await this.getSearchResult();
 
     if (videoItems.length === 0) {
       this.fetchNotFoundImg();
     } else {
-      this.fetchVideos(videoItems);
+      this.renderVideos(videoItems);
     }
   }
 
@@ -56,7 +64,8 @@ export default class SearchController {
     this.searchView.showNotFoundImg();
   }
 
-  fetchVideos(videoItems) {
+  // TODO : naming
+  renderVideos(videoItems) {
     videos.setFetchedVideos(videoItems);
     this.searchView.showSearchResults();
     searchHistory.setPageToken(this.nextPageToken);
@@ -68,7 +77,7 @@ export default class SearchController {
 
     if (isBottom && !scrollEventLock.isLocked()) {
       scrollEventLock.lock();
-      await this.searchVideos();
+      await this.fetchVideos();
       scrollEventLock.unlock();
     }
   }
@@ -81,6 +90,11 @@ export default class SearchController {
 
   showSavedVideoCount() {
     this.searchView.showSavedVideoCount();
+  }
+
+  removeKeywordHistoryChip(keyword) {
+    searchHistory.removeKeyword(keyword);
+    this.updateKeywordHistory();
   }
 
   updateKeywordHistory() {
