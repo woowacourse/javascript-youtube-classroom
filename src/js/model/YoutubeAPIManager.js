@@ -14,31 +14,30 @@ export default class YoutubeAPIManager {
 
   createRequestURL() {
     const requestURL = `https://www.googleapis.com/youtube/v3/search?`;
-    const searchParams = new URLSearchParams("part=snippet&type=video");
+    const searchParams = new URLSearchParams('part=snippet&type=video');
 
     searchParams.set('q', this.searchTerm);
     searchParams.set('key', MY_KEY);
     searchParams.set('maxResults', MAX_RESULT);
-  
-    if(this.pageToken) {
+
+    if (this.pageToken) {
       searchParams.set('pageToken', this.pageToken);
     }
 
-    return `${requestURL}${searchParams}`
+    return `${requestURL}${searchParams}`;
   }
 
   async requestVideos() {
     const url = this.createRequestURL(this.searchTerm, this.pageToken);
-    const res = await fetch(url)
-      .then((data) => {
-        if (!data.ok) {
-          if (data.status === 403) {
-            throw new Error(ERROR_MESSAGE.EXCEED_API_REQUEST_COUNT(data.status));
-          }
-          throw new Error(ERROR_MESSAGE.API_REQUEST_ERROR(data.status));
+    const res = await fetch(url).then((data) => {
+      if (!data.ok) {
+        if (data.status === 403) {
+          throw new Error(ERROR_MESSAGE.EXCEED_API_REQUEST_COUNT(data.status));
         }
-        return data.json();
-      })
+        throw new Error(ERROR_MESSAGE.API_REQUEST_ERROR(data.status));
+      }
+      return data.json();
+    });
 
     this.pageToken = res.nextPageToken;
 

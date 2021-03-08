@@ -7,16 +7,18 @@ export const youtubeAPIManager = new YoutubeAPIManager();
 export default class App {
   constructor($target) {
     this.$target = $target;
-    this.setup()
+    this.setup();
   }
 
-  setup(){
+  setup() {
     this.localStorageSetup();
     this.states = {
       searchedVideos: [],
       searchHistory: localStorageGetItem(LOCALSTORAGE_KEYS.SEARCH_HISTORY),
       requestPending: false,
-      savedVideoCount: localStorageGetItem(LOCALSTORAGE_KEYS.VIDEOS).length,
+      savedVideoCount: Object.keys(
+        localStorageGetItem(LOCALSTORAGE_KEYS.VIDEOS)
+      ).length,
     };
   }
 
@@ -27,15 +29,14 @@ export default class App {
     this.bindEvent();
   }
 
-  localStorageSetup(){
-      if (localStorageGetItem(LOCALSTORAGE_KEYS.VIDEOS) === null) {
-        localStorageSetItem(LOCALSTORAGE_KEYS.VIDEOS, []);
-      }
+  localStorageSetup() {
+    if (localStorageGetItem(LOCALSTORAGE_KEYS.VIDEOS) === null) {
+      localStorageSetItem(LOCALSTORAGE_KEYS.VIDEOS, {});
+    }
 
-      if (localStorageGetItem(LOCALSTORAGE_KEYS.SEARCH_HISTORY) === null) {
-        localStorageSetItem(LOCALSTORAGE_KEYS.SEARCH_HISTORY, []);
-      }
-    
+    if (localStorageGetItem(LOCALSTORAGE_KEYS.SEARCH_HISTORY) === null) {
+      localStorageSetItem(LOCALSTORAGE_KEYS.SEARCH_HISTORY, []);
+    }
   }
 
   initRender() {

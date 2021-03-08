@@ -1,6 +1,11 @@
 import Component from '../../core/Component.js';
 import { store } from '../../index.js';
-import { $, createElement, localStorageGetItem, localStorageSetItem } from '../../utils/utils.js';
+import {
+  $,
+  createElement,
+  localStorageGetItem,
+  localStorageSetItem,
+} from '../../utils/utils.js';
 import { LOCALSTORAGE_KEYS } from '../../constants/constants.js';
 
 export default class SearchTermHistory extends Component {
@@ -19,9 +24,7 @@ export default class SearchTermHistory extends Component {
     const chips = createElement({ tag: 'div', classes: ['chips'] });
 
     chips.appendChild(
-      this.chipsTemplate(
-        localStorageGetItem(LOCALSTORAGE_KEYS.SEARCH_HISTORY)
-      )
+      this.chipsTemplate(localStorageGetItem(LOCALSTORAGE_KEYS.SEARCH_HISTORY))
     );
 
     fragment.appendChild(searchHistory);
@@ -61,17 +64,12 @@ export default class SearchTermHistory extends Component {
   // TODO: 중복되는 로직 추출
   onRequestVideo(event) {
     const searchTerm = event.target.textContent;
-    const history = localStorageGetItem(
-      LOCALSTORAGE_KEYS.SEARCH_HISTORY
-    );
+    const history = localStorageGetItem(LOCALSTORAGE_KEYS.SEARCH_HISTORY);
     const indexOfSearchTerm = history.indexOf(searchTerm);
 
     history.splice(indexOfSearchTerm, 1);
     history.unshift(searchTerm);
-    localStorageSetItem(
-      LOCALSTORAGE_KEYS.SEARCH_HISTORY,
-      history.slice(0, 3)
-    );
+    localStorageSetItem(LOCALSTORAGE_KEYS.SEARCH_HISTORY, history.slice(0, 3));
 
     this.$props.requestVideos(searchTerm);
   }

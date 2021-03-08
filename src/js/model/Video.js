@@ -5,7 +5,11 @@ import {
   ERROR_MESSAGE,
   LOCALSTORAGE_KEYS,
 } from '../constants/constants.js';
-import { createElement, localStorageGetItem, localStorageSetItem } from '../utils/utils.js';
+import {
+  createElement,
+  localStorageGetItem,
+  localStorageSetItem,
+} from '../utils/utils.js';
 
 export default class Video {
   constructor(videoInfo) {
@@ -28,52 +32,48 @@ export default class Video {
   }
 
   createVideoUploadDate(date) {
-    if(Date.parse(date)){
+    if (Date.parse(date)) {
       const newDate = new Date(date);
       return `${newDate.getFullYear()}년 ${newDate.getMonth()}월 ${newDate.getDate()}일`;
     }
-    return ''
+    return '';
   }
 
   toJSON() {
     return {
-      videoId: this.videoId,
       videoTitle: this.videoTitle,
       videoEmbedURL: this.videoEmbedURL,
       channelTitle: this.channelTitle,
       channelId: this.channelId,
       channelURL: this.channelURL,
       uploadTime: this.uploadTime,
-      thumbnailURL: this.thumbnailURL
+      thumbnailURL: this.thumbnailURL,
     };
   }
 
   isSavedVideo() {
     const videos = localStorageGetItem(LOCALSTORAGE_KEYS.VIDEOS);
 
-    for (const key in videos) {
-      if (this.videoId === videos[key].videoId) return true;
-    }
-
-    return false;
+    return Object.keys(videos).includes(this.videoId);
   }
 
   onSaveVideo(event) {
     const savedVideos = localStorageGetItem(LOCALSTORAGE_KEYS.VIDEOS);
 
-    if (savedVideos.length >= VALUES.MAXIMUM_VIDEO_SAVE_COUNT) {
+    if (Object.keys(savedVideos).length >= VALUES.MAXIMUM_VIDEO_SAVE_COUNT) {
       alert(ERROR_MESSAGE.MAXIMUM_VIDEO_SAVE_COUNT_ERROR);
 
       return;
     }
 
-    savedVideos.push(this.toJSON());
+    const newObject = {};
+    newObject[this.videoId] = this.toJSON();
+    Object.assign(savedVideos, newObject);
     localStorageSetItem(LOCALSTORAGE_KEYS.VIDEOS, savedVideos);
 
     event.target.classList.add('d-none');
     store.dispatch(increaseSavedVideoCount());
   }
-
 
   createIframeSrcdocTemplate() {
     return `
@@ -118,7 +118,7 @@ export default class Video {
     <a href="${this.videoEmbedURL}?autoplay=1">
       <img src="${this.thumbnailURL}" alt="${this.videoTitle} thumbnail"/>
       <span>►</span>
-    </a>`
+    </a>`;
   }
 
   createTemplate() {
@@ -176,7 +176,7 @@ export default class Video {
     });
     channelURL.href = this.channelURL;
     channelURL.target = '_blank';
-    channelURL.rel = "noopener";
+    channelURL.rel = 'noopener';
 
     const meta = createElement({ tag: 'div', classes: ['meta'] });
 

@@ -1,7 +1,7 @@
 const getCircularReplacer = () => {
   const seen = new WeakSet();
   return (key, value) => {
-    if (typeof value === "object" && value !== null) {
+    if (typeof value === 'object' && value !== null) {
       if (seen.has(value)) {
         return;
       }
@@ -19,7 +19,11 @@ export const $$ = (selector, target = document) => {
   return target.querySelectorAll(selector);
 };
 
-export const createElement = ({ tag = 'div', classes = [], textContent= '' }) => {
+export const createElement = ({
+  tag = 'div',
+  classes = [],
+  textContent = '',
+}) => {
   const element = document.createElement(tag);
   element.classList.add(...classes);
   element.textContent = textContent;
@@ -33,16 +37,16 @@ export const isEmptyString = (string) => {
 export const localStorageGetItem = (key) => {
   try {
     return JSON.parse(localStorage.getItem(key));
-  } catch (error) {
-    throw new Error('JSON parsing error.')
+  } catch {
+    return undefined;
   }
-}
+};
 
 export const localStorageSetItem = (key, value) => {
-  const decycled  = JSON.stringify(value, getCircularReplacer())
-  if(decycled) {
-    localStorage.setItem(key, decycled)
-  }else{
-    throw new Error('JSON stringify error.')
+  const decycled = JSON.stringify(value, getCircularReplacer());
+  if (decycled) {
+    localStorage.setItem(key, decycled);
+  } else {
+    throw new Error('JSON stringify error.');
   }
-}
+};
