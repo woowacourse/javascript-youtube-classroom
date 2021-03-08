@@ -56,9 +56,9 @@ const videos = {
   },
 
   isSavedVideo(videoId) {
-    return this.getSavedVideos()
-      .map((savedVideo) => savedVideo.videoId)
-      .includes(videoId);
+    return this.getSavedVideos().some(
+      (savedVideo) => savedVideo.videoId === videoId
+    );
   },
 };
 
