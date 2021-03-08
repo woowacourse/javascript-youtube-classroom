@@ -1,7 +1,13 @@
 import SearchModel from '../models/searchModel.js';
 import SearchView from '../views/searchView.js';
 import VideoLocalStorage from '../models/localStorage.js';
-import { VIDEOS_TO_WATCH, STORAGE_CAPACITY_FULL, MAX_VIDEO_STORAGE_CAPACITY, RECENT_KEYWORDS } from '../constants.js';
+import {
+  VIDEOS_TO_WATCH,
+  STORAGE_CAPACITY_IS_FULL,
+  MAX_VIDEO_STORAGE_CAPACITY,
+  RECENT_KEYWORDS,
+  VIDEO_IS_SAVED_SUCCESSFULLY,
+} from '../constants.js';
 import { isEndOfPage } from '../utils/DOM.js';
 
 export default class SearchController {
@@ -76,13 +82,14 @@ export default class SearchController {
     const storedCount = this.storage.getStoredVideoCount();
 
     if (storedCount >= MAX_VIDEO_STORAGE_CAPACITY) {
-      this.view.renderSnackbar(STORAGE_CAPACITY_FULL);
+      this.view.renderSnackbar(STORAGE_CAPACITY_IS_FULL);
       return;
     }
 
     this.view.setCurrentSaveButton(target);
     this.saveVideo(target);
     this.updateViewAfterSavingVideo();
+    this.view.renderSnackbar(VIDEO_IS_SAVED_SUCCESSFULLY);
   }
 
   saveVideo(target) {
