@@ -19,3 +19,4 @@ export const $searchResultIntersector = $(
 export const $videoWrapper = $(`#${SELECTOR_ID.VIDEO_WRAPPER}`);
 export const $searchQueries = $(`#${SELECTOR_ID.SEARCH_QUERIES}`);
 export const $savedVideoCount = $(`#${SELECTOR_ID.SAVED_VIDEO_COUNT}`);
+export const $emptyVideoImage = $(`#${SELECTOR_ID.EMPTY_VIDEO_TO_WATCH}`);
