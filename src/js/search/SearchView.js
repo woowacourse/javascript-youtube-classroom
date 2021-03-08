@@ -62,4 +62,8 @@ export default class SearchView {
 
     hideElement(currentSaveButton);
   }
+
+  setSearchInputValue(searchKeyword) {
+    elements.$searchForm.elements["search-keyword"].value = searchKeyword;
+  }
 }

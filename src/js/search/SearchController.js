@@ -22,6 +22,11 @@ export default class SearchController {
     this.updateSearchResultView();
   }
 
+  searchVideosByHistory(searchKeyword) {
+    this.searchView.setSearchInputValue(searchKeyword);
+    this.searchVideos(searchKeyword);
+  }
+
   activateSearchLoading() {
     this.searchView.resetSearchResults();
     loadingSearchResults.resetLoadCount();

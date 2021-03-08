@@ -83,13 +83,17 @@ export default class SearchEventController {
   }
 
   onClickKeywordHistory(e) {
-    // TODO : dataset이 없는 경우 error 처리 어떻게 할것인가
+    const keyword = e.target.dataset.keyword.replace("+", " ");
+    if (!keyword) {
+      return;
+    }
+
     if (e.target.classList.contains("js-remove-btn")) {
-      this.searchController.removeKeywordHistoryChip(e.target.dataset.keyword);
+      this.searchController.removeKeywordHistoryChip(keyword);
     }
 
     if (e.target.classList.contains("icon")) {
-      this.searchController.searchVideos(e.target.dataset.keyword);
+      this.searchController.searchVideosByHistory(keyword);
     }
   }
 
