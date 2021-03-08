@@ -16,7 +16,7 @@ export default class VideoList extends Component {
   }
 
   initRender() {
-    if (this.savedVideos) {
+    if (Object.keys(this.savedVideos).length > 0) {
       const fragment = document.createDocumentFragment();
       Object.keys(this.savedVideos).forEach((videoId) => {
         fragment.appendChild(
@@ -37,7 +37,12 @@ export default class VideoList extends Component {
       this.$target.appendChild(fragment);
       this.$target.appendChild(snackBar);
     } else {
-      console.log('저장된 동영상 없음');
+      // TODO: 비디오가 저장되면 메시지 지우기, 비디오가 삭제되고 저장된 비디오가 없으면 메시지 띄우기
+      const notSavedVideoMessage = createElement({
+        tag: 'h2',
+        textContent: '저장된 비디오가 없습니다.',
+      });
+      this.$target.appendChild(notSavedVideoMessage);
     }
   }
 
@@ -53,9 +58,11 @@ export default class VideoList extends Component {
   }
 
   render() {
+    // TODO: 다른 메서드로 빼기
     $$('.clip', this.$target).forEach(($clip) => {
       $clip.classList.toggle('d-none');
     });
+    // TODO: 검색창에서 저장 버튼을 눌렀을 때, 상태에 따라 렌더링 해주어야 함. (실시간 영상 추가)
   }
 
   onClickWatchedButton(event) {
