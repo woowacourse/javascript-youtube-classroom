@@ -1,8 +1,8 @@
 import { $ } from "../utils/dom.js";
-import { STANDARD_NUMS, ALERT_MESSAGE, STORAGE } from "../utils/constants.js";
+import { STANDARD_NUMS, ALERT_MESSAGE, STORAGE, SECTION } from "../utils/constants.js";
 import { api } from "../utils/api.js";
 import { setLocalStorage, getLocalStorage } from "../utils/localStorage.js";
-import { changeDateFormat } from "../utils/common.js";
+import { createVideoTemplate } from "../utils/templates.js";
 
 // dummy API Response 사용할 경우
 // import { dummySearchedData } from "../utils/dummy.js";
@@ -194,7 +194,8 @@ class SearchModal {
   render() {
     this.videos.length
       ? (this.$videoWrapper.innerHTML = this.videos
-          .map(video => createSearchedVideoTemplate(video))
+          .filter(video => video.videoId)
+          .map(video => createVideoTemplate(video, SECTION.MODAL))
           .join(""))
       : (this.$videoWrapper.innerHTML = createNoSearchResultTemplate());
 
@@ -210,41 +211,6 @@ class SearchModal {
     this.$target.classList.remove("open");
   }
 }
-
-const createSearchedVideoTemplate = video => `
-<article class="clip">
-  <div class="preview-container">
-    <iframe
-      width="100%"
-      height="118"
-      src="https://www.youtube.com/embed/${video.videoId}"
-      frameborder="0"
-      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-      allowfullscreen
-    ></iframe>
-  </div>
-  <div class="content-container pt-2 px-1">
-    <h3>${video.title}</h3>
-    <div>
-      <a
-        href="https://www.youtube.com/channel/${video.channelId}"
-        target="_blank"
-        rel="noopener noreferrer nofollow"
-        class="channel-name mt-1"
-      >
-      ${video.channelTitle}
-      </a>
-      <div class="meta">
-        <p>${changeDateFormat(video.publishedAt)}</p>
-      </div>
-      <div class="d-flex justify-end">
-        <button class="clip__save-btn btn ${video.isSaved ? "hidden" : ""}" data-video-id="${
-  video.videoId
-}">⬇️ 저장</button>
-      </div>
-    </div>
-  </div>
-</article>`;
 
 const createNoSearchResultTemplate = () =>
   `<div class='d-flex flex-col justify-center items-center no-search-result'>

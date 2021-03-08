@@ -12,3 +12,8 @@ export const ALERT_MESSAGE = Object.freeze({
 export const STORAGE = Object.freeze({
   VIDEO_IDS: "videoIds",
 });
+
+export const SECTION = Object.freeze({
+  MODAL: "modal",
+  MAIN: "main",
+});
