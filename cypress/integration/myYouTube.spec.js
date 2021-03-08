@@ -10,6 +10,13 @@ describe('simba-tube', () => {
     cy.get('#modal-search-button').click();
   };
 
+  const interceptSearch = (keyword) => {
+    cy.intercept({
+      url: 'https://www.googleapis.com/youtube/v3/search',
+      query: { q: keyword },
+    }).as('search');
+  };
+
   it('클릭한 탭의 색을 하이라이트한다.', () => {
     cy.get('#nav-bar > button').each((button) => {
       cy.wrap(button).click();
@@ -50,18 +57,34 @@ describe('simba-tube', () => {
   });
 
   it('검색 결과가 없는 경우 결과 없음 이미지를 보여준다. ', () => {
-    searchVideo('sadffsdasdb');
+    const keyword = 'sadffsdasdb';
+
+    interceptSearch(keyword);
+    searchVideo(keyword);
+
+    cy.wait('@search');
     cy.get('.not-found').should('be.visible');
   });
 
   it('검색 후 스크롤를 끝까지 이동시킬 경우 api 추가 요청을 통해 검색 결과를 10개씩 더 보여준다.', () => {
-    searchVideo('방탄소년단');
+    const keyword = 'bts';
+
+    interceptSearch(keyword);
+    searchVideo(keyword);
+
+    cy.wait('@search');
     cy.get('#modal-videos').scrollTo('bottom');
+    cy.wait('@search');
     cy.get('#modal-videos').find('.clip').should('have.length', 20);
   });
 
   it('검색 결과 동영상의 저장 버튼을 누르면 저장한 동영상들을 볼 영상 목록에 보여준다.', () => {
-    searchVideo('방탄소년단');
+    const keyword = 'bts';
+
+    interceptSearch(keyword);
+    searchVideo(keyword);
+
+    cy.wait('@search');
     cy.get('.clip-save-btn').eq(0).click();
 
     cy.get('#saved-video-count').should('have.text', 1);
@@ -69,14 +92,24 @@ describe('simba-tube', () => {
   });
 
   it('최근 검색어 클릭 시 해당 검색어로 검색을 한다.', () => {
-    searchVideo('방탄소년단');
+    searchVideo('bts');
 
-    cy.get('#modal-search-input').clear().type('데이식스');
+    cy.get('#modal-search-input').clear().type('day6');
     cy.get('#modal-search-button').click();
 
-    cy.get('#chip-1').should('have.text', '데이식스');
+    cy.get('#chip-1').should('have.text', 'day6');
+
+    cy.intercept({
+      url: 'https://www.googleapis.com/youtube/v3/search',
+    }).as('search');
+
     cy.get('#chip-2').click();
-    cy.get('#modal-search-input').should('have.value', '방탄소년단');
-    cy.get('#chip-1').should('have.text', '방탄소년단');
+
+    cy.wait('@search').should(({ request }) => {
+      expect(request.url).to.include('q=bts');
+    });
+
+    cy.get('#modal-search-input').should('have.value', 'bts');
+    cy.get('#chip-1').should('have.text', 'bts');
   });
 });

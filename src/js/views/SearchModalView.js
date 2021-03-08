@@ -72,13 +72,16 @@ export default class SearchModalView extends View {
     this.updateSavedCount();
     this.clearVideoClips();
 
-    const latestKeyword = $('#chip-1').getText();
+    try {
+      const latestKeyword = $('#chip-1').getText();
 
-    if (latestKeyword) {
       this.searchKeyword = latestKeyword;
-
       $('#modal-search-input').setValue(latestKeyword);
+
       this.emit('openModal', latestKeyword);
+    } catch (err) {
+      console.error(err);
+      return;
     }
   }
 
@@ -146,7 +149,7 @@ export default class SearchModalView extends View {
     this.modalVideos.setInnerHTML(
       `
         <div class="empty"></div>
-        <img class="not-found" src="./src/images/status/not_found.png"></img>
+        <img class="not-found" src="./src/images/status/not_found.png" alt="not-found-img"></img>
       `,
     );
   }
