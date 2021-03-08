@@ -14,7 +14,9 @@
             <h2 class="text-center font-bold">👩🏻‍💻 나만의 유튜브 강의실 👨🏻‍💻</h2>
             <nav class="d-flex justify-center">
               <button class="btn bg-cyan-100 mx-1">👁️ 볼 영상</button>
-              <button class="btn mx-1">✅ 본 영상</button>
+              <button id="watched-videos-button" class="btn mx-1">
+                ✅ 본 영상
+              </button>
               <button id="search-modal-button" class="btn mx-1">
                 🔍 동영상 검색
               </button>
@@ -49,11 +51,11 @@
                     <div class="meta">
                       <p class="line">2021년 3월 2일</p>
                     </div>
-                    <div>
-                      <span class="opacity-hover">✅</span>
-                      <span class="opacity-hover">👍</span>
-                      <span class="opacity-hover">💬</span>
-                      <span class="opacity-hover">🗑️</span>
+                    <div class="video-info-buttons">
+                      <span class="watched opacity-hover">✅</span>
+                      <span class="thumbs-up opacity-hover">👍</span>
+                      <span class="comments opacity-hover">💬</span>
+                      <span class="delete opacity-hover">🗑️</span>
                     </div>
                   </div>
                 </div>
