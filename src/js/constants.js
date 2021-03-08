@@ -15,5 +15,6 @@ export const VIDEOS_WATCHED = 'videosWatched';
 export const RECENT_KEYWORDS = 'recentKeywords';
 
 export const SNACKBAR_SHOW_TIME = 2000;
-export const STORAGE_CAPACITY_IS_FULL = `최대 영상 저장갯수 ${MAX_VIDEO_STORAGE_CAPACITY}개가 다 찼습니다.`;
-export const VIDEO_IS_SAVED_SUCCESSFULLY = `선택하신 영상이 [시청 중인 영상] 메뉴에 추가되었습니다.`;
+export const NO_KEYWORD_IS_SUBMITTED = `검색키워드가 입력되지 않았습니다. 저장하고 싶은 검색키워드를 입력해주세요!😁`;
+export const STORAGE_CAPACITY_IS_FULL = `최대 영상 저장갯수 ${MAX_VIDEO_STORAGE_CAPACITY}개가 다 찼습니다.😭`;
+export const VIDEO_IS_SAVED_SUCCESSFULLY = `선택하신 영상이 [시청 중인 영상] 메뉴에 추가되었습니다.🤩`;
