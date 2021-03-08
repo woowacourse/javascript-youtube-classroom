@@ -37,17 +37,17 @@
     rgba(255, 255, 255, 0)
   );
   animation-name: shining;
-  animation-duration: 1.8s;
+  animation-duration: 0.7s;
   animation-timing-function: ease-in-out;
   animation-iteration-count: infinite;
 }
 
 @keyframes shining {
   0% {
-    transform: translateX(-200%);
+    transform: translateX(-50%);
   }
 
   100% {
-    transform: translateX(300%);
+    transform: translateX(160%);
   }
 }
