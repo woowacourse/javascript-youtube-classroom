@@ -1,3 +1,3 @@
-import SearchEventBinder from "./search/SearchEventBinder.js";
+import SearchEventController from "./search/SearchEventController.js";
 
-new SearchEventBinder().bindEvents();
+new SearchEventController().bindEvents();

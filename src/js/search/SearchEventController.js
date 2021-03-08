@@ -12,12 +12,18 @@ import {
   hideElement,
 } from "../utils/dom.js";
 
-export default class SearchEventBinder {
+export default class SearchEventController {
   constructor() {
     this.searchController = new SearchController();
   }
 
   bindEvents() {
+    this.bindModalEvents();
+    this.bindSearchEvents();
+    this.bindSaveVideoEvent();
+  }
+
+  bindModalEvents() {
     elements.$searchButton.addEventListener(
       "click",
       this.onClickSearchButton.bind(this)
@@ -27,7 +33,9 @@ export default class SearchEventBinder {
       "click",
       this.onClickSearchModalCloseButton
     );
+  }
 
+  bindSearchEvents() {
     elements.$searchForm.addEventListener("submit", this.onSearch.bind(this));
     elements.$keywordHistory.addEventListener(
       "click",
@@ -41,11 +49,31 @@ export default class SearchEventBinder {
       "loadSearchAll",
       this.onLoadSearchAll
     );
+  }
 
+  bindSaveVideoEvent() {
     elements.$searchResults.addEventListener(
       "click",
       this.onClickSaveVideoButtons.bind(this)
     );
+  }
+
+  onClickSearchButton() {
+    openModal(elements.$searchModal);
+    elements.$searchForm.elements["search-keyword"].focus();
+
+    this.searchController.updateKeywordHistory();
+    this.searchController.showSavedVideoCount();
+  }
+
+  onClickDimmed(e) {
+    if (e.target.classList.contains("modal")) {
+      closeModal(elements.$searchModal);
+    }
+  }
+
+  onClickSearchModalCloseButton() {
+    closeModal(elements.$searchModal);
   }
 
   onSearch(e) {
@@ -67,24 +95,6 @@ export default class SearchEventBinder {
 
   onScroll(e) {
     this.searchController.addVideosByScroll(e.target);
-  }
-
-  onClickSearchButton() {
-    openModal(elements.$searchModal);
-    elements.$searchForm.elements["search-keyword"].focus();
-
-    this.searchController.updateKeywordHistory();
-    this.searchController.showSavedVideoCount();
-  }
-
-  onClickDimmed(e) {
-    if (e.target.classList.contains("modal")) {
-      closeModal(elements.$searchModal);
-    }
-  }
-
-  onClickSearchModalCloseButton() {
-    closeModal(elements.$searchModal);
   }
 
   onLoadSearchAll() {
