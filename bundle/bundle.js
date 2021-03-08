@@ -12442,7 +12442,14 @@ var controller = {
     _view_view_js__WEBPACK_IMPORTED_MODULE_1__.default.renderSearchQueries(_storage_searchQuery_js__WEBPACK_IMPORTED_MODULE_4__.default.getQueries());
   },
   initVideos: function initVideos() {
-    _view_view_js__WEBPACK_IMPORTED_MODULE_1__.default.renderSelectedVideoItems(_storage_videoToWatch_js__WEBPACK_IMPORTED_MODULE_5__.default.getVideos());
+    var videosToWatch = _storage_videoToWatch_js__WEBPACK_IMPORTED_MODULE_5__.default.getVideos();
+
+    if (videosToWatch.length === 0) {
+      _view_view_js__WEBPACK_IMPORTED_MODULE_1__.default.showEmptyVideoImage();
+      return;
+    }
+
+    _view_view_js__WEBPACK_IMPORTED_MODULE_1__.default.renderSelectedVideoItems(videosToWatch);
   }
 };
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (controller);
@@ -12564,7 +12571,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "$searchResultVideoWrapper": () => (/* binding */ $searchResultVideoWrapper),
 /* harmony export */   "$searchResultIntersector": () => (/* binding */ $searchResultIntersector),
 /* harmony export */   "$videoWrapper": () => (/* binding */ $videoWrapper),
-/* harmony export */   "$searchQueries": () => (/* binding */ $searchQueries)
+/* harmony export */   "$searchQueries": () => (/* binding */ $searchQueries),
+/* harmony export */   "$emptyVideoImage": () => (/* binding */ $emptyVideoImage)
 /* harmony export */ });
 /* harmony import */ var _constants_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./constants.js */ "./src/constants.js");
 /* harmony import */ var _utils_querySelector_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./utils/querySelector.js */ "./src/utils/querySelector.js");
@@ -12580,6 +12588,7 @@ var $searchResultVideoWrapper = (0,_utils_querySelector_js__WEBPACK_IMPORTED_MOD
 var $searchResultIntersector = (0,_utils_querySelector_js__WEBPACK_IMPORTED_MODULE_1__.$)("#".concat(_constants_js__WEBPACK_IMPORTED_MODULE_0__.SELECTOR_ID.SERACH_RESULT_INTERSECTOR));
 var $videoWrapper = (0,_utils_querySelector_js__WEBPACK_IMPORTED_MODULE_1__.$)("#".concat(_constants_js__WEBPACK_IMPORTED_MODULE_0__.SELECTOR_ID.VIDEO_WRAPPER));
 var $searchQueries = (0,_utils_querySelector_js__WEBPACK_IMPORTED_MODULE_1__.$)("#".concat(_constants_js__WEBPACK_IMPORTED_MODULE_0__.SELECTOR_ID.SEARCH_QUERIES));
+var $emptyVideoImage = (0,_utils_querySelector_js__WEBPACK_IMPORTED_MODULE_1__.$)("#".concat(_constants_js__WEBPACK_IMPORTED_MODULE_0__.SELECTOR_ID.EMPTY_VIDEO_TO_WATCH));
 
 /***/ }),
 

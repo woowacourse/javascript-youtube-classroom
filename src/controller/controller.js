@@ -91,7 +91,12 @@ const controller = {
     view.renderSearchQueries(searchQuery.getQueries());
   },
   initVideos() {
-    view.renderSelectedVideoItems(videoToWatch.getVideos());
+    const videosToWatch = videoToWatch.getVideos();
+    if (videosToWatch.length === 0) {
+      view.showEmptyVideoImage();
+      return;
+    }
+    view.renderSelectedVideoItems(videosToWatch);
   },
 };
 
