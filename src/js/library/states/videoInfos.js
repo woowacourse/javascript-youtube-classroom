@@ -1,6 +1,7 @@
 import { renderSavedVideoList } from '../../viewControllers/app.js';
 import { renderSavedVideoCount } from '../../viewControllers/searchModal.js';
 import { fetchLatestVideoInfos } from '../API.js';
+import { getLocalStorage, setLocalStorage } from '../utils/localStorage.js';
 
 async function updateVideoInfos(videoInfos) {
   const videoIds = videoInfos.map(videoInfo => videoInfo.id.videoId);
@@ -22,7 +23,7 @@ const videoInfos = {
   value: new Set(),
 
   async init() {
-    const videoInfos = JSON.parse(localStorage.getItem('videoInfos')) ?? [];
+    const videoInfos = getLocalStorage('videoInfos') ?? [];
     const latestVideoInfos = await updateVideoInfos(videoInfos);
 
     this.set(latestVideoInfos);
@@ -30,7 +31,7 @@ const videoInfos = {
 
   add(newVideoInfo) {
     this.value.add(newVideoInfo);
-    localStorage.setItem('videoInfos', JSON.stringify([...this.value]));
+    setLocalStorage('videoInfos', [...this.value]);
 
     renderSavedVideoCount(this.value.size);
     renderSavedVideoList(this.value);

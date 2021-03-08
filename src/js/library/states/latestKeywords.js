@@ -1,11 +1,12 @@
 import { renderLatestKeywordList } from '../../viewControllers/searchModal.js';
 import { MAX_LATEST_KEYWORD_COUNT } from '../constants/classroom.js';
+import { getLocalStorage, setLocalStorage } from '../utils/localStorage.js';
 
 const latestKeywords = {
   value: [],
 
   init() {
-    this.set(JSON.parse(localStorage.getItem('latestKeywords')) ?? []);
+    this.set(getLocalStorage('latestKeywords') ?? []);
   },
 
   get() {
@@ -13,23 +14,23 @@ const latestKeywords = {
   },
 
   set(newKeywords) {
-    this.latestKeywords = newKeywords;
+    this.value = newKeywords;
 
-    renderLatestKeywordList(this.latestKeywords);
+    renderLatestKeywordList(this.value);
   },
 
   add(newKeyword) {
-    const targetIdx = this.latestKeywords.indexOf(newKeyword);
+    const targetIdx = this.value.indexOf(newKeyword);
 
     if (targetIdx > -1) {
-      this.latestKeywords.splice(targetIdx, 1);
-    } else if (this.latestKeywords.length === MAX_LATEST_KEYWORD_COUNT) {
-      this.latestKeywords.shift();
+      this.value.splice(targetIdx, 1);
+    } else if (this.value.length === MAX_LATEST_KEYWORD_COUNT) {
+      this.value.shift();
     }
-    this.latestKeywords.push(newKeyword);
-    localStorage.setItem('latestKeywords', JSON.stringify(this.latestKeywords));
+    this.value.push(newKeyword);
+    setLocalStorage('latestKeywords', this.value ?? []);
 
-    renderLatestKeywordList(this.latestKeywords);
+    renderLatestKeywordList(this.value);
   },
 };
 
