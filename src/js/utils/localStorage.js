@@ -1,7 +1,7 @@
 import { VALUE, STORAGE_KEYS } from './constants.js';
 
 export function setRecentChip(keyword) {
-  const recentKeywords = getValidJson(STORAGE_KEYS.RECENT_KEYWORDS, []);
+  const recentKeywords = getStorageData(STORAGE_KEYS.RECENT_KEYWORDS, []);
 
   if (recentKeywords.includes(keyword)) {
     recentKeywords.splice(recentKeywords.indexOf(keyword), 1);
@@ -16,7 +16,7 @@ export function setRecentChip(keyword) {
 }
 
 export function setSavedVideoId(videoId) {
-  const savedVideoIds = getValidJson(STORAGE_KEYS.SAVED_VIDEO_IDS, []);
+  const savedVideoIds = getStorageData(STORAGE_KEYS.SAVED_VIDEO_IDS, []);
 
   if (savedVideoIds.includes(videoId)) return;
 
@@ -24,7 +24,7 @@ export function setSavedVideoId(videoId) {
   localStorage.setItem(STORAGE_KEYS.SAVED_VIDEO_IDS, savedVideoIds);
 }
 
-export function getValidJson(str, defaultValue) {
+export function getStorageData(str, defaultValue) {
   try {
     const items = localStorage.getItem(str);
 

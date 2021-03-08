@@ -1,11 +1,11 @@
 import { $ } from './utils/dom.js';
 import {
-  getValidJson,
+  getStorageData,
   setRecentChip,
   setSavedVideoId,
 } from './utils/localStorage.js';
 import { isEmptySearchKeyword } from './utils/validator.js';
-import { ALERT_MESSAGES, STORAGE_KEYS } from './utils/constants.js';
+import { VALUE, ALERT_MESSAGES, STORAGE_KEYS } from './utils/constants.js';
 import { searchRequest, videoRequest } from '../js/request.js';
 import NavigationView from './views/NavigationView.js';
 import SearchModalView from './views/SearchModalView.js';
@@ -72,7 +72,7 @@ export default class YoutubeController {
   }
 
   async loadSavedVideos() {
-    const savedVideoIds = getValidJson(STORAGE_KEYS.SAVED_VIDEO_IDS, []);
+    const savedVideoIds = getStorageData(STORAGE_KEYS.SAVED_VIDEO_IDS, []);
 
     if (savedVideoIds.length === 0) {
       this.savedVideosView.showNoVideos();
@@ -115,7 +115,7 @@ export default class YoutubeController {
       return;
     }
 
-    const recentKeywords = getValidJson(STORAGE_KEYS.RECENT_KEYWORDS, []);
+    const recentKeywords = getStorageData(STORAGE_KEYS.RECENT_KEYWORDS, []);
 
     setRecentChip(keyword);
     this.searchModalView.updateChips(recentKeywords);
@@ -127,10 +127,20 @@ export default class YoutubeController {
     this.generateVideos(response);
   }
 
-  saveVideo(videoId) {
+  saveVideo(target) {
+    const videoId = target.dataset.videoId;
+    const savedVideos = getStorageData(STORAGE_KEYS.SAVED_VIDEO_IDS, []);
+
+    if (savedVideos.length === VALUE.MAX_SAVED_COUNT) {
+      alert(ALERT_MESSAGES.OVER_SAVED_VIDEO_COUNT);
+      return;
+    }
+
     const videoToSave = this.videos.find((video) => video.id === videoId);
 
-    this.savedVideosView.addSavedVideoClip(videoToSave);
     setSavedVideoId(videoId);
+    this.savedVideosView.addSavedVideoClip(videoToSave);
+    this.savedVideosView.updateSavedCount();
+    this.savedVideosView.disableSaveButton(target);
   }
 }

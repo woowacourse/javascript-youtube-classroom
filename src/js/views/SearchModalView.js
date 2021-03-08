@@ -2,7 +2,7 @@ import { $ } from '../utils/dom.js';
 import { VALUE, STORAGE_KEYS } from '../utils/constants.js';
 import throttle from '../utils/throttle.js';
 import clipMaker from '../utils/clipMaker.js';
-import { getValidJson } from '../utils/localStorage.js';
+import { getStorageData } from '../utils/localStorage.js';
 import View from './View.js';
 
 export default class SearchModalView extends View {
@@ -48,11 +48,7 @@ export default class SearchModalView extends View {
 
   bindSaveEvent() {
     $('.clip-save-btn').setEvent('click', (e) => {
-      e.target.setAttribute('disabled', true);
-      const videoId = e.target.dataset.videoId;
-
-      this.emit('clickSaveButton', videoId);
-      this.updateSavedCount();
+      this.emit('clickSaveButton', e.target);
     });
   }
 
@@ -85,8 +81,12 @@ export default class SearchModalView extends View {
     }
   }
 
+  disableSaveButton(target) {
+    target.setAttribute('disabled', true);
+  }
+
   updateSavedCount() {
-    const savedVideoIds = getValidJson(STORAGE_KEYS.SAVED_VIDEO_IDS, []);
+    const savedVideoIds = getStorageData(STORAGE_KEYS.SAVED_VIDEO_IDS, []);
 
     $('#saved-video-count').setText(savedVideoIds.length);
   }
@@ -100,7 +100,7 @@ export default class SearchModalView extends View {
   }
 
   updateChips() {
-    const recentKeywords = getValidJson(STORAGE_KEYS.RECENT_KEYWORDS, []);
+    const recentKeywords = getStorageData(STORAGE_KEYS.RECENT_KEYWORDS, []);
     $('#chip-container').setInnerHTML(this.chipTemplate(recentKeywords));
 
     this.bindChipsEvent();
@@ -129,7 +129,7 @@ export default class SearchModalView extends View {
   renderVideoClips(videos) {
     $('.skeleton').removeElement();
 
-    const savedVideoIds = getValidJson(STORAGE_KEYS.SAVED_VIDEO_IDS, []);
+    const savedVideoIds = getStorageData(STORAGE_KEYS.SAVED_VIDEO_IDS, []);
     const videoClips = videos
       .map((video) => {
         const isSaved = savedVideoIds.includes(video.id);
