@@ -17,13 +17,16 @@ export const getSearchVideoByKeyword = async (keyword, pageToken = '') => {
   searchURL.search = params.toString();
 
   return await fetch(searchURL.href).then(Response => Response.json());
+
+  // fetch dummy data for test
+  // return await fetch('http://localhost:5500/src/js/dummy.json').then(Response => Response.json());
 };
 
 export const getVideoByIdList = async idList => {
   const videoURL = new URL('/youtube/v3/videos', END_POINT);
   const params = new URLSearchParams({
     part: 'snippet',
-    id: idList.join(','),
+    id: Array.isArray(idList) ? idList.join(',') : idList,
     key: YOUTUBE_API_KEY,
   });
   videoURL.search = params.toString();
