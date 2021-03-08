@@ -31,5 +31,5 @@ export const resultNotFoundTemplate = `
 `;
 
 export const getRecentKeywordsTemplate = (recentKeywords) => {
-  return recentKeywords.map((keyword) => `<a class="chip">${keyword}</a>`).join('');
+  return recentKeywords.map((keyword) => `<a class="chip mx-1">${keyword}</a>`).join('');
 };
