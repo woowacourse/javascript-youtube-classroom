@@ -6,6 +6,10 @@
   justify-content: center;
 }
 
+.stretch {
+  grid-area: 1 / 1 / 1 / end;
+}
+
 .clip {
   height: 254px;
   cursor: pointer;

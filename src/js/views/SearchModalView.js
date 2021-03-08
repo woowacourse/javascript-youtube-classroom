@@ -146,10 +146,14 @@ export default class SearchModalView extends View {
   }
 
   showNoResult() {
+    $('.skeleton').hide();
+
     this.modalVideos.setInnerHTML(
       `
-        <div class="empty"></div>
-        <img class="not-found" src="./src/images/status/not_found.png" alt="not-found-img"></img>
+        <div class="not-found stretch d-flex flex-col items-center">
+          <img src="./src/images/status/not_found.png" alt="not-found-img"></img>
+          <h2>검색 결과가 없읍니다.</h2>
+        </div>
       `,
     );
   }
