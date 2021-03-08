@@ -1,5 +1,5 @@
 import { LOCAL_STORAGE_SAVED_VIDEO_KEY, SNACKBAR_MESSAGE, MAX_NUM_OF_SAVED_VIDEO } from '../constants/index.js';
-import { getLocalStorageItem, setLocalStorageItem } from '../util/index.js';
+import { getLocalStorageItem, setLocalStorageItem, showSnackbar } from '../util/index.js';
 
 export const SAVED_VIDEO_SUBSCRIBER_KEY = Object.freeze({
   SAVE: 'save',
@@ -35,9 +35,7 @@ export class SavedVideoManager {
 
   saveVideo(videoId) {
     if (this.savedVideos.length >= MAX_NUM_OF_SAVED_VIDEO) {
-      alert(SNACKBAR_MESSAGE.OVER_MAX_NUM_OF_SAVED_VIDEO);
-
-      return;
+      return false;
     }
 
     this.setState({
@@ -45,6 +43,8 @@ export class SavedVideoManager {
       videoId,
       savedVideos: { ...this.savedVideos, [videoId]: { isChecked: false } },
     });
+
+    return true;
   }
 
   deleteVideo(videoId) {

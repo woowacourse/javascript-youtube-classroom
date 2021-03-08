@@ -6,8 +6,14 @@ import {
   renderSkeleton,
   removeSkeleton,
   throttle,
+  showSnackbar,
 } from '../util/index.js';
-import { NUM_OF_VIDEO_PER_FETCH, SCROLL_THRTOTTLE_DELAY, getVideoTemplate } from '../constants/index.js';
+import {
+  NUM_OF_VIDEO_PER_FETCH,
+  SCROLL_THRTOTTLE_DELAY,
+  getVideoTemplate,
+  SNACKBAR_MESSAGE,
+} from '../constants/index.js';
 
 export class SearchVideoResult {
   constructor({ searchKeywordHistoryManager, savedVideoManager }) {
@@ -47,6 +53,7 @@ export class SearchVideoResult {
         this.setState({ searchResultData });
       } catch (e) {
         console.error(e);
+        showSnackbar(SNACKBAR_MESSAGE.API_REQUEST_FAILURE);
       }
     }
   }
@@ -59,15 +66,20 @@ export class SearchVideoResult {
       this.setState({ searchResultData });
     } catch (e) {
       console.error(e);
-      // TODO: 오류났음 보여주는 메세지 띄우기
+      showSnackbar(SNACKBAR_MESSAGE.API_REQUEST_FAILURE);
     }
   }
 
   handleSaveVideo({ target }) {
-    if (target.classList.contains('js-clip-save-button')) {
-      this.savedVideoManager.saveVideo(target.dataset.videoId);
+    if (!target.classList.contains('js-clip-save-button')) {
+      return;
+    }
 
+    if (this.savedVideoManager.saveVideo(target.dataset.videoId)) {
+      showSnackbar(SNACKBAR_MESSAGE.SAVE_SUCCESS);
       target.disabled = true;
+    } else {
+      showSnackbar(SNACKBAR_MESSAGE.OVER_MAX_NUM_OF_SAVED_VIDEO);
     }
   }
 
