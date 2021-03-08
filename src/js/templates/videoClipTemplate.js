@@ -52,11 +52,8 @@ function getSrcDocTemplate(item) {
   `;
 }
 
-export default function getVideoClipTemplate(item) {
-  const videoArticle = document.createElement("article");
-  videoArticle.classList.add("clip");
-  videoArticle.classList.add("mt-10");
-  videoArticle.innerHTML = `
+function getVideoClipInnerTemplate(item) {
+  return `
     <div class="preview-container">
       <iframe
         width="100%"
@@ -92,6 +89,13 @@ export default function getVideoClipTemplate(item) {
         </div>
       </div>
     </div>`;
+}
+
+export default function createVideoClipTemplate(item) {
+  const videoArticle = document.createElement("article");
+  videoArticle.classList.add("clip");
+  videoArticle.classList.add("mt-10");
+  videoArticle.insertAdjacentHTML("beforeend", getVideoClipInnerTemplate(item));
 
   return videoArticle;
 }
