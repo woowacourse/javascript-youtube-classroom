@@ -2,14 +2,21 @@ import { ERROR_MESSAGE } from '../../src/js/constants/constant';
 
 describe('saved-video-ui', () => {
   before(() => {
-    cy.visit('http://127.0.0.1:5500/');
+    cy.visit('http://127.0.0.1:5502/');
   });
 
   it('사이트에 접속했을때, 비디오 목록에 "저장된 영상이 없습니다. 볼 영상을 저장해주세요" 라고 표시해줘야 한다', () => {
     cy.get('#saved-video-wrapper #saved-not-found').should('exist');
   });
 
-  it('동영상 검색, 첫번째 영상 저장버튼 클릭, 사이트 새로고침시, 저장한 영상 목록의 길이가 1이여야 한다.', () => {});
+  it('동영상 검색, 첫번째 영상 저장버튼 클릭, 사이트 새로고침시, 저장한 영상 목록의 길이가 1이여야 한다.', () => {
+    cy.get('#saved-video-wrapper article').should('have.length', '1');
+    cy.get('#search-modal-button').click();
+    cy.get('#search-youtube-input').type('우테코');
+    cy.get('#search-youtube-button').click();
+    cy.wait(10000);
+    cy.get('.js-save-button').first().click();
+  });
   it('저장한 영상의 "본 영상" 버튼을 클릭, "선택한 영상을 본 영상 목록에 저장했습니다" 라는 스낵바 div 3초간 보여진다.', () => {});
   it('본 영상 으로 영상 이동하면, "볼 영상 목록" 버튼 클릭하면 해당 영상 안보이고, "본 영상 목록" 버튼 클릭하면, 해당 영상이 보인다.', () => {});
   it('저장한 영상의 "삭제" 버튼 클릭, "정말로 삭제하시겠습니까?" confirm 창 보여진다', () => {});
