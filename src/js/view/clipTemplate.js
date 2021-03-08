@@ -27,8 +27,6 @@ const YMDtemplate = (time) => {
 
 export const clipTemplate = (video, index, type) => {
   const { isModal } = type;
-  console.log(video);
-  console.log(video.isWatched);
 
   return `
       <article class="clip" data-js=${

@@ -84,7 +84,6 @@ const searchRequest = async (keyword) => {
     q: keyword,
     key: API_KEY,
   });
-  console.log(queryString);
   const response = await request(SEARCH_URL + queryString);
 
   hideElement($skeletonWrapper);
