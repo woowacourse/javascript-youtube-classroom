@@ -3,8 +3,7 @@
   min-width: 64px;
   padding: 0 16px;
   border-radius: 4px;
-  outline: 0;
-  border-style: none;
+  background-color: #efefef;
   cursor: pointer;
 }
 
@@ -17,10 +16,16 @@
 }
 
 .small-btn {
-  outline: 0;
-  border-style: none;
   background-color: inherit;
   font-size: 15px;
   color: rgba(0, 0, 0, 0.35);
+  cursor: pointer;
+}
+
+.round-btn {
+  height: 36px;
+  width: 70px;
+  border-radius: 20px;
+  background-color: #efefef;
   cursor: pointer;
 }

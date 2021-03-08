@@ -131,3 +131,7 @@
 .block-center {
   margin: 0 auto;
 }
+
+.test-border {
+  border: 1px solid black;
+}

@@ -17,6 +17,12 @@ a {
   text-decoration: none;
 }
 
+button {
+  background-color: rgba(0, 0, 0, 0);
+  outline: 0;
+  border-style: none;
+}
+
 .opacity-hover {
   opacity: 0.3;
 }
