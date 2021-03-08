@@ -38,7 +38,16 @@ describe('saved-video-ui', () => {
     cy.get('.video-info-buttons .delete').first().click();
     cy.get('@confirm').should('be.calledWith', '정말로 삭제하시겠습니까?');
   });
-  it('저장한 영상 삭제 확인 누르면, "영상이 삭제되었습니다" 라는 스낵바 div가 3초간 보여지고, 저장한 영상 목록의 길이가 0이여야 한다.', () => {});
+
+  it('저장한 영상 삭제 확인 누르면, "영상이 삭제되었습니다" 라는 스낵바 div가 3초간 보여지고, 저장한 영상 목록의 길이가 0이여야 한다.', () => {
+    cy.get('.video-info-buttons .delete').first().click();
+    cy.get('#snackbar')
+      .should('have.class', 'show')
+      .and('have.text', '영상이 삭제되었습니다.');
+    cy.wait(3000);
+    cy.get('#snackbar').should('not.have.class', 'show');
+    cy.get('#saved-video-wrapper article').should('have.length', '0');
+  });
 });
 
 // context('search-ui', () => {
