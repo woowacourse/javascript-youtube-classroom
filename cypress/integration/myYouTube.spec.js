@@ -17,6 +17,10 @@ describe('simba-tube', () => {
     }).as('search');
   };
 
+  it.only('사이트에 접속하면 가장 처음에는 비어있다는 것을 알려주는 이미지와 텍스트를 보여준다. ', () => {
+    cy.get('.empty-videos').should('be.visible');
+  });
+
   it('클릭한 탭의 색을 하이라이트한다.', () => {
     cy.get('#nav-bar > button').each((button) => {
       cy.wrap(button).click();
