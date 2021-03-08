@@ -9,9 +9,10 @@ import deliveryMan from "../deliveryMan.js";
 
 export default class KeywordHistory {
   constructor() {
-    this.$keywordHistorySection = $(CLASSNAME.KEYWORD_HISTORY_SECTION);
     this.keywordHistory =
       JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEY.KEYWORD_HISTORY)) || [];
+
+    this.$keywordHistorySection = $(CLASSNAME.KEYWORD_HISTORY_SECTION);
 
     deliveryMan.addMessageListener(
       MESSAGE.KEYWORD_SUBMITTED,
@@ -22,15 +23,15 @@ export default class KeywordHistory {
   }
 
   addKeyword({ query }) {
-    // console.log(`[KeywordHistory] MESSAGE.KEYWORD_SUBMITTED received `);
-
     this.keywordHistory = this.keywordHistory.filter(
       (keyword) => keyword !== query
     );
+
     this.keywordHistory.push(query);
     if (this.keywordHistory.length > MAX_KEYWORDS_COUNT) {
       this.keywordHistory.shift();
     }
+
     localStorage.setItem(
       LOCAL_STORAGE_KEY.KEYWORD_HISTORY,
       JSON.stringify(this.keywordHistory)

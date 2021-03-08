@@ -89,13 +89,9 @@ export const render = ($video, item) => {
 
   $saveVideoButton.dataset.videoId = videoId;
 
-  // console.log(`[videoInfo] HIDE_IF_VIDEO_IS_SAVED post videoId: `, videoId);
   deliveryMan.deliverMessage(MESSAGE.HIDE_IF_VIDEO_IS_SAVED, {
     videoId,
-    callback: () => {
-      // console.log("[callback invoked] $saveVideoButton: ", $saveVideoButton);
-      $saveVideoButton.classList.add(CLASSNAME.HIDDEN);
-    },
+    callback: () => $saveVideoButton.classList.add(CLASSNAME.HIDDEN),
   });
 
   removeSkeletonUI($video);

@@ -2,37 +2,32 @@ import {
   CLASSNAME,
   MESSAGE,
   MAX_RESULTS_COUNT,
-  // API_END_POINT,
+  API_END_POINT,
   SCROLL_EVENT_THRESHOLD,
   THROTTLE_TIME_IN_MS,
 } from "../constants.js";
 import { $ } from "../utils/querySelector.js";
-import dummyFetch from "../dummyFetch.js";
 import deliveryMan from "../deliveryMan.js";
 import { SKELETON_TEMPLATE, render } from "../utils/videoInfo.js";
 
 export default class VideoWrapper {
   constructor() {
-    this.$modalVideoWrapper = $(CLASSNAME.MODAL_VIDEO_WRAPPER);
-    this.$notFoundImg = $(CLASSNAME.NOT_FOUND_IMAGE);
     this.currentQuery = "";
     this.currentNextPageToken = "";
 
-    deliveryMan.addMessageListener(MESSAGE.KEYWORD_SUBMITTED, ({ query }) => {
-      // console.log(`[VideoWrapper] MESSAGE.KEYWORD_SUBMITTED received `);
+    this.$modalVideoWrapper = $(CLASSNAME.MODAL_VIDEO_WRAPPER);
+    this.$notFoundImg = $(CLASSNAME.NOT_FOUND_IMAGE);
 
+    deliveryMan.addMessageListener(MESSAGE.KEYWORD_SUBMITTED, ({ query }) => {
       this.$notFoundImg.classList.add(CLASSNAME.HIDDEN);
       this.$modalVideoWrapper.innerHTML = "";
       this.currentQuery = query;
       this.mountTemplate();
     });
+
     deliveryMan.addMessageListener(
       MESSAGE.DATA_LOADED,
       ({ nextPageToken, items }) => {
-        // console.log(`[VideoWrapper] MESSAGE.DATA_LOADED received `);
-        // console.log("nextPageToken: ", nextPageToken);
-        // console.log("items: ", items);
-
         if (items.length === 0) {
           this.$modalVideoWrapper.innerHTML = "";
           this.$notFoundImg.classList.remove(CLASSNAME.HIDDEN);
@@ -60,11 +55,6 @@ export default class VideoWrapper {
   // eslint-disable-next-line class-methods-use-this
   saveVideo($button) {
     const { videoId } = $button.dataset;
-
-    // console.log(
-    //   `[VideoWrapper] MESSAGE.VIDEO_SAVED post. videoId: `,
-    //   videoId
-    // );
     deliveryMan.deliverMessage(MESSAGE.SAVE_VIDEO_BUTTON_CLICKED, { videoId });
     $button.classList.add(CLASSNAME.HIDDEN);
   }
@@ -101,9 +91,8 @@ export default class VideoWrapper {
 
     if (this.throttle) return;
 
-    this.throttle = setTimeout(async () => {
+    this.throttle = setTimeout(() => {
       this.throttle = null;
-
       this.loadData();
     }, THROTTLE_TIME_IN_MS);
   }
@@ -112,19 +101,16 @@ export default class VideoWrapper {
     this.mountTemplate();
 
     try {
-      const response = await dummyFetch(
-        this.currentQuery,
-        this.currentNextPageToken
+      const response = await fetch(
+        API_END_POINT(this.currentQuery, this.currentNextPageToken)
       );
-      // const response = await fetch(
-      //   API_END_POINT(this.currentQuery, this.currentNextPageToken)
-      // );
+      const body = await response.json();
 
       if (!response.ok) {
-        throw new Error(response.statusText);
+        throw new Error(body.error.message);
       }
 
-      const { nextPageToken, items } = await response.json();
+      const { nextPageToken, items } = body;
 
       this.attachData({ nextPageToken, items });
     } catch (error) {

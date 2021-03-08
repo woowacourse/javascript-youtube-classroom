@@ -21,18 +21,18 @@ export default class SavedVideosCount {
 
     deliveryMan.addMessageListener(
       MESSAGE.VIDEO_SAVED,
-      ({ savedVideosCount }) => {
-        // console.log(`[SavedVideoCounts] MESSAGE.VIDEO_SAVED received `);
-
-        this.savedVideosCount = savedVideosCount;
-
-        localStorage.setItem(
-          LOCAL_STORAGE_KEY.SAVED_VIDEOS_COUNT,
-          JSON.stringify(this.savedVideosCount)
-        );
-
-        this.$savedVideosCount.innerText = this.savedVideosCount;
-      }
+      this.setCount.bind(this)
     );
+  }
+
+  setCount({ savedVideosCount }) {
+    this.savedVideosCount = savedVideosCount;
+
+    localStorage.setItem(
+      LOCAL_STORAGE_KEY.SAVED_VIDEOS_COUNT,
+      JSON.stringify(this.savedVideosCount)
+    );
+
+    this.$savedVideosCount.innerText = this.savedVideosCount;
   }
 }

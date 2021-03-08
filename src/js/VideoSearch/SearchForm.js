@@ -1,26 +1,26 @@
 import {
   CLASSNAME,
   MESSAGE,
-  // API_END_POINT,
+  API_END_POINT,
   LOCAL_STORAGE_KEY,
 } from "../constants.js";
 import { $ } from "../utils/querySelector.js";
 import deliveryMan from "../deliveryMan.js";
-import dummyFetch from "../dummyFetch.js";
 
 export default class SearchForm {
   constructor() {
     this.query =
       JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEY.QUERY)) || "";
+
     this.$youtubeSearchForm = $(CLASSNAME.YOUTUBE_SEARCH_FORM);
     this.$youtubeSearchFormInput = $(CLASSNAME.YOUTUBE_SEARCH_FORM_INPUT);
-
-    this.fetchData();
 
     this.$youtubeSearchForm.addEventListener(
       "submit",
       this.handleFormSubmit.bind(this)
     );
+
+    this.fetchData();
   }
 
   handleFormSubmit(event) {
@@ -36,28 +36,19 @@ export default class SearchForm {
   async fetchData() {
     if (this.query === "") return;
 
-    // console.log(`[SearchForm] MESSAGE.KEYWORD_SUBMITTED post `);
-
     deliveryMan.deliverMessage(MESSAGE.KEYWORD_SUBMITTED, {
       query: this.query,
     });
 
     try {
-      // const response = await fetch(API_END_POINT(this.query));
-      const response = await dummyFetch(this.query);
+      const response = await fetch(API_END_POINT(this.query));
+      const body = await response.json();
 
       if (!response.ok) {
-        throw new Error(response.statusText);
+        throw new Error(body.error.message);
       }
 
-      const { nextPageToken, items } = await response.json();
-
-      // console.log(
-      //   `[SearchForm] MESSAGE.DATA_LOADED post: `,
-      //   nextPageToken,
-      //   items
-      // );
-
+      const { nextPageToken, items } = body;
       deliveryMan.deliverMessage(MESSAGE.DATA_LOADED, {
         nextPageToken,
         items,

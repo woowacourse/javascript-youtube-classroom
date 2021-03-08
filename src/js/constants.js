@@ -1,5 +1,3 @@
-import API_KEY from "./key.js";
-
 const CLASSNAME = Object.freeze({
   WATCH_LATER_TAB: "js-watch-later-tab",
   VIDEO_SEARCH_TAB: "js-video-search-tab",
@@ -50,8 +48,10 @@ const SCROLL_EVENT_THRESHOLD = 0.7;
 
 const THROTTLE_TIME_IN_MS = 500;
 
+const REDIRECT_SERVER_HOST = "https://jum0.netlify.app";
+
 const API_END_POINT = (query, nextPageToken = "") =>
-  `https://www.googleapis.com/youtube/v3/search?part=snippet&maxResults=${MAX_RESULTS_COUNT}&regionCode=kr&safeSearch=strict&pageToken=${nextPageToken}&q=${query}}&key=${API_KEY}`;
+  `${REDIRECT_SERVER_HOST}/youtube/search?part=snippet&maxResults=${MAX_RESULTS_COUNT}&regionCode=kr&safeSearch=strict&pageToken=${nextPageToken}&q=${query}`;
 
 export {
   CLASSNAME,
@@ -59,6 +59,7 @@ export {
   MAX_RESULTS_COUNT,
   MAX_SAVED_VIDEOS_COUNT,
   MESSAGE,
+  REDIRECT_SERVER_HOST,
   API_END_POINT,
   SCROLL_EVENT_THRESHOLD,
   THROTTLE_TIME_IN_MS,
