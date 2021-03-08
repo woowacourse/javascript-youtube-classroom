@@ -3,9 +3,10 @@ import SearchView from '../views/searchView.js';
 import VideoLocalStorage from '../models/localStorage.js';
 import {
   VIDEOS_TO_WATCH,
-  STORAGE_CAPACITY_IS_FULL,
   MAX_VIDEO_STORAGE_CAPACITY,
   RECENT_KEYWORDS,
+  NO_KEYWORD_IS_SUBMITTED,
+  STORAGE_CAPACITY_IS_FULL,
   VIDEO_IS_SAVED_SUCCESSFULLY,
 } from '../constants.js';
 import { isEndOfPage } from '../utils/DOM.js';
@@ -59,6 +60,7 @@ export default class SearchController {
     const keyword = e.target.elements['search-keyword-input'].value;
 
     if (keyword === '') {
+      this.view.renderSnackbar(NO_KEYWORD_IS_SUBMITTED);
       return;
     }
     this.model.setKeyword(keyword);
