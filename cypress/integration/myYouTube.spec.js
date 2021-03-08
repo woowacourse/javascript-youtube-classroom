@@ -1,7 +1,6 @@
 describe('simba-tube', () => {
   beforeEach(() => {
     cy.visit('http://localhost:5500/');
-    cy.window().then((win) => cy.stub(win, 'alert').as('windowAlert'));
   });
 
   const searchVideo = (keyword) => {
@@ -17,7 +16,7 @@ describe('simba-tube', () => {
     }).as('search');
   };
 
-  it.only('사이트에 접속하면 가장 처음에는 비어있다는 것을 알려주는 이미지와 텍스트를 보여준다. ', () => {
+  it('사이트에 접속하면 가장 처음에는 비어있다는 것을 알려주는 이미지와 텍스트를 보여준다. ', () => {
     cy.get('.empty-videos').should('be.visible');
   });
 
