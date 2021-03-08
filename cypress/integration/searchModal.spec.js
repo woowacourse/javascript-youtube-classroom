@@ -2,8 +2,9 @@ import {
   MAX_RECENT_KEYWORD_COUNT,
   MAX_RESULT_COUNT,
   MAX_VIDEO_STORAGE_CAPACITY,
-  STORAGE_CAPACITY_FULL,
+  STORAGE_CAPACITY_IS_FULL,
   VIDEOS_TO_WATCH,
+  VIDEO_IS_SAVED_SUCCESSFULLY,
 } from '../../src/js/constants.js';
 
 describe('검색 모달 테스트', () => {
@@ -128,11 +129,12 @@ describe('예외 처리 테스트', () => {
       if (i >= MAX_VIDEO_STORAGE_CAPACITY) {
         $el.click();
         cy.wrap($el).should(be.visible);
-        cy.get('#snackbar').contains(STORAGE_CAPACITY_FULL);
+        cy.get('#snackbar').contains(STORAGE_CAPACITY_IS_FULL);
         return;
       }
       $el.click();
       cy.wait(500);
+      cy.get('#snackbar').contains(VIDEO_IS_SAVED_SUCCESSFULLY);
     });
   });
 });
