@@ -1,12 +1,8 @@
 import { VIDEOS } from "../utils/constants.js";
 import YOUTUBE_API_KEY from "../config/youtubeAPI.js";
-import searchHistory from "../state/searchHistory.js";
 
-export function getSearchQueryString() {
-  const pageTokenQuery =
-    searchHistory.getPageToken() && `pageToken=${searchHistory.getPageToken()}`;
+export function getSearchQueryString(keyword, pageToken) {
+  const pageTokenQuery = pageToken && `pageToken=${pageToken}`;
 
-  return `part=snippet&key=${YOUTUBE_API_KEY}&q=${searchHistory.getKeyword()}&maxResults=${
-    VIDEOS.SEARCH_MAX_RESULT
-  }&${pageTokenQuery}`;
+  return `part=snippet&key=${YOUTUBE_API_KEY}&q=${keyword}&maxResults=${VIDEOS.SEARCH_MAX_RESULT}&${pageTokenQuery}`;
 }
