@@ -10,7 +10,6 @@ import { $ } from '../utils/DOM.js';
 
 export default class SearchView {
   constructor() {
-    this.videoStorage = new VideoLocalStorage();
     this.selectDOMs();
   }
 
