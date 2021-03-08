@@ -108,7 +108,7 @@ describe('유튜브 검색 테스트', () => {
         cy.get('.js-check-button').first().click();
         cy.get('.js-snackbar').should('have.text', SNACKBAR_MESSAGE.CHECK_VIDEO_SUCCESS);
         cy.wrap($clip).should('not.exist');
-        cy.get('.js-completed-video-button').click();
+        cy.get('.js-checked-video-button').click();
         cy.wrap($clip).should('exist');
       });
   });

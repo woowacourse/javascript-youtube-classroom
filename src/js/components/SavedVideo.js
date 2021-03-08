@@ -1,10 +1,19 @@
 import { SAVED_VIDEO_SUBSCRIBER_KEY } from '../model/index.js';
 import { getVideoTemplate, SNACKBAR_MESSAGE } from '../constants/index.js';
-import { getVideoByIdList, $, renderSkeleton, removeSkeleton, showSnackbar } from '../util/index.js';
+import {
+  getVideoByIdList,
+  $,
+  renderSkeleton,
+  removeSkeleton,
+  showSnackbar,
+  showElement,
+  hideElement,
+} from '../util/index.js';
 
 export class SavedVideo {
   constructor({ savedVideoManager, isChecked }) {
     this.$savedVideoWrapper = $('.js-saved-video-wrapper');
+    this.$emptyImage = $('.js-empty-image');
 
     this.savedVideoManager = savedVideoManager;
     this.savedVideoManager.subscribe({
@@ -30,11 +39,19 @@ export class SavedVideo {
       this.savedVideoManager.checkVideo(target.closest('ul').dataset.videoId);
       target.closest('article').remove();
       showSnackbar(this.isChecked ? SNACKBAR_MESSAGE.UNCHECK_VIDEO_SUCCESS : SNACKBAR_MESSAGE.CHECK_VIDEO_SUCCESS);
+
+      if (this.$savedVideoWrapper.children.length === 0) {
+        showElement(this.$emptyImage);
+      }
     }
 
     if (target.classList.contains('js-delete-button')) {
       this.savedVideoManager.deleteVideo(target.closest('ul').dataset.videoId);
       target.closest('article').remove();
+
+      if (this.$savedVideoWrapper.children.length === 0) {
+        showElement(this.$emptyImage);
+      }
     }
   }
 
@@ -80,9 +97,12 @@ export class SavedVideo {
       .filter(id => savedVideos[id].isChecked === this.isChecked);
 
     if (filteredVideoIdList.length === 0) {
+      showElement(this.$emptyImage);
+
       return;
     }
 
+    hideElement(this.$emptyImage);
     renderSkeleton(this.$savedVideoWrapper, filteredVideoIdList.length);
     const savedVideoData = await this.fetchSavedVideoData(this.savedVideoManager.getSavedVideoIdList());
     removeSkeleton(this.$savedVideoWrapper);
@@ -96,6 +116,10 @@ export class SavedVideo {
   async renderNewVideo(videoId) {
     if (this.isChecked) {
       return;
+    }
+
+    if ($('.js-empty-image')) {
+      hideElement(this.$emptyImage);
     }
 
     renderSkeleton(this.$savedVideoWrapper, 1);
