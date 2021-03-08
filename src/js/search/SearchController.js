@@ -17,9 +17,7 @@ export default class SearchController {
 
   searchVideos(searchKeyword) {
     searchHistory.resetPageToken();
-    searchHistory.setKeyword(searchKeyword);
-    this.updateKeywordHistory();
-    this.updateSearchResultView();
+    this.updateSearchResultView(searchKeyword);
   }
 
   searchVideosByHistory(searchKeyword) {
@@ -33,11 +31,11 @@ export default class SearchController {
     this.searchView.showSkeletonClip();
   }
 
-  async updateSearchResultView() {
+  async updateSearchResultView(searchKeyword) {
     if (searchHistory.getPageToken() === "") {
       this.activateSearchLoading();
     }
-    const videoItems = await this.fetchSearchResult();
+    const videoItems = await this.fetchSearchResult(searchKeyword);
 
     if (videoItems.length === 0) {
       this.searchView.showNotFoundImg(searchHistory.getPageToken());
@@ -46,18 +44,31 @@ export default class SearchController {
     }
   }
 
-  async fetchSearchResult() {
-    const res = await fetch(
-      `${YOUTUBE_URL}/${API.GET.SEARCH}?${getSearchQueryString()}`
-    );
-    if (!res.ok) {
-      throw new Error(res.status);
+  async fetchSearchResult(searchKeyword) {
+    try {
+      const res = await fetch(
+        `${YOUTUBE_URL}/${API.GET.SEARCH}?${getSearchQueryString(
+          searchKeyword,
+          searchHistory.getPageToken()
+        )}`
+      );
+
+      if (!res.ok) {
+        throw new Error(res.status);
+      }
+
+      const { items, nextPageToken } = await res.json();
+      this.nextPageToken = nextPageToken;
+
+      searchHistory.setKeyword(searchKeyword);
+      this.updateKeywordHistory();
+
+      return items;
+    } catch (err) {
+      this.searchView.resetSearchResults();
+      alert("동영상을 검색할 수 없습니다.");
+      return;
     }
-
-    const { items, nextPageToken } = await res.json();
-    this.nextPageToken = nextPageToken;
-
-    return items;
   }
 
   attachVideos(videoItems) {
@@ -75,7 +86,7 @@ export default class SearchController {
 
     if (isBottom && !scrollEventLock.isLocked()) {
       scrollEventLock.lock();
-      await this.updateSearchResultView();
+      await this.updateSearchResultView(searchHistory.getKeyword());
       scrollEventLock.unlock();
     }
   }
