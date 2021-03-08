@@ -7,10 +7,11 @@ import pageToken from '../library/states/pageToken.js';
 
 async function handleMoreVideoLoading(entries) {
   const [$lastVideo] = entries;
+  const intersectionObserver = this;
 
   if (!$lastVideo.isIntersecting) return;
 
-  this.disconnect();
+  intersectionObserver.disconnect();
 
   const { nextPageToken, items } = await fetchSearchResult(
     latestKeywords.get()[latestKeywords.get().length - 1],
@@ -22,7 +23,7 @@ async function handleMoreVideoLoading(entries) {
 
   const $newLastVideo = $('#video-search-result .js-video:last-child');
 
-  this.observe($newLastVideo);
+  intersectionObserver.observe($newLastVideo);
 }
 
 export default handleMoreVideoLoading;
