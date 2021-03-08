@@ -99,6 +99,7 @@ export default class YoutubeController {
 
   async scrollVideo(keyword) {
     this.searchModalView.startSearch();
+
     const response = await searchRequest(keyword, this.nextPageToken);
     this.generateVideos(response);
   }

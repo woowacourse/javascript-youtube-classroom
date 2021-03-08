@@ -127,7 +127,7 @@ export default class SearchModalView extends View {
   }
 
   renderVideoClips(videos) {
-    $('.skeleton').hide();
+    $('.skeleton').removeElement();
 
     const savedVideoIds = getValidJson(STORAGE_KEYS.SAVED_VIDEO_IDS, []);
     const videoClips = videos
@@ -146,8 +146,6 @@ export default class SearchModalView extends View {
   }
 
   showNoResult() {
-    $('.skeleton').hide();
-
     this.modalVideos.setInnerHTML(
       `
         <div class="not-found stretch d-flex flex-col items-center">

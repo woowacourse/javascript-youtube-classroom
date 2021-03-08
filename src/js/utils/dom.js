@@ -39,6 +39,10 @@ export const $ = (function () {
     this.each((element) => element.classList.add('d-none'));
   };
 
+  constructor.prototype.removeElement = function () {
+    this.each((element) => element.remove());
+  };
+
   constructor.prototype.setInnerHTML = function (template) {
     this.each((element) => (element.innerHTML = template));
   };
