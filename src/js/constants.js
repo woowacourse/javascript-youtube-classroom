@@ -51,7 +51,7 @@ const THROTTLE_TIME_IN_MS = 500;
 const REDIRECT_SERVER_HOST = "https://bigsaigon333.netlify.app";
 
 const API_END_POINT = (query, nextPageToken = "") =>
-  `${REDIRECT_SERVER_HOST}/youtube/search?part=snippet&maxResults=${MAX_RESULTS_COUNT}&regionCode=kr&safeSearch=strict&pageToken=${nextPageToken}&q=${query}`;
+  `${REDIRECT_SERVER_HOST}/youtube/search?part=snippet&type=video&maxResults=${MAX_RESULTS_COUNT}&regionCode=kr&safeSearch=strict&pageToken=${nextPageToken}&q=${query}`;
 
 export {
   CLASSNAME,
