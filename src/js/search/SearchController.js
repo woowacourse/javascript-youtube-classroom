@@ -5,7 +5,7 @@ import searchHistory from "../state/searchHistory.js";
 import videos from "../state/videos.js";
 import loadingSearchResults from "../state/loadingSearchResults.js";
 
-import { API, YOUTUBE_URL } from "../utils/constants.js";
+import { API, VIDEOS, YOUTUBE_URL } from "../utils/constants.js";
 
 import { getSearchQueryString } from "../queries/searchQuery.js";
 
@@ -13,6 +13,11 @@ export default class SearchController {
   constructor() {
     this.searchView = new SearchView();
     this.nextPageToken = "";
+    this.init();
+  }
+
+  init() {
+    this.searchView.addSkeletonUITemplate(VIDEOS.SKELETON_REPEAT_NUMBER);
   }
 
   searchVideos(searchKeyword) {

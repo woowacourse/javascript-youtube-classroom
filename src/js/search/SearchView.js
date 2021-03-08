@@ -3,6 +3,7 @@ import videos from "../state/videos.js";
 
 import getKeywordHistoryTemplate from "../templates/keywordHistoryTemplate.js";
 import getVideoClipTemplate from "../templates/videoClipTemplate.js";
+import getSkeletonUITemplate from "../templates/skeletonUITemplate.js";
 
 import { $, hideElement, showElement } from "../utils/dom.js";
 import { VIDEOS } from "../utils/constants.js";
@@ -81,5 +82,12 @@ export default class SearchView {
 
   setSearchInputValue(searchKeyword) {
     elements.$searchForm.elements["search-keyword"].value = searchKeyword;
+  }
+
+  addSkeletonUITemplate(repeatNumber) {
+    elements.$skeletonUIContainer.insertAdjacentHTML(
+      "beforeend",
+      getSkeletonUITemplate(repeatNumber)
+    );
   }
 }
