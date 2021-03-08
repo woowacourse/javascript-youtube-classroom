@@ -17,6 +17,12 @@ a {
   text-decoration: none;
 }
 
+ul {
+  margin: 0;
+  padding: 0;
+  list-style-type: none;
+}
+
 button {
   background-color: rgba(0, 0, 0, 0);
   outline: 0;
