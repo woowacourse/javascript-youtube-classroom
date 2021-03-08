@@ -8,6 +8,21 @@ import { onModalScroll } from './handler/onModalScroll.js';
 import { onSaveClip } from './handler/onSaveClip.js';
 import { onModalClose } from './handler/onModalClose.js';
 import { renderSavedClips } from './view/main.js';
+import { hideElement, showElement } from './utils/setAttribute.js';
+import { setMockData } from '../mock.js';
+
+const initDisplay = () => {
+  const savedClips = storage.get(LOCAL_STORAGE_KEY.SAVED_CLIPS) ?? [];
+  const $savedPageNotFound = $('[data-js="saved-page__not-found"]');
+
+  if (savedClips.length === 0) {
+    showElement($savedPageNotFound);
+    return;
+  }
+
+  hideElement($savedPageNotFound);
+  renderSavedClips(savedClips);
+};
 
 export const YoutubeClassRoom = () => {
   $('[data-js="navigator__search-button"]').addEventListener(
@@ -38,7 +53,5 @@ export const YoutubeClassRoom = () => {
 
 window.onload = () => {
   YoutubeClassRoom();
-
-  const savedClips = storage.get(LOCAL_STORAGE_KEY.SAVED_CLIPS) ?? [];
-  renderSavedClips(savedClips);
+  initDisplay();
 };
