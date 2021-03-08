@@ -19,3 +19,6 @@ export const STORAGE_NAME = {
 export const ALERT_MESSAGE = {
   SAVE_COUNT_EXCEEDED_ERROR: "비디오 저장은 100개까지만 가능합니다.",
 };
+
+export const INVALID_DATE = "Invalid Date";
+export const NULL_DATE = "----년 --월 --일";

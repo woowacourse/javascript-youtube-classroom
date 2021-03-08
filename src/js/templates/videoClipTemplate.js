@@ -1,9 +1,14 @@
 import loadingSearchResults from "../state/loadingSearchResults.js";
+import { NULL_DATE, INVALID_DATE } from "../utils/constants.js";
 
 function parseDate(dateString) {
-  const [year, month, date] = dateString.split("T")[0].split("-");
+  const date = new Date(dateString).toLocaleDateString("ko-KR", {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+  });
 
-  return `${year}년 ${month}월 ${date}일`;
+  return date === INVALID_DATE ? NULL_DATE : date;
 }
 
 function getSrcDocTemplate(item) {
