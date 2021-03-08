@@ -42,8 +42,11 @@ function onModalClose() {
 
 async function onVideoSearch(event) {
   event.preventDefault();
-  const input = $searchFormInput.value;
+  const input = $searchFormInput.value.trim();
   if (input === prevSearchResult.getLastQuery()) {
+    return;
+  }
+  if (input === '') {
     return;
   }
   view.initSearchResult();
