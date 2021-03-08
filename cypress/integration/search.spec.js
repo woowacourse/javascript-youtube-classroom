@@ -1,16 +1,37 @@
 /* eslint-disable cypress/no-unnecessary-waiting */
-import { CLASSNAME, MAX_KEYWORDS_COUNT } from "../../src/js/constants.js";
+import {
+  CLASSNAME,
+  MAX_KEYWORDS_COUNT,
+  MAX_RESULTS_COUNT,
+  REDIRECT_SERVER_HOST,
+} from "../../src/js/constants.js";
 
 describe("유투브 검색 API를 이용하여 영상들을 검색할 수 있다.", () => {
   context("유저가 검색창에 검색어를 입력하고 클릭을 했을 때", () => {
     beforeEach(() => {
       cy.visit("/");
       cy.get(`.${CLASSNAME.VIDEO_SEARCH_TAB}`).click();
+
+      cy.intercept({
+        url: REDIRECT_SERVER_HOST,
+        query: {
+          pageToken: /^$/,
+        },
+      }).as("searchFromKeyword");
+
+      cy.intercept({
+        url: REDIRECT_SERVER_HOST,
+        query: {
+          pageToken: /.+/,
+        },
+      }).as("searchFromScroll");
     });
 
-    it.skip("검색 결과가 없는 경우, 검색 결과 없음 이미지가 나타난다.", () => {
+    it("검색 결과가 없는 경우, 검색 결과 없음 이미지가 나타난다.", () => {
       cy.get(`.${CLASSNAME.YOUTUBE_SEARCH_FORM_INPUT}`).type("./");
       cy.get(`.${CLASSNAME.YOUTUBE_SEARCH_FORM_BUTTON}`).click();
+      cy.wait("@searchFromKeyword");
+
       cy.get(`.${CLASSNAME.MODAL_VIDEO_WRAPPER}`)
         .children()
         .should("have.length", 0);
@@ -20,6 +41,8 @@ describe("유투브 검색 API를 이용하여 영상들을 검색할 수 있다
     it("검색 결과가 있는 경우, 검색 결과가 나타난다.", () => {
       cy.get(`.${CLASSNAME.YOUTUBE_SEARCH_FORM_INPUT}`).type("우아한테크코스");
       cy.get(`.${CLASSNAME.YOUTUBE_SEARCH_FORM_BUTTON}`).click();
+      cy.wait("@searchFromKeyword");
+
       cy.get(`.${CLASSNAME.MODAL_VIDEO_WRAPPER}`)
         .children()
         .should("have.length.least", 1);
@@ -37,6 +60,7 @@ describe("유투브 검색 API를 이용하여 영상들을 검색할 수 있다
       keywords.forEach((keyword, i) => {
         cy.get(`.${CLASSNAME.YOUTUBE_SEARCH_FORM_INPUT}`).type(keyword);
         cy.get(`.${CLASSNAME.YOUTUBE_SEARCH_FORM_BUTTON}`).click();
+        cy.wait("@searchFromKeyword");
 
         cy.get(`.${CLASSNAME.KEYWORD_HISTORY_SECTION}`)
           .children("a.chip")
@@ -44,7 +68,6 @@ describe("유투브 검색 API를 이용하여 영상들을 검색할 수 있다
           .last()
           .invoke("text")
           .then((text) => {
-            cy.wait(1000);
             expect(text).to.be.equal(keyword);
           });
       });
@@ -56,7 +79,8 @@ describe("유투브 검색 API를 이용하여 영상들을 검색할 수 있다
 
       cy.get(`.${CLASSNAME.YOUTUBE_SEARCH_FORM_INPUT}`).type(fourthKeyword);
       cy.get(`.${CLASSNAME.YOUTUBE_SEARCH_FORM_BUTTON}`).click();
-      cy.wait(3000);
+      cy.wait("@searchFromKeyword");
+
       cy.get(`.${CLASSNAME.KEYWORD_HISTORY_SECTION}`)
         .children("a.chip")
         .should("have.length", MAX_KEYWORDS_COUNT)
@@ -71,7 +95,7 @@ describe("유투브 검색 API를 이용하여 영상들을 검색할 수 있다
       keywords.forEach((keyword) => {
         cy.get(`.${CLASSNAME.YOUTUBE_SEARCH_FORM_INPUT}`).type(keyword);
         cy.get(`.${CLASSNAME.YOUTUBE_SEARCH_FORM_BUTTON}`).click();
-        cy.wait(2000);
+        cy.wait("@searchFromKeyword");
       });
 
       const duplicatedKeyword = "주모";
@@ -79,8 +103,8 @@ describe("유투브 검색 API를 이용하여 영상들을 검색할 수 있다
 
       cy.get(`.${CLASSNAME.YOUTUBE_SEARCH_FORM_INPUT}`).type(duplicatedKeyword);
       cy.get(`.${CLASSNAME.YOUTUBE_SEARCH_FORM_BUTTON}`).click();
+      cy.wait("@searchFromKeyword");
 
-      cy.wait(3000);
       cy.get(`.${CLASSNAME.KEYWORD_HISTORY_SECTION}`)
         .children("a.chip")
         .should("have.length", MAX_KEYWORDS_COUNT)
@@ -94,32 +118,38 @@ describe("유투브 검색 API를 이용하여 영상들을 검색할 수 있다
 
       cy.get(`.${CLASSNAME.YOUTUBE_SEARCH_FORM_INPUT}`).type(keyword);
       cy.get(`.${CLASSNAME.YOUTUBE_SEARCH_FORM_BUTTON}`).click();
+      cy.wait("@searchFromKeyword");
+
       cy.get(`.${CLASSNAME.MODAL_VIDEO_WRAPPER}`)
         .children()
-        .should("have.length", 10);
+        .should("have.length", MAX_RESULTS_COUNT);
+
       cy.get(`.${CLASSNAME.MODAL_VIDEO_WRAPPER}`)
         .children("article.clip:last-child")
-        .scrollIntoView()
-        .then(() => {
-          cy.get(`.${CLASSNAME.MODAL_VIDEO_WRAPPER}`)
-            .children()
-            .should("have.length", 20);
-        });
+        .scrollIntoView();
+      cy.wait("@searchFromScroll");
+
+      cy.get(`.${CLASSNAME.MODAL_VIDEO_WRAPPER}`)
+        .children()
+        .should("have.length", MAX_RESULTS_COUNT * 2);
     });
 
     it("검색 직후 skeleton UI가 나타나고, 데이터 로드된 후 skeleton UI가 사라진다.", () => {
       cy.get(`.${CLASSNAME.YOUTUBE_SEARCH_FORM_INPUT}`).type("우테코");
       cy.get(`.${CLASSNAME.YOUTUBE_SEARCH_FORM_BUTTON}`).click();
-      cy.get(".modal .skeleton").should("have.length", 10);
-      cy.wait(3000);
+      cy.get(".modal .skeleton").should("have.length", MAX_RESULTS_COUNT);
+      cy.wait("@searchFromKeyword");
 
       cy.get(".modal .skeleton").should("have.length", 0);
     });
 
     it("검색어를 검색한 후 각 비디오의 저장버튼을 누르면, 저장된 영상 갯수가 1씩 증가한다", () => {
+      const keyword = "돼지";
+
       cy.get(`.${CLASSNAME.SAVED_VIDEOS_COUNT}`).should("have.text", 0);
-      cy.get(`.${CLASSNAME.YOUTUBE_SEARCH_FORM_INPUT}`).type("wow");
+      cy.get(`.${CLASSNAME.YOUTUBE_SEARCH_FORM_INPUT}`).type(keyword);
       cy.get(`.${CLASSNAME.YOUTUBE_SEARCH_FORM_BUTTON}`).click();
+      cy.wait("@searchFromKeyword");
 
       cy.get(`.${CLASSNAME.SAVE_VIDEO_BUTTON}`).each(($btn, index) => {
         cy.wrap($btn).click();
