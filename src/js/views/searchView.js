@@ -90,7 +90,7 @@ export default class SearchView {
     this.$recentKeywords.innerHTML = getRecentKeywordsTemplate(recentKeywords);
   }
 
-  renderClosedModal() {
+  renderInvisibleModal() {
     this.$searchSection.classList.remove('open');
     this.$searchKeywordForm.reset();
   }
