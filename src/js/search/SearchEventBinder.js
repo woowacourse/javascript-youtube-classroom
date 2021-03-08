@@ -22,6 +22,7 @@ export default class SearchEventBinder {
       "click",
       this.onClickSearchButton.bind(this)
     );
+    elements.$searchModal.addEventListener("click", this.onClickDimmed);
     elements.$searchModalClose.addEventListener(
       "click",
       this.onClickSearchModalCloseButton
@@ -63,6 +64,12 @@ export default class SearchEventBinder {
 
     this.searchController.updateKeywordHistory();
     this.searchController.showSavedVideoCount();
+  }
+
+  onClickDimmed(e) {
+    if (e.target.classList.contains("modal")) {
+      closeModal(elements.$searchModal);
+    }
   }
 
   onClickSearchModalCloseButton() {
