@@ -1,3 +1,5 @@
+import { CLASS, SELECTOR } from '../constants/constant.js';
+import { $$ } from '../utils/util.js';
 class SavedController {
   constructor(storage, view) {
     this.storage = storage;
@@ -15,9 +17,21 @@ class SavedController {
       return;
     }
     // 동영상 목록 render view 함수
-    console.log('동영상 있음');
+    this.view.renderSavedVideos(savedVideos);
+    this.handleSavedVideoLoad();
   };
 
+  // TODO: search.js와 중복 - 빼야함
+  removeSkeleton = event => {
+    const article = event.target.closest('article');
+    article.classList.remove(CLASS.SKELETON);
+  };
+
+  handleSavedVideoLoad() {
+    $$(SELECTOR.VIDEO_IFRAME).forEach(iframe => {
+      iframe.addEventListener('load', event => this.removeSkeleton(event));
+    });
+  }
   // 볼 영상 필터링 메서드, 본 영상 필터링 메서드(파라미터 받아서)
   // 볼 영상 -> 본 영상 toggle 메서드
   //// e.target의 info.url 을 가져옴

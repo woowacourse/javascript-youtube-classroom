@@ -15,7 +15,7 @@ const youtubeSearchURL = ({ query, nextPageToken, max }) => {
   };
 
   return (
-    URL.YOUTUBE_VIDEOS +
+    URL.YOUTUBE_SEARCH +
     Object.entries(queries)
       .map(([key, value]) => {
         if (value === undefined) {
