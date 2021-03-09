@@ -25,7 +25,7 @@ export const onToggleRenderedClips = ({ target }) => {
 
   setSelected(isWatchedButton);
   savedClips.forEach((savedClip) => {
-    savedClip.dataset.isWatchedButton === String(isWatchedButton) &&
+    savedClip.dataset.isWatched === String(isWatchedButton) &&
     savedClip.dataset.isDeleted === String(false)
       ? showElement(savedClip)
       : hideElement(savedClip);
