@@ -1,5 +1,5 @@
 import { searchYoutube, searchYoutubeDummyData } from '../api.js';
-import { $, showSnackbar, renderSkeletonUI, formatDate, closeModal } from '../utils.js';
+import { $, showSnackbar, renderSkeletonUI, formatDate, closeModal, generateCSSClass } from '../utils.js';
 import { ALERT_MESSAGE, SELECTORS, LOCAL_STORAGE_KEYS } from '../constants.js';
 import Observer from '../lib/Observer.js';
 
@@ -75,7 +75,10 @@ export default class YoutubeSearchManager extends Observer {
                   </div>
                 </div>
                 <div class="d-flex justify-end">
-                  <button class="btn btn-save ${isSaved ? 'hidden' : ''}" data-video-id="${videoId}">⬇️ 저장</button>
+                  <button 
+                    type="button" 
+                    class="btn btn-save ${generateCSSClass(isSaved, 'hidden')}" 
+                    data-video-id="${videoId}">⬇️ 저장</button>
                 </div>
               </div>
             </article>
