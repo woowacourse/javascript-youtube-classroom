@@ -7,6 +7,7 @@ import {
   STORAGE_CAPACITY_IS_FULL,
   VIDEO_IS_SAVED_SUCCESSFULLY,
   VIDEO_IS_ALREADY_SAVED,
+  SEARCH_REQUEST_HAS_FAILED,
 } from '../constants.js';
 import { isEndOfScroll } from '../utils/DOM.js';
 
@@ -81,7 +82,7 @@ export default class SearchController {
   }
 
   onRequestSaveVideo({ target }) {
-    if (!target.classList.contains('save-button')) {
+    if (!target.classList.contains('js-save-button')) {
       return;
     }
     if (target.classList.contains('saved')) {
@@ -105,7 +106,10 @@ export default class SearchController {
     this.view.renderSkeleton();
     this.service
       .getSearchResultAsync()
-      .then(this.view.renderSearchResult)
-      .catch((error) => console.error(error));
+      .then((result) => this.view.renderSearchResult(result))
+      .catch((e) => {
+        this.view.init();
+        this.view.renderNotification(SEARCH_REQUEST_HAS_FAILED);
+      });
   }
 }
