@@ -31,7 +31,6 @@ export default class SearchController {
   }
 
   activateSearchLoading() {
-    console.log("skel");
     this.searchView.resetSearchResults();
     loadingSearchResults.resetLoadCount();
     this.searchView.showSkeletonClip();
