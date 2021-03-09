@@ -201,7 +201,7 @@ export default class YoutubeSearchManager extends Observer {
   }
 
   handleClickDimmer(event) {
-    if (event.target.classList.contains('modal')) {
+    if (event.target.id === 'dimmer') {
       closeModal();
     }
   }
