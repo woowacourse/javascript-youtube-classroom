@@ -1,5 +1,23 @@
 class SavedController {
+  constructor(storage, view) {
+    this.storage = storage;
+    this.view = view;
+  }
+
+  init() {
+    this.loadSavedVideos();
+  }
   // 페이지 접속하면 저장된 영상들 불러오는 메서드
+  loadSavedVideos = () => {
+    const savedVideos = this.storage.myVideos;
+    if (savedVideos.length === 0) {
+      this.view.renderNotFoundSavedVideo();
+      return;
+    }
+    // 동영상 목록 render view 함수
+    console.log('동영상 있음');
+  };
+
   // 볼 영상 필터링 메서드, 본 영상 필터링 메서드(파라미터 받아서)
   // 볼 영상 -> 본 영상 toggle 메서드
   //// e.target의 info.url 을 가져옴

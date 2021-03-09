@@ -17,7 +17,11 @@ class StorageModel {
     this.#keywords = getJSONFromLocalStorage(STORAGE.KEY_KEYWORDS);
   }
 
-  // getSavedVideos - 저장된 영상 불러오는 메서드
+  // get savedVideos - 저장된 영상 불러오는 메서드
+  get myVideos() {
+    // getJSON ? 변수그냥 사용? 추후 고민하기
+    return this.#myVideo;
+  }
   //
   // getFilteredVideos(watched) - 본 / 볼 영상 불러오는 메서드
   //// watched가 true면 본 영상들만 필터링. 반대는 반대

@@ -5,7 +5,7 @@ import {
   searchVideoTemplate,
   recentKeywordsTemplate,
   myVideoInfosTemplate,
-} from './template.js';
+} from '../templates/search-template.js';
 
 class SearchView {
   init = () => {

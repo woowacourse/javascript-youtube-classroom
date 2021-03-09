@@ -1,5 +1,10 @@
+import { $ } from '../utils/util.js';
+import { videoNotFoundTemplate } from '../templates/video-template.js';
 class SavedView {
-  // 주어진 영상들을 메인 화면에 렌더링하는 메서드
+  renderNotFoundSavedVideo() {
+    const $savedVideoWrapper = $('#saved-video-wrapper');
+    $savedVideoWrapper.innerHTML = videoNotFoundTemplate();
+  }
 }
 
 export default SavedView;
