@@ -51,6 +51,7 @@
   -webkit-line-clamp: 2;
   overflow: hidden;
   color: #0a0a0a;
+  line-height: 1.5;
 }
 
 .clip .content-container .channel-name {
