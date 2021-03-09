@@ -49,7 +49,12 @@
           </main>
         </div>
       </div>
-      <div class="modal" data-js="youtube-search-modal">
+      <div
+        class="modal"
+        data-js="youtube-search-modal"
+        role="dialog"
+        aria-labelledby="dialog__title"
+      >
         <div class="modal-inner p-8" data-js="youtube-search-modal__inner">
           <button class="modal-close" data-js="youtube-serach-modal__close">
             <svg viewbox="0 0 40 40">
@@ -57,15 +62,19 @@
             </svg>
           </button>
           <header>
-            <h2 class="text-center">🔎 유튜브 검색</h2>
+            <h2 id="dialog__title" class="text-center">🔎 유튜브 검색</h2>
           </header>
           <form class="d-flex" data-js="youtube-search-modal__form">
             <input
               type="text"
-              name="youtube-search-modal__input"
               class="w-100 mr-2 pl-2"
-              placeholder="검색"
               data-js="youtube-search-modal__input"
+              name="youtube-search-modal__input"
+              minlength="1"
+              maxlength="90"
+              placeholder="검색"
+              autofocus
+              autocomplete="on"
               required
             />
             <button
