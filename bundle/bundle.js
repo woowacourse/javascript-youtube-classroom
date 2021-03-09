@@ -12575,7 +12575,7 @@ var controllerUtil = {
   getProcessedVideos: function getProcessedVideos(videos) {
     return videos.map(function (video) {
       return _objectSpread(_objectSpread({}, video), {}, {
-        isSaved: controllerUtil.isVideoToWatch(video.videoId)
+        isSaved: controllerUtil.isVideoToWatch(video.videoId) || controllerUtil.isWatchedVideo(video.videoId)
       });
     });
   },
@@ -12640,6 +12640,11 @@ var controllerUtil = {
   },
   isVideoToWatch: function isVideoToWatch(videoId) {
     return _storage_videoToWatch_js__WEBPACK_IMPORTED_MODULE_3__.default.getVideos().some(function (video) {
+      return video.videoId === videoId;
+    });
+  },
+  isWatchedVideo: function isWatchedVideo(videoId) {
+    return _storage_watchedVideo_js__WEBPACK_IMPORTED_MODULE_4__.default.getVideos().some(function (video) {
       return video.videoId === videoId;
     });
   }

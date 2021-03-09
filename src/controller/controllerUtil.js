@@ -5,7 +5,7 @@ import videoToWatch from '../storage/videoToWatch.js';
 import { SELECTOR_CLASS, SETTINGS, STYLE_CLASS } from '../constants.js';
 import { $ } from '../utils/querySelector.js';
 import viewUtil from '../view/viewUtil.js';
-import watchedVideos from '../storage/watchedVideo.js';
+import watchedVideo from '../storage/watchedVideo.js';
 
 const controllerUtil = {
   setObserver($element, callback) {
@@ -22,7 +22,9 @@ const controllerUtil = {
   getProcessedVideos(videos) {
     return videos.map(video => ({
       ...video,
-      isSaved: controllerUtil.isVideoToWatch(video.videoId),
+      isSaved:
+        controllerUtil.isVideoToWatch(video.videoId) ||
+        controllerUtil.isWatchedVideo(video.videoId),
     }));
   },
 
@@ -84,13 +86,16 @@ const controllerUtil = {
     if (!sendingVideo) {
       return;
     }
-    watchedVideos.pushVideo(sendingVideo);
+    watchedVideo.pushVideo(sendingVideo);
   },
 
   isVideoToWatch(videoId) {
     return videoToWatch.getVideos().some(video => video.videoId === videoId);
   },
 
+  isWatchedVideo(videoId) {
+    return watchedVideo.getVideos().some(video => video.videoId === videoId);
+  },
 };
 
 export default controllerUtil;
