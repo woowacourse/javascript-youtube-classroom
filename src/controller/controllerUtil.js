@@ -56,7 +56,7 @@ const controllerUtil = {
   },
 
   loadAdditionalVideos(videos) {
-    view.insertVideoItems(videos);
+    view.insertSearchedVideos(videos);
     if (videos.length === 0) {
       view.showNotFoundContent();
       return;
@@ -70,7 +70,7 @@ const controllerUtil = {
 
   loadPrevSearchedVideos(videos) {
     const processedVideos = controllerUtil.getProcessedVideos(videos);
-    view.insertVideoItems(processedVideos);
+    view.renderSearchedVideos(processedVideos);
     view.showSearchResultIntersector();
   },
 

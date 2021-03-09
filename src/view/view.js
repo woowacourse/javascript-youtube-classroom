@@ -34,11 +34,20 @@ const view = {
   },
 
   renderSkeletonItems() {
-    $searchResultVideoWrapper.innerHTML = getSkeletonListTemplate();
+    viewUtil.renderByElement(
+      $searchResultVideoWrapper,
+      getSkeletonListTemplate()
+    );
+  },
+  renderSelectedVideoItems(videos) {
+    viewUtil.renderByElement(
+      $videoWrapper,
+      getSelectedVideoListTemplate(videos)
+    );
   },
 
   renderSearchQueries(queries) {
-    $searchQueries.innerHTML = getSearchQueriesTemplate(queries);
+    viewUtil.renderByElement($searchQueries, getSearchQueriesTemplate(queries));
   },
 
   renderSavedVideoCount(count) {
@@ -46,6 +55,7 @@ const view = {
   },
 
   renderSearchedVideos(processedVideos) {
+<<<<<<< HEAD
     view.insertVideoItems(processedVideos);
     viewUtil.showElementBySelector(`#${SELECTOR_ID.SEARCH_RESULT_INTERSECTOR}`);
   },
@@ -54,6 +64,19 @@ const view = {
     $searchResultVideoWrapper.insertAdjacentHTML(
       'beforeend',
       getVideoListTemplate(videos)
+=======
+    //TODO : getVideoListTemplate -> searchedVideoListTemplate
+    viewUtil.renderByElement(
+      $searchResultVideoWrapper,
+      getVideoListTemplate(processedVideos)
+    );
+    viewUtil.showElementBySelector(`#${SELECTOR_ID.SERACH_RESULT_INTERSECTOR}`);
+  },
+  insertSearchedVideos(processedVideos) {
+    viewUtil.insertByElement(
+      $searchResultVideoWrapper,
+      getVideoListTemplate(processedVideos)
+>>>>>>> a0ff67b... feat: 쓰레기통 버튼으로 저장된 리스트에서 삭제할 수 있다.
     );
   },
 

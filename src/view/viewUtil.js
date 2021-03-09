@@ -1,6 +1,12 @@
 import { $ } from '../utils/querySelector.js';
 
 const viewUtil = {
+  renderByElement($element, htmlString) {
+    $element.innerHTML = htmlString;
+  },
+  insertByElement($element, htmlString) {
+    $element.insertAdjacentHTML('beforeend', htmlString);
+  },
   showElement($element) {
     $element.classList.remove('removed');
   },

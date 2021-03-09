@@ -17,9 +17,13 @@ import { SETTINGS, SELECTOR_CLASS, ALERT_MESSAGE, SELECTOR_ID } from '../constan
 import controllerUtil from './controllerUtil.js';
 
 function onVideoInteract({ target }) {
-  console.log(target);
   if (target.classList.contains(SELECTOR_CLASS.CLIP_CHECK_BUTTON)) {
     onClipCheck(target);
+    return;
+  }
+  if (target.classList.contains(SELECTOR_CLASS.CLIP_DELETE_BUTTON)) {
+    onClipDelete(target);
+    console.log(target);
     return;
   }
 }
@@ -27,6 +31,12 @@ function onVideoInteract({ target }) {
 function onClipCheck(button) {
   const videoId = button.dataset.videoId;
   controllerUtil.sendVideoToWatchedVideos(videoId);
+  controller.loadVideos();
+}
+
+function onClipDelete(button) {
+  const videoId = button.dataset.videoId;
+  videoToWatch.popVideoByVideoId(videoId);
   controller.loadVideos();
 }
 
