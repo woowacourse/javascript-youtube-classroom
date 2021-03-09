@@ -102,3 +102,12 @@ dist
 
 # TernJS port file
 .tern-port
+
+cypress/fixtures
+cypress/plugins
+cypress/support
+temp.js
+
+src/js/apiKey.js
+public
+*.cache
