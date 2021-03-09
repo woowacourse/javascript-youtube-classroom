@@ -45,7 +45,10 @@ function getSelectedVideoTemplate(videoItem) {
           <p>${videoItem.publishedAt}</p>
         </div>
         <div>
-          <span class="${SELECTOR_CLASS.CLIP_CHECK_BUTTON} opacity-hover">✅</span>
+          <span 
+          class="${SELECTOR_CLASS.CLIP_CHECK_BUTTON} opacity-hover" 
+          data-video-id="${videoItem.videoId}"
+          >✅</span>
           <span class="opacity-hover">👍</span>
           <span class="opacity-hover">💬</span>
           <span class="opacity-hover">🗑️</span>

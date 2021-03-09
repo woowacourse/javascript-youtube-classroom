@@ -5,6 +5,7 @@ import {
   $searchFormInput,
   $searchResultIntersector,
   $searchResultVideoWrapper,
+  $videoWrapper,
 } from '../elements.js';
 import view from '../view/view.js';
 import { getVideosByKeyword } from '../apis/youtube.js';
@@ -13,6 +14,20 @@ import searchQuery from '../storage/searchQuery.js';
 import videoToWatch from '../storage/videoToWatch.js';
 import { SETTINGS, SELECTOR_CLASS, ALERT_MESSAGE } from '../constants.js';
 import controllerUtil from './controllerUtil.js';
+
+function onVideoInteract({ target }) {
+  console.log(target);
+  if (target.classList.contains(SELECTOR_CLASS.CLIP_CHECK_BUTTON)) {
+    onClipCheck(target);
+    return;
+  }
+}
+
+function onClipCheck(button) {
+  const videoId = button.dataset.videoId;
+  controllerUtil.sendVideoToWatchedVideos(videoId);
+  controller.loadVideos();
+}
 
 async function onAdditionalVideosLoad() {
   const { videos, nextPageToken } = await getVideosByKeyword(
@@ -90,15 +105,16 @@ const controller = {
     $searchButton.addEventListener('click', onModalOpen);
     $modalCloseButton.addEventListener('click', onModalClose);
     $searchForm.addEventListener('submit', onVideoSearch);
+    $videoWrapper.addEventListener('click', onVideoInteract);
   },
   initSearchQueries() {
     view.renderSearchQueries(searchQuery.getQueries());
   },
-  initVideos() {
+  // TODO: Selected -> Watching 으로 단어 변경
+  loadVideos() {
     const videosToWatch = videoToWatch.getVideos();
     if (videosToWatch.length === 0) {
       view.showEmptyVideoImage();
-      return;
     }
     view.renderSelectedVideoItems(videosToWatch);
   },

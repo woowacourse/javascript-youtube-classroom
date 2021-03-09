@@ -12260,6 +12260,7 @@ var SETTINGS = Object.freeze({
 var LOCAL_STORAGE_KEY = Object.freeze({
   PREVIOUS_SEARCH_VIDEOS: 'previous_search_videos',
   VIDEOS_TO_WATCH: 'videos_to_watch',
+  WATCHED_VIDEOS: 'watched_videos',
   SEARCH_QUERIES: 'search_queries',
   LAST_QUERY: 'last_query',
   NEXT_PAGE_TOKEN: 'next_page_token'
@@ -12301,6 +12302,22 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
 
 
+
+function onVideoInteract(_ref) {
+  var target = _ref.target;
+  console.log(target);
+
+  if (target.classList.contains(_constants_js__WEBPACK_IMPORTED_MODULE_6__.SELECTOR_CLASS.CLIP_CHECK_BUTTON)) {
+    onClipCheck(target);
+    return;
+  }
+}
+
+function onClipCheck(button) {
+  var videoId = button.dataset.videoId;
+  _controllerUtil_js__WEBPACK_IMPORTED_MODULE_7__.default.sendVideoToWatchedVideos(videoId);
+  controller.loadVideos();
+}
 
 function onAdditionalVideosLoad() {
   return _onAdditionalVideosLoad.apply(this, arguments);
@@ -12415,8 +12432,8 @@ function _onVideoSearch() {
   return _onVideoSearch.apply(this, arguments);
 }
 
-function onSelectedVideoSave(_ref) {
-  var target = _ref.target;
+function onSelectedVideoSave(_ref2) {
+  var target = _ref2.target;
 
   if (!target.classList.contains(_constants_js__WEBPACK_IMPORTED_MODULE_6__.SELECTOR_CLASS.SEARCHED_CLIP_SAVE_BUTTON)) {
     return;
@@ -12443,16 +12460,17 @@ var controller = {
     _elements_js__WEBPACK_IMPORTED_MODULE_0__.$searchButton.addEventListener('click', onModalOpen);
     _elements_js__WEBPACK_IMPORTED_MODULE_0__.$modalCloseButton.addEventListener('click', onModalClose);
     _elements_js__WEBPACK_IMPORTED_MODULE_0__.$searchForm.addEventListener('submit', onVideoSearch);
+    _elements_js__WEBPACK_IMPORTED_MODULE_0__.$videoWrapper.addEventListener('click', onVideoInteract);
   },
   initSearchQueries: function initSearchQueries() {
     _view_view_js__WEBPACK_IMPORTED_MODULE_1__.default.renderSearchQueries(_storage_searchQuery_js__WEBPACK_IMPORTED_MODULE_4__.default.getQueries());
   },
-  initVideos: function initVideos() {
+  // TODO: Selected -> Watching 으로 단어 변경
+  loadVideos: function loadVideos() {
     var videosToWatch = _storage_videoToWatch_js__WEBPACK_IMPORTED_MODULE_5__.default.getVideos();
 
     if (videosToWatch.length === 0) {
       _view_view_js__WEBPACK_IMPORTED_MODULE_1__.default.showEmptyVideoImage();
-      return;
     }
 
     _view_view_js__WEBPACK_IMPORTED_MODULE_1__.default.renderSelectedVideoItems(videosToWatch);
@@ -12477,12 +12495,14 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _storage_prevSearchResult_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../storage/prevSearchResult.js */ "./src/storage/prevSearchResult.js");
 /* harmony import */ var _storage_searchQuery_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../storage/searchQuery.js */ "./src/storage/searchQuery.js");
 /* harmony import */ var _storage_videoToWatch_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../storage/videoToWatch.js */ "./src/storage/videoToWatch.js");
-/* harmony import */ var _constants_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../constants.js */ "./src/constants.js");
+/* harmony import */ var _storage_watchedVideo_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../storage/watchedVideo.js */ "./src/storage/watchedVideo.js");
+/* harmony import */ var _constants_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../constants.js */ "./src/constants.js");
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
 
 function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
 
 
 
@@ -12526,7 +12546,7 @@ var controllerUtil = {
     });
     filteredQueries.push(input);
 
-    if (filteredQueries.length > _constants_js__WEBPACK_IMPORTED_MODULE_4__.SETTINGS.MAX_SAVED_SEARCH_QUERY_COUNT) {
+    if (filteredQueries.length > _constants_js__WEBPACK_IMPORTED_MODULE_5__.SETTINGS.MAX_SAVED_SEARCH_QUERY_COUNT) {
       filteredQueries.shift();
     }
 
@@ -12548,6 +12568,15 @@ var controllerUtil = {
     var processedVideos = controllerUtil.getProcessedVideos(videos);
     _view_view_js__WEBPACK_IMPORTED_MODULE_0__.default.insertVideoItems(processedVideos);
     _view_view_js__WEBPACK_IMPORTED_MODULE_0__.default.showSearchResultIntersector();
+  },
+  sendVideoToWatchedVideos: function sendVideoToWatchedVideos(videoId) {
+    var sendingVideo = _storage_videoToWatch_js__WEBPACK_IMPORTED_MODULE_3__.default.popVideoByVideoId(videoId);
+
+    if (!sendingVideo) {
+      return;
+    }
+
+    _storage_watchedVideo_js__WEBPACK_IMPORTED_MODULE_4__.default.pushVideo(sendingVideo);
   },
   isVideoToWatch: function isVideoToWatch(videoId) {
     return _storage_videoToWatch_js__WEBPACK_IMPORTED_MODULE_3__.default.getVideos().some(function (video) {
@@ -12598,10 +12627,10 @@ var $emptyVideoImage = (0,_utils_querySelector_js__WEBPACK_IMPORTED_MODULE_1__.$
 
 /***/ }),
 
-/***/ "./src/storage/localStorage.js":
-/*!*************************************!*\
-  !*** ./src/storage/localStorage.js ***!
-  \*************************************/
+/***/ "./src/storage/localStorageUtil.js":
+/*!*****************************************!*\
+  !*** ./src/storage/localStorageUtil.js ***!
+  \*****************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
@@ -12643,20 +12672,21 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
 /* harmony import */ var _constants_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../constants.js */ "./src/constants.js");
-/* harmony import */ var _localStorage_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./localStorage.js */ "./src/storage/localStorage.js");
+/* harmony import */ var _localStorageUtil_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./localStorageUtil.js */ "./src/storage/localStorageUtil.js");
 
 
 var prevSearchResult = {
   getLastQuery: function getLastQuery() {
-    return (0,_localStorage_js__WEBPACK_IMPORTED_MODULE_1__.getLocalStorageItem)(_constants_js__WEBPACK_IMPORTED_MODULE_0__.LOCAL_STORAGE_KEY.LAST_QUERY);
+    return (0,_localStorageUtil_js__WEBPACK_IMPORTED_MODULE_1__.getLocalStorageItem)(_constants_js__WEBPACK_IMPORTED_MODULE_0__.LOCAL_STORAGE_KEY.LAST_QUERY);
   },
   getNextPageToken: function getNextPageToken() {
-    return (0,_localStorage_js__WEBPACK_IMPORTED_MODULE_1__.getLocalStorageItem)(_constants_js__WEBPACK_IMPORTED_MODULE_0__.LOCAL_STORAGE_KEY.NEXT_PAGE_TOKEN);
+    return (0,_localStorageUtil_js__WEBPACK_IMPORTED_MODULE_1__.getLocalStorageItem)(_constants_js__WEBPACK_IMPORTED_MODULE_0__.LOCAL_STORAGE_KEY.NEXT_PAGE_TOKEN);
   },
   getSearchedVideos: function getSearchedVideos() {
-    return (0,_localStorage_js__WEBPACK_IMPORTED_MODULE_1__.getLocalStorageItem)(_constants_js__WEBPACK_IMPORTED_MODULE_0__.LOCAL_STORAGE_KEY.PREVIOUS_SEARCH_VIDEOS) || [];
+    return (0,_localStorageUtil_js__WEBPACK_IMPORTED_MODULE_1__.getLocalStorageItem)(_constants_js__WEBPACK_IMPORTED_MODULE_0__.LOCAL_STORAGE_KEY.PREVIOUS_SEARCH_VIDEOS) || [];
   },
   setLastQuery: function setLastQuery(value) {
+    //TODO setLocalStorageItem 사용해야함
     localStorage.setItem(_constants_js__WEBPACK_IMPORTED_MODULE_0__.LOCAL_STORAGE_KEY.LAST_QUERY, JSON.stringify(value));
   },
   setNextPageToken: function setNextPageToken(value) {
@@ -12682,19 +12712,19 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
 /* harmony import */ var _constants_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../constants.js */ "./src/constants.js");
-/* harmony import */ var _localStorage_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./localStorage.js */ "./src/storage/localStorage.js");
+/* harmony import */ var _localStorageUtil_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./localStorageUtil.js */ "./src/storage/localStorageUtil.js");
 
 
 var searchQuery = {
   getQueries: function getQueries() {
-    return (0,_localStorage_js__WEBPACK_IMPORTED_MODULE_1__.getLocalStorageItem)(_constants_js__WEBPACK_IMPORTED_MODULE_0__.LOCAL_STORAGE_KEY.SEARCH_QUERIES) || [];
+    return (0,_localStorageUtil_js__WEBPACK_IMPORTED_MODULE_1__.getLocalStorageItem)(_constants_js__WEBPACK_IMPORTED_MODULE_0__.LOCAL_STORAGE_KEY.SEARCH_QUERIES) || [];
   },
   setQueries: function setQueries(queries) {
     if (!Array.isArray(queries)) {
       return;
     }
 
-    (0,_localStorage_js__WEBPACK_IMPORTED_MODULE_1__.setLocalStorageItem)(_constants_js__WEBPACK_IMPORTED_MODULE_0__.LOCAL_STORAGE_KEY.SEARCH_QUERIES, queries);
+    (0,_localStorageUtil_js__WEBPACK_IMPORTED_MODULE_1__.setLocalStorageItem)(_constants_js__WEBPACK_IMPORTED_MODULE_0__.LOCAL_STORAGE_KEY.SEARCH_QUERIES, queries);
   },
   pushQuery: function pushQuery(query) {
     if (typeof query !== 'string') {
@@ -12722,27 +12752,95 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
 /* harmony import */ var _constants_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../constants.js */ "./src/constants.js");
-/* harmony import */ var _localStorage_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./localStorage.js */ "./src/storage/localStorage.js");
+/* harmony import */ var _localStorageUtil_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./localStorageUtil.js */ "./src/storage/localStorageUtil.js");
+// TODO : 이름 videoToWatch -> watchingVideo
 
 
 var videoToWatch = {
   getVideos: function getVideos() {
-    return (0,_localStorage_js__WEBPACK_IMPORTED_MODULE_1__.getLocalStorageItem)(_constants_js__WEBPACK_IMPORTED_MODULE_0__.LOCAL_STORAGE_KEY.VIDEOS_TO_WATCH) || [];
+    return (0,_localStorageUtil_js__WEBPACK_IMPORTED_MODULE_1__.getLocalStorageItem)(_constants_js__WEBPACK_IMPORTED_MODULE_0__.LOCAL_STORAGE_KEY.VIDEOS_TO_WATCH) || [];
   },
   setVideos: function setVideos(videos) {
     if (!Array.isArray(videos)) {
       return;
     }
 
-    (0,_localStorage_js__WEBPACK_IMPORTED_MODULE_1__.setLocalStorageItem)(_constants_js__WEBPACK_IMPORTED_MODULE_0__.LOCAL_STORAGE_KEY.VIDEOS_TO_WATCH, videos);
+    (0,_localStorageUtil_js__WEBPACK_IMPORTED_MODULE_1__.setLocalStorageItem)(_constants_js__WEBPACK_IMPORTED_MODULE_0__.LOCAL_STORAGE_KEY.VIDEOS_TO_WATCH, videos);
   },
   pushVideo: function pushVideo(newVideo) {
     var videosToWatch = videoToWatch.getVideos();
     videosToWatch.push(newVideo);
     videoToWatch.setVideos(videosToWatch);
+  },
+  popVideoByVideoId: function popVideoByVideoId(videoId) {
+    var videos = videoToWatch.getVideos();
+    var poppedVideo = videos.find(function (video) {
+      return video.videoId === videoId;
+    });
+
+    if (!poppedVideo) {
+      return;
+    }
+
+    videoToWatch.setVideos(videos.filter(function (video) {
+      return video.videoId !== videoId;
+    }));
+    return poppedVideo;
   }
 };
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (videoToWatch);
+
+/***/ }),
+
+/***/ "./src/storage/watchedVideo.js":
+/*!*************************************!*\
+  !*** ./src/storage/watchedVideo.js ***!
+  \*************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _constants_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../constants.js */ "./src/constants.js");
+/* harmony import */ var _localStorageUtil_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./localStorageUtil.js */ "./src/storage/localStorageUtil.js");
+
+ // TODO : Mixin 을 활용해서 리팩토링
+
+var watchedVideo = {
+  getVideos: function getVideos() {
+    return (0,_localStorageUtil_js__WEBPACK_IMPORTED_MODULE_1__.getLocalStorageItem)(_constants_js__WEBPACK_IMPORTED_MODULE_0__.LOCAL_STORAGE_KEY.WATCHED_VIDEOS) || [];
+  },
+  setVideos: function setVideos(videos) {
+    if (!Array.isArray(videos)) {
+      return;
+    }
+
+    (0,_localStorageUtil_js__WEBPACK_IMPORTED_MODULE_1__.setLocalStorageItem)(_constants_js__WEBPACK_IMPORTED_MODULE_0__.LOCAL_STORAGE_KEY.WATCHED_VIDEOS, videos);
+  },
+  pushVideo: function pushVideo(newVideo) {
+    var videosToWatch = watchedVideo.getVideos();
+    videosToWatch.push(newVideo);
+    watchedVideo.setVideos(videosToWatch);
+  },
+  popVideoByVideoId: function popVideoByVideoId(videoId) {
+    var videos = watchedVideo.getVideos();
+    var poppedVideo = videos.find(function (video) {
+      return video.videoId === videoId;
+    });
+
+    if (!poppedVideo) {
+      return;
+    }
+
+    watchedVideo.setVideos(videos.filter(function (video) {
+      return video.videoId !== videoId;
+    }));
+    return poppedVideo;
+  }
+};
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (watchedVideo);
 
 /***/ }),
 
@@ -12815,7 +12913,7 @@ function getSearchQueryTemplate(query) {
 }
 
 function getSelectedVideoTemplate(videoItem) {
-  return "\n  <article class=\"".concat(_constants_js__WEBPACK_IMPORTED_MODULE_0__.SELECTOR_CLASS.CLIP, " clip\">\n    <div class=\"clip__preview\">\n      <iframe\n        width=\"100%\"\n        height=\"118\"\n        src=\"https://www.youtube.com/embed/").concat(videoItem.videoId, "\"\n        frameborder=\"0\"\n        allow=\"accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture\"\n        allowfullscreen\n      ></iframe>\n    </div>\n    <div class=\"clip__content pt-2 px-1\">\n      <h3>").concat(videoItem.title, "</h3>\n      <div>\n        <a\n          href=\"https://www.youtube.com/channel/UC-mOekGSesms0agFntnQang\"\n          target=\"_blank\"\n          class=\"channel-name mt-1\"\n        >\n          ").concat(videoItem.channelTitle, "\n        </a>\n        <div class=\"meta\">\n          <p>").concat(videoItem.publishedAt, "</p>\n        </div>\n        <div>\n          <span class=\"").concat(_constants_js__WEBPACK_IMPORTED_MODULE_0__.SELECTOR_CLASS.CLIP_CHECK_BUTTON, " opacity-hover\">\u2705</span>\n          <span class=\"opacity-hover\">\uD83D\uDC4D</span>\n          <span class=\"opacity-hover\">\uD83D\uDCAC</span>\n          <span class=\"opacity-hover\">\uD83D\uDDD1\uFE0F</span>\n        </div>\n      </div>\n    </div>\n  </article>\n  ");
+  return "\n  <article class=\"".concat(_constants_js__WEBPACK_IMPORTED_MODULE_0__.SELECTOR_CLASS.CLIP, " clip\">\n    <div class=\"clip__preview\">\n      <iframe\n        width=\"100%\"\n        height=\"118\"\n        src=\"https://www.youtube.com/embed/").concat(videoItem.videoId, "\"\n        frameborder=\"0\"\n        allow=\"accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture\"\n        allowfullscreen\n      ></iframe>\n    </div>\n    <div class=\"clip__content pt-2 px-1\">\n      <h3>").concat(videoItem.title, "</h3>\n      <div>\n        <a\n          href=\"https://www.youtube.com/channel/UC-mOekGSesms0agFntnQang\"\n          target=\"_blank\"\n          class=\"channel-name mt-1\"\n        >\n          ").concat(videoItem.channelTitle, "\n        </a>\n        <div class=\"meta\">\n          <p>").concat(videoItem.publishedAt, "</p>\n        </div>\n        <div>\n          <span \n          class=\"").concat(_constants_js__WEBPACK_IMPORTED_MODULE_0__.SELECTOR_CLASS.CLIP_CHECK_BUTTON, " opacity-hover\" \n          data-video-id=\"").concat(videoItem.videoId, "\"\n          >\u2705</span>\n          <span class=\"opacity-hover\">\uD83D\uDC4D</span>\n          <span class=\"opacity-hover\">\uD83D\uDCAC</span>\n          <span class=\"opacity-hover\">\uD83D\uDDD1\uFE0F</span>\n        </div>\n      </div>\n    </div>\n  </article>\n  ");
 }
 
 function getSearchedVideoTemplate(videoItem) {
@@ -13066,7 +13164,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _controller_controller_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./controller/controller.js */ "./src/controller/controller.js");
 
 _controller_controller_js__WEBPACK_IMPORTED_MODULE_0__.default.initEventListeners();
-_controller_controller_js__WEBPACK_IMPORTED_MODULE_0__.default.initVideos();
+_controller_controller_js__WEBPACK_IMPORTED_MODULE_0__.default.loadVideos();
 _controller_controller_js__WEBPACK_IMPORTED_MODULE_0__.default.initSearchQueries();
 })();
 

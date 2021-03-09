@@ -1,5 +1,8 @@
 import { LOCAL_STORAGE_KEY } from '../constants.js';
-import { getLocalStorageItem, setLocalStorageItem } from './localStorage.js';
+import {
+  getLocalStorageItem,
+  setLocalStorageItem,
+} from './localStorageUtil.js';
 
 const searchQuery = {
   getQueries() {

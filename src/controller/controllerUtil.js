@@ -2,6 +2,7 @@ import view from '../view/view.js';
 import prevSearchResult from '../storage/prevSearchResult.js';
 import searchQuery from '../storage/searchQuery.js';
 import videoToWatch from '../storage/videoToWatch.js';
+import watchedVideos from '../storage/watchedVideo.js';
 import { SETTINGS } from '../constants.js';
 
 const controllerUtil = {
@@ -59,6 +60,13 @@ const controllerUtil = {
     const processedVideos = controllerUtil.getProcessedVideos(videos);
     view.insertVideoItems(processedVideos);
     view.showSearchResultIntersector();
+  },
+  sendVideoToWatchedVideos(videoId) {
+    const sendingVideo = videoToWatch.popVideoByVideoId(videoId);
+    if (!sendingVideo) {
+      return;
+    }
+    watchedVideos.pushVideo(sendingVideo);
   },
   isVideoToWatch(videoId) {
     return videoToWatch.getVideos().some(video => video.videoId === videoId);
