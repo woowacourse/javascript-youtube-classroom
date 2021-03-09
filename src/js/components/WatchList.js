@@ -76,9 +76,10 @@ export default class WatchList extends Observer {
     const { watchList } = this.store.get();
 
     const newVideoId = watchList.filter((id) => !this.list.includes(id));
-    const selectedVideo = await searchYoutubeById([newVideoId]);
+    if (!newVideoId || newVideoId.length <= 0) return;
+    const { items } = await searchYoutubeById([newVideoId]);
 
-    this.renderSavedVideos(selectedVideo.items);
+    this.renderSavedVideos(items);
     this.list = watchList;
   }
 }

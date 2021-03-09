@@ -3,19 +3,30 @@ import { dummyData } from './dummy.js';
 import { sleep } from './utils.js';
 
 export const searchYoutube = async (keyword, pageToken = '') => {
-  const response = await fetch(
-    `https://www.googleapis.com/youtube/v3/search?part=snippet&type=video&q=${keyword}&pageToken=${pageToken}&maxResults=10&key=${YOUTUBE_API_KEY}`
-  );
+  const endPoint = `https://www.googleapis.com/youtube/v3/search`;
+  const query = getParameters({
+    part: 'snippet',
+    type: 'video',
+    key: YOUTUBE_API_KEY,
+    pageToken,
+    maxResults: '10',
+    q: keyword,
+  }).toString();
+  const response = await fetch(`${endPoint}?${query}`);
 
   return response.json();
 };
 
 export const searchYoutubeById = async (ids = []) => {
   if (ids.length <= 0) return;
-  const idsListString = ids.join(',');
-  const response = await fetch(
-    `https://www.googleapis.com/youtube/v3/videos?part=snippet&type=video&key=${YOUTUBE_API_KEY}&id=${idsListString}`
-  );
+  const endPoint = `https://www.googleapis.com/youtube/v3/videos`;
+  const query = getParameters({
+    part: 'snippet',
+    type: 'video',
+    key: YOUTUBE_API_KEY,
+    id: ids.join(','),
+  }).toString();
+  const response = await fetch(`${endPoint}?${query}`);
 
   return response.json();
 };
@@ -38,4 +49,15 @@ export const searchYoutubeDummyData = async (isEmpty = false) => {
     `);
   }
   return dummyData[0];
+};
+
+const getParameters = function ({ part, type, key, pageToken = '', maxResults = '', q = '', id = '' }) {
+  const URLparams = new URLSearchParams({});
+
+  const params = arguments[0];
+  Object.keys(params).forEach((key) => {
+    if (params[key]) URLparams.set(key, params[key]);
+  });
+
+  return URLparams;
 };
