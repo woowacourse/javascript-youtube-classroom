@@ -1,5 +1,5 @@
 import { MY_KEY } from '../key.js';
-import { MAX_RESULT, ERROR_MESSAGES } from '../constants/constants.js';
+import { VALUES, ERROR_MESSAGES } from '../constants/constants.js';
 
 export default class YoutubeAPIManager {
   constructor() {
@@ -19,7 +19,7 @@ export default class YoutubeAPIManager {
       type: 'video',
       q: this.searchTerm,
       key: MY_KEY,
-      maxResults: MAX_RESULT,
+      maxResults: VALUES.MAXIMUM_SEARCH_VIDEO_COUNT,
     });
 
     if (this.pageToken) {
