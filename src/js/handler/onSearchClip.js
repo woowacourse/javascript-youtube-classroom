@@ -6,7 +6,6 @@ import {
   LOCAL_STORAGE_KEY,
   BASE_URL,
 } from '../utils/constant.js';
-import { API_KEY } from '../utils/env.js';
 import { request } from '../utils/fetch.js';
 import { showElement, hideElement } from '../utils/setAttribute.js';
 import storage from '../utils/localStorage.js';
@@ -83,7 +82,6 @@ const searchRequest = async (keyword) => {
     part: 'snippet',
     maxResults: YOUTUBE.NUMBER_TO_LOAD,
     q: keyword,
-    key: API_KEY,
   });
   const response = await request(BASE_URL + queryString);
 
