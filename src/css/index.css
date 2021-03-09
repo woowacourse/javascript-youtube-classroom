@@ -1,11 +1,16 @@
 @import './shared/index.css';
 @import './ui/index.css';
 
+* {
+  box-sizing: border-box;
+}
+
 html,
 body {
   margin: 0;
   height: 100%;
   font-size: 16px;
+  /* overflow-y: hidden; */
 }
 
 #app {

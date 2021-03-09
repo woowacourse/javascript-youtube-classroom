@@ -7,8 +7,8 @@
 }
 
 #searched-video-wrapper {
-  overflow-y: scroll;
   height: 60vh;
+  overflow-y: auto;
 }
 
 .clip {

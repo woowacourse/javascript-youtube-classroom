@@ -154,8 +154,10 @@ export default class Video {
     const iframe = document.createElement('iframe');
     iframe.width = '100%';
     iframe.height = '118px';
-    iframe.srcdoc = this.createIframeSrcdocTemplate();
-    iframe.src = `${this.videoEmbedURL}`;
+    // iframe.srcdoc = this.createIframeSrcdocTemplate();
+    // iframe.src = `${this.videoEmbedURL}`;
+    iframe.dataset.srcdoc = this.createIframeSrcdocTemplate();
+    iframe.dataset.src = `${this.videoEmbedURL}`;
     iframe.frameBorder = '0';
     iframe.allow =
       'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture';
@@ -163,8 +165,6 @@ export default class Video {
     iframe.onload = (e) => {
       e.target.classList.add('loaded');
     };
-    // TODO: intersection observer 이용해서 수정하기
-    iframe.loading = 'lazy';
 
     previewContainer.appendChild(iframe);
 

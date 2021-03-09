@@ -15,6 +15,35 @@ export default class VideoList extends Component {
     this.filter = 'watchLater';
   }
 
+  lazyLoad(targets) {
+    const callback = (entries, observer) => {
+      if (entries.length === 0) {
+        observer.disconnect();
+      }
+
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          const video = $('iframe', entry.target);
+          const src = video.getAttribute('data-src');
+          const srcdoc = video.getAttribute('data-srcdoc');
+
+          video.setAttribute('src', src);
+          video.setAttribute('srcdoc', srcdoc);
+
+          observer.unobserve(entry.target);
+        }
+      });
+    };
+
+    const options = {
+      threshold: 0.5,
+    };
+
+    const io = new IntersectionObserver(callback, options);
+
+    targets.forEach((target) => io.observe(target));
+  }
+
   initRender() {
     if (Object.keys(this.savedVideos).length > 0) {
       const fragment = document.createDocumentFragment();
@@ -118,5 +147,7 @@ export default class VideoList extends Component {
         this.showSnackBar(error.message);
       }
     });
+
+    this.lazyLoad($$('.clip'));
   }
 }

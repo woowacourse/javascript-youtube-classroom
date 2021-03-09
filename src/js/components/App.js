@@ -1,7 +1,12 @@
 import YoutubeAPIManager from '../model/YoutubeAPIManager.js';
 import VideoSearchModal from './videoSearchModal/VideoSearchModal.js';
 import VideoList from './videoList/VideoList.js';
-import { $, localStorageSetItem, localStorageGetItem } from '../utils/utils.js';
+import {
+  $,
+  $$,
+  localStorageSetItem,
+  localStorageGetItem,
+} from '../utils/utils.js';
 import { LOCALSTORAGE_KEYS } from '../constants/constants.js';
 
 export const youtubeAPIManager = new YoutubeAPIManager();
@@ -55,7 +60,7 @@ export default class App {
         </nav>
       </header>
       <main class="mt-10">
-        <section class="video-wrapper">
+        <section id="video-list-wrapper" class="video-wrapper">
         </section>
       </main>
     </div>
