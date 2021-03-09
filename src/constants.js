@@ -15,10 +15,13 @@ export const SELECTOR_ID = Object.freeze({
 });
 
 export const SELECTOR_CLASS = Object.freeze({
-  CLIP: 'clip',
-  SKELETON: 'skeleton',
-  CLIP_SAVE_BUTTON: 'clip__save-button',
-  SEARCH_QUERIES_CHIP: 'search-queries__chip',
+  SKELETON: 'js-skeleton',
+  SEARCHED_CLIP: 'js-searched-clip',
+  SEARCHED_CLIP_SAVE_BUTTON: 'js-searched-clip__save-button',
+  SEARCH_QUERIES_CHIP: 'js-search-queries__chip',
+
+  CLIP: 'js-clip',
+  CLIP_CHECK_BUTTON: 'js-clip__check-button',
 });
 
 export const STYLE_CLASS = Object.freeze({

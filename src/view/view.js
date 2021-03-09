@@ -3,6 +3,7 @@ import {
   $searchResultVideoWrapper,
   $searchQueries,
   $videoWrapper,
+  $emptyVideoImage,
 } from '../elements.js';
 import { STYLE_CLASS, SELECTOR_ID, SELECTOR_CLASS } from '../constants.js';
 import {
@@ -49,6 +50,9 @@ const view = {
   showSearchResultIntersector() {
     viewUtil.showElementBySelector(`#${SELECTOR_ID.SERACH_RESULT_INTERSECTOR}`);
   },
+  showEmptyVideoImage() {
+    viewUtil.showElement($emptyVideoImage);
+  },
   showMessage(message) {
     alert(message);
   },
@@ -57,6 +61,9 @@ const view = {
   },
   hideVideoSaveButton(target) {
     viewUtil.hideElement(target);
+  },
+  hideEmptyVideoImage() {
+    viewUtil.hideElement($emptyVideoImage);
   },
 };
 

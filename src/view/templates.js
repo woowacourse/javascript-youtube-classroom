@@ -1,4 +1,4 @@
-import { YOUTUBE } from '../constants.js';
+import { YOUTUBE, SELECTOR_CLASS } from '../constants.js';
 
 export function getVideoListTemplate(videos) {
   return videos.map(getSearchedVideoTemplate).join('');
@@ -14,13 +14,13 @@ export function getSearchQueriesTemplate(queries) {
 
 export function getSearchQueryTemplate(query) {
   return `
-    <a class="search-queries__chip">${query}</a>
+    <a class="${SELECTOR_CLASS.SEARCH_QUERIES_CHIP} search-queries__chip mr-2">${query}</a>
   `;
 }
 
 function getSelectedVideoTemplate(videoItem) {
   return `
-  <article class="clip">
+  <article class="${SELECTOR_CLASS.CLIP} clip">
     <div class="clip__preview">
       <iframe
         width="100%"
@@ -45,7 +45,7 @@ function getSelectedVideoTemplate(videoItem) {
           <p>${videoItem.publishedAt}</p>
         </div>
         <div>
-          <span class="opacity-hover">✅</span>
+          <span class="${SELECTOR_CLASS.CLIP_CHECK_BUTTON} opacity-hover">✅</span>
           <span class="opacity-hover">👍</span>
           <span class="opacity-hover">💬</span>
           <span class="opacity-hover">🗑️</span>
@@ -58,7 +58,7 @@ function getSelectedVideoTemplate(videoItem) {
 
 function getSearchedVideoTemplate(videoItem) {
   return `
-  <article class="clip">
+  <article class="${SELECTOR_CLASS.SEARCHED_CLIP} clip">
     <div class="clip__preview">
       <iframe
         width="100%"
@@ -83,7 +83,7 @@ function getSearchedVideoTemplate(videoItem) {
           <p>${videoItem.publishedAt}</p>
         </div>
         <div class="d-flex justify-end ${videoItem.isSaved ? 'removed' : ''}">
-          <button class="btn clip__save-button"
+          <button class="btn ${SELECTOR_CLASS.SEARCHED_CLIP_SAVE_BUTTON}"
             data-video-id="${videoItem.videoId}"
             data-title="${videoItem.title}"
             data-channel-title="${videoItem.channelTitle}"
@@ -98,7 +98,7 @@ function getSearchedVideoTemplate(videoItem) {
 
 export function getSkeletonListTemplate() {
   return `
-    <div class="skeleton">
+    <div class="${SELECTOR_CLASS.SKELETON} skeleton">
       <div class="image"></div>
       <p class="line"></p>
       <p class="line"></p>
