@@ -27,6 +27,7 @@ context('유튜브 강의실 테스트', () => {
       cy.get(`.${SELECTOR_CLASS.CLIP}`).should('not.exist');
     });
 
+    // TODO : 볼 영상 보기 기능 구현시 테스트 바꿀 것
     it('✅ 버튼을 누르면 본 영상으로 체크된다.', () => {
       click(`#${SELECTOR_ID.SEARCH_BUTTON}`);
       type(`#${SELECTOR_ID.SEARCH_FORM_INPUT}`, '우아한');

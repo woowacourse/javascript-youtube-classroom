@@ -25,23 +25,33 @@ const view = {
     viewUtil.hideElementBySelector(`#${SELECTOR_ID.NOT_FOUND_CONTENT}`);
     view.renderSkeletonItems();
   },
-  renderSelectedVideoItems(videos) {
-    $videoWrapper.innerHTML = getSelectedVideoListTemplate(videos);
-  },
   renderSkeletonItems() {
-    $searchResultVideoWrapper.innerHTML = getSkeletonListTemplate();
+    viewUtil.renderByElement(
+      $searchResultVideoWrapper,
+      getSkeletonListTemplate()
+    );
+  },
+  renderSelectedVideoItems(videos) {
+    viewUtil.renderByElement(
+      $videoWrapper,
+      getSelectedVideoListTemplate(videos)
+    );
   },
   renderSearchQueries(queries) {
-    $searchQueries.innerHTML = getSearchQueriesTemplate(queries);
+    viewUtil.renderByElement($searchQueries, getSearchQueriesTemplate(queries));
   },
   renderSearchedVideos(processedVideos) {
-    view.insertVideoItems(processedVideos);
+    //TODO : getVideoListTemplate -> searchedVideoListTemplate
+    viewUtil.renderByElement(
+      $searchResultVideoWrapper,
+      getVideoListTemplate(processedVideos)
+    );
     viewUtil.showElementBySelector(`#${SELECTOR_ID.SERACH_RESULT_INTERSECTOR}`);
   },
-  insertVideoItems(videos) {
-    $searchResultVideoWrapper.insertAdjacentHTML(
-      'beforeend',
-      getVideoListTemplate(videos)
+  insertSearchedVideos(processedVideos) {
+    viewUtil.insertByElement(
+      $searchResultVideoWrapper,
+      getVideoListTemplate(processedVideos)
     );
   },
   showNotFountContent() {
