@@ -33,8 +33,17 @@ a {
   overflow: hidden;
 }
 
-button:hover {
-  background-color: rgb(179, 234, 242);
+.menu-btn:hover {
+  background-color: #b3eaf2;
+}
+
+input:checked + .menu-btn {
+  background-color: #b3eaf2;
+}
+
+label.menu-btn {
+  background-color: rgb(243, 244, 246);
+  line-height: 38px;
 }
 
 .video-search-overlay {

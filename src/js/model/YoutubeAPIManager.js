@@ -14,11 +14,13 @@ export default class YoutubeAPIManager {
 
   createRequestURL() {
     const requestURL = `https://www.googleapis.com/youtube/v3/search?`;
-    const searchParams = new URLSearchParams('part=snippet&type=video');
-
-    searchParams.set('q', this.searchTerm);
-    searchParams.set('key', MY_KEY);
-    searchParams.set('maxResults', MAX_RESULT);
+    const searchParams = new URLSearchParams({
+      part: 'snippet',
+      type: 'video',
+      q: this.searchTerm,
+      key: MY_KEY,
+      maxResults: MAX_RESULT,
+    });
 
     if (this.pageToken) {
       searchParams.set('pageToken', this.pageToken);

@@ -51,12 +51,12 @@ export default class App {
     <div class="w-100">
       <header class="my-4">
         <h2 class="text-center font-bold">👩🏻‍💻 나만의 유튜브 강의실 👨🏻‍💻</h2>
-        <nav class="d-flex justify-center">
-          <button id="watch-later-button" class="btn mx-1">👁️ 볼 영상</button>
-          <button id="watched-button" class="btn mx-1">✅ 본 영상</button>
-          <button id="search-button" class="btn mx-1">
-            🔍 동영상 검색
-          </button>
+        <nav id="menu-buttons" class="d-flex justify-center">
+          <input type="radio" name="menu" id="watch-later-button" class="d-none" value="👁️ 볼 영상" checked/>
+          <label for="watch-later-button" class="btn menu-btn mx-1 text-base">👁️ 볼 영상</label>
+          <input type="radio" name="menu" id="watched-button" class="d-none" value="✅ 본 영상"/>
+          <label for="watched-button" class="btn menu-btn mx-1 text-base">✅ 본 영상</label>
+          <button id="search-button" class="btn menu-btn mx-1 text-base" type="button">🔍 동영상 검색</button>
         </nav>
       </header>
       <main class="mt-10">
