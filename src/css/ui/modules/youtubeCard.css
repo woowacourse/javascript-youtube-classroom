@@ -7,9 +7,10 @@
 }
 
 .clip {
-  height: 219px;
+  height: 254px;
   cursor: pointer;
   text-decoration: none;
+  position: relative;
 }
 
 .clip .preview-container {
@@ -53,6 +54,12 @@
   color: #606060;
   display: block;
   width: 100%;
+}
+
+.clip .clip-save {
+  position: absolute;
+  bottom: 18px;
+  right: 2px;
 }
 
 .clip .content-container .meta p {
