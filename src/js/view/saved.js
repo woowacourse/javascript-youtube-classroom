@@ -22,6 +22,10 @@ class SavedView {
     const $savedVideoWrapper = $('#saved-video-wrapper');
     $savedVideoWrapper.innerHTML = ``;
   }
+
+  hideSelectedVideo(target) {
+    $('#saved-video-wrapper').removeChild(target.closest('.clip'));
+  }
 }
 
 export default SavedView;

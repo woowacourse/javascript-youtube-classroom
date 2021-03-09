@@ -19,16 +19,21 @@ class StorageModel {
     this.#keywords = getJSONFromLocalStorage(STORAGE.KEY_KEYWORDS);
   }
 
-  // get savedVideos - 저장된 영상 불러오는 메서드
+  updateVideoWatched(target) {
+    this.#myVideo.forEach(info => {
+      if (info.url === target.closest('.video-info-buttons').dataset.url) {
+        info.watched = !info.watched;
+      }
+    });
+    setJSONToLocalStorage(STORAGE.KEY_MY_VIDEO, this.#myVideo);
+  }
+
   get myVideos() {
-    // getJSON ? 변수그냥 사용? 추후 고민하기
+    // TODO: getJSON ? 변수그냥 사용? 추후 고민하기
     return this.#myVideo;
   }
-  //
-  // getFilteredVideos(watched) - 본 / 볼 영상 불러오는 메서드
-  //// watched가 true면 본 영상들만 필터링. 반대는 반대
-  //// return this.#myVideo.filter(info => info.watched === watched)
-  getFilteredVideos = showWatched => {
+
+  filterVideos = showWatched => {
     this.#showWatched = showWatched;
     return this.#myVideo.filter(video => video.watched === showWatched);
   };
@@ -36,15 +41,10 @@ class StorageModel {
   get showWatched() {
     return this.#showWatched;
   }
-  //
+
   // deleteSelectedVideo
-  //
-  // toggleVideoWatched = (info)
-  //// 실제 view에서는 class 이용해서 처리됨
-  //// getITem해서 주어진 info 와 일치하는 것의 watched를 !watched 처리
 
   // keyword와 myVideo 분리하는거는 어떨까?
-
   saveVideo = json => {
     this.#myVideo = getJSONFromLocalStorage(STORAGE.KEY_MY_VIDEO);
     if (this.#myVideo.length === STORAGE.MAX_SAVED_VIDEO_LENGTH) {
