@@ -27,7 +27,7 @@ export default class SearchEventController {
       "click",
       this.onClickSearchButton.bind(this)
     );
-    elements.$searchModal.addEventListener("click", this.onClickDimmed);
+    elements.$searchModal.addEventListener("mousedown", this.onClickDimmed);
     elements.$searchModalClose.addEventListener(
       "click",
       this.onClickSearchModalCloseButton
