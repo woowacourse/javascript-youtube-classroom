@@ -4,6 +4,7 @@ import {
   ADD_SEARCH_TERM,
   UPDATE_REQUEST_PENDING,
   INCREASE_SAVED_VIDEO_COUNT,
+  DECREASE_SAVED_VIDEO_COUNT,
 } from './actionType.js';
 
 export const updateVideosToBeShown = (items) => {
@@ -59,5 +60,11 @@ export const updateRequestPending = (pendingState) => {
 export const increaseSavedVideoCount = () => {
   return {
     type: INCREASE_SAVED_VIDEO_COUNT,
+  };
+};
+
+export const decreaseSavedVidoCount = () => {
+  return {
+    type: DECREASE_SAVED_VIDEO_COUNT,
   };
 };

@@ -3,6 +3,7 @@ import {
   ADD_SEARCH_TERM,
   UPDATE_REQUEST_PENDING,
   INCREASE_SAVED_VIDEO_COUNT,
+  DECREASE_SAVED_VIDEO_COUNT,
 } from './actionType.js';
 
 const searchedVideoReducer = (state, { type, payload }) => {
@@ -46,6 +47,8 @@ const savedVideoCountReducer = (state, { type }) => {
   switch (type) {
     case INCREASE_SAVED_VIDEO_COUNT:
       return state + 1;
+    case DECREASE_SAVED_VIDEO_COUNT:
+      return state - 1;
     default:
       return state;
   }
