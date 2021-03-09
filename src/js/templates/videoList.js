@@ -65,7 +65,7 @@ function createSavedVideoListTemplate(savedVideoInfos = []) {
     .join('');
 }
 
-const emptyVideoListTemplate = `<span id="empty-video-list" class="stretch text-center">저장된 영상이 없습니다. 😥</span>`;
+const emptyVideoListTemplate = `<span id="empty-video-list" class="stretch text-center">영상이 없습니다. 😥</span>`;
 
 /*
  * data-attirbue 로 다 할당
