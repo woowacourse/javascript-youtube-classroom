@@ -16,7 +16,7 @@ function closeModal() {
 }
 
 function renderSavedVideoList(videoInfos) {
-  $videoList.innerHTML = videoInfos.length
+  $videoList.innerHTML = videoInfos.size
     ? createSavedVideoListTemplate(videoInfos)
     : emptyVideoListTemplate;
 }

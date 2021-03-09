@@ -38,6 +38,14 @@ const videoInfos = {
     renderSavedVideoList(this.value);
   },
 
+  remove(targetId) {
+    const newVideoInfos = [...this.value].filter(
+      ({ id }) => id.videoId !== targetId
+    );
+
+    this.set(newVideoInfos);
+  },
+
   set(newVideoInfos) {
     this.value = new Set(newVideoInfos);
 
