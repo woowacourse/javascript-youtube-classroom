@@ -75,6 +75,9 @@ const view = {
   hideEmptyVideoImage() {
     viewUtil.hideElement($emptyVideoImage);
   },
+  confirm(message) {
+    return confirm(message);
+  },
 };
 
 export default view;

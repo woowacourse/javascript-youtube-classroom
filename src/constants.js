@@ -48,6 +48,10 @@ export const LOCAL_STORAGE_KEY = Object.freeze({
   NEXT_PAGE_TOKEN: 'next_page_token',
 });
 
-export const ALERT_MESSAGE = {
+export const ALERT_MESSAGE = Object.freeze({
   SAVE_LIMIT_EXCEEDED: `${SETTINGS.MAX_SAVE_COUNT}개 보다 많은 영상을 저장할 수 없습니다.`,
-};
+});
+
+export const CONFIRM_MESSAGE = Object.freeze({
+  WATCHING_VIDEO_DELETE: '볼 영상을 정말 삭제하시겠습니까?',
+});

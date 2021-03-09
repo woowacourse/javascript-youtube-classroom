@@ -12,7 +12,12 @@ import { getVideosByKeyword } from '../apis/youtube.js';
 import prevSearchResult from '../storage/prevSearchResult.js';
 import searchQuery from '../storage/searchQuery.js';
 import videoToWatch from '../storage/videoToWatch.js';
-import { SETTINGS, SELECTOR_CLASS, ALERT_MESSAGE } from '../constants.js';
+import {
+  SETTINGS,
+  SELECTOR_CLASS,
+  ALERT_MESSAGE,
+  CONFIRM_MESSAGE,
+} from '../constants.js';
 import controllerUtil from './controllerUtil.js';
 
 function onVideoInteract({ target }) {
@@ -22,7 +27,6 @@ function onVideoInteract({ target }) {
   }
   if (target.classList.contains(SELECTOR_CLASS.CLIP_DELETE_BUTTON)) {
     onClipDelete(target);
-    console.log(target);
     return;
   }
 }
@@ -34,6 +38,9 @@ function onClipCheck(button) {
 }
 
 function onClipDelete(button) {
+  if (!view.confirm(CONFIRM_MESSAGE.WATCHING_VIDEO_DELETE)) {
+    return;
+  }
   const videoId = button.dataset.videoId;
   videoToWatch.popVideoByVideoId(videoId);
   controller.loadVideos();
