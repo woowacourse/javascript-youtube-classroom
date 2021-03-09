@@ -12,6 +12,7 @@ import { hideElement, showElement } from './utils/setAttribute.js';
 import { onToggleRenderedClips } from './handler/onToggleRenderedClips.js';
 import { setMockData } from '../mock.js';
 import { onButtonContainer } from './handler/onButtonContainer.js';
+import { onWindowInput } from './handler/onWindowInput.js';
 
 const clearDeletedClip = () => {
   const savedClips = storage.get(LOCAL_STORAGE_KEY.SAVED_CLIPS) ?? [];
@@ -69,6 +70,7 @@ export const YoutubeClassRoom = () => {
     onButtonContainer,
   );
 
+  window.addEventListener('keyup', onWindowInput);
   window.addEventListener('click', onModalClose);
   setMockData();
 };
