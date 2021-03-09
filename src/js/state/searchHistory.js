@@ -2,9 +2,11 @@ import { STORAGE_NAME, VIDEOS } from "../utils/constants.js";
 
 const searchHistory = {
   pageToken: "",
+  recentKeyword: "",
 
   setKeyword(input) {
     const newKeyword = input.trim();
+    this.recentKeyword = newKeyword;
     if (this.getKeywordAll().includes(newKeyword)) {
       this.removeKeyword(newKeyword);
     }
@@ -17,7 +19,7 @@ const searchHistory = {
   },
 
   getKeyword() {
-    return this.getKeywordAll()[0];
+    return this.recentKeyword;
   },
 
   getKeywordAll() {
