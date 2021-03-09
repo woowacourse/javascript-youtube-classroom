@@ -72,14 +72,17 @@ export default class VideoList extends Component {
     this.$snackbar = $(SELECTORS.VIDEO_LIST.SNACKBAR);
   }
 
-  setFilter(filter = TYPES.FILTER.WATCH_LATER) {
-    if (this.filter === filter) return;
-    // TODO: 다른 메서드로 빼기
+  toggleVideoList() {
     $$(SELECTORS.VIDEO_LIST.CLIP_CLASS, this.$target).forEach(($clip) => {
       $clip.classList.toggle('d-none');
     });
+  }
 
-    this.filter = filter;
+  setFilter(newFilter = TYPES.FILTER.WATCH_LATER) {
+    if (this.filter === newFilter) return;
+    this.toggleVideoList();
+
+    this.filter = newFilter;
     this.showByFilter();
   }
 
@@ -153,32 +156,28 @@ export default class VideoList extends Component {
     clip.remove();
   }
 
-  // TODO: 좀 더 Object literal로 바꾸기
-  // ex
-  // const ManageButtonClick = {
-  //   WATCHED_BUTTON: () => {}
-  // }
-
-  // ManageButtonClick(BUTTON_NAME);
+  onClickManagementButton(event) {
+    let msg = '';
+    try {
+      if (event.target.classList.contains(CLASS_NAMES.CLIP.WATCHED_BUTTON)) {
+        this.onClickWatchedButton(event);
+        msg = MESSAGES.ACTION_SUCCESS.WATCHED_STATE_SETTING;
+      } else if (
+        event.target.classList.contains(CLASS_NAMES.CLIP.DELETE_BUTTON)
+      ) {
+        this.onClickDeleteButton(event);
+        msg = MESSAGES.ACTION_SUCCESS.DELETE;
+      }
+    } catch (error) {
+      msg = error.message;
+    }
+    showSnackBar(this.$snackbar, msg);
+  }
 
   bindEvent() {
-    this.$target.addEventListener('click', (event) => {
-      try {
-        if (event.target.classList.contains(CLASS_NAMES.CLIP.WATCHED_BUTTON)) {
-          this.onClickWatchedButton(event);
-          showSnackBar(
-            this.$snackbar,
-            MESSAGES.ACTION_SUCCESS.WATCHED_STATE_SETTING
-          );
-        } else if (
-          event.target.classList.contains(CLASS_NAMES.CLIP.DELETE_BUTTON)
-        ) {
-          this.onClickDeleteButton(event);
-          showSnackBar(this.$snackbar, MESSAGES.ACTION_SUCCESS.DELETE);
-        }
-      } catch (error) {
-        showSnackBar(this.$snackbar, error.message);
-      }
-    });
+    this.$target.addEventListener(
+      'click',
+      this.onClickManagementButton.bind(this)
+    );
   }
 }
