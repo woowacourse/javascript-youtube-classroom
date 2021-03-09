@@ -1,4 +1,4 @@
-import { YOUTUBE, LOCAL_STORAGE_KEY, SEARCH_URL } from '../utils/constant.js';
+import { YOUTUBE, LOCAL_STORAGE_KEY, BASE_URL } from '../utils/constant.js';
 import { request } from '../utils/fetch.js';
 import storage from '../utils/localStorage.js';
 import { $ } from '../utils/querySelector.js';
@@ -29,7 +29,7 @@ export const onModalScroll = async (event) => {
     key: API_KEY,
     pageToken,
   });
-  const response = await request(SEARCH_URL + queryString);
+  const response = await request(BASE_URL + queryString);
   const recentSearchResults =
     storage.get(LOCAL_STORAGE_KEY.RECENT_SEARCH_RESULTS) ?? [];
   const savedClips = storage.get(LOCAL_STORAGE_KEY.SAVED_CLIPS) ?? [];

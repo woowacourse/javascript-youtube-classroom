@@ -30,4 +30,4 @@ export const LOCAL_STORAGE_KEY = {
   RECENT_SEARCH_RESULTS: 'recentSearchResults',
 };
 
-export const SEARCH_URL = `https://www.googleapis.com/youtube/v3/search`;
+export const BASE_URL = 'https://zen-cray-600581.netlify.app/';
