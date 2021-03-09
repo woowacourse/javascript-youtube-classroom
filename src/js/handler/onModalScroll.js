@@ -5,7 +5,6 @@ import { $ } from '../utils/querySelector.js';
 import { hideElement, showElement } from '../utils/setAttribute.js';
 import { renderExtraClips } from '../view/modal.js';
 import { getQueryString } from '../utils/getQueryString.js';
-import { API_KEY } from '../utils/env.js';
 
 export const onModalScroll = async (event) => {
   const { scrollTop, scrollHeight, clientHeight } = event.target;
@@ -26,7 +25,6 @@ export const onModalScroll = async (event) => {
     part: 'snippet',
     maxResults: YOUTUBE.NUMBER_TO_LOAD,
     q: keyword,
-    key: API_KEY,
     pageToken,
   });
   const response = await request(BASE_URL + queryString);
