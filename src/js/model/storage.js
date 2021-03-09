@@ -42,7 +42,12 @@ class StorageModel {
     return this.#showWatched;
   }
 
-  // deleteSelectedVideo
+  deleteSelectedVideo(target) {
+    this.#myVideo = this.#myVideo.filter(
+      info => info.url !== target.closest('.video-info-buttons').dataset.url
+    );
+    setJSONToLocalStorage(STORAGE.KEY_MY_VIDEO, this.#myVideo);
+  }
 
   // keyword와 myVideo 분리하는거는 어떨까?
   saveVideo = json => {

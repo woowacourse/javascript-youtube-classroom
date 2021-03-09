@@ -43,8 +43,17 @@ class SavedController {
     this.handleSavedVideoLoad();
   }
 
-  // 영상 삭제 메서드
   // 볼영상 handler - true
+
+  deleteVideo(target) {
+    if (!confirm('정말로 영상을 삭제하시겠습니까?')) return;
+    this.storage.deleteSelectedVideo(target);
+    this.savedView.hideSelectedVideo(target);
+
+    if (this.storage.savedVideoCount === 0) {
+      this.savedView.renderNotFoundSavedVideo();
+    }
+  }
 
   toggleVideoWatched(target) {
     this.storage.updateVideoWatched(target);
@@ -54,17 +63,17 @@ class SavedController {
     if (this.storage.showWatched !== null) {
       this.savedView.hideSelectedVideo(target);
     }
-
-    // 제거
-    // this.storage.myVideos = this.storage.myVideos.filter(
-    //   infos => infos.url !== target.closest('.video-info-buttons').dataset.url
-    // );
   }
 
   handleToggleVideosWatched() {
     $('#saved-video-wrapper').addEventListener('click', ({ target }) => {
-      if (!target.classList.contains('watched')) return;
-      this.toggleVideoWatched(target);
+      if (target.classList.contains('watched')) {
+        this.toggleVideoWatched(target);
+      }
+
+      if (target.classList.contains('delete')) {
+        this.deleteVideo(target);
+      }
     });
   }
 
