@@ -5,8 +5,28 @@ const waitTime = 2000;
 context('유튜브 강의실 테스트', () => {
   beforeEach(() => {
     cy.visit('http://localhost:5500');
+    cy.window()
+      .then(win => cy.stub(win, 'confirm'))
+      .as('confirmStub');
   });
   describe('볼 영상', () => {
+    it('🗑️ 버튼으로 저장된 리스트에서 삭제할 수 있다.', () => {
+      click(`#${SELECTOR_ID.SEARCH_BUTTON}`);
+      type(`#${SELECTOR_ID.SEARCH_FORM_INPUT}`, '우아한');
+      click(`#${SELECTOR_ID.SEARCH_FORM_SUBMIT}`);
+      cy.wait(waitTime);
+      cy.get(`.${SELECTOR_CLASS.SEARCHED_CLIP_SAVE_BUTTON}`).then(elements => {
+        click(elements[0]);
+      });
+      click(`#${SELECTOR_ID.MODAL_CLOSE_BUTTON}`);
+      click(`.${SELECTOR_CLASS.CLIP_DELETE_BUTTON}`);
+      cy.on('window:confirm', () => true);
+      cy.on('window:confirm', str => {
+        expect(str).to.equal(ALERT_MESSAGE.CLIP_DELETE_CONFIRM);
+      });
+      cy.get(`.${SELECTOR_CLASS.CLIP}`).should('not.exist');
+    });
+
     it('✅ 버튼을 누르면 본 영상으로 체크된다.', () => {
       click(`#${SELECTOR_ID.SEARCH_BUTTON}`);
       type(`#${SELECTOR_ID.SEARCH_FORM_INPUT}`, '우아한');

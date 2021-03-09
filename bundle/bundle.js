@@ -12244,7 +12244,8 @@ var SELECTOR_CLASS = Object.freeze({
   SEARCHED_CLIP_SAVE_BUTTON: 'js-searched-clip__save-button',
   SEARCH_QUERIES_CHIP: 'js-search-queries__chip',
   CLIP: 'js-clip',
-  CLIP_CHECK_BUTTON: 'js-clip__check-button'
+  CLIP_CHECK_BUTTON: 'js-clip__check-button',
+  CLIP_DELETE_BUTTON: 'js-clip__delete-button'
 });
 var STYLE_CLASS = Object.freeze({
   OPEN: 'open',
