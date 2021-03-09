@@ -252,22 +252,22 @@ export default class Video {
 
     const watchedButton = createElement({
       tag: 'button',
-      classes: ['watched-button'],
+      classes: ['watched-button', 'opacity-hover'],
       textContent: '✅',
     });
     const likeButton = createElement({
       tag: 'button',
-      classes: ['like-button'],
+      classes: ['like-button', 'opacity-hover'],
       textContent: '👍',
     });
     const commentButton = createElement({
       tag: 'button',
-      classes: ['comment-button'],
+      classes: ['comment-button', 'opacity-hover'],
       textContent: '💬',
     });
     const deleteButton = createElement({
       tag: 'button',
-      classes: ['delete-button'],
+      classes: ['delete-button', 'opacity-hover'],
       textContent: '🗑️',
     });
 

@@ -10,7 +10,6 @@ body {
   margin: 0;
   height: 100%;
   font-size: 16px;
-  /* overflow-y: hidden; */
 }
 
 #app {
@@ -28,6 +27,10 @@ a {
 
 .opacity-hover:hover {
   opacity: 1;
+}
+
+.overflow-hidden {
+  overflow: hidden;
 }
 
 button:hover {
@@ -50,11 +53,6 @@ button:hover {
   outline: 0;
   background: none;
   cursor: pointer;
-  opacity: 50%;
-}
-
-.management-buttons button:hover {
-  opacity: 100%;
 }
 
 .video-list {
