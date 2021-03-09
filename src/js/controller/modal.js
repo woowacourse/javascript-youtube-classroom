@@ -1,6 +1,13 @@
 import { $ } from '../utils/util.js';
 
 class ModalController {
+  #storage;
+  #savedView;
+
+  constructor(savedView, storage) {
+    this.#savedView = savedView;
+    this.#storage = storage;
+  }
   init = () => {
     this.handleModalOpen();
     this.handleModalClose();
@@ -14,6 +21,7 @@ class ModalController {
   onModalClose = () => {
     const $modal = $('.modal');
     $modal.classList.remove('open');
+    this.#savedView.renderSavedVideos(this.#storage.myVideos);
   };
 
   handleModalOpen = () => {

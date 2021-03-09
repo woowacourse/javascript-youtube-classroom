@@ -20,7 +20,7 @@ const searchController = new SearchController(
   searchView
 );
 const savedController = new SavedController(storageModel, savedView, navView);
-const modalController = new ModalController();
+const modalController = new ModalController(savedView, storageModel);
 
 searchController.init();
 savedController.init();
