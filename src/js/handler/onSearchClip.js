@@ -4,7 +4,7 @@ import {
   YOUTUBE,
   MESSAGE,
   LOCAL_STORAGE_KEY,
-  SEARCH_URL,
+  BASE_URL,
 } from '../utils/constant.js';
 import { API_KEY } from '../utils/env.js';
 import { request } from '../utils/fetch.js';
@@ -85,7 +85,7 @@ const searchRequest = async (keyword) => {
     q: keyword,
     key: API_KEY,
   });
-  const response = await request(SEARCH_URL + queryString);
+  const response = await request(BASE_URL + queryString);
 
   hideElement($skeletonWrapper);
 
