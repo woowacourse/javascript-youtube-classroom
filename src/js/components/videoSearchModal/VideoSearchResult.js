@@ -29,19 +29,6 @@ export default class VideoSearchResult extends Component {
     this.$savedVideoCount = $('#saved-video-count');
   }
 
-  // TODO: scroll 이벤트 감지하는 방법 바꾸기
-  bindEvent() {
-    this.$searchedVideoWrapper.addEventListener('scroll', (e) => {
-      const $videoWrapper = e.target;
-      if (
-        $videoWrapper.scrollHeight - $videoWrapper.scrollTop ===
-        $videoWrapper.clientHeight
-      ) {
-        this.$props.requestVideos();
-      }
-    });
-  }
-
   skeletonTemplate() {
     const fragment = document.createDocumentFragment();
     const skeleton = createElement({ tag: 'div', classes: ['skeleton'] });
@@ -59,37 +46,11 @@ export default class VideoSearchResult extends Component {
     return fragment;
   }
 
-  displayClips() {
-    const $clips = $$('.clip', this.$searchedVideoWrapper);
-
-    $clips.forEach((clip) => {
-      if (!clip.classList.contains('d-none')) return;
-      clip.classList.remove('d-none');
-    });
-  }
-
   removeSkeletons() {
     const $skeltons = $$('.skeleton', this.$searchedVideoWrapper);
 
     $skeltons.forEach((skeleton) => {
       skeleton.remove();
-    });
-  }
-
-  async waitUntilAllVideoLoaded() {
-    return await new Promise((resolve) => {
-      const interval = setInterval(() => {
-        const $iframes = $$('iframe', this.$searchedVideoWrapper);
-        const isIframeAllLoaded = Array.from($iframes).every((preview) =>
-          preview.classList.contains('loaded')
-        );
-
-        if (!isIframeAllLoaded) return;
-        this.displayClips();
-        this.removeSkeletons();
-        clearInterval(interval);
-        resolve();
-      }, 1500);
     });
   }
 
@@ -123,7 +84,54 @@ export default class VideoSearchResult extends Component {
       });
 
       this.$searchedVideoWrapper.appendChild(fragment);
-      this.waitUntilAllVideoLoaded();
+      this.lazyLoad($$('.clip', this.$target));
+      this.removeSkeletons();
     }
+  }
+
+  lazyLoad(targets) {
+    const callback = (entries, observer) => {
+      if (entries.length === 0) {
+        observer.disconnect();
+      }
+
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          const video = $('iframe', entry.target);
+          const src = video.getAttribute('data-src');
+          const srcdoc = video.getAttribute('data-srcdoc');
+
+          video.setAttribute('src', src);
+          video.setAttribute('srcdoc', srcdoc);
+
+          observer.unobserve(entry.target);
+        }
+      });
+    };
+
+    const callback2 = (entries, observer) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          this.$props.requestVideos();
+          observer.unobserve(entry.target);
+        }
+      });
+    };
+
+    const options = {
+      root: this.$target,
+      threshold: 0.5,
+    };
+
+    const options2 = {
+      root: this.$target,
+      threshold: 1,
+    };
+
+    const io = new IntersectionObserver(callback, options);
+    const io2 = new IntersectionObserver(callback2, options2);
+
+    targets.forEach((target) => io.observe(target));
+    io2.observe(targets[targets.length - 1]);
   }
 }

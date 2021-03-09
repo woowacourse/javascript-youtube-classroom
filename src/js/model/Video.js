@@ -135,10 +135,6 @@ export default class Video {
     const fragment = document.createDocumentFragment();
     const clip = createElement({ tag: 'article', classes: ['clip'] });
 
-    if (pageType !== 'management') {
-      clip.classList.add('d-none');
-    }
-
     // 초기 생성 : 볼 영상 기준
     if (pageType === 'management' && this.watched) {
       clip.classList.add('d-none');
@@ -154,8 +150,6 @@ export default class Video {
     const iframe = document.createElement('iframe');
     iframe.width = '100%';
     iframe.height = '118px';
-    // iframe.srcdoc = this.createIframeSrcdocTemplate();
-    // iframe.src = `${this.videoEmbedURL}`;
     iframe.dataset.srcdoc = this.createIframeSrcdocTemplate();
     iframe.dataset.src = `${this.videoEmbedURL}`;
     iframe.frameBorder = '0';
