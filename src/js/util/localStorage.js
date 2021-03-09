@@ -12,6 +12,25 @@ export const getLocalStorageItem = ({ key, defaultValue }) => {
   }
 };
 
+const getCircularReplacer = () => {
+  const seen = new WeakSet();
+  return (key, value) => {
+    if (typeof value === 'object' && value !== null) {
+      if (seen.has(value)) {
+        return;
+      }
+      seen.add(value);
+    }
+    return value;
+  };
+};
+
 export const setLocalStorageItem = ({ key, item }) => {
-  localStorage.setItem(key, JSON.stringify(item));
+  const data = JSON.stringify(item, getCircularReplacer());
+
+  if (data === undefined) {
+    throw new Error("Item type doesn't match with JSON");
+  }
+
+  localStorage.setItem(key, data);
 };
