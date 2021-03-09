@@ -29,7 +29,11 @@ const savedController = new SavedController(
   navView,
   snackBarView
 );
-const modalController = new ModalController(storageModel, savedView);
+const modalController = new ModalController(
+  storageModel,
+  savedView,
+  searchView
+);
 
 searchController.init();
 savedController.init();

@@ -8,11 +8,6 @@ import {
 } from '../templates/search-template.js';
 
 class SearchView {
-  init = () => {
-    this.renderSavedVideoCountSection(0);
-    this.renderRecentKeywordSection([]);
-  };
-
   renderVideoArticle = (info, save) => {
     const $searchVideoWrapper = $(SELECTOR.SEARCH_VIDEO_WRAPPER);
     $searchVideoWrapper.append(
