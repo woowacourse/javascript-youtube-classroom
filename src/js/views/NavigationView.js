@@ -6,6 +6,9 @@ export default class NavigationView extends View {
     super($element);
 
     this.tabButtons = $('.nav-btn');
+  }
+
+  init() {
     this.bindTabEvents();
   }
 
@@ -23,8 +26,8 @@ export default class NavigationView extends View {
     });
   }
 
-  toggleTabColor(prevTab, currentTab) {
-    prevTab.removeClass('bg-cyan-100');
+  toggleTabColor(currentTab) {
+    $('.nav-btn').removeClass('bg-cyan-100');
     currentTab.addClass('bg-cyan-100');
   }
 }

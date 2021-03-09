@@ -1,7 +1,7 @@
-import { VALUE, STORAGE_KEYS } from './constants.js';
+import { VALUE, STORE_KEYS } from './constants.js';
 
-export function setRecentChip(keyword) {
-  const recentKeywords = getStorageData(STORAGE_KEYS.RECENT_KEYWORDS, []);
+export function updateRecentChips(keyword) {
+  const recentKeywords = getStorageData(STORE_KEYS.RECENT_KEYWORDS);
 
   if (recentKeywords.includes(keyword)) {
     recentKeywords.splice(recentKeywords.indexOf(keyword), 1);
@@ -12,19 +12,27 @@ export function setRecentChip(keyword) {
   }
 
   recentKeywords.unshift(keyword);
-  localStorage.setItem(STORAGE_KEYS.RECENT_KEYWORDS, recentKeywords);
+  localStorage.setItem(STORE_KEYS.RECENT_KEYWORDS, recentKeywords);
+
+  return recentKeywords;
 }
 
-export function setSavedVideoId(videoId) {
-  const savedVideoIds = getStorageData(STORAGE_KEYS.SAVED_VIDEO_IDS, []);
+export function updateSavedVideoIds(videoId) {
+  const savedVideoIds = getStorageData(STORE_KEYS.SAVED_VIDEO_IDS);
 
   if (savedVideoIds.includes(videoId)) return;
 
   savedVideoIds.push(videoId);
-  localStorage.setItem(STORAGE_KEYS.SAVED_VIDEO_IDS, savedVideoIds);
+  localStorage.setItem(STORE_KEYS.SAVED_VIDEO_IDS, savedVideoIds);
+
+  return savedVideoIds;
 }
 
-export function getStorageData(str, defaultValue) {
+export function updateWatchedVideoIds(videoId) {
+  const watchedVideoIds = getStorageData(STORE_KEYS.WATCHED_VIDEO_IDS);
+}
+
+export function getStorageData(str, defaultValue = []) {
   try {
     const items = localStorage.getItem(str);
 

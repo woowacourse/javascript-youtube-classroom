@@ -12,11 +12,11 @@ export default class SavedVideosView extends View {
       .map((video) => clipMaker(video, { isModal: false }))
       .join('');
 
-    $('#main-videos').addInnerHTML(savedVideoClips);
+    this.$element.addInnerHTML(savedVideoClips);
   }
 
   addSavedVideoClip(video) {
-    $('#main-videos').addInnerHTML(clipMaker(video, { isModal: false }));
+    this.$element.addInnerHTML(clipMaker(video, { isModal: false }));
   }
 
   showNoVideos() {
@@ -29,5 +29,9 @@ export default class SavedVideosView extends View {
         </div>
       `,
     );
+  }
+
+  hideNoVideos() {
+    $('.empty-videos').removeElement();
   }
 }

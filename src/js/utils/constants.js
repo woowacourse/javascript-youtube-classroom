@@ -13,7 +13,9 @@ export const ALERT_MESSAGES = {
   OVER_SAVED_VIDEO_COUNT: '동영상 저장은 최대 100개까지 가능합니다',
 };
 
-export const STORAGE_KEYS = {
-  RECENT_KEYWORDS: 'recentKeywords',
+export const STORE_KEYS = {
+  SELECTED_TAB: 'selectedTab',
   SAVED_VIDEO_IDS: 'savedVideoIds',
+  RECENT_KEYWORDS: 'recentKeywords',
+  WATCHED_VIDEO_IDS: 'watchedVideoIds',
 };

@@ -56,6 +56,8 @@ export const $ = (function () {
   };
 
   constructor.prototype.removeClass = function (className) {
+    if (!this.elements) return;
+
     this.each((element) => element.classList.remove(className));
   };
 

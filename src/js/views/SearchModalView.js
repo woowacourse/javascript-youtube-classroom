@@ -1,8 +1,7 @@
 import { $ } from '../utils/dom.js';
-import { VALUE, STORAGE_KEYS } from '../utils/constants.js';
+import { VALUE } from '../utils/constants.js';
 import throttle from '../utils/throttle.js';
 import clipMaker from '../utils/clipMaker.js';
-import { getStorageData } from '../utils/localStorage.js';
 import View from './View.js';
 
 export default class SearchModalView extends View {
@@ -13,8 +12,9 @@ export default class SearchModalView extends View {
     this.searchForm = $('#modal-search-form');
     this.modalVideos = $('#modal-videos');
     this.searchKeyword;
+  }
 
-    this.updateChips();
+  init() {
     this.bindModalEvents();
     this.bindScrollEvent();
   }
@@ -46,9 +46,11 @@ export default class SearchModalView extends View {
     );
   }
 
-  bindSaveEvent() {
-    $('.clip-save-btn').setEvent('click', (e) => {
-      this.emit('clickSaveButton', e.target);
+  bindSaveEvent(videos) {
+    videos.forEach((video) => {
+      $(`[data-video-id='${video.id}']`).setEvent('click', (e) => {
+        this.emit('clickSaveButton', e.target);
+      });
     });
   }
 
@@ -57,7 +59,6 @@ export default class SearchModalView extends View {
       const chipText = e.target.innerText;
       $('#modal-search-input').setValue(chipText);
       this.searchKeyword = chipText;
-      this.clearVideoClips();
 
       this.emit('clickChip', chipText);
     });
@@ -65,8 +66,6 @@ export default class SearchModalView extends View {
 
   openModal() {
     this.$element.addClass('open');
-    this.updateSavedCount();
-    this.clearVideoClips();
 
     try {
       const latestKeyword = $('#chip-1').getText();
@@ -85,10 +84,8 @@ export default class SearchModalView extends View {
     target.setAttribute('disabled', true);
   }
 
-  updateSavedCount() {
-    const savedVideoIds = getStorageData(STORAGE_KEYS.SAVED_VIDEO_IDS, []);
-
-    $('#saved-video-count').setText(savedVideoIds.length);
+  updateSavedCount(savedVideos) {
+    $('#saved-video-count').setText(savedVideos.length);
   }
 
   chipTemplate(recentKeywords) {
@@ -99,8 +96,7 @@ export default class SearchModalView extends View {
       .join('');
   }
 
-  updateChips() {
-    const recentKeywords = getStorageData(STORAGE_KEYS.RECENT_KEYWORDS, []);
+  updateChips(recentKeywords) {
     $('#chip-container').setInnerHTML(this.chipTemplate(recentKeywords));
 
     this.bindChipsEvent();
@@ -126,19 +122,18 @@ export default class SearchModalView extends View {
     );
   }
 
-  renderVideoClips(videos) {
+  renderVideoClips(videos, savedVideos) {
     $('.skeleton').removeElement();
 
-    const savedVideoIds = getStorageData(STORAGE_KEYS.SAVED_VIDEO_IDS, []);
     const videoClips = videos
       .map((video) => {
-        const isSaved = savedVideoIds.includes(video.id);
+        const isSaved = savedVideos.includes(video.id);
 
         return clipMaker(video, { isModal: true, isSaved: isSaved });
       })
       .join('');
     this.modalVideos.addInnerHTML(videoClips);
-    this.bindSaveEvent();
+    this.bindSaveEvent(videos);
   }
 
   clearVideoClips() {
