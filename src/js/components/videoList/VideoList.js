@@ -55,13 +55,14 @@ export default class VideoList extends Component {
       });
     }
 
-    const notSavedVideoMessage = createElement({
-      tag: 'h2',
-      classes: ['not-saved-video-message'],
-      textContent: ERROR_MESSAGES.NO_VIDEO_ERROR,
+    const notSavedVideoImage = createElement({
+      tag: 'img',
+      classes: ['not-saved-video-image'],
     });
 
-    fragment.appendChild(notSavedVideoMessage);
+    notSavedVideoImage.src = './src/images/status/no_saved_video.jpg';
+
+    fragment.appendChild(notSavedVideoImage);
     this.$target.appendChild(fragment);
 
     this.showByFilter();
@@ -157,6 +158,7 @@ export default class VideoList extends Component {
   }
 
   onClickManagementButton(event) {
+    if (event.target.localName !== 'button') return;
     let msg = '';
     try {
       if (event.target.classList.contains(CLASS_NAMES.CLIP.WATCHED_BUTTON)) {

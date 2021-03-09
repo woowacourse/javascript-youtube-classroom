@@ -59,7 +59,7 @@ export const SELECTORS = {
     VIDEO_LIST_ID: '#video-list-wrapper',
     CLIP_CLASS: '.clip',
     SNACKBAR: '#snackbar',
-    NO_VIDEO_MESSAGE_CLASS: '.not-saved-video-message',
+    NO_VIDEO_MESSAGE_CLASS: '.not-saved-video-image',
   },
 
   SEARCH_MODAL: {

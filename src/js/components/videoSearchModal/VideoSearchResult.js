@@ -84,7 +84,7 @@ export default class VideoSearchResult extends Component {
   }
 
   displayNotFound() {
-    this.$searchedVideoWrapper.innerHTML = `<img class="w-100" src="./src/images/status/not_found.png" alt="not found"/>`;
+    this.$searchedVideoWrapper.innerHTML = `<img class="not-found-image w-100" src="./src/images/status/not_found.png" alt="not found"/>`;
   }
 
   displayVideos(searchedVideos) {

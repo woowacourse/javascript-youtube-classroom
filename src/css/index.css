@@ -67,3 +67,11 @@ label.menu-btn {
 .checked {
   opacity: 1;
 }
+
+.not-saved-video-image {
+  top: 0;
+  left: 50%;
+  transform: translate(-50%, 0%);
+  position: absolute;
+  object-fit: contain;
+}

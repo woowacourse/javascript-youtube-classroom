@@ -60,7 +60,7 @@ export default class App {
         </nav>
       </header>
       <main class="mt-10">
-        <section id="video-list-wrapper" class="video-wrapper">
+        <section id="video-list-wrapper" class="video-wrapper relative">
         </section>
       </main>
     </div>
