@@ -8,55 +8,81 @@ import {
   createElement,
 } from '../../utils/utils.js';
 import { LOCALSTORAGE_KEYS } from '../../constants/constants.js';
+import { store } from '../../index.js';
 
 export default class VideoList extends Component {
   setup() {
-    this.savedVideos = localStorageGetItem(LOCALSTORAGE_KEYS.VIDEOS);
+    store.subscribe(this.render.bind(this));
     this.filter = 'watchLater';
-  }
-
-  lazyLoad(targets) {
-    const callback = (entries, observer) => {
-      if (entries.length === 0) {
-        observer.disconnect();
-      }
-
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-          const video = $('iframe', entry.target);
-          const src = video.getAttribute('data-src');
-          const srcdoc = video.getAttribute('data-srcdoc');
-
-          video.setAttribute('src', src);
-          video.setAttribute('srcdoc', srcdoc);
-
-          observer.unobserve(entry.target);
-        }
-      });
-    };
 
     const options = {
       threshold: 0.5,
     };
+    this.observer = new IntersectionObserver(this.callback, options);
+  }
 
-    const io = new IntersectionObserver(callback, options);
+  callback(entries, observer) {
+    // if (entries.length === 0) {
+    //   observer.disconnect();
+    // }
 
-    targets.forEach((target) => io.observe(target));
+    entries.forEach((entry) => {
+      if (entry.isIntersecting) {
+        const video = $('iframe', entry.target);
+        const src = video.getAttribute('data-src');
+        const srcdoc = video.getAttribute('data-srcdoc');
+
+        video.setAttribute('src', src);
+        video.setAttribute('srcdoc', srcdoc);
+
+        observer.unobserve(entry.target);
+      }
+    });
+  }
+
+  lazyLoad(targets) {
+    // const callback = (entries, observer) => {
+    //   // if (entries.length === 0) {
+    //   //   observer.disconnect();
+    //   // }
+
+    //   entries.forEach((entry) => {
+    //     if (entry.isIntersecting) {
+    //       const video = $('iframe', entry.target);
+    //       const src = video.getAttribute('data-src');
+    //       const srcdoc = video.getAttribute('data-srcdoc');
+
+    //       video.setAttribute('src', src);
+    //       video.setAttribute('srcdoc', srcdoc);
+
+    //       observer.unobserve(entry.target);
+    //     }
+    //   });
+    // };
+
+    // const options = {
+    //   threshold: 0.5,
+    // };
+
+    // const io = new IntersectionObserver(callback, options);
+
+    targets.forEach((target) => this.observer.observe(target));
   }
 
   initRender() {
-    if (Object.keys(this.savedVideos).length > 0) {
+    const savedVideos = localStorageGetItem(LOCALSTORAGE_KEYS.VIDEOS);
+    if (Object.keys(savedVideos).length > 0) {
       const fragment = document.createDocumentFragment();
-      Object.keys(this.savedVideos).forEach((videoId) => {
+      Object.keys(savedVideos).forEach((videoId) => {
         fragment.appendChild(
           new Video({
             videoId,
-            videoTitle: this.savedVideos[videoId].videoTitle,
-            channelTitle: this.savedVideos[videoId].channelTitle,
-            channelId: this.savedVideos[videoId].channelId,
-            publishedAt: this.savedVideos[videoId].publishedAt,
-            thumbnailURL: this.savedVideos[videoId].thumbnailURL,
-            watched: this.savedVideos[videoId].watched,
+            videoTitle: savedVideos[videoId].videoTitle,
+            channelTitle: savedVideos[videoId].channelTitle,
+            channelId: savedVideos[videoId].channelId,
+            publishedAt: savedVideos[videoId].publishedAt,
+            thumbnailURL: savedVideos[videoId].thumbnailURL,
+            watched: savedVideos[videoId].watched,
           }).createTemplate('management')
         );
       });
@@ -81,49 +107,60 @@ export default class VideoList extends Component {
 
   setFilter(filter) {
     if (this.filter !== filter) {
-      this.render();
+      // TODO: 다른 메서드로 빼기
+      $$('.clip', this.$target).forEach(($clip) => {
+        $clip.classList.toggle('d-none');
+      });
     }
     this.filter = filter ?? 'watchLater';
   }
 
-  render() {
-    // TODO: 다른 메서드로 빼기
-    $$('.clip', this.$target).forEach(($clip) => {
-      $clip.classList.toggle('d-none');
-    });
-    // TODO: 검색창에서 저장 버튼을 눌렀을 때, 상태에 따라 렌더링 해주어야 함. (실시간 영상 추가)
+  render(preStates, states) {
+    if (preStates.savedVideoCount !== states.savedVideoCount) {
+      console.log('비디오가 저장됨');
+      const savedVideos = localStorageGetItem(LOCALSTORAGE_KEYS.VIDEOS);
+      const lastestVideoId = Object.keys(savedVideos)[
+        Object.keys(savedVideos).length - 1
+      ];
+
+      const newVideo = new Video({
+        videoId: lastestVideoId,
+        ...savedVideos[lastestVideoId],
+      }).createTemplate('management');
+      this.$target.appendChild(newVideo);
+
+      this.observer.observe(newVideo);
+    }
   }
 
   onClickWatchedButton(event) {
     const clip = event.target.closest('.clip');
-
-    this.savedVideos[clip.dataset.videoId].watched = !this.savedVideos[
+    const savedVideos = localStorageGetItem(LOCALSTORAGE_KEYS.VIDEOS);
+    savedVideos[clip.dataset.videoId].watched = !savedVideos[
       clip.dataset.videoId
     ].watched;
-    localStorageSetItem(LOCALSTORAGE_KEYS.VIDEOS, this.savedVideos);
+    localStorageSetItem(LOCALSTORAGE_KEYS.VIDEOS, savedVideos);
 
     clip.classList.toggle('d-none');
   }
 
   onClickDeleteButton(event) {
     const clip = event.target.closest('.clip');
-
+    const savedVideos = localStorageGetItem(LOCALSTORAGE_KEYS.VIDEOS);
     if (
       !(
-        confirm('정말로 삭제하시겠습니까?') &&
-        this.savedVideos[clip.dataset.videoId]
+        confirm('정말로 삭제하시겠습니까?') && savedVideos[clip.dataset.videoId]
       )
     ) {
       throw new Error('삭제에 실패했습니다.');
     }
-    delete this.savedVideos[clip.dataset.videoId];
-    localStorageSetItem(LOCALSTORAGE_KEYS.VIDEOS, this.savedVideos);
+    delete savedVideos[clip.dataset.videoId];
+    localStorageSetItem(LOCALSTORAGE_KEYS.VIDEOS, savedVideos);
 
     clip.remove();
   }
 
   showSnackBar(text) {
-    console.log(text);
     this.$snackbar.textContent = text;
     this.$snackbar.classList.toggle('show');
     setTimeout(() => {
@@ -148,6 +185,6 @@ export default class VideoList extends Component {
       }
     });
 
-    this.lazyLoad($$('.clip'));
+    this.lazyLoad($$('.clip', this.$target));
   }
 }

@@ -16,7 +16,7 @@ export const $ = (selector, target = document) => {
 };
 
 export const $$ = (selector, target = document) => {
-  return target.querySelectorAll(selector);
+  return Array.from(target.querySelectorAll(selector));
 };
 
 export const createElement = ({

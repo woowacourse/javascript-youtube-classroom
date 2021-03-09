@@ -132,7 +132,6 @@ export default class Video {
   }
 
   createTemplate(pageType = 'management') {
-    const fragment = document.createDocumentFragment();
     const clip = createElement({ tag: 'article', classes: ['clip'] });
 
     // 초기 생성 : 볼 영상 기준
@@ -214,16 +213,12 @@ export default class Video {
     videoInfo.appendChild(channelURL);
     videoInfo.appendChild(meta);
     contentContainer.appendChild(videoInfo);
-    // 저장 버튼 혹은 [저장, 좋아요, 코멘트, 삭제 ] 버튼 셋
-
     contentContainer.appendChild(buttonContainer);
 
     clip.appendChild(previewContainer);
     clip.appendChild(contentContainer);
 
-    fragment.appendChild(clip);
-
-    return fragment;
+    return clip;
   }
 
   createSaveButtonTemplate() {
