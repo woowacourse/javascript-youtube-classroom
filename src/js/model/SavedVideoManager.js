@@ -34,7 +34,7 @@ export class SavedVideoManager {
   }
 
   saveVideo(videoId) {
-    if (this.savedVideos.length >= MAX_NUM_OF_SAVED_VIDEO) {
+    if (this.getSavedVideoIdList().length >= MAX_NUM_OF_SAVED_VIDEO) {
       return false;
     }
 
