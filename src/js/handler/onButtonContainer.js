@@ -1,13 +1,19 @@
 import storage from '../utils/localStorage.js';
-import { LOCAL_STORAGE_KEY, CONFIRM_MESSAGE } from '../utils/constant.js';
+import { LOCAL_STORAGE_KEY, MESSAGE } from '../utils/constant.js';
 import { hideElement } from '../utils/setAttribute.js';
+import { snackbar } from '../utils/snackbar.js';
 
 const toggleIsWatched = (target) => {
   const targetClip = target.closest('[data-js="saved-page__clip"]');
-  const targetClipIndex = targetClip.dataset.clipIndex;
   const savedClips = storage.get(LOCAL_STORAGE_KEY.SAVED_CLIPS);
+  const targetClipIndex = targetClip.dataset.clipIndex;
   const isWatched = savedClips[targetClipIndex].isWatched;
 
+  const notifyMessage = isWatched
+    ? MESSAGE.NOTIFY.CHECK_WACTHED_CLIP
+    : MESSAGE.NOTIFY.CHECK_UNWACTHED_CLIP;
+
+  snackbar(notifyMessage);
   savedClips[targetClipIndex].isWatched = !isWatched;
   targetClip.setAttribute('data-is-watched', !isWatched);
   hideElement(targetClip);
@@ -17,12 +23,14 @@ const toggleIsWatched = (target) => {
 const deleteClip = (target) => {
   const targetClip = target.closest('[data-js="saved-page__clip"]');
   const savedClips = storage.get(LOCAL_STORAGE_KEY.SAVED_CLIPS);
+  const targetClipIndex = targetClip.dataset.clipIndex;
 
-  if (!confirm(CONFIRM_MESSAGE.DELETE_CLIP)) {
+  if (!confirm(MESSAGE.CONFIRM.DELETE_CLIP)) {
     return;
   }
 
-  savedClips.splice(targetClip.dataset.clipIndex, 1);
+  snackbar(MESSAGE.NOTIFY.DELETE_CLIP);
+  savedClips[targetClipIndex].isDeleted = true;
   targetClip.setAttribute('data-is-deleted', true);
   hideElement(targetClip);
   storage.set(LOCAL_STORAGE_KEY.SAVED_CLIPS, savedClips);

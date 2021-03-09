@@ -1,4 +1,4 @@
-import { CONFIRM_MESSAGE } from '../../src/js/utils/constant';
+import { MESSAGE } from '../../src/js/utils/constant';
 
 describe('나만의 유튜브 강의실 메인 페이지 테스트', () => {
   beforeEach(() => {
@@ -39,7 +39,7 @@ describe('나만의 유튜브 강의실 메인 페이지 테스트', () => {
     cy.get('[data-js="saved-clip-button-container__delete"]')
       .click()
       .then(() => {
-        expect(stub.getCall(0)).to.be.calledWith(CONFIRM_MESSAGE.DELETE_CLIP);
+        expect(stub.getCall(0)).to.be.calledWith(MESSAGE.CONFIRM.DELETE_CLIP);
       });
     cy.get('[data-js="saved-page__clip"]').shoulde('not.be.visible');
   });

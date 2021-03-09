@@ -2,7 +2,7 @@ import { $ } from '../utils/querySelector.js';
 import { getQueryString } from '../utils/getQueryString.js';
 import {
   YOUTUBE,
-  ERROR_MESSAGE,
+  MESSAGE,
   LOCAL_STORAGE_KEY,
   SEARCH_URL,
 } from '../utils/constant.js';
@@ -15,6 +15,7 @@ import {
   renderClips,
   renderRecentKeywords,
 } from '../view/modal.js';
+import { snackbar } from '../utils/snackbar.js';
 
 const getRecentKeywords = (keyword) => {
   const keywords = storage.get(LOCAL_STORAGE_KEY.RECENT_KETWORDS) ?? [];
@@ -73,7 +74,7 @@ const searchRequest = async (keyword) => {
 
   showElement($skeletonWrapper);
   if (isEmpty(keyword)) {
-    alert(ERROR_MESSAGE.EMPTY_KEYWORD);
+    snackbar(MESSAGE.ERROR.EMPTY_KEYWORD);
   }
 
   $('[data-js=youtube-search-modal__video-wrapper]').innerHTML = '';
