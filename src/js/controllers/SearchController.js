@@ -1,5 +1,6 @@
 import SearchService from '../models/SearchService.js';
 import SearchView from '../views/SearchView.js';
+import { isModalOpen, isModalCloseButton, isModalDimmedArea } from './elementValidator.js';
 import {
   MAX_VIDEO_STORAGE_CAPACITY,
   NO_KEYWORD_IS_SUBMITTED,
@@ -22,7 +23,8 @@ export default class SearchController {
 
   attachEvents() {
     this.view.$searchButton.addEventListener('click', this.onShowModal.bind(this));
-    this.view.$modalCloseButton.addEventListener('click', this.onCloseModal.bind(this));
+    this.view.$searchSection.addEventListener('click', this.onCloseModal.bind(this));
+    document.body.addEventListener('keyup', this.onCloseModal.bind(this));
     this.view.$searchKeywordForm.addEventListener('submit', this.onRequestSearchKeyword.bind(this));
     this.view.$recentKeywords.addEventListener('click', this.onRequestSearchRecentKeyword.bind(this));
     this.view.$searchResultWrapper.addEventListener('scroll', this.onRequestNextResult.bind(this));
@@ -42,8 +44,10 @@ export default class SearchController {
     this.showSearchGroup();
   }
 
-  onCloseModal() {
-    this.view.renderInvisibleModal();
+  onCloseModal({ key, target, currentTarget }) {
+    if ((key === 'Escape' && isModalOpen(currentTarget)) || isModalDimmedArea(target) || isModalCloseButton(target)) {
+      this.view.renderInvisibleModal();
+    }
   }
 
   onRequestNextResult() {
