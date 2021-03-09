@@ -30,4 +30,5 @@ export const LOCAL_STORAGE_KEY = {
   RECENT_SEARCH_RESULTS: 'recentSearchResults',
 };
 
-export const BASE_URL = 'https://zen-cray-600581.netlify.app/';
+export const BASE_URL =
+  'https://zen-cray-600581.netlify.app/.netlify/functions/lambda/search';
