@@ -73,7 +73,7 @@ async function onVideoSearch(event) {
 }
 
 function onSelectedVideoSave({ target }) {
-  if (!target.classList.contains(SELECTOR_CLASS.CLIP_SAVE_BUTTON)) {
+  if (!target.classList.contains(SELECTOR_CLASS.SEARCHED_CLIP_SAVE_BUTTON)) {
     return;
   }
 
@@ -82,6 +82,9 @@ function onSelectedVideoSave({ target }) {
     return;
   }
 
+  if (videoToWatch.getVideos().length === 0) {
+    view.hideEmptyVideoImage();
+  }
   view.hideVideoSaveButton(target);
   videoToWatch.pushVideo(controllerUtil.getNewVideo(target.dataset));
 
