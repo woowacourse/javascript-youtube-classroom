@@ -21,8 +21,9 @@ export default class YoutubeSearchManager extends Observer {
           class="w-100 mr-2 pl-2"
           name="keyword"
           placeholder="검색"
+          required
         />
-        <button type="submit" class="btn bg-cyan-500">검색</button>
+        <button class="btn bg-cyan-500">검색</button>
       </form>
     `;
   }
@@ -134,10 +135,6 @@ export default class YoutubeSearchManager extends Observer {
     event.preventDefault();
 
     const keyword = event.target.elements.keyword.value;
-    if (!keyword) {
-      showSnackbar(ALERT_MESSAGE.EMPTY_SEARCH_KEYWORD);
-      return;
-    }
 
     this.renderEmptySearchResult();
     renderSkeletonUI(SELECTORS.CLASS.YOUTUBE_SEARCH_RESULT, 8);
