@@ -12,6 +12,19 @@ context('유튜브 강의실 테스트', () => {
     cy.visit('http://localhost:5500');
   });
   describe('볼 영상', () => {
+    it('클립 안의 버튼을 클릭시 동작 결과를 `snackbar`를 통해 보여준다.', () => {
+      click(`#${SELECTOR_ID.SEARCH_BUTTON}`);
+      type(`#${SELECTOR_ID.SEARCH_FORM_INPUT}`, '우아한');
+      click(`#${SELECTOR_ID.SEARCH_FORM_SUBMIT}`);
+      cy.wait(waitTime);
+      cy.get(`.${SELECTOR_CLASS.SEARCHED_CLIP_SAVE_BUTTON}`).then(elements => {
+        click(elements[0]);
+      });
+      click(`#${SELECTOR_ID.MODAL_CLOSE_BUTTON}`);
+      click(`.${SELECTOR_CLASS.CLIP_CHECK_BUTTON}`);
+      cy.get(`.${SELECTOR_CLASS.SNACKBAR}`).should('be.visible');
+    });
+
     it('🗑️ 버튼으로 저장된 리스트에서 삭제할 수 있다.', () => {
       click(`#${SELECTOR_ID.SEARCH_BUTTON}`);
       type(`#${SELECTOR_ID.SEARCH_FORM_INPUT}`, '우아한');

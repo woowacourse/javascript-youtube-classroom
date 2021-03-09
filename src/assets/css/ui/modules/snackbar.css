@@ -1,0 +1,22 @@
+.snackbar-wrapper {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+}
+
+.snackbar {
+  min-width: 250px;
+  padding: 18px;
+  border-radius: 7px;
+  font: normal normal normal 20px/27px;
+}
+
+.snackbar.success {
+  background: #9AF0A5 0% 0% no-repeat padding-box;
+  color: #838383;
+}
+
+.snackbar.fail {
+  background: #FFA2A2 0% 0% no-repeat padding-box;
+  color: #FFFFFF;
+}
