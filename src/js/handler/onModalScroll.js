@@ -10,7 +10,7 @@ import { API_KEY } from '../utils/env.js';
 export const onModalScroll = async (event) => {
   const { scrollTop, scrollHeight, clientHeight } = event.target;
 
-  if (scrollTop + clientHeight < scrollHeight - 5) {
+  if (scrollTop + clientHeight < scrollHeight) {
     return;
   }
 
