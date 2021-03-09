@@ -84,7 +84,7 @@ function getVideoClipInnerTemplate(item) {
         <div class="meta">
           <p>${parseDate(item.publishedAt)}</p>
         </div>
-        <div class="d-flex justify-end">
+        <div class="save-button-container">
           <button 
             data-video-id=${item.videoId}
             data-video-saved=""
