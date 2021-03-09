@@ -1,9 +1,10 @@
 import { CLASS, SELECTOR } from '../constants/constant.js';
 import { $, $$ } from '../utils/util.js';
 class SavedController {
-  constructor(storage, view) {
+  constructor(storage, savedView, navView) {
     this.storage = storage;
-    this.view = view;
+    this.savedView = savedView;
+    this.navView = navView;
   }
 
   init() {
@@ -17,25 +18,26 @@ class SavedController {
     const savedVideos = this.storage.myVideos;
 
     if (savedVideos.length === 0) {
-      this.view.renderNotFoundSavedVideo();
+      this.savedView.renderNotFoundSavedVideo();
       return;
     }
-    this.view.renderSavedVideos(savedVideos);
+    this.savedView.renderSavedVideos(savedVideos);
     this.handleSavedVideoLoad();
   };
 
   // 볼 영상 필터링 메서드, 본 영상 필터링 메서드(파라미터 받아서)
   filterVideos({ watched }) {
+    this.navView.toggleNavButton(watched);
     const filteredVideos = this.storage.myVideos.filter(
       video => video.watched === watched
     );
 
     if (filteredVideos.length === 0) {
-      this.view.renderNotFoundSavedVideo();
+      this.savedView.renderNotFoundSavedVideo();
       return;
     }
 
-    this.view.renderSavedVideos(filteredVideos);
+    this.savedView.renderSavedVideos(filteredVideos);
     this.handleSavedVideoLoad();
   }
 
