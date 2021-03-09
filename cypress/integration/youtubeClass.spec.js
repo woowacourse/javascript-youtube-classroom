@@ -1,13 +1,15 @@
-import { SELECTOR_ID, SELECTOR_CLASS, SETTINGS } from '../../src/constants.js';
+import {
+  SELECTOR_ID,
+  SELECTOR_CLASS,
+  SETTINGS,
+  CONFIRM_MESSAGE,
+} from '../../src/constants.js';
 
 const waitTime = 2000;
 
 context('유튜브 강의실 테스트', () => {
   beforeEach(() => {
     cy.visit('http://localhost:5500');
-    cy.window()
-      .then(win => cy.stub(win, 'confirm'))
-      .as('confirmStub');
   });
   describe('볼 영상', () => {
     it('🗑️ 버튼으로 저장된 리스트에서 삭제할 수 있다.', () => {
@@ -19,11 +21,11 @@ context('유튜브 강의실 테스트', () => {
         click(elements[0]);
       });
       click(`#${SELECTOR_ID.MODAL_CLOSE_BUTTON}`);
-      click(`.${SELECTOR_CLASS.CLIP_DELETE_BUTTON}`);
-      cy.on('window:confirm', () => true);
       cy.on('window:confirm', str => {
-        expect(str).to.equal(ALERT_MESSAGE.CLIP_DELETE_CONFIRM);
+        expect(str).to.equal(CONFIRM_MESSAGE.WATCHING_VIDEO_DELETE);
+        return true;
       });
+      click(`.${SELECTOR_CLASS.CLIP_DELETE_BUTTON}`);
       cy.get(`.${SELECTOR_CLASS.CLIP}`).should('not.exist');
     });
 
