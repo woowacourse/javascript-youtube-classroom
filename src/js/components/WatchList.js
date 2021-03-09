@@ -38,6 +38,7 @@ export default class WatchList extends Observer {
                 <a
                   href="https://www.youtube.com/channel/${channelId}"
                   target="_blank"
+                  rel="noopener noreferrer"
                   class="channel-name mt-1"
                 >
                   ${channelTitle}
