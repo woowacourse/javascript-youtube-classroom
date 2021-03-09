@@ -1,13 +1,15 @@
 .video-wrapper {
   display: grid;
   grid-template-columns: repeat(auto-fill, 236px);
-  grid-row-gap: 0px;
+  grid-row-gap: 2px;
   grid-column-gap: 4px;
   justify-content: center;
+  overflow: scroll;
+  height: 500px;
 }
 
 .clip {
-  height: 219px;
+  height: 236px;
   cursor: pointer;
   text-decoration: none;
 }
@@ -60,4 +62,14 @@
   display: inline-block;
   margin: 0;
   color: #606060;
+}
+
+.video-wrapper img {
+  width: 50%;
+  height: 50%;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -30%);
+  position: absolute;
+  object-fit: contain;
 }

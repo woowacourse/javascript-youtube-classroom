@@ -7,11 +7,23 @@
   position: absolute;
 }
 
+.ab-bottom0 {
+  bottom: 0;
+}
+
+.ab-right15 {
+  right: 15px;
+}
+
 .fixed {
   position: fixed;
 }
 
 /* Layout - Display */
+.d-none {
+  display: none;
+}
+
 .d-flex {
   display: flex;
 }
