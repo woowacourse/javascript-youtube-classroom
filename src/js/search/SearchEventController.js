@@ -11,6 +11,8 @@ import {
   hideElement,
 } from "../utils/dom.js";
 
+import searchHistory from "../state/searchHistory.js";
+
 export default class SearchEventController {
   constructor() {
     this.searchController = new SearchController();
@@ -54,6 +56,7 @@ export default class SearchEventController {
   }
 
   onClickSearchButton() {
+    searchHistory.initKeywords();
     openModal(elements.$searchModal);
     elements.$searchForm.elements["search-keyword"].focus();
 
