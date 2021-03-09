@@ -1,6 +1,7 @@
 import { $ } from "./dom.js";
 
 const elements = {
+  $body: $("body"),
   $searchButton: $("#search-button"),
   $searchModal: $("#search-modal"),
   $searchModalClose: $("#search-modal-close"),
