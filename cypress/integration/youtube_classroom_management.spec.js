@@ -127,4 +127,16 @@ describe('유튜브 강의실 관리 기능', () => {
       .should('be.visible')
       .should('have.text', '설정이 완료되었습니다.');
   });
+
+  it('저장된 영상이 없을때, 비어있다는 것을 사용자에게 알려주는 상태를 보여준다.(영상 삭제 시)', () => {
+    cy.get('.video-wrapper')
+      .children('.clip')
+      .not('.d-none')
+      .each((clip) => {
+        cy.wrap(clip).find('.delete-button').click();
+      });
+    cy.get('.not-saved-video-message')
+      .should('have.text', '저장된 비디오가 없습니다.')
+      .and('be.visible');
+  });
 });
