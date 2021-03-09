@@ -1,16 +1,8 @@
 import Component from '../../core/Component.js';
 import { store } from '../../index.js';
-import {
-  $,
-  isEmptyString,
-  localStorageGetItem,
-  localStorageSetItem,
-} from '../../utils/utils.js';
-import {
-  LOCALSTORAGE_KEYS,
-  SELECTORS,
-  VALUES,
-} from '../../constants/constants.js';
+import { $, isEmptyString } from '../../utils/utils.js';
+import { SELECTORS } from '../../constants/constants.js';
+import { saveHistoryToLocalStorage } from '../../utils/youtubeClassRoomUtils.js';
 
 export default class VideoSearchBar extends Component {
   setup() {
@@ -53,22 +45,6 @@ export default class VideoSearchBar extends Component {
     }
   }
 
-  saveHistoryToLocalStorage(searchTerm) {
-    const history = localStorageGetItem(LOCALSTORAGE_KEYS.SEARCH_HISTORY);
-
-    if (history.includes(searchTerm)) {
-      const indexOfSearchTerm = history.indexOf(searchTerm);
-
-      history.splice(indexOfSearchTerm, 1);
-    }
-
-    history.unshift(searchTerm);
-    localStorageSetItem(
-      LOCALSTORAGE_KEYS.SEARCH_HISTORY,
-      history.slice(0, VALUES.MAXIMUM_SEARCH_HISTORY_COUNT)
-    );
-  }
-
   onRequestVideo(event) {
     event.preventDefault();
     const searchTerm = event.target.elements[
@@ -79,7 +55,7 @@ export default class VideoSearchBar extends Component {
       return;
     }
 
-    this.saveHistoryToLocalStorage(searchTerm);
+    saveHistoryToLocalStorage(searchTerm);
 
     this.$props.requestVideos(searchTerm);
   }

@@ -18,6 +18,7 @@ import {
 } from '../../constants/constants.js';
 import { store } from '../../index.js';
 import { decreaseSavedVideoCount } from '../../redux/action.js';
+import { loadIframe } from '../../utils/youtubeClassRoomUtils.js';
 
 export default class VideoList extends Component {
   setup() {
@@ -28,23 +29,9 @@ export default class VideoList extends Component {
       threshold: INTERSECTION_OBSERVER_OPTIONS.IFRAME_LOAD_THRESHOLD,
     };
     this.iframeLoadObserver = new IntersectionObserver(
-      this.loadIframe,
+      loadIframe.bind(this),
       options
     );
-  }
-
-  loadIframe(entries, observer) {
-    entries.forEach((entry) => {
-      if (entry.isIntersecting) {
-        const video = $('iframe', entry.target);
-        const src = video.getAttribute('data-src');
-        const srcdoc = video.getAttribute('data-srcdoc');
-
-        video.setAttribute('src', src);
-        video.setAttribute('srcdoc', srcdoc);
-        observer.unobserve(entry.target);
-      }
-    });
   }
 
   setLazyloading() {

@@ -1,16 +1,8 @@
 import Component from '../../core/Component.js';
 import { store } from '../../index.js';
-import {
-  $,
-  createElement,
-  localStorageGetItem,
-  localStorageSetItem,
-} from '../../utils/utils.js';
-import {
-  LOCALSTORAGE_KEYS,
-  VALUES,
-  SELECTORS,
-} from '../../constants/constants.js';
+import { $, createElement, localStorageGetItem } from '../../utils/utils.js';
+import { LOCALSTORAGE_KEYS, SELECTORS } from '../../constants/constants.js';
+import { saveHistoryToLocalStorage } from '../../utils/youtubeClassRoomUtils.js';
 
 export default class SearchTermHistory extends Component {
   setup() {
@@ -68,19 +60,10 @@ export default class SearchTermHistory extends Component {
     return fragment;
   }
 
-  // TODO: 중복되는 로직 추출
   onRequestVideo(event) {
     const searchTerm = event.target.textContent;
-    const history = localStorageGetItem(LOCALSTORAGE_KEYS.SEARCH_HISTORY);
-    const indexOfSearchTerm = history.indexOf(searchTerm);
 
-    history.splice(indexOfSearchTerm, 1);
-    history.unshift(searchTerm);
-    localStorageSetItem(
-      LOCALSTORAGE_KEYS.SEARCH_HISTORY,
-      history.slice(0, VALUES.MAXIMUM_SEARCH_HISTORY_COUNT)
-    );
-
+    saveHistoryToLocalStorage(searchTerm);
     this.$props.requestVideos(searchTerm);
   }
 }

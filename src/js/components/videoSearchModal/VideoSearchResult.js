@@ -14,11 +14,12 @@ import {
   INTERSECTION_OBSERVER_OPTIONS,
   VALUES,
 } from '../../constants/constants.js';
+import { loadIframe } from '../../utils/youtubeClassRoomUtils.js';
 export default class VideoSearchResult extends Component {
   setup() {
     store.subscribe(this.render.bind(this));
     this.iframeLoadObserver = new IntersectionObserver(
-      this.loadIframe.bind(this),
+      loadIframe.bind(this),
       this.observerOption({
         root: this.$target,
         threshold: INTERSECTION_OBSERVER_OPTIONS.IFRAME_LOAD_THRESHOLD,
@@ -103,22 +104,6 @@ export default class VideoSearchResult extends Component {
     );
     clips.forEach((clip) => this.iframeLoadObserver.observe(clip));
     this.requestVideoObserver.observe(clips[clips.length - 1]);
-  }
-
-  // TODO: video Result 와 같음
-  loadIframe(entries, observer) {
-    entries.forEach((entry) => {
-      if (entry.isIntersecting) {
-        const video = $('iframe', entry.target);
-        const src = video.getAttribute('data-src');
-        const srcdoc = video.getAttribute('data-srcdoc');
-
-        video.setAttribute('src', src);
-        video.setAttribute('srcdoc', srcdoc);
-
-        observer.unobserve(entry.target);
-      }
-    });
   }
 
   requestVideo(entries, observer) {
