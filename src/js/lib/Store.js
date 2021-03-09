@@ -36,6 +36,6 @@ export default class Store extends Subject {
   }
 
   get() {
-    return this.state;
+    return Object.assign({}, this.state);
   }
 }

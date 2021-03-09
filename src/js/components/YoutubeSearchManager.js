@@ -121,16 +121,16 @@ export default class YoutubeSearchManager extends Observer {
   }
 
   updateRecentKeywordList(keyword) {
-    let { recentKeywordList } = this.store.get();
-    recentKeywordList = recentKeywordList.filter((item) => item !== keyword);
+    const { recentKeywordList } = this.store.get();
+    const newKeywordList = recentKeywordList.filter((item) => item !== keyword);
 
-    if (recentKeywordList.length >= 3) {
-      recentKeywordList.pop();
+    if (newKeywordList.length >= 3) {
+      newKeywordList.pop();
     }
-    recentKeywordList.unshift(keyword);
+    newKeywordList.unshift(keyword);
 
     this.store.update({
-      [LOCAL_STORAGE_KEYS.RECENT_KEYWORD_LIST]: recentKeywordList,
+      [LOCAL_STORAGE_KEYS.RECENT_KEYWORD_LIST]: newKeywordList,
     });
   }
 
