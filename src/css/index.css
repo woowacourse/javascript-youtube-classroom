@@ -33,6 +33,10 @@ a {
   overflow: hidden;
 }
 
+.checked {
+  opacity: 1;
+}
+
 .menu-btn:hover {
   background-color: #b3eaf2;
 }
@@ -62,10 +66,6 @@ label.menu-btn {
 
 .video-list {
   height: none;
-}
-
-.checked {
-  opacity: 1;
 }
 
 .not-saved-video-image {

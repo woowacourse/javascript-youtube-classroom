@@ -36,12 +36,12 @@ export default class VideoList extends Component {
 
   setLazyloading() {
     const clips = $$(SELECTORS.VIDEO_LIST.CLIP_CLASS, this.$target);
+
     clips.forEach((clip) => this.iframeLoadObserver.observe(clip));
   }
 
   initRender() {
     const savedVideos = localStorageGetItem(LOCALSTORAGE_KEYS.VIDEOS);
-
     const fragment = document.createDocumentFragment();
 
     if (Object.keys(savedVideos).length > 0) {
@@ -61,6 +61,7 @@ export default class VideoList extends Component {
     });
 
     notSavedVideoImage.src = './src/images/status/no_saved_video.jpg';
+    notSavedVideoImage.alt = 'no_saved_video';
 
     fragment.appendChild(notSavedVideoImage);
     this.$target.appendChild(fragment);
@@ -80,9 +81,11 @@ export default class VideoList extends Component {
   }
 
   setFilter(newFilter = TYPES.FILTER.WATCH_LATER) {
-    if (this.filter === newFilter) return;
-    this.toggleVideoList();
+    if (this.filter === newFilter) {
+      return;
+    }
 
+    this.toggleVideoList();
     this.filter = newFilter;
     this.showByFilter();
   }
@@ -93,6 +96,7 @@ export default class VideoList extends Component {
     const watchedVideos = Object.keys(savedVideos).filter(
       (videoId) => savedVideos[videoId].watched === isWatched
     );
+
     watchedVideos.length === 0
       ? $(SELECTORS.VIDEO_LIST.NO_VIDEO_MESSAGE_CLASS).classList.remove(
           'd-none'
@@ -131,11 +135,12 @@ export default class VideoList extends Component {
   onClickWatchedButton(event) {
     const clip = event.target.closest(SELECTORS.VIDEO_LIST.CLIP_CLASS);
     const savedVideos = localStorageGetItem(LOCALSTORAGE_KEYS.VIDEOS);
+
     savedVideos[clip.dataset.videoId].watched = !savedVideos[
       clip.dataset.videoId
     ].watched;
-    localStorageSetItem(LOCALSTORAGE_KEYS.VIDEOS, savedVideos);
 
+    localStorageSetItem(LOCALSTORAGE_KEYS.VIDEOS, savedVideos);
     clip.classList.toggle('d-none');
     $(SELECTORS.CLIP.WATCHED_BUTTON, clip).classList.toggle('checked');
     this.showByFilter();
@@ -144,6 +149,7 @@ export default class VideoList extends Component {
   onClickDeleteButton(event) {
     const clip = event.target.closest(SELECTORS.VIDEO_LIST.CLIP_CLASS);
     const savedVideos = localStorageGetItem(LOCALSTORAGE_KEYS.VIDEOS);
+
     if (
       !(confirm(MESSAGES.CONFIRM.DELETE) && savedVideos[clip.dataset.videoId])
     ) {
@@ -158,22 +164,27 @@ export default class VideoList extends Component {
   }
 
   onClickManagementButton(event) {
-    if (event.target.localName !== 'button') return;
-    let msg = '';
+    if (event.target.localName !== 'button') {
+      return;
+    }
+
+    let message = '';
+
     try {
       if (event.target.classList.contains(CLASS_NAMES.CLIP.WATCHED_BUTTON)) {
         this.onClickWatchedButton(event);
-        msg = MESSAGES.ACTION_SUCCESS.WATCHED_STATE_SETTING;
+        message = MESSAGES.ACTION_SUCCESS.WATCHED_STATE_SETTING;
       } else if (
         event.target.classList.contains(CLASS_NAMES.CLIP.DELETE_BUTTON)
       ) {
         this.onClickDeleteButton(event);
-        msg = MESSAGES.ACTION_SUCCESS.DELETE;
+        message = MESSAGES.ACTION_SUCCESS.DELETE;
       }
     } catch (error) {
-      msg = error.message;
+      message = error.message;
     }
-    showSnackBar(this.$snackbar, msg);
+
+    showSnackBar(this.$snackbar, message);
   }
 
   bindEvent() {

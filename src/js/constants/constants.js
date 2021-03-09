@@ -1,20 +1,7 @@
-export const MAX_RESULT = 10;
-
 export const VALUES = {
   MAXIMUM_VIDEO_SAVE_COUNT: 100,
   MAXIMUM_SEARCH_HISTORY_COUNT: 3,
-};
-
-export const ERROR_MESSAGES = {
-  MAXIMUM_VIDEO_SAVE_COUNT_ERROR:
-    '동영상은 100개까지 저장할 수 있습니다. 저장된 동영상을 지워주세요.',
-  EXCEED_API_REQUEST_COUNT: (error) =>
-    `제한된 API 요청 횟수를 초과하여, 동영상을 불러올 수 없습니다. (Error code : ${error})`,
-  API_REQUEST_ERROR: (error) =>
-    `동영상 요청에 실패하여, 동영상을 불러올수 없습니다. (Error code : ${error})`,
-  VIDEO_DELETE_ERROR: '비디오 삭제에 실패했습니다.',
-  NO_VIDEO_ERROR: '저장된 동영상이 없습니다.',
-  EMPTY_SEARCH_TERM: '검색어를 입력해주세요.',
+  MAXIMUM_SEARCH_VIDEO_COUNT: 10,
 };
 
 export const MESSAGES = {
@@ -25,6 +12,17 @@ export const MESSAGES = {
     WATCHED_STATE_SETTING: '설정이 완료되었습니다.',
     DELETE: '정상적으로 삭제되었습니다.',
   },
+};
+
+export const ERROR_MESSAGES = {
+  MAXIMUM_VIDEO_SAVE_COUNT_ERROR:
+    '동영상은 100개까지 저장할 수 있습니다. 저장된 동영상을 지워주세요.',
+  EXCEED_API_REQUEST_COUNT: (error) =>
+    `제한된 API 요청 횟수를 초과하여, 동영상을 불러올 수 없습니다. (Error code : ${error})`,
+  API_REQUEST_ERROR: (error) =>
+    `동영상 요청에 실패하여, 동영상을 불러올수 없습니다. (Error code : ${error})`,
+  VIDEO_DELETE_ERROR: '비디오 삭제에 실패했습니다.',
+  EMPTY_SEARCH_TERM: '검색어를 입력해주세요.',
 };
 
 export const LOCALSTORAGE_KEYS = {

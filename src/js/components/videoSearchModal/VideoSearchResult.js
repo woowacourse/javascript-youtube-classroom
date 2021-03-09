@@ -10,7 +10,6 @@ import {
   LOCALSTORAGE_KEYS,
   TYPES,
   SELECTORS,
-  MAX_RESULT,
   INTERSECTION_OBSERVER_OPTIONS,
   VALUES,
 } from '../../constants/constants.js';
@@ -18,6 +17,7 @@ import { loadIframe } from '../../utils/youtubeClassRoomUtils.js';
 export default class VideoSearchResult extends Component {
   setup() {
     store.subscribe(this.render.bind(this));
+
     this.iframeLoadObserver = new IntersectionObserver(
       loadIframe.bind(this),
       this.observerOption({
@@ -25,6 +25,7 @@ export default class VideoSearchResult extends Component {
         threshold: INTERSECTION_OBSERVER_OPTIONS.IFRAME_LOAD_THRESHOLD,
       })
     );
+
     this.requestVideoObserver = new IntersectionObserver(
       this.requestVideo.bind(this),
       this.observerOption({
@@ -77,6 +78,7 @@ export default class VideoSearchResult extends Component {
 
         return;
       }
+
       this.displayVideos(states.searchedVideos);
       this.setLazyloading();
       this.removeSkeletons();
@@ -102,6 +104,7 @@ export default class VideoSearchResult extends Component {
       SELECTORS.VIDEO_LIST.CLIP_CLASS,
       this.$searchedVideoWrapper
     );
+
     clips.forEach((clip) => this.iframeLoadObserver.observe(clip));
     this.requestVideoObserver.observe(clips[clips.length - 1]);
   }
@@ -133,7 +136,7 @@ export default class VideoSearchResult extends Component {
     skeleton.appendChild(line.cloneNode(true));
     skeleton.appendChild(line.cloneNode(true));
 
-    Array.from({ length: MAX_RESULT }).forEach(() => {
+    Array.from({ length: VALUES.MAXIMUM_SEARCH_VIDEO_COUNT }).forEach(() => {
       fragment.appendChild(skeleton.cloneNode(true));
     });
 

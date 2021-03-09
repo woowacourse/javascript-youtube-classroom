@@ -45,8 +45,10 @@ export default class Video {
   createVideoUploadDate(date) {
     if (Date.parse(date)) {
       const newDate = new Date(date);
+
       return `${newDate.getFullYear()}년 ${newDate.getMonth()}월 ${newDate.getDate()}일`;
     }
+
     return '';
   }
 
@@ -79,6 +81,7 @@ export default class Video {
     }
 
     const newObject = {};
+
     newObject[this.videoId] = this.toJSON();
     Object.assign(savedVideos, newObject);
     localStorageSetItem(LOCALSTORAGE_KEYS.VIDEOS, savedVideos);
