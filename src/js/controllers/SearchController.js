@@ -105,7 +105,7 @@ export default class SearchController {
     this.view.renderSkeleton();
     this.service
       .getSearchResultAsync()
-      .then((searchResult) => this.view.renderSearchResult(searchResult))
+      .then(this.view.renderSearchResult)
       .catch((error) => console.error(error));
   }
 }
