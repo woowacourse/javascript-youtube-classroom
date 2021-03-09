@@ -63,7 +63,7 @@ export const increaseSavedVideoCount = () => {
   };
 };
 
-export const decreaseSavedVidoCount = () => {
+export const decreaseSavedVideoCount = () => {
   return {
     type: DECREASE_SAVED_VIDEO_COUNT,
   };

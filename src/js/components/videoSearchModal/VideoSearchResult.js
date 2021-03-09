@@ -10,6 +10,20 @@ import { LOCALSTORAGE_KEYS } from '../../constants/constants.js';
 export default class VideoSearchResult extends Component {
   setup() {
     store.subscribe(this.render.bind(this));
+    this.iframeLoadObserver = new IntersectionObserver(
+      this.loadIframe.bind(this),
+      this.observerOption({
+        root: this.$target,
+        threshold: 1,
+      })
+    );
+    this.requestVideoObserver = new IntersectionObserver(
+      this.requestVideo.bind(this),
+      this.observerOption({
+        root: this.$target,
+        threshold: 0.5,
+      })
+    );
   }
 
   initRender() {
@@ -27,6 +41,87 @@ export default class VideoSearchResult extends Component {
   selectDOM() {
     this.$searchedVideoWrapper = $('#searched-video-wrapper');
     this.$savedVideoCount = $('#saved-video-count');
+  }
+
+  render(preStates, states) {
+    if (preStates.searchHistory !== states.searchHistory) {
+      this.$searchedVideoWrapper.innerHTML = '';
+    }
+
+    if (preStates.savedVideoCount !== states.savedVideoCount) {
+      this.$savedVideoCount.textContent = states.savedVideoCount;
+    }
+
+    if (
+      preStates.requestPending !== states.requestPending &&
+      states.requestPending
+    ) {
+      this.$searchedVideoWrapper.appendChild(this.skeletonTemplate());
+    }
+
+    if (preStates.searchedVideos !== states.searchedVideos) {
+      if (states.searchedVideos.length === 0) {
+        this.displayNotFound();
+
+        return;
+      }
+      this.displayVideos(states.searchedVideos);
+      this.setLazyloading();
+      this.removeSkeletons();
+    }
+  }
+
+  displayNotFound() {
+    this.$searchedVideoWrapper.innerHTML = `<img class="w-100" src="./src/images/status/not_found.png" alt="not found"/>`;
+  }
+
+  displayVideos(searchedVideos) {
+    const fragment = document.createDocumentFragment();
+
+    searchedVideos.forEach((video) => {
+      fragment.appendChild(video.createTemplate('search'));
+    });
+
+    this.$searchedVideoWrapper.appendChild(fragment);
+  }
+
+  setLazyloading() {
+    const clips = $$('.clip', this.$searchedVideoWrapper);
+    clips.forEach((clip) => this.iframeLoadObserver.observe(clip));
+    this.requestVideoObserver.observe(clips[clips.length - 1]);
+  }
+
+  // TODO: video Result 와 같음
+  loadIframe(entries, observer) {
+    entries.forEach((entry) => {
+      if (entry.isIntersecting) {
+        const video = $('iframe', entry.target);
+        const src = video.getAttribute('data-src');
+        const srcdoc = video.getAttribute('data-srcdoc');
+
+        video.setAttribute('src', src);
+        video.setAttribute('srcdoc', srcdoc);
+
+        observer.unobserve(entry.target);
+      }
+    });
+  }
+
+  requestVideo(entries, observer) {
+    entries.forEach((entry) => {
+      if (entry.isIntersecting) {
+        this.$props.requestVideos();
+        observer.unobserve(entry.target);
+      }
+    });
+  }
+
+  observerOption({ root = document, rootMargin = '0%', threshold = 0 }) {
+    return {
+      root: root,
+      rootMargin: rootMargin,
+      threshold: threshold,
+    };
   }
 
   skeletonTemplate() {
@@ -52,86 +147,5 @@ export default class VideoSearchResult extends Component {
     $skeltons.forEach((skeleton) => {
       skeleton.remove();
     });
-  }
-
-  render(preStates, states) {
-    if (preStates.searchHistory !== states.searchHistory) {
-      this.$searchedVideoWrapper.innerHTML = '';
-    }
-
-    if (preStates.savedVideoCount !== states.savedVideoCount) {
-      this.$savedVideoCount.textContent = states.savedVideoCount;
-    }
-
-    if (
-      preStates.requestPending !== states.requestPending &&
-      states.requestPending
-    ) {
-      this.$searchedVideoWrapper.appendChild(this.skeletonTemplate());
-    }
-
-    if (preStates.searchedVideos !== states.searchedVideos) {
-      if (states.searchedVideos.length === 0) {
-        this.$searchedVideoWrapper.innerHTML = `<img class="w-100" src="./src/images/status/not_found.png" alt="not found"/>`;
-
-        return;
-      }
-
-      const fragment = document.createDocumentFragment();
-
-      states.searchedVideos.forEach((video) => {
-        fragment.appendChild(video.createTemplate('search'));
-      });
-
-      this.$searchedVideoWrapper.appendChild(fragment);
-      this.lazyLoad($$('.clip', this.$target));
-      this.removeSkeletons();
-    }
-  }
-
-  lazyLoad(targets) {
-    const callback = (entries, observer) => {
-      if (entries.length === 0) {
-        observer.disconnect();
-      }
-
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-          const video = $('iframe', entry.target);
-          const src = video.getAttribute('data-src');
-          const srcdoc = video.getAttribute('data-srcdoc');
-
-          video.setAttribute('src', src);
-          video.setAttribute('srcdoc', srcdoc);
-
-          observer.unobserve(entry.target);
-        }
-      });
-    };
-
-    const callback2 = (entries, observer) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-          this.$props.requestVideos();
-          observer.unobserve(entry.target);
-        }
-      });
-    };
-
-    const options = {
-      root: this.$target,
-      threshold: 0.5,
-    };
-
-    const options2 = {
-      root: this.$target,
-      threshold: 1,
-    };
-
-    const io = new IntersectionObserver(callback, options);
-    const io2 = new IntersectionObserver(callback2, options2);
-
-    targets.forEach((target) => io.observe(target));
-    io2.observe(targets[targets.length - 1]);
   }
 }
