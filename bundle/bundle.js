@@ -12270,8 +12270,13 @@ var SELECTOR_CLASS = Object.freeze({
   SEARCHED_CLIP_SAVE_BUTTON: 'js-searched-clip__save-button',
   SEARCH_QUERIES_CHIP: 'js-search-queries__chip',
   CLIP: 'js-clip',
+<<<<<<< HEAD
   CLIP_CHECK_BUTTON: 'js-clip__check-button'
 >>>>>>> 835077e... test: 체크 버튼을 누르면 본 영상으로 체크된다.
+=======
+  CLIP_CHECK_BUTTON: 'js-clip__check-button',
+  CLIP_DELETE_BUTTON: 'js-clip__delete-button'
+>>>>>>> e99387f... test: 쓰레기통 버튼으로 저장된 리스트에서 삭제할 수 있다.
 });
 var STYLE_CLASS = Object.freeze({
   OPEN: 'open',

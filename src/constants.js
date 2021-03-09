@@ -27,6 +27,7 @@ export const SELECTOR_CLASS = Object.freeze({
 
   CLIP: 'js-clip',
   CLIP_CHECK_BUTTON: 'js-clip__check-button',
+  CLIP_DELETE_BUTTON: 'js-clip__delete-button',
 });
 
 export const STYLE_CLASS = Object.freeze({
