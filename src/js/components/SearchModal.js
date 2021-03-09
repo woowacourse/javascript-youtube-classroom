@@ -143,7 +143,7 @@ class SearchModal {
     }
 
     try {
-      const { items, nextPageToken } = await api.searchNextVideo(this.keyword, this.nextPageToken);
+      const { items, nextPageToken } = await api.searchVideo(this.keyword, this.nextPageToken);
 
       const nextVideos = items.map(
         ({ id: { videoId }, snippet: { channelId, channelTitle, publishedAt, title } }) => ({
