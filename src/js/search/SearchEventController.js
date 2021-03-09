@@ -1,6 +1,5 @@
 import SearchController from "./SearchController.js";
 
-import searchHistory from "../state/searchHistory.js";
 import videos from "../state/videos.js";
 
 import elements from "../utils/elements.js";
@@ -40,10 +39,6 @@ export default class SearchEventController {
     elements.$keywordHistory.addEventListener(
       "click",
       this.onClickKeywordHistory.bind(this)
-    );
-    elements.$searchResults.addEventListener(
-      "scroll",
-      this.onScroll.bind(this)
     );
     elements.$searchResults.addEventListener(
       "loadSearchAll",
@@ -95,10 +90,6 @@ export default class SearchEventController {
     if (e.target.classList.contains("icon")) {
       this.searchController.searchVideosByHistory(keyword);
     }
-  }
-
-  onScroll(e) {
-    this.searchController.addVideosByScroll(e.target);
   }
 
   onLoadSearchAll() {

@@ -1,11 +1,11 @@
 import SearchView from "./SearchView.js";
 
-import scrollEventLock from "../state/scrollEventLock.js";
 import searchHistory from "../state/searchHistory.js";
 import videos from "../state/videos.js";
 import loadingSearchResults from "../state/loadingSearchResults.js";
 
 import { API, VIDEOS, YOUTUBE_URL } from "../utils/constants.js";
+import { observeScrollBottom } from "../utils/scrollBottomObserver.js";
 
 import { getSearchQueryString } from "../queries/searchQuery.js";
 
@@ -31,6 +31,7 @@ export default class SearchController {
   }
 
   activateSearchLoading() {
+    console.log("skel");
     this.searchView.resetSearchResults();
     loadingSearchResults.resetLoadCount();
     this.searchView.showSkeletonClip();
@@ -82,18 +83,15 @@ export default class SearchController {
       videos.getRecentVideos(),
       searchHistory.getPageToken()
     );
+
+    if (searchHistory.getPageToken() === "") {
+      observeScrollBottom(this.addVideosByScroll.bind(this));
+    }
     searchHistory.setPageToken(this.nextPageToken);
   }
 
-  async addVideosByScroll($target) {
-    const { clientHeight, scrollTop, scrollHeight } = $target;
-    const isBottom = clientHeight + scrollTop >= scrollHeight - 5;
-
-    if (isBottom && !scrollEventLock.isLocked()) {
-      scrollEventLock.lock();
-      await this.updateSearchResultView(searchHistory.getKeyword());
-      scrollEventLock.unlock();
-    }
+  async addVideosByScroll() {
+    await this.updateSearchResultView(searchHistory.getKeyword());
   }
 
   saveVideo(videoId) {

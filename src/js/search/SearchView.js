@@ -11,7 +11,7 @@ import elements from "../utils/elements.js";
 
 export default class SearchView {
   resetSearchResults() {
-    elements.$searchResults.innerHTML = "";
+    elements.$searchResultsInner.innerHTML = "";
     hideElement(elements.$searchResults);
     hideElement(elements.$notFound);
   }
@@ -31,7 +31,9 @@ export default class SearchView {
       this.resetSearchResults();
     }
 
-    elements.$searchResults.appendChild(this.appendVideoClips(recentVideos));
+    elements.$searchResultsInner.appendChild(
+      this.appendVideoClips(recentVideos)
+    );
   }
 
   appendVideoClips(items) {
