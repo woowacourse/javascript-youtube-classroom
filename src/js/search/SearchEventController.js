@@ -78,15 +78,15 @@ export default class SearchEventController {
   }
 
   onClickKeywordHistory(e) {
-    const keyword = e.target.dataset.keyword.replace("+", " ");
-    if (!keyword) {
+    if (!e.target.dataset.keyword) {
       return;
     }
+
+    const keyword = e.target.dataset.keyword.replace("+", " ");
 
     if (e.target.classList.contains("js-remove-btn")) {
       this.searchController.removeKeywordHistoryChip(keyword);
     }
-
     if (e.target.classList.contains("icon")) {
       this.searchController.searchVideosByHistory(keyword);
     }
