@@ -32,7 +32,7 @@ export const clipTemplate = (video, index, type) => {
       <article class="clip" data-js=${
         isModal ? 'youtube-search-modal__clip' : 'saved-page__clip'
       }
-        data-is-watched=${video.isWatched ? true : false}
+        data-is-watched=${video.isWatched ? false : true}
         data-is-deleted=false
         data-clip-index=${index}
       >
