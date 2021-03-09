@@ -10,13 +10,13 @@ export default class SearchView {
 
   selectDOMs() {
     this.$searchResultWrapper = $('#search-result-wrapper');
-    this.$searchSection = $('#search-section');
-    this.$searchKeywordForm = $('#search-keyword-form');
-    this.$searchButton = $('#search-button');
-    this.$modalCloseButton = $('#modal-close-button');
-    this.$recentKeywords = $('#recent-keyword');
-    this.$savedVideoCount = $('#saved-video-count');
-    this.$snackbar = $('#snackbar');
+    this.$searchSection = $('.js-modal');
+    this.$searchKeywordForm = $('.js-search-keyword-form');
+    this.$searchButton = $('.js-search-button');
+    this.$modalCloseButton = $('.js-modal-close-button');
+    this.$recentKeywords = $('.js-recent-keyword');
+    this.$savedVideoCount = $('.js-saved-video-count');
+    this.$snackbar = $('.js-snackbar');
   }
 
   init() {
