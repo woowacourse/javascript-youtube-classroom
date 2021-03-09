@@ -1,18 +1,18 @@
 import { $, $$ } from '../utils/querySelector.js';
 import { showElement, hideElement } from '../utils/setAttribute.js';
 
-const setSelected = (isWatched) => {
+const setSelected = (isWatchedButton) => {
   const $watchedButton = $('[data-js="navigator__watched-button"]');
   const $unwatchedButton = $('[data-js="navigator__unwatched-button"]');
 
-  if (isWatched) {
-    $unwatchedButton.classList.add('bg-cyan-100');
-    $watchedButton.classList.remove('bg-cyan-100');
+  if (isWatchedButton) {
+    $watchedButton.classList.add('bg-cyan-100');
+    $unwatchedButton.classList.remove('bg-cyan-100');
     return;
   }
 
-  $watchedButton.classList.add('bg-cyan-100');
-  $unwatchedButton.classList.remove('bg-cyan-100');
+  $unwatchedButton.classList.add('bg-cyan-100');
+  $watchedButton.classList.remove('bg-cyan-100');
 };
 
 export const onToggleRenderedClips = ({ target }) => {
@@ -21,11 +21,11 @@ export const onToggleRenderedClips = ({ target }) => {
   }
 
   const savedClips = $$('[data-js="saved-page__clip"]');
-  const isWatched = target.dataset.js === 'navigator__watched-button';
+  const isWatchedButton = target.dataset.js === 'navigator__watched-button';
 
-  setSelected(isWatched);
+  setSelected(isWatchedButton);
   savedClips.forEach((savedClip) => {
-    savedClip.dataset.isWatched === String(isWatched) &&
+    savedClip.dataset.isWatchedButton === String(isWatchedButton) &&
     savedClip.dataset.isDeleted === String(false)
       ? showElement(savedClip)
       : hideElement(savedClip);
