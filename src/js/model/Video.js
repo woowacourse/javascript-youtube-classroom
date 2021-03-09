@@ -136,7 +136,6 @@ export default class Video {
   createTemplate(pageType = TYPES.PAGE.MANAGEMENT) {
     const clip = createElement({ tag: 'article', classes: ['clip'] });
 
-    // 초기 생성 : 볼 영상 기준
     if (pageType === TYPES.PAGE.MANAGEMENT && this.watched) {
       clip.classList.add('d-none');
     }
@@ -245,7 +244,6 @@ export default class Video {
     return buttonContainer;
   }
 
-  // TODO: 현재 state 따라서 opacity 조정.
   createManagementButtonSetTemplate() {
     const buttonContainer = createElement({
       tag: 'span',
@@ -272,6 +270,8 @@ export default class Video {
       classes: [CLASS_NAMES.CLIP.DELETE_BUTTON, 'opacity-hover'],
       textContent: '🗑️',
     });
+
+    this.watched && watchedButton.classList.add('checked');
 
     buttonContainer.appendChild(watchedButton);
     buttonContainer.appendChild(likeButton);

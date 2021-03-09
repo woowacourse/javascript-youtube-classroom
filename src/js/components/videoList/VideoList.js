@@ -150,7 +150,7 @@ export default class VideoList extends Component {
     localStorageSetItem(LOCALSTORAGE_KEYS.VIDEOS, savedVideos);
 
     clip.classList.toggle('d-none');
-
+    $(SELECTORS.CLIP.WATCHED_BUTTON, clip).classList.toggle('checked');
     this.showByFilter();
   }
 

@@ -58,3 +58,7 @@ button:hover {
 .video-list {
   height: none;
 }
+
+.checked {
+  opacity: 1;
+}
