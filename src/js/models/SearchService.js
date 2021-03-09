@@ -26,6 +26,34 @@ export default class SearchService {
     this.saveKeyword();
   }
 
+  async getSearchResultAsync() {
+    const response = await httpRequest(this.getSearchApiURI(), 'GET');
+    const searchResult = this.processJSON(response);
+
+    this.addNewSearchResult(searchResult);
+
+    return searchResult;
+  }
+
+  getSavedVideoCount() {
+    return this.model.getListByKey(KEY_VIDEOS_WATCHING).length + this.model.getListByKey(KEY_VIDEOS_WATCHED);
+  }
+
+  saveVideo(targetId) {
+    const targetVideo = this.totalSearchResult.find((video) => video.videoId === targetId);
+
+    targetVideo.isSaved = true;
+    this.model.insertItemByKey(KEY_VIDEOS_WATCHING, targetVideo);
+  }
+
+  getRecentKeywords() {
+    try {
+      return this.model.getListByKey(KEY_RECENT_KEYWORDS);
+    } catch (e) {
+      return '';
+    }
+  }
+
   saveKeyword() {
     if (this.keyword === '') {
       return;
@@ -40,10 +68,6 @@ export default class SearchService {
       this.model.deleteLastItemByKey(KEY_RECENT_KEYWORDS);
     }
     this.model.insertItemAtFirstByKey(KEY_RECENT_KEYWORDS, this.keyword);
-  }
-
-  addNewSearchResult(newSearchResult) {
-    this.totalSearchResult.push(...newSearchResult);
   }
 
   getSearchApiURI() {
@@ -61,15 +85,6 @@ export default class SearchService {
       .join('&');
 
     return `${API_SEARCH_ENDPOINT}?${queryStringFlattened}`;
-  }
-
-  async getSearchResultAsync() {
-    const response = await httpRequest(this.getSearchApiURI(), 'GET');
-    const searchResult = await this.processJSON(response);
-
-    this.addNewSearchResult(searchResult);
-
-    return searchResult;
   }
 
   processJSON(rawData) {
@@ -95,22 +110,7 @@ export default class SearchService {
     );
   }
 
-  getSavedVideoCount() {
-    return this.model.getListByKey(KEY_VIDEOS_WATCHING).length + this.model.getListByKey(KEY_VIDEOS_WATCHED);
-  }
-
-  getRecentKeywords() {
-    try {
-      return this.model.getListByKey(KEY_RECENT_KEYWORDS);
-    } catch (e) {
-      return '';
-    }
-  }
-
-  saveVideo(targetId) {
-    const targetVideo = this.totalSearchResult.find((video) => video.videoId === targetId);
-
-    targetVideo.isSaved = true;
-    this.model.insertItemByKey(KEY_VIDEOS_WATCHING, targetVideo);
+  addNewSearchResult(newSearchResult) {
+    this.totalSearchResult.push(...newSearchResult);
   }
 }
