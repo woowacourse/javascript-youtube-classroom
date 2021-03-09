@@ -2,15 +2,16 @@
 import { CLASS, SEARCH, SELECTOR } from '../constants/constant.js';
 import { $, $$, isScrollUnfinished } from '../utils/util.js';
 class SearchController {
-  constructor(youtube, storage, view) {
+  constructor(youtube, storage, searchView, savedView) {
     this.youtube = youtube;
     this.storage = storage;
-    this.view = view;
+    this.searchView = searchView;
+    this.savedView = savedView;
   }
 
   init = () => {
     this.storage.init();
-    this.view.init();
+    this.searchView.init();
     this.handleSearch();
     this.handleSearchModalScroll();
     this.handleSaveVideo();
@@ -22,7 +23,7 @@ class SearchController {
 
   getVideosBySearch = async event => {
     event.preventDefault();
-    this.view.resetView();
+    this.searchView.resetView();
     this.youtube.resetNextPageToken();
     this.addVideosBySearch();
   };
@@ -31,17 +32,17 @@ class SearchController {
     const query = this.getSearchInput();
 
     this.storage.saveRecentKeyword(query);
-    this.view.renderRecentKeywordSection(this.storage.recentKeywords);
+    this.searchView.renderRecentKeywordSection(this.storage.recentKeywords);
 
     await this.youtube.getVideoInfosBySearch({ query });
     if (this.youtube.videoInfos.length === 0) {
-      this.view.renderNotFound();
+      this.searchView.renderNotFound();
       return;
     }
 
     this.youtube.videoInfos.forEach(info => {
       const isSaved = this.storage.findVideoByInfo(info);
-      this.view.renderVideoArticle(info, isSaved);
+      this.searchView.renderVideoArticle(info, isSaved);
     });
 
     this.handleVideoLoad();
@@ -52,7 +53,10 @@ class SearchController {
     const videoInfo = JSON.parse(e.target.dataset.info);
     this.storage.saveVideo(videoInfo);
 
-    this.view.renderSavedVideoCountSection(this.storage.savedVideoCount);
+    this.searchView.renderSavedVideoCountSection(this.storage.savedVideoCount);
+
+    if (this.storage.showWatched === true) return;
+    this.savedView.appendSavedVideo(videoInfo);
   };
 
   fetchVideo = event => {

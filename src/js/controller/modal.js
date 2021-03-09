@@ -21,7 +21,6 @@ class ModalController {
   onModalClose = () => {
     const $modal = $('.modal');
     $modal.classList.remove('open');
-    this.#savedView.renderSavedVideos(this.#storage.myVideos);
   };
 
   handleModalOpen = () => {
