@@ -10,6 +10,7 @@ const CLASSNAME = Object.freeze({
   YOUTUBE_SEARCH_FORM_BUTTON: "js-youtube-search-form__button",
   MODAL_VIDEO_WRAPPER: "js-modal-video-wrapper",
   NOT_FOUND_IMAGE: "js-not-found-img",
+  NO_SAVED_VIDEO_IMAGE: "js-no-saved-video-img",
   KEYWORD_HISTORY_SECTION: "js-keyword-history-section",
   VIDEO_ID: "js-video-id",
   VIDEO_TITLE: "js-video-title",
