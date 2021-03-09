@@ -29,7 +29,3 @@ export const resultNotFoundTemplate = `
     <img src="src/images/status/not_found.png" alt="not found"/>
   </p>
 `;
-
-export const getRecentKeywordsTemplate = (recentKeywords) => {
-  return recentKeywords.map((keyword) => `<a class="chip mx-1">${keyword}</a>`).join('');
-};

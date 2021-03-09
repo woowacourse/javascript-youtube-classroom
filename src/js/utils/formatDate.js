@@ -1,5 +1,6 @@
 export const formatDateKR = (string) => {
   const date = new Date(string);
+  const options = { year: 'numeric', month: 'long', day: 'numeric' };
 
-  return new Intl.DateTimeFormat('ko-KR', { year: 'numeric', month: 'long', day: 'numeric' }).format(date);
+  return date.toLocaleDateString('ko-KR', options);
 };

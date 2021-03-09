@@ -1,21 +1,19 @@
-import SearchModel from '../models/searchModel.js';
-import SearchView from '../views/searchView.js';
-import VideoLocalStorage from '../models/localStorage.js';
+import SearchService from '../models/SearchService.js';
+import SearchView from '../views/SearchView.js';
 import {
-  VIDEOS_TO_WATCH,
   MAX_VIDEO_STORAGE_CAPACITY,
-  RECENT_KEYWORDS,
   NO_KEYWORD_IS_SUBMITTED,
   STORAGE_CAPACITY_IS_FULL,
   VIDEO_IS_SAVED_SUCCESSFULLY,
+  VIDEO_IS_ALREADY_SAVED,
 } from '../constants.js';
-import { isEndOfPage } from '../utils/DOM.js';
+import { isEndOfScroll } from '../utils/DOM.js';
 
 export default class SearchController {
   constructor() {
-    this.model = new SearchModel();
+    this.service = new SearchService();
     this.view = new SearchView();
-    this.storage = new VideoLocalStorage();
+    this.recentKeywords;
   }
 
   init() {
@@ -32,23 +30,24 @@ export default class SearchController {
   }
 
   onShowModal() {
-    this.view.$searchSection.classList.add('open');
-    this.view.renderStoredVideoCount(this.storage.getStoredVideoCount());
-    this.showRecentKeywords();
-    this.model.setKeyword(this.storage.getMostRecentKeyword());
+    const videoCount = this.service.getSavedVideoCount();
+    const recentKeywords = this.service.getRecentKeywords();
+    const mostRecentKeyword = recentKeywords[0] ?? '';
 
-    if (this.model.getKeyword() === '') {
+    this.view.renderVisibleModal(videoCount, recentKeywords);
+    if (mostRecentKeyword === '') {
       return;
     }
-    this.showFirstSearchGroup();
+    this.service.init(mostRecentKeyword);
+    this.showSearchGroup();
   }
 
   onCloseModal() {
-    this.view.renderClosedModal();
+    this.view.renderInvisibleModal();
   }
 
   onRequestNextResult() {
-    if (!isEndOfPage(this.view.$searchResultWrapper)) {
+    if (!isEndOfScroll(this.view.$searchResultWrapper)) {
       return;
     }
     this.showSearchGroup();
@@ -60,101 +59,49 @@ export default class SearchController {
     const keyword = e.target.elements['search-keyword-input'].value;
 
     if (keyword === '') {
-      this.view.renderSnackbar(NO_KEYWORD_IS_SUBMITTED);
+      this.view.renderNotification(NO_KEYWORD_IS_SUBMITTED);
       return;
     }
-    this.model.setKeyword(keyword);
-    this.showFirstSearchGroup();
-    this.storage.addRecentKeyword(keyword);
-    this.showRecentKeywords();
+    this.service.init(keyword);
+    this.view.init();
+    this.view.renderRecentKeywords(this.service.getRecentKeywords());
+    this.showSearchGroup();
   }
 
   onRequestSearchRecentKeyword({ target }) {
     const keyword = target.innerText;
 
-    this.model.setKeyword(keyword);
-    this.showFirstSearchGroup();
+    this.service.init(keyword);
+    this.view.init();
+    this.showSearchGroup();
   }
 
   onRequestSaveVideo({ target }) {
     if (!target.classList.contains('save-button')) {
       return;
     }
-
-    const storedCount = this.storage.getStoredVideoCount();
-
-    if (storedCount >= MAX_VIDEO_STORAGE_CAPACITY) {
-      this.view.renderSnackbar(STORAGE_CAPACITY_IS_FULL);
+    if (target.classList.contains('saved')) {
+      this.view.renderNotification(VIDEO_IS_ALREADY_SAVED);
       return;
     }
 
-    this.view.setCurrentSaveButton(target);
-    this.saveVideo(target);
-    this.updateViewAfterSavingVideo();
-    this.view.renderSnackbar(VIDEO_IS_SAVED_SUCCESSFULLY);
-  }
+    const savedCount = this.service.getSavedVideoCount();
 
-  saveVideo(target) {
-    const video = this.model.getVideoData(target);
-
-    this.storage.addVideo(VIDEOS_TO_WATCH, video);
-  }
-
-  updateViewAfterSavingVideo() {
-    const updatedCount = this.storage.getStoredVideoCount();
-
-    this.view.renderInvisibleSaveButton();
-    this.view.renderStoredVideoCount(updatedCount);
-  }
-
-  showSkeleton() {
-    this.view.renderSkeleton();
-  }
-
-  showSearchResult() {
-    const searchResult = this.model.getSearchResult();
-
-    this.view.setCurrentGroupElements();
-    this.view.renderSkeletonRemoved();
-
-    if (searchResult.length === 0) {
-      this.view.renderResultNotFound();
+    if (savedCount >= MAX_VIDEO_STORAGE_CAPACITY) {
+      this.view.renderNotification(STORAGE_CAPACITY_IS_FULL);
       return;
     }
-
-    this.showEachVideo(searchResult);
-  }
-
-  showEachVideo(searchResult) {
-    this.view.$currentGroupVideos.forEach(($video, i) => {
-      const result = searchResult[i];
-
-      this.view.setCurrentVideoElements($video);
-      this.view.renderVideo(result);
-      this.model.setVideoData(this.view.$saveButton, result);
-      this.storage.isStoredVideo(result.videoId)
-        ? this.view.renderInvisibleSaveButton()
-        : this.view.renderVisibleSaveButton();
-    });
+    this.service.saveVideo(target.id);
+    this.view.renderInvisibleSaveButton(target);
+    this.view.renderSaveVideoCount(savedCount + 1);
+    this.view.renderNotification(VIDEO_IS_SAVED_SUCCESSFULLY);
   }
 
   showSearchGroup() {
-    this.showSkeleton();
-    this.model
-      .requestSearchResult()
-      .then(() => this.showSearchResult())
+    this.view.renderSkeleton();
+    this.service
+      .getSearchResultAsync()
+      .then((searchResult) => this.view.renderSearchResult(searchResult))
       .catch((error) => console.error(error));
-  }
-
-  showRecentKeywords() {
-    const recentKeywords = this.storage.getList(RECENT_KEYWORDS);
-
-    this.view.renderRecentKeywords(recentKeywords);
-  }
-
-  showFirstSearchGroup() {
-    this.model.initSearchResult();
-    this.view.initSearchResult();
-    this.showSearchGroup();
   }
 }

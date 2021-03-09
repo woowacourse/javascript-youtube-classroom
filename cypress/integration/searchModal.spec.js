@@ -3,28 +3,51 @@ import {
   MAX_RESULT_COUNT,
   MAX_VIDEO_STORAGE_CAPACITY,
   STORAGE_CAPACITY_IS_FULL,
-  VIDEOS_TO_WATCH,
+  KEY_VIDEOS_WATCHING,
   VIDEO_IS_SAVED_SUCCESSFULLY,
+  API_SEARCH_ENDPOINT,
+  PART_TYPE,
+  SEARCH_TYPE_VIDEO,
+  REGION_CODE,
 } from '../../src/js/constants.js';
+import { getListFromLocalStorage } from '../../src/js/utils/localStorage.js';
 
-describe('검색 모달 테스트', () => {
+const interceptYoutubeApiRequest = (keyword, alias) => {
+  cy.intercept({
+    url: `${API_SEARCH_ENDPOINT}?`,
+    query: {
+      part: PART_TYPE,
+      q: keyword,
+      type: SEARCH_TYPE_VIDEO,
+      maxResults: MAX_RESULT_COUNT.toString(),
+      regionCode: REGION_CODE,
+    },
+  }).as(alias);
+};
+
+describe.only('검색 모달 테스트', () => {
   const KEYWORD = '테코톡';
+  const INTERCEPT_ALIAS = 'search';
 
   beforeEach(() => {
     cy.visit('http://localhost:5500/');
   });
 
   it('검색 모달에서 "엔터키"를 누르면, 최초 검색 결과 10개가 화면에 표시된다.', () => {
+    interceptYoutubeApiRequest(KEYWORD, INTERCEPT_ALIAS);
     cy.get('#search-button').click();
     cy.get('#search-keyword-input').type(KEYWORD).type('{enter}');
+    cy.wait(`@${INTERCEPT_ALIAS}`);
 
     cy.get('.search-result-group').children().should('have.length', MAX_RESULT_COUNT);
   });
 
   it('검색 모달에서 "검색 버튼"을 클릭하면, 최초 검색 결과 10개가 화면에 표시된다.', () => {
+    interceptYoutubeApiRequest(KEYWORD, INTERCEPT_ALIAS);
     cy.get('#search-button').click();
     cy.get('#search-keyword-input').type(KEYWORD);
     cy.get('#search-keyword-button').click();
+    cy.wait(`@${INTERCEPT_ALIAS}`);
 
     cy.get('.search-result-group').children().should('have.length', MAX_RESULT_COUNT);
   });
@@ -46,17 +69,21 @@ describe('검색 모달 테스트', () => {
   it('검색결과가 없는 경우, 결과없음 이미지가 화면에 표시된다.', () => {
     const KEYWORD_FOR_NO_RESULT = 'dsflmkfsdlkjweljksf';
 
+    interceptYoutubeApiRequest(KEYWORD_FOR_NO_RESULT, INTERCEPT_ALIAS);
     cy.get('#search-button').click();
     cy.get('#search-keyword-input').type(KEYWORD_FOR_NO_RESULT);
     cy.get('#search-keyword-form').submit();
+    cy.wait(`@${INTERCEPT_ALIAS}`);
 
     cy.get('#search-result-wrapper').find('img').should('have.attr', 'src').should('include', 'not_found');
   });
 
   it('스크롤바를 최하단으로 이동시킬 경우, 다음 10개 아이템을 추가로 화면에 표시한다.', () => {
+    interceptYoutubeApiRequest(KEYWORD, INTERCEPT_ALIAS);
     cy.get('#search-button').click();
     cy.get('#search-keyword-input').type(KEYWORD);
     cy.get('#search-keyword-form').submit();
+    cy.wait(`@${INTERCEPT_ALIAS}`);
 
     cy.get('#search-result-wrapper').scrollTo('bottom');
     cy.get('#search-section article').should('have.length', MAX_RESULT_COUNT * 2);
@@ -65,28 +92,32 @@ describe('검색 모달 테스트', () => {
   it('저장버튼을 누르면 localStorage에 해당 영상이 저장된다.', () => {
     const FIRST_INDEX = 0;
 
+    interceptYoutubeApiRequest(KEYWORD, INTERCEPT_ALIAS);
     cy.get('#search-button').click();
     cy.get('#search-keyword-input').type(KEYWORD);
     cy.get('#search-keyword-form').submit();
+    cy.wait(`@${INTERCEPT_ALIAS}`);
 
+    localStorage.setItem('test', ['test']);
     cy.get('.save-button')
       .eq(FIRST_INDEX)
       .click()
-      .invoke('attr', 'data-video-id')
-      .then((storedVideoId) => {
-        const list = JSON.parse(localStorage.getItem(VIDEOS_TO_WATCH));
-        expect(list[FIRST_INDEX].videoId).to.be.equal(storedVideoId);
+      .then(($el) => {
+        const list = JSON.parse(getListFromLocalStorage(KEY_VIDEOS_WATCHING));
+        cy.wrap($el).should('have.id', list[FIRST_INDEX].videoId);
       });
   });
 
   it('검색 모달에 다시 접근했을 때, 가장 마지막에 검색한 결과를 화면에 표시한다.', () => {
+    interceptYoutubeApiRequest(KEYWORD, INTERCEPT_ALIAS);
     cy.get('#search-button').click();
     cy.get('#search-keyword-input').type(KEYWORD);
     cy.get('#search-keyword-form').submit();
+    cy.wait(`@${INTERCEPT_ALIAS}`);
     cy.reload();
 
     cy.get('#search-button').click();
-    cy.get('#recent-keyword').eq(0).should('have.text', KEYWORD);
+    cy.get('#recent-keyword').children(0).should('have.text', KEYWORD);
     cy.get('#search-section article').should('have.length', MAX_RESULT_COUNT);
   });
 
@@ -96,8 +127,10 @@ describe('검색 모달 테스트', () => {
 
     cy.get('#search-button').click();
     KEYWORDS.forEach((keyword) => {
+      interceptYoutubeApiRequest(keyword, `${INTERCEPT_ALIAS}-${keyword}`);
       cy.get('#search-keyword-input').clear().type(keyword);
       cy.get('#search-keyword-form').submit();
+      cy.wait(`@${INTERCEPT_ALIAS}-${keyword}`);
     });
 
     cy.get('#recent-keyword')
@@ -121,9 +154,10 @@ describe('예외 처리 테스트', () => {
     cy.get('#search-keyword-input').type(KEYWORD);
     cy.get('#search-keyword-form').submit();
 
+    interceptYoutubeApiRequest(KEYWORD);
     for (let i = 0; i < 10; i++) {
       cy.get('.modal').scrollTo('bottom');
-      cy.wait(2000);
+      cy.wait('@search');
     }
     cy.get('.save-button').each(($el, i) => {
       if (i >= MAX_VIDEO_STORAGE_CAPACITY) {
@@ -133,7 +167,6 @@ describe('예외 처리 테스트', () => {
         return;
       }
       $el.click();
-      cy.wait(500);
       cy.get('#snackbar').contains(VIDEO_IS_SAVED_SUCCESSFULLY);
     });
   });

@@ -1,6 +1,6 @@
-export const request = async (url, method) => {
+export const httpRequest = async (uri, method) => {
   try {
-    const response = await fetch(url, { method });
+    const response = await fetch(uri, { method });
     const json = await response.json();
 
     if (!response.ok) {
