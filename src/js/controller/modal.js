@@ -1,20 +1,32 @@
 import { $ } from '../utils/util.js';
 
 class ModalController {
-  #storage;
+  #storageModel;
   #savedView;
+  #searchView;
 
-  constructor(savedView, storage) {
+  constructor(storageModel, savedView, searchView) {
+    this.#storageModel = storageModel;
     this.#savedView = savedView;
-    this.#storage = storage;
+    this.#searchView = searchView;
   }
   init = () => {
     this.handleModalOpen();
     this.handleModalClose();
   };
 
+  loadInfos = () => {
+    this.#searchView.renderSavedVideoCountSection(
+      this.#storageModel.savedVideoCount
+    );
+    this.#searchView.renderRecentKeywordSection(
+      this.#storageModel.recentKeywords
+    );
+  };
+
   onModalShow = () => {
     const $modal = $('.modal');
+    this.loadInfos();
     $modal.classList.add('open');
   };
 

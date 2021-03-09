@@ -12,7 +12,7 @@ class SearchController {
 
   init = () => {
     this.storage.init();
-    this.searchView.init();
+    //this.searchView.init();
     this.handleSearch();
     this.handleSearchModalScroll();
     this.handleSaveVideo();
