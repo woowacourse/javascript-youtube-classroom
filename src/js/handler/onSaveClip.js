@@ -4,6 +4,7 @@ import { MESSAGE, LOCAL_STORAGE_KEY, YOUTUBE } from '../utils/constant.js';
 import storage from '../utils/localStorage.js';
 import { hideElement } from '../utils/setAttribute.js';
 import { snackbar } from '../utils/snackbar.js';
+import { renderSaveVideoCount } from '../view/modal.js';
 
 export const onSaveClip = ({ target }) => {
   if (target.dataset.js !== 'save-button') {
@@ -29,4 +30,5 @@ export const onSaveClip = ({ target }) => {
   storage.set(LOCAL_STORAGE_KEY.SAVED_CLIPS, savedClips);
 
   renderSavedClip(savedClip, savedClips.length - 1);
+  renderSaveVideoCount(savedClips);
 };
