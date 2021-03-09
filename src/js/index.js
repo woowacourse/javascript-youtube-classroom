@@ -13,6 +13,15 @@ import { onToggleRenderedClips } from './handler/onToggleRenderedClips.js';
 import { setMockData } from '../mock.js';
 import { onButtonContainer } from './handler/onButtonContainer.js';
 
+const clearDeletedClip = () => {
+  const savedClips = storage.get(LOCAL_STORAGE_KEY.SAVED_CLIPS) ?? [];
+  const filterdSavedClips = savedClips.filter(
+    (savedClip) => !savedClip.isDeleted,
+  );
+
+  storage.set(LOCAL_STORAGE_KEY.SAVED_CLIPS, filterdSavedClips);
+};
+
 const initDisplay = () => {
   const savedClips = storage.get(LOCAL_STORAGE_KEY.SAVED_CLIPS) ?? [];
   const $savedPageNotFound = $('[data-js="saved-page__not-found"]');
@@ -66,6 +75,7 @@ export const YoutubeClassRoom = () => {
 
 window.onload = () => {
   YoutubeClassRoom();
+  clearDeletedClip();
   initDisplay();
   onToggleRenderedClips({
     target: $('[data-js="navigator__unwatched-button"]'),

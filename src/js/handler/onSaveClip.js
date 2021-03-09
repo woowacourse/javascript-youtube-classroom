@@ -1,12 +1,9 @@
 import { $ } from '../utils/querySelector.js';
 import { renderSavedClip } from '../view/main.js';
-import {
-  ERROR_MESSAGE,
-  LOCAL_STORAGE_KEY,
-  YOUTUBE,
-} from '../utils/constant.js';
+import { MESSAGE, LOCAL_STORAGE_KEY, YOUTUBE } from '../utils/constant.js';
 import storage from '../utils/localStorage.js';
 import { hideElement } from '../utils/setAttribute.js';
+import { snackbar } from '../utils/snackbar.js';
 
 export const onSaveClip = ({ target }) => {
   if (target.dataset.js !== 'save-button') {
@@ -19,8 +16,11 @@ export const onSaveClip = ({ target }) => {
   const savedClip = recentSearchResults[clipIndex];
   const savedClips = storage.get(LOCAL_STORAGE_KEY.SAVED_CLIPS) ?? [];
 
-  if (savedClips.length >= YOUTUBE.MAXIMUM_SAVE_CLIPS) {
-    alert(ERROR_MESSAGE.EXCEED_MAXIMUM_CLIP_COUNT);
+  if (
+    savedClips.filter((savedClip) => savedClip.isDeleted).length >=
+    YOUTUBE.MAXIMUM_SAVE_CLIPS
+  ) {
+    snackbar(MESSAGE.ERROR.EXCEED_MAXIMUM_CLIP_COUNT);
     return;
   }
 
