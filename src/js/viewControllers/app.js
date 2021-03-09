@@ -1,5 +1,8 @@
 import $ from '../utils/DOM.js';
-import { createSavedVideoListTemplate } from '../templates/videoList.js';
+import {
+  createSavedVideoListTemplate,
+  emptyVideoListTemplate,
+} from '../templates/videoList.js';
 
 const $searchModal = $('#video-search-modal');
 const $videoList = $('#video-list');
@@ -13,7 +16,9 @@ function closeModal() {
 }
 
 function renderSavedVideoList(videoInfos) {
-  $videoList.innerHTML = createSavedVideoListTemplate(videoInfos);
+  $videoList.innerHTML = videoInfos.length
+    ? createSavedVideoListTemplate(videoInfos)
+    : emptyVideoListTemplate;
 }
 
 export { openModal, closeModal, renderSavedVideoList };

@@ -110,6 +110,6 @@ describe('Youtube classroom test', () => {
   });
 
   it('저장된 영상이 없을 때, 사용자에게 빈 상태를 UI로 알려준다.', () => {
-    cy.get('#video-list #empty').should('exist');
+    cy.get('#video-list #empty-video-list').should('exist');
   });
 });
