@@ -1,12 +1,18 @@
 class SnackBarView {
+  constructor() {
+    this.throttle = null;
+  }
   showSnackBar = text => {
     const $snackBar = document.querySelector('#snackbar');
     $snackBar.innerHTML = text;
 
-    $snackBar.classList.toggle('show');
-    setTimeout(() => {
+    if (!this.throttle) {
       $snackBar.classList.toggle('show');
-    }, 3000);
+      this.throttle = setTimeout(() => {
+        this.throttle = null;
+        $snackBar.classList.toggle('show');
+      }, 3000);
+    }
   };
 }
 
