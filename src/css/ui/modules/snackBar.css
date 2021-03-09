@@ -8,9 +8,9 @@
   border-radius: 2px;
   padding: 16px;
   position: fixed;
-  z-index: 1;
+  z-index: 3;
   left: 50%;
-  bottom: 0;
+  bottom: 10px;
 }
 
 .show {
@@ -21,7 +21,7 @@
 
 @-webkit-keyframes fadein {
   from {
-    bottom: 0;
+    bottom: 10px;
     opacity: 0;
   }
   to {
@@ -32,11 +32,11 @@
 
 @keyframes fadein {
   from {
-    bottom: 0;
+    bottom: 10px;
     opacity: 0;
   }
   to {
-    bottom: 0;
+    bottom: 10px;
     opacity: 1;
   }
 }
@@ -54,7 +54,7 @@
 
 @keyframes fadeout {
   from {
-    bottom: 0;
+    bottom: 10px;
     opacity: 1;
   }
   to {

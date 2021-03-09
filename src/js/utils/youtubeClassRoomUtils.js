@@ -31,3 +31,11 @@ export const saveHistoryToLocalStorage = (searchTerm) => {
     history.slice(0, VALUES.MAXIMUM_SEARCH_HISTORY_COUNT)
   );
 };
+
+export const showSnackBar = ($snackbar, text) => {
+  $snackbar.textContent = text;
+  $snackbar.classList.toggle('show');
+  setTimeout(() => {
+    $snackbar.classList.toggle('show');
+  }, 3000);
+};

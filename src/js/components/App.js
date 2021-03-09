@@ -66,6 +66,7 @@ export default class App {
     </div>
     <div class="modal">
     </div>
+    <div id="snackbar"></div>
   </div>`;
   }
 

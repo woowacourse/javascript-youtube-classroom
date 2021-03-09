@@ -1,15 +1,17 @@
 import Component from '../../core/Component.js';
 import { store } from '../../index.js';
 import { $, isEmptyString } from '../../utils/utils.js';
-import { SELECTORS } from '../../constants/constants.js';
-import { saveHistoryToLocalStorage } from '../../utils/youtubeClassRoomUtils.js';
+import { SELECTORS, ERROR_MESSAGES } from '../../constants/constants.js';
+import {
+  saveHistoryToLocalStorage,
+  showSnackBar,
+} from '../../utils/youtubeClassRoomUtils.js';
 
 export default class VideoSearchBar extends Component {
   setup() {
     store.subscribe(this.render.bind(this));
   }
 
-  // TODO : '               ' string error 처리
   initRender() {
     this.$target.innerHTML = `
       <form id="youtube-search-form" class="d-flex">
@@ -27,6 +29,7 @@ export default class VideoSearchBar extends Component {
     this.$videoSearchButton = $(
       SELECTORS.SEARCH_MODAL.VIDEO_SEARCH_BAR.SUBMIT_BUTTON_ID
     );
+    this.$snackbar = $(SELECTORS.VIDEO_LIST.SNACKBAR);
   }
 
   bindEvent() {
@@ -52,6 +55,9 @@ export default class VideoSearchBar extends Component {
     ].value.trim();
 
     if (isEmptyString(searchTerm)) {
+      this.$videoSearchInput.focus();
+      this.$videoSearchInput.value = '';
+      showSnackBar(this.$snackbar, ERROR_MESSAGES.EMPTY_SEARCH_TERM);
       return;
     }
 

@@ -14,6 +14,7 @@ export const ERROR_MESSAGES = {
     `동영상 요청에 실패하여, 동영상을 불러올수 없습니다. (Error code : ${error})`,
   VIDEO_DELETE_ERROR: '비디오 삭제에 실패했습니다.',
   NO_VIDEO_ERROR: '저장된 동영상이 없습니다.',
+  EMPTY_SEARCH_TERM: '검색어를 입력해주세요.',
 };
 
 export const MESSAGES = {
