@@ -10,7 +10,6 @@ import { onModalClose } from './handler/onModalClose.js';
 import { renderSavedClips } from './view/main.js';
 import { hideElement, showElement } from './utils/setAttribute.js';
 import { onToggleRenderedClips } from './handler/onToggleRenderedClips.js';
-import { setMockData } from '../mock.js';
 import { onButtonContainer } from './handler/onButtonContainer.js';
 import { onWindowInput } from './handler/onWindowInput.js';
 
@@ -72,7 +71,6 @@ export const YoutubeClassRoom = () => {
 
   window.addEventListener('keyup', onWindowInput);
   window.addEventListener('click', onModalClose);
-  setMockData();
 };
 
 window.onload = () => {
