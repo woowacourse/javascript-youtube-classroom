@@ -22,7 +22,8 @@ export default class Store extends Subject {
   }
 
   load(key) {
-    return JSON.parse(localStorage.getItem(key));
+    const loadedItem = localStorage.getItem(key);
+    return loadedItem && JSON.parse(loadedItem);
   }
 
   update(data = {}) {
