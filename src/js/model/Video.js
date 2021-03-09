@@ -134,7 +134,10 @@ export default class Video {
   }
 
   createTemplate(pageType = TYPES.PAGE.MANAGEMENT) {
-    const clip = createElement({ tag: 'article', classes: ['clip'] });
+    const clip = createElement({
+      tag: 'article',
+      classes: ['clip', 'd-flex', 'flex-col'],
+    });
 
     if (pageType === TYPES.PAGE.MANAGEMENT && this.watched) {
       clip.classList.add('d-none');
@@ -171,6 +174,8 @@ export default class Video {
         'flex-col',
         'justify-between',
         'w-100',
+        'flex-grow',
+        'px-1',
       ],
     });
 
@@ -225,7 +230,7 @@ export default class Video {
   createSaveButtonTemplate() {
     const buttonContainer = createElement({
       tag: 'span',
-      classes: ['relative'],
+      classes: ['d-flex', 'justify-end'],
     });
 
     const button = createElement({
@@ -247,7 +252,7 @@ export default class Video {
   createManagementButtonSetTemplate() {
     const buttonContainer = createElement({
       tag: 'span',
-      classes: [CLASS_NAMES.CLIP.MANAGEMENT_BUTTONS],
+      classes: [CLASS_NAMES.CLIP.MANAGEMENT_BUTTONS, 'd-flex', 'justify-end'],
     });
 
     const watchedButton = createElement({
