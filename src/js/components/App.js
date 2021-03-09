@@ -81,10 +81,6 @@ export default class App {
   }
 
   bindEvent() {
-    this.$searchButton.addEventListener('click', () =>
-      this.viewSearchModal.onModalShow()
-    );
-
     this.$watchLaterButton.addEventListener('click', () => {
       this.videoList.setFilter('watchLater');
     });
@@ -92,5 +88,9 @@ export default class App {
     this.$watchedButton.addEventListener('click', () => {
       this.videoList.setFilter('watched');
     });
+
+    this.$searchButton.addEventListener('click', () =>
+      this.viewSearchModal.onModalShow()
+    );
   }
 }

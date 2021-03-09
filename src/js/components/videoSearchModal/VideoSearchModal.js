@@ -73,11 +73,13 @@ export default class VideoSearchModal extends Component {
   }
 
   onModalShow() {
+    $('body').classList.add('overflow-hidden');
     this.$target.classList.add('open');
     this.videoSearchBar.$videoSearchInput.focus();
   }
 
   onModalClose() {
+    $('body').classList.remove('overflow-hidden');
     this.$target.classList.remove('open');
   }
 
