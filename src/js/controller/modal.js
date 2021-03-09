@@ -30,8 +30,15 @@ class ModalController {
   };
 
   handleModalClose = () => {
-    const $modalClose = $('.modal-close');
-    $modalClose.addEventListener('click', () => this.onModalClose());
+    const $modal = $('.modal');
+    $modal.addEventListener('click', event => {
+      if (
+        event.target.querySelector('.modal-inner') ||
+        event.target.closest('.modal-close')
+      ) {
+        this.onModalClose();
+      }
+    });
   };
 }
 
