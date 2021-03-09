@@ -3,6 +3,9 @@ import { API_KEY } from "../apiKey.js";
 
 const BASE_URL = "https://content.googleapis.com/youtube/v3";
 
+const getParams = ({ part, q, maxResults, key, pageToken }) =>
+  new URLSearchParams({ part, q, maxResults, key, pageToken }).toString();
+
 const request = async (url, option = {}) => {
   const res = await fetch(url, option);
   if (!res.ok) {
@@ -13,19 +16,15 @@ const request = async (url, option = {}) => {
 };
 
 export const api = {
-  searchVideo: keyword => {
+  searchVideo: (keyword, nextPageToken = "") => {
     return request(
-      `${BASE_URL}/search?part=snippet&q=${encodeURI(keyword)}&maxResults=${
-        STANDARD_NUMS.LOAD_CLIP_COUNT
-      }&key=${API_KEY}`,
-    );
-  },
-
-  searchNextVideo: (keyword, nextPageToken) => {
-    return request(
-      `${BASE_URL}/search?part=snippet&q=${encodeURI(keyword)}&maxResults=${
-        STANDARD_NUMS.LOAD_CLIP_COUNT
-      }&pageToken=${nextPageToken}&key=${API_KEY}`,
+      `${BASE_URL}/search?${getParams({
+        part: "snippet",
+        q: keyword,
+        maxResults: STANDARD_NUMS.LOAD_CLIP_COUNT,
+        key: API_KEY,
+        pageToken: nextPageToken,
+      })}`,
     );
   },
 };
