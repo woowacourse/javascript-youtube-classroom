@@ -36,13 +36,13 @@
     rgba(255, 255, 255, 0.4) 55%,
     rgba(255, 255, 255, 0)
   );
-  animation-name: shining;
+  animation-name: skeleton-shining;
   animation-duration: 0.7s;
   animation-timing-function: ease-in-out;
   animation-iteration-count: infinite;
 }
 
-@keyframes shining {
+@keyframes skeleton-shining {
   0% {
     transform: translateX(-50%);
   }
