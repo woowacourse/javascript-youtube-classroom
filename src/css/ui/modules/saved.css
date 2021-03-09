@@ -1,0 +1,7 @@
+#saved-not-found {
+  grid-column-start: 1;
+  grid-column-end: span 4;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
