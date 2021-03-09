@@ -3,7 +3,7 @@ export const isModalOpen = (currentTarget) => {
 };
 
 export const isModalCloseButton = (target) => {
-  return target.closest('#modal-close-button');
+  return target.closest('.js-modal-close-button');
 };
 
 export const isModalDimmedArea = (target) => {
