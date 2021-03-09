@@ -1,4 +1,3 @@
-/* eslint-disable cypress/no-unnecessary-waiting */
 import {
   CLASSNAME,
   MAX_KEYWORDS_COUNT,
