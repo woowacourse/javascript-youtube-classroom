@@ -20,10 +20,16 @@ const searchController = new SearchController(
   youtubeModel,
   storageModel,
   searchView,
-  savedView
+  savedView,
+  snackBarView
 );
-const savedController = new SavedController(storageModel, savedView, navView);
-const modalController = new ModalController(savedView, storageModel);
+const savedController = new SavedController(
+  storageModel,
+  savedView,
+  navView,
+  snackBarView
+);
+const modalController = new ModalController(storageModel, savedView);
 
 searchController.init();
 savedController.init();

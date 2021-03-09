@@ -2,11 +2,12 @@
 import { CLASS, SEARCH, SELECTOR } from '../constants/constant.js';
 import { $, $$, isScrollUnfinished } from '../utils/util.js';
 class SearchController {
-  constructor(youtube, storage, searchView, savedView) {
+  constructor(youtube, storage, searchView, savedView, snackBarView) {
     this.youtube = youtube;
     this.storage = storage;
     this.searchView = searchView;
     this.savedView = savedView;
+    this.snackBarView = snackBarView;
   }
 
   init = () => {
@@ -57,6 +58,7 @@ class SearchController {
 
     if (this.storage.showWatched === true) return;
     this.savedView.appendSavedVideo(videoInfo);
+    this.snackBarView.showSnackBar('영상을 저장했습니다.');
   };
 
   fetchVideo = event => {
