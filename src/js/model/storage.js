@@ -6,10 +6,12 @@ import { ERROR_MESSAGE, SEARCH, STORAGE } from '../constants/constant.js';
 class StorageModel {
   #myVideo;
   #keywords;
+  #showWatched;
 
   constructor() {
     this.#myVideo = [];
     this.#keywords = [];
+    this.#showWatched = null;
   }
 
   init() {
@@ -26,6 +28,14 @@ class StorageModel {
   // getFilteredVideos(watched) - 본 / 볼 영상 불러오는 메서드
   //// watched가 true면 본 영상들만 필터링. 반대는 반대
   //// return this.#myVideo.filter(info => info.watched === watched)
+  getFilteredVideos = showWatched => {
+    this.#showWatched = showWatched;
+    return this.#myVideo.filter(video => video.watched === showWatched);
+  };
+
+  get showWatched() {
+    return this.#showWatched;
+  }
   //
   // deleteSelectedVideo
   //
