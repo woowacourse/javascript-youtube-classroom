@@ -1,4 +1,4 @@
-import { $, $$ } from '../utils/util.js';
+import { $, parseDOMFromString } from '../utils/util.js';
 import {
   savedVideoTemplate,
   videoNotFoundTemplate,
@@ -18,13 +18,29 @@ class SavedView {
     });
   }
 
+  appendSavedVideo(info) {
+    const $savedVideoWrapper = $('#saved-video-wrapper');
+    if ($savedVideoWrapper.firstElementChild.id === 'saved-not-found') {
+      this.resetSavedVideos();
+    }
+
+    $savedVideoWrapper.appendChild(
+      parseDOMFromString(savedVideoTemplate(info))
+    );
+  }
+
   resetSavedVideos() {
     const $savedVideoWrapper = $('#saved-video-wrapper');
     $savedVideoWrapper.innerHTML = ``;
   }
 
   hideSelectedVideo(target) {
-    $('#saved-video-wrapper').removeChild(target.closest('.clip'));
+    const $savedVideoWrapper = $('#saved-video-wrapper');
+    $savedVideoWrapper.removeChild(target.closest('.clip'));
+
+    if ($savedVideoWrapper.children.length === 0) {
+      $savedVideoWrapper.innerHTML = videoNotFoundTemplate();
+    }
   }
 }
 

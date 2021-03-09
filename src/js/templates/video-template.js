@@ -35,7 +35,9 @@ export const savedVideoTemplate = info => {
                   <p class="line">${convertDateFormat(info.publishTime)}</p>
                 </div>
                 <div class="video-info-buttons" data-url="${info.url}">
-                  <span class="watched opacity-hover">✅</span>
+                  <span class="watched ${
+                    info.watched ? null : 'opacity-hover'
+                  }">✅</span>
                   <span class="thumbs-up opacity-hover">👍</span>
                   <span class="comments opacity-hover">💬</span>
                   <span class="delete opacity-hover">🗑️</span>

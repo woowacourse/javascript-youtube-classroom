@@ -49,7 +49,7 @@ class StorageModel {
     setJSONToLocalStorage(STORAGE.KEY_MY_VIDEO, this.#myVideo);
   }
 
-  // keyword와 myVideo 분리하는거는 어떨까?
+  // TODO: keyword와 myVideo 분리하는거는 어떨까?
   saveVideo = json => {
     this.#myVideo = getJSONFromLocalStorage(STORAGE.KEY_MY_VIDEO);
     if (this.#myVideo.length === STORAGE.MAX_SAVED_VIDEO_LENGTH) {

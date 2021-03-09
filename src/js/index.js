@@ -17,7 +17,8 @@ const navView = new NavView();
 const searchController = new SearchController(
   youtubeModel,
   storageModel,
-  searchView
+  searchView,
+  savedView
 );
 const savedController = new SavedController(storageModel, savedView, navView);
 const modalController = new ModalController(savedView, storageModel);
