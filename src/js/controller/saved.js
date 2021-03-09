@@ -26,12 +26,12 @@ class SavedController {
   };
 
   // 볼 영상 필터링 메서드, 본 영상 필터링 메서드(파라미터 받아서)
-  filterVideos({ watched }) {
-    this.navView.toggleNavButton(watched);
-    const filteredVideos = this.storage.myVideos.filter(
-      video => video.watched === watched
-    );
+  filterVideos({ showWatched }) {
+    if (this.storage.showWatched === showWatched) return;
 
+    this.navView.toggleNavButton(showWatched);
+
+    const filteredVideos = this.storage.getFilteredVideos(showWatched);
     if (filteredVideos.length === 0) {
       this.savedView.renderNotFoundSavedVideo();
       return;
@@ -52,13 +52,13 @@ class SavedController {
   // 볼영상 handler - true
   handleVideosToWatch() {
     $('#towatch-videos-button').addEventListener('click', () => {
-      this.filterVideos({ watched: false });
+      this.filterVideos({ showWatched: false });
     });
   }
   // 본영상 handler
   handleVideosWatched() {
     $('#watched-videos-button').addEventListener('click', () => {
-      this.filterVideos({ watched: true });
+      this.filterVideos({ showWatched: true });
     });
   }
   // 비디오 video-infos button handler들 (이벤트 위임으로 구현하기!!)
