@@ -25,6 +25,7 @@ class YoutubeModel {
           channelUrl: item.snippet.channelId,
           channelTitle: item.snippet.channelTitle,
           publishTime: item.snippet.publishTime,
+          watched: false,
         };
       });
     });
