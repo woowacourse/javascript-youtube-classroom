@@ -39,7 +39,7 @@ describe('검색 모달 테스트', () => {
     cy.get('.js-search-keyword-input').type(KEYWORD).type('{enter}');
     cy.wait(`@${INTERCEPT_ALIAS}`);
 
-    cy.get('.search-result-group').children().should('have.length', MAX_RESULT_COUNT);
+    cy.get('.js-search-result-group').children().should('have.length', MAX_RESULT_COUNT);
   });
 
   it('검색 모달에서 "검색 버튼"을 클릭하면, 최초 검색 결과 10개가 화면에 표시된다.', () => {
@@ -49,7 +49,7 @@ describe('검색 모달 테스트', () => {
     cy.get('.js-search-keyword-button').click();
     cy.wait(`@${INTERCEPT_ALIAS}`);
 
-    cy.get('.search-result-group').children().should('have.length', MAX_RESULT_COUNT);
+    cy.get('.js-search-result-group').children().should('have.length', MAX_RESULT_COUNT);
   });
 
   it('검색 키워드 제출 후, 데이터를 불러오기 전이면 skeleton UI가 화면에 표시된다.', () => {
@@ -59,11 +59,11 @@ describe('검색 모달 테스트', () => {
     cy.get('.js-search-keyword-input').type(ANOTHER_KEYWORD);
     cy.get('.js-search-keyword-form').submit();
 
-    cy.get('.search-result-group').should('have.class', 'skeleton');
-    cy.get('.js-modal .video-title').each(($el) => cy.wrap($el).should('have.class', 'line'));
-    cy.get('.js-modal .channel-title').each(($el) => cy.wrap($el).should('have.class', 'line'));
-    cy.get('.js-modal .published-at').each(($el) => cy.wrap($el).should('have.class', 'line'));
-    cy.get('.js-modal .preview-container').each(($el) => cy.wrap($el).should('have.class', 'image'));
+    cy.get('.js-search-result-group').should('have.class', 'skeleton');
+    cy.get('.js-modal .js-video-title').each(($el) => cy.wrap($el).should('have.class', 'line'));
+    cy.get('.js-modal .js-channel-title').each(($el) => cy.wrap($el).should('have.class', 'line'));
+    cy.get('.js-modal .js-published-at').each(($el) => cy.wrap($el).should('have.class', 'line'));
+    cy.get('.js-modal .js-preview-container').each(($el) => cy.wrap($el).should('have.class', 'image'));
   });
 
   it('검색결과가 없는 경우, 결과없음 이미지가 화면에 표시된다.', () => {
@@ -75,7 +75,7 @@ describe('검색 모달 테스트', () => {
     cy.get('.js-search-keyword-form').submit();
     cy.wait(`@${INTERCEPT_ALIAS}`);
 
-    cy.get('#search-result-wrapper').find('img').should('have.attr', 'src').should('include', 'not_found');
+    cy.get('.js-search-result-wrapper').find('img').should('have.attr', 'src').should('include', 'not_found');
   });
 
   it('스크롤바를 최하단으로 이동시킬 경우, 다음 10개 아이템을 추가로 화면에 표시한다.', () => {
@@ -85,7 +85,7 @@ describe('검색 모달 테스트', () => {
     cy.get('.js-search-keyword-form').submit();
     cy.wait(`@${INTERCEPT_ALIAS}`);
 
-    cy.get('#search-result-wrapper').scrollTo('bottom');
+    cy.get('.js-search-result-wrapper').scrollTo('bottom');
     cy.get('.js-modal article').should('have.length', MAX_RESULT_COUNT * 2);
   });
 
@@ -99,7 +99,7 @@ describe('검색 모달 테스트', () => {
     cy.wait(`@${INTERCEPT_ALIAS}`);
 
     localStorage.setItem('test', ['test']);
-    cy.get('.save-button')
+    cy.get('.js-save-button')
       .eq(FIRST_INDEX)
       .click()
       .then(($el) => {
@@ -159,7 +159,7 @@ describe('예외 처리 테스트', () => {
       cy.get('.modal').scrollTo('bottom');
       cy.wait('@search');
     }
-    cy.get('.save-button').each(($el, i) => {
+    cy.get('.js-save-button').each(($el, i) => {
       if (i >= MAX_VIDEO_STORAGE_CAPACITY) {
         $el.click();
         cy.wrap($el).should(be.visible);

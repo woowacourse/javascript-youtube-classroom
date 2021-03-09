@@ -2,13 +2,13 @@ import { MAX_RESULT_COUNT } from '../constants.js';
 
 const skeletonUnitTemplate = `
   <article class="clip">
-    <div class="preview-container image"></div>
+    <div class="js-preview-container preview-container image"></div>
     <div class="content-container pt-2 px-1">
-      <h3 class="video-title line"></h3>
-      <div class="channel-title line mt-1"></div>
-      <div class="published-at meta line"></div>
+      <h3 class="js-video-title video-title line"></h3>
+      <div class="js-channel-title channel-title line mt-1"></div>
+      <div class="js-published-at published-at meta line"></div>
       <div class="d-flex justify-end">
-        <button type="button" class="save-button btn">⬇️ 저장</button>
+        <button type="button" class="js-save-button save-button btn">⬇️ 저장</button>
       </div>
     </div>
   </article>
@@ -16,7 +16,7 @@ const skeletonUnitTemplate = `
 
 export const getSkeletonTemplate = () => {
   return `
-    <div class="search-result-group skeleton">
+    <div class="js-search-result-group search-result-group skeleton">
       ${skeletonUnitTemplate.repeat(MAX_RESULT_COUNT)}
     </div>
   `;

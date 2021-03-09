@@ -1,6 +1,6 @@
 .snackbar {
   visibility: hidden;
-  min-width: 250px;
+  min-width: 500px;
   background-color: #333;
   color: #fff;
   text-align: center;
@@ -15,8 +15,8 @@
 
 .show {
   visibility: visible !important; /* Show the snackbar */
-  -webkit-animation: fadein 0.5s, fadeout 0.5s 1s;
-  animation: fadein 0.5s, fadeout 0.5s 1s;
+  -webkit-animation: fadein 0.4s, fadeout 0.3s 1.2s;
+  animation: fadein 0.4s, fadeout 0.3s 1.2s;
 }
 
 @-webkit-keyframes fadein {
