@@ -1,5 +1,7 @@
 import { $, $$ } from '../utils/querySelector.js';
+import storage from '../utils/localStorage.js';
 import { showElement, hideElement } from '../utils/setAttribute.js';
+import { LOCAL_STORAGE_KEY, LOCAL_STORAGE_VALUE } from '../utils/constant.js';
 
 const setSelected = (isWatchedButton) => {
   const $watchedButton = $('[data-js="navigator__watched-button"]');
@@ -30,4 +32,11 @@ export const onToggleRenderedClips = ({ target }) => {
       ? showElement(savedClip)
       : hideElement(savedClip);
   });
+
+  storage.set(
+    LOCAL_STORAGE_KEY.CURRENT_TAB,
+    isWatchedButton
+      ? LOCAL_STORAGE_VALUE.WATCHED
+      : LOCAL_STORAGE_VALUE.UNWATCHED,
+  );
 };
