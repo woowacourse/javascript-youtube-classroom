@@ -26,8 +26,8 @@ export default class SearchController {
     this.view.$searchButton.addEventListener('click', this.onShowModal.bind(this));
     this.view.$searchSection.addEventListener('click', this.onCloseModal.bind(this));
     document.body.addEventListener('keyup', this.onCloseModal.bind(this));
-    this.view.$searchKeywordForm.addEventListener('submit', this.onRequestSearchKeyword.bind(this));
     this.view.$recentKeywords.addEventListener('click', this.onRequestSearchRecentKeyword.bind(this));
+    this.view.$searchKeywordForm.addEventListener('submit', this.onRequestSearchKeyword.bind(this));
     this.view.$searchResultWrapper.addEventListener('scroll', this.onRequestNextResult.bind(this));
     this.view.$searchResultWrapper.addEventListener('click', this.onRequestSaveVideo.bind(this));
   }
@@ -51,10 +51,11 @@ export default class SearchController {
     }
   }
 
-  onRequestNextResult() {
-    if (!isEndOfScroll(this.view.$searchResultWrapper)) {
-      return;
-    }
+  onRequestSearchRecentKeyword({ target }) {
+    const keyword = target.innerText;
+
+    this.service.init(keyword);
+    this.view.init();
     this.showSearchGroup();
   }
 
@@ -73,11 +74,10 @@ export default class SearchController {
     this.showSearchGroup();
   }
 
-  onRequestSearchRecentKeyword({ target }) {
-    const keyword = target.innerText;
-
-    this.service.init(keyword);
-    this.view.init();
+  onRequestNextResult() {
+    if (!isEndOfScroll(this.view.$searchResultWrapper)) {
+      return;
+    }
     this.showSearchGroup();
   }
 
