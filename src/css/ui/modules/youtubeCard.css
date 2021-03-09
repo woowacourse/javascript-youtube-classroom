@@ -73,6 +73,7 @@
   color: #606060;
 }
 
-.clip .save-button.stored {
-  visibility: hidden;
+.clip .save-button.saved {
+  opacity: 0.3;
+  cursor: not-allowed;
 }

@@ -1,9 +1,4 @@
-import {
-  getThumbnailTemplate,
-  getChannelTitleTemplate,
-  resultNotFoundTemplate,
-  getRecentKeywordsTemplate,
-} from '../layout/searchResult.js';
+import { getThumbnailTemplate, getChannelTitleTemplate, resultNotFoundTemplate } from '../layout/searchResult.js';
 import { getSkeletonTemplate } from '../layout/skeleton.js';
 import { $ } from '../utils/DOM.js';
 import { SNACKBAR_SHOW_TIME } from '../constants.js';
@@ -20,11 +15,11 @@ export default class SearchView {
     this.$searchButton = $('#search-button');
     this.$modalCloseButton = $('#modal-close-button');
     this.$recentKeywords = $('#recent-keyword');
-    this.$storedVideoCount = $('#stored-video-count');
+    this.$savedVideoCount = $('#saved-video-count');
     this.$snackbar = $('#snackbar');
   }
 
-  initSearchResult() {
+  init() {
     this.$searchResultWrapper.innerHTML = '';
   }
 
@@ -42,18 +37,6 @@ export default class SearchView {
     this.$saveButton = $saveButton;
   }
 
-  renderSnackbar(message) {
-    this.$snackbar.innerText = message;
-    this.$snackbar.classList.add('show');
-    setTimeout(() => {
-      this.$snackbar.classList.remove('show');
-    }, SNACKBAR_SHOW_TIME);
-  }
-
-  renderStoredVideoCount(count) {
-    this.$storedVideoCount.innerText = count;
-  }
-
   renderSkeleton() {
     this.$searchResultWrapper.innerHTML += getSkeletonTemplate();
   }
@@ -66,26 +49,68 @@ export default class SearchView {
     this.$searchResultWrapper.innerHTML = resultNotFoundTemplate;
   }
 
-  renderVideo(result) {
-    this.$video.querySelector('.preview-container').innerHTML = getThumbnailTemplate(result.videoId);
-    this.$video.querySelector('.video-title').innerText = result.videoTitle;
-    this.$video.querySelector('.channel-title').innerHTML = getChannelTitleTemplate(
-      result.channelId,
-      result.channelTitle,
-    );
-    this.$video.querySelector('.published-at').innerText = result.publishedAt;
+  renderSearchResult(searchResult) {
+    this.setCurrentGroupElements();
+    this.renderSkeletonRemoved();
+
+    if (searchResult.length === 0) {
+      this.renderResultNotFound();
+      return;
+    }
+
+    this.renderVideos(searchResult);
   }
 
-  renderVisibleSaveButton() {
-    this.$saveButton.classList.remove('stored');
+  renderVideos(searchResult) {
+    this.$currentGroupVideos.forEach(($video, i) => {
+      const result = searchResult[i];
+      const $saveButton = $video.querySelector('.save-button');
+
+      this.renderVideo($video, result);
+      $saveButton.id = result.videoId;
+      result.isSaved ? this.renderInvisibleSaveButton($saveButton) : this.renderVisibleSaveButton($saveButton);
+    });
   }
 
-  renderInvisibleSaveButton() {
-    this.$saveButton.classList.add('stored');
+  renderVideo($video, result) {
+    $video.querySelector('.preview-container').innerHTML = getThumbnailTemplate(result.videoId);
+    $video.querySelector('.video-title').innerText = result.videoTitle;
+    $video.querySelector('.channel-title').innerHTML = getChannelTitleTemplate(result.channelId, result.channelTitle);
+    $video.querySelector('.published-at').innerText = result.publishedAt;
   }
 
-  renderRecentKeywords(recentKeywords) {
-    this.$recentKeywords.innerHTML = getRecentKeywordsTemplate(recentKeywords);
+  renderVisibleSaveButton($saveButton) {
+    $saveButton.classList.remove('saved');
+  }
+
+  renderInvisibleSaveButton($saveButton) {
+    $saveButton.classList.add('saved');
+  }
+
+  renderNotification(message) {
+    this.$snackbar.innerText = message;
+    this.$snackbar.classList.add('show');
+    setTimeout(() => {
+      this.$snackbar.classList.remove('show');
+    }, SNACKBAR_SHOW_TIME);
+  }
+
+  renderSaveVideoCount(videoCount) {
+    this.$savedVideoCount.innerText = videoCount;
+  }
+
+  renderRecentKeywords(keywords) {
+    keywords.forEach((keyword, index) => {
+      this.$recentKeywords.children[index].innerText = keyword;
+      this.$recentKeywords.children[index].classList.remove('v-hidden');
+    });
+  }
+
+  renderVisibleModal(videoCount, keywords) {
+    this.$searchSection.classList.add('open');
+    this.init();
+    this.renderSaveVideoCount(videoCount);
+    this.renderRecentKeywords(keywords);
   }
 
   renderInvisibleModal() {

@@ -38,11 +38,18 @@
             <button type="submit" id="search-keyword-button" class="btn bg-cyan-500">검색</button>
           </form>
           <section class="mt-2">
-            <span class="text-gray-700">최근 검색어:<span id="recent-keyword"></span></span>
+            <span class="text-gray-700"
+              >최근 검색어:
+              <span id="recent-keyword">
+                <a class="chip mx-1 v-hidden"></a>
+                <a class="chip mx-1 v-hidden"></a>
+                <a class="chip mx-1 v-hidden"></a>
+              </span>
+            </span>
           </section>
           <section>
             <div class="d-flex justify-end text-gray-700">
-              저장된 영상 갯수: <span id="stored-video-count">0</span>개
+              저장된 영상 갯수: <span id="saved-video-count">0</span>개
             </div>
             <section id="search-result-wrapper" class="video-wrapper"></section>
           </section>
