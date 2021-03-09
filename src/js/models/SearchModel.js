@@ -68,6 +68,6 @@ export default class SearchModel {
   }
 
   getSavedVideoCount() {
-    return getListByKey(KEY_VIDEOS_WATCHING).length + getListByKey(KEY_VIDEOS_WATCHED);
+    return getListByKey(KEY_VIDEOS_WATCHING).length + getListByKey(KEY_VIDEOS_WATCHED).length;
   }
 }
