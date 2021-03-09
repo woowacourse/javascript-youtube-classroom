@@ -1,6 +1,7 @@
 describe('Youtube classroom test', () => {
   beforeEach(() => {
     cy.visit('http://127.0.0.1:5500');
+    cy.clearLocalStorage();
   });
 
   it('유튜브 검색 모달에서, 검색을 하면 동영상 리스트를 불러온다.', () => {
@@ -106,5 +107,9 @@ describe('Youtube classroom test', () => {
     cy.reload();
     cy.get('#search-button').click();
     cy.get('#video-search-result .video').should('have.length', 10);
+  });
+
+  it('저장된 영상이 없을 때, 사용자에게 빈 상태를 UI로 알려준다.', () => {
+    cy.get('#video-list #empty').should('exist');
   });
 });
