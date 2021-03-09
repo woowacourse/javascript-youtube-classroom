@@ -12,12 +12,16 @@ export const parseDOMFromString = string => {
 };
 
 export const setJSONToLocalStorage = (key, value) => {
+  // TODO : JSON.stringify 가능요소인지 검증작업 구현해주기
   localStorage.setItem(key, JSON.stringify(value));
 };
 
 export const getJSONFromLocalStorage = key => {
   try {
-    return JSON.parse(localStorage.getItem(key));
+    const json = JSON.parse(localStorage.getItem(key));
+    if (json === null) return [];
+
+    return json;
   } catch (e) {
     return {};
   }
