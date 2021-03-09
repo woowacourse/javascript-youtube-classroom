@@ -19,7 +19,7 @@ export default class VideoSearchModal extends Component {
 
   initRender() {
     this.$target.innerHTML = `
-    <div class="video-search-overlay w-100" data-action="modal-close"></div>
+    <div class="video-search-overlay w-100"></div>
     <div class="modal-inner p-8">
         <button class="modal-close">
           <svg viewbox="0 0 40 40">
@@ -55,6 +55,7 @@ export default class VideoSearchModal extends Component {
 
   selectDOM() {
     this.$modalClose = $('.modal-close');
+    this.$overlay = $('.video-search-overlay');
   }
 
   bindEvent() {
@@ -66,7 +67,7 @@ export default class VideoSearchModal extends Component {
   }
 
   onClickOutsideModal(event) {
-    if (event.target.dataset.action === 'modal-close') {
+    if (event.target === this.$overlay) {
       this.onModalClose();
     }
   }
