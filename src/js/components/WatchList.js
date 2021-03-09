@@ -17,7 +17,9 @@ export default class WatchList extends Observer {
         const { channelId, title, channelTitle, publishedAt } = item.snippet;
         const { id } = item;
 
-        const dateString = formatDate(publishedAt);
+        const options = { year: 'numeric', month: 'long', day: 'numeric' };
+        const dateString = new Date(publishedAt).toLocaleDateString('ko-KR', options);
+        // const dateString = formatDate(publishedAt);
 
         $(SELECTORS.CLASS.WATCH_LIST).insertAdjacentHTML(
           'beforeend',

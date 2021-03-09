@@ -45,7 +45,9 @@ export default class YoutubeSearchManager extends Observer {
         const { watchList } = this.store.get();
         const isSaved = watchList.includes(videoId);
 
-        const dateString = formatDate(publishedAt);
+        // const dateString = formatDate(publishedAt);
+        const options = { year: 'numeric', month: 'long', day: 'numeric' };
+        const dateString = new Date(publishedAt).toLocaleDateString('ko-KR', options);
 
         return `
             <article class="clip d-flex flex-col">
