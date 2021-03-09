@@ -21,7 +21,7 @@ export const onToggleRenderedClips = ({ target }) => {
   }
 
   const savedClips = $$('[data-js="saved-page__clip"]');
-  const isWatched = target.dataset.js === 'navigator__unwatched-button';
+  const isWatched = target.dataset.js === 'navigator__watched-button';
 
   setSelected(isWatched);
   savedClips.forEach((savedClip) => {
