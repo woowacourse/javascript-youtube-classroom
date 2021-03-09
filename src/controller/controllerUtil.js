@@ -2,7 +2,7 @@ import view from '../view/view.js';
 import prevSearchResult from '../storage/prevSearchResult.js';
 import searchQuery from '../storage/searchQuery.js';
 import videoToWatch from '../storage/videoToWatch.js';
-import watchedVideos from '../storage/watchedVideo.js';
+import watchedVideo from '../storage/watchedVideo.js';
 import { SETTINGS } from '../constants.js';
 
 const controllerUtil = {
@@ -19,7 +19,9 @@ const controllerUtil = {
   getProcessedVideos(videos) {
     return videos.map(video => ({
       ...video,
-      isSaved: controllerUtil.isVideoToWatch(video.videoId),
+      isSaved:
+        controllerUtil.isVideoToWatch(video.videoId) ||
+        controllerUtil.isWatchedVideo(video.videoId),
     }));
   },
   getNewVideo(dataset) {
@@ -66,10 +68,13 @@ const controllerUtil = {
     if (!sendingVideo) {
       return;
     }
-    watchedVideos.pushVideo(sendingVideo);
+    watchedVideo.pushVideo(sendingVideo);
   },
   isVideoToWatch(videoId) {
     return videoToWatch.getVideos().some(video => video.videoId === videoId);
+  },
+  isWatchedVideo(videoId) {
+    return watchedVideo.getVideos().some(video => video.videoId === videoId);
   },
 };
 
