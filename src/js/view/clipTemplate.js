@@ -1,4 +1,5 @@
 import date from '../utils/date.js';
+import { LOCAL_STORAGE_VALUE } from '../utils/constant.js';
 
 const buttonTemplate = (index, type) => {
   const { isModal, isSaved } = type;
@@ -26,12 +27,13 @@ const YMDtemplate = (time) => {
 };
 
 export const clipTemplate = (video, index, type) => {
-  const { isModal } = type;
+  const { isModal, currentTab } = type;
 
   return `
-      <article class="clip" data-js=${
-        isModal ? 'youtube-search-modal__clip' : 'saved-page__clip'
-      }
+      <article class="clip ${
+        currentTab === LOCAL_STORAGE_VALUE.WATCHED ? 'd-none' : ''
+      }" 
+        data-js=${isModal ? 'youtube-search-modal__clip' : 'saved-page__clip'}
         data-is-watched=${video.isWatched ? true : false}
         data-is-deleted=false
         data-clip-index=${index}

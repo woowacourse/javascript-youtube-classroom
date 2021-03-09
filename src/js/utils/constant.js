@@ -28,6 +28,12 @@ export const LOCAL_STORAGE_KEY = {
   NEXT_PAGE_TOKEN: 'nextPageToken',
   SAVED_CLIPS: 'savedClips',
   RECENT_SEARCH_RESULTS: 'recentSearchResults',
+  CURRENT_TAB: 'currentTab',
+};
+
+export const LOCAL_STORAGE_VALUE = {
+  WATCHED: 'watched',
+  UNWATCHED: 'unWatched',
 };
 
 export const BASE_URL =
