@@ -63,7 +63,6 @@ export default class YoutubeController {
   }
 
   async loadSavedVideos() {
-    // const savedVideoIds = getStorageData(STORE_KEYS.SAVED_VIDEO_IDS);
     const savedVideoIds = this.store.state.savedVideoIds;
 
     if (savedVideoIds.length === 0) {

@@ -6,6 +6,7 @@ export const VALUE = {
   CLIPS_PER_SCROLL: 10,
   THROTTLE_TIME: 1000,
   MAX_SAVED_COUNT: 100,
+  SNACKBAR_TIME: 3000,
 };
 
 export const ALERT_MESSAGES = {
@@ -18,4 +19,11 @@ export const STORE_KEYS = {
   SAVED_VIDEO_IDS: 'savedVideoIds',
   RECENT_KEYWORDS: 'recentKeywords',
   WATCHED_VIDEO_IDS: 'watchedVideoIds',
+};
+
+export const SNACKBAR_MESSAGES = {
+  SAVE_VIDEO: {
+    SUCCESS: '동영상이 저장되었읍니다',
+    FAIL: '동영상 저장에 실패했읍니다',
+  },
 };

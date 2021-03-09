@@ -1,11 +1,18 @@
 import { $ } from '../utils/dom.js';
 import { isEmptySearchKeyword } from '../utils/validator.js';
-import { VALUE, ALERT_MESSAGES, STORE_KEYS } from '../utils/constants.js';
+import {
+  VALUE,
+  ALERT_MESSAGES,
+  STORE_KEYS,
+  SNACKBAR_MESSAGES,
+} from '../utils/constants.js';
 import NavigationView from '../views/NavigationView.js';
 import SearchModalView from '../views/SearchModalView.js';
 import SavedVideosView from '../views/SavedVideosView.js';
 import Video from '../models/Video.js';
 import { searchRequest } from '../request.js';
+import popSnackbar from '../utils/snackbar.js';
+
 export default class SearchModalController {
   constructor(store) {
     this.store = store;
@@ -85,6 +92,7 @@ export default class SearchModalController {
 
     if (savedVideoIds.length === VALUE.MAX_SAVED_COUNT) {
       alert(ALERT_MESSAGES.OVER_SAVED_VIDEO_COUNT);
+      popSnackbar(SNACKBAR_MESSAGES.SAVE_VIDEO.FAIL);
       return;
     }
 
@@ -94,5 +102,6 @@ export default class SearchModalController {
     this.savedVideosView.hideNoVideos();
     this.savedVideosView.addSavedVideoClip(videoToSave);
     this.searchModalView.disableSaveButton(target);
+    popSnackbar(SNACKBAR_MESSAGES.SAVE_VIDEO.SUCCESS);
   }
 }
