@@ -1,6 +1,6 @@
 import formatDate from '../utils/date.js';
 
-function createVideoSnippetTemplate({ id, snippet }, isSaved = false) {
+function createVideoSnippetTemplate({ id, snippet }, buttonListTemplate) {
   return `<article class="clip js-video"
             data-video-id=${id.videoId}
             data-title=${encodeURIComponent(snippet.title)}
@@ -32,17 +32,18 @@ function createVideoSnippetTemplate({ id, snippet }, isSaved = false) {
                 <div class="meta">
                   <p>${formatDate(snippet.publishTime)}</p>
                 </div>
-                <div class="d-flex justify-end">
-                  <button 
-                    class="btn js-save-button" 
-                    ${isSaved ? 'hidden' : ''}
-                    >
-                      ⬇️ 저장
-                  </button>
+                <div class="d-flex justify-end" >
+                  ${buttonListTemplate}
                 </div>
               </div>
             </div>
           </article>`;
+}
+
+function createSaveButtonTemplate(isSaved) {
+  return isSaved
+    ? `<button class="btn js-save-cancel-button"}>↪️ 저장 취소</button>`
+    : `<button class="btn js-save-button"}>⬇️ 저장</button>`;
 }
 
 function isSavedVideo(item, videoInfos) {
@@ -54,14 +55,33 @@ function isSavedVideo(item, videoInfos) {
 function createVideoListTemplate(resultItems = [], videoInfos) {
   return [...resultItems]
     .map(item =>
-      createVideoSnippetTemplate(item, isSavedVideo(item, videoInfos))
+      createVideoSnippetTemplate(
+        item,
+        createSaveButtonTemplate(isSavedVideo(item, videoInfos))
+      )
+    )
+    .join('');
+}
+
+function createControlButtonsTemplate() {
+  return [
+    { content: '✅', className: 'js-watched-button' },
+    { content: '👍', className: 'js-like-button' },
+    { content: '💬', className: 'js-comment-button' },
+    { content: '🗑️', className: 'js-delete-button' },
+  ]
+    .map(
+      ({ content, className }) =>
+        `<span class="opacity-hover ml-2 ${className}">${content}</span>`
     )
     .join('');
 }
 
 function createSavedVideoListTemplate(savedVideoInfos = []) {
   return [...savedVideoInfos]
-    .map(item => createVideoSnippetTemplate(item, true))
+    .map(item =>
+      createVideoSnippetTemplate(item, createControlButtonsTemplate())
+    )
     .join('');
 }
 

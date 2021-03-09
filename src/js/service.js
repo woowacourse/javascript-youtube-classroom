@@ -33,6 +33,12 @@ function saveVideo($video) {
   videoInfos.add(videoInfo);
 }
 
+function cancelVideoSave($video) {
+  const { videoId } = $video.dataset;
+
+  videoInfos.remove(videoId);
+}
+
 function initInfiniteScroll() {
   const $lastVideo = $('#video-search-result .js-video:last-child');
 
@@ -40,4 +46,4 @@ function initInfiniteScroll() {
   intersectionObserver.observe($lastVideo);
 }
 
-export { saveVideo, searchVideo, initInfiniteScroll };
+export { saveVideo, cancelVideoSave, searchVideo, initInfiniteScroll };

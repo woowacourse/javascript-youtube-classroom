@@ -40,6 +40,18 @@ function search(keyword) {
   $videoSearchForm.elements['video-search-submit'].click();
 }
 
+function toggleSaveButton($saveButton) {
+  if ($saveButton.classList.contains('js-save-button')) {
+    $saveButton.innerText = '↪️ 저장 취소';
+    $saveButton.classList.remove('js-save-button');
+    $saveButton.classList.add('js-save-cancel-button');
+  } else {
+    $saveButton.innerText = '⬇️ 저장';
+    $saveButton.classList.remove('js-save-cancel-button');
+    $saveButton.classList.add('js-save-button');
+  }
+}
+
 export {
   renderSavedVideoCount,
   renderLatestKeywordList,
@@ -47,4 +59,5 @@ export {
   renderVideoSearchResult,
   appendVideos,
   search,
+  toggleSaveButton,
 };
