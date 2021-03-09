@@ -5,6 +5,7 @@ import videoToWatch from '../storage/videoToWatch.js';
 import { SELECTOR_CLASS, SETTINGS, STYLE_CLASS } from '../constants.js';
 import { $ } from '../utils/querySelector.js';
 import viewUtil from '../view/viewUtil.js';
+import watchedVideos from '../storage/watchedVideo.js';
 
 const controllerUtil = {
   setObserver($element, callback) {
@@ -76,6 +77,14 @@ const controllerUtil = {
       viewUtil.removeStyleClass($button, STYLE_CLASS.CLICKED);
     });
     viewUtil.addStyleClass($target, STYLE_CLASS.CLICKED);
+  },
+
+  sendVideoToWatchedVideos(videoId) {
+    const sendingVideo = videoToWatch.popVideoByVideoId(videoId);
+    if (!sendingVideo) {
+      return;
+    }
+    watchedVideos.pushVideo(sendingVideo);
   },
 
   isVideoToWatch(videoId) {

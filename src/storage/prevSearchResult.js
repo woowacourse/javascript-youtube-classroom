@@ -1,5 +1,5 @@
 import { LOCAL_STORAGE_KEY } from '../constants.js';
-import { getLocalStorageItem } from './localStorage.js';
+import { getLocalStorageItem } from './localStorageUtil.js';
 
 const prevSearchResult = {
   getLastQuery() {
@@ -15,6 +15,7 @@ const prevSearchResult = {
   },
 
   setLastQuery(value) {
+    //TODO setLocalStorageItem 사용해야함
     localStorage.setItem(LOCAL_STORAGE_KEY.LAST_QUERY, JSON.stringify(value));
   },
 

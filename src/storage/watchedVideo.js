@@ -1,39 +1,35 @@
-// TODO : 이름 videoToWatch -> watchingVideo
-
 import { LOCAL_STORAGE_KEY } from '../constants.js';
 import {
   getLocalStorageItem,
   setLocalStorageItem,
 } from './localStorageUtil.js';
 
-const videoToWatch = {
+// TODO : Mixin 을 활용해서 리팩토링
+const watchedVideo = {
   getVideos() {
-    return getLocalStorageItem(LOCAL_STORAGE_KEY.VIDEOS_TO_WATCH) || [];
+    return getLocalStorageItem(LOCAL_STORAGE_KEY.WATCHED_VIDEOS) || [];
   },
-
   setVideos(videos) {
     if (!Array.isArray(videos)) {
       return;
     }
-    setLocalStorageItem(LOCAL_STORAGE_KEY.VIDEOS_TO_WATCH, videos);
+    setLocalStorageItem(LOCAL_STORAGE_KEY.WATCHED_VIDEOS, videos);
   },
-
   pushVideo(newVideo) {
-    const videosToWatch = videoToWatch.getVideos();
+    const videosToWatch = watchedVideo.getVideos();
     videosToWatch.push(newVideo);
-    videoToWatch.setVideos(videosToWatch);
+    watchedVideo.setVideos(videosToWatch);
   },
-
   popVideoByVideoId(videoId) {
-    const videos = videoToWatch.getVideos();
+    const videos = watchedVideo.getVideos();
     const poppedVideo = videos.find(video => video.videoId === videoId);
     if (!poppedVideo) {
       return;
     }
-    videoToWatch.setVideos(videos.filter(video => video.videoId !== videoId));
+    watchedVideo.setVideos(videos.filter(video => video.videoId !== videoId));
 
     return poppedVideo;
   },
 };
 
-export default videoToWatch;
+export default watchedVideo;

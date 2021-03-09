@@ -48,6 +48,7 @@ export const SETTINGS = Object.freeze({
 export const LOCAL_STORAGE_KEY = Object.freeze({
   PREVIOUS_SEARCH_VIDEOS: 'previous_search_videos',
   VIDEOS_TO_WATCH: 'videos_to_watch',
+  WATCHED_VIDEOS: 'watched_videos',
   SEARCH_QUERIES: 'search_queries',
   LAST_QUERY: 'last_query',
   NEXT_PAGE_TOKEN: 'next_page_token',
