@@ -9,11 +9,18 @@ class SavedView {
     $savedVideoWrapper.innerHTML = videoNotFoundTemplate();
   }
 
+  // TODO : 개선해보기..
   renderSavedVideos(infos) {
+    this.resetSavedVideos();
     const $savedVideoWrapper = $('#saved-video-wrapper');
     infos.forEach(info => {
       $savedVideoWrapper.innerHTML += savedVideoTemplate(info);
     });
+  }
+
+  resetSavedVideos() {
+    const $savedVideoWrapper = $('#saved-video-wrapper');
+    $savedVideoWrapper.innerHTML = ``;
   }
 }
 
