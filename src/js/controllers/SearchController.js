@@ -1,4 +1,5 @@
-import SearchService from '../models/SearchService.js';
+import SearchModel from '../models/SearchModel.js';
+import SearchService from '../services/SearchService.js';
 import SearchView from '../views/SearchView.js';
 import { isModalOpen, isModalCloseButton, isModalDimmedArea } from './elementValidator.js';
 import {
@@ -13,9 +14,9 @@ import { isEndOfScroll } from '../utils/DOM.js';
 
 export default class SearchController {
   constructor() {
-    this.service = new SearchService();
+    this.model = new SearchModel();
+    this.service = new SearchService(this.model);
     this.view = new SearchView();
-    this.recentKeywords;
   }
 
   init() {
@@ -33,15 +34,15 @@ export default class SearchController {
   }
 
   onShowModal() {
-    const videoCount = this.service.getSavedVideoCount();
-    const recentKeywords = this.service.getRecentKeywords();
+    const videoCount = this.model.getSavedVideoCount();
+    const recentKeywords = this.model.getRecentKeywords();
     const mostRecentKeyword = recentKeywords[0] ?? '';
 
     this.view.renderVisibleModal(videoCount, recentKeywords);
     if (mostRecentKeyword === '') {
       return;
     }
-    this.service.init(mostRecentKeyword);
+    this.model.init(mostRecentKeyword);
     this.showSearchGroup();
   }
 
@@ -54,7 +55,7 @@ export default class SearchController {
   onRequestSearchRecentKeyword({ target }) {
     const keyword = target.innerText;
 
-    this.service.init(keyword);
+    this.model.init(keyword);
     this.view.init();
     this.showSearchGroup();
   }
@@ -68,9 +69,9 @@ export default class SearchController {
       this.view.renderNotification(NO_KEYWORD_IS_SUBMITTED);
       return;
     }
-    this.service.init(keyword);
+    this.model.init(keyword);
     this.view.init();
-    this.view.renderRecentKeywords(this.service.getRecentKeywords());
+    this.view.renderRecentKeywords(this.model.getRecentKeywords());
     this.showSearchGroup();
   }
 
@@ -90,13 +91,13 @@ export default class SearchController {
       return;
     }
 
-    const savedCount = this.service.getSavedVideoCount();
+    const savedCount = this.model.getSavedVideoCount();
 
     if (savedCount >= MAX_VIDEO_STORAGE_CAPACITY) {
       this.view.renderNotification(STORAGE_CAPACITY_IS_FULL);
       return;
     }
-    this.service.saveVideo(target.id);
+    this.model.saveVideo(target.id);
     this.view.renderInvisibleSaveButton(target);
     this.view.renderSaveVideoCount(savedCount + 1);
     this.view.renderNotification(VIDEO_IS_SAVED_SUCCESSFULLY);
@@ -107,7 +108,7 @@ export default class SearchController {
     this.service
       .getSearchResultAsync()
       .then((result) => this.view.renderSearchResult(result))
-      .catch((e) => {
+      .catch(() => {
         this.view.init();
         this.view.renderNotification(SEARCH_REQUEST_HAS_FAILED);
       });
