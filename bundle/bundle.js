@@ -12151,8 +12151,12 @@ function getVideosByKeyword(_x, _x2) {
 
 function _getVideosByKeyword() {
   _getVideosByKeyword = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee(searchKeyword, pageToken) {
+<<<<<<< HEAD
     var query, response, _response, nextPageToken, videos;
 
+=======
+    var query, response, nextPageToken, videos;
+>>>>>>> e1697c0... test: 클립 안의 버튼을 클릭시 동작 결과를 통해 보여준다.
     return regeneratorRuntime.wrap(function _callee$(_context) {
       while (1) {
         switch (_context.prev = _context.next) {
@@ -12163,6 +12167,7 @@ function _getVideosByKeyword() {
               type: 'video',
               maxResults: _constants_js__WEBPACK_IMPORTED_MODULE_0__.YOUTUBE.MAX_RESULT_COUNT,
               videoDefinition: 'high',
+<<<<<<< HEAD
               key: "AIzaSyD47VxXW1OO3UhbV33t1EfO1lP1XB2mMNc"
             };
             _context.prev = 1;
@@ -12185,6 +12190,20 @@ function _getVideosByKeyword() {
 
           case 12:
             _response = response, nextPageToken = _response.nextPageToken;
+=======
+              key: "AIzaSyBmX5TEH7eS1rqcf33gV0CWUZaQFLoN6b4"
+            };
+            _context.next = 3;
+            return fetch("https://www.googleapis.com/youtube/v3/search?".concat(parseQuery(query)).concat(pageToken ? "&pageToken=".concat(pageToken) : ''));
+
+          case 3:
+            _context.next = 5;
+            return _context.sent.json();
+
+          case 5:
+            response = _context.sent;
+            nextPageToken = response.nextPageToken;
+>>>>>>> e1697c0... test: 클립 안의 버튼을 클릭시 동작 결과를 통해 보여준다.
             videos = response.items.map(function (_ref) {
               var id = _ref.id,
                   snippet = _ref.snippet;
@@ -12200,12 +12219,20 @@ function _getVideosByKeyword() {
               videos: videos
             });
 
+<<<<<<< HEAD
           case 15:
+=======
+          case 9:
+>>>>>>> e1697c0... test: 클립 안의 버튼을 클릭시 동작 결과를 통해 보여준다.
           case "end":
             return _context.stop();
         }
       }
+<<<<<<< HEAD
     }, _callee, null, [[1, 9]]);
+=======
+    }, _callee);
+>>>>>>> e1697c0... test: 클립 안의 버튼을 클릭시 동작 결과를 통해 보여준다.
   }));
   return _getVideosByKeyword.apply(this, arguments);
 }
@@ -12233,9 +12260,17 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "YOUTUBE": () => (/* binding */ YOUTUBE),
 /* harmony export */   "SETTINGS": () => (/* binding */ SETTINGS),
 /* harmony export */   "LOCAL_STORAGE_KEY": () => (/* binding */ LOCAL_STORAGE_KEY),
+<<<<<<< HEAD
 /* harmony export */   "ALERT_MESSAGE": () => (/* binding */ ALERT_MESSAGE)
 /* harmony export */ });
 var SELECTOR_ID = Object.freeze({
+=======
+/* harmony export */   "ALERT_MESSAGE": () => (/* binding */ ALERT_MESSAGE),
+/* harmony export */   "CONFIRM_MESSAGE": () => (/* binding */ CONFIRM_MESSAGE)
+/* harmony export */ });
+var SELECTOR_ID = Object.freeze({
+  SEARCH_BUTTON: 'search-button',
+>>>>>>> e1697c0... test: 클립 안의 버튼을 클릭시 동작 결과를 통해 보여준다.
   SEARCH_FORM: 'search-form',
   SEARCH_FORM_INPUT: 'search-form__input',
   SEARCH_FORM_SUBMIT: 'search-form__submit',
@@ -12244,6 +12279,7 @@ var SELECTOR_ID = Object.freeze({
   SEARCH_RESULT_VIDEO_WRAPPER: 'search-result__video-wrapper',
   VIDEO_WRAPPER: 'video-wrapper',
   NOT_FOUND_CONTENT: 'not-found-content',
+<<<<<<< HEAD
 <<<<<<< HEAD
   SEARCH_RESULT_INTERSECTOR: 'search-result__intersector',
   SEARCH_QUERIES: 'search-queries',
@@ -12265,11 +12301,19 @@ var SELECTOR_CLASS = Object.freeze({
   SEARCH_QUERIES_CHIP: 'search-queries__chip',
   NAV_BUTTON: 'js-nav__button'
 =======
+=======
+  SERACH_RESULT_INTERSECTOR: 'search-result__intersector',
+  SEARCH_QUERIES: 'search-queries',
+  EMPTY_VIDEO_TO_WATCH: 'empty-video-to-watch'
+});
+var SELECTOR_CLASS = Object.freeze({
+>>>>>>> e1697c0... test: 클립 안의 버튼을 클릭시 동작 결과를 통해 보여준다.
   SKELETON: 'js-skeleton',
   SEARCHED_CLIP: 'js-searched-clip',
   SEARCHED_CLIP_SAVE_BUTTON: 'js-searched-clip__save-button',
   SEARCH_QUERIES_CHIP: 'js-search-queries__chip',
   CLIP: 'js-clip',
+<<<<<<< HEAD
 <<<<<<< HEAD
   CLIP_CHECK_BUTTON: 'js-clip__check-button'
 >>>>>>> 835077e... test: 체크 버튼을 누르면 본 영상으로 체크된다.
@@ -12282,6 +12326,15 @@ var STYLE_CLASS = Object.freeze({
   OPEN: 'open',
   CLOSE: 'close',
   CLICKED: 'clicked'
+=======
+  CLIP_CHECK_BUTTON: 'js-clip__check-button',
+  CLIP_DELETE_BUTTON: 'js-clip__delete-button',
+  SNACKBAR: 'js-snackbar'
+});
+var STYLE_CLASS = Object.freeze({
+  OPEN: 'open',
+  CLOSE: 'close'
+>>>>>>> e1697c0... test: 클립 안의 버튼을 클릭시 동작 결과를 통해 보여준다.
 });
 var YOUTUBE = Object.freeze({
   MAX_RESULT_COUNT: 10
@@ -12298,9 +12351,18 @@ var LOCAL_STORAGE_KEY = Object.freeze({
   LAST_QUERY: 'last_query',
   NEXT_PAGE_TOKEN: 'next_page_token'
 });
+<<<<<<< HEAD
 var ALERT_MESSAGE = {
   SAVE_LIMIT_EXCEEDED: "".concat(SETTINGS.MAX_SAVE_COUNT, "\uAC1C \uBCF4\uB2E4 \uB9CE\uC740 \uC601\uC0C1\uC744 \uC800\uC7A5\uD560 \uC218 \uC5C6\uC2B5\uB2C8\uB2E4.")
 };
+=======
+var ALERT_MESSAGE = Object.freeze({
+  SAVE_LIMIT_EXCEEDED: "".concat(SETTINGS.MAX_SAVE_COUNT, "\uAC1C \uBCF4\uB2E4 \uB9CE\uC740 \uC601\uC0C1\uC744 \uC800\uC7A5\uD560 \uC218 \uC5C6\uC2B5\uB2C8\uB2E4.")
+});
+var CONFIRM_MESSAGE = Object.freeze({
+  WATCHING_VIDEO_DELETE: '볼 영상을 정말 삭제하시겠습니까?'
+});
+>>>>>>> e1697c0... test: 클립 안의 버튼을 클릭시 동작 결과를 통해 보여준다.
 
 /***/ }),
 
@@ -12346,7 +12408,10 @@ function onVideoInteract(_ref) {
 
   if (target.classList.contains(_constants_js__WEBPACK_IMPORTED_MODULE_6__.SELECTOR_CLASS.CLIP_DELETE_BUTTON)) {
     onClipDelete(target);
+<<<<<<< HEAD
     console.log(target);
+=======
+>>>>>>> e1697c0... test: 클립 안의 버튼을 클릭시 동작 결과를 통해 보여준다.
     return;
   }
 }
@@ -12358,6 +12423,13 @@ function onClipCheck(button) {
 }
 
 function onClipDelete(button) {
+<<<<<<< HEAD
+=======
+  if (!_view_view_js__WEBPACK_IMPORTED_MODULE_1__.default.confirm(_constants_js__WEBPACK_IMPORTED_MODULE_6__.CONFIRM_MESSAGE.WATCHING_VIDEO_DELETE)) {
+    return;
+  }
+
+>>>>>>> e1697c0... test: 클립 안의 버튼을 클릭시 동작 결과를 통해 보여준다.
   var videoId = button.dataset.videoId;
   _storage_videoToWatch_js__WEBPACK_IMPORTED_MODULE_5__.default.popVideoByVideoId(videoId);
   controller.loadVideos();
@@ -12396,11 +12468,16 @@ function _onAdditionalVideosLoad() {
 }
 
 function onModalOpen() {
+<<<<<<< HEAD
   _controllerUtil_js__WEBPACK_IMPORTED_MODULE_7__.default.highlightNavButton(_elements_js__WEBPACK_IMPORTED_MODULE_0__.$searchButton);
   var savedVideoCount = _storage_videoToWatch_js__WEBPACK_IMPORTED_MODULE_5__.default.getVideos().length;
   var videos = _storage_prevSearchResult_js__WEBPACK_IMPORTED_MODULE_3__.default.getSearchedVideos();
   _view_view_js__WEBPACK_IMPORTED_MODULE_1__.default.renderSavedVideoCount(savedVideoCount);
   _view_view_js__WEBPACK_IMPORTED_MODULE_1__.default.openModal();
+=======
+  _view_view_js__WEBPACK_IMPORTED_MODULE_1__.default.openModal();
+  var videos = _storage_prevSearchResult_js__WEBPACK_IMPORTED_MODULE_3__.default.getSearchedVideos();
+>>>>>>> e1697c0... test: 클립 안의 버튼을 클릭시 동작 결과를 통해 보여준다.
 
   if (videos.length === 0) {
     return;
@@ -12411,7 +12488,10 @@ function onModalOpen() {
 }
 
 function onModalClose() {
+<<<<<<< HEAD
   _controllerUtil_js__WEBPACK_IMPORTED_MODULE_7__.default.highlightNavButton(_elements_js__WEBPACK_IMPORTED_MODULE_0__.$watchingVideoButton);
+=======
+>>>>>>> e1697c0... test: 클립 안의 버튼을 클릭시 동작 결과를 통해 보여준다.
   _view_view_js__WEBPACK_IMPORTED_MODULE_1__.default.closeModal();
 }
 
@@ -12428,7 +12508,11 @@ function _onVideoSearch() {
         switch (_context2.prev = _context2.next) {
           case 0:
             event.preventDefault();
+<<<<<<< HEAD
             input = event.target["".concat(_constants_js__WEBPACK_IMPORTED_MODULE_6__.SELECTOR_ID.SEARCH_FORM_INPUT)].value.trim();
+=======
+            input = _elements_js__WEBPACK_IMPORTED_MODULE_0__.$searchFormInput.value.trim();
+>>>>>>> e1697c0... test: 클립 안의 버튼을 클릭시 동작 결과를 통해 보여준다.
 
             if (!(input === _storage_prevSearchResult_js__WEBPACK_IMPORTED_MODULE_3__.default.getLastQuery())) {
               _context2.next = 4;
@@ -12460,7 +12544,11 @@ function _onVideoSearch() {
               break;
             }
 
+<<<<<<< HEAD
             _view_view_js__WEBPACK_IMPORTED_MODULE_1__.default.showNotFoundContent();
+=======
+            _view_view_js__WEBPACK_IMPORTED_MODULE_1__.default.showNotFountContent();
+>>>>>>> e1697c0... test: 클립 안의 버튼을 클릭시 동작 결과를 통해 보여준다.
             return _context2.abrupt("return");
 
           case 15:
@@ -12498,15 +12586,20 @@ function onSelectedVideoSave(_ref2) {
 
   _view_view_js__WEBPACK_IMPORTED_MODULE_1__.default.hideVideoSaveButton(target);
   _storage_videoToWatch_js__WEBPACK_IMPORTED_MODULE_5__.default.pushVideo(_controllerUtil_js__WEBPACK_IMPORTED_MODULE_7__.default.getNewVideo(target.dataset));
+<<<<<<< HEAD
   var videos = _storage_videoToWatch_js__WEBPACK_IMPORTED_MODULE_5__.default.getVideos();
   _view_view_js__WEBPACK_IMPORTED_MODULE_1__.default.renderSelectedVideoItems(videos);
   _view_view_js__WEBPACK_IMPORTED_MODULE_1__.default.renderSavedVideoCount(videos.length);
+=======
+  _view_view_js__WEBPACK_IMPORTED_MODULE_1__.default.renderSelectedVideoItems(_storage_videoToWatch_js__WEBPACK_IMPORTED_MODULE_5__.default.getVideos());
+>>>>>>> e1697c0... test: 클립 안의 버튼을 클릭시 동작 결과를 통해 보여준다.
 }
 
 var controller = {
   initEventListeners: function initEventListeners() {
     _controllerUtil_js__WEBPACK_IMPORTED_MODULE_7__.default.setObserver(_elements_js__WEBPACK_IMPORTED_MODULE_0__.$searchResultIntersector, onAdditionalVideosLoad);
     _elements_js__WEBPACK_IMPORTED_MODULE_0__.$searchResultVideoWrapper.addEventListener('click', onSelectedVideoSave);
+<<<<<<< HEAD
     _elements_js__WEBPACK_IMPORTED_MODULE_0__.$modalCloseButton.addEventListener('click', onModalClose);
     _elements_js__WEBPACK_IMPORTED_MODULE_0__.$searchForm.addEventListener('submit', onVideoSearch);
 <<<<<<< HEAD
@@ -12519,6 +12612,12 @@ var controller = {
 =======
     _elements_js__WEBPACK_IMPORTED_MODULE_0__.$videoWrapper.addEventListener('click', onVideoInteract);
 >>>>>>> 384485f... feat: 체크 버튼을 누르면 본 영상으로 체크된다.
+=======
+    _elements_js__WEBPACK_IMPORTED_MODULE_0__.$searchButton.addEventListener('click', onModalOpen);
+    _elements_js__WEBPACK_IMPORTED_MODULE_0__.$modalCloseButton.addEventListener('click', onModalClose);
+    _elements_js__WEBPACK_IMPORTED_MODULE_0__.$searchForm.addEventListener('submit', onVideoSearch);
+    _elements_js__WEBPACK_IMPORTED_MODULE_0__.$videoWrapper.addEventListener('click', onVideoInteract);
+>>>>>>> e1697c0... test: 클립 안의 버튼을 클릭시 동작 결과를 통해 보여준다.
   },
   initSearchQueries: function initSearchQueries() {
     _view_view_js__WEBPACK_IMPORTED_MODULE_1__.default.renderSearchQueries(_storage_searchQuery_js__WEBPACK_IMPORTED_MODULE_4__.default.getQueries());
@@ -12554,6 +12653,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _storage_searchQuery_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../storage/searchQuery.js */ "./src/storage/searchQuery.js");
 /* harmony import */ var _storage_videoToWatch_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../storage/videoToWatch.js */ "./src/storage/videoToWatch.js");
 <<<<<<< HEAD
+<<<<<<< HEAD
 /* harmony import */ var _constants_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../constants.js */ "./src/constants.js");
 /* harmony import */ var _utils_querySelector_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../utils/querySelector.js */ "./src/utils/querySelector.js");
 /* harmony import */ var _view_viewUtil_js__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../view/viewUtil.js */ "./src/view/viewUtil.js");
@@ -12561,6 +12661,10 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _storage_watchedVideo_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../storage/watchedVideo.js */ "./src/storage/watchedVideo.js");
 /* harmony import */ var _constants_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../constants.js */ "./src/constants.js");
 >>>>>>> 384485f... feat: 체크 버튼을 누르면 본 영상으로 체크된다.
+=======
+/* harmony import */ var _storage_watchedVideo_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../storage/watchedVideo.js */ "./src/storage/watchedVideo.js");
+/* harmony import */ var _constants_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../constants.js */ "./src/constants.js");
+>>>>>>> e1697c0... test: 클립 안의 버튼을 클릭시 동작 결과를 통해 보여준다.
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
 
 function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
@@ -12574,9 +12678,12 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 
 =======
 >>>>>>> 384485f... feat: 체크 버튼을 누르면 본 영상으로 체크된다.
+=======
+>>>>>>> e1697c0... test: 클립 안의 버튼을 클릭시 동작 결과를 통해 보여준다.
 var controllerUtil = {
   setObserver: function setObserver($element, callback) {
     var observer = new IntersectionObserver(function (entries) {
@@ -12624,7 +12731,11 @@ var controllerUtil = {
     _view_view_js__WEBPACK_IMPORTED_MODULE_0__.default.insertSearchedVideos(videos);
 
     if (videos.length === 0) {
+<<<<<<< HEAD
       _view_view_js__WEBPACK_IMPORTED_MODULE_0__.default.showNotFoundContent();
+=======
+      _view_view_js__WEBPACK_IMPORTED_MODULE_0__.default.showNotFountContent();
+>>>>>>> e1697c0... test: 클립 안의 버튼을 클릭시 동작 결과를 통해 보여준다.
       return;
     }
   },
@@ -12638,12 +12749,15 @@ var controllerUtil = {
     _view_view_js__WEBPACK_IMPORTED_MODULE_0__.default.showSearchResultIntersector();
   },
 <<<<<<< HEAD
+<<<<<<< HEAD
   highlightNavButton: function highlightNavButton($target) {
     (0,_utils_querySelector_js__WEBPACK_IMPORTED_MODULE_5__.$)(".".concat(_constants_js__WEBPACK_IMPORTED_MODULE_4__.SELECTOR_CLASS.NAV_BUTTON)).forEach(function ($button) {
       _view_viewUtil_js__WEBPACK_IMPORTED_MODULE_6__.default.removeStyleClass($button, _constants_js__WEBPACK_IMPORTED_MODULE_4__.STYLE_CLASS.CLICKED);
     });
     _view_viewUtil_js__WEBPACK_IMPORTED_MODULE_6__.default.addStyleClass($target, _constants_js__WEBPACK_IMPORTED_MODULE_4__.STYLE_CLASS.CLICKED);
 =======
+=======
+>>>>>>> e1697c0... test: 클립 안의 버튼을 클릭시 동작 결과를 통해 보여준다.
   sendVideoToWatchedVideos: function sendVideoToWatchedVideos(videoId) {
     var sendingVideo = _storage_videoToWatch_js__WEBPACK_IMPORTED_MODULE_3__.default.popVideoByVideoId(videoId);
 
@@ -12652,7 +12766,10 @@ var controllerUtil = {
     }
 
     _storage_watchedVideo_js__WEBPACK_IMPORTED_MODULE_4__.default.pushVideo(sendingVideo);
+<<<<<<< HEAD
 >>>>>>> 384485f... feat: 체크 버튼을 누르면 본 영상으로 체크된다.
+=======
+>>>>>>> e1697c0... test: 클립 안의 버튼을 클릭시 동작 결과를 통해 보여준다.
   },
   isVideoToWatch: function isVideoToWatch(videoId) {
     return _storage_videoToWatch_js__WEBPACK_IMPORTED_MODULE_3__.default.getVideos().some(function (video) {
@@ -12678,8 +12795,11 @@ var controllerUtil = {
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
+<<<<<<< HEAD
 /* harmony export */   "$watchingVideoButton": () => (/* binding */ $watchingVideoButton),
 /* harmony export */   "$watchedVideoButton": () => (/* binding */ $watchedVideoButton),
+=======
+>>>>>>> e1697c0... test: 클립 안의 버튼을 클릭시 동작 결과를 통해 보여준다.
 /* harmony export */   "$searchButton": () => (/* binding */ $searchButton),
 /* harmony export */   "$searchForm": () => (/* binding */ $searchForm),
 /* harmony export */   "$searchFormInput": () => (/* binding */ $searchFormInput),
@@ -12691,17 +12811,24 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "$videoWrapper": () => (/* binding */ $videoWrapper),
 /* harmony export */   "$searchQueries": () => (/* binding */ $searchQueries),
 <<<<<<< HEAD
+<<<<<<< HEAD
 /* harmony export */   "$savedVideoCount": () => (/* binding */ $savedVideoCount)
 =======
 /* harmony export */   "$emptyVideoImage": () => (/* binding */ $emptyVideoImage)
 >>>>>>> 7a84e14... feat: 볼 영상에 저장된 영상이 없으면 이를 화면상의 이미지로 알려준다.
+=======
+/* harmony export */   "$emptyVideoImage": () => (/* binding */ $emptyVideoImage)
+>>>>>>> e1697c0... test: 클립 안의 버튼을 클릭시 동작 결과를 통해 보여준다.
 /* harmony export */ });
 /* harmony import */ var _constants_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./constants.js */ "./src/constants.js");
 /* harmony import */ var _utils_querySelector_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./utils/querySelector.js */ "./src/utils/querySelector.js");
 
 
+<<<<<<< HEAD
 var $watchingVideoButton = (0,_utils_querySelector_js__WEBPACK_IMPORTED_MODULE_1__.$)("#".concat(_constants_js__WEBPACK_IMPORTED_MODULE_0__.SELECTOR_ID.WATCHING_VIDEO_BUTTON));
 var $watchedVideoButton = (0,_utils_querySelector_js__WEBPACK_IMPORTED_MODULE_1__.$)("#".concat(_constants_js__WEBPACK_IMPORTED_MODULE_0__.SELECTOR_ID.WATCHED_VIDEO_BUTTON));
+=======
+>>>>>>> e1697c0... test: 클립 안의 버튼을 클릭시 동작 결과를 통해 보여준다.
 var $searchButton = (0,_utils_querySelector_js__WEBPACK_IMPORTED_MODULE_1__.$)("#".concat(_constants_js__WEBPACK_IMPORTED_MODULE_0__.SELECTOR_ID.SEARCH_BUTTON));
 var $searchForm = (0,_utils_querySelector_js__WEBPACK_IMPORTED_MODULE_1__.$)("#".concat(_constants_js__WEBPACK_IMPORTED_MODULE_0__.SELECTOR_ID.SEARCH_FORM));
 var $searchFormInput = (0,_utils_querySelector_js__WEBPACK_IMPORTED_MODULE_1__.$)("#".concat(_constants_js__WEBPACK_IMPORTED_MODULE_0__.SELECTOR_ID.SEARCH_FORM_INPUT));
@@ -12709,6 +12836,7 @@ var $searchFormSubmit = (0,_utils_querySelector_js__WEBPACK_IMPORTED_MODULE_1__.
 var $modal = (0,_utils_querySelector_js__WEBPACK_IMPORTED_MODULE_1__.$)("#".concat(_constants_js__WEBPACK_IMPORTED_MODULE_0__.SELECTOR_ID.MODAL));
 var $modalCloseButton = (0,_utils_querySelector_js__WEBPACK_IMPORTED_MODULE_1__.$)("#".concat(_constants_js__WEBPACK_IMPORTED_MODULE_0__.SELECTOR_ID.MODAL_CLOSE_BUTTON));
 var $searchResultVideoWrapper = (0,_utils_querySelector_js__WEBPACK_IMPORTED_MODULE_1__.$)("#".concat(_constants_js__WEBPACK_IMPORTED_MODULE_0__.SELECTOR_ID.SEARCH_RESULT_VIDEO_WRAPPER));
+<<<<<<< HEAD
 var $searchResultIntersector = (0,_utils_querySelector_js__WEBPACK_IMPORTED_MODULE_1__.$)("#".concat(_constants_js__WEBPACK_IMPORTED_MODULE_0__.SELECTOR_ID.SEARCH_RESULT_INTERSECTOR));
 var $videoWrapper = (0,_utils_querySelector_js__WEBPACK_IMPORTED_MODULE_1__.$)("#".concat(_constants_js__WEBPACK_IMPORTED_MODULE_0__.SELECTOR_ID.VIDEO_WRAPPER));
 var $searchQueries = (0,_utils_querySelector_js__WEBPACK_IMPORTED_MODULE_1__.$)("#".concat(_constants_js__WEBPACK_IMPORTED_MODULE_0__.SELECTOR_ID.SEARCH_QUERIES));
@@ -12717,6 +12845,12 @@ var $savedVideoCount = (0,_utils_querySelector_js__WEBPACK_IMPORTED_MODULE_1__.$
 =======
 var $emptyVideoImage = (0,_utils_querySelector_js__WEBPACK_IMPORTED_MODULE_1__.$)("#".concat(_constants_js__WEBPACK_IMPORTED_MODULE_0__.SELECTOR_ID.EMPTY_VIDEO_TO_WATCH));
 >>>>>>> 7a84e14... feat: 볼 영상에 저장된 영상이 없으면 이를 화면상의 이미지로 알려준다.
+=======
+var $searchResultIntersector = (0,_utils_querySelector_js__WEBPACK_IMPORTED_MODULE_1__.$)("#".concat(_constants_js__WEBPACK_IMPORTED_MODULE_0__.SELECTOR_ID.SERACH_RESULT_INTERSECTOR));
+var $videoWrapper = (0,_utils_querySelector_js__WEBPACK_IMPORTED_MODULE_1__.$)("#".concat(_constants_js__WEBPACK_IMPORTED_MODULE_0__.SELECTOR_ID.VIDEO_WRAPPER));
+var $searchQueries = (0,_utils_querySelector_js__WEBPACK_IMPORTED_MODULE_1__.$)("#".concat(_constants_js__WEBPACK_IMPORTED_MODULE_0__.SELECTOR_ID.SEARCH_QUERIES));
+var $emptyVideoImage = (0,_utils_querySelector_js__WEBPACK_IMPORTED_MODULE_1__.$)("#".concat(_constants_js__WEBPACK_IMPORTED_MODULE_0__.SELECTOR_ID.EMPTY_VIDEO_TO_WATCH));
+>>>>>>> e1697c0... test: 클립 안의 버튼을 클릭시 동작 결과를 통해 보여준다.
 
 /***/ }),
 
@@ -12824,9 +12958,15 @@ var searchQuery = {
       return;
     }
 
+<<<<<<< HEAD
     var queries = searchQuery.getQueries();
     queries.push(query);
     searchQuery.setQueries(queries);
+=======
+    var quries = searchQuery.getQueries();
+    quries.push(query);
+    searchQuery.setQueries(quries);
+>>>>>>> e1697c0... test: 클립 안의 버튼을 클릭시 동작 결과를 통해 보여준다.
   }
 };
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (searchQuery);
@@ -13003,10 +13143,14 @@ function getSearchQueriesTemplate(queries) {
 }
 function getSearchQueryTemplate(query) {
 <<<<<<< HEAD
+<<<<<<< HEAD
   return "\n    <a class=\"search-queries__chip mr-1\">".concat(query, "</a>\n  ");
 =======
   return "\n    <a class=\"".concat(_constants_js__WEBPACK_IMPORTED_MODULE_0__.SELECTOR_CLASS.SEARCH_QUERIES_CHIP, " search-queries__chip mr-2\">").concat(query, "</a>\n  ");
 >>>>>>> 835077e... test: 체크 버튼을 누르면 본 영상으로 체크된다.
+=======
+  return "\n    <a class=\"".concat(_constants_js__WEBPACK_IMPORTED_MODULE_0__.SELECTOR_CLASS.SEARCH_QUERIES_CHIP, " search-queries__chip mr-2\">").concat(query, "</a>\n  ");
+>>>>>>> e1697c0... test: 클립 안의 버튼을 클릭시 동작 결과를 통해 보여준다.
 }
 
 function getSelectedVideoTemplate(videoItem) {
@@ -13062,6 +13206,7 @@ var view = {
   renderSearchQueries: function renderSearchQueries(queries) {
     _viewUtil_js__WEBPACK_IMPORTED_MODULE_3__.default.renderByElement(_elements_js__WEBPACK_IMPORTED_MODULE_0__.$searchQueries, (0,_templates_js__WEBPACK_IMPORTED_MODULE_2__.getSearchQueriesTemplate)(queries));
   },
+<<<<<<< HEAD
   renderSavedVideoCount: function renderSavedVideoCount(count) {
     _elements_js__WEBPACK_IMPORTED_MODULE_0__.$savedVideoCount.innerHTML = count;
   },
@@ -13074,15 +13219,29 @@ var view = {
     _viewUtil_js__WEBPACK_IMPORTED_MODULE_3__.default.renderByElement(_elements_js__WEBPACK_IMPORTED_MODULE_0__.$searchResultVideoWrapper, (0,_templates_js__WEBPACK_IMPORTED_MODULE_2__.getVideoListTemplate)(processedVideos));
     _viewUtil_js__WEBPACK_IMPORTED_MODULE_3__.default.showElementBySelector("#".concat(_constants_js__WEBPACK_IMPORTED_MODULE_1__.SELECTOR_ID.SERACH_RESULT_INTERSECTOR));
 >>>>>>> a0ff67b... feat: 쓰레기통 버튼으로 저장된 리스트에서 삭제할 수 있다.
+=======
+  renderSearchedVideos: function renderSearchedVideos(processedVideos) {
+    //TODO : getVideoListTemplate -> searchedVideoListTemplate
+    _viewUtil_js__WEBPACK_IMPORTED_MODULE_3__.default.renderByElement(_elements_js__WEBPACK_IMPORTED_MODULE_0__.$searchResultVideoWrapper, (0,_templates_js__WEBPACK_IMPORTED_MODULE_2__.getVideoListTemplate)(processedVideos));
+    _viewUtil_js__WEBPACK_IMPORTED_MODULE_3__.default.showElementBySelector("#".concat(_constants_js__WEBPACK_IMPORTED_MODULE_1__.SELECTOR_ID.SERACH_RESULT_INTERSECTOR));
+>>>>>>> e1697c0... test: 클립 안의 버튼을 클릭시 동작 결과를 통해 보여준다.
   },
   insertSearchedVideos: function insertSearchedVideos(processedVideos) {
     _viewUtil_js__WEBPACK_IMPORTED_MODULE_3__.default.insertByElement(_elements_js__WEBPACK_IMPORTED_MODULE_0__.$searchResultVideoWrapper, (0,_templates_js__WEBPACK_IMPORTED_MODULE_2__.getVideoListTemplate)(processedVideos));
   },
+<<<<<<< HEAD
   showNotFoundContent: function showNotFoundContent() {
     _viewUtil_js__WEBPACK_IMPORTED_MODULE_3__.default.showElementBySelector("#".concat(_constants_js__WEBPACK_IMPORTED_MODULE_1__.SELECTOR_ID.NOT_FOUND_CONTENT));
   },
   showSearchResultIntersector: function showSearchResultIntersector() {
     _viewUtil_js__WEBPACK_IMPORTED_MODULE_3__.default.showElementBySelector("#".concat(_constants_js__WEBPACK_IMPORTED_MODULE_1__.SELECTOR_ID.SEARCH_RESULT_INTERSECTOR));
+=======
+  showNotFountContent: function showNotFountContent() {
+    _viewUtil_js__WEBPACK_IMPORTED_MODULE_3__.default.showElementBySelector("#".concat(_constants_js__WEBPACK_IMPORTED_MODULE_1__.SELECTOR_ID.NOT_FOUND_CONTENT));
+  },
+  showSearchResultIntersector: function showSearchResultIntersector() {
+    _viewUtil_js__WEBPACK_IMPORTED_MODULE_3__.default.showElementBySelector("#".concat(_constants_js__WEBPACK_IMPORTED_MODULE_1__.SELECTOR_ID.SERACH_RESULT_INTERSECTOR));
+>>>>>>> e1697c0... test: 클립 안의 버튼을 클릭시 동작 결과를 통해 보여준다.
   },
   showEmptyVideoImage: function showEmptyVideoImage() {
     _viewUtil_js__WEBPACK_IMPORTED_MODULE_3__.default.showElement(_elements_js__WEBPACK_IMPORTED_MODULE_0__.$emptyVideoImage);
@@ -13098,7 +13257,24 @@ var view = {
   },
   hideEmptyVideoImage: function hideEmptyVideoImage() {
     _viewUtil_js__WEBPACK_IMPORTED_MODULE_3__.default.hideElement(_elements_js__WEBPACK_IMPORTED_MODULE_0__.$emptyVideoImage);
+<<<<<<< HEAD
   }
+=======
+  },
+  confirm: function (_confirm) {
+    function confirm(_x) {
+      return _confirm.apply(this, arguments);
+    }
+
+    confirm.toString = function () {
+      return _confirm.toString();
+    };
+
+    return confirm;
+  }(function (message) {
+    return confirm(message);
+  })
+>>>>>>> e1697c0... test: 클립 안의 버튼을 클릭시 동작 결과를 통해 보여준다.
 };
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (view);
 
@@ -13144,12 +13320,15 @@ var viewUtil = {
     }
 
     target.classList.add('removed');
+<<<<<<< HEAD
   },
   removeStyleClass: function removeStyleClass($element, removingClass) {
     $element.classList.remove(removingClass);
   },
   addStyleClass: function addStyleClass($element, removingClass) {
     $element.classList.remove(removingClass);
+=======
+>>>>>>> e1697c0... test: 클립 안의 버튼을 클릭시 동작 결과를 통해 보여준다.
   }
 };
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (viewUtil);
