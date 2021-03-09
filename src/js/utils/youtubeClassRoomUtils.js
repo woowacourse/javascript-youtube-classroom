@@ -34,8 +34,8 @@ export const saveHistoryToLocalStorage = (searchTerm) => {
 
 export const showSnackBar = ($snackbar, text) => {
   $snackbar.textContent = text;
-  $snackbar.classList.toggle('show');
+  $snackbar.classList.add('show');
   setTimeout(() => {
-    $snackbar.classList.toggle('show');
+    $snackbar.classList.remove('show');
   }, 3000);
 };
