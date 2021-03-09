@@ -46,8 +46,8 @@ describe('유튜브 강의실 관리 기능', () => {
       .first()
       .find(SELECTORS.CLIP.WATCHED_BUTTON)
       .click();
-    // TODO: watched-button 이름 바꾸기
-    cy.get(SELECTORS.MENU_BUTTON.WATCHED_ID)
+
+    cy.get('[for="watched-button"]')
       .click()
       .then(() => {
         const videos = JSON.parse(
@@ -139,8 +139,6 @@ describe('유튜브 강의실 관리 기능', () => {
       .each((clip) => {
         cy.wrap(clip).find(SELECTORS.CLIP.DELETE_BUTTON).click();
       });
-    cy.get(SELECTORS.VIDEO_LIST.NO_VIDEO_MESSAGE_CLASS)
-      .should('have.text', ERROR_MESSAGES.NO_VIDEO_ERROR)
-      .and('be.visible');
+    cy.get(SELECTORS.VIDEO_LIST.NO_VIDEO_MESSAGE_CLASS).and('be.visible');
   });
 });
