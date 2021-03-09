@@ -16,7 +16,7 @@ const setSelected = (isWatched) => {
 };
 
 export const onToggleRenderedClips = ({ target }) => {
-  if (target.dataset.js === 'navigator__search') {
+  if (target.dataset.js === 'navigator__search-button') {
     return;
   }
 
