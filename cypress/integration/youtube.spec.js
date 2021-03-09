@@ -12,9 +12,6 @@ describe('유튜브 검색 테스트', () => {
     cy.visit('http://localhost:5500/');
   });
 
-  const original = localStorage.getItem(LOCAL_STORAGE_SAVED_VIDEO_KEY);
-  localStorage.clear();
-
   it('저장된 영상이 없을 경우, 비어있다는 것을 사용자에게 알려주는 상태를 보여준다.', () => {
     cy.get('.js-empty-image').should('be.visible');
   });
@@ -27,9 +24,13 @@ describe('유튜브 검색 테스트', () => {
   it('검색 결과가 없는 경우 결과 없음 이미지와 메세지를 화면에 띄운다.', () => {
     const searchInput = 'aefasfase';
 
-    cy.get('.js-search-input').type(searchInput).type('{enter}');
-    cy.get('.chip').first().should('have.text', searchInput);
-    cy.get('.js-not-found-image').should('be.visible');
+    cy.get('.js-search-input')
+      .type(searchInput)
+      .type('{enter}')
+      .then(() => {
+        cy.get('.chip').first().should('have.text', searchInput);
+        cy.get('.js-not-found-image').should('be.visible');
+      });
   });
 
   it(`최초 검색결과는 ${NUM_OF_VIDEO_PER_FETCH}개까지만 보여준다.`, () => {
@@ -94,10 +95,11 @@ describe('유튜브 검색 테스트', () => {
 
       expect(document.querySelector('.modal') === searchResult).to.equal(true);
     });
+
+    cy.get('.js-search-modal-close-button').click();
   });
 
   it('저장된 영상 중 "볼 영상"이 있는 경우, 기본 메인 화면은 "볼 영상" 리스트를 보여준다.', () => {
-    cy.visit('http://localhost:5500/');
     cy.get('.js-saved-video-wrapper .clip').should('be.visible');
   });
 
@@ -109,7 +111,7 @@ describe('유튜브 검색 테스트', () => {
         cy.get('.js-snackbar').should('have.text', SNACKBAR_MESSAGE.CHECK_VIDEO_SUCCESS);
         cy.wrap($clip).should('not.exist');
         cy.get('.js-checked-video-button').click();
-        cy.wrap($clip).should('exist');
+        cy.get('.js-saved-video-wrapper .clip').should('have.length', 1);
       });
   });
 
@@ -118,19 +120,21 @@ describe('유튜브 검색 테스트', () => {
       .first()
       .then($clip => {
         cy.get('.js-delete-button').first().click();
+        cy.get('.js-confirm-modal').should('be.visible');
+        cy.get('.js-confirm-button').click();
         cy.get('.js-snackbar').should('have.text', SNACKBAR_MESSAGE.DELETE_SUCCESS);
         cy.wrap($clip).should('not.exist');
       });
   });
 
-  it(`저장된 동영상의 개수가 ${MAX_NUM_OF_SAVED_VIDEO}개일 때, 동영상 저장 버튼을 누르면 snackbar에 메세지를 띄운다.`, () => {
+  it(`저장된 동영상의 개수가 ${MAX_NUM_OF_SAVED_VIDEO}개일 때, 동영상 저장을 할 수 없다.`, () => {
     localStorage.clear();
-    const dummies = Array(MAX_NUM_OF_SAVED_VIDEO).fill({ id: '000', isChecked: false });
+    const dummies = {};
+    [...Array(MAX_NUM_OF_SAVED_VIDEO)].forEach((v, i) => {
+      dummies[i] = { isChecked: false };
+    });
+
     const savedVideoManager = new SavedVideoManager(dummies);
-
-    savedVideoManager.saveVideo({ id: '000', isChecked: false });
-    cy.get('.js-snackbar').should('have.text', SNACKBAR_MESSAGE.OVER_MAX_NUM_OF_SAVED_VIDEO);
+    expect(savedVideoManager.saveVideo('101010')).to.be.equal(false);
   });
-
-  localStorage.setItem(LOCAL_STORAGE_SAVED_VIDEO_KEY, original);
 });
