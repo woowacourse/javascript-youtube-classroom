@@ -6,7 +6,11 @@ import {
   localStorageGetItem,
   localStorageSetItem,
 } from '../../utils/utils.js';
-import { LOCALSTORAGE_KEYS } from '../../constants/constants.js';
+import {
+  LOCALSTORAGE_KEYS,
+  VALUES,
+  SELECTORS,
+} from '../../constants/constants.js';
 
 export default class SearchTermHistory extends Component {
   setup() {
@@ -34,7 +38,10 @@ export default class SearchTermHistory extends Component {
   }
 
   selectDOM() {
-    this.$chips = $('.chips', this.$target);
+    this.$chips = $(
+      SELECTORS.SEARCH_MODAL.SEARCH_TERM_HISTORY.CHIPS_CLASS,
+      this.$target
+    );
   }
 
   render(preStates, states) {
@@ -69,7 +76,10 @@ export default class SearchTermHistory extends Component {
 
     history.splice(indexOfSearchTerm, 1);
     history.unshift(searchTerm);
-    localStorageSetItem(LOCALSTORAGE_KEYS.SEARCH_HISTORY, history.slice(0, 3));
+    localStorageSetItem(
+      LOCALSTORAGE_KEYS.SEARCH_HISTORY,
+      history.slice(0, VALUES.MAXIMUM_SEARCH_HISTORY_COUNT)
+    );
 
     this.$props.requestVideos(searchTerm);
   }

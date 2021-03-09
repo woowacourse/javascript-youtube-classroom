@@ -10,6 +10,7 @@ import {
   updateRequestPending,
   updateVideosToBeShown,
 } from '../../redux/action.js';
+import { SELECTORS } from '../../constants/constants.js';
 
 export default class VideoSearchModal extends Component {
   constructor($target) {
@@ -40,22 +41,25 @@ export default class VideoSearchModal extends Component {
   }
 
   mount() {
-    this.videoSearchBar = new VideoSearchBar($('#video-search-bar'), {
-      requestVideos: this.requestVideos.bind(this),
-    });
+    this.videoSearchBar = new VideoSearchBar(
+      $(SELECTORS.SEARCH_MODAL.VIDEO_SEARCH_BAR.SECTION_ID),
+      { requestVideos: this.requestVideos.bind(this) }
+    );
 
-    this.searchTermHistory = new SearchTermHistory($('#search-term-history'), {
-      requestVideos: this.requestVideos.bind(this),
-    });
+    this.searchTermHistory = new SearchTermHistory(
+      $(SELECTORS.SEARCH_MODAL.SEARCH_TERM_HISTORY.SECTION_ID),
+      { requestVideos: this.requestVideos.bind(this) }
+    );
 
-    this.videoSearchResult = new VideoSearchResult($('#video-search-result'), {
-      requestVideos: this.requestVideos.bind(this),
-    });
+    this.videoSearchResult = new VideoSearchResult(
+      $(SELECTORS.SEARCH_MODAL.VIDEO_SEARCH_RESULT.SECTION_ID),
+      { requestVideos: this.requestVideos.bind(this) }
+    );
   }
 
   selectDOM() {
-    this.$modalClose = $('.modal-close');
-    this.$overlay = $('.video-search-overlay');
+    this.$modalClose = $(SELECTORS.SEARCH_MODAL.MODAL_CLOSE_BUTTON_CLASS);
+    this.$overlay = $(SELECTORS.SEARCH_MODAL.MODAL_OVERLAY_CLASS);
   }
 
   bindEvent() {

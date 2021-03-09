@@ -6,7 +6,7 @@
   justify-content: center;
 }
 
-#searched-video-wrapper {
+#searched-video-list {
   height: 60vh;
   overflow-y: auto;
 }

@@ -7,17 +7,25 @@ import {
   localStorageSetItem,
   createElement,
 } from '../../utils/utils.js';
-import { LOCALSTORAGE_KEYS } from '../../constants/constants.js';
+import {
+  LOCALSTORAGE_KEYS,
+  TYPES,
+  SELECTORS,
+  INTERSECTION_OBSERVER_OPTIONS,
+  ERROR_MESSAGES,
+  MESSAGES,
+  CLASS_NAMES,
+} from '../../constants/constants.js';
 import { store } from '../../index.js';
 import { decreaseSavedVideoCount } from '../../redux/action.js';
 
 export default class VideoList extends Component {
   setup() {
     store.subscribe(this.render.bind(this));
-    this.filter = 'watchLater';
+    this.filter = TYPES.FILTER.WATCH_LATER;
 
     const options = {
-      threshold: 0.5,
+      threshold: INTERSECTION_OBSERVER_OPTIONS.IFRAME_LOAD_THRESHOLD,
     };
     this.iframeLoadObserver = new IntersectionObserver(
       this.loadIframe,
@@ -40,7 +48,7 @@ export default class VideoList extends Component {
   }
 
   setLazyloading() {
-    const clips = $$('.clip', this.$target);
+    const clips = $$(SELECTORS.VIDEO_LIST.CLIP_CLASS, this.$target);
     clips.forEach((clip) => this.iframeLoadObserver.observe(clip));
   }
 
@@ -55,7 +63,7 @@ export default class VideoList extends Component {
           new Video({
             videoId,
             ...savedVideos[videoId],
-          }).createTemplate('management')
+          }).createTemplate(TYPES.PAGE.MANAGEMENT)
         );
       });
     }
@@ -66,7 +74,7 @@ export default class VideoList extends Component {
     const notSavedVideoMessage = createElement({
       tag: 'h2',
       classes: ['not-saved-video-message'],
-      textContent: '저장된 비디오가 없습니다.',
+      textContent: ERROR_MESSAGES.NO_VIDEO_ERROR,
     });
 
     fragment.appendChild(snackBar);
@@ -78,13 +86,13 @@ export default class VideoList extends Component {
   }
 
   selectDOM() {
-    this.$snackbar = $('#snackbar');
+    this.$snackbar = $(SELECTORS.VIDEO_LIST.SNACKBAR);
   }
 
-  setFilter(filter = 'watchLater') {
+  setFilter(filter = TYPES.FILTER.WATCH_LATER) {
     if (this.filter === filter) return;
     // TODO: 다른 메서드로 빼기
-    $$('.clip', this.$target).forEach(($clip) => {
+    $$(SELECTORS.VIDEO_LIST.CLIP_CLASS, this.$target).forEach(($clip) => {
       $clip.classList.toggle('d-none');
     });
 
@@ -94,12 +102,15 @@ export default class VideoList extends Component {
 
   showByFilter() {
     const savedVideos = localStorageGetItem(LOCALSTORAGE_KEYS.VIDEOS);
+    const isWatched = this.filter === TYPES.FILTER.WATCHED;
     const watchedVideos = Object.keys(savedVideos).filter(
-      (videoId) => savedVideos[videoId].watched === (this.filter === 'watched')
+      (videoId) => savedVideos[videoId].watched === isWatched
     );
     watchedVideos.length === 0
-      ? $('.not-saved-video-message').classList.remove('d-none')
-      : $('.not-saved-video-message').classList.add('d-none');
+      ? $(SELECTORS.VIDEO_LIST.NO_VIDEO_MESSAGE_CLASS).classList.remove(
+          'd-none'
+        )
+      : $(SELECTORS.VIDEO_LIST.NO_VIDEO_MESSAGE_CLASS).classList.add('d-none');
   }
 
   render(preStates, states) {
@@ -116,9 +127,9 @@ export default class VideoList extends Component {
       const newVideo = new Video({
         videoId: lastestVideoId,
         ...savedVideos[lastestVideoId],
-      }).createTemplate('management');
+      }).createTemplate(TYPES.PAGE.MANAGEMENT);
 
-      if (this.filter === 'watched') {
+      if (this.filter === TYPES.FILTER.WATCHED) {
         newVideo.classList.add('d-none');
       }
 
@@ -131,7 +142,7 @@ export default class VideoList extends Component {
   }
 
   onClickWatchedButton(event) {
-    const clip = event.target.closest('.clip');
+    const clip = event.target.closest(SELECTORS.VIDEO_LIST.CLIP_CLASS);
     const savedVideos = localStorageGetItem(LOCALSTORAGE_KEYS.VIDEOS);
     savedVideos[clip.dataset.videoId].watched = !savedVideos[
       clip.dataset.videoId
@@ -144,14 +155,12 @@ export default class VideoList extends Component {
   }
 
   onClickDeleteButton(event) {
-    const clip = event.target.closest('.clip');
+    const clip = event.target.closest(SELECTORS.VIDEO_LIST.CLIP_CLASS);
     const savedVideos = localStorageGetItem(LOCALSTORAGE_KEYS.VIDEOS);
     if (
-      !(
-        confirm('정말로 삭제하시겠습니까?') && savedVideos[clip.dataset.videoId]
-      )
+      !(confirm(MESSAGES.CONFIRM.DELETE) && savedVideos[clip.dataset.videoId])
     ) {
-      throw new Error('삭제에 실패했습니다.');
+      throw new Error(ERROR_MESSAGES.VIDEO_DELETE_ERROR);
     }
     delete savedVideos[clip.dataset.videoId];
     localStorageSetItem(LOCALSTORAGE_KEYS.VIDEOS, savedVideos);
@@ -170,15 +179,24 @@ export default class VideoList extends Component {
   }
 
   // TODO: 좀 더 Object literal로 바꾸기
+  // ex
+  // const ManageButtonClick = {
+  //   WATCHED_BUTTON: () => {}
+  // }
+
+  // ManageButtonClick(BUTTON_NAME);
+
   bindEvent() {
     this.$target.addEventListener('click', (event) => {
       try {
-        if (event.target.classList.contains('watched-button')) {
+        if (event.target.classList.contains(CLASS_NAMES.CLIP.WATCHED_BUTTON)) {
           this.onClickWatchedButton(event);
-          this.showSnackBar('설정이 완료되었습니다.');
-        } else if (event.target.classList.contains('delete-button')) {
+          this.showSnackBar(MESSAGES.ACTION_SUCCESS.WATCHED_STATE_SETTING);
+        } else if (
+          event.target.classList.contains(CLASS_NAMES.CLIP.DELETE_BUTTON)
+        ) {
           this.onClickDeleteButton(event);
-          this.showSnackBar('정상적으로 삭제되었습니다.');
+          this.showSnackBar(MESSAGES.ACTION_SUCCESS.DELETE);
         }
       } catch (error) {
         this.showSnackBar(error.message);

@@ -6,7 +6,14 @@ import {
   createElement,
   localStorageGetItem,
 } from '../../utils/utils.js';
-import { LOCALSTORAGE_KEYS } from '../../constants/constants.js';
+import {
+  LOCALSTORAGE_KEYS,
+  TYPES,
+  SELECTORS,
+  MAX_RESULT,
+  INTERSECTION_OBSERVER_OPTIONS,
+  VALUES,
+} from '../../constants/constants.js';
 export default class VideoSearchResult extends Component {
   setup() {
     store.subscribe(this.render.bind(this));
@@ -14,14 +21,14 @@ export default class VideoSearchResult extends Component {
       this.loadIframe.bind(this),
       this.observerOption({
         root: this.$target,
-        threshold: 1,
+        threshold: INTERSECTION_OBSERVER_OPTIONS.IFRAME_LOAD_THRESHOLD,
       })
     );
     this.requestVideoObserver = new IntersectionObserver(
       this.requestVideo.bind(this),
       this.observerOption({
         root: this.$target,
-        threshold: 0.5,
+        threshold: INTERSECTION_OBSERVER_OPTIONS.REQUEST_VIDEO_THRESHOLD,
       })
     );
   }
@@ -31,16 +38,20 @@ export default class VideoSearchResult extends Component {
         <div class="d-flex justify-end text-gray-700">
           저장된 영상 갯수 : <span id="saved-video-count">${
             Object.keys(localStorageGetItem(LOCALSTORAGE_KEYS.VIDEOS)).length
-          }</span>/100 개
+          }</span>/${VALUES.MAXIMUM_VIDEO_SAVE_COUNT} 개
         </div>
-        <section id="searched-video-wrapper" class="video-wrapper">
+        <section id="searched-video-list" class="video-wrapper">
         </section>
     `;
   }
 
   selectDOM() {
-    this.$searchedVideoWrapper = $('#searched-video-wrapper');
-    this.$savedVideoCount = $('#saved-video-count');
+    this.$savedVideoCount = $(
+      SELECTORS.SEARCH_MODAL.VIDEO_SEARCH_RESULT.SAVED_VIDEO_COUNT_ID
+    );
+    this.$searchedVideoWrapper = $(
+      SELECTORS.SEARCH_MODAL.VIDEO_SEARCH_RESULT.VIDEO_LIST_ID
+    );
   }
 
   render(preStates, states) {
@@ -79,14 +90,17 @@ export default class VideoSearchResult extends Component {
     const fragment = document.createDocumentFragment();
 
     searchedVideos.forEach((video) => {
-      fragment.appendChild(video.createTemplate('search'));
+      fragment.appendChild(video.createTemplate(TYPES.PAGE.SEARCH));
     });
 
     this.$searchedVideoWrapper.appendChild(fragment);
   }
 
   setLazyloading() {
-    const clips = $$('.clip', this.$searchedVideoWrapper);
+    const clips = $$(
+      SELECTORS.VIDEO_LIST.CLIP_CLASS,
+      this.$searchedVideoWrapper
+    );
     clips.forEach((clip) => this.iframeLoadObserver.observe(clip));
     this.requestVideoObserver.observe(clips[clips.length - 1]);
   }
@@ -134,7 +148,7 @@ export default class VideoSearchResult extends Component {
     skeleton.appendChild(line.cloneNode(true));
     skeleton.appendChild(line.cloneNode(true));
 
-    Array.from({ length: 10 }).forEach(() => {
+    Array.from({ length: MAX_RESULT }).forEach(() => {
       fragment.appendChild(skeleton.cloneNode(true));
     });
 
@@ -142,7 +156,10 @@ export default class VideoSearchResult extends Component {
   }
 
   removeSkeletons() {
-    const $skeltons = $$('.skeleton', this.$searchedVideoWrapper);
+    const $skeltons = $$(
+      SELECTORS.SEARCH_MODAL.VIDEO_SEARCH_RESULT.SKELETON_CLASS,
+      this.$searchedVideoWrapper
+    );
 
     $skeltons.forEach((skeleton) => {
       skeleton.remove();

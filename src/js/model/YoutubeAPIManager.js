@@ -1,5 +1,5 @@
 import { MY_KEY } from '../key.js';
-import { MAX_RESULT, ERROR_MESSAGE } from '../constants/constants.js';
+import { MAX_RESULT, ERROR_MESSAGES } from '../constants/constants.js';
 
 export default class YoutubeAPIManager {
   constructor() {
@@ -32,9 +32,9 @@ export default class YoutubeAPIManager {
     const res = await fetch(url).then((data) => {
       if (!data.ok) {
         if (data.status === 403) {
-          throw new Error(ERROR_MESSAGE.EXCEED_API_REQUEST_COUNT(data.status));
+          throw new Error(ERROR_MESSAGES.EXCEED_API_REQUEST_COUNT(data.status));
         }
-        throw new Error(ERROR_MESSAGE.API_REQUEST_ERROR(data.status));
+        throw new Error(ERROR_MESSAGES.API_REQUEST_ERROR(data.status));
       }
       return data.json();
     });

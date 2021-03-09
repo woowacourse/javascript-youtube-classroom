@@ -2,8 +2,10 @@ import { store } from '../index.js';
 import { increaseSavedVideoCount } from '../redux/action.js';
 import {
   VALUES,
-  ERROR_MESSAGE,
+  ERROR_MESSAGES,
   LOCALSTORAGE_KEYS,
+  CLASS_NAMES,
+  TYPES,
 } from '../constants/constants.js';
 import {
   createElement,
@@ -71,7 +73,7 @@ export default class Video {
     const savedVideos = localStorageGetItem(LOCALSTORAGE_KEYS.VIDEOS);
 
     if (Object.keys(savedVideos).length >= VALUES.MAXIMUM_VIDEO_SAVE_COUNT) {
-      alert(ERROR_MESSAGE.MAXIMUM_VIDEO_SAVE_COUNT_ERROR);
+      alert(ERROR_MESSAGES.MAXIMUM_VIDEO_SAVE_COUNT_ERROR);
 
       return;
     }
@@ -131,11 +133,11 @@ export default class Video {
     </a>`;
   }
 
-  createTemplate(pageType = 'management') {
+  createTemplate(pageType = TYPES.PAGE.MANAGEMENT) {
     const clip = createElement({ tag: 'article', classes: ['clip'] });
 
     // 초기 생성 : 볼 영상 기준
-    if (pageType === 'management' && this.watched) {
+    if (pageType === TYPES.PAGE.MANAGEMENT && this.watched) {
       clip.classList.add('d-none');
     }
 
@@ -143,7 +145,7 @@ export default class Video {
 
     const previewContainer = createElement({
       tag: 'div',
-      classes: ['preview-container'],
+      classes: [CLASS_NAMES.CLIP.PREVIEW_CONTAINER],
     });
 
     const iframe = document.createElement('iframe');
@@ -181,13 +183,13 @@ export default class Video {
     // TODO: 텍스트 인코딩 깨지는거 해결하기
     const videoTitle = createElement({
       tag: 'h3',
-      classes: ['video-title'],
+      classes: [CLASS_NAMES.CLIP.TITLE],
       textContent: this.videoTitle,
     });
 
     const channelURL = createElement({
       tag: 'a',
-      classes: ['channel-name', 'mt-1'],
+      classes: [CLASS_NAMES.CLIP.CHANNEL_NAME, 'mt-1'],
       textContent: this.channelTitle,
     });
     channelURL.href = this.channelURL;
@@ -205,7 +207,7 @@ export default class Video {
     meta.appendChild(uploadTime);
 
     const buttonContainer =
-      pageType === 'management'
+      pageType === TYPES.PAGE.MANAGEMENT
         ? this.createManagementButtonSetTemplate()
         : this.createSaveButtonTemplate();
 
@@ -229,7 +231,7 @@ export default class Video {
 
     const button = createElement({
       tag: 'button',
-      classes: ['save-btn', 'btn'],
+      classes: [CLASS_NAMES.CLIP.VIDEO_SAVE_BUTTON, 'btn'],
       textContent: '⬇️ 저장',
     });
 
@@ -247,27 +249,27 @@ export default class Video {
   createManagementButtonSetTemplate() {
     const buttonContainer = createElement({
       tag: 'span',
-      classes: ['management-buttons'],
+      classes: [CLASS_NAMES.CLIP.MANAGEMENT_BUTTONS],
     });
 
     const watchedButton = createElement({
       tag: 'button',
-      classes: ['watched-button', 'opacity-hover'],
+      classes: [CLASS_NAMES.CLIP.WATCHED_BUTTON, 'opacity-hover'],
       textContent: '✅',
     });
     const likeButton = createElement({
       tag: 'button',
-      classes: ['like-button', 'opacity-hover'],
+      classes: [CLASS_NAMES.CLIP.LIKE_BUTTON, 'opacity-hover'],
       textContent: '👍',
     });
     const commentButton = createElement({
       tag: 'button',
-      classes: ['comment-button', 'opacity-hover'],
+      classes: [CLASS_NAMES.CLIP.COMMENT_BUTTON, 'opacity-hover'],
       textContent: '💬',
     });
     const deleteButton = createElement({
       tag: 'button',
-      classes: ['delete-button', 'opacity-hover'],
+      classes: [CLASS_NAMES.CLIP.DELETE_BUTTON, 'opacity-hover'],
       textContent: '🗑️',
     });
 

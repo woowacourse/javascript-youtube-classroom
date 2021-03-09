@@ -7,7 +7,7 @@ import {
   localStorageSetItem,
   localStorageGetItem,
 } from '../utils/utils.js';
-import { LOCALSTORAGE_KEYS } from '../constants/constants.js';
+import { LOCALSTORAGE_KEYS, SELECTORS, TYPES } from '../constants/constants.js';
 
 export const youtubeAPIManager = new YoutubeAPIManager();
 export default class App {
@@ -70,23 +70,25 @@ export default class App {
   }
 
   mount() {
-    this.videoList = new VideoList($('.video-wrapper'));
-    this.viewSearchModal = new VideoSearchModal($('.modal'));
+    this.videoList = new VideoList($(SELECTORS.VIDEO_LIST.VIDEO_LIST_ID));
+    this.viewSearchModal = new VideoSearchModal(
+      $(SELECTORS.SEARCH_MODAL.MODAL_CLASS)
+    );
   }
 
   selectDOM() {
-    this.$searchButton = $('#search-button');
-    this.$watchLaterButton = $('#watch-later-button');
-    this.$watchedButton = $('#watched-button');
+    this.$watchLaterButton = $(SELECTORS.MENU_BUTTON.WATCH_LATER_ID);
+    this.$watchedButton = $(SELECTORS.MENU_BUTTON.WATCHED_ID);
+    this.$searchButton = $(SELECTORS.MENU_BUTTON.SEARCH_ID);
   }
 
   bindEvent() {
     this.$watchLaterButton.addEventListener('click', () => {
-      this.videoList.setFilter('watchLater');
+      this.videoList.setFilter(TYPES.FILTER.WATCH_LATER);
     });
 
     this.$watchedButton.addEventListener('click', () => {
-      this.videoList.setFilter('watched');
+      this.videoList.setFilter(TYPES.FILTER.WATCHED);
     });
 
     this.$searchButton.addEventListener('click', () =>
