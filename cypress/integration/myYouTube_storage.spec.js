@@ -18,7 +18,7 @@ describe('simba-tube', () => {
     cy.get('#modal-search-button').click();
   };
 
-  it('저장한 동영상이 100개 이상이면 alert 창을 보여준다.', () => {
+  it('저장한 동영상이 100개 이상이면 alert 창과 snackbar를 보여준다.', () => {
     searchVideo('bts');
 
     cy.get('#saved-video-count').should('have.text', 100);
@@ -28,5 +28,8 @@ describe('simba-tube', () => {
       'be.calledWith',
       '동영상 저장은 최대 100개까지 가능합니다',
     );
+
+    cy.get('#snackbar').should('be.visible');
+    cy.get('#snackbar').should('have.text', '동영상 저장에 실패했읍니다');
   });
 });

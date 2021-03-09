@@ -92,6 +92,9 @@ describe('simba-tube', () => {
 
     cy.get('#saved-video-count').should('have.text', 1);
     cy.get('#main-videos').find('.clip').should('have.length', 1);
+
+    cy.get('#snackbar').should('be.visible');
+    cy.get('#snackbar').should('have.text', '동영상이 저장되었읍니다');
   });
 
   it('최근 검색어 클릭 시 해당 검색어로 검색을 한다.', () => {
