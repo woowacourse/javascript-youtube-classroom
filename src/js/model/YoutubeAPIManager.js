@@ -1,4 +1,4 @@
-import { MY_KEY } from '../key.js';
+// import { MY_KEY } from '../key.js';
 import { VALUES, ERROR_MESSAGES } from '../constants/constants.js';
 
 export default class YoutubeAPIManager {
@@ -13,12 +13,13 @@ export default class YoutubeAPIManager {
   }
 
   createRequestURL() {
-    const requestURL = `https://www.googleapis.com/youtube/v3/search?`;
+    // const requestURL = `https://www.googleapis.com/youtube/v3/search?`;
+    const requestURL = `https://wonderful-leavitt-5e0985.netlify.app/youtube/search?`;
     const searchParams = new URLSearchParams({
       part: 'snippet',
       type: 'video',
       q: this.searchTerm,
-      key: MY_KEY,
+      // key: MY_KEY,
       maxResults: VALUES.MAXIMUM_SEARCH_VIDEO_COUNT,
     });
 

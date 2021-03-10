@@ -11,6 +11,7 @@ import {
   createElement,
   localStorageGetItem,
   localStorageSetItem,
+  unescapeString,
 } from '../utils/utils.js';
 
 export default class Video {
@@ -24,9 +25,9 @@ export default class Video {
     watched = false,
   }) {
     this.videoId = videoId;
-    this.videoTitle = videoTitle;
+    this.videoTitle = unescapeString(videoTitle);
     this.videoEmbedURL = this.createVideoEmbedURL();
-    this.channelTitle = channelTitle;
+    this.channelTitle = unescapeString(channelTitle);
     this.channelId = channelId;
     this.channelURL = this.createChannelURL();
     this.uploadTime = this.createVideoUploadDate(publishedAt);
@@ -188,7 +189,6 @@ export default class Video {
       classes: ['d-flex', 'flex-col', 'video-info'],
     });
 
-    // TODO: 텍스트 인코딩 깨지는거 해결하기
     const videoTitle = createElement({
       tag: 'h3',
       classes: [CLASS_NAMES.CLIP.TITLE],
