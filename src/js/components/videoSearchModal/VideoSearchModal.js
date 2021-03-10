@@ -79,6 +79,12 @@ export default class VideoSearchModal extends Component {
   onModalShow() {
     $('body').classList.add('overflow-hidden');
     this.$target.classList.add('open');
+
+    const latestSearchTerm = store.getStates().searchHistory[0];
+
+    if (latestSearchTerm) {
+      this.requestVideos(latestSearchTerm);
+    }
     this.videoSearchBar.$videoSearchInput.focus();
   }
 
@@ -88,6 +94,7 @@ export default class VideoSearchModal extends Component {
   }
 
   requestVideos(searchTerm) {
+    console.log('hello?');
     if (searchTerm) {
       store.dispatch(addSearchHistory(searchTerm));
       youtubeAPIManager.setSearchTerm(searchTerm);
