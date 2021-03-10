@@ -18,6 +18,8 @@ function handleVideoSave($saveButton) {
 }
 
 function handleVideoSaveCancel($saveCancelButton) {
+  if (!window.confirm('저장을 취소하시겠습니까?')) return;
+
   cancelVideoSave($saveCancelButton.closest('.js-video'));
   toggleSaveButton($saveCancelButton);
   showSnackBar('저장을 취소하였습니다.');

@@ -9,6 +9,8 @@ function handleWatchedButton($target) {
 }
 
 function handleDeleteButton($target) {
+  if (!window.confirm('해당 영상을 삭제하시겠습니까?')) return;
+
   const targetId = $target.closest('.js-video').dataset.videoId;
 
   videoInfos.remove(targetId);
