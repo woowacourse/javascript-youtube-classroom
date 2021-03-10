@@ -2,3 +2,19 @@
 .w-100 {
   width: 100%;
 }
+
+.w-70 {
+  width: 70%;
+}
+
+.h-100 {
+  height: 100%;
+}
+
+.vh-60 {
+  height: 60vh;
+}
+
+.vh-70 {
+  height: 70vh;
+}
