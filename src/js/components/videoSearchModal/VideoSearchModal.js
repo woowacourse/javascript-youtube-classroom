@@ -94,7 +94,6 @@ export default class VideoSearchModal extends Component {
   }
 
   requestVideos(searchTerm) {
-    console.log('hello?');
     if (searchTerm) {
       store.dispatch(addSearchHistory(searchTerm));
       youtubeAPIManager.setSearchTerm(searchTerm);
