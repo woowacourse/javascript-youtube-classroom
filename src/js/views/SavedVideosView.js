@@ -74,4 +74,14 @@ export default class SavedVideosView extends View {
     const packButton = $(`[data-video-${buttonType}='${videoId}']`);
     packButton.toggleClass('opacity-hover');
   }
+
+  showSavedVideosAll() {
+    $('#main-videos > article').show();
+  }
+
+  showWatchedVideosOnly(unWatchedVideoIds) {
+    unWatchedVideoIds.forEach((unWatchedVideoId) => {
+      $(`[data-article='${unWatchedVideoId}']`).hide();
+    });
+  }
 }

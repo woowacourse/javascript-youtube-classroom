@@ -63,12 +63,18 @@ export default class YoutubeController {
   }
 
   focusSavedTab() {
-    // TODO: saved tab 이동 시 기능 구현
     this.updateNavTab($('#saved-btn'));
+    this.savedVideosView.showSavedVideosAll();
   }
 
   focusWatchedTab() {
-    // TODO: watched tab 이동 시 기능 구현
+    const savedVideoIds = this.store.state.savedVideoIds;
+    const watchedVideoIds = this.store.state.watchedVideoIds;
+    const unWatchedVideoIds = savedVideoIds.filter(
+      (videoId) => !watchedVideoIds.includes(videoId),
+    );
+
+    this.savedVideosView.showWatchedVideosOnly(unWatchedVideoIds);
     this.updateNavTab($('#watched-btn'));
   }
 
