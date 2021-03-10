@@ -1,28 +1,37 @@
 import ClassroomModel from '../models/ClassroomModel.js';
-import ClassroomView from '../views/ClassroomView.js';
-import { isWatchedMenu, isWatchingMenu } from './elementValidator.js';
+import { isWatchingMenu } from './elementValidator.js';
 
 export default class ClassroomController {
-  constructor() {
+  constructor({ classroomView }) {
     this.model = new ClassroomModel();
-    this.view = new ClassroomView();
+    this.view = classroomView;
   }
 
   init() {
-    this.attachEvents();
     this.onShowClassroom();
   }
 
   onShowClassroom() {
-    const $nav = this.view.$classroomNav;
-
-    if (isWatchedMenu($nav) && this.model.isOnlyWatchingVideoSaved()) {
-      this.view.renderNoWatchedVideo();
+    if (isWatchingMenu(this.view.$savedVideos)) {
+      this.showWatchingMenuContents();
       return;
     }
-    if (isWatchingMenu($nav) && this.model.hasNoWatchingVideoSaved()) {
+    this.showWatchedMenuContents();
+  }
+
+  showWatchingMenuContents() {
+    if (this.model.hasNoWatchingVideoSaved()) {
       this.view.renderNoWatchingVideo();
       return;
     }
+    this.view.renderWatchingVideo();
+  }
+
+  showWatchedMenuContents() {
+    if (this.model.isOnlyWatchingVideoSaved()) {
+      this.view.renderNoWatchedVideo();
+      return;
+    }
+    this.view.renderWatchedVideo();
   }
 }

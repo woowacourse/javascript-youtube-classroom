@@ -25,6 +25,7 @@ describe('저장된 비디오 관리 기능 테스트', () => {
     cy.get('#search-button').click();
     cy.get('#search-keyword-input').type(KEYWORD);
     cy.get('#search-keyword-form').submit();
+
     cy.get('.save-button').each(($el) => {
       $el.click();
       cy.wait(500);

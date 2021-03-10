@@ -60,9 +60,11 @@ export default class SearchModel {
     this.totalSearchResult.push(...newSearchResult);
   }
 
-  saveVideo(targetId) {
-    const targetVideo = this.totalSearchResult.find((video) => video.videoId === targetId);
+  getTargetVideoData(targetId) {
+    return this.totalSearchResult.find((video) => video.videoId === targetId);
+  }
 
+  saveVideo(targetVideo) {
     targetVideo.isSaved = true;
     insertItemByKey(KEY_VIDEOS_WATCHING, targetVideo);
   }

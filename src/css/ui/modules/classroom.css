@@ -1,0 +1,15 @@
+.watching-section .watching {
+  display: block;
+}
+
+.watching-section .watched {
+  display: none;
+}
+
+.watched-section .watched {
+  display: block;
+}
+
+.watched-section .watching {
+  display: none;
+}
