@@ -122,4 +122,14 @@ describe('Youtube classroom test', () => {
     cy.get('.js-video .js-watched-button').click();
     cy.get('#video-list #empty-video-list').should('exist');
   });
+
+  it('영상 카드의 `삭제 버튼`을 눌렀을 때, 저장 영상 목록에서 삭제한다.', () => {
+    cy.get('#search-button').click();
+    cy.get('#video-search-input').type('로이드1');
+    cy.get('#video-search-submit').click();
+    cy.get('.js-save-button').eq(0).click();
+    cy.reload();
+    cy.get('.js-video .js-delete-button').click();
+    cy.get('#video-list #empty-video-list').should('exist');
+  });
 });
