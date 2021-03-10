@@ -14,6 +14,11 @@ describe('simba-tube', () => {
     cy.get('#modal-search-button').click();
   };
 
+  const popSnackbar = (message) => {
+    cy.get('#snackbar').should('be.visible');
+    cy.get('#snackbar').should('have.text', message);
+  };
+
   it('저장한 동영상이 100개 이상이면 alert 창과 snackbar를 보여준다.', () => {
     setLocalStorage(Array(100).fill('mock-a1b2'));
     cy.window().then((win) => cy.stub(win, 'alert').as('windowAlert'));
@@ -32,7 +37,7 @@ describe('simba-tube', () => {
   });
 
   it('✅ 본 영상을 체크하면 버튼의 투명도가 바뀌고, snackbar를 띄운다.', () => {
-    setLocalStorage(['vRXZj0DzXIA', 'I3U0QAXeOW4', 'BS7tz2rAOSA']); // 블랙핑크 아이스크림, 데이식스 예뻤어
+    setLocalStorage(['vRXZj0DzXIA', 'I3U0QAXeOW4', 'BS7tz2rAOSA']);
 
     cy.get(`[data-video-watched='vRXZj0DzXIA']`)
       .click()
@@ -40,10 +45,24 @@ describe('simba-tube', () => {
         cy.wrap(button).should('have.css', 'opacity', '1');
       });
 
-    cy.get('#snackbar').should('be.visible');
-    cy.get('#snackbar').should(
-      'have.text',
-      '동영상이 본 영상 목록에 추가되었읍니다',
-    );
+    popSnackbar('동영상이 본 영상 목록에 추가되었읍니다');
+  });
+
+  it('🗑️ 버튼 클릭 시 사용자에게 정말 삭제할 것인지 물어보는 alert가 나오고, 동의 시 snackbar를 띄운다.', () => {
+    setLocalStorage(['vRXZj0DzXIA', 'I3U0QAXeOW4', 'BS7tz2rAOSA']);
+
+    const confirmStub = cy.stub();
+    cy.on('window:confirm', confirmStub);
+
+    cy.get(`[data-video-delete='vRXZj0DzXIA']`)
+      .click()
+      .then(() => {
+        expect(confirmStub.getCall(0)).to.be.calledWith(
+          '동영상을 삭제하시겠읍니까?',
+        );
+      });
+
+    cy.on('window:confirm', () => true);
+    popSnackbar('동영상이 삭제되었읍니다');
   });
 });
