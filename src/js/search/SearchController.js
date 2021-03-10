@@ -20,16 +20,6 @@ export default class SearchController {
     this.searchView.addSkeletonUITemplate(VIDEOS.SKELETON_REPEAT_NUMBER);
   }
 
-  searchVideos(searchKeyword) {
-    searchHistory.resetPageToken();
-    this.updateSearchResultView(searchKeyword);
-  }
-
-  searchVideosByHistory(searchKeyword) {
-    this.searchView.setSearchInputValue(searchKeyword);
-    this.searchVideos(searchKeyword);
-  }
-
   activateSearchLoading() {
     this.searchView.resetSearchResults();
     loadingSearchResults.resetLoadCount();
@@ -89,8 +79,31 @@ export default class SearchController {
     searchHistory.setPageToken(this.nextPageToken);
   }
 
+  showSavedVideoCount() {
+    this.searchView.showSavedVideoCount();
+  }
+
+  updateKeywordHistory() {
+    this.searchView.showKeywordHistory();
+  }
+
+  removeKeywordHistoryChip(keyword) {
+    searchHistory.removeKeyword(keyword);
+    this.updateKeywordHistory();
+  }
+
+  searchVideos(searchKeyword) {
+    searchHistory.resetPageToken();
+    this.updateSearchResultView(searchKeyword);
+  }
+
   async addVideosByScroll() {
     await this.updateSearchResultView(searchHistory.getKeyword());
+  }
+
+  searchVideosByHistory(searchKeyword) {
+    this.searchView.setSearchInputValue(searchKeyword);
+    this.searchVideos(searchKeyword);
   }
 
   saveVideo(videoId) {
@@ -103,18 +116,5 @@ export default class SearchController {
     videos.removeSavedVideo(videoId);
     this.searchView.showSaveButton(videoId);
     this.showSavedVideoCount();
-  }
-
-  showSavedVideoCount() {
-    this.searchView.showSavedVideoCount();
-  }
-
-  removeKeywordHistoryChip(keyword) {
-    searchHistory.removeKeyword(keyword);
-    this.updateKeywordHistory();
-  }
-
-  updateKeywordHistory() {
-    this.searchView.showKeywordHistory();
   }
 }
