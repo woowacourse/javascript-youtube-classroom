@@ -75,3 +75,9 @@ label.menu-btn {
   position: absolute;
   object-fit: contain;
 }
+
+fieldset {
+  border: none;
+  padding: 0;
+  margin: 0;
+}

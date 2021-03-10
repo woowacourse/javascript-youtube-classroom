@@ -22,7 +22,7 @@ export default class VideoSearchModal extends Component {
     this.$target.innerHTML = `
     <div class="video-search-overlay w-100"></div>
     <div class="modal-inner p-8">
-        <button class="modal-close">
+        <button class="modal-close" aria-label="검색창 닫기">
           <svg viewbox="0 0 40 40">
             <path class="close-x" d="M 10,10 L 30,30 M 30,10 L 10,30" />
           </svg>

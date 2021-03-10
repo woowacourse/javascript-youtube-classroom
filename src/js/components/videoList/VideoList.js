@@ -60,7 +60,8 @@ export default class VideoList extends Component {
       classes: ['not-saved-video-image'],
     });
 
-    notSavedVideoImage.src = './src/images/status/no_saved_video.jpg';
+    notSavedVideoImage.src =
+      './src/images/status/youtube_no_saved_image_light.jpeg';
     notSavedVideoImage.alt = 'no_saved_video';
 
     fragment.appendChild(notSavedVideoImage);

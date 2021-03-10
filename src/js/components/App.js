@@ -50,14 +50,14 @@ export default class App {
     <div class="d-flex justify-center mt-5 w-100">
     <div class="w-100">
       <header class="my-4">
-        <h2 class="text-center font-bold">👩🏻‍💻 나만의 유튜브 강의실 👨🏻‍💻</h2>
+        <h1 class="text-center font-bold">👩🏻‍💻 나만의 유튜브 강의실 👨🏻‍💻</h1>
         <nav id="menu-buttons" class="d-flex justify-between">  
-        <div>  
-          <input type="radio" name="menu" id="watch-later-button" class="d-none" value="👁️ 볼 영상" checked/>
+          <fieldset id="menu">  
+            <input type="radio" name="menu" id="watch-later-button" class="d-none" value="👁️ 볼 영상" checked/>
             <label for="watch-later-button" class="d-inline-block btn menu-btn text-base">👁️ 볼 영상</label>
             <input type="radio" name="menu" id="watched-button" class="d-none" value="✅ 본 영상"/>
             <label for="watched-button" class="d-inline-block btn menu-btn mx-1 text-base">✅ 본 영상</label>
-          </div>
+          </fieldset>
         <div class="d-flex">
           <button id="search-button" class="btn menu-btn text-base" type="button">🔍 동영상 검색</button>
         </div>
@@ -68,7 +68,7 @@ export default class App {
         </section>
       </main>
     </div>
-    <div class="modal">
+    <div class="modal" role="dialog" aria-modal="true">
     </div>
     <div id="snackbar"></div>
   </div>`;

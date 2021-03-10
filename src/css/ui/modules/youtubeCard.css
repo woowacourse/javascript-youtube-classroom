@@ -1,13 +1,13 @@
 .video-wrapper {
   display: grid;
-  grid-template-columns: repeat(4, auto);
+  grid-template-columns: repeat(4, 1fr);
   grid-row-gap: 32px;
   grid-column-gap: 8px;
   justify-content: space-between;
 }
 
 #searched-video-list {
-  grid-template-columns: repeat(4, auto);
+  grid-template-columns: repeat(4, 1fr);
   grid-column-gap: 6px;
   height: 60vh;
   overflow-y: auto;
