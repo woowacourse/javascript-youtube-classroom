@@ -11,7 +11,7 @@
 
 #modal.open {
   display: flex;
-  animation: fadeIn 0.5s forwards;
+  animation: fade-in 0.5s forwards;
 }
 
 .modal-inner {

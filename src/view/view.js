@@ -5,8 +5,15 @@ import {
   $videoWrapper,
   $savedVideoCount,
   $emptyVideoImage,
+  $snackbarWrapper,
 } from '../elements.js';
-import { STYLE_CLASS, SELECTOR_ID, SELECTOR_CLASS } from '../constants.js';
+import {
+  STYLE_CLASS,
+  SELECTOR_ID,
+  SELECTOR_CLASS,
+  ANIMATION_CLASS,
+  SETTINGS,
+} from '../constants.js';
 import {
   getVideoListTemplate,
   getSkeletonListTemplate,
@@ -29,16 +36,13 @@ const view = {
     view.renderSkeletonItems();
   },
 
-  renderSelectedVideoItems(videos) {
-    $videoWrapper.innerHTML = getSelectedVideoListTemplate(videos);
-  },
-
   renderSkeletonItems() {
     viewUtil.renderByElement(
       $searchResultVideoWrapper,
       getSkeletonListTemplate()
     );
   },
+
   renderSelectedVideoItems(videos) {
     viewUtil.renderByElement(
       $videoWrapper,
@@ -55,16 +59,6 @@ const view = {
   },
 
   renderSearchedVideos(processedVideos) {
-<<<<<<< HEAD
-    view.insertVideoItems(processedVideos);
-    viewUtil.showElementBySelector(`#${SELECTOR_ID.SEARCH_RESULT_INTERSECTOR}`);
-  },
-
-  insertVideoItems(videos) {
-    $searchResultVideoWrapper.insertAdjacentHTML(
-      'beforeend',
-      getVideoListTemplate(videos)
-=======
     //TODO : getVideoListTemplate -> searchedVideoListTemplate
     viewUtil.renderByElement(
       $searchResultVideoWrapper,
@@ -73,10 +67,9 @@ const view = {
     viewUtil.showElementBySelector(`#${SELECTOR_ID.SERACH_RESULT_INTERSECTOR}`);
   },
   insertSearchedVideos(processedVideos) {
-    viewUtil.insertByElement(
+    viewUtil.insertHTML(
       $searchResultVideoWrapper,
       getVideoListTemplate(processedVideos)
->>>>>>> a0ff67b... feat: 쓰레기통 버튼으로 저장된 리스트에서 삭제할 수 있다.
     );
   },
 
@@ -87,11 +80,35 @@ const view = {
   showSearchResultIntersector() {
     viewUtil.showElementBySelector(`#${SELECTOR_ID.SEARCH_RESULT_INTERSECTOR}`);
   },
+
   showEmptyVideoImage() {
     viewUtil.showElement($emptyVideoImage);
   },
+
   showMessage(message) {
     alert(message);
+  },
+
+  showSnackbar(message, isSuccess) {
+    // TODO : make snackbar => 붙이고 => setTimeout 걸기
+    // TODO : inserBy => insertTo
+    const $snackbar = view.createSnackbar(message, isSuccess);
+    viewUtil.insertElement($snackbarWrapper, $snackbar);
+    setTimeout(() => {
+      viewUtil.deleteElement($snackbarWrapper, $snackbar);
+    }, SETTINGS.SNACKBAR_PERSISTENT_MILLISEC);
+  },
+
+  createSnackbar(message, isSuccess) {
+    const $snackbar = document.createElement('div');
+    $snackbar.className = `
+      ${SELECTOR_CLASS.SNACKBAR} 
+      ${STYLE_CLASS.SNACKBAR} 
+      ${isSuccess ? STYLE_CLASS.SUCCESS : STYLE_CLASS.FAIL}
+      ${ANIMATION_CLASS.FADE_IN_AND_OUT}
+    `;
+    $snackbar.innerText = message;
+    return $snackbar;
   },
 
   hideSkeletons() {
@@ -101,12 +118,15 @@ const view = {
   hideVideoSaveButton(target) {
     viewUtil.hideElement(target);
   },
+
   hideEmptyVideoImage() {
     viewUtil.hideElement($emptyVideoImage);
   },
+
   confirm(message) {
     return confirm(message);
   },
+
 };
 
 export default view;

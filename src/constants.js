@@ -16,6 +16,7 @@ export const SELECTOR_ID = Object.freeze({
   SEARCH_BUTTON: 'search-button',
 
   EMPTY_VIDEO_TO_WATCH: 'empty-video-to-watch',
+  SNACKBAR_WRAPPER: 'snackbar-wrapper',
 });
 
 export const SELECTOR_CLASS = Object.freeze({
@@ -37,6 +38,13 @@ export const STYLE_CLASS = Object.freeze({
   CLOSE: 'close',
 
   CLICKED: 'clicked',
+  SUCCESS: 'success',
+  FAIL: 'fail',
+  SNACKBAR: 'snackbar',
+});
+
+export const ANIMATION_CLASS = Object.freeze({
+  FADE_IN_AND_OUT: 'fade-in-and-out',
 });
 
 export const YOUTUBE = Object.freeze({
@@ -46,6 +54,7 @@ export const YOUTUBE = Object.freeze({
 export const SETTINGS = Object.freeze({
   MAX_SAVE_COUNT: 100,
   MAX_SAVED_SEARCH_QUERY_COUNT: 3,
+  SNACKBAR_PERSISTENT_MILLISEC: 3000,
 });
 
 export const LOCAL_STORAGE_KEY = Object.freeze({
@@ -57,10 +66,13 @@ export const LOCAL_STORAGE_KEY = Object.freeze({
   NEXT_PAGE_TOKEN: 'next_page_token',
 });
 
-export const ALERT_MESSAGE = Object.freeze({
-  SAVE_LIMIT_EXCEEDED: `${SETTINGS.MAX_SAVE_COUNT}개 보다 많은 영상을 저장할 수 없습니다.`,
-});
-
 export const CONFIRM_MESSAGE = Object.freeze({
   WATCHING_VIDEO_DELETE: '볼 영상을 정말 삭제하시겠습니까?',
+});
+
+export const SNACKBAR_MESSAGE = Object.freeze({
+  WATCHED_VIDEO_CHECK_SUCCESS: '본 영상으로 저장되었습니다.',
+  WATCHING_VIDEO_DELETE_SUCCESS: '볼 영상에서 삭제되었습니다.',
+  WATCHING_VIDEO_SAVE_SUCCESS: '볼 영상으로 저장되었습니다.',
+  SAVE_LIMIT_EXCEEDED: `${SETTINGS.MAX_SAVE_COUNT}개 보다 많은 영상을 저장할 수 없습니다.`,
 });

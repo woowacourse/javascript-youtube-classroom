@@ -12168,6 +12168,7 @@ function _getVideosByKeyword() {
               maxResults: _constants_js__WEBPACK_IMPORTED_MODULE_0__.YOUTUBE.MAX_RESULT_COUNT,
               videoDefinition: 'high',
 <<<<<<< HEAD
+<<<<<<< HEAD
               key: "AIzaSyD47VxXW1OO3UhbV33t1EfO1lP1XB2mMNc"
             };
             _context.prev = 1;
@@ -12192,6 +12193,9 @@ function _getVideosByKeyword() {
             _response = response, nextPageToken = _response.nextPageToken;
 =======
               key: "AIzaSyBmX5TEH7eS1rqcf33gV0CWUZaQFLoN6b4"
+=======
+              key: "AIzaSyByhqLFGJ7zfUEWkVJirkfddqG-27i43mM"
+>>>>>>> 620ac11... feat: 클립 안의 버튼을 클릭시 동작 결과를 통해 보여준다.
             };
             _context.next = 3;
             return fetch("https://www.googleapis.com/youtube/v3/search?".concat(parseQuery(query)).concat(pageToken ? "&pageToken=".concat(pageToken) : ''));
@@ -12257,9 +12261,11 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "SELECTOR_ID": () => (/* binding */ SELECTOR_ID),
 /* harmony export */   "SELECTOR_CLASS": () => (/* binding */ SELECTOR_CLASS),
 /* harmony export */   "STYLE_CLASS": () => (/* binding */ STYLE_CLASS),
+/* harmony export */   "ANIMATION_CLASS": () => (/* binding */ ANIMATION_CLASS),
 /* harmony export */   "YOUTUBE": () => (/* binding */ YOUTUBE),
 /* harmony export */   "SETTINGS": () => (/* binding */ SETTINGS),
 /* harmony export */   "LOCAL_STORAGE_KEY": () => (/* binding */ LOCAL_STORAGE_KEY),
+<<<<<<< HEAD
 <<<<<<< HEAD
 /* harmony export */   "ALERT_MESSAGE": () => (/* binding */ ALERT_MESSAGE)
 /* harmony export */ });
@@ -12267,6 +12273,10 @@ var SELECTOR_ID = Object.freeze({
 =======
 /* harmony export */   "ALERT_MESSAGE": () => (/* binding */ ALERT_MESSAGE),
 /* harmony export */   "CONFIRM_MESSAGE": () => (/* binding */ CONFIRM_MESSAGE)
+=======
+/* harmony export */   "CONFIRM_MESSAGE": () => (/* binding */ CONFIRM_MESSAGE),
+/* harmony export */   "SNACKBAR_MESSAGE": () => (/* binding */ SNACKBAR_MESSAGE)
+>>>>>>> 620ac11... feat: 클립 안의 버튼을 클릭시 동작 결과를 통해 보여준다.
 /* harmony export */ });
 var SELECTOR_ID = Object.freeze({
   SEARCH_BUTTON: 'search-button',
@@ -12304,7 +12314,8 @@ var SELECTOR_CLASS = Object.freeze({
 =======
   SERACH_RESULT_INTERSECTOR: 'search-result__intersector',
   SEARCH_QUERIES: 'search-queries',
-  EMPTY_VIDEO_TO_WATCH: 'empty-video-to-watch'
+  EMPTY_VIDEO_TO_WATCH: 'empty-video-to-watch',
+  SNACKBAR_WRAPPER: 'snackbar-wrapper'
 });
 var SELECTOR_CLASS = Object.freeze({
 >>>>>>> e1697c0... test: 클립 안의 버튼을 클릭시 동작 결과를 통해 보여준다.
@@ -12333,15 +12344,26 @@ var STYLE_CLASS = Object.freeze({
 });
 var STYLE_CLASS = Object.freeze({
   OPEN: 'open',
+<<<<<<< HEAD
   CLOSE: 'close'
 >>>>>>> e1697c0... test: 클립 안의 버튼을 클릭시 동작 결과를 통해 보여준다.
+=======
+  CLOSE: 'close',
+  SUCCESS: 'success',
+  FAIL: 'fail',
+  SNACKBAR: 'snackbar'
+});
+var ANIMATION_CLASS = Object.freeze({
+  FADE_IN_AND_OUT: 'fade-in-and-out'
+>>>>>>> 620ac11... feat: 클립 안의 버튼을 클릭시 동작 결과를 통해 보여준다.
 });
 var YOUTUBE = Object.freeze({
   MAX_RESULT_COUNT: 10
 });
 var SETTINGS = Object.freeze({
   MAX_SAVE_COUNT: 100,
-  MAX_SAVED_SEARCH_QUERY_COUNT: 3
+  MAX_SAVED_SEARCH_QUERY_COUNT: 3,
+  SNACKBAR_PERSISTENT_MILLISEC: 3000
 });
 var LOCAL_STORAGE_KEY = Object.freeze({
   PREVIOUS_SEARCH_VIDEOS: 'previous_search_videos',
@@ -12351,6 +12373,7 @@ var LOCAL_STORAGE_KEY = Object.freeze({
   LAST_QUERY: 'last_query',
   NEXT_PAGE_TOKEN: 'next_page_token'
 });
+<<<<<<< HEAD
 <<<<<<< HEAD
 var ALERT_MESSAGE = {
   SAVE_LIMIT_EXCEEDED: "".concat(SETTINGS.MAX_SAVE_COUNT, "\uAC1C \uBCF4\uB2E4 \uB9CE\uC740 \uC601\uC0C1\uC744 \uC800\uC7A5\uD560 \uC218 \uC5C6\uC2B5\uB2C8\uB2E4.")
@@ -12363,6 +12386,17 @@ var CONFIRM_MESSAGE = Object.freeze({
   WATCHING_VIDEO_DELETE: '볼 영상을 정말 삭제하시겠습니까?'
 });
 >>>>>>> e1697c0... test: 클립 안의 버튼을 클릭시 동작 결과를 통해 보여준다.
+=======
+var CONFIRM_MESSAGE = Object.freeze({
+  WATCHING_VIDEO_DELETE: '볼 영상을 정말 삭제하시겠습니까?'
+});
+var SNACKBAR_MESSAGE = Object.freeze({
+  WATCHED_VIDEO_CHECK_SUCCESS: '본 영상으로 저장되었습니다.',
+  WATCHING_VIDEO_DELETE_SUCCESS: '볼 영상에서 삭제되었습니다.',
+  WATCHING_VIDEO_SAVE_SUCCESS: '볼 영상으로 저장되었습니다.',
+  SAVE_LIMIT_EXCEEDED: "".concat(SETTINGS.MAX_SAVE_COUNT, "\uAC1C \uBCF4\uB2E4 \uB9CE\uC740 \uC601\uC0C1\uC744 \uC800\uC7A5\uD560 \uC218 \uC5C6\uC2B5\uB2C8\uB2E4.")
+});
+>>>>>>> 620ac11... feat: 클립 안의 버튼을 클릭시 동작 결과를 통해 보여준다.
 
 /***/ }),
 
@@ -12420,6 +12454,7 @@ function onClipCheck(button) {
   var videoId = button.dataset.videoId;
   _controllerUtil_js__WEBPACK_IMPORTED_MODULE_7__.default.sendVideoToWatchedVideos(videoId);
   controller.loadVideos();
+  _view_view_js__WEBPACK_IMPORTED_MODULE_1__.default.showSnackbar(_constants_js__WEBPACK_IMPORTED_MODULE_6__.SNACKBAR_MESSAGE.WATCHED_VIDEO_CHECK_SUCCESS, true);
 }
 
 function onClipDelete(button) {
@@ -12433,6 +12468,7 @@ function onClipDelete(button) {
   var videoId = button.dataset.videoId;
   _storage_videoToWatch_js__WEBPACK_IMPORTED_MODULE_5__.default.popVideoByVideoId(videoId);
   controller.loadVideos();
+  _view_view_js__WEBPACK_IMPORTED_MODULE_1__.default.showSnackbar(_constants_js__WEBPACK_IMPORTED_MODULE_6__.SNACKBAR_MESSAGE.WATCHING_VIDEO_DELETE_SUCCESS, true);
 }
 
 function onAdditionalVideosLoad() {
@@ -12576,7 +12612,7 @@ function onSelectedVideoSave(_ref2) {
   }
 
   if (_storage_videoToWatch_js__WEBPACK_IMPORTED_MODULE_5__.default.getVideos().length === _constants_js__WEBPACK_IMPORTED_MODULE_6__.SETTINGS.MAX_SAVE_COUNT) {
-    _view_view_js__WEBPACK_IMPORTED_MODULE_1__.default.showMessage(_constants_js__WEBPACK_IMPORTED_MODULE_6__.ALERT_MESSAGE.SAVE_LIMIT_EXCEEDED);
+    _view_view_js__WEBPACK_IMPORTED_MODULE_1__.default.showSnackbar(_constants_js__WEBPACK_IMPORTED_MODULE_6__.SNACKBAR_MESSAGE.SAVE_LIMIT_EXCEEDED, false);
     return;
   }
 
@@ -12592,7 +12628,11 @@ function onSelectedVideoSave(_ref2) {
   _view_view_js__WEBPACK_IMPORTED_MODULE_1__.default.renderSavedVideoCount(videos.length);
 =======
   _view_view_js__WEBPACK_IMPORTED_MODULE_1__.default.renderSelectedVideoItems(_storage_videoToWatch_js__WEBPACK_IMPORTED_MODULE_5__.default.getVideos());
+<<<<<<< HEAD
 >>>>>>> e1697c0... test: 클립 안의 버튼을 클릭시 동작 결과를 통해 보여준다.
+=======
+  _view_view_js__WEBPACK_IMPORTED_MODULE_1__.default.showSnackbar(_constants_js__WEBPACK_IMPORTED_MODULE_6__.SNACKBAR_MESSAGE.WATCHING_VIDEO_SAVE_SUCCESS, true);
+>>>>>>> 620ac11... feat: 클립 안의 버튼을 클릭시 동작 결과를 통해 보여준다.
 }
 
 var controller = {
@@ -12812,6 +12852,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "$searchQueries": () => (/* binding */ $searchQueries),
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 /* harmony export */   "$savedVideoCount": () => (/* binding */ $savedVideoCount)
 =======
 /* harmony export */   "$emptyVideoImage": () => (/* binding */ $emptyVideoImage)
@@ -12819,6 +12860,10 @@ __webpack_require__.r(__webpack_exports__);
 =======
 /* harmony export */   "$emptyVideoImage": () => (/* binding */ $emptyVideoImage)
 >>>>>>> e1697c0... test: 클립 안의 버튼을 클릭시 동작 결과를 통해 보여준다.
+=======
+/* harmony export */   "$emptyVideoImage": () => (/* binding */ $emptyVideoImage),
+/* harmony export */   "$snackbarWrapper": () => (/* binding */ $snackbarWrapper)
+>>>>>>> 620ac11... feat: 클립 안의 버튼을 클릭시 동작 결과를 통해 보여준다.
 /* harmony export */ });
 /* harmony import */ var _constants_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./constants.js */ "./src/constants.js");
 /* harmony import */ var _utils_querySelector_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./utils/querySelector.js */ "./src/utils/querySelector.js");
@@ -12850,7 +12895,11 @@ var $searchResultIntersector = (0,_utils_querySelector_js__WEBPACK_IMPORTED_MODU
 var $videoWrapper = (0,_utils_querySelector_js__WEBPACK_IMPORTED_MODULE_1__.$)("#".concat(_constants_js__WEBPACK_IMPORTED_MODULE_0__.SELECTOR_ID.VIDEO_WRAPPER));
 var $searchQueries = (0,_utils_querySelector_js__WEBPACK_IMPORTED_MODULE_1__.$)("#".concat(_constants_js__WEBPACK_IMPORTED_MODULE_0__.SELECTOR_ID.SEARCH_QUERIES));
 var $emptyVideoImage = (0,_utils_querySelector_js__WEBPACK_IMPORTED_MODULE_1__.$)("#".concat(_constants_js__WEBPACK_IMPORTED_MODULE_0__.SELECTOR_ID.EMPTY_VIDEO_TO_WATCH));
+<<<<<<< HEAD
 >>>>>>> e1697c0... test: 클립 안의 버튼을 클릭시 동작 결과를 통해 보여준다.
+=======
+var $snackbarWrapper = (0,_utils_querySelector_js__WEBPACK_IMPORTED_MODULE_1__.$)("#".concat(_constants_js__WEBPACK_IMPORTED_MODULE_0__.SELECTOR_ID.SNACKBAR_WRAPPER));
+>>>>>>> 620ac11... feat: 클립 안의 버튼을 클릭시 동작 결과를 통해 보여준다.
 
 /***/ }),
 
@@ -13227,7 +13276,7 @@ var view = {
 >>>>>>> e1697c0... test: 클립 안의 버튼을 클릭시 동작 결과를 통해 보여준다.
   },
   insertSearchedVideos: function insertSearchedVideos(processedVideos) {
-    _viewUtil_js__WEBPACK_IMPORTED_MODULE_3__.default.insertByElement(_elements_js__WEBPACK_IMPORTED_MODULE_0__.$searchResultVideoWrapper, (0,_templates_js__WEBPACK_IMPORTED_MODULE_2__.getVideoListTemplate)(processedVideos));
+    _viewUtil_js__WEBPACK_IMPORTED_MODULE_3__.default.insertHTML(_elements_js__WEBPACK_IMPORTED_MODULE_0__.$searchResultVideoWrapper, (0,_templates_js__WEBPACK_IMPORTED_MODULE_2__.getVideoListTemplate)(processedVideos));
   },
 <<<<<<< HEAD
   showNotFoundContent: function showNotFoundContent() {
@@ -13248,6 +13297,21 @@ var view = {
   },
   showMessage: function showMessage(message) {
     alert(message);
+  },
+  showSnackbar: function showSnackbar(message, isSuccess) {
+    // TODO : make snackbar => 붙이고 => setTimeout 걸기
+    // TODO : inserBy => insertTo
+    var $snackbar = view.createSnackbar(message, isSuccess);
+    _viewUtil_js__WEBPACK_IMPORTED_MODULE_3__.default.insertElement(_elements_js__WEBPACK_IMPORTED_MODULE_0__.$snackbarWrapper, $snackbar);
+    setTimeout(function () {
+      _viewUtil_js__WEBPACK_IMPORTED_MODULE_3__.default.deleteElement(_elements_js__WEBPACK_IMPORTED_MODULE_0__.$snackbarWrapper, $snackbar);
+    }, _constants_js__WEBPACK_IMPORTED_MODULE_1__.SETTINGS.SNACKBAR_PERSISTENT_MILLISEC);
+  },
+  createSnackbar: function createSnackbar(message, isSuccess) {
+    var $snackbar = document.createElement('div');
+    $snackbar.className = "\n      ".concat(_constants_js__WEBPACK_IMPORTED_MODULE_1__.SELECTOR_CLASS.SNACKBAR, " \n      ").concat(_constants_js__WEBPACK_IMPORTED_MODULE_1__.STYLE_CLASS.SNACKBAR, " \n      ").concat(isSuccess ? _constants_js__WEBPACK_IMPORTED_MODULE_1__.STYLE_CLASS.SUCCESS : _constants_js__WEBPACK_IMPORTED_MODULE_1__.STYLE_CLASS.FAIL, "\n      ").concat(_constants_js__WEBPACK_IMPORTED_MODULE_1__.ANIMATION_CLASS.FADE_IN_AND_OUT, "\n    ");
+    $snackbar.innerText = message;
+    return $snackbar;
   },
   hideSkeletons: function hideSkeletons() {
     _viewUtil_js__WEBPACK_IMPORTED_MODULE_3__.default.hideElementBySelector(".".concat(_constants_js__WEBPACK_IMPORTED_MODULE_1__.SELECTOR_CLASS.SKELETON));
@@ -13297,17 +13361,20 @@ var viewUtil = {
   renderByElement: function renderByElement($element, htmlString) {
     $element.innerHTML = htmlString;
   },
-  insertByElement: function insertByElement($element, htmlString) {
-    $element.insertAdjacentHTML('beforeend', htmlString);
+  insertElement: function insertElement($target, $element) {
+    $target.insertAdjacentElement('beforeend', $element);
+  },
+  insertHTML: function insertHTML($target, htmlString) {
+    $target.insertAdjacentHTML('beforeend', htmlString);
   },
   showElement: function showElement($element) {
     $element.classList.remove('removed');
   },
-  hideElement: function hideElement($element) {
-    $element.classList.add('removed');
-  },
   showElementBySelector: function showElementBySelector(selector) {
     (0,_utils_querySelector_js__WEBPACK_IMPORTED_MODULE_0__.$)(selector).classList.remove('removed');
+  },
+  hideElement: function hideElement($element) {
+    $element.classList.add('removed');
   },
   hideElementBySelector: function hideElementBySelector(selector) {
     var target = (0,_utils_querySelector_js__WEBPACK_IMPORTED_MODULE_0__.$)(selector);
@@ -13321,6 +13388,7 @@ var viewUtil = {
 
     target.classList.add('removed');
 <<<<<<< HEAD
+<<<<<<< HEAD
   },
   removeStyleClass: function removeStyleClass($element, removingClass) {
     $element.classList.remove(removingClass);
@@ -13329,6 +13397,11 @@ var viewUtil = {
     $element.classList.remove(removingClass);
 =======
 >>>>>>> e1697c0... test: 클립 안의 버튼을 클릭시 동작 결과를 통해 보여준다.
+=======
+  },
+  deleteElement: function deleteElement($target, $element) {
+    $target.removeChild($element);
+>>>>>>> 620ac11... feat: 클립 안의 버튼을 클릭시 동작 결과를 통해 보여준다.
   }
 };
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (viewUtil);

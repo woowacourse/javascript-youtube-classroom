@@ -4,19 +4,25 @@ const viewUtil = {
   renderByElement($element, htmlString) {
     $element.innerHTML = htmlString;
   },
-  insertByElement($element, htmlString) {
-    $element.insertAdjacentHTML('beforeend', htmlString);
+
+  insertElement($target, $element) {
+    $target.insertAdjacentElement('beforeend', $element);
   },
+
+  insertHTML($target, htmlString) {
+    $target.insertAdjacentHTML('beforeend', htmlString);
+  },
+
   showElement($element) {
     $element.classList.remove('removed');
   },
 
-  hideElement($element) {
-    $element.classList.add('removed');
-  },
-
   showElementBySelector(selector) {
     $(selector).classList.remove('removed');
+  },
+
+  hideElement($element) {
+    $element.classList.add('removed');
   },
 
   hideElementBySelector(selector) {
@@ -36,8 +42,11 @@ const viewUtil = {
 
   addStyleClass($element, removingClass) {
     $element.classList.remove(removingClass);
-  }
+  },
 
+  deleteElement($target, $element) {
+    $target.removeChild($element);
+  },
 };
 
 export default viewUtil;
