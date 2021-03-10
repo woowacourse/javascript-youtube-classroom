@@ -16,9 +16,9 @@ const watchedVideo = {
     setLocalStorageItem(LOCAL_STORAGE_KEY.WATCHED_VIDEOS, videos);
   },
   pushVideo(newVideo) {
-    const videosToWatch = watchedVideo.getVideos();
-    videosToWatch.push(newVideo);
-    watchedVideo.setVideos(videosToWatch);
+    const watchingVideos = watchedVideo.getVideos();
+    watchingVideos.push(newVideo);
+    watchedVideo.setVideos(watchingVideos);
   },
   popVideoByVideoId(videoId) {
     const videos = watchedVideo.getVideos();

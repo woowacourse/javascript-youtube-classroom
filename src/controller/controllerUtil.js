@@ -1,9 +1,9 @@
-import view from '../view/view.js';
 import prevSearchResult from '../storage/prevSearchResult.js';
 import searchQuery from '../storage/searchQuery.js';
-import videoToWatch from '../storage/videoToWatch.js';
+import watchingVideo from '../storage/watchingVideo.js';
 import watchedVideo from '../storage/watchedVideo.js';
 import { SETTINGS } from '../constants.js';
+import modalView from '../view/modalView.js';
 
 const controllerUtil = {
   setObserver($element, callback) {
@@ -20,7 +20,7 @@ const controllerUtil = {
     return videos.map(video => ({
       ...video,
       isSaved:
-        controllerUtil.isVideoToWatch(video.videoId) ||
+        controllerUtil.isWatchingVideo(video.videoId) ||
         controllerUtil.isWatchedVideo(video.videoId),
     }));
   },
@@ -48,37 +48,37 @@ const controllerUtil = {
     searchQuery.setQueries(filteredQueries);
   },
   loadAdditionalVideos(videos) {
-    view.insertSearchedVideos(videos);
+    modalView.insertSearchedVideos(videos);
     if (videos.length === 0) {
-      view.showNotFountContent();
+      modalView.showNotFountImage();
       return;
     }
   },
   loadSearchResult(videos) {
-    view.renderSearchQueries(searchQuery.getQueries());
-    view.renderSearchedVideos(controllerUtil.getProcessedVideos(videos));
+    modalView.renderSearchQueries(searchQuery.getQueries());
+    modalView.renderSearchedVideos(controllerUtil.getProcessedVideos(videos));
   },
   loadPrevSearchedVideos(videos) {
     const processedVideos = controllerUtil.getProcessedVideos(videos);
-    view.renderSearchedVideos(processedVideos);
-    view.showSearchResultIntersector();
+    modalView.renderSearchedVideos(processedVideos);
+    modalView.showSearchResultIntersector();
   },
-  sendVideoToWatchedVideos(videoId) {
-    const sendingVideo = videoToWatch.popVideoByVideoId(videoId);
+  sendWatchingVideoedVideos(videoId) {
+    const sendingVideo = watchingVideo.popVideoByVideoId(videoId);
     if (!sendingVideo) {
       return;
     }
     watchedVideo.pushVideo(sendingVideo);
   },
-  sendVideoToWatchingVideos(videoId) {
+  sendWatchingVideoingVideos(videoId) {
     const sendingVideo = watchedVideo.popVideoByVideoId(videoId);
     if (!sendingVideo) {
       return;
     }
-    videoToWatch.pushVideo(sendingVideo);
+    watchingVideo.pushVideo(sendingVideo);
   },
-  isVideoToWatch(videoId) {
-    return videoToWatch.getVideos().some(video => video.videoId === videoId);
+  isWatchingVideo(videoId) {
+    return watchingVideo.getVideos().some(video => video.videoId === videoId);
   },
   isWatchedVideo(videoId) {
     return watchedVideo.getVideos().some(video => video.videoId === videoId);

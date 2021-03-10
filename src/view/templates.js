@@ -4,9 +4,9 @@ export function getVideoListTemplate(videos) {
   return videos.map(getSearchedVideoTemplate).join('');
 }
 
-export function getSelectedVideoListTemplate(videos, isWatched) {
+export function getWatchingVideoListTemplate(videos, isWatched) {
   return videos
-    .map(video => getSelectedVideoTemplate(video, isWatched))
+    .map(video => getWatchingVideoTemplate(video, isWatched))
     .join('');
 }
 
@@ -20,7 +20,7 @@ export function getSearchQueryTemplate(query) {
   `;
 }
 
-function getSelectedVideoTemplate(videoItem, isWatched) {
+function getWatchingVideoTemplate(videoItem, isWatched) {
   return `
   <article class="${SELECTOR_CLASS.CLIP} clip">
     <div class="clip__preview">

@@ -1,8 +1,9 @@
+// TODO : storage => storageModel 로 분리
 export function setLocalStorageItem(key, item) {
   if (!isKey(key)) {
     return;
   }
-  localStorage.setItem(key, JSON.stringify(item));
+  setLocalStorageItem(key, JSON.stringify(item));
 }
 
 export function getLocalStorageItem(key) {

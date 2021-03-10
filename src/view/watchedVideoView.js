@@ -1,15 +1,27 @@
-import { $watchingVideoWrapper } from '../elements';
-import { getSelectedVideoListTemplate } from './templates';
+import {
+  $emptyWatchedVideo,
+  $watchedVideoWrapper,
+  $watchingVideoWrapper,
+} from '../elements';
+import { getWatchingVideoListTemplate } from './templates';
 import viewUtil from './viewUtil';
 
 const watchedVideoView = {
-  // TODO : Item 없애기
-  renderWatchedVideoItems(videos) {
-    viewUtil.renderByElement($watchingVideoWrapper, '');
-    viewUtil.renderByElement(
-      $watchingVideoWrapper,
-      getSelectedVideoListTemplate(videos)
+  renderWatchedVideo(videos) {
+    viewUtil.renderHTML($watchingVideoWrapper, '');
+    viewUtil.renderHTML(
+      $watchedVideoWrapper,
+      getWatchingVideoListTemplate(videos, true)
     );
+  },
+  eraseWatchedVideo() {
+    viewUtil.renderHTML($watchedVideoWrapper, '');
+  },
+  showEmptyWatchedVideo() {
+    viewUtil.showElement($emptyWatchedVideo);
+  },
+  hideEmptyWatchedVideo() {
+    viewUtil.hideElement($emptyWatchedVideo);
   },
 };
 

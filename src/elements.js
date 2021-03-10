@@ -17,7 +17,7 @@ export const $watchingVideoWrapper = $(
   `#${SELECTOR_ID.WATCHING_VIDEO_WRAPPER}`
 );
 export const $searchQueries = $(`#${SELECTOR_ID.SEARCH_QUERIES}`);
-export const $emptyVideoToWatch = $(`#${SELECTOR_ID.EMPTY_VIDEO_TO_WATCH}`);
+export const $emptyWatchingVideo = $(`#${SELECTOR_ID.EMPTY_VIDEO_TO_WATCH}`);
 export const $emptyWatchedVideo = $(`#${SELECTOR_ID.EMPTY_WATCHED_VIDEO}`);
 export const $snackbarWrapper = $(`#${SELECTOR_ID.SNACKBAR_WRAPPER}`);
 export const $watchedVideoWrapper = $(`#${SELECTOR_ID.WATCHED_VIDEO_WRAPPER}`);

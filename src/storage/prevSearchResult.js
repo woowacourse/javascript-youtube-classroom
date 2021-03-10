@@ -1,5 +1,8 @@
 import { LOCAL_STORAGE_KEY } from '../constants.js';
-import { getLocalStorageItem } from './localStorageUtil.js';
+import {
+  getLocalStorageItem,
+  setLocalStorageItem,
+} from './localStorageUtil.js';
 
 const prevSearchResult = {
   getLastQuery() {
@@ -15,19 +18,18 @@ const prevSearchResult = {
   },
 
   setLastQuery(value) {
-    //TODO setLocalStorageItem 사용해야함
-    localStorage.setItem(LOCAL_STORAGE_KEY.LAST_QUERY, JSON.stringify(value));
+    setLocalStorageItem(LOCAL_STORAGE_KEY.LAST_QUERY, JSON.stringify(value));
   },
 
   setNextPageToken(value) {
-    localStorage.setItem(
+    setLocalStorageItem(
       LOCAL_STORAGE_KEY.NEXT_PAGE_TOKEN,
       JSON.stringify(value)
     );
   },
 
   setVideos(videos) {
-    localStorage.setItem(
+    setLocalStorageItem(
       LOCAL_STORAGE_KEY.PREVIOUS_SEARCH_VIDEOS,
       JSON.stringify(videos)
     );
