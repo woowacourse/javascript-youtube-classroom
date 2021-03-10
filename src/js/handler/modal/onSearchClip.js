@@ -32,7 +32,7 @@ const getRecentKeywords = (keyword) => {
 };
 
 const isEmpty = (value) => {
-  return value.trim('').length < 1;
+  return value.trim().length < 1;
 };
 
 const renderResult = (videoItems) => {
@@ -71,6 +71,7 @@ const searchRequest = async (keyword) => {
 
   if (isEmpty(keyword)) {
     snackbar(MESSAGE.ERROR.EMPTY_KEYWORD);
+    return;
   }
 
   $DOM.SEARCH_MODAL.VIDEO_WRAPPER.innerHTML = '';
