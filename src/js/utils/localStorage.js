@@ -12,7 +12,10 @@ export function updateRecentChips(keyword) {
   }
 
   recentKeywords.unshift(keyword);
-  localStorage.setItem(STORE_KEYS.RECENT_KEYWORDS, recentKeywords);
+  localStorage.setItem(
+    STORE_KEYS.RECENT_KEYWORDS,
+    JSON.stringify(recentKeywords),
+  );
 
   return recentKeywords;
 }
@@ -23,7 +26,10 @@ export function updateSavedVideoIds(videoId) {
   if (savedVideoIds.includes(videoId)) return;
 
   savedVideoIds.push(videoId);
-  localStorage.setItem(STORE_KEYS.SAVED_VIDEO_IDS, savedVideoIds);
+  localStorage.setItem(
+    STORE_KEYS.SAVED_VIDEO_IDS,
+    JSON.stringify(savedVideoIds),
+  );
 
   return savedVideoIds;
 }
@@ -34,9 +40,9 @@ export function updateWatchedVideoIds(videoId) {
 
 export function getStorageData(str, defaultValue = []) {
   try {
-    const items = localStorage.getItem(str);
+    const items = JSON.parse(localStorage.getItem(str));
 
-    if (items) return items.split(',');
+    if (items) return items;
   } catch (e) {
     return defaultValue;
   }
