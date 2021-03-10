@@ -7,42 +7,41 @@ import {
 } from '../templates/search-template.js';
 
 class SearchView {
+  constructor() {
+    this.$searchVideoWrapper = $(SELECTOR.SEARCH_VIDEO_WRAPPER);
+    this.$myVideoInfosSection = $(SELECTOR.MY_VIDEO_INFOS);
+    this.$recentKeywordsSection = $(SELECTOR.RECENT_KEYWORDS);
+    this.$searchNotFound = $(SELECTOR.SEARCH_NOT_FOUND);
+  }
+
   renderVideoArticle = (info, save) => {
-    const $searchVideoWrapper = $(SELECTOR.SEARCH_VIDEO_WRAPPER);
-    $searchVideoWrapper.append(
+    this.$searchVideoWrapper.append(
       parseDOMFromString(searchVideoTemplate(info, save))
     );
   };
 
   toggleNotFound = show => {
-    const $searchNotFound = $(SELECTOR.SEARCH_NOT_FOUND);
-    if (show) {
-      $searchNotFound.classList.remove('hide');
-    } else {
-      $searchNotFound.classList.add('hide');
-    }
+    show
+      ? this.$searchNotFound.classList.remove('hide')
+      : this.$searchNotFound.classList.add('hide');
   };
 
   renderSkeletonArticles = () => {
-    const $searchVideoWrapper = $(SELECTOR.SEARCH_VIDEO_WRAPPER);
-    $searchVideoWrapper.innerHTML = videoSkeletonTemplate().repeat(
+    this.$searchVideoWrapper.innerHTML = videoSkeletonTemplate().repeat(
       SEARCH.FETCH_VIDEO_LENGTH
     );
   };
 
   renderRecentKeywordSection = keywords => {
-    const $recentKeywordsSection = $(SELECTOR.RECENT_KEYWORDS);
-    $recentKeywordsSection.innerHTML = recentKeywordsTemplate(keywords);
+    this.$recentKeywordsSection.innerHTML = recentKeywordsTemplate(keywords);
   };
 
   renderSavedVideoCountSection = length => {
-    const $myVideoInfosSection = $(SELECTOR.MY_VIDEO_INFOS);
-    $myVideoInfosSection.innerHTML = myVideoInfosTemplate(length);
+    this.$myVideoInfosSection.innerHTML = myVideoInfosTemplate(length);
   };
 
   resetView = () => {
-    const $searchVideoWrapper = $(SELECTOR.SEARCH_VIDEO_WRAPPER);
-    $searchVideoWrapper.innerHTML = '';
+    this.$searchVideoWrapper.innerHTML = '';
     this.toggleNotFound(false);
   };
 }

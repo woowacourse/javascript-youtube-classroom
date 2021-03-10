@@ -4,42 +4,41 @@ import {
   videoNotFoundTemplate,
 } from '../templates/video-template.js';
 class SavedView {
+  constructor() {
+    this.$savedVideoWrapper = $('#saved-video-wrapper');
+  }
+
   renderNotFoundSavedVideo() {
-    const $savedVideoWrapper = $('#saved-video-wrapper');
-    $savedVideoWrapper.innerHTML = videoNotFoundTemplate();
+    this.$savedVideoWrapper.innerHTML = videoNotFoundTemplate();
   }
 
   // TODO : 개선해보기..
   renderSavedVideos(infos) {
     this.resetSavedVideos();
-    const $savedVideoWrapper = $('#saved-video-wrapper');
     infos.forEach(info => {
-      $savedVideoWrapper.innerHTML += savedVideoTemplate(info);
+      this.$savedVideoWrapper.innerHTML += savedVideoTemplate(info);
     });
   }
 
   appendSavedVideo(info) {
-    const $savedVideoWrapper = $('#saved-video-wrapper');
-    if ($savedVideoWrapper.firstElementChild.id === 'saved-not-found') {
+    if (this.$savedVideoWrapper.firstElementChild.id === 'saved-not-found') {
       this.resetSavedVideos();
     }
 
-    $savedVideoWrapper.appendChild(
+    this.$savedVideoWrapper.appendChild(
       parseDOMFromString(savedVideoTemplate(info))
     );
   }
 
   resetSavedVideos() {
-    const $savedVideoWrapper = $('#saved-video-wrapper');
-    $savedVideoWrapper.innerHTML = ``;
+    this.$savedVideoWrapper.innerHTML = ``;
   }
 
   hideSelectedVideo(target) {
-    const $savedVideoWrapper = $('#saved-video-wrapper');
-    $savedVideoWrapper.removeChild(target.closest('.clip'));
+    this.$savedVideoWrapper.removeChild(target.closest('.clip'));
 
-    if ($savedVideoWrapper.children.length === 0) {
-      $savedVideoWrapper.innerHTML = videoNotFoundTemplate();
+    if (this.$savedVideoWrapper.children.length === 0) {
+      this.$savedVideoWrapper.innerHTML = videoNotFoundTemplate();
     }
   }
 }
