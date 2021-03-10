@@ -1,4 +1,11 @@
-import { VIDEOS_TO_WATCH, VIDEOS_WATCHED } from '../../src/js/constants';
+import {
+  VIDEOS_TO_WATCH,
+  VIDEOS_WATCHED,
+  VIDEO_IS_MOVED_TO_WATCHED_MENU,
+  VIDEO_IS_MOVED_TO_WATCHING_MENU,
+  VIDEO_IS_REMOVED,
+  REQUEST_HAS_FAILED,
+} from '../../src/js/constants';
 import { $$ } from '../../src/js/utils/DOM';
 
 describe('저장된 비디오 관리 기능 테스트', () => {
@@ -35,15 +42,30 @@ describe('저장된 비디오 관리 기능 테스트', () => {
     });
   });
 
-  it('영상 카드의 시청완료 체크버튼을 클릭하면, 해당 영상이 시청중인 영상에서 시청완료 영상으로 옮겨진다.', () => {
+  it('[시청 중인 영상] 메뉴에서 영상 카드의 시청완료 체크버튼을 클릭하면, 해당 영상이 시청중인 영상에서 시청완료 영상으로 옮겨진다.', () => {
     cy.get('.js-stored-videos .watching')
       .eq(0)
       .then(($el) => {
         cy.wrap($el).get('.js-check-button').click();
 
+        cy.get('.js-snackbar').contains(VIDEO_IS_MOVED_TO_WATCHED_MENU);
         cy.wrap($el).should('have.class', 'watched');
         cy.wrap($el).should('not.be.visible');
         cy.get('.js-watched-menu-button').click();
+        cy.wrap($el).should('be.visible');
+      });
+  });
+
+  it('[시청 완료 영상] 메뉴에서 영상 카드의 시청완료 체크버튼을 해제하면, 해당 영상이 시청완료 영상에서 시청중인 영상으로 옮겨진다.', () => {
+    cy.get('.js-stored-videos .watched')
+      .eq(0)
+      .then(($el) => {
+        cy.wrap($el).get('.js-check-button').click();
+
+        cy.get('.js-snackbar').contains(VIDEO_IS_MOVED_TO_WATCHING_MENU);
+        cy.wrap($el).should('have.class', 'watching');
+        cy.wrap($el).should('not.be.visible');
+        cy.get('.js-watching-menu-button').click();
         cy.wrap($el).should('be.visible');
       });
   });
