@@ -21,9 +21,7 @@ class SearchView {
   };
 
   toggleNotFound = show => {
-    show
-      ? this.$searchNotFound.classList.remove('hide')
-      : this.$searchNotFound.classList.add('hide');
+    this.$searchNotFound.classList.toggle('hide', !show);
   };
 
   renderSkeletonArticles = () => {

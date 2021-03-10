@@ -25,6 +25,7 @@ class ModalController {
     this.#searchView.renderRecentKeywordSection(
       this.#storageModel.recentKeywords
     );
+    // this.#searchView.toggleNotFound(true);
   };
 
   onModalShow = () => {
