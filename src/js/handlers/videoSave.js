@@ -1,28 +1,33 @@
-import { EXCEED_SAVED_VIDEO_COUNT_MSG } from '../constants/alertMessage.js';
+import {
+  EXCEED_SAVED_VIDEO_COUNT_MSG,
+  SAVE_SUCCESS_MSG,
+  SAVE_CANCEL_SUCCESS_MSG,
+} from '../constants/snackbarMessage.js';
 import { MAX_SAVED_VIDEO_COUNT } from '../constants/classroom.js';
 import { cancelVideoSave, saveVideo } from '../service.js';
 import videoInfos from '../states/videoInfos.js';
 import { showSnackBar } from '../viewControllers/app.js';
 import { toggleSaveButton } from '../viewControllers/searchModal.js';
+import { VIDEO_SAVE_CANCEL_CONFIRM_MSG } from '../constants/confirmMessage.js';
 
 function handleVideoSave($saveButton) {
   if (videoInfos.size >= MAX_SAVED_VIDEO_COUNT) {
-    alert(EXCEED_SAVED_VIDEO_COUNT_MSG);
+    showSnackBar(EXCEED_SAVED_VIDEO_COUNT_MSG);
 
     return;
   }
 
   saveVideo($saveButton.closest('.js-video'));
   toggleSaveButton($saveButton);
-  showSnackBar('성공적으로 저장하였습니다.');
+  showSnackBar(SAVE_SUCCESS_MSG);
 }
 
 function handleVideoSaveCancel($saveCancelButton) {
-  if (!window.confirm('저장을 취소하시겠습니까?')) return;
+  if (!window.confirm(VIDEO_SAVE_CANCEL_CONFIRM_MSG)) return;
 
   cancelVideoSave($saveCancelButton.closest('.js-video'));
   toggleSaveButton($saveCancelButton);
-  showSnackBar('저장을 취소하였습니다.');
+  showSnackBar(SAVE_CANCEL_SUCCESS_MSG);
 }
 
 function videoSaveManager({ target }) {
