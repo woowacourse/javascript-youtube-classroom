@@ -12,8 +12,11 @@ export const parseDOMFromString = string => {
 };
 
 export const setJSONToLocalStorage = (key, value) => {
-  // TODO : JSON.stringify 가능요소인지 검증작업 구현해주기
-  localStorage.setItem(key, JSON.stringify(value));
+  try {
+    localStorage.setItem(key, JSON.stringify(value));
+  } catch (error) {
+    localStorage.setItem(key, {});
+  }
 };
 
 export const getJSONFromLocalStorage = key => {
@@ -22,7 +25,7 @@ export const getJSONFromLocalStorage = key => {
     if (json === null) return [];
 
     return json;
-  } catch (e) {
+  } catch (error) {
     return {};
   }
 };
