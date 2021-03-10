@@ -33,17 +33,22 @@ const initDisplay = () => {
 
   hideElement($DOM.SAVE_PAGE.NOT_FOUND);
   renderSavedClips(savedClips);
+  onToggleRenderedClips({
+    target: $DOM.NAVIGATOR.UNWATCHED_BUTTON,
+  });
 };
 
 export const YoutubeClassRoom = () => {
+  $DOM.NAVIGATOR.CONTAINER.addEventListener('click', onToggleRenderedClips);
   $DOM.NAVIGATOR.SEARCH_BUTTON.addEventListener('click', onModalShow);
+
   $DOM.SEARCH_MODAL.FORM.addEventListener('submit', onSearchClip);
   $DOM.SEARCH_MODAL.CHIP_CONTAINER.addEventListener('click', onSearchByKeyword);
+  $DOM.SEARCH_MODAL.VIDEO_WRAPPER.addEventListener('click', onSaveClip);
   $DOM.SEARCH_MODAL.INNER.addEventListener('scroll', (event) => {
     throttling(onModalScroll, event);
   });
-  $DOM.SEARCH_MODAL.VIDEO_WRAPPER.addEventListener('click', onSaveClip);
-  $DOM.NAVIGATOR.CONTAINER.addEventListener('click', onToggleRenderedClips);
+
   $DOM.SAVE_PAGE.VIDEO_WRAPPER.addEventListener('click', onButtonContainer);
 
   window.addEventListener('keyup', onWindowInput);
@@ -54,7 +59,4 @@ window.onload = () => {
   YoutubeClassRoom();
   clearDeletedClip();
   initDisplay();
-  onToggleRenderedClips({
-    target: $DOM.NAVIGATOR.UNWATCHED_BUTTON,
-  });
 };
