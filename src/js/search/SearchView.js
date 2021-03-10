@@ -6,7 +6,7 @@ import getVideoClipTemplate from "../templates/videoClipTemplate.js";
 import getSkeletonUITemplate from "../templates/skeletonUITemplate.js";
 
 import { $, hideElement, showElement } from "../utils/dom.js";
-import { VIDEOS } from "../utils/constants.js";
+import { ERROR_MESSAGE, VIDEOS } from "../utils/constants.js";
 import elements from "../utils/elements.js";
 
 export default class SearchView {
@@ -59,11 +59,20 @@ export default class SearchView {
   }
 
   selectSaveButton(videoId, isSaved = false) {
-    return Array.from($("button[data-video-id]")).find(
-      ($saveButton) =>
-        $saveButton.dataset.videoId === videoId &&
-        $saveButton.dataset.videoSaved === (isSaved ? "saved" : "")
-    );
+    try {
+      const selectedTarget = Array.from($("button[data-video-id]")).find(
+        ($saveButton) =>
+          $saveButton.dataset.videoId === videoId &&
+          $saveButton.dataset.videoSaved === (isSaved ? "saved" : "")
+      );
+
+      if (!selectedTarget) {
+        throw new Error(ERROR_MESSAGE.CONNOT_FOUND_SAVE_BUTTON_ERROR);
+      }
+    } catch (e) {
+      console.error(e);
+      alert(ERROR_MESSAGE.INVALID_ACTION_ERROR);
+    }
   }
 
   showSaveCancelButton(videoId) {
