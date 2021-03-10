@@ -1,9 +1,27 @@
 // WARN: 아래 테스트 코드는 mock data를 사용해야 한다.
 describe('simba-tube', () => {
-  const setLocalStorage = (array) => {
+  const setSavedVideoIds = (savedVideoIds) => {
     cy.visit('http://localhost:5500/', {
       onBeforeLoad: function (window) {
-        window.localStorage.setItem('savedVideoIds', JSON.stringify(array));
+        window.localStorage.setItem(
+          'savedVideoIds',
+          JSON.stringify(savedVideoIds),
+        );
+      },
+    });
+  };
+
+  const setWatchedVideoIds = (savedVideoIds, watchedVideoIds) => {
+    cy.visit('http://localhost:5500/', {
+      onBeforeLoad: function (window) {
+        window.localStorage.setItem(
+          'savedVideoIds',
+          JSON.stringify(savedVideoIds),
+        );
+        window.localStorage.setItem(
+          'watchedVideoIds',
+          JSON.stringify(watchedVideoIds),
+        );
       },
     });
   };
@@ -20,7 +38,7 @@ describe('simba-tube', () => {
   };
 
   it('저장한 동영상이 100개 이상이면 alert 창과 snackbar를 보여준다.', () => {
-    setLocalStorage(Array(100).fill('mock-a1b2'));
+    setSavedVideoIds(Array(100).fill('mock-a1b2'));
     cy.window().then((win) => cy.stub(win, 'alert').as('windowAlert'));
     searchVideo('bts');
 
@@ -37,7 +55,7 @@ describe('simba-tube', () => {
   });
 
   it('✅ 본 영상을 체크하면 버튼의 투명도가 바뀌고, snackbar를 띄운다.', () => {
-    setLocalStorage(['vRXZj0DzXIA', 'I3U0QAXeOW4', 'BS7tz2rAOSA']);
+    setSavedVideoIds(['vRXZj0DzXIA', 'I3U0QAXeOW4', 'BS7tz2rAOSA']);
 
     cy.get(`[data-video-watched='vRXZj0DzXIA']`)
       .click()
@@ -49,7 +67,7 @@ describe('simba-tube', () => {
   });
 
   it('🗑️ 버튼 클릭 시 사용자에게 정말 삭제할 것인지 물어보는 alert가 나오고, 동의 시 snackbar를 띄운다.', () => {
-    setLocalStorage(['vRXZj0DzXIA', 'I3U0QAXeOW4', 'BS7tz2rAOSA']);
+    setSavedVideoIds(['vRXZj0DzXIA', 'I3U0QAXeOW4', 'BS7tz2rAOSA']);
 
     const confirmStub = cy.stub();
     cy.on('window:confirm', confirmStub);
@@ -64,5 +82,29 @@ describe('simba-tube', () => {
 
     cy.on('window:confirm', () => true);
     popSnackbar('동영상이 삭제되었읍니다');
+  });
+
+  it.only('본 영상 탭 선택 시 본 영상 목록을 보여주고, 볼 영상 탭 선택 시 볼 영상 목록을 보여준다.', () => {
+    const savedVideoIds = ['vRXZj0DzXIA', 'I3U0QAXeOW4', 'BS7tz2rAOSA'];
+    const watchedVideos = ['vRXZj0DzXIA', 'BS7tz2rAOSA'];
+
+    setWatchedVideoIds(savedVideoIds, watchedVideos);
+
+    cy.get(`[data-video-watched='vRXZj0DzXIA']`).click();
+    cy.get('#watched-btn').click();
+
+    cy.get('#main-videos > article')
+      .not('.d-none')
+      .then((article) => {
+        cy.wrap(article)
+          .find('.pack-button')
+          .first()
+          .should('have.css', 'opacity', '1');
+      });
+
+    cy.get('#saved-btn').click();
+    cy.get('#main-videos > article').then((article) => {
+      cy.wrap(article).should('be.visible');
+    });
   });
 });
