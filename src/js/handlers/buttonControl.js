@@ -1,3 +1,8 @@
+import { DELETE_VIDEO_CONFIRM_MSG } from '../constants/confirmMessage.js';
+import {
+  SAVE_DELETE_SUCCESS_MSG,
+  VIDEO_MOVE_SUCCESS_MSG,
+} from '../constants/snackbarMessage.js';
 import videoInfos from '../states/videoInfos.js';
 import { showSnackBar } from '../viewControllers/app.js';
 
@@ -5,16 +10,16 @@ function handleWatchedButton($target) {
   const targetId = $target.closest('.js-video').dataset.videoId;
 
   videoInfos.toggleIsWatched(targetId);
-  showSnackBar('영상을 이동시켰습니다.');
+  showSnackBar(VIDEO_MOVE_SUCCESS_MSG);
 }
 
 function handleDeleteButton($target) {
-  if (!window.confirm('해당 영상을 삭제하시겠습니까?')) return;
+  if (!window.confirm(DELETE_VIDEO_CONFIRM_MSG)) return;
 
   const targetId = $target.closest('.js-video').dataset.videoId;
 
   videoInfos.remove(targetId);
-  showSnackBar('해당 영상을 삭제하였습니다.');
+  showSnackBar(SAVE_DELETE_SUCCESS_MSG);
 }
 
 function handleButtonsControl({ target }) {
