@@ -7,17 +7,23 @@ const getParams = ({ part, q, maxResults, key, pageToken }) =>
   new URLSearchParams({ part, q, maxResults, key, pageToken }).toString();
 
 const request = async (url, option = {}) => {
-  const res = await fetch(url, option);
-  if (!res.ok) {
-    throw new Error(`http request Error : ${res.status}`);
-  }
+  try {
+    const res = await fetch(url, option);
+    const body = await res.json();
 
-  return await res.json();
+    if (!res.ok) {
+      throw new Error(`http request Error : ${res.status}${body.error.message}`);
+    }
+
+    return body;
+  } catch (error) {
+    console.error(error);
+  }
 };
 
-export const api = {
-  searchVideo: (keyword, nextPageToken = "") => {
-    return request(
+const API = {
+  searchVideo: async (keyword, nextPageToken = "") => {
+    return await request(
       `${BASE_URL}/search?${getParams({
         part: "snippet",
         q: keyword,
@@ -28,3 +34,5 @@ export const api = {
     );
   },
 };
+
+export default API;

@@ -1,7 +1,7 @@
 import { $ } from "../utils/dom.js";
 import { STANDARD_NUMS, ALERT_MESSAGE, STORAGE, SECTION } from "../utils/constants.js";
-import { api } from "../utils/api.js";
-import { setLocalStorage, getLocalStorage } from "../utils/localStorage.js";
+import API from "../utils/api.js";
+import { setDataToLocalStorage, getDataFromLocalStorage } from "../utils/localStorage.js";
 import { createVideoTemplate } from "../utils/templates.js";
 
 // dummy API Response 사용할 경우
@@ -18,7 +18,7 @@ class SearchModal {
     this.keyword = "";
     this.keywordHistory = [];
     this.videos = [];
-    this.savedVideoIds = getLocalStorage(STORAGE.VIDEO_IDS, []);
+    this.savedVideoIds = getDataFromLocalStorage(STORAGE.VIDEO_IDS, []);
     this.nextPageToken = "";
   }
 
@@ -30,7 +30,7 @@ class SearchModal {
     this.nextPageToken = nextPageToken ?? this.nextPageToken;
 
     this.render();
-    setLocalStorage(STORAGE.VIDEO_IDS, this.savedVideoIds);
+    setDataToLocalStorage(STORAGE.VIDEO_IDS, this.savedVideoIds);
   }
 
   selectDOM() {
@@ -112,7 +112,7 @@ class SearchModal {
     try {
       // dummy API Response 사용할 경우
       // const { items, nextPageToken } = dummySearchedData;
-      const { items, nextPageToken } = await api.searchVideo(keyword);
+      const { items, nextPageToken } = await API.searchVideo(keyword);
 
       const videos = items.map(
         ({ id: { videoId }, snippet: { channelId, channelTitle, publishedAt, title } }) => ({
@@ -143,7 +143,7 @@ class SearchModal {
     }
 
     try {
-      const { items, nextPageToken } = await api.searchNextVideo(this.keyword, this.nextPageToken);
+      const { items, nextPageToken } = await API.searchVideo(this.keyword, this.nextPageToken);
 
       const nextVideos = items.map(
         ({ id: { videoId }, snippet: { channelId, channelTitle, publishedAt, title } }) => ({
