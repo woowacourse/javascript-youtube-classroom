@@ -17,7 +17,12 @@ export default class WatchList extends Observer {
       .map((item) => {
         const { channelId, title, channelTitle, publishedAt } = item.snippet;
         const { id } = item;
-        const dateString = formatDate(publishedAt);
+
+        const dateString = new Date(publishedAt).toLocaleDateString('ko-KR', {
+          year: 'numeric',
+          month: 'long',
+          day: 'numeric',
+        });
 
         const video = { id, title, channelId, channelTitle, dateString };
         const options = { containsMenu: true };
@@ -50,11 +55,12 @@ export default class WatchList extends Observer {
     const { watchList } = this.store.get();
 
     const newVideoId = watchList.filter((id) => !this.list.includes(id));
+    if (!newVideoId || newVideoId.length <= 0) return;
 
     try {
-      const selectedVideo = await searchYoutubeById([newVideoId]);
+      const { items } = await searchYoutubeById([newVideoId]);
 
-      this.renderSavedVideos(selectedVideo.items);
+      this.renderSavedVideos(items);
       this.list = watchList;
     } catch (error) {
       showSnackbar(error.message);

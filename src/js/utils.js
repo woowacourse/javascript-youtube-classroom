@@ -45,3 +45,7 @@ export const openModal = () => {
 export const closeModal = () => {
   $(SELECTORS.CLASS.MODAL).classList.remove(SELECTORS.STATUS.MODAL_OPEN);
 };
+
+export const generateCSSClass = (condition, className) => {
+  return condition ? className : '';
+};

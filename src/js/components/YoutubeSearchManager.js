@@ -1,5 +1,5 @@
 import { searchYoutube, searchYoutubeDummyData } from '../api.js';
-import { $, showSnackbar, renderSkeletonUI, formatDate, closeModal } from '../utils.js';
+import { $, showSnackbar, renderSkeletonUI, formatDate, closeModal, generateCSSClass } from '../utils.js';
 import { ALERT_MESSAGE, SELECTORS, LOCAL_STORAGE_KEYS, SERACH_RESULT } from '../constants.js';
 import {
   getVideoTemplate,
@@ -24,9 +24,14 @@ export default class YoutubeSearchManager extends Observer {
       .map((item) => {
         const { channelId, title, channelTitle, publishedAt } = item.snippet;
         const id = item.id.videoId;
+
         const { watchList } = this.store.get();
         const isSaved = watchList.includes(id);
-        const dateString = formatDate(publishedAt);
+        const dateString = new Date(publishedAt).toLocaleDateString('ko-KR', {
+          year: 'numeric',
+          month: 'long',
+          day: 'numeric',
+        });
 
         const video = { id, title, channelId, channelTitle, dateString };
         const options = { containsSaveButton: !isSaved };
@@ -68,16 +73,16 @@ export default class YoutubeSearchManager extends Observer {
   }
 
   updateRecentKeywordList(keyword) {
-    let { recentKeywordList } = this.store.get();
-    recentKeywordList = recentKeywordList.filter((item) => item !== keyword);
+    const { recentKeywordList } = this.store.get();
+    const newKeywordList = recentKeywordList.filter((item) => item !== keyword);
 
-    if (recentKeywordList.length >= 3) {
-      recentKeywordList.pop();
+    if (newKeywordList.length >= 3) {
+      newKeywordList.pop();
     }
-    recentKeywordList.unshift(keyword);
+    newKeywordList.unshift(keyword);
 
     this.store.update({
-      [LOCAL_STORAGE_KEYS.RECENT_KEYWORD_LIST]: recentKeywordList,
+      [LOCAL_STORAGE_KEYS.RECENT_KEYWORD_LIST]: newKeywordList,
     });
   }
 
@@ -85,11 +90,6 @@ export default class YoutubeSearchManager extends Observer {
     event.preventDefault();
 
     const keyword = event.target.elements.keyword.value;
-
-    if (!keyword) {
-      showSnackbar(ALERT_MESSAGE.EMPTY_SEARCH_KEYWORD);
-      return;
-    }
 
     this.renderEmptySearchResult();
     renderSkeletonUI(SELECTORS.CLASS.YOUTUBE_SEARCH_RESULT, SERACH_RESULT.SKELETON_UI_COUNT);
@@ -160,13 +160,12 @@ export default class YoutubeSearchManager extends Observer {
   }
 
   handleClickDimmer(event) {
-    if (event.target.classList.contains('modal')) {
+    if (event.target === event.currentTarget) {
       closeModal();
     }
   }
 
   bindEvents() {
-    // TODO: 일부 너무 긴 메소드들 하위 메소드 여러 개로 분리
     $(SELECTORS.ID.YOUTUBE_SEARCH_FORM).addEventListener('submit', this.handleSearch.bind(this));
 
     // TODO: 과도한 scroll 이벤트 방지를 위해 debounce 적용 필요

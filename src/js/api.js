@@ -4,9 +4,16 @@ import { sleep } from './utils.js';
 
 export const searchYoutube = async (keyword, pageToken = '') => {
   try {
-    const response = await fetch(
-      `https://www.googleapis.com/youtube/v3/search?part=snippet&type=video&q=${keyword}&pageToken=${pageToken}&maxResults=10&key=${YOUTUBE_API_KEY}`
-    );
+    const endPoint = `https://www.googleapis.com/youtube/v3/search`;
+    const query = getParameters({
+      part: 'snippet',
+      type: 'video',
+      key: YOUTUBE_API_KEY,
+      pageToken,
+      maxResults: '10',
+      q: keyword,
+    }).toString();
+    const response = await fetch(`${endPoint}?${query}`);
 
     if (!response.ok) {
       throw Error(`${response.status} 에러가 발생했습니다`);
@@ -21,12 +28,15 @@ export const searchYoutube = async (keyword, pageToken = '') => {
 export const searchYoutubeById = async (ids = []) => {
   if (ids.length <= 0) return;
 
-  const idsListString = ids.join(',');
-
   try {
-    const response = await fetch(
-      `https://www.googleapis.com/youtube/v3/videos?part=snippet&type=video&key=${YOUTUBE_API_KEY}&id=${idsListString}`
-    );
+    const endPoint = `https://www.googleapis.com/youtube/v3/videos`;
+    const query = getParameters({
+      part: 'snippet',
+      type: 'video',
+      key: YOUTUBE_API_KEY,
+      id: ids.join(','),
+    }).toString();
+    const response = await fetch(`${endPoint}?${query}`);
 
     if (!response.ok) {
       throw Error(`${response.status} 에러가 발생했습니다`);
@@ -56,4 +66,15 @@ export const searchYoutubeDummyData = async (isEmpty = false) => {
     `);
   }
   return dummyData[0];
+};
+
+const getParameters = function ({ part, type, key, pageToken = '', maxResults = '', q = '', id = '' }) {
+  const URLparams = new URLSearchParams({});
+
+  const params = arguments[0];
+  Object.keys(params).forEach((key) => {
+    if (params[key]) URLparams.set(key, params[key]);
+  });
+
+  return URLparams;
 };

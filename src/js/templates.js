@@ -63,6 +63,7 @@ export const getFormTemplate = () => {
         class="w-100 mr-2 pl-2"
         name="keyword"
         placeholder="검색"
+        required
       />
       <button type="submit" class="btn bg-cyan-500">검색</button>
     </form>
