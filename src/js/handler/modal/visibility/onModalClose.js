@@ -1,4 +1,4 @@
-import { closeModal } from '../../view/modal.js';
+import { closeModal } from '../../../view/modal.js';
 
 const isDimmed = (target) => {
   return (
