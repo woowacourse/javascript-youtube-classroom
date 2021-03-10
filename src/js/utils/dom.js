@@ -1,8 +1,32 @@
+import { ERROR_MESSAGE } from "./constants.js";
 import elements from "./elements.js";
 
 export const $ = (selector) => {
-  const selected = document.querySelectorAll(selector);
-  return selected.length === 1 ? selected[0] : selected;
+  try {
+    const selected = document.querySelectorAll(selector);
+
+    if (selected.length === 0) {
+      throw new Error(ERROR_MESSAGE.CONNOT_FIND_ELEMENT_ERROR);
+    }
+
+    return selected.length === 1 ? selected[0] : selected;
+  } catch (e) {
+    console.error(e);
+  }
+};
+
+export const getFormElements = ($form, elementName) => {
+  try {
+    const $elements = $form.elements[elementName];
+
+    if (!$elements) {
+      throw new Error(ERROR_MESSAGE.CONNOT_FIND_ELEMENT_ERROR);
+    }
+
+    return $elements;
+  } catch (e) {
+    console.error(e);
+  }
 };
 
 export const showElement = ($target) => {

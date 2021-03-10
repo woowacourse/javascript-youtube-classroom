@@ -9,6 +9,7 @@ import {
   closeModal,
   showElement,
   hideElement,
+  getFormElements,
 } from "../utils/dom.js";
 
 import searchHistory from "../state/searchHistory.js";
@@ -58,7 +59,7 @@ export default class SearchEventController {
   onClickSearchButton() {
     searchHistory.initKeywords();
     openModal(elements.$searchModal);
-    elements.$searchForm.elements["search-keyword"].focus();
+    getFormElements(elements.$searchForm, "search-keyword").focus();
 
     this.searchController.updateKeywordHistory();
     this.searchController.showSavedVideoCount();
@@ -76,7 +77,10 @@ export default class SearchEventController {
 
   onSearch(e) {
     e.preventDefault();
-    const searchKeyword = e.target.elements["search-keyword"].value;
+    const searchKeyword = getFormElements(
+      elements.$searchForm,
+      "search-keyword"
+    ).value;
     this.searchController.searchVideos(searchKeyword);
   }
 

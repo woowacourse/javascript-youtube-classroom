@@ -1,11 +1,10 @@
-import searchHistory from "../state/searchHistory.js";
 import videos from "../state/videos.js";
 
 import getKeywordHistoryTemplate from "../templates/keywordHistoryTemplate.js";
 import getVideoClipTemplate from "../templates/videoClipTemplate.js";
 import getSkeletonUITemplate from "../templates/skeletonUITemplate.js";
 
-import { $, hideElement, showElement } from "../utils/dom.js";
+import { $, getFormElements, hideElement, showElement } from "../utils/dom.js";
 import { ERROR_MESSAGE, VIDEOS } from "../utils/constants.js";
 import elements from "../utils/elements.js";
 
@@ -67,7 +66,7 @@ export default class SearchView {
       );
 
       if (!selectedTarget) {
-        throw new Error(ERROR_MESSAGE.CONNOT_FOUND_SAVE_BUTTON_ERROR);
+        throw new Error(ERROR_MESSAGE.CONNOT_FIND_SAVE_BUTTON_ERROR);
       }
     } catch (e) {
       console.error(e);
@@ -92,7 +91,10 @@ export default class SearchView {
   }
 
   setSearchInputValue(searchKeyword) {
-    elements.$searchForm.elements["search-keyword"].value = searchKeyword;
+    getFormElements(
+      elements.$searchForm,
+      "search-keyword"
+    ).value = searchKeyword;
   }
 
   addSkeletonUITemplate(repeatNumber) {
