@@ -37,7 +37,7 @@ const videoInfos = {
     setLocalStorage(VIDEO_INFOS, [...this.value]);
 
     renderSavedVideoCount(this.value.size);
-    renderSavedVideoList(this.value);
+    renderSavedVideoList(this.value, isWatchedMode.get());
   },
 
   remove(targetId) {

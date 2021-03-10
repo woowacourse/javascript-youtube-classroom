@@ -21,15 +21,16 @@ function createVideoInfo(videoDataset) {
 async function searchVideo(keyword) {
   renderVideoLoader();
   const { nextPageToken, items } = await fetchSearchResult(keyword);
+  const filteredItems = items.filter(item => item.id.videoId);
+
   pageToken.set(nextPageToken);
-  renderVideoSearchResult(items, videoInfos.get());
+  renderVideoSearchResult(filteredItems, videoInfos.get());
 
   return items;
 }
 
 function saveVideo($video) {
   const videoInfo = createVideoInfo($video.dataset);
-
   videoInfos.add(videoInfo);
 }
 
