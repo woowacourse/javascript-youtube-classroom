@@ -108,5 +108,4 @@ dist
 .vscode/
 cypress/fixtures/*
 cypress/plugins/*
-cypress/support/*
 mock.js
