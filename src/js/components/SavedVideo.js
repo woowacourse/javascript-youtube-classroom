@@ -3,6 +3,7 @@ import { getVideoTemplate, SNACKBAR_MESSAGE, CONFIRM_MESSAGE } from '../constant
 import {
   getVideoByIdList,
   $,
+  $$,
   renderSkeleton,
   removeSkeleton,
   showSnackbar,
@@ -21,6 +22,18 @@ export class SavedVideo {
       key: SAVED_VIDEO_SUBSCRIBER_KEY.SAVE,
       subscriber: this.renderNewVideo.bind(this),
     });
+    this.savedVideoManager.subscribe({
+      key: SAVED_VIDEO_SUBSCRIBER_KEY.SAVE,
+      subscriber: this.renderEmptyImage.bind(this),
+    });
+    this.savedVideoManager.subscribe({
+      key: SAVED_VIDEO_SUBSCRIBER_KEY.DELETE,
+      subscriber: this.renderEmptyImage.bind(this),
+    });
+    this.savedVideoManager.subscribe({
+      key: SAVED_VIDEO_SUBSCRIBER_KEY.CHECK,
+      subscriber: this.renderEmptyImage.bind(this),
+    });
 
     this.isChecked = isChecked;
     this.initEvent();
@@ -37,22 +50,15 @@ export class SavedVideo {
     }
 
     if (target.classList.contains('js-check-button')) {
-      this.savedVideoManager.checkVideo(target.closest('ul').dataset.videoId);
       target.closest('article').remove();
+      this.savedVideoManager.checkVideo(target.closest('ul').dataset.videoId);
       showSnackbar(this.isChecked ? SNACKBAR_MESSAGE.UNCHECK_VIDEO_SUCCESS : SNACKBAR_MESSAGE.CHECK_VIDEO_SUCCESS);
-
-      if (this.$savedVideoWrapper.children.length === 0) {
-        showElement(this.$emptyImage);
-      }
     }
 
     if (target.classList.contains('js-delete-button')) {
-      if (this.$savedVideoWrapper.children.length === 0) {
-        showElement(this.$emptyImage);
-      }
       customConfirm(CONFIRM_MESSAGE.DELETE_VIDEO, () => {
-        this.savedVideoManager.deleteVideo(target.closest('ul').dataset.videoId);
         target.closest('article').remove();
+        this.savedVideoManager.deleteVideo(target.closest('ul').dataset.videoId);
         showSnackbar(SNACKBAR_MESSAGE.DELETE_SUCCESS);
       });
     }
@@ -121,14 +127,23 @@ export class SavedVideo {
       return;
     }
 
-    if ($('.js-empty-image')) {
-      hideElement(this.$emptyImage);
-    }
-
     renderSkeleton(this.$savedVideoWrapper, 1);
     const newVideoData = await this.fetchSavedVideoData(videoId);
     removeSkeleton(this.$savedVideoWrapper);
 
     this.$savedVideoWrapper.insertAdjacentHTML('afterbegin', this.makeTemplate(newVideoData.items[0]));
+  }
+
+  renderEmptyImage() {
+    const savedVideos = this.savedVideoManager.getSavedVideos();
+    const filteredVideoIdList = this.savedVideoManager
+      .getSavedVideoIdList()
+      .filter(id => savedVideos[id].isChecked === this.isChecked);
+
+    if (filteredVideoIdList.length === 0) {
+      showElement(this.$emptyImage);
+    } else {
+      hideElement(this.$emptyImage);
+    }
   }
 }
