@@ -1,6 +1,7 @@
 import { convertDateFormat, escapeApostrophe } from '../utils/util.js';
 import { CLASS } from '../constants/constant.js';
 
+// // data-info='${escapeApostrophe(info)}'
 // TODO : 템플릿도 나중에 폴더만들어서 사용되는 곳대로 나누기
 export const searchVideoTemplate = (info, save) => {
   return `<article class="clip skeleton">
@@ -20,8 +21,7 @@ export const searchVideoTemplate = (info, save) => {
                     <a
                         href="https://www.youtube.com/channel/${info.channelId}"
                         target="_blank"
-                        class="channel-name mt-1 line"
-                    >
+                        class="channel-name mt-1 line">
                         ${info.channelTitle}
                     </a>
                     <div class="meta">
@@ -32,12 +32,16 @@ export const searchVideoTemplate = (info, save) => {
                     <div class="d-flex justify-end">
                         <button class="btn js-save-button ${
                           save ? CLASS.INVISIBLE : ''
-                        }" data-info='${escapeApostrophe(
-    info
-  )}'>⬇️ 저장</button>
+                        }" 
+                        data-url="${info.url}"
+                        data-channelId="${info.channelId}"
+                        data-channelTitle="${info.channelTitle}"
+                        data-publishTime="${convertDateFormat(
+                          info.publishTime
+                        )}">⬇️ 저장</button>
                     </div>
                 </div>
-            </div>
+              </div>
             </article>`;
 };
 

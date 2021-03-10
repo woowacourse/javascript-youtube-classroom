@@ -15,7 +15,7 @@ const youtubeSearchURL = ({ query, nextPageToken, max }) => {
   };
 
   return (
-    REDIRECT_HOST +
+    URL.YOUTUBE_SEARCH +
     Object.entries(queries)
       .map(([key, value]) => {
         if (value === undefined) {
