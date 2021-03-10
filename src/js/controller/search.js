@@ -36,6 +36,7 @@ class SearchController {
     this.searchView.renderRecentKeywordSection(this.storage.recentKeywords);
 
     await this.youtube.getVideoInfosBySearch({ query });
+
     if (this.youtube.videoInfos.length === 0) {
       this.searchView.renderNotFound();
       return;
