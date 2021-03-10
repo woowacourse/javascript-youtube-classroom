@@ -15,8 +15,8 @@ import videoToWatch from '../storage/videoToWatch.js';
 import {
   SETTINGS,
   SELECTOR_CLASS,
-  ALERT_MESSAGE,
   CONFIRM_MESSAGE,
+  SNACKBAR_MESSAGE,
 } from '../constants.js';
 import controllerUtil from './controllerUtil.js';
 
@@ -35,6 +35,7 @@ function onClipCheck(button) {
   const videoId = button.dataset.videoId;
   controllerUtil.sendVideoToWatchedVideos(videoId);
   controller.loadVideos();
+  view.showSnackbar(SNACKBAR_MESSAGE.WATCHED_VIDEO_CHECK_SUCCESS, true);
 }
 
 function onClipDelete(button) {
@@ -44,6 +45,7 @@ function onClipDelete(button) {
   const videoId = button.dataset.videoId;
   videoToWatch.popVideoByVideoId(videoId);
   controller.loadVideos();
+  view.showSnackbar(SNACKBAR_MESSAGE.WATCHING_VIDEO_DELETE_SUCCESS, true);
 }
 
 async function onAdditionalVideosLoad() {
@@ -100,7 +102,7 @@ function onSelectedVideoSave({ target }) {
     return;
   }
   if (videoToWatch.getVideos().length === SETTINGS.MAX_SAVE_COUNT) {
-    view.showMessage(ALERT_MESSAGE.SAVE_LIMIT_EXCEEDED);
+    view.showSnackbar(SNACKBAR_MESSAGE.SAVE_LIMIT_EXCEEDED, false);
     return;
   }
 
@@ -110,6 +112,7 @@ function onSelectedVideoSave({ target }) {
   view.hideVideoSaveButton(target);
   videoToWatch.pushVideo(controllerUtil.getNewVideo(target.dataset));
   view.renderSelectedVideoItems(videoToWatch.getVideos());
+  view.showSnackbar(SNACKBAR_MESSAGE.WATCHING_VIDEO_SAVE_SUCCESS, true);
 }
 
 const controller = {
