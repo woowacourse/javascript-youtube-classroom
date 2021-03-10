@@ -12,10 +12,10 @@ export default class ClassroomModel {
   }
 
   isOnlyWatchingVideoSaved() {
-    return this.model.watchingVideoCount > 0 && this.model.watchedVideoCount === 0;
+    return this.watchingVideoCount > 0 && this.watchedVideoCount === 0;
   }
 
   hasNoWatchingVideoSaved() {
-    return this.model.watchingVideoCount === 0;
+    return this.watchingVideoCount === 0;
   }
 }

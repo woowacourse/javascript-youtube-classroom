@@ -25,9 +25,5 @@ export const isSavedVideo = (targetId) => {
 };
 
 export const isWatchingMenu = (target) => {
-  return target.contains('.watching');
-};
-
-export const isWatchedMenu = (target) => {
-  return target.contains('.watched');
+  return target.classList.contains('.watching-section');
 };
