@@ -1,7 +1,6 @@
 import { SEARCH, SELECTOR } from '../constants/constant.js';
 import { $, parseDOMFromString } from '../utils/util.js';
 import {
-  searchNotFoundTemplate,
   searchVideoTemplate,
   recentKeywordsTemplate,
   myVideoInfosTemplate,
@@ -15,9 +14,13 @@ class SearchView {
     );
   };
 
-  renderNotFound = () => {
-    const $searchVideoWrapper = $(SELECTOR.SEARCH_VIDEO_WRAPPER);
-    $searchVideoWrapper.innerHTML = searchNotFoundTemplate();
+  toggleNotFound = show => {
+    const $searchNotFound = $(SELECTOR.SEARCH_NOT_FOUND);
+    if (show) {
+      $searchNotFound.classList.remove('hide');
+    } else {
+      $searchNotFound.classList.add('hide');
+    }
   };
 
   renderSkeletonArticles = () => {
@@ -40,6 +43,7 @@ class SearchView {
   resetView = () => {
     const $searchVideoWrapper = $(SELECTOR.SEARCH_VIDEO_WRAPPER);
     $searchVideoWrapper.innerHTML = '';
+    this.toggleNotFound(false);
   };
 }
 
