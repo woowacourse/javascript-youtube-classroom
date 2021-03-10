@@ -1,6 +1,7 @@
 import { $ } from '../utils/querySelector.js';
 
 const viewUtil = {
+  //TODO: renderHTML로 개명하기
   renderByElement($element, htmlString) {
     $element.innerHTML = htmlString;
   },

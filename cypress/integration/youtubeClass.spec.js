@@ -121,7 +121,7 @@ context('유튜브 강의실 테스트', () => {
         click(elements[0]);
       });
       click(`#${SELECTOR_ID.MODAL_CLOSE_BUTTON}`);
-      cy.get(`#${SELECTOR_ID.VIDEO_WRAPPER} .${SELECTOR_CLASS.SEARCHED_CLIP}`)
+      cy.get(`#${SELECTOR_ID.WATCHING_VIDEO_WRAPPER} .${SELECTOR_CLASS.CLIP}`)
         .its('length')
         .should('be.gt', 0);
     });
