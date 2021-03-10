@@ -1,4 +1,4 @@
-const storedVideoTemplate = `
+const savedVideoTemplate = `
     <article class="watching" class="clip">
       <div class="preview-container">
         <iframe
