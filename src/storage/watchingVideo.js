@@ -1,12 +1,10 @@
-// TODO : 이름 videoToWatch -> watchingVideo
-
 import { LOCAL_STORAGE_KEY } from '../constants.js';
 import {
   getLocalStorageItem,
   setLocalStorageItem,
 } from './localStorageUtil.js';
 
-const videoToWatch = {
+const watchingVideo = {
   getVideos() {
     return getLocalStorageItem(LOCAL_STORAGE_KEY.VIDEOS_TO_WATCH) || [];
   },
@@ -19,21 +17,21 @@ const videoToWatch = {
   },
 
   pushVideo(newVideo) {
-    const videosToWatch = videoToWatch.getVideos();
-    videosToWatch.push(newVideo);
-    videoToWatch.setVideos(videosToWatch);
+    const watchingVideos = watchingVideo.getVideos();
+    watchingVideos.push(newVideo);
+    watchingVideo.setVideos(watchingVideos);
   },
 
   popVideoByVideoId(videoId) {
-    const videos = videoToWatch.getVideos();
+    const videos = watchingVideo.getVideos();
     const poppedVideo = videos.find(video => video.videoId === videoId);
     if (!poppedVideo) {
       return;
     }
-    videoToWatch.setVideos(videos.filter(video => video.videoId !== videoId));
+    watchingVideo.setVideos(videos.filter(video => video.videoId !== videoId));
 
     return poppedVideo;
   },
 };
 
-export default videoToWatch;
+export default watchingVideo;

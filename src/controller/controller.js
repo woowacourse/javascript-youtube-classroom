@@ -9,11 +9,10 @@ import {
   $watchingVideoWrapper,
   $watchedVideoWrapper,
 } from '../elements.js';
-import view from '../view/view.js';
+import watchingVideoView from '../view/watchingVideoView.js';
 import { getVideosByKeyword } from '../apis/youtube.js';
 import prevSearchResult from '../storage/prevSearchResult.js';
-import searchQuery from '../storage/searchQuery.js';
-import videoToWatch from '../storage/videoToWatch.js';
+import watchingVideo from '../storage/watchingVideo.js';
 import {
   SETTINGS,
   SELECTOR_CLASS,
@@ -24,6 +23,9 @@ import {
 } from '../constants.js';
 import controllerUtil from './controllerUtil.js';
 import watchedVideo from '../storage/watchedVideo.js';
+import modalView from '../view/modalView.js';
+import watchedVideoView from '../view/watchedVideoView.js';
+import viewUtil from '../view/viewUtil.js';
 
 function onWatchingVideoInteract({ target }) {
   if (target.classList.contains(SELECTOR_CLASS.CLIP_CHECK_BUTTON)) {
@@ -49,36 +51,36 @@ function onWatchedVideoInteract({ target }) {
 
 function onClipCheck(button) {
   const videoId = button.dataset.videoId;
-  controllerUtil.sendVideoToWatchedVideos(videoId);
+  controllerUtil.sendWatchingVideoedVideos(videoId);
   controller.loadWatchingVideos();
-  view.showSnackbar(SNACKBAR_MESSAGE.WATCHED_VIDEO_CHECK_SUCCESS, true);
+  viewUtil.showSnackbar(SNACKBAR_MESSAGE.WATCHED_VIDEO_CHECK_SUCCESS, true);
 }
 
 function onClipUnCheck(button) {
   const videoId = button.dataset.videoId;
-  controllerUtil.sendVideoToWatchingVideos(videoId);
+  controllerUtil.sendWatchingVideoingVideos(videoId);
   controller.loadWatchedVideos();
-  view.showSnackbar(SNACKBAR_MESSAGE.WATCHING_VIDEO_CHECK_SUCCESS, true);
+  viewUtil.showSnackbar(SNACKBAR_MESSAGE.WATCHING_VIDEO_CHECK_SUCCESS, true);
 }
 
 function onWatchingVideoDelete(button) {
-  if (!view.confirm(CONFIRM_MESSAGE.WATCHING_VIDEO_DELETE)) {
+  if (!viewUtil.confirm(CONFIRM_MESSAGE.WATCHING_VIDEO_DELETE)) {
     return;
   }
   const videoId = button.dataset.videoId;
-  videoToWatch.popVideoByVideoId(videoId);
+  watchingVideo.popVideoByVideoId(videoId);
   controller.loadWatchingVideos();
-  view.showSnackbar(SNACKBAR_MESSAGE.WATCHING_VIDEO_DELETE_SUCCESS, true);
+  viewUtil.showSnackbar(SNACKBAR_MESSAGE.WATCHING_VIDEO_DELETE_SUCCESS, true);
 }
 
 function onWatchedVideoDelete(button) {
-  if (!view.confirm(CONFIRM_MESSAGE.WATCHED_VIDEO_DELETE)) {
+  if (!viewUtil.confirm(CONFIRM_MESSAGE.WATCHED_VIDEO_DELETE)) {
     return;
   }
   const videoId = button.dataset.videoId;
   watchedVideo.popVideoByVideoId(videoId);
   controller.loadWatchedVideos();
-  view.showSnackbar(SNACKBAR_MESSAGE.WATCHED_VIDEO_DELETE_SUCCESS, true);
+  viewUtil.showSnackbar(SNACKBAR_MESSAGE.WATCHED_VIDEO_DELETE_SUCCESS, true);
 }
 
 async function onAdditionalVideosLoad() {
@@ -92,10 +94,11 @@ async function onAdditionalVideosLoad() {
 
 function onModalOpen() {
   controllerUtil.highlightNavButton($searchButton);
-  const savedVideoCount = videoToWatch.getVideos().length;
+  const savedVideoCount = watchingVideo.getVideos().length;
+  modalView.openModal();
   const videos = prevSearchResult.getSearchedVideos();
-  view.renderSavedVideoCount(savedVideoCount);
-  view.openModal();
+  watchingVideoView.renderSavedVideoCount(savedVideoCount);
+  modalView.openModal();
 
   if (videos.length === 0) {
     return;
@@ -109,7 +112,7 @@ function onModalOpen() {
 
 function onModalClose() {
   controllerUtil.highlightNavButton($watchingVideoButton);
-  view.closeModal();
+  modalView.closeModal();
 }
 
 async function onVideoSearch(event) {
@@ -122,15 +125,14 @@ async function onVideoSearch(event) {
   if (input === '') {
     return;
   }
-  view.initSearchResult();
-
+  modalView.initSearchResult();
   const { videos, nextPageToken } = await getVideosByKeyword(input);
 
   if (videos.length === 0) {
-    view.showNotFoundContent();
+    modalView.showNotFoundImage();
     return;
   }
-  view.hideSkeletons();
+  modalView.hideSkeletons();
   controllerUtil.pushSearchQuery(input);
   controllerUtil.loadSearchResult(videos);
 
@@ -138,55 +140,57 @@ async function onVideoSearch(event) {
   prevSearchResult.setVideos(videos);
 }
 
-function onSelectedVideoSave({ target }) {
+function onWatchingVideoSave({ target }) {
   if (!target.classList.contains(SELECTOR_CLASS.SEARCHED_CLIP_SAVE_BUTTON)) {
     return;
   }
 
-  if (videoToWatch.getVideos().length === SETTINGS.MAX_SAVE_COUNT) {
-    view.showSnackbar(SNACKBAR_MESSAGE.SAVE_LIMIT_EXCEEDED, false);
+  if (watchingVideo.getVideos().length === SETTINGS.MAX_SAVE_COUNT) {
+    viewUtil.showSnackbar(SNACKBAR_MESSAGE.SAVE_LIMIT_EXCEEDED, false);
     return;
   }
 
-  if (videoToWatch.getVideos().length === 0) {
-    view.hideEmptyVideoToWatch();
-    view.hideEmptyWatchedVideo();
+  if (watchingVideo.getVideos().length === 0) {
+    watchingVideoView.hideEmptyWatchingVideo();
+    watchedVideoView.hideEmptyWatchedVideo();
   }
-  view.hideVideoSaveButton(target);
-  videoToWatch.pushVideo(controllerUtil.getNewVideo(target.dataset));
-  const videos = videoToWatch.getVideos();
-  view.renderSavedVideoCount(videos.length);
+
+  modalView.hideVideoSaveButton(target);
+  watchingVideo.pushVideo(controllerUtil.getNewVideo(target.dataset));
+  const videos = watchingVideo.getVideos();
+  watchingVideoView.renderSavedVideoCount(videos.length);
+
   if (parseHash(location.hash) === BROWSER_HASH.WATCHING) {
-    view.renderSelectedVideoItems(videos);
+    watchingVideoView.renderWatchingVideoItems(videos);
   }
-  view.showSnackbar(SNACKBAR_MESSAGE.WATCHING_VIDEO_SAVE_SUCCESS, true);
+  viewUtil.showSnackbar(SNACKBAR_MESSAGE.WATCHING_VIDEO_SAVE_SUCCESS, true);
 }
 
 function onWatchedVideoShow() {
   const videos = watchedVideo.getVideos();
-  view.eraseWatchingVideo();
-  view.hideEmptyVideoToWatch();
+  watchingVideoView.eraseWatchingVideo();
+  watchingVideoView.hideEmptyWatchingVideo();
   if (videos.length === 0) {
-    view.showEmptyWatchedVideo();
+    watchedVideoView.showEmptyWatchedVideo();
     return;
   }
-  view.renderWatchedVideo(videos);
+  watchedVideoView.renderWatchedVideo(videos);
 }
 
 function onWatchingVideoShow() {
-  const videos = videoToWatch.getVideos();
-  view.eraseWatchedVideo();
-  view.hideEmptyWatchedVideo();
+  const videos = watchingVideo.getVideos();
+  watchedVideoView.eraseWatchedVideo();
+  watchedVideoView.hideEmptyWatchedVideo();
   if (videos.length === 0) {
-    view.showEmptyVideoToWatch();
+    watchingVideoView.showEmptyWatchingVideo();
     return;
   }
-  view.renderWatchingVideo(videos);
+  watchingVideoView.renderWatchingVideo(videos);
 }
 
 function routeByHash() {
   const hash = parseHash(location.hash);
-  view.highlightNavButton(hash);
+  viewUtil.highlightNavButton(hash);
   if (hash === BROWSER_HASH.WATCHING) {
     onWatchingVideoShow();
     return;
@@ -211,7 +215,8 @@ const controller = {
       $searchResultIntersector,
       onAdditionalVideosLoad
     );
-    $searchResultVideoWrapper.addEventListener('click', onSelectedVideoSave);
+    $searchResultVideoWrapper.addEventListener('click', onWatchingVideoSave);
+    $searchButton.addEventListener('click', onModalOpen);
     $modalCloseButton.addEventListener('click', onModalClose);
     $searchForm.addEventListener('submit', onVideoSearch);
     $modal.addEventListener('click', (event) => {
@@ -228,25 +233,24 @@ const controller = {
   },
 
   initSearchQueries() {
-    view.renderSearchQueries(searchQuery.getQueries());
+    modalView.renderSearchQueriesuery.getQueries();
   },
-  // TODO: Selected -> Watching 으로 단어 변경
   loadWatchingVideos() {
-    const videosToWatch = videoToWatch.getVideos();
-    if (videosToWatch.length === 0) {
-      view.showEmptyVideoToWatch();
-      view.hideEmptyWatchedVideo();
+    const watchingVideos = watchingVideo.getVideos();
+    if (watchingVideos.length === 0) {
+      watchingVideoView.showEmptyWatchingVideo();
+      watchedVideoView.hideEmptyWatchedVideo();
     }
-    view.renderSelectedVideoItems(videosToWatch);
+    watchingVideoView.renderWatchingVideoItems(watchingVideos);
   },
 
   loadWatchedVideos() {
     const watchedVideos = watchedVideo.getVideos();
     if (watchedVideos.length === 0) {
-      view.hideEmptyVideoToWatch();
-      view.showEmptyWatchedVideo();
+      watchingVideoView.hideEmptyWatchingVideo();
+      watchedVideoView.showEmptyWatchedVideo();
     }
-    view.renderWatchedVideo(watchedVideos);
+    watchedVideoView.renderWatchedVideo(watchedVideos);
   },
 };
 
