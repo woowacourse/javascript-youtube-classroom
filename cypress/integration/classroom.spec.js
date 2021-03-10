@@ -93,14 +93,47 @@ describe('나만의 유튜브 강의실 Test', () => {
   });
 
   it.only('🗑️ 버튼으로 저장된 리스트에서 삭제할 수 있다. (삭제 시 사용자에게 정말 삭제할 것인지 물어봅니다.)', () => {
-    const confirmStub = cy.stub();
-    cy.on('window:confirm', confirmStub);
+    cy.get(SELECTORS.CLASS.WATCH_LIST).invoke(
+      'append',
+      `
+        <article class="clip d-flex flex-col" data-video-id="UidhQTm1ulw">
+          <div class="preview-container">
+            <iframe width="100%" height="118" src="https://www.youtube.com/embed/UidhQTm1ulw" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen="">
+            </iframe>
+          </div>
+          <div class="content-container pt-2 px-1 d-flex flex-col justify-between flex-1">
+            <div>
+              <h3 class="video-title">폴킴 - 안녕 (호텔 델루나 OST PART.10) / 가사</h3>
+              <a href="https://www.youtube.com/channel/UCaZhnsQ36GIYYQ1sbxKeMDg" target="_blank" class="channel-name mt-1">
+                Music is my life
+              </a>
+              <div class="meta">
+                <p>2019년 8월 25일</p>
+              </div>
+              
+              
+                  <div class="menu-list" data-video-id="UidhQTm1ulw" }="">
+                    <span class="opacity-hover watched">✅</span>
+                    <span class="opacity-hover like">👍</span>
+                    <span class="opacity-hover comment">💬</span>
+                    <span class="opacity-hover delete">🗑️</span>
+                  </div>
+                
+            </div>
+          </div>
+        </article>
+      `
+    );
 
     cy.get(SELECTORS.CLASS.CLIP).then(($$clips) => {
       const $firstClip = $$clips[0];
-      $firstClip.find(SELECTORS.CLASS.DELETE).click();
-      expect(confirmStub.getCall(0)).to.be.calledWith('정말 삭제하시겠습니까?');
-      $firstClip.should('not.exist');
+
+      cy.wrap($firstClip).find(SELECTORS.CLASS.DELETE).click();
+      cy.on('window:confirm', (str) => {
+        expect(str).to.equal(ALERT_MESSAGE.CONFIRM_DELETE);
+      });
+      cy.on('window:confirm', () => true);
+      cy.wrap($firstClip).should('not.exist');
     });
   });
 });

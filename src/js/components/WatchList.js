@@ -1,5 +1,5 @@
 import { $, renderSkeletonUI, clearElement, showSnackbar, showElement, hideElement } from '../utils.js';
-import { SELECTORS, LOCAL_STORAGE_KEYS } from '../constants.js';
+import { SELECTORS, LOCAL_STORAGE_KEYS, ALERT_MESSAGE } from '../constants.js';
 import { searchYoutubeById } from '../api.js';
 import { getVideoTemplate } from '../templates.js';
 import Observer from '../lib/Observer.js';
@@ -10,6 +10,8 @@ export default class WatchList extends Observer {
     this.store = store;
     this.selector = SELECTORS.CLASS.WATCH_LIST;
     this.list = this.store.get().watchList;
+
+    this.bindEvents();
   }
 
   renderSavedVideos(items) {
@@ -57,14 +59,28 @@ export default class WatchList extends Observer {
   async update() {
     const { watchList } = this.store.get();
     if (!watchList || watchList.length <= 0) {
+      clearElement(SELECTORS.CLASS.WATCH_LIST);
       showElement(SELECTORS.CLASS.NO_VIDEO);
       return;
     }
 
     hideElement(SELECTORS.CLASS.NO_VIDEO);
 
+    const oldVideoId = this.list.filter((id) => !watchList.includes(id));
+    if (oldVideoId.length > 0) {
+      oldVideoId.forEach((id) => {
+        const $targetVideo = $(`${SELECTORS.CLASS.CLIP}[data-video-id="${id}"]`);
+        $targetVideo.remove(); // NOTE: 데이터만 변경해도 삭제할 수 있는 방법 좀 더 생각해 볼 필요 있음
+      });
+
+      this.list = watchList;
+      return;
+    }
+
     const newVideoId = watchList.filter((id) => !this.list.includes(id));
-    if (!newVideoId || newVideoId.length <= 0) return;
+    if (!newVideoId || newVideoId.length <= 0) {
+      return;
+    }
 
     try {
       const { items } = await searchYoutubeById([newVideoId]);
@@ -74,5 +90,20 @@ export default class WatchList extends Observer {
     } catch (error) {
       showSnackbar(error.message);
     }
+  }
+
+  bindEvents() {
+    $(SELECTORS.CLASS.WATCH_LIST).addEventListener('click', (event) => {
+      console.log(ALERT_MESSAGE.CONFIRM_DELETE);
+      if (!window.confirm(ALERT_MESSAGE.CONFIRM_DELETE)) return;
+
+      const { target } = event;
+      const { watchList } = this.store.get();
+      if (target.classList.contains('delete')) {
+        const targetId = target.closest('.menu-list').dataset.videoId;
+        const newWatchList = watchList.filter((id) => id !== targetId);
+        this.store.update(LOCAL_STORAGE_KEYS.WATCH_LIST, newWatchList, this);
+      }
+    });
   }
 }

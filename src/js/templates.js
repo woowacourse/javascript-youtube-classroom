@@ -3,7 +3,7 @@ export const getVideoTemplate = (data, options) => {
   const { containsSaveButton = false, containsMenu = false, isSaved = false } = options;
 
   return `
-    <article class="clip d-flex flex-col">
+    <article class="clip d-flex flex-col" data-video-id="${id}">
       <div class="preview-container">
         <iframe
           width="100%"
@@ -39,7 +39,7 @@ export const getVideoTemplate = (data, options) => {
           ${
             containsMenu
               ? `
-              <div>
+              <div class="menu-list" data-video-id="${id}"}>
                 <span class="opacity-hover watched">✅</span>
                 <span class="opacity-hover like">👍</span>
                 <span class="opacity-hover comment">💬</span>
