@@ -30,11 +30,10 @@ export const getJSONFromLocalStorage = key => {
   }
 };
 
-export const isScrollUnfinished = (document, target) => {
+export const isScrollUnfinished = (args, scrollTop) => {
   return (
-    target.scrollTop <
-    Math.max(document.scrollHeight, document.offsetHeight) -
-      document.clientHeight
+    scrollTop <
+    Math.max(args.scrollHeight, args.offsetHeight) - args.clientHeight
   );
 };
 
