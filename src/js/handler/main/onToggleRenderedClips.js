@@ -1,8 +1,11 @@
-import { $$ } from '../utils/querySelector.js';
-import storage from '../utils/localStorage.js';
-import { showElement, hideElement } from '../utils/setAttribute.js';
-import { LOCAL_STORAGE_KEY, LOCAL_STORAGE_VALUE } from '../utils/constant.js';
-import $DOM from '../utils/DOM.js';
+import { $$ } from '../../utils/querySelector.js';
+import $DOM from '../../utils/DOM.js';
+import storage from '../../utils/localStorage.js';
+import { showElement, hideElement } from '../../utils/setAttribute.js';
+import {
+  LOCAL_STORAGE_KEY,
+  LOCAL_STORAGE_VALUE,
+} from '../../utils/constant.js';
 
 const setSelected = (isWatchedButton) => {
   if (isWatchedButton) {

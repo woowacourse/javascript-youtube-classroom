@@ -1,12 +1,12 @@
-import { LOCAL_STORAGE_KEY } from '../utils/constant.js';
-import $DOM from '../utils/DOM.js';
-import storage from '../utils/localStorage.js';
+import { LOCAL_STORAGE_KEY } from '../../utils/constant.js';
+import $DOM from '../../utils/DOM.js';
+import storage from '../../utils/localStorage.js';
 import {
   openModal,
   renderClips,
   renderSaveVideoCount,
   renderRecentKeywords,
-} from '../view/modal.js';
+} from '../../view/modal.js';
 
 export const onModalShow = () => {
   const savedClips = storage.get(LOCAL_STORAGE_KEY.SAVED_CLIPS) ?? [];

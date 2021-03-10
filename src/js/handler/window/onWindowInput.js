@@ -1,7 +1,7 @@
-import $DOM from '../utils/DOM.js';
-import { closeModal } from '../view/modal.js';
-import { onModalShow } from './onModalShow.js';
-import { onToggleRenderedClips } from './onToggleRenderedClips.js';
+import $DOM from '../../utils/DOM.js';
+import { closeModal } from '../../view/modal.js';
+import { onModalShow } from '../modal/onModalShow.js';
+import { onToggleRenderedClips } from '../main/onToggleRenderedClips.js';
 
 const actions = {
   F1: () => onToggleRenderedClips({ target: $DOM.NAVIGATOR.UNWATCHED_BUTTON }),
