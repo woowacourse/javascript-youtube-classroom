@@ -30,7 +30,9 @@ export default class SavedVideosView extends View {
     this.emit('clickWatched', videoId);
   }
 
-  bindDeleteEvent(videoId) {}
+  bindDeleteEvent(videoId) {
+    this.emit('clickDelete', videoId);
+  }
 
   renderSavedVideoClips(savedVideos, watchedVideos) {
     const savedVideoClips = savedVideos
@@ -46,6 +48,10 @@ export default class SavedVideosView extends View {
 
   addSavedVideoClip(video) {
     this.$element.addInnerHTML(clipMaker(video, { isModal: false }));
+  }
+
+  removeSavedVideoClip(videoId) {
+    $(`[data-article='${videoId}']`).removeElement();
   }
 
   showNoVideos() {
@@ -64,8 +70,8 @@ export default class SavedVideosView extends View {
     $('.empty-videos').removeElement();
   }
 
-  toggleButtonColor(videoId, buttonTyoe) {
-    const packButton = $(`[data-video-${buttonTyoe}='${videoId}']`);
+  toggleButtonColor(videoId, buttonType) {
+    const packButton = $(`[data-video-${buttonType}='${videoId}']`);
     packButton.toggleClass('opacity-hover');
   }
 }

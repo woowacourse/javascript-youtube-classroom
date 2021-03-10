@@ -1,6 +1,7 @@
 import {
   updateRecentChips,
-  updateSavedVideoIds,
+  pushSavedVideoIds,
+  popSavedVideoId,
   updateWatchedVideoIds,
   getStorageData,
 } from '../utils/localStorage.js';
@@ -23,10 +24,12 @@ export default class Store {
     };
   }
 
-  save(key, value) {
+  save(key, value, isDelete) {
     const updateLocalStorage = {
       [STORE_KEYS.RECENT_KEYWORDS]: updateRecentChips,
-      [STORE_KEYS.SAVED_VIDEO_IDS]: updateSavedVideoIds,
+      [STORE_KEYS.SAVED_VIDEO_IDS]: isDelete
+        ? popSavedVideoId
+        : pushSavedVideoIds,
       [STORE_KEYS.WATCHED_VIDEO_IDS]: updateWatchedVideoIds,
     };
 
@@ -34,9 +37,9 @@ export default class Store {
     this._state = { ...this._state, [key]: updatedResult };
   }
 
-  update(data = {}) {
+  update(data = {}, isDelete = false) {
     Object.entries(data).forEach(([key, value]) => {
-      this.save(key, value);
+      this.save(key, value, isDelete);
     });
 
     this.notify();

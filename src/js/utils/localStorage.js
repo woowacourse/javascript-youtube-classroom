@@ -20,7 +20,7 @@ export function updateRecentChips(keyword) {
   return recentKeywords;
 }
 
-export function updateSavedVideoIds(videoId) {
+export function pushSavedVideoIds(videoId) {
   const savedVideoIds = getStorageData(STORE_KEYS.SAVED_VIDEO_IDS);
 
   if (savedVideoIds.includes(videoId)) return savedVideoIds;
@@ -32,6 +32,23 @@ export function updateSavedVideoIds(videoId) {
   );
 
   return savedVideoIds;
+}
+
+export function popSavedVideoId(videoId) {
+  const savedVideoIds = getStorageData(STORE_KEYS.SAVED_VIDEO_IDS);
+
+  if (!savedVideoIds.includes(videoId)) return savedVideoIds;
+
+  const updatedSavedVideoIds = savedVideoIds.filter(
+    (savedVideoId) => savedVideoId !== videoId,
+  );
+
+  localStorage.setItem(
+    STORE_KEYS.SAVED_VIDEO_IDS,
+    JSON.stringify(updatedSavedVideoIds),
+  );
+
+  return updatedSavedVideoIds;
 }
 
 export function updateWatchedVideoIds(videoId) {

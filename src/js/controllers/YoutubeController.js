@@ -2,6 +2,7 @@ import { $ } from '../utils/dom.js';
 import {
   STORE_KEYS,
   PACK_BUTTON_TYPE,
+  ALERT_MESSAGES,
   SNACKBAR_MESSAGES,
 } from '../utils/constants.js';
 import { videoRequest } from '../request.js';
@@ -34,9 +35,20 @@ export default class YoutubeController {
       .on('clickSavedTab', () => this.focusSavedTab())
       .on('clickWatchedTab', () => this.focusWatchedTab())
       .on('clickSearchTab', () => this.focusSearchTab());
-
     this.searchModalView.on('closeModal', () => this.focusSavedTab());
-    this.savedVideosView.on('clickWatched', (e) => this.watchVideo(e.detail));
+    this.savedVideosView
+      .on('clickWatched', (e) => this.watchVideo(e.detail))
+      .on('clickDelete', (e) => this.deleteVideo(e.detail));
+  }
+
+  deleteVideo(videoId) {
+    const isDelete = true;
+
+    if (confirm(ALERT_MESSAGES.CONFIRM_DELETE_VIDEO)) {
+      this.store.update({ [STORE_KEYS.SAVED_VIDEO_IDS]: videoId }, isDelete);
+      this.savedVideosView.removeSavedVideoClip(videoId);
+      popSnackbar(SNACKBAR_MESSAGES.DELETE_VIDEO.SUCCESS);
+    }
   }
 
   watchVideo(videoId) {

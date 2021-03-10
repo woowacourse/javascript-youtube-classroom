@@ -12,6 +12,7 @@ export const VALUE = {
 export const ALERT_MESSAGES = {
   EMPTY_SEARCH_KEYWORD: '검색어를 입력해주세요',
   OVER_SAVED_VIDEO_COUNT: '동영상 저장은 최대 100개까지 가능합니다',
+  CONFIRM_DELETE_VIDEO: '동영상을 삭제하시겠읍니까?',
 };
 
 export const STORE_KEYS = {
@@ -40,5 +41,9 @@ export const SNACKBAR_MESSAGES = {
   WATCH_VIDEO_REMOVE: {
     SUCCESS: '동영상이 본 영상 목록에서 제거되었읍니다',
     FAIL: '본 영상 목록 제거에 실패했읍니다',
+  },
+  DELETE_VIDEO: {
+    SUCCESS: '동영상이 삭제되었읍니다',
+    FAIL: '동영상 삭제에 실패했읍니다',
   },
 };
