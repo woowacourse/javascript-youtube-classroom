@@ -24,6 +24,8 @@ export const CLASS = {
   INVISIBLE: 'invisible',
 };
 
+export const REDIRECT_HOST = 'https://ddongule.netlify.app/youtube/v3/search?';
+
 export const URL = {
   YOUTUBE_SEARCH: 'https://www.googleapis.com/youtube/v3/search?',
   YOUTUBE_VIDEOS: 'https://www.googleapis.com/youtube/v3/videos?',

@@ -10,13 +10,10 @@ class YoutubeModel {
     this.#nextPageToken = '';
   }
 
-  getVideoInfosBySearch = async ({
-    query,
-    max = SEARCH.FETCH_VIDEO_LENGTH,
-  }) => {
+  getVideoInfosBySearch = ({ query, max = SEARCH.FETCH_VIDEO_LENGTH }) => {
     const nextPageToken = this.#nextPageToken;
 
-    await api.fetchVideoItems({ query, nextPageToken, max }).then(json => {
+    api.fetchVideoItems({ query, nextPageToken, max }).then(json => {
       this.#nextPageToken = json.nextPageToken;
       this.#videoInfos = json.items.map(item => {
         return {
