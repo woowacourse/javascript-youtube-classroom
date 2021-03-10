@@ -1,3 +1,5 @@
+import deepFreeze from './freeze.js';
+
 export const YOUTUBE = {
   NUMBER_TO_LOAD: 10,
   MAXMIMUM_RECENT_KEYWORD_LENGTH: 3,
@@ -38,3 +40,8 @@ export const LOCAL_STORAGE_VALUE = {
 
 export const BASE_URL =
   'https://zen-cray-600581.netlify.app/.netlify/functions/lambda/search';
+
+deepFreeze(YOUTUBE);
+deepFreeze(MESSAGE);
+deepFreeze(LOCAL_STORAGE_KEY);
+deepFreeze(LOCAL_STORAGE_VALUE);
