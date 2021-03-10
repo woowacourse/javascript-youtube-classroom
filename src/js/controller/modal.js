@@ -4,12 +4,15 @@ class ModalController {
   #storageModel;
   #savedView;
   #searchView;
+  #$modal;
 
   constructor(storageModel, savedView, searchView) {
     this.#storageModel = storageModel;
     this.#savedView = savedView;
     this.#searchView = searchView;
+    this.#$modal = $('.modal');
   }
+
   init = () => {
     this.handleModalOpen();
     this.handleModalClose();
@@ -25,14 +28,12 @@ class ModalController {
   };
 
   onModalShow = () => {
-    const $modal = $('.modal');
     this.loadInfos();
-    $modal.classList.add('open');
+    this.#$modal.classList.add('open');
   };
 
   onModalClose = () => {
-    const $modal = $('.modal');
-    $modal.classList.remove('open');
+    this.#$modal.classList.remove('open');
   };
 
   handleModalOpen = () => {
@@ -41,8 +42,7 @@ class ModalController {
   };
 
   handleModalClose = () => {
-    const $modal = $('.modal');
-    $modal.addEventListener('click', event => {
+    this.#$modal.addEventListener('click', event => {
       if (
         event.target.querySelector('.modal-inner') ||
         event.target.closest('.modal-close')
