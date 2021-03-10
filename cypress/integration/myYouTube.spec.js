@@ -1,7 +1,6 @@
 describe('simba-tube', () => {
   beforeEach(() => {
     cy.visit('http://localhost:5500/');
-    cy.window().then((win) => cy.stub(win, 'alert').as('windowAlert'));
   });
 
   const searchVideo = (keyword) => {
@@ -16,6 +15,10 @@ describe('simba-tube', () => {
       query: { q: keyword },
     }).as('search');
   };
+
+  it('사이트에 접속하면 가장 처음에는 비어있다는 것을 알려주는 이미지와 텍스트를 보여준다. ', () => {
+    cy.get('.empty-videos').should('be.visible');
+  });
 
   it('클릭한 탭의 색을 하이라이트한다.', () => {
     cy.get('#nav-bar > button').each((button) => {
@@ -89,6 +92,9 @@ describe('simba-tube', () => {
 
     cy.get('#saved-video-count').should('have.text', 1);
     cy.get('#main-videos').find('.clip').should('have.length', 1);
+
+    cy.get('#snackbar').should('be.visible');
+    cy.get('#snackbar').should('have.text', '동영상이 저장되었읍니다');
   });
 
   it('최근 검색어 클릭 시 해당 검색어로 검색을 한다.', () => {

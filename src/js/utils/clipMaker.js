@@ -1,8 +1,8 @@
 export default function clipMaker(video, type) {
-  const { isModal, isSaved } = type;
+  const { isModal, isSaved, isWatched } = type;
 
   return `
-    <article class="clip">
+    <article class="clip" data-article="${video.id}">
       <div class="preview-container">
         <iframe
           width="100%"
@@ -29,7 +29,11 @@ export default function clipMaker(video, type) {
           </div>
         </div>
         </div>
-      ${isModal ? saveButtonTemplate(video.id, isSaved) : buttonPackTemplate()}
+      ${
+        isModal
+          ? saveButtonTemplate(video.id, isSaved)
+          : buttonPackTemplate(video.id, isWatched)
+      }
     </article>
   `;
 }
@@ -39,7 +43,7 @@ function saveButtonTemplate(videoId, isSaved) {
     <div class="d-flex justify-end clip-save">
       <button
         type="button"
-        data-video-id="${videoId}" 
+        data-video-save="${videoId}" 
         class="btn clip-save-btn" 
         ${isSaved ? 'disabled' : ''}
       >⬇️ 저장
@@ -48,13 +52,17 @@ function saveButtonTemplate(videoId, isSaved) {
   `;
 }
 
-function buttonPackTemplate() {
+function buttonPackTemplate(videoId, isWatched) {
   return `
-    <div>
-      <span class="opacity-hover">✅</span>
-      <span class="opacity-hover">👍</span>
-      <span class="opacity-hover">💬</span>
-      <span class="opacity-hover">🗑️</span>
+    <div class="video-button-pack">
+      <span
+        data-video-watched=${videoId}
+        class="pack-button ${isWatched ? '' : 'opacity-hover'}"
+      >✅
+      </span>
+      <span data-video-like=${videoId} class="pack-button opacity-hover">👍</span>
+      <span data-video-comment=${videoId} class="pack-button opacity-hover">💬</span>
+      <span data-video-delete=${videoId} class="pack-button opacity-hover">🗑️</span>
     </div>
   `;
 }

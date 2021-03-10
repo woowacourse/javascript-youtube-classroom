@@ -7,15 +7,81 @@ export default class SavedVideosView extends View {
     super($element);
   }
 
-  renderSavedVideoClips(videos) {
-    const savedVideoClips = videos
-      .map((video) => clipMaker(video, { isModal: false }))
+  init() {
+    this.bindEvents();
+  }
+
+  bindEvents() {
+    $('#main-videos').setEvent('click', (e) => {
+      if (!e.target.classList.contains('pack-button')) return;
+
+      const buttonPack = {
+        videoWatched: this.bindWatchedEvent.bind(this),
+        videoDelete: this.bindDeleteEvent.bind(this),
+      };
+
+      Object.entries(e.target.dataset).forEach(([key, value]) => {
+        buttonPack[key](value);
+      });
+    });
+  }
+
+  bindWatchedEvent(videoId) {
+    this.emit('clickWatched', videoId);
+  }
+
+  bindDeleteEvent(videoId) {
+    this.emit('clickDelete', videoId);
+  }
+
+  renderSavedVideoClips(savedVideos, watchedVideos) {
+    const savedVideoClips = savedVideos
+      .map((video) => {
+        const isWatched = watchedVideos.includes(video.id);
+
+        return clipMaker(video, { isModal: false, isWatched });
+      })
       .join('');
 
-    $('#main-videos').addInnerHTML(savedVideoClips);
+    this.$element.addInnerHTML(savedVideoClips);
   }
 
   addSavedVideoClip(video) {
-    $('#main-videos').addInnerHTML(clipMaker(video, { isModal: false }));
+    this.$element.addInnerHTML(clipMaker(video, { isModal: false }));
+  }
+
+  removeSavedVideoClip(videoId) {
+    $(`[data-article='${videoId}']`).removeElement();
+  }
+
+  showNoVideos() {
+    this.$element.setInnerHTML(
+      `
+        <div class="empty-videos stretch d-flex flex-col items-center">
+          <img width="50%" src="./src/images/status/empty_tung.png" alt="empty-videos-img"></img>
+          <h2>저장된 동영상이 없읍니다 🙄</h2>
+          <p>동영상 검색 탭을 눌러 키워드를 검색 후 마음에 드는 동영상을 저장해 보세요 ☺️</p>
+        </div>
+      `,
+    );
+  }
+
+  hideNoVideos() {
+    $('.empty-videos').removeElement();
+  }
+
+  toggleButtonColor(videoId, buttonType) {
+    const packButton = $(`[data-video-${buttonType}='${videoId}']`);
+    packButton.toggleClass('opacity-hover');
+  }
+
+  showSavedVideosAll() {
+    $('#main-videos > article').show();
+  }
+
+  showWatchedVideosOnly(unWatchedVideoIds) {
+    unWatchedVideoIds.forEach((unWatchedVideoId) => {
+      $(`[data-article='${unWatchedVideoId}']`).hide();
+    });
   }
 }

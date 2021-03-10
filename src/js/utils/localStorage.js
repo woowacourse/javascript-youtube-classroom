@@ -1,7 +1,7 @@
-import { VALUE, STORAGE_KEYS } from './constants.js';
+import { VALUE, STORE_KEYS } from './constants.js';
 
-export function setRecentChip(keyword) {
-  const recentKeywords = getValidJson(STORAGE_KEYS.RECENT_KEYWORDS, []);
+export function updateRecentChips(keyword) {
+  const recentKeywords = getStorageData(STORE_KEYS.RECENT_KEYWORDS);
 
   if (recentKeywords.includes(keyword)) {
     recentKeywords.splice(recentKeywords.indexOf(keyword), 1);
@@ -12,23 +12,71 @@ export function setRecentChip(keyword) {
   }
 
   recentKeywords.unshift(keyword);
-  localStorage.setItem(STORAGE_KEYS.RECENT_KEYWORDS, recentKeywords);
+  localStorage.setItem(
+    STORE_KEYS.RECENT_KEYWORDS,
+    JSON.stringify(recentKeywords),
+  );
+
+  return recentKeywords;
 }
 
-export function setSavedVideoId(videoId) {
-  const savedVideoIds = getValidJson(STORAGE_KEYS.SAVED_VIDEO_IDS, []);
+export function pushSavedVideoIds(videoId) {
+  const savedVideoIds = getStorageData(STORE_KEYS.SAVED_VIDEO_IDS);
 
-  if (savedVideoIds.includes(videoId)) return;
+  if (savedVideoIds.includes(videoId)) return savedVideoIds;
 
   savedVideoIds.push(videoId);
-  localStorage.setItem(STORAGE_KEYS.SAVED_VIDEO_IDS, savedVideoIds);
+  localStorage.setItem(
+    STORE_KEYS.SAVED_VIDEO_IDS,
+    JSON.stringify(savedVideoIds),
+  );
+
+  return savedVideoIds;
 }
 
-export function getValidJson(str, defaultValue) {
-  try {
-    const items = localStorage.getItem(str);
+export function popSavedVideoId(videoId) {
+  const savedVideoIds = getStorageData(STORE_KEYS.SAVED_VIDEO_IDS);
 
-    if (items) return items.split(',');
+  if (!savedVideoIds.includes(videoId)) return savedVideoIds;
+
+  const updatedSavedVideoIds = savedVideoIds.filter(
+    (savedVideoId) => savedVideoId !== videoId,
+  );
+
+  localStorage.setItem(
+    STORE_KEYS.SAVED_VIDEO_IDS,
+    JSON.stringify(updatedSavedVideoIds),
+  );
+
+  return updatedSavedVideoIds;
+}
+
+export function updateWatchedVideoIds(videoId) {
+  const watchedVideoIds = getStorageData(STORE_KEYS.WATCHED_VIDEO_IDS);
+  let updatedWatchedVideoIds;
+
+  if (watchedVideoIds.includes(videoId)) {
+    updatedWatchedVideoIds = watchedVideoIds.filter(
+      (watchedVideoId) => watchedVideoId !== videoId,
+    );
+  } else {
+    watchedVideoIds.push(videoId);
+    updatedWatchedVideoIds = [...watchedVideoIds];
+  }
+
+  localStorage.setItem(
+    STORE_KEYS.WATCHED_VIDEO_IDS,
+    JSON.stringify(updatedWatchedVideoIds),
+  );
+
+  return updatedWatchedVideoIds;
+}
+
+export function getStorageData(str, defaultValue = []) {
+  try {
+    const items = JSON.parse(localStorage.getItem(str));
+
+    if (items) return items;
   } catch (e) {
     return defaultValue;
   }

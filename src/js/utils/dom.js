@@ -39,6 +39,10 @@ export const $ = (function () {
     this.each((element) => element.classList.add('d-none'));
   };
 
+  constructor.prototype.removeElement = function () {
+    this.each((element) => element.remove());
+  };
+
   constructor.prototype.setInnerHTML = function (template) {
     this.each((element) => (element.innerHTML = template));
   };
@@ -48,11 +52,21 @@ export const $ = (function () {
   };
 
   constructor.prototype.addClass = function (className) {
+    if (!this.elements) return;
+
     this.each((element) => element.classList.add(className));
   };
 
   constructor.prototype.removeClass = function (className) {
+    if (!this.elements) return;
+
     this.each((element) => element.classList.remove(className));
+  };
+
+  constructor.prototype.toggleClass = function (className) {
+    if (!this.elements) return;
+
+    this.each((element) => element.classList.toggle(className));
   };
 
   constructor.prototype.getText = function () {
