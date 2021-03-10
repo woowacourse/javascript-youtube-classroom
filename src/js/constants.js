@@ -21,6 +21,8 @@ export const SELECTORS = {
     VIDEO_TITLE: '.video-title',
     RECENT_KEYWORD_LIST: '.recent-keyword-list',
     SAVED_VIDEO_COUNT: '.saved-video-count',
+    NO_VIDEO: '.no-video',
+    CLIP: '.clip',
   },
   ID: {
     SEARCH_BUTTON: '#search-button',

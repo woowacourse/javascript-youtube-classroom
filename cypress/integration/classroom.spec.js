@@ -83,4 +83,12 @@ describe('나만의 유튜브 강의실 Test', () => {
       .should('be.visible')
       .should('have.text', '동영상은 최대 100개까지 저장할 수 있습니다.');
   });
+
+  it.only('이전에 저장해뒀던 비디오가 없으면, 저장한 동영상이 없다는 것을 알려주는 이미지를 출력한다.', () => {
+    cy.get(SELECTORS.CLASS.WATCH_LIST).then(($watchList) => {
+      if ($watchList.find(SELECTORS.CLASS.CLIP).length <= 0) {
+        cy.get(SELECTORS.CLASS.NO_VIDEO).should('be.visible');
+      }
+    });
+  });
 });
