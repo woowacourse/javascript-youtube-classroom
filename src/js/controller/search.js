@@ -51,9 +51,9 @@ class SearchController {
 
   saveVideo = e => {
     e.target.classList.add(CLASS.INVISIBLE);
-    const videoInfo = JSON.parse(e.target.dataset.info);
-    this.storage.saveVideo(videoInfo);
 
+    const videoInfo = { ...e.target.dataset, watched: false };
+    this.storage.saveVideo(videoInfo);
     this.searchView.renderSavedVideoCountSection(this.storage.savedVideoCount);
 
     if (this.storage.showWatched === true) return;

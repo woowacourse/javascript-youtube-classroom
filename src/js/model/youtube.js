@@ -19,10 +19,9 @@ class YoutubeModel {
         return {
           url: item.id.videoId,
           title: item.snippet.title,
-          channelUrl: item.snippet.channelId,
+          channelId: item.snippet.channelId,
           channelTitle: item.snippet.channelTitle,
           publishTime: item.snippet.publishTime,
-          watched: false,
         };
       });
     });
