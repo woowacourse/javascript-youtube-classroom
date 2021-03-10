@@ -17,8 +17,11 @@ export const STORAGE_NAME = {
   SAVED_VIDEOS: "saved_videos",
 };
 
-export const ALERT_MESSAGE = {
+export const ERROR_MESSAGE = {
   SAVE_COUNT_EXCEEDED_ERROR: "비디오 저장은 100개까지만 가능합니다.",
+  SEARCH_ERROR: "동영상을 검색할 수 없습니다",
+  INVALID_ACTION_ERROR: "유효하지 않은 동작입니다.",
+  CONNOT_FOUND_SAVE_BUTTON_ERROR: "cannot find save button",
 };
 
 export const INVALID_DATE = "Invalid Date";

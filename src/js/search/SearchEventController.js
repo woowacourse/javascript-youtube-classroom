@@ -3,7 +3,7 @@ import SearchController from "./SearchController.js";
 import videos from "../state/videos.js";
 
 import elements from "../utils/elements.js";
-import { ALERT_MESSAGE, VIDEOS } from "../utils/constants.js";
+import { ERROR_MESSAGE, VIDEOS } from "../utils/constants.js";
 import {
   openModal,
   closeModal,
@@ -108,7 +108,7 @@ export default class SearchEventController {
 
     if (e.target.dataset.videoSaved === "") {
       if (videos.getSavedVideoCount() >= VIDEOS.SAVED_VIDEOS_MAX_COUNT) {
-        alert(ALERT_MESSAGE.SAVE_COUNT_EXCEEDED_ERROR);
+        alert(ERROR_MESSAGE.SAVE_COUNT_EXCEEDED_ERROR);
         return;
       }
       this.searchController.saveVideo(videoId);

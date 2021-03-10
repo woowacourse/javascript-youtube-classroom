@@ -71,7 +71,7 @@ export default class SearchController {
       return items;
     } catch (err) {
       this.searchView.resetSearchResults();
-      alert("동영상을 검색할 수 없습니다.");
+      alert(ERROR_MESSAGE.SEARCH_ERROR);
       return;
     }
   }
