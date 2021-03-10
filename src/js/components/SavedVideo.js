@@ -89,10 +89,12 @@ export class SavedVideo {
   getButtonTemplate(videoId) {
     return `
       <ul class="list-style-none p-0 mt-3 mb-6 d-flex" data-video-id="${videoId}">
-        <li class="mr-2"><button type="button" class="js-check-button emoji-btn opacity-hover">✅</button></li>
-        <li class="mr-2"><button type="button" class="js-like-button emoji-btn opacity-hover">👍</button></li>
-        <li class="mr-2"><button type="button" class="js-comment-button emoji-btn opacity-hover">💬</button></li>
-        <li class="mr-2"><button type="button" class="js-delete-button emoji-btn opacity-hover">🗑️</button></li>
+        <li class="mr-2"><button type="button" class="js-check-button emoji-btn ${
+          this.isChecked ? 'scale-hover' : 'scale-hover opacity-hover'
+        }">✅</button></li>
+        <li class="mr-2"><button type="button" class="js-like-button emoji-btn bg-transparent scale-hover opacity-hover">👍</button></li>
+        <li class="mr-2"><button type="button" class="js-comment-button emoji-btn bg-transparent scale-hover opacity-hover">💬</button></li>
+        <li class="mr-2"><button type="button" class="js-delete-button emoji-btn bg-transparent scale-hover opacity-hover">🗑️</button></li>
       </ul>
     `;
   }
