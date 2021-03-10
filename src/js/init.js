@@ -6,6 +6,8 @@ import handleLatestKeywordSearch from './handlers/latestKeywordSearch.js';
 import videoInfos from './states/videoInfos.js';
 import latestKeywords from './states/latestKeywords.js';
 import intersectionObserver from './states/intersectionObserver.js';
+import handleButtonsControl from './handlers/buttonControl.js';
+import handleModeChange from './handlers/modeChange.js';
 
 function initState() {
   videoInfos.init();
@@ -22,6 +24,8 @@ function initEvent() {
     'click',
     handleLatestKeywordSearch
   );
+  $('#video-list').addEventListener('click', handleButtonsControl);
+  $('#mode-wrapper').addEventListener('click', handleModeChange);
 }
 
 export { initState, initEvent };

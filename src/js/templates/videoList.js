@@ -63,16 +63,18 @@ function createVideoListTemplate(resultItems = [], videoInfos) {
     .join('');
 }
 
-function createControlButtonsTemplate() {
+function createControlButtonsTemplate(isWatched) {
   return [
-    { content: '✅', className: 'js-watched-button' },
-    { content: '👍', className: 'js-like-button' },
-    { content: '💬', className: 'js-comment-button' },
-    { content: '🗑️', className: 'js-delete-button' },
+    { content: '✅', className: 'js-watched-button', isChecked: isWatched },
+    { content: '👍', className: 'js-like-button', isChecked: false },
+    { content: '💬', className: 'js-comment-button', isChecked: false },
+    { content: '🗑️', className: 'js-delete-button', isChecked: false },
   ]
     .map(
-      ({ content, className }) =>
-        `<span class="opacity-hover ml-2 ${className}">${content}</span>`
+      ({ content, className, isChecked }) =>
+        `<span class="${isChecked ? '' : 'opacity-hover'} ml-2 ${className}">
+          ${content}
+        </span>`
     )
     .join('');
 }
@@ -80,7 +82,10 @@ function createControlButtonsTemplate() {
 function createSavedVideoListTemplate(savedVideoInfos = []) {
   return [...savedVideoInfos]
     .map(item =>
-      createVideoSnippetTemplate(item, createControlButtonsTemplate())
+      createVideoSnippetTemplate(
+        item,
+        createControlButtonsTemplate(item.isWatched)
+      )
     )
     .join('');
 }

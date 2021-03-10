@@ -3,6 +3,7 @@ import { renderSavedVideoCount } from '../viewControllers/searchModal.js';
 import { fetchLatestVideoInfos } from '../API.js';
 import { VIDEO_INFOS } from '../constants/localStorage.js';
 import { getLocalStorage, setLocalStorage } from '../utils/localStorage.js';
+import isWatchedMode from './isWatchedMode.js';
 
 async function updateVideoInfos(videoInfos) {
   const videoIds = videoInfos.map(videoInfo => videoInfo.id.videoId);
@@ -16,7 +17,8 @@ async function updateVideoInfos(videoInfos) {
       channelTitle: snippet.channelTitle,
       publishTime: snippet.publishedAt,
     },
-    isWatched: false, // TODO: 필터 할 때 localStorage에서 받아오기 - 2단계.
+    isWatched: videoInfos.find(videoInfo => videoInfo.id.videoId === id)
+      .isWatched,
   }));
 }
 
@@ -48,9 +50,23 @@ const videoInfos = {
 
   set(newVideoInfos) {
     this.value = new Set(newVideoInfos);
+    setLocalStorage(VIDEO_INFOS, [...this.value]);
 
     renderSavedVideoCount(this.value.size);
-    renderSavedVideoList(this.value);
+    renderSavedVideoList(this.value, isWatchedMode.get());
+  },
+
+  toggleIsWatched(targetId) {
+    const newVideoInfos = [...this.value].map(videoInfo =>
+      videoInfo.id.videoId === targetId
+        ? {
+            ...videoInfo,
+            isWatched: !videoInfo.isWatched,
+          }
+        : videoInfo
+    );
+
+    this.set(newVideoInfos);
   },
 
   get() {

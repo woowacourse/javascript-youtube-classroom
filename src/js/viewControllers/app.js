@@ -15,9 +15,13 @@ function closeModal() {
   $searchModal.classList.remove('open');
 }
 
-function renderSavedVideoList(videoInfos) {
-  $videoList.innerHTML = videoInfos.size
-    ? createSavedVideoListTemplate(videoInfos)
+function renderSavedVideoList(videoInfos, isWatchedMode) {
+  const filteredVideoInfos = [...videoInfos].filter(
+    videoInfo => isWatchedMode === videoInfo.isWatched
+  );
+
+  $videoList.innerHTML = filteredVideoInfos.length
+    ? createSavedVideoListTemplate(filteredVideoInfos)
     : emptyVideoListTemplate;
 }
 
