@@ -7,3 +7,7 @@
   border-style: none;
   cursor: pointer;
 }
+
+.clicked {
+  background-color: rgb(179, 234, 242);
+}

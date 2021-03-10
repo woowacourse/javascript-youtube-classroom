@@ -1,11 +1,13 @@
-import { YOUTUBE, SELECTOR_CLASS } from '../constants.js';
+import { YOUTUBE, SELECTOR_CLASS, STYLE_CLASS } from '../constants.js';
 
 export function getVideoListTemplate(videos) {
   return videos.map(getSearchedVideoTemplate).join('');
 }
 
-export function getSelectedVideoListTemplate(videos) {
-  return videos.map(getSelectedVideoTemplate).join('');
+export function getSelectedVideoListTemplate(videos, isWatched) {
+  return videos
+    .map(video => getSelectedVideoTemplate(video, isWatched))
+    .join('');
 }
 
 export function getSearchQueriesTemplate(queries) {
@@ -18,7 +20,7 @@ export function getSearchQueryTemplate(query) {
   `;
 }
 
-function getSelectedVideoTemplate(videoItem) {
+function getSelectedVideoTemplate(videoItem, isWatched) {
   return `
   <article class="${SELECTOR_CLASS.CLIP} clip">
     <div class="clip__preview">
@@ -46,7 +48,12 @@ function getSelectedVideoTemplate(videoItem) {
         </div>
         <div>
           <span 
-            class="${SELECTOR_CLASS.CLIP_CHECK_BUTTON} opacity-hover" 
+            class="
+              ${SELECTOR_CLASS.CLIP_CHECK_BUTTON}
+              clip__check-button
+              ${isWatched ? STYLE_CLASS.CHECKED : ''} 
+              opacity-hover
+            " 
             data-video-id="${videoItem.videoId}"
           >✅</span>
           <span class="opacity-hover">👍</span>

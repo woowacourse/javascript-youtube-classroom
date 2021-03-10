@@ -70,6 +70,13 @@ const controllerUtil = {
     }
     watchedVideo.pushVideo(sendingVideo);
   },
+  sendVideoToWatchingVideos(videoId) {
+    const sendingVideo = watchedVideo.popVideoByVideoId(videoId);
+    if (!sendingVideo) {
+      return;
+    }
+    videoToWatch.pushVideo(sendingVideo);
+  },
   isVideoToWatch(videoId) {
     return videoToWatch.getVideos().some(video => video.videoId === videoId);
   },

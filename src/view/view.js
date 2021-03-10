@@ -2,9 +2,12 @@ import {
   $modal,
   $searchResultVideoWrapper,
   $searchQueries,
-  $videoWrapper,
-  $emptyVideoImage,
+  $watchingVideoWrapper,
+  $emptyVideoToWatch,
   $snackbarWrapper,
+  $watchedVideoWrapper,
+  $emptyWatchedVideo,
+  $nav,
 } from '../elements.js';
 import {
   STYLE_CLASS,
@@ -40,9 +43,27 @@ const view = {
   },
   renderSelectedVideoItems(videos) {
     viewUtil.renderByElement(
-      $videoWrapper,
+      $watchingVideoWrapper,
       getSelectedVideoListTemplate(videos)
     );
+  },
+  renderWatchedVideo(videos) {
+    viewUtil.renderByElement(
+      $watchedVideoWrapper,
+      getSelectedVideoListTemplate(videos, true)
+    );
+  },
+  renderWatchingVideo(videos) {
+    viewUtil.renderByElement(
+      $watchingVideoWrapper,
+      getSelectedVideoListTemplate(videos)
+    );
+  },
+  eraseWatchingVideo() {
+    viewUtil.renderByElement($watchingVideoWrapper, '');
+  },
+  eraseWatchedVideo() {
+    viewUtil.renderByElement($watchedVideoWrapper, '');
   },
   renderSearchQueries(queries) {
     viewUtil.renderByElement($searchQueries, getSearchQueriesTemplate(queries));
@@ -67,8 +88,11 @@ const view = {
   showSearchResultIntersector() {
     viewUtil.showElementBySelector(`#${SELECTOR_ID.SERACH_RESULT_INTERSECTOR}`);
   },
-  showEmptyVideoImage() {
-    viewUtil.showElement($emptyVideoImage);
+  showEmptyVideoToWatch() {
+    viewUtil.showElement($emptyVideoToWatch);
+  },
+  showEmptyWatchedVideo() {
+    viewUtil.showElement($emptyWatchedVideo);
   },
   showMessage(message) {
     alert(message);
@@ -82,6 +106,7 @@ const view = {
       viewUtil.deleteElement($snackbarWrapper, $snackbar);
     }, SETTINGS.SNACKBAR_PERSISTENT_MILLISEC);
   },
+  // TODO : view 에서 modal view 분리
   createSnackbar(message, isSuccess) {
     const $snackbar = document.createElement('div');
     $snackbar.className = `
@@ -99,8 +124,20 @@ const view = {
   hideVideoSaveButton(target) {
     viewUtil.hideElement(target);
   },
-  hideEmptyVideoImage() {
-    viewUtil.hideElement($emptyVideoImage);
+  hideEmptyVideoToWatch() {
+    viewUtil.hideElement($emptyVideoToWatch);
+  },
+  hideEmptyWatchedVideo() {
+    viewUtil.hideElement($emptyWatchedVideo);
+  },
+  highlightNavButton(hash) {
+    $nav.querySelectorAll(`.${SELECTOR_CLASS.NAV_BUTTON}`).forEach($button => {
+      if ($button.dataset.id === hash) {
+        $button.classList.add(STYLE_CLASS.CLICKED);
+        return;
+      }
+      $button.classList.remove(STYLE_CLASS.CLICKED);
+    });
   },
   confirm(message) {
     return confirm(message);
