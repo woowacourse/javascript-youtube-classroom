@@ -1,16 +1,19 @@
 import storage from './utils/localStorage.js';
 import { throttling } from './utils/throttling.js';
 import { LOCAL_STORAGE_KEY } from './utils/constant.js';
-import { onModalShow } from './handler/onModalShow.js';
-import { onSearchByKeyword, onSearchClip } from './handler/onSearchClip.js';
-import { onModalScroll } from './handler/onModalScroll.js';
-import { onSaveClip } from './handler/onSaveClip.js';
-import { onModalClose } from './handler/onModalClose.js';
+import { onModalShow } from './handler/modal/onModalShow.js';
+import {
+  onSearchByKeyword,
+  onSearchClip,
+} from './handler/modal/onSearchClip.js';
+import { onModalScroll } from './handler/modal/onModalScroll.js';
+import { onSaveClip } from './handler/modal/onSaveClip.js';
+import { onModalClose } from './handler/modal/onModalClose.js';
 import { renderSavedClips } from './view/main.js';
 import { hideElement, showElement } from './utils/setAttribute.js';
-import { onToggleRenderedClips } from './handler/onToggleRenderedClips.js';
-import { onButtonContainer } from './handler/onButtonContainer.js';
-import { onWindowInput } from './handler/onWindowInput.js';
+import { onToggleRenderedClips } from './handler/main/onToggleRenderedClips.js';
+import { onButtonContainer } from './handler/main/onButtonContainer.js';
+import { onWindowInput } from './handler/window/onWindowInput.js';
 import $DOM from './utils/DOM.js';
 
 const clearDeletedClip = () => {

@@ -3,13 +3,13 @@ import {
   LOCAL_STORAGE_KEY,
   YOUTUBE,
   LOCAL_STORAGE_VALUE,
-} from '../utils/constant.js';
-import { renderSavedClip } from '../view/main.js';
-import storage from '../utils/localStorage.js';
-import { hideElement } from '../utils/setAttribute.js';
-import { snackbar } from '../utils/snackbar.js';
-import { renderSaveVideoCount } from '../view/modal.js';
-import $DOM from '../utils/DOM.js';
+} from '../../utils/constant.js';
+import { renderSavedClip } from '../../view/main.js';
+import storage from '../../utils/localStorage.js';
+import { hideElement } from '../../utils/setAttribute.js';
+import { snackbar } from '../../utils/snackbar.js';
+import { renderSaveVideoCount } from '../../view/modal.js';
+import $DOM from '../../utils/DOM.js';
 
 export const onSaveClip = ({ target }) => {
   if (target.dataset.js !== 'save-button') {
