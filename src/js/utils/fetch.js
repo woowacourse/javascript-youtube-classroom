@@ -1,3 +1,5 @@
+import { snackbar } from './snackbar.js';
+
 export const request = async (url) => {
   try {
     const response = await fetch(url);
@@ -6,6 +8,6 @@ export const request = async (url) => {
     }
     return await response.json();
   } catch (err) {
-    alert(`💣 Error : ${err} 💣`);
+    snackbar(`💣 Error : ${err} 💣`);
   }
 };
