@@ -23,3 +23,11 @@ export const isSavedVideo = (targetId) => {
     videosWatched.some((video) => video.videoId === targetId)
   );
 };
+
+export const isWatchingMenu = (target) => {
+  return target.contains('.watching');
+};
+
+export const isWatchedMenu = (target) => {
+  return target.contains('.watched');
+};
