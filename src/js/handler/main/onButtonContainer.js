@@ -1,7 +1,8 @@
-import storage from '../../utils/localStorage.js';
-import { LOCAL_STORAGE_KEY, MESSAGE } from '../../utils/constant.js';
-import { hideElement } from '../../utils/setAttribute.js';
-import { snackbar } from '../../utils/snackbar.js';
+import storage from '../utils/localStorage.js';
+import { LOCAL_STORAGE_KEY, MESSAGE } from '../utils/constant.js';
+import { hideElement, showElement } from '../utils/setAttribute.js';
+import { snackbar } from '../utils/snackbar.js';
+import $DOM from '../utils/DOM.js';
 
 const toggleIsWatched = (target) => {
   const targetClip = target.closest('[data-js="saved-page__clip"]');
@@ -33,6 +34,13 @@ const deleteClip = (target) => {
   savedClips[targetClipIndex].isDeleted = true;
   targetClip.setAttribute('data-is-deleted', true);
   hideElement(targetClip);
+
+  const existClips = savedClips.filter((savedClip) => !savedClip.isDeleted);
+
+  if (existClips.length === 0) {
+    showElement($DOM.SAVE_PAGE.NOT_FOUND);
+  }
+
   storage.set(LOCAL_STORAGE_KEY.SAVED_CLIPS, savedClips);
 };
 
