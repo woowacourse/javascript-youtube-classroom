@@ -9,7 +9,7 @@ import { showSnackBar } from '../viewControllers/app.js';
 function handleWatchedButton($target) {
   const targetId = $target.closest('.js-video').dataset.videoId;
 
-  videoInfos.toggleIsWatched(targetId);
+  videoInfos.toggleWatchType(targetId);
   showSnackBar(VIDEO_MOVE_SUCCESS_MSG);
 }
 

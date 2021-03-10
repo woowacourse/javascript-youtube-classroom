@@ -3,7 +3,7 @@ import { renderSavedVideoCount } from '../viewControllers/searchModal.js';
 import { fetchLatestVideoInfos } from '../API.js';
 import { VIDEO_INFOS } from '../constants/localStorage.js';
 import { getLocalStorage, setLocalStorage } from '../utils/localStorage.js';
-import isWatchedMode from './isWatchedMode.js';
+import videoListType from './videoListType.js';
 
 async function updateVideoInfos(videoInfos) {
   const videoIds = videoInfos.map(videoInfo => videoInfo.id.videoId);
@@ -17,8 +17,8 @@ async function updateVideoInfos(videoInfos) {
       channelTitle: snippet.channelTitle,
       publishTime: snippet.publishedAt,
     },
-    isWatched: videoInfos.find(videoInfo => videoInfo.id.videoId === id)
-      .isWatched,
+    watchType: videoInfos.find(videoInfo => videoInfo.id.videoId === id)
+      .watchType,
   }));
 }
 
@@ -37,7 +37,7 @@ const videoInfos = {
     setLocalStorage(VIDEO_INFOS, [...this.value]);
 
     renderSavedVideoCount(this.value.size);
-    renderSavedVideoList(this.value, isWatchedMode.get());
+    renderSavedVideoList(this.value, videoListType.get());
   },
 
   remove(targetId) {
@@ -53,15 +53,16 @@ const videoInfos = {
     setLocalStorage(VIDEO_INFOS, [...this.value]);
 
     renderSavedVideoCount(this.value.size);
-    renderSavedVideoList(this.value, isWatchedMode.get());
+    renderSavedVideoList(this.value, videoListType.get());
   },
 
-  toggleIsWatched(targetId) {
+  toggleWatchType(targetId) {
     const newVideoInfos = [...this.value].map(videoInfo =>
       videoInfo.id.videoId === targetId
         ? {
             ...videoInfo,
-            isWatched: !videoInfo.isWatched,
+            watchType:
+              videoInfo.watchType === 'toWatch' ? 'watched' : 'toWatch',
           }
         : videoInfo
     );

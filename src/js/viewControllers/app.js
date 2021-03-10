@@ -15,9 +15,9 @@ function closeModal() {
   $searchModal.classList.remove('open');
 }
 
-function renderSavedVideoList(videoInfos, isWatchedMode) {
+function renderSavedVideoList(videoInfos, videoListType) {
   const filteredVideoInfos = [...videoInfos].filter(
-    videoInfo => isWatchedMode === videoInfo.isWatched
+    videoInfo => videoListType === videoInfo.watchType
   );
 
   $videoList.innerHTML = filteredVideoInfos.length
@@ -35,4 +35,15 @@ function showSnackBar(contents) {
   }, 3000);
 }
 
-export { openModal, closeModal, renderSavedVideoList, showSnackBar };
+function toggleFocusedModeButton() {
+  $('#watched-video-display-button').classList.toggle('bg-cyan-100');
+  $('#to-watch-video-display-button').classList.toggle('bg-cyan-100');
+}
+
+export {
+  openModal,
+  closeModal,
+  renderSavedVideoList,
+  showSnackBar,
+  toggleFocusedModeButton,
+};
