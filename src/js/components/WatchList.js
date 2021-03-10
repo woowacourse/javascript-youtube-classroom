@@ -1,4 +1,4 @@
-import { $, renderSkeletonUI, clearElement, formatDate, showSnackbar } from '../utils.js';
+import { $, renderSkeletonUI, clearElement, showSnackbar, showElement } from '../utils.js';
 import { SELECTORS, LOCAL_STORAGE_KEYS } from '../constants.js';
 import { searchYoutubeById } from '../api.js';
 import { getVideoTemplate } from '../templates.js';
@@ -37,7 +37,10 @@ export default class WatchList extends Observer {
 
   async render() {
     const watchList = this.store.load(LOCAL_STORAGE_KEYS.WATCH_LIST);
-    if (!watchList || watchList.length <= 0) return;
+    if (!watchList || watchList.length <= 0) {
+      showElement(SELECTORS.CLASS.NO_VIDEO);
+      return;
+    }
 
     renderSkeletonUI(SELECTORS.CLASS.WATCH_LIST, watchList.length);
 
@@ -53,6 +56,10 @@ export default class WatchList extends Observer {
 
   async update() {
     const { watchList } = this.store.get();
+    if (!watchList || watchList.length <= 0) {
+      showElement(SELECTORS.CLASS.NO_VIDEO);
+      return;
+    }
 
     const newVideoId = watchList.filter((id) => !this.list.includes(id));
     if (!newVideoId || newVideoId.length <= 0) return;

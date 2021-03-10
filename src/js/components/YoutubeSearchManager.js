@@ -82,10 +82,6 @@ export default class YoutubeSearchManager extends Observer {
     }
     newKeywordList.unshift(keyword);
     this.store.update(LOCAL_STORAGE_KEYS.RECENT_KEYWORD_LIST, newKeywordList, this);
-
-    // this.store.updateAll({
-    //   [LOCAL_STORAGE_KEYS.RECENT_KEYWORD_LIST]: newKeywordList,
-    // });
   }
 
   async handleSearch(event) {

@@ -49,3 +49,11 @@ export const closeModal = () => {
 export const generateCSSClass = (condition, className) => {
   return condition ? className : '';
 };
+
+export const hideElement = (selector) => {
+  $(selector).classList.add('d-none');
+};
+
+export const showElement = (selector) => {
+  $(selector).classList.remove('d-none');
+};
