@@ -23,7 +23,7 @@ export const onSaveClip = ({ target }) => {
   const currentTab =
     storage.get(LOCAL_STORAGE_KEY.CURRENT_TAB) ?? LOCAL_STORAGE_VALUE.UNWATCHED;
   const savedClips = storage.get(LOCAL_STORAGE_KEY.SAVED_CLIPS) ?? [];
-  const existClips = savedClips.filter((savedClip) => savedClip.isDeleted);
+  const existClips = savedClips.filter((savedClip) => !savedClip.isDeleted);
 
   if (existClips.length >= YOUTUBE.MAXIMUM_SAVE_CLIPS) {
     snackbar(MESSAGE.ERROR.EXCEED_MAXIMUM_CLIP_COUNT);
