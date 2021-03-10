@@ -1,20 +1,18 @@
-import { $, $$ } from '../utils/querySelector.js';
+import { $$ } from '../utils/querySelector.js';
 import storage from '../utils/localStorage.js';
 import { showElement, hideElement } from '../utils/setAttribute.js';
 import { LOCAL_STORAGE_KEY, LOCAL_STORAGE_VALUE } from '../utils/constant.js';
+import $DOM from '../utils/DOM.js';
 
 const setSelected = (isWatchedButton) => {
-  const $watchedButton = $('[data-js="navigator__watched-button"]');
-  const $unwatchedButton = $('[data-js="navigator__unwatched-button"]');
-
   if (isWatchedButton) {
-    $watchedButton.classList.add('bg-cyan-100');
-    $unwatchedButton.classList.remove('bg-cyan-100');
+    $DOM.NAVIGATOR.WATCHED_BUTTON.classList.add('bg-cyan-100');
+    $DOM.NAVIGATOR.UNWATCHED_BUTTON.classList.remove('bg-cyan-100');
     return;
   }
 
-  $unwatchedButton.classList.add('bg-cyan-100');
-  $watchedButton.classList.remove('bg-cyan-100');
+  $DOM.NAVIGATOR.UNWATCHED_BUTTON.classList.add('bg-cyan-100');
+  $DOM.NAVIGATOR.WATCHED_BUTTON.classList.remove('bg-cyan-100');
 };
 
 export const onToggleRenderedClips = ({ target }) => {

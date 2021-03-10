@@ -1,4 +1,3 @@
-import { $ } from '../utils/querySelector.js';
 import { getQueryString } from '../utils/getQueryString.js';
 import {
   YOUTUBE,
@@ -15,6 +14,7 @@ import {
   renderRecentKeywords,
 } from '../view/modal.js';
 import { snackbar } from '../utils/snackbar.js';
+import $DOM from '../utils/DOM.js';
 
 const getRecentKeywords = (keyword) => {
   const keywords = storage.get(LOCAL_STORAGE_KEY.RECENT_KETWORDS) ?? [];
@@ -37,7 +37,7 @@ const isEmpty = (value) => {
 
 const renderResult = (videoItems) => {
   if (videoItems.length === 0) {
-    showElement($('[data-js=youtube-search-modal__not-found]'));
+    showElement($DOM.SEARCH_MODAL.NOT_FOUND);
     clearSearchResult();
     return;
   }
@@ -45,7 +45,7 @@ const renderResult = (videoItems) => {
   const savedClips = storage.get(LOCAL_STORAGE_KEY.SAVED_CLIPS) ?? [];
   const savedClipIds = savedClips.map((savedClip) => savedClip.id.videoId);
 
-  hideElement($('[data-js=youtube-search-modal__not-found]'));
+  hideElement($DOM.SEARCH_MODAL.NOT_FOUND);
   renderClips(videoItems, savedClipIds);
 };
 
@@ -67,16 +67,13 @@ const setSearchResult = (response) => {
 };
 
 const searchRequest = async (keyword) => {
-  const $skeletonWrapper = $(
-    '[data-js="youtube-search-modal__skeleton-wrapper"]',
-  );
+  showElement($DOM.SEARCH_MODAL.SKELETON_WRAPPER);
 
-  showElement($skeletonWrapper);
   if (isEmpty(keyword)) {
     snackbar(MESSAGE.ERROR.EMPTY_KEYWORD);
   }
 
-  $('[data-js=youtube-search-modal__video-wrapper]').innerHTML = '';
+  $DOM.SEARCH_MODAL.VIDEO_WRAPPER.innerHTML = '';
 
   const queryString = getQueryString({
     part: 'snippet',
@@ -85,7 +82,7 @@ const searchRequest = async (keyword) => {
   });
   const response = await request(BASE_URL + queryString);
 
-  hideElement($skeletonWrapper);
+  hideElement($DOM.SEARCH_MODAL.SKELETON_WRAPPER);
 
   setSearchKeyword(keyword);
   setSearchResult(response);

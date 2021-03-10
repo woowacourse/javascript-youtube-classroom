@@ -1,4 +1,3 @@
-import { $ } from '../utils/querySelector.js';
 import {
   MESSAGE,
   LOCAL_STORAGE_KEY,
@@ -10,6 +9,7 @@ import storage from '../utils/localStorage.js';
 import { hideElement } from '../utils/setAttribute.js';
 import { snackbar } from '../utils/snackbar.js';
 import { renderSaveVideoCount } from '../view/modal.js';
+import $DOM from '../utils/DOM.js';
 
 export const onSaveClip = ({ target }) => {
   if (target.dataset.js !== 'save-button') {
@@ -31,7 +31,7 @@ export const onSaveClip = ({ target }) => {
   }
 
   hideElement(target);
-  hideElement($('[data-js="saved-page__not-found"]'));
+  hideElement($DOM.SAVE_PAGE.NOT_FOUND);
 
   savedClips.push(savedClip);
   storage.set(LOCAL_STORAGE_KEY.SAVED_CLIPS, savedClips);

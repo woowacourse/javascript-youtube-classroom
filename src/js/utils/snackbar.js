@@ -1,11 +1,9 @@
-import { $ } from './querySelector.js';
+import $DOM from './DOM.js';
 
 export const snackbar = (message) => {
-  const $snackbar = $('[data-js="snackbar"]');
-
-  $snackbar.innerText = message;
-  $snackbar.classList.toggle('show');
+  $DOM.SNACK_BAR.CONTINAER.innerText = message;
+  $DOM.SNACK_BAR.CONTINAER.classList.toggle('show');
   setTimeout(() => {
-    $snackbar.classList.toggle('show');
+    $DOM.SNACK_BAR.CONTINAER.classList.toggle('show');
   }, 3000);
 };

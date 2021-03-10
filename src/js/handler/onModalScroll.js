@@ -1,10 +1,10 @@
 import { YOUTUBE, LOCAL_STORAGE_KEY, BASE_URL } from '../utils/constant.js';
 import { request } from '../utils/fetch.js';
 import storage from '../utils/localStorage.js';
-import { $ } from '../utils/querySelector.js';
 import { hideElement, showElement } from '../utils/setAttribute.js';
 import { renderExtraClips } from '../view/modal.js';
 import { getQueryString } from '../utils/getQueryString.js';
+import $DOM from '../utils/DOM.js';
 
 export const onModalScroll = async (event) => {
   const { scrollTop, scrollHeight, clientHeight } = event.target;
@@ -13,11 +13,7 @@ export const onModalScroll = async (event) => {
     return;
   }
 
-  const $skeletonWrapper = $(
-    '[data-js=youtube-search-modal__skeleton-wrapper]',
-  );
-
-  showElement($skeletonWrapper);
+  showElement($DOM.SEARCH_MODAL.SKELETON_WRAPPER);
   const keyword = storage.get(LOCAL_STORAGE_KEY.CURRENT_KEYWORD);
   const pageToken = storage.get(LOCAL_STORAGE_KEY.NEXT_PAGE_TOKEN) ?? '';
 
@@ -36,6 +32,6 @@ export const onModalScroll = async (event) => {
   recentSearchResults.push(...response.items);
   storage.set(LOCAL_STORAGE_KEY.RECENT_SEARCH_RESULTS, recentSearchResults);
 
-  hideElement($skeletonWrapper);
+  hideElement($DOM.SEARCH_MODAL.SKELETON_WRAPPER);
   renderExtraClips(recentSearchResults, savedClipIds);
 };

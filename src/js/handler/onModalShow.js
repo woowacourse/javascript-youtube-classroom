@@ -1,6 +1,6 @@
 import { LOCAL_STORAGE_KEY } from '../utils/constant.js';
+import $DOM from '../utils/DOM.js';
 import storage from '../utils/localStorage.js';
-import { $ } from '../utils/querySelector.js';
 import {
   openModal,
   renderClips,
@@ -23,5 +23,6 @@ export const onModalShow = () => {
   if (recentSearchResults) {
     renderClips(recentSearchResults, savedClipIds);
   }
-  $('[data-js="youtube-search-modal__input"]').focus();
+
+  $DOM.SEARCH_MODAL.INPUT.focus();
 };
