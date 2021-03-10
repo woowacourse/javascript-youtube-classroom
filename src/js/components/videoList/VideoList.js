@@ -44,8 +44,14 @@ export default class VideoList extends Component {
     const savedVideos = localStorageGetItem(LOCALSTORAGE_KEYS.VIDEOS);
     const fragment = document.createDocumentFragment();
 
-    if (Object.keys(savedVideos).length > 0) {
-      Object.keys(savedVideos).forEach((videoId) => {
+    const videoIdSortedByDate = Object.keys(savedVideos).sort((a, b) => {
+      return (
+        new Date(savedVideos[b].savedTime) - new Date(savedVideos[a].savedTime)
+      );
+    });
+
+    if (videoIdSortedByDate.length > 0) {
+      videoIdSortedByDate.forEach((videoId) => {
         fragment.appendChild(
           new Video({
             videoId,
@@ -125,7 +131,7 @@ export default class VideoList extends Component {
         newVideo.classList.add('d-none');
       }
 
-      this.$target.appendChild(newVideo);
+      this.$target.prepend(newVideo);
 
       this.iframeLoadObserver.observe(newVideo);
 
