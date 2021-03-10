@@ -21,9 +21,24 @@ export const STORE_KEYS = {
   WATCHED_VIDEO_IDS: 'watchedVideoIds',
 };
 
+export const PACK_BUTTON_TYPE = {
+  WATCHED: 'watched',
+  LIKE: 'like',
+  COMMENT: 'comment',
+  DELETE: 'delete',
+};
+
 export const SNACKBAR_MESSAGES = {
   SAVE_VIDEO: {
     SUCCESS: '동영상이 저장되었읍니다',
     FAIL: '동영상 저장에 실패했읍니다',
+  },
+  WATCH_VIDEO_ADD: {
+    SUCCESS: '동영상이 본 영상 목록에 추가되었읍니다',
+    FAIL: '본 영상 목록 추가에 실패했읍니다 ',
+  },
+  WATCH_VIDEO_REMOVE: {
+    SUCCESS: '동영상이 본 영상 목록에서 제거되었읍니다',
+    FAIL: '본 영상 목록 제거에 실패했읍니다',
   },
 };

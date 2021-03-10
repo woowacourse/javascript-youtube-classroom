@@ -52,6 +52,8 @@ export const $ = (function () {
   };
 
   constructor.prototype.addClass = function (className) {
+    if (!this.elements) return;
+
     this.each((element) => element.classList.add(className));
   };
 
@@ -59,6 +61,12 @@ export const $ = (function () {
     if (!this.elements) return;
 
     this.each((element) => element.classList.remove(className));
+  };
+
+  constructor.prototype.toggleClass = function (className) {
+    if (!this.elements) return;
+
+    this.each((element) => element.classList.toggle(className));
   };
 
   constructor.prototype.getText = function () {

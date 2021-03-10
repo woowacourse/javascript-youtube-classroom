@@ -1,4 +1,3 @@
-import { $ } from '../utils/dom.js';
 import {
   updateRecentChips,
   updateSavedVideoIds,
@@ -10,9 +9,7 @@ import { STORE_KEYS } from '../utils/constants.js';
 export default class Store {
   constructor() {
     this._observers = [];
-    this._state = {
-      selectedTab: $('#saved-btn'),
-    };
+    this._state = {};
 
     this.load();
   }
@@ -39,11 +36,7 @@ export default class Store {
 
   update(data = {}) {
     Object.entries(data).forEach(([key, value]) => {
-      if (key === 'selectedTab') {
-        this._state = { ...this._state, [key]: value };
-      } else {
-        this.save(key, value);
-      }
+      this.save(key, value);
     });
 
     this.notify();

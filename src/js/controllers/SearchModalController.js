@@ -87,7 +87,7 @@ export default class SearchModalController {
   }
 
   saveVideo(target) {
-    const videoId = target.dataset.videoId;
+    const videoId = target.dataset.videoSave;
     const savedVideoIds = this.store.state.savedVideoIds;
 
     if (savedVideoIds.length === VALUE.MAX_SAVED_COUNT) {

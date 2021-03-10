@@ -10,5 +10,4 @@ const searchModalController = new SearchModalController(store);
 youtubeController.init();
 searchModalController.init();
 
-store.register(youtubeController);
 store.register(searchModalController);

@@ -23,7 +23,7 @@ export function updateRecentChips(keyword) {
 export function updateSavedVideoIds(videoId) {
   const savedVideoIds = getStorageData(STORE_KEYS.SAVED_VIDEO_IDS);
 
-  if (savedVideoIds.includes(videoId)) return;
+  if (savedVideoIds.includes(videoId)) return savedVideoIds;
 
   savedVideoIds.push(videoId);
   localStorage.setItem(
@@ -36,6 +36,23 @@ export function updateSavedVideoIds(videoId) {
 
 export function updateWatchedVideoIds(videoId) {
   const watchedVideoIds = getStorageData(STORE_KEYS.WATCHED_VIDEO_IDS);
+  let updatedWatchedVideoIds;
+
+  if (watchedVideoIds.includes(videoId)) {
+    updatedWatchedVideoIds = watchedVideoIds.filter(
+      (watchedVideoId) => watchedVideoId !== videoId,
+    );
+  } else {
+    watchedVideoIds.push(videoId);
+    updatedWatchedVideoIds = [...watchedVideoIds];
+  }
+
+  localStorage.setItem(
+    STORE_KEYS.WATCHED_VIDEO_IDS,
+    JSON.stringify(updatedWatchedVideoIds),
+  );
+
+  return updatedWatchedVideoIds;
 }
 
 export function getStorageData(str, defaultValue = []) {

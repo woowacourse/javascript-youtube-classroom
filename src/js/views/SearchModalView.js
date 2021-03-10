@@ -48,7 +48,7 @@ export default class SearchModalView extends View {
 
   bindSaveEvent(videos) {
     videos.forEach((video) => {
-      $(`[data-video-id='${video.id}']`).setEvent('click', (e) => {
+      $(`[data-video-save='${video.id}']`).setEvent('click', (e) => {
         this.emit('clickSaveButton', e.target);
       });
     });
@@ -129,7 +129,7 @@ export default class SearchModalView extends View {
       .map((video) => {
         const isSaved = savedVideos.includes(video.id);
 
-        return clipMaker(video, { isModal: true, isSaved: isSaved });
+        return clipMaker(video, { isModal: true, isSaved });
       })
       .join('');
     this.modalVideos.addInnerHTML(videoClips);
