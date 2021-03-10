@@ -1,14 +1,12 @@
-import { $ } from '../utils/querySelector.js';
+import $DOM from '../utils/DOM.js';
 import { clipTemplate } from './clipTemplate.js';
 
-const $modal = $('[data-js="youtube-search-modal"]');
-
 export const openModal = () => {
-  $modal.classList.add('open');
+  $DOM.SEARCH_MODAL.CONTAINER.classList.add('open');
 };
 
 export const closeModal = () => {
-  $modal.classList.remove('open');
+  $DOM.SEARCH_MODAL.CONTAINER.classList.remove('open');
 };
 
 const recentKeywordTemplate = (keyword) => {
@@ -16,15 +14,13 @@ const recentKeywordTemplate = (keyword) => {
 };
 
 export const renderRecentKeywords = (recentKeywords) => {
-  $(
-    '[data-js="youtube-search-modal__chip-container"]',
-  ).innerHTML = recentKeywords.map(recentKeywordTemplate).join('');
+  $DOM.SEARCH_MODAL.CHIP_CONTAINER.innerHTML = recentKeywords
+    .map(recentKeywordTemplate)
+    .join('');
 };
 
 export const renderSaveVideoCount = (saveClips) => {
-  $(
-    '[data-js="youtube-search-modal__save-video-count"]',
-  ).innerText = `저장된 영상 갯수: ${saveClips.length}개`;
+  $DOM.SEARCH_MODAL.SAVE_VIDEO_COUNT.innerText = `저장된 영상 갯수: ${saveClips.length}개`;
 };
 
 export const renderExtraClips = (videoItems, savedClipIds) => {
@@ -35,14 +31,11 @@ export const renderExtraClips = (videoItems, savedClipIds) => {
     })
     .join('');
 
-  $('[data-js=youtube-search-modal__video-wrapper]').insertAdjacentHTML(
-    'beforeend',
-    extraClips,
-  );
+  $DOM.SEARCH_MODAL.VIDEO_WRAPPER.insertAdjacentHTML('beforeend', extraClips);
 };
 
 export const renderClips = (videoItems, savedClipIds) => {
-  $('[data-js=youtube-search-modal__video-wrapper]').innerHTML = videoItems
+  $DOM.SEARCH_MODAL.VIDEO_WRAPPER.innerHTML = videoItems
     .map((video, index) => {
       const isSaved = savedClipIds.includes(video.id.videoId);
       return clipTemplate(video, index, { isModal: true, isSaved });
@@ -51,10 +44,10 @@ export const renderClips = (videoItems, savedClipIds) => {
 };
 
 export const setRecentKeywords = (recentKeywords) => {
-  $('[data-js="youtube-search-modal__recent-keywords"]').innerHTML =
+  $DOM.SEARCH_MODAL.RECENT_KEYWORDS.innerHTML =
     recentKeywordsLabel() + recentKeywords.map(recentKeywordTemplate).join('');
 };
 
 export const clearSearchResult = () => {
-  $('[data-js=youtube-search-modal__video-wrapper]').innerHTML = '';
+  $DOM.SEARCH_MODAL.VIDEO_WRAPPER.innerHTML = '';
 };

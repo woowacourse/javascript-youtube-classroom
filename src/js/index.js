@@ -1,4 +1,3 @@
-import { $ } from './utils/querySelector.js';
 import storage from './utils/localStorage.js';
 import { throttling } from './utils/throttling.js';
 import { LOCAL_STORAGE_KEY } from './utils/constant.js';
@@ -12,6 +11,7 @@ import { hideElement, showElement } from './utils/setAttribute.js';
 import { onToggleRenderedClips } from './handler/onToggleRenderedClips.js';
 import { onButtonContainer } from './handler/onButtonContainer.js';
 import { onWindowInput } from './handler/onWindowInput.js';
+import $DOM from './utils/DOM.js';
 
 const clearDeletedClip = () => {
   const savedClips = storage.get(LOCAL_STORAGE_KEY.SAVED_CLIPS) ?? [];
@@ -24,50 +24,26 @@ const clearDeletedClip = () => {
 
 const initDisplay = () => {
   const savedClips = storage.get(LOCAL_STORAGE_KEY.SAVED_CLIPS) ?? [];
-  const $savedPageNotFound = $('[data-js="saved-page__not-found"]');
 
   if (savedClips.length === 0) {
-    showElement($savedPageNotFound);
+    showElement($DOM.SAVE_PAGE.NOT_FOUND);
     return;
   }
 
-  hideElement($savedPageNotFound);
+  hideElement($DOM.SAVE_PAGE.NOT_FOUND);
   renderSavedClips(savedClips);
 };
 
 export const YoutubeClassRoom = () => {
-  $('[data-js="navigator__search-button"]').addEventListener(
-    'click',
-    onModalShow,
-  );
-
-  $('[data-js="youtube-search-modal__form"]').addEventListener(
-    'submit',
-    onSearchClip,
-  );
-
-  $('[data-js="youtube-search-modal__chip-container"]').addEventListener(
-    'click',
-    onSearchByKeyword,
-  );
-
-  $('[data-js="youtube-search-modal__inner"]').addEventListener(
-    'scroll',
-    (event) => {
-      throttling(onModalScroll, event);
-    },
-  );
-
-  $('[data-js="youtube-search-modal__video-wrapper"]').addEventListener(
-    'click',
-    onSaveClip,
-  );
-
-  $('[data-js="navigator"]').addEventListener('click', onToggleRenderedClips);
-  $('[data-js="saved-page__video-wrapper"]').addEventListener(
-    'click',
-    onButtonContainer,
-  );
+  $DOM.NAVIGATOR.SEARCH_BUTTON.addEventListener('click', onModalShow);
+  $DOM.SEARCH_MODAL.FORM.addEventListener('submit', onSearchClip);
+  $DOM.SEARCH_MODAL.CHIP_CONTAINER.addEventListener('click', onSearchByKeyword);
+  $DOM.SEARCH_MODAL.INNER.addEventListener('scroll', (event) => {
+    throttling(onModalScroll, event);
+  });
+  $DOM.SEARCH_MODAL.VIDEO_WRAPPER.addEventListener('click', onSaveClip);
+  $DOM.NAVIGATOR.CONTAINER.addEventListener('click', onToggleRenderedClips);
+  $DOM.SAVE_PAGE.VIDEO_WRAPPER.addEventListener('click', onButtonContainer);
 
   window.addEventListener('keyup', onWindowInput);
   window.addEventListener('click', onModalClose);
@@ -78,6 +54,6 @@ window.onload = () => {
   clearDeletedClip();
   initDisplay();
   onToggleRenderedClips({
-    target: $('[data-js="navigator__unwatched-button"]'),
+    target: $DOM.NAVIGATOR.UNWATCHED_BUTTON,
   });
 };
