@@ -25,4 +25,14 @@ function renderSavedVideoList(videoInfos, isWatchedMode) {
     : emptyVideoListTemplate;
 }
 
-export { openModal, closeModal, renderSavedVideoList };
+function showSnackBar(contents) {
+  const $snackbar = $('#snack-bar');
+
+  $snackbar.innerText = contents;
+  $snackbar.classList.toggle('show');
+  setTimeout(() => {
+    $snackbar.classList.toggle('show');
+  }, 3000);
+}
+
+export { openModal, closeModal, renderSavedVideoList, showSnackBar };
