@@ -11,12 +11,13 @@ import {
 import Observer from '../lib/Observer.js';
 
 export default class YoutubeSearchManager extends Observer {
-  constructor(store) {
+  constructor(store, watchList) {
     super();
     this.store = store;
     this.pageToken = '';
     this.keyword = '';
     this.selector = SELECTORS.CLASS.YOUTUBE_SEARCH_FORM_CONTAINER;
+    this.watchList = watchList;
   }
 
   getResultTemplate(result) {
@@ -80,10 +81,11 @@ export default class YoutubeSearchManager extends Observer {
       newKeywordList.pop();
     }
     newKeywordList.unshift(keyword);
+    this.store.update(LOCAL_STORAGE_KEYS.RECENT_KEYWORD_LIST, newKeywordList, this);
 
-    this.store.update({
-      [LOCAL_STORAGE_KEYS.RECENT_KEYWORD_LIST]: newKeywordList,
-    });
+    // this.store.updateAll({
+    //   [LOCAL_STORAGE_KEYS.RECENT_KEYWORD_LIST]: newKeywordList,
+    // });
   }
 
   async handleSearch(event) {
@@ -142,9 +144,12 @@ export default class YoutubeSearchManager extends Observer {
     const $selectedButton = event.target;
     const selectedVideoId = $selectedButton.dataset.videoId;
 
-    this.store.update({
-      [LOCAL_STORAGE_KEYS.WATCH_LIST]: [...this.store.get()[LOCAL_STORAGE_KEYS.WATCH_LIST], selectedVideoId],
-    });
+    // TODO: 단일 옵저버만 업데이트할 때, this.watchList를 직접 파라미터에 넣지 않는 방법 찾아보기
+    this.store.update(
+      LOCAL_STORAGE_KEYS.WATCH_LIST,
+      [...this.store.get()[LOCAL_STORAGE_KEYS.WATCH_LIST], selectedVideoId],
+      this.watchList
+    );
 
     $selectedButton.classList.add(SELECTORS.STATUS.HIDDEN);
 
