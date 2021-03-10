@@ -1,6 +1,5 @@
 const getCircularReplacer = () => {
   const seen = new WeakSet();
-
   return (key, value) => {
     if (typeof value === 'object' && value !== null) {
       if (seen.has(value)) {
@@ -28,7 +27,6 @@ export const createElement = ({
   const element = document.createElement(tag);
   element.classList.add(...classes);
   element.textContent = textContent;
-
   return element;
 };
 
