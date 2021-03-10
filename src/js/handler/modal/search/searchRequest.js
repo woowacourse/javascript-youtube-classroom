@@ -1,20 +1,20 @@
-import { getQueryString } from '../../utils/getQueryString.js';
+import { getQueryString } from '../../../utils/getQueryString.js';
 import {
   YOUTUBE,
   MESSAGE,
   LOCAL_STORAGE_KEY,
   BASE_URL,
-} from '../../utils/constant.js';
-import { request } from '../../utils/fetch.js';
-import { showElement, hideElement } from '../../utils/setAttribute.js';
-import storage from '../../utils/localStorage.js';
+} from '../../../utils/constant.js';
+import { request } from '../../../utils/fetch.js';
+import { showElement, hideElement } from '../../../utils/setAttribute.js';
+import storage from '../../../utils/localStorage.js';
 import {
   clearSearchResult,
   renderClips,
   renderRecentKeywords,
-} from '../../view/modal.js';
-import { snackbar } from '../../utils/snackbar.js';
-import $DOM from '../../utils/DOM.js';
+} from '../../../view/modal.js';
+import { snackbar } from '../../../utils/snackbar.js';
+import $DOM from '../../../utils/DOM.js';
 
 const getRecentKeywords = (keyword) => {
   const keywords = storage.get(LOCAL_STORAGE_KEY.RECENT_KETWORDS) ?? [];
@@ -66,7 +66,7 @@ const setSearchResult = (response) => {
   renderResult(items);
 };
 
-const searchRequest = async (keyword) => {
+export const searchRequest = async (keyword) => {
   showElement($DOM.SEARCH_MODAL.SKELETON_WRAPPER);
 
   if (isEmpty(keyword)) {
@@ -87,23 +87,4 @@ const searchRequest = async (keyword) => {
 
   setSearchKeyword(keyword);
   setSearchResult(response);
-};
-
-export const onSearchClip = (event) => {
-  event.preventDefault();
-
-  const $input = event.target.elements['youtube-search-modal__input'];
-  const keyword = $input.value;
-  searchRequest(keyword);
-
-  $input.value = '';
-};
-
-export const onSearchByKeyword = ({ target }) => {
-  if (target.dataset.js !== 'youtube-search-modal__chip') {
-    return;
-  }
-
-  const keyword = target.innerText;
-  searchRequest(keyword);
 };

@@ -1,6 +1,6 @@
 import $DOM from '../../utils/DOM.js';
 import { closeModal } from '../../view/modal.js';
-import { onModalShow } from '../modal/onModalShow.js';
+import { onModalShow } from '../modal/visibility/onModalShow.js';
 import { onToggleRenderedClips } from '../main/onToggleRenderedClips.js';
 
 const actions = {
