@@ -3,6 +3,20 @@ import { STORAGE_NAME } from "../utils/constants.js";
 const videos = {
   fetchedVideos: [],
   recentVideos: [],
+  savedVideos: [],
+
+  initSavedVideos() {
+    const videos = localStorage.getItem(STORAGE_NAME.SAVED_VIDEOS);
+
+    this.savedVideos = videos ? JSON.parse(videos) : [];
+  },
+
+  storeSavedVideos() {
+    localStorage.setItem(
+      STORAGE_NAME.SAVED_VIDEOS,
+      JSON.stringify(this.savedVideos)
+    );
+  },
 
   setFetchedVideos(videoItems) {
     const parsedVideoItems = videoItems
@@ -14,11 +28,9 @@ const videos = {
 
   setSavedVideos(videoId) {
     const selectedVideo = this.selectVideoItemById(videoId);
+    this.savedVideos = [...this.savedVideos, selectedVideo];
 
-    localStorage.setItem(
-      STORAGE_NAME.SAVED_VIDEOS,
-      JSON.stringify([...this.getSavedVideos(), selectedVideo])
-    );
+    this.storeSavedVideos();
   },
 
   getRecentVideos() {
@@ -26,13 +38,11 @@ const videos = {
   },
 
   getSavedVideos() {
-    const videos = localStorage.getItem(STORAGE_NAME.SAVED_VIDEOS);
-
-    return videos ? JSON.parse(videos) : [];
+    return this.savedVideos;
   },
 
   getSavedVideoCount() {
-    return this.getSavedVideos().length;
+    return this.savedVideos.length;
   },
 
   selectVideoItemById(videoId) {
@@ -56,20 +66,17 @@ const videos = {
   },
 
   isSavedVideo(videoId) {
-    return this.getSavedVideos().some(
+    return this.savedVideos.some(
       (savedVideo) => savedVideo.videoId === videoId
     );
   },
 
   removeSavedVideo(videoId) {
-    const filteredVideos = this.getSavedVideos().filter(
+    this.savedVideos = this.savedVideos.filter(
       (video) => video.videoId !== videoId
     );
 
-    localStorage.setItem(
-      STORAGE_NAME.SAVED_VIDEOS,
-      JSON.stringify(filteredVideos)
-    );
+    this.storeSavedVideos();
   },
 };
 
