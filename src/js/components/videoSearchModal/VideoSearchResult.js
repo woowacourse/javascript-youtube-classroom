@@ -58,6 +58,7 @@ export default class VideoSearchResult extends Component {
 
   render(preStates, states) {
     if (preStates.searchHistory !== states.searchHistory) {
+      this.$searchedVideoWrapper.scrollTo({ top: 0 });
       this.$searchedVideoWrapper.innerHTML = '';
     }
 
