@@ -20,6 +20,12 @@ export const customConfirm = (message, yesCallback) => {
   $('#app').insertAdjacentHTML('beforeend', confirmTemplate(message));
 
   $('.js-confirm-modal').addEventListener('click', ({ currentTarget, target }) => {
+    if (currentTarget === target) {
+      currentTarget.remove();
+
+      return;
+    }
+
     if (target.tagName !== 'BUTTON') {
       return;
     }

@@ -22,6 +22,11 @@ export class SearchVideoModal {
 
   initEvent() {
     this.$closeButton.addEventListener('click', this.closeModal.bind(this));
+    this.$modal.addEventListener('click', ({ currentTarget, target }) => {
+      if (currentTarget === target) {
+        this.closeModal();
+      }
+    });
   }
 
   openModal() {
