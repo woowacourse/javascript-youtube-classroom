@@ -201,13 +201,12 @@ export default class YoutubeSearchManager extends Observer {
   }
 
   handleClickDimmer(event) {
-    if (event.target.id === 'dimmer') {
+    if (event.target === event.currentTarget) {
       closeModal();
     }
   }
 
   bindEvents() {
-    // TODO: 일부 너무 긴 메소드들 하위 메소드 여러 개로 분리
     $(SELECTORS.ID.YOUTUBE_SEARCH_FORM).addEventListener('submit', this.handleSearch.bind(this));
 
     // TODO: 과도한 scroll 이벤트 방지를 위해 debounce 적용 필요
