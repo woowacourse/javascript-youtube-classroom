@@ -1,4 +1,4 @@
-import { $, renderSkeletonUI, clearElement, showSnackbar, showElement } from '../utils.js';
+import { $, renderSkeletonUI, clearElement, showSnackbar, showElement, hideElement } from '../utils.js';
 import { SELECTORS, LOCAL_STORAGE_KEYS } from '../constants.js';
 import { searchYoutubeById } from '../api.js';
 import { getVideoTemplate } from '../templates.js';
@@ -60,6 +60,8 @@ export default class WatchList extends Observer {
       showElement(SELECTORS.CLASS.NO_VIDEO);
       return;
     }
+
+    hideElement(SELECTORS.CLASS.NO_VIDEO);
 
     const newVideoId = watchList.filter((id) => !this.list.includes(id));
     if (!newVideoId || newVideoId.length <= 0) return;

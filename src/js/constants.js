@@ -23,6 +23,10 @@ export const SELECTORS = {
     SAVED_VIDEO_COUNT: '.saved-video-count',
     NO_VIDEO: '.no-video',
     CLIP: '.clip',
+    WATCHED: '.watched',
+    LIKE: '.like',
+    COMMENT: '.comment',
+    DELETE: '.delete',
   },
   ID: {
     SEARCH_BUTTON: '#search-button',

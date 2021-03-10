@@ -19,6 +19,7 @@ a {
 
 .opacity-hover {
   opacity: 0.3;
+  cursor: pointer;
 }
 
 .opacity-hover:hover {

@@ -84,11 +84,23 @@ describe('나만의 유튜브 강의실 Test', () => {
       .should('have.text', '동영상은 최대 100개까지 저장할 수 있습니다.');
   });
 
-  it.only('이전에 저장해뒀던 비디오가 없으면, 저장한 동영상이 없다는 것을 알려주는 이미지를 출력한다.', () => {
+  it('이전에 저장해뒀던 비디오가 없으면, 저장한 동영상이 없다는 것을 알려주는 이미지를 출력한다.', () => {
     cy.get(SELECTORS.CLASS.WATCH_LIST).then(($watchList) => {
       if ($watchList.find(SELECTORS.CLASS.CLIP).length <= 0) {
         cy.get(SELECTORS.CLASS.NO_VIDEO).should('be.visible');
       }
+    });
+  });
+
+  it.only('🗑️ 버튼으로 저장된 리스트에서 삭제할 수 있다. (삭제 시 사용자에게 정말 삭제할 것인지 물어봅니다.)', () => {
+    const confirmStub = cy.stub();
+    cy.on('window:confirm', confirmStub);
+
+    cy.get(SELECTORS.CLASS.CLIP).then(($$clips) => {
+      const $firstClip = $$clips[0];
+      $firstClip.find(SELECTORS.CLASS.DELETE).click();
+      expect(confirmStub.getCall(0)).to.be.calledWith('정말 삭제하시겠습니까?');
+      $firstClip.should('not.exist');
     });
   });
 });

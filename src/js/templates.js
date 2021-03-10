@@ -40,10 +40,10 @@ export const getVideoTemplate = (data, options) => {
             containsMenu
               ? `
               <div>
-                <span class="opacity-hover">✅</span>
-                <span class="opacity-hover">👍</span>
-                <span class="opacity-hover">💬</span>
-                <span class="opacity-hover">🗑️</span>
+                <span class="opacity-hover watched">✅</span>
+                <span class="opacity-hover like">👍</span>
+                <span class="opacity-hover comment">💬</span>
+                <span class="opacity-hover delete">🗑️</span>
               </div>
             `
               : ''
