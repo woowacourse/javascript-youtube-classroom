@@ -1,8 +1,8 @@
-import storage from '../utils/localStorage.js';
-import { LOCAL_STORAGE_KEY, MESSAGE } from '../utils/constant.js';
-import { hideElement, showElement } from '../utils/setAttribute.js';
-import { snackbar } from '../utils/snackbar.js';
-import $DOM from '../utils/DOM.js';
+import storage from '../../utils/localStorage.js';
+import { LOCAL_STORAGE_KEY, MESSAGE } from '../../utils/constant.js';
+import { hideElement, showElement } from '../../utils/setAttribute.js';
+import { snackbar } from '../../utils/snackbar.js';
+import $DOM from '../../utils/DOM.js';
 
 const toggleIsWatched = (target) => {
   const targetClip = target.closest('[data-js="saved-page__clip"]');

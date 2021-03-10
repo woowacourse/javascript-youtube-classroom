@@ -36,6 +36,7 @@ export const onSaveClip = ({ target }) => {
   savedClips.push(savedClip);
   storage.set(LOCAL_STORAGE_KEY.SAVED_CLIPS, savedClips);
 
+  snackbar(MESSAGE.NOTIFY.SAVE_CLIP);
   renderSavedClip(savedClip, savedClips.length - 1, currentTab);
   renderSaveVideoCount(savedClips);
 };
