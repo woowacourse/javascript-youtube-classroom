@@ -14,7 +14,7 @@ function createVideoInfo(videoDataset) {
   return {
     id: { videoId },
     snippet: { title, channelId, channelTitle, publishTime },
-    isWatched: false,
+    watchType: 'toWatch',
   };
 }
 
