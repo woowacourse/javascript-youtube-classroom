@@ -1,20 +1,23 @@
 .video-wrapper {
   display: grid;
-  grid-template-columns: repeat(auto-fill, 236px);
-  grid-row-gap: 16px;
+  grid-template-columns: repeat(4, auto);
+  grid-row-gap: 32px;
   grid-column-gap: 8px;
-  justify-content: center;
+  justify-content: space-between;
 }
 
 #searched-video-list {
+  grid-template-columns: repeat(4, auto);
+  grid-column-gap: 6px;
   height: 60vh;
   overflow-y: auto;
 }
 
 .clip {
-  height: 236px;
+  height: auto;
   cursor: pointer;
   text-decoration: none;
+  box-sizing: border-box;
 }
 
 .clip .preview-container {

@@ -17,7 +17,7 @@ export default class SearchTermHistory extends Component {
       textContent: '최근 검색어: ',
     });
 
-    const chips = createElement({ tag: 'div', classes: ['chips'] });
+    const chips = createElement({ tag: 'div', classes: ['chips', 'd-inline'] });
 
     chips.appendChild(
       this.chipsTemplate(localStorageGetItem(LOCALSTORAGE_KEYS.SEARCH_HISTORY))
@@ -49,9 +49,11 @@ export default class SearchTermHistory extends Component {
     searchHistory.forEach((history) => {
       const button = createElement({
         tag: 'button',
-        classes: ['chip'],
+        classes: ['chip', 'mr-2'],
         textContent: history,
       });
+
+      button.title = history;
 
       button.addEventListener('click', this.onRequestVideo.bind(this));
       fragment.appendChild(button);
