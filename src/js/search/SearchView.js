@@ -68,6 +68,8 @@ export default class SearchView {
       if (!selectedTarget) {
         throw new Error(ERROR_MESSAGE.CONNOT_FIND_SAVE_BUTTON_ERROR);
       }
+
+      return selectedTarget;
     } catch (e) {
       console.error(e);
       alert(ERROR_MESSAGE.INVALID_ACTION_ERROR);
