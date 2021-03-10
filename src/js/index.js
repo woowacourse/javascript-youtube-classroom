@@ -1,4 +1,10 @@
+import ClassroomController from './controllers/ClassroomController.js';
 import SearchController from './controllers/SearchController.js';
 
+const classroomController = new ClassroomController();
 const searchController = new SearchController();
-searchController.init();
+
+window.addEventListener('DOMContentLoaded', () => {
+  classroomController.init();
+  searchController.init();
+});
