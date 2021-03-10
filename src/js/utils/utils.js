@@ -52,3 +52,9 @@ export const localStorageSetItem = (key, value) => {
     throw new Error('JSON stringify error.');
   }
 };
+
+export const unescapeString = (string) => {
+  return new DOMParser()
+    .parseFromString(string, 'text/html')
+    .querySelector('html').textContent;
+};
