@@ -45,10 +45,6 @@ export const searchVideoTemplate = (info, save) => {
             </article>`;
 };
 
-export const searchNotFoundTemplate = () => {
-  return `<img id="search-not-found" src="./src/images/status/not_found.png" />`;
-};
-
 export const recentKeywordsTemplate = keywords => {
   return `
     <span class="text-gray-700">최근 검색어: </span>

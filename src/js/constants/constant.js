@@ -13,6 +13,7 @@ export const SELECTOR = {
   SEARCH_VIDEO_WRAPPER: '#search-video-wrapper',
   SEARCH_YOUTUBE_FORM: '#search-youtube-form',
   SEARCH_YOUTUBE_INPUT: '#search-youtube-input',
+  SEARCH_NOT_FOUND: '#search-not-found',
   SAVE_VIDEO_BUTTON: '.js-save-button',
   VIDEO_IFRAME: '.clip iframe',
   RECENT_KEYWORDS: '#recent-keywords',

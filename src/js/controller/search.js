@@ -38,7 +38,7 @@ class SearchController {
     await this.youtube.getVideoInfosBySearch({ query });
 
     if (this.youtube.videoInfos.length === 0) {
-      this.searchView.renderNotFound();
+      this.searchView.toggleNotFound(true);
       return;
     }
 
