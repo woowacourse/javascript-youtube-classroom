@@ -7,14 +7,19 @@ import {
 const $searchModal = $('#video-search-modal');
 const $videoList = $('#video-list');
 
-function openModal() {
-  $searchModal.classList.add('open');
-  document.body.classList.add('disable-scroll');
-}
-
 function closeModal() {
   $searchModal.classList.remove('open');
   document.body.classList.remove('disable-scroll');
+}
+function openModal() {
+  $searchModal.classList.add('open');
+  document.body.classList.add('disable-scroll');
+
+  window.addEventListener('mouseup', e => {
+    if (!e.target.closest('.modal-inner')) {
+      closeModal();
+    }
+  });
 }
 
 function renderSavedVideoList(videoInfos, videoListType) {

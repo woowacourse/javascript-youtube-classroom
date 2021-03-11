@@ -71,7 +71,6 @@ function createControlButtonsTemplate(watchType) {
       isChecked: watchType === 'watched',
     },
     { content: '👍', className: 'js-like-button', isChecked: false },
-    { content: '💬', className: 'js-comment-button', isChecked: false },
     { content: '🗑️', className: 'js-delete-button', isChecked: false },
   ]
     .map(
