@@ -3,8 +3,8 @@ import { $ } from '../util/index.js';
 export class Navigation {
   constructor({ handleIsChecked, handleOpenModal }) {
     this.$navigation = $('nav');
-    this.$uncheckedButton = $('.js-unchecked-video-button');
-    this.$checkedButton = $('.js-checked-video-button');
+    this.$uncheckedButton = $('.js-unchecked-video');
+    this.$checkedButton = $('.js-checked-video');
     this.handleIsChecked = handleIsChecked;
     this.handleOpenModal = handleOpenModal;
 
@@ -13,16 +13,16 @@ export class Navigation {
 
   initEvent() {
     this.$navigation.addEventListener('click', ({ target }) => {
-      if (target.classList.contains('js-unchecked-video-button')) {
+      if (target.classList.contains('js-unchecked-video')) {
         this.handleIsChecked(false);
-        this.toggleButtonColor();
+        this.changeButtonColor(target);
 
         return;
       }
 
-      if (target.classList.contains('js-checked-video-button')) {
+      if (target.classList.contains('js-checked-video')) {
         this.handleIsChecked(true);
-        this.toggleButtonColor();
+        this.changeButtonColor(target);
 
         return;
       }
@@ -35,8 +35,13 @@ export class Navigation {
     });
   }
 
-  toggleButtonColor() {
-    this.$uncheckedButton.classList.toggle('bg-cyan-100');
-    this.$checkedButton.classList.toggle('bg-cyan-100');
+  changeButtonColor(clickedButton) {
+    this.$navigation.querySelectorAll('.js-color-btn ').forEach($ele => {
+      if ($ele === clickedButton) {
+        $ele.classList.add('bg-cyan-100');
+      } else {
+        $ele.classList.remove('bg-cyan-100');
+      }
+    });
   }
 }
