@@ -55,20 +55,15 @@ export default class SavedVideosView extends View {
     $(`[data-article='${videoId}']`).removeElement();
   }
 
-  showNoVideos() {
-    this.$element.setInnerHTML(
+  renderVideoEmptyImg() {
+    this.$element.addInnerHTML(
       `
-        <div class="empty-videos stretch d-flex flex-col items-center">
-          <img width="50%" src="./src/images/status/empty_tung.png" alt="empty-videos-img"></img>
-          <h2>저장된 동영상이 없읍니다 🙄</h2>
-          <p>동영상 검색 탭을 눌러 키워드를 검색 후 마음에 드는 동영상을 저장해 보세요 ☺️</p>
+        <div class="empty-videos stretch d-flex flex-col items-center d-none">
+          <img width="50%" src="./src/images/status/empty_tung.png" alt="empty_video_img"></img>
+          <h2>동영상 목록이 비었읍니다 🙄</h2>
         </div>
       `,
     );
-  }
-
-  hideNoVideos() {
-    $('.empty-videos').removeElement();
   }
 
   toggleWatchedButton(videoId) {
@@ -86,6 +81,7 @@ export default class SavedVideosView extends View {
 
   showMatchedVideos(prevTabVideos, currentTabVideos) {
     clearTimeout(this.clipTransition);
+    $('.empty-videos').hide();
     $('#main-videos > article').removeClass('fadein', 'fadeout');
     $('#main-videos > article').addClass('fadeout');
 
@@ -96,6 +92,12 @@ export default class SavedVideosView extends View {
       currentTabVideos.forEach((currentTabVideo) => {
         $(`[data-article='${currentTabVideo}']`).show().addClass('fadein');
       });
+    }, VALUE.CLIP_TRANSITION_TIME);
+  }
+
+  showVideoEmptyImg() {
+    setTimeout(() => {
+      $('.empty-videos').show();
     }, VALUE.CLIP_TRANSITION_TIME);
   }
 }

@@ -99,7 +99,6 @@ export default class SearchModalController {
     this.store.update({ [STORE_KEYS.SAVED_VIDEO_IDS]: videoId });
 
     const videoToSave = this.videos.find((video) => video.id === videoId);
-    this.savedVideosView.hideNoVideos();
     this.savedVideosView.addSavedVideoClip(videoToSave);
     this.searchModalView.disableSaveButton(target);
     popSnackbar(SNACKBAR_MESSAGES.SAVE_VIDEO.SUCCESS);

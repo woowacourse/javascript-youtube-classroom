@@ -44,6 +44,9 @@ export default class YoutubeController {
     if (!confirm(ALERT_MESSAGES.CONFIRM_DELETE_VIDEO)) return;
 
     const isDelete = true;
+    const isFromSavedTab = this.store.computed.unWatchedVideoIds.includes(
+      videoId,
+    );
 
     this.store.update(
       {
@@ -52,8 +55,20 @@ export default class YoutubeController {
       },
       isDelete,
     );
-      this.savedVideosView.removeSavedVideoClip(videoId);
-      popSnackbar(SNACKBAR_MESSAGES.DELETE_VIDEO.SUCCESS);
+    this.savedVideosView.removeSavedVideoClip(videoId);
+    popSnackbar(SNACKBAR_MESSAGES.DELETE_VIDEO.SUCCESS);
+
+    const unWatchedVideoIds = this.store.computed.unWatchedVideoIds;
+    const watchedVideoIds = this.store.state.watchedVideoIds;
+
+    if (isFromSavedTab) {
+      if (unWatchedVideoIds.length === 0) {
+        this.savedVideosView.showVideoEmptyImg();
+      }
+    } else {
+      if (watchedVideoIds.length === 0) {
+        this.savedVideosView.showVideoEmptyImg();
+      }
     }
   }
 
@@ -61,10 +76,21 @@ export default class YoutubeController {
     this.store.update({ [STORE_KEYS.WATCHED_VIDEO_IDS]: videoId });
     this.savedVideosView.toggleWatchedButton(videoId);
 
-    if (this.store.state.watchedVideoIds.includes(videoId)) {
-      popSnackbar(SNACKBAR_MESSAGES.WATCH_VIDEO_ADD.SUCCESS);
-    } else {
+    const watchedVideoIds = this.store.state.watchedVideoIds;
+    const unWatchedVideoIds = this.store.computed.unWatchedVideoIds;
+
+    const isFromSavedTab = unWatchedVideoIds.includes(videoId);
+
+    if (isFromSavedTab) {
       popSnackbar(SNACKBAR_MESSAGES.WATCH_VIDEO_REMOVE.SUCCESS);
+      if (watchedVideoIds.length === 0) {
+        this.savedVideosView.showVideoEmptyImg();
+      }
+    } else {
+      popSnackbar(SNACKBAR_MESSAGES.WATCH_VIDEO_ADD.SUCCESS);
+      if (unWatchedVideoIds.length === 0) {
+        this.savedVideosView.showVideoEmptyImg();
+      }
     }
   }
 
@@ -72,16 +98,24 @@ export default class YoutubeController {
     const watchedVideoIds = this.store.state.watchedVideoIds;
     const unWatchedVideoIds = this.store.computed.unWatchedVideoIds;
 
-    this.savedVideosView.showMatchedVideos(watchedVideoIds, unWatchedVideoIds);
     this.updateNavTab($('#saved-btn'));
+    this.savedVideosView.showMatchedVideos(watchedVideoIds, unWatchedVideoIds);
+
+    if (unWatchedVideoIds.length === 0) {
+      this.savedVideosView.showVideoEmptyImg();
+    }
   }
 
   focusWatchedTab() {
     const watchedVideoIds = this.store.state.watchedVideoIds;
     const unWatchedVideoIds = this.store.computed.unWatchedVideoIds;
 
-    this.savedVideosView.showMatchedVideos(unWatchedVideoIds, watchedVideoIds);
     this.updateNavTab($('#watched-btn'));
+    this.savedVideosView.showMatchedVideos(unWatchedVideoIds, watchedVideoIds);
+
+    if (watchedVideoIds.length === 0) {
+      this.savedVideosView.showVideoEmptyImg();
+    }
   }
 
   focusSearchTab() {
@@ -103,20 +137,20 @@ export default class YoutubeController {
       ...items.map((item) => new Video(item.id, item.snippet)),
     ];
     const watchedVideos = this.store.state.watchedVideoIds;
-    const unWatchedVideoIds = this.store.computed.unWatchedVideoIds;
 
     this.savedVideosView.renderSavedVideoClips(savedVideos, watchedVideos);
   }
 
   async loadSavedVideos() {
     const savedVideoIds = this.store.state.savedVideoIds;
-
-    if (savedVideoIds.length === 0) {
-      this.savedVideosView.showNoVideos();
-      return;
-    }
-
+    const unWatchedVideoIds = this.store.computed.unWatchedVideoIds;
     const response = await videoRequest(savedVideoIds);
+
     this.generateSavedVideos(response);
+    this.savedVideosView.renderVideoEmptyImg();
+
+    if (unWatchedVideoIds.length === 0) {
+      this.savedVideosView.showVideoEmptyImg();
+    }
   }
 }
