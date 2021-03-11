@@ -11,6 +11,7 @@ class VideoView {
 
   async initState() {
     this.savedVideos = getDataFromLocalStorage(STORAGE.SAVED_VIDEOS, []);
+    // console.log(JSON.stringify(this.savedVideos));
     this.render();
   }
 
@@ -21,7 +22,7 @@ class VideoView {
 
   render() {
     this.$videoViewVideoWrapper.innerHTML = this.savedVideos.length
-      ? this.savedVideosVideos.map(video => createVideoTemplate(video, SECTION.MAIN)).join("")
+      ? this.savedVideos.map(video => createVideoTemplate(video, SECTION.MAIN)).join("")
       : createNoWatchLaterTemplate();
   }
 }
