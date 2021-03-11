@@ -79,7 +79,7 @@ class SavedController {
   }
 
   handleVideosToWatch() {
-    $(SELECTOR.WATCHED_VIDEOS_BUTTON).addEventListener('click', () => {
+    $(SELECTOR.TO_WATCH_VIDEOS_BUTTON).addEventListener('click', () => {
       this.filterVideos({ showWatched: false });
     });
   }
