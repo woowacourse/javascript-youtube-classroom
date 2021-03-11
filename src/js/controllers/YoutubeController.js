@@ -1,7 +1,6 @@
 import { $ } from '../utils/dom.js';
 import {
   STORE_KEYS,
-  PACK_BUTTON_TYPE,
   ALERT_MESSAGES,
   SNACKBAR_MESSAGES,
 } from '../utils/constants.js';
@@ -42,10 +41,17 @@ export default class YoutubeController {
   }
 
   deleteVideo(videoId) {
+    if (!confirm(ALERT_MESSAGES.CONFIRM_DELETE_VIDEO)) return;
+
     const isDelete = true;
 
-    if (confirm(ALERT_MESSAGES.CONFIRM_DELETE_VIDEO)) {
-      this.store.update({ [STORE_KEYS.SAVED_VIDEO_IDS]: videoId }, isDelete);
+    this.store.update(
+      {
+        [STORE_KEYS.SAVED_VIDEO_IDS]: videoId,
+        [STORE_KEYS.WATCHED_VIDEO_IDS]: videoId,
+      },
+      isDelete,
+    );
       this.savedVideosView.removeSavedVideoClip(videoId);
       popSnackbar(SNACKBAR_MESSAGES.DELETE_VIDEO.SUCCESS);
     }

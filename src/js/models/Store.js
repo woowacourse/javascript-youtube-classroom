@@ -3,6 +3,7 @@ import {
   pushSavedVideoIds,
   popSavedVideoId,
   updateWatchedVideoIds,
+  popWatchedVideoId,
   getStorageData,
 } from '../utils/localStorage.js';
 import { STORE_KEYS } from '../utils/constants.js';
@@ -30,7 +31,9 @@ export default class Store {
       [STORE_KEYS.SAVED_VIDEO_IDS]: isDelete
         ? popSavedVideoId
         : pushSavedVideoIds,
-      [STORE_KEYS.WATCHED_VIDEO_IDS]: updateWatchedVideoIds,
+      [STORE_KEYS.WATCHED_VIDEO_IDS]: isDelete
+        ? popWatchedVideoId
+        : updateWatchedVideoIds,
     };
 
     const updatedResult = updateLocalStorage[key](value);
