@@ -36,7 +36,7 @@ export default class Video {
   }
 
   createVideoEmbedURL() {
-    return `https://www.youtube.com/embed/${this.videoId}`;
+    return `https://www.youtube.com/embed/${this.videoId}?enablejsapi=1&version=3&playerapiid=ytplayer`;
   }
 
   createChannelURL() {
@@ -167,6 +167,7 @@ export default class Video {
     iframe.onload = (e) => {
       e.target.classList.add('loaded');
     };
+    iframe.allowscriptaccess = 'always';
 
     previewContainer.appendChild(iframe);
 

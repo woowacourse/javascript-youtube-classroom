@@ -76,7 +76,20 @@ export default class VideoSearchModal extends Component {
     }
   }
 
+  pauseAllIframeVideo() {
+    document
+      .querySelectorAll('iframe')
+      .forEach((iframe) =>
+        iframe.contentWindow.postMessage(
+          '{"event":"command","func":"pauseVideo","args":""}',
+          '*'
+        )
+      );
+  }
+
   onModalShow() {
+    this.pauseAllIframeVideo();
+
     $('body').classList.add('overflow-hidden');
     this.$target.classList.add('open');
 
@@ -89,6 +102,8 @@ export default class VideoSearchModal extends Component {
   }
 
   onModalClose() {
+    this.pauseAllIframeVideo();
+
     $('body').classList.remove('overflow-hidden');
     this.$target.classList.remove('open');
   }
