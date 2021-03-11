@@ -93,7 +93,7 @@ function getClipButtons(item) {
         👍
       </button>
       <button 
-        data-deleted-button=${item.videoId} 
+        data-delete-button=${item.videoId} 
         class="opacity-hover">
         🗑️
       </button>
