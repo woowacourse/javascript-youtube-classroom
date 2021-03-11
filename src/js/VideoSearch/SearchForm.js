@@ -5,7 +5,7 @@ import {
   LOCAL_STORAGE_KEY,
 } from "../constants.js";
 import { $ } from "../utils/querySelector.js";
-import deliveryMan from "../deliveryMan.js";
+import messenger from "../Messenger.js";
 
 export default class SearchForm {
   constructor() {
@@ -36,7 +36,7 @@ export default class SearchForm {
   async fetchData() {
     if (this.query === "") return;
 
-    deliveryMan.deliverMessage(MESSAGE.KEYWORD_SUBMITTED, {
+    messenger.deliverMessage(MESSAGE.KEYWORD_SUBMITTED, {
       query: this.query,
     });
 
@@ -49,7 +49,7 @@ export default class SearchForm {
       }
 
       const { nextPageToken, items } = body;
-      deliveryMan.deliverMessage(MESSAGE.DATA_LOADED, {
+      messenger.deliverMessage(MESSAGE.DATA_LOADED, {
         nextPageToken,
         items,
       });

@@ -1,6 +1,6 @@
 import { MESSAGE } from "./constants.js";
 
-class DeliveryMan {
+class Messenger {
   constructor() {
     this.listeners = {
       [MESSAGE.KEYWORD_SUBMITTED]: [],
@@ -20,6 +20,7 @@ class DeliveryMan {
   }
 }
 
-const deliveryMan = new DeliveryMan();
+const messenger = new Messenger();
 
-export default deliveryMan;
+export default messenger;
+

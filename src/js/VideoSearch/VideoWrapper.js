@@ -7,7 +7,7 @@ import {
   THROTTLE_TIME_IN_MS,
 } from "../constants.js";
 import { $ } from "../utils/querySelector.js";
-import deliveryMan from "../deliveryMan.js";
+import messenger from "../Messenger.js";
 import { SKELETON_TEMPLATE, render } from "../utils/videoInfo.js";
 
 export default class VideoWrapper {
@@ -18,14 +18,14 @@ export default class VideoWrapper {
     this.$modalVideoWrapper = $(CLASSNAME.MODAL_VIDEO_WRAPPER);
     this.$notFoundImg = $(CLASSNAME.NOT_FOUND_IMAGE);
 
-    deliveryMan.addMessageListener(MESSAGE.KEYWORD_SUBMITTED, ({ query }) => {
+    messenger.addMessageListener(MESSAGE.KEYWORD_SUBMITTED, ({ query }) => {
       this.$notFoundImg.classList.add(CLASSNAME.HIDDEN);
       this.$modalVideoWrapper.innerHTML = "";
       this.currentQuery = query;
       this.mountTemplate();
     });
 
-    deliveryMan.addMessageListener(
+    messenger.addMessageListener(
       MESSAGE.DATA_LOADED,
       ({ nextPageToken, items }) => {
         if (items.length === 0) {
@@ -55,7 +55,7 @@ export default class VideoWrapper {
   // eslint-disable-next-line class-methods-use-this
   saveVideo($button) {
     const { videoId } = $button.dataset;
-    deliveryMan.deliverMessage(MESSAGE.SAVE_VIDEO_BUTTON_CLICKED, { videoId });
+    messenger.deliverMessage(MESSAGE.SAVE_VIDEO_BUTTON_CLICKED, { videoId });
     $button.classList.add(CLASSNAME.HIDDEN);
   }
 

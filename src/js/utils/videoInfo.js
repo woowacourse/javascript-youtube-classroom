@@ -1,5 +1,5 @@
 import { CLASSNAME, MESSAGE } from "../constants.js";
-import deliveryMan from "../deliveryMan.js";
+import messenger from "../Messenger.js";
 
 export const SKELETON_TEMPLATE = `
 <article class="clip skeleton">
@@ -89,7 +89,7 @@ export const render = ($video, item) => {
 
   $saveVideoButton.dataset.videoId = videoId;
 
-  deliveryMan.deliverMessage(MESSAGE.HIDE_IF_VIDEO_IS_SAVED, {
+  messenger.deliverMessage(MESSAGE.HIDE_IF_VIDEO_IS_SAVED, {
     videoId,
     callback: () => $saveVideoButton.classList.add(CLASSNAME.HIDDEN),
   });
