@@ -40,7 +40,7 @@ export const LOCAL_STORAGE_VALUE = {
 };
 
 export const BASE_URL =
-  'https://zen-cray-600581.netlify.app/.netlify/functions/lambda/search';
+  'https://agitated-wozniak-09d838.netlify.app/.netlify/functions/youtube_search/';
 
 deepFreeze(YOUTUBE);
 deepFreeze(MESSAGE);
