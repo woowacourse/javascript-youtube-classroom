@@ -2,13 +2,7 @@ import { MESSAGE } from "./constants.js";
 
 class Messenger {
   constructor() {
-    this.listeners = {
-      [MESSAGE.KEYWORD_SUBMITTED]: [],
-      [MESSAGE.DATA_LOADED]: [],
-      [MESSAGE.SAVE_VIDEO_BUTTON_CLICKED]: [],
-      [MESSAGE.VIDEO_SAVED]: [],
-      [MESSAGE.HIDE_IF_VIDEO_IS_SAVED]: [],
-    };
+    this.listeners = {};
   }
 
   deliverMessage(message, data) {
@@ -16,6 +10,14 @@ class Messenger {
   }
 
   addMessageListener(message, messageHandler) {
+    if (!Object.keys(MESSAGE).includes(message)) {
+      throw new Error(`적합한 Message가 아닙니다. message: ${MESSAGE}`);
+    }
+
+    if (!this.listeners[message]) {
+      this.listeners[message] = [];
+    }
+
     this.listeners[message].push(messageHandler);
   }
 }
@@ -23,4 +25,3 @@ class Messenger {
 const messenger = new Messenger();
 
 export default messenger;
-
