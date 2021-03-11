@@ -1,4 +1,9 @@
-import { STORAGE_NAME } from "../utils/constants.js";
+import {
+  ERROR_MESSAGE,
+  STORAGE_NAME,
+  SUCCESS_MESSAGE,
+} from "../utils/constants.js";
+import { showSnackbar } from "../utils/snackbar.js";
 
 const videos = {
   fetchedVideos: [],
@@ -27,10 +32,19 @@ const videos = {
   },
 
   setSavedVideos(videoId) {
-    const selectedVideo = this.selectVideoItemById(videoId);
-    this.savedVideos = [...this.savedVideos, selectedVideo];
+    try {
+      const selectedVideo = this.selectVideoItemById(videoId);
 
-    this.storeSavedVideos();
+      if (!selectedVideo) {
+        throw new Error(ERROR_MESSAGE.SAVE_ERROR);
+      }
+      this.savedVideos = [...this.savedVideos, selectedVideo];
+      this.storeSavedVideos();
+      showSnackbar(SUCCESS_MESSAGE.SAVE_VIDEO);
+    } catch (e) {
+      console.error(e);
+      showSnackbar(e.message);
+    }
   },
 
   setVideoWatched(videoId, watched) {
