@@ -33,15 +33,15 @@ const videos = {
     this.storeSavedVideos();
   },
 
-  setVideoWatched(videoId) {
-    const watchedVideo = this.savedVideos.find(
+  setVideoWatched(videoId, watched) {
+    const watchedVideoIndex = this.savedVideos.findIndex(
       (video) => video.videoId === videoId
     );
-    const watchedVideoIndex = this.savedVideos.indexOf(watchedVideo);
+    const watchedVideo = this.savedVideos[watchedVideoIndex];
 
     this.savedVideos = [
       ...this.savedVideos.slice(0, watchedVideoIndex),
-      { ...watchedVideo, watched: true },
+      { ...watchedVideo, watched },
       ...this.savedVideos.slice(watchedVideoIndex + 1),
     ];
 
