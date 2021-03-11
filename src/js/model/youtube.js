@@ -36,6 +36,10 @@ class YoutubeModel {
   get videoInfos() {
     return this.#videoInfos;
   }
+
+  get videoCount() {
+    return this.#videoInfos.length;
+  }
 }
 
 export default YoutubeModel;

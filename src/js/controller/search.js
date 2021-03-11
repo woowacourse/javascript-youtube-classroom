@@ -36,15 +36,14 @@ class SearchController {
 
   addVideosBySearch = async () => {
     const query = this.getSearchInput();
-    const videoInfosLength = this.youtube.videoInfos.length;
 
     this.storage.saveRecentKeyword(query);
     this.searchView.renderRecentKeywordSection(this.storage.recentKeywords);
 
     await this.youtube.getVideoInfosBySearch({ query });
 
-    this.searchView.toggleNotFoundSearchedVideo(videoInfosLength);
-    if (videoInfosLength === 0) return;
+    this.searchView.toggleNotFoundSearchedVideo(this.youtube.videoCount);
+    if (this.youtube.videoCount === 0) return;
 
     this.youtube.videoInfos.forEach(info => {
       const isSaved = this.storage.findVideoByInfo(info);
