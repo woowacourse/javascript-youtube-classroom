@@ -1,4 +1,5 @@
 import { $ } from "../utils/dom.js";
+import { CLASS_NAME } from "../utils/constants.js";
 
 class MenuSection {
   constructor(props) {
@@ -8,10 +9,10 @@ class MenuSection {
   }
 
   selectDOM() {
-    this.$target = $(".menu-section");
-    this.$watchLaterBtn = $(".menu-section__watch-later-btn");
-    this.$watchedBtn = $(".menu-section__watched-btn");
-    this.$videoSearchBtn = $(".menu-section__video-search-btn");
+    this.$target = $(`.${CLASS_NAME.MENU_SECTION}`);
+    this.$watchLaterBtn = $(`.${CLASS_NAME.WATCH_LATER_BTN}`);
+    this.$watchedBtn = $(`.${CLASS_NAME.WATCHED_BTN}`);
+    this.$videoSearchBtn = $(`.${CLASS_NAME.VIDEO_SEARCH_BTN}`);
   }
 
   bindEvent() {
@@ -20,9 +21,9 @@ class MenuSection {
 
   handleSelectMenu({ target }) {
     const menuNames = [
-      "menu-section__watch-later-btn",
-      "menu-section__watched-btn",
-      "menu-section__video-search-btn",
+      CLASS_NAME.WATCH_LATER_BTN,
+      CLASS_NAME.WATCHED_BTN,
+      CLASS_NAME.VIDEO_SEARCH_BTN,
     ];
 
     const selectedMenu = menuNames.find(name => target.classList.contains(name));
@@ -32,13 +33,13 @@ class MenuSection {
 
   getMatchedAction(selectedMenu) {
     const menuAction = {
-      ["menu-section__watch-later-btn"]: () => {
+      [CLASS_NAME.WATCH_LATER_BTN]: () => {
         console.log("볼 영상");
       },
-      ["menu-section__watched-btn"]: () => {
+      [CLASS_NAME.WATCHED_BTN]: () => {
         console.log("본 영상");
       },
-      ["menu-section__video-search-btn"]: this.props.openModal,
+      [CLASS_NAME.VIDEO_SEARCH_BTN]: this.props.openModal,
     };
 
     return menuAction[selectedMenu];

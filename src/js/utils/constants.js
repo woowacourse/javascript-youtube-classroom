@@ -17,3 +17,31 @@ export const SECTION = Object.freeze({
   MODAL: "modal",
   MAIN: "main",
 });
+
+export const SEARCH = Object.freeze({
+  LOAD: "load",
+  KEYWORD: "keyword",
+});
+
+export const CLASS_NAME = Object.freeze({
+  MENU_SECTION: "menu-section",
+  WATCH_LATER_BTN: "menu-section__watch-later-btn",
+  WATCHED_BTN: "menu-section__watched-btn",
+  VIDEO_SEARCH_BTN: "menu-section__video-search-btn",
+
+  SEARCH_MODAL: "search-modal",
+  SEARCH_MODAL_INPUT: "search-modal__input",
+  SEARCH_MODAL_BTN: `search-modal__btn`,
+  SEARCH_MODAL_VIDEO_WRAPPER: "search-modal__video-wrapper",
+  SCROLL_AREA: "search-modal__scroll-area",
+  MORE_AREA: "search-modal__more-area",
+  MODAL_CLOSE: "modal-close",
+  SAVED_VIDEO_COUNT: "search-modal__saved-video-count",
+  KEYWORD_HISTORY: "search-modal__keyword-history",
+  KEYWORD: "keyword-history__keyword",
+  CLIP_SAVE_BTN: "clip__save-btn",
+  CLIP: "clip",
+
+  SKELETON: "skeleton",
+  NO_RESULT_IMAGE: "no-result-image",
+});
