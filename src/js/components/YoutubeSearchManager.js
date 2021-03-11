@@ -1,4 +1,4 @@
-import { searchYoutube, searchYoutubeDummyData } from '../api.js';
+import { searchYoutube } from '../api.js';
 import { $, showSnackbar, renderSkeletonUI, formatDate, closeModal, generateCSSClass } from '../utils.js';
 import { ALERT_MESSAGE, SELECTORS, LOCAL_STORAGE_KEYS, SERACH_RESULT } from '../constants.js';
 import {
@@ -27,7 +27,8 @@ export default class YoutubeSearchManager extends Observer {
         const id = item.id.videoId;
 
         const { watchList } = this.store.get();
-        const isSaved = watchList.includes(id);
+        const watchListIds = watchList.map((item) => item.videoId);
+        const isSaved = watchListIds.includes(id);
         const dateString = new Date(publishedAt).toLocaleDateString('ko-KR', {
           year: 'numeric',
           month: 'long',
@@ -140,12 +141,15 @@ export default class YoutubeSearchManager extends Observer {
     const $selectedButton = event.target;
     const selectedVideoId = $selectedButton.dataset.videoId;
 
+    const watchList = this.store.get()[LOCAL_STORAGE_KEYS.WATCH_LIST];
+    const newVideo = {
+      videoId: selectedVideoId,
+      watched: false,
+    };
+
     // TODO: 단일 옵저버만 업데이트할 때, this.watchList를 직접 파라미터에 넣지 않는 방법 찾아보기
-    this.store.update(
-      LOCAL_STORAGE_KEYS.WATCH_LIST,
-      [...this.store.get()[LOCAL_STORAGE_KEYS.WATCH_LIST], selectedVideoId],
-      this.watchList
-    );
+    // this.store.update(LOCAL_STORAGE_KEYS.WATCH_LIST, [...watchList, newVideo], this.watchList);
+    this.store.updateAll({ [LOCAL_STORAGE_KEYS.WATCH_LIST]: [...watchList, newVideo] });
 
     $selectedButton.classList.add(SELECTORS.STATUS.HIDDEN);
 

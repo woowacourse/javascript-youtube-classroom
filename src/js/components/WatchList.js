@@ -9,7 +9,7 @@ export default class WatchList extends Observer {
     super();
     this.store = store;
     this.selector = SELECTORS.CLASS.WATCH_LIST;
-    this.list = this.store.get().watchList;
+    this.list = [];
 
     this.bindEvents();
   }
@@ -39,18 +39,27 @@ export default class WatchList extends Observer {
 
   async render() {
     const watchList = this.store.load(LOCAL_STORAGE_KEYS.WATCH_LIST);
+    const watchListIds = watchList.map((item) => item.videoId);
+
     if (!watchList || watchList.length <= 0) {
       showElement(SELECTORS.CLASS.NO_VIDEO);
       return;
     }
 
-    renderSkeletonUI(SELECTORS.CLASS.WATCH_LIST, watchList.length);
+    renderSkeletonUI(SELECTORS.CLASS.WATCH_LIST, watchList.filter(({ watched }) => !watched).length);
 
     try {
-      const { items } = await searchYoutubeById(watchList);
-      clearElement(SELECTORS.CLASS.WATCH_LIST);
+      const { items } = await searchYoutubeById(watchListIds);
 
-      this.renderSavedVideos(items);
+      this.list = watchList.map(({ videoId, watched }) => {
+        const video = items.find(({ id }) => id === videoId);
+        return { ...video, watched };
+      });
+
+      const toWatchVideos = this.list.filter((video) => !video.watched);
+
+      clearElement(SELECTORS.CLASS.WATCH_LIST);
+      this.renderSavedVideos(toWatchVideos);
     } catch (error) {
       showSnackbar(error.message);
     }
@@ -58,6 +67,7 @@ export default class WatchList extends Observer {
 
   async update() {
     const { watchList } = this.store.get();
+    const watchListIds = watchList.map((item) => item.videoId);
     if (!watchList || watchList.length <= 0) {
       clearElement(SELECTORS.CLASS.WATCH_LIST);
       showElement(SELECTORS.CLASS.NO_VIDEO);
@@ -66,27 +76,26 @@ export default class WatchList extends Observer {
 
     hideElement(SELECTORS.CLASS.NO_VIDEO);
 
-    const oldVideoId = this.list.filter((id) => !watchList.includes(id));
-    if (oldVideoId.length > 0) {
-      oldVideoId.forEach((id) => {
-        const $targetVideo = $(`${SELECTORS.CLASS.CLIP}[data-video-id="${id}"]`);
-        $targetVideo.remove(); // NOTE: 데이터만 변경해도 삭제할 수 있는 방법 좀 더 생각해 볼 필요 있음
-      });
+    const oldVideo = this.list.find(({ id }) => !watchListIds.includes(id));
+    if (oldVideo) {
+      const $targetVideo = $(`${SELECTORS.CLASS.CLIP}[data-video-id="${oldVideo.id}"]`);
+      $targetVideo.remove(); // NOTE: 데이터만 변경해도 삭제할 수 있는 방법 좀 더 생각해 볼 필요 있음
+      this.list = this.list.filter(({ id }) => watchListIds.includes(id));
 
-      this.list = watchList;
       return;
     }
 
-    const newVideoId = watchList.filter((id) => !this.list.includes(id));
-    if (!newVideoId || newVideoId.length <= 0) {
-      return;
-    }
+    const idsList = this.list.map(({ id }) => id);
+    const newVideo = watchList.find(({ videoId }) => !idsList.includes(videoId));
+    console.log('newVideo', newVideo);
+
+    if (!newVideo) return;
 
     try {
-      const { items } = await searchYoutubeById([newVideoId]);
-
+      const { items } = await searchYoutubeById([newVideo.videoId]);
       this.renderSavedVideos(items);
-      this.list = watchList;
+
+      this.list = [...this.list, { ...items[0], watched: newVideo.watched }];
     } catch (error) {
       showSnackbar(error.message);
     }
@@ -94,16 +103,29 @@ export default class WatchList extends Observer {
 
   bindEvents() {
     $(SELECTORS.CLASS.WATCH_LIST).addEventListener('click', (event) => {
-      console.log(ALERT_MESSAGE.CONFIRM_DELETE);
-      if (!window.confirm(ALERT_MESSAGE.CONFIRM_DELETE)) return;
-
       const { target } = event;
       const { watchList } = this.store.get();
       if (target.classList.contains('delete')) {
+        if (!window.confirm(ALERT_MESSAGE.CONFIRM_DELETE)) return;
+
         const targetId = target.closest('.menu-list').dataset.videoId;
-        const newWatchList = watchList.filter((id) => id !== targetId);
+        const newWatchList = watchList.filter(({ videoId }) => videoId !== targetId);
         this.store.update(LOCAL_STORAGE_KEYS.WATCH_LIST, newWatchList, this);
       }
+    });
+
+    $(SELECTORS.CLASS.TO_WATCH_LIST_BUTTON).addEventListener('click', () => {
+      clearElement(SELECTORS.CLASS.WATCH_LIST);
+
+      const watchedList = this.list.filter(({ watched }) => !watched);
+      this.renderSavedVideos(watchedList);
+    });
+
+    $(SELECTORS.CLASS.WATCHED_LIST_BUTTON).addEventListener('click', () => {
+      clearElement(SELECTORS.CLASS.WATCH_LIST);
+
+      const watchedList = this.list.filter(({ watched }) => watched);
+      this.renderSavedVideos(watchedList);
     });
   }
 }

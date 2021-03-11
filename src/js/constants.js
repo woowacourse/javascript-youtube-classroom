@@ -28,6 +28,8 @@ export const SELECTORS = {
     LIKE: '.like',
     COMMENT: '.comment',
     DELETE: '.delete',
+    TO_WATCH_LIST_BUTTON: '.to-watch-list-button',
+    WATCHED_LIST_BUTTON: '.watched-list-button',
   },
   ID: {
     SEARCH_BUTTON: '#search-button',
