@@ -3,7 +3,7 @@ import { $ } from '../util/index.js';
 export class Navigation {
   constructor({ handleIsChecked, handleOpenModal }) {
     this.$navigation = $('nav');
-    this.$uncheckedButton = $('.js-unchecked-video');
+    this.$searchButton = $('.js-search-button');
     this.$checkedButton = $('.js-checked-video');
     this.handleIsChecked = handleIsChecked;
     this.handleOpenModal = handleOpenModal;
@@ -12,34 +12,8 @@ export class Navigation {
   }
 
   initEvent() {
-    this.$navigation.addEventListener('click', ({ target }) => {
-      if (target.classList.contains('js-unchecked-video')) {
-        this.changeButtonColor(target);
-
-        return;
-      }
-
-      if (target.classList.contains('js-checked-video')) {
-        this.changeButtonColor(target);
-
-        return;
-      }
-
-      if (target.classList.contains('js-search-button')) {
-        this.handleOpenModal();
-
-        return;
-      }
-    });
-  }
-
-  changeButtonColor(clickedButton) {
-    this.$navigation.querySelectorAll('.js-color-btn ').forEach($ele => {
-      if ($ele === clickedButton) {
-        $ele.classList.add('bg-cyan-100');
-      } else {
-        $ele.classList.remove('bg-cyan-100');
-      }
+    this.$searchButton.addEventListener('click', event => {
+      this.handleOpenModal();
     });
   }
 }

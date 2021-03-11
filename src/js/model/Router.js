@@ -1,5 +1,8 @@
+import { $$ } from '../util/index.js';
+
 export class Router {
   constructor({ onChangePage }) {
+    this.$routeButtons = $$('.js-route-btn');
     this.onChangePage = onChangePage;
     this.currentPage = '';
 
@@ -12,8 +15,19 @@ export class Router {
     };
   }
 
+  changeButtonColor() {
+    this.$routeButtons.forEach($ele => {
+      if ($ele.href.split('/').slice(-1)[0] === this.currentPage) {
+        $ele.classList.add('bg-cyan-100');
+      } else {
+        $ele.classList.remove('bg-cyan-100');
+      }
+    });
+  }
+
   setState({ currentPage }) {
     this.currentPage = currentPage;
     this.onChangePage();
+    this.changeButtonColor();
   }
 }
