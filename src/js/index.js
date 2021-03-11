@@ -1,4 +1,4 @@
-import { initEvent, initState } from './init.js';
+import { initEvent, initView } from './init.js';
 
-initState();
+initView();
 initEvent();

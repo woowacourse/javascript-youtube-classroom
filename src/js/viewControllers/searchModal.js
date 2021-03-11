@@ -8,7 +8,6 @@ import notFoundTemplate from '../templates/notFound.js';
 const $savedVideoCount = $('#saved-video-count');
 const $latestKeywordList = $('#latest-keyword-list');
 const $videoSearchResult = $('#video-search-result');
-const $videoSearchForm = $('#video-search-form');
 
 function renderSavedVideoCount(count) {
   $savedVideoCount.innerText = `${count} / ${MAX_SAVED_VIDEO_COUNT}`;
@@ -22,22 +21,17 @@ function renderVideoLoader() {
   $videoSearchResult.innerHTML = createVideoSkeletonTemplate();
 }
 
-function renderVideoSearchResult(resultItems, videoInfos) {
+function renderSearchVideoList(resultItems, videoInfos) {
   $videoSearchResult.innerHTML = resultItems.length
     ? createVideoListTemplate(resultItems, videoInfos)
     : notFoundTemplate;
 }
 
-function appendVideos(searchResult, videoInfos) {
+function appendVideoList(searchResult, videoInfos) {
   $videoSearchResult.innerHTML += createVideoListTemplate(
     searchResult,
     videoInfos
   );
-}
-
-function search(keyword) {
-  $videoSearchForm.elements['video-search-input'].value = keyword;
-  $videoSearchForm.elements['video-search-submit'].click();
 }
 
 function toggleSaveButton($saveButton) {
@@ -56,8 +50,7 @@ export {
   renderSavedVideoCount,
   renderLatestKeywordList,
   renderVideoLoader,
-  renderVideoSearchResult,
-  appendVideos,
-  search,
   toggleSaveButton,
+  renderSearchVideoList,
+  appendVideoList,
 };
