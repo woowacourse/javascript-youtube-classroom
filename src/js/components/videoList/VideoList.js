@@ -18,7 +18,11 @@ import {
 } from '../../constants/constants.js';
 import { store } from '../../index.js';
 import { decreaseSavedVideoCount } from '../../redux/action.js';
-import { loadIframe, showSnackBar } from '../../utils/youtubeClassRoomUtils.js';
+import {
+  loadIframe,
+  pauseAllIframeVideo,
+  showSnackBar,
+} from '../../utils/youtubeClassRoomUtils.js';
 
 export default class VideoList extends Component {
   setup() {
@@ -92,6 +96,7 @@ export default class VideoList extends Component {
       return;
     }
 
+    pauseAllIframeVideo();
     this.toggleVideoList();
     this.filter = newFilter;
     this.showByFilter();

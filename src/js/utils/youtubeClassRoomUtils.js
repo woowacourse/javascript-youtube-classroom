@@ -1,4 +1,4 @@
-import { localStorageGetItem, $, localStorageSetItem } from './utils.js';
+import { localStorageGetItem, $, $$, localStorageSetItem } from './utils.js';
 import { LOCALSTORAGE_KEYS, VALUES } from '../constants/constants.js';
 
 export const loadIframe = (entries, observer) => {
@@ -38,4 +38,13 @@ export const showSnackBar = ($snackbar, text) => {
   setTimeout(() => {
     $snackbar.classList.remove('show');
   }, 3000);
+};
+
+export const pauseAllIframeVideo = () => {
+  $$('iframe').forEach((iframe) =>
+    iframe.contentWindow.postMessage(
+      '{"event":"command","func":"pauseVideo","args":""}',
+      '*'
+    )
+  );
 };
