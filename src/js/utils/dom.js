@@ -1,4 +1,4 @@
-import { ERROR_MESSAGE, PALLET } from "./constants.js";
+import { ERROR_MESSAGE } from "./constants.js";
 import elements from "./elements.js";
 
 export const $ = (selector) => {
