@@ -42,15 +42,38 @@ describe("youtube classroom 기능 테스트", () => {
         cy.get("#watched-videos").children().should("have.length", 1);
         cy.get("#watched-videos > article button")
           .eq(0)
-          .then(([$watchedViewButton]) => {
-            expect($watchedViewButton.dataset.watchedButton).to.eq(
-              watchedVideoId
-            );
+          .then(([$watchedButton]) => {
+            expect($watchedButton.dataset.watchedButton).to.eq(watchedVideoId);
           });
 
         cy.get("#watched-videos button[data-watched-button]")
           .eq(0)
           .should("not.have.class", "opacity-hover");
+      });
+  });
+
+  it("watch 버튼을 다시 누르면, 볼 영상에 추가된다.", () => {
+    cy.get("#watched-videos button[data-watched-button]")
+      .eq(0)
+      .click()
+      .then(([$clickedButton]) => {
+        return $clickedButton.dataset.watchedButton;
+      })
+      .then((watchedVideoId) => {
+        cy.get("#watched-videos").should("not.be.visible");
+        cy.get("#not-watched").should("be.visible");
+
+        cy.get("#watch-later-view-button").click();
+        cy.get("#watch-later-videos").children().should("have.length", 1);
+        cy.get("#watch-later-videos > article button")
+          .eq(0)
+          .then(([$watchedButton]) => {
+            expect($watchedButton.dataset.watchedButton).to.eq(watchedVideoId);
+          });
+
+        cy.get("#watch-later-videos button[data-watched-button]")
+          .eq(0)
+          .should("have.class", "opacity-hover");
       });
   });
 });
