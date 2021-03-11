@@ -53,7 +53,7 @@ export default class YoutubeController {
 
   watchVideo(videoId) {
     this.store.update({ [STORE_KEYS.WATCHED_VIDEO_IDS]: videoId });
-    this.savedVideosView.toggleButtonColor(videoId, PACK_BUTTON_TYPE.WATCHED);
+    this.savedVideosView.toggleWatchedButton(videoId);
 
     if (this.store.state.watchedVideoIds.includes(videoId)) {
       popSnackbar(SNACKBAR_MESSAGES.WATCH_VIDEO_ADD.SUCCESS);
@@ -68,11 +68,9 @@ export default class YoutubeController {
 
     this.savedVideosView.showMatchedVideos(watchedVideoIds, unWatchedVideoIds);
     this.updateNavTab($('#saved-btn'));
-    this.savedVideosView.showSavedVideosAll();
   }
 
   focusWatchedTab() {
-    const savedVideoIds = this.store.state.savedVideoIds;
     const watchedVideoIds = this.store.state.watchedVideoIds;
     const unWatchedVideoIds = this.store.computed.unWatchedVideoIds;
 
@@ -99,6 +97,7 @@ export default class YoutubeController {
       ...items.map((item) => new Video(item.id, item.snippet)),
     ];
     const watchedVideos = this.store.state.watchedVideoIds;
+    const unWatchedVideoIds = this.store.computed.unWatchedVideoIds;
 
     this.savedVideosView.renderSavedVideoClips(savedVideos, watchedVideos);
   }

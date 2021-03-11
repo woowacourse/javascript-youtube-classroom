@@ -64,4 +64,12 @@ export default class Store {
   get state() {
     return this._state;
   }
+
+  get computed() {
+    return {
+      unWatchedVideoIds: this._state.savedVideoIds.filter(
+        (videoId) => !this._state.watchedVideoIds.includes(videoId),
+      ),
+    };
+  }
 }

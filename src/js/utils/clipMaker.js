@@ -2,7 +2,10 @@ export default function clipMaker(video, type) {
   const { isModal, isSaved, isWatched } = type;
 
   return `
-    <article class="clip" data-article="${video.id}">
+    <article 
+      class="clip ${isWatched ? 'd-none' : ''}"
+      data-article="${video.id}"
+    >
       <div class="preview-container">
         <iframe
           width="100%"
