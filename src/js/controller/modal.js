@@ -1,4 +1,5 @@
-import { $ } from '../utils/util.js';
+import { CLASS, SELECTOR } from '../constants/constant.js';
+import { $, toggleSelectorClass } from '../utils/util.js';
 
 class ModalController {
   #storageModel;
@@ -10,7 +11,7 @@ class ModalController {
     this.#storageModel = storageModel;
     this.#savedView = savedView;
     this.#searchView = searchView;
-    this.#$modal = $('.modal');
+    this.#$modal = $(SELECTOR.MODAL);
   }
 
   init = () => {
@@ -22,31 +23,31 @@ class ModalController {
     this.#searchView.renderSavedVideoCountSection(
       this.#storageModel.savedVideoCount
     );
+
     this.#searchView.renderRecentKeywordSection(
       this.#storageModel.recentKeywords
     );
-    // this.#searchView.toggleNotFound(true);
   };
 
   onModalShow = () => {
     this.loadInfos();
-    this.#$modal.classList.add('open');
+    toggleSelectorClass(this.#$modal, CLASS.OPEN, true);
   };
 
   onModalClose = () => {
-    this.#$modal.classList.remove('open');
+    toggleSelectorClass(this.#$modal, CLASS.OPEN, false);
   };
 
   handleModalOpen = () => {
-    const $searchModalButton = $('#search-modal-button');
+    const $searchModalButton = $(SELECTOR.SEARCH_MODAL_BUTTON);
     $searchModalButton.addEventListener('click', () => this.onModalShow());
   };
 
   handleModalClose = () => {
     this.#$modal.addEventListener('click', event => {
       if (
-        event.target.querySelector('.modal-inner') ||
-        event.target.closest('.modal-close')
+        event.target.querySelector(SELECTOR.MODAL_INNER) ||
+        event.target.closest(SELECTOR.MODAL_CLOSE)
       ) {
         this.onModalClose();
       }

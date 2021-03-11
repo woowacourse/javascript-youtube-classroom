@@ -21,11 +21,11 @@ class SearchView {
 
   toggleNotFoundSearchedVideo = length => {
     if (length === 0) {
-      toggleSelectorClass(this.$searchNotFound, 'show', true);
+      toggleSelectorClass(this.$searchNotFound, CLASS.SHOW, true);
       return;
     }
 
-    toggleSelectorClassfalse(this.$searchNotFound, 'show', false);
+    toggleSelectorClassfalse(this.$searchNotFound, CLASS.SHOW, false);
   };
 
   renderSkeletonArticles = () => {

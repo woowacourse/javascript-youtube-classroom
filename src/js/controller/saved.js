@@ -1,4 +1,9 @@
-import { CLASS, SELECTOR } from '../constants/constant.js';
+import {
+  CLASS,
+  CONFIRM_MESSAGE,
+  SELECTOR,
+  SNACK_BAR,
+} from '../constants/constant.js';
 import { $, $$, toggleSelectorClass } from '../utils/util.js';
 class SavedController {
   constructor(storage, savedView, navView, snackBarView) {
@@ -20,8 +25,7 @@ class SavedController {
     const savedVideos = this.storage.myVideos;
 
     if (savedVideos.length === 0) {
-      toggleSelectorClass($('#saved-video-wrapper'), 'show', true);
-      // this.savedView.toggleNotFoundSavedVideo(true);
+      toggleSelectorClass($(SELECTOR.SEARCH_VIDEO_WRAPPER), CLASS.SHOW, true);
       return;
     }
     this.savedView.renderSavedVideos(savedVideos);
@@ -40,48 +44,47 @@ class SavedController {
   }
 
   deleteVideo(target) {
-    if (!confirm('정말로 영상을 삭제하시겠습니까?')) return;
+    if (!confirm(CONFIRM_MESSAGE.DELETE_VIDEO)) return;
     this.storage.deleteSelectedVideo(target);
     this.savedView.hideSelectedVideo(target);
 
     if (this.storage.savedVideoCount === 0) {
-      toggleSelectorClass($('#saved-video-wrapper'), 'show', true);
-      // this.savedView.toggleNotFoundSavedVideo(true);
+      toggleSelectorClass($(SELECTOR.SEARCH_VIDEO_WRAPPER), CLASS.SHOW, true);
     }
-    this.snackBarView.showSnackBar('영상을 목록에서 제거했습니다');
+    this.snackBarView.showSnackBar(SNACK_BAR.DELETE_MESSAGE);
   }
 
   toggleVideoWatched(target) {
     this.storage.updateVideoWatched(target);
 
-    target.classList.toggle('opacity-hover');
+    target.classList.toggle(CLASS.OPACITY_HOVER);
 
     if (this.storage.showWatched !== null) {
       this.savedView.hideSelectedVideo(target);
     }
 
-    this.snackBarView.showSnackBar(`해당 영상의 저장 목록 위치를 변경했습니다`);
+    this.snackBarView.showSnackBar(SNACK_BAR.LIST_MODIFIED_MESSAGE);
   }
 
   handleToggleVideosWatched() {
-    $('#saved-video-wrapper').addEventListener('click', ({ target }) => {
-      if (target.classList.contains('watched')) {
+    $(SELECTOR.SEARCH_VIDEO_WRAPPER).addEventListener('click', ({ target }) => {
+      if (target.classList.contains(CLASS.WATCHED)) {
         this.toggleVideoWatched(target);
       }
 
-      if (target.classList.contains('delete')) {
+      if (target.classList.contains(CLASS.DELETE)) {
         this.deleteVideo(target);
       }
     });
   }
 
   handleVideosToWatch() {
-    $('#towatch-videos-button').addEventListener('click', () => {
+    $(SELECTOR.WATCHED_VIDEOS_BUTTON).addEventListener('click', () => {
       this.filterVideos({ showWatched: false });
     });
   }
   handleVideosWatched() {
-    $('#watched-videos-button').addEventListener('click', () => {
+    $(SELECTOR.WATCHED_VIDEOS_BUTTON).addEventListener('click', () => {
       this.filterVideos({ showWatched: true });
     });
   }

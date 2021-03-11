@@ -1,9 +1,18 @@
-import { $ } from '../utils/util.js';
+import { CLASS, SELECTOR } from '../constants/constant.js';
+import { $, toggleSelectorClass } from '../utils/util.js';
 
 class NavView {
   toggleNavButton = watched => {
-    $('#towatch-videos-button').classList.toggle('bg-cyan-100', !watched);
-    $('#watched-videos-button').classList.toggle('bg-cyan-100', watched);
+    toggleSelectorClass(
+      $(SELECTOR.TO_WATCH_VIDEOS_BUTTON),
+      CLASS.BG_CYAN,
+      !watched
+    );
+    toggleSelectorClass(
+      $(SELECTOR.WATCHED_VIDEOS_BUTTON),
+      CLASS.BG_CYAN,
+      watched
+    );
   };
 }
 
