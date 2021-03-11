@@ -11,12 +11,13 @@ export default class SearchModalView extends View {
     this.closeButton = $('.modal-close');
     this.searchForm = $('#modal-search-form');
     this.modalVideos = $('#modal-videos');
-    this.searchKeyword;
   }
 
   init() {
     this.bindModalEvents();
     this.bindScrollEvent();
+    this.bindSaveEvent();
+    this.bindChipsEvent();
   }
 
   bindModalEvents() {
@@ -28,8 +29,8 @@ export default class SearchModalView extends View {
     this.searchForm.setEvent('submit', (e) => {
       e.preventDefault();
 
-      this.searchKeyword = e.target.elements.search.value;
-      this.emit('submitSearch', this.searchKeyword);
+      const searchKeyword = e.target.elements.search.value;
+      this.emit('submitSearch', searchKeyword);
     });
   }
 
@@ -41,27 +42,28 @@ export default class SearchModalView extends View {
         const isBottomOfScroll = scrollTop === scrollHeight - offsetHeight;
 
         if (isBottomOfScroll) {
-          this.emit('scrollResult', this.searchKeyword);
+          this.emit('scrollResult');
         }
       }, VALUE.THROTTLE_TIME).bind(this),
     );
   }
 
-  bindSaveEvent(videos) {
-    videos.forEach((video) => {
-      $(`[data-video-save='${video.id}']`).setEvent('click', (e) => {
+  bindSaveEvent() {
+    $('#modal-videos').setEvent('click', (e) => {
+      if (e.target.classList.contains('clip-save-btn')) {
         this.emit('clickSaveButton', e.target);
-      });
+      }
     });
   }
 
   bindChipsEvent() {
-    $('.chip').setEvent('click', (e) => {
-      const chipText = e.target.innerText;
-      $('#modal-search-input').setValue(chipText);
-      this.searchKeyword = chipText;
+    $('#chip-container').setEvent('click', (e) => {
+      if (e.target.classList.contains('chip')) {
+        const chipText = e.target.innerText;
 
-      this.emit('clickChip', chipText);
+        $('#modal-search-input').setValue(chipText);
+        this.emit('clickChip', chipText);
+      }
     });
   }
 
@@ -70,8 +72,6 @@ export default class SearchModalView extends View {
 
     try {
       const latestKeyword = $('#chip-1').getText();
-
-      this.searchKeyword = latestKeyword;
       $('#modal-search-input').setValue(latestKeyword);
 
       this.emit('openModal', latestKeyword);
@@ -99,8 +99,6 @@ export default class SearchModalView extends View {
 
   updateChips(recentKeywords) {
     $('#chip-container').setInnerHTML(this.chipTemplate(recentKeywords));
-
-    this.bindChipsEvent();
   }
 
   scrollToTop() {
@@ -117,7 +115,7 @@ export default class SearchModalView extends View {
     `;
   }
 
-  startSearch() {
+  renderSkeletonTemplate() {
     this.modalVideos.addInnerHTML(
       this.skeletonTemplate().repeat(VALUE.CLIPS_PER_SCROLL),
     );
@@ -134,7 +132,6 @@ export default class SearchModalView extends View {
       })
       .join('');
     this.modalVideos.addInnerHTML(videoClips);
-    this.bindSaveEvent(videos);
   }
 
   clearVideoClips() {

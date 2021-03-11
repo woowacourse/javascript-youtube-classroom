@@ -6,18 +6,19 @@ import {
   STORE_KEYS,
   SNACKBAR_MESSAGES,
 } from '../utils/constants.js';
+import popSnackbar from '../utils/snackbar.js';
 import NavigationView from '../views/NavigationView.js';
 import SearchModalView from '../views/SearchModalView.js';
 import SavedVideosView from '../views/SavedVideosView.js';
 import Video from '../models/Video.js';
 import { searchRequest } from '../request.js';
-import popSnackbar from '../utils/snackbar.js';
 
 export default class SearchModalController {
   constructor(store) {
     this.store = store;
     this.videos = [];
     this.nextPageToken;
+    this.keyword;
     this.navigationView = new NavigationView($('#nav-bar'));
     this.searchModalView = new SearchModalView($('.modal'));
     this.savedVideosView = new SavedVideosView($('#main-videos'));
@@ -61,25 +62,25 @@ export default class SearchModalController {
     );
   }
 
-  async scrollVideo(keyword) {
-    this.searchModalView.startSearch();
+  async scrollVideo() {
+    this.searchModalView.renderSkeletonTemplate();
 
-    const response = await searchRequest(keyword, this.nextPageToken);
+    const response = await searchRequest(this.keyword, this.nextPageToken);
     this.generateVideos(response);
   }
 
   async searchVideo(keyword) {
-    this.nextPageToken = null;
-
     if (isEmptySearchKeyword(keyword)) {
       alert(ALERT_MESSAGES.EMPTY_SEARCH_KEYWORD);
       return;
     }
 
+    this.keyword = keyword;
+    this.nextPageToken = null;
     this.store.update({ [STORE_KEYS.RECENT_KEYWORDS]: keyword });
 
     this.searchModalView.clearVideoClips();
-    this.searchModalView.startSearch();
+    this.searchModalView.renderSkeletonTemplate();
     this.searchModalView.scrollToTop();
 
     const response = await searchRequest(keyword, this.nextPageToken);

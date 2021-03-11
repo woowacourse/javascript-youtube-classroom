@@ -51,23 +51,6 @@ export function popSavedVideoId(videoId) {
   return updatedSavedVideoIds;
 }
 
-export function popWatchedVideoId(videoId) {
-  const watchedVideoIds = getStorageData(STORE_KEYS.WATCHED_VIDEO_IDS);
-
-  if (!watchedVideoIds.includes(videoId)) return watchedVideoIds;
-
-  const updatedWatchedVideoIds = watchedVideoIds.filter(
-    (watchedVideoId) => watchedVideoId !== videoId,
-  );
-
-  localStorage.setItem(
-    STORE_KEYS.WATCHED_VIDEO_IDS,
-    JSON.stringify(updatedWatchedVideoIds),
-  );
-
-  return updatedWatchedVideoIds;
-}
-
 export function updateWatchedVideoIds(videoId) {
   const watchedVideoIds = getStorageData(STORE_KEYS.WATCHED_VIDEO_IDS);
   let updatedWatchedVideoIds;
@@ -80,6 +63,23 @@ export function updateWatchedVideoIds(videoId) {
     watchedVideoIds.push(videoId);
     updatedWatchedVideoIds = [...watchedVideoIds];
   }
+
+  localStorage.setItem(
+    STORE_KEYS.WATCHED_VIDEO_IDS,
+    JSON.stringify(updatedWatchedVideoIds),
+  );
+
+  return updatedWatchedVideoIds;
+}
+
+export function popWatchedVideoId(videoId) {
+  const watchedVideoIds = getStorageData(STORE_KEYS.WATCHED_VIDEO_IDS);
+
+  if (!watchedVideoIds.includes(videoId)) return watchedVideoIds;
+
+  const updatedWatchedVideoIds = watchedVideoIds.filter(
+    (watchedVideoId) => watchedVideoId !== videoId,
+  );
 
   localStorage.setItem(
     STORE_KEYS.WATCHED_VIDEO_IDS,

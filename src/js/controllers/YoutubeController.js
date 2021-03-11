@@ -5,12 +5,12 @@ import {
   ALERT_MESSAGES,
   SNACKBAR_MESSAGES,
 } from '../utils/constants.js';
+import popSnackbar from '../utils/snackbar.js';
 import { videoRequest } from '../request.js';
 import NavigationView from '../views/NavigationView.js';
 import SearchModalView from '../views/SearchModalView.js';
 import SavedVideosView from '../views/SavedVideosView.js';
 import Video from '../models/Video.js';
-import popSnackbar from '../utils/snackbar.js';
 
 export default class YoutubeController {
   constructor(store) {
@@ -26,8 +26,8 @@ export default class YoutubeController {
     this.searchModalView.init();
     this.savedVideosView.init();
 
+    this.initialLoad();
     this.bindEvents();
-    this.loadSavedVideos();
   }
 
   bindEvents() {
@@ -39,6 +39,42 @@ export default class YoutubeController {
     this.savedVideosView
       .on('clickWatched', (e) => this.watchVideo(e.detail))
       .on('clickDelete', (e) => this.deleteVideo(e.detail));
+  }
+
+  focusSavedTab() {
+    const watchedVideoIds = this.store.state.watchedVideoIds;
+    const unWatchedVideoIds = this.store.computed.unWatchedVideoIds;
+
+    this.updateNavTab($('#saved-btn'));
+    this.savedVideosView.showMatchedVideos(watchedVideoIds, unWatchedVideoIds);
+
+    if (isEmptyArray(unWatchedVideoIds)) {
+      this.savedVideosView.showVideoEmptyImg();
+    }
+  }
+
+  focusWatchedTab() {
+    const watchedVideoIds = this.store.state.watchedVideoIds;
+    const unWatchedVideoIds = this.store.computed.unWatchedVideoIds;
+
+    this.updateNavTab($('#watched-btn'));
+    this.savedVideosView.showMatchedVideos(unWatchedVideoIds, watchedVideoIds);
+
+    if (isEmptyArray(watchedVideoIds)) {
+      this.savedVideosView.showVideoEmptyImg();
+    }
+  }
+
+  focusSearchTab() {
+    this.searchModalView.updateSavedCount(this.store.state.savedVideoIds);
+    this.searchModalView.updateChips(this.store.state.recentKeywords);
+    this.searchModalView.openModal();
+    this.updateNavTab($('#search-btn'));
+  }
+
+  updateNavTab(currentTab) {
+    this.selectedTab = currentTab;
+    this.navigationView.toggleTabColor(currentTab);
   }
 
   deleteVideo(videoId) {
@@ -79,7 +115,6 @@ export default class YoutubeController {
 
     const watchedVideoIds = this.store.state.watchedVideoIds;
     const unWatchedVideoIds = this.store.computed.unWatchedVideoIds;
-
     const isFromSavedTab = unWatchedVideoIds.includes(videoId);
 
     if (isFromSavedTab) {
@@ -95,42 +130,6 @@ export default class YoutubeController {
     }
   }
 
-  focusSavedTab() {
-    const watchedVideoIds = this.store.state.watchedVideoIds;
-    const unWatchedVideoIds = this.store.computed.unWatchedVideoIds;
-
-    this.updateNavTab($('#saved-btn'));
-    this.savedVideosView.showMatchedVideos(watchedVideoIds, unWatchedVideoIds);
-
-    if (isEmptyArray(unWatchedVideoIds)) {
-      this.savedVideosView.showVideoEmptyImg();
-    }
-  }
-
-  focusWatchedTab() {
-    const watchedVideoIds = this.store.state.watchedVideoIds;
-    const unWatchedVideoIds = this.store.computed.unWatchedVideoIds;
-
-    this.updateNavTab($('#watched-btn'));
-    this.savedVideosView.showMatchedVideos(unWatchedVideoIds, watchedVideoIds);
-
-    if (isEmptyArray(watchedVideoIds)) {
-      this.savedVideosView.showVideoEmptyImg();
-    }
-  }
-
-  focusSearchTab() {
-    this.searchModalView.updateSavedCount(this.store.state.savedVideoIds);
-    this.searchModalView.updateChips(this.store.state.recentKeywords);
-    this.searchModalView.openModal();
-    this.updateNavTab($('#search-btn'));
-  }
-
-  updateNavTab(currentTab) {
-    this.selectedTab = currentTab;
-    this.navigationView.toggleTabColor(currentTab);
-  }
-
   generateSavedVideos(response) {
     const { items } = response;
 
@@ -142,7 +141,7 @@ export default class YoutubeController {
     this.savedVideosView.renderSavedVideoClips(savedVideos, watchedVideos);
   }
 
-  async loadSavedVideos() {
+  async initialLoad() {
     const savedVideoIds = this.store.state.savedVideoIds;
     const unWatchedVideoIds = this.store.computed.unWatchedVideoIds;
     const response = await videoRequest(savedVideoIds);

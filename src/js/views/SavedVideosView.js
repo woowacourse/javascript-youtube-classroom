@@ -55,30 +55,6 @@ export default class SavedVideosView extends View {
     $(`[data-article='${videoId}']`).removeElement();
   }
 
-  renderVideoEmptyImg() {
-    this.$element.addInnerHTML(
-      `
-        <div class="empty-videos stretch d-flex flex-col items-center d-none">
-          <img width="50%" src="./src/images/status/empty_tung.png" alt="empty_video_img"></img>
-          <h2>동영상 목록이 비었읍니다 🙄</h2>
-        </div>
-      `,
-    );
-  }
-
-  toggleWatchedButton(videoId) {
-    const videoClip = $(`[data-article='${videoId}']`);
-    const packButton = $(`[data-video-watched='${videoId}']`);
-
-    $('#main-videos > article').removeClass('fadein', 'fadeout');
-    packButton.toggleClass('opacity-hover');
-    videoClip.addClass('fadeout');
-
-    setTimeout(() => {
-      videoClip.hide();
-    }, VALUE.CLIP_TRANSITION_TIME);
-  }
-
   showMatchedVideos(prevTabVideos, currentTabVideos) {
     clearTimeout(this.clipTransition);
     $('.empty-videos').hide();
@@ -95,9 +71,33 @@ export default class SavedVideosView extends View {
     }, VALUE.CLIP_TRANSITION_TIME);
   }
 
+  renderVideoEmptyImg() {
+    this.$element.addInnerHTML(
+      `
+        <div class="empty-videos stretch d-flex flex-col items-center d-none">
+          <img width="50%" src="./src/images/status/empty_tung.png" alt="empty_video_img"></img>
+          <h2>동영상 목록이 비었읍니다 🙄</h2>
+        </div>
+      `,
+    );
+  }
+
   showVideoEmptyImg() {
     setTimeout(() => {
       $('.empty-videos').show();
+    }, VALUE.CLIP_TRANSITION_TIME);
+  }
+
+  toggleWatchedButton(videoId) {
+    const videoClip = $(`[data-article='${videoId}']`);
+    const packButton = $(`[data-video-watched='${videoId}']`);
+
+    $('#main-videos > article').removeClass('fadein', 'fadeout');
+    packButton.toggleClass('opacity-hover');
+    videoClip.addClass('fadeout');
+
+    setTimeout(() => {
+      videoClip.hide();
     }, VALUE.CLIP_TRANSITION_TIME);
   }
 }
