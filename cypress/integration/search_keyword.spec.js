@@ -28,7 +28,7 @@ context("모달을 통한 비디오 검색", () => {
     });
   });
 
-  describe.only("비디오를 저장하는 경우", () => {
+  describe("비디오를 저장하는 경우", () => {
     beforeEach(() => {
       cy.visit("http://127.0.0.1:5500");
     });
@@ -81,7 +81,7 @@ context("모달을 통한 비디오 검색", () => {
       cy.visit("http://127.0.0.1:5500");
     });
 
-    it("10개 이상의 검색 결과가 있는 상태에서 스크롤을 끝까지 내릴 경우, 그 다음 검색 결과가 누적되어 20개 이하의 결과가 출력된다.", () => {
+    it("첫 번째 검색 결과가 띄워진 상태에서 스크롤을 끝까지 내릴 경우, 그 다음 검색 결과가 누적되어 20개 이하의 결과가 출력된다.", () => {
       cy.get(`.${CLASS_NAME.VIDEO_SEARCH_BTN}`).click();
       cy.get(`.${CLASS_NAME.SEARCH_MODAL_INPUT}`).type("스낵랩");
       cy.get(`.${CLASS_NAME.SEARCH_MODAL_BTN}`).click();
@@ -89,7 +89,6 @@ context("모달을 통한 비디오 검색", () => {
       cy.get(`.${CLASS_NAME.SEARCH_MODAL_VIDEO_WRAPPER}`)
         .find(`.${CLASS_NAME.CLIP}`)
         .its("length")
-        .should("be.gte", STANDARD_NUMS.LOAD_CLIP_COUNT)
         .and("be.lte", STANDARD_NUMS.LOAD_CLIP_COUNT * 2); // 1번 추가로 불러올 경우 최대 20개 까지 검색됨
     });
 
