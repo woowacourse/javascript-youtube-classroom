@@ -1,12 +1,11 @@
 export const changeDateFormat = date => {
-  if (Date.parse(date)) {
-    const newDate = new Date(date);
+  if (!Date.parse(date)) return "";
 
-    return newDate.toLocaleDateString("ko-KR", {
-      year: "numeric",
-      month: "long",
-      day: "numeric",
-    });
-  }
-  return "";
+  const newDate = new Date(date);
+
+  return newDate.toLocaleDateString("ko-KR", {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+  });
 };
