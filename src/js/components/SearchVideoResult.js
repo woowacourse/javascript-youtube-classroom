@@ -65,7 +65,7 @@ export class SearchVideoResult {
 
   async searchVideos() {
     renderSkeleton(this.$wrapper, NUM_OF_VIDEO_PER_FETCH);
-    const searchResultData = await fetchSearchResultData(this.searchKeywordHistoryManager.getLastKeyword());
+    const searchResultData = await this.fetchSearchResultData(this.searchKeywordHistoryManager.getLastKeyword());
     removeSkeleton(this.$wrapper);
     this.setState({ searchResultData });
   }
