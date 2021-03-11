@@ -1,5 +1,5 @@
 import { $ } from "../utils/dom.js";
-import { STANDARD_NUMS, ALERT_MESSAGE, STORAGE, SECTION } from "../utils/constants.js";
+import { STANDARD_NUMS, ALERT_MESSAGE, STORAGE, SECTION, CLASS_NAME } from "../utils/constants.js";
 import API from "../utils/api.js";
 import { setDataToLocalStorage, getDataFromLocalStorage } from "../utils/localStorage.js";
 import { createVideoTemplate } from "../utils/templates.js";
@@ -34,14 +34,14 @@ class SearchModal {
   }
 
   selectDOM() {
-    this.$target = $(".search-modal");
-    this.$searchInput = $(".search-modal__input");
-    this.$videoWrapper = $(".search-modal__video-wrapper");
-    this.$scrollArea = $(".search-modal__scroll-area");
-    this.$moreArea = $(".search-modal__more-area");
-    this.$modalCloseBtn = $(".modal-close");
-    this.$savedVideoCount = $(".search-modal__saved-video-count");
-    this.$keywordHistory = $(".search-modal__keyword-history");
+    this.$target = $(`.${CLASS_NAME.SEARCH_MODAL}`);
+    this.$searchInput = $(`.${CLASS_NAME.SEARCH_MODAL_INPUT}`);
+    this.$videoWrapper = $(`.${CLASS_NAME.SEARCH_MODAL_VIDEO_WRAPPER}`);
+    this.$scrollArea = $(`.${CLASS_NAME.SCROLL_AREA}`);
+    this.$moreArea = $(`.${CLASS_NAME.MORE_AREA}`);
+    this.$modalCloseBtn = $(`.${CLASS_NAME.MODAL_CLOSE}`);
+    this.$savedVideoCount = $(`.${CLASS_NAME.SAVED_VIDEO_COUNT}`);
+    this.$keywordHistory = $(`.${CLASS_NAME.KEYWORD_HISTORY}`);
   }
 
   bindEvent() {
@@ -52,7 +52,7 @@ class SearchModal {
     });
 
     this.$target.addEventListener("click", e => {
-      if (!e.target.classList.contains("search-modal")) return;
+      if (!e.target.classList.contains(`${CLASS_NAME.SEARCH_MODAL}`)) return;
 
       this.handleCloseModal();
     });
@@ -60,13 +60,13 @@ class SearchModal {
     this.$modalCloseBtn.addEventListener("click", this.handleCloseModal.bind(this));
 
     this.$videoWrapper.addEventListener("click", e => {
-      if (!e.target.classList.contains("clip__save-btn")) return;
+      if (!e.target.classList.contains(`${CLASS_NAME.CLIP_SAVE_BTN}`)) return;
 
       this.handleSaveVideo(e.target.dataset.videoId);
     });
 
     this.$keywordHistory.addEventListener("click", e => {
-      if (!e.target.classList.contains("keyword-history__keyword")) return;
+      if (!e.target.classList.contains(`${CLASS_NAME.KEYWORD_HISTORY}`)) return;
 
       this.handleSearchClickedHistory(e.target.innerText);
     });
