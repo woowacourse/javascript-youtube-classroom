@@ -81,7 +81,7 @@ describe('simba-tube', () => {
     cy.get('#modal-videos').find('.clip').should('have.length', 20);
   });
 
-  it.only('검색 결과 동영상의 저장 버튼을 누르면 저장한 동영상들을 볼 영상 목록에 보여준다.', () => {
+  it('검색 결과 동영상의 저장 버튼을 누르면 저장한 동영상들을 볼 영상 목록에 보여준다.', () => {
     const keyword = 'bts';
 
     interceptSearch(keyword);

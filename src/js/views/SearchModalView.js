@@ -38,8 +38,9 @@ export default class SearchModalView extends View {
       'scroll',
       throttle(function (event) {
         const { scrollTop, scrollHeight, offsetHeight } = event.target;
+        const isBottomOfScroll = scrollTop === scrollHeight - offsetHeight;
 
-        if (scrollTop === scrollHeight - offsetHeight) {
+        if (isBottomOfScroll) {
           this.emit('scrollResult', this.searchKeyword);
         }
       }, VALUE.THROTTLE_TIME).bind(this),

@@ -1,5 +1,5 @@
 import { $ } from '../utils/dom.js';
-import { isEmptySearchKeyword } from '../utils/validator.js';
+import { isEmptySearchKeyword, isEmptyArray } from '../utils/validator.js';
 import {
   VALUE,
   ALERT_MESSAGES,
@@ -44,7 +44,7 @@ export default class SearchModalController {
   generateVideos(response) {
     const { prevPageToken, nextPageToken, items } = response;
 
-    if (items.length === 0 && !prevPageToken) {
+    if (isEmptyArray(items) && !prevPageToken) {
       this.searchModalView.showNoResult();
       return;
     }

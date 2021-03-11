@@ -1,4 +1,5 @@
 import { $ } from '../utils/dom.js';
+import { isEmptyArray } from '../utils/validator.js';
 import {
   STORE_KEYS,
   ALERT_MESSAGES,
@@ -62,11 +63,11 @@ export default class YoutubeController {
     const watchedVideoIds = this.store.state.watchedVideoIds;
 
     if (isFromSavedTab) {
-      if (unWatchedVideoIds.length === 0) {
+      if (isEmptyArray(unWatchedVideoIds)) {
         this.savedVideosView.showVideoEmptyImg();
       }
     } else {
-      if (watchedVideoIds.length === 0) {
+      if (isEmptyArray(watchedVideoIds)) {
         this.savedVideosView.showVideoEmptyImg();
       }
     }
@@ -83,12 +84,12 @@ export default class YoutubeController {
 
     if (isFromSavedTab) {
       popSnackbar(SNACKBAR_MESSAGES.WATCH_VIDEO_REMOVE.SUCCESS);
-      if (watchedVideoIds.length === 0) {
+      if (isEmptyArray(watchedVideoIds)) {
         this.savedVideosView.showVideoEmptyImg();
       }
     } else {
       popSnackbar(SNACKBAR_MESSAGES.WATCH_VIDEO_ADD.SUCCESS);
-      if (unWatchedVideoIds.length === 0) {
+      if (isEmptyArray(unWatchedVideoIds)) {
         this.savedVideosView.showVideoEmptyImg();
       }
     }
@@ -101,7 +102,7 @@ export default class YoutubeController {
     this.updateNavTab($('#saved-btn'));
     this.savedVideosView.showMatchedVideos(watchedVideoIds, unWatchedVideoIds);
 
-    if (unWatchedVideoIds.length === 0) {
+    if (isEmptyArray(unWatchedVideoIds)) {
       this.savedVideosView.showVideoEmptyImg();
     }
   }
@@ -113,7 +114,7 @@ export default class YoutubeController {
     this.updateNavTab($('#watched-btn'));
     this.savedVideosView.showMatchedVideos(unWatchedVideoIds, watchedVideoIds);
 
-    if (watchedVideoIds.length === 0) {
+    if (isEmptyArray(watchedVideoIds)) {
       this.savedVideosView.showVideoEmptyImg();
     }
   }
@@ -149,7 +150,7 @@ export default class YoutubeController {
     this.generateSavedVideos(response);
     this.savedVideosView.renderVideoEmptyImg();
 
-    if (unWatchedVideoIds.length === 0) {
+    if (isEmptyArray(unWatchedVideoIds)) {
       this.savedVideosView.showVideoEmptyImg();
     }
   }
