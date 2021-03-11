@@ -1,3 +1,5 @@
+import { CLASS } from '../constants/constant.js';
+
 export const $ = selector => document.querySelector(selector);
 
 export const $$ = selector => document.querySelectorAll(selector);
@@ -40,4 +42,18 @@ export const convertDateFormat = publishedDate => {
 
 export const toggleSelectorClass = (selector, className, force) => {
   selector.classList.toggle(className, force);
+};
+
+const removeSkeleton = event => {
+  const article = event.target.closest('article');
+  article.classList.remove(CLASS.SKELETON);
+};
+
+export const handleVideoLoad = iframe => {
+  console.log(iframe, 'iframe');
+  iframe.addEventListener('load', event => removeSkeleton(event));
+};
+
+export const handleVideosLoad = iframes => {
+  iframes.forEach(iframe => handleVideoLoad(iframe));
 };

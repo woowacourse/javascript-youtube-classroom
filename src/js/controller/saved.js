@@ -4,7 +4,7 @@ import {
   SELECTOR,
   SNACK_BAR,
 } from '../constants/constant.js';
-import { $, $$, toggleSelectorClass } from '../utils/util.js';
+import { $, $$, handleVideosLoad, toggleSelectorClass } from '../utils/util.js';
 class SavedController {
   constructor(storage, savedView, navView, snackBarView) {
     this.storage = storage;
@@ -29,7 +29,7 @@ class SavedController {
       return;
     }
     this.savedView.renderSavedVideos(savedVideos);
-    this.handleSavedVideoLoad();
+    handleVideosLoad($$(SELECTOR.VIDEO_IFRAME));
   };
 
   filterVideos({ showWatched }) {
@@ -40,7 +40,7 @@ class SavedController {
     const filteredVideos = this.storage.filterVideos(showWatched);
 
     this.savedView.renderSavedVideos(filteredVideos);
-    this.handleSavedVideoLoad();
+    handleVideosLoad($$(SELECTOR.VIDEO_IFRAME));
   }
 
   deleteVideo(target) {
@@ -86,18 +86,6 @@ class SavedController {
   handleVideosWatched() {
     $(SELECTOR.WATCHED_VIDEOS_BUTTON).addEventListener('click', () => {
       this.filterVideos({ showWatched: true });
-    });
-  }
-
-  // TODO: search.js와 중복 - 빼야함
-  removeSkeleton = event => {
-    const article = event.target.closest('article');
-    article.classList.remove(CLASS.SKELETON);
-  };
-
-  handleSavedVideoLoad() {
-    $$(SELECTOR.VIDEO_IFRAME).forEach(iframe => {
-      iframe.addEventListener('load', event => this.removeSkeleton(event));
     });
   }
 }

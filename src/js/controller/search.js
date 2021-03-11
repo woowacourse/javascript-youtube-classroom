@@ -1,6 +1,12 @@
 // TODO : 제일마지막에 상수화. 숫자, 셀렉터 / 파일명좀 바꿀수 있으면 바꾸기 ㅎㅎ.. /모달도 좀 넣어주자
 import { CLASS, SEARCH, SELECTOR, SNACK_BAR } from '../constants/constant.js';
-import { $, $$, isScrollUnfinished } from '../utils/util.js';
+import {
+  $,
+  $$,
+  handleVideoLoad,
+  handleVideosLoad,
+  isScrollUnfinished,
+} from '../utils/util.js';
 class SearchController {
   constructor(youtube, storage, searchView, savedView, snackBarView) {
     this.youtube = youtube;
@@ -39,13 +45,13 @@ class SearchController {
 
     this.searchView.toggleNotFoundSearchedVideo(videoInfosLength);
     if (videoInfosLength === 0) return;
-    console.log(this.youtube.videoInfos);
+
     this.youtube.videoInfos.forEach(info => {
       const isSaved = this.storage.findVideoByInfo(info);
       this.searchView.renderVideoArticle(info, isSaved);
     });
 
-    this.handleVideoLoad();
+    handleVideosLoad($$(SELECTOR.VIDEO_IFRAME));
   };
 
   saveVideo = e => {
@@ -56,7 +62,14 @@ class SearchController {
     this.searchView.renderSavedVideoCountSection(this.storage.savedVideoCount);
 
     if (this.storage.showWatched === true) return;
+
     this.savedView.appendSavedVideo(videoInfo);
+
+    handleVideoLoad(
+      $(SELECTOR.SAVED_VIDEO_WRAPPER).lastChild.querySelector(
+        SELECTOR.VIDEO_IFRAME
+      )
+    );
     this.snackBarView.showSnackBar(SNACK_BAR.SAVED_MESSAGE);
   };
 
@@ -76,11 +89,6 @@ class SearchController {
     this.addVideosBySearch();
   };
 
-  removeSkeleton = event => {
-    const article = event.target.closest('article');
-    article.classList.remove(CLASS.SKELETON);
-  };
-
   handleSaveVideo = () => {
     $(SELECTOR.SEARCH_VIDEO_WRAPPER).addEventListener('click', event => {
       if (event.target.classList.contains(CLASS.SAVE_BUTTON)) {
@@ -92,12 +100,6 @@ class SearchController {
   handleSearch = () => {
     $(SELECTOR.SEARCH_YOUTUBE_FORM).addEventListener('submit', event => {
       this.getVideosBySearch(event);
-    });
-  };
-
-  handleVideoLoad = () => {
-    $$(SELECTOR.VIDEO_IFRAME).forEach(iframe => {
-      iframe.addEventListener('load', event => this.removeSkeleton(event));
     });
   };
 
