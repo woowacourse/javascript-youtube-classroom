@@ -20,6 +20,8 @@ export default class SearchEventController {
   }
 
   bindEvents() {
+    window.addEventListener("load", () => searchHistory.initKeywords());
+
     this.bindModalEvents();
     this.bindSearchEvents();
     this.bindSaveVideoEvent();
@@ -57,12 +59,16 @@ export default class SearchEventController {
   }
 
   onClickSearchButton() {
-    searchHistory.initKeywords();
     openModal(elements.$searchModal);
     getFormElements(elements.$searchForm, "search-keyword").focus();
 
     this.searchController.updateKeywordHistory();
     this.searchController.showSavedVideoCount();
+
+    const recentKeyword = searchHistory.getKeyword();
+    if (recentKeyword) {
+      this.searchController.searchVideos(recentKeyword);
+    }
   }
 
   onClickDimmed(e) {
