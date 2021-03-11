@@ -89,9 +89,11 @@ export class SavedVideo {
   getButtonTemplate(videoId) {
     return `
       <ul class="list-style-none p-0 mt-3 mb-6 d-flex" data-video-id="${videoId}">
-        <li class="mr-2"><button type="button" class="js-check-button emoji-btn ${
-          this.isChecked ? 'scale-hover' : 'scale-hover opacity-hover'
-        }">✅</button></li>
+        <li class="mr-2">
+          <button type="button" class="js-check-button emoji-btn ${
+            this.isChecked ? 'scale-hover' : 'scale-hover opacity-hover'
+          }">✅</button>
+        </li>
         <li class="mr-2"><button type="button" class="js-like-button emoji-btn bg-transparent scale-hover opacity-hover">👍</button></li>
         <li class="mr-2"><button type="button" class="js-comment-button emoji-btn bg-transparent scale-hover opacity-hover">💬</button></li>
         <li class="mr-2"><button type="button" class="js-delete-button emoji-btn bg-transparent scale-hover opacity-hover">🗑️</button></li>
@@ -104,7 +106,7 @@ export class SavedVideo {
 
     const savedVideos = this.savedVideoManager.getSavedVideos();
     const filteredVideoIdList = this.savedVideoManager
-      .getSavedVideoIdList()
+      .getSortedSavedVideoIdList()
       .filter(id => savedVideos[id].isChecked === this.isChecked);
 
     if (filteredVideoIdList.length === 0) {
@@ -115,13 +117,10 @@ export class SavedVideo {
 
     hideElement(this.$emptyImage);
     renderSkeleton(this.$savedVideoWrapper, filteredVideoIdList.length);
-    const savedVideoData = await this.fetchSavedVideoData(this.savedVideoManager.getSavedVideoIdList());
+    const savedVideoData = await this.fetchSavedVideoData(filteredVideoIdList);
     removeSkeleton(this.$savedVideoWrapper);
 
-    this.$savedVideoWrapper.innerHTML = savedVideoData.items
-      .filter(item => filteredVideoIdList.includes(item.id))
-      .map(item => this.makeTemplate(item))
-      .join('');
+    this.$savedVideoWrapper.innerHTML = savedVideoData.items.map(item => this.makeTemplate(item)).join('');
   }
 
   async renderNewVideo(videoId) {
