@@ -3,8 +3,8 @@ import { $ } from "./dom.js";
 const elements = {
   $body: $("body"),
 
-  $watchLaterButton: $("#watch-later-button"),
-  $watchedButton: $("#watched-button"),
+  $watchLaterViewButton: $("#watch-later-view-button"),
+  $watchedViewButton: $("#watched-view-button"),
   $notSaved: $("#not-saved"),
   $notWatched: $("#not-watched"),
   $watchLaterVideos: $("#watch-later-videos"),
