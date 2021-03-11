@@ -11,7 +11,7 @@ describe('simba-tube', () => {
 
   const interceptSearch = (keyword) => {
     cy.intercept({
-      url: 'https://www.googleapis.com/youtube/v3/search',
+      url: 'https://zig-youtube-api.netlify.app/youtube/search',
       query: { q: keyword },
     }).as('search');
   };
@@ -69,7 +69,7 @@ describe('simba-tube', () => {
     cy.get('.not-found').should('be.visible');
   });
 
-  it('검색 후 스크롤를 끝까지 이동시킬 경우 api 추가 요청을 통해 검색 결과를 10개씩 더 보여준다.', () => {
+  it('검색 후 스크롤을 끝까지 이동시킬 경우 api 추가 요청을 통해 검색 결과를 10개씩 더 보여준다.', () => {
     const keyword = 'bts';
 
     interceptSearch(keyword);
@@ -81,7 +81,7 @@ describe('simba-tube', () => {
     cy.get('#modal-videos').find('.clip').should('have.length', 20);
   });
 
-  it('검색 결과 동영상의 저장 버튼을 누르면 저장한 동영상들을 볼 영상 목록에 보여준다.', () => {
+  it.only('검색 결과 동영상의 저장 버튼을 누르면 저장한 동영상들을 볼 영상 목록에 보여준다.', () => {
     const keyword = 'bts';
 
     interceptSearch(keyword);
@@ -93,8 +93,8 @@ describe('simba-tube', () => {
     cy.get('#saved-video-count').should('have.text', 1);
     cy.get('#main-videos').find('.clip').should('have.length', 1);
 
-    cy.get('#snackbar').should('be.visible');
-    cy.get('#snackbar').should('have.text', '동영상이 저장되었읍니다');
+    cy.get('.snackbar').last().should('be.visible');
+    cy.get('.snackbar').last().should('have.text', '동영상이 저장되었읍니다');
   });
 
   it('최근 검색어 클릭 시 해당 검색어로 검색을 한다.', () => {
@@ -106,7 +106,7 @@ describe('simba-tube', () => {
     cy.get('#chip-1').should('have.text', 'day6');
 
     cy.intercept({
-      url: 'https://www.googleapis.com/youtube/v3/search',
+      url: 'https://zig-youtube-api.netlify.app/youtube/search',
     }).as('search');
 
     cy.get('#chip-2').click();
