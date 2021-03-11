@@ -3,13 +3,11 @@ import { $, toggleSelectorClass } from '../utils/util.js';
 
 class ModalController {
   #storageModel;
-  #savedView;
   #searchView;
   #$modal;
 
-  constructor(storageModel, savedView, searchView) {
+  constructor(storageModel, searchView) {
     this.#storageModel = storageModel;
-    this.#savedView = savedView;
     this.#searchView = searchView;
     this.#$modal = $(SELECTOR.MODAL);
   }

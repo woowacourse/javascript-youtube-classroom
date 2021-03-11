@@ -8,16 +8,16 @@ import {
   isScrollUnfinished,
 } from '../utils/util.js';
 class SearchController {
-  constructor(youtube, storage, searchView, savedView, snackBarView) {
-    this.youtube = youtube;
-    this.storage = storage;
+  constructor(youtubeModel, storageModel, searchView, savedView, snackBarView) {
+    this.youtubeModel = youtubeModel;
+    this.storageModel = storageModel;
     this.searchView = searchView;
     this.savedView = savedView;
     this.snackBarView = snackBarView;
   }
 
   init = () => {
-    this.storage.init();
+    this.storageModel.init();
     this.handleSearch();
     this.handleSearchModalScroll();
     this.handleSaveVideo();
@@ -30,23 +30,25 @@ class SearchController {
   getVideosBySearch = async event => {
     event.preventDefault();
     this.searchView.resetView();
-    this.youtube.resetNextPageToken();
+    this.youtubeModel.resetNextPageToken();
     this.addVideosBySearch();
   };
 
   addVideosBySearch = async () => {
     const query = this.getSearchInput();
 
-    this.storage.saveRecentKeyword(query);
-    this.searchView.renderRecentKeywordSection(this.storage.recentKeywords);
+    this.storageModel.saveRecentKeyword(query);
+    this.searchView.renderRecentKeywordSection(
+      this.storageModel.recentKeywords
+    );
 
-    await this.youtube.getVideoInfosBySearch({ query });
+    await this.youtubeModel.getVideoInfosBySearch({ query });
 
-    this.searchView.toggleNotFoundSearchedVideo(this.youtube.videoCount);
-    if (this.youtube.videoCount === 0) return;
+    this.searchView.toggleNotFoundSearchedVideo(this.youtubeModel.videoCount);
+    if (this.youtubeModel.videoCount === 0) return;
 
-    this.youtube.videoInfos.forEach(info => {
-      const isSaved = this.storage.findVideoByInfo(info);
+    this.youtubeModel.videoInfos.forEach(info => {
+      const isSaved = this.storageModel.findVideoByInfo(info);
       this.searchView.renderVideoArticle(info, isSaved);
     });
 
@@ -57,10 +59,12 @@ class SearchController {
     e.target.classList.add(CLASS.INVISIBLE);
 
     const videoInfo = { ...e.target.dataset, watched: false };
-    this.storage.saveVideo(videoInfo);
-    this.searchView.renderSavedVideoCountSection(this.storage.savedVideoCount);
+    this.storageModel.saveVideo(videoInfo);
+    this.searchView.renderSavedVideoCountSection(
+      this.storageModel.savedVideoCount
+    );
 
-    if (this.storage.showWatched === true) return;
+    if (this.storageModel.showWatched === true) return;
 
     this.savedView.appendSavedVideo(videoInfo);
 
