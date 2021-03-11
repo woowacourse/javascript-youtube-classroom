@@ -18,7 +18,7 @@ class SearchModal {
     this.keyword = "";
     this.keywordHistory = [];
     this.videos = [];
-    this.savedVideoIds = getDataFromLocalStorage(STORAGE.VIDEO_IDS, []);
+    this.savedVideos = getDataFromLocalStorage(STORAGE.SAVED_VIDEOS, []);
     this.nextPageToken = "";
   }
 
@@ -38,10 +38,10 @@ class SearchModal {
     this.render();
   }
 
-  setSaveVideoIdsState({ savedVideoIds }) {
-    this.savedVideoIds = savedVideoIds ?? this.savedVideoIds;
+  setSaveVideosState({ savedVideos }) {
+    this.savedVideos = savedVideos ?? this.savedVideos;
 
-    setDataToLocalStorage(STORAGE.VIDEO_IDS, this.savedVideoIds);
+    setDataToLocalStorage(STORAGE.SAVED_VIDEOS, this.savedVideos);
     this.renderSavedCount();
   }
 
@@ -139,6 +139,7 @@ class SearchModal {
           channelTitle,
           publishedAt,
           title,
+          isSaved: this.savedVideos.map(video => video.videoId).includes(videoId),
         }),
       );
 
@@ -169,6 +170,7 @@ class SearchModal {
           channelTitle,
           publishedAt,
           title,
+          isSaved: this.savedVideos.map(video => video.videoId).includes(videoId),
         }),
       );
 
@@ -185,15 +187,20 @@ class SearchModal {
   handleSaveVideo($saveBtn) {
     const savedVideoId = $saveBtn.dataset.videoId;
 
-    if (this.savedVideoIds.length === STANDARD_NUMS.MAX_SAVE_VIDEO_COUNT) {
+    if (this.savedVideos.length === STANDARD_NUMS.MAX_SAVE_VIDEO_COUNT) {
       alert(ALERT_MESSAGE.OVER_MAX_SAVE_VIDEO_COUNT);
 
       return;
     }
 
-    const savedVideoIds = [...this.savedVideoIds, savedVideoId];
+    const newSavedVideo = {
+      ...this.videos.find(video => video.videoId === savedVideoId),
+      isWatched: false,
+      isLiked: false,
+    };
+    const savedVideos = [...this.savedVideos, newSavedVideo];
 
-    this.setSaveVideoIdsState({ savedVideoIds });
+    this.setSaveVideosState({ savedVideos });
     $saveBtn.classList.add("hidden");
   }
 
@@ -220,7 +227,7 @@ class SearchModal {
   }
 
   renderSavedCount() {
-    this.$savedVideoCount.textContent = `저장된 영상 갯수: ${this.savedVideoIds.length}/${STANDARD_NUMS.MAX_SAVE_VIDEO_COUNT}개`;
+    this.$savedVideoCount.textContent = `저장된 영상 갯수: ${this.savedVideos.length}/${STANDARD_NUMS.MAX_SAVE_VIDEO_COUNT}개`;
   }
 
   showModal() {

@@ -10,7 +10,7 @@ export const ALERT_MESSAGE = Object.freeze({
 });
 
 export const STORAGE = Object.freeze({
-  VIDEO_IDS: "videoIds",
+  SAVED_VIDEOS: "savedVideos",
 });
 
 export const SECTION = Object.freeze({
