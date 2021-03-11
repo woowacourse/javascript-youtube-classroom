@@ -79,14 +79,24 @@ function getSaveButtonsTemplate(item) {
     </div>`;
 }
 
-// TODO : 이름 변경
-function getClipButtons(videoId) {
+function getClipButtons(item) {
   return `
     <div>
-      <button data-watched-button=${videoId} class="opacity-hover">✅</button>
-      <button data-likeed-button=${videoId} class="opacity-hover">👍</button>
-      <button data-comment-button=${videoId} class="opacity-hover">💬</button>
-      <button data-deleted-button=${videoId} class="opacity-hover">🗑️</button>
+      <button 
+        data-watched-button=${item.videoId} 
+        class=${item.watched ? "" : "opacity-hover"}>
+        ✅
+      </button>
+      <button 
+        data-likeed-button=${item.videoId} 
+        class=${item.liked ? "" : "opacity-hover"}>
+        👍
+      </button>
+      <button 
+        data-deleted-button=${item.videoId} 
+        class="opacity-hover">
+        🗑️
+      </button>
     </div>`;
 }
 
@@ -128,7 +138,7 @@ export function createSavedClipTemplate(item) {
   videoArticle.classList.add("mt-10");
   videoArticle.insertAdjacentHTML(
     "beforeend",
-    getVideoClipInnerTemplate(item, getClipButtons(item.videoId))
+    getVideoClipInnerTemplate(item, getClipButtons(item))
   );
 
   return videoArticle;

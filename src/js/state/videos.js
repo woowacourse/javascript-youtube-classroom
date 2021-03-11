@@ -33,6 +33,21 @@ const videos = {
     this.storeSavedVideos();
   },
 
+  setVideoWatched(videoId) {
+    const watchedVideo = this.savedVideos.find(
+      (video) => video.videoId === videoId
+    );
+    const watchedVideoIndex = this.savedVideos.indexOf(watchedVideo);
+
+    this.savedVideos = [
+      ...this.savedVideos.slice(0, watchedVideoIndex),
+      { ...watchedVideo, watched: true },
+      ...this.savedVideos.slice(watchedVideoIndex + 1),
+    ];
+
+    this.storeSavedVideos();
+  },
+
   getRecentVideos() {
     return this.recentVideos;
   },

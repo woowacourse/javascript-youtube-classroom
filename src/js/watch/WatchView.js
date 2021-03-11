@@ -9,14 +9,14 @@ import {
 import elements from "../utils/elements.js";
 
 export default class WatchView {
-  markWatchLaterButton() {
+  markWatchLaterViewButton() {
     this.removeAllButtonColor();
-    addBackgroundColor(elements.$watchLaterButton, PALLET.CYAN_100);
+    addBackgroundColor(elements.$watchLaterViewButton, PALLET.CYAN_100);
   }
 
-  markWatchedButton() {
+  markWatchedViewButton() {
     this.removeAllButtonColor();
-    addBackgroundColor(elements.$watchedButton, PALLET.CYAN_100);
+    addBackgroundColor(elements.$watchedViewButton, PALLET.CYAN_100);
   }
 
   showNotSavedImg() {
@@ -44,11 +44,18 @@ export default class WatchView {
   showWatchedVideos(watchedVideos) {
     this.hideAllSection();
     showElement(elements.$watchedVideos);
+    elements.$watchLaterVideos.innerHTML = "";
+
+    const fragment = document.createDocumentFragment();
+    watchedVideos.forEach((video) =>
+      fragment.append(createSavedClipTemplate(video))
+    );
+    elements.$watchedVideos.append(fragment);
   }
 
   removeAllButtonColor() {
-    removeBackgroundColor(elements.$watchLaterButton, PALLET.CYAN_100);
-    removeBackgroundColor(elements.$watchedButton, PALLET.CYAN_100);
+    removeBackgroundColor(elements.$watchLaterViewButton, PALLET.CYAN_100);
+    removeBackgroundColor(elements.$watchedViewButton, PALLET.CYAN_100);
   }
 
   hideAllSection() {

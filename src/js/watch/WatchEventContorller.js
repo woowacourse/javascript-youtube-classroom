@@ -10,17 +10,22 @@ export default class WatchEventController {
 
   bindEvents() {
     window.addEventListener("load", this.onLoadApp.bind(this));
-    elements.$watchLaterButton.addEventListener(
+    elements.$watchLaterViewButton.addEventListener(
       "click",
-      this.onClickWatchLaterButton.bind(this)
+      this.onClickWatchLaterViewButton.bind(this)
     );
-    elements.$watchedButton.addEventListener(
+    elements.$watchedViewButton.addEventListener(
       "click",
-      this.onClickWatchedButton.bind(this)
+      this.onClickWatchedViewButton.bind(this)
     );
     elements.$searchResults.addEventListener(
       "click",
       this.onClickSaveButton.bind(this)
+    );
+
+    elements.$watchLaterVideos.addEventListener(
+      "click",
+      this.onClickWatchedButton.bind(this)
     );
   }
 
@@ -29,11 +34,11 @@ export default class WatchEventController {
     this.watchController.updateWatchLaterView(videos.getSavedVideos());
   }
 
-  onClickWatchLaterButton() {
+  onClickWatchLaterViewButton() {
     this.watchController.updateWatchLaterView(videos.getSavedVideos());
   }
 
-  onClickWatchedButton() {
+  onClickWatchedViewButton() {
     this.watchController.updateWatchedView(videos.getSavedVideos());
   }
 
@@ -42,6 +47,16 @@ export default class WatchEventController {
       return;
     }
 
+    this.watchController.updateWatchLaterView(videos.getSavedVideos());
+  }
+
+  onClickWatchedButton(e) {
+    const videoId = e.target.dataset.watchedButton;
+    if (!videoId) {
+      return;
+    }
+
+    this.watchController.watchVideo(videoId);
     this.watchController.updateWatchLaterView(videos.getSavedVideos());
   }
 }
