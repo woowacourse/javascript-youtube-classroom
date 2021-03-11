@@ -37,8 +37,9 @@ class ModalController {
   };
 
   #handleModalOpen = () => {
-    const $searchModalButton = $(SELECTOR.SEARCH_MODAL_BUTTON);
-    $searchModalButton.addEventListener('click', () => this.#onModalShow());
+    $(SELECTOR.SEARCH_MODAL_BUTTON).addEventListener('click', () =>
+      this.#onModalShow()
+    );
   };
 
   #handleModalClose = () => {

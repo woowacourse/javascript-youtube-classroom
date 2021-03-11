@@ -40,7 +40,11 @@ export const convertDateFormat = publishedDate => {
   return `${date.getFullYear()}년 ${date.getMonth() + 1}월 ${date.getDate()}일`;
 };
 
-export const toggleSelectorClass = (selector, className, force) => {
+export const toggleSelectorClass = (selector, className, force = null) => {
+  if (force === null) {
+    selector.classList.toggle(className);
+    return;
+  }
   selector.classList.toggle(className, force);
 };
 

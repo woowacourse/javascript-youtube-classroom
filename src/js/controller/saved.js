@@ -17,49 +17,50 @@ class SavedController {
   }
 
   init() {
+    this.#storageModel.init();
     this.#loadSavedVideos();
     this.#handleVideosToWatch();
     this.#handleVideosWatched();
     this.#handleVideoButtons();
   }
 
-  // 페이지 접속하면 저장된 영상들 불러오는 메서드
-  #loadSavedVideos = () => {
-    const savedVideos = this.#storageModel.myVideos;
+  #renderSavedVideo = videos => {
+    this.#savedView.renderSavedVideos(videos);
+    handleVideosLoad($$(SELECTOR.VIDEO_IFRAME));
+  };
 
-    if (savedVideos.length === 0) {
+  #loadSavedVideos = () => {
+    if (this.#storageModel.savedVideoCount === 0) {
       toggleSelectorClass($(SELECTOR.SEARCH_VIDEO_WRAPPER), CLASS.SHOW, true);
       return;
     }
-    this.#savedView.renderSavedVideos(savedVideos);
-    handleVideosLoad($$(SELECTOR.VIDEO_IFRAME));
+
+    this.#renderSavedVideo(this.#storageModel.savedVideos);
   };
 
   #filterVideos({ showWatched }) {
     if (this.#storageModel.showWatched === showWatched) return;
 
     this.#savedView.toggleNavButton(showWatched);
-
-    const filteredVideos = this.#storageModel.filterVideos(showWatched);
-
-    this.#savedView.renderSavedVideos(filteredVideos);
-    handleVideosLoad($$(SELECTOR.VIDEO_IFRAME));
+    this.#renderSavedVideo(this.#storageModel.filterVideos(showWatched));
   }
 
   #deleteVideo(target) {
     if (!confirm(CONFIRM_MESSAGE.DELETE_VIDEO)) return;
+
     this.#storageModel.deleteSelectedVideo(target);
     this.#savedView.hideSelectedVideo(target);
 
     if (this.#storageModel.savedVideoCount === 0) {
       toggleSelectorClass($(SELECTOR.SEARCH_VIDEO_WRAPPER), CLASS.SHOW, true);
     }
+
     this.#snackBarView.showSnackBar(SNACK_BAR.DELETE_MESSAGE);
   }
 
   #toggleVideoWatched(target) {
     this.#storageModel.updateVideoWatched(target);
-    target.classList.toggle(CLASS.OPACITY_HOVER);
+    toggleSelectorClass(target, CLASS.OPACITY_HOVER);
 
     if (this.#storageModel.showWatched !== null) {
       this.#savedView.hideSelectedVideo(target);
@@ -85,6 +86,7 @@ class SavedController {
       this.#filterVideos({ showWatched: false });
     });
   }
+
   #handleVideosWatched() {
     $(SELECTOR.WATCHED_VIDEOS_BUTTON).addEventListener('click', () => {
       this.#filterVideos({ showWatched: true });
