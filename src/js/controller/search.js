@@ -8,75 +8,81 @@ import {
   isScrollUnfinished,
 } from '../utils/util.js';
 class SearchController {
+  #youtubeModel;
+  #storageModel;
+  #searchView;
+  #savedView;
+  #snackBarView;
+
   constructor(youtubeModel, storageModel, searchView, savedView, snackBarView) {
-    this.youtubeModel = youtubeModel;
-    this.storageModel = storageModel;
-    this.searchView = searchView;
-    this.savedView = savedView;
-    this.snackBarView = snackBarView;
+    this.#youtubeModel = youtubeModel;
+    this.#storageModel = storageModel;
+    this.#searchView = searchView;
+    this.#savedView = savedView;
+    this.#snackBarView = snackBarView;
   }
 
   init = () => {
-    this.storageModel.init();
-    this.handleSearch();
-    this.handleSearchModalScroll();
-    this.handleSaveVideo();
+    this.#storageModel.init();
+    this.#handleSearch();
+    this.#handleSearchModalScroll();
+    this.#handleSaveVideo();
   };
 
-  getSearchInput = () => {
+  #getSearchInput = () => {
     return $(SELECTOR.SEARCH_YOUTUBE_INPUT).value;
   };
 
-  getVideosBySearch = async event => {
+  #getVideosBySearch = async event => {
     event.preventDefault();
-    this.searchView.resetView();
-    this.youtubeModel.resetNextPageToken();
-    this.addVideosBySearch();
+    this.#searchView.resetView();
+    this.#youtubeModel.resetNextPageToken();
+    this.#addVideosBySearch();
   };
 
-  addVideosBySearch = async () => {
-    const query = this.getSearchInput();
+  #addVideosBySearch = async () => {
+    const query = this.#getSearchInput();
 
-    this.storageModel.saveRecentKeyword(query);
-    this.searchView.renderRecentKeywordSection(
-      this.storageModel.recentKeywords
+    this.#storageModel.saveRecentKeyword(query);
+    this.#searchView.renderRecentKeywordSection(
+      this.#storageModel.recentKeywords
     );
 
-    await this.youtubeModel.getVideoInfosBySearch({ query });
+    await this.#youtubeModel.getVideoInfosBySearch({ query });
 
-    this.searchView.toggleNotFoundSearchedVideo(this.youtubeModel.videoCount);
-    if (this.youtubeModel.videoCount === 0) return;
+    this.#searchView.toggleNotFoundSearchedVideo(this.#youtubeModel.videoCount);
+    if (this.#youtubeModel.videoCount === 0) return;
 
-    this.youtubeModel.videoInfos.forEach(info => {
-      const isSaved = this.storageModel.findVideoByInfo(info);
-      this.searchView.renderVideoArticle(info, isSaved);
+    this.#youtubeModel.videoInfos.forEach(info => {
+      const isSaved = this.#storageModel.findVideoByInfo(info);
+      this.#searchView.renderVideoArticle(info, isSaved);
     });
 
     handleVideosLoad($$(SELECTOR.VIDEO_IFRAME));
   };
 
-  saveVideo = e => {
+  #saveVideo = e => {
     e.target.classList.add(CLASS.INVISIBLE);
 
     const videoInfo = { ...e.target.dataset, watched: false };
-    this.storageModel.saveVideo(videoInfo);
-    this.searchView.renderSavedVideoCountSection(
-      this.storageModel.savedVideoCount
+    this.#storageModel.saveVideo(videoInfo);
+    this.#searchView.renderSavedVideoCountSection(
+      this.#storageModel.savedVideoCount
     );
 
-    if (this.storageModel.showWatched === true) return;
+    if (this.#storageModel.showWatched === true) return;
 
-    this.savedView.appendSavedVideo(videoInfo);
+    this.#savedView.appendSavedVideo(videoInfo);
 
     handleVideoLoad(
       $(SELECTOR.SAVED_VIDEO_WRAPPER).lastChild.querySelector(
         SELECTOR.VIDEO_IFRAME
       )
     );
-    this.snackBarView.showSnackBar(SNACK_BAR.SAVED_MESSAGE);
+    this.#snackBarView.showSnackBar(SNACK_BAR.SAVED_MESSAGE);
   };
 
-  fetchVideo = event => {
+  #fetchVideo = event => {
     const { scrollHeight, offsetHeight, clientHeight } = $(
       SELECTOR.SEARCH_VIDEO_WRAPPER
     );
@@ -89,26 +95,26 @@ class SearchController {
     )
       return;
 
-    this.addVideosBySearch();
+    this.#addVideosBySearch();
   };
 
-  handleSaveVideo = () => {
+  #handleSaveVideo = () => {
     $(SELECTOR.SEARCH_VIDEO_WRAPPER).addEventListener('click', event => {
       if (event.target.classList.contains(CLASS.SAVE_BUTTON)) {
-        this.saveVideo(event);
+        this.#saveVideo(event);
       }
     });
   };
 
-  handleSearch = () => {
+  #handleSearch = () => {
     $(SELECTOR.SEARCH_YOUTUBE_FORM).addEventListener('submit', event => {
-      this.getVideosBySearch(event);
+      this.#getVideosBySearch(event);
     });
   };
 
-  handleSearchModalScroll = () => {
+  #handleSearchModalScroll = () => {
     $(SELECTOR.SEARCH_VIDEO_WRAPPER).addEventListener('scroll', event => {
-      this.fetchVideo(event);
+      this.#fetchVideo(event);
     });
   };
 }

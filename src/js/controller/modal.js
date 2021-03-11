@@ -13,11 +13,11 @@ class ModalController {
   }
 
   init = () => {
-    this.handleModalOpen();
-    this.handleModalClose();
+    this.#handleModalOpen();
+    this.#handleModalClose();
   };
 
-  loadInfos = () => {
+  #loadInfos = () => {
     this.#searchView.renderSavedVideoCountSection(
       this.#storageModel.savedVideoCount
     );
@@ -27,27 +27,27 @@ class ModalController {
     );
   };
 
-  onModalShow = () => {
-    this.loadInfos();
+  #onModalShow = () => {
+    this.#loadInfos();
     toggleSelectorClass(this.#$modal, CLASS.OPEN, true);
   };
 
-  onModalClose = () => {
+  #onModalClose = () => {
     toggleSelectorClass(this.#$modal, CLASS.OPEN, false);
   };
 
-  handleModalOpen = () => {
+  #handleModalOpen = () => {
     const $searchModalButton = $(SELECTOR.SEARCH_MODAL_BUTTON);
-    $searchModalButton.addEventListener('click', () => this.onModalShow());
+    $searchModalButton.addEventListener('click', () => this.#onModalShow());
   };
 
-  handleModalClose = () => {
+  #handleModalClose = () => {
     this.#$modal.addEventListener('click', event => {
       if (
         event.target.querySelector(SELECTOR.MODAL_INNER) ||
         event.target.closest(SELECTOR.MODAL_CLOSE)
       ) {
-        this.onModalClose();
+        this.#onModalClose();
       }
     });
   };
