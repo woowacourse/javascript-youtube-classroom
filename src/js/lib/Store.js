@@ -31,12 +31,12 @@ export default class Store extends Subject {
     }
   }
 
-  update(key, data = {}, observer) {
+  update(key, data = {}) {
     this.state = { ...this.state, ...data };
 
     this.save(key, data[key]);
 
-    this.notify(observer);
+    this.notify(key);
   }
 
   updateAll(data = {}) {

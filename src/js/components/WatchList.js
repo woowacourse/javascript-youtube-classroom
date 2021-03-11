@@ -76,7 +76,6 @@ export default class WatchList extends Observer {
   }
 
   async update() {
-    console.log('watchList update');
     const { watchList } = this.store.get();
 
     const newVideoId = watchList.filter((id) => !this.list.includes(id));

@@ -4,9 +4,8 @@ import { ALERT_MESSAGE, SELECTORS, LOCAL_STORAGE_KEYS } from '../constants.js';
 import Observer from '../lib/Observer.js';
 
 export default class YoutubeSearchManager extends Observer {
-  constructor(store, watchList) {
+  constructor(store) {
     super();
-    this.watchList = watchList;
     this.store = store;
     this.pageToken = '';
     this.keyword = '';
@@ -132,11 +131,9 @@ export default class YoutubeSearchManager extends Observer {
     }
     newKeywordList.unshift(keyword);
 
-    this.store.update(
-      LOCAL_STORAGE_KEYS.RECENT_KEYWORD_LIST,
-      { [LOCAL_STORAGE_KEYS.RECENT_KEYWORD_LIST]: newKeywordList },
-      this
-    );
+    this.store.update(LOCAL_STORAGE_KEYS.RECENT_KEYWORD_LIST, {
+      [LOCAL_STORAGE_KEYS.RECENT_KEYWORD_LIST]: newKeywordList,
+    });
   }
 
   async handleSearch(event) {
@@ -186,13 +183,10 @@ export default class YoutubeSearchManager extends Observer {
 
     if (!event.target.classList.contains('btn-save')) return;
 
-    this.store.update(
-      LOCAL_STORAGE_KEYS.WATCH_LIST,
-      {
-        [LOCAL_STORAGE_KEYS.WATCH_LIST]: [...this.store.get()[LOCAL_STORAGE_KEYS.WATCH_LIST], selectedVideoId],
-      },
-      this.watchList
-    );
+    const savedVideoIds = this.store.get()[LOCAL_STORAGE_KEYS.WATCH_LIST];
+    this.store.update(LOCAL_STORAGE_KEYS.WATCH_LIST, {
+      [LOCAL_STORAGE_KEYS.WATCH_LIST]: [...savedVideoIds, selectedVideoId],
+    });
 
     $selectedButton.classList.add(SELECTORS.STATUS.HIDDEN);
 
@@ -224,7 +218,6 @@ export default class YoutubeSearchManager extends Observer {
   }
 
   update() {
-    console.log('YSM update');
     this.renderRecentKeywordList();
     this.renderSavedVideoCount();
   }
