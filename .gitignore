@@ -68,10 +68,6 @@ typings/
 # Yarn Integrity file
 .yarn-integrity
 
-# dotenv environment variables file
-.env
-.env.test
-
 # parcel-bundler cache (https://parceljs.org/)
 .cache
 
@@ -102,3 +98,22 @@ dist
 
 # TernJS port file
 .tern-port
+
+# macOS #
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Stores VSCode versions used for testing VSCode extensions
+.vscode-test
+
+### vscode ###
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+*.code-workspace
+
+### Dummy Data ###
+*dummyData.js

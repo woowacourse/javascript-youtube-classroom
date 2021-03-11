@@ -1,0 +1,33 @@
+{
+  "name": "1st-youtube",
+  "version": "1.0.0",
+  "description": "나만의 유튜브 강의실 미션",
+  "main": "index.js",
+  "scripts": {
+    "cypress": "./node_modules/.bin/cypress open"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/365kim/javascript-youtube-classroom.git"
+  },
+  "type": "module",
+  "keywords": [],
+  "contributors": [
+    "dudtjr913",
+    "365kim"
+  ],
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/365kim/javascript-youtube-classroom/issues"
+  },
+  "homepage": "https://github.com/365kim/javascript-youtube-classroom#readme",
+  "devDependencies": {
+    "cypress": "^6.6.0",
+    "eslint": "^7.21.0",
+    "eslint-config-airbnb-base": "^14.2.1",
+    "eslint-config-prettier": "^8.1.0",
+    "eslint-plugin-import": "^2.22.1",
+    "eslint-plugin-prettier": "^3.3.1",
+    "prettier": "^2.2.1"
+  }
+}
