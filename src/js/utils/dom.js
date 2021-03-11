@@ -1,5 +1,4 @@
 import { ERROR_MESSAGE } from "./constants.js";
-import elements from "./elements.js";
 
 export const $ = (selector) => {
   try {
