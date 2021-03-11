@@ -31,7 +31,6 @@ const searchVideoButtons = (info, save) => {
 };
 
 export const videoTemplate = (info, save = null) => {
-  console.log(info);
   return `<article class="clip skeleton">
             <div class="preview-container image">
               <iframe

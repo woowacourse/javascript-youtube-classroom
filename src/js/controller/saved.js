@@ -6,8 +6,8 @@ import {
 } from '../constants/constant.js';
 import { $, $$, handleVideosLoad, toggleSelectorClass } from '../utils/util.js';
 class SavedController {
-  constructor(storage, savedView, navView, snackBarView) {
-    this.storage = storage;
+  constructor(storageModel, savedView, navView, snackBarView) {
+    this.storageModel = storageModel;
     this.savedView = savedView;
     this.navView = navView;
     this.snackBarView = snackBarView;
@@ -22,7 +22,7 @@ class SavedController {
 
   // 페이지 접속하면 저장된 영상들 불러오는 메서드
   loadSavedVideos = () => {
-    const savedVideos = this.storage.myVideos;
+    const savedVideos = this.storageModel.myVideos;
 
     if (savedVideos.length === 0) {
       toggleSelectorClass($(SELECTOR.SEARCH_VIDEO_WRAPPER), CLASS.SHOW, true);
@@ -33,11 +33,11 @@ class SavedController {
   };
 
   filterVideos({ showWatched }) {
-    if (this.storage.showWatched === showWatched) return;
+    if (this.storageModel.showWatched === showWatched) return;
 
     this.navView.toggleNavButton(showWatched);
 
-    const filteredVideos = this.storage.filterVideos(showWatched);
+    const filteredVideos = this.storageModel.filterVideos(showWatched);
 
     this.savedView.renderSavedVideos(filteredVideos);
     handleVideosLoad($$(SELECTOR.VIDEO_IFRAME));
@@ -45,21 +45,21 @@ class SavedController {
 
   deleteVideo(target) {
     if (!confirm(CONFIRM_MESSAGE.DELETE_VIDEO)) return;
-    this.storage.deleteSelectedVideo(target);
+    this.storageModel.deleteSelectedVideo(target);
     this.savedView.hideSelectedVideo(target);
 
-    if (this.storage.savedVideoCount === 0) {
+    if (this.storageModel.savedVideoCount === 0) {
       toggleSelectorClass($(SELECTOR.SEARCH_VIDEO_WRAPPER), CLASS.SHOW, true);
     }
     this.snackBarView.showSnackBar(SNACK_BAR.DELETE_MESSAGE);
   }
 
   toggleVideoWatched(target) {
-    this.storage.updateVideoWatched(target);
+    this.storageModel.updateVideoWatched(target);
 
     target.classList.toggle(CLASS.OPACITY_HOVER);
 
-    if (this.storage.showWatched !== null) {
+    if (this.storageModel.showWatched !== null) {
       this.savedView.hideSelectedVideo(target);
     }
 

@@ -50,7 +50,6 @@ const removeSkeleton = event => {
 };
 
 export const handleVideoLoad = iframe => {
-  console.log(iframe, 'iframe');
   iframe.addEventListener('load', event => removeSkeleton(event));
 };
 
