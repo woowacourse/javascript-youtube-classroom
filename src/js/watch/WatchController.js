@@ -1,3 +1,4 @@
+import videos from "../state/videos.js";
 import WatchView from "./WatchView.js";
 
 export default class WatchController {
@@ -8,7 +9,7 @@ export default class WatchController {
   updateWatchLaterView(savedVideos) {
     const watchLaterVideos = savedVideos.filter((video) => !video.watched);
 
-    this.watchView.markWatchLaterButton();
+    this.watchView.markWatchLaterViewButton();
 
     if (watchLaterVideos.length === 0) {
       this.watchView.showNotSavedImg();
@@ -17,10 +18,16 @@ export default class WatchController {
     }
   }
 
+  watchVideo(videoId) {
+    videos.setVideoWatched(videoId);
+  }
+
+  clearWatchedViedoLog() {}
+
   updateWatchedView(savedVideos) {
     const watchedVideos = savedVideos.filter((video) => video.watched);
 
-    this.watchView.markWatchedButton();
+    this.watchView.markWatchedViewButton();
 
     if (watchedVideos.length === 0) {
       this.watchView.showNotWatchedImg();
