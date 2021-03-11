@@ -1,9 +1,9 @@
-import { SEARCH, SELECTOR } from '../constants/constant.js';
+import { SEARCH, SELECTOR, CLASS } from '../constants/constant.js';
 import { $, parseDOMFromString, toggleSelectorClass } from '../utils/util.js';
 import {
-  searchVideoTemplate,
+  videoTemplate,
   recentKeywordsTemplate,
-} from '../templates/search-template.js';
+} from '../templates/video-template.js';
 
 class SearchView {
   constructor() {
@@ -15,7 +15,7 @@ class SearchView {
 
   renderVideoArticle = (info, save) => {
     this.$searchVideoWrapper.append(
-      parseDOMFromString(searchVideoTemplate(info, save))
+      parseDOMFromString(videoTemplate(info, save))
     );
   };
 
@@ -25,7 +25,7 @@ class SearchView {
       return;
     }
 
-    toggleSelectorClassfalse(this.$searchNotFound, CLASS.SHOW, false);
+    toggleSelectorClass(this.$searchNotFound, CLASS.SHOW, false);
   };
 
   renderSkeletonArticles = () => {

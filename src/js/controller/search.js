@@ -39,7 +39,7 @@ class SearchController {
 
     this.searchView.toggleNotFoundSearchedVideo(videoInfosLength);
     if (videoInfosLength === 0) return;
-
+    console.log(this.youtube.videoInfos);
     this.youtube.videoInfos.forEach(info => {
       const isSaved = this.storage.findVideoByInfo(info);
       this.searchView.renderVideoArticle(info, isSaved);

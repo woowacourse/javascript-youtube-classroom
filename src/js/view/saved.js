@@ -1,6 +1,6 @@
 import { $, parseDOMFromString, toggleSelectorClass } from '../utils/util.js';
-import { savedVideoTemplate } from '../templates/video-template.js';
-import { SELECTOR } from '../constants/constant.js';
+import { videoTemplate } from '../templates/video-template.js';
+import { SELECTOR, CLASS } from '../constants/constant.js';
 class SavedView {
   constructor() {
     this.$savedVideoWrapper = $(SELECTOR.SAVED_VIDEO_WRAPPER);
@@ -19,7 +19,7 @@ class SavedView {
     toggleSelectorClass(this.$savedNotFound, CLASS.SHOW, false);
 
     infos.forEach(info => {
-      this.$savedVideoWrapper.innerHTML += savedVideoTemplate(info);
+      this.$savedVideoWrapper.innerHTML += videoTemplate(info);
     });
   }
 
@@ -29,7 +29,7 @@ class SavedView {
     }
 
     this.$savedVideoWrapper.appendChild(
-      parseDOMFromString(savedVideoTemplate(info))
+      parseDOMFromString(videoTemplate(info))
     );
   }
 
