@@ -39,3 +39,14 @@ export const showSnackBar = ($snackbar, text) => {
     $snackbar.classList.remove('show');
   }, 3000);
 };
+
+export const pauseAllIframeVideo = () => {
+  document
+    .querySelectorAll('iframe')
+    .forEach((iframe) =>
+      iframe.contentWindow.postMessage(
+        '{"event":"command","func":"pauseVideo","args":""}',
+        '*'
+      )
+    );
+};

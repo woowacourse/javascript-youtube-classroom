@@ -11,6 +11,7 @@ import {
   updateVideosToBeShown,
 } from '../../redux/action.js';
 import { SELECTORS } from '../../constants/constants.js';
+import { pauseAllIframeVideo } from '../../utils/youtubeClassRoomUtils.js';
 
 export default class VideoSearchModal extends Component {
   constructor($target) {
@@ -76,19 +77,8 @@ export default class VideoSearchModal extends Component {
     }
   }
 
-  pauseAllIframeVideo() {
-    document
-      .querySelectorAll('iframe')
-      .forEach((iframe) =>
-        iframe.contentWindow.postMessage(
-          '{"event":"command","func":"pauseVideo","args":""}',
-          '*'
-        )
-      );
-  }
-
   onModalShow() {
-    this.pauseAllIframeVideo();
+    pauseAllIframeVideo();
 
     $('body').classList.add('overflow-hidden');
     this.$target.classList.add('open');
@@ -102,7 +92,7 @@ export default class VideoSearchModal extends Component {
   }
 
   onModalClose() {
-    this.pauseAllIframeVideo();
+    pauseAllIframeVideo();
 
     $('body').classList.remove('overflow-hidden');
     this.$target.classList.remove('open');
