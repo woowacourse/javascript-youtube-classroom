@@ -1,12 +1,5 @@
 import { $, $$ } from "../utils/dom.js";
-import {
-  STANDARD_NUMS,
-  ALERT_MESSAGE,
-  STORAGE,
-  SECTION,
-  CLASS_NAME,
-  SEARCH,
-} from "../utils/constants.js";
+import { STANDARD_NUMS, ALERT_MESSAGE, STORAGE, SECTION, CLASS_NAME } from "../utils/constants.js";
 import API from "../utils/api.js";
 import { setDataToLocalStorage, getDataFromLocalStorage } from "../utils/localStorage.js";
 import { createVideoTemplate } from "../utils/templates.js";
