@@ -18,10 +18,11 @@ export class SearchVideoResult {
 
     this.searchKeywordHistoryManager = searchKeywordHistoryManager;
     this.searchKeywordHistoryManager.subscribe(this.reset.bind(this));
-    this.searchKeywordHistoryManager.subscribe(this.fetchSearchResultData.bind(this));
+    this.searchKeywordHistoryManager.subscribe(this.render.bind(this));
     this.savedVideoManager = savedVideoManager;
 
     this.searchResultData = {};
+    this.nextPageToken = '';
 
     this.initEvent();
     this.initIntersectionObeserver();
@@ -45,28 +46,20 @@ export class SearchVideoResult {
 
   async handleScroll() {
     try {
-      renderSkeleton(this.$wrapper, NUM_OF_VIDEO_PER_FETCH);
-      const searchResultData = await getSearchVideoByKeyword(
-        this.searchKeywordHistoryManager.getLastKeyword(),
-        this.searchResultData.nextPageToken
-      );
-      removeSkeleton(this.$wrapper);
-
-      this.setState({ searchResultData });
+      this.render();
     } catch (e) {
-      console.error(e);
       showSnackbar(SNACKBAR_MESSAGE.API_REQUEST_FAILURE);
     }
   }
 
   async fetchSearchResultData() {
     try {
-      renderSkeleton(this.$wrapper, NUM_OF_VIDEO_PER_FETCH);
-      const searchResultData = await getSearchVideoByKeyword(this.searchKeywordHistoryManager.getLastKeyword());
-      removeSkeleton(this.$wrapper);
+      const searchResultData = await getSearchVideoByKeyword(
+        this.searchKeywordHistoryManager.getLastKeyword(),
+        this.nextPageToken
+      );
       this.setState({ searchResultData });
     } catch (e) {
-      console.error(e);
       showSnackbar(SNACKBAR_MESSAGE.API_REQUEST_FAILURE);
     }
   }
@@ -82,17 +75,6 @@ export class SearchVideoResult {
     } else {
       showSnackbar(SNACKBAR_MESSAGE.OVER_MAX_NUM_OF_SAVED_VIDEO);
     }
-  }
-
-  setState({ searchResultData }) {
-    this.searchResultData = searchResultData;
-    this.render();
-  }
-
-  reset() {
-    this.$container.scrollTo(0, 0);
-    this.$wrapper.innerHTML = '';
-    hideElement(this.$intersectionObserver);
   }
 
   makeTemplate(videoData) {
@@ -112,7 +94,11 @@ export class SearchVideoResult {
     `;
   }
 
-  render() {
+  async render() {
+    renderSkeleton(this.$wrapper, NUM_OF_VIDEO_PER_FETCH);
+    await this.fetchSearchResultData();
+    removeSkeleton(this.$wrapper);
+
     if (this.$wrapper.querySelectorAll('.clip').length === 0 && this.searchResultData.items.length === 0) {
       showElement(this.$notFoundImage);
 
@@ -125,5 +111,16 @@ export class SearchVideoResult {
       this.searchResultData.items.map(item => this.makeTemplate(item)).join('')
     );
     showElement(this.$intersectionObserver);
+  }
+
+  setState({ searchResultData }) {
+    this.searchResultData = searchResultData;
+    this.nextPageToken = searchResultData.nextPageToken;
+  }
+
+  reset() {
+    this.$container.scrollTo(0, 0);
+    this.$wrapper.innerHTML = '';
+    hideElement(this.$intersectionObserver);
   }
 }
