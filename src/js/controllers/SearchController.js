@@ -1,5 +1,3 @@
-import SearchModel from '../models/SearchModel.js';
-import SearchService from '../services/SearchService.js';
 import { isModalOpen, isModalCloseButton, isModalDimmedArea } from './elementValidator.js';
 import {
   MAX_VIDEO_STORAGE_CAPACITY,
@@ -12,11 +10,12 @@ import {
 import { isEndOfScroll } from '../utils/DOM.js';
 
 export default class SearchController {
-  constructor({ searchView, classroomView }) {
-    this.model = new SearchModel();
-    this.service = new SearchService(this.model);
+  constructor({ searchModel, classroomModel, searchView, classroomView, searchService }) {
+    this.searchModel = searchModel;
+    this.classroomModel = classroomModel;
     this.searchView = searchView;
     this.classroomView = classroomView;
+    this.searchService = searchService;
   }
 
   init() {
@@ -34,15 +33,15 @@ export default class SearchController {
   }
 
   onShowModal() {
-    const videoCount = this.model.getSavedVideoCount();
-    const recentKeywords = this.model.getRecentKeywords();
+    const videoCount = this.searchModel.getSavedVideoCount();
+    const recentKeywords = this.searchModel.getRecentKeywords();
     const mostRecentKeyword = recentKeywords[0] ?? '';
 
     this.searchView.renderVisibleModal(videoCount, recentKeywords);
     if (mostRecentKeyword === '') {
       return;
     }
-    this.model.init(mostRecentKeyword);
+    this.searchModel.init(mostRecentKeyword);
     this.showSearchGroup();
   }
 
@@ -55,7 +54,7 @@ export default class SearchController {
   onRequestSearchRecentKeyword({ target }) {
     const keyword = target.innerText;
 
-    this.model.init(keyword);
+    this.searchModel.init(keyword);
     this.searchView.init();
     this.showSearchGroup();
   }
@@ -69,9 +68,9 @@ export default class SearchController {
       this.searchView.renderNotification(NO_KEYWORD_IS_SUBMITTED);
       return;
     }
-    this.model.init(keyword);
+    this.searchModel.init(keyword);
     this.searchView.init();
-    this.searchView.renderRecentKeywords(this.model.getRecentKeywords());
+    this.searchView.renderRecentKeywords(this.searchModel.getRecentKeywords());
     this.showSearchGroup();
   }
 
@@ -91,16 +90,17 @@ export default class SearchController {
       return;
     }
 
-    const savedCount = this.model.getSavedVideoCount();
+    const savedCount = this.searchModel.getSavedVideoCount();
 
     if (savedCount >= MAX_VIDEO_STORAGE_CAPACITY) {
       this.searchView.renderNotification(STORAGE_CAPACITY_IS_FULL);
       return;
     }
 
-    const targetVideoData = this.model.getTargetVideoData(target.id);
+    const targetVideoData = this.searchModel.getTargetVideoData(target.id);
 
-    this.model.saveVideo(targetVideoData);
+    this.searchModel.saveVideo(targetVideoData);
+    this.classroomModel.updateWatchingVideoCount(true);
     this.searchView.renderInvisibleSaveButton(target);
     this.searchView.renderSaveVideoCount(savedCount + 1);
     this.searchView.renderNotification(VIDEO_IS_SAVED_SUCCESSFULLY);
@@ -109,7 +109,7 @@ export default class SearchController {
 
   showSearchGroup() {
     this.searchView.renderSkeleton();
-    this.service
+    this.searchService
       .getSearchResultAsync()
       .then((result) => this.searchView.renderSearchResult(result))
       .catch(() => {
