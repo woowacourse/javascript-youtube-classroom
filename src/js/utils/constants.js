@@ -12,6 +12,10 @@ export const VIDEOS = {
   SKELETON_REPEAT_NUMBER: 8,
 };
 
+export const PALLET = {
+  CYAN_100: "bg-cyan-100",
+};
+
 export const STORAGE_NAME = {
   KEYWORDS: "keywords",
   SAVED_VIDEOS: "saved_videos",

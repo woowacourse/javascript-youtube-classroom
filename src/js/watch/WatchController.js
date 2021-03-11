@@ -8,6 +8,8 @@ export default class WatchController {
   updateWatchLaterView(savedVideos) {
     const watchLaterVideos = savedVideos.filter((video) => !video.watched);
 
+    this.watchView.markWatchLaterButton();
+
     if (watchLaterVideos.length === 0) {
       this.watchView.showNotSavedImg();
     } else {
@@ -17,6 +19,8 @@ export default class WatchController {
 
   updateWatchedView(savedVideos) {
     const watchedVideos = savedVideos.filter((video) => video.watched);
+
+    this.watchView.markWatchedButton();
 
     if (watchedVideos.length === 0) {
       this.watchView.showNotWatchedImg();
