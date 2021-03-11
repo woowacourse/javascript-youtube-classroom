@@ -35,9 +35,7 @@ export const createVideoTemplate = (video, wrapperName) => `
 
 const createSaveBtnTemplate = video => `
 <div class="d-flex justify-end">
-  <button class="clip__save-btn btn ${video.isSaved ? "hidden" : ""}" data-video-id="${
-  video.videoId
-}">⬇️ 저장</button>
+  <button class="clip__save-btn btn" data-video-id="${video.videoId}">⬇️ 저장</button>
 </div>
 `;
 

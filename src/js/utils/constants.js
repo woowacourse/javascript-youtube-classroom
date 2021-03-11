@@ -18,6 +18,11 @@ export const SECTION = Object.freeze({
   MAIN: "main",
 });
 
+export const SEARCH = Object.freeze({
+  LOAD: "load",
+  KEYWORD: "keyword",
+});
+
 export const CLASS_NAME = Object.freeze({
   MENU_SECTION: "menu-section",
   WATCH_LATER_BTN: "menu-section__watch-later-btn",

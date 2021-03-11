@@ -1,5 +1,12 @@
-import { $ } from "../utils/dom.js";
-import { STANDARD_NUMS, ALERT_MESSAGE, STORAGE, SECTION, CLASS_NAME } from "../utils/constants.js";
+import { $, $$ } from "../utils/dom.js";
+import {
+  STANDARD_NUMS,
+  ALERT_MESSAGE,
+  STORAGE,
+  SECTION,
+  CLASS_NAME,
+  SEARCH,
+} from "../utils/constants.js";
 import API from "../utils/api.js";
 import { setDataToLocalStorage, getDataFromLocalStorage } from "../utils/localStorage.js";
 import { createVideoTemplate } from "../utils/templates.js";
@@ -22,15 +29,27 @@ class SearchModal {
     this.nextPageToken = "";
   }
 
-  setState({ keyword, keywordHistory, videos, savedVideoIds, nextPageToken }) {
+  setSearchKeywordState({ keyword, keywordHistory, videos, nextPageToken }) {
     this.keyword = keyword ?? this.keyword;
     this.keywordHistory = keywordHistory ?? this.keywordHistory;
     this.videos = videos ?? this.videos;
-    this.savedVideoIds = savedVideoIds ?? this.savedVideoIds;
     this.nextPageToken = nextPageToken ?? this.nextPageToken;
 
     this.render();
+  }
+
+  setLoadMoreState({ videos, nextPageToken }) {
+    this.videos = videos ?? this.videos;
+    this.nextPageToken = nextPageToken ?? this.nextPageToken;
+
+    this.render();
+  }
+
+  setSaveVideoIdsState({ savedVideoIds }) {
+    this.savedVideoIds = savedVideoIds ?? this.savedVideoIds;
+
     setDataToLocalStorage(STORAGE.VIDEO_IDS, this.savedVideoIds);
+    this.renderSavedCount();
   }
 
   selectDOM() {
@@ -39,8 +58,8 @@ class SearchModal {
     this.$videoWrapper = $(`.${CLASS_NAME.SEARCH_MODAL_VIDEO_WRAPPER}`);
     this.$scrollArea = $(`.${CLASS_NAME.SCROLL_AREA}`);
     this.$moreArea = $(`.${CLASS_NAME.MORE_AREA}`);
-    this.$modalCloseBtn = $(`.${CLASS_NAME.MODAL_CLOSE}`);
     this.$savedVideoCount = $(`.${CLASS_NAME.SAVED_VIDEO_COUNT}`);
+    this.$modalCloseBtn = $(`.${CLASS_NAME.MODAL_CLOSE}`);
     this.$keywordHistory = $(`.${CLASS_NAME.KEYWORD_HISTORY}`);
   }
 
@@ -62,11 +81,11 @@ class SearchModal {
     this.$videoWrapper.addEventListener("click", e => {
       if (!e.target.classList.contains(`${CLASS_NAME.CLIP_SAVE_BTN}`)) return;
 
-      this.handleSaveVideo(e.target.dataset.videoId);
+      this.handleSaveVideo(e.target);
     });
 
     this.$keywordHistory.addEventListener("click", e => {
-      if (!e.target.classList.contains(`${CLASS_NAME.KEYWORD_HISTORY}`)) return;
+      if (!e.target.classList.contains(`${CLASS_NAME.KEYWORD}`)) return;
 
       this.handleSearchClickedHistory(e.target.innerText);
     });
@@ -85,7 +104,7 @@ class SearchModal {
     this.observer.observe(this.$moreArea);
   }
 
-  showLoadingAnimation() {
+  showLoadingAnimation(mode) {
     const skeletonCardTemplate = `
     <div class="skeleton">
       <div class="image"></div>
@@ -93,10 +112,18 @@ class SearchModal {
       <p class="line"></p>
     </div>`;
 
+    if (mode === SEARCH.KEYWORD) {
+      this.$videoWrapper.innerHTML = "";
+    }
+
     this.$videoWrapper.insertAdjacentHTML(
       "beforeend",
       skeletonCardTemplate.repeat(STANDARD_NUMS.LOAD_CLIP_COUNT),
     );
+  }
+
+  hideLoadingAnimation() {
+    $$(".skeleton").forEach($skeleton => $skeleton.remove());
   }
 
   async handleSearchKeyword() {
@@ -107,9 +134,9 @@ class SearchModal {
       return;
     }
 
-    this.showLoadingAnimation();
-
     try {
+      this.showLoadingAnimation(SEARCH.KEYWORD);
+
       // dummy API Response 사용할 경우
       // const { items, nextPageToken } = dummySearchedData;
       const { items, nextPageToken } = await API.searchVideo(keyword);
@@ -121,7 +148,6 @@ class SearchModal {
           channelTitle,
           publishedAt,
           title,
-          isSaved: this.savedVideoIds.includes(videoId),
         }),
       );
 
@@ -131,18 +157,18 @@ class SearchModal {
       ];
       keywordHistory.splice(STANDARD_NUMS.MAX_SAVE_KEYWORD_COUNT, 1);
 
-      this.setState({ keyword, keywordHistory, videos, nextPageToken });
+      this.setSearchKeywordState({ keyword, keywordHistory, videos, nextPageToken });
     } catch (err) {
       console.error(err);
     }
   }
 
   async handleLoadMore() {
-    if (!this.$target.classList.contains("open")) {
-      return;
-    }
+    if (!this.$target.classList.contains("open")) return;
 
     try {
+      this.showLoadingAnimation(SEARCH.LOAD);
+
       const { items, nextPageToken } = await API.searchVideo(this.keyword, this.nextPageToken);
 
       const nextVideos = items.map(
@@ -152,11 +178,10 @@ class SearchModal {
           channelTitle,
           publishedAt,
           title,
-          isSaved: this.savedVideoIds.includes(videoId),
         }),
       );
 
-      this.setState({ videos: [...this.videos, ...nextVideos], nextPageToken });
+      this.setLoadMoreState({ videos: [...this.videos, ...nextVideos], nextPageToken });
     } catch (err) {
       console.error(err);
     }
@@ -166,7 +191,9 @@ class SearchModal {
     this.hideModal();
   }
 
-  handleSaveVideo(savedVideoId) {
+  handleSaveVideo($saveBtn) {
+    const savedVideoId = $saveBtn.dataset.videoId;
+
     if (this.savedVideoIds.length === STANDARD_NUMS.MAX_SAVE_VIDEO_COUNT) {
       alert(ALERT_MESSAGE.OVER_MAX_SAVE_VIDEO_COUNT);
 
@@ -174,15 +201,9 @@ class SearchModal {
     }
 
     const savedVideoIds = [...this.savedVideoIds, savedVideoId];
-    const videos = [...this.videos].map(video => {
-      if (video.videoId === savedVideoId) {
-        video.isSaved = true;
-      }
 
-      return video;
-    });
-
-    this.setState({ videos, savedVideoIds });
+    this.setSaveVideoIdsState({ savedVideoIds });
+    $saveBtn.classList.add("hidden");
   }
 
   handleSearchClickedHistory(keyword) {
@@ -193,14 +214,22 @@ class SearchModal {
 
   render() {
     this.videos.length
-      ? (this.$videoWrapper.innerHTML = this.videos
-          .filter(video => video.videoId)
-          .map(video => createVideoTemplate(video, SECTION.MODAL))
-          .join(""))
-      : (this.$videoWrapper.innerHTML = createNoSearchResultTemplate());
+      ? this.$videoWrapper.insertAdjacentHTML(
+          "beforeend",
+          this.videos
+            .filter(video => video.videoId)
+            .map(video => createVideoTemplate(video, SECTION.MODAL))
+            .join(""),
+        )
+      : this.$videoWrapper.insertAdjacentHTML("beforeend", createNoSearchResultTemplate());
 
-    this.$savedVideoCount.textContent = `저장된 영상 갯수: ${this.savedVideoIds.length}/${STANDARD_NUMS.MAX_SAVE_VIDEO_COUNT}개`;
+    this.renderSavedCount();
     this.$keywordHistory.innerHTML = createKeywordHistoryTemplate(this.keywordHistory);
+    this.hideLoadingAnimation();
+  }
+
+  renderSavedCount() {
+    this.$savedVideoCount.textContent = `저장된 영상 갯수: ${this.savedVideoIds.length}/${STANDARD_NUMS.MAX_SAVE_VIDEO_COUNT}개`;
   }
 
   showModal() {
