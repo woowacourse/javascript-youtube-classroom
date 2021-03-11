@@ -19,6 +19,7 @@ class ModalController {
   };
 
   loadInfos = () => {
+    console.log('load');
     this.#searchView.renderSavedVideoCountSection(
       this.#storageModel.savedVideoCount
     );

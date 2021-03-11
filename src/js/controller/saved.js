@@ -20,7 +20,7 @@ class SavedController {
     const savedVideos = this.storage.myVideos;
 
     if (savedVideos.length === 0) {
-      this.savedView.renderNotFoundSavedVideo();
+      this.savedView.toggleNotFoundSavedVideo(true);
       return;
     }
     this.savedView.renderSavedVideos(savedVideos);
@@ -31,13 +31,8 @@ class SavedController {
     if (this.storage.showWatched === showWatched) return;
 
     this.navView.toggleNavButton(showWatched);
-    this.storage.filterVideos(showWatched);
 
     const filteredVideos = this.storage.filterVideos(showWatched);
-    if (filteredVideos.length === 0) {
-      this.savedView.renderNotFoundSavedVideo();
-      return;
-    }
 
     this.savedView.renderSavedVideos(filteredVideos);
     this.handleSavedVideoLoad();
@@ -49,7 +44,7 @@ class SavedController {
     this.savedView.hideSelectedVideo(target);
 
     if (this.storage.savedVideoCount === 0) {
-      this.savedView.renderNotFoundSavedVideo();
+      this.savedView.toggleNotFoundSavedVideo(true);
     }
     this.snackBarView.showSnackBar('영상을 목록에서 제거했습니다');
   }

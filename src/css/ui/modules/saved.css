@@ -1,6 +1,9 @@
 #saved-not-found {
-  grid-column-start: 1;
-  grid-column-end: span 4;
+  display: none;
+}
+
+#saved-not-found.show {
+  width: 100%;
   display: flex;
   justify-content: center;
   align-items: center;
