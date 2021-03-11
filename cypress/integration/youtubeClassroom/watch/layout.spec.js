@@ -11,4 +11,14 @@ describe("youtube classroom 기능 테스트", () => {
     cy.get("#watched-button").click();
     cy.get("#not-watched").should("be.visible");
   });
+
+  it("선택된 볼 영상, 본 영상 버튼의 색깔이 바뀐다.", () => {
+    cy.get("#watch-later-button").click();
+    cy.get("#watched-button").should("not.have.class", "bg-cyan-100");
+    cy.get("#watch-later-button").should("have.class", "bg-cyan-100");
+
+    cy.get("#watched-button").click();
+    cy.get("#watch-later-button").should("not.have.class", "bg-cyan-100");
+    cy.get("#watched-button").should("have.class", "bg-cyan-100");
+  });
 });
