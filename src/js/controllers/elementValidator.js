@@ -1,4 +1,4 @@
-import { KEY_VIDEOS_WATCHING, KEY_VIDEOS_WATCHED } from '../constants.js';
+import { KEY_VIDEOS_WATCHING, KEY_VIDEOS_WATCHED, WATCHING_SECTION } from '../constants.js';
 
 import { getListByKey } from '../utils/localStorage.js';
 
@@ -25,5 +25,5 @@ export const isSavedVideo = (targetId) => {
 };
 
 export const isWatchingMenu = (target) => {
-  return target.classList.contains('.watching-section');
+  return target.classList.contains(WATCHING_SECTION);
 };

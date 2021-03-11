@@ -14,6 +14,13 @@ export const KEY_VIDEOS_WATCHING = 'videosWatching';
 export const KEY_VIDEOS_WATCHED = 'videosWatched';
 export const KEY_RECENT_KEYWORDS = 'recentKeywords';
 
+export const WATCHING_SECTION = 'watching-section';
+export const WATCHED_SECTION = 'watched-section';
+export const WATCHING = 'watching';
+export const WATCHED = 'watched';
+export const NO_WATCHING = 'no-watching';
+export const NO_WATCHED = 'no-watched';
+
 export const SNACKBAR_SHOW_TIME = 1500;
 export const NO_KEYWORD_IS_SUBMITTED = `검색키워드가 입력되지 않았습니다.\n저장하고 싶은 검색키워드를 입력해주세요!😁`;
 export const STORAGE_CAPACITY_IS_FULL = `최대 영상 저장갯수\n${MAX_VIDEO_STORAGE_CAPACITY}개가 다 찼습니다.😭`;
