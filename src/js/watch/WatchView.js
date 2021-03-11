@@ -44,7 +44,7 @@ export default class WatchView {
   showWatchedVideos(watchedVideos) {
     this.hideAllSection();
     showElement(elements.$watchedVideos);
-    elements.$watchLaterVideos.innerHTML = "";
+    elements.$watchedVideos.innerHTML = "";
 
     const fragment = document.createDocumentFragment();
     watchedVideos.forEach((video) =>

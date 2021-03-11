@@ -19,10 +19,12 @@ export default class WatchController {
   }
 
   watchVideo(videoId) {
-    videos.setVideoWatched(videoId);
+    videos.setVideoWatched(videoId, true);
   }
 
-  clearWatchedViedoLog() {}
+  clearWatchedViedoLog(videoId) {
+    videos.setVideoWatched(videoId, false);
+  }
 
   updateWatchedView(savedVideos) {
     const watchedVideos = savedVideos.filter((video) => video.watched);
