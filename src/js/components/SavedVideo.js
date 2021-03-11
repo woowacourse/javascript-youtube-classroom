@@ -17,7 +17,19 @@ export class SavedVideo {
     this.$savedVideoWrapper = $('.js-saved-video-wrapper');
     this.$emptyImage = $('.js-empty-image');
 
+    this.isChecked = isChecked;
     this.savedVideoManager = savedVideoManager;
+    this.initSubscription();
+
+    this.initEvent();
+    this.renderTotalVideo();
+  }
+
+  initEvent() {
+    this.$savedVideoWrapper.addEventListener('click', this.handleEmojiButton.bind(this));
+  }
+
+  initSubscription() {
     this.savedVideoManager.subscribe({
       key: SAVED_VIDEO_SUBSCRIBER_KEY.SAVE,
       subscriber: this.renderNewVideo.bind(this),
@@ -34,14 +46,6 @@ export class SavedVideo {
       key: SAVED_VIDEO_SUBSCRIBER_KEY.CHECK,
       subscriber: this.renderEmptyImage.bind(this),
     });
-
-    this.isChecked = isChecked;
-    this.initEvent();
-    this.renderTotalVideo();
-  }
-
-  initEvent() {
-    this.$savedVideoWrapper.addEventListener('click', this.handleEmojiButton.bind(this));
   }
 
   handleEmojiButton({ target }) {

@@ -17,14 +17,18 @@ export class SearchVideoResult {
     this.$intersectionObserver = $('.js-intersection-observer');
 
     this.searchKeywordHistoryManager = searchKeywordHistoryManager;
-    this.searchKeywordHistoryManager.subscribe(this.reset.bind(this));
-    this.searchKeywordHistoryManager.subscribe(this.fetchSearchResultData.bind(this));
     this.savedVideoManager = savedVideoManager;
+    this.initSubscription();
 
     this.searchResultData = {};
 
     this.initEvent();
     this.initIntersectionObeserver();
+  }
+
+  initSubscription() {
+    this.searchKeywordHistoryManager.subscribe(this.reset.bind(this));
+    this.searchKeywordHistoryManager.subscribe(this.searchVideos.bind(this));
   }
 
   initEvent() {
@@ -59,12 +63,16 @@ export class SearchVideoResult {
     }
   }
 
-  async fetchSearchResultData() {
+  async searchVideos() {
+    renderSkeleton(this.$wrapper, NUM_OF_VIDEO_PER_FETCH);
+    const searchResultData = await fetchSearchResultData(this.searchKeywordHistoryManager.getLastKeyword());
+    removeSkeleton(this.$wrapper);
+    this.setState({ searchResultData });
+  }
+
+  async fetchSearchResultData(keyword) {
     try {
-      renderSkeleton(this.$wrapper, NUM_OF_VIDEO_PER_FETCH);
-      const searchResultData = await getSearchVideoByKeyword(this.searchKeywordHistoryManager.getLastKeyword());
-      removeSkeleton(this.$wrapper);
-      this.setState({ searchResultData });
+      return await getSearchVideoByKeyword(keyword);
     } catch (e) {
       console.error(e);
       showSnackbar(SNACKBAR_MESSAGE.API_REQUEST_FAILURE);
