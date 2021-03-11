@@ -1,17 +1,9 @@
-import { CLASSNAME } from "../constants.js";
+const $ = (selector) => document.querySelector(selector);
 
-export const $ = (parameter) => {
-  const selector = Object.values(CLASSNAME).includes(parameter)
-    ? `.${parameter}`
-    : parameter;
+const $$ = (selector) => document.querySelectorAll(selector);
 
-  return document.querySelector(selector);
-};
+const $c = (classname) => $(`.${classname}`);
 
-export const $$ = (parameter) => {
-  const selector = Object.values(CLASSNAME).includes(parameter)
-    ? `.${parameter}`
-    : parameter;
+const $$c = (classname) => $$(`.${classname}`);
 
-  return document.querySelectorAll(selector);
-};
+export { $, $$, $c, $$c };
