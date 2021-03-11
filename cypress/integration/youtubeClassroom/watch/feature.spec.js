@@ -90,7 +90,7 @@ describe("youtube classroom 기능 테스트", () => {
     cy.get("#search-results button[data-video-id]").eq(0).click();
     cy.get("#search-modal-close").click();
 
-    cy.get("#watch-later-videos button[data-delete-button]").eq(0).click();
+    cy.get("#watch-later-videos button[data-watched-button]").eq(0).click();
     cy.get("#not-saved").should("be.visible");
 
     cy.get("#watched-view-button").click();
