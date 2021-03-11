@@ -21,24 +21,23 @@ export default class VideoSearchModal extends Component {
 
   initRender() {
     this.$target.innerHTML = `
-    <div class="video-search-overlay w-100"></div>
-    <div class="modal-inner p-8">
-        <button class="modal-close" aria-label="검색창 닫기">
-          <svg viewbox="0 0 40 40">
-            <path class="close-x" d="M 10,10 L 30,30 M 30,10 L 10,30" />
-          </svg>
-        </button>
-        <header>
-          <h2 class="text-center">🔎 유튜브 검색</h2>
-        </header>
-        <section id="video-search-bar">
-        </section>
-        <section id="search-term-history" class="mt-2">
-        </section>
-        <section id="video-search-result">
-        </section>
-      </div>
-    </div>`;
+      <div class="modal-inner p-8">
+          <button class="modal-close" aria-label="검색창 닫기">
+            <svg viewbox="0 0 40 40">
+              <path class="close-x" d="M 10,10 L 30,30 M 30,10 L 10,30" />
+            </svg>
+          </button>
+          <header>
+            <h2 class="text-center">🔎 유튜브 검색</h2>
+          </header>
+          <section id="video-search-bar">
+          </section>
+          <section id="search-term-history" class="mt-2">
+          </section>
+          <section id="video-search-result">
+          </section>
+        </div>
+      </div>`;
   }
 
   mount() {
@@ -72,7 +71,7 @@ export default class VideoSearchModal extends Component {
   }
 
   onClickOutsideModal(event) {
-    if (event.target === this.$overlay) {
+    if (event.target === event.currentTarget) {
       this.onModalClose();
     }
   }
