@@ -35,7 +35,7 @@ describe('검색 모달 테스트', () => {
 
   it('검색 모달에서 "엔터키"를 누르면, 최초 검색 결과 10개가 화면에 표시된다.', () => {
     interceptYoutubeApiRequest(KEYWORD, INTERCEPT_ALIAS);
-    cy.get('.js-search-button').click();
+    cy.get('.js-search-menu-button').click();
     cy.get('.js-search-keyword-input').type(KEYWORD).type('{enter}');
     cy.wait(`@${INTERCEPT_ALIAS}`);
 
@@ -44,7 +44,7 @@ describe('검색 모달 테스트', () => {
 
   it('검색 모달에서 "검색 버튼"을 클릭하면, 최초 검색 결과 10개가 화면에 표시된다.', () => {
     interceptYoutubeApiRequest(KEYWORD, INTERCEPT_ALIAS);
-    cy.get('.js-search-button').click();
+    cy.get('.js-search-menu-button').click();
     cy.get('.js-search-keyword-input').type(KEYWORD);
     cy.get('.js-search-keyword-button').click();
     cy.wait(`@${INTERCEPT_ALIAS}`);
@@ -55,7 +55,7 @@ describe('검색 모달 테스트', () => {
   it('검색 키워드 제출 후, 데이터를 불러오기 전이면 skeleton UI가 화면에 표시된다.', () => {
     const ANOTHER_KEYWORD = '우아한 형제들';
 
-    cy.get('.js-search-button').click();
+    cy.get('.js-search-menu-button').click();
     cy.get('.js-search-keyword-input').type(ANOTHER_KEYWORD);
     cy.get('.js-search-keyword-form').submit();
 
@@ -70,7 +70,7 @@ describe('검색 모달 테스트', () => {
     const KEYWORD_FOR_NO_RESULT = 'dsflmkfsdlkjweljksf';
 
     interceptYoutubeApiRequest(KEYWORD_FOR_NO_RESULT, INTERCEPT_ALIAS);
-    cy.get('.js-search-button').click();
+    cy.get('.js-search-menu-button').click();
     cy.get('.js-search-keyword-input').type(KEYWORD_FOR_NO_RESULT);
     cy.get('.js-search-keyword-form').submit();
     cy.wait(`@${INTERCEPT_ALIAS}`);
@@ -80,7 +80,7 @@ describe('검색 모달 테스트', () => {
 
   it('스크롤바를 최하단으로 이동시킬 경우, 다음 10개 아이템을 추가로 화면에 표시한다.', () => {
     interceptYoutubeApiRequest(KEYWORD, INTERCEPT_ALIAS);
-    cy.get('.js-search-button').click();
+    cy.get('.js-search-menu-button').click();
     cy.get('.js-search-keyword-input').type(KEYWORD);
     cy.get('.js-search-keyword-form').submit();
     cy.wait(`@${INTERCEPT_ALIAS}`);
@@ -93,7 +93,7 @@ describe('검색 모달 테스트', () => {
     const FIRST_INDEX = 0;
 
     interceptYoutubeApiRequest(KEYWORD, INTERCEPT_ALIAS);
-    cy.get('.js-search-button').click();
+    cy.get('.js-search-menu-button').click();
     cy.get('.js-search-keyword-input').type(KEYWORD);
     cy.get('.js-search-keyword-form').submit();
     cy.wait(`@${INTERCEPT_ALIAS}`);
@@ -110,13 +110,13 @@ describe('검색 모달 테스트', () => {
 
   it('검색 모달에 다시 접근했을 때, 가장 마지막에 검색한 결과를 화면에 표시한다.', () => {
     interceptYoutubeApiRequest(KEYWORD, INTERCEPT_ALIAS);
-    cy.get('.js-search-button').click();
+    cy.get('.js-search-menu-button').click();
     cy.get('.js-search-keyword-input').type(KEYWORD);
     cy.get('.js-search-keyword-form').submit();
     cy.wait(`@${INTERCEPT_ALIAS}`);
     cy.reload();
 
-    cy.get('.js-search-button').click();
+    cy.get('.js-search-menu-button').click();
     cy.get('.js-recent-keyword').children(0).should('have.text', KEYWORD);
     cy.get('.js-modal article').should('have.length', MAX_RESULT_COUNT);
   });
@@ -125,7 +125,7 @@ describe('검색 모달 테스트', () => {
     const KEYWORDS = ['쿠팡', '네이버', '토스', '우아한형제들'];
     const TRY_COUNT = KEYWORDS.length;
 
-    cy.get('.js-search-button').click();
+    cy.get('.js-search-menu-button').click();
     KEYWORDS.forEach((keyword) => {
       interceptYoutubeApiRequest(keyword, `${INTERCEPT_ALIAS}-${keyword}`);
       cy.get('.js-search-keyword-input').clear().type(keyword);
@@ -150,7 +150,7 @@ describe('예외 처리 테스트', () => {
   });
 
   it('100개의 영상을 저장했을 때, 더 저장하려고 시도할 경우 저장용량 초과 메세지를 표시한다.', () => {
-    cy.get('.js-search-button').click();
+    cy.get('.js-search-menu-button').click();
     cy.get('.js-search-keyword-input').type(KEYWORD);
     cy.get('.js-search-keyword-form').submit();
 

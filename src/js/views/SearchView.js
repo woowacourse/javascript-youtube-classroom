@@ -9,10 +9,10 @@ export default class SearchView {
   }
 
   selectDOMs() {
-    this.$searchResultWrapper = $('.js-search-result-wrapper');
+    this.$searchMenuButton = $('.js-search-menu-button');
     this.$searchSection = $('.js-modal');
+    this.$searchResultWrapper = $('.js-search-result-wrapper');
     this.$searchKeywordForm = $('.js-search-keyword-form');
-    this.$searchButton = $('.js-search-button');
     this.$modalCloseButton = $('.js-modal-close-button');
     this.$recentKeywords = $('.js-recent-keyword');
     this.$savedVideoCount = $('.js-saved-video-count');
