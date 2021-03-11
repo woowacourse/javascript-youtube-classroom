@@ -48,6 +48,7 @@ export class SearchVideoResult {
     try {
       this.render();
     } catch (e) {
+      console.error(e);
       showSnackbar(SNACKBAR_MESSAGE.API_REQUEST_FAILURE);
     }
   }
@@ -60,7 +61,9 @@ export class SearchVideoResult {
       );
       this.setState({ searchResultData });
     } catch (e) {
+      console.error(e);
       showSnackbar(SNACKBAR_MESSAGE.API_REQUEST_FAILURE);
+      this.setState({ searchResultData: { nextPageToken: '', items: [] } });
     }
   }
 
@@ -95,6 +98,7 @@ export class SearchVideoResult {
   }
 
   async render() {
+    hideElement(this.$notFoundImage);
     renderSkeleton(this.$wrapper, NUM_OF_VIDEO_PER_FETCH);
     await this.fetchSearchResultData();
     removeSkeleton(this.$wrapper);
@@ -105,7 +109,6 @@ export class SearchVideoResult {
       return;
     }
 
-    hideElement(this.$notFoundImage);
     this.$wrapper.insertAdjacentHTML(
       'beforeend',
       this.searchResultData.items.map(item => this.makeTemplate(item)).join('')
