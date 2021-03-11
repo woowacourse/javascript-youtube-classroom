@@ -18,8 +18,12 @@
             <h1 class="text-center font-bold">👩🏻‍💻 나만의 유튜브 강의실 👨🏻‍💻</h1>
             <div class="d-flex justify-between items-center w-100">
               <nav id="navigator">
-                <button id="watch-later-view-button" class="btn mx-1">👁️ 볼 영상</button>
-                <button id="watched-view-button" class="btn mx-1">✅ 본 영상</button>
+                <button id="watch-later-view-button" class="btn mx-1">
+                  👁️ 볼 영상
+                </button>
+                <button id="watched-view-button" class="btn mx-1">
+                  ✅ 본 영상
+                </button>
               </nav>
               <button
                 id="search-button"
@@ -39,9 +43,9 @@
                 src="./src/images/status/not_found.png"
                 alt="저장된 영상이 없습니다."
               />
-              </section>
+            </section>
 
-              <section
+            <section
               aria-label="본 영상이 없음"
               id="not-watched"
               class="vh-70 d-flex justify-center items-center d-none-hard"
@@ -50,7 +54,7 @@
                 src="./src/images/status/not_found.png"
                 alt="본 영상이 없습니다."
               />
-              </section>
+            </section>
 
             <section id="watch-later-videos" class="video-wrapper d-none-hard">
               <!-- 볼영상 영상 clip -->
@@ -138,6 +142,7 @@
         </div>
       </div>
     </div>
+    <div id="snackbar" class="snackbar"></div>
     <script type="module" src="./src/js/index.js"></script>
   </body>
 </html>

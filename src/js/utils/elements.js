@@ -2,6 +2,7 @@ import { $ } from "./dom.js";
 
 const elements = {
   $body: $("body"),
+  $snackbar: $("#snackbar"),
 
   $watchLaterViewButton: $("#watch-later-view-button"),
   $watchedViewButton: $("#watched-view-button"),
