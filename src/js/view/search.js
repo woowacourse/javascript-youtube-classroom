@@ -7,13 +7,13 @@ import {
 
 class SearchView {
   #$searchVideoWrapper;
-  #$myVideoLength;
+  #$savedVideoLength;
   #$recentKeywordsSection;
   #$searchNotFound;
 
   constructor() {
     this.#$searchVideoWrapper = $(SELECTOR.SEARCH_VIDEO_WRAPPER);
-    this.#$myVideoLength = $(SELECTOR.MY_VIDEO_LENGTH);
+    this.#$savedVideoLength = $(SELECTOR.MY_VIDEO_LENGTH);
     this.#$recentKeywordsSection = $(SELECTOR.RECENT_KEYWORDS);
     this.#$searchNotFound = $(SELECTOR.SEARCH_NOT_FOUND);
   }
@@ -44,7 +44,7 @@ class SearchView {
   };
 
   renderSavedVideoCountSection = length => {
-    this.#$myVideoLength.innerHTML = length;
+    this.#$savedVideoLength.innerHTML = length;
   };
 
   resetView = () => {

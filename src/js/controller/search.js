@@ -23,7 +23,6 @@ class SearchController {
   }
 
   init = () => {
-    this.#storageModel.init();
     this.#handleSearch();
     this.#handleSearchModalScroll();
     this.#handleSaveVideo();
@@ -40,6 +39,17 @@ class SearchController {
     this.#addVideosBySearch();
   };
 
+  #renderSearchedVideo = () => {
+    if (this.#youtubeModel.videoCount === 0) return;
+
+    this.#youtubeModel.videoInfos.forEach(info => {
+      const isSaved = this.#storageModel.findVideoByInfo(info);
+      this.#searchView.renderVideoArticle(info, isSaved);
+    });
+
+    handleVideosLoad($$(SELECTOR.VIDEO_IFRAME));
+  };
+
   #addVideosBySearch = async () => {
     const query = this.#getSearchInput();
 
@@ -51,25 +61,10 @@ class SearchController {
     await this.#youtubeModel.getVideoInfosBySearch({ query });
 
     this.#searchView.toggleNotFoundSearchedVideo(this.#youtubeModel.videoCount);
-    if (this.#youtubeModel.videoCount === 0) return;
-
-    this.#youtubeModel.videoInfos.forEach(info => {
-      const isSaved = this.#storageModel.findVideoByInfo(info);
-      this.#searchView.renderVideoArticle(info, isSaved);
-    });
-
-    handleVideosLoad($$(SELECTOR.VIDEO_IFRAME));
+    this.#renderSearchedVideo();
   };
 
-  #saveVideo = e => {
-    e.target.classList.add(CLASS.INVISIBLE);
-
-    const videoInfo = { ...e.target.dataset, watched: false };
-    this.#storageModel.saveVideo(videoInfo);
-    this.#searchView.renderSavedVideoCountSection(
-      this.#storageModel.savedVideoCount
-    );
-
+  #renderSavedVideo = videoInfo => {
     if (this.#storageModel.showWatched === true) return;
 
     this.#savedView.appendSavedVideo(videoInfo);
@@ -82,18 +77,25 @@ class SearchController {
     this.#snackBarView.showSnackBar(SNACK_BAR.SAVED_MESSAGE);
   };
 
+  #saveVideo = e => {
+    e.target.classList.add(CLASS.INVISIBLE);
+
+    const videoInfo = { ...e.target.dataset, watched: false };
+    this.#storageModel.saveVideo(videoInfo);
+    this.#renderSavedVideo(videoInfo);
+
+    this.#searchView.renderSavedVideoCountSection(
+      this.#storageModel.savedVideoCount
+    );
+  };
+
   #fetchVideo = event => {
     const { scrollHeight, offsetHeight, clientHeight } = $(
       SELECTOR.SEARCH_VIDEO_WRAPPER
     );
 
-    if (
-      isScrollUnfinished(
-        { scrollHeight, offsetHeight, clientHeight },
-        event.target.scrollTop
-      )
-    )
-      return;
+    const scrollArgs = { scrollHeight, offsetHeight, clientHeight };
+    if (isScrollUnfinished(scrollArgs, event.target.scrollTop)) return;
 
     this.#addVideosBySearch();
   };

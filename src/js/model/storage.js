@@ -9,40 +9,35 @@ import {
   STORAGE,
 } from '../constants/constant.js';
 class StorageModel {
-  #myVideo;
+  #savedVideo;
   #keywords;
   #showWatched;
 
   constructor() {
-    this.#myVideo = [];
+    this.#savedVideo = [];
     this.#keywords = [];
     this.#showWatched = null;
   }
 
   init() {
-    this.#myVideo = getJSONFromLocalStorage(STORAGE.KEY_MY_VIDEO);
+    this.#savedVideo = getJSONFromLocalStorage(STORAGE.KEY_MY_VIDEO);
     this.#keywords = getJSONFromLocalStorage(STORAGE.KEY_KEYWORDS);
   }
 
   updateVideoWatched(target) {
-    this.#myVideo.forEach(info => {
+    this.#savedVideo.forEach(info => {
       if (
         info.url === target.closest(SELECTOR.VIDEO_INFO_BUTTONS).dataset.url
       ) {
         info.watched = !info.watched;
       }
     });
-    setJSONToLocalStorage(STORAGE.KEY_MY_VIDEO, this.#myVideo);
-  }
-
-  get myVideos() {
-    // TODO: getJSON ? 변수그냥 사용? 추후 고민하기
-    return this.#myVideo;
+    setJSONToLocalStorage(STORAGE.KEY_MY_VIDEO, this.#savedVideo);
   }
 
   filterVideos = showWatched => {
     this.#showWatched = showWatched;
-    return this.#myVideo.filter(video => video.watched === showWatched);
+    return this.#savedVideo.filter(video => video.watched === showWatched);
   };
 
   get showWatched() {
@@ -50,28 +45,28 @@ class StorageModel {
   }
 
   deleteSelectedVideo(target) {
-    this.#myVideo = this.#myVideo.filter(
+    this.#savedVideo = this.#savedVideo.filter(
       info =>
         info.url !== target.closest(SELECTOR.VIDEO_INFO_BUTTONS).dataset.url
     );
-    setJSONToLocalStorage(STORAGE.KEY_MY_VIDEO, this.#myVideo);
+    setJSONToLocalStorage(STORAGE.KEY_MY_VIDEO, this.#savedVideo);
   }
 
-  // TODO: keyword와 myVideo 분리하는거는 어떨까?
+  // TODO: keyword와 savedVideo 분리하는거는 어떨까?
   saveVideo = json => {
-    this.#myVideo = getJSONFromLocalStorage(STORAGE.KEY_MY_VIDEO);
-    if (this.#myVideo.length === STORAGE.MAX_SAVED_VIDEO_LENGTH) {
+    this.#savedVideo = getJSONFromLocalStorage(STORAGE.KEY_MY_VIDEO);
+    if (this.#savedVideo.length === STORAGE.MAX_SAVED_VIDEO_LENGTH) {
       alert(ERROR_MESSAGE.OVER_MAX_VIDEO_LENGTH);
       return;
     }
-    this.#myVideo.push(json);
-    setJSONToLocalStorage(STORAGE.KEY_MY_VIDEO, this.#myVideo);
+    this.#savedVideo.push(json);
+    setJSONToLocalStorage(STORAGE.KEY_MY_VIDEO, this.#savedVideo);
   };
 
   findVideoByInfo = info => {
     return (
       getJSONFromLocalStorage(STORAGE.KEY_MY_VIDEO).filter(
-        myVideo => info.url === myVideo.url
+        savedVideo => info.url === savedVideo.url
       ).length > 0
     );
   };
@@ -91,8 +86,12 @@ class StorageModel {
     setJSONToLocalStorage(STORAGE.KEY_KEYWORDS, this.#keywords);
   };
 
+  get savedVideos() {
+    return this.#savedVideo;
+  }
+
   get savedVideoCount() {
-    return this.#myVideo.length;
+    return this.#savedVideo.length;
   }
 
   get recentKeywords() {
