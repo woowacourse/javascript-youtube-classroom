@@ -2,6 +2,14 @@ import { $ } from "./dom.js";
 
 const elements = {
   $body: $("body"),
+
+  $watchLaterButton: $("#watch-later-button"),
+  $watchedButton: $("#watched-button"),
+  $notSaved: $("#not-saved"),
+  $notWatched: $("#not-watched"),
+  $watchLaterVideos: $("#watch-later-videos"),
+  $watchedVideos: $("#watched-videos"),
+
   $searchButton: $("#search-button"),
   $searchModal: $("#search-modal"),
   $searchModalClose: $("#search-modal-close"),
