@@ -9,6 +9,20 @@ export default class ClassroomController {
 
   init() {
     this.onShowClassroom();
+    this.attachEvents();
+  }
+
+  attachEvents() {
+    this.view.$watchingMenuButton.addEventListener('click', this.onNavigateWatchingVideos.bind(this));
+    this.view.$watchedMenuButton.addEventListener('click', this.onNavigateWatchedVideos.bind(this));
+  }
+
+  onNavigateWatchingVideos() {
+    this.showWatchingVideos();
+  }
+
+  onNavigateWatchedVideos() {
+    this.showWatchedVideos();
   }
 
   onShowClassroom() {
@@ -22,18 +36,18 @@ export default class ClassroomController {
   }
 
   showWatchingVideos() {
+    this.view.renderOnlyWatchingVideos();
+
     if (this.model.hasNoWatchingVideoSaved()) {
       this.view.renderImageNoWatchingVideo();
-      return;
     }
-    this.view.renderOnlyWatchingVideos(this.model.watchingVideos);
   }
 
   showWatchedVideos() {
+    this.view.renderOnlyWatchedVideos();
+
     if (this.model.isOnlyWatchingVideoSaved()) {
       this.view.renderImageNoWatchedVideo();
-      return;
     }
-    this.view.renderOnlyWatchedVideos(this.model.watchedVideos);
   }
 }

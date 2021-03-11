@@ -24,7 +24,7 @@ export default class SearchController {
   }
 
   attachEvents() {
-    this.searchView.$searchButton.addEventListener('click', this.onShowModal.bind(this));
+    this.searchView.$searchMenuButton.addEventListener('click', this.onShowModal.bind(this));
     this.searchView.$searchSection.addEventListener('click', this.onCloseModal.bind(this));
     document.body.addEventListener('keyup', this.onCloseModal.bind(this));
     this.searchView.$recentKeywords.addEventListener('click', this.onRequestSearchRecentKeyword.bind(this));
