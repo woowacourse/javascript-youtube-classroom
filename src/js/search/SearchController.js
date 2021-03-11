@@ -17,7 +17,6 @@ export default class SearchController {
   }
 
   init() {
-    videos.initSavedVideos();
     this.searchView.addSkeletonUITemplate(VIDEOS.SKELETON_REPEAT_NUMBER);
   }
 
