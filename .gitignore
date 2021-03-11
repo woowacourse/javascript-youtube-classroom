@@ -110,7 +110,3 @@ cypress/support/*
 
 # Key
 key.js
-
-# Dummy Data
-dummyData.js
-dummyFetch.js
