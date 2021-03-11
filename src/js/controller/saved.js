@@ -20,6 +20,7 @@ class SavedController {
     this.#loadSavedVideos();
     this.#handleVideosToWatch();
     this.#handleVideosWatched();
+    this.#handleVideoButtons();
   }
 
   // 페이지 접속하면 저장된 영상들 불러오는 메서드
@@ -32,7 +33,6 @@ class SavedController {
     }
     this.#savedView.renderSavedVideos(savedVideos);
     handleVideosLoad($$(SELECTOR.VIDEO_IFRAME));
-    this.#handleToggleVideosWatched();
   };
 
   #filterVideos({ showWatched }) {
@@ -68,8 +68,8 @@ class SavedController {
     this.#snackBarView.showSnackBar(SNACK_BAR.LIST_MODIFIED_MESSAGE);
   }
 
-  #handleToggleVideosWatched() {
-    $(SELECTOR.SEARCH_VIDEO_WRAPPER).addEventListener('click', ({ target }) => {
+  #handleVideoButtons() {
+    $(SELECTOR.SAVED_VIDEO_WRAPPER).addEventListener('click', ({ target }) => {
       if (target.classList.contains(CLASS.WATCHED)) {
         this.#toggleVideoWatched(target);
       }
