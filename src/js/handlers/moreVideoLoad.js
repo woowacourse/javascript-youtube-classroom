@@ -1,11 +1,11 @@
 import { fetchSearchResult } from '../API.js';
-import { appendVideos } from '../viewControllers/searchModal.js';
+import { appendVideoList } from '../viewControllers/searchModal.js';
 import $ from '../utils/DOM.js';
 import latestKeywords from '../states/latestKeywords.js';
 import videoInfos from '../states/videoInfos.js';
 import pageToken from '../states/pageToken.js';
 
-async function handleMoreVideoLoading(entries) {
+async function handleMoreVideoLoad(entries) {
   const [$lastVideo] = entries;
   const intersectionObserver = this;
 
@@ -13,17 +13,15 @@ async function handleMoreVideoLoading(entries) {
 
   intersectionObserver.disconnect();
 
-  const { nextPageToken, items } = await fetchSearchResult(
-    latestKeywords.get()[latestKeywords.get().length - 1],
+  const { nextPageToken, items: loadVideoList } = await fetchSearchResult(
+    latestKeywords.getLastKeyword(),
     pageToken.get()
   );
-
   pageToken.set(nextPageToken);
-  appendVideos(items, videoInfos.get());
+  appendVideoList(loadVideoList, videoInfos.get());
 
   const $newLastVideo = $('#video-search-result .js-video:last-child');
-
   intersectionObserver.observe($newLastVideo);
 }
 
-export default handleMoreVideoLoading;
+export default handleMoreVideoLoad;

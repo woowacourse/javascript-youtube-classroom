@@ -33,6 +33,10 @@ const latestKeywords = {
 
     renderLatestKeywordList(this.value);
   },
+
+  getLastKeyword() {
+    return this.value[this.value.length - 1];
+  },
 };
 
 export default latestKeywords;

@@ -1,4 +1,4 @@
-import handleMoreVideoLoading from '../handlers/moreVideoLoading.js';
+import handleMoreVideoLoad from '../handlers/moreVideoLoad.js';
 import $ from '../utils/DOM.js';
 
 const intersectionObserver = {
@@ -11,7 +11,7 @@ const intersectionObserver = {
 
   init() {
     this.set(
-      new IntersectionObserver(handleMoreVideoLoading.bind(this), this.options)
+      new IntersectionObserver(handleMoreVideoLoad.bind(this), this.options)
     );
   },
 
