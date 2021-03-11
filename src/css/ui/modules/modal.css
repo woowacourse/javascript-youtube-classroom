@@ -39,6 +39,10 @@
   padding: 0;
 }
 
+.modal .btn {
+  height: 24px;
+  font-size: 10px;
+}
 svg {
   display: block;
 }

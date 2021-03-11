@@ -7,15 +7,14 @@
 }
 
 .clip {
-  height: 219px;
-  min-height: 300px; /*TODO: 더 나은 방법있으면 대체*/
+  min-height: 240px;
+  max-height: 240px;
   cursor: pointer;
   text-decoration: none;
 }
 
 .clip .preview-container {
   width: 100%;
-  height: 120px;
   position: relative;
 }
 
@@ -35,6 +34,7 @@
 
 .clip .content-container {
   position: relative;
+  height: 120px;
 }
 
 .clip .content-container h3 {

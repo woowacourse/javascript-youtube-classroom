@@ -1,7 +1,7 @@
 import formatDate from '../utils/date.js';
 
 function createVideoSnippetTemplate({ id, snippet }, buttonListTemplate) {
-  return `<article class="clip js-video"
+  return `<article class="clip js-video mb-8 d-flex flex-col"
             data-video-id=${id.videoId}
             data-title=${encodeURIComponent(snippet.title)}
             data-channel-id=${snippet.channelId}
@@ -32,10 +32,10 @@ function createVideoSnippetTemplate({ id, snippet }, buttonListTemplate) {
                 <div class="meta">
                   <p>${formatDate(snippet.publishTime)}</p>
                 </div>
-                <div class="d-flex justify-end" >
-                  ${buttonListTemplate}
-                </div>
               </div>
+            </div>
+            <div class=" d-flex justify-end mt-auto">
+              ${buttonListTemplate}
             </div>
           </article>`;
 }
