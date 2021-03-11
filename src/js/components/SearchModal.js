@@ -104,7 +104,7 @@ class SearchModal {
     this.observer.observe(this.$moreArea);
   }
 
-  showLoadingAnimation(mode) {
+  showLoadingAnimation() {
     const skeletonCardTemplate = `
     <div class="skeleton">
       <div class="image"></div>
@@ -112,9 +112,7 @@ class SearchModal {
       <p class="line"></p>
     </div>`;
 
-    if (mode === SEARCH.KEYWORD) {
-      this.$videoWrapper.innerHTML = "";
-    }
+    this.$videoWrapper.innerHTML = "";
 
     this.$videoWrapper.insertAdjacentHTML(
       "beforeend",
@@ -135,7 +133,7 @@ class SearchModal {
     }
 
     try {
-      this.showLoadingAnimation(SEARCH.KEYWORD);
+      this.showLoadingAnimation();
 
       // dummy API Response 사용할 경우
       // const { items, nextPageToken } = dummySearchedData;
@@ -167,7 +165,7 @@ class SearchModal {
     if (!this.$target.classList.contains("open")) return;
 
     try {
-      this.showLoadingAnimation(SEARCH.LOAD);
+      this.showLoadingAnimation();
 
       const { items, nextPageToken } = await API.searchVideo(this.keyword, this.nextPageToken);
 
