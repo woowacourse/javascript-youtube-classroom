@@ -33,7 +33,7 @@ export default class Store extends Subject {
       this.save(key, value);
     });
 
-    this.notify();
+    this.notifyAll();
   }
 
   get() {
