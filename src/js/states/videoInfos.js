@@ -64,7 +64,8 @@ const videoInfos = {
         channelTitle: snippet.channelTitle,
         publishTime: snippet.publishedAt,
       },
-      isWatched: false, // TODO: 필터 할 때 localStorage에서 받아오기 - 2단계.
+      watchType: videoInfos.find(videoInfo => videoInfo.id.videoId === id)
+        .watchType, // TODO: 필터 할 때 localStorage에서 받아오기 - 2단계.
     }));
   },
 };

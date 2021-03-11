@@ -4,33 +4,15 @@ import {
   SAVE_CANCEL_SUCCESS_MSG,
 } from '../constants/snackbarMessage.js';
 import { MAX_SAVED_VIDEO_COUNT } from '../constants/classroom.js';
-import { cancelVideoSave } from '../service.js';
+import { cancelVideoSave, saveVideo } from '../service.js';
 import videoInfos from '../states/videoInfos.js';
-import { showSnackBar, renderSavedVideoList } from '../viewControllers/app.js';
+import { renderSavedVideoList, showSnackBar } from '../viewControllers/app.js';
 import {
-  toggleSaveButton,
   renderSavedVideoCount,
+  toggleSaveButton,
 } from '../viewControllers/searchModal.js';
 import { VIDEO_SAVE_CANCEL_CONFIRM_MSG } from '../constants/confirmMessage.js';
-
-function createVideoInfo(videoDataset) {
-  const { videoId, title, channelId, channelTitle, publishTime } = videoDataset;
-
-  return {
-    id: { videoId },
-    snippet: { title, channelId, channelTitle, publishTime },
-    isWatched: false,
-  };
-}
-
-function saveVideo($video) {
-  const videoInfo = createVideoInfo($video.dataset);
-
-  videoInfos.add(videoInfo);
-
-  renderSavedVideoCount(videoInfos.size);
-  renderSavedVideoList(videoInfos.get());
-}
+import videoListType from '../states/videoListType.js';
 
 function handleVideoSave($saveButton) {
   if (videoInfos.size >= MAX_SAVED_VIDEO_COUNT) {
@@ -42,6 +24,9 @@ function handleVideoSave($saveButton) {
   saveVideo($saveButton.closest('.js-video'));
   toggleSaveButton($saveButton);
   showSnackBar(SAVE_SUCCESS_MSG);
+
+  renderSavedVideoCount(videoInfos.size);
+  renderSavedVideoList(videoInfos.get(), videoListType.get());
 }
 
 function handleVideoSaveCancel($saveCancelButton) {
@@ -50,6 +35,9 @@ function handleVideoSaveCancel($saveCancelButton) {
   cancelVideoSave($saveCancelButton.closest('.js-video'));
   toggleSaveButton($saveCancelButton);
   showSnackBar(SAVE_CANCEL_SUCCESS_MSG);
+
+  renderSavedVideoList(videoInfos.get(), videoListType.get());
+  renderSavedVideoCount(videoInfos.size);
 }
 
 function videoSaveManager({ target }) {

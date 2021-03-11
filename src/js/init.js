@@ -15,6 +15,7 @@ import {
   renderLatestKeywordList,
   renderSavedVideoCount,
 } from './viewControllers/searchModal.js';
+import videoListType from './states/videoListType.js';
 
 async function initState() {
   await videoInfos.init();
@@ -25,7 +26,7 @@ async function initState() {
 async function initView() {
   await initState();
 
-  renderSavedVideoList(videoInfos.get());
+  renderSavedVideoList(videoInfos.get(), videoListType.get());
   renderSavedVideoCount(videoInfos.size);
   renderLatestKeywordList(latestKeywords.get());
 }

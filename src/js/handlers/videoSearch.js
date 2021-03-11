@@ -1,31 +1,6 @@
-import $ from '../utils/DOM.js';
-import { fetchSearchResult } from '../API.js';
-import intersectionObserver from '../states/intersectionObserver.js';
 import latestKeywords from '../states/latestKeywords.js';
-import pageToken from '../states/pageToken.js';
-import videoInfos from '../states/videoInfos.js';
-import {
-  renderVideoLoader,
-  renderSearchVideoList,
-  renderLatestKeywordList,
-} from '../viewControllers/searchModal.js';
-
-async function searchVideo(keyword) {
-  renderVideoLoader();
-
-  const { nextPageToken, items: videoList } = await fetchSearchResult(keyword);
-  pageToken.set(nextPageToken);
-  renderSearchVideoList(videoList, videoInfos.get());
-
-  return videoList;
-}
-
-function initInfiniteScroll() {
-  const $lastVideo = $('#video-search-result .js-video:last-child');
-
-  intersectionObserver.disconnect();
-  intersectionObserver.observe($lastVideo);
-}
+import { renderLatestKeywordList } from '../viewControllers/searchModal.js';
+import { initInfiniteScroll, searchVideo } from '../service.js';
 
 async function handleVideoSearch(e) {
   e.preventDefault();

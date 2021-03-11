@@ -4,9 +4,12 @@ import pageToken from './states/pageToken.js';
 import videoInfos from './states/videoInfos.js';
 import {
   renderVideoLoader,
-  renderVideoSearchResult,
+  renderSearchVideoList,
+  renderSavedVideoCount,
 } from './viewControllers/searchModal.js';
 import $ from './utils/DOM.js';
+import { renderSavedVideoList } from './viewControllers/app.js';
+import videoListType from './states/videoListType.js';
 
 function createVideoInfo(videoDataset) {
   const { videoId, title, channelId, channelTitle, publishTime } = videoDataset;
@@ -20,17 +23,18 @@ function createVideoInfo(videoDataset) {
 
 async function searchVideo(keyword) {
   renderVideoLoader();
-  const { nextPageToken, items } = await fetchSearchResult(keyword);
-  const filteredItems = items.filter(item => item.id.videoId);
 
+  const { nextPageToken, items: videoList } = await fetchSearchResult(keyword);
+  const filteredItems = videoList.filter(video => video.id.videoId);
   pageToken.set(nextPageToken);
-  renderVideoSearchResult(filteredItems, videoInfos.get());
+  renderSearchVideoList(filteredItems, videoInfos.get());
 
-  return items;
+  return videoList;
 }
 
 function saveVideo($video) {
   const videoInfo = createVideoInfo($video.dataset);
+
   videoInfos.add(videoInfo);
 }
 
