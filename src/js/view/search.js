@@ -20,8 +20,8 @@ class SearchView {
     );
   };
 
-  toggleNotFound = show => {
-    this.$searchNotFound.classList.toggle('hide', !show);
+  toggleNotFoundSearchedVideo = show => {
+    this.$searchNotFound.classList.toggle('show', show);
   };
 
   renderSkeletonArticles = () => {
@@ -40,7 +40,6 @@ class SearchView {
 
   resetView = () => {
     this.$searchVideoWrapper.innerHTML = '';
-    this.toggleNotFound(false);
   };
 }
 
