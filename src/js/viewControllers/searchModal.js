@@ -37,7 +37,7 @@ function appendVideos(searchResult, videoInfos) {
 
 function search(keyword) {
   $videoSearchForm.elements['video-search-input'].value = keyword;
-  $videoSearchForm.elements['video-search-submit'].click();
+  $videoSearchForm.elements['video-search-button'].click();
 }
 
 export {
