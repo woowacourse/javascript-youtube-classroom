@@ -50,8 +50,9 @@ export default class WatchList extends Observer {
   async render() {
     const watchList = this.store.load(LOCAL_STORAGE_KEYS.WATCH_LIST);
     const watchListIds = watchList.map((item) => item.videoId);
+    const toWatchList = watchList.filter((item) => !item.watched);
 
-    if (!watchList || watchList.length <= 0) {
+    if (!toWatchList || toWatchList.length <= 0) {
       showElement(SELECTORS.CLASS.NO_VIDEO);
       return;
     }
@@ -75,13 +76,6 @@ export default class WatchList extends Observer {
     }
   }
 
-  // update() - 기존에 렌더된 아이템은 두고, 변화될 것만 감지해서 렌더링
-  // - 추가되면 추가만
-  // - 삭제 되면 삭제한 것만 안 보이게
-  //   - 볼 목록 or 본 목록
-  // this.store.update -> 자동 렌더 -> 실상은... 일일이 render 함수에 신경을 써줄수밖에 없었음
-  // 옵저버 패턴이라는 형태에 맞게 코드를 작성하기 위해서, 한번에 다시 렌더하는 방법을 택함
-  // - 처음부터 최적화를 하려고 들어서 코드가 많이 꼬임
   async update() {
     try {
       const { watchList } = this.store.get();
@@ -99,11 +93,23 @@ export default class WatchList extends Observer {
         const watchedList = watchList.filter((item) => item.watched);
         const watchedListIds = watchedList.map((item) => item.videoId);
 
+        if (watchedList.length) {
+          hideElement(SELECTORS.CLASS.NO_VIDEO);
+        } else {
+          showElement(SELECTORS.CLASS.NO_VIDEO);
+        }
+
         const renderingVideos = this.list.filter(({ id }) => watchedListIds.includes(id));
         this.renderSavedVideos(renderingVideos);
       } else if (this.nowMenu === MENU.TO_WATCH) {
         const toWatchList = watchList.filter((item) => !item.watched);
         const toWatchListIds = toWatchList.map((item) => item.videoId);
+
+        if (toWatchList.length) {
+          hideElement(SELECTORS.CLASS.NO_VIDEO);
+        } else {
+          showElement(SELECTORS.CLASS.NO_VIDEO);
+        }
 
         const renderingVideos = this.list.filter(({ id }) => toWatchListIds.includes(id));
         this.renderSavedVideos(renderingVideos);
@@ -124,6 +130,8 @@ export default class WatchList extends Observer {
         const targetId = target.closest('.menu-list').dataset.videoId;
         const newWatchList = watchList.filter(({ videoId }) => videoId !== targetId);
         this.store.update(LOCAL_STORAGE_KEYS.WATCH_LIST, newWatchList, this);
+
+        showSnackbar(ALERT_MESSAGE.VIDEO_DELETED);
       }
 
       if (target.classList.contains('watched')) {
@@ -135,7 +143,14 @@ export default class WatchList extends Observer {
           }
           return nowVideo;
         });
+
         this.store.update(LOCAL_STORAGE_KEYS.WATCH_LIST, newWatchList, this);
+
+        if (this.nowMenu === MENU.TO_WATCH) {
+          showSnackbar(ALERT_MESSAGE.VIDEO_MOVED_WATCHED_LIST);
+        } else if (this.nowMenu === MENU.WATCHED) {
+          showSnackbar(ALERT_MESSAGE.VIDEO_MOVED_TO_WATCH_LIST);
+        }
       }
     });
 
@@ -148,6 +163,12 @@ export default class WatchList extends Observer {
       const { watchList } = this.store.get();
       const toWatchList = watchList.filter(({ watched }) => !watched);
       const toWatchListIds = toWatchList.map((item) => item.videoId);
+
+      if (toWatchList.length) {
+        hideElement(SELECTORS.CLASS.NO_VIDEO);
+      } else {
+        showElement(SELECTORS.CLASS.NO_VIDEO);
+      }
 
       const renderingVideos = this.list.filter(({ id }) => toWatchListIds.includes(id));
       this.renderSavedVideos(renderingVideos);
@@ -162,6 +183,12 @@ export default class WatchList extends Observer {
       const { watchList } = this.store.get();
       const watchedList = watchList.filter(({ watched }) => watched);
       const watchedListIds = watchedList.map((item) => item.videoId);
+
+      if (watchedList.length) {
+        hideElement(SELECTORS.CLASS.NO_VIDEO);
+      } else {
+        showElement(SELECTORS.CLASS.NO_VIDEO);
+      }
 
       const renderingVideos = this.list.filter(({ id }) => watchedListIds.includes(id));
       this.renderSavedVideos(renderingVideos);

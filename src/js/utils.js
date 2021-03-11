@@ -7,11 +7,16 @@ export const sleep = (ms) => {
   return new Promise((resolve) => setTimeout(resolve, ms));
 };
 
+let snackbarTimeout = null;
 export const showSnackbar = (message, second = 3) => {
+  if (snackbarTimeout) {
+    clearTimeout(snackbarTimeout);
+  }
+
   $(SELECTORS.ID.SNACKBAR).textContent = message;
   $(SELECTORS.ID.SNACKBAR).classList.add(SELECTORS.STATUS.SNACKBAR_SHOW);
 
-  setTimeout(() => {
+  snackbarTimeout = setTimeout(() => {
     $(SELECTORS.ID.SNACKBAR).classList.remove(SELECTORS.STATUS.SNACKBAR_SHOW);
   }, second * 1000);
 };
