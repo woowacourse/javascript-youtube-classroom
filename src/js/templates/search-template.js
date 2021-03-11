@@ -56,9 +56,3 @@ export const recentKeywordsTemplate = keywords => {
 
     `;
 };
-
-export const myVideoInfosTemplate = length => {
-  return `<div class="d-flex justify-end text-gray-700">
-            저장된 영상 갯수: ${length}개
-          </div>`;
-};

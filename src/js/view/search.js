@@ -3,13 +3,12 @@ import { $, parseDOMFromString } from '../utils/util.js';
 import {
   searchVideoTemplate,
   recentKeywordsTemplate,
-  myVideoInfosTemplate,
 } from '../templates/search-template.js';
 
 class SearchView {
   constructor() {
     this.$searchVideoWrapper = $(SELECTOR.SEARCH_VIDEO_WRAPPER);
-    this.$myVideoInfosSection = $(SELECTOR.MY_VIDEO_INFOS);
+    this.$myVideoLength = $(SELECTOR.MY_VIDEO_LENGTH);
     this.$recentKeywordsSection = $(SELECTOR.RECENT_KEYWORDS);
     this.$searchNotFound = $(SELECTOR.SEARCH_NOT_FOUND);
   }
@@ -35,7 +34,7 @@ class SearchView {
   };
 
   renderSavedVideoCountSection = length => {
-    this.$myVideoInfosSection.innerHTML = myVideoInfosTemplate(length);
+    this.$myVideoLength.innerHTML = length;
   };
 
   resetView = () => {

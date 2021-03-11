@@ -17,7 +17,7 @@ export const SELECTOR = {
   SAVE_VIDEO_BUTTON: '.js-save-button',
   VIDEO_IFRAME: '.clip iframe',
   RECENT_KEYWORDS: '#recent-keywords',
-  MY_VIDEO_INFOS: '#my-video-infos',
+  MY_VIDEO_LENGTH: '#my-video-length',
 };
 
 export const CLASS = {
