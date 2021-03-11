@@ -27,6 +27,10 @@ export default class WatchEventController {
       "click",
       this.onClickWatchedButton.bind(this)
     );
+    elements.$watchedVideos.addEventListener(
+      "click",
+      this.onClickClearWatchLogbutton.bind(this)
+    );
   }
 
   onLoadApp() {
@@ -58,5 +62,15 @@ export default class WatchEventController {
 
     this.watchController.watchVideo(videoId);
     this.watchController.updateWatchLaterView(videos.getSavedVideos());
+  }
+
+  onClickClearWatchLogbutton(e) {
+    const videoId = e.target.dataset.watchedButton;
+    if (!videoId) {
+      return;
+    }
+
+    this.watchController.clearWatchedViedoLog(videoId);
+    this.watchController.updateWatchedView(videos.getSavedVideos());
   }
 }
