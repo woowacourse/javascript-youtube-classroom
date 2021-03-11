@@ -74,6 +74,7 @@ export class SavedVideo {
     } catch (e) {
       console.error(e);
       showSnackbar(SNACKBAR_MESSAGE.API_REQUEST_FAILURE);
+      return { items: [] };
     }
   }
 

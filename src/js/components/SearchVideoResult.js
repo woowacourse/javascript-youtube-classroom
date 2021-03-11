@@ -60,6 +60,7 @@ export class SearchVideoResult {
     } catch (e) {
       console.error(e);
       showSnackbar(SNACKBAR_MESSAGE.API_REQUEST_FAILURE);
+      return { items: [] };
     }
   }
 
@@ -76,6 +77,7 @@ export class SearchVideoResult {
     } catch (e) {
       console.error(e);
       showSnackbar(SNACKBAR_MESSAGE.API_REQUEST_FAILURE);
+      return { items: [] };
     }
   }
 
