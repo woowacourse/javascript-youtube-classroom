@@ -18,14 +18,6 @@ export default class WatchController {
     }
   }
 
-  watchVideo(videoId) {
-    videos.setVideoWatched(videoId, true);
-  }
-
-  clearWatchedViedoLog(videoId) {
-    videos.setVideoWatched(videoId, false);
-  }
-
   updateWatchedView(savedVideos) {
     const watchedVideos = savedVideos.filter((video) => video.watched);
 
@@ -36,5 +28,17 @@ export default class WatchController {
     } else {
       this.watchView.showWatchedVideos(watchedVideos);
     }
+  }
+
+  watchVideo(videoId) {
+    videos.setVideoWatched(videoId, true);
+  }
+
+  clearWatchedViedoLog(videoId) {
+    videos.setVideoWatched(videoId, false);
+  }
+
+  deleteVideo(videoId) {
+    videos.removeSavedVideo(videoId);
   }
 }
