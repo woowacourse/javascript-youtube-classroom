@@ -78,7 +78,21 @@ describe("youtube classroom 기능 테스트", () => {
   });
 
   it("delete 버튼을 누르면, 볼 영상에서 삭제된다.", () => {
-    cy.get("#watch-later-videos button[data-delete-button]").eq(0).click();
+    const confirmStub = cy.stub();
+
+    cy.on("window:confirm", (message) => {
+      confirmStub(message);
+      return true;
+    });
+
+    cy.get("#watch-later-videos button[data-delete-button]")
+      .eq(0)
+      .click()
+      .then(() => {
+        expect(confirmStub.getCall(0)).to.be.calledWith(
+          "정말로 삭제하시겠습니까?"
+        );
+      });
 
     cy.get("#not-saved").should("be.visible");
     cy.get("#watched-view-button").click();
@@ -86,6 +100,13 @@ describe("youtube classroom 기능 테스트", () => {
   });
 
   it("delete 버튼을 누르면, 본 영상에서 삭제된다.", () => {
+    const confirmStub = cy.stub();
+
+    cy.on("window:confirm", (message) => {
+      confirmStub(message);
+      return true;
+    });
+
     cy.get("#search-button").click();
     cy.get("#search-results button[data-video-id]").eq(0).click();
     cy.get("#search-modal-close").click();
@@ -94,7 +115,14 @@ describe("youtube classroom 기능 테스트", () => {
     cy.get("#not-saved").should("be.visible");
 
     cy.get("#watched-view-button").click();
-    cy.get("#watched-videos button[data-delete-button]").eq(0).click();
+    cy.get("#watched-videos button[data-delete-button]")
+      .eq(0)
+      .click()
+      .then(() => {
+        expect(confirmStub.getCall(0)).to.be.calledWith(
+          "정말로 삭제하시겠습니까?"
+        );
+      });
     cy.get("#not-watched").should("be.visible");
   });
 });
