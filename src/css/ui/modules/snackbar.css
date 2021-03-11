@@ -1,4 +1,13 @@
-#snackbar {
+#snackbar-container {
+  display: table-cell;
+  vertical-align: bottom;
+  position: fixed;
+  z-index: 100;
+  left: 50%;
+  bottom: 0;
+}
+
+.snackbar {
   visibility: hidden;
   min-width: 250px;
   margin-left: -125px;
@@ -7,13 +16,9 @@
   text-align: center;
   border-radius: 2px;
   padding: 16px;
-  position: fixed;
-  z-index: 100;
-  left: 50%;
-  bottom: 0;
 }
 
-#snackbar.show {
+.snackbar.show {
   visibility: visible !important; /* Show the snackbar */
   -webkit-animation: fadein 0.5s, fadeout 0.5s 2.7s;
   animation: fadein 0.5s, fadeout 0.5s 2.7s;

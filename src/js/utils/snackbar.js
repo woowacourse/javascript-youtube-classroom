@@ -1,14 +1,15 @@
-import { $ } from './dom.js';
 import { VALUE } from './constants.js';
 
-const snackbar = $('#snackbar');
-
 export default function popSnackbar(message) {
-  snackbar.setText(message);
-  snackbar.addClass('show');
+  const snackbar = document.createElement('div');
+  snackbar.classList.add('snackbar');
+
+  document.querySelector('#snackbar-container').append(snackbar);
+
+  snackbar.innerText = message;
+  snackbar.classList.add('show');
 
   setTimeout(() => {
-    snackbar.removeClass('show');
-    snackbar.setText('');
+    snackbar.remove();
   }, VALUE.SNACKBAR_TIME);
 }
