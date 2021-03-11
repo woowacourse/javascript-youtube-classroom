@@ -1,5 +1,5 @@
-export const SEARCH_URL = 'https://www.googleapis.com/youtube/v3/search?';
-export const VIDEO_URL = 'https://www.googleapis.com/youtube/v3/videos?';
+export const SEARCH_URL = 'https://zig-youtube-api.netlify.app/youtube/search?';
+export const VIDEO_URL = 'https://zig-youtube-api.netlify.app/youtube/videos?';
 
 export const VALUE = {
   KEYWORD_COUNT: 3,

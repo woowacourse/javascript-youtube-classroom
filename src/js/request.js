@@ -1,9 +1,7 @@
-import youtubeKey from '../../youtubeAPI.js';
 import { SEARCH_URL, VIDEO_URL, VALUE } from '../js/utils/constants.js';
 
 function generateSearchURL(keyword, pageToken) {
   const searchParams = new URLSearchParams({
-    key: youtubeKey,
     type: 'video',
     part: 'snippet',
     maxResults: VALUE.CLIPS_PER_SCROLL,
@@ -26,7 +24,6 @@ export async function searchRequest(keyword, pageToken) {
 
 function generateVideoURL(videoIds) {
   const searchParams = new URLSearchParams({
-    key: youtubeKey,
     part: 'snippet',
     id: videoIds.join(','),
   });
