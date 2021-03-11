@@ -29,5 +29,9 @@ export const ERROR_MESSAGE = {
   CONNOT_FIND_ELEMENT_ERROR: "cannot find element",
 };
 
+export const CONFIRM_MESSAGE = {
+  DELETE: "정말로 삭제하시겠습니까?",
+};
+
 export const INVALID_DATE = "Invalid Date";
 export const NULL_DATE = "----년 --월 --일";

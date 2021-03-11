@@ -1,4 +1,5 @@
 import videos from "../state/videos.js";
+import { CONFIRM_MESSAGE } from "../utils/constants.js";
 import WatchView from "./WatchView.js";
 
 export default class WatchController {
@@ -39,6 +40,8 @@ export default class WatchController {
   }
 
   deleteVideo(videoId) {
-    videos.removeSavedVideo(videoId);
+    if (window.confirm(CONFIRM_MESSAGE.DELETE)) {
+      videos.removeSavedVideo(videoId);
+    }
   }
 }
