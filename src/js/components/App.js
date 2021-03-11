@@ -1,4 +1,4 @@
-import { SavedVideoManager } from '../model/index.js';
+import { Router, SavedVideoManager } from '../model/index.js';
 import { Navigation, SearchVideoModal, SavedVideo } from './index.js';
 
 export class App {
@@ -8,6 +8,7 @@ export class App {
       handleIsChecked: this.handleIsChecked.bind(this),
       handleOpenModal: this.handleOpenModal.bind(this),
     });
+    this.router = new Router({ onChangePage: this.handleIsChecked.bind(this) });
     this.savedVideo = new SavedVideo({
       savedVideoManager: this.savedVideoManager,
       isChecked: false,
@@ -17,8 +18,8 @@ export class App {
     this.isChecked = false;
   }
 
-  handleIsChecked(isChecked) {
-    this.setState({ isChecked });
+  handleIsChecked() {
+    this.setState({ isChecked: !this.isChecked });
   }
 
   handleOpenModal() {

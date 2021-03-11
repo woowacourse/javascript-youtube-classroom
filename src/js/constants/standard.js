@@ -1,3 +1,4 @@
+export const DEFAULT_PAGE = './#unchecked';
 export const NUM_OF_VIDEO_PER_FETCH = 10;
 export const MAX_NUM_OF_SAVED_VIDEO = 100;
 export const SCROLL_THRTOTTLE_DELAY = 100;

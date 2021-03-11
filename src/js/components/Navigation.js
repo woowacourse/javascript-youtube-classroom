@@ -14,14 +14,12 @@ export class Navigation {
   initEvent() {
     this.$navigation.addEventListener('click', ({ target }) => {
       if (target.classList.contains('js-unchecked-video')) {
-        this.handleIsChecked(false);
         this.changeButtonColor(target);
 
         return;
       }
 
       if (target.classList.contains('js-checked-video')) {
-        this.handleIsChecked(true);
         this.changeButtonColor(target);
 
         return;

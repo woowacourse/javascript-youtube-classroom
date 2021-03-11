@@ -94,9 +94,9 @@ export class SavedVideo {
     return `
       <ul class="list-style-none p-0 mt-3 mb-6 d-flex" data-video-id="${videoId}">
         <li class="mr-2">
-          <button type="button" class="js-check-button emoji-btn ${
-            this.isChecked ? 'scale-hover' : 'scale-hover opacity-hover'
-          }">✅</button>
+          <button type="button" class="js-check-button emoji-btn scale-hover ${this.isChecked ? '' : 'opacity-hover'}">
+            ✅
+          </button>
         </li>
         <li class="mr-2"><button type="button" class="js-like-button emoji-btn bg-transparent scale-hover opacity-hover">👍</button></li>
         <li class="mr-2"><button type="button" class="js-comment-button emoji-btn bg-transparent scale-hover opacity-hover">💬</button></li>
