@@ -2,6 +2,8 @@ import WatchController from "./WatchController.js";
 
 import videos from "../state/videos.js";
 import elements from "../utils/elements.js";
+import { addBackgroundColor } from "../utils/dom.js";
+import { PALLET } from "../utils/constants.js";
 
 export default class WatchEventController {
   constructor() {

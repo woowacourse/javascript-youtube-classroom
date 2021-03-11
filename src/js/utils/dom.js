@@ -1,4 +1,4 @@
-import { ERROR_MESSAGE } from "./constants.js";
+import { ERROR_MESSAGE, PALLET } from "./constants.js";
 import elements from "./elements.js";
 
 export const $ = (selector) => {
@@ -35,6 +35,14 @@ export const showElement = ($target) => {
 
 export const hideElement = ($target) => {
   $target.classList.add("d-none-hard");
+};
+
+export const addBackgroundColor = ($target, color) => {
+  $target.classList.add(color);
+};
+
+export const removeBackgroundColor = ($target, color) => {
+  $target.classList.remove(color);
 };
 
 export const lockScroll = ($target) => {
