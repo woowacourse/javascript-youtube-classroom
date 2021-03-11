@@ -76,4 +76,25 @@ describe("youtube classroom 기능 테스트", () => {
           .should("have.class", "opacity-hover");
       });
   });
+
+  it("delete 버튼을 누르면, 볼 영상에서 삭제된다.", () => {
+    cy.get("#watch-later-videos button[data-delete-button]").eq(0).click();
+
+    cy.get("#not-saved").should("be.visible");
+    cy.get("#watched-view-button").click();
+    cy.get("#not-watched").should("be.visible");
+  });
+
+  it("delete 버튼을 누르면, 본 영상에서 삭제된다.", () => {
+    cy.get("#search-button").click();
+    cy.get("#search-results button[data-video-id]").eq(0).click();
+    cy.get("#search-modal-close").click();
+
+    cy.get("#watch-later-videos button[data-delete-button]").eq(0).click();
+    cy.get("#not-saved").should("be.visible");
+
+    cy.get("#watched-view-button").click();
+    cy.get("#watched-videos button[data-delete-button]").eq(0).click();
+    cy.get("#not-watched").should("be.visible");
+  });
 });
