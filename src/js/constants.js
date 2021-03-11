@@ -52,3 +52,8 @@ export const LOCAL_STORAGE_KEYS = {
 export const SERACH_RESULT = {
   SKELETON_UI_COUNT: 8,
 };
+
+export const MENU = {
+  WATCHED: 'watched',
+  TO_WATCH: 'toWatch',
+};

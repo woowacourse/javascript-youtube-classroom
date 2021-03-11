@@ -57,3 +57,11 @@ export const hideElement = (selector) => {
 export const showElement = (selector) => {
   $(selector).classList.remove('d-none');
 };
+
+export const colorizeButton = (selector) => {
+  $(selector).classList.add('bg-cyan-100');
+};
+
+export const uncolorizeButton = (selector) => {
+  $(selector).classList.remove('bg-cyan-100');
+};

@@ -1,6 +1,8 @@
+import { generateCSSClass } from './utils.js';
+
 export const getVideoTemplate = (data, options) => {
   const { id, title, channelId, channelTitle, dateString } = data;
-  const { containsSaveButton = false, containsMenu = false, isSaved = false } = options;
+  const { containsSaveButton = false, containsMenu = false, isSaved = false, isWatched = false } = options;
 
   return `
     <article class="clip d-flex flex-col" data-video-id="${id}">
@@ -40,10 +42,10 @@ export const getVideoTemplate = (data, options) => {
             containsMenu
               ? `
               <div class="menu-list" data-video-id="${id}"}>
-                <span class="opacity-hover watched">✅</span>
-                <span class="opacity-hover like">👍</span>
-                <span class="opacity-hover comment">💬</span>
-                <span class="opacity-hover delete">🗑️</span>
+                <span class="cursor-pointer ${generateCSSClass(!isWatched, 'opacity-hover')} watched">✅</span>
+                <span class="cursor-pointer opacity-hover like">👍</span>
+                <span class="cursor-pointer opacity-hover comment">💬</span>
+                <span class="cursor-pointer opacity-hover delete">🗑️</span>
               </div>
             `
               : ''
