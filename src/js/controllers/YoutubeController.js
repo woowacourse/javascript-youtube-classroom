@@ -63,6 +63,10 @@ export default class YoutubeController {
   }
 
   focusSavedTab() {
+    const watchedVideoIds = this.store.state.watchedVideoIds;
+    const unWatchedVideoIds = this.store.computed.unWatchedVideoIds;
+
+    this.savedVideosView.showMatchedVideos(watchedVideoIds, unWatchedVideoIds);
     this.updateNavTab($('#saved-btn'));
     this.savedVideosView.showSavedVideosAll();
   }
@@ -70,11 +74,9 @@ export default class YoutubeController {
   focusWatchedTab() {
     const savedVideoIds = this.store.state.savedVideoIds;
     const watchedVideoIds = this.store.state.watchedVideoIds;
-    const unWatchedVideoIds = savedVideoIds.filter(
-      (videoId) => !watchedVideoIds.includes(videoId),
-    );
+    const unWatchedVideoIds = this.store.computed.unWatchedVideoIds;
 
-    this.savedVideosView.showWatchedVideosOnly(unWatchedVideoIds);
+    this.savedVideosView.showMatchedVideos(unWatchedVideoIds, watchedVideoIds);
     this.updateNavTab($('#watched-btn'));
   }
 

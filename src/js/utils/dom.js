@@ -33,10 +33,14 @@ export const $ = (function () {
 
   constructor.prototype.show = function () {
     this.each((element) => element.classList.remove('d-none'));
+
+    return this;
   };
 
   constructor.prototype.hide = function () {
     this.each((element) => element.classList.add('d-none'));
+
+    return this;
   };
 
   constructor.prototype.removeElement = function () {
@@ -51,16 +55,16 @@ export const $ = (function () {
     this.each((element) => element.insertAdjacentHTML('beforeend', template));
   };
 
-  constructor.prototype.addClass = function (className) {
+  constructor.prototype.addClass = function () {
     if (!this.elements) return;
 
-    this.each((element) => element.classList.add(className));
+    this.each((element) => element.classList.add(...arguments));
   };
 
-  constructor.prototype.removeClass = function (className) {
+  constructor.prototype.removeClass = function () {
     if (!this.elements) return;
 
-    this.each((element) => element.classList.remove(className));
+    this.each((element) => element.classList.remove(...arguments));
   };
 
   constructor.prototype.toggleClass = function (className) {
