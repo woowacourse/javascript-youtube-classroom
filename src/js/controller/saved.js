@@ -1,5 +1,5 @@
-import { CLASS, SELECTOR, STORAGE } from '../constants/constant.js';
-import { $, $$, setJSONToLocalStorage } from '../utils/util.js';
+import { CLASS, SELECTOR } from '../constants/constant.js';
+import { $, $$, toggleSelectorClass } from '../utils/util.js';
 class SavedController {
   constructor(storage, savedView, navView, snackBarView) {
     this.storage = storage;
@@ -20,7 +20,8 @@ class SavedController {
     const savedVideos = this.storage.myVideos;
 
     if (savedVideos.length === 0) {
-      this.savedView.toggleNotFoundSavedVideo(true);
+      toggleSelectorClass($('#saved-video-wrapper'), 'show', true);
+      // this.savedView.toggleNotFoundSavedVideo(true);
       return;
     }
     this.savedView.renderSavedVideos(savedVideos);
@@ -44,7 +45,8 @@ class SavedController {
     this.savedView.hideSelectedVideo(target);
 
     if (this.storage.savedVideoCount === 0) {
-      this.savedView.toggleNotFoundSavedVideo(true);
+      toggleSelectorClass($('#saved-video-wrapper'), 'show', true);
+      // this.savedView.toggleNotFoundSavedVideo(true);
     }
     this.snackBarView.showSnackBar('영상을 목록에서 제거했습니다');
   }

@@ -1,12 +1,9 @@
-import { $, parseDOMFromString } from '../utils/util.js';
+import { $, parseDOMFromString, toggleSelectorClass } from '../utils/util.js';
 import { savedVideoTemplate } from '../templates/video-template.js';
 class SavedView {
   constructor() {
     this.$savedVideoWrapper = $('#saved-video-wrapper');
-  }
-
-  toggleNotFoundSavedVideo(show) {
-    $('#saved-not-found').classList.toggle('show', show);
+    this.$savedNotFound = $('#saved-not-found');
   }
 
   // TODO : 개선해보기..
@@ -14,11 +11,12 @@ class SavedView {
     this.$savedVideoWrapper.innerHTML = ``;
 
     if (infos.length === 0) {
-      this.toggleNotFoundSavedVideo(true);
+      toggleSelectorClass(this.$savedNotFound, 'show', true);
       return;
     }
 
-    this.toggleNotFoundSavedVideo(false);
+    toggleSelectorClass(this.$savedNotFound, 'show', false);
+
     infos.forEach(info => {
       this.$savedVideoWrapper.innerHTML += savedVideoTemplate(info);
     });
@@ -26,7 +24,7 @@ class SavedView {
 
   appendSavedVideo(info) {
     if (this.$savedVideoWrapper.children.length === 0) {
-      this.toggleNotFoundSavedVideo(false);
+      toggleSelectorClass(this.$savedNotFound, 'show', false);
     }
 
     this.$savedVideoWrapper.appendChild(
@@ -38,7 +36,7 @@ class SavedView {
     this.$savedVideoWrapper.removeChild(target.closest('.clip'));
 
     if (this.$savedVideoWrapper.children.length === 0) {
-      this.toggleNotFoundSavedVideo(true);
+      toggleSelectorClass(this.$savedNotFound, 'show', true);
     }
   }
 }

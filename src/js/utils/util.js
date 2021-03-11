@@ -41,3 +41,7 @@ export const convertDateFormat = publishedDate => {
   const date = new Date(publishedDate);
   return `${date.getFullYear()}년 ${date.getMonth() + 1}월 ${date.getDate()}일`;
 };
+
+export const toggleSelectorClass = (selector, className, force) => {
+  selector.classList.toggle(className, force);
+};

@@ -1,5 +1,5 @@
 import { SEARCH, SELECTOR } from '../constants/constant.js';
-import { $, parseDOMFromString } from '../utils/util.js';
+import { $, parseDOMFromString, toggleSelectorClass } from '../utils/util.js';
 import {
   searchVideoTemplate,
   recentKeywordsTemplate,
@@ -19,8 +19,13 @@ class SearchView {
     );
   };
 
-  toggleNotFoundSearchedVideo = show => {
-    this.$searchNotFound.classList.toggle('show', show);
+  toggleNotFoundSearchedVideo = length => {
+    if (length === 0) {
+      toggleSelectorClass(this.$searchNotFound, 'show', true);
+      return;
+    }
+
+    toggleSelectorClassfalse(this.$searchNotFound, 'show', false);
   };
 
   renderSkeletonArticles = () => {
