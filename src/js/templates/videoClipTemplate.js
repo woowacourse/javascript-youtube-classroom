@@ -80,7 +80,7 @@ function getSaveButtonsTemplate(item) {
 }
 
 // TODO : 이름 변경
-function getSomethingbuttons(videoId) {
+function getClipButtons(videoId) {
   return `
     <div>
       <button data-watched-button=${videoId} class="opacity-hover">✅</button>
@@ -128,7 +128,7 @@ export function createSavedClipTemplate(item) {
   videoArticle.classList.add("mt-10");
   videoArticle.insertAdjacentHTML(
     "beforeend",
-    getVideoClipInnerTemplate(item, getSaveButtonsTemplate(item))
+    getVideoClipInnerTemplate(item, getClipButtons(item.videoId))
   );
 
   return videoArticle;
@@ -140,7 +140,7 @@ export function createSearchedClipTemplate(item) {
   videoArticle.classList.add("mt-10");
   videoArticle.insertAdjacentHTML(
     "beforeend",
-    getVideoClipInnerTemplate(item, getSomethingbuttons(item.videoId))
+    getVideoClipInnerTemplate(item, getSaveButtonsTemplate(item))
   );
 
   return videoArticle;
