@@ -7,6 +7,7 @@ import videoInfos from '../states/videoInfos.js';
 import {
   renderVideoLoader,
   renderSearchVideoList,
+  renderLatestKeywordList,
 } from '../viewControllers/searchModal.js';
 
 async function searchVideo(keyword) {
@@ -33,6 +34,7 @@ async function handleVideoSearch(e) {
     ? e.target.innerText // 최근 검색어 클릭 시
     : e.target.elements['video-search-input'].value; // 검색 input에 직접 입력 시
   latestKeywords.add(keyword);
+  renderLatestKeywordList(latestKeywords.get());
 
   const searchVideoList = await searchVideo(keyword);
 
