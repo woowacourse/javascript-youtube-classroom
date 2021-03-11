@@ -1,3 +1,4 @@
+import { createSavedClipTemplate } from "../templates/videoClipTemplate.js";
 import { PALLET } from "../utils/constants.js";
 import {
   hideElement,
@@ -28,12 +29,19 @@ export default class WatchView {
     showElement(elements.$notWatched);
   }
 
-  showWatchLaterVideos() {
+  showWatchLaterVideos(watchLaterVideos) {
     this.hideAllSection();
     showElement(elements.$watchLaterVideos);
+    elements.$watchLaterVideos.innerHTML = "";
+
+    const fragment = document.createDocumentFragment();
+    watchLaterVideos.forEach((video) =>
+      fragment.append(createSavedClipTemplate(video))
+    );
+    elements.$watchLaterVideos.append(fragment);
   }
 
-  showWatchedVideos() {
+  showWatchedVideos(watchedVideos) {
     this.hideAllSection();
     showElement(elements.$watchedVideos);
   }
