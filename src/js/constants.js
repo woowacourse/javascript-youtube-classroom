@@ -1,3 +1,7 @@
+export const SETTINGS = {
+  MAX_VIDEO_COUNT: 100,
+};
+
 export const ALERT_MESSAGE = {
   EMPTY_SEARCH_KEYWORD: '검색어를 입력해주세요',
   VIDEO_SAVED: '선택한 동영상을 저장했습니다',
@@ -5,6 +9,7 @@ export const ALERT_MESSAGE = {
   VIDEO_MOVED_WATCHED_LIST: '영상을 [본 영상] 목록으로 옮겼습니다',
   VIDEO_MOVED_TO_WATCH_LIST: '영상을 [볼 영상] 목록으로 옮겼습니다',
   VIDEO_DELETED: '영상이 삭제되었습니다.',
+  MAX_VIDEO_COUNT_EXCEEDED: `영상은 최대 ${SETTINGS.MAX_VIDEO_COUNT}개까지만 저장할 수 있습니다.`,
 };
 
 export const API_SETTINGS = {

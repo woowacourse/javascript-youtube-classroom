@@ -1,6 +1,6 @@
 import { searchYoutube } from '../api.js';
 import { $, showSnackbar, renderSkeletonUI, formatDate, closeModal, generateCSSClass } from '../utils.js';
-import { ALERT_MESSAGE, SELECTORS, LOCAL_STORAGE_KEYS, SERACH_RESULT } from '../constants.js';
+import { ALERT_MESSAGE, SELECTORS, LOCAL_STORAGE_KEYS, SERACH_RESULT, SETTINGS } from '../constants.js';
 import {
   getVideoTemplate,
   getFormTemplate,
@@ -138,10 +138,15 @@ export default class YoutubeSearchManager extends Observer {
   async handleSaveVideo(event) {
     if (!event.target.classList.contains('btn-save')) return;
 
+    const watchList = this.store.get()[LOCAL_STORAGE_KEYS.WATCH_LIST];
+    if (watchList.length >= SETTINGS.MAX_VIDEO_COUNT) {
+      showSnackbar(ALERT_MESSAGE.MAX_VIDEO_COUNT_EXCEEDED);
+      return;
+    }
+
     const $selectedButton = event.target;
     const selectedVideoId = $selectedButton.dataset.videoId;
 
-    const watchList = this.store.get()[LOCAL_STORAGE_KEYS.WATCH_LIST];
     const newVideo = {
       videoId: selectedVideoId,
       watched: false,
