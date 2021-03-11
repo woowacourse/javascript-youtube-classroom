@@ -57,7 +57,40 @@ function getSrcDocTemplate(item) {
   `;
 }
 
-function getVideoClipInnerTemplate(item) {
+function getSaveButtonsTemplate(item) {
+  return `
+    <div class="save-button-container">
+      <button 
+        data-video-id=${item.videoId}
+        data-video-saved=""
+        class="btn btn-hover-cyan-700 bg-cyan-500 ${
+          item.saved ? "d-none-hard" : ""
+        }"
+        >
+        ⬇️ 저장
+      </button>
+      <button 
+        data-video-id=${item.videoId}
+        data-video-saved="saved" 
+        class="btn btn-hover-gray-300 ${item.saved ? "" : "d-none-hard"}"
+        >
+        저장 취소
+      </button>
+    </div>`;
+}
+
+// TODO : 이름 변경
+function getSomethingbuttons(videoId) {
+  return `
+    <div>
+      <button data-watched-button=${videoId} class="opacity-hover">✅</button>
+      <button data-likeed-button=${videoId} class="opacity-hover">👍</button>
+      <button data-comment-button=${videoId} class="opacity-hover">💬</button>
+      <button data-deleted-button=${videoId} class="opacity-hover">🗑️</button>
+    </div>`;
+}
+
+function getVideoClipInnerTemplate(item, buttonsContainer) {
   return `
     <div class="preview-container">
       <iframe
@@ -84,33 +117,31 @@ function getVideoClipInnerTemplate(item) {
         <div class="meta">
           <p>${parseDate(item.publishedAt)}</p>
         </div>
-        <div class="save-button-container">
-          <button 
-            data-video-id=${item.videoId}
-            data-video-saved=""
-            class="btn btn-hover-cyan-700 bg-cyan-500 ${
-              item.saved ? "d-none-hard" : ""
-            }"
-            >
-            ⬇️ 저장
-          </button>
-          <button 
-            data-video-id=${item.videoId}
-            data-video-saved="saved" 
-            class="btn btn-hover-gray-300 ${item.saved ? "" : "d-none-hard"}"
-            >
-            저장 취소
-          </button>
-        </div>
+        ${buttonsContainer}
       </div>
     </div>`;
 }
 
-export default function createVideoClipTemplate(item) {
+export function createSavedClipTemplate(item) {
   const videoArticle = document.createElement("article");
   videoArticle.classList.add("clip");
   videoArticle.classList.add("mt-10");
-  videoArticle.insertAdjacentHTML("beforeend", getVideoClipInnerTemplate(item));
+  videoArticle.insertAdjacentHTML(
+    "beforeend",
+    getVideoClipInnerTemplate(item, getSaveButtonsTemplate(item))
+  );
+
+  return videoArticle;
+}
+
+export function createSearchedClipTemplate(item) {
+  const videoArticle = document.createElement("article");
+  videoArticle.classList.add("clip");
+  videoArticle.classList.add("mt-10");
+  videoArticle.insertAdjacentHTML(
+    "beforeend",
+    getVideoClipInnerTemplate(item, getSomethingbuttons(item.videoId))
+  );
 
   return videoArticle;
 }

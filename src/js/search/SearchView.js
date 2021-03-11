@@ -1,7 +1,7 @@
 import videos from "../state/videos.js";
 
 import getKeywordHistoryTemplate from "../templates/keywordHistoryTemplate.js";
-import getVideoClipTemplate from "../templates/videoClipTemplate.js";
+import { createSavedClipTemplate } from "../templates/videoClipTemplate.js";
 import getSkeletonUITemplate from "../templates/skeletonUITemplate.js";
 
 import { $, getFormElements, hideElement, showElement } from "../utils/dom.js";
@@ -37,7 +37,7 @@ export default class SearchView {
 
   appendVideoClips(items) {
     const fragment = document.createDocumentFragment();
-    items.forEach((item) => fragment.append(getVideoClipTemplate(item)));
+    items.forEach((item) => fragment.append(createSavedClipTemplate(item)));
     return fragment;
   }
 
