@@ -1,5 +1,5 @@
 // TODO : 제일마지막에 상수화. 숫자, 셀렉터 / 파일명좀 바꿀수 있으면 바꾸기 ㅎㅎ.. /모달도 좀 넣어주자
-import { CLASS, SEARCH, SELECTOR } from '../constants/constant.js';
+import { CLASS, SEARCH, SELECTOR, SNACK_BAR } from '../constants/constant.js';
 import { $, $$, isScrollUnfinished } from '../utils/util.js';
 class SearchController {
   constructor(youtube, storage, searchView, savedView, snackBarView) {
@@ -12,14 +12,13 @@ class SearchController {
 
   init = () => {
     this.storage.init();
-    //this.searchView.init();
     this.handleSearch();
     this.handleSearchModalScroll();
     this.handleSaveVideo();
   };
 
   getSearchInput = () => {
-    return $('#search-youtube-input').value;
+    return $(SELECTOR.SEARCH_YOUTUBE_INPUT).value;
   };
 
   getVideosBySearch = async event => {
@@ -58,7 +57,7 @@ class SearchController {
 
     if (this.storage.showWatched === true) return;
     this.savedView.appendSavedVideo(videoInfo);
-    this.snackBarView.showSnackBar('영상을 저장했습니다.');
+    this.snackBarView.showSnackBar(SNACK_BAR.SAVED_MESSAGE);
   };
 
   fetchVideo = event => {
@@ -83,8 +82,8 @@ class SearchController {
   };
 
   handleSaveVideo = () => {
-    $('#search-video-wrapper').addEventListener('click', event => {
-      if (event.target.classList.contains('js-save-button')) {
+    $(SELECTOR.SEARCH_VIDEO_WRAPPER).addEventListener('click', event => {
+      if (event.target.classList.contains(CLASS.SAVE_BUTTON)) {
         this.saveVideo(event);
       }
     });

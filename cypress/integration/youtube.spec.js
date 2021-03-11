@@ -1,4 +1,4 @@
-import { ERROR_MESSAGE } from '../../src/js/constants/constant';
+import { ERROR_MESSAGE } from '../../src/js/constants/constant.js';
 
 describe('saved-video-ui', () => {
   before(() => {

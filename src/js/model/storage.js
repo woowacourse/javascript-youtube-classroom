@@ -2,7 +2,12 @@ import {
   setJSONToLocalStorage,
   getJSONFromLocalStorage,
 } from '../utils/util.js';
-import { ERROR_MESSAGE, SEARCH, STORAGE } from '../constants/constant.js';
+import {
+  ERROR_MESSAGE,
+  SEARCH,
+  SELECTOR,
+  STORAGE,
+} from '../constants/constant.js';
 class StorageModel {
   #myVideo;
   #keywords;
@@ -21,7 +26,9 @@ class StorageModel {
 
   updateVideoWatched(target) {
     this.#myVideo.forEach(info => {
-      if (info.url === target.closest('.video-info-buttons').dataset.url) {
+      if (
+        info.url === target.closest(SELECTOR.VIDEO_INFO_BUTTONS).dataset.url
+      ) {
         info.watched = !info.watched;
       }
     });
@@ -44,7 +51,8 @@ class StorageModel {
 
   deleteSelectedVideo(target) {
     this.#myVideo = this.#myVideo.filter(
-      info => info.url !== target.closest('.video-info-buttons').dataset.url
+      info =>
+        info.url !== target.closest(SELECTOR.VIDEO_INFO_BUTTONS).dataset.url
     );
     setJSONToLocalStorage(STORAGE.KEY_MY_VIDEO, this.#myVideo);
   }
