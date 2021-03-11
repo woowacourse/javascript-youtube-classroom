@@ -23,10 +23,23 @@ export default class Store extends Subject {
 
   load(key) {
     const loadedItem = localStorage.getItem(key);
-    return loadedItem && JSON.parse(loadedItem);
+
+    try {
+      return JSON.parse(loadedItem);
+    } catch (error) {
+      return loadedItem;
+    }
   }
 
-  update(data = {}) {
+  update(key, data = {}, observer) {
+    this.state = { ...this.state, ...data };
+
+    this.save(key, data[key]);
+
+    this.notify(observer);
+  }
+
+  updateAll(data = {}) {
     this.state = { ...this.state, ...data };
 
     Object.entries(data).forEach(([key, value]) => {

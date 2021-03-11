@@ -12,7 +12,7 @@ export default class Subject {
   }
 
   notify(observer) {
-    const targetObserver = this.observers.find((_observer) => (_observer = observer));
+    const targetObserver = this.observers.find((_observer) => _observer === observer);
     if (targetObserver) {
       targetObserver.update();
     }

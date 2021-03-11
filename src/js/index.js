@@ -11,7 +11,7 @@ $(SELECTORS.ID.SEARCH_BUTTON).addEventListener('click', openModal);
 $(SELECTORS.CLASS.MODAL_CLOSE).addEventListener('click', closeModal);
 
 const watchList = new WatchList(store);
-const youtubeSearchManager = new YoutubeSearchManager(store);
+const youtubeSearchManager = new YoutubeSearchManager(store, watchList);
 
 store.subscribe(watchList);
 store.subscribe(youtubeSearchManager);
