@@ -39,7 +39,6 @@ function initEvent() {
   $('#latest-keyword-list').addEventListener('click', handleVideoSearch);
   $('#video-list').addEventListener('click', handleButtonsControl);
   $('#mode-wrapper').addEventListener('click', handleModeChange);
-  // $('#video-search-result').addEventListener('click', handleVideoSave);
 }
 
 export { initState, initView, initEvent };

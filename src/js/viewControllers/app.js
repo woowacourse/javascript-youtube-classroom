@@ -9,10 +9,12 @@ const $videoList = $('#video-list');
 
 function openModal() {
   $searchModal.classList.add('open');
+  document.body.classList.add('disable-scroll');
 }
 
 function closeModal() {
   $searchModal.classList.remove('open');
+  document.body.classList.remove('disable-scroll');
 }
 
 function renderSavedVideoList(videoInfos, videoListType) {
