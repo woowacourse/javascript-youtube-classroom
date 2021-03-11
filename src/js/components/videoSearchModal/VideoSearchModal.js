@@ -68,6 +68,13 @@ export default class VideoSearchModal extends Component {
       'mousedown',
       this.onClickOutsideModal.bind(this)
     );
+    this.$target.addEventListener('keydown', this.onEscape.bind(this));
+  }
+
+  onEscape(event) {
+    if (event.key === 'Escape') {
+      this.onModalClose();
+    }
   }
 
   onClickOutsideModal(event) {
