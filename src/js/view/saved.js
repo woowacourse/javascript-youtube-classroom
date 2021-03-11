@@ -6,9 +6,7 @@ class SavedView {
   }
 
   toggleNotFoundSavedVideo(show) {
-    console.log('show', show);
     $('#saved-not-found').classList.toggle('show', show);
-    console.log($('#saved-not-found'));
   }
 
   // TODO : 개선해보기..
