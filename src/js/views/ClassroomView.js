@@ -14,11 +14,12 @@ export default class ClassroomView {
     this.$noVideoFound = $('.js-no-video-found');
   }
 
-  renderVideosToPrepare({ watchingVideos, watchedVideos }) {
-    const watchingVideosHTML = watchingVideos.map((video) => getSavedVideoTemplate(video, WATCHING)).join('');
-    const watchedVideosHTML = watchedVideos.map((video) => getSavedVideoTemplate(video, WATCHED)).join('');
+  renderVideosToPrepare(videos) {
+    const videosHTML = videos
+      .map((video) => getSavedVideoTemplate(video, video.isWatching ? WATCHING : WATCHED))
+      .join('');
 
-    this.$savedVideosWrapper.innerHTML = watchingVideosHTML + watchedVideosHTML;
+    this.$savedVideosWrapper.innerHTML = videosHTML;
   }
 
   renderSavedVideo(video) {
@@ -45,5 +46,16 @@ export default class ClassroomView {
     this.$watchingMenuButton.classList.remove('bg-cyan-100');
     this.$noVideoFound.classList.remove(NO_WATCHING);
     this.$savedVideosWrapper.classList.replace(WATCHING_SECTION, WATCHED_SECTION);
+  }
+
+  renderMovedVideo($video, wasWatching) {
+    $video.querySelector('.js-check-button').classList.toggle('checked');
+    if (wasWatching) {
+      $video.classList.remove(WATCHING);
+      $video.classList.add(WATCHED);
+    } else {
+      $video.classList.remove(WATCHED);
+      $video.classList.add(WATCHING);
+    }
   }
 }

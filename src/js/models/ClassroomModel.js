@@ -1,5 +1,5 @@
-import { getListByKey } from '../utils/localStorage.js';
-import { KEY_VIDEOS_WATCHING, KEY_VIDEOS_WATCHED } from '../constants.js';
+import { getListByKey, setListByKey } from '../utils/localStorage.js';
+import { KEY_VIDEOS } from '../constants.js';
 
 export default class ClassroomModel {
   constructor() {
@@ -7,8 +7,10 @@ export default class ClassroomModel {
   }
 
   init() {
-    this.watchingVideoCount = getListByKey(KEY_VIDEOS_WATCHING).length;
-    this.watchedVideoCount = getListByKey(KEY_VIDEOS_WATCHED).length;
+    this.videos = getListByKey(KEY_VIDEOS);
+    this.videosCount = this.videos.length;
+    this.watchingVideoCount = this.videos.filter((video) => video.isWatching).length;
+    this.watchedVideoCount = this.videosCount - this.watchingVideoCount;
   }
 
   isOnlyWatchingVideoSaved() {
@@ -19,13 +21,25 @@ export default class ClassroomModel {
     return this.watchingVideoCount === 0;
   }
 
-  getVideos() {
-    this.watchingVideos = getListByKey(KEY_VIDEOS_WATCHING);
-    this.watchedVideos = getListByKey(KEY_VIDEOS_WATCHED);
+  hasNoWatchedVideoSaved() {
+    return this.watchedVideoCount === 0;
+  }
 
-    return {
-      watchingVideos: this.watchingVideos,
-      watchedVideos: this.watchedVideos,
-    };
+  moveVideo(videoId) {
+    const videos = getListByKey(KEY_VIDEOS);
+    const target = videos.find((video) => video.videoId === videoId);
+
+    target.isWatching = !target.isWatching;
+    this.updateWatchingVideoCount(target.isWatching);
+    this.updateWatchedVideoCount(!target.isWatching);
+    setListByKey(KEY_VIDEOS, videos);
+  }
+
+  updateWatchingVideoCount(isWatching) {
+    this.watchingVideoCount += isWatching ? 1 : -1;
+  }
+
+  updateWatchedVideoCount(isWatched) {
+    this.watchedVideoCount += isWatched ? 1 : -1;
   }
 }

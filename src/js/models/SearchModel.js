@@ -1,17 +1,11 @@
-import {
-  MAX_RECENT_KEYWORD_COUNT,
-  KEY_VIDEOS_WATCHING,
-  KEY_VIDEOS_WATCHED,
-  KEY_RECENT_KEYWORDS,
-} from '../constants.js';
+import { MAX_RECENT_KEYWORD_COUNT, KEY_VIDEOS, KEY_RECENT_KEYWORDS } from '../constants.js';
 
 import { getListByKey, insertItemByKey, insertItemAtFirstByKey, deleteLastItemByKey } from '../utils/localStorage.js';
 
 /*
 로컬스토리지 데이터 저장구조
   {
-    videosWatching: [ { videoId: 'TVUNi0zi1yw', ... }, ... ],
-    videosWatched: [ { videoId: '0nxsS4B85E8', ... }, ... ],
+    videos: [ { videoId: 'TVUNi0zi1yw', ..., isWatching: true }, ... ],
     recentKeywords: [ 'keyword1', 'keyword2', 'keyword3' ],
   }
 */
@@ -66,10 +60,11 @@ export default class SearchModel {
 
   saveVideo(targetVideo) {
     targetVideo.isSaved = true;
-    insertItemByKey(KEY_VIDEOS_WATCHING, targetVideo);
+    targetVideo.isWatching = true;
+    insertItemByKey(KEY_VIDEOS, targetVideo);
   }
 
   getSavedVideoCount() {
-    return getListByKey(KEY_VIDEOS_WATCHING).length + getListByKey(KEY_VIDEOS_WATCHED).length;
+    return getListByKey(KEY_VIDEOS).length;
   }
 }

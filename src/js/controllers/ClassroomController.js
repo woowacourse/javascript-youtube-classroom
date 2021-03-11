@@ -1,10 +1,9 @@
-import ClassroomModel from '../models/ClassroomModel.js';
-import { isWatchingMenu } from './elementValidator.js';
+import { isWatchingMenu, isWatchingVideo } from './elementValidator.js';
 
 export default class ClassroomController {
-  constructor({ classroomView }) {
+  constructor({ classroomModel, classroomView }) {
     this.view = classroomView;
-    this.model = new ClassroomModel();
+    this.model = classroomModel;
   }
 
   init() {
@@ -13,8 +12,22 @@ export default class ClassroomController {
   }
 
   attachEvents() {
+    this.view.$savedVideosWrapper.addEventListener('click', this.onRequestVideoManagement.bind(this));
     this.view.$watchingMenuButton.addEventListener('click', this.onNavigateWatchingVideos.bind(this));
     this.view.$watchedMenuButton.addEventListener('click', this.onNavigateWatchedVideos.bind(this));
+  }
+
+  onRequestVideoManagement({ target }) {
+    if (!target.classList.contains('video-manage-btn')) {
+      return;
+    }
+
+    const $video = target.closest('article');
+
+    if (target.classList.contains('js-check-button')) {
+      this.model.moveVideo($video.id);
+      this.view.renderMovedVideo($video, isWatchingVideo($video));
+    }
   }
 
   onNavigateWatchingVideos() {
@@ -26,7 +39,7 @@ export default class ClassroomController {
   }
 
   onShowClassroom() {
-    this.view.renderVideosToPrepare(this.model.getVideos());
+    this.view.renderVideosToPrepare(this.model.videos);
 
     if (isWatchingMenu(this.view.$savedVideosWrapper)) {
       this.showWatchingVideos();
@@ -46,8 +59,10 @@ export default class ClassroomController {
   showWatchedVideos() {
     this.view.renderOnlyWatchedVideos();
 
-    if (this.model.isOnlyWatchingVideoSaved()) {
-      this.view.renderImageNoWatchedVideo();
+    if (this.model.hasNoWatchedVideoSaved()) {
+      this.model.hasNoWatchingVideoSaved()
+        ? this.view.renderImageNoWatchingVideo()
+        : this.view.renderImageNoWatchedVideo();
     }
   }
 }

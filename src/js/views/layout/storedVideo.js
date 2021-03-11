@@ -1,8 +1,8 @@
-import { YOUTUBE_VIDEO_ENDPOINT, YOUTUBE_CHANNEL_ENDPOINT } from '../../constants.js';
+import { YOUTUBE_VIDEO_ENDPOINT, YOUTUBE_CHANNEL_ENDPOINT, WATCHING, CHECKED } from '../../constants.js';
 
 export const getSavedVideoTemplate = ({ videoId, videoTitle, channelId, channelTitle, publishedAt }, className) => {
   return `
-    <article class=${className} clip>
+    <article id=${videoId} class=${className} clip>
       <div class="preview-container">
         <iframe
           width="100%"
@@ -23,10 +23,10 @@ export const getSavedVideoTemplate = ({ videoId, videoTitle, channelId, channelT
             <p>${publishedAt}</p>
           </div>
           <div>
-            <span class="js-check-button opacity-hover">✅</span>
-            <span class="js-like-button opacity-hover">👍</span>
-            <span class="js-comment-button opacity-hover">💬</span>
-            <span class="js-remove-button opacity-hover">🗑️</span>
+            <span class="js-check-button video-manage-btn ${className === WATCHING ? '' : CHECKED}">✅</span>
+            <span class="js-like-button video-manage-btn">👍</span>
+            <span class="js-comment-button video-manage-btn disabled">💬</span>
+            <span class="js-remove-button video-manage-btn">🗑️</span>
           </div>
         </div>
       </div>
