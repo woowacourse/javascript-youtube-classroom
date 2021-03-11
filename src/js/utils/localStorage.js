@@ -1,4 +1,6 @@
-export const setDataToLocalStorage = (key, value) => {
+import { STORAGE } from "../utils/constants.js";
+
+export const setDataToLocalStorage = (key = STORAGE.VIDEO_IDS, value = []) => {
   try {
     localStorage.setItem(key, JSON.stringify(value));
   } catch (err) {
@@ -6,7 +8,7 @@ export const setDataToLocalStorage = (key, value) => {
   }
 };
 
-export const getDataFromLocalStorage = (key, defaultValue) => {
+export const getDataFromLocalStorage = (key = STORAGE.VIDEO_IDS, defaultValue = []) => {
   try {
     return JSON.parse(localStorage.getItem(key)) || defaultValue;
   } catch (err) {
