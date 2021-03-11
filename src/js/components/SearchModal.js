@@ -5,7 +5,7 @@ import { setDataToLocalStorage, getDataFromLocalStorage } from "../utils/localSt
 import { createVideoTemplate } from "../utils/templates.js";
 
 // dummy API Response 사용할 경우
-// import { dummySearchedData } from "../utils/dummy.js";
+// import { dummySearchedData } from "../data/dummy.js";
 class SearchModal {
   constructor() {
     this.initState();
@@ -211,15 +211,15 @@ class SearchModal {
   }
 
   render() {
-    this.videos.length
-      ? this.$videoWrapper.insertAdjacentHTML(
-          "beforeend",
-          this.videos
+    this.$videoWrapper.insertAdjacentHTML(
+      "beforeend",
+      this.videos.length
+        ? this.videos
             .filter(video => video.videoId)
             .map(video => createVideoTemplate(video, SECTION.MODAL))
-            .join(""),
-        )
-      : this.$videoWrapper.insertAdjacentHTML("beforeend", createNoSearchResultTemplate());
+            .join("")
+        : createNoSearchResultTemplate(),
+    );
 
     this.renderSavedCount();
     this.$keywordHistory.innerHTML = createKeywordHistoryTemplate(this.keywordHistory);
