@@ -21,4 +21,27 @@ describe("youtube classroom 기능 테스트", () => {
     cy.get("#watch-later-button").should("not.have.class", "bg-cyan-100");
     cy.get("#watched-button").should("have.class", "bg-cyan-100");
   });
+
+  it("저장버튼을 누르면 볼 영상에 추가된다.", () => {
+    cy.get("#search-button").click();
+    cy.get("#search-form > input").type("javascript");
+    cy.get("#search-form > button").click();
+
+    cy.get("#search-results button[data-video-id]")
+      .eq(0)
+      .click()
+      .then(([$clickedButton]) => {
+        console.log($clickedButton);
+        return $clickedButton.dataset.videoId;
+      })
+      .then((savedVideoId) => {
+        cy.get("#search-modal-close").click();
+        cy.get("#watch-later-videos").children().should("have.length", 1);
+        cy.get("#watch-later-videos > article button")
+          .eq(0)
+          .then(([$watchedButton]) => {
+            expect($watchedButton.dataset.watchedButton).to.eq(savedVideoId);
+          });
+      });
+  });
 });
