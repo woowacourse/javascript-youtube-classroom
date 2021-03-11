@@ -18,4 +18,14 @@ export default class ClassroomModel {
   hasNoWatchingVideoSaved() {
     return this.watchingVideoCount === 0;
   }
+
+  getVideos() {
+    this.watchingVideos = getListByKey(KEY_VIDEOS_WATCHING);
+    this.watchedVideos = getListByKey(KEY_VIDEOS_WATCHED);
+
+    return {
+      watchingVideos: this.watchingVideos,
+      watchedVideos: this.watchedVideos,
+    };
+  }
 }

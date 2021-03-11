@@ -1,4 +1,4 @@
-import { MAX_RESULT_COUNT } from '../constants.js';
+import { MAX_RESULT_COUNT } from '../../constants.js';
 
 const skeletonUnitTemplate = `
   <article class="clip">

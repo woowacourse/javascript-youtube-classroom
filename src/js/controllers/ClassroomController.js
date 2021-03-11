@@ -3,8 +3,8 @@ import { isWatchingMenu } from './elementValidator.js';
 
 export default class ClassroomController {
   constructor({ classroomView }) {
-    this.model = new ClassroomModel();
     this.view = classroomView;
+    this.model = new ClassroomModel();
   }
 
   init() {
@@ -12,26 +12,28 @@ export default class ClassroomController {
   }
 
   onShowClassroom() {
-    if (isWatchingMenu(this.view.$savedVideos)) {
-      this.showWatchingMenuContents();
+    this.view.renderVideosToPrepare(this.model.getVideos());
+
+    if (isWatchingMenu(this.view.$savedVideosWrapper)) {
+      this.showWatchingVideos();
       return;
     }
-    this.showWatchedMenuContents();
+    this.showWatchedVideos();
   }
 
-  showWatchingMenuContents() {
+  showWatchingVideos() {
     if (this.model.hasNoWatchingVideoSaved()) {
-      this.view.renderNoWatchingVideo();
+      this.view.renderImageNoWatchingVideo();
       return;
     }
-    this.view.renderWatchingVideo();
+    this.view.renderOnlyWatchingVideos(this.model.watchingVideos);
   }
 
-  showWatchedMenuContents() {
+  showWatchedVideos() {
     if (this.model.isOnlyWatchingVideoSaved()) {
-      this.view.renderNoWatchedVideo();
+      this.view.renderImageNoWatchedVideo();
       return;
     }
-    this.view.renderWatchedVideo();
+    this.view.renderOnlyWatchedVideos(this.model.watchedVideos);
   }
 }

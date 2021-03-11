@@ -1,5 +1,6 @@
 import { $ } from '../utils/DOM.js';
-import { getSavedVideoTemplate } from '../layout/storedVideo.js';
+import { getSavedVideoTemplate } from './layout/storedVideo.js';
+import { WATCHING_SECTION, WATCHED_SECTION, WATCHING, WATCHED, NO_WATCHING, NO_WATCHED } from '../constants.js';
 
 export default class ClassroomView {
   constructor() {
@@ -7,22 +8,38 @@ export default class ClassroomView {
   }
 
   selectDOMs() {
-    this.$savedVideos = $('.js-saved-videos');
+    this.$savedVideosWrapper = $('.js-saved-videos-wrapper');
+    this.$noVideoFound = $('.js-no-video-found');
   }
 
-  renderWatchingVideo() {
-    this.$savedVideos.classList.replace('watched-section', 'watching-section');
-  }
+  renderVideosToPrepare({ watchingVideos, watchedVideos }) {
+    const watchingVideosHTML = watchingVideos.map((video) => getSavedVideoTemplate(video, WATCHING)).join('');
+    const watchedVideosHTML = watchedVideos.map((video) => getSavedVideoTemplate(video, WATCHED)).join('');
 
-  renderWatchedVideo() {
-    this.$savedVideos.classList.replace('watching-section', 'watched-section');
+    this.$savedVideosWrapper.innerHTML = watchingVideosHTML + watchedVideosHTML;
   }
 
   renderSavedVideo(video) {
-    this.$savedVideos.insertAdjacentHTML('beforeEnd', getSavedVideoTemplate(video));
+    this.$savedVideosWrapper.insertAdjacentHTML('beforeEnd', getSavedVideoTemplate(video, WATCHING));
   }
 
-  renderNoWatchedVideo() {}
+  renderImageNoWatchingVideo() {
+    this.$noVideoFound.classList.remove(NO_WATCHED);
+    this.$noVideoFound.classList.add(NO_WATCHING);
+  }
 
-  renderWatchedVideo() {}
+  renderImageNoWatchedVideo() {
+    this.$noVideoFound.classList.remove(NO_WATCHING);
+    this.$noVideoFound.classList.add(NO_WATCHED);
+  }
+
+  renderOnlyWatchingVideos() {
+    this.$noVideoFound.classList.remove(NO_WATCHING, NO_WATCHED);
+    this.$savedVideosWrapper.classList.replace(WATCHED_SECTION, WATCHING_SECTION);
+  }
+
+  renderOnlyWatchedVideos() {
+    this.$noVideoFound.classList.remove(NO_WATCHING, NO_WATCHED);
+    this.$savedVideosWrapper.classList.replace(WATCHING_SECTION, WATCHED_SECTION);
+  }
 }

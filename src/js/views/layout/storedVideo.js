@@ -1,8 +1,8 @@
-import { YOUTUBE_VIDEO_ENDPOINT, YOUTUBE_CHANNEL_ENDPOINT } from '../constants.js';
+import { YOUTUBE_VIDEO_ENDPOINT, YOUTUBE_CHANNEL_ENDPOINT } from '../../constants.js';
 
-export const getSavedVideoTemplate = ({ videoId, videoTitle, channelId, channelTitle, publishedAt }) => {
+export const getSavedVideoTemplate = ({ videoId, videoTitle, channelId, channelTitle, publishedAt }, className) => {
   return `
-    <article class="watching" class="clip">
+    <article class=${className} clip>
       <div class="preview-container">
         <iframe
           width="100%"

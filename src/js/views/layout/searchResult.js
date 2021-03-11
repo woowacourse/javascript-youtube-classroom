@@ -1,4 +1,4 @@
-import { YOUTUBE_VIDEO_ENDPOINT, YOUTUBE_CHANNEL_ENDPOINT } from '../constants.js';
+import { YOUTUBE_VIDEO_ENDPOINT, YOUTUBE_CHANNEL_ENDPOINT } from '../../constants.js';
 
 export const getThumbnailTemplate = (videoId) => {
   return `
