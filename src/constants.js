@@ -17,6 +17,7 @@ export const SELECTOR_ID = Object.freeze({
   EMPTY_WATCHED_VIDEO: 'empty-watched-video',
   SNACKBAR_WRAPPER: 'snackbar-wrapper',
   NAV: 'nav',
+  SAVED_VIDEO_COUNT: 'saved-video-count',
 });
 
 export const SELECTOR_CLASS = Object.freeze({
@@ -58,12 +59,10 @@ export const SETTINGS = Object.freeze({
 });
 
 export const LOCAL_STORAGE_KEY = Object.freeze({
-  PREVIOUS_SEARCH_VIDEOS: 'previous_search_videos',
-  VIDEOS_TO_WATCH: 'videos_to_watch',
+  PREV_SEARCH_RESULT: 'prev_search_result',
+  WATCHING_VIDEOS: 'watching_videos',
   WATCHED_VIDEOS: 'watched_videos',
   SEARCH_QUERIES: 'search_queries',
-  LAST_QUERY: 'last_query',
-  NEXT_PAGE_TOKEN: 'next_page_token',
 });
 
 export const CONFIRM_MESSAGE = Object.freeze({
