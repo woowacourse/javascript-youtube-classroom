@@ -7,9 +7,9 @@ import SavedVideosCount from "./SavedVideosCount.js";
 
 export default class VideoSearchModal {
   constructor() {
-    this.$modal = $(CLASSNAME.MODAL);
-    this.$modalClose = $(CLASSNAME.MODAL_CLOSE);
-    this.$modalInner = $(CLASSNAME.MODAL_INNER);
+    this.$modal = $(`.${CLASSNAME.MODAL}`);
+    this.$modalClose = $(`.${CLASSNAME.MODAL_CLOSE}`);
+    this.$modalInner = $(`.${CLASSNAME.MODAL_INNER}`);
 
     this.videoWrapper = new VideoWrapper();
     this.searchForm = new SearchForm();

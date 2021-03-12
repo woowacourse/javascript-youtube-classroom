@@ -5,16 +5,16 @@ import {
   MESSAGE,
 } from "../constants.js";
 import { $ } from "../utils/querySelector.js";
-import deliveryMan from "../deliveryMan.js";
+import messenger from "../Messenger.js";
 
 export default class KeywordHistory {
   constructor() {
     this.keywordHistory =
       JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEY.KEYWORD_HISTORY)) || [];
 
-    this.$keywordHistorySection = $(CLASSNAME.KEYWORD_HISTORY_SECTION);
+    this.$keywordHistorySection = $(`.${CLASSNAME.KEYWORD_HISTORY_SECTION}`);
 
-    deliveryMan.addMessageListener(
+    messenger.addMessageListener(
       MESSAGE.KEYWORD_SUBMITTED,
       this.addKeyword.bind(this)
     );

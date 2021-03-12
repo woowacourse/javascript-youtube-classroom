@@ -3,8 +3,8 @@ import {
   CLASSNAME,
   MAX_KEYWORDS_COUNT,
   MAX_RESULTS_COUNT,
-  REDIRECT_SERVER_HOST,
 } from "../../src/js/constants.js";
+import { REDIRECT_SERVER_HOST } from "../../src/js/utils/API.js";
 
 describe("유투브 검색 API를 이용하여 영상들을 검색할 수 있다.", () => {
   context("유저가 검색창에 검색어를 입력하고 클릭을 했을 때", () => {

@@ -2,30 +2,30 @@ import {
   CLASSNAME,
   MESSAGE,
   MAX_RESULTS_COUNT,
-  API_END_POINT,
   SCROLL_EVENT_THRESHOLD,
-  THROTTLE_TIME_IN_MS,
 } from "../constants.js";
 import { $ } from "../utils/querySelector.js";
-import deliveryMan from "../deliveryMan.js";
-import { SKELETON_TEMPLATE, render } from "../utils/videoInfo.js";
+import messenger from "../Messenger.js";
+import render from "../Video/render.js";
+import TEMPLATE from "../Video/template.js";
+import { fetchData } from "../utils/API.js";
 
 export default class VideoWrapper {
   constructor() {
     this.currentQuery = "";
     this.currentNextPageToken = "";
 
-    this.$modalVideoWrapper = $(CLASSNAME.MODAL_VIDEO_WRAPPER);
-    this.$notFoundImg = $(CLASSNAME.NOT_FOUND_IMAGE);
+    this.$modalVideoWrapper = $(`.${CLASSNAME.MODAL_VIDEO_WRAPPER}`);
+    this.$notFoundImg = $(`.${CLASSNAME.NOT_FOUND_IMAGE}`);
 
-    deliveryMan.addMessageListener(MESSAGE.KEYWORD_SUBMITTED, ({ query }) => {
+    messenger.addMessageListener(MESSAGE.KEYWORD_SUBMITTED, ({ query }) => {
       this.$notFoundImg.classList.add(CLASSNAME.HIDDEN);
       this.$modalVideoWrapper.innerHTML = "";
       this.currentQuery = query;
       this.mountTemplate();
     });
 
-    deliveryMan.addMessageListener(
+    messenger.addMessageListener(
       MESSAGE.DATA_LOADED,
       ({ nextPageToken, items }) => {
         if (items.length === 0) {
@@ -34,7 +34,9 @@ export default class VideoWrapper {
           return;
         }
 
-        this.attachData({ nextPageToken, items });
+        this.currentNextPageToken = nextPageToken;
+
+        this.attachData(items);
       }
     );
 
@@ -55,22 +57,18 @@ export default class VideoWrapper {
   // eslint-disable-next-line class-methods-use-this
   saveVideo($button) {
     const { videoId } = $button.dataset;
-    deliveryMan.deliverMessage(MESSAGE.SAVE_VIDEO_BUTTON_CLICKED, { videoId });
+
+    messenger.deliverMessage(MESSAGE.SAVE_VIDEO_BUTTON_CLICKED, { videoId });
     $button.classList.add(CLASSNAME.HIDDEN);
   }
 
   mountTemplate() {
     Array.from({ length: MAX_RESULTS_COUNT }).forEach(() => {
-      this.$modalVideoWrapper.insertAdjacentHTML(
-        "beforeEnd",
-        SKELETON_TEMPLATE
-      );
+      this.$modalVideoWrapper.insertAdjacentHTML("beforeEnd", TEMPLATE);
     });
   }
 
-  attachData({ nextPageToken, items }) {
-    this.currentNextPageToken = nextPageToken;
-
+  attachData(items) {
     const $$videos = Array.from(this.$modalVideoWrapper.children).slice(
       -MAX_RESULTS_COUNT
     );
@@ -81,6 +79,8 @@ export default class VideoWrapper {
   }
 
   handlePageScroll() {
+    if (this.throttle) return;
+
     if (
       this.$modalVideoWrapper.scrollTop +
         this.$modalVideoWrapper.clientHeight <=
@@ -89,33 +89,18 @@ export default class VideoWrapper {
       return;
     }
 
-    if (this.throttle) return;
+    this.throttle = setTimeout(async () => {
+      this.mountTemplate();
 
-    this.throttle = setTimeout(() => {
-      this.throttle = null;
-      this.loadData();
-    }, THROTTLE_TIME_IN_MS);
-  }
-
-  async loadData() {
-    this.mountTemplate();
-
-    try {
-      const response = await fetch(
-        API_END_POINT(this.currentQuery, this.currentNextPageToken)
+      const { nextPageToken, items } = await fetchData(
+        this.currentQuery,
+        this.currentNextPageToken
       );
-      const body = await response.json();
+      this.currentNextPageToken = nextPageToken;
 
-      if (!response.ok) {
-        throw new Error(body.error.message);
-      }
+      this.attachData(items);
 
-      const { nextPageToken, items } = body;
-
-      this.attachData({ nextPageToken, items });
-    } catch (error) {
-      // eslint-disable-next-line no-console
-      console.error(error);
-    }
+      this.throttle = null;
+    }, 0);
   }
 }
