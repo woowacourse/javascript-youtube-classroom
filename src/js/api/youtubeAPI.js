@@ -34,9 +34,7 @@ export const api = {
     nextPageToken = '',
     max = SEARCH.FETCH_VIDEO_LENGTH,
   }) => {
-    return fetch(youtubeSearchURL({ query, nextPageToken, max }), {
-      method: 'GET',
-    })
+    return fetch(youtubeSearchURL({ query, nextPageToken, max }))
       .then(response => {
         if (response.ok) {
           return response.json();
