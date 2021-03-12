@@ -21,7 +21,7 @@
 
 /* Layout - Display */
 .d-none {
-  display: none !important;
+  display: none;
 }
 
 .d-flex {

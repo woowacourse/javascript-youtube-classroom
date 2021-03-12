@@ -141,7 +141,7 @@ export default class Video {
   createTemplate(pageType = TYPES.PAGE.MANAGEMENT) {
     const clip = createElement({
       tag: 'article',
-      classes: ['clip', 'd-flex', 'flex-col'],
+      classes: ['clip'],
     });
 
     if (pageType === TYPES.PAGE.MANAGEMENT && this.watched) {

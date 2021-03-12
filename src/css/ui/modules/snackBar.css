@@ -14,7 +14,7 @@
 }
 
 .show {
-  visibility: visible !important; /* Show the snackbar */
+  visibility: visible !important; /* #snackbar의 id 스타일로 visibility가 적용되어 있는데, class toggle로 visibility를 변경하기 위해 !important 사용*/
   -webkit-animation: fadein 0.5s, fadeout 0.5s 2.7s;
   animation: fadein 0.5s, fadeout 0.5s 2.7s;
 }
