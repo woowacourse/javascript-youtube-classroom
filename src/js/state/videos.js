@@ -51,18 +51,32 @@ const videos = {
   },
 
   setVideoWatched(videoId, watched) {
-    const watchedVideoIndex = this.savedVideos.findIndex(
-      (video) => video.videoId === videoId
-    );
-    const watchedVideo = this.savedVideos[watchedVideoIndex];
+    try {
+      const watchedVideoIndex = this.savedVideos.findIndex(
+        (video) => video.videoId === videoId
+      );
 
-    this.savedVideos = [
-      ...this.savedVideos.slice(0, watchedVideoIndex),
-      { ...watchedVideo, watched },
-      ...this.savedVideos.slice(watchedVideoIndex + 1),
-    ];
+      if (watchedVideoIndex === -1) {
+        throw new Error(ERROR_MESSAGE.CONNOT_FIND_INDEX_OF_VIDEO);
+      }
 
-    this.storeSavedVideos();
+      const watchedVideo = this.savedVideos[watchedVideoIndex];
+      this.savedVideos = [
+        ...this.savedVideos.slice(0, watchedVideoIndex),
+        { ...watchedVideo, watched },
+        ...this.savedVideos.slice(watchedVideoIndex + 1),
+      ];
+
+      this.storeSavedVideos();
+      showSnackbar(
+        watched
+          ? SUCCESS_MESSAGE.WATCH_VIDEO
+          : SUCCESS_MESSAGE.CLEAR_WATCH_VIDEO_LOG
+      );
+    } catch (e) {
+      console.error(e);
+      showSnackbar(ERROR_MESSAGE.INVALID_ACTION_ERROR);
+    }
   },
 
   getRecentVideos() {
@@ -112,7 +126,6 @@ const videos = {
     if (prevLength === this.savedVideos.length) {
       showSnackbar(ERROR_MESSAGE.DELETE_ERROR);
     } else {
-      console.log("delete");
       showSnackbar(SUCCESS_MESSAGE.DELETE_VIDEO);
       this.storeSavedVideos();
     }

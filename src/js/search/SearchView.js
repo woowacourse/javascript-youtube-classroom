@@ -7,6 +7,7 @@ import getSkeletonUITemplate from "../templates/skeletonUITemplate.js";
 import { $, getFormElements, hideElement, showElement } from "../utils/dom.js";
 import { ERROR_MESSAGE, VIDEOS } from "../utils/constants.js";
 import elements from "../utils/elements.js";
+import { showSnackbar } from "../utils/snackbar.js";
 
 export default class SearchView {
   resetSearchResults() {
@@ -72,7 +73,7 @@ export default class SearchView {
       return selectedTarget;
     } catch (e) {
       console.error(e);
-      alert(ERROR_MESSAGE.INVALID_ACTION_ERROR);
+      showSnackbar(ERROR_MESSAGE.INVALID_ACTION_ERROR);
     }
   }
 

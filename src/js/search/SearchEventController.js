@@ -11,6 +11,7 @@ import {
   hideElement,
   getFormElements,
 } from "../utils/dom.js";
+import { showSnackbar } from "../utils/snackbar.js";
 
 import searchHistory from "../state/searchHistory.js";
 
@@ -118,7 +119,7 @@ export default class SearchEventController {
 
     if (e.target.dataset.videoSaved === "") {
       if (videos.getSavedVideoCount() >= VIDEOS.SAVED_VIDEOS_MAX_COUNT) {
-        alert(ERROR_MESSAGE.SAVE_COUNT_EXCEEDED_ERROR);
+        showSnackbar(ERROR_MESSAGE.SAVE_COUNT_EXCEEDED_ERROR);
         return;
       }
       this.searchController.saveVideo(videoId);

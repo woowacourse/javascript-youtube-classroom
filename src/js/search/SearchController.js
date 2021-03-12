@@ -4,8 +4,9 @@ import searchHistory from "../state/searchHistory.js";
 import videos from "../state/videos.js";
 import loadingSearchResults from "../state/loadingSearchResults.js";
 
-import { API, VIDEOS, YOUTUBE_URL } from "../utils/constants.js";
+import { API, ERROR_MESSAGE, VIDEOS, YOUTUBE_URL } from "../utils/constants.js";
 import { observeScrollBottom } from "../utils/scrollBottomObserver.js";
+import { showSnackbar } from "../utils/snackbar.js";
 
 import { getSearchQueryString } from "../queries/searchQuery.js";
 
@@ -61,7 +62,7 @@ export default class SearchController {
       return items;
     } catch (err) {
       this.searchView.resetSearchResults();
-      alert(ERROR_MESSAGE.SEARCH_ERROR);
+      showSnackbar(ERROR_MESSAGE.SEARCH_ERROR);
       return;
     }
   }
