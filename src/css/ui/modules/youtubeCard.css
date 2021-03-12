@@ -7,19 +7,17 @@
 }
 
 #searched-video-list {
-  grid-template-columns: repeat(4, 1fr);
   grid-column-gap: 6px;
   height: 60vh;
   overflow-y: auto;
 }
 
 .clip {
-  display: flex;
-  flex-direction: column;
-  height: auto;
+  height: 100%;
   cursor: pointer;
   text-decoration: none;
   box-sizing: border-box;
+  position: relative;
 }
 
 .clip .preview-container {
@@ -42,9 +40,6 @@
   bottom: 0;
 }
 
-.clip .content-container {
-  position: relative;
-}
 
 .clip .content-container h3 {
   display: -webkit-box;
@@ -57,6 +52,10 @@
   overflow: hidden;
   color: #0a0a0a;
   line-height: 1.5;
+}
+
+.clip .content-container{
+  position: relative;
 }
 
 .clip .content-container .channel-name {
@@ -81,4 +80,10 @@
   transform: translate(-50%, -30%);
   position: absolute;
   object-fit: contain;
+}
+
+.save-btn, .management-buttons {
+  position: absolute;
+  right: 0;
+  bottom: -10%;
 }

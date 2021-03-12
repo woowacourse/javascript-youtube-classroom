@@ -205,20 +205,15 @@ export default class Video {
     videoInfo.appendChild(channelURL);
     videoInfo.appendChild(meta);
     contentContainer.appendChild(videoInfo);
-    contentContainer.appendChild(buttonContainer);
 
     clip.appendChild(previewContainer);
     clip.appendChild(contentContainer);
+    clip.appendChild(buttonContainer);
 
     return clip;
   }
 
   createSaveButtonTemplate() {
-    const buttonContainer = createElement({
-      tag: 'span',
-      classes: ['d-flex', 'justify-end'],
-    });
-
     const button = createElement({
       tag: 'button',
       classes: [CLASS_NAMES.CLIP.VIDEO_SAVE_BUTTON, 'btn'],
@@ -229,9 +224,7 @@ export default class Video {
       button.classList.add('d-none');
     }
 
-    buttonContainer.appendChild(button);
-
-    return buttonContainer;
+    return button;
   }
 
   createManagementButtonSetTemplate() {
