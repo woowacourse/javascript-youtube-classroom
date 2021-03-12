@@ -22,18 +22,6 @@ class StorageModel {
   init() {
     this.#savedVideo = getJSONFromLocalStorage(STORAGE.KEY_MY_VIDEO);
     this.#keywords = getJSONFromLocalStorage(STORAGE.KEY_KEYWORDS);
-    console.log(this.#savedVideo);
-  }
-
-  updateVideoWatched(target) {
-    this.#savedVideo.forEach(info => {
-      if (
-        info.url === target.closest(SELECTOR.VIDEO_INFO_BUTTONS).dataset.url
-      ) {
-        info.watched = !info.watched;
-      }
-    });
-    setJSONToLocalStorage(STORAGE.KEY_MY_VIDEO, this.#savedVideo);
   }
 
   filterVideos = showWatched => {
@@ -41,19 +29,24 @@ class StorageModel {
     return this.#savedVideo.filter(video => video.watched === showWatched);
   };
 
-  get showWatched() {
-    return this.#showWatched;
-  }
+  updateVideoWatched(target) {
+    const targetUrl = target.closest(SELECTOR.VIDEO_INFO_BUTTONS).dataset.url;
+    this.#savedVideo.forEach(info => {
+      if (info.url === targetUrl) {
+        info.watched = !info.watched;
+      }
+    });
 
-  deleteSelectedVideo(target) {
-    this.#savedVideo = this.#savedVideo.filter(
-      info =>
-        info.url !== target.closest(SELECTOR.VIDEO_INFO_BUTTONS).dataset.url
-    );
     setJSONToLocalStorage(STORAGE.KEY_MY_VIDEO, this.#savedVideo);
   }
 
-  // TODO: keyword와 savedVideo 분리하는거는 어떨까?
+  deleteSelectedVideo(target) {
+    const targetUrl = target.closest(SELECTOR.VIDEO_INFO_BUTTONS).dataset.url;
+    this.#savedVideo = this.#savedVideo.filter(info => info.url !== targetUrl);
+
+    setJSONToLocalStorage(STORAGE.KEY_MY_VIDEO, this.#savedVideo);
+  }
+
   saveVideo = json => {
     this.#savedVideo = getJSONFromLocalStorage(STORAGE.KEY_MY_VIDEO);
     if (this.#savedVideo.length === STORAGE.MAX_SAVED_VIDEO_LENGTH) {
@@ -64,11 +57,11 @@ class StorageModel {
     setJSONToLocalStorage(STORAGE.KEY_MY_VIDEO, this.#savedVideo);
   };
 
-  findVideoByInfo = info => {
+  findVideoSaved = info => {
+    this.#savedVideo = getJSONFromLocalStorage(STORAGE.KEY_MY_VIDEO);
     return (
-      getJSONFromLocalStorage(STORAGE.KEY_MY_VIDEO).filter(
-        savedVideo => info.url === savedVideo.url
-      ).length > 0
+      this.#savedVideo.filter(savedVideo => info.url === savedVideo.url)
+        .length > 0
     );
   };
 
@@ -86,6 +79,10 @@ class StorageModel {
 
     setJSONToLocalStorage(STORAGE.KEY_KEYWORDS, this.#keywords);
   };
+
+  get showWatched() {
+    return this.#showWatched;
+  }
 
   get savedVideos() {
     return this.#savedVideo;

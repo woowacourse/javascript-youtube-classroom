@@ -43,7 +43,7 @@ class SearchController {
     if (this.#youtubeModel.videoCount === 0) return;
 
     this.#youtubeModel.videoInfos.forEach(info => {
-      const isSaved = this.#storageModel.findVideoByInfo(info);
+      const isSaved = this.#storageModel.findVideoSaved(info);
       this.#searchView.renderVideoArticle(info, isSaved);
     });
 
