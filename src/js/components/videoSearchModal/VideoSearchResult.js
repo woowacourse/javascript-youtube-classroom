@@ -44,6 +44,7 @@ export default class VideoSearchResult extends Component {
         </div>
         <section id="searched-video-list" class="video-wrapper">
         </section>
+        <img class="not-found-image w-100 d-none" src="./src/images/status/not_found.png" alt="not found"/>
     `;
   }
 
@@ -54,12 +55,14 @@ export default class VideoSearchResult extends Component {
     this.$searchedVideoWrapper = $(
       SELECTORS.SEARCH_MODAL.VIDEO_SEARCH_RESULT.VIDEO_LIST_ID
     );
+    this.$notFoundImage = $('.not-found-image');
   }
 
   render(preStates, states) {
     if (preStates.searchHistory !== states.searchHistory) {
       this.$searchedVideoWrapper.scrollTo({ top: 0 });
       this.$searchedVideoWrapper.innerHTML = '';
+      this.hideNotFoundImage();
     }
 
     if (preStates.savedVideoCount !== states.savedVideoCount) {
@@ -75,7 +78,7 @@ export default class VideoSearchResult extends Component {
 
     if (preStates.searchedVideos !== states.searchedVideos) {
       if (states.searchedVideos.length === 0) {
-        this.displayNotFound();
+        this.showNotFoundImage();
 
         return;
       }
@@ -86,8 +89,13 @@ export default class VideoSearchResult extends Component {
     }
   }
 
-  displayNotFound() {
-    this.$searchedVideoWrapper.innerHTML = `<img class="not-found-image w-100" src="./src/images/status/not_found.png" alt="not found"/>`;
+  hideNotFoundImage() {
+    this.$notFoundImage.classList.add('d-none');
+  }
+
+  showNotFoundImage() {
+    this.$searchedVideoWrapper.innerHTML = '';
+    this.$notFoundImage.classList.remove('d-none');
   }
 
   displayVideos(searchedVideos) {
