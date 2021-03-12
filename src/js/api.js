@@ -1,6 +1,6 @@
 export const searchYoutube = async (keyword, pageToken = '') => {
   try {
-    const endPoint = `http://vultr.puterism.com:8080/search`;
+    const endPoint = `http://vultr.puterism.com:8080/search/dummy`;
     const query = getParameters({
       pageToken,
       q: keyword,
