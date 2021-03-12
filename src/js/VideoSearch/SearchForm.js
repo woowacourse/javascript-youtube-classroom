@@ -4,7 +4,7 @@ import {
   API_END_POINT,
   LOCAL_STORAGE_KEY,
 } from "../constants.js";
-import { $c } from "../utils/querySelector.js";
+import { $ } from "../utils/querySelector.js";
 import messenger from "../Messenger.js";
 
 export default class SearchForm {
@@ -12,8 +12,8 @@ export default class SearchForm {
     this.query =
       JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEY.QUERY)) || "";
 
-    this.$youtubeSearchForm = $c(CLASSNAME.YOUTUBE_SEARCH_FORM);
-    this.$youtubeSearchFormInput = $c(CLASSNAME.YOUTUBE_SEARCH_FORM_INPUT);
+    this.$youtubeSearchForm = $(`.${CLASSNAME.YOUTUBE_SEARCH_FORM}`);
+    this.$youtubeSearchFormInput = $(`.${CLASSNAME.YOUTUBE_SEARCH_FORM_INPUT}`);
 
     this.$youtubeSearchForm.addEventListener(
       "submit",

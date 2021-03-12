@@ -1,6 +1,7 @@
 const CLASSNAME = Object.freeze({
   WATCH_LATER_TAB: "js-watch-later-tab",
   VIDEO_SEARCH_TAB: "js-video-search-tab",
+  HISTORY_TAB: "js-history-tab",
   MODAL: "modal",
   MODAL_INNER: "modal-inner",
   MODAL_CLOSE: "modal-close",

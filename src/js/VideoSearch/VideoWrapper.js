@@ -6,7 +6,7 @@ import {
   SCROLL_EVENT_THRESHOLD,
   THROTTLE_TIME_IN_MS,
 } from "../constants.js";
-import { $c } from "../utils/querySelector.js";
+import { $ } from "../utils/querySelector.js";
 import messenger from "../Messenger.js";
 import { SKELETON_TEMPLATE, render } from "../utils/videoInfo.js";
 
@@ -15,8 +15,8 @@ export default class VideoWrapper {
     this.currentQuery = "";
     this.currentNextPageToken = "";
 
-    this.$modalVideoWrapper = $c(CLASSNAME.MODAL_VIDEO_WRAPPER);
-    this.$notFoundImg = $c(CLASSNAME.NOT_FOUND_IMAGE);
+    this.$modalVideoWrapper = $(`.${CLASSNAME.MODAL_VIDEO_WRAPPER}`);
+    this.$notFoundImg = $(`.${CLASSNAME.NOT_FOUND_IMAGE}`);
 
     messenger.addMessageListener(MESSAGE.KEYWORD_SUBMITTED, ({ query }) => {
       this.$notFoundImg.classList.add(CLASSNAME.HIDDEN);

@@ -5,7 +5,7 @@ import {
   LOCAL_STORAGE_KEY,
 } from "../constants.js";
 import messenger from "../Messenger.js";
-import { $c } from "../utils/querySelector.js";
+import { $ } from "../utils/querySelector.js";
 
 export default class SavedVideosCount {
   constructor() {
@@ -13,8 +13,8 @@ export default class SavedVideosCount {
       JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEY.SAVED_VIDEOS_COUNT)) ||
       0;
 
-    this.$savedVideosCount = $c(CLASSNAME.SAVED_VIDEOS_COUNT);
-    this.$maxSavedVideosCount = $c(CLASSNAME.MAX_SAVED_VIDEOS_COUNT);
+    this.$savedVideosCount = $(`.${CLASSNAME.SAVED_VIDEOS_COUNT}`);
+    this.$maxSavedVideosCount = $(`.${CLASSNAME.MAX_SAVED_VIDEOS_COUNT}`);
 
     this.$savedVideosCount.innerText = this.savedVideosCount;
     this.$maxSavedVideosCount.innerText = MAX_SAVED_VIDEOS_COUNT;

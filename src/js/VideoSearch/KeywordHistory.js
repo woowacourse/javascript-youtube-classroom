@@ -4,7 +4,7 @@ import {
   MAX_KEYWORDS_COUNT,
   MESSAGE,
 } from "../constants.js";
-import { $c } from "../utils/querySelector.js";
+import { $ } from "../utils/querySelector.js";
 import messenger from "../Messenger.js";
 
 export default class KeywordHistory {
@@ -12,7 +12,7 @@ export default class KeywordHistory {
     this.keywordHistory =
       JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEY.KEYWORD_HISTORY)) || [];
 
-    this.$keywordHistorySection = $c(CLASSNAME.KEYWORD_HISTORY_SECTION);
+    this.$keywordHistorySection = $(`.${CLASSNAME.KEYWORD_HISTORY_SECTION}`);
 
     messenger.addMessageListener(
       MESSAGE.KEYWORD_SUBMITTED,
