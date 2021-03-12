@@ -1,10 +1,19 @@
-import { initInfiniteScroll, searchVideo } from '../service.js';
+import { searchVideo } from '../service.js';
+import intersectionObserver from '../states/intersectionObserver.js';
 import latestKeywords from '../states/latestKeywords.js';
 import videoInfos from '../states/videoInfos.js';
+import $ from '../utils/DOM.js';
 import {
   renderVideoLoader,
   renderVideoSearchResult,
 } from '../viewControllers/searchModal.js';
+
+function initInfiniteScroll() {
+  const $lastVideo = $('#video-search-result .js-video:last-child');
+
+  intersectionObserver.disconnect();
+  intersectionObserver.observe($lastVideo);
+}
 
 async function handleVideoSearch(e) {
   e.preventDefault();
