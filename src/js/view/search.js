@@ -19,9 +19,8 @@ class SearchView {
   }
 
   renderVideoArticle = (info, save) => {
-    this.#$searchVideoWrapper.append(
-      parseDOMFromString(videoTemplate(info, save))
-    );
+    const videoArticle = parseDOMFromString(videoTemplate(info, save));
+    this.#$searchVideoWrapper.append(videoArticle);
   };
 
   toggleNotFoundSearchedVideo = length => {

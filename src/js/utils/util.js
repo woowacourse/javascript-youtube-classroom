@@ -50,13 +50,13 @@ export const toggleSelectorClass = (selector, className, force = null) => {
   selector.classList.toggle(className, force);
 };
 
-const removeSkeleton = event => {
+const removeArticleSkeleton = event => {
   const article = event.target.closest('article');
   article.classList.remove(CLASS.SKELETON);
 };
 
 export const handleVideoLoad = iframe => {
-  iframe.addEventListener('load', event => removeSkeleton(event));
+  iframe.addEventListener('load', event => removeArticleSkeleton(event));
 };
 
 export const handleVideosLoad = iframes => {

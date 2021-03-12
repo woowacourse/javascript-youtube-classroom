@@ -63,6 +63,7 @@ class SearchController {
     this.#searchView.toggleNotFoundSearchedVideo(
       this.#youtubeModel.searchedCount
     );
+
     this.#renderSearchedVideo();
   };
 
