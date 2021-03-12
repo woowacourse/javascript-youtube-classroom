@@ -7,6 +7,7 @@ import {
 
 function toggleMode() {
   videoListType.toggle();
+
   renderSavedVideoList(videoInfos.get(), videoListType.get());
   toggleFocusedModeButton();
 }

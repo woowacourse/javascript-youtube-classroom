@@ -6,14 +6,15 @@ import {
 
 const $searchModal = $('#video-search-modal');
 const $videoList = $('#video-list');
+const $body = $('body');
 
 function closeModal() {
   $searchModal.classList.remove('open');
-  document.body.classList.remove('disable-scroll');
+  $body.classList.remove('disable-scroll');
 }
 function openModal() {
   $searchModal.classList.add('open');
-  document.body.classList.add('disable-scroll');
+  $body.classList.add('disable-scroll');
 
   window.addEventListener('mouseup', e => {
     if (!e.target.closest('.modal-inner')) {

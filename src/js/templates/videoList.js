@@ -41,10 +41,11 @@ function createVideoSnippetTemplate({ id, snippet }, buttonListTemplate) {
           </article>`;
 }
 
+// search modal 내 video templates
 function createSaveButtonTemplate(isSaved) {
   return isSaved
-    ? `<button class="btn js-save-cancel-button"}>↪️ 저장 취소</button>`
-    : `<button class="btn js-save-button"}>⬇️ 저장</button>`;
+    ? `<button class="btn js-save-cancel-button"}>저장 취소</button>`
+    : `<button class="btn bg-cyan-100 js-save-button"}>저장</button>`;
 }
 
 function isSavedVideo(item, videoInfos) {
@@ -53,7 +54,7 @@ function isSavedVideo(item, videoInfos) {
   );
 }
 
-function createVideoListTemplate(resultItems = [], videoInfos) {
+function createSearchVideoListTemplate(resultItems = [], videoInfos) {
   return [...resultItems]
     .map(item =>
       createVideoSnippetTemplate(
@@ -64,6 +65,7 @@ function createVideoListTemplate(resultItems = [], videoInfos) {
     .join('');
 }
 
+// main page 내 video templates
 function createControlButtonsTemplate(watchType) {
   return [
     {
@@ -96,13 +98,8 @@ function createSavedVideoListTemplate(savedVideoInfos = []) {
 
 const emptyVideoListTemplate = `<span id="empty-video-list" class="stretch text-center">영상이 없습니다. 😥</span>`;
 
-/*
- * data-attirbue 로 다 할당
- * 이미 존재하는 속성들을 그대로 활용 (선택자 접근, 문자열 파싱)
- */
-
 export {
-  createVideoListTemplate,
+  createSearchVideoListTemplate,
   createSavedVideoListTemplate,
   emptyVideoListTemplate,
 };

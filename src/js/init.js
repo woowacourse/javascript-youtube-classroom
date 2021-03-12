@@ -1,6 +1,6 @@
 import { $ } from './utils/DOM.js';
 import handleVideoSearch from './handlers/videoSearch.js';
-import videoSaveManager from './handlers/videoSave.js';
+import handleVideoSaveControl from './handlers/videoSave.js';
 import videoInfos from './states/videoInfos.js';
 import latestKeywords from './states/latestKeywords.js';
 import intersectionObserver from './states/intersectionObserver.js';
@@ -35,7 +35,7 @@ function initEvent() {
   $('#search-button').addEventListener('click', openModal);
   $('#modal-close-button').addEventListener('click', closeModal);
   $('#video-search-form').addEventListener('submit', handleVideoSearch);
-  $('#video-search-result').addEventListener('click', videoSaveManager);
+  $('#video-search-result').addEventListener('click', handleVideoSaveControl);
   $('#latest-keyword-list').addEventListener('click', handleVideoSearch);
   $('#video-list').addEventListener('click', handleButtonsControl);
   $('#mode-wrapper').addEventListener('click', handleModeChange);

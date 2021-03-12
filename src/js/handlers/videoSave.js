@@ -40,7 +40,7 @@ function handleVideoSaveCancel($saveCancelButton) {
   renderSavedVideoCount(videoInfos.size);
 }
 
-function videoSaveManager({ target }) {
+function handleVideoSaveControl({ target }) {
   if (target.classList.contains('js-save-button')) {
     handleVideoSave(target);
 
@@ -52,4 +52,4 @@ function videoSaveManager({ target }) {
   }
 }
 
-export default videoSaveManager;
+export default handleVideoSaveControl;

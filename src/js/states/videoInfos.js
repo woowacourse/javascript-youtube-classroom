@@ -65,7 +65,7 @@ const videoInfos = {
         publishTime: snippet.publishedAt,
       },
       watchType: videoInfos.find(videoInfo => videoInfo.id.videoId === id)
-        .watchType, // TODO: 필터 할 때 localStorage에서 받아오기 - 2단계.
+        .watchType,
     }));
   },
 };

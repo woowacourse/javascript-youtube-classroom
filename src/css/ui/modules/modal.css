@@ -20,7 +20,7 @@
 .modal-inner {
   transition: top 0.25s ease;
   width: 100%;
-  margin: 30px 20px;
+  margin: 20px 80px;
   overflow: auto;
   background: #fff;
   border-radius: 5px;
@@ -40,7 +40,7 @@
 }
 
 .modal .btn {
-  height: 24px;
+  height: 26px;
   font-size: 10px;
 }
 svg {
