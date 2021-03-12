@@ -2,10 +2,6 @@ import { fetchSearchResult } from './API.js';
 import intersectionObserver from './states/intersectionObserver.js';
 import pageToken from './states/pageToken.js';
 import videoInfos from './states/videoInfos.js';
-import {
-  renderVideoLoader,
-  renderVideoSearchResult,
-} from './viewControllers/searchModal.js';
 import $ from './utils/DOM.js';
 
 function createVideoInfo(videoDataset) {
@@ -16,17 +12,6 @@ function createVideoInfo(videoDataset) {
     snippet: { title, channelId, channelTitle, publishTime },
     watchType: 'toWatch',
   };
-}
-
-async function searchVideo(keyword) {
-  renderVideoLoader();
-  const { nextPageToken, items } = await fetchSearchResult(keyword);
-  const filteredItems = items.filter(item => item.id.videoId);
-
-  pageToken.set(nextPageToken);
-  renderVideoSearchResult(filteredItems, videoInfos.get());
-
-  return items;
 }
 
 function saveVideo($video) {
@@ -45,6 +30,13 @@ function initInfiniteScroll() {
 
   intersectionObserver.disconnect();
   intersectionObserver.observe($lastVideo);
+}
+
+async function searchVideo(keyword) {
+  const { nextPageToken, items } = await fetchSearchResult(keyword);
+  pageToken.set(nextPageToken);
+
+  return items.filter(item => item.id.videoId);
 }
 
 export { saveVideo, cancelVideoSave, searchVideo, initInfiniteScroll };
