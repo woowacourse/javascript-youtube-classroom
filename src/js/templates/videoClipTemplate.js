@@ -88,7 +88,7 @@ function getClipButtons(item) {
         ✅
       </button>
       <button 
-        data-likeed-button=${item.videoId} 
+        data-liked-button=${item.videoId} 
         class=${item.liked ? "" : "opacity-hover"}>
         👍
       </button>
