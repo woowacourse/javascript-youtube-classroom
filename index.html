@@ -5,6 +5,13 @@
     <title>👩🏻‍💻 유튜브 강의실</title>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link rel="stylesheet" href="./src/css/index.css" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100&display=swap"
+      rel="stylesheet"
+    />
   </head>
   <body>
     <div id="app">
@@ -22,9 +29,7 @@
               <button id="watched-video-display-button" class="btn mx-1">
                 ✅ 본 영상
               </button>
-              <button id="search-button" class="btn mx-1">
-                🔍 동영상 검색
-              </button>
+              <button id="search-button" class="mx-1 rounded-full">🔍</button>
             </nav>
           </header>
           <main class="mt-10">
@@ -65,7 +70,10 @@
             <div class="d-flex justify-end text-gray-700">
               저장된 영상 개수:&nbsp;<span id="saved-video-count"></span>
             </div>
-            <section id="video-search-result" class="video-wrapper"></section>
+            <section
+              id="video-search-result"
+              class="mt-6 video-wrapper"
+            ></section>
           </section>
         </div>
       </div>

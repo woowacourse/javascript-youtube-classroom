@@ -1,5 +1,5 @@
 function keywordChipTemplate(keyword) {
-  return `<span class="js-latest-keyword chip">${keyword}</span>`;
+  return `<span class="js-latest-keyword chip mx-1">${keyword}</span>`;
 }
 
 function keywordListTemplate(latestKeywords = []) {

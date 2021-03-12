@@ -6,9 +6,11 @@ import {
 
 const $searchModal = $('#video-search-modal');
 const $videoList = $('#video-list');
+const $videoSearchInput = $('#video-search-input');
 
 function openModal() {
   $searchModal.classList.add('open');
+  $videoSearchInput.focus();
 }
 
 function closeModal() {
