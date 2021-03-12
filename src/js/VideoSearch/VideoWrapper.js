@@ -8,7 +8,8 @@ import {
 } from "../constants.js";
 import { $ } from "../utils/querySelector.js";
 import messenger from "../Messenger.js";
-import { SKELETON_TEMPLATE, render } from "../utils/videoInfo.js";
+import render from "../Video/render.js";
+import TEMPLATE from "../Video/template.js";
 
 export default class VideoWrapper {
   constructor() {
@@ -61,10 +62,7 @@ export default class VideoWrapper {
 
   mountTemplate() {
     Array.from({ length: MAX_RESULTS_COUNT }).forEach(() => {
-      this.$modalVideoWrapper.insertAdjacentHTML(
-        "beforeEnd",
-        SKELETON_TEMPLATE
-      );
+      this.$modalVideoWrapper.insertAdjacentHTML("beforeEnd", TEMPLATE);
     });
   }
 
