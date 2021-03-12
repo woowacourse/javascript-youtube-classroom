@@ -137,9 +137,11 @@ export default class VideoSearchResult extends Component {
     skeleton.appendChild(line.cloneNode(true));
     skeleton.appendChild(line.cloneNode(true));
 
-    Array.from({ length: VALUES.MAXIMUM_SEARCH_VIDEO_COUNT }).forEach(() => {
-      fragment.appendChild(skeleton.cloneNode(true));
-    });
+    fragment.append(
+      ...Array.from({ length: VALUES.MAXIMUM_SEARCH_VIDEO_COUNT }, () =>
+        skeleton.cloneNode(true)
+      )
+    );
 
     return fragment;
   }
