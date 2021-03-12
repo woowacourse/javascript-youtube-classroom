@@ -1,3 +1,9 @@
+import {
+  VIDEO_IS_MOVED_TO_WATCHED_MENU,
+  VIDEO_IS_MOVED_TO_WATCHING_MENU,
+  ARE_YOU_SURE_TO_REMOVE_VIDEO,
+  VIDEO_IS_REMOVED_SUCCESSFULLY,
+} from '../constants.js';
 import { isWatchingMenu, isWatchingVideo } from './elementValidator.js';
 
 export default class ClassroomController {
@@ -23,13 +29,24 @@ export default class ClassroomController {
     }
 
     const $video = target.closest('article');
+    const isWatching = isWatchingVideo($video);
 
     if (target.classList.contains('js-check-button')) {
       this.model.moveVideo($video.id);
-      this.view.renderMovedVideo($video, isWatchingVideo($video));
-      isWatchingMenu(this.view.$savedVideosWrapper)
-        ? this.model.hasNoWatchingVideoSaved() && this.view.renderImageNoWatchingVideo()
-        : this.model.hasNoWatchedVideoSaved() && this.view.renderImageNoWatchedVideo();
+      this.view.renderMovedVideo($video, isWatching);
+      isWatching
+        ? this.view.renderNotification(VIDEO_IS_MOVED_TO_WATCHED_MENU)
+        : this.view.renderNotification(VIDEO_IS_MOVED_TO_WATCHING_MENU);
+      this.showImageNoVideo();
+      return;
+    }
+
+    if (target.classList.contains('js-remove-button')) {
+      if (!window.confirm(ARE_YOU_SURE_TO_REMOVE_VIDEO)) return;
+      this.model.removeVideo($video.id, isWatching);
+      this.view.removeVideo($video);
+      this.view.renderNotification(VIDEO_IS_REMOVED_SUCCESSFULLY);
+      this.showImageNoVideo();
     }
   }
 
@@ -53,15 +70,27 @@ export default class ClassroomController {
 
   showWatchingVideos() {
     this.view.renderOnlyWatchingVideos();
+    this.showImageNoWatchingVideoSaved();
+  }
 
+  showWatchedVideos() {
+    this.view.renderOnlyWatchedVideos();
+    this.showImageNoWatchedVideoSaved();
+  }
+
+  showImageNoVideo() {
+    isWatchingMenu(this.view.$savedVideosWrapper)
+      ? this.showImageNoWatchingVideoSaved()
+      : this.showImageNoWatchedVideoSaved();
+  }
+
+  showImageNoWatchingVideoSaved() {
     if (this.model.hasNoWatchingVideoSaved()) {
       this.view.renderImageNoWatchingVideo();
     }
   }
 
-  showWatchedVideos() {
-    this.view.renderOnlyWatchedVideos();
-
+  showImageNoWatchedVideoSaved() {
     if (this.model.hasNoWatchedVideoSaved()) {
       this.model.hasNoWatchingVideoSaved()
         ? this.view.renderImageNoWatchingVideo()

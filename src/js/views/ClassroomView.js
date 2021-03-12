@@ -1,6 +1,14 @@
-import { $ } from '../utils/DOM.js';
+import { $, showSnackbar } from '../utils/DOM.js';
 import { getSavedVideoTemplate } from './layout/storedVideo.js';
-import { WATCHING_SECTION, WATCHED_SECTION, WATCHING, WATCHED, NO_WATCHING, NO_WATCHED } from '../constants.js';
+import {
+  WATCHING_SECTION,
+  WATCHED_SECTION,
+  WATCHING,
+  WATCHED,
+  NO_WATCHING,
+  NO_WATCHED,
+  SNACKBAR_SHOW_TIME,
+} from '../constants.js';
 
 export default class ClassroomView {
   constructor() {
@@ -12,6 +20,7 @@ export default class ClassroomView {
     this.$watchedMenuButton = $('.js-watched-menu-button');
     this.$savedVideosWrapper = $('.js-saved-videos-wrapper');
     this.$noVideoFound = $('.js-no-video-found');
+    this.$snackbar = $('.js-snackbar');
   }
 
   renderVideosToPrepare(videos) {
@@ -37,14 +46,14 @@ export default class ClassroomView {
   renderOnlyWatchingVideos() {
     this.$watchingMenuButton.classList.add('bg-cyan-100');
     this.$watchedMenuButton.classList.remove('bg-cyan-100');
-    this.$noVideoFound.classList.remove(NO_WATCHED);
+    this.$noVideoFound.classList.remove(NO_WATCHING, NO_WATCHED);
     this.$savedVideosWrapper.classList.replace(WATCHED_SECTION, WATCHING_SECTION);
   }
 
   renderOnlyWatchedVideos() {
     this.$watchedMenuButton.classList.add('bg-cyan-100');
     this.$watchingMenuButton.classList.remove('bg-cyan-100');
-    this.$noVideoFound.classList.remove(NO_WATCHING);
+    this.$noVideoFound.classList.remove(NO_WATCHING, NO_WATCHED);
     this.$savedVideosWrapper.classList.replace(WATCHING_SECTION, WATCHED_SECTION);
   }
 
@@ -57,5 +66,13 @@ export default class ClassroomView {
       $video.classList.remove(WATCHED);
       $video.classList.add(WATCHING);
     }
+  }
+
+  removeVideo($video) {
+    $video.remove();
+  }
+
+  renderNotification(message) {
+    showSnackbar({ messenger: this.$snackbar, message, showtime: SNACKBAR_SHOW_TIME });
   }
 }

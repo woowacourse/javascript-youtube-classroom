@@ -4,7 +4,7 @@ export const httpRequest = async (uri, method) => {
     const json = await response.json();
 
     if (!response.ok) {
-      throw Error(response.statusText);
+      throw new Error(response.statusText);
     }
     return json;
   } catch (e) {

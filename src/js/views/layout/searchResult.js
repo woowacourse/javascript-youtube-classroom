@@ -18,6 +18,7 @@ export const getChannelTitleTemplate = (channelId, channelTitle) => {
     <a
       href=${YOUTUBE_CHANNEL_ENDPOINT}${channelId}
       target="_blank"
+      rel="noopener"
       class="channel-link">
         ${channelTitle}
     </a>

@@ -1,6 +1,6 @@
 import { getThumbnailTemplate, getChannelTitleTemplate, resultNotFoundTemplate } from './layout/searchResult.js';
 import { getSkeletonTemplate } from './layout/skeleton.js';
-import { $ } from '../utils/DOM.js';
+import { $, showSnackbar } from '../utils/DOM.js';
 import { SNACKBAR_SHOW_TIME } from '../constants.js';
 
 export default class SearchView {
@@ -91,11 +91,7 @@ export default class SearchView {
   }
 
   renderNotification(message) {
-    this.$snackbar.innerText = message;
-    this.$snackbar.classList.add('show');
-    setTimeout(() => {
-      this.$snackbar.classList.remove('show');
-    }, SNACKBAR_SHOW_TIME);
+    showSnackbar({ messenger: this.$snackbar, message, showtime: SNACKBAR_SHOW_TIME });
   }
 
   renderSaveVideoCount(videoCount) {

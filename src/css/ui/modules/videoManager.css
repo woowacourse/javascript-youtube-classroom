@@ -1,18 +1,20 @@
 .video-manage-btn {
   display: inline-block;
+  opacity: 0.4;
 }
 
 .video-manage-btn:hover {
   cursor: pointer;
+  opacity: 1;
   animation: wave-animation 0.3s infinite;
 }
 
 .video-manage-btn.checked {
-  opacity: 0.3;
+  opacity: 1;
 }
 
 .video-manage-btn.disabled {
-  opacity: 0.3;
+  opacity: 0.4;
   cursor: not-allowed;
   animation: none;
 }
