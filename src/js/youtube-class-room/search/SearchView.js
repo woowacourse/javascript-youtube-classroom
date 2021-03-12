@@ -1,13 +1,18 @@
-import videos from "../state/videos.js";
+import videos from "../../state/videos.js";
 
-import getKeywordHistoryTemplate from "../templates/keywordHistoryTemplate.js";
-import { createSearchedClipTemplate } from "../templates/videoClipTemplate.js";
-import getSkeletonUITemplate from "../templates/skeletonUITemplate.js";
+import getKeywordHistoryTemplate from "../../templates/keywordHistoryTemplate.js";
+import { createSearchedClipTemplate } from "../../templates/videoClipTemplate.js";
+import getSkeletonUITemplate from "../../templates/skeletonUITemplate.js";
 
-import { $, getFormElements, hideElement, showElement } from "../utils/dom.js";
-import { DOM_SELECTORS, ERROR_MESSAGE, VIDEOS } from "../utils/constants.js";
-import elements from "../utils/elements.js";
-import { showSnackbar } from "../utils/snackbar.js";
+import {
+  $,
+  getFormElements,
+  hideElement,
+  showElement,
+} from "../../utils/dom.js";
+import { DOM_CONSTANTS, ERROR_MESSAGE, VIDEOS } from "../../utils/constants.js";
+import elements from "../../utils/elements.js";
+import { showSnackbar } from "../../utils/snackbar.js";
 
 export default class SearchView {
   resetSearchResults() {
@@ -17,7 +22,7 @@ export default class SearchView {
   }
 
   resetSearchInput() {
-    elements.$searchForm.elements[DOM_SELECTORS.NAME.SEARCH_KEYWORD].value = "";
+    elements.$searchForm.elements[DOM_CONSTANTS.NAME.SEARCH_KEYWORD].value = "";
   }
 
   showNotFoundImg() {
@@ -61,7 +66,7 @@ export default class SearchView {
   selectSaveButton(videoId, isSaved = false) {
     try {
       const selectedTarget = Array.from(
-        $(`${DOM_SELECTORS.ELEMENT.BUTTON}[${DOM_SELECTORS.DATASET.VIDEO_ID}]`)
+        $(`${DOM_CONSTANTS.ELEMENT.BUTTON}[${DOM_CONSTANTS.DATASET.VIDEO_ID}]`)
       ).find(
         ($saveButton) =>
           $saveButton.dataset.videoId === videoId &&
@@ -98,7 +103,7 @@ export default class SearchView {
   setSearchInputValue(searchKeyword) {
     getFormElements(
       elements.$searchForm,
-      DOM_SELECTORS.NAME.SEARCH_KEYWORD
+      DOM_CONSTANTS.NAME.SEARCH_KEYWORD
     ).value = searchKeyword;
   }
 
