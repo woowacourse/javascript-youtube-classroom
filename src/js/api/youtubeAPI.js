@@ -19,7 +19,7 @@ const youtubeSearchURL = ({ query, nextPageToken, max }) => {
     value && urlSearch.set(key, value);
   });
 
-  return URL.YOUTUBE_SEARCH + urlSearch.toString();
+  return URL.YOUTUBE_VIDEOS + urlSearch.toString();
 };
 
 export const api = {

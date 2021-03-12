@@ -1,5 +1,11 @@
 // TODO : 제일마지막에 상수화. 숫자, 셀렉터 / 파일명좀 바꿀수 있으면 바꾸기 ㅎㅎ.. /모달도 좀 넣어주자
-import { CLASS, SEARCH, SELECTOR, SNACK_BAR } from '../constants/constant.js';
+import {
+  CLASS,
+  STORAGE,
+  SELECTOR,
+  SNACK_BAR,
+  ERROR_MESSAGE,
+} from '../constants/constant.js';
 import {
   $,
   $$,
@@ -81,9 +87,15 @@ class SearchController {
   };
 
   #saveVideo = e => {
+    if (this.#storageModel.savedVideoCount === STORAGE.MAX_SAVED_VIDEO_LENGTH) {
+      alert(ERROR_MESSAGE.OVER_MAX_VIDEO_LENGTH);
+      return;
+    }
+
     e.target.classList.add(CLASS.INVISIBLE);
 
     const videoInfo = { ...e.target.dataset, watched: false };
+
     this.#storageModel.saveVideo(videoInfo);
     this.#renderSavedVideo(videoInfo);
 
