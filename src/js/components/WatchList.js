@@ -130,7 +130,7 @@ export default class WatchList extends Observer {
 
       const targetId = target.closest('.menu-list').dataset.videoId;
       const newWatchList = watchList.filter(({ videoId }) => videoId !== targetId);
-      this.store.updateAll({ [LOCAL_STORAGE_KEYS.WATCH_LIST]: newWatchList });
+      this.store.update(LOCAL_STORAGE_KEYS.WATCH_LIST, newWatchList);
 
       const $saveButton = getVideoSaveButton(targetId);
       if ($saveButton) {
@@ -150,7 +150,7 @@ export default class WatchList extends Observer {
         return nowVideo;
       });
 
-      this.store.update(LOCAL_STORAGE_KEYS.WATCH_LIST, newWatchList, this);
+      this.store.update(LOCAL_STORAGE_KEYS.WATCH_LIST, newWatchList);
 
       if (this.nowMenu === MENU.TO_WATCH) {
         showSnackbar(ALERT_MESSAGE.VIDEO_MOVED_WATCHED_LIST);
