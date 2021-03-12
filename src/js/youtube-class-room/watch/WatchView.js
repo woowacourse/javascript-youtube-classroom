@@ -1,13 +1,13 @@
-import { createSavedClipTemplate } from "../templates/videoClipTemplate.js";
+import { createSavedClipTemplate } from "../../templates/videoClipTemplate.js";
 
-import { PALLET } from "../utils/constants.js";
-import elements from "../utils/elements.js";
+import { PALLET } from "../../utils/constants.js";
+import elements from "../../utils/elements.js";
 import {
   hideElement,
   showElement,
   removeBackgroundColor,
   addBackgroundColor,
-} from "../utils/dom.js";
+} from "../../utils/dom.js";
 
 export default class WatchView {
   removeAllButtonColor() {

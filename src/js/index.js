@@ -1,5 +1,5 @@
-import SearchEventController from "./search/SearchEventController.js";
-import WatchEventController from "./watch/WatchEventContorller.js";
+import SearchEventController from "./youtube-class-room/search/SearchEventController.js";
+import WatchEventController from "./youtube-class-room/watch/WatchEventContorller.js";
 
 function initApp() {
   const searchEventController = new SearchEventController();

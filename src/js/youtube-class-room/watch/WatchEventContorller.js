@@ -1,10 +1,10 @@
 import WatchController from "./WatchController.js";
 
-import elements from "../utils/elements.js";
-import { showSnackbar } from "../utils/snackbar.js";
-import { ERROR_MESSAGE } from "../utils/constants.js";
+import elements from "../../utils/elements.js";
+import { showSnackbar } from "../../utils/snackbar.js";
+import { ERROR_MESSAGE } from "../../utils/constants.js";
 
-import videos from "../state/videos.js";
+import videos from "../../state/videos.js";
 export default class WatchEventController {
   constructor() {
     this.watchController = new WatchController();

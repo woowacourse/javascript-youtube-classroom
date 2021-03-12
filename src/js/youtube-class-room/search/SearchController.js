@@ -1,14 +1,19 @@
 import SearchView from "./SearchView.js";
 
-import searchHistory from "../state/searchHistory.js";
-import videos from "../state/videos.js";
-import loadingSearchResults from "../state/loadingSearchResults.js";
+import searchHistory from "../../state/searchHistory.js";
+import videos from "../../state/videos.js";
+import loadingSearchResults from "../../state/loadingSearchResults.js";
 
-import { API, ERROR_MESSAGE, VIDEOS, YOUTUBE_URL } from "../utils/constants.js";
-import { observeScrollBottom } from "../utils/scrollBottomObserver.js";
-import { showSnackbar } from "../utils/snackbar.js";
+import {
+  API,
+  ERROR_MESSAGE,
+  VIDEOS,
+  YOUTUBE_URL,
+} from "../../utils/constants.js";
+import { observeScrollBottom } from "../../utils/scrollBottomObserver.js";
+import { showSnackbar } from "../../utils/snackbar.js";
 
-import { getSearchQueryString } from "../queries/searchQuery.js";
+import { getSearchQueryString } from "../../queries/searchQuery.js";
 
 export default class SearchController {
   constructor() {

@@ -1,24 +1,24 @@
 import SearchController from "./SearchController.js";
 
-import videos from "../state/videos.js";
+import videos from "../../state/videos.js";
 
-import elements from "../utils/elements.js";
+import elements from "../../utils/elements.js";
 import {
   ERROR_MESSAGE,
   VIDEOS,
   DOM_CONSTANTS,
   CUSTOM_EVENTS,
-} from "../utils/constants.js";
-import { showSnackbar } from "../utils/snackbar.js";
+} from "../../utils/constants.js";
+import { showSnackbar } from "../../utils/snackbar.js";
 import {
   openModal,
   closeModal,
   showElement,
   hideElement,
   getFormElements,
-} from "../utils/dom.js";
+} from "../../utils/dom.js";
 
-import searchHistory from "../state/searchHistory.js";
+import searchHistory from "../../state/searchHistory.js";
 
 export default class SearchEventController {
   constructor() {
