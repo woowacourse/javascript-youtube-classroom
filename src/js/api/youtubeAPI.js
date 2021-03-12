@@ -1,9 +1,10 @@
 import { YOUTUBE_API_KEY } from '../../../env.js';
-import { SEARCH, URL, REDIRECT_HOST } from '../constants/constant.js';
+import { SEARCH, URL } from '../constants/constant.js';
 
 const youtubeSearchURL = ({ query, nextPageToken, max }) => {
+  const urlSearch = new URLSearchParams();
   const queries = {
-    q: query,
+    q: query.toString(),
     key: YOUTUBE_API_KEY,
     pageToken: nextPageToken,
     max_results: max,
@@ -14,18 +15,11 @@ const youtubeSearchURL = ({ query, nextPageToken, max }) => {
     part: 'snippet',
   };
 
-  return (
-    URL.YOUTUBE_SEARCH +
-    Object.entries(queries)
-      .map(([key, value]) => {
-        if (value === undefined) {
-          return [];
-        }
-        return `${key}=${value}`;
-      })
-      .flat()
-      .join('&')
-  );
+  Object.entries(queries).forEach(([key, value]) => {
+    value && urlSearch.set(key, value);
+  });
+
+  return URL.YOUTUBE_SEARCH + urlSearch.toString();
 };
 
 export const api = {
