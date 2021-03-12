@@ -2,6 +2,8 @@ import WatchController from "./WatchController.js";
 
 import videos from "../state/videos.js";
 import elements from "../utils/elements.js";
+import { showSnackbar } from "../utils/snackbar.js";
+import { ERROR_MESSAGE } from "../utils/constants.js";
 
 export default class WatchEventController {
   constructor() {
@@ -23,21 +25,16 @@ export default class WatchEventController {
       this.onClickSaveButton.bind(this)
     );
 
-    elements.$watchLaterVideos.addEventListener(
-      "click",
-      this.onClickWatchedButton.bind(this)
-    );
-    elements.$watchedVideos.addEventListener(
-      "click",
-      this.onClickClearWatchLogbutton.bind(this)
-    );
-
-    elements.$watchLaterVideos.addEventListener("click", (e) =>
-      this.onClickDeleteButton(e, false)
-    );
-    elements.$watchedVideos.addEventListener("click", (e) =>
-      this.onClickDeleteButton(e, true)
-    );
+    elements.$watchLaterVideos.addEventListener("click", (e) => {
+      this.onClickWatchedButton(e);
+      this.onClickLikedButton(e);
+      this.onClickDeleteButton(e, false);
+    });
+    elements.$watchedVideos.addEventListener("click", (e) => {
+      this.onClickClearWatchLogbutton(e);
+      this.onClickLikedButton(e);
+      this.onClickDeleteButton(e, true);
+    });
   }
 
   onLoadApp() {
@@ -79,6 +76,14 @@ export default class WatchEventController {
 
     this.watchController.clearWatchedViedoLog(videoId);
     this.watchController.updateWatchedView(videos.getSavedVideos());
+  }
+
+  onClickLikedButton(e) {
+    if (!e.target.dataset.likedButton) {
+      return;
+    }
+
+    showSnackbar(ERROR_MESSAGE.NOT_IMPLEMENTED);
   }
 
   onClickDeleteButton(e, isWatched) {
