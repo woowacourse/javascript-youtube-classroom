@@ -1,6 +1,6 @@
 import { DELETE_VIDEO_CONFIRM_MSG } from '../constants/confirmMessage.js';
 import {
-  SAVE_DELETE_SUCCESS_MSG,
+  DELETE_SUCCESS_MSG,
   VIDEO_MOVE_SUCCESS_MSG,
 } from '../constants/snackbarMessage.js';
 import videoInfos from '../states/videoInfos.js';
@@ -19,7 +19,7 @@ function handleDeleteButton($target) {
   const targetId = $target.closest('.js-video').dataset.videoId;
 
   videoInfos.remove(targetId);
-  showSnackBar(SAVE_DELETE_SUCCESS_MSG);
+  showSnackBar(DELETE_SUCCESS_MSG);
 }
 
 function handleButtonsControl({ target }) {
