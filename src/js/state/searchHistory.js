@@ -16,8 +16,6 @@ const searchHistory = {
   },
 
   setKeyword(input) {
-    console.log(input);
-    console.log(`this.recentKeyword : ${this.recentKeyword}`);
     this.recentKeyword = input.trim();
 
     if (this.getKeywordAll().includes(this.recentKeyword)) {
