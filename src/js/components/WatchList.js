@@ -7,6 +7,7 @@ import {
   hideElement,
   colorizeButton,
   uncolorizeButton,
+  getVideoSaveButton,
 } from '../utils.js';
 import { SELECTORS, LOCAL_STORAGE_KEYS, ALERT_MESSAGE, MENU } from '../constants.js';
 import { searchYoutubeById } from '../api.js';
@@ -124,12 +125,18 @@ export default class WatchList extends Observer {
     $(SELECTORS.CLASS.WATCH_LIST).addEventListener('click', (event) => {
       const { target } = event;
       const { watchList } = this.store.get();
+
       if (target.classList.contains('delete')) {
         if (!window.confirm(ALERT_MESSAGE.CONFIRM_DELETE)) return;
 
         const targetId = target.closest('.menu-list').dataset.videoId;
         const newWatchList = watchList.filter(({ videoId }) => videoId !== targetId);
-        this.store.update(LOCAL_STORAGE_KEYS.WATCH_LIST, newWatchList, this);
+        this.store.updateAll({ [LOCAL_STORAGE_KEYS.WATCH_LIST]: newWatchList });
+
+        const $saveButton = getVideoSaveButton(targetId);
+        if ($saveButton) {
+          $saveButton.classList.remove('hidden');
+        }
 
         showSnackbar(ALERT_MESSAGE.VIDEO_DELETED);
       }

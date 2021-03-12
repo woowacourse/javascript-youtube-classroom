@@ -29,28 +29,28 @@ export const getVideoTemplate = (data, options) => {
           <div class="meta">
             <p>${dateString}</p>
           </div>
-          ${
-            containsSaveButton
-              ? `
-                <div class="d-flex justify-end">
-                  <button class="btn btn-save ${isSaved ? 'hidden' : ''}" data-video-id="${id}">⬇️ 저장</button>
-                </div>
-              `
-              : ''
-          }
-          ${
-            containsMenu
-              ? `
-              <div class="menu-list" data-video-id="${id}"}>
-                <span class="cursor-pointer ${generateCSSClass(!isWatched, 'opacity-hover')} watched">✅</span>
-                <span class="cursor-pointer opacity-hover like">👍</span>
-                <span class="cursor-pointer opacity-hover comment">💬</span>
-                <span class="cursor-pointer opacity-hover delete">🗑️</span>
+        </div>
+        ${
+          containsSaveButton
+            ? `
+              <div class="d-flex justify-end">
+                <button class="btn btn-save ${isSaved ? 'hidden' : ''}" data-video-id="${id}">⬇️ 저장</button>
               </div>
             `
-              : ''
-          }
-        </div>
+            : ''
+        }
+        ${
+          containsMenu
+            ? `
+            <div class="menu-list" data-video-id="${id}"}>
+              <span class="cursor-pointer ${generateCSSClass(!isWatched, 'opacity-hover')} watched">✅</span>
+              <span class="cursor-pointer opacity-hover like">👍</span>
+              <span class="cursor-pointer opacity-hover comment">💬</span>
+              <span class="cursor-pointer opacity-hover delete">🗑️</span>
+            </div>
+          `
+            : ''
+        }
       </div>
     </article>
   `;

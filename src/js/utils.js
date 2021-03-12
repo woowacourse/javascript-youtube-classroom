@@ -72,3 +72,8 @@ export const colorizeButton = (selector) => {
 export const uncolorizeButton = (selector) => {
   $(selector).classList.remove('bg-cyan-100');
 };
+
+export const getVideoSaveButton = (id) => {
+  const { YOUTUBE_SEARCH_RESULT, CLIP, BTN_SAVE } = SELECTORS.CLASS;
+  return $(`${YOUTUBE_SEARCH_RESULT} ${CLIP}[data-video-id="${id}"] ${BTN_SAVE}`);
+};
