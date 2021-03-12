@@ -93,9 +93,10 @@ export function getStorageData(str, defaultValue = []) {
   try {
     const items = JSON.parse(localStorage.getItem(str));
 
-    if (items) return items;
+    return items || defaultValue;
   } catch (e) {
+    console.error(e);
+
     return defaultValue;
   }
-  return defaultValue;
 }
