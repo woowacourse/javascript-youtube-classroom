@@ -1,11 +1,7 @@
-import {
-  CLASSNAME,
-  MESSAGE,
-  API_END_POINT,
-  LOCAL_STORAGE_KEY,
-} from "../constants.js";
+import { CLASSNAME, MESSAGE, LOCAL_STORAGE_KEY } from "../constants.js";
 import { $ } from "../utils/querySelector.js";
 import messenger from "../Messenger.js";
+import { fetchData } from "../utils/API.js";
 
 export default class SearchForm {
   constructor() {
@@ -20,7 +16,7 @@ export default class SearchForm {
       this.handleFormSubmit.bind(this)
     );
 
-    this.fetchData();
+    this.searchKeyword();
   }
 
   handleFormSubmit(event) {
@@ -30,10 +26,10 @@ export default class SearchForm {
 
     localStorage.setItem(LOCAL_STORAGE_KEY.QUERY, JSON.stringify(this.query));
 
-    this.fetchData();
+    this.searchKeyword();
   }
 
-  async fetchData() {
+  async searchKeyword() {
     if (this.query === "") return;
 
     messenger.deliverMessage(MESSAGE.KEYWORD_SUBMITTED, {
@@ -41,14 +37,8 @@ export default class SearchForm {
     });
 
     try {
-      const response = await fetch(API_END_POINT(this.query));
-      const body = await response.json();
+      const { nextPageToken, items } = await fetchData(this.query);
 
-      if (!response.ok) {
-        throw new Error(body.error.message);
-      }
-
-      const { nextPageToken, items } = body;
       messenger.deliverMessage(MESSAGE.DATA_LOADED, {
         nextPageToken,
         items,

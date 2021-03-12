@@ -49,19 +49,12 @@ const SCROLL_EVENT_THRESHOLD = 0.7;
 
 const THROTTLE_TIME_IN_MS = 500;
 
-const REDIRECT_SERVER_HOST = "https://jum0.netlify.app";
-
-const API_END_POINT = (query, nextPageToken = "") =>
-  `${REDIRECT_SERVER_HOST}/youtube/search?part=snippet&type=video&maxResults=${MAX_RESULTS_COUNT}&regionCode=kr&safeSearch=strict&pageToken=${nextPageToken}&q=${query}`;
-
 export {
   CLASSNAME,
   MAX_KEYWORDS_COUNT,
   MAX_RESULTS_COUNT,
   MAX_SAVED_VIDEOS_COUNT,
   MESSAGE,
-  REDIRECT_SERVER_HOST,
-  API_END_POINT,
   SCROLL_EVENT_THRESHOLD,
   THROTTLE_TIME_IN_MS,
   LOCAL_STORAGE_KEY,
