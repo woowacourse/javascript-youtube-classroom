@@ -1,8 +1,4 @@
-import { store } from '../index.js';
-import { increaseSavedVideoCount } from '../redux/action.js';
 import {
-  VALUES,
-  ERROR_MESSAGES,
   LOCALSTORAGE_KEYS,
   CLASS_NAMES,
   TYPES,
@@ -10,7 +6,6 @@ import {
 import {
   createElement,
   localStorageGetItem,
-  localStorageSetItem,
   unescapeString,
 } from '../utils/utils.js';
 
@@ -35,6 +30,9 @@ export default class Video {
     this.uploadTime = this.createVideoUploadDate(publishedAt);
     this.thumbnailURL = thumbnailURL;
     this.watched = watched;
+
+    if (Video.cache[this.videoId]) return;
+    Video.cache[this.videoId] = this.toJSON();
   }
 
   createVideoEmbedURL() {
@@ -73,25 +71,6 @@ export default class Video {
     const videos = localStorageGetItem(LOCALSTORAGE_KEYS.VIDEOS);
 
     return Object.keys(videos).includes(this.videoId);
-  }
-
-  onSaveVideo(event) {
-    const savedVideos = localStorageGetItem(LOCALSTORAGE_KEYS.VIDEOS);
-
-    if (Object.keys(savedVideos).length >= VALUES.MAXIMUM_VIDEO_SAVE_COUNT) {
-      alert(ERROR_MESSAGES.MAXIMUM_VIDEO_SAVE_COUNT_ERROR);
-
-      return;
-    }
-
-    const newObject = {};
-
-    newObject[this.videoId] = this.toJSON();
-    Object.assign(savedVideos, newObject);
-    localStorageSetItem(LOCALSTORAGE_KEYS.VIDEOS, savedVideos);
-
-    event.target.classList.add('d-none');
-    store.dispatch(increaseSavedVideoCount());
   }
 
   createIframeSrcdocTemplate() {
@@ -246,7 +225,6 @@ export default class Video {
       textContent: '⬇️ 저장',
     });
 
-    button.onclick = this.onSaveVideo.bind(this);
     if (this.isSavedVideo()) {
       button.classList.add('d-none');
     }

@@ -1,10 +1,12 @@
 import Component from '../../core/Component.js';
+import Video from '../../model/Video.js';
 import { store } from '../../index.js';
 import {
   $,
   $$,
   createElement,
   localStorageGetItem,
+  localStorageSetItem,
 } from '../../utils/utils.js';
 import {
   LOCALSTORAGE_KEYS,
@@ -12,8 +14,10 @@ import {
   SELECTORS,
   INTERSECTION_OBSERVER_OPTIONS,
   VALUES,
+  CLASS_NAMES,
 } from '../../constants/constants.js';
 import { loadIframe } from '../../utils/youtubeClassRoomUtils.js';
+import { increaseSavedVideoCount } from '../../redux/action.js';
 export default class VideoSearchResult extends Component {
   setup() {
     store.subscribe(this.render.bind(this));
@@ -89,6 +93,31 @@ export default class VideoSearchResult extends Component {
     }
   }
 
+  bindEvent() {
+    this.$target.addEventListener('click', this.onSaveVideo.bind(this));
+  }
+
+  onSaveVideo(event) {
+    if (!event.target.classList.contains(CLASS_NAMES.CLIP.VIDEO_SAVE_BUTTON)) {
+      return;
+    }
+
+    const savedVideos = localStorageGetItem(LOCALSTORAGE_KEYS.VIDEOS);
+    if (Object.keys(savedVideos).length >= VALUES.MAXIMUM_VIDEO_SAVE_COUNT) {
+      alert(ERROR_MESSAGES.MAXIMUM_VIDEO_SAVE_COUNT_ERROR);
+      return;
+    }
+
+    const videoId = event.target.closest(SELECTORS.VIDEO_LIST.CLIP_CLASS)
+      .dataset.videoId;
+
+    savedVideos[videoId] = Video.cache[videoId];
+    localStorageSetItem(LOCALSTORAGE_KEYS.VIDEOS, savedVideos);
+
+    event.target.classList.add('d-none');
+    store.dispatch(increaseSavedVideoCount());
+  }
+
   hideNotFoundImage() {
     this.$notFoundImage.classList.add('d-none');
   }
@@ -100,10 +129,9 @@ export default class VideoSearchResult extends Component {
 
   displayVideos(searchedVideos) {
     const fragment = document.createDocumentFragment();
-
-    searchedVideos.forEach((video) => {
-      fragment.appendChild(video.createTemplate(TYPES.PAGE.SEARCH));
-    });
+    fragment.append(
+      ...searchedVideos.map((video) => video.createTemplate(TYPES.PAGE.SEARCH))
+    );
 
     this.$searchedVideoWrapper.appendChild(fragment);
   }
