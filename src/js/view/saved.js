@@ -20,7 +20,7 @@ class SavedView {
     }
 
     toggleSelectorClass(this.#$savedNotFound, CLASS.SHOW, false);
-
+    console.log(infos);
     infos.forEach(info => {
       this.#$savedVideoWrapper.innerHTML += videoTemplate(info);
     });

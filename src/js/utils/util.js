@@ -1,4 +1,4 @@
-import { CLASS } from '../constants/constant.js';
+import { CLASS, ERROR_MESSAGE } from '../constants/constant.js';
 
 export const $ = selector => document.querySelector(selector);
 
@@ -13,7 +13,7 @@ export const setJSONToLocalStorage = (key, value) => {
   try {
     localStorage.setItem(key, JSON.stringify(value));
   } catch (error) {
-    localStorage.setItem(key, {});
+    alert(ERROR_MESSAGE.FAILED_SET_ITEM);
   }
 };
 
@@ -24,8 +24,10 @@ export const getJSONFromLocalStorage = key => {
 
     return json;
   } catch (error) {
-    return {};
+    alert(ERROR_MESSAGE.FAILED_GET_ITEM);
   }
+
+  return [];
 };
 
 export const isScrollUnfinished = (args, scrollTop) => {
