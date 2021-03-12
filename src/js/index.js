@@ -7,8 +7,14 @@ import YoutubeSearchManager from './components/YoutubeSearchManager.js';
 const store = new Store();
 
 // Note: modal 관련 이벤트 메소드는 추후 2단계에서 새로운 컴포넌트를 만들어 옮길 예정입니다.
-$(SELECTORS.ID.SEARCH_BUTTON).addEventListener('click', openModal);
-$(SELECTORS.CLASS.MODAL_CLOSE).addEventListener('click', closeModal);
+$(SELECTORS.ID.SEARCH_BUTTON).addEventListener('click', () => {
+  openModal();
+  $(SELECTORS.ID.YOUTUBE_SEARCH_KEYWORD_INPUT).focus();
+});
+
+$(SELECTORS.CLASS.MODAL_CLOSE).addEventListener('click', () => {
+  closeModal();
+});
 
 const watchList = new WatchList(store);
 const youtubeSearchManager = new YoutubeSearchManager(store, watchList);

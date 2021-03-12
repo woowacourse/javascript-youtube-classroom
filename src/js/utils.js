@@ -44,10 +44,12 @@ export const formatDate = (publishedAt) => {
 };
 
 export const openModal = () => {
+  document.body.classList.add('overflow-hidden');
   $(SELECTORS.CLASS.MODAL).classList.add(SELECTORS.STATUS.MODAL_OPEN);
 };
 
 export const closeModal = () => {
+  document.body.classList.remove('overflow-hidden');
   $(SELECTORS.CLASS.MODAL).classList.remove(SELECTORS.STATUS.MODAL_OPEN);
 };
 
