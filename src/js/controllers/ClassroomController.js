@@ -27,6 +27,9 @@ export default class ClassroomController {
     if (target.classList.contains('js-check-button')) {
       this.model.moveVideo($video.id);
       this.view.renderMovedVideo($video, isWatchingVideo($video));
+      isWatchingMenu(this.view.$savedVideosWrapper)
+        ? this.model.hasNoWatchingVideoSaved() && this.view.renderImageNoWatchingVideo()
+        : this.model.hasNoWatchedVideoSaved() && this.view.renderImageNoWatchedVideo();
     }
   }
 

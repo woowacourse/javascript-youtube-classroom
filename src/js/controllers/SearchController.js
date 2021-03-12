@@ -49,6 +49,7 @@ export default class SearchController {
     if ((key === 'Escape' && isModalOpen(currentTarget)) || isModalDimmedArea(target) || isModalCloseButton(target)) {
       this.searchView.renderInvisibleModal();
     }
+    this.classroomView.$watchingMenuButton.click();
   }
 
   onRequestSearchRecentKeyword({ target }) {

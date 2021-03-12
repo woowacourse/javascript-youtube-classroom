@@ -20,12 +20,12 @@
 @keyframes wave-animation {
   0%,
   100% {
-    transform: rotate(0deg);
+    transform: scale(1.2) rotate(0deg);
   }
   25% {
-    transform: rotate(20deg);
+    transform: scale(1.2) rotate(20deg);
   }
   75% {
-    transform: rotate(-15deg);
+    transform: scale(1.2) rotate(-15deg);
   }
 }
