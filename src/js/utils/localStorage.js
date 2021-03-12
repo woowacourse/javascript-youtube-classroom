@@ -20,12 +20,14 @@ export const setListByKey = (key, list) => {
 
 export const insertItemByKey = (key, item) => {
   const list = getListByKey(key);
+
   list.push(item);
   setListByKey(key, list);
 };
 
 export const insertItemAtFirstByKey = (key, item) => {
   const list = getListByKey(key);
+
   list.unshift(item);
   setListByKey(key, list);
 };
@@ -36,9 +38,9 @@ export const deleteLastItemByKey = (key) => {
   setListByKey(key, list.slice(0, list.length - 1));
 };
 
-export const deleteTargetItemByKey = (key, secondKey, target) => {
+export const deleteTargetItemByKey = (key, secondKey, value) => {
   const list = getListByKey(key);
-  const filteredList = list.filter((item) => item[secondKey] !== target[secondKey]);
+  const filteredList = list.filter((item) => item[secondKey] !== value);
 
   setListByKey(key, filteredList);
 };

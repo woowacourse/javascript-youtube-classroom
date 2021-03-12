@@ -1,4 +1,4 @@
-import { getListByKey, setListByKey } from '../utils/localStorage.js';
+import { getListByKey, setListByKey, deleteTargetItemByKey } from '../utils/localStorage.js';
 import { KEY_VIDEOS } from '../constants.js';
 
 export default class ClassroomModel {
@@ -41,5 +41,10 @@ export default class ClassroomModel {
 
   updateWatchedVideoCount(isWatched) {
     this.watchedVideoCount += isWatched ? 1 : -1;
+  }
+
+  removeVideo(videoId, isWatching) {
+    deleteTargetItemByKey(KEY_VIDEOS, 'videoId', videoId);
+    isWatching ? (this.watchingVideoCount -= 1) : (this.watchedVideoCount -= 1);
   }
 }

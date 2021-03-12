@@ -16,7 +16,7 @@ export const getSavedVideoTemplate = ({ videoId, videoTitle, channelId, channelT
       <div class="content-container pt-2 px-1">
         <h3 class="js-video-title">${videoTitle}</h3>
         <div>
-          <a href=${YOUTUBE_CHANNEL_ENDPOINT}${channelId} target="_blank" class="channel-name mt-1">
+          <a href=${YOUTUBE_CHANNEL_ENDPOINT}${channelId} target="_blank" rel="noopener" class="channel-name mt-1">
           ${channelTitle}
           </a>
           <div class="meta">
