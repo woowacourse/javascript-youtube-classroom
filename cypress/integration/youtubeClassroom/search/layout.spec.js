@@ -35,20 +35,24 @@ describe("youtube classroom 레이아웃 테스트", () => {
       .should("have.class", "d-none-hard");
   });
 
-  it("스크롤바를 내리면, 영상을 추가로 보여준다.", async () => {
+  it("스크롤바를 내리면, 영상을 추가로 보여준다.", () => {
     cy.get("#search-results-inner")
       .children()
       .its("length")
       .should("be.gt", MIN_NUMBER);
 
-    const $searchReulstInner = await cy.get("#search-results-inner");
-    const itemLen = $searchReulstInner.children().length;
-
-    cy.get("#skeleton-search-results").should("not.be.visible");
-    cy.get("#search-results").scrollTo("bottom");
     cy.get("#search-results-inner")
-      .children()
-      .its("length")
-      .should("be.gt", itemLen);
+      .then(($searchReulstInner) => {
+        return $searchReulstInner.children().length;
+      })
+      .then((itemLen) => {
+        cy.get("#skeleton-search-results").should("not.be.visible");
+        cy.get("#search-results").scrollTo("bottom");
+        cy.wait(1000);
+        cy.get("#search-results-inner")
+          .children()
+          .its("length")
+          .should("be.gt", itemLen);
+      });
   });
 });
