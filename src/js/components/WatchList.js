@@ -121,84 +121,88 @@ export default class WatchList extends Observer {
     }
   }
 
+  handleClickVideoMenu(event) {
+    const { target } = event;
+    const { watchList } = this.store.get();
+
+    if (target.classList.contains('delete')) {
+      if (!window.confirm(ALERT_MESSAGE.CONFIRM_DELETE)) return;
+
+      const targetId = target.closest('.menu-list').dataset.videoId;
+      const newWatchList = watchList.filter(({ videoId }) => videoId !== targetId);
+      this.store.updateAll({ [LOCAL_STORAGE_KEYS.WATCH_LIST]: newWatchList });
+
+      const $saveButton = getVideoSaveButton(targetId);
+      if ($saveButton) {
+        $saveButton.classList.remove('hidden');
+      }
+
+      showSnackbar(ALERT_MESSAGE.VIDEO_DELETED);
+    }
+
+    if (target.classList.contains('watched')) {
+      const targetId = target.closest('.menu-list').dataset.videoId;
+      const newWatchList = watchList.map((video) => {
+        const nowVideo = { ...video };
+        if (nowVideo.videoId === targetId) {
+          nowVideo.watched = !nowVideo.watched;
+        }
+        return nowVideo;
+      });
+
+      this.store.update(LOCAL_STORAGE_KEYS.WATCH_LIST, newWatchList, this);
+
+      if (this.nowMenu === MENU.TO_WATCH) {
+        showSnackbar(ALERT_MESSAGE.VIDEO_MOVED_WATCHED_LIST);
+      } else if (this.nowMenu === MENU.WATCHED) {
+        showSnackbar(ALERT_MESSAGE.VIDEO_MOVED_TO_WATCH_LIST);
+      }
+    }
+  }
+
+  handleShowToWatchList() {
+    this.nowMenu = MENU.TO_WATCH;
+    colorizeButton(SELECTORS.CLASS.TO_WATCH_LIST_BUTTON);
+    uncolorizeButton(SELECTORS.CLASS.WATCHED_LIST_BUTTON);
+    clearElement(SELECTORS.CLASS.WATCH_LIST);
+
+    const { watchList } = this.store.get();
+    const toWatchList = watchList.filter(({ watched }) => !watched);
+    const toWatchListIds = toWatchList.map((item) => item.videoId);
+
+    if (toWatchList.length) {
+      hideElement(SELECTORS.CLASS.NO_VIDEO);
+    } else {
+      showElement(SELECTORS.CLASS.NO_VIDEO);
+    }
+
+    const renderingVideos = this.list.filter(({ id }) => toWatchListIds.includes(id));
+    this.renderSavedVideos(renderingVideos);
+  }
+
+  handleShowWatchedList() {
+    this.nowMenu = MENU.WATCHED;
+    colorizeButton(SELECTORS.CLASS.WATCHED_LIST_BUTTON);
+    uncolorizeButton(SELECTORS.CLASS.TO_WATCH_LIST_BUTTON);
+    clearElement(SELECTORS.CLASS.WATCH_LIST);
+
+    const { watchList } = this.store.get();
+    const watchedList = watchList.filter(({ watched }) => watched);
+    const watchedListIds = watchedList.map((item) => item.videoId);
+
+    if (watchedList.length) {
+      hideElement(SELECTORS.CLASS.NO_VIDEO);
+    } else {
+      showElement(SELECTORS.CLASS.NO_VIDEO);
+    }
+
+    const renderingVideos = this.list.filter(({ id }) => watchedListIds.includes(id));
+    this.renderSavedVideos(renderingVideos);
+  }
+
   bindEvents() {
-    $(SELECTORS.CLASS.WATCH_LIST).addEventListener('click', (event) => {
-      const { target } = event;
-      const { watchList } = this.store.get();
-
-      if (target.classList.contains('delete')) {
-        if (!window.confirm(ALERT_MESSAGE.CONFIRM_DELETE)) return;
-
-        const targetId = target.closest('.menu-list').dataset.videoId;
-        const newWatchList = watchList.filter(({ videoId }) => videoId !== targetId);
-        this.store.updateAll({ [LOCAL_STORAGE_KEYS.WATCH_LIST]: newWatchList });
-
-        const $saveButton = getVideoSaveButton(targetId);
-        if ($saveButton) {
-          $saveButton.classList.remove('hidden');
-        }
-
-        showSnackbar(ALERT_MESSAGE.VIDEO_DELETED);
-      }
-
-      if (target.classList.contains('watched')) {
-        const targetId = target.closest('.menu-list').dataset.videoId;
-        const newWatchList = watchList.map((video) => {
-          const nowVideo = { ...video };
-          if (nowVideo.videoId === targetId) {
-            nowVideo.watched = !nowVideo.watched;
-          }
-          return nowVideo;
-        });
-
-        this.store.update(LOCAL_STORAGE_KEYS.WATCH_LIST, newWatchList, this);
-
-        if (this.nowMenu === MENU.TO_WATCH) {
-          showSnackbar(ALERT_MESSAGE.VIDEO_MOVED_WATCHED_LIST);
-        } else if (this.nowMenu === MENU.WATCHED) {
-          showSnackbar(ALERT_MESSAGE.VIDEO_MOVED_TO_WATCH_LIST);
-        }
-      }
-    });
-
-    $(SELECTORS.CLASS.TO_WATCH_LIST_BUTTON).addEventListener('click', () => {
-      this.nowMenu = MENU.TO_WATCH;
-      colorizeButton(SELECTORS.CLASS.TO_WATCH_LIST_BUTTON);
-      uncolorizeButton(SELECTORS.CLASS.WATCHED_LIST_BUTTON);
-      clearElement(SELECTORS.CLASS.WATCH_LIST);
-
-      const { watchList } = this.store.get();
-      const toWatchList = watchList.filter(({ watched }) => !watched);
-      const toWatchListIds = toWatchList.map((item) => item.videoId);
-
-      if (toWatchList.length) {
-        hideElement(SELECTORS.CLASS.NO_VIDEO);
-      } else {
-        showElement(SELECTORS.CLASS.NO_VIDEO);
-      }
-
-      const renderingVideos = this.list.filter(({ id }) => toWatchListIds.includes(id));
-      this.renderSavedVideos(renderingVideos);
-    });
-
-    $(SELECTORS.CLASS.WATCHED_LIST_BUTTON).addEventListener('click', () => {
-      this.nowMenu = MENU.WATCHED;
-      colorizeButton(SELECTORS.CLASS.WATCHED_LIST_BUTTON);
-      uncolorizeButton(SELECTORS.CLASS.TO_WATCH_LIST_BUTTON);
-      clearElement(SELECTORS.CLASS.WATCH_LIST);
-
-      const { watchList } = this.store.get();
-      const watchedList = watchList.filter(({ watched }) => watched);
-      const watchedListIds = watchedList.map((item) => item.videoId);
-
-      if (watchedList.length) {
-        hideElement(SELECTORS.CLASS.NO_VIDEO);
-      } else {
-        showElement(SELECTORS.CLASS.NO_VIDEO);
-      }
-
-      const renderingVideos = this.list.filter(({ id }) => watchedListIds.includes(id));
-      this.renderSavedVideos(renderingVideos);
-    });
+    $(SELECTORS.CLASS.WATCH_LIST).addEventListener('click', this.handleClickVideoMenu.bind(this));
+    $(SELECTORS.CLASS.TO_WATCH_LIST_BUTTON).addEventListener('click', this.handleShowToWatchList.bind(this));
+    $(SELECTORS.CLASS.WATCHED_LIST_BUTTON).addEventListener('click', this.handleShowWatchedList.bind(this));
   }
 }
