@@ -1,6 +1,9 @@
 import { VALUES, ERROR_MESSAGES } from '../constants/constants.js';
+import { isEmptyObject } from '../utils/utils.js';
 
 export default class YoutubeAPIManager {
+  static cache = {};
+
   constructor() {
     this.searchTerm = '';
     this.pageToken = '';
@@ -29,18 +32,31 @@ export default class YoutubeAPIManager {
 
   async requestVideos() {
     const url = this.createRequestURL(this.searchTerm, this.pageToken);
-    const res = await fetch(url).then((data) => {
+    const params = url.split('?')[1];
+    if (
+      YoutubeAPIManager.cache[params] &&
+      !isEmptyObject(YoutubeAPIManager.cache[params])
+    ) {
+      this.pageToken = YoutubeAPIManager.cache[params].nextPageToken;
+      return YoutubeAPIManager.cache[params].items;
+    }
+
+    try {
+      const data = await fetch(url);
       if (!data.ok) {
         if (data.status === 403) {
           throw new Error(ERROR_MESSAGES.EXCEED_API_REQUEST_COUNT(data.status));
         }
         throw new Error(ERROR_MESSAGES.API_REQUEST_ERROR(data.status));
       }
-      return data.json();
-    });
 
-    this.pageToken = res.nextPageToken;
+      const dataJSON = await data.json();
+      YoutubeAPIManager.cache[params] = dataJSON;
+      this.pageToken = dataJSON.nextPageToken;
 
-    return res.items;
+      return dataJSON.items;
+    } catch (error) {
+      console.log(error);
+    }
   }
 }

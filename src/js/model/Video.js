@@ -15,6 +15,8 @@ import {
 } from '../utils/utils.js';
 
 export default class Video {
+  static cache = {};
+
   constructor({
     videoId,
     videoTitle,

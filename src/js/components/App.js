@@ -36,13 +36,15 @@ export default class App {
   }
 
   localStorageSetup() {
-    if (localStorageGetItem(LOCALSTORAGE_KEYS.VIDEOS) === null) {
-      localStorageSetItem(LOCALSTORAGE_KEYS.VIDEOS, {});
+    if (localStorageGetItem(LOCALSTORAGE_KEYS.VIDEOS)) {
+      return;
     }
+    localStorageSetItem(LOCALSTORAGE_KEYS.VIDEOS, {});
 
-    if (localStorageGetItem(LOCALSTORAGE_KEYS.SEARCH_HISTORY) === null) {
-      localStorageSetItem(LOCALSTORAGE_KEYS.SEARCH_HISTORY, []);
+    if (localStorageGetItem(LOCALSTORAGE_KEYS.SEARCH_HISTORY)) {
+      return;
     }
+    localStorageSetItem(LOCALSTORAGE_KEYS.SEARCH_HISTORY, []);
   }
 
   initRender() {

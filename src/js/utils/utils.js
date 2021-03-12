@@ -37,7 +37,8 @@ export const isEmptyString = (string) => {
 export const localStorageGetItem = (key) => {
   try {
     return JSON.parse(localStorage.getItem(key));
-  } catch {
+  } catch (error) {
+    console.log(error);
     return undefined;
   }
 };
@@ -55,4 +56,13 @@ export const unescapeString = (string) => {
   return new DOMParser()
     .parseFromString(string, 'text/html')
     .querySelector('html').textContent;
+};
+
+export const isEmptyObject = (obj) => {
+  try {
+    if (Object.keys(obj).length === 0) return true;
+  } catch (error) {
+    console.log(error);
+    return false;
+  }
 };
