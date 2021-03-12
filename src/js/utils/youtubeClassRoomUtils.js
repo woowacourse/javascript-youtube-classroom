@@ -19,17 +19,22 @@ export const loadIframe = (entries, observer) => {
 export const saveHistoryToLocalStorage = (searchTerm) => {
   const history = localStorageGetItem(LOCALSTORAGE_KEYS.SEARCH_HISTORY);
 
-  if (history.includes(searchTerm)) {
-    const indexOfSearchTerm = history.indexOf(searchTerm);
+  try {
+    const newHistory = [...history];
+    if (newHistory.includes(searchTerm)) {
+      const indexOfSearchTerm = newHistory.indexOf(searchTerm);
 
-    history.splice(indexOfSearchTerm, 1);
+      newHistory.splice(indexOfSearchTerm, 1);
+    }
+
+    newHistory.unshift(searchTerm);
+    localStorageSetItem(
+      LOCALSTORAGE_KEYS.SEARCH_HISTORY,
+      newHistory.slice(0, VALUES.MAXIMUM_SEARCH_HISTORY_COUNT)
+    );
+  } catch (error) {
+    console.log(error);
   }
-
-  history.unshift(searchTerm);
-  localStorageSetItem(
-    LOCALSTORAGE_KEYS.SEARCH_HISTORY,
-    history.slice(0, VALUES.MAXIMUM_SEARCH_HISTORY_COUNT)
-  );
 };
 
 export const showSnackBar = ($snackbar, text) => {

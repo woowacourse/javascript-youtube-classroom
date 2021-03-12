@@ -148,11 +148,13 @@ export default class VideoList extends Component {
     const clip = event.target.closest(SELECTORS.VIDEO_LIST.CLIP_CLASS);
     const savedVideos = localStorageGetItem(LOCALSTORAGE_KEYS.VIDEOS);
 
-    savedVideos[clip.dataset.videoId].watched = !savedVideos[
-      clip.dataset.videoId
-    ].watched;
+    const newObject = {};
+    Object.assign(newObject, savedVideos);
 
-    localStorageSetItem(LOCALSTORAGE_KEYS.VIDEOS, savedVideos);
+    newObject[clip.dataset.videoId].watched = !newObject[clip.dataset.videoId]
+      .watched;
+
+    localStorageSetItem(LOCALSTORAGE_KEYS.VIDEOS, newObject);
     clip.classList.toggle('d-none');
     $(SELECTORS.CLIP.WATCHED_BUTTON, clip).classList.toggle('checked');
     this.showByFilter();
@@ -167,8 +169,12 @@ export default class VideoList extends Component {
     ) {
       throw new Error(ERROR_MESSAGES.VIDEO_DELETE_ERROR);
     }
-    delete savedVideos[clip.dataset.videoId];
-    localStorageSetItem(LOCALSTORAGE_KEYS.VIDEOS, savedVideos);
+
+    const newObject = {};
+    Object.assign(newObject, savedVideos);
+
+    delete newObject[clip.dataset.videoId];
+    localStorageSetItem(LOCALSTORAGE_KEYS.VIDEOS, newObject);
 
     store.dispatch(decreaseSavedVideoCount());
 
