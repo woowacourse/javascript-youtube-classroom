@@ -1,5 +1,5 @@
 import { searchYoutube } from '../api.js';
-import { $, showSnackbar, renderSkeletonUI, formatDate, closeModal, generateCSSClass } from '../utils.js';
+import { $, $all, showSnackbar, renderSkeletonUI, closeModal } from '../utils.js';
 import { ALERT_MESSAGE, SELECTORS, LOCAL_STORAGE_KEYS, SERACH_RESULT, SETTINGS } from '../constants.js';
 import {
   getVideoTemplate,
@@ -18,6 +18,34 @@ export default class YoutubeSearchManager extends Observer {
     this.keyword = '';
     this.selector = SELECTORS.CLASS.YOUTUBE_SEARCH_FORM_CONTAINER;
     this.watchList = watchList;
+    this.setScrollObserver();
+  }
+
+  setScrollObserver() {
+    const options = {
+      root: $(SELECTORS.CLASS.YOUTUBE_SEARCH_RESULT_CONTAINER),
+      threshold: 1,
+    };
+
+    this.scrollObserver = new IntersectionObserver((entries) => {
+      entries.forEach(async (entry) => {
+        if (entry.isIntersecting) {
+          this.handleAdditionalSearch();
+        }
+      });
+    }, options);
+  }
+
+  async handleAdditionalSearch() {
+    try {
+      const response = await searchYoutube(this.keyword, this.pageToken);
+      this.pageToken = response.nextPageToken;
+
+      const template = this.getResultTemplate(response.items);
+      this.renderResults(template);
+    } catch (error) {
+      showSnackbar(error.message);
+    }
   }
 
   getResultTemplate(result) {
@@ -52,7 +80,7 @@ export default class YoutubeSearchManager extends Observer {
   }
 
   renderResults(template) {
-    $(SELECTORS.CLASS.YOUTUBE_SEARCH_RESULT).insertAdjacentHTML('beforeend', template);
+    $(SELECTORS.CLASS.SENTINEL).insertAdjacentHTML('beforebegin', template);
   }
 
   renderNoResult() {
@@ -88,17 +116,18 @@ export default class YoutubeSearchManager extends Observer {
   async handleSearch(event) {
     event.preventDefault();
 
-    const keyword = event.target.elements.keyword.value;
+    this.keyword = event.target.elements.keyword.value;
 
     this.renderEmptySearchResult();
     renderSkeletonUI(SELECTORS.CLASS.YOUTUBE_SEARCH_RESULT, SERACH_RESULT.SKELETON_UI_COUNT);
 
     try {
-      const response = await searchYoutube(keyword);
+      const response = await searchYoutube(this.keyword);
       this.pageToken = response.nextPageToken;
-      this.updateRecentKeywordList(keyword);
+      this.updateRecentKeywordList(this.keyword);
 
       if (response.pageInfo.totalResults === 0) {
+        $(SELECTORS.CLASS.SENTINEL).remove();
         this.renderNoResult();
         return;
       }
@@ -108,30 +137,13 @@ export default class YoutubeSearchManager extends Observer {
 
       const template = this.getResultTemplate(response.items);
       this.renderResults(template);
+
+      this.scrollObserver.observe($(SELECTORS.CLASS.SENTINEL));
     } catch (error) {
+      console.error(error);
       this.renderEmptySearchResult();
 
       showSnackbar(error.message);
-    }
-  }
-
-  async handleScroll(event) {
-    const $videoWrapper = event.target;
-    const isScrollBottom =
-      Math.round($videoWrapper.scrollTop) === $videoWrapper.scrollHeight - $videoWrapper.offsetHeight;
-
-    if (isScrollBottom) {
-      const keyword = $(SELECTORS.ID.YOUTUBE_SEARCH_KEYWORD_INPUT).value;
-
-      try {
-        const response = await searchYoutube(keyword, this.pageToken);
-        this.pageToken = response.nextPageToken;
-
-        const template = this.getResultTemplate(response.items);
-        this.renderResults(template);
-      } catch (error) {
-        showSnackbar(error.message);
-      }
     }
   }
 
@@ -177,9 +189,6 @@ export default class YoutubeSearchManager extends Observer {
 
   bindEvents() {
     $(SELECTORS.ID.YOUTUBE_SEARCH_FORM).addEventListener('submit', this.handleSearch.bind(this));
-
-    // TODO: 과도한 scroll 이벤트 방지를 위해 debounce 적용 필요
-    $(SELECTORS.CLASS.YOUTUBE_SEARCH_RESULT_CONTAINER).addEventListener('scroll', this.handleScroll.bind(this));
     $(SELECTORS.CLASS.YOUTUBE_SEARCH_RESULT_CONTAINER).addEventListener('click', this.handleSaveVideo.bind(this));
     $(SELECTORS.CLASS.RECENT_KEYWORD_LIST).addEventListener('click', this.handleClickRecentKeyword.bind(this));
     $(SELECTORS.CLASS.MODAL).addEventListener('click', this.handleClickDimmer.bind(this));

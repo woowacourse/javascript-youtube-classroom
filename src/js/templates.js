@@ -82,7 +82,11 @@ export const getNoResultTemplate = () => {
 };
 
 export const getEmptySearchResultTemplate = () => {
-  return `<div class="youtube-search-result video-wrapper"></div>`;
+  return `
+    <div class="youtube-search-result video-wrapper">
+      <div class="sentinel"></div>
+    </div>
+  `;
 };
 
 export const getRecentKeywordTemplate = (keyword) => {

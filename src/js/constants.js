@@ -38,6 +38,7 @@ export const SELECTORS = {
     DELETE: '.delete',
     TO_WATCH_LIST_BUTTON: '.to-watch-list-button',
     WATCHED_LIST_BUTTON: '.watched-list-button',
+    SENTINEL: '.sentinel',
   },
   ID: {
     SEARCH_BUTTON: '#search-button',
