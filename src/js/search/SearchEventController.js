@@ -33,10 +33,13 @@ export default class SearchEventController {
       "click",
       this.onClickSearchButton.bind(this)
     );
-    elements.$searchModal.addEventListener("mousedown", this.onClickDimmed);
+    elements.$searchModal.addEventListener(
+      "mousedown",
+      this.onClickDimmed.bind(this)
+    );
     elements.$searchModalClose.addEventListener(
       "click",
-      this.onClickSearchModalCloseButton
+      this.onClickSearchModalCloseButton.bind(this)
     );
   }
 
@@ -66,7 +69,7 @@ export default class SearchEventController {
     this.searchController.updateKeywordHistory();
     this.searchController.showSavedVideoCount();
 
-    const recentKeyword = searchHistory.getKeyword();
+    const recentKeyword = searchHistory.getKeywordAll()[0];
     if (recentKeyword) {
       this.searchController.searchVideos(recentKeyword);
     }
@@ -74,11 +77,13 @@ export default class SearchEventController {
 
   onClickDimmed(e) {
     if (e.target.classList.contains("modal")) {
+      this.searchController.resetSearchView();
       closeModal(elements.$searchModal);
     }
   }
 
   onClickSearchModalCloseButton() {
+    this.searchController.resetSearchView();
     closeModal(elements.$searchModal);
   }
 
