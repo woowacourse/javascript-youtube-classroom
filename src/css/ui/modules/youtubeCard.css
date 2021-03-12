@@ -1,4 +1,4 @@
-.video-wrapper {
+.videos-wrapper {
   display: grid;
   grid-template-columns: repeat(auto-fill, 230px);
   grid-row-gap: 50px;
@@ -6,7 +6,7 @@
   justify-content: center;
 }
 
-.modal .video-wrapper {
+.modal .videos-wrapper {
   overflow-y: auto;
   height: 70vh;
 }
@@ -58,11 +58,13 @@
   overflow: hidden;
   color: #0a0a0a;
   white-space: nowrap;
+  cursor: text;
 }
 
 .clip .content-container .channel-link {
   font-size: 12px;
-  color: #606060;
+  color: #02a3b8;
+  font-weight: 800;
   display: block;
   width: 100%;
 }
@@ -71,6 +73,7 @@
   font-size: 12px;
   display: inline-block;
   color: #606060;
+  cursor: text;
 }
 
 .clip .save-button.saved {
