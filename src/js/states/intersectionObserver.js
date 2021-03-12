@@ -1,6 +1,9 @@
 import { fetchSearchResult } from '../API.js';
-import $ from '../utils/DOM.js';
-import { appendVideoList } from '../viewControllers/searchModal.js';
+import { $ } from '../utils/DOM.js';
+import {
+  appendVideoList,
+  appendVideoLoader,
+} from '../viewControllers/searchModal.js';
 import latestKeywords from './latestKeywords.js';
 import pageToken from './pageToken.js';
 import videoInfos from './videoInfos.js';
@@ -14,7 +17,7 @@ const intersectionObserver = {
   },
 
   init() {
-    this.set(new IntersectionObserver(this.moreVideoLoad, this.options));
+    this.set(new IntersectionObserver(this.loadMoreVideo, this.options));
   },
 
   set(observer) {
@@ -33,11 +36,12 @@ const intersectionObserver = {
     this.value.observe($target);
   },
 
-  async moreVideoLoad(entries) {
+  async loadMoreVideo(entries) {
     const [$lastVideo] = entries;
     if (!$lastVideo.isIntersecting) return;
 
     this.disconnect(); // 이전 마지막 비디오와 observer의 연결 해제
+    appendVideoLoader();
 
     const { nextPageToken, items: loadVideoList } = await fetchSearchResult(
       latestKeywords.getLastKeyword(),

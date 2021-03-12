@@ -5,9 +5,8 @@ import videoInfos from './states/videoInfos.js';
 import {
   renderVideoLoader,
   renderSearchVideoList,
-  renderSavedVideoCount,
 } from './viewControllers/searchModal.js';
-import $ from './utils/DOM.js';
+import { $ } from './utils/DOM.js';
 import { renderSavedVideoList } from './viewControllers/app.js';
 import videoListType from './states/videoListType.js';
 

@@ -1,4 +1,4 @@
-import $ from './utils/DOM.js';
+import { $ } from './utils/DOM.js';
 import handleVideoSearch from './handlers/videoSearch.js';
 import videoSaveManager from './handlers/videoSave.js';
 import videoInfos from './states/videoInfos.js';

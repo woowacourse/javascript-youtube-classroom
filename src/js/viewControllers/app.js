@@ -1,4 +1,4 @@
-import $ from '../utils/DOM.js';
+import { $ } from '../utils/DOM.js';
 import {
   createSavedVideoListTemplate,
   emptyVideoListTemplate,

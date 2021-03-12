@@ -1,4 +1,4 @@
-import $ from '../utils/DOM.js';
+import { $, $$ } from '../utils/DOM.js';
 import { MAX_SAVED_VIDEO_COUNT } from '../constants/classroom.js';
 import createKeywordListTemplate from '../templates/keywordList.js';
 import { createVideoListTemplate } from '../templates/videoList.js';
@@ -27,7 +27,19 @@ function renderSearchVideoList(resultItems, videoInfos) {
     : notFoundTemplate;
 }
 
+function removeVideoLoader() {
+  $$('.skeleton').forEach(element => {
+    element.remove();
+  });
+}
+
+function appendVideoLoader() {
+  $videoSearchResult.innerHTML += createVideoSkeletonTemplate();
+}
+
 function appendVideoList(searchResult, videoInfos) {
+  removeVideoLoader();
+
   $videoSearchResult.innerHTML += createVideoListTemplate(
     searchResult,
     videoInfos
@@ -53,4 +65,5 @@ export {
   toggleSaveButton,
   renderSearchVideoList,
   appendVideoList,
+  appendVideoLoader,
 };
