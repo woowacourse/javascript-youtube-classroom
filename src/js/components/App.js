@@ -18,8 +18,8 @@ export class App {
     this.isChecked = false;
   }
 
-  handleIsChecked() {
-    this.setState({ isChecked: !this.isChecked });
+  handleIsChecked(isChecked) {
+    this.setState({ isChecked });
   }
 
   handleOpenModal() {

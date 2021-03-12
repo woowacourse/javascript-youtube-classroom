@@ -1,5 +1,10 @@
 import { $$ } from '../util/index.js';
 
+const ROUTE_KEY = {
+  ['#unchecked']: false,
+  ['#checked']: true,
+};
+
 export class Router {
   constructor({ onChangePage }) {
     this.$routeButtons = $$('.js-route-btn');
@@ -27,7 +32,8 @@ export class Router {
 
   setState({ currentPage }) {
     this.currentPage = currentPage;
-    this.onChangePage();
+
+    this.onChangePage(ROUTE_KEY[this.currentPage]);
     this.changeButtonColor();
   }
 }
