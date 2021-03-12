@@ -6,9 +6,13 @@ import {
 import { MAX_SAVED_VIDEO_COUNT } from '../constants/classroom.js';
 import { cancelVideoSave, saveVideo } from '../service.js';
 import videoInfos from '../states/videoInfos.js';
-import { showSnackBar } from '../viewControllers/app.js';
-import { toggleSaveButton } from '../viewControllers/searchModal.js';
+import { renderSavedVideoList, showSnackBar } from '../viewControllers/app.js';
+import {
+  renderSavedVideoCount,
+  toggleSaveButton,
+} from '../viewControllers/searchModal.js';
 import { VIDEO_SAVE_CANCEL_CONFIRM_MSG } from '../constants/confirmMessage.js';
+import videoListType from '../states/videoListType.js';
 
 function handleVideoSave($saveButton) {
   if (videoInfos.size >= MAX_SAVED_VIDEO_COUNT) {
@@ -18,6 +22,8 @@ function handleVideoSave($saveButton) {
   }
 
   saveVideo($saveButton.closest('.js-video'));
+  renderSavedVideoCount(videoInfos.size);
+  renderSavedVideoList(videoInfos.get(), videoListType.get());
   toggleSaveButton($saveButton);
   showSnackBar(SAVE_SUCCESS_MSG);
 }
@@ -26,6 +32,8 @@ function handleVideoSaveCancel($saveCancelButton) {
   if (!window.confirm(VIDEO_SAVE_CANCEL_CONFIRM_MSG)) return;
 
   cancelVideoSave($saveCancelButton.closest('.js-video'));
+  renderSavedVideoCount(videoInfos.size);
+  renderSavedVideoList(videoInfos.get(), videoListType.get());
   toggleSaveButton($saveCancelButton);
   showSnackBar(SAVE_CANCEL_SUCCESS_MSG);
 }

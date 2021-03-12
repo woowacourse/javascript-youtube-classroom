@@ -3,16 +3,19 @@ import $ from '../utils/DOM.js';
 
 const intersectionObserver = {
   value: {},
-  options: {
-    root: $('.modal-inner'),
-    rootMargin: '0px',
-    threshold: 0.85,
-  },
 
   init() {
-    this.set(
-      new IntersectionObserver(handleMoreVideoLoading.bind(this), this.options)
+    const options = {
+      root: $('.modal-inner'),
+      rootMargin: '0px',
+      threshold: 0.85,
+    };
+    const observer = new IntersectionObserver(
+      handleMoreVideoLoading.bind(this),
+      options
     );
+
+    this.set(observer);
   },
 
   set(observer) {

@@ -1,17 +1,29 @@
 import $ from './utils/DOM.js';
 import handleVideoSearch from './handlers/videoSearch.js';
 import videoSaveManager from './handlers/videoSave.js';
-import { openModal, closeModal } from './viewControllers/app.js';
+import {
+  openModal,
+  closeModal,
+  renderSavedVideoList,
+} from './viewControllers/app.js';
 import handleLatestKeywordSearch from './handlers/latestKeywordSearch.js';
 import videoInfos from './states/videoInfos.js';
 import latestKeywords from './states/latestKeywords.js';
 import intersectionObserver from './states/intersectionObserver.js';
 import handleButtonsControl from './handlers/buttonControl.js';
 import handleModeChange from './handlers/modeChange.js';
+import {
+  renderLatestKeywordList,
+  renderSavedVideoCount,
+} from './viewControllers/searchModal.js';
+import videoListType from './states/videoListType.js';
 
 function initState() {
   videoInfos.init();
+  renderSavedVideoCount(videoInfos.size);
+  renderSavedVideoList(videoInfos.get(), videoListType.get());
   latestKeywords.init();
+  renderLatestKeywordList(latestKeywords.get());
   intersectionObserver.init();
 }
 

@@ -4,6 +4,7 @@ import latestKeywords from '../states/latestKeywords.js';
 import videoInfos from '../states/videoInfos.js';
 import $ from '../utils/DOM.js';
 import {
+  renderLatestKeywordList,
   renderVideoLoader,
   renderVideoSearchResult,
 } from '../viewControllers/searchModal.js';
@@ -20,6 +21,7 @@ async function handleVideoSearch(e) {
 
   const keyword = e.target.elements['video-search-input'].value;
   latestKeywords.add(keyword);
+  renderLatestKeywordList(latestKeywords.get());
 
   renderVideoLoader();
   const resultItems = await searchVideo(keyword);
