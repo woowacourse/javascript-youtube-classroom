@@ -1,6 +1,7 @@
 import { $ } from '../utils/dom.js';
 import { VALUE } from '../utils/constants.js';
 import clipMaker from '../utils/clipMaker.js';
+import stopVideo from '../utils/stopVideo.js';
 import View from './View.js';
 
 export default class SavedVideosView extends View {
@@ -29,6 +30,7 @@ export default class SavedVideosView extends View {
 
   bindWatchedEvent(videoId) {
     this.emit('clickWatched', videoId);
+    $(`[data-article="${videoId}"] iframe`).each((iframe) => stopVideo(iframe));
   }
 
   bindDeleteEvent(videoId) {

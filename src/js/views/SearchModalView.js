@@ -2,6 +2,7 @@ import { $ } from '../utils/dom.js';
 import { VALUE } from '../utils/constants.js';
 import throttle from '../utils/throttle.js';
 import clipMaker from '../utils/clipMaker.js';
+import stopVideo from '../utils/stopVideo.js';
 import View from './View.js';
 
 export default class SearchModalView extends View {
@@ -22,6 +23,7 @@ export default class SearchModalView extends View {
 
   bindModalEvents() {
     this.closeButton.setEvent('click', () => {
+      $('iframe').each((iframe) => stopVideo(iframe));
       this.closeModal();
       this.emit('closeModal');
     });
