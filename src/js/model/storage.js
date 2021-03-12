@@ -22,6 +22,7 @@ class StorageModel {
   init() {
     this.#savedVideo = getJSONFromLocalStorage(STORAGE.KEY_MY_VIDEO);
     this.#keywords = getJSONFromLocalStorage(STORAGE.KEY_KEYWORDS);
+    console.log(this.#savedVideo);
   }
 
   updateVideoWatched(target) {

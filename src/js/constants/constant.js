@@ -53,6 +53,7 @@ export const URL = {
 
 export const ERROR_MESSAGE = {
   OVER_MAX_VIDEO_LENGTH: '볼 영상은 최대 100개까지만 저장할 수 있습니다!',
+  FAILED_GET_ITEM: '데이터를 불러오는중에 오류가 발생했습니다',
 };
 
 export const SNACK_BAR = {
