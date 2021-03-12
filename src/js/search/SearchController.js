@@ -34,7 +34,7 @@ export default class SearchController {
     const videoItems = await this.fetchSearchResult(searchKeyword);
 
     if (videoItems.length === 0) {
-      this.searchView.showNotFoundImg(searchHistory.getPageToken());
+      searchHistory.getPageToken() === "" && this.searchView.showNotFoundImg();
     } else {
       this.attachVideos(videoItems);
     }
@@ -54,9 +54,8 @@ export default class SearchController {
       }
 
       const { items, nextPageToken } = await res.json();
-      if (this.nextPageToken === "") {
-        searchHistory.setKeyword(searchKeyword);
-      }
+
+      this.nextPageToken === "" && searchHistory.setKeyword(searchKeyword);
       this.updateKeywordHistory();
       this.nextPageToken = nextPageToken;
 

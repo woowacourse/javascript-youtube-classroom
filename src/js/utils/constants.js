@@ -5,6 +5,28 @@ export const API = {
   },
 };
 
+export const DOM_SELECTORS = {
+  ELEMENT: {
+    BUTTON: "button",
+  },
+  ID: {},
+  CLASS: {
+    MODAL: "modal",
+    JS_REMOVE_BTN: "js-remove-btn",
+    ICON: "icon",
+  },
+  DATASET: {
+    VIDEO_ID: "data-video-id",
+  },
+  NAME: {
+    SEARCH_KEYWORD: "search-keyword",
+  },
+};
+
+export const CUSTOM_EVENTS = {
+  LOAD_SEARCH_ALL: "loadSearchAll",
+};
+
 export const VIDEOS = {
   SEARCH_MAX_RESULT: 10,
   KEYWORD_HISTORY_LENGTH: 3,
