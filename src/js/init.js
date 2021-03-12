@@ -26,11 +26,11 @@ function initEvent() {
   );
   $('#video-list').addEventListener('click', handleButtonsControl);
   $('#mode-wrapper').addEventListener('click', handleModeChange);
-  $('#video-search-modal').addEventListener('click', ({ target }) => {
-    if (target.id === 'modal-inner') return;
+  // $('#video-search-modal').addEventListener('click', ({ target }) => {
+  //   if (target.id === 'modal-inner') return;
 
-    closeModal();
-  });
+  //   closeModal();
+  // });
 }
 
 export { initState, initEvent };
