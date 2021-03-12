@@ -2,23 +2,20 @@ import { api } from '../api/youtubeAPI.js';
 import { SEARCH } from '../constants/constant.js';
 
 class YoutubeModel {
-  #videoInfos;
+  #searchedVideos;
   #nextPageToken;
 
   constructor() {
-    this.#videoInfos = [];
+    this.#searchedVideos = [];
     this.#nextPageToken = '';
   }
 
-  getVideoInfosBySearch = async ({
-    query,
-    max = SEARCH.FETCH_VIDEO_LENGTH,
-  }) => {
+  getVideosBySearch = async ({ query, max = SEARCH.FETCH_VIDEO_LENGTH }) => {
     const nextPageToken = this.#nextPageToken;
     const json = await api.fetchVideoItems({ query, nextPageToken, max });
 
     this.#nextPageToken = json.nextPageToken;
-    this.#videoInfos = json.items.map(item => {
+    this.#searchedVideos = json.items.map(item => {
       return {
         url: item.id.videoId,
         title: item.snippet.title,
@@ -33,12 +30,12 @@ class YoutubeModel {
     this.#nextPageToken = '';
   }
 
-  get videoInfos() {
-    return this.#videoInfos;
+  get searchedVideos() {
+    return this.#searchedVideos;
   }
 
-  get videoCount() {
-    return this.#videoInfos.length;
+  get searchedCount() {
+    return this.#searchedVideos.length;
   }
 }
 
