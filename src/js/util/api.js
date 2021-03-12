@@ -2,6 +2,20 @@ import { NUM_OF_VIDEO_PER_FETCH } from '../constants/index.js';
 
 const END_POINT = 'https://jolly-lalande-122025.netlify.app';
 
+const HttpRequest = async url => {
+  try {
+    const response = await fetch(url);
+
+    if (!response.ok) {
+      throw new Error(`${response.status}: http request error!`);
+    }
+
+    return await response.json();
+  } catch (e) {
+    console.error(e);
+  }
+};
+
 export const getSearchVideoByKeyword = async (keyword, pageToken = '') => {
   const searchURL = new URL('/.netlify/functions/youtube/search', END_POINT);
   const params = new URLSearchParams({
@@ -14,7 +28,7 @@ export const getSearchVideoByKeyword = async (keyword, pageToken = '') => {
   });
   searchURL.search = params.toString();
 
-  return await fetch(searchURL.href).then(response => response.json());
+  return await HttpRequest(searchURL.href);
 };
 
 export const getVideoByIdList = async idList => {
@@ -25,5 +39,5 @@ export const getVideoByIdList = async idList => {
   });
   videoURL.search = params.toString();
 
-  return await fetch(videoURL.href).then(response => response.json());
+  return await HttpRequest(videoURL.href);
 };

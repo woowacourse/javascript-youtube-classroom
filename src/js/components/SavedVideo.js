@@ -3,7 +3,6 @@ import { getVideoTemplate, SNACKBAR_MESSAGE, CONFIRM_MESSAGE } from '../constant
 import {
   getVideoByIdList,
   $,
-  $$,
   renderSkeleton,
   removeSkeleton,
   showSnackbar,
