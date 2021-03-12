@@ -10,7 +10,6 @@ class SavedView {
     this.#$savedNotFound = $(SELECTOR.SAVED_NOT_FOUND);
   }
 
-  // TODO : 개선해보기..
   renderSavedVideos(infos) {
     this.#$savedVideoWrapper.innerHTML = ``;
 
@@ -18,9 +17,8 @@ class SavedView {
       toggleSelectorClass(this.#$savedNotFound, CLASS.SHOW, true);
       return;
     }
-
     toggleSelectorClass(this.#$savedNotFound, CLASS.SHOW, false);
-    console.log(infos);
+
     infos.forEach(info => {
       this.#$savedVideoWrapper.innerHTML += videoTemplate(info);
     });
@@ -50,6 +48,7 @@ class SavedView {
       CLASS.BG_CYAN,
       !watched
     );
+
     toggleSelectorClass(
       $(SELECTOR.WATCHED_VIDEOS_BUTTON),
       CLASS.BG_CYAN,
