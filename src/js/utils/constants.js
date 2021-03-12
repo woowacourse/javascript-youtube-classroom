@@ -5,15 +5,39 @@ export const API = {
   },
 };
 
-export const DOM_SELECTORS = {
+export const DOM_CONSTANTS = {
   ELEMENT: {
+    BODY: "body",
     BUTTON: "button",
   },
-  ID: {},
-  CLASS: {
+  ID_SELECTOR: {
+    SNACKBAR: "#snackbar",
+    WATCHED_LATER_VIEW_BUTTON: "#watch-later-view-button",
+    WATCHED_VIEW_BUTTON: "#watched-view-button",
+    NOT_SAVED: "#not-saved",
+    NOT_WATCHED: "#not-watched",
+    WATCH_LATER_VIDEOS: "#watch-later-videos",
+    WATCHED_VIDEOS: "#watched-videos",
+    SEARCH_BUTTON: "#search-button",
+    SEARCH_MODAL: "#search-modal",
+    SEARCH_MODAL_CLOSE: "#search-modal-close",
+    SEARCH_FORM: "#search-form",
+    SEARCH_RESULTS: "#search-results",
+    SEARCH_RESULTS_INNER: "#search-results-inner",
+    HIDDEN_TARGET: "#hidden-target",
+    SKELETON_SEARCH_RESULTS: "#skeleton-search-results",
+    SKELETON_UI_CONTAINER: "#skeleton-ui-container",
+    NOT_FOUND: "#not-found",
+    KEYWORD_HISTORY: "#keyword-history",
+    SAVED_VIDEO_COUNT: "#saved-video-count",
+  },
+  CLASS_NAME: {
     MODAL: "modal",
     JS_REMOVE_BTN: "js-remove-btn",
     ICON: "icon",
+    D_NONE_HARD: "d-none-hard",
+    OVERFLOW_HIDDEN: "overflow-hidden",
+    OPEN: "open",
   },
   DATASET: {
     VIDEO_ID: "data-video-id",
