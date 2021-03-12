@@ -57,7 +57,7 @@ function getSrcDocTemplate(item) {
   `;
 }
 
-function getSaveButtonsTemplate(item) {
+function getSaveButtons(item) {
   return `
     <div class="save-button-container">
       <button 
@@ -150,7 +150,7 @@ export function createSearchedClipTemplate(item) {
   videoArticle.classList.add("mt-10");
   videoArticle.insertAdjacentHTML(
     "beforeend",
-    getVideoClipInnerTemplate(item, getSaveButtonsTemplate(item))
+    getVideoClipInnerTemplate(item, getSaveButtons(item))
   );
 
   return videoArticle;

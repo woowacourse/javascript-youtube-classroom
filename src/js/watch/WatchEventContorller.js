@@ -1,10 +1,10 @@
 import WatchController from "./WatchController.js";
 
-import videos from "../state/videos.js";
 import elements from "../utils/elements.js";
 import { showSnackbar } from "../utils/snackbar.js";
 import { ERROR_MESSAGE } from "../utils/constants.js";
 
+import videos from "../state/videos.js";
 export default class WatchEventController {
   constructor() {
     this.watchController = new WatchController();
@@ -12,6 +12,13 @@ export default class WatchEventController {
 
   bindEvents() {
     window.addEventListener("load", this.onLoadApp.bind(this));
+
+    this.bindNavEvents();
+    this.bindSaveVideoEvents();
+    this.bindClipButtonEvents();
+  }
+
+  bindNavEvents() {
     elements.$watchLaterViewButton.addEventListener(
       "click",
       this.onClickWatchLaterViewButton.bind(this)
@@ -20,11 +27,16 @@ export default class WatchEventController {
       "click",
       this.onClickWatchedViewButton.bind(this)
     );
+  }
+
+  bindSaveVideoEvents() {
     elements.$searchResults.addEventListener(
       "click",
       this.onClickSaveButton.bind(this)
     );
+  }
 
+  bindClipButtonEvents() {
     elements.$watchLaterVideos.addEventListener("click", (e) => {
       this.onClickWatchedButton(e);
       this.onClickLikedButton(e);

@@ -1,7 +1,8 @@
-import videos from "../state/videos.js";
-import { CONFIRM_MESSAGE } from "../utils/constants.js";
 import WatchView from "./WatchView.js";
 
+import { CONFIRM_MESSAGE } from "../utils/constants.js";
+
+import videos from "../state/videos.js";
 export default class WatchController {
   constructor() {
     this.watchView = new WatchView();

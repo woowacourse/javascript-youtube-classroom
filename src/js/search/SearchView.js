@@ -5,7 +5,7 @@ import { createSearchedClipTemplate } from "../templates/videoClipTemplate.js";
 import getSkeletonUITemplate from "../templates/skeletonUITemplate.js";
 
 import { $, getFormElements, hideElement, showElement } from "../utils/dom.js";
-import { ERROR_MESSAGE, VIDEOS } from "../utils/constants.js";
+import { DOM_SELECTORS, ERROR_MESSAGE, VIDEOS } from "../utils/constants.js";
 import elements from "../utils/elements.js";
 import { showSnackbar } from "../utils/snackbar.js";
 
@@ -17,14 +17,10 @@ export default class SearchView {
   }
 
   resetSearchInput() {
-    elements.$searchForm.elements["search-keyword"].value = "";
+    elements.$searchForm.elements[DOM_SELECTORS.NAME.SEARCH_KEYWORD].value = "";
   }
 
-  showNotFoundImg(pageToken) {
-    if (pageToken !== "") {
-      return;
-    }
-
+  showNotFoundImg() {
     hideElement(elements.$searchResults);
     hideElement(elements.$skeletonSearchResults);
     showElement(elements.$notFound);
@@ -64,7 +60,9 @@ export default class SearchView {
 
   selectSaveButton(videoId, isSaved = false) {
     try {
-      const selectedTarget = Array.from($("button[data-video-id]")).find(
+      const selectedTarget = Array.from(
+        $(`${DOM_SELECTORS.ELEMENT.BUTTON}[${DOM_SELECTORS.DATASET.VIDEO_ID}]`)
+      ).find(
         ($saveButton) =>
           $saveButton.dataset.videoId === videoId &&
           $saveButton.dataset.videoSaved === (isSaved ? "saved" : "")
@@ -100,7 +98,7 @@ export default class SearchView {
   setSearchInputValue(searchKeyword) {
     getFormElements(
       elements.$searchForm,
-      "search-keyword"
+      DOM_SELECTORS.NAME.SEARCH_KEYWORD
     ).value = searchKeyword;
   }
 

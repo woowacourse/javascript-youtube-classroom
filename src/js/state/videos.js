@@ -24,24 +24,26 @@ const videos = {
   },
 
   setFetchedVideos(videoItems) {
-    const parsedVideoItems = videoItems
+    this.recentVideos = videoItems
       .filter((videoItem) => videoItem.id.videoId)
       .map((videoItem) => this.parseVideoItem(videoItem));
-    this.recentVideos = parsedVideoItems;
-    this.fetchedVideos = [...this.fetchedVideos, ...parsedVideoItems];
+
+    this.fetchedVideos = [...this.fetchedVideos, ...this.recentVideos];
   },
 
   setSavedVideos(videoId) {
     try {
-      const selectedVideo = this.selectVideoItemById(videoId);
+      const selectedVideo = this.selectFetchedVideoById(videoId);
 
       if (!selectedVideo) {
         throw new Error(ERROR_MESSAGE.SAVE_ERROR);
       }
+
       this.savedVideos = [
         ...this.savedVideos,
         { ...selectedVideo, saved: true },
       ];
+
       this.storeSavedVideos();
       showSnackbar(SUCCESS_MESSAGE.SAVE_VIDEO);
     } catch (e) {
@@ -61,6 +63,7 @@ const videos = {
       }
 
       const watchedVideo = this.savedVideos[watchedVideoIndex];
+
       this.savedVideos = [
         ...this.savedVideos.slice(0, watchedVideoIndex),
         { ...watchedVideo, watched },
@@ -91,7 +94,7 @@ const videos = {
     return this.savedVideos.length;
   },
 
-  selectVideoItemById(videoId) {
+  selectFetchedVideoById(videoId) {
     return this.fetchedVideos.find(
       (fetchedVideo) => fetchedVideo.videoId === videoId
     );
@@ -123,11 +126,12 @@ const videos = {
       (video) => video.videoId !== videoId
     );
 
-    if (prevLength === this.savedVideos.length) {
-      showSnackbar(ERROR_MESSAGE.DELETE_ERROR);
-    } else {
+    const isChanged = prevLength !== this.savedVideos.length;
+    if (isChanged) {
       showSnackbar(SUCCESS_MESSAGE.DELETE_VIDEO);
       this.storeSavedVideos();
+    } else {
+      showSnackbar(ERROR_MESSAGE.DELETE_ERROR);
     }
   },
 };

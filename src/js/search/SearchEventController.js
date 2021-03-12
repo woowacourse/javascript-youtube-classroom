@@ -3,7 +3,13 @@ import SearchController from "./SearchController.js";
 import videos from "../state/videos.js";
 
 import elements from "../utils/elements.js";
-import { ERROR_MESSAGE, VIDEOS } from "../utils/constants.js";
+import {
+  ERROR_MESSAGE,
+  VIDEOS,
+  DOM_SELECTORS,
+  CUSTOM_EVENTS,
+} from "../utils/constants.js";
+import { showSnackbar } from "../utils/snackbar.js";
 import {
   openModal,
   closeModal,
@@ -11,7 +17,6 @@ import {
   hideElement,
   getFormElements,
 } from "../utils/dom.js";
-import { showSnackbar } from "../utils/snackbar.js";
 
 import searchHistory from "../state/searchHistory.js";
 
@@ -25,7 +30,7 @@ export default class SearchEventController {
 
     this.bindModalEvents();
     this.bindSearchEvents();
-    this.bindSaveVideoEvent();
+    this.bindSaveVideoEvents();
   }
 
   bindModalEvents() {
@@ -50,12 +55,12 @@ export default class SearchEventController {
       this.onClickKeywordHistory.bind(this)
     );
     elements.$searchResults.addEventListener(
-      "loadSearchAll",
+      CUSTOM_EVENTS.LOAD_SEARCH_ALL,
       this.onLoadSearchAll
     );
   }
 
-  bindSaveVideoEvent() {
+  bindSaveVideoEvents() {
     elements.$searchResults.addEventListener(
       "click",
       this.onClickSaveVideoButtons.bind(this)
@@ -64,7 +69,10 @@ export default class SearchEventController {
 
   onClickSearchButton() {
     openModal(elements.$searchModal);
-    getFormElements(elements.$searchForm, "search-keyword").focus();
+    getFormElements(
+      elements.$searchForm,
+      DOM_SELECTORS.NAME.SEARCH_KEYWORD
+    ).focus();
 
     this.searchController.updateKeywordHistory();
     this.searchController.showSavedVideoCount();
@@ -76,7 +84,7 @@ export default class SearchEventController {
   }
 
   onClickDimmed(e) {
-    if (e.target.classList.contains("modal")) {
+    if (e.target.classList.contains(DOM_SELECTORS.CLASS.MODAL)) {
       this.searchController.resetSearchView();
       closeModal(elements.$searchModal);
     }
@@ -91,7 +99,7 @@ export default class SearchEventController {
     e.preventDefault();
     const searchKeyword = getFormElements(
       elements.$searchForm,
-      "search-keyword"
+      DOM_SELECTORS.NAME.SEARCH_KEYWORD
     ).value;
     this.searchController.searchVideos(searchKeyword);
   }
@@ -103,11 +111,11 @@ export default class SearchEventController {
 
     const keyword = e.target.dataset.keyword.replace("+", " ");
 
-    if (e.target.classList.contains("js-remove-btn")) {
-      this.searchController.removeKeywordHistoryChip(keyword);
-    }
-    if (e.target.classList.contains("icon")) {
+    if (e.target.classList.contains(DOM_SELECTORS.CLASS.ICON)) {
       this.searchController.searchVideosByHistory(keyword);
+    }
+    if (e.target.classList.contains(DOM_SELECTORS.CLASS.JS_REMOVE_BTN)) {
+      this.searchController.removeKeywordHistoryChip(keyword);
     }
   }
 
@@ -127,6 +135,7 @@ export default class SearchEventController {
         showSnackbar(ERROR_MESSAGE.SAVE_COUNT_EXCEEDED_ERROR);
         return;
       }
+
       this.searchController.saveVideo(videoId);
     } else {
       this.searchController.cancelSavedVideo(videoId);
