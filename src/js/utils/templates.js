@@ -43,7 +43,7 @@ const createSaveBtnTemplate = video => `
 
 const createActionBtnTemplate = video => `
 <div class="clip__actions" data-video-id="${video.videoId}">
-  <span class="clip__watched-check opacity-hover">✅</span>
+  <span class="clip__watched-check ${video.isWatched ? "opacity-1" : "opacity-hover"}">✅</span>
   <span class="clip__thumbs-up opacity-hover">👍</span>
   <span class="clip__comment opacity-hover">💬</span>
   <span class="clip__trash-can opacity-hover">🗑️</span>

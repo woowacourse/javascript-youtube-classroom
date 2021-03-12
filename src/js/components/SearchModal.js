@@ -7,7 +7,8 @@ import { createVideoTemplate } from "../utils/templates.js";
 // dummy API Response 사용할 경우
 // import { dummySearchedData } from "../data/dummy.js";
 class SearchModal {
-  constructor() {
+  constructor(props) {
+    this.props = props;
     this.initState();
     this.selectDOM();
     this.bindEvent();
@@ -106,7 +107,6 @@ class SearchModal {
     </div>`;
 
     this.$videoWrapper.innerHTML = "";
-
     this.$videoWrapper.insertAdjacentHTML(
       "beforeend",
       skeletonCardTemplate.repeat(STANDARD_NUMS.LOAD_CLIP_COUNT),
@@ -182,6 +182,7 @@ class SearchModal {
 
   handleCloseModal() {
     this.hideModal();
+    this.props.changeMenu("watch-later");
   }
 
   handleSaveVideo($saveBtn) {
@@ -206,7 +207,6 @@ class SearchModal {
 
   handleSearchClickedHistory(keyword) {
     this.$searchInput.value = keyword;
-
     this.handleSearchKeyword();
   }
 
