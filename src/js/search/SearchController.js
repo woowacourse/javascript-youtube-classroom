@@ -54,10 +54,11 @@ export default class SearchController {
       }
 
       const { items, nextPageToken } = await res.json();
-      this.nextPageToken = nextPageToken;
-
-      searchHistory.setKeyword(searchKeyword);
+      if (this.nextPageToken === "") {
+        searchHistory.setKeyword(searchKeyword);
+      }
       this.updateKeywordHistory();
+      this.nextPageToken = nextPageToken;
 
       return items;
     } catch (err) {
@@ -95,6 +96,7 @@ export default class SearchController {
 
   searchVideos(searchKeyword) {
     searchHistory.resetPageToken();
+    this.nextPageToken = "";
     this.updateSearchResultView(searchKeyword);
   }
 
@@ -117,5 +119,10 @@ export default class SearchController {
     videos.removeSavedVideo(videoId);
     this.searchView.showSaveButton(videoId);
     this.showSavedVideoCount();
+  }
+
+  resetSearchView() {
+    this.searchView.resetSearchInput();
+    this.searchView.resetSearchResults();
   }
 }

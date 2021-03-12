@@ -16,6 +16,10 @@ export default class SearchView {
     hideElement(elements.$notFound);
   }
 
+  resetSearchInput() {
+    elements.$searchForm.elements["search-keyword"].value = "";
+  }
+
   showNotFoundImg(pageToken) {
     if (pageToken !== "") {
       return;

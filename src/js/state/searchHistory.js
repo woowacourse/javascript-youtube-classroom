@@ -3,6 +3,7 @@ import { STORAGE_NAME, VIDEOS } from "../utils/constants.js";
 const searchHistory = {
   pageToken: "",
   keywords: [],
+  recentKeyword: "",
 
   initKeywords() {
     const keywords = localStorage.getItem(STORAGE_NAME.KEYWORDS);
@@ -15,13 +16,15 @@ const searchHistory = {
   },
 
   setKeyword(input) {
-    const newKeyword = input.trim();
+    console.log(input);
+    console.log(`this.recentKeyword : ${this.recentKeyword}`);
+    this.recentKeyword = input.trim();
 
-    if (this.getKeywordAll().includes(newKeyword)) {
-      this.removeKeyword(newKeyword);
+    if (this.getKeywordAll().includes(this.recentKeyword)) {
+      this.removeKeyword(this.recentKeyword);
     }
 
-    this.keywords = [newKeyword, ...this.getKeywordAll()].slice(
+    this.keywords = [this.recentKeyword, ...this.getKeywordAll()].slice(
       0,
       VIDEOS.KEYWORD_HISTORY_LENGTH
     );
@@ -29,7 +32,7 @@ const searchHistory = {
   },
 
   getKeyword() {
-    return this.keywords[0];
+    return this.recentKeyword;
   },
 
   getKeywordAll() {
