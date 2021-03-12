@@ -1,6 +1,6 @@
 import formatDate from '../utils/date.js';
 
-function createVideoSnippetTemplate({ id, snippet }, buttonListTemplate) {
+function videoSnippetTemplate({ id, snippet }, buttonListTemplate) {
   return `<article class="clip js-video"
             data-video-id=${id.videoId}
             data-title=${encodeURIComponent(snippet.title)}
@@ -40,7 +40,7 @@ function createVideoSnippetTemplate({ id, snippet }, buttonListTemplate) {
           </article>`;
 }
 
-function createSaveButtonTemplate(isSaved) {
+function saveButtonTemplate(isSaved) {
   return isSaved
     ? `<button class="btn js-save-cancel-button"}>↪️ 저장 취소</button>`
     : `<button class="btn js-save-button"}>⬇️ 저장</button>`;
@@ -52,18 +52,18 @@ function isSavedVideo(item, videoInfos) {
   );
 }
 
-function createVideoListTemplate(resultItems = [], videoInfos) {
+function videoListTemplate(resultItems = [], videoInfos) {
   return [...resultItems]
     .map(item =>
-      createVideoSnippetTemplate(
+      videoSnippetTemplate(
         item,
-        createSaveButtonTemplate(isSavedVideo(item, videoInfos))
+        saveButtonTemplate(isSavedVideo(item, videoInfos))
       )
     )
     .join('');
 }
 
-function createControlButtonsTemplate(watchType) {
+function controlButtonsTemplate(watchType) {
   return [
     {
       content: '✅',
@@ -83,26 +83,14 @@ function createControlButtonsTemplate(watchType) {
     .join('');
 }
 
-function createSavedVideoListTemplate(savedVideoInfos = []) {
+function savedVideoListTemplate(savedVideoInfos = []) {
   return [...savedVideoInfos]
     .map(item =>
-      createVideoSnippetTemplate(
-        item,
-        createControlButtonsTemplate(item.watchType)
-      )
+      videoSnippetTemplate(item, controlButtonsTemplate(item.watchType))
     )
     .join('');
 }
 
 const emptyVideoListTemplate = `<span id="empty-video-list" class="stretch text-center">영상이 없습니다. 😥</span>`;
 
-/*
- * data-attirbue 로 다 할당
- * 이미 존재하는 속성들을 그대로 활용 (선택자 접근, 문자열 파싱)
- */
-
-export {
-  createVideoListTemplate,
-  createSavedVideoListTemplate,
-  emptyVideoListTemplate,
-};
+export { videoListTemplate, savedVideoListTemplate, emptyVideoListTemplate };

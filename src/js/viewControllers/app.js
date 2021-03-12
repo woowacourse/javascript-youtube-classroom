@@ -1,6 +1,6 @@
 import $ from '../utils/DOM.js';
 import {
-  createSavedVideoListTemplate,
+  savedVideoListTemplate,
   emptyVideoListTemplate,
 } from '../templates/videoList.js';
 
@@ -21,7 +21,7 @@ function renderSavedVideoList(videoInfos, videoListType) {
   );
 
   $videoList.innerHTML = filteredVideoInfos.length
-    ? createSavedVideoListTemplate(filteredVideoInfos)
+    ? savedVideoListTemplate(filteredVideoInfos)
     : emptyVideoListTemplate;
 }
 
