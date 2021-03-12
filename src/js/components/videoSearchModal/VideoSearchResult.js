@@ -99,7 +99,6 @@ export default class VideoSearchResult extends Component {
 
   onSaveVideo(event) {
     if (!event.target.classList.contains(CLASS_NAMES.CLIP.VIDEO_SAVE_BUTTON)) {
-      console.log(event.target);
       return;
     }
 
