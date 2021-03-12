@@ -40,9 +40,9 @@ class SearchController {
   };
 
   #renderSearchedVideo = () => {
-    if (this.#youtubeModel.videoCount === 0) return;
+    if (this.#youtubeModel.searchedCount === 0) return;
 
-    this.#youtubeModel.videoInfos.forEach(info => {
+    this.#youtubeModel.searchedVideos.forEach(info => {
       const isSaved = this.#storageModel.findVideoSaved(info);
       this.#searchView.renderVideoArticle(info, isSaved);
     });
@@ -58,9 +58,11 @@ class SearchController {
       this.#storageModel.recentKeywords
     );
 
-    await this.#youtubeModel.getVideoInfosBySearch({ query });
+    await this.#youtubeModel.getVideosBySearch({ query });
 
-    this.#searchView.toggleNotFoundSearchedVideo(this.#youtubeModel.videoCount);
+    this.#searchView.toggleNotFoundSearchedVideo(
+      this.#youtubeModel.searchedCount
+    );
     this.#renderSearchedVideo();
   };
 
