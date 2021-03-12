@@ -1,98 +1,126 @@
 import {
   MAX_RESULT_COUNT,
-  VIDEOS_TO_WATCH,
-  VIDEOS_WATCHED,
   VIDEO_IS_MOVED_TO_WATCHED_MENU,
   VIDEO_IS_MOVED_TO_WATCHING_MENU,
   VIDEO_IS_REMOVED_SUCCESSFULLY,
 } from '../../src/js/constants';
 
 describe('저장된 비디오 관리 기능 테스트', () => {
-  before(() => {
+  beforeEach(() => {
     cy.visit('http://localhost:5500/');
   });
 
+  const KEYWORD = '테코톡';
+
   it('저장된 영상이 없는 경우, 비어있다는 것을 사용자에게 알려주는 상태를 표시한다.', () => {
-    cy.clearLocalStorage(VIDEOS_TO_WATCH);
-    cy.clearLocalStorage(VIDEOS_WATCHED);
-    cy.get('.js-saved-videos').find('img').should('have.attr', 'src').should('include', 'no_video_saved');
+    cy.get('.js-no-video-found').should('have.class', 'no-watching');
   });
 
   it('저장된 영상이 있는 경우에 페이지를 다시 방문하면, 시청중인 영상 목록을 표시한다.', () => {
-    const KEYWORD = '테코톡';
     const savedVideoTitles = [];
 
-    cy.get('#search-button').click();
-    cy.get('#search-keyword-input').type(KEYWORD);
-    cy.get('#search-keyword-form').submit();
+    cy.get('.js-search-menu-button').click();
+    cy.get('.js-search-keyword-input').type(KEYWORD);
+    cy.get('.js-search-keyword-form').submit();
+    cy.wait(2000);
 
-    cy.get('.save-button').each(($el) => {
+    cy.get('.js-save-button').each(($el) => {
       $el.click();
-      cy.wait(500);
       cy.wrap($el)
         .parent()
-        .siblings('.video-title')
+        .siblings('.js-video-title')
         .invoke('text')
-        .then((videoTitle) => savedVideoTitles.push(videoTitle));
+        .then((videoTitle) => savedVideoTitles.push(`${videoTitle}`));
     });
 
     cy.reload();
-    cy.get('.js-saved-videos .js-video-title').each(($el, index) => {
-      cy.wrap($el).should('have.text', savedVideoTitles[index]);
+    cy.get('.js-saved-videos-wrapper .js-video-title').each(($el, index) => {
+      cy.wrap($el)
+        .invoke('text')
+        .then((title) => expect(title.replace(/&/g, '&amp;')).to.be.eq(savedVideoTitles[index]));
     });
   });
 
   it('[시청 중인 영상] 메뉴에서 영상 카드의 시청완료 체크버튼을 클릭하면, 해당 영상이 시청중인 영상에서 시청완료 영상으로 옮겨지고 알림이 표시된다.', () => {
-    cy.get('.js-watching-menu-button').click();
-    cy.get('.js-saved-videos .watching').each(($el, index) => {
+    cy.get('.js-search-menu-button').click();
+    cy.get('.js-search-keyword-input').type(KEYWORD);
+    cy.get('.js-search-keyword-form').submit();
+    cy.wait(2000);
+    cy.get('.js-save-button').each(($el) => $el.click());
+    cy.get('.js-modal-close-button').click();
+
+    cy.get('.js-check-button').each(($el, index) => {
       if (index > MAX_RESULT_COUNT / 2) {
         return;
       }
-      cy.wrap($el).get('.js-check-button').click();
+      cy.wrap($el).click();
 
       cy.get('.js-snackbar').contains(VIDEO_IS_MOVED_TO_WATCHED_MENU);
-      cy.wrap($el).should('have.class', 'watched');
-      cy.wrap($el).should('not.be.visible');
+      cy.wrap($el).closest('article').should('not.be.visible');
       cy.get('.js-watched-menu-button').click();
-      cy.wrap($el).should('be.visible');
+      cy.wrap($el).closest('article').should('be.visible');
       cy.get('.js-watching-menu-button').click();
     });
   });
 
   it('[시청 완료 영상] 메뉴에서 영상 카드의 시청완료 체크버튼을 해제하면, 해당 영상이 시청완료 영상에서 시청중인 영상으로 옮겨지고 알림이 표시된다.', () => {
+    cy.get('.js-search-menu-button').click();
+    cy.get('.js-search-keyword-input').type(KEYWORD);
+    cy.get('.js-search-keyword-form').submit();
+    cy.wait(2000);
+    cy.get('.js-save-button').each(($el) => $el.click());
+    cy.get('.js-modal-close-button').click();
+    cy.get('.js-check-button').each(($el, index) => {
+      if (index > MAX_RESULT_COUNT / 2) {
+        return;
+      }
+      cy.wrap($el).click();
+    });
     cy.get('.js-watched-menu-button').click();
-    cy.get('.js-saved-videos .watched')
-      .eq(0)
-      .then(($el) => {
-        cy.wrap($el).get('.js-check-button').click();
 
-        cy.get('.js-snackbar').contains(VIDEO_IS_MOVED_TO_WATCHING_MENU);
-        cy.wrap($el).should('have.class', 'watching');
-        cy.wrap($el).should('not.be.visible');
-        cy.get('.js-watching-menu-button').click();
-        cy.wrap($el).should('be.visible');
-      });
+    cy.get('.js-check-button.checked').each(($el) => {
+      cy.wrap($el).click();
+
+      cy.get('.js-snackbar').contains(VIDEO_IS_MOVED_TO_WATCHING_MENU);
+      cy.wrap($el).closest('article').should('not.be.visible');
+      cy.get('.js-watching-menu-button').click();
+      cy.wrap($el).closest('article').should('be.visible');
+      cy.get('.js-watched-menu-button').click();
+    });
   });
 
   it('영상 카드의 삭제버튼을 클릭하면, 나의 강의실에서 해당 영상이 삭제되고 알림이 표시된다.', () => {
-    cy.get('.js-watching-menu-button').click();
-    cy.get('.js-saved-videos .watching')
-      .eq(0)
-      .then(($el) => {
-        cy.wrap($el).get('.js-remove-button').click();
+    cy.get('.js-search-menu-button').click();
+    cy.get('.js-search-keyword-input').type(KEYWORD);
+    cy.get('.js-search-keyword-form').submit();
+    cy.wait(2000);
+    cy.get('.js-save-button').eq(0).click();
+    cy.get('.js-modal-close-button').click();
 
-        cy.get('.js-snackbar').contains(VIDEO_IS_REMOVED_SUCCESSFULLY);
-        cy.wrap($el).should('not.exist');
-      });
+    cy.get('.js-remove-button').click();
+    cy.get('.js-snackbar').contains(VIDEO_IS_REMOVED_SUCCESSFULLY);
+    cy.get('.js-saved-videos-wrapper article').should('not.exist');
   });
 
   it('[시청 중인 영상]과 [시청 완료 영상] 메뉴버튼을 클릭하여 저장한 영상을 필터링할 수 있다.', () => {
-    cy.get('.js-watching-menu-button').click();
-    cy.get('.js-saved-videos .watching').should('have.length.of.greaterThan', 0);
-    cy.get('.js-saved-videos .watched').should('have.length', 0);
+    cy.get('.js-search-menu-button').click();
+    cy.get('.js-search-keyword-input').type(KEYWORD);
+    cy.get('.js-search-keyword-form').submit();
+    cy.wait(2000);
+    cy.get('.js-save-button').each(($el) => $el.click());
+    cy.get('.js-modal-close-button').click();
+    cy.get('.js-check-button').each(($el, index) => {
+      if (index > MAX_RESULT_COUNT / 2) {
+        return;
+      }
+      cy.wrap($el).click();
+    });
+
+    cy.get('.js-saved-videos-wrapper .watching').each(($el) => cy.wrap($el).should('be.visible'));
+    cy.get('.js-saved-videos-wrapper .watched').each(($el) => cy.wrap($el).should('not.be.visible'));
 
     cy.get('.js-watched-menu-button').click();
-    cy.get('.js-saved-videos .watched').should('have.length.of.greaterThan', 0);
-    cy.get('.js-saved-videos .watching').should('have.length', 0);
+    cy.get('.js-saved-videos-wrapper .watched').each(($el) => cy.wrap($el).should('be.visible'));
+    cy.get('.js-saved-videos-wrapper .watching').each(($el) => cy.wrap($el).should('not.be.visible'));
   });
 });
