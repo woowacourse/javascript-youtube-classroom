@@ -38,7 +38,10 @@ const videos = {
       if (!selectedVideo) {
         throw new Error(ERROR_MESSAGE.SAVE_ERROR);
       }
-      this.savedVideos = [...this.savedVideos, selectedVideo];
+      this.savedVideos = [
+        ...this.savedVideos,
+        { ...selectedVideo, saved: true },
+      ];
       this.storeSavedVideos();
       showSnackbar(SUCCESS_MESSAGE.SAVE_VIDEO);
     } catch (e) {
@@ -101,11 +104,18 @@ const videos = {
   },
 
   removeSavedVideo(videoId) {
+    const prevLength = this.savedVideos.length;
     this.savedVideos = this.savedVideos.filter(
       (video) => video.videoId !== videoId
     );
 
-    this.storeSavedVideos();
+    if (prevLength === this.savedVideos.length) {
+      showSnackbar(ERROR_MESSAGE.DELETE_ERROR);
+    } else {
+      console.log("delete");
+      showSnackbar(SUCCESS_MESSAGE.DELETE_VIDEO);
+      this.storeSavedVideos();
+    }
   },
 };
 
