@@ -14,15 +14,21 @@
             <h2 class="text-center font-bold">👩🏻‍💻 나만의 유튜브 강의실 👨🏻‍💻</h2>
             <nav class="d-flex justify-center" data-js="navigator">
               <button
+                type="button"
                 class="btn bg-cyan-100 mx-1"
                 data-js="navigator__unwatched-button"
               >
                 👁️ 볼 영상(F1)
               </button>
-              <button class="btn mx-1" data-js="navigator__watched-button">
+              <button
+                type="button"
+                class="btn mx-1"
+                data-js="navigator__watched-button"
+              >
                 ✅ 본 영상(F2)
               </button>
               <button
+                type="button"
                 id="search-button"
                 class="btn mx-1"
                 data-js="navigator__search-button"
@@ -66,7 +72,7 @@
           </header>
           <form class="d-flex" data-js="youtube-search-modal__form">
             <input
-              type="text"
+              type="search"
               class="w-100 mr-2 pl-2"
               data-js="youtube-search-modal__input"
               name="youtube-search-modal__input"
