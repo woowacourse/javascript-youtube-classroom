@@ -28,6 +28,14 @@
   display: inline-block;
 }
 
+.d-none {
+  display: none;
+}
+
+.d-none-hard {
+  display: none !important;
+}
+
 /* Layout - Top / Right / Bottom / Left */
 .mt-2 {
   margin-top: 8px;
@@ -118,4 +126,12 @@
 
 .content-evenly {
   align-content: space-around;
+}
+
+.block-center {
+  margin: 0 auto;
+}
+
+.test-border {
+  border: 1px solid black;
 }

@@ -1,0 +1,53 @@
+.skeleton {
+  background-color: #e7e7e7;
+  overflow: hidden;
+}
+
+.skeleton.image {
+  width: 236px;
+  height: 118px;
+}
+
+.skeleton.line {
+  width: 236px;
+  height: 16px;
+}
+
+.skeleton.short-line {
+  width: 110px;
+  height: 16px;
+}
+
+.skeleton.skeleton-btn {
+  width: 80px;
+  height: 36px;
+}
+
+.skeleton::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 50%;
+  height: 100%;
+  background: linear-gradient(
+    to right,
+    rgba(255, 255, 255, 0) 40%,
+    rgba(255, 255, 255, 0.4) 55%,
+    rgba(255, 255, 255, 0)
+  );
+  animation-name: skeleton-shining;
+  animation-duration: 0.7s;
+  animation-timing-function: ease-in-out;
+  animation-iteration-count: infinite;
+}
+
+@keyframes skeleton-shining {
+  0% {
+    transform: translateX(-50%);
+  }
+
+  100% {
+    transform: translateX(160%);
+  }
+}
