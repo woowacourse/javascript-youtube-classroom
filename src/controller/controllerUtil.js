@@ -15,12 +15,14 @@ const controllerUtil = {
     });
     observer.observe($element);
   },
+
   getProcessedVideos(videos) {
     return videos.map(video => ({
       ...video,
       isSaved: controllerUtil.isVideoToWatch(video.videoId),
     }));
   },
+
   getNewVideo(dataset) {
     return {
       title: dataset.title,
@@ -30,10 +32,12 @@ const controllerUtil = {
       isSaved: true,
     };
   },
+
   savePrevSearchInfo(lastQuery, nextPageToken) {
     prevSearchResult.setLastQuery(lastQuery);
     prevSearchResult.setNextPageToken(nextPageToken);
   },
+
   pushSearchQuery(input) {
     const filteredQueries = searchQuery
       .getQueries()
@@ -44,6 +48,7 @@ const controllerUtil = {
     }
     searchQuery.setQueries(filteredQueries);
   },
+
   loadAdditionalVideos(videos) {
     view.insertVideoItems(videos);
     if (videos.length === 0) {
@@ -51,18 +56,22 @@ const controllerUtil = {
       return;
     }
   },
+
   loadSearchResult(videos) {
     view.renderSearchQueries(searchQuery.getQueries());
     view.renderSearchedVideos(controllerUtil.getProcessedVideos(videos));
   },
+
   loadPrevSearchedVideos(videos) {
     const processedVideos = controllerUtil.getProcessedVideos(videos);
     view.insertVideoItems(processedVideos);
     view.showSearchResultIntersector();
   },
+
   isVideoToWatch(videoId) {
     return videoToWatch.getVideos().some(video => video.videoId === videoId);
   },
+
 };
 
 export default controllerUtil;

@@ -23,6 +23,7 @@ const viewUtil = {
     }
     target.classList.add('removed');
   },
+
 };
 
 export default viewUtil;

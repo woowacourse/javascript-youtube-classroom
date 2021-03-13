@@ -87,12 +87,15 @@ const controller = {
     $modalCloseButton.addEventListener('click', onModalClose);
     $searchForm.addEventListener('submit', onVideoSearch);
   },
+
   initSearchQueries() {
     view.renderSearchQueries(searchQuery.getQueries());
   },
+
   initVideos() {
     view.renderSelectedVideoItems(videoToWatch.getVideos());
   },
+
 };
 
 export default controller;

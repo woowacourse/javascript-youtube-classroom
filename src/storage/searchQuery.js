@@ -17,9 +17,9 @@ const searchQuery = {
     if (typeof query !== 'string') {
       return;
     }
-    const quries = searchQuery.getQueries();
-    quries.push(query);
-    searchQuery.setQueries(quries);
+    const queries = searchQuery.getQueries();
+    queries.push(query);
+    searchQuery.setQueries(queries);
   },
 };
 
