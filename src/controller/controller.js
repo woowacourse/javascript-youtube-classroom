@@ -26,6 +26,7 @@ async function onAdditionalVideosLoad() {
 function onModalOpen() {
   view.openModal();
   const videos = prevSearchResult.getSearchedVideos();
+
   if (videos.length === 0) {
     return;
   }
@@ -43,6 +44,7 @@ function onModalClose() {
 async function onVideoSearch(event) {
   event.preventDefault();
   const input = $searchFormInput.value.trim();
+
   if (input === prevSearchResult.getLastQuery()) {
     return;
   }
@@ -50,7 +52,9 @@ async function onVideoSearch(event) {
     return;
   }
   view.initSearchResult();
+
   const { videos, nextPageToken } = await getVideosByKeyword(input);
+
   if (videos.length === 0) {
     view.showNotFountContent();
     return;
@@ -67,10 +71,12 @@ function onSelectedVideoSave({ target }) {
   if (!target.classList.contains(SELECTOR_CLASS.CLIP_SAVE_BUTTON)) {
     return;
   }
+
   if (videoToWatch.getVideos().length === SETTINGS.MAX_SAVE_COUNT) {
     view.showMessage(ALERT_MESSAGE.SAVE_LIMIT_EXCEEDED);
     return;
   }
+
   view.hideVideoSaveButton(target);
   videoToWatch.pushVideo(controllerUtil.getNewVideo(target.dataset));
   view.renderSelectedVideoItems(videoToWatch.getVideos());

@@ -43,6 +43,7 @@ const controllerUtil = {
       .getQueries()
       .filter(query => input !== query);
     filteredQueries.push(input);
+
     if (filteredQueries.length > SETTINGS.MAX_SAVED_SEARCH_QUERY_COUNT) {
       filteredQueries.shift();
     }
