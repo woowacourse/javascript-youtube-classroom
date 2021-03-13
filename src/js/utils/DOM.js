@@ -24,6 +24,6 @@ export default {
     NOT_FOUND: $('[data-js="saved-page__not-found"]'),
   },
   SNACK_BAR: {
-    CONTINAER: $('[data-js="snackbar"]'),
+    CONTAINER: $('[data-js="snackbar-container"]'),
   },
 };

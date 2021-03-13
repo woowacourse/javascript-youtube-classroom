@@ -7,7 +7,7 @@ import {
 import { renderSavedClip } from '../../../view/main.js';
 import storage from '../../../utils/localStorage.js';
 import { hideElement } from '../../../utils/setAttribute.js';
-import { snackbar } from '../../../utils/snackbar.js';
+import { showSnackbar } from '../../../utils/showSnackbar.js';
 import { renderSaveVideoCount } from '../../../view/modal.js';
 import $DOM from '../../../utils/DOM.js';
 
@@ -26,7 +26,7 @@ export const onSaveClip = ({ target }) => {
   const existClips = savedClips.filter((savedClip) => !savedClip.isDeleted);
 
   if (existClips.length >= YOUTUBE.MAXIMUM_SAVE_CLIPS) {
-    snackbar(MESSAGE.ERROR.EXCEED_MAXIMUM_CLIP_COUNT);
+    showSnackbar(MESSAGE.ERROR.EXCEED_MAXIMUM_CLIP_COUNT);
     return;
   }
 
@@ -36,7 +36,7 @@ export const onSaveClip = ({ target }) => {
   savedClips.push(savedClip);
   storage.set(LOCAL_STORAGE_KEY.SAVED_CLIPS, savedClips);
 
-  snackbar(MESSAGE.NOTIFY.SAVE_CLIP);
+  showSnackbar(MESSAGE.NOTIFY.SAVE_CLIP);
   renderSavedClip(savedClip, savedClips.length - 1, currentTab);
   renderSaveVideoCount(savedClips);
 };

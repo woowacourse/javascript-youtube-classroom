@@ -1,4 +1,4 @@
-import { snackbar } from './snackbar.js';
+import { showSnackbar } from './showSnackbar.js';
 
 export const request = async (url) => {
   try {
@@ -8,6 +8,6 @@ export const request = async (url) => {
     }
     return await response.json();
   } catch (err) {
-    snackbar(`💣 Error : ${err} 💣`);
+    showSnackbar(`💣 Error : ${err} 💣`);
   }
 };

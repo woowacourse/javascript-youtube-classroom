@@ -13,7 +13,7 @@ import {
   renderClips,
   renderRecentKeywords,
 } from '../../../view/modal.js';
-import { snackbar } from '../../../utils/snackbar.js';
+import { showSnackbar } from '../../../utils/showSnackbar.js';
 import $DOM from '../../../utils/DOM.js';
 
 const getRecentKeywords = (keyword) => {
@@ -70,7 +70,7 @@ export const searchRequest = async (keyword) => {
   showElement($DOM.SEARCH_MODAL.SKELETON_WRAPPER);
 
   if (isEmpty(keyword)) {
-    snackbar(MESSAGE.ERROR.EMPTY_KEYWORD);
+    showSnackbar(MESSAGE.ERROR.EMPTY_KEYWORD);
     return;
   }
 
