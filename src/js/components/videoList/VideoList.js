@@ -32,7 +32,10 @@ export default class VideoList extends Component {
   setup() {
     store.subscribe(this.render.bind(this));
     this.filter = TYPES.FILTER.WATCH_LATER;
+    this.setIntersectionObserver();
+  }
 
+  setIntersectionObserver() {
     const options = {
       threshold: INTERSECTION_OBSERVER_OPTIONS.IFRAME_LOAD_THRESHOLD,
     };
@@ -56,15 +59,15 @@ export default class VideoList extends Component {
       );
     });
 
+    const newSaveVideos = videoIdSortedByDate.map((videoId) =>
+      new Video({
+        videoId,
+        ...savedVideos[videoId],
+      }).createTemplate(TYPES.PAGE.MANAGEMENT)
+    );
+
     if (videoIdSortedByDate.length > 0) {
-      fragment.append(
-        ...videoIdSortedByDate.map((videoId) =>
-          new Video({
-            videoId,
-            ...savedVideos[videoId],
-          }).createTemplate(TYPES.PAGE.MANAGEMENT)
-        )
-      );
+      fragment.append(...newSaveVideos);
       this.$target.appendChild(fragment);
     }
   }
@@ -97,38 +100,54 @@ export default class VideoList extends Component {
   }
 
   showByFilter() {
-    const filteredKeys = [];
     const savedVideos = localStorageGetItem(LOCALSTORAGE_KEYS.VIDEOS);
-    $$(SELECTORS.VIDEO_LIST.CLIP_CLASS, this.$target).forEach(($elem) => {
+    const filteredKeys = [];
+    $$(SELECTORS.VIDEO_LIST.CLIP_CLASS, this.$target).forEach(($clip) => {
       const {
         dataset: { videoId },
-      } = $elem;
+      } = $clip;
 
-      if (
-        (this.filter === TYPES.FILTER.WATCH_LATER &&
-          !savedVideos[videoId].watched) ||
-        (this.filter === TYPES.FILTER.WATCHED &&
-          savedVideos[videoId].watched) ||
-        (this.filter === TYPES.FILTER.LIKED && savedVideos[videoId].liked)
-      ) {
+      if (this.isRightVideoToShow(savedVideos[videoId])) {
+        $clip.classList.remove('d-none');
         filteredKeys.push(videoId);
-        $elem.classList.remove('d-none');
       } else {
-        $elem.classList.add('d-none');
+        $clip.classList.add('d-none');
       }
     });
 
-    if (filteredKeys.length === 0) {
-      this.$notFoundImage.classList.remove('d-none');
-      $(SELECTORS.MENU_BUTTON.SEARCH_ID).classList.add(
-        CLASS_NAMES.CLIP.SEARCH_BUTTON_GUIDE
-      );
-    } else {
-      this.$notFoundImage.classList.add('d-none');
-      $(SELECTORS.MENU_BUTTON.SEARCH_ID).classList.remove(
-        CLASS_NAMES.CLIP.SEARCH_BUTTON_GUIDE
-      );
+    filteredKeys.length === 0
+      ? this.setNoResultDisplay()
+      : this.setResultDisplay();
+  }
+
+  isRightVideoToShow(videoObject) {
+    try {
+      if (
+        (this.filter === TYPES.FILTER.WATCH_LATER && !videoObject.watched) ||
+        (this.filter === TYPES.FILTER.WATCHED && videoObject.watched) ||
+        (this.filter === TYPES.FILTER.LIKED && videoObject.liked)
+      ) {
+        return true;
+      }
+      return false;
+    } catch (error) {
+      console.log(error);
+      return false;
     }
+  }
+
+  setNoResultDisplay() {
+    this.$notFoundImage.classList.remove('d-none');
+    $(SELECTORS.MENU_BUTTON.SEARCH_ID).classList.add(
+      CLASS_NAMES.CLIP.SEARCH_BUTTON_GUIDE
+    );
+  }
+
+  setResultDisplay() {
+    this.$notFoundImage.classList.add('d-none');
+    $(SELECTORS.MENU_BUTTON.SEARCH_ID).classList.remove(
+      CLASS_NAMES.CLIP.SEARCH_BUTTON_GUIDE
+    );
   }
 
   render(preStates, states) {
@@ -147,10 +166,6 @@ export default class VideoList extends Component {
         ...savedVideos[lastestVideoId],
       }).createTemplate(TYPES.PAGE.MANAGEMENT);
 
-      if (this.filter === TYPES.FILTER.WATCHED) {
-        newVideo.classList.add('d-none');
-      }
-
       this.$target.prepend(newVideo);
 
       this.iframeLoadObserver.observe(newVideo);
@@ -159,59 +174,63 @@ export default class VideoList extends Component {
     }
   }
 
-  onClickWatchedButton(event) {
-    const clip = event.target.closest(SELECTORS.VIDEO_LIST.CLIP_CLASS);
-    const savedVideos = localStorageGetItem(LOCALSTORAGE_KEYS.VIDEOS);
+  toggleWatchedVideo(clip, newSavedVideos = {}) {
+    try {
+      newSavedVideos[clip.dataset.videoId].watched = !newSavedVideos[
+        clip.dataset.videoId
+      ].watched;
 
-    const newSavedVideos = {};
-    Object.assign(newSavedVideos, savedVideos);
+      localStorageSetItem(LOCALSTORAGE_KEYS.VIDEOS, newSavedVideos);
 
-    newSavedVideos[clip.dataset.videoId].watched = !newSavedVideos[
-      clip.dataset.videoId
-    ].watched;
+      clip.classList.toggle('d-none');
 
-    localStorageSetItem(LOCALSTORAGE_KEYS.VIDEOS, newSavedVideos);
-    clip.classList.toggle('d-none');
-    $(SELECTORS.CLIP.WATCHED_BUTTON, clip).classList.toggle('checked');
-    this.showByFilter();
-  }
+      $(SELECTORS.CLIP.WATCHED_BUTTON, clip).classList.toggle('checked');
 
-  onClickLikeButton(event) {
-    const clip = event.target.closest(SELECTORS.VIDEO_LIST.CLIP_CLASS);
-    const savedVideos = localStorageGetItem(LOCALSTORAGE_KEYS.VIDEOS);
-
-    const newSavedVideos = {};
-    Object.assign(newSavedVideos, savedVideos);
-
-    newSavedVideos[clip.dataset.videoId].liked = !newSavedVideos[
-      clip.dataset.videoId
-    ].liked;
-
-    localStorageSetItem(LOCALSTORAGE_KEYS.VIDEOS, newSavedVideos);
-    $(SELECTORS.CLIP.LIKE_BUTTON, clip).classList.toggle('checked');
-    this.showByFilter();
-  }
-
-  onClickDeleteButton(event) {
-    const clip = event.target.closest(SELECTORS.VIDEO_LIST.CLIP_CLASS);
-    const savedVideos = localStorageGetItem(LOCALSTORAGE_KEYS.VIDEOS);
-
-    if (
-      !(confirm(MESSAGES.CONFIRM.DELETE) && savedVideos[clip.dataset.videoId])
-    ) {
-      throw new Error(ERROR_MESSAGES.VIDEO_DELETE_ERROR);
+      this.showByFilter();
+    } catch (error) {
+      throw new Error(error.message);
     }
+  }
 
-    const newSavedVideos = {};
-    Object.assign(newSavedVideos, savedVideos);
+  addLikeVideo(clip, newSavedVideos = {}) {
+    try {
+      newSavedVideos[clip.dataset.videoId].liked = !newSavedVideos[
+        clip.dataset.videoId
+      ].liked;
 
-    delete newSavedVideos[clip.dataset.videoId];
-    delete Video.cache[clip.dataset.videoId];
-    clip.remove();
+      localStorageSetItem(LOCALSTORAGE_KEYS.VIDEOS, newSavedVideos);
 
-    localStorageSetItem(LOCALSTORAGE_KEYS.VIDEOS, newSavedVideos);
-    store.dispatch(decreaseSavedVideoCount());
-    this.showByFilter();
+      $(SELECTORS.CLIP.LIKE_BUTTON, clip).classList.toggle('checked');
+
+      this.showByFilter();
+    } catch (error) {
+      throw new Error(error.message);
+    }
+  }
+
+  deleteVideo(clip, newSavedVideos = {}) {
+    try {
+      if (
+        !(
+          confirm(MESSAGES.CONFIRM.DELETE) &&
+          newSavedVideos[clip.dataset.videoId]
+        )
+      ) {
+        throw new Error(ERROR_MESSAGES.VIDEO_DELETE_ERROR);
+      }
+
+      delete newSavedVideos[clip.dataset.videoId];
+      delete Video.cache[clip.dataset.videoId];
+      clip.remove();
+
+      localStorageSetItem(LOCALSTORAGE_KEYS.VIDEOS, newSavedVideos);
+
+      store.dispatch(decreaseSavedVideoCount());
+
+      this.showByFilter();
+    } catch (error) {
+      throw new Error(error.message);
+    }
   }
 
   onClickManagementButton(event) {
@@ -219,21 +238,26 @@ export default class VideoList extends Component {
       return;
     }
 
+    const clip = event.target.closest(SELECTORS.VIDEO_LIST.CLIP_CLASS);
+    const savedVideos = localStorageGetItem(LOCALSTORAGE_KEYS.VIDEOS);
+    const newSavedVideos = {};
     let message = '';
+
+    Object.assign(newSavedVideos, savedVideos);
 
     try {
       if (event.target.classList.contains(CLASS_NAMES.CLIP.WATCHED_BUTTON)) {
-        this.onClickWatchedButton(event);
+        this.toggleWatchedVideo(clip, savedVideos);
         message = MESSAGES.ACTION_SUCCESS.STATE_SETTING;
       } else if (
         event.target.classList.contains(CLASS_NAMES.CLIP.LIKE_BUTTON)
       ) {
-        this.onClickLikeButton(event);
+        this.addLikeVideo(clip, savedVideos);
         message = MESSAGES.ACTION_SUCCESS.STATE_SETTING;
       } else if (
         event.target.classList.contains(CLASS_NAMES.CLIP.DELETE_BUTTON)
       ) {
-        this.onClickDeleteButton(event);
+        this.deleteVideo(clip, savedVideos);
         message = MESSAGES.ACTION_SUCCESS.DELETE;
       }
     } catch (error) {
