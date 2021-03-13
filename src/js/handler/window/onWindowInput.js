@@ -15,5 +15,5 @@ const actions = {
 };
 
 export const onWindowInput = ({ key }) => {
-  actions[key] && actions[key]();
+  actions[key]?.();
 };

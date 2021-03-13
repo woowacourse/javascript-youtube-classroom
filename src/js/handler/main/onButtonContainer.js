@@ -56,5 +56,5 @@ const actions = {
 };
 
 export const onButtonContainer = ({ target }) => {
-  actions[target.dataset.js] && actions[target.dataset.js](target);
+  actions[target.dataset.js]?.(target);
 };
