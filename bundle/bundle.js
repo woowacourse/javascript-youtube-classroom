@@ -12441,6 +12441,11 @@ var controller = {
     _elements_js__WEBPACK_IMPORTED_MODULE_0__.$searchButton.addEventListener('click', onModalOpen);
     _elements_js__WEBPACK_IMPORTED_MODULE_0__.$modalCloseButton.addEventListener('click', onModalClose);
     _elements_js__WEBPACK_IMPORTED_MODULE_0__.$searchForm.addEventListener('submit', onVideoSearch);
+    _elements_js__WEBPACK_IMPORTED_MODULE_0__.$modal.addEventListener('click', function (event) {
+      if (event.target.id === _constants_js__WEBPACK_IMPORTED_MODULE_6__.SELECTOR_ID.MODAL) {
+        onModalClose();
+      }
+    });
   },
   initSearchQueries: function initSearchQueries() {
     _view_view_js__WEBPACK_IMPORTED_MODULE_1__.default.renderSearchQueries(_storage_searchQuery_js__WEBPACK_IMPORTED_MODULE_4__.default.getQueries());

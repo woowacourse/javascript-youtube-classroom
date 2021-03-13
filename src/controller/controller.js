@@ -5,13 +5,14 @@ import {
   $searchFormInput,
   $searchResultIntersector,
   $searchResultVideoWrapper,
+  $modal,
 } from '../elements.js';
 import view from '../view/view.js';
 import { getVideosByKeyword } from '../apis/youtube.js';
 import prevSearchResult from '../storage/prevSearchResult.js';
 import searchQuery from '../storage/searchQuery.js';
 import videoToWatch from '../storage/videoToWatch.js';
-import { SETTINGS, SELECTOR_CLASS, ALERT_MESSAGE } from '../constants.js';
+import { SETTINGS, SELECTOR_CLASS, ALERT_MESSAGE, SELECTOR_ID } from '../constants.js';
 import controllerUtil from './controllerUtil.js';
 
 async function onAdditionalVideosLoad() {
@@ -97,6 +98,11 @@ const controller = {
     $searchButton.addEventListener('click', onModalOpen);
     $modalCloseButton.addEventListener('click', onModalClose);
     $searchForm.addEventListener('submit', onVideoSearch);
+    $modal.addEventListener('click', (event) => {
+      if (event.target.id === SELECTOR_ID.MODAL) {
+        onModalClose();
+      }
+    })
   },
 
   initSearchQueries() {
