@@ -27,21 +27,12 @@ export default class ClassroomController {
     const isWatching = isWatchingVideo($video);
 
     if (target.classList.contains('js-check-button')) {
-      this.model.moveVideo($video.id);
-      this.view.renderMovedVideo($video, isWatching);
-      isWatching
-        ? this.view.renderNotification(MESSAGE.VIDEO_IS_MOVED_TO_WATCHED_MENU)
-        : this.view.renderNotification(MESSAGE.VIDEO_IS_MOVED_TO_WATCHING_MENU);
-      this.showImageNoVideo();
+      this.moveVideo($video, isWatching);
       return;
     }
 
     if (target.classList.contains('js-remove-button')) {
-      if (!window.confirm(MESSAGE.ARE_YOU_SURE_TO_REMOVE_VIDEO)) return;
-      this.model.removeVideo($video.id, isWatching);
-      this.view.removeVideo($video);
-      this.view.renderNotification(MESSAGE.VIDEO_IS_REMOVED_SUCCESSFULLY);
-      this.showImageNoVideo();
+      this.removeVideo($video, isWatching);
     }
   }
 
@@ -91,5 +82,22 @@ export default class ClassroomController {
         ? this.view.renderImageNoWatchingVideo()
         : this.view.renderImageNoWatchedVideo();
     }
+  }
+
+  moveVideo($video, isWatching) {
+    this.model.moveVideo($video.id);
+    this.view.renderMovedVideo($video, isWatching);
+    isWatching
+      ? this.view.renderNotification(MESSAGE.VIDEO_IS_MOVED_TO_WATCHED_MENU)
+      : this.view.renderNotification(MESSAGE.VIDEO_IS_MOVED_TO_WATCHING_MENU);
+    this.showImageNoVideo();
+  }
+
+  removeVideo($video, isWatching) {
+    if (!window.confirm(MESSAGE.ARE_YOU_SURE_TO_REMOVE_VIDEO)) return;
+    this.model.removeVideo($video.id, isWatching);
+    this.view.removeVideo($video);
+    this.view.renderNotification(MESSAGE.VIDEO_IS_REMOVED_SUCCESSFULLY);
+    this.showImageNoVideo();
   }
 }
