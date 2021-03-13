@@ -35,7 +35,6 @@ export const clipTemplate = (video, index, type) => {
       } ${video.isWatched ? 'watched-clip' : 'unwatched-clip'}
         " 
         data-js=${isModal ? 'youtube-search-modal__clip' : 'saved-page__clip'}
-        data-is-deleted=false
         data-clip-index=${index}
       >
         <div class="preview-container">
