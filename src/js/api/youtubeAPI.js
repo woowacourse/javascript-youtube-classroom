@@ -4,7 +4,7 @@ import { SEARCH, URL } from '../constants/constant.js';
 const youtubeSearchURL = ({ query, nextPageToken, max }) => {
   const urlSearch = new URLSearchParams();
   const queries = {
-    q: query.toString(),
+    q: query,
     key: YOUTUBE_API_KEY,
     pageToken: nextPageToken,
     max_results: max,
@@ -36,7 +36,7 @@ export const api = {
         return Promise.reject(Error(response.status));
       })
       .catch(error => {
-        return alert(
+        alert(
           `데이터 불러오기 실패! : 에러코드 - ${error.message} \n다시 검색해주세요!`
         );
       });

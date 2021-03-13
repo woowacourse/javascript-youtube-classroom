@@ -1,8 +1,6 @@
 import { CLASS } from '../constants/constant.js';
 import { convertDateFormat } from '../utils/util.js';
 
-// TODO: 템플릿 중복 - 빼야함
-//export const videoTemplate = info => {
 const savedVideoButtons = info => {
   return `
           <div class="video-info-buttons" data-url="${info.url}">
