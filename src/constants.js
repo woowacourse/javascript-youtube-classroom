@@ -10,6 +10,7 @@ export const SELECTOR_ID = Object.freeze({
   NOT_FOUND_CONTENT: 'not-found-content',
   SERACH_RESULT_INTERSECTOR: 'search-result__intersector',
   SEARCH_QUERIES: 'search-queries',
+  SAVED_VIDEO_COUNT: 'saved-video-count',
 });
 
 export const SELECTOR_CLASS = Object.freeze({

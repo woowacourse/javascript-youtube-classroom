@@ -14,7 +14,7 @@ export function getSearchQueriesTemplate(queries) {
 
 export function getSearchQueryTemplate(query) {
   return `
-    <a class="search-queries__chip">${query}</a>
+    <a class="search-queries__chip mr-1">${query}</a>
   `;
 }
 

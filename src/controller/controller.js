@@ -24,8 +24,10 @@ async function onAdditionalVideosLoad() {
 }
 
 function onModalOpen() {
-  view.openModal();
+  const savedVideoCount = videoToWatch.getVideos().length;
   const videos = prevSearchResult.getSearchedVideos();
+  view.renderSavedVideoCount(savedVideoCount);
+  view.openModal();
 
   if (videos.length === 0) {
     return;
@@ -79,7 +81,10 @@ function onSelectedVideoSave({ target }) {
 
   view.hideVideoSaveButton(target);
   videoToWatch.pushVideo(controllerUtil.getNewVideo(target.dataset));
-  view.renderSelectedVideoItems(videoToWatch.getVideos());
+
+  const videos = videoToWatch.getVideos();
+  view.renderSelectedVideoItems(videos);
+  view.renderSavedVideoCount(videos.length);
 }
 
 const controller = {

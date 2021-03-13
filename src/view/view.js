@@ -3,6 +3,7 @@ import {
   $searchResultVideoWrapper,
   $searchQueries,
   $videoWrapper,
+  $savedVideoCount,
 } from '../elements.js';
 import { STYLE_CLASS, SELECTOR_ID, SELECTOR_CLASS } from '../constants.js';
 import {
@@ -37,6 +38,10 @@ const view = {
 
   renderSearchQueries(queries) {
     $searchQueries.innerHTML = getSearchQueriesTemplate(queries);
+  },
+
+  renderSavedVideoCount(count) {
+    $savedVideoCount.innerHTML = count;
   },
 
   renderSearchedVideos(processedVideos) {
