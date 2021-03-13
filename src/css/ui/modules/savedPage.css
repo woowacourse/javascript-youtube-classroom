@@ -5,3 +5,7 @@
 .unwatched-section > .watched-clip {
   display: none;
 }
+
+.deleted-clip {
+  display: none;
+}

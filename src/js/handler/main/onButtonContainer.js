@@ -1,6 +1,6 @@
 import storage from '../../utils/localStorage.js';
 import { LOCAL_STORAGE_KEY, MESSAGE } from '../../utils/constant.js';
-import { hideElement, showElement } from '../../utils/setAttribute.js';
+import { showElement } from '../../utils/setAttribute.js';
 import { snackbar } from '../../utils/snackbar.js';
 import $DOM from '../../utils/DOM.js';
 
@@ -39,8 +39,7 @@ const deleteClip = (target) => {
 
   snackbar(MESSAGE.NOTIFY.DELETE_CLIP);
   savedClips[targetClipIndex].isDeleted = true;
-  targetClip.setAttribute('data-is-deleted', true);
-  hideElement(targetClip);
+  targetClip.classList.add('deleted-clip');
 
   const existClips = savedClips.filter((savedClip) => !savedClip.isDeleted);
 
