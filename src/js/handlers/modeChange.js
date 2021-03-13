@@ -4,6 +4,7 @@ import {
   renderSavedVideoList,
   toggleFocusedModeButton,
 } from '../viewControllers/app.js';
+import { TO_WATCH_TYPE, WATCHED_TYPE } from '../constants/filterType.js';
 
 function toggleMode() {
   videoListType.toggle();
@@ -14,14 +15,14 @@ function toggleMode() {
 function handleModeChange({ target }) {
   if (
     target.id === 'to-watch-video-display-button' &&
-    videoListType.get() === 'watched'
+    videoListType.get() === WATCHED_TYPE
   ) {
     toggleMode();
     return;
   }
   if (
     target.id === 'watched-video-display-button' &&
-    videoListType.get() === 'toWatch'
+    videoListType.get() === TO_WATCH_TYPE
   ) {
     toggleMode();
   }

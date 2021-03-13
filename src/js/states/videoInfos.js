@@ -1,4 +1,5 @@
 import { fetchLatestVideoInfos } from '../API.js';
+import { TO_WATCH_TYPE, WATCHED_TYPE } from '../constants/filterType.js';
 import { VIDEO_INFOS } from '../constants/localStorage.js';
 import { getLocalStorage, setLocalStorage } from '../utils/localStorage.js';
 
@@ -53,7 +54,9 @@ const videoInfos = {
         ? {
             ...videoInfo,
             watchType:
-              videoInfo.watchType === 'toWatch' ? 'watched' : 'toWatch',
+              videoInfo.watchType === TO_WATCH_TYPE
+                ? WATCHED_TYPE
+                : TO_WATCH_TYPE,
           }
         : videoInfo
     );

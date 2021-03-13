@@ -1,5 +1,7 @@
+import { TO_WATCH_TYPE, WATCHED_TYPE } from '../constants/filterType.js';
+
 const videoListType = {
-  value: 'toWatch',
+  value: TO_WATCH_TYPE,
 
   set(mode) {
     this.value = mode;
@@ -10,7 +12,7 @@ const videoListType = {
   },
 
   toggle() {
-    this.value = this.value === 'toWatch' ? 'watched' : 'toWatch';
+    this.value = this.value === TO_WATCH_TYPE ? WATCHED_TYPE : TO_WATCH_TYPE;
   },
 };
 

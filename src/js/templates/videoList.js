@@ -1,3 +1,4 @@
+import { WATCHED_TYPE } from '../constants/filterType.js';
 import formatDate from '../utils/date.js';
 
 function videoSnippetTemplate({ id, snippet }, buttonListTemplate) {
@@ -68,7 +69,7 @@ function controlButtonsTemplate(watchType) {
     {
       content: '✅',
       className: 'js-watched-button',
-      isChecked: watchType === 'watched',
+      isChecked: watchType === WATCHED_TYPE,
     },
     { content: '👍', className: 'js-like-button', isChecked: false },
     { content: '💬', className: 'js-comment-button', isChecked: false },
