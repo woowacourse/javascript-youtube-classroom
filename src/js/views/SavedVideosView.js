@@ -1,5 +1,4 @@
 import { $ } from '../utils/dom.js';
-import { VALUE } from '../utils/constants.js';
 import clipMaker from '../utils/clipMaker.js';
 import stopVideo from '../utils/stopVideo.js';
 import View from './View.js';
@@ -59,19 +58,15 @@ export default class SavedVideosView extends View {
   }
 
   showMatchedVideos(prevTabVideos, currentTabVideos) {
-    clearTimeout(this.clipTransition);
     $('.empty-videos').hide();
-    $('#main-videos > article').removeClass('fadein', 'fadeout');
-    $('#main-videos > article').addClass('fadeout');
+    $('#main-videos > article').addClass('hidden');
 
-    this.clipTransition = setTimeout(() => {
-      prevTabVideos.forEach((prevTabVideo) => {
-        $(`[data-article='${prevTabVideo}']`).hide();
-      });
-      currentTabVideos.forEach((currentTabVideo) => {
-        $(`[data-article='${currentTabVideo}']`).show().addClass('fadein');
-      });
-    }, VALUE.CLIP_TRANSITION_TIME);
+    prevTabVideos.forEach((prevTabVideo) => {
+      $(`[data-article='${prevTabVideo}']`).hide();
+    });
+    currentTabVideos.forEach((currentTabVideo) => {
+      $(`[data-article='${currentTabVideo}']`).show().addClass('visible');
+    });
   }
 
   renderVideoEmptyImg() {
@@ -86,21 +81,14 @@ export default class SavedVideosView extends View {
   }
 
   showVideoEmptyImg() {
-    setTimeout(() => {
-      $('.empty-videos').show();
-    }, VALUE.CLIP_TRANSITION_TIME);
+    $('.empty-videos').show();
   }
 
   toggleWatchedButton(videoId) {
     const videoClip = $(`[data-article='${videoId}']`);
     const packButton = $(`[data-video-watched='${videoId}']`);
 
-    $('#main-videos > article').removeClass('fadein', 'fadeout');
     packButton.toggleClass('opacity-hover');
-    videoClip.addClass('fadeout');
-
-    setTimeout(() => {
-      videoClip.hide();
-    }, VALUE.CLIP_TRANSITION_TIME);
+    videoClip.hide();
   }
 }

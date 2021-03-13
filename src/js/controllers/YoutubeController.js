@@ -37,7 +37,7 @@ export default class YoutubeController {
       .on('clickSearchTab', () => this.focusSearchTab());
     this.searchModalView.on('closeModal', () => this.focusSavedTab());
     this.savedVideosView
-      .on('clickWatched', (e) => this.watchVideo(e.detail))
+      .on('clickWatched', (e) => this.markVideoWatched(e.detail))
       .on('clickDelete', (e) => this.deleteVideo(e.detail));
   }
 
@@ -109,7 +109,7 @@ export default class YoutubeController {
     }
   }
 
-  watchVideo(videoId) {
+  markVideoWatched(videoId) {
     this.store.update({ [STORE_KEYS.WATCHED_VIDEO_IDS]: videoId });
     this.savedVideosView.toggleWatchedButton(videoId);
 

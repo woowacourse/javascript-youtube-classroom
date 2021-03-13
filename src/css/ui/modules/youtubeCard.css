@@ -73,26 +73,16 @@
   color: #606060;
 }
 
-.clip.fadeout {
-  animation-name: clip-fade-out;
-  animation-duration: 0.3s;
+.clip {
+  animation-name: fade-in;
+  animation-duration: 1s;
 }
 
-.clip.fadein {
-  animation-name: clip-fade-in;
-  animation-duration: 0.3s;
+.empty-videos {
+  animation: fade-in 1s;
 }
 
-@keyframes clip-fade-out {
-  from {
-    opacity: 1;
-  }
-  to {
-    opacity: 0;
-  }
-}
-
-@keyframes clip-fade-in {
+@keyframes fade-in {
   from {
     opacity: 0;
   }
