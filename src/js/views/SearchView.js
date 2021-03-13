@@ -1,6 +1,6 @@
 import { getSkeletonTemplate } from './layout/skeleton.js';
 import { getThumbnailTemplate, getChannelTitleTemplate, resultNotFoundTemplate } from './layout/searchResult.js';
-import { $, showSnackbar } from '../utils/DOM.js';
+import { $, createSnackbar } from '../utils/DOM.js';
 import { SNACKBAR_SHOW_TIME } from '../constants.js';
 
 export default class SearchView {
@@ -16,7 +16,7 @@ export default class SearchView {
     this.$modalCloseButton = $('.js-modal-close-button');
     this.$recentKeywords = $('.js-recent-keywords');
     this.$savedVideoCount = $('.js-saved-video-count');
-    this.$snackbar = $('.js-snackbar');
+    this.$snackbarWrapper = $('.js-snackbar-wrapper');
   }
 
   init() {
@@ -91,7 +91,7 @@ export default class SearchView {
   }
 
   renderNotification(message) {
-    showSnackbar({ messenger: this.$snackbar, message, showtime: SNACKBAR_SHOW_TIME });
+    this.$snackbarWrapper.appendChild(createSnackbar({ message, showtime: SNACKBAR_SHOW_TIME }));
   }
 
   renderSaveVideoCount(videoCount) {

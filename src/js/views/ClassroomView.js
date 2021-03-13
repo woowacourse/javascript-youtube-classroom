@@ -1,4 +1,4 @@
-import { $, showSnackbar } from '../utils/DOM.js';
+import { $, createSnackbar } from '../utils/DOM.js';
 import { getSavedVideoTemplate } from './layout/storedVideo.js';
 import { CLASS_NAME, SNACKBAR_SHOW_TIME } from '../constants.js';
 
@@ -14,7 +14,7 @@ export default class ClassroomView {
     this.$watchedMenuButton = $('.js-watched-menu-button');
     this.$savedVideosWrapper = $('.js-saved-videos-wrapper');
     this.$noVideoFound = $('.js-no-video-found');
-    this.$snackbar = $('.js-snackbar');
+    this.$snackbarWrapper = $('.js-snackbar-wrapper');
   }
 
   renderVideosToPrepare(videos) {
@@ -67,6 +67,6 @@ export default class ClassroomView {
   }
 
   renderNotification(message) {
-    showSnackbar({ messenger: this.$snackbar, message, showtime: SNACKBAR_SHOW_TIME });
+    this.$snackbarWrapper.appendChild(createSnackbar({ message, showtime: SNACKBAR_SHOW_TIME }));
   }
 }
