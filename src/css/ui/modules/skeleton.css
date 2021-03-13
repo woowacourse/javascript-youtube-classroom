@@ -1,0 +1,40 @@
+.skeleton .image,
+.skeleton .line {
+  background-image: linear-gradient(90deg, #e0e0e0 0px, #ededed 30px, #e0e0e0 60px);
+  animation: refresh 2s infinite ease-out;
+}
+
+.skeleton .image {
+  height: 150px;
+}
+
+.skeleton .line {
+  height: 16px;
+}
+
+.skeleton .line.video-title,
+.skeleton .line.channel-title {
+  margin-bottom: 0.5rem;
+}
+
+.skeleton .line.channel-title {
+  width: 60%;
+}
+
+.skeleton .line.published-at {
+  width: 40%;
+}
+
+.skeleton .save-button {
+  visibility: hidden;
+}
+
+@keyframes refresh {
+  0% {
+    background-position: calc(-100px);
+  }
+  40%,
+  100% {
+    background-position: 320px;
+  }
+}

@@ -1,0 +1,56 @@
+.snackbar {
+  visibility: hidden;
+  min-width: 500px;
+  background-color: #333;
+  color: #fff;
+  text-align: center;
+  border-radius: 2px;
+  padding: 16px;
+  position: fixed;
+  z-index: 3;
+  left: calc(50% - 250px);
+  bottom: 50%;
+  font-size: x-large;
+}
+
+.show {
+  visibility: visible !important; /* Show the snackbar */
+  -webkit-animation: fadein 0.4s, fadeout 0.3s 1.2s;
+  animation: fadein 0.4s, fadeout 0.3s 1.2s;
+}
+
+@-webkit-keyframes fadein {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 0.85;
+  }
+}
+
+@keyframes fadein {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 0.85;
+  }
+}
+
+@-webkit-keyframes fadeout {
+  from {
+    opacity: 0.85;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+@keyframes fadeout {
+  from {
+    opacity: 0.85;
+  }
+  to {
+    opacity: 0;
+  }
+}
