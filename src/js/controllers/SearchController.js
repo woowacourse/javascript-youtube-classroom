@@ -1,13 +1,7 @@
 import { isModalOpen, isModalCloseButton, isModalDimmedArea } from './elementValidator.js';
-import {
-  MAX_VIDEO_STORAGE_CAPACITY,
-  NO_KEYWORD_IS_SUBMITTED,
-  STORAGE_CAPACITY_IS_FULL,
-  VIDEO_IS_SAVED_SUCCESSFULLY,
-  VIDEO_IS_ALREADY_SAVED,
-  SEARCH_REQUEST_HAS_FAILED,
-} from '../constants.js';
 import { isEndOfScroll } from '../utils/DOM.js';
+import { doThrottling } from '../utils/throttle.js';
+import { MESSAGE, MAX_VIDEO_STORAGE_CAPACITY } from '../constants.js';
 
 export default class SearchController {
   constructor({ searchModel, classroomModel, searchView, classroomView, searchService }) {
@@ -70,7 +64,7 @@ export default class SearchController {
     const keyword = e.target.elements['search-keyword-input'].value;
 
     if (keyword === '') {
-      this.searchView.renderNotification(NO_KEYWORD_IS_SUBMITTED);
+      this.searchView.renderNotification(MESSAGE.NO_KEYWORD_IS_SUBMITTED);
       return;
     }
     this.searchModel.init(keyword);
@@ -91,14 +85,14 @@ export default class SearchController {
       return;
     }
     if (target.classList.contains('saved')) {
-      this.searchView.renderNotification(VIDEO_IS_ALREADY_SAVED);
+      this.searchView.renderNotification(MESSAGE.VIDEO_IS_ALREADY_SAVED);
       return;
     }
 
     const savedCount = this.searchModel.getSavedVideoCount();
 
     if (savedCount >= MAX_VIDEO_STORAGE_CAPACITY) {
-      this.searchView.renderNotification(STORAGE_CAPACITY_IS_FULL);
+      this.searchView.renderNotification(MESSAGE.STORAGE_CAPACITY_IS_FULL);
       return;
     }
 
@@ -108,7 +102,7 @@ export default class SearchController {
     this.classroomModel.updateWatchingVideoCount(true);
     this.searchView.renderInvisibleSaveButton(target);
     this.searchView.renderSaveVideoCount(savedCount + 1);
-    this.searchView.renderNotification(VIDEO_IS_SAVED_SUCCESSFULLY);
+    this.searchView.renderNotification(MESSAGE.VIDEO_IS_SAVED_SUCCESSFULLY);
     this.classroomView.renderSavedVideo(targetVideoData);
   }
 
@@ -119,7 +113,7 @@ export default class SearchController {
       .then((result) => this.searchView.renderSearchResult(result))
       .catch(() => {
         this.searchView.init();
-        this.searchView.renderNotification(SEARCH_REQUEST_HAS_FAILED);
+        this.searchView.renderNotification(MESSAGE.SEARCH_REQUEST_HAS_FAILED);
       });
   }
 }

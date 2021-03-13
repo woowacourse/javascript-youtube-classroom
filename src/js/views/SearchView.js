@@ -1,5 +1,5 @@
-import { getThumbnailTemplate, getChannelTitleTemplate, resultNotFoundTemplate } from './layout/searchResult.js';
 import { getSkeletonTemplate } from './layout/skeleton.js';
+import { getThumbnailTemplate, getChannelTitleTemplate, resultNotFoundTemplate } from './layout/searchResult.js';
 import { $, showSnackbar } from '../utils/DOM.js';
 import { SNACKBAR_SHOW_TIME } from '../constants.js';
 

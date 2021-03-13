@@ -1,13 +1,15 @@
-import { YOUTUBE_VIDEO_ENDPOINT, YOUTUBE_CHANNEL_ENDPOINT, WATCHING, CHECKED } from '../../constants.js';
+import { YOUTUBE_LINK_ENDPOINT, CLASS_NAME } from '../../constants.js';
 
 export const getSavedVideoTemplate = ({ videoId, videoTitle, channelId, channelTitle, publishedAt }, className) => {
+  const { WATCHING, CHECKED } = CLASS_NAME;
+
   return `
     <article id=${videoId} class="${className} clip">
       <div class="preview-container">
         <iframe
           width="100%"
           height="118"
-          src=${YOUTUBE_VIDEO_ENDPOINT}${videoId}
+          src=${YOUTUBE_LINK_ENDPOINT.VIDEO}${videoId}
           frameborder="0"
           allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
           allowfullscreen
@@ -16,7 +18,9 @@ export const getSavedVideoTemplate = ({ videoId, videoTitle, channelId, channelT
       <div class="content-container pt-2 px-1">
         <h3 class="js-video-title video-title">${videoTitle}</h3>
         <div class="channel-title">
-          <a href=${YOUTUBE_CHANNEL_ENDPOINT}${channelId} target="_blank" rel="noopener" class="channel-link mt-1 ">
+          <a href=${
+            YOUTUBE_LINK_ENDPOINT.CHANNEL
+          }${channelId} target="_blank" rel="noopener" class="channel-link mt-1 ">
           ${channelTitle}
           </a>
         </div>

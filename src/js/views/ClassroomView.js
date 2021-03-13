@@ -1,14 +1,8 @@
 import { $, showSnackbar } from '../utils/DOM.js';
 import { getSavedVideoTemplate } from './layout/storedVideo.js';
-import {
-  WATCHING_SECTION,
-  WATCHED_SECTION,
-  WATCHING,
-  WATCHED,
-  NO_WATCHING,
-  NO_WATCHED,
-  SNACKBAR_SHOW_TIME,
-} from '../constants.js';
+import { CLASS_NAME, SNACKBAR_SHOW_TIME } from '../constants.js';
+
+const { WATCHING_SECTION, WATCHED_SECTION, WATCHING, WATCHED, NO_WATCHING, NO_WATCHED } = CLASS_NAME;
 
 export default class ClassroomView {
   constructor() {

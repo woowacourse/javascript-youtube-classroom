@@ -1,6 +1,5 @@
-import { MAX_RECENT_KEYWORD_COUNT, KEY_VIDEOS, KEY_RECENT_KEYWORDS } from '../constants.js';
-
 import { getListByKey, insertItemByKey, insertItemAtFirstByKey, deleteLastItemByKey } from '../utils/localStorage.js';
+import { MAX_RECENT_KEYWORD_COUNT, DB_KEY } from '../constants.js';
 
 /*
 로컬스토리지 데이터 저장구조
@@ -31,20 +30,20 @@ export default class SearchModel {
       return;
     }
 
-    const recentKeywords = getListByKey(KEY_RECENT_KEYWORDS);
+    const recentKeywords = getListByKey(DB_KEY.RECENT_KEYWORDS);
 
     if (recentKeywords.includes(this.keyword)) {
       return;
     }
     if (recentKeywords.length === MAX_RECENT_KEYWORD_COUNT) {
-      deleteLastItemByKey(KEY_RECENT_KEYWORDS);
+      deleteLastItemByKey(DB_KEY.RECENT_KEYWORDS);
     }
-    insertItemAtFirstByKey(KEY_RECENT_KEYWORDS, this.keyword);
+    insertItemAtFirstByKey(DB_KEY.RECENT_KEYWORDS, this.keyword);
   }
 
   getRecentKeywords() {
     try {
-      return getListByKey(KEY_RECENT_KEYWORDS);
+      return getListByKey(DB_KEY.RECENT_KEYWORDS);
     } catch (e) {
       return '';
     }
@@ -61,10 +60,10 @@ export default class SearchModel {
   saveVideo(targetVideo) {
     targetVideo.isSaved = true;
     targetVideo.isWatching = true;
-    insertItemByKey(KEY_VIDEOS, targetVideo);
+    insertItemByKey(DB_KEY.VIDEOS, targetVideo);
   }
 
   getSavedVideoCount() {
-    return getListByKey(KEY_VIDEOS).length;
+    return getListByKey(DB_KEY.VIDEOS).length;
   }
 }

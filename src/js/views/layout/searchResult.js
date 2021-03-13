@@ -1,11 +1,11 @@
-import { YOUTUBE_VIDEO_ENDPOINT, YOUTUBE_CHANNEL_ENDPOINT } from '../../constants.js';
+import { YOUTUBE_LINK_ENDPOINT } from '../../constants.js';
 
 export const getThumbnailTemplate = (videoId) => {
   return `
     <iframe
       width="100%"
       height="118"
-      src=${YOUTUBE_VIDEO_ENDPOINT}${videoId}
+      src=${YOUTUBE_LINK_ENDPOINT.VIDEO}${videoId}
       frameborder="0"
       allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
       allowfullscreen>
@@ -16,7 +16,7 @@ export const getThumbnailTemplate = (videoId) => {
 export const getChannelTitleTemplate = (channelId, channelTitle) => {
   return `
     <a
-      href=${YOUTUBE_CHANNEL_ENDPOINT}${channelId}
+      href=${YOUTUBE_LINK_ENDPOINT.CHANNEL}${channelId}
       target="_blank"
       rel="noopener"
       class="channel-link">
