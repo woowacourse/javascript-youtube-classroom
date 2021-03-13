@@ -27,12 +27,13 @@ export const onToggleRenderedClips = ({ target }) => {
   const isWatchedButton = target.dataset.js === 'navigator__watched-button';
 
   setSelected(isWatchedButton);
-  savedClips.forEach((savedClip) => {
-    savedClip.dataset.isWatched === String(isWatchedButton) &&
-    savedClip.dataset.isDeleted === String(false)
-      ? showElement(savedClip)
-      : hideElement(savedClip);
-  });
+
+  // savedClips.forEach((savedClip) => {
+  //   savedClip.dataset.isWatched === String(isWatchedButton) &&
+  //   savedClip.dataset.isDeleted === String(false)
+  //     ? showElement(savedClip)
+  //     : hideElement(savedClip);
+  // });
 
   storage.set(
     LOCAL_STORAGE_KEY.CURRENT_TAB,
