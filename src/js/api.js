@@ -1,6 +1,6 @@
 export const searchYoutube = async (keyword, pageToken = '') => {
   try {
-    const endPoint = `http://vultr.puterism.com:8080/search`;
+    const endPoint = `https://vultr.puterism.com/search`;
     const query = getParameters({
       pageToken,
       q: keyword,
@@ -21,7 +21,7 @@ export const searchYoutubeById = async (ids = []) => {
   if (ids.length <= 0) return;
 
   try {
-    const endPoint = `http://vultr.puterism.com:8080/videos`;
+    const endPoint = `https://vultr.puterism.com/videos`;
     const query = getParameters({
       id: ids.join(','),
     }).toString();
