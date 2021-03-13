@@ -9,6 +9,7 @@ export default class YoutubeAPIManager {
   static cache = {};
 
   constructor() {
+    this.domain = 'wonderful-leavitt-5e0985.netlify.app';
     this.searchTerm = '';
     this.pageToken = '';
   }
@@ -19,7 +20,7 @@ export default class YoutubeAPIManager {
   }
 
   createRequestURL() {
-    const requestURL = `https://wonderful-leavitt-5e0985.netlify.app/youtube/search?`;
+    const requestURL = `https://${this.domain}/youtube/search?`;
     const searchParams = new URLSearchParams({
       part: 'snippet',
       type: 'video',
