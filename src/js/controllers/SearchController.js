@@ -1,4 +1,10 @@
-import { isModalOpen, isModalCloseButton, isModalDimmedArea } from './elementValidator.js';
+import {
+  isModalOpen,
+  isModalCloseButton,
+  isModalDimmedArea,
+  isRecentKeywordLink,
+  isRecentKeywordRemoveButton,
+} from './elementValidator.js';
 import { isEndOfScroll } from '../utils/DOM.js';
 import { doThrottling } from '../utils/throttle.js';
 import { MESSAGE, MAX_VIDEO_STORAGE_CAPACITY, SCROLL_DELAY_TIME } from '../constants.js';
@@ -20,7 +26,7 @@ export default class SearchController {
     this.searchView.$searchMenuButton.addEventListener('click', this.onShowModal.bind(this));
     this.searchView.$searchSection.addEventListener('click', this.onCloseModal.bind(this));
     document.body.addEventListener('keyup', this.onCloseModal.bind(this));
-    this.searchView.$recentKeywords.addEventListener('click', this.onRequestSearchRecentKeyword.bind(this));
+    this.searchView.$recentKeywords.addEventListener('click', this.onClickRecentKeyword.bind(this));
     this.searchView.$searchKeywordForm.addEventListener('submit', this.onRequestSearchKeyword.bind(this));
     this.searchView.$searchResultWrapper.addEventListener('click', this.onRequestSaveVideo.bind(this));
     this.searchView.$searchResultWrapper.addEventListener(
@@ -31,11 +37,10 @@ export default class SearchController {
   }
 
   onShowModal() {
-    const videoCount = this.searchModel.getSavedVideoCount();
     const recentKeywords = this.searchModel.getRecentKeywords();
     const mostRecentKeyword = recentKeywords[0] ?? '';
 
-    this.searchView.renderVisibleModal(videoCount, recentKeywords);
+    this.searchView.renderVisibleModal(this.classroomModel.videosCount, recentKeywords);
     if (mostRecentKeyword === '') {
       return;
     }
@@ -50,16 +55,23 @@ export default class SearchController {
     this.classroomView.$watchingMenuButton.click();
   }
 
-  onRequestSearchRecentKeyword({ target }) {
-    if (target.tagName !== 'A') {
+  onClickRecentKeyword({ target }) {
+    if (isRecentKeywordLink(target)) {
+      const keyword = target.innerText;
+
+      this.searchModel.init(keyword);
+      this.searchView.init();
+      this.showSearchGroup();
       return;
     }
 
-    const keyword = target.innerText;
+    if (isRecentKeywordRemoveButton(target)) {
+      const $keyword = target.closest('.js-recent-keyword');
+      const keyword = $keyword.querySelector('.js-keyword-link').innerText;
 
-    this.searchModel.init(keyword);
-    this.searchView.init();
-    this.showSearchGroup();
+      this.searchModel.removeRecentKeyword(keyword);
+      this.searchView.removeRecentKeyword(this.searchModel.recentKeywords);
+    }
   }
 
   onRequestSearchKeyword(e) {
@@ -93,7 +105,7 @@ export default class SearchController {
       return;
     }
 
-    const savedCount = this.searchModel.getSavedVideoCount();
+    const savedCount = this.classroomModel.videosCount;
 
     if (savedCount >= MAX_VIDEO_STORAGE_CAPACITY) {
       this.searchView.renderNotification(MESSAGE.STORAGE_CAPACITY_IS_FULL);

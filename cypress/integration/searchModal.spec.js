@@ -113,7 +113,7 @@ describe('검색 모달 테스트', () => {
     cy.reload();
 
     cy.get('.js-search-menu-button').click();
-    cy.get('.js-recent-keyword').children(0).should('have.text', KEYWORD);
+    cy.get('.js-recent-keywords').children(0).should('have.text', KEYWORD);
     cy.get('.js-modal article').should('have.length', YOUTUBE_API.MAX_RESULT_COUNT);
   });
 
@@ -129,7 +129,7 @@ describe('검색 모달 테스트', () => {
       cy.wait(`@${INTERCEPT_ALIAS}-${keyword}`);
     });
 
-    cy.get('.js-recent-keyword')
+    cy.get('.js-recent-keywords')
       .children()
       .should('have.length', MAX_RECENT_KEYWORD_COUNT)
       .each(($el, i) => {

@@ -40,7 +40,7 @@
 }
 
 svg {
-  display: block;
+  display: inline-block;
 }
 
 .close-x {
@@ -48,6 +48,20 @@ svg {
   fill: transparent;
   stroke-linecap: round;
   stroke-width: 5;
+}
+
+.keyword-remove-button {
+  width: 12px;
+  height: 12px;
+  cursor: pointer;
+  background: no-repeat;
+  border: none;
+  padding: 0;
+  margin: 0;
+}
+
+.keyword-remove-button:focus {
+  outline: 1px solid gray;
 }
 
 @media screen and (max-width: 768px) {

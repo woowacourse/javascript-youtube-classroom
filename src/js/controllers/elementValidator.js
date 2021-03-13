@@ -13,6 +13,14 @@ export const isModalCloseButton = ($target) => {
   return $target.closest('.js-modal-close-button');
 };
 
+export const isRecentKeywordLink = ($target) => {
+  return $target.closest('.js-keyword-link');
+};
+
+export const isRecentKeywordRemoveButton = ($target) => {
+  return $target.closest('.js-keyword-remove-button');
+};
+
 export const isSavedVideo = (targetId) => {
   const videos = getListByKey(DB_KEY.VIDEOS);
 

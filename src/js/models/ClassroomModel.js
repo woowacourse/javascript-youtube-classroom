@@ -44,7 +44,7 @@ export default class ClassroomModel {
   }
 
   removeVideo(videoId, isWatching) {
-    deleteTargetItemByKey(DB_KEY.VIDEOS, 'videoId', videoId);
+    deleteTargetItemByKey({ key: DB_KEY.VIDEOS, secondKey: 'videoId' }, videoId);
     isWatching ? (this.watchingVideoCount -= 1) : (this.watchedVideoCount -= 1);
   }
 }

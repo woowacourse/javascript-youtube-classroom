@@ -45,17 +45,38 @@
             <button type="submit" class="js-search-keyword-button btn bg-cyan-500">검색</button>
           </form>
           <section class="mt-2">
-            <span class="text-gray-700"
-              >최근 검색어:
-              <span class="js-recent-keyword">
-                <a class="chip mx-1 v-hidden"></a>
-                <a class="chip mx-1 v-hidden"></a>
-                <a class="chip mx-1 v-hidden"></a>
+            <div class="text-gray-700 d-inline-block">
+              최근 검색어:
+              <span class="js-recent-keywords">
+                <span class="js-recent-keyword v-hidden chip">
+                  <a class="js-keyword-link mr-2"> </a>
+                  <button class="js-keyword-remove-button keyword-remove-button">
+                    <svg viewbox="0 0 40 40">
+                      <path class="close-x" d="M 10,10 L 30,30 M 30,10 L 10,30" />
+                    </svg>
+                  </button>
+                </span>
+                <span class="js-recent-keyword v-hidden chip">
+                  <a class="js-keyword-link mr-2"> </a>
+                  <button class="js-keyword-remove-button keyword-remove-button">
+                    <svg viewbox="0 0 40 40">
+                      <path class="close-x" d="M 10,10 L 30,30 M 30,10 L 10,30" />
+                    </svg>
+                  </button>
+                </span>
+                <span class="js-recent-keyword v-hidden chip">
+                  <a class="js-keyword-link mr-2"> </a>
+                  <button class="js-keyword-remove-button keyword-remove-button">
+                    <svg viewbox="0 0 40 40">
+                      <path class="close-x" d="M 10,10 L 30,30 M 30,10 L 10,30" />
+                    </svg>
+                  </button>
+                </span>
               </span>
-            </span>
+            </div>
           </section>
           <section>
-            <div class="d-flex justify-end text-gray-700">
+            <div class="d-flex justify-end text-gray-700 my-2">
               저장된 영상 갯수:&nbsp;<span class="js-saved-video-count"></span>&nbsp;/&nbsp;100개
             </div>
             <section class="js-search-result-wrapper videos-wrapper"></section>
