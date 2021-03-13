@@ -1,6 +1,6 @@
 import { DELETE_VIDEO_CONFIRM_MSG } from '../constants/confirmMessage.js';
 import {
-  SAVE_DELETE_SUCCESS_MSG,
+  VIDEO_DELETE_SUCCESS_MSG,
   VIDEO_MOVE_SUCCESS_MSG,
 } from '../constants/snackbarMessage.js';
 import videoInfos from '../states/videoInfos.js';
@@ -28,7 +28,7 @@ function handleDeleteButton($target) {
   renderSavedVideoCount(videoInfos.size);
   renderSavedVideoList(videoInfos.get(), videoListType.get());
   updateModalSaveButton(targetId);
-  showSnackBar(SAVE_DELETE_SUCCESS_MSG);
+  showSnackBar(VIDEO_DELETE_SUCCESS_MSG);
 }
 
 function handleButtonsControl({ target }) {

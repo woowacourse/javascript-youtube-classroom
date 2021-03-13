@@ -865,13 +865,13 @@ exports.default = _default;
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.VIDEO_MOVE_SUCCESS_MSG = exports.SAVE_DELETE_SUCCESS_MSG = exports.SAVE_CANCEL_SUCCESS_MSG = exports.SAVE_SUCCESS_MSG = exports.EXCEED_SAVED_VIDEO_COUNT_MSG = void 0;
+exports.VIDEO_MOVE_SUCCESS_MSG = exports.VIDEO_DELETE_SUCCESS_MSG = exports.SAVE_CANCEL_SUCCESS_MSG = exports.SAVE_SUCCESS_MSG = exports.EXCEED_SAVED_VIDEO_COUNT_MSG = void 0;
 const SAVE_SUCCESS_MSG = '성공적으로 저장하였습니다.';
 exports.SAVE_SUCCESS_MSG = SAVE_SUCCESS_MSG;
 const SAVE_CANCEL_SUCCESS_MSG = '저장을 취소하였습니다.';
 exports.SAVE_CANCEL_SUCCESS_MSG = SAVE_CANCEL_SUCCESS_MSG;
-const SAVE_DELETE_SUCCESS_MSG = '해당 영상을 삭제하였습니다.';
-exports.SAVE_DELETE_SUCCESS_MSG = SAVE_DELETE_SUCCESS_MSG;
+const VIDEO_DELETE_SUCCESS_MSG = '해당 영상을 삭제하였습니다.';
+exports.VIDEO_DELETE_SUCCESS_MSG = VIDEO_DELETE_SUCCESS_MSG;
 const EXCEED_SAVED_VIDEO_COUNT_MSG = '최대 저장 개수를 초과했습니다. 기존에 저장된 영상을 삭제하고 다시 시도해주세요.';
 exports.EXCEED_SAVED_VIDEO_COUNT_MSG = EXCEED_SAVED_VIDEO_COUNT_MSG;
 const VIDEO_MOVE_SUCCESS_MSG = '영상을 이동시켰습니다.';
@@ -1100,7 +1100,7 @@ function handleDeleteButton($target) {
   (0, _searchModal.renderSavedVideoCount)(_videoInfos.default.size);
   (0, _app.renderSavedVideoList)(_videoInfos.default.get(), _videoListType.default.get());
   (0, _searchModal.updateModalSaveButton)(targetId);
-  (0, _app.showSnackBar)(_snackbarMessage.SAVE_DELETE_SUCCESS_MSG);
+  (0, _app.showSnackBar)(_snackbarMessage.VIDEO_DELETE_SUCCESS_MSG);
 }
 
 function handleButtonsControl({
