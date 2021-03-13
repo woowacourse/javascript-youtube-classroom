@@ -1,7 +1,7 @@
 import { isModalOpen, isModalCloseButton, isModalDimmedArea } from './elementValidator.js';
 import { isEndOfScroll } from '../utils/DOM.js';
 import { doThrottling } from '../utils/throttle.js';
-import { MESSAGE, MAX_VIDEO_STORAGE_CAPACITY } from '../constants.js';
+import { MESSAGE, MAX_VIDEO_STORAGE_CAPACITY, SCROLL_DELAY_TIME } from '../constants.js';
 
 export default class SearchController {
   constructor({ searchModel, classroomModel, searchView, classroomView, searchService }) {
@@ -22,8 +22,12 @@ export default class SearchController {
     document.body.addEventListener('keyup', this.onCloseModal.bind(this));
     this.searchView.$recentKeywords.addEventListener('click', this.onRequestSearchRecentKeyword.bind(this));
     this.searchView.$searchKeywordForm.addEventListener('submit', this.onRequestSearchKeyword.bind(this));
-    this.searchView.$searchResultWrapper.addEventListener('scroll', this.onRequestNextResult.bind(this));
     this.searchView.$searchResultWrapper.addEventListener('click', this.onRequestSaveVideo.bind(this));
+    this.searchView.$searchResultWrapper.addEventListener(
+      'scroll',
+      doThrottling(this.onRequestNextResult.bind(this), SCROLL_DELAY_TIME),
+      { passive: true },
+    );
   }
 
   onShowModal() {

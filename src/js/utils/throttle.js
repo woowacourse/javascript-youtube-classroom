@@ -1,7 +1,7 @@
-export const doThrottling = (() => {
+export const doThrottling = (func, ms) => {
   let throttle;
 
-  return (func, ms) => {
+  return () => {
     if (!throttle) {
       throttle = setTimeout(() => {
         throttle = null;
@@ -9,4 +9,4 @@ export const doThrottling = (() => {
       }, ms);
     }
   };
-})();
+};
