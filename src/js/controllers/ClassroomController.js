@@ -1,10 +1,5 @@
-import {
-  VIDEO_IS_MOVED_TO_WATCHED_MENU,
-  VIDEO_IS_MOVED_TO_WATCHING_MENU,
-  ARE_YOU_SURE_TO_REMOVE_VIDEO,
-  VIDEO_IS_REMOVED_SUCCESSFULLY,
-} from '../constants.js';
 import { isWatchingMenu, isWatchingVideo } from './elementValidator.js';
+import { MESSAGE } from '../constants.js';
 
 export default class ClassroomController {
   constructor({ classroomModel, classroomView }) {
@@ -35,17 +30,17 @@ export default class ClassroomController {
       this.model.moveVideo($video.id);
       this.view.renderMovedVideo($video, isWatching);
       isWatching
-        ? this.view.renderNotification(VIDEO_IS_MOVED_TO_WATCHED_MENU)
-        : this.view.renderNotification(VIDEO_IS_MOVED_TO_WATCHING_MENU);
+        ? this.view.renderNotification(MESSAGE.VIDEO_IS_MOVED_TO_WATCHED_MENU)
+        : this.view.renderNotification(MESSAGE.VIDEO_IS_MOVED_TO_WATCHING_MENU);
       this.showImageNoVideo();
       return;
     }
 
     if (target.classList.contains('js-remove-button')) {
-      if (!window.confirm(ARE_YOU_SURE_TO_REMOVE_VIDEO)) return;
+      if (!window.confirm(MESSAGE.ARE_YOU_SURE_TO_REMOVE_VIDEO)) return;
       this.model.removeVideo($video.id, isWatching);
       this.view.removeVideo($video);
-      this.view.renderNotification(VIDEO_IS_REMOVED_SUCCESSFULLY);
+      this.view.renderNotification(MESSAGE.VIDEO_IS_REMOVED_SUCCESSFULLY);
       this.showImageNoVideo();
     }
   }

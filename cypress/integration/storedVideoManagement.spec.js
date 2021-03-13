@@ -1,9 +1,4 @@
-import {
-  MAX_RESULT_COUNT,
-  VIDEO_IS_MOVED_TO_WATCHED_MENU,
-  VIDEO_IS_MOVED_TO_WATCHING_MENU,
-  VIDEO_IS_REMOVED_SUCCESSFULLY,
-} from '../../src/js/constants';
+import { YOUTUBE_API, MESSAGE } from '../../src/js/constants';
 
 describe('저장된 비디오 관리 기능 테스트', () => {
   beforeEach(() => {
@@ -50,12 +45,12 @@ describe('저장된 비디오 관리 기능 테스트', () => {
     cy.get('.js-modal-close-button').click();
 
     cy.get('.js-check-button').each(($el, index) => {
-      if (index > MAX_RESULT_COUNT / 2) {
+      if (index > YOUTUBE_API.MAX_RESULT_COUNT / 2) {
         return;
       }
       cy.wrap($el).click();
 
-      cy.get('.js-snackbar').contains(VIDEO_IS_MOVED_TO_WATCHED_MENU);
+      cy.get('.js-snackbar').contains(MESSAGE.VIDEO_IS_MOVED_TO_WATCHED_MENU);
       cy.wrap($el).closest('article').should('not.be.visible');
       cy.get('.js-watched-menu-button').click();
       cy.wrap($el).closest('article').should('be.visible');
@@ -71,7 +66,7 @@ describe('저장된 비디오 관리 기능 테스트', () => {
     cy.get('.js-save-button').each(($el) => $el.click());
     cy.get('.js-modal-close-button').click();
     cy.get('.js-check-button').each(($el, index) => {
-      if (index > MAX_RESULT_COUNT / 2) {
+      if (index > YOUTUBE_API.MAX_RESULT_COUNT / 2) {
         return;
       }
       cy.wrap($el).click();
@@ -81,7 +76,7 @@ describe('저장된 비디오 관리 기능 테스트', () => {
     cy.get('.js-check-button.checked').each(($el) => {
       cy.wrap($el).click();
 
-      cy.get('.js-snackbar').contains(VIDEO_IS_MOVED_TO_WATCHING_MENU);
+      cy.get('.js-snackbar').contains(MESSAGE.VIDEO_IS_MOVED_TO_WATCHING_MENU);
       cy.wrap($el).closest('article').should('not.be.visible');
       cy.get('.js-watching-menu-button').click();
       cy.wrap($el).closest('article').should('be.visible');
@@ -98,7 +93,7 @@ describe('저장된 비디오 관리 기능 테스트', () => {
     cy.get('.js-modal-close-button').click();
 
     cy.get('.js-remove-button').click();
-    cy.get('.js-snackbar').contains(VIDEO_IS_REMOVED_SUCCESSFULLY);
+    cy.get('.js-snackbar').contains(MESSAGE.VIDEO_IS_REMOVED_SUCCESSFULLY);
     cy.get('.js-saved-videos-wrapper article').should('not.exist');
   });
 
@@ -110,7 +105,7 @@ describe('저장된 비디오 관리 기능 테스트', () => {
     cy.get('.js-save-button').each(($el) => $el.click());
     cy.get('.js-modal-close-button').click();
     cy.get('.js-check-button').each(($el, index) => {
-      if (index > MAX_RESULT_COUNT / 2) {
+      if (index > YOUTUBE_API.MAX_RESULT_COUNT / 2) {
         return;
       }
       cy.wrap($el).click();

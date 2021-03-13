@@ -1,4 +1,4 @@
-import { MAX_RESULT_COUNT } from '../../constants.js';
+import { YOUTUBE_API } from '../../constants.js';
 
 const skeletonUnitTemplate = `
   <article class="clip">
@@ -17,7 +17,7 @@ const skeletonUnitTemplate = `
 export const getSkeletonTemplate = () => {
   return `
     <div class="js-search-result-group search-result-group skeleton">
-      ${skeletonUnitTemplate.repeat(MAX_RESULT_COUNT)}
+      ${skeletonUnitTemplate.repeat(YOUTUBE_API.MAX_RESULT_COUNT)}
     </div>
   `;
 };

@@ -1,5 +1,5 @@
 import { getListByKey, setListByKey, deleteTargetItemByKey } from '../utils/localStorage.js';
-import { KEY_VIDEOS } from '../constants.js';
+import { DB_KEY } from '../constants.js';
 
 export default class ClassroomModel {
   constructor() {
@@ -7,7 +7,7 @@ export default class ClassroomModel {
   }
 
   init() {
-    this.videos = getListByKey(KEY_VIDEOS);
+    this.videos = getListByKey(DB_KEY.VIDEOS);
     this.videosCount = this.videos.length;
     this.watchingVideoCount = this.videos.filter((video) => video.isWatching).length;
     this.watchedVideoCount = this.videosCount - this.watchingVideoCount;
@@ -26,13 +26,13 @@ export default class ClassroomModel {
   }
 
   moveVideo(videoId) {
-    const videos = getListByKey(KEY_VIDEOS);
+    const videos = getListByKey(DB_KEY.VIDEOS);
     const target = videos.find((video) => video.videoId === videoId);
 
     target.isWatching = !target.isWatching;
     this.updateWatchingVideoCount(target.isWatching);
     this.updateWatchedVideoCount(!target.isWatching);
-    setListByKey(KEY_VIDEOS, videos);
+    setListByKey(DB_KEY.VIDEOS, videos);
   }
 
   updateWatchingVideoCount(isWatching) {
@@ -44,7 +44,7 @@ export default class ClassroomModel {
   }
 
   removeVideo(videoId, isWatching) {
-    deleteTargetItemByKey(KEY_VIDEOS, 'videoId', videoId);
+    deleteTargetItemByKey(DB_KEY.VIDEOS, 'videoId', videoId);
     isWatching ? (this.watchingVideoCount -= 1) : (this.watchedVideoCount -= 1);
   }
 }

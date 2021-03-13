@@ -1,6 +1,5 @@
-import { KEY_VIDEOS, WATCHING, WATCHING_SECTION } from '../constants.js';
-
 import { getListByKey } from '../utils/localStorage.js';
+import { DB_KEY, CLASS_NAME } from '../constants.js';
 
 export const isModalOpen = ($target) => {
   return $target.querySelector('.modal').classList.contains('open');
@@ -15,15 +14,15 @@ export const isModalCloseButton = ($target) => {
 };
 
 export const isSavedVideo = (targetId) => {
-  const videos = getListByKey(KEY_VIDEOS);
+  const videos = getListByKey(DB_KEY.VIDEOS);
 
   return videos.some((video) => video.videoId === targetId);
 };
 
 export const isWatchingMenu = ($target) => {
-  return $target.classList.contains(WATCHING_SECTION);
+  return $target.classList.contains(CLASS_NAME.WATCHING_SECTION);
 };
 
 export const isWatchingVideo = ($target) => {
-  return $target.classList.contains(WATCHING);
+  return $target.classList.contains(CLASS_NAME.WATCHING);
 };
