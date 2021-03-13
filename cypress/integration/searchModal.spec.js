@@ -1,10 +1,4 @@
-import {
-  MAX_RECENT_KEYWORD_COUNT,
-  MAX_VIDEO_STORAGE_CAPACITY,
-  YOUTUBE_API,
-  MESSAGE,
-  DB_KEY,
-} from '../../src/js/constants.js';
+import { MAX_RECENT_KEYWORD_COUNT, YOUTUBE_API, MESSAGE, DB_KEY } from '../../src/js/constants.js';
 import { getListFromLocalStorage } from '../../src/js/utils/localStorage.js';
 
 const interceptYoutubeApiRequest = (keyword, alias) => {
@@ -100,7 +94,7 @@ describe('검색 모달 테스트', () => {
         const list = JSON.parse(getListFromLocalStorage(DB_KEY.VIDEOS));
 
         cy.wrap($el).should('have.id', list[FIRST_INDEX].videoId);
-        cy.get('.js-snackbar').contains(MESSAGE.VIDEO_IS_SAVED_SUCCESSFULLY);
+        cy.get('.js-snackbar').contains(MESSAGE.VIDEO_IS_SAVED_SUCCESSFULLY.replace('\n', ''));
       });
   });
 
@@ -155,15 +149,17 @@ describe('예외 처리 테스트', () => {
       cy.get('.js-search-result-wrapper').scrollTo('bottom');
       cy.wait('@search');
     }
+
+    cy.wait('@search');
     cy.get('.js-save-button').each(($el) => $el.click());
     cy.get('.js-search-result-wrapper').scrollTo('bottom');
-    cy.wait('@search');
 
+    cy.wait('@search');
     cy.get('.js-save-button')
       .eq(100)
       .click()
       .then(($el) => {
-        cy.get('.js-snackbar').contains(MESSAGE.STORAGE_CAPACITY_IS_FULL);
+        cy.get('.js-snackbar').contains(MESSAGE.STORAGE_CAPACITY_IS_FULL.replace('\n', ''));
         cy.wrap($el).should('not.have.class', 'saved');
       });
   });

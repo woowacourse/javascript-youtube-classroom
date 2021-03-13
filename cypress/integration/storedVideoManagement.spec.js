@@ -1,4 +1,5 @@
 import { YOUTUBE_API, MESSAGE } from '../../src/js/constants';
+import { escape } from '../../src/js/utils/escapeSpecialCharacter.js';
 
 describe('저장된 비디오 관리 기능 테스트', () => {
   beforeEach(() => {
@@ -11,7 +12,7 @@ describe('저장된 비디오 관리 기능 테스트', () => {
     cy.get('.js-no-video-found').should('have.class', 'no-watching');
   });
 
-  it('저장된 영상이 있는 경우에 페이지를 다시 방문하면, 시청중인 영상 목록을 표시한다.', () => {
+  it.only('저장된 영상이 있는 경우에 페이지를 다시 방문하면, 시청중인 영상 목록을 표시한다.', () => {
     const savedVideoTitles = [];
 
     cy.get('.js-search-menu-button').click();
@@ -32,7 +33,7 @@ describe('저장된 비디오 관리 기능 테스트', () => {
     cy.get('.js-saved-videos-wrapper .js-video-title').each(($el, index) => {
       cy.wrap($el)
         .invoke('text')
-        .then((title) => expect(title.replace(/&/g, '&amp;')).to.be.eq(savedVideoTitles[index]));
+        .then((title) => expect(escape(title)).to.be.eq(savedVideoTitles[index]));
     });
   });
 
