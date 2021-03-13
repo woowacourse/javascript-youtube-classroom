@@ -1,6 +1,10 @@
 import { VALUES, ERROR_MESSAGES } from '../constants/constants.js';
 import { isEmptyObject } from '../utils/utils.js';
 
+const youtubeFetchCacheCleaner = setInterval(() => {
+  YoutubeAPIManager.cache = {};
+}, 3000000);
+
 export default class YoutubeAPIManager {
   static cache = {};
 
