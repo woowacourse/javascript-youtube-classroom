@@ -61,12 +61,16 @@
   cursor: text;
 }
 
-.clip .content-container .channel-link {
+.clip .channel-link {
   font-size: 12px;
-  color: #02a3b8;
+  color: #105f6a;
   font-weight: 800;
   display: block;
   width: 100%;
+}
+
+.clip .channel-link:hover {
+  color: #3b9fac;
 }
 
 .clip .published-at {
@@ -76,7 +80,9 @@
   cursor: text;
 }
 
-.clip .save-button.saved {
+.clip .save-button.saved,
+.clip .save-button.saved:hover {
+  background-color: #efefef;
   opacity: 0.3;
   cursor: not-allowed;
 }
