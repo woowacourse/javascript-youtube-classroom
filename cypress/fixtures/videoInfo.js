@@ -7,7 +7,7 @@ export const videoInfo = {
     channelURL: 'https://www.youtube.com/channel/UCa56qkMvVvq1IMn4xbXaKEA',
     uploadTime: '2021년 2월 7일',
     thumbnailURL: 'https://i.ytimg.com/vi/EbPyvpmcWr8/default.jpg',
-    warched: false,
+    watched: false,
     liked: false,
   },
   mF4Z1REC6W0: {
@@ -18,7 +18,7 @@ export const videoInfo = {
     channelURL: 'https://www.youtube.com/channel/UCJmcPVY4dC0e3L5_eemKtlg',
     uploadTime: '2020년 8월 25일',
     thumbnailURL: 'https://i.ytimg.com/vi/mF4Z1REC6W0/default.jpg',
-    warched: false,
+    watched: false,
     liked: false,
   },
   'W-zXJ6u1He4': {
@@ -29,7 +29,7 @@ export const videoInfo = {
     channelURL: 'https://www.youtube.com/channel/UC48NSSfUBsmL0k0wKxSqRkw',
     uploadTime: '2021년 1월 6일',
     thumbnailURL: 'https://i.ytimg.com/vi/W-zXJ6u1He4/default.jpg',
-    warched: false,
+    watched: false,
     liked: false,
   },
   mhzO8PTm8W8: {
@@ -41,7 +41,7 @@ export const videoInfo = {
     channelURL: 'https://www.youtube.com/channel/UCF4Wxdo3inmxP-Y59wXDsFw',
     uploadTime: '2021년 1월 25일',
     thumbnailURL: 'https://i.ytimg.com/vi/mhzO8PTm8W8/default.jpg',
-    warched: false,
+    watched: false,
     liked: false,
   },
   yJHCqB7SBfo: {
@@ -52,7 +52,7 @@ export const videoInfo = {
     channelURL: 'https://www.youtube.com/channel/UCrpoE9e2-eWcj8AYvwYdebw',
     uploadTime: '2021년 2월 6일',
     thumbnailURL: 'https://i.ytimg.com/vi/yJHCqB7SBfo/default.jpg',
-    warched: false,
+    watched: false,
     liked: false,
   },
   lVZSQ0ZdRfg: {
@@ -63,7 +63,7 @@ export const videoInfo = {
     channelURL: 'https://www.youtube.com/channel/UCGMsFBPnR2hcrM0xGoFUL-A',
     uploadTime: '2021년 2월 8일',
     thumbnailURL: 'https://i.ytimg.com/vi/lVZSQ0ZdRfg/default.jpg',
-    warched: false,
+    watched: false,
     liked: false,
   },
   '51UM_hAikgY': {
@@ -75,7 +75,7 @@ export const videoInfo = {
     channelURL: 'https://www.youtube.com/channel/UCuD_5vico-nuukZPXGrNYlQ',
     uploadTime: '2020년 5월 4일',
     thumbnailURL: 'https://i.ytimg.com/vi/51UM_hAikgY/default.jpg',
-    warched: false,
+    watched: false,
     liked: false,
   },
   kExWcwc7aYM: {
@@ -98,7 +98,7 @@ export const videoInfo = {
     channelURL: 'https://www.youtube.com/channel/UCuGHsugfoeUmDae5O39Rm6w',
     uploadTime: '2021년 1월 14일',
     thumbnailURL: 'https://i.ytimg.com/vi/3mu4fNfYkiA/default.jpg',
-    warched: false,
+    watched: false,
     liked: false,
   },
   'qDiVNXlt-SI': {
@@ -109,7 +109,7 @@ export const videoInfo = {
     channelURL: 'https://www.youtube.com/channel/UCuGHsugfoeUmDae5O39Rm6w',
     uploadTime: '2021년 1월 25일',
     thumbnailURL: 'https://i.ytimg.com/vi/qDiVNXlt-SI/default.jpg',
-    warched: false,
+    watched: false,
     liked: false,
   },
   PdiJXEUeLyc: {
