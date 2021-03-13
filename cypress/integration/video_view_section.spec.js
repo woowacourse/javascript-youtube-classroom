@@ -88,6 +88,28 @@ context.only("저장된 비디오 관리", () => {
       });
     });
   });
+
+  it.only("볼 영상 리스트에서 체크 버튼, 휴지통 버튼을 누르면 스낵바가 3초간 띄워진다.", () => {
+    setDataToLocalStorage(STORAGE.SAVED_VIDEOS, dummyVideos);
+    cy.reload();
+
+    cy.get(".menu-section__watch-later-btn").click();
+    cy.get(".clip__actions").then($clipActions => {
+      $clipActions.eq(0).find(".clip__watched-check").click();
+    });
+
+    cy.get(".snackbar").should("have.class", "show");
+    cy.wait(4000);
+    cy.get(".snackbar").should("not.have.class", "show");
+
+    cy.get(".clip__actions").then($clipActions => {
+      $clipActions.eq(0).find(".clip__trash-can").click();
+    });
+
+    cy.get(".snackbar").should("have.class", "show");
+    cy.wait(4000);
+    cy.get(".snackbar").should("not.have.class", "show");
+  });
 });
 
 const dummyVideos = [

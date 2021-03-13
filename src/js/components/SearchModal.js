@@ -1,4 +1,4 @@
-import { $, $$ } from "../utils/dom.js";
+import { $, $$, popMessage } from "../utils/dom.js";
 import { STANDARD_NUMS, ALERT_MESSAGE, STORAGE, SECTION, CLASS_NAME } from "../utils/constants.js";
 import API from "../utils/api.js";
 import { setDataToLocalStorage, getDataFromLocalStorage } from "../utils/localStorage.js";
@@ -55,6 +55,7 @@ class SearchModal {
     this.$savedVideoCount = $(`.${CLASS_NAME.SAVED_VIDEO_COUNT}`);
     this.$modalCloseBtn = $(`.${CLASS_NAME.MODAL_CLOSE}`);
     this.$keywordHistory = $(`.${CLASS_NAME.KEYWORD_HISTORY}`);
+    this.$snackBar = $(".snackbar");
   }
 
   bindEvent() {
@@ -148,7 +149,6 @@ class SearchModal {
         ...this.keywordHistory.filter(_keyword => _keyword !== keyword),
       ];
       keywordHistory.splice(STANDARD_NUMS.MAX_SAVE_KEYWORD_COUNT, 1);
-
       this.setSearchKeywordState({ keyword, keywordHistory, videos, nextPageToken });
     } catch (err) {
       console.error(err);
@@ -200,9 +200,10 @@ class SearchModal {
       isLiked: false,
     };
     const savedVideos = [...this.savedVideos, newSavedVideo];
-
     this.setSaveVideosState({ savedVideos });
     $saveBtn.classList.add("hidden");
+
+    popMessage(this.$snackBar, "성공적으로 저장되었습니다.");
   }
 
   handleSearchClickedHistory(keyword) {

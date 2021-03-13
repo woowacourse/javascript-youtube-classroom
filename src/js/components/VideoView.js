@@ -1,4 +1,4 @@
-import { $ } from "../utils/dom.js";
+import { $, popMessage } from "../utils/dom.js";
 import { getDataFromLocalStorage, setDataToLocalStorage } from "../utils/localStorage.js";
 import { SECTION, STORAGE } from "../utils/constants.js";
 import { createVideoTemplate } from "../utils/templates.js";
@@ -54,6 +54,8 @@ class VideoView {
 
     this.setState({ savedVideos });
     setDataToLocalStorage(STORAGE.SAVED_VIDEOS, this.savedVideos);
+    const message = `${this.clickedMenu === "watch-later" ? "본" : "볼"} 영상으로 이동되었습니다.`;
+    popMessage(this.$snackbar, message);
   }
 
   handleRemoveSaved(e) {
@@ -63,6 +65,7 @@ class VideoView {
 
       this.setState({ savedVideos });
       setDataToLocalStorage(STORAGE.SAVED_VIDEOS, this.savedVideos);
+      popMessage(this.$snackbar, "성공적으로 삭제되었습니다.");
     }
   }
 
