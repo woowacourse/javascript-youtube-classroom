@@ -49,7 +49,13 @@ function toggleSaveButton($saveButton) {
   }
 }
 
-// function updateModalSaveButton(videoId) {}
+function updateModalSaveButton(videoId) {
+  const $targetSaveButton = $(
+    `[data-video-id=${videoId}] .js-save-cancel-button`
+  );
+
+  toggleSaveButton($targetSaveButton);
+}
 
 export {
   renderSavedVideoCount,
@@ -59,4 +65,5 @@ export {
   appendVideos,
   search,
   toggleSaveButton,
+  updateModalSaveButton,
 };

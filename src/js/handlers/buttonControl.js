@@ -6,7 +6,10 @@ import {
 import videoInfos from '../states/videoInfos.js';
 import videoListType from '../states/videoListType.js';
 import { renderSavedVideoList, showSnackBar } from '../viewControllers/app.js';
-import { renderSavedVideoCount } from '../viewControllers/searchModal.js';
+import {
+  renderSavedVideoCount,
+  updateModalSaveButton,
+} from '../viewControllers/searchModal.js';
 
 function handleWatchedButton($target) {
   const targetId = $target.closest('.js-video').dataset.videoId;
@@ -24,6 +27,7 @@ function handleDeleteButton($target) {
   videoInfos.remove(targetId);
   renderSavedVideoCount(videoInfos.size);
   renderSavedVideoList(videoInfos.get(), videoListType.get());
+  updateModalSaveButton(targetId);
   showSnackBar(SAVE_DELETE_SUCCESS_MSG);
 }
 
@@ -34,8 +38,6 @@ function handleButtonsControl({ target }) {
   }
   if (target.classList.contains('js-delete-button')) {
     handleDeleteButton(target);
-    console.log(target.closest('.js-video').dataset.videoId);
-    // updateModalSaveButton(target.closest('js-video').dataset.videoId);
   }
 }
 
