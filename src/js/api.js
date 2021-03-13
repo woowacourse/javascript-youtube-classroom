@@ -1,54 +1,40 @@
-import { YOUTUBE_API_KEY } from './config.js';
-import { dummyData } from './dummy.js';
-import { sleep } from './utils.js';
-
 export const searchYoutube = async (keyword, pageToken = '') => {
-  const endPoint = `https://www.googleapis.com/youtube/v3/search`;
-  const query = getParameters({
-    part: 'snippet',
-    type: 'video',
-    key: YOUTUBE_API_KEY,
-    pageToken,
-    maxResults: '10',
-    q: keyword,
-  }).toString();
-  const response = await fetch(`${endPoint}?${query}`);
+  try {
+    const endPoint = `http://vultr.puterism.com:8080/search/dummy`;
+    const query = getParameters({
+      pageToken,
+      q: keyword,
+    }).toString();
+    const response = await fetch(`${endPoint}?${query}`);
 
-  return response.json();
+    if (!response.ok) {
+      throw Error(`${response.status} 에러가 발생했습니다`);
+    }
+
+    return await response.json();
+  } catch (error) {
+    throw Error(error.message);
+  }
 };
 
 export const searchYoutubeById = async (ids = []) => {
   if (ids.length <= 0) return;
-  const endPoint = `https://www.googleapis.com/youtube/v3/videos`;
-  const query = getParameters({
-    part: 'snippet',
-    type: 'video',
-    key: YOUTUBE_API_KEY,
-    id: ids.join(','),
-  }).toString();
-  const response = await fetch(`${endPoint}?${query}`);
 
-  return response.json();
-};
+  try {
+    const endPoint = `http://vultr.puterism.com:8080/videos`;
+    const query = getParameters({
+      id: ids.join(','),
+    }).toString();
+    const response = await fetch(`${endPoint}?${query}`);
 
-// TODO: 테스트 코드 - 추후 삭제 요망
-export const searchYoutubeDummyData = async (isEmpty = false) => {
-  await sleep(500);
-  if (isEmpty) {
-    return JSON.parse(`
-      {
-        "kind": "youtube#searchListResponse",
-        "etag": "aAoE_May7GgRH79SFKG9Byh3Z_A",
-        "regionCode": "KR",
-        "pageInfo": {
-            "totalResults": 0,
-            "resultsPerPage": 0
-        },
-        "items": []
-      }
-    `);
+    if (!response.ok) {
+      throw Error(`${response.status} 에러가 발생했습니다`);
+    }
+
+    return await response.json();
+  } catch (error) {
+    throw Error(error.message);
   }
-  return dummyData[0];
 };
 
 const getParameters = function ({ part, type, key, pageToken = '', maxResults = '', q = '', id = '' }) {

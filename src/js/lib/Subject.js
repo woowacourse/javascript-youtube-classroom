@@ -2,10 +2,18 @@ import { LOCAL_STORAGE_KEYS } from '../constants.js';
 
 export default class Subject {
   constructor() {
-    this.observers = {
-      [LOCAL_STORAGE_KEYS.WATCH_LIST]: [],
-      [LOCAL_STORAGE_KEYS.RECENT_KEYWORD_LIST]: [],
-    };
+    this.observers = {};
+
+    this.initObservers();
+  }
+
+  initObservers() {
+    Object.values(LOCAL_STORAGE_KEYS).forEach((key) => {
+      this.observers = {
+        ...this.observers,
+        [key]: [],
+      };
+    });
   }
 
   subscribe(key, observer) {
@@ -17,7 +25,7 @@ export default class Subject {
 
   unsubscribe(key, observer) {
     const newObservers = Object.assign({}, this.observers);
-    newObservers[key] = newObservers[key].filter((_observer) => _observer !== observer);
+    newObservers[key] = newObservers[key].filter((currentObserver) => currentObserver !== observer);
 
     this.observers = newObservers;
   }
