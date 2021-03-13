@@ -1,3 +1,5 @@
+import { SEARCH_URL } from '../../src/js/utils/constants.js';
+
 describe('simba-tube', () => {
   beforeEach(() => {
     cy.visit('http://localhost:5500/');
@@ -11,7 +13,7 @@ describe('simba-tube', () => {
 
   const interceptSearch = (keyword) => {
     cy.intercept({
-      url: 'https://zig-youtube-api.netlify.app/youtube/search',
+      url: SEARCH_URL,
       query: { q: keyword },
     }).as('search');
   };
@@ -106,7 +108,7 @@ describe('simba-tube', () => {
     cy.get('#chip-1').should('have.text', 'day6');
 
     cy.intercept({
-      url: 'https://zig-youtube-api.netlify.app/youtube/search',
+      url: SEARCH_URL,
     }).as('search');
 
     cy.get('#chip-2').click();

@@ -145,6 +145,10 @@ export default class YoutubeController {
     const savedVideoIds = this.store.state.savedVideoIds;
     const unWatchedVideoIds = this.store.computed.unWatchedVideoIds;
     const response = await videoRequest(savedVideoIds);
+    if (!response) {
+      popSnackbar(ALERT_MESSAGES.API_REQUEST_FAILED);
+      return;
+    }
 
     this.generateSavedVideos(response);
     this.savedVideosView.renderVideoEmptyImg();

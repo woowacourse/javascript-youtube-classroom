@@ -14,6 +14,13 @@ export const ALERT_MESSAGES = {
   EMPTY_SEARCH_KEYWORD: '검색어를 입력해주세요',
   OVER_SAVED_VIDEO_COUNT: '동영상 저장은 최대 100개까지 가능합니다',
   CONFIRM_DELETE_VIDEO: '동영상을 삭제하시겠읍니까?',
+  API_REQUEST_FAILED:
+    '동영상을 불러오는 데 실패했습니다. 잠시 후 다시 시도해 주세요.',
+};
+
+export const ERROR_MESSAGES = {
+  EXCEED_API_QUOTA: 'API 최대 요청 할당량을 초과했습니다',
+  API_ERROR: 'API 요청 과정에서 문제가 발생했습니다',
 };
 
 export const STORE_KEYS = {

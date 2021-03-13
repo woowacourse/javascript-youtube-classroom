@@ -51,9 +51,9 @@ export default class SearchModalController {
     }
 
     this.nextPageToken = nextPageToken;
-    const newVideos = [
-      ...items.map((item) => new Video(item.id.videoId, item.snippet)),
-    ];
+    const newVideos = items.map(
+      (item) => new Video(item.id.videoId, item.snippet),
+    );
     this.videos = [...this.videos, ...newVideos];
 
     this.searchModalView.renderVideoClips(
@@ -66,6 +66,11 @@ export default class SearchModalController {
     this.searchModalView.renderSkeletonTemplate();
 
     const response = await searchRequest(this.keyword, this.nextPageToken);
+    if (!response) {
+      popSnackbar(API_REQUEST_FAILED.API_REQUEST_FAILED);
+      return;
+    }
+
     this.generateVideos(response);
   }
 
@@ -84,6 +89,11 @@ export default class SearchModalController {
     this.searchModalView.scrollToTop();
 
     const response = await searchRequest(keyword, this.nextPageToken);
+    if (!response) {
+      popSnackbar(ALERT_MESSAGES.API_REQUEST_FAILED);
+      return;
+    }
+
     this.generateVideos(response);
   }
 
