@@ -22,6 +22,7 @@ export const getVideoTemplate = (data, options) => {
           <a
             href="https://www.youtube.com/channel/${channelId}"
             target="_blank"
+            rel="noopener noreferrer"
             class="channel-name mt-1"
           >
             ${channelTitle}
@@ -34,7 +35,9 @@ export const getVideoTemplate = (data, options) => {
           containsSaveButton
             ? `
               <div class="d-flex justify-end">
-                <button class="btn btn-save ${isSaved ? 'hidden' : ''}" data-video-id="${id}">⬇️ 저장</button>
+                <button type="button" 
+                class="btn btn-save ${generateCSSClass(isSaved, 'hidden')}" 
+                data-video-id="${id}">⬇️ 저장</button>
               </div>
             `
             : ''
@@ -60,7 +63,7 @@ export const getFormTemplate = () => {
   return `
     <form id="youtube-search-form" class="d-flex">
       <input
-        type="text"
+        type="search"
         id="youtube-search-keyword-input"
         class="w-100 mr-2 pl-2"
         name="keyword"
