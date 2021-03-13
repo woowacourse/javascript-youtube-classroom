@@ -41,12 +41,13 @@
   margin: 0;
   font-size: 14px;
   font-weight: 500;
+  height: 1.9rem;
+  line-height: 1rem;
   -webkit-box-orient: vertical;
   text-overflow: ellipsis;
   -webkit-line-clamp: 2;
   overflow: hidden;
   color: #0a0a0a;
-  height: 2.6rem;
 }
 
 .clip .content-container .channel-name {
@@ -61,4 +62,15 @@
   display: inline-block;
   margin: 0;
   color: #606060;
+}
+
+.button-container > button {
+  background: inherit;
+  font-size: 1.2rem;
+  border: none;
+  box-shadow: none;
+  border-radius: 0;
+  padding: 0;
+  overflow: visible;
+  cursor: pointer;
 }
