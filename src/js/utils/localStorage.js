@@ -38,9 +38,10 @@ export const deleteLastItemByKey = (key) => {
   setListByKey(key, list.slice(0, list.length - 1));
 };
 
-export const deleteTargetItemByKey = (key, secondKey, value) => {
+export const deleteTargetItemByKey = ({ key, secondKey }, value) => {
   const list = getListByKey(key);
-  const filteredList = list.filter((item) => item[secondKey] !== value);
-
+  const filteredList = secondKey
+    ? list.filter((item) => item[secondKey] !== value)
+    : list.filter((item) => item !== value);
   setListByKey(key, filteredList);
 };

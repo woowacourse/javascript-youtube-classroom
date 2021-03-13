@@ -1,4 +1,4 @@
-import { getListByKey, insertItemByKey, insertItemAtFirstByKey, deleteLastItemByKey } from '../utils/localStorage.js';
+import { getListByKey, insertItemByKey, setListByKey } from '../utils/localStorage.js';
 import { MAX_RECENT_KEYWORD_COUNT, DB_KEY } from '../constants.js';
 
 /*
@@ -12,6 +12,7 @@ import { MAX_RECENT_KEYWORD_COUNT, DB_KEY } from '../constants.js';
 export default class SearchModel {
   constructor(keyword = '') {
     this.init(keyword);
+    this.recentKeywords = getListByKey(DB_KEY.RECENT_KEYWORDS);
   }
 
   init(keyword) {
@@ -30,15 +31,14 @@ export default class SearchModel {
       return;
     }
 
-    const recentKeywords = getListByKey(DB_KEY.RECENT_KEYWORDS);
-
-    if (recentKeywords.includes(this.keyword)) {
+    if (this.recentKeywords.includes(this.keyword)) {
       return;
     }
-    if (recentKeywords.length === MAX_RECENT_KEYWORD_COUNT) {
-      deleteLastItemByKey(DB_KEY.RECENT_KEYWORDS);
+    if (this.recentKeywords.length === MAX_RECENT_KEYWORD_COUNT) {
+      this.recentKeywords.pop();
     }
-    insertItemAtFirstByKey(DB_KEY.RECENT_KEYWORDS, this.keyword);
+    this.recentKeywords.unshift(this.keyword);
+    setListByKey(DB_KEY.RECENT_KEYWORDS, this.recentKeywords);
   }
 
   getRecentKeywords() {
@@ -47,6 +47,11 @@ export default class SearchModel {
     } catch (e) {
       return '';
     }
+  }
+
+  removeRecentKeyword(target) {
+    this.recentKeywords = this.recentKeywords.filter((keyword) => keyword !== target);
+    setListByKey(DB_KEY.RECENT_KEYWORDS, this.recentKeywords);
   }
 
   addNewSearchResult(newSearchResult) {
@@ -61,9 +66,5 @@ export default class SearchModel {
     targetVideo.isSaved = true;
     targetVideo.isWatching = true;
     insertItemByKey(DB_KEY.VIDEOS, targetVideo);
-  }
-
-  getSavedVideoCount() {
-    return getListByKey(DB_KEY.VIDEOS).length;
   }
 }

@@ -14,7 +14,7 @@ export default class SearchView {
     this.$searchResultWrapper = $('.js-search-result-wrapper');
     this.$searchKeywordForm = $('.js-search-keyword-form');
     this.$modalCloseButton = $('.js-modal-close-button');
-    this.$recentKeywords = $('.js-recent-keyword');
+    this.$recentKeywords = $('.js-recent-keywords');
     this.$savedVideoCount = $('.js-saved-video-count');
     this.$snackbar = $('.js-snackbar');
   }
@@ -100,9 +100,16 @@ export default class SearchView {
 
   renderRecentKeywords(keywords) {
     keywords.forEach((keyword, index) => {
-      this.$recentKeywords.children[index].innerText = keyword;
+      this.$recentKeywords.children[index].querySelector('a').innerText = keyword;
       this.$recentKeywords.children[index].classList.remove('v-hidden');
     });
+  }
+
+  removeRecentKeyword(keywords) {
+    [...this.$recentKeywords.children].forEach(($keyword) => {
+      $keyword.classList.add('v-hidden');
+    });
+    this.renderRecentKeywords(keywords);
   }
 
   renderVisibleModal(videoCount, keywords) {
