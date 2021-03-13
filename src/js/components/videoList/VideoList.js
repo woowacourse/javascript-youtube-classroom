@@ -160,6 +160,21 @@ export default class VideoList extends Component {
     this.showByFilter();
   }
 
+  onClickLikeyButton(event) {
+    const clip = event.target.closest(SELECTORS.VIDEO_LIST.CLIP_CLASS);
+    const savedVideos = localStorageGetItem(LOCALSTORAGE_KEYS.VIDEOS);
+
+    const newObject = {};
+    Object.assign(newObject, savedVideos);
+
+    newObject[clip.dataset.videoId].liked = !newObject[clip.dataset.videoId]
+      .liked;
+
+    localStorageSetItem(LOCALSTORAGE_KEYS.VIDEOS, newObject);
+    $(SELECTORS.CLIP.LIKE_BUTTON, clip).classList.toggle('checked');
+    this.showByFilter();
+  }
+
   onClickDeleteButton(event) {
     const clip = event.target.closest(SELECTORS.VIDEO_LIST.CLIP_CLASS);
     const savedVideos = localStorageGetItem(LOCALSTORAGE_KEYS.VIDEOS);
@@ -197,6 +212,11 @@ export default class VideoList extends Component {
       ) {
         this.onClickDeleteButton(event);
         message = MESSAGES.ACTION_SUCCESS.DELETE;
+      } else if (
+        event.target.classList.contains(CLASS_NAMES.CLIP.LIKE_BUTTON)
+      ) {
+        this.onClickLikeyButton(event);
+        message = MESSAGES.ACTION_SUCCESS.LIKEY_STATE_SETTING;
       }
     } catch (error) {
       message = error.message;

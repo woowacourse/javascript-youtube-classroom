@@ -10,6 +10,7 @@ export const MESSAGES = {
   },
   ACTION_SUCCESS: {
     WATCHED_STATE_SETTING: '설정이 완료되었습니다.',
+    LIKEY_STATE_SETTING: '좋아요 👍를 누르셨습니다.',
     DELETE: '정상적으로 삭제되었습니다.',
   },
 };

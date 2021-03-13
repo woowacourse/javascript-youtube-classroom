@@ -5,62 +5,52 @@ import {
 import { videoInfo } from '../fixtures/videoInfo.js';
 
 describe('유튜브 강의실 관리 기능', () => {
-  beforeEach(() => {
+  before(() => {
     cy.visit('http://localhost:5500/');
   });
 
-  // it('👍 좋아요 버튼을 누르면 localStorage에서 해당 영상에 대한 정보가 업데이트 되어야 한다.', () => {
-  //   cy.get(SELECTORS.SEARCH_MODAL.VIDEO_SEARCH_BAR.INPUT_ID).clear();
-
-  //   cy.intercept({
-  //     url: 'https://www.googleapis.com/youtube/v3/search?',
-  //     query: { q: searchTerm },
-  //   }).as('search');
-
-  //   cy.get(SELECTORS.MENU_BUTTON.SEARCH_ID).click();
-  //   cy.get(SELECTORS.SEARCH_MODAL.VIDEO_SEARCH_BAR.INPUT_ID).type(searchTerm);
-  //   cy.get(SELECTORS.SEARCH_MODAL.VIDEO_SEARCH_BAR.SUBMIT_BUTTON_ID).click();
-
-  //   cy.wait('@search');
-
-  //   cy.get(SELECTORS.CLIP.VIDEO_SAVE_BUTTON).first().click();
-
-  //   cy.get(SELECTORS.SEARCH_MODAL.MODAL_CLOSE_BUTTON_CLASS).click();
-
-  //   cy.get(SELECTORS.CLIP.LIKE_BUTTON).each(($likeButton) => {
-  //     $likeButton.click();
-  //   });
-
-  //   const videos = JSON.parse(localStorage.getItem(LOCALSTORAGE_KEYS.VIDEOS));
-  //   Object.keys(videos).forEach((videoId) => {
-  //     expect(videos[videoId].isLiked).to.equal(true);
-  //   });
-  // });
-
-  it('볼/본 영상 및 동영상 검색 결과에서 디바이스의 가로길이에 따라 row당 적절한 video개수가 노출되어야 한다.', () => {
+  it('👍 좋아요 버튼을 누르면 localStorage에서 해당 영상에 대한 정보가 업데이트 되어야 한다.', async () => {
+    cy.visit('http://localhost:5500/');
     localStorage.setItem(LOCALSTORAGE_KEYS.VIDEOS, JSON.stringify(videoInfo));
-    cy.visit('http://localhost:5500/');
-    cy.viewport(992, 1000).wait(200);
-    cy.get('.video-wrapper').should(
-      'have.css',
-      'grid-template-columns',
-      '234px 234px 234px 234px'
-    );
+    cy.get(SELECTORS.CLIP.LIKE_BUTTON)
+      .each(($likeButton) => {
+        $likeButton.click();
+      })
+      .then(() => {
+        const videos = JSON.parse(
+          localStorage.getItem(LOCALSTORAGE_KEYS.VIDEOS)
+        );
 
-    cy.viewport(768, 1000).wait(200);
-    cy.get('.video-wrapper').should(
-      'have.css',
-      'grid-template-columns',
-      '380px 380px'
-    );
-
-    cy.viewport(576, 1000).wait(200);
-    cy.get('.video-wrapper').should(
-      'have.css',
-      'grid-template-columns',
-      '576px'
-    );
+        Object.keys(videos).forEach((videoId) => {
+          expect(videos[videoId].liked).to.equal(true);
+        });
+      });
   });
+
+  // it('볼/본 영상 및 동영상 검색 결과에서 디바이스의 가로길이에 따라 row당 적절한 video개수가 노출되어야 한다.', () => {
+  //   localStorage.setItem(LOCALSTORAGE_KEYS.VIDEOS, JSON.stringify(videoInfo));
+  //   cy.visit('http://localhost:5500/');
+  //   cy.viewport(992, 1000).wait(200);
+  //   cy.get('.video-wrapper').should(
+  //     'have.css',
+  //     'grid-template-columns',
+  //     '234px 234px 234px 234px'
+  //   );
+
+  //   cy.viewport(768, 1000).wait(200);
+  //   cy.get('.video-wrapper').should(
+  //     'have.css',
+  //     'grid-template-columns',
+  //     '380px 380px'
+  //   );
+
+  //   cy.viewport(576, 1000).wait(200);
+  //   cy.get('.video-wrapper').should(
+  //     'have.css',
+  //     'grid-template-columns',
+  //     '576px'
+  //   );
+  // });
 
   // it('첫 화면에 로컬스토리지에 있는 볼 영상의 video 배열이 화면에 나타나는지 확인한다.', () => {
   //   const videos = JSON.parse(localStorage.getItem(LOCALSTORAGE_KEYS.VIDEOS));
