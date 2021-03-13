@@ -27,12 +27,17 @@ class VideoView {
   selectDOM() {
     this.$target = $(".video-view");
     this.$videoViewVideoWrapper = $(".video-view__video-wrapper");
+    this.$snackbar = $(".snackbar");
   }
 
   bindEvent() {
     this.$videoViewVideoWrapper.addEventListener("click", e => {
       if (e.target.classList.contains("clip__watched-check")) {
         this.handleCheckWatched(e);
+      }
+
+      if (e.target.classList.contains("clip__trash-can")) {
+        this.handleRemoveSaved(e);
       }
     });
   }
@@ -49,6 +54,16 @@ class VideoView {
 
     this.setState({ savedVideos });
     setDataToLocalStorage(STORAGE.SAVED_VIDEOS, this.savedVideos);
+  }
+
+  handleRemoveSaved(e) {
+    if (confirm("정말 삭제하시겠습니까?")) {
+      const removeVideoId = e.target.closest(".clip__actions").dataset.videoId;
+      const savedVideos = this.savedVideos.filter(video => video.videoId !== removeVideoId);
+
+      this.setState({ savedVideos });
+      setDataToLocalStorage(STORAGE.SAVED_VIDEOS, this.savedVideos);
+    }
   }
 
   render() {

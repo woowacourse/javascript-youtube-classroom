@@ -74,6 +74,20 @@ context.only("저장된 비디오 관리", () => {
       .find(".clip__watched-check")
       .should("have.class", "opacity-hover");
   });
+
+  it("볼 영상 리스트에서 비디오의 휴지통 버튼을 누르면, 볼 영상 리스트에서 삭제된다.", () => {
+    setDataToLocalStorage(STORAGE.SAVED_VIDEOS, dummyVideos);
+    cy.reload();
+
+    cy.get(".menu-section__watch-later-btn").click();
+    cy.get(".clip__actions").then($clipActions => {
+      const removeVideoId = $clipActions.attr("data-video-id");
+      cy.wrap($clipActions.eq(0).find(".clip__trash-can")).click();
+      cy.get(".clip__actions").each($clipActions => {
+        cy.wrap($clipActions.attr("data-video-id")).should("not.eq", removeVideoId);
+      });
+    });
+  });
 });
 
 const dummyVideos = [
