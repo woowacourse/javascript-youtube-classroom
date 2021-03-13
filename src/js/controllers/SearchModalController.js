@@ -1,5 +1,5 @@
 import { $ } from '../utils/dom.js';
-import { isEmptySearchKeyword, isEmptyArray } from '../utils/validator.js';
+import { isEmptyString, isEmptyArray } from '../utils/validator.js';
 import {
   VALUE,
   ALERT_MESSAGES,
@@ -75,12 +75,12 @@ export default class SearchModalController {
   }
 
   async searchVideo(keyword) {
-    if (isEmptySearchKeyword(keyword)) {
+    if (isEmptyString(keyword)) {
       alert(ALERT_MESSAGES.EMPTY_SEARCH_KEYWORD);
       return;
     }
 
-    this.keyword = keyword;
+    this.keyword = keyword.trim();
     this.nextPageToken = null;
     this.store.update({ [STORE_KEYS.RECENT_KEYWORDS]: keyword });
 
@@ -110,6 +110,10 @@ export default class SearchModalController {
     this.store.update({ [STORE_KEYS.SAVED_VIDEO_IDS]: videoId });
 
     const videoToSave = this.videos.find((video) => video.id === videoId);
+    if (!videoToSave) {
+      popSnackbar(SNACKBAR_MESSAGES.SAVE_VIDEO.FAIL);
+      return;
+    }
     this.savedVideosView.addSavedVideoClip(videoToSave);
     this.searchModalView.disableSaveButton(target);
     popSnackbar(SNACKBAR_MESSAGES.SAVE_VIDEO.SUCCESS);

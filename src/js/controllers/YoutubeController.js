@@ -133,9 +133,7 @@ export default class YoutubeController {
   generateSavedVideos(response) {
     const { items } = response;
 
-    const savedVideos = [
-      ...items.map((item) => new Video(item.id, item.snippet)),
-    ];
+    const savedVideos = items.map((item) => new Video(item.id, item.snippet));
     const watchedVideos = this.store.state.watchedVideoIds;
 
     this.savedVideosView.renderSavedVideoClips(savedVideos, watchedVideos);
