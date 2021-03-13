@@ -1,5 +1,4 @@
 import { fetchSearchResult } from './API.js';
-import { TO_WATCH_TYPE } from './constants/filterType.js';
 import pageToken from './states/pageToken.js';
 import videoInfos from './states/videoInfos.js';
 
@@ -9,7 +8,7 @@ function createVideoInfo(videoDataset) {
   return {
     id: { videoId },
     snippet: { title, channelId, channelTitle, publishTime },
-    watchType: TO_WATCH_TYPE,
+    isWatched: false,
   };
 }
 

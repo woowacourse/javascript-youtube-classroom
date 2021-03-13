@@ -1,4 +1,4 @@
-const TO_WATCH_TYPE = 'filterType/toWatch';
-const WATCHED_TYPE = 'filterType/toWatch';
+const TO_WATCH_TYPE = 'toWatch';
+const WATCHED_TYPE = 'watched';
 
 export { TO_WATCH_TYPE, WATCHED_TYPE };

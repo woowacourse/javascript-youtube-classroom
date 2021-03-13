@@ -34,6 +34,8 @@ function handleButtonsControl({ target }) {
   }
   if (target.classList.contains('js-delete-button')) {
     handleDeleteButton(target);
+    console.log(target.closest('.js-video').dataset.videoId);
+    // updateModalSaveButton(target.closest('js-video').dataset.videoId);
   }
 }
 

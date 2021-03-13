@@ -3,6 +3,7 @@ import {
   savedVideoListTemplate,
   emptyVideoListTemplate,
 } from '../templates/videoList.js';
+import { TO_WATCH_TYPE } from '../constants/filterType.js';
 
 const $searchModal = $('#video-search-modal');
 const $videoList = $('#video-list');
@@ -18,9 +19,10 @@ function closeModal() {
 }
 
 function renderSavedVideoList(videoInfos, videoListType) {
-  const filteredVideoInfos = [...videoInfos].filter(
-    videoInfo => videoListType === videoInfo.watchType
-  );
+  const filteredVideoInfos =
+    videoListType === TO_WATCH_TYPE
+      ? [...videoInfos].filter(videoInfo => !videoInfo.isWatched)
+      : [...videoInfos].filter(videoInfo => videoInfo.isWatched);
 
   $videoList.innerHTML = filteredVideoInfos.length
     ? savedVideoListTemplate(filteredVideoInfos)

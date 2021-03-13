@@ -18,8 +18,8 @@ import {
 } from './viewControllers/searchModal.js';
 import videoListType from './states/videoListType.js';
 
-function initState() {
-  videoInfos.init();
+async function initState() {
+  await videoInfos.init();
   renderSavedVideoCount(videoInfos.size);
   renderSavedVideoList(videoInfos.get(), videoListType.get());
   latestKeywords.init();

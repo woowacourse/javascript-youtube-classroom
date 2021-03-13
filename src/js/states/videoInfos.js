@@ -1,5 +1,4 @@
 import { fetchLatestVideoInfos } from '../API.js';
-import { TO_WATCH_TYPE, WATCHED_TYPE } from '../constants/filterType.js';
 import { VIDEO_INFOS } from '../constants/localStorage.js';
 import { getLocalStorage, setLocalStorage } from '../utils/localStorage.js';
 
@@ -15,8 +14,8 @@ async function updateVideoInfos(videoInfos) {
       channelTitle: snippet.channelTitle,
       publishTime: snippet.publishedAt,
     },
-    watchType: videoInfos.find(videoInfo => videoInfo.id.videoId === id)
-      .watchType,
+    isWatched: videoInfos.find(videoInfo => videoInfo.id.videoId === id)
+      .isWatched,
   }));
 }
 
@@ -53,10 +52,7 @@ const videoInfos = {
       videoInfo.id.videoId === targetId
         ? {
             ...videoInfo,
-            watchType:
-              videoInfo.watchType === TO_WATCH_TYPE
-                ? WATCHED_TYPE
-                : TO_WATCH_TYPE,
+            isWatched: !videoInfo.isWatched,
           }
         : videoInfo
     );
