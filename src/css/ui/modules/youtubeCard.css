@@ -6,6 +6,18 @@
   justify-content: space-between;
 }
 
+@media screen and (max-width: 768px) {
+  .video-wrapper {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+@media screen and (max-width: 576px) {
+  .video-wrapper {
+    grid-template-columns: 1fr;
+  }
+}
+
 #searched-video-list {
   grid-column-gap: 6px;
   height: 60vh;
