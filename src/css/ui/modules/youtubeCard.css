@@ -41,10 +41,10 @@
   margin: 0;
   font-size: 14px;
   font-weight: 500;
-  height: 1.9rem;
-  line-height: 1rem;
   -webkit-box-orient: vertical;
   text-overflow: ellipsis;
+  line-height: 1rem;
+  height: 2rem;
   -webkit-line-clamp: 2;
   overflow: hidden;
   color: #0a0a0a;
