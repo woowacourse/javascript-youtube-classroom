@@ -167,13 +167,13 @@ var _API = require("./constants/API.js");
 var _classroom = require("./constants/classroom.js");
 
 function fetchSearchResult(keyword, nextPageToken = '') {
-  const query = `part=snippet&order=viewCount&maxResults=${_classroom.FETCH_VIDEO_COUNT}&key=${"AIzaSyC8yRAHFAKKXsDAjyxRnV28t-s6_ZEDdgM"}&pageToken=${nextPageToken}&q=${keyword}`;
+  const query = `part=snippet&order=viewCount&maxResults=${_classroom.FETCH_VIDEO_COUNT}&key=${"AIzaSyDSu3YG4AM7jnpXoYY5q8-a6KAPao2dpnY"}&pageToken=${nextPageToken}&q=${keyword}`;
   return fetch(`${_API.YOUTUBE_BASE_URL}/search?${query}`).then(data => data.json()).catch(e => console.error(e));
 }
 
 function fetchLatestVideoInfos(videoIds) {
   const videoIdString = videoIds.join('&id=');
-  const query = `part=snippet&id=${videoIdString}&key=${API_KEY}`;
+  const query = `part=snippet&id=${videoIdString}&key=${"AIzaSyDSu3YG4AM7jnpXoYY5q8-a6KAPao2dpnY"}`;
   return fetch(`${_API.YOUTUBE_BASE_URL}/videos?${query}`).then(data => data.json()).catch(e => console.error(e));
 }
 },{"./constants/API.js":"src/js/constants/API.js","./constants/classroom.js":"src/js/constants/classroom.js"}],"src/js/states/pageToken.js":[function(require,module,exports) {
@@ -1220,7 +1220,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "44023" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "34489" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
