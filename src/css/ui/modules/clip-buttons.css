@@ -1,0 +1,8 @@
+.clip-buttons {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.clip-buttons > button {
+  padding: 0 4px;
+}

@@ -81,7 +81,7 @@ function getSaveButtons(item) {
 
 function getClipButtons(item) {
   return `
-    <div>
+    <div class="clip-buttons">
       <button 
         data-watched-button=${item.videoId} 
         class=${item.watched ? "" : "opacity-hover"}>
