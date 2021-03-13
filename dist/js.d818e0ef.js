@@ -135,9 +135,18 @@ exports.default = _default;
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.YOUTUBE_BASE_URL = void 0;
+exports.YOUTUBE_QUERY = exports.YOUTUBE_BASE_URL = void 0;
 const YOUTUBE_BASE_URL = 'https://www.googleapis.com/youtube/v3';
 exports.YOUTUBE_BASE_URL = YOUTUBE_BASE_URL;
+const YOUTUBE_QUERY = {
+  PART: {
+    SNIPPET: 'snippet'
+  },
+  ORDER: {
+    VIEWCOUNT: 'viewCount'
+  }
+};
+exports.YOUTUBE_QUERY = YOUTUBE_QUERY;
 },{}],"src/js/constants/classroom.js":[function(require,module,exports) {
 "use strict";
 
@@ -153,6 +162,17 @@ const FETCH_VIDEO_COUNT = 10;
 exports.FETCH_VIDEO_COUNT = FETCH_VIDEO_COUNT;
 const NAN_CHARACTER = '-';
 exports.NAN_CHARACTER = NAN_CHARACTER;
+},{}],"src/js/utils/queryString.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.getQueryString = getQueryString;
+
+function getQueryString(query = {}) {
+  return Object.entries(query).map(([key, value]) => value instanceof Array ? `${key}=${value.join(',')}` : `${key}=${value}`).join('&');
+}
 },{}],"src/js/API.js":[function(require,module,exports) {
 "use strict";
 
@@ -166,17 +186,31 @@ var _API = require("./constants/API.js");
 
 var _classroom = require("./constants/classroom.js");
 
-function fetchSearchResult(keyword, nextPageToken = '') {
-  const query = `part=snippet&order=viewCount&maxResults=${_classroom.FETCH_VIDEO_COUNT}&key=${"AIzaSyDSu3YG4AM7jnpXoYY5q8-a6KAPao2dpnY"}&pageToken=${nextPageToken}&q=${keyword}`;
-  return fetch(`${_API.YOUTUBE_BASE_URL}/search?${query}`).then(data => data.json()).catch(e => console.error(e));
+var _queryString = require("./utils/queryString.js");
+
+function fetchSearchResult(keyword = '', nextPageToken = '') {
+  const query = {
+    part: _API.YOUTUBE_QUERY.PART.SNIPPET,
+    order: _API.YOUTUBE_QUERY.ORDER.VIEW_COUNT,
+    maxResults: _classroom.FETCH_VIDEO_COUNT,
+    key: "AIzaSyDSu3YG4AM7jnpXoYY5q8-a6KAPao2dpnY" ?? '',
+    pageToken: nextPageToken,
+    q: keyword
+  };
+  const queryString = (0, _queryString.getQueryString)(query);
+  return fetch(`${_API.YOUTUBE_BASE_URL}/search?${queryString}`).then(data => data.json()).catch(e => console.error(e));
 }
 
-function fetchLatestVideoInfos(videoIds) {
-  const videoIdString = videoIds.join('&id=');
-  const query = `part=snippet&id=${videoIdString}&key=${"AIzaSyDSu3YG4AM7jnpXoYY5q8-a6KAPao2dpnY"}`;
-  return fetch(`${_API.YOUTUBE_BASE_URL}/videos?${query}`).then(data => data.json()).catch(e => console.error(e));
+function fetchLatestVideoInfos(videoIds = []) {
+  const query = {
+    part: _API.YOUTUBE_QUERY.PART.SNIPPET,
+    id: videoIds,
+    key: "AIzaSyDSu3YG4AM7jnpXoYY5q8-a6KAPao2dpnY" ?? ''
+  };
+  const queryString = (0, _queryString.getQueryString)(query);
+  return fetch(`${_API.YOUTUBE_BASE_URL}/videos?${queryString}`).then(data => data.json()).catch(e => console.error(e));
 }
-},{"./constants/API.js":"src/js/constants/API.js","./constants/classroom.js":"src/js/constants/classroom.js"}],"src/js/states/pageToken.js":[function(require,module,exports) {
+},{"./constants/API.js":"src/js/constants/API.js","./constants/classroom.js":"src/js/constants/classroom.js","./utils/queryString.js":"src/js/utils/queryString.js"}],"src/js/states/pageToken.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
