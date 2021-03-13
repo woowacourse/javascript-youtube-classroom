@@ -53,6 +53,10 @@ export default class SearchController {
   }
 
   onRequestSearchRecentKeyword({ target }) {
+    if (target.tagName !== 'A') {
+      return;
+    }
+
     const keyword = target.innerText;
 
     this.searchModel.init(keyword);
