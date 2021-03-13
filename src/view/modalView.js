@@ -7,7 +7,6 @@ import {
 
 import BasicView from './BasicView.js';
 export default class ModalView extends BasicView {
-  // TODO: 이게 최선?
   constructor({
     $modal,
     $searchQueries,

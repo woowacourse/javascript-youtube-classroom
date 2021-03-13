@@ -4,6 +4,7 @@ import {
   $searchForm,
   $searchFormInput,
   $searchResultIntersector,
+  $searchResultVideoWrapper,
 } from '../elements.js';
 import { getVideosByKeyword } from '../apis/youtube.js';
 import controllerUtil from './controllerUtil.js';
@@ -14,7 +15,9 @@ import {
   watchingVideoModel,
 } from '../store.js';
 import modalService from '../service/modalService.js';
-import { modalView } from '../view/index.js';
+import { layoutView, modalView, watchedVideoView, watchingVideoView } from '../view/index.js';
+import { BROWSER_HASH, SELECTOR_CLASS, SNACKBAR_MESSAGE } from '../constants.js';
+import watchingVideoService from '../service/watchingVideoService.js';
 
 const modalController = {
   initEventListeners() {
@@ -22,6 +25,7 @@ const modalController = {
       $searchResultIntersector,
       onAdditionalVideosLoad
     );
+    $searchResultVideoWrapper.addEventListener('click', onSearchedVideoSave);
     $searchButton.addEventListener('click', onModalOpen);
     $modalCloseButton.addEventListener('click', onModalClose);
     $searchForm.addEventListener('submit', onVideoSearch);
@@ -53,7 +57,6 @@ function onModalClose() {
 async function onVideoSearch(event) {
   event.preventDefault();
   const input = $searchFormInput.value.trim();
-  //TODO: validation 으로 빼기
   if (input === prevSearchResultModel.getItem().lastQuery) {
     return;
   }
@@ -82,6 +85,27 @@ async function onAdditionalVideosLoad() {
   );
   modalView.insertSearchedVideos(videos);
   modalService.savePrevSearchInfo({ nextPageToken });
+}
+
+function onSearchedVideoSave({ target }) {
+  if (!target.classList.contains(SELECTOR_CLASS.SEARCHED_CLIP_SAVE_BUTTON)) {
+    return;
+  }
+  if (!watchingVideoService.isVideoCountUnderLimit()) {
+    layoutView.showSnackbar(SNACKBAR_MESSAGE.SAVE_LIMIT_EXCEEDED, false);
+    return;
+  }
+  if (watchingVideoService.isVideosEmpty()) {
+    watchingVideoView.hideEmptyVideoImage();
+    watchedVideoView.hideEmptyVideoImage();
+  }
+  watchingVideoService.pushNewVideo(target.dataset);
+
+  if (controllerUtil.parseHash(location.hash) === BROWSER_HASH.WATCHING) {
+    watchingVideoView.renderVideos(watchingVideoModel.getItem());
+  }
+  modalView.hideVideoSaveButton(target);
+  layoutView.showSnackbar(SNACKBAR_MESSAGE.WATCHING_VIDEO_SAVE_SUCCESS, true);
 }
 
 export default modalController;

@@ -2,22 +2,18 @@ import { $searchResultVideoWrapper, $watchingVideoWrapper } from '../elements';
 import { watchedVideoModel, watchingVideoModel } from '../store';
 import {
   layoutView,
-  modalView,
   watchedVideoView,
   watchingVideoView,
 } from '../view';
 import watchingVideoService from '../service/watchingVideoService.js';
 import {
-  BROWSER_HASH,
   CONFIRM_MESSAGE,
   SELECTOR_CLASS,
   SNACKBAR_MESSAGE,
 } from '../constants';
-import controllerUtil from './controllerUtil';
 
 const watchingVideoController = {
   initEventListeners() {
-    $searchResultVideoWrapper.addEventListener('click', onWatchingVideoSave);
     $watchingVideoWrapper.addEventListener('click', onWatchingVideoInteract);
   },
   loadVideos() {
@@ -59,29 +55,6 @@ function onWatchingVideoDelete(button) {
   watchingVideoModel.popVideoByVideoId(videoId);
   loadWatchingVideos();
   layoutView.showSnackbar(SNACKBAR_MESSAGE.WATCHING_VIDEO_DELETE_SUCCESS, true);
-}
-
-function onWatchingVideoSave({ target }) {
-  if (!target.classList.contains(SELECTOR_CLASS.SEARCHED_CLIP_SAVE_BUTTON)) {
-    return;
-  }
-  // TODO: watching + watched 비디오 합쳐서 100개 이하여야함
-  if (!watchingVideoService.isVideoCountUnderLimit()) {
-    layoutView.showSnackbar(SNACKBAR_MESSAGE.SAVE_LIMIT_EXCEEDED, false);
-    return;
-  }
-
-  if (watchingVideoService.isVideosEmpty()) {
-    watchingVideoView.hideEmptyVideoImage();
-    watchedVideoView.hideEmptyVideoImage();
-  }
-  watchingVideoService.pushNewVideo(target.dataset);
-
-  if (controllerUtil.parseHash(location.hash) === BROWSER_HASH.WATCHING) {
-    watchingVideoView.renderVideos(watchingVideoModel.getItem());
-  }
-  modalView.hideVideoSaveButton(target);
-  layoutView.showSnackbar(SNACKBAR_MESSAGE.WATCHING_VIDEO_SAVE_SUCCESS, true);
 }
 
 function loadWatchingVideos() {
