@@ -1,5 +1,5 @@
 import { $ } from "../utils/dom.js";
-import { CLASS_NAME } from "../utils/constants.js";
+import { CLASS_NAME, MENU } from "../utils/constants.js";
 
 class MenuSection {
   constructor(props) {
@@ -9,7 +9,7 @@ class MenuSection {
   }
 
   initState() {
-    this.clickedMenu = "watch-later";
+    this.clickedMenu = MENU.WATCH_LATER;
   }
 
   setState({ clickedMenu }) {
@@ -27,7 +27,7 @@ class MenuSection {
 
   bindEvent() {
     this.$target.addEventListener("click", e => {
-      if (!e.target.classList.contains("menu-btn")) return;
+      if (!e.target.classList.contains(CLASS_NAME.MENU_BTN)) return;
 
       this.handleSelectMenu(e.target);
     });
@@ -49,7 +49,7 @@ class MenuSection {
   changeMenuBtnColor(target) {
     [this.$watchLaterBtn, this.$watchedBtn].forEach($btn => $btn.classList.remove("bg-cyan-100"));
 
-    if (!target.classList.contains("menu-section__video-search-btn")) {
+    if (!target.classList.contains(CLASS_NAME.VIDEO_SEARCH_BTN)) {
       target.classList.add("bg-cyan-100");
     }
   }
@@ -57,10 +57,10 @@ class MenuSection {
   getMatchedAction(selectedMenu) {
     const menuAction = {
       [CLASS_NAME.WATCH_LATER_BTN]: () => {
-        this.props.changeMenu("watch-later");
+        this.props.changeMenu(MENU.WATCH_LATER);
       },
       [CLASS_NAME.WATCHED_BTN]: () => {
-        this.props.changeMenu("watched");
+        this.props.changeMenu(MENU.WATCHED);
       },
       [CLASS_NAME.VIDEO_SEARCH_BTN]: this.props.openModal,
     };
@@ -70,8 +70,8 @@ class MenuSection {
 
   render() {
     const mappingMenu = {
-      ["watch-later"]: this.$watchLaterBtn,
-      ["watched"]: this.$watchedBtn,
+      [MENU.WATCH_LATER]: this.$watchLaterBtn,
+      [MENU.WATCHED]: this.$watchedBtn,
     };
 
     [this.$watchLaterBtn, this.$watchedBtn].forEach($btn => $btn.classList.remove("bg-cyan-100"));

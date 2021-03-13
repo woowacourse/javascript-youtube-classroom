@@ -1,5 +1,13 @@
 import { $, $$, popMessage } from "../utils/dom.js";
-import { STANDARD_NUMS, ALERT_MESSAGE, STORAGE, SECTION, CLASS_NAME } from "../utils/constants.js";
+import {
+  MENU,
+  STANDARD_NUMS,
+  ALERT_MESSAGE,
+  STORAGE,
+  SECTION,
+  CLASS_NAME,
+  SNACKBAR_MESSAGE,
+} from "../utils/constants.js";
 import API from "../utils/api.js";
 import { setDataToLocalStorage, getDataFromLocalStorage } from "../utils/localStorage.js";
 import { createVideoTemplate } from "../utils/templates.js";
@@ -55,7 +63,7 @@ class SearchModal {
     this.$savedVideoCount = $(`.${CLASS_NAME.SAVED_VIDEO_COUNT}`);
     this.$modalCloseBtn = $(`.${CLASS_NAME.MODAL_CLOSE}`);
     this.$keywordHistory = $(`.${CLASS_NAME.KEYWORD_HISTORY}`);
-    this.$snackBar = $(".snackbar");
+    this.$snackBar = $(`.${CLASS_NAME.SNACKBAR}`);
   }
 
   bindEvent() {
@@ -182,7 +190,7 @@ class SearchModal {
 
   handleCloseModal() {
     this.hideModal();
-    this.props.changeMenu("watch-later");
+    this.props.changeMenu(MENU.WATCH_LATER);
   }
 
   handleSaveVideo($saveBtn) {
@@ -203,7 +211,7 @@ class SearchModal {
     this.setSaveVideosState({ savedVideos });
     $saveBtn.classList.add("hidden");
 
-    popMessage(this.$snackBar, "성공적으로 저장되었습니다.");
+    popMessage(this.$snackBar, SNACKBAR_MESSAGE.SAVE);
   }
 
   handleSearchClickedHistory(keyword) {

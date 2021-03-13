@@ -2,33 +2,36 @@
 import { setDataToLocalStorage } from "../../src/js/utils/localStorage.js";
 import { STORAGE, CLASS_NAME } from "../../src/js/utils/constants.js";
 
-context.only("저장된 비디오 관리", () => {
+context("저장된 비디오 관리", () => {
   beforeEach(() => {
     cy.visit("http://127.0.0.1:5500");
   });
 
   it("초기에 저장된 비디오가 존재하지 않는다면, 비어있다는 것을 사용자에게 알려주는 이미지를 보여준다.", () => {
-    cy.get(".no-watch-later-image").should("be.visible");
+    cy.get(`.${CLASS_NAME.NO_SAVED_VIDEO_IMAGE}`).should("be.visible");
   });
 
   it("초기에 저장된 비디오가 존재한다면, 비디오 리스트를 출력한다.", () => {
     setDataToLocalStorage(STORAGE.SAVED_VIDEOS, dummyVideos);
     cy.reload();
 
-    cy.get(".video-view").find(".clip").should("be.visible");
+    cy.get(`.${CLASS_NAME.VIDEO_VIEW}`).find(`.${CLASS_NAME.CLIP}`).should("be.visible");
   });
 
   it("볼 영상 리스트에서 비디오의 체크 버튼을 누르면 볼 영상 리스트에서는 삭제되고, 본 영상 리스트에 추가된다.", () => {
     setDataToLocalStorage(STORAGE.SAVED_VIDEOS, dummyVideos);
     cy.reload();
 
-    cy.get(".menu-section__watch-later-btn").click();
-    cy.get(".clip__actions").then($clipActions => {
+    cy.get(`.${CLASS_NAME.WATCH_LATER_BTN}`).click();
+    cy.get(`.${CLASS_NAME.CLIP_ACTIONS}`).then($clipActions => {
       const watchedVideoId = $clipActions.attr("data-video-id");
 
-      cy.wrap($clipActions.eq(0).find(".clip__watched-check")).click();
-      cy.get(".menu-section__watched-btn").click();
-      cy.get(".clip__actions").eq(0).invoke("attr", "data-video-id").should("eq", watchedVideoId);
+      cy.wrap($clipActions.eq(0).find(`.${CLASS_NAME.WATCHED_CHECK}`)).click();
+      cy.get(`.${CLASS_NAME.WATCHED_BTN}`).click();
+      cy.get(`.${CLASS_NAME.CLIP_ACTIONS}`)
+        .eq(0)
+        .invoke("attr", "data-video-id")
+        .should("eq", watchedVideoId);
     });
   });
 
@@ -36,15 +39,18 @@ context.only("저장된 비디오 관리", () => {
     setDataToLocalStorage(STORAGE.SAVED_VIDEOS, dummyVideos);
     cy.reload();
 
-    cy.get(".clip__actions").then($clipActions => {
+    cy.get(`.${CLASS_NAME.CLIP_ACTIONS}`).then($clipActions => {
       const watchedVideoId = $clipActions.attr("data-video-id");
 
-      cy.wrap($clipActions.eq(0).find(".clip__watched-check")).click();
-      cy.get(".menu-section__watched-btn").click();
-      cy.get(".clip__actions").then($clipActions => {
-        cy.wrap($clipActions.eq(0).find(".clip__watched-check")).click();
-        cy.get(".menu-section__watch-later-btn").click();
-        cy.get(".clip__actions").eq(0).invoke("attr", "data-video-id").should("eq", watchedVideoId);
+      cy.wrap($clipActions.eq(0).find(`.${CLASS_NAME.WATCHED_CHECK}`)).click();
+      cy.get(`.${CLASS_NAME.WATCHED_BTN}`).click();
+      cy.get(`.${CLASS_NAME.CLIP_ACTIONS}`).then($clipActions => {
+        cy.wrap($clipActions.eq(0).find(`.${CLASS_NAME.WATCHED_CHECK}`)).click();
+        cy.get(`.${CLASS_NAME.WATCH_LATER_BTN}`).click();
+        cy.get(`.${CLASS_NAME.CLIP_ACTIONS}`)
+          .eq(0)
+          .invoke("attr", "data-video-id")
+          .should("eq", watchedVideoId);
       });
     });
   });
@@ -53,11 +59,11 @@ context.only("저장된 비디오 관리", () => {
     setDataToLocalStorage(STORAGE.SAVED_VIDEOS, dummyVideos);
     cy.reload();
 
-    cy.get(".clip__actions").then($clipActions => {
-      cy.wrap($clipActions.eq(0).find(".clip__watched-check")).click();
-      cy.get(".menu-section__watched-btn").click();
-      cy.get(".clip__actions").each(clipActions => {
-        cy.wrap(clipActions).find(".clip__watched-check").should("have.class", "opacity-1");
+    cy.get(`.${CLASS_NAME.CLIP_ACTIONS}`).then($clipActions => {
+      cy.wrap($clipActions.eq(0).find(`.${CLASS_NAME.WATCHED_CHECK}`)).click();
+      cy.get(`.${CLASS_NAME.WATCHED_BTN}`).click();
+      cy.get(`.${CLASS_NAME.CLIP_ACTIONS}`).each(clipActions => {
+        cy.wrap(clipActions).find(`.${CLASS_NAME.WATCHED_CHECK}`).should("have.class", "opacity-1");
       });
     });
   });
@@ -68,10 +74,10 @@ context.only("저장된 비디오 관리", () => {
 
     cy.get(`.${CLASS_NAME.VIDEO_SEARCH_BTN}`).click();
     cy.get(`.${CLASS_NAME.MODAL_CLOSE}`).click();
-    cy.get(".menu-section__watch-later-btn").should("have.class", "bg-cyan-100");
-    cy.get(".clip__actions")
+    cy.get(`.${CLASS_NAME.WATCH_LATER_BTN}`).should("have.class", "bg-cyan-100");
+    cy.get(`.${CLASS_NAME.CLIP_ACTIONS}`)
       .eq(0)
-      .find(".clip__watched-check")
+      .find(`.${CLASS_NAME.WATCHED_CHECK}`)
       .should("have.class", "opacity-hover");
   });
 
@@ -79,36 +85,36 @@ context.only("저장된 비디오 관리", () => {
     setDataToLocalStorage(STORAGE.SAVED_VIDEOS, dummyVideos);
     cy.reload();
 
-    cy.get(".menu-section__watch-later-btn").click();
-    cy.get(".clip__actions").then($clipActions => {
+    cy.get(`.${CLASS_NAME.WATCH_LATER_BTN}`).click();
+    cy.get(`.${CLASS_NAME.CLIP_ACTIONS}`).then($clipActions => {
       const removeVideoId = $clipActions.attr("data-video-id");
-      cy.wrap($clipActions.eq(0).find(".clip__trash-can")).click();
-      cy.get(".clip__actions").each($clipActions => {
+      cy.wrap($clipActions.eq(0).find(`.${CLASS_NAME.TRASH_CAN}`)).click();
+      cy.get(`.${CLASS_NAME.CLIP_ACTIONS}`).each($clipActions => {
         cy.wrap($clipActions.attr("data-video-id")).should("not.eq", removeVideoId);
       });
     });
   });
 
-  it.only("볼 영상 리스트에서 체크 버튼, 휴지통 버튼을 누르면 스낵바가 3초간 띄워진다.", () => {
+  it("볼 영상 리스트에서 체크 버튼, 휴지통 버튼을 누르면 스낵바가 3초간 띄워진다.", () => {
     setDataToLocalStorage(STORAGE.SAVED_VIDEOS, dummyVideos);
     cy.reload();
 
-    cy.get(".menu-section__watch-later-btn").click();
-    cy.get(".clip__actions").then($clipActions => {
-      $clipActions.eq(0).find(".clip__watched-check").click();
+    cy.get(`.${CLASS_NAME.WATCH_LATER_BTN}`).click();
+    cy.get(`.${CLASS_NAME.CLIP_ACTIONS}`).then($clipActions => {
+      $clipActions.eq(0).find(`.${CLASS_NAME.WATCHED_CHECK}`).click();
     });
 
-    cy.get(".snackbar").should("have.class", "show");
+    cy.get(`.${CLASS_NAME.SNACKBAR}`).should("have.class", "show");
     cy.wait(4000);
-    cy.get(".snackbar").should("not.have.class", "show");
+    cy.get(`.${CLASS_NAME.SNACKBAR}`).should("not.have.class", "show");
 
-    cy.get(".clip__actions").then($clipActions => {
-      $clipActions.eq(0).find(".clip__trash-can").click();
+    cy.get(`.${CLASS_NAME.CLIP_ACTIONS}`).then($clipActions => {
+      $clipActions.eq(0).find(`.${CLASS_NAME.TRASH_CAN}`).click();
     });
 
-    cy.get(".snackbar").should("have.class", "show");
+    cy.get(`.${CLASS_NAME.SNACKBAR}`).should("have.class", "show");
     cy.wait(4000);
-    cy.get(".snackbar").should("not.have.class", "show");
+    cy.get(`.${CLASS_NAME.SNACKBAR}`).should("not.have.class", "show");
   });
 });
 
