@@ -26,15 +26,13 @@ const YMDtemplate = (time) => {
   return `<p>${year}년 ${month}월 ${day}일</p>`;
 };
 
-// data-is-watched=${video.isWatched ? true : false}
 export const clipTemplate = (video, index, type) => {
   const { isModal, currentTab } = type;
 
   return `
-      <article class="
-          clip 
-          ${currentTab === LOCAL_STORAGE_VALUE.WATCHED ? 'd-none' : ''} 
-          ${video.isWatched ? watched : ''}
+      <article class="clip ${
+        currentTab === LOCAL_STORAGE_VALUE.WATCHED ? 'd-none' : ''
+      } ${video.isWatched ? 'watched-clip' : 'unwatched-clip'}
         " 
         data-js=${isModal ? 'youtube-search-modal__clip' : 'saved-page__clip'}
         data-is-deleted=false
