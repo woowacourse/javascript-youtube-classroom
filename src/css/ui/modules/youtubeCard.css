@@ -8,9 +8,14 @@
 
 .clip {
   height: 219px;
-  min-height: 300px; /*TODO: 더 나은 방법있으면 대체*/
+  min-height: 280px; /*TODO: 더 나은 방법있으면 대체*/
   cursor: pointer;
   text-decoration: none;
+  margin-bottom: 20px;
+}
+
+.clip:hover {
+  background-color: rgba(0, 0, 0, 0.025);
 }
 
 .clip .preview-container {

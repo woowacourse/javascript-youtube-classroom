@@ -1,6 +1,6 @@
 import formatDate from '../utils/date.js';
 
-function createVideoSnippetTemplate({ id, snippet }, isSaved = false) {
+function videoSnippetTemplate({ id, snippet }, buttonListTemplate) {
   return `<article class="clip js-video"
             data-video-id=${id.videoId}
             data-title=${encodeURIComponent(snippet.title)}
@@ -32,17 +32,18 @@ function createVideoSnippetTemplate({ id, snippet }, isSaved = false) {
                 <div class="meta">
                   <p>${formatDate(snippet.publishTime)}</p>
                 </div>
-                <div class="d-flex justify-end">
-                  <button 
-                    class="btn js-save-button" 
-                    ${isSaved ? 'hidden' : ''}
-                    >
-                      ⬇️ 저장
-                  </button>
+                <div class="d-flex justify-end" >
+                  ${buttonListTemplate}
                 </div>
               </div>
             </div>
           </article>`;
+}
+
+function saveButtonTemplate(isSaved) {
+  return isSaved
+    ? `<button class="btn js-save-cancel-button"}>↪️ 저장 취소</button>`
+    : `<button class="btn js-save-button"}>⬇️ 저장</button>`;
 }
 
 function isSavedVideo(item, videoInfos) {
@@ -51,23 +52,45 @@ function isSavedVideo(item, videoInfos) {
   );
 }
 
-function createVideoListTemplate(resultItems = [], videoInfos) {
+function videoListTemplate(resultItems = [], videoInfos) {
   return [...resultItems]
     .map(item =>
-      createVideoSnippetTemplate(item, isSavedVideo(item, videoInfos))
+      videoSnippetTemplate(
+        item,
+        saveButtonTemplate(isSavedVideo(item, videoInfos))
+      )
     )
     .join('');
 }
 
-function createSavedVideoListTemplate(savedVideoInfos = []) {
-  return [...savedVideoInfos]
-    .map(item => createVideoSnippetTemplate(item, true))
+function controlButtonsTemplate(isWatched) {
+  return [
+    {
+      content: '✅',
+      className: 'js-watched-button',
+      isChecked: isWatched,
+    },
+    { content: '👍', className: 'js-like-button', isChecked: false },
+    { content: '💬', className: 'js-comment-button', isChecked: false },
+    { content: '🗑️', className: 'js-delete-button', isChecked: false },
+  ]
+    .map(
+      ({ content, className, isChecked }) =>
+        `<span class="${isChecked ? '' : 'opacity-hover'} ml-2 ${className}">
+          ${content}
+        </span>`
+    )
     .join('');
 }
 
-/*
- * data-attirbue 로 다 할당
- * 이미 존재하는 속성들을 그대로 활용 (선택자 접근, 문자열 파싱)
- */
+function savedVideoListTemplate(savedVideoInfos = []) {
+  return [...savedVideoInfos]
+    .map(item =>
+      videoSnippetTemplate(item, controlButtonsTemplate(item.watchType))
+    )
+    .join('');
+}
 
-export { createVideoListTemplate, createSavedVideoListTemplate };
+const emptyVideoListTemplate = `<span id="empty-video-list" class="stretch text-center">영상이 없습니다. 😥</span>`;
+
+export { videoListTemplate, savedVideoListTemplate, emptyVideoListTemplate };

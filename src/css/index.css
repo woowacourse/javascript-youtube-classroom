@@ -6,6 +6,8 @@ body {
   margin: 0;
   height: 100%;
   font-size: 16px;
+  user-select: none;
+  font-family: 'Noto Sans KR', sans-serif;
 }
 
 #app {
@@ -27,4 +29,27 @@ a {
 
 .stretch {
   grid-area: 1 / 1 / 3 / end;
+}
+
+#search-button {
+  outline: none;
+  cursor: pointer;
+  position: fixed;
+  top: 40px;
+  right: 40px;
+  height: 48px;
+  width: 48px;
+  font-size: 1.4rem;
+}
+
+@media (max-width: 500px) {
+  #search-button {
+    top: auto;
+    right: 40px;
+    bottom: 40px;
+  }
+}
+
+.btn:hover {
+  opacity: 0.8;
 }
