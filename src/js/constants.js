@@ -39,6 +39,9 @@ export const SELECTORS = {
     TO_WATCH_LIST_BUTTON: '.to-watch-list-button',
     WATCHED_LIST_BUTTON: '.watched-list-button',
     SENTINEL: '.sentinel',
+    MENU_LIST: '.menu-list',
+    VIDEO_MODAL: '.video-modal',
+    VIDEO_MODAL_PLAYER: '.video-modal iframe',
   },
   ID: {
     SEARCH_BUTTON: '#search-button',

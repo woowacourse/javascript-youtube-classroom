@@ -43,14 +43,14 @@ export const formatDate = (publishedAt) => {
   return `${year}년 ${month}월 ${day}일`;
 };
 
-export const openModal = () => {
+export const openModal = (selector) => {
   document.body.classList.add('overflow-hidden');
-  $(SELECTORS.CLASS.MODAL).classList.add(SELECTORS.STATUS.MODAL_OPEN);
+  $(selector).classList.add(SELECTORS.STATUS.MODAL_OPEN);
 };
 
-export const closeModal = () => {
+export const closeModal = (selector) => {
   document.body.classList.remove('overflow-hidden');
-  $(SELECTORS.CLASS.MODAL).classList.remove(SELECTORS.STATUS.MODAL_OPEN);
+  $(selector).classList.remove(SELECTORS.STATUS.MODAL_OPEN);
 };
 
 export const generateCSSClass = (condition, className) => {

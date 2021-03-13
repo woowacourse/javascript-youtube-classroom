@@ -1,20 +1,27 @@
 import { generateCSSClass } from './utils.js';
 
+export const getVideoPlayerTemplate = (id) => {
+  return `
+    <iframe
+      width="80%"
+      height="80%"
+      src="https://www.youtube.com/embed/${id}"
+      frameborder="0"
+      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+      allowfullscreen>
+    </iframe>
+  `;
+};
+
 export const getVideoTemplate = (data, options) => {
-  const { id, title, channelId, channelTitle, dateString } = data;
+  const { id, title, channelId, channelTitle, dateString, thumbnailURL } = data;
   const { containsSaveButton = false, containsMenu = false, isSaved = false, isWatched = false } = options;
 
   return `
     <article class="clip d-flex flex-col" data-video-id="${id}">
-      <div class="preview-container">
-        <iframe
-          width="100%"
-          height="118"
-          src="https://www.youtube.com/embed/${id}"
-          frameborder="0"
-          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-          allowfullscreen>
-        </iframe>
+      <div class="preview-container" style="background-image: url(${thumbnailURL})">
+        <div class="dimmed"></div>
+        <button class="play-button" />
       </div>
       <div class="content-container pt-2 px-1 d-flex flex-col justify-between flex-1">
         <div>

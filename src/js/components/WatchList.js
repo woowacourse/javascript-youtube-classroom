@@ -8,10 +8,11 @@ import {
   colorizeButton,
   uncolorizeButton,
   getVideoSaveButton,
+  openModal,
 } from '../utils.js';
 import { SELECTORS, LOCAL_STORAGE_KEYS, ALERT_MESSAGE, MENU } from '../constants.js';
 import { searchYoutubeById } from '../api.js';
-import { getVideoTemplate } from '../templates.js';
+import { getVideoTemplate, getVideoPlayerTemplate } from '../templates.js';
 import Observer from '../lib/Observer.js';
 
 export default class WatchList extends Observer {
@@ -28,7 +29,8 @@ export default class WatchList extends Observer {
   renderSavedVideos(items) {
     const resultTemplate = items
       .map((item) => {
-        const { channelId, title, channelTitle, publishedAt } = item.snippet;
+        const { channelId, title, channelTitle, publishedAt, thumbnails } = item.snippet;
+        const thumbnailURL = thumbnails.high.url;
         const { id } = item;
 
         const dateString = new Date(publishedAt).toLocaleDateString('ko-KR', {
@@ -37,7 +39,7 @@ export default class WatchList extends Observer {
           day: 'numeric',
         });
 
-        const video = { id, title, channelId, channelTitle, dateString };
+        const video = { id, title, channelId, channelTitle, dateString, thumbnailURL };
         const options = { containsMenu: true, isWatched: this.nowMenu === MENU.WATCHED };
         const videoTemplate = getVideoTemplate(video, options);
 
@@ -128,7 +130,7 @@ export default class WatchList extends Observer {
     if (target.classList.contains('delete')) {
       if (!window.confirm(ALERT_MESSAGE.CONFIRM_DELETE)) return;
 
-      const targetId = target.closest('.menu-list').dataset.videoId;
+      const targetId = target.closest(SELECTORS.CLASS.MENU_LIST).dataset.videoId;
       const newWatchList = watchList.filter(({ videoId }) => videoId !== targetId);
       this.store.update(LOCAL_STORAGE_KEYS.WATCH_LIST, newWatchList);
 
@@ -141,7 +143,7 @@ export default class WatchList extends Observer {
     }
 
     if (target.classList.contains('watched')) {
-      const targetId = target.closest('.menu-list').dataset.videoId;
+      const targetId = target.closest(SELECTORS.CLASS.MENU_LIST).dataset.videoId;
       const newWatchList = watchList.map((video) => {
         const nowVideo = { ...video };
         if (nowVideo.videoId === targetId) {
@@ -157,6 +159,16 @@ export default class WatchList extends Observer {
       } else if (this.nowMenu === MENU.WATCHED) {
         showSnackbar(ALERT_MESSAGE.VIDEO_MOVED_TO_WATCH_LIST);
       }
+    }
+  }
+
+  handlePlayVideo(event) {
+    const { target } = event;
+
+    if (target.classList.contains('play-button')) {
+      const targetId = target.closest(SELECTORS.CLASS.CLIP).dataset.videoId;
+      $(SELECTORS.CLASS.VIDEO_MODAL).innerHTML = getVideoPlayerTemplate(targetId);
+      openModal(SELECTORS.CLASS.VIDEO_MODAL);
     }
   }
 
@@ -202,6 +214,7 @@ export default class WatchList extends Observer {
 
   bindEvents() {
     $(SELECTORS.CLASS.WATCH_LIST).addEventListener('click', this.handleClickVideoMenu.bind(this));
+    $(SELECTORS.CLASS.WATCH_LIST).addEventListener('click', this.handlePlayVideo.bind(this));
     $(SELECTORS.CLASS.TO_WATCH_LIST_BUTTON).addEventListener('click', this.handleShowToWatchList.bind(this));
     $(SELECTORS.CLASS.WATCHED_LIST_BUTTON).addEventListener('click', this.handleShowWatchedList.bind(this));
   }

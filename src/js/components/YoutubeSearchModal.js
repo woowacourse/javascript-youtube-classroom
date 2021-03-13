@@ -1,8 +1,9 @@
 import { searchYoutube } from '../api.js';
-import { $, showSnackbar, renderSkeletonUI, closeModal } from '../utils.js';
+import { $, showSnackbar, renderSkeletonUI, closeModal, openModal } from '../utils.js';
 import { ALERT_MESSAGE, SELECTORS, LOCAL_STORAGE_KEYS, SERACH_RESULT, SETTINGS } from '../constants.js';
 import {
   getVideoTemplate,
+  getVideoPlayerTemplate,
   getFormTemplate,
   getNoResultTemplate,
   getEmptySearchResultTemplate,
@@ -51,7 +52,8 @@ export default class YoutubeSearchModal extends Observer {
   getResultTemplate(result) {
     return result
       .map((item) => {
-        const { channelId, title, channelTitle, publishedAt } = item.snippet;
+        const { channelId, title, channelTitle, publishedAt, thumbnails } = item.snippet;
+        const thumbnailURL = thumbnails.high.url;
         const id = item.id.videoId;
 
         const { watchList } = this.store.get();
@@ -63,12 +65,22 @@ export default class YoutubeSearchModal extends Observer {
           day: 'numeric',
         });
 
-        const video = { id, title, channelId, channelTitle, dateString };
+        const video = { id, title, channelId, channelTitle, dateString, thumbnailURL };
         const options = { containsSaveButton: !isSaved };
 
         return getVideoTemplate(video, options);
       })
       .join('');
+  }
+
+  handlePlayVideo(event) {
+    const { target } = event;
+
+    if (target.classList.contains('play-button')) {
+      const targetId = target.closest(SELECTORS.CLASS.CLIP).dataset.videoId;
+      $(SELECTORS.CLASS.VIDEO_MODAL).innerHTML = getVideoPlayerTemplate(targetId);
+      openModal(SELECTORS.CLASS.VIDEO_MODAL);
+    }
   }
 
   render() {
@@ -137,6 +149,7 @@ export default class YoutubeSearchModal extends Observer {
       const template = this.getResultTemplate(response.items);
       this.renderResults(template);
 
+      this.bindPlayVideoEvent();
       this.scrollObserver.observe($(SELECTORS.CLASS.SENTINEL));
     } catch (error) {
       console.error(error);
@@ -180,8 +193,13 @@ export default class YoutubeSearchModal extends Observer {
 
   handleClickDimmer(event) {
     if (event.target === event.currentTarget) {
-      closeModal();
+      closeModal(SELECTORS.CLASS.MODAL);
     }
+  }
+
+  bindPlayVideoEvent() {
+    $(SELECTORS.CLASS.YOUTUBE_SEARCH_RESULT).removeEventListener('click', this.handlePlayVideo.bind(this));
+    $(SELECTORS.CLASS.YOUTUBE_SEARCH_RESULT).addEventListener('click', this.handlePlayVideo.bind(this));
   }
 
   bindEvents() {
@@ -194,5 +212,6 @@ export default class YoutubeSearchModal extends Observer {
   update() {
     this.renderRecentKeywordList();
     this.renderSavedVideoCount();
+    $(SELECTORS.CLASS.YOUTUBE_SEARCH_RESULT).addEventListener('click', this.handlePlayVideo.bind(this));
   }
 }
