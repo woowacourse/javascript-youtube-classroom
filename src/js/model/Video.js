@@ -243,11 +243,6 @@ export default class Video {
       classes: [CLASS_NAMES.CLIP.LIKE_BUTTON, 'opacity-hover'],
       textContent: '👍',
     });
-    const commentButton = createElement({
-      tag: 'button',
-      classes: [CLASS_NAMES.CLIP.COMMENT_BUTTON, 'opacity-hover'],
-      textContent: '💬',
-    });
     const deleteButton = createElement({
       tag: 'button',
       classes: [CLASS_NAMES.CLIP.DELETE_BUTTON, 'opacity-hover'],
@@ -258,7 +253,6 @@ export default class Video {
 
     buttonContainer.appendChild(watchedButton);
     buttonContainer.appendChild(likeButton);
-    buttonContainer.appendChild(commentButton);
     buttonContainer.appendChild(deleteButton);
 
     return buttonContainer;

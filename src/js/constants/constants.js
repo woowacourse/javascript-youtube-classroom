@@ -95,7 +95,6 @@ export const SELECTORS = {
     VIDEO_SAVE_BUTTON: '.save-btn',
     WATCHED_BUTTON: '.watched-button',
     LIKE_BUTTON: '.like-button',
-    COMMENT_BUTTON: '.comment-button',
     DELETE_BUTTON: '.delete-button',
   },
 };
@@ -109,7 +108,6 @@ export const CLASS_NAMES = {
     MANAGEMENT_BUTTONS: 'management-buttons',
     WATCHED_BUTTON: 'watched-button',
     LIKE_BUTTON: 'like-button',
-    COMMENT_BUTTON: 'comment-button',
     DELETE_BUTTON: 'delete-button',
   },
 };
