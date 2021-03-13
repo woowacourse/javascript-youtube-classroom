@@ -1,7 +1,7 @@
 import storage from '../../utils/localStorage.js';
 import { LOCAL_STORAGE_KEY, MESSAGE } from '../../utils/constant.js';
 import { showElement } from '../../utils/setAttribute.js';
-import { snackbar } from '../../utils/snackbar.js';
+import { showSnackbar } from '../../utils/showSnackbar.js';
 import $DOM from '../../utils/DOM.js';
 
 const toggleIsWatched = (target) => {
@@ -14,7 +14,7 @@ const toggleIsWatched = (target) => {
     ? MESSAGE.NOTIFY.CHECK_UNWACTHED_CLIP
     : MESSAGE.NOTIFY.CHECK_WACTHED_CLIP;
 
-  snackbar(notifyMessage);
+  showSnackbar(notifyMessage);
 
   savedClips[targetClipIndex].isWatched = !isWatched;
   storage.set(LOCAL_STORAGE_KEY.SAVED_CLIPS, savedClips);
@@ -37,7 +37,7 @@ const deleteClip = (target) => {
     return;
   }
 
-  snackbar(MESSAGE.NOTIFY.DELETE_CLIP);
+  showSnackbar(MESSAGE.NOTIFY.DELETE_CLIP);
   savedClips[targetClipIndex].isDeleted = true;
   targetClip.classList.add('deleted-clip');
 
