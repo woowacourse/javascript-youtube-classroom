@@ -37,9 +37,17 @@ a {
   position: fixed;
   top: 40px;
   right: 40px;
-  height: 60px;
-  width: 60px;
-  font-size: 2rem;
+  height: 48px;
+  width: 48px;
+  font-size: 1.4rem;
+}
+
+@media (max-width: 500px) {
+  #search-button {
+    top: auto;
+    right: 40px;
+    bottom: 40px;
+  }
 }
 
 .btn:hover {
