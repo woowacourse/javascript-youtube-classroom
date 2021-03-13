@@ -40,7 +40,6 @@ export default class VideoSearchBar extends Component {
   }
 
   render(preStates, states) {
-    // TODO: 조건문을 의미를 명확하게 전달 될 수 있도록 바꾸기 (ex. isUpdated)
     if (preStates.searchHistory !== states.searchHistory) {
       const latestSearchHistory = states.searchHistory[0];
 
