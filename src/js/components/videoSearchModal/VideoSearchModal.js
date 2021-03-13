@@ -91,7 +91,6 @@ export default class VideoSearchModal extends Component {
 
   onModalClose() {
     pauseAllIframeVideo();
-
     this.$target.classList.remove('open');
   }
 
