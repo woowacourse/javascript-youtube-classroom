@@ -1,6 +1,7 @@
 import { $ } from '../utils/dom.js';
 import { isEmptyArray } from '../utils/validator.js';
 import {
+  TABS,
   STORE_KEYS,
   ALERT_MESSAGES,
   SNACKBAR_MESSAGES,
@@ -15,7 +16,7 @@ import Video from '../models/Video.js';
 export default class YoutubeController {
   constructor(store) {
     this.store = store;
-    this.selectedTab = $('#saved-btn');
+    this.selectedTab = TABS.SAVED;
     this.navigationView = new NavigationView($('#nav-bar'));
     this.searchModalView = new SearchModalView($('.modal'));
     this.savedVideosView = new SavedVideosView($('#main-videos'));
@@ -45,7 +46,7 @@ export default class YoutubeController {
     const watchedVideoIds = this.store.state.watchedVideoIds;
     const unWatchedVideoIds = this.store.computed.unWatchedVideoIds;
 
-    this.updateNavTab($('#saved-btn'));
+    this.updateNavTab(TABS.SAVED);
     this.savedVideosView.showMatchedVideos(watchedVideoIds, unWatchedVideoIds);
 
     if (isEmptyArray(unWatchedVideoIds)) {
@@ -57,7 +58,7 @@ export default class YoutubeController {
     const watchedVideoIds = this.store.state.watchedVideoIds;
     const unWatchedVideoIds = this.store.computed.unWatchedVideoIds;
 
-    this.updateNavTab($('#watched-btn'));
+    this.updateNavTab(TABS.WATCHED);
     this.savedVideosView.showMatchedVideos(unWatchedVideoIds, watchedVideoIds);
 
     if (isEmptyArray(watchedVideoIds)) {
@@ -69,7 +70,7 @@ export default class YoutubeController {
     this.searchModalView.updateSavedCount(this.store.state.savedVideoIds);
     this.searchModalView.updateChips(this.store.state.recentKeywords);
     this.searchModalView.openModal();
-    this.updateNavTab($('#search-btn'));
+    this.updateNavTab(TABS.SEARCH);
   }
 
   updateNavTab(currentTab) {
@@ -81,9 +82,6 @@ export default class YoutubeController {
     if (!confirm(ALERT_MESSAGES.CONFIRM_DELETE_VIDEO)) return;
 
     const isDelete = true;
-    const isFromSavedTab = this.store.computed.unWatchedVideoIds.includes(
-      videoId,
-    );
 
     this.store.update(
       {
@@ -94,37 +92,27 @@ export default class YoutubeController {
     );
     this.savedVideosView.removeSavedVideoClip(videoId);
     popSnackbar(SNACKBAR_MESSAGES.DELETE_VIDEO.SUCCESS);
-
-    const unWatchedVideoIds = this.store.computed.unWatchedVideoIds;
-    const watchedVideoIds = this.store.state.watchedVideoIds;
-
-    if (isFromSavedTab) {
-      if (isEmptyArray(unWatchedVideoIds)) {
-        this.savedVideosView.showVideoEmptyImg();
-      }
-    } else {
-      if (isEmptyArray(watchedVideoIds)) {
-        this.savedVideosView.showVideoEmptyImg();
-      }
-    }
+    this.checkCurrentTabEmpty();
   }
 
   markVideoWatched(videoId) {
     this.store.update({ [STORE_KEYS.WATCHED_VIDEO_IDS]: videoId });
     this.savedVideosView.toggleWatchedButton(videoId);
+    this.checkCurrentTabEmpty();
+  }
 
+  checkCurrentTabEmpty() {
     const watchedVideoIds = this.store.state.watchedVideoIds;
     const unWatchedVideoIds = this.store.computed.unWatchedVideoIds;
-    const isFromSavedTab = unWatchedVideoIds.includes(videoId);
 
-    if (isFromSavedTab) {
+    if (this.selectedTab === TABS.SAVED) {
       popSnackbar(SNACKBAR_MESSAGES.WATCH_VIDEO_REMOVE.SUCCESS);
-      if (isEmptyArray(watchedVideoIds)) {
+      if (isEmptyArray(unWatchedVideoIds)) {
         this.savedVideosView.showVideoEmptyImg();
       }
     } else {
       popSnackbar(SNACKBAR_MESSAGES.WATCH_VIDEO_ADD.SUCCESS);
-      if (isEmptyArray(unWatchedVideoIds)) {
+      if (isEmptyArray(watchedVideoIds)) {
         this.savedVideosView.showVideoEmptyImg();
       }
     }

@@ -1,5 +1,13 @@
+import { $ } from './dom.js';
+
 export const SEARCH_URL = 'https://zig-youtube-api.netlify.app/youtube/search?';
 export const VIDEO_URL = 'https://zig-youtube-api.netlify.app/youtube/videos?';
+
+export const TABS = {
+  SAVED: $('#saved-btn'),
+  WATCHED: $('#watched-btn'),
+  SEARCH: $('#search-btn'),
+};
 
 export const VALUE = {
   KEYWORD_COUNT: 3,
