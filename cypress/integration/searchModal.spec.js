@@ -20,6 +20,7 @@ describe('검색 모달 테스트', () => {
 
   beforeEach(() => {
     cy.visit('http://localhost:5500/');
+    cy.clearLocalStorage();
   });
 
   it('검색 모달에서 "엔터키"를 누르면, 최초 검색 결과 10개가 화면에 표시된다.', () => {
@@ -79,13 +80,14 @@ describe('검색 모달 테스트', () => {
   });
 
   it('저장버튼을 누르면 localStorage에 해당 영상이 저장된다.', () => {
+    const ANOTHER_KEYWORD = '디토';
     const FIRST_INDEX = 0;
 
     interceptYoutubeApiRequest(KEYWORD, INTERCEPT_ALIAS);
     cy.get('.js-search-menu-button').click();
-    cy.get('.js-search-keyword-input').type(KEYWORD);
+    cy.get('.js-search-keyword-input').type(ANOTHER_KEYWORD);
     cy.get('.js-search-keyword-form').submit();
-    cy.wait(`@${INTERCEPT_ALIAS}`);
+    cy.wait(3000);
 
     cy.get('.js-save-button')
       .eq(FIRST_INDEX)
@@ -94,7 +96,7 @@ describe('검색 모달 테스트', () => {
         const list = JSON.parse(getListFromLocalStorage(DB_KEY.VIDEOS));
 
         cy.wrap($el).should('have.id', list[FIRST_INDEX].videoId);
-        cy.get('.js-snackbar').contains(MESSAGE.VIDEO_IS_SAVED_SUCCESSFULLY.replace('\n', ''));
+        cy.get('.snackbar').contains(MESSAGE.VIDEO_IS_SAVED_SUCCESSFULLY.replace('\n', ''));
       });
   });
 
@@ -107,7 +109,7 @@ describe('검색 모달 테스트', () => {
     cy.reload();
 
     cy.get('.js-search-menu-button').click();
-    cy.get('.js-recent-keywords').children(0).should('have.text', KEYWORD);
+    cy.get('.js-recent-keywords').children(0).contains(KEYWORD);
     cy.get('.js-modal article').should('have.length', YOUTUBE_API.MAX_RESULT_COUNT);
   });
 
@@ -127,7 +129,7 @@ describe('검색 모달 테스트', () => {
       .children()
       .should('have.length', MAX_RECENT_KEYWORD_COUNT)
       .each(($el, i) => {
-        cy.wrap($el).should('have.text', KEYWORDS[TRY_COUNT - 1 - i]);
+        cy.wrap($el).contains(KEYWORDS[TRY_COUNT - 1 - i]);
       });
   });
 });
@@ -138,6 +140,7 @@ describe('예외 처리 테스트', () => {
 
   beforeEach(() => {
     cy.visit('http://localhost:5500/');
+    cy.clearLocalStorage();
   });
 
   it('100개의 영상을 저장했을 때, 더 저장하려고 시도할 경우 저장용량 초과 메세지를 표시한다.', () => {
@@ -159,7 +162,7 @@ describe('예외 처리 테스트', () => {
       .eq(100)
       .click()
       .then(($el) => {
-        cy.get('.js-snackbar').contains(MESSAGE.STORAGE_CAPACITY_IS_FULL.replace('\n', ''));
+        cy.get('.snackbar').contains(MESSAGE.STORAGE_CAPACITY_IS_FULL.replace('\n', ''));
         cy.wrap($el).should('not.have.class', 'saved');
       });
   });
