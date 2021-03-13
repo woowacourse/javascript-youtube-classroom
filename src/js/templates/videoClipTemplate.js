@@ -66,6 +66,7 @@ function getSaveButtons(item) {
         class="btn btn-hover-cyan-700 bg-cyan-500 ${
           item.saved ? "d-none-hard" : ""
         }"
+        type="button"
         >
         ⬇️ 저장
       </button>
@@ -73,6 +74,7 @@ function getSaveButtons(item) {
         data-video-id=${item.videoId}
         data-video-saved="saved" 
         class="btn btn-hover-gray-300 ${item.saved ? "" : "d-none-hard"}"
+        type="button"
         >
         저장 취소
       </button>
@@ -84,17 +86,20 @@ function getClipButtons(item) {
     <div class="clip-buttons">
       <button 
         data-watched-button=${item.videoId} 
-        class=${item.watched ? "" : "opacity-hover"}>
+        class=${item.watched ? "" : "opacity-hover"}
+        type="button">
         ✅
       </button>
       <button 
         data-liked-button=${item.videoId} 
-        class=${item.liked ? "" : "opacity-hover"}>
+        class=${item.liked ? "" : "opacity-hover"}
+        type="button">
         👍
       </button>
       <button 
         data-delete-button=${item.videoId} 
-        class="opacity-hover">
+        class="opacity-hover"
+        type="button">
         🗑️
       </button>
     </div>`;
