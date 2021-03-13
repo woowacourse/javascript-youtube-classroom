@@ -132,8 +132,12 @@ export default class VideoList extends Component {
 
     if (filteredKeys.length === 0) {
       this.$notFoundImage.classList.remove('d-none');
+      $(SELECTORS.MENU_BUTTON.SEARCH_ID).classList.add('search-button-guide');
     } else {
       this.$notFoundImage.classList.add('d-none');
+      $(SELECTORS.MENU_BUTTON.SEARCH_ID).classList.remove(
+        'search-button-guide'
+      );
     }
   }
 

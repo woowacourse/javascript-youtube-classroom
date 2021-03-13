@@ -44,6 +44,11 @@
   object-fit: cover;
 }
 
+.clip .preview-container:hover {
+  transform: scale(1.1);
+  transition-duration: 0.5s;
+}
+
 .clip .overlay-preview {
   position: absolute;
   left: 0;
@@ -51,7 +56,6 @@
   right: 0;
   bottom: 0;
 }
-
 
 .clip .content-container h3 {
   display: -webkit-box;
