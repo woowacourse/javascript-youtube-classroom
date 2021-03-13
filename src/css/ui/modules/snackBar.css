@@ -1,0 +1,64 @@
+#snackbar {
+  visibility: hidden;
+  min-width: 250px;
+  margin-left: -125px;
+  background-color: #333;
+  color: #fff;
+  text-align: center;
+  border-radius: 2px;
+  padding: 16px;
+  position: fixed;
+  z-index: 3;
+  left: 50%;
+  bottom: 10px;
+}
+
+.show {
+  visibility: visible !important; /* #snackbar의 id 스타일로 visibility가 적용되어 있는데, class toggle로 visibility를 변경하기 위해 !important 사용*/
+  -webkit-animation: fadein 0.5s, fadeout 0.5s 2.7s;
+  animation: fadein 0.5s, fadeout 0.5s 2.7s;
+}
+
+@-webkit-keyframes fadein {
+  from {
+    bottom: 10px;
+    opacity: 0;
+  }
+  to {
+    bottom: 30px;
+    opacity: 1;
+  }
+}
+
+@keyframes fadein {
+  from {
+    bottom: 10px;
+    opacity: 0;
+  }
+  to {
+    bottom: 10px;
+    opacity: 1;
+  }
+}
+
+@-webkit-keyframes fadeout {
+  from {
+    bottom: 0;
+    opacity: 1;
+  }
+  to {
+    bottom: -30px;
+    opacity: 0;
+  }
+}
+
+@keyframes fadeout {
+  from {
+    bottom: 10px;
+    opacity: 1;
+  }
+  to {
+    bottom: -30px;
+    opacity: 0;
+  }
+}

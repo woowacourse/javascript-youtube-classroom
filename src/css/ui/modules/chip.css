@@ -1,14 +1,18 @@
 .chip {
+  display: inline-block;
   padding: 0 12px;
   background-color: #efefef;
   border-radius: 100px;
-  display: inline-flex;
   color: rgba(0, 0, 0, 0.87);
   align-items: center;
-  height: 32px;
+  height: 24px;
   font-size: 14px;
   cursor: pointer;
   border: none;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  max-width: 100px;
 }
 
 .chip .icon {
@@ -16,4 +20,8 @@
   color: rgba(0, 0, 0, 0.54);
   width: 20px;
   text-align: center;
+}
+
+.chip:hover {
+  background-color: #b3eaf2;
 }

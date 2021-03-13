@@ -10,6 +10,8 @@ import {
   updateRequestPending,
   updateVideosToBeShown,
 } from '../../redux/action.js';
+import { SELECTORS } from '../../constants/constants.js';
+import { pauseAllIframeVideo } from '../../utils/youtubeClassRoomUtils.js';
 
 export default class VideoSearchModal extends Component {
   constructor($target) {
@@ -19,9 +21,9 @@ export default class VideoSearchModal extends Component {
 
   initRender() {
     this.$target.innerHTML = `
-    <div class="video-search-overlay w-100" data-action="modal-close"></div>
+    <div class="video-search-overlay w-100"></div>
     <div class="modal-inner p-8">
-        <button class="modal-close">
+        <button class="modal-close" aria-label="검색창 닫기">
           <svg viewbox="0 0 40 40">
             <path class="close-x" d="M 10,10 L 30,30 M 30,10 L 10,30" />
           </svg>
@@ -40,21 +42,25 @@ export default class VideoSearchModal extends Component {
   }
 
   mount() {
-    this.videoSearchBar = new VideoSearchBar($('#video-search-bar'), {
-      requestVideos: this.requestVideos.bind(this),
-    });
+    this.videoSearchBar = new VideoSearchBar(
+      $(SELECTORS.SEARCH_MODAL.VIDEO_SEARCH_BAR.SECTION_ID),
+      { requestVideos: this.requestVideos.bind(this) }
+    );
 
-    this.searchTermHistory = new SearchTermHistory($('#search-term-history'), {
-      requestVideos: this.requestVideos.bind(this),
-    });
+    this.searchTermHistory = new SearchTermHistory(
+      $(SELECTORS.SEARCH_MODAL.SEARCH_TERM_HISTORY.SECTION_ID),
+      { requestVideos: this.requestVideos.bind(this) }
+    );
 
-    this.videoSearchResult = new VideoSearchResult($('#video-search-result'), {
-      requestVideos: this.requestVideos.bind(this),
-    });
+    this.videoSearchResult = new VideoSearchResult(
+      $(SELECTORS.SEARCH_MODAL.VIDEO_SEARCH_RESULT.SECTION_ID),
+      { requestVideos: this.requestVideos.bind(this) }
+    );
   }
 
   selectDOM() {
-    this.$modalClose = $('.modal-close');
+    this.$modalClose = $(SELECTORS.SEARCH_MODAL.MODAL_CLOSE_BUTTON_CLASS);
+    this.$overlay = $(SELECTORS.SEARCH_MODAL.MODAL_OVERLAY_CLASS);
   }
 
   bindEvent() {
@@ -66,17 +72,28 @@ export default class VideoSearchModal extends Component {
   }
 
   onClickOutsideModal(event) {
-    if (event.target.dataset.action === 'modal-close') {
+    if (event.target === this.$overlay) {
       this.onModalClose();
     }
   }
 
   onModalShow() {
+    pauseAllIframeVideo();
+
+    $('body').classList.add('overflow-hidden');
     this.$target.classList.add('open');
+
+    const latestSearchTerm = store.getStates().searchHistory[0];
+
+    if (latestSearchTerm) {
+      this.requestVideos(latestSearchTerm);
+    }
     this.videoSearchBar.$videoSearchInput.focus();
   }
 
   onModalClose() {
+    pauseAllIframeVideo();
+    $('body').classList.remove('overflow-hidden');
     this.$target.classList.remove('open');
   }
 
@@ -85,7 +102,9 @@ export default class VideoSearchModal extends Component {
       store.dispatch(addSearchHistory(searchTerm));
       youtubeAPIManager.setSearchTerm(searchTerm);
     }
+
     store.dispatch(updateRequestPending(true));
+
     youtubeAPIManager
       .requestVideos()
       .then((videoInfos) => {

@@ -16,7 +16,7 @@ export const $ = (selector, target = document) => {
 };
 
 export const $$ = (selector, target = document) => {
-  return target.querySelectorAll(selector);
+  return Array.from(target.querySelectorAll(selector));
 };
 
 export const createElement = ({
@@ -38,6 +38,7 @@ export const localStorageGetItem = (key) => {
   try {
     return JSON.parse(localStorage.getItem(key));
   } catch (error) {
+    console.log(error);
     return undefined;
   }
 };
@@ -48,5 +49,20 @@ export const localStorageSetItem = (key, value) => {
     localStorage.setItem(key, decycled);
   } else {
     throw new Error('JSON stringify error.');
+  }
+};
+
+export const unescapeString = (string) => {
+  return new DOMParser()
+    .parseFromString(string, 'text/html')
+    .querySelector('html').textContent;
+};
+
+export const isEmptyObject = (obj) => {
+  try {
+    if (Object.keys(obj).length === 0) return true;
+  } catch (error) {
+    console.log(error);
+    return false;
   }
 };

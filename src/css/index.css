@@ -1,6 +1,10 @@
 @import './shared/index.css';
 @import './ui/index.css';
 
+* {
+  box-sizing: border-box;
+}
+
 html,
 body {
   margin: 0;
@@ -25,17 +29,25 @@ a {
   opacity: 1;
 }
 
-.save-btn {
-  position: absolute;
-  bottom: 10px;
-  right: 0px;
+.overflow-hidden {
+  overflow: hidden;
 }
 
-.clickable-btn:hover {
-  background-color: rgb(179, 234, 242);
+.checked {
+  opacity: 1;
 }
-.video-info {
-  height: 110px;
+
+.menu-btn:hover {
+  background-color: #b3eaf2;
+}
+
+input:checked + .menu-btn {
+  background-color: #b3eaf2;
+}
+
+label.menu-btn {
+  background-color: rgb(243, 244, 246);
+  line-height: 38px;
 }
 
 .video-search-overlay {
@@ -44,6 +56,28 @@ a {
   bottom: 0;
 }
 
-.disabled-btn {
-  cursor: not-allowed;
+.management-buttons button {
+  border: 0;
+  outline: 0;
+  background: none;
+  cursor: pointer;
+  font-size: 1.25rem;
+}
+
+.video-list {
+  height: none;
+}
+
+.not-saved-video-image {
+  top: 0;
+  left: 50%;
+  transform: translate(-50%, 0%);
+  position: absolute;
+  object-fit: contain;
+}
+
+fieldset {
+  border: none;
+  padding: 0;
+  margin: 0;
 }

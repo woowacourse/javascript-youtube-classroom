@@ -4,11 +4,33 @@ import {
   ADD_SEARCH_TERM,
   UPDATE_REQUEST_PENDING,
   INCREASE_SAVED_VIDEO_COUNT,
+  DECREASE_SAVED_VIDEO_COUNT,
 } from './actionType.js';
 
 export const updateVideosToBeShown = (items) => {
-  const videos = items.map(item => new Video(item));
-  
+  const videos = items.map(
+    ({
+      id: { videoId },
+      snippet: {
+        title: videoTitle,
+        channelTitle,
+        channelId,
+        publishedAt,
+        thumbnails: {
+          default: { url: thumbnailURL },
+        },
+      },
+    }) =>
+      new Video({
+        videoId,
+        videoTitle,
+        channelTitle,
+        channelId,
+        publishedAt,
+        thumbnailURL,
+      })
+  );
+
   return {
     type: UPDATE_VIDEOS_TO_BE_SHOWN,
     payload: {
@@ -38,5 +60,11 @@ export const updateRequestPending = (pendingState) => {
 export const increaseSavedVideoCount = () => {
   return {
     type: INCREASE_SAVED_VIDEO_COUNT,
+  };
+};
+
+export const decreaseSavedVideoCount = () => {
+  return {
+    type: DECREASE_SAVED_VIDEO_COUNT,
   };
 };

@@ -1,30 +1,42 @@
-import { store } from '../index.js';
-import { increaseSavedVideoCount } from '../redux/action.js';
 import {
-  VALUES,
-  ERROR_MESSAGE,
   LOCALSTORAGE_KEYS,
+  CLASS_NAMES,
+  TYPES,
 } from '../constants/constants.js';
 import {
   createElement,
   localStorageGetItem,
-  localStorageSetItem,
+  unescapeString,
 } from '../utils/utils.js';
 
 export default class Video {
-  constructor(videoInfo) {
-    this.videoId = videoInfo.id.videoId;
-    this.videoTitle = videoInfo.snippet.title;
+  static cache = {};
+
+  constructor({
+    videoId,
+    videoTitle,
+    channelTitle,
+    channelId,
+    publishedAt,
+    thumbnailURL,
+    watched = false,
+  }) {
+    this.videoId = videoId;
+    this.videoTitle = unescapeString(videoTitle);
     this.videoEmbedURL = this.createVideoEmbedURL();
-    this.channelTitle = videoInfo.snippet.channelTitle;
-    this.channelId = videoInfo.snippet.channelId;
+    this.channelTitle = unescapeString(channelTitle);
+    this.channelId = channelId;
     this.channelURL = this.createChannelURL();
-    this.uploadTime = this.createVideoUploadDate(videoInfo.snippet.publishedAt);
-    this.thumbnailURL = videoInfo.snippet.thumbnails.default.url;
+    this.uploadTime = this.createVideoUploadDate(publishedAt);
+    this.thumbnailURL = thumbnailURL;
+    this.watched = watched;
+
+    if (Video.cache[this.videoId]) return;
+    Video.cache[this.videoId] = this.toJSON();
   }
 
   createVideoEmbedURL() {
-    return `https://www.youtube.com/embed/${this.videoId}`;
+    return `https://www.youtube.com/embed/${this.videoId}?enablejsapi=1&version=3&playerapiid=ytplayer`;
   }
 
   createChannelURL() {
@@ -34,8 +46,10 @@ export default class Video {
   createVideoUploadDate(date) {
     if (Date.parse(date)) {
       const newDate = new Date(date);
+
       return `${newDate.getFullYear()}년 ${newDate.getMonth()}월 ${newDate.getDate()}일`;
     }
+
     return '';
   }
 
@@ -48,36 +62,15 @@ export default class Video {
       channelURL: this.channelURL,
       uploadTime: this.uploadTime,
       thumbnailURL: this.thumbnailURL,
+      watched: this.watched,
+      savedTime: new Date(),
     };
   }
 
   isSavedVideo() {
     const videos = localStorageGetItem(LOCALSTORAGE_KEYS.VIDEOS);
 
-    for (const key in videos) {
-      if (videos[this.videoId]) return true;
-    }
-
-    return false;
-  }
-
-  onSaveVideo(event) {
-    const savedVideos = localStorageGetItem(LOCALSTORAGE_KEYS.VIDEOS);
-
-    if (Object.keys(savedVideos).length >= VALUES.MAXIMUM_VIDEO_SAVE_COUNT) {
-      alert(ERROR_MESSAGE.MAXIMUM_VIDEO_SAVE_COUNT_ERROR);
-
-      return;
-    }
-
-    const newObject = {};
-    newObject[this.videoId] = this.toJSON();
-
-    Object.assign(savedVideos, newObject);
-    localStorageSetItem(LOCALSTORAGE_KEYS.VIDEOS, savedVideos);
-
-    event.target.classList.add('d-none');
-    store.dispatch(increaseSavedVideoCount());
+    return Object.keys(videos).includes(this.videoId);
   }
 
   createIframeSrcdocTemplate() {
@@ -126,20 +119,28 @@ export default class Video {
     </a>`;
   }
 
-  createTemplate() {
-    const fragment = document.createDocumentFragment();
-    const clip = createElement({ tag: 'article', classes: ['clip', 'd-none'] });
+  createTemplate(pageType = TYPES.PAGE.MANAGEMENT) {
+    const clip = createElement({
+      tag: 'article',
+      classes: ['clip'],
+    });
+
+    if (pageType === TYPES.PAGE.MANAGEMENT && this.watched) {
+      clip.classList.add('d-none');
+    }
+
+    clip.dataset.videoId = this.videoId;
 
     const previewContainer = createElement({
       tag: 'div',
-      classes: ['preview-container'],
+      classes: [CLASS_NAMES.CLIP.PREVIEW_CONTAINER],
     });
 
     const iframe = document.createElement('iframe');
     iframe.width = '100%';
     iframe.height = '118px';
-    iframe.srcdoc = this.createIframeSrcdocTemplate();
-    iframe.src = `${this.videoEmbedURL}`;
+    iframe.dataset.srcdoc = this.createIframeSrcdocTemplate();
+    iframe.dataset.src = `${this.videoEmbedURL}`;
     iframe.frameBorder = '0';
     iframe.allow =
       'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture';
@@ -147,6 +148,7 @@ export default class Video {
     iframe.onload = (e) => {
       e.target.classList.add('loaded');
     };
+    iframe.allowscriptaccess = 'always';
 
     previewContainer.appendChild(iframe);
 
@@ -159,6 +161,8 @@ export default class Video {
         'flex-col',
         'justify-between',
         'w-100',
+        'flex-grow',
+        'px-1',
       ],
     });
 
@@ -167,16 +171,15 @@ export default class Video {
       classes: ['d-flex', 'flex-col', 'video-info'],
     });
 
-    // TODO: 텍스트 인코딩 깨지는거 해결하기
     const videoTitle = createElement({
       tag: 'h3',
-      classes: ['video-title'],
+      classes: [CLASS_NAMES.CLIP.TITLE],
       textContent: this.videoTitle,
     });
 
     const channelURL = createElement({
       tag: 'a',
-      classes: ['channel-name', 'mt-1'],
+      classes: [CLASS_NAMES.CLIP.CHANNEL_NAME, 'mt-1'],
       textContent: this.channelTitle,
     });
     channelURL.href = this.channelURL;
@@ -193,27 +196,71 @@ export default class Video {
 
     meta.appendChild(uploadTime);
 
-    const button = createElement({
-      tag: 'button',
-      classes: ['save-btn', 'btn', 'clickable-btn'],
-      textContent: '⬇️ 저장',
-    });
-    button.onclick = this.onSaveVideo.bind(this);
-    if (this.isSavedVideo()) {
-      button.classList.add('d-none');
-    }
+    const buttonContainer =
+      pageType === TYPES.PAGE.MANAGEMENT
+        ? this.createManagementButtonSetTemplate()
+        : this.createSaveButtonTemplate();
 
     videoInfo.appendChild(videoTitle);
     videoInfo.appendChild(channelURL);
     videoInfo.appendChild(meta);
     contentContainer.appendChild(videoInfo);
-    contentContainer.appendChild(button);
 
     clip.appendChild(previewContainer);
     clip.appendChild(contentContainer);
+    clip.appendChild(buttonContainer);
 
-    fragment.appendChild(clip);
+    return clip;
+  }
 
-    return fragment;
+  createSaveButtonTemplate() {
+    const button = createElement({
+      tag: 'button',
+      classes: [CLASS_NAMES.CLIP.VIDEO_SAVE_BUTTON, 'btn'],
+      textContent: '⬇️ 저장',
+    });
+
+    if (this.isSavedVideo()) {
+      button.classList.add('d-none');
+    }
+
+    return button;
+  }
+
+  createManagementButtonSetTemplate() {
+    const buttonContainer = createElement({
+      tag: 'span',
+      classes: [CLASS_NAMES.CLIP.MANAGEMENT_BUTTONS, 'd-flex', 'justify-end'],
+    });
+
+    const watchedButton = createElement({
+      tag: 'button',
+      classes: [CLASS_NAMES.CLIP.WATCHED_BUTTON, 'opacity-hover'],
+      textContent: '✅',
+    });
+    const likeButton = createElement({
+      tag: 'button',
+      classes: [CLASS_NAMES.CLIP.LIKE_BUTTON, 'opacity-hover'],
+      textContent: '👍',
+    });
+    const commentButton = createElement({
+      tag: 'button',
+      classes: [CLASS_NAMES.CLIP.COMMENT_BUTTON, 'opacity-hover'],
+      textContent: '💬',
+    });
+    const deleteButton = createElement({
+      tag: 'button',
+      classes: [CLASS_NAMES.CLIP.DELETE_BUTTON, 'opacity-hover'],
+      textContent: '🗑️',
+    });
+
+    this.watched && watchedButton.classList.add('checked');
+
+    buttonContainer.appendChild(watchedButton);
+    buttonContainer.appendChild(likeButton);
+    buttonContainer.appendChild(commentButton);
+    buttonContainer.appendChild(deleteButton);
+
+    return buttonContainer;
   }
 }
