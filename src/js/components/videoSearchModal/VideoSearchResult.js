@@ -114,10 +114,12 @@ export default class VideoSearchResult extends Component {
     const videoId = event.target.closest(SELECTORS.VIDEO_LIST.CLIP_CLASS)
       .dataset.videoId;
 
-    const newObject = {};
-    Object.assign(newObject, savedVideos, { [videoId]: Video.cache[videoId] });
+    const newSavedVideos = {};
+    Object.assign(newSavedVideos, savedVideos, {
+      [videoId]: Video.cache[videoId],
+    });
 
-    localStorageSetItem(LOCALSTORAGE_KEYS.VIDEOS, newObject);
+    localStorageSetItem(LOCALSTORAGE_KEYS.VIDEOS, newSavedVideos);
 
     event.target.classList.add('d-none');
     store.dispatch(increaseSavedVideoCount());

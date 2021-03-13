@@ -5,7 +5,6 @@ import {
   $$,
   localStorageGetItem,
   localStorageSetItem,
-  createElement,
 } from '../../utils/utils.js';
 import {
   LOCALSTORAGE_KEYS,
@@ -98,6 +97,7 @@ export default class VideoList extends Component {
   }
 
   showByFilter() {
+    const filteredKeys = [];
     const savedVideos = localStorageGetItem(LOCALSTORAGE_KEYS.VIDEOS);
     $$(SELECTORS.VIDEO_LIST.CLIP_CLASS, this.$target).forEach(($elem) => {
       const {
@@ -111,22 +111,10 @@ export default class VideoList extends Component {
           savedVideos[videoId].watched) ||
         (this.filter === TYPES.FILTER.LIKED && savedVideos[videoId].liked)
       ) {
+        filteredKeys.push(videoId);
         $elem.classList.remove('d-none');
       } else {
         $elem.classList.add('d-none');
-      }
-    });
-
-    const filteredKeys = Object.keys(savedVideos).filter((videoId) => {
-      switch (this.filter) {
-        case TYPES.FILTER.WATCH_LATER:
-          return savedVideos[videoId].watched === false;
-        case TYPES.FILTER.WATCHED:
-          return savedVideos[videoId].watched === true;
-        case TYPES.FILTER.LIKED:
-          return savedVideos[videoId].liked === true;
-        default:
-          return false;
       }
     });
 
@@ -175,13 +163,14 @@ export default class VideoList extends Component {
     const clip = event.target.closest(SELECTORS.VIDEO_LIST.CLIP_CLASS);
     const savedVideos = localStorageGetItem(LOCALSTORAGE_KEYS.VIDEOS);
 
-    const newObject = {};
-    Object.assign(newObject, savedVideos);
+    const newSavedVideos = {};
+    Object.assign(newSavedVideos, savedVideos);
 
-    newObject[clip.dataset.videoId].watched = !newObject[clip.dataset.videoId]
-      .watched;
+    newSavedVideos[clip.dataset.videoId].watched = !newSavedVideos[
+      clip.dataset.videoId
+    ].watched;
 
-    localStorageSetItem(LOCALSTORAGE_KEYS.VIDEOS, newObject);
+    localStorageSetItem(LOCALSTORAGE_KEYS.VIDEOS, newSavedVideos);
     clip.classList.toggle('d-none');
     $(SELECTORS.CLIP.WATCHED_BUTTON, clip).classList.toggle('checked');
     this.showByFilter();
@@ -191,18 +180,16 @@ export default class VideoList extends Component {
     const clip = event.target.closest(SELECTORS.VIDEO_LIST.CLIP_CLASS);
     const savedVideos = localStorageGetItem(LOCALSTORAGE_KEYS.VIDEOS);
 
-    const newObject = {};
-    Object.assign(newObject, savedVideos);
+    const newSavedVideos = {};
+    Object.assign(newSavedVideos, savedVideos);
 
-    newObject[clip.dataset.videoId].liked = !newObject[clip.dataset.videoId]
-      .liked;
+    newSavedVideos[clip.dataset.videoId].liked = !newSavedVideos[
+      clip.dataset.videoId
+    ].liked;
 
-    if (!newObject[clip.dataset.videoId].liked) {
-      clip.classList.add('d-none');
-    }
-
-    localStorageSetItem(LOCALSTORAGE_KEYS.VIDEOS, newObject);
+    localStorageSetItem(LOCALSTORAGE_KEYS.VIDEOS, newSavedVideos);
     $(SELECTORS.CLIP.LIKE_BUTTON, clip).classList.toggle('checked');
+    this.showByFilter();
   }
 
   onClickDeleteButton(event) {
@@ -215,13 +202,14 @@ export default class VideoList extends Component {
       throw new Error(ERROR_MESSAGES.VIDEO_DELETE_ERROR);
     }
 
-    const newObject = {};
-    Object.assign(newObject, savedVideos);
+    const newSavedVideos = {};
+    Object.assign(newSavedVideos, savedVideos);
 
-    delete newObject[clip.dataset.videoId];
+    delete newSavedVideos[clip.dataset.videoId];
     delete Video.cache[clip.dataset.videoId];
     clip.remove();
-    localStorageSetItem(LOCALSTORAGE_KEYS.VIDEOS, newObject);
+
+    localStorageSetItem(LOCALSTORAGE_KEYS.VIDEOS, newSavedVideos);
     store.dispatch(decreaseSavedVideoCount());
     this.showByFilter();
   }
