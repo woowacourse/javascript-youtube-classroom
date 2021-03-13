@@ -1,0 +1,11 @@
+{
+  "name": "javascript-youtube-classroom",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "https://github.com/hchayan/javascript-youtube-classroom",
+  "author": "ddongule <mnk918p@gmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "cypress": "^6.6.0"
+  }
+}

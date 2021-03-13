@@ -1,13 +1,12 @@
 .video-wrapper {
   display: grid;
   grid-template-columns: repeat(auto-fill, 236px);
-  grid-row-gap: 0px;
+  grid-row-gap: 10px;
   grid-column-gap: 4px;
   justify-content: center;
 }
 
 .clip {
-  height: 219px;
   cursor: pointer;
   text-decoration: none;
 }
@@ -46,6 +45,7 @@
   -webkit-line-clamp: 2;
   overflow: hidden;
   color: #0a0a0a;
+  min-height: 40px;
 }
 
 .clip .content-container .channel-name {
@@ -60,4 +60,8 @@
   display: inline-block;
   margin: 0;
   color: #606060;
+}
+
+.clip .invisible {
+  visibility: hidden;
 }
