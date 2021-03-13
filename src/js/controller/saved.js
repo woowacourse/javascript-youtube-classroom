@@ -50,11 +50,6 @@ class SavedController {
 
     this.#storageModel.deleteSelectedVideo(target);
     this.#savedView.hideSelectedVideo(target);
-
-    if (this.#storageModel.savedVideoCount === 0) {
-      toggleSelectorClass($(SELECTOR.SEARCH_VIDEO_WRAPPER), CLASS.SHOW, true);
-    }
-
     this.#snackBarView.showSnackBar(SNACK_BAR.DELETE_MESSAGE);
   }
 
