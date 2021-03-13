@@ -61,7 +61,7 @@ export default class VideoSearchResult extends Component {
     this.$searchedVideoWrapper = $(
       SELECTORS.SEARCH_MODAL.VIDEO_SEARCH_RESULT.VIDEO_LIST_ID
     );
-    this.$notFoundImage = $('.not-found-image');
+    this.$notFoundImage = $(SELECTORS.VIDEO_LIST.NOT_FOUND_IMAGE_CLASS);
     this.$snackbar = $(SELECTORS.VIDEO_LIST.SNACKBAR);
   }
 

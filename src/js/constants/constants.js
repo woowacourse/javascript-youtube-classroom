@@ -61,6 +61,7 @@ export const SELECTORS = {
     CLIP_CLASS: '.clip',
     SNACKBAR: '#snackbar',
     NO_VIDEO_MESSAGE_CLASS: '.not-saved-video-image',
+    NOT_FOUND_IMAGE_CLASS: '.not-found-image',
   },
 
   SEARCH_MODAL: {
@@ -112,5 +113,6 @@ export const CLASS_NAMES = {
     WATCHED_BUTTON: 'watched-button',
     LIKE_BUTTON: 'like-button',
     DELETE_BUTTON: 'delete-button',
+    SEARCH_BUTTON_GUIDE: 'search-button-guide',
   },
 };
