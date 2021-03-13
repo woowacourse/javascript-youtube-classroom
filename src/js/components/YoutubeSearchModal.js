@@ -1,5 +1,5 @@
 import { searchYoutube } from '../api.js';
-import { $, $all, showSnackbar, renderSkeletonUI, closeModal } from '../utils.js';
+import { $, showSnackbar, renderSkeletonUI, closeModal } from '../utils.js';
 import { ALERT_MESSAGE, SELECTORS, LOCAL_STORAGE_KEYS, SERACH_RESULT, SETTINGS } from '../constants.js';
 import {
   getVideoTemplate,
@@ -10,7 +10,7 @@ import {
 } from '../templates.js';
 import Observer from '../lib/Observer.js';
 
-export default class YoutubeSearchManager extends Observer {
+export default class YoutubeSearchModal extends Observer {
   constructor(store) {
     super();
     this.store = store;

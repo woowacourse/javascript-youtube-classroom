@@ -2,7 +2,7 @@ import { $, openModal, closeModal } from './utils.js';
 import { LOCAL_STORAGE_KEYS, SELECTORS } from './constants.js';
 import Store from './lib/Store.js';
 import WatchList from './components/WatchList.js';
-import YoutubeSearchManager from './components/YoutubeSearchManager.js';
+import YoutubeSearchModal from './components/YoutubeSearchModal.js';
 
 const store = new Store();
 
@@ -16,11 +16,11 @@ $(SELECTORS.CLASS.MODAL_CLOSE).addEventListener('click', () => {
 });
 
 const watchList = new WatchList(store);
-const youtubeSearchManager = new YoutubeSearchManager(store);
+const youtubeSearchModal = new YoutubeSearchModal(store);
 
 store.subscribe(LOCAL_STORAGE_KEYS.WATCH_LIST, watchList);
-store.subscribe(LOCAL_STORAGE_KEYS.WATCH_LIST, youtubeSearchManager);
-store.subscribe(LOCAL_STORAGE_KEYS.RECENT_KEYWORD_LIST, youtubeSearchManager);
+store.subscribe(LOCAL_STORAGE_KEYS.WATCH_LIST, youtubeSearchModal);
+store.subscribe(LOCAL_STORAGE_KEYS.RECENT_KEYWORD_LIST, youtubeSearchModal);
 
 watchList.render();
-youtubeSearchManager.render();
+youtubeSearchModal.render();
