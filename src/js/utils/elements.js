@@ -3,7 +3,7 @@ import { DOM_CONSTANTS } from "./constants.js";
 
 const elements = {
   $body: $(DOM_CONSTANTS.ELEMENT.BODY),
-  $snackbar: $(DOM_CONSTANTS.ID_SELECTOR.SNACKBAR),
+  $snackbarContainer: $(DOM_CONSTANTS.ID_SELECTOR.SNACKBAR_CONTAINER),
 
   $watchLaterViewButton: $(DOM_CONSTANTS.ID_SELECTOR.WATCHED_LATER_VIEW_BUTTON),
   $watchedViewButton: $(DOM_CONSTANTS.ID_SELECTOR.WATCHED_VIEW_BUTTON),

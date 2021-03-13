@@ -1,10 +1,14 @@
 import elements from "./elements.js";
 
 export const showSnackbar = (message = "") => {
-  elements.$snackbar.innerText = message;
-  elements.$snackbar.classList.add("show-snackbar");
+  const snackbar = document.createElement("div");
+  snackbar.classList.add("snackbar");
+
+  elements.$snackbarContainer.append(snackbar);
+  snackbar.innerHTML = message;
+  snackbar.classList.add("show-snackbar");
 
   setTimeout(() => {
-    elements.$snackbar.classList.remove("show-snackbar");
-  }, 3000);
+    snackbar.classList.remove("show-snackbar");
+  }, 2000);
 };

@@ -11,7 +11,7 @@ export const DOM_CONSTANTS = {
     BUTTON: "button",
   },
   ID_SELECTOR: {
-    SNACKBAR: "#snackbar",
+    SNACKBAR_CONTAINER: "#snackbar-container",
     WATCHED_LATER_VIEW_BUTTON: "#watch-later-view-button",
     WATCHED_VIEW_BUTTON: "#watched-view-button",
     NOT_SAVED: "#not-saved",
