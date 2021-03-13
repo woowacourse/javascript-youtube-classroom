@@ -10,8 +10,7 @@ import { MAX_RECENT_KEYWORD_COUNT, DB_KEY } from '../constants.js';
 */
 
 export default class SearchModel {
-  constructor(keyword = '') {
-    this.init(keyword);
+  constructor() {
     this.recentKeywords = getListByKey(DB_KEY.RECENT_KEYWORDS);
   }
 
