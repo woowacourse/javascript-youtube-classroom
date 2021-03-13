@@ -37,7 +37,8 @@ a {
   opacity: 1;
 }
 
-.menu-btn:hover {
+.menu-btn:hover,
+.save-btn:hover  {
   background-color: #b3eaf2;
   animation: pulse 1s ease-in;
 }
@@ -82,7 +83,7 @@ label.menu-btn {
   font-size: 1.25rem;
 }
 
-.management-buttons button:hover {
+.management-buttons button:hover{
   animation: shaking 1s infinite;
 }
 
