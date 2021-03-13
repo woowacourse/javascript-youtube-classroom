@@ -13,10 +13,12 @@ import {
   TYPES,
   SELECTORS,
   INTERSECTION_OBSERVER_OPTIONS,
+  MESSAGES,
+  ERROR_MESSAGES,
   VALUES,
   CLASS_NAMES,
 } from '../../constants/constants.js';
-import { loadIframe } from '../../utils/youtubeClassRoomUtils.js';
+import { loadIframe, showSnackBar } from '../../utils/youtubeClassRoomUtils.js';
 import { increaseSavedVideoCount } from '../../redux/action.js';
 export default class VideoSearchResult extends Component {
   setup() {
@@ -60,6 +62,7 @@ export default class VideoSearchResult extends Component {
       SELECTORS.SEARCH_MODAL.VIDEO_SEARCH_RESULT.VIDEO_LIST_ID
     );
     this.$notFoundImage = $('.not-found-image');
+    this.$snackbar = $(SELECTORS.VIDEO_LIST.SNACKBAR);
   }
 
   render(preStates, states) {
@@ -104,7 +107,7 @@ export default class VideoSearchResult extends Component {
 
     const savedVideos = localStorageGetItem(LOCALSTORAGE_KEYS.VIDEOS);
     if (Object.keys(savedVideos).length >= VALUES.MAXIMUM_VIDEO_SAVE_COUNT) {
-      console.log(ERROR_MESSAGES.MAXIMUM_VIDEO_SAVE_COUNT_ERROR);
+      alert(ERROR_MESSAGES.MAXIMUM_VIDEO_SAVE_COUNT_ERROR);
       return;
     }
 
@@ -118,6 +121,7 @@ export default class VideoSearchResult extends Component {
 
     event.target.classList.add('d-none');
     store.dispatch(increaseSavedVideoCount());
+    showSnackBar(this.$snackbar, MESSAGES.ACTION_SUCCESS.SAVE);
   }
 
   hideNotFoundImage() {

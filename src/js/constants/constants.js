@@ -10,6 +10,7 @@ export const MESSAGES = {
   },
   ACTION_SUCCESS: {
     STATE_SETTING: '설정이 완료되었습니다.',
+    SAVE: '저장이 완료되었습니다.',
     DELETE: '정상적으로 삭제되었습니다.',
   },
 };
