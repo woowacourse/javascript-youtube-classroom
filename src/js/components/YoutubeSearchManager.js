@@ -44,6 +44,7 @@ export default class YoutubeSearchManager extends Observer {
       const template = this.getResultTemplate(response.items);
       this.renderResults(template);
     } catch (error) {
+      console.log(error.message);
       showSnackbar(error.message);
     }
   }
