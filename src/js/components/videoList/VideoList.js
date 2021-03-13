@@ -191,6 +191,10 @@ export default class VideoList extends Component {
     newObject[clip.dataset.videoId].liked = !newObject[clip.dataset.videoId]
       .liked;
 
+    if (!newObject[clip.dataset.videoId].liked) {
+      clip.classList.add('d-none');
+    }
+
     localStorageSetItem(LOCALSTORAGE_KEYS.VIDEOS, newObject);
     $(SELECTORS.CLIP.LIKE_BUTTON, clip).classList.toggle('checked');
   }
