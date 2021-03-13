@@ -1,12 +1,11 @@
 import { VALUES, ERROR_MESSAGES } from '../constants/constants.js';
 import { isEmptyObject } from '../utils/utils.js';
 
-const youtubeFetchCacheCleaner = setInterval(() => {
-  YoutubeAPIManager.cache = {};
-}, 3000000);
-
 export default class YoutubeAPIManager {
   static cache = {};
+  static youtubeFetchCacheCleaner = setInterval(() => {
+    YoutubeAPIManager.cache = {};
+  }, 3000000);
 
   constructor() {
     this.domain = 'wonderful-leavitt-5e0985.netlify.app';

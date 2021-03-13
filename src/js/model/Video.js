@@ -9,11 +9,11 @@ import {
   unescapeString,
 } from '../utils/utils.js';
 
-const videoCacheCleaner = setInterval(() => {
-  Video.cache = {};
-}, 3000000);
 export default class Video {
   static cache = {};
+  static videoCacheCleaner = setInterval(() => {
+    Video.cache = {};
+  }, 3000000);
 
   constructor({
     videoId,
