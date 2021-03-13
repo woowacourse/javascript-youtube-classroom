@@ -116,4 +116,3 @@ dist
 *.code-workspace
 
 ### Dummy Data ###
-*dummyData.js
