@@ -1,6 +1,6 @@
 import searchHistory from "../state/searchHistory.js";
 
-export default function getKeywordHistoryTemplate() {
+export default function getKeywordHistoryElement() {
   return searchHistory
     .getKeywordAll()
     .map((keyword) => {

@@ -1,4 +1,4 @@
-import { createSavedClipTemplate } from "../../templates/videoClipTemplate.js";
+import { createSavedClipElement } from "../../templates/videoClipTemplate.js";
 
 import { PALLET } from "../../utils/constants.js";
 import elements from "../../utils/elements.js";
@@ -35,7 +35,7 @@ export default class WatchView {
   appendSavedVideoClips(items) {
     const fragment = document.createDocumentFragment();
 
-    items.forEach((item) => fragment.append(createSavedClipTemplate(item)));
+    items.forEach((item) => fragment.append(createSavedClipElement(item)));
 
     return fragment;
   }

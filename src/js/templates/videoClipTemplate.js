@@ -11,7 +11,7 @@ function parseDate(dateString) {
   return date === INVALID_DATE ? NULL_DATE : date;
 }
 
-function getSrcDocTemplate(item) {
+function getSrcDocAttribute(item) {
   return `
     <style>
       * {
@@ -100,14 +100,14 @@ function getClipButtons(item) {
     </div>`;
 }
 
-function getVideoClipInnerTemplate(item, buttonsContainer) {
+function getVideoClipInnerElement(item, buttonsContainer) {
   return `
     <div class="preview-container">
       <iframe
         width="100%"
         height="118"
         onload="() => ${loadingSearchResults.load()}"
-        srcdoc="${getSrcDocTemplate(item)}"
+        srcdoc="${getSrcDocAttribute(item)}"
         src="https://www.youtube.com/embed/${item.videoId}"
         frameborder="0"
         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
@@ -132,25 +132,25 @@ function getVideoClipInnerTemplate(item, buttonsContainer) {
     </div>`;
 }
 
-export function createSavedClipTemplate(item) {
+export function createSavedClipElement(item) {
   const videoArticle = document.createElement("article");
   videoArticle.classList.add("clip");
   videoArticle.classList.add("mt-10");
   videoArticle.insertAdjacentHTML(
     "beforeend",
-    getVideoClipInnerTemplate(item, getClipButtons(item))
+    getVideoClipInnerElement(item, getClipButtons(item))
   );
 
   return videoArticle;
 }
 
-export function createSearchedClipTemplate(item) {
+export function createSearchedClipElement(item) {
   const videoArticle = document.createElement("article");
   videoArticle.classList.add("clip");
   videoArticle.classList.add("mt-10");
   videoArticle.insertAdjacentHTML(
     "beforeend",
-    getVideoClipInnerTemplate(item, getSaveButtons(item))
+    getVideoClipInnerElement(item, getSaveButtons(item))
   );
 
   return videoArticle;

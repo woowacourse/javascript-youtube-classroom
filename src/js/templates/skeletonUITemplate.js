@@ -1,4 +1,4 @@
-export default function getSkeletonUITemplate(repeatNumber) {
+export default function getSkeletonUIElement(repeatNumber) {
   return `
     <li class="clip">
       <article class="mt-10">

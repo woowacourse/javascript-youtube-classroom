@@ -1,8 +1,8 @@
 import videos from "../../state/videos.js";
 
-import getKeywordHistoryTemplate from "../../templates/keywordHistoryTemplate.js";
-import { createSearchedClipTemplate } from "../../templates/videoClipTemplate.js";
-import getSkeletonUITemplate from "../../templates/skeletonUITemplate.js";
+import getKeywordHistoryElement from "../../templates/keywordHistoryTemplate.js";
+import { createSearchedClipElement } from "../../templates/videoClipTemplate.js";
+import getSkeletonUIElement from "../../templates/skeletonUITemplate.js";
 
 import {
   $,
@@ -43,12 +43,12 @@ export default class SearchView {
 
   appendVideoClips(items) {
     const fragment = document.createDocumentFragment();
-    items.forEach((item) => fragment.append(createSearchedClipTemplate(item)));
+    items.forEach((item) => fragment.append(createSearchedClipElement(item)));
     return fragment;
   }
 
   showKeywordHistory() {
-    elements.$keywordHistory.innerHTML = getKeywordHistoryTemplate();
+    elements.$keywordHistory.innerHTML = getKeywordHistoryElement();
   }
 
   showSavedVideoCount() {
@@ -110,7 +110,7 @@ export default class SearchView {
   addSkeletonUITemplate(repeatNumber) {
     elements.$skeletonUIContainer.insertAdjacentHTML(
       "beforeend",
-      getSkeletonUITemplate(repeatNumber)
+      getSkeletonUIElement(repeatNumber)
     );
   }
 }
