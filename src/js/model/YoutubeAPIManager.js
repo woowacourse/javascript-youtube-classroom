@@ -56,7 +56,7 @@ export default class YoutubeAPIManager {
 
       return dataJSON.items;
     } catch (error) {
-      console.log(error);
+      alert(error);
     }
   }
 }
