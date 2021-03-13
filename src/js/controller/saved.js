@@ -30,11 +30,6 @@ class SavedController {
   };
 
   #loadSavedVideos = () => {
-    if (this.#storageModel.savedVideoCount === 0) {
-      toggleSelectorClass($(SELECTOR.SEARCH_VIDEO_WRAPPER), CLASS.SHOW, true);
-      return;
-    }
-
     this.#renderSavedVideo(this.#storageModel.savedVideos);
   };
 
