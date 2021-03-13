@@ -169,7 +169,7 @@ describe('유튜브 강의실 관리 기능', () => {
 
   //   cy.get(SELECTORS.VIDEO_LIST.SNACKBAR)
   //     .should('be.visible')
-  //     .should('have.text', MESSAGES.ACTION_SUCCESS.WATCHED_STATE_SETTING);
+  //     .should('have.text', MESSAGES.ACTION_SUCCESS.STATE_SETTING);
   // });
 
   // it('저장된 영상이 없을때, 비어있다는 것을 사용자에게 알려주는 상태를 보여준다.(영상 삭제 시)', () => {

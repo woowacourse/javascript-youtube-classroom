@@ -128,10 +128,6 @@ export default class Video {
       classes: ['clip'],
     });
 
-    if (pageType === TYPES.PAGE.MANAGEMENT && this.watched) {
-      clip.classList.add('d-none');
-    }
-
     clip.dataset.videoId = this.videoId;
 
     const previewContainer = createElement({
@@ -253,6 +249,7 @@ export default class Video {
     });
 
     this.watched && watchedButton.classList.add('checked');
+    this.liked && likeButton.classList.add('checked');
 
     buttonContainer.appendChild(watchedButton);
     buttonContainer.appendChild(likeButton);

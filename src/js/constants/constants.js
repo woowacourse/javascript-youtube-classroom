@@ -9,8 +9,7 @@ export const MESSAGES = {
     DELETE: '정말로 삭제하시겠습니까? 되돌릴 수 없습니다.',
   },
   ACTION_SUCCESS: {
-    WATCHED_STATE_SETTING: '설정이 완료되었습니다.',
-    LIKEY_STATE_SETTING: '좋아요 👍를 누르셨습니다.',
+    STATE_SETTING: '설정이 완료되었습니다.',
     DELETE: '정상적으로 삭제되었습니다.',
   },
 };
@@ -40,6 +39,7 @@ export const TYPES = {
   FILTER: {
     WATCH_LATER: 'watchLater',
     WATCHED: 'watched',
+    LIKED: 'liked',
   },
   PAGE: {
     MANAGEMENT: 'management',
@@ -51,6 +51,7 @@ export const SELECTORS = {
   MENU_BUTTON: {
     WATCH_LATER_ID: '#watch-later-button',
     WATCHED_ID: '#watched-button',
+    LIKE_ID: '#like-button',
     SEARCH_ID: '#search-button',
   },
 

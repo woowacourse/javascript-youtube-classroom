@@ -104,7 +104,7 @@ export default class VideoSearchResult extends Component {
 
     const savedVideos = localStorageGetItem(LOCALSTORAGE_KEYS.VIDEOS);
     if (Object.keys(savedVideos).length >= VALUES.MAXIMUM_VIDEO_SAVE_COUNT) {
-      alert(ERROR_MESSAGES.MAXIMUM_VIDEO_SAVE_COUNT_ERROR);
+      console.log(ERROR_MESSAGES.MAXIMUM_VIDEO_SAVE_COUNT_ERROR);
       return;
     }
 
