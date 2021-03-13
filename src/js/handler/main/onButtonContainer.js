@@ -50,11 +50,13 @@ const deleteClip = (target) => {
   storage.set(LOCAL_STORAGE_KEY.SAVED_CLIPS, savedClips);
 };
 
-const actions = {
-  'saved-clip-button-container__check': (target) => toggleIsWatched(target),
-  'saved-clip-button-container__delete': (target) => deleteClip(target),
-};
-
 export const onButtonContainer = ({ target }) => {
-  actions[target.dataset.js]?.(target);
+  if (target.dataset.js === 'saved-clip-button-container__check') {
+    toggleIsWatched(target);
+    return;
+  }
+
+  if (target.dataset.js === 'saved-clip-button-container__delete') {
+    deleteClip(target);
+  }
 };
