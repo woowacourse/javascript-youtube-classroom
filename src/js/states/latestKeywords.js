@@ -13,6 +13,10 @@ const latestKeywords = {
     return this.value;
   },
 
+  get length() {
+    return this.value.length;
+  },
+
   set(newKeywords) {
     this.value = newKeywords;
   },

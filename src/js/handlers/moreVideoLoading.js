@@ -14,7 +14,7 @@ async function handleMoreVideoLoading(entries) {
   intersectionObserver.disconnect();
 
   const { nextPageToken, items } = await fetchSearchResult(
-    latestKeywords.get()[latestKeywords.get().length - 1],
+    latestKeywords.get()[latestKeywords.length - 1],
     pageToken.get()
   );
 
