@@ -29,6 +29,7 @@ export const CLASS_NAME = Object.freeze({
   CHECKED: 'checked',
 });
 
+export const SCROLL_DELAY_TIME = 300;
 export const SNACKBAR_SHOW_TIME = 1500;
 
 export const MESSAGE = Object.freeze({
