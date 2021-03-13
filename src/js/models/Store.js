@@ -1,9 +1,8 @@
 import {
+  addToStorage,
+  removeFromStorage,
+  toggleStorageValue,
   updateRecentChips,
-  pushSavedVideoIds,
-  popSavedVideoId,
-  updateWatchedVideoIds,
-  popWatchedVideoId,
   getStorageData,
 } from '../utils/localStorage.js';
 import { STORE_KEYS } from '../utils/constants.js';
@@ -28,15 +27,13 @@ export default class Store {
   save(key, value, isDelete) {
     const updateLocalStorage = {
       [STORE_KEYS.RECENT_KEYWORDS]: updateRecentChips,
-      [STORE_KEYS.SAVED_VIDEO_IDS]: isDelete
-        ? popSavedVideoId
-        : pushSavedVideoIds,
+      [STORE_KEYS.SAVED_VIDEO_IDS]: isDelete ? removeFromStorage : addToStorage,
       [STORE_KEYS.WATCHED_VIDEO_IDS]: isDelete
-        ? popWatchedVideoId
-        : updateWatchedVideoIds,
+        ? removeFromStorage
+        : toggleStorageValue,
     };
 
-    const updatedResult = updateLocalStorage[key](value);
+    const updatedResult = updateLocalStorage[key](key, value);
     this._state = { ...this._state, [key]: updatedResult };
   }
 
@@ -59,9 +56,7 @@ export default class Store {
   }
 
   notify() {
-    if (this._observers.length > 0) {
-      this._observers.forEach((observer) => observer.update());
-    }
+    this._observers.forEach((observer) => observer.update());
   }
 
   get state() {
