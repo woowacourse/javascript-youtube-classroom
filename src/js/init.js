@@ -16,12 +16,11 @@ import {
   renderLatestKeywordList,
   renderSavedVideoCount,
 } from './viewControllers/searchModal.js';
-import videoListType from './states/videoListType.js';
 
 async function initState() {
   await videoInfos.init();
   renderSavedVideoCount(videoInfos.size);
-  renderSavedVideoList(videoInfos.get(), videoListType.get());
+  renderSavedVideoList();
   latestKeywords.init();
   renderLatestKeywordList(latestKeywords.get());
   intersectionObserver.init();

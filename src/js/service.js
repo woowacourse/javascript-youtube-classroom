@@ -30,4 +30,18 @@ async function searchVideo(keyword) {
   return items.filter(item => item.id.videoId);
 }
 
-export { saveVideo, cancelVideoSave, searchVideo };
+function getToWatchVideoInfos() {
+  return [...videoInfos.get()].filter(videoInfo => !videoInfo.isWatched);
+}
+
+function getWatchedVideoInfos() {
+  return [...videoInfos.get()].filter(videoInfo => videoInfo.isWatched);
+}
+
+export {
+  saveVideo,
+  cancelVideoSave,
+  searchVideo,
+  getToWatchVideoInfos,
+  getWatchedVideoInfos,
+};

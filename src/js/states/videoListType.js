@@ -1,4 +1,4 @@
-import { TO_WATCH_TYPE, WATCHED_TYPE } from '../constants/filterType.js';
+import { TO_WATCH_TYPE } from '../constants/filterType.js';
 
 const videoListType = {
   value: TO_WATCH_TYPE,
@@ -9,10 +9,6 @@ const videoListType = {
 
   get() {
     return this.value;
-  },
-
-  toggle() {
-    this.value = this.value === TO_WATCH_TYPE ? WATCHED_TYPE : TO_WATCH_TYPE;
   },
 };
 

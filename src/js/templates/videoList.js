@@ -86,7 +86,7 @@ function controlButtonsTemplate(isWatched) {
 function savedVideoListTemplate(savedVideoInfos = []) {
   return [...savedVideoInfos]
     .map(item =>
-      videoSnippetTemplate(item, controlButtonsTemplate(item.watchType))
+      videoSnippetTemplate(item, controlButtonsTemplate(item.isWatched))
     )
     .join('');
 }
