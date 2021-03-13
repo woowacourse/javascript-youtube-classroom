@@ -8,24 +8,24 @@ const toggleIsWatched = (target) => {
   const targetClip = target.closest('[data-js="saved-page__clip"]');
   const savedClips = storage.get(LOCAL_STORAGE_KEY.SAVED_CLIPS);
   const targetClipIndex = targetClip.dataset.clipIndex;
-  const isWatched = savedClips[targetClipIndex].classList.contains('watched');
+  const isWatched = savedClips[targetClipIndex].isWatched;
 
   const notifyMessage = isWatched
-    ? MESSAGE.NOTIFY.CHECK_WACTHED_CLIP
-    : MESSAGE.NOTIFY.CHECK_UNWACTHED_CLIP;
+    ? MESSAGE.NOTIFY.CHECK_UNWACTHED_CLIP
+    : MESSAGE.NOTIFY.CHECK_WACTHED_CLIP;
 
   snackbar(notifyMessage);
 
-  if (isWatched) {
-    savedClips[targetClipIndex].classList.remove('watched');
-  } else {
-    savedClips[targetClipIndex].classList.add('watched');
-  }
-
   savedClips[targetClipIndex].isWatched = !isWatched;
-  // targetClip.setAttribute('data-is-watched', !isWatched);
-  hideElement(targetClip);
   storage.set(LOCAL_STORAGE_KEY.SAVED_CLIPS, savedClips);
+
+  if (isWatched) {
+    targetClip.classList.add('unwatched-clip');
+    targetClip.classList.remove('watched-clip');
+    return;
+  }
+  targetClip.classList.add('watched-clip');
+  targetClip.classList.remove('unwatched-clip');
 };
 
 const deleteClip = (target) => {

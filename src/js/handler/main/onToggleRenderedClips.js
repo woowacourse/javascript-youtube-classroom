@@ -23,17 +23,10 @@ export const onToggleRenderedClips = ({ target }) => {
     return;
   }
 
-  const savedClips = $$('[data-js="saved-page__clip"]');
   const isWatchedButton = target.dataset.js === 'navigator__watched-button';
+  const savePageVideoWrapper = $DOM.SAVE_PAGE.VIDEO_WRAPPER;
 
   setSelected(isWatchedButton);
-
-  // savedClips.forEach((savedClip) => {
-  //   savedClip.dataset.isWatched === String(isWatchedButton) &&
-  //   savedClip.dataset.isDeleted === String(false)
-  //     ? showElement(savedClip)
-  //     : hideElement(savedClip);
-  // });
 
   storage.set(
     LOCAL_STORAGE_KEY.CURRENT_TAB,
@@ -41,4 +34,12 @@ export const onToggleRenderedClips = ({ target }) => {
       ? LOCAL_STORAGE_VALUE.WATCHED
       : LOCAL_STORAGE_VALUE.UNWATCHED,
   );
+
+  if (isWatchedButton) {
+    savePageVideoWrapper.classList.add('watched-section');
+    savePageVideoWrapper.classList.remove('unwatched-section');
+    return;
+  }
+  savePageVideoWrapper.classList.add('unwatched-section');
+  savePageVideoWrapper.classList.remove('watched-section');
 };
