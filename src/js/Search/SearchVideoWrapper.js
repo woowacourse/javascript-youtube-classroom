@@ -4,33 +4,36 @@ import {
   MAX_RESULTS_COUNT,
   SCROLL_EVENT_THRESHOLD,
 } from "../constants.js";
-import { $ } from "../utils/querySelector.js";
+import { $ } from "../utils/DOM.js";
 import messenger from "../Messenger.js";
-import render from "../Video/render.js";
-import TEMPLATE from "../Video/template.js";
+import { renderSearchVideo } from "../Video/render.js";
+import { SEARCH_VIDEO_TEMPLATE } from "../Video/template.js";
 import { fetchYoutubeData } from "../utils/API.js";
 
-export default class VideoWrapper {
+export default class SearchVideoWrapper {
   constructor() {
     this.currentQuery = "";
     this.currentNextPageToken = "";
+    this.videoItemsMap = new Map();
 
-    this.$modalVideoWrapper = $(`.${CLASSNAME.MODAL_VIDEO_WRAPPER}`);
+    this.$searchVideoWrapper = $(`.${CLASSNAME.SEARCH_VIDEO_WRAPPER}`);
     this.$notFoundImg = $(`.${CLASSNAME.NOT_FOUND_IMAGE}`);
 
     messenger.addMessageListener(MESSAGE.KEYWORD_SUBMITTED, ({ query }) => {
       this.$notFoundImg.classList.add(CLASSNAME.HIDDEN);
-      this.$modalVideoWrapper.innerHTML = "";
+      this.$searchVideoWrapper.innerHTML = "";
       this.currentQuery = query;
       this.mountTemplate();
+      this.$searchVideoWrapper.scrollTo({ top: 0 });
     });
 
     messenger.addMessageListener(
       MESSAGE.DATA_LOADED,
       ({ nextPageToken, items }) => {
         if (items.length === 0) {
-          this.$modalVideoWrapper.innerHTML = "";
-          this.$notFoundImg.classList.remove(CLASSNAME.HIDDEN);
+          this.$searchVideoWrapper.innerHTML = "";
+          $.show(this.$notFoundImg);
+
           return;
         }
 
@@ -40,12 +43,12 @@ export default class VideoWrapper {
       }
     );
 
-    this.$modalVideoWrapper.addEventListener(
+    this.$searchVideoWrapper.addEventListener(
       "scroll",
       this.handlePageScroll.bind(this)
     );
 
-    this.$modalVideoWrapper.addEventListener("click", (event) => {
+    this.$searchVideoWrapper.addEventListener("click", (event) => {
       if (!event.target.classList.contains(CLASSNAME.SAVE_VIDEO_BUTTON)) {
         return;
       }
@@ -58,46 +61,55 @@ export default class VideoWrapper {
   saveVideo($button) {
     const { videoId } = $button.dataset;
 
-    messenger.deliverMessage(MESSAGE.SAVE_VIDEO_BUTTON_CLICKED, { videoId });
-    $button.classList.add(CLASSNAME.HIDDEN);
+    messenger.deliverMessage(MESSAGE.SAVE_VIDEO_BUTTON_CLICKED, {
+      videoId,
+      item: this.videoItemsMap.get(videoId),
+    });
+    $.hide($button);
   }
 
   mountTemplate() {
     Array.from({ length: MAX_RESULTS_COUNT }).forEach(() => {
-      this.$modalVideoWrapper.insertAdjacentHTML("beforeEnd", TEMPLATE);
+      this.$searchVideoWrapper.insertAdjacentHTML(
+        "beforeEnd",
+        SEARCH_VIDEO_TEMPLATE
+      );
     });
   }
 
   attachData(items) {
-    const $$videos = Array.from(this.$modalVideoWrapper.children).slice(
+    const $$videos = Array.from(this.$searchVideoWrapper.children).slice(
       -MAX_RESULTS_COUNT
     );
 
     Array.from({ length: MAX_RESULTS_COUNT })
       .map((_, i) => [$$videos[i], items[i]])
-      .forEach(([$video, item]) => render($video, item));
+      .forEach(([$video, item]) => {
+        const { videoId } = item.id;
+        this.videoItemsMap.set(videoId, item);
+
+        renderSearchVideo($video, item);
+      });
   }
 
   handlePageScroll() {
     if (this.throttle) return;
 
     if (
-      this.$modalVideoWrapper.scrollTop +
-        this.$modalVideoWrapper.clientHeight <=
-      this.$modalVideoWrapper.scrollHeight * SCROLL_EVENT_THRESHOLD
+      this.$searchVideoWrapper.scrollTop +
+        this.$searchVideoWrapper.clientHeight <=
+      this.$searchVideoWrapper.scrollHeight * SCROLL_EVENT_THRESHOLD
     ) {
       return;
     }
 
     this.throttle = setTimeout(async () => {
       this.mountTemplate();
-
       const { nextPageToken, items } = await fetchYoutubeData(
         this.currentQuery,
         this.currentNextPageToken
       );
       this.currentNextPageToken = nextPageToken;
-
       this.attachData(items);
 
       this.throttle = null;

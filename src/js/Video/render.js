@@ -1,7 +1,8 @@
 import { CLASSNAME, MESSAGE } from "../constants.js";
 import messenger from "../Messenger.js";
+import { $ } from "../utils/DOM.js";
 
-const render = ($video, item) => {
+const renderVideo = ($video, item) => {
   const {
     id: { videoId },
     snippet: { title, channelId, channelTitle, publishedAt },
@@ -11,12 +12,6 @@ const render = ($video, item) => {
   const $videoTitle = $video.querySelector(`.${CLASSNAME.VIDEO_TITLE}`);
   const $channelTitle = $video.querySelector(`.${CLASSNAME.CHANNEL_TITLE}`);
   const $publishedAt = $video.querySelector(`.${CLASSNAME.PUBLISHED_AT}`);
-  const $saveVideoButton = $video.querySelector(
-    `.${CLASSNAME.SAVE_VIDEO_BUTTON}`
-  );
-  const $saveVideoButtonWrapper = $video.querySelector(
-    `.${CLASSNAME.SAVE_VIDEO_BUTTON_WRAPPER}`
-  );
 
   $iframe.src = `https://www.youtube.com/embed/${videoId}`;
 
@@ -31,11 +26,38 @@ const render = ($video, item) => {
     day: "numeric",
   });
 
+  $.removeClass($video, CLASSNAME.SKELETON);
+};
+
+const renderWatchLaterVideo = ($video, item) => {
+  renderVideo($video, item);
+
+  const { videoId } = item.id;
+
+  const $iconsWrapper = $video.querySelector(`.${CLASSNAME.ICONS_WRAPPER}`);
+
+  $iconsWrapper.dataset.videoId = videoId;
+};
+
+const renderSearchVideo = ($video, item) => {
+  renderVideo($video, item);
+
+  const { videoId } = item.id;
+
+  const $saveVideoButton = $video.querySelector(
+    `.${CLASSNAME.SAVE_VIDEO_BUTTON}`
+  );
+  const $saveVideoButtonWrapper = $video.querySelector(
+    `.${CLASSNAME.SAVE_VIDEO_BUTTON_WRAPPER}`
+  );
+
   $saveVideoButton.dataset.videoId = videoId;
+
+  $.show($saveVideoButtonWrapper);
 
   messenger.deliverMessage(MESSAGE.HIDE_IF_VIDEO_IS_SAVED, {
     videoId,
-    callback: () => $saveVideoButton.classList.add(CLASSNAME.HIDDEN),
+    callback: () => $.hide($saveVideoButton),
   });
 
   $saveVideoButtonWrapper.classList.remove(CLASSNAME.HIDDEN);
@@ -43,4 +65,4 @@ const render = ($video, item) => {
   $video.classList.remove(CLASSNAME.SKELETON);
 };
 
-export default render;
+export { renderWatchLaterVideo, renderSearchVideo };

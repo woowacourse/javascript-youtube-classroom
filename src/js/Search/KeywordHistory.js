@@ -4,7 +4,7 @@ import {
   MAX_KEYWORDS_COUNT,
   MESSAGE,
 } from "../constants.js";
-import { $ } from "../utils/querySelector.js";
+import { $ } from "../utils/DOM.js";
 import messenger from "../Messenger.js";
 
 export default class KeywordHistory {
