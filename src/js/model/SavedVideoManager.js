@@ -80,10 +80,6 @@ export class SavedVideoManager {
   }
 
   setState({ key, videoId, savedVideos }) {
-    if (this.savedVideos === savedVideos) {
-      return;
-    }
-
     this.savedVideos = savedVideos;
     setLocalStorageItem({ key: LOCAL_STORAGE_SAVED_VIDEO_KEY, item: this.savedVideos });
 
