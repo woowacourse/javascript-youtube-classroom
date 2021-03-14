@@ -1,18 +1,30 @@
 .video-wrapper {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(auto-fill, 234px);
   grid-row-gap: 32px;
   grid-column-gap: 8px;
   justify-content: space-between;
 }
 
-@media screen and (max-width: 768px) {
+@media screen and (max-width: 1280px) {
+  .video-wrapper {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+@media screen and (max-width: 960px) {
+  .video-wrapper {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media screen and (max-width: 600px) {
   .video-wrapper {
     grid-template-columns: 1fr 1fr;
   }
 }
 
-@media screen and (max-width: 576px) {
+@media screen and (max-width: 400px) {
   .video-wrapper {
     grid-template-columns: 1fr;
   }
