@@ -56,8 +56,9 @@ class StorageModel {
   findVideoSaved = info => {
     this.#savedVideo = getJSONFromLocalStorage(STORAGE.KEY_MY_VIDEO);
     return (
-      this.#savedVideo.filter(savedVideo => info.url === savedVideo.url)
-        .length > 0
+      getJSONFromLocalStorage(STORAGE.KEY_MY_VIDEO).filter(
+        savedVideo => info.url === savedVideo.url
+      ).length > 0
     );
   };
 

@@ -1,3 +1,4 @@
+
 import { SEARCH, SELECTOR, CLASS } from '../constants/constant.js';
 import { $, parseDOMFromString, toggleSelectorClass } from '../utils/util.js';
 import {
@@ -34,11 +35,13 @@ class SearchView {
 
   renderSkeletonArticles = () => {
     this.#$searchVideoWrapper.innerHTML = videoSkeletonTemplate().repeat(
+
       SEARCH.FETCH_VIDEO_LENGTH
     );
   };
 
   renderRecentKeywordSection = keywords => {
+
     this.#$recentKeywordsSection.innerHTML = recentKeywordsTemplate(keywords);
   };
 

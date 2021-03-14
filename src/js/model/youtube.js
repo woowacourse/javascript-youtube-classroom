@@ -1,6 +1,7 @@
 import { api } from '../api/youtubeAPI.js';
 import { SEARCH } from '../constants/constant.js';
 
+
 class YoutubeModel {
   #searchedVideos;
   #nextPageToken;
@@ -37,6 +38,7 @@ class YoutubeModel {
   get searchedCount() {
     return this.#searchedVideos.length;
   }
+
 }
 
 export default YoutubeModel;

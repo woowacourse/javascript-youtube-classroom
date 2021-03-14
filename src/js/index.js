@@ -31,3 +31,4 @@ const modalController = new ModalController(storageModel, searchView);
 searchController.init();
 savedController.init();
 modalController.init();
+

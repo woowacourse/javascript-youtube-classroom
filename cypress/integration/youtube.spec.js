@@ -1,10 +1,4 @@
-import {
-  CLASS,
-  CONFIRM_MESSAGE,
-  SELECTOR,
-  SNACK_BAR,
-  STORAGE,
-} from '../../src/js/constants/constant.js';
+import { ERROR_MESSAGE } from '../../src/js/constants/constant.js';
 
 describe('saved-video-ui', () => {
   before(() => {
