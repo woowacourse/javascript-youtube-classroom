@@ -6,7 +6,7 @@ import {
 } from "../constants.js";
 import messenger from "../Messenger.js";
 import { $ } from "../utils/DOM.js";
-import { VIDEO_TEMPLATE } from "../Video/template.js";
+import { WATCH_LATER_VIDEO_TEMPLATE } from "../Video/template.js";
 import { renderWatchLaterVideo } from "../Video/render.js";
 
 export default class WatchLaterVideoWrapper {
@@ -148,7 +148,7 @@ export default class WatchLaterVideoWrapper {
 
     this.$watchLaterVideoWrapper.insertAdjacentHTML(
       "afterBegin",
-      VIDEO_TEMPLATE
+      WATCH_LATER_VIDEO_TEMPLATE
     );
 
     const $video = this.$watchLaterVideoWrapper.children[0];

@@ -1,7 +1,7 @@
 import { MESSAGE, LOCAL_STORAGE_KEY, CLASSNAME } from "../constants.js";
 import messenger from "../Messenger.js";
 import { $ } from "../utils/DOM.js";
-import { VIDEO_TEMPLATE } from "../Video/template.js";
+import { HISTORY_VIDEO_TEMPLATE } from "../Video/template.js";
 import { renderWatchLaterVideo } from "../Video/render.js";
 
 export default class HistoryVideoWrapper {
@@ -30,7 +30,7 @@ export default class HistoryVideoWrapper {
     this.$historyVideoWrapper.addEventListener("click", (event) => {
       const { videoId } = event.target.parentElement.dataset;
 
-      if (event.target.classList.contains(CLASSNAME.WATCHED_ICON)) {
+      if (event.target.classList.contains(CLASSNAME.WATCH_LATER_ICON)) {
         this.moveVideo(videoId);
       }
 
@@ -114,7 +114,10 @@ export default class HistoryVideoWrapper {
   renderSingleVideo(item) {
     $.hide(this.$noSavedVideoImage);
 
-    this.$historyVideoWrapper.insertAdjacentHTML("afterBegin", VIDEO_TEMPLATE);
+    this.$historyVideoWrapper.insertAdjacentHTML(
+      "afterBegin",
+      HISTORY_VIDEO_TEMPLATE
+    );
 
     const $video = this.$historyVideoWrapper.children[0];
     renderWatchLaterVideo($video, item);
