@@ -51,6 +51,11 @@ const LOCAL_STORAGE_KEY = Object.freeze({
   QUERY: "query",
 });
 
+const REGULAR_EXPRESSION = Object.freeze({
+  EMPTY_STRING: /^$/,
+  NOT_EMPTY_STRING: /.+/,
+});
+
 const MAX_KEYWORDS_COUNT = 3;
 
 const MAX_RESULTS_COUNT = 10;
@@ -70,4 +75,5 @@ export {
   SCROLL_EVENT_THRESHOLD,
   THROTTLE_TIME_IN_MS,
   LOCAL_STORAGE_KEY,
+  REGULAR_EXPRESSION,
 };
