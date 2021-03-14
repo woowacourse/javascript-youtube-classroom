@@ -119,4 +119,28 @@ describe('저장된 비디오 관리 기능 테스트', () => {
     cy.get('#saved-videos-wrapper .watched').each(($el) => cy.wrap($el).should('be.visible'));
     cy.get('#saved-videos-wrapper .watching').each(($el) => cy.wrap($el).should('not.be.visible'));
   });
+
+  it('좋아요 메뉴버튼을 누르면 좋아요 버튼을 누른 데이터만 보여준다.', () => {
+    cy.get('.js-search-menu-button').click();
+    cy.get('.js-search-keyword-input').type(KEYWORD);
+    cy.get('.js-search-keyword-form').submit();
+    cy.wait(2000);
+    cy.get('.js-save-button').each(($el) => $el.click());
+    cy.get('.js-modal-close-button').click();
+    cy.get('.js-like-button').each(($el, index) => {
+      if (index > YOUTUBE_API.MAX_RESULT_COUNT / 2) {
+        return;
+      }
+      cy.wrap($el).click();
+    });
+
+    cy.get('.js-saved-videos-wrapper .watching').each(($el) => cy.wrap($el).should('be.visible'));
+    cy.get('.js-saved-videos-wrapper .watched').each(($el) => cy.wrap($el).should('not.be.visible'));
+    cy.get('.js-saved-videos-wrapper .liked').each(($el) => cy.wrap($el).should('not.be.visible'));
+
+    cy.get('.js-liked-menu-button').click();
+    cy.get('.js-saved-videos-wrapper .watching').each(($el) => cy.wrap($el).should('not.be.visible'));
+    cy.get('.js-saved-videos-wrapper .watched').each(($el) => cy.wrap($el).should('not.be.visible'));
+    cy.get('.js-saved-videos-wrapper .liked').each(($el) => cy.wrap($el).should('be.visible'));
+  });
 });
