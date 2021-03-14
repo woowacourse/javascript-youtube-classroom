@@ -24,6 +24,14 @@ const viewUtil = {
     target.classList.add('removed');
   },
 
+  removeStyleClass($element, removingClass) {
+    $element.classList.remove(removingClass);
+  },
+
+  addStyleClass($element, removingClass) {
+    $element.classList.remove(removingClass);
+  }
+
 };
 
 export default viewUtil;

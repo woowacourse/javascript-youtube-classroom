@@ -4,6 +4,7 @@ import searchQuery from '../storage/searchQuery.js';
 import videoToWatch from '../storage/videoToWatch.js';
 import { SELECTOR_CLASS, SETTINGS, STYLE_CLASS } from '../constants.js';
 import { $ } from '../utils/querySelector.js';
+import viewUtil from '../view/viewUtil.js';
 
 const controllerUtil = {
   setObserver($element, callback) {
@@ -70,12 +71,11 @@ const controllerUtil = {
     view.showSearchResultIntersector();
   },
 
-  //TODO: remove, add => view로 옮기기
-  highlightNavButton($element) {
-    $(`.${SELECTOR_CLASS.NAV_BUTTON}`).forEach((button) => {
-      button.classList.remove(STYLE_CLASS.CLICKED);
+  highlightNavButton($target) {
+    $(`.${SELECTOR_CLASS.NAV_BUTTON}`).forEach(($button) => {
+      viewUtil.removeStyleClass($button, STYLE_CLASS.CLICKED);
     });
-    $element.classList.add(STYLE_CLASS.CLICKED);
+    viewUtil.addStyleClass($target, STYLE_CLASS.CLICKED);
   },
 
   isVideoToWatch(videoId) {

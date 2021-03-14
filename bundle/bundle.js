@@ -12492,11 +12492,13 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _storage_videoToWatch_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../storage/videoToWatch.js */ "./src/storage/videoToWatch.js");
 /* harmony import */ var _constants_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../constants.js */ "./src/constants.js");
 /* harmony import */ var _utils_querySelector_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../utils/querySelector.js */ "./src/utils/querySelector.js");
+/* harmony import */ var _view_viewUtil_js__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../view/viewUtil.js */ "./src/view/viewUtil.js");
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
 
 function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
 
 
 
@@ -12564,12 +12566,11 @@ var controllerUtil = {
     _view_view_js__WEBPACK_IMPORTED_MODULE_0__.default.insertVideoItems(processedVideos);
     _view_view_js__WEBPACK_IMPORTED_MODULE_0__.default.showSearchResultIntersector();
   },
-  //TODO: remove, add => view로 옮기기
-  highlightNavButton: function highlightNavButton($element) {
-    (0,_utils_querySelector_js__WEBPACK_IMPORTED_MODULE_5__.$)(".".concat(_constants_js__WEBPACK_IMPORTED_MODULE_4__.SELECTOR_CLASS.NAV_BUTTON)).forEach(function (button) {
-      button.classList.remove(_constants_js__WEBPACK_IMPORTED_MODULE_4__.STYLE_CLASS.CLICKED);
+  highlightNavButton: function highlightNavButton($target) {
+    (0,_utils_querySelector_js__WEBPACK_IMPORTED_MODULE_5__.$)(".".concat(_constants_js__WEBPACK_IMPORTED_MODULE_4__.SELECTOR_CLASS.NAV_BUTTON)).forEach(function ($button) {
+      _view_viewUtil_js__WEBPACK_IMPORTED_MODULE_6__.default.removeStyleClass($button, _constants_js__WEBPACK_IMPORTED_MODULE_4__.STYLE_CLASS.CLICKED);
     });
-    $element.classList.add(_constants_js__WEBPACK_IMPORTED_MODULE_4__.STYLE_CLASS.CLICKED);
+    _view_viewUtil_js__WEBPACK_IMPORTED_MODULE_6__.default.addStyleClass($target, _constants_js__WEBPACK_IMPORTED_MODULE_4__.STYLE_CLASS.CLICKED);
   },
   isVideoToWatch: function isVideoToWatch(videoId) {
     return _storage_videoToWatch_js__WEBPACK_IMPORTED_MODULE_3__.default.getVideos().some(function (video) {
@@ -12957,6 +12958,12 @@ var viewUtil = {
     }
 
     target.classList.add('removed');
+  },
+  removeStyleClass: function removeStyleClass($element, removingClass) {
+    $element.classList.remove(removingClass);
+  },
+  addStyleClass: function addStyleClass($element, removingClass) {
+    $element.classList.remove(removingClass);
   }
 };
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (viewUtil);
