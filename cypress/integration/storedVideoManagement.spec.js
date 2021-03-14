@@ -1,4 +1,5 @@
-import { YOUTUBE_API, MESSAGE } from '../../src/js/constants';
+import { YOUTUBE_API, MESSAGE, DB_KEY } from '../../src/js/constants';
+import { getListByKey } from '../../src/js/utils/localStorage';
 import { unescape } from '../../src/js/utils/unescapeSpecialCharacter.js';
 
 describe('저장된 비디오 관리 기능 테스트', () => {
@@ -12,7 +13,7 @@ describe('저장된 비디오 관리 기능 테스트', () => {
     cy.get('#no-video-found').should('have.class', 'no-watching');
   });
 
-  it.only('저장된 영상이 있는 경우에 페이지를 다시 방문하면, 시청중인 영상 목록을 표시한다.', () => {
+  it('저장된 영상이 있는 경우에 페이지를 다시 방문하면, 시청중인 영상 목록을 표시한다.', () => {
     const savedVideoTitles = [];
 
     cy.get('#search-menu-button').click();
@@ -121,55 +122,54 @@ describe('저장된 비디오 관리 기능 테스트', () => {
   });
 
   it('좋아요 메뉴버튼을 누르면 좋아요 버튼을 누른 데이터만 보여준다.', () => {
-    cy.get('.js-search-menu-button').click();
-    cy.get('.js-search-keyword-input').type(KEYWORD);
-    cy.get('.js-search-keyword-form').submit();
+    cy.get('#search-menu-button').click();
+    cy.get('#search-keyword-input').type(KEYWORD);
+    cy.get('#search-keyword-form').submit();
     cy.wait(2000);
-    cy.get('.js-save-button').each(($el) => $el.click());
-    cy.get('.js-modal-close-button').click();
-    cy.get('.js-like-button').each(($el, index) => {
+    cy.get('.save-button').each(($el) => $el.click());
+    cy.get('#modal-close-button').click();
+    cy.get('.like-button').each(($el, index) => {
       if (index > YOUTUBE_API.MAX_RESULT_COUNT / 2) {
         return;
       }
       cy.wrap($el).click();
     });
 
-    cy.get('.js-saved-videos-wrapper .watching').each(($el) => cy.wrap($el).should('be.visible'));
-    cy.get('.js-saved-videos-wrapper .watched').each(($el) => cy.wrap($el).should('not.be.visible'));
-    cy.get('.js-saved-videos-wrapper .liked').each(($el) => cy.wrap($el).should('not.be.visible'));
-
-    cy.get('.js-liked-menu-button').click();
-    cy.get('.js-saved-videos-wrapper .watching').each(($el) => cy.wrap($el).should('not.be.visible'));
-    cy.get('.js-saved-videos-wrapper .watched').each(($el) => cy.wrap($el).should('not.be.visible'));
-    cy.get('.js-saved-videos-wrapper .liked').each(($el) => cy.wrap($el).should('be.visible'));
+    cy.get('#liked-menu-button').click();
+    cy.get('#saved-videos-wrapper .liked').each(($el) => cy.wrap($el).should('be.visible'));
   });
 
   it('좋아요 메뉴버튼을 누르면 좋아요 로컬에서 데이터를 변경한다.', () => {
     const FIRST_INDEX = 0;
-    cy.get('.js-search-menu-button').click();
-    cy.get('.js-search-keyword-input').type(KEYWORD);
-    cy.get('.js-search-keyword-form').submit();
+    cy.get('#search-menu-button').click();
+    cy.get('#search-keyword-input').type(KEYWORD);
+    cy.get('#search-keyword-form').submit();
     cy.wait(2000);
-    cy.get('.js-save-button').eq(FIRST_INDEX).click();
-    cy.get('.js-modal-close-button').click();
-
-    expect(false).to.be.eq(getListByKey(DB_KEY.VIDEOS)[FIRST_INDEX].isLiked);
-    cy.get('.js-like-button').click();
-    expect(true).to.be.eq(getListByKey(DB_KEY.VIDEOS)[FIRST_INDEX].isLiked);
+    cy.get('.save-button').eq(FIRST_INDEX).click();
+    cy.get('#modal-close-button')
+      .click()
+      .then(() => {
+        expect(false).to.be.eq(getListByKey(DB_KEY.VIDEOS)[FIRST_INDEX].isLiked);
+      });
+    cy.get('.like-button')
+      .click()
+      .then(() => {
+        expect(true).to.be.eq(getListByKey(DB_KEY.VIDEOS)[FIRST_INDEX].isLiked);
+      });
   });
 
   it('좋아요 버튼을 다시 클릭하면 좋아요가 해지된다.', () => {
     const FIRST_INDEX = 0;
-    cy.get('.js-search-menu-button').click();
-    cy.get('.js-search-keyword-input').type(KEYWORD);
-    cy.get('.js-search-keyword-form').submit();
+    cy.get('#search-menu-button').click();
+    cy.get('#search-keyword-input').type(KEYWORD);
+    cy.get('#search-keyword-form').submit();
     cy.wait(2000);
-    cy.get('.js-save-button').eq(FIRST_INDEX).click();
-    cy.get('.js-modal-close-button').click();
+    cy.get('.save-button').eq(FIRST_INDEX).click();
+    cy.get('#modal-close-button').click();
 
-    cy.get('.js-like-button').click();
-    cy.get('.js-liked-menu-button').click();
-    cy.get('.js-like-button').click();
-    cy.get('.js-saved-videos-wrapper .liked').should('not.exist');
+    cy.get('.like-button').click();
+    cy.get('#liked-menu-button').click();
+    cy.get('.like-button').click();
+    cy.get('#saved-videos-wrapper .liked').should('not.exist');
   });
 });
