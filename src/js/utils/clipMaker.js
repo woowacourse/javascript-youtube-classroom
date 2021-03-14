@@ -15,6 +15,7 @@ export default function clipMaker(video, type) {
           allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
           allowscriptaccess="always"
           allowfullscreen
+          loading="lazy"
         ></iframe>
       </div>
       <div class="content-container pt-2 px-1">
