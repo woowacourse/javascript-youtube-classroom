@@ -93,7 +93,6 @@ export default class VideoSearchResult extends Component {
 
       this.displayVideos(states.searchedVideos);
       this.setLazyloading();
-      this.removeSkeletons();
     }
   }
 

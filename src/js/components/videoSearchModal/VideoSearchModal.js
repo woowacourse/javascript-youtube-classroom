@@ -95,21 +95,20 @@ export default class VideoSearchModal extends Component {
   }
 
   async requestVideos(searchTerm) {
-    try {
-      if (searchTerm) {
-        store.dispatch(addSearchHistory(searchTerm));
-        youtubeAPIManager.setSearchTerm(searchTerm);
-      }
+    if (searchTerm) {
+      store.dispatch(addSearchHistory(searchTerm));
+      youtubeAPIManager.setSearchTerm(searchTerm);
+    }
 
+    try {
       store.dispatch(updateRequestPending(true));
       const videoInfos = await youtubeAPIManager.requestVideos();
-
       store.dispatch(updateVideosToBeShown(videoInfos));
     } catch (error) {
-      this.videoSearchResult.removeSkeletons();
-      console.log(error);
+      alert(error);
     } finally {
       store.dispatch(updateRequestPending(false));
+      this.videoSearchResult.removeSkeletons();
     }
   }
 }

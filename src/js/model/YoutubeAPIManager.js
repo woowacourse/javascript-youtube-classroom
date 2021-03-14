@@ -21,7 +21,7 @@ export default class YoutubeAPIManager {
   createRequestURL() {
     const requestURL = `https://${this.domain}/youtube/search?`;
     const searchParams = new URLSearchParams({
-      part: 'snippet',
+      part: 'snippet2',
       type: 'video',
       q: this.searchTerm,
       maxResults: VALUES.MAXIMUM_SEARCH_VIDEO_COUNT,
@@ -45,22 +45,18 @@ export default class YoutubeAPIManager {
       return YoutubeAPIManager.cache[params].items;
     }
 
-    try {
-      const data = await fetch(url);
-      if (!data.ok) {
-        if (data.status === 403) {
-          throw new Error(ERROR_MESSAGES.EXCEED_API_REQUEST_COUNT(data.status));
-        }
-        throw new Error(ERROR_MESSAGES.API_REQUEST_ERROR(data.status));
+    const data = await fetch(url);
+    if (!data.ok) {
+      if (data.status === 403) {
+        throw new Error(ERROR_MESSAGES.EXCEED_API_REQUEST_COUNT(data.status));
       }
-
-      const dataJSON = await data.json();
-      YoutubeAPIManager.cache[params] = dataJSON;
-      this.pageToken = dataJSON.nextPageToken;
-
-      return dataJSON.items;
-    } catch (error) {
-      alert(error);
+      throw new Error(ERROR_MESSAGES.API_REQUEST_ERROR(data.status));
     }
+
+    const dataJSON = await data.json();
+    YoutubeAPIManager.cache[params] = dataJSON;
+    this.pageToken = dataJSON.nextPageToken;
+
+    return dataJSON.items;
   }
 }
