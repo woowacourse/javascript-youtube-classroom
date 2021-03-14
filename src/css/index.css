@@ -48,6 +48,10 @@ a {
     right: 40px;
     bottom: 40px;
   }
+
+  .linebreak {
+    display: block;
+  }
 }
 
 .btn:hover {
