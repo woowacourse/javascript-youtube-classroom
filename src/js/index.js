@@ -14,19 +14,18 @@ const searchView = new SearchView();
 const savedView = new SavedView();
 const snackBarView = new SnackBarView();
 
-const searchController = new SearchController(
-  youtubeModel,
-  storageModel,
-  searchView,
-  savedView,
-  snackBarView
-);
-const savedController = new SavedController(
-  storageModel,
-  savedView,
-  snackBarView
-);
-const modalController = new ModalController(storageModel, searchView);
+const searchController = new SearchController({
+  model: { youtubeModel, storageModel },
+  view: { searchView, savedView, snackBarView },
+});
+const savedController = new SavedController({
+  model: { storageModel },
+  view: { savedView, snackBarView },
+});
+const modalController = new ModalController({
+  model: { storageModel },
+  view: { searchView },
+});
 
 searchController.init();
 savedController.init();

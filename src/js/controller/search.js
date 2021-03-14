@@ -19,12 +19,12 @@ class SearchController {
   #savedView;
   #snackBarView;
 
-  constructor(youtubeModel, storageModel, searchView, savedView, snackBarView) {
-    this.#youtubeModel = youtubeModel;
-    this.#storageModel = storageModel;
-    this.#searchView = searchView;
-    this.#savedView = savedView;
-    this.#snackBarView = snackBarView;
+  constructor({ model, view }) {
+    this.#youtubeModel = model.youtubeModel;
+    this.#storageModel = model.storageModel;
+    this.#searchView = view.searchView;
+    this.#savedView = view.savedView;
+    this.#snackBarView = view.snackBarView;
   }
 
   init = () => {

@@ -10,10 +10,10 @@ class SavedController {
   #savedView;
   #snackBarView;
 
-  constructor(storageModel, savedView, snackBarView) {
-    this.#storageModel = storageModel;
-    this.#savedView = savedView;
-    this.#snackBarView = snackBarView;
+  constructor({ model, view }) {
+    this.#storageModel = model.storageModel;
+    this.#savedView = view.savedView;
+    this.#snackBarView = view.snackBarView;
   }
 
   init() {

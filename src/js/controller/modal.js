@@ -6,9 +6,9 @@ class ModalController {
   #searchView;
   #$modal;
 
-  constructor(storageModel, searchView) {
-    this.#storageModel = storageModel;
-    this.#searchView = searchView;
+  constructor({ model, view }) {
+    this.#storageModel = model.storageModel;
+    this.#searchView = view.searchView;
     this.#$modal = $(SELECTOR.MODAL);
   }
 
