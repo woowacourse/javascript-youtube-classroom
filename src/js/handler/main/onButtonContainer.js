@@ -57,19 +57,18 @@ const likeClip = (target) => {
     : MESSAGE.NOTIFY.LIKE_CLIP;
 
   showSnackbar(notifyMessage);
+
   savedClips[targetClipIndex].isLiked = !isLiked;
+  targetClip.classList.toggle('liked-clip');
+  targetClip.classList.toggle('unliked-clip');
   target.classList.toggle('opacity-hover');
 
   storage.set(LOCAL_STORAGE_KEY.SAVED_CLIPS, savedClips);
 };
 
 export const onButtonContainer = ({ target }) => {
-  console.log('!');
-  console.log(target.dataset.js);
   if (target.dataset.js === 'saved-clip-button-container__check') {
-    console.log('?');
     toggleIsWatched(target);
-    console.log('??');
     return;
   }
 

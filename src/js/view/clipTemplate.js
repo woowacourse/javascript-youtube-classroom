@@ -3,7 +3,6 @@ import { LOCAL_STORAGE_VALUE } from '../utils/constant.js';
 
 const buttonTemplate = (index, type) => {
   const { isModal, isSaved, isWatched, isLiked } = type;
-  console.log(type);
 
   if (isModal) {
     return isSaved
@@ -37,7 +36,8 @@ export const clipTemplate = (video, index, type) => {
   return `
       <article class="clip ${
         currentTab === LOCAL_STORAGE_VALUE.WATCHED ? 'd-none' : ''
-      } ${video.isWatched ? 'watched-clip' : 'unwatched-clip'}"
+      } ${isWatched ? 'watched-clip' : 'unwatched-clip'}
+        ${isLiked ? 'liked-clip' : 'unliked-clip'}"
         data-js=${isModal ? 'youtube-search-modal__clip' : 'saved-page__clip'}
         data-clip-index=${index}
       >

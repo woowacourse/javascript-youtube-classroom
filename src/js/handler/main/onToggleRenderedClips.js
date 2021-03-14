@@ -1,21 +1,39 @@
-import { $$ } from '../../utils/querySelector.js';
 import $DOM from '../../utils/DOM.js';
 import storage from '../../utils/localStorage.js';
-import { showElement, hideElement } from '../../utils/setAttribute.js';
 import {
   LOCAL_STORAGE_KEY,
   LOCAL_STORAGE_VALUE,
 } from '../../utils/constant.js';
 
-const setSelected = (isWatchedButton) => {
-  if (isWatchedButton) {
-    $DOM.NAVIGATOR.WATCHED_BUTTON.classList.add('bg-cyan-100');
-    $DOM.NAVIGATOR.UNWATCHED_BUTTON.classList.remove('bg-cyan-100');
-    return;
-  }
+const deActivateButton = () => {
+  $DOM.NAVIGATOR.WATCHED_BUTTON.classList.remove('active');
+  $DOM.NAVIGATOR.UNWATCHED_BUTTON.classList.remove('active');
+  $DOM.NAVIGATOR.LIKED_BUTTON.classList.remove('active');
+};
 
-  $DOM.NAVIGATOR.UNWATCHED_BUTTON.classList.add('bg-cyan-100');
-  $DOM.NAVIGATOR.WATCHED_BUTTON.classList.remove('bg-cyan-100');
+const activateButton = (target) => {
+  target.classList.add('active');
+};
+
+const setSelected = (target) => {
+  deActivateButton();
+  activateButton(target);
+};
+
+const targetSectionClassName = [
+  'watched-section',
+  'unwatched-section',
+  'liked-section',
+];
+
+const deActivateTargetSection = () => {
+  targetSectionClassName.forEach((className) => {
+    $DOM.SAVE_PAGE.VIDEO_WRAPPER.classList.remove(className);
+  });
+};
+
+const activateTargetSection = (targetClassName) => {
+  $DOM.SAVE_PAGE.VIDEO_WRAPPER.classList.add(targetClassName);
 };
 
 export const onToggleRenderedClips = ({ target }) => {
@@ -24,9 +42,10 @@ export const onToggleRenderedClips = ({ target }) => {
   }
 
   const isWatchedButton = target.dataset.js === 'navigator__watched-button';
-  const savePageVideoWrapper = $DOM.SAVE_PAGE.VIDEO_WRAPPER;
+  const isUnwatchedButton = target.dataset.js === 'navigator__unwatched-button';
+  const isLikedButton = target.dataset.js === 'navigator__liked-button';
 
-  setSelected(isWatchedButton);
+  setSelected(target);
 
   storage.set(
     LOCAL_STORAGE_KEY.CURRENT_TAB,
@@ -35,11 +54,15 @@ export const onToggleRenderedClips = ({ target }) => {
       : LOCAL_STORAGE_VALUE.UNWATCHED,
   );
 
-  if (isWatchedButton) {
-    savePageVideoWrapper.classList.add('watched-section');
-    savePageVideoWrapper.classList.remove('unwatched-section');
-    return;
+  let targetIndex = 0;
+  if (isUnwatchedButton) {
+    targetIndex = 1;
   }
-  savePageVideoWrapper.classList.add('unwatched-section');
-  savePageVideoWrapper.classList.remove('watched-section');
+
+  if (isLikedButton) {
+    targetIndex = 2;
+  }
+
+  deActivateTargetSection();
+  activateTargetSection(targetSectionClassName[targetIndex]);
 };
