@@ -102,7 +102,6 @@ dist
 
 # TernJS port file
 .tern-port
-youtubeAPI.js
 
 # Cypress
 cypress/fixtures/

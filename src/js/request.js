@@ -1,9 +1,12 @@
-import youtubeKey from '../../youtubeAPI.js';
-import { SEARCH_URL, VIDEO_URL, VALUE } from '../js/utils/constants.js';
+import {
+  SEARCH_URL,
+  VIDEO_URL,
+  ERROR_MESSAGES,
+  VALUE,
+} from '../js/utils/constants.js';
 
-function generateSearchURL(keyword, pageToken) {
+export async function searchRequest(keyword, pageToken) {
   const searchParams = new URLSearchParams({
-    key: youtubeKey,
     type: 'video',
     part: 'snippet',
     maxResults: VALUE.CLIPS_PER_SCROLL,
@@ -14,29 +17,35 @@ function generateSearchURL(keyword, pageToken) {
     searchParams.set('pageToken', pageToken);
   }
 
-  return SEARCH_URL + searchParams;
+  const requestURL = SEARCH_URL + searchParams;
+
+  return await httpRequest(requestURL);
 }
 
-export async function searchRequest(keyword, pageToken) {
-  const requestURL = generateSearchURL(keyword, pageToken);
-  const response = await fetch(requestURL).then((response) => response.json());
-
-  return response;
-}
-
-function generateVideoURL(videoIds) {
+export async function videoRequest(videoIds) {
   const searchParams = new URLSearchParams({
-    key: youtubeKey,
     part: 'snippet',
     id: videoIds.join(','),
   });
 
-  return VIDEO_URL + searchParams;
+  const requestURL = VIDEO_URL + searchParams;
+
+  return await httpRequest(requestURL);
 }
 
-export async function videoRequest(videoIds) {
-  const requestURL = generateVideoURL(videoIds);
-  const response = await fetch(requestURL).then((response) => response.json());
+async function httpRequest(requestURL) {
+  try {
+    const response = await fetch(requestURL);
 
-  return response;
+    if (!response.ok) {
+      if (response.status === 403) {
+        throw new Error(ERROR_MESSAGES.EXCEED_API_QUOTA);
+      }
+      throw new Error(ERROR_MESSAGES.API_ERROR);
+    }
+
+    return await response.json();
+  } catch (e) {
+    console.error(e);
+  }
 }

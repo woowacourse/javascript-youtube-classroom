@@ -6,6 +6,10 @@
   justify-content: center;
 }
 
+.stretch {
+  grid-area: 1 / 1 / 1 / end;
+}
+
 .clip {
   height: 254px;
   cursor: pointer;
@@ -67,4 +71,32 @@
   display: inline-block;
   margin: 0;
   color: #606060;
+}
+
+.clip.fadeout {
+  animation-name: clip-fade-out;
+  animation-duration: 0.3s;
+}
+
+.clip.fadein {
+  animation-name: clip-fade-in;
+  animation-duration: 0.3s;
+}
+
+@keyframes clip-fade-out {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+@keyframes clip-fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
 }
