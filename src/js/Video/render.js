@@ -2,6 +2,8 @@ import { CLASSNAME, MESSAGE } from "../constants.js";
 import messenger from "../Messenger.js";
 import { $ } from "../utils/DOM.js";
 
+const DOMAIN = "https://www.youtube.com";
+
 const renderVideo = ($video, item) => {
   const {
     id: { videoId },
@@ -13,11 +15,11 @@ const renderVideo = ($video, item) => {
   const $channelTitle = $video.querySelector(`.${CLASSNAME.CHANNEL_TITLE}`);
   const $publishedAt = $video.querySelector(`.${CLASSNAME.PUBLISHED_AT}`);
 
-  $iframe.src = `https://www.youtube.com/embed/${videoId}`;
+  $iframe.src = `${DOMAIN}/embed/${videoId}`;
 
   $videoTitle.innerText = title;
 
-  $channelTitle.href = `https://www.youtube.com/channel/${channelId}`;
+  $channelTitle.href = `${DOMAIN}/channel/${channelId}`;
   $channelTitle.innerText = channelTitle;
 
   $publishedAt.innerText = new Date(publishedAt).toLocaleDateString("ko-KR", {
