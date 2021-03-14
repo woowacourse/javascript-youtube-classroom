@@ -1,33 +1,36 @@
 import { YOUTUBE } from '../constants.js';
 
 export async function getVideosByKeyword(searchKeyword, pageToken) {
-  const query = {
+  const query = getQuery(searchKeyword, pageToken)
+  const response = await fetch(`https://www.googleapis.com/youtube/v3/search?${parseQuery(query)}`);
+  const data = await response.json();
+  const { nextPageToken } = response;
+  const videos = data.items.map(({ id, snippet }) => getVideoItem(id, snippet));
+  return {
+    nextPageToken,
+    videos,
+  };
+}
+
+function getQuery(searchKeyword, pageToken) {
+  return {
     part: 'snippet',
     q: searchKeyword,
     type: 'video',
     maxResults: YOUTUBE.MAX_RESULT_COUNT,
     videoDefinition: 'high',
     key: YOUTUBE_API_KEY,
+    pageToken: pageToken ? pageToken : ''
   };
-  const response = await (
-    await fetch(
-      `https://www.googleapis.com/youtube/v3/search?${parseQuery(query)}${
-        pageToken ? `&pageToken=${pageToken}` : ''
-      }`
-    )
-  ).json();
-  const { nextPageToken } = response;
-  const videos = response.items.map(({ id, snippet }) => ({
+}
+
+function getVideoItem(id, snippet) {
+  return {
     videoId: id.videoId,
     title: snippet.title,
     channelTitle: snippet.channelTitle,
     publishedAt: snippet.publishedAt,
-  }));
-
-  return {
-    nextPageToken,
-    videos,
-  };
+  }
 }
 
 function parseQuery(query) {

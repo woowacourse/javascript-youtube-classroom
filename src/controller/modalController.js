@@ -66,6 +66,7 @@ async function onVideoSearch(event) {
   modalView.initSearchEnv();
   const { videos, nextPageToken } = await getVideosByKeyword(input);
   if (videos.length === 0) {
+    modalView.hideSearchResultIntersector();
     modalView.showNotFountImage();
     modalView.hideSkeletons();
     return;
@@ -76,6 +77,7 @@ async function onVideoSearch(event) {
   modalView.hideSkeletons();
   modalView.renderSearchQueries(searchQueryModel.getItem());
   modalView.renderSearchedVideos(modalService.getProcessedVideos(videos));
+  modalView.showSearchResultIntersector();
 }
 
 async function onAdditionalVideosLoad() {

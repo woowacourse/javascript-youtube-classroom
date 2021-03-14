@@ -35,9 +35,7 @@ function onWatchingVideoInteract({ target }) {
 function onClipCheck(button) {
   const videoId = button.dataset.videoId;
   watchingVideoModel.sendVideoTo(watchedVideoModel, videoId);
-
   loadWatchingVideos();
-
   layoutView.showSnackbar(SNACKBAR_MESSAGE.WATCHED_VIDEO_CHECK_SUCCESS, true);
 }
 

@@ -12,13 +12,16 @@ export default class ModalView extends BasicView {
     $searchQueries,
     $searchResultVideoWrapper,
     $savedVideoCount,
-    
+    $searchResultIntersector,
+    $searchedVideoNotFound  
   }) {
     super({
       $modal,
       $searchQueries,
       $searchResultVideoWrapper,
       $savedVideoCount,
+      $searchResultIntersector,
+      $searchedVideoNotFound    
     });
   }
 
@@ -30,7 +33,7 @@ export default class ModalView extends BasicView {
   }
 
   initSearchEnv() {
-    this.hideElementBySelector(`#${SELECTOR_ID.SEARCHED_VIDEO_NOT_FOUND}`);
+    this.hideElement(this._element.$searchedVideoNotFound);
     this.#renderSkeletonItems();
   }
 
@@ -50,7 +53,6 @@ export default class ModalView extends BasicView {
       this._element.$searchResultVideoWrapper,
       this.#getSearchedVideoListTemplate(processedVideos)
     );
-    this.showElementBySelector(`#${SELECTOR_ID.SERACH_RESULT_INTERSECTOR}`);
   }
 
   insertSearchedVideos(processedVideos) {
@@ -59,15 +61,23 @@ export default class ModalView extends BasicView {
       this.#getSearchedVideoListTemplate(processedVideos)
     );
   }
+
   showNotFountImage() {
-    this.showElementBySelector(`#${SELECTOR_ID.SEARCHED_VIDEO_NOT_FOUND}`);
+    this.showElement(this._element.$searchedVideoNotFound);
   }
+
   showSearchResultIntersector() {
-    this.showElementBySelector(`#${SELECTOR_ID.SERACH_RESULT_INTERSECTOR}`);
+    this.showElement(this._element.$searchResultIntersector);
   }
+
+  hideSearchResultIntersector() {
+    this.hideElement(this._element.$searchResultIntersector);
+  }
+
   hideSkeletons() {
     this.hideElementBySelector(`.${SELECTOR_CLASS.SKELETON}`);
   }
+
   hideVideoSaveButton($button) {
     this.hideElement($button);
   }

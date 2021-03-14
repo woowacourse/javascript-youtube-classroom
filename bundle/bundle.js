@@ -12151,45 +12151,34 @@ function getVideosByKeyword(_x, _x2) {
 
 function _getVideosByKeyword() {
   _getVideosByKeyword = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee(searchKeyword, pageToken) {
-    var query, response, nextPageToken, videos;
+    var query, response, data, nextPageToken, videos;
     return regeneratorRuntime.wrap(function _callee$(_context) {
       while (1) {
         switch (_context.prev = _context.next) {
           case 0:
-            query = {
-              part: 'snippet',
-              q: searchKeyword,
-              type: 'video',
-              maxResults: _constants_js__WEBPACK_IMPORTED_MODULE_0__.YOUTUBE.MAX_RESULT_COUNT,
-              videoDefinition: 'high',
-              key: "AIzaSyBmX5TEH7eS1rqcf33gV0CWUZaQFLoN6b4"
-            };
+            query = getQuery(searchKeyword, pageToken);
             _context.next = 3;
-            return fetch("https://www.googleapis.com/youtube/v3/search?".concat(parseQuery(query)).concat(pageToken ? "&pageToken=".concat(pageToken) : ''));
+            return fetch("https://www.googleapis.com/youtube/v3/search?".concat(parseQuery(query)));
 
           case 3:
-            _context.next = 5;
-            return _context.sent.json();
-
-          case 5:
             response = _context.sent;
+            _context.next = 6;
+            return response.json();
+
+          case 6:
+            data = _context.sent;
             nextPageToken = response.nextPageToken;
-            videos = response.items.map(function (_ref) {
+            videos = data.items.map(function (_ref) {
               var id = _ref.id,
                   snippet = _ref.snippet;
-              return {
-                videoId: id.videoId,
-                title: snippet.title,
-                channelTitle: snippet.channelTitle,
-                publishedAt: snippet.publishedAt
-              };
+              return getVideoItem(id, snippet);
             });
             return _context.abrupt("return", {
               nextPageToken: nextPageToken,
               videos: videos
             });
 
-          case 9:
+          case 10:
           case "end":
             return _context.stop();
         }
@@ -12197,6 +12186,27 @@ function _getVideosByKeyword() {
     }, _callee);
   }));
   return _getVideosByKeyword.apply(this, arguments);
+}
+
+function getQuery(searchKeyword, pageToken) {
+  return {
+    part: 'snippet',
+    q: searchKeyword,
+    type: 'video',
+    maxResults: _constants_js__WEBPACK_IMPORTED_MODULE_0__.YOUTUBE.MAX_RESULT_COUNT,
+    videoDefinition: 'high',
+    key: "AIzaSyBmX5TEH7eS1rqcf33gV0CWUZaQFLoN6b4",
+    pageToken: pageToken ? pageToken : ''
+  };
+}
+
+function getVideoItem(id, snippet) {
+  return {
+    videoId: id.videoId,
+    title: snippet.title,
+    channelTitle: snippet.channelTitle,
+    publishedAt: snippet.publishedAt
+  };
 }
 
 function parseQuery(query) {
@@ -12237,12 +12247,12 @@ var SELECTOR_ID = Object.freeze({
   SEARCH_RESULT_VIDEO_WRAPPER: 'search-result__video-wrapper',
   WATCHING_VIDEO_WRAPPER: 'watching-video-wrapper',
   WATCHED_VIDEO_WRAPPER: 'watched-video-wrapper',
-  NOT_FOUND_CONTENT: 'not-found-content',
+  SEARCHED_VIDEO_NOT_FOUND: 'searched-video-not-found',
   SERACH_RESULT_INTERSECTOR: 'search-result__intersector',
   SEARCH_QUERIES: 'search-queries',
   WATCHED_VIDEO_SWITCH_BUTTON: 'watched-video-switch-button',
   WATCHING_VIDEO_SWITCH_BUTTON: 'watching-video-switch-button',
-  EMPTY_VIDEO_TO_WATCH: 'empty-video-to-watch',
+  EMPTY_WATCHING_VIDEO: 'empty-watching-video',
   EMPTY_WATCHED_VIDEO: 'empty-watched-video',
   SNACKBAR_WRAPPER: 'snackbar-wrapper',
   NAV: 'nav',
@@ -12430,6 +12440,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _store_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../store.js */ "./src/store.js");
 /* harmony import */ var _service_modalService_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../service/modalService.js */ "./src/service/modalService.js");
 /* harmony import */ var _view_index_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../view/index.js */ "./src/view/index.js");
+/* harmony import */ var _constants_js__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../constants.js */ "./src/constants.js");
+/* harmony import */ var _service_watchingVideoService_js__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../service/watchingVideoService.js */ "./src/service/watchingVideoService.js");
 function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
 
 function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
@@ -12440,9 +12452,12 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
 
 
+
+
 var modalController = {
   initEventListeners: function initEventListeners() {
     _controllerUtil_js__WEBPACK_IMPORTED_MODULE_2__.default.setObserver(_elements_js__WEBPACK_IMPORTED_MODULE_0__.$searchResultIntersector, onAdditionalVideosLoad);
+    _elements_js__WEBPACK_IMPORTED_MODULE_0__.$searchResultVideoWrapper.addEventListener('click', onSearchedVideoSave);
     _elements_js__WEBPACK_IMPORTED_MODULE_0__.$searchButton.addEventListener('click', onModalOpen);
     _elements_js__WEBPACK_IMPORTED_MODULE_0__.$modalCloseButton.addEventListener('click', onModalClose);
     _elements_js__WEBPACK_IMPORTED_MODULE_0__.$searchForm.addEventListener('submit', onVideoSearch);
@@ -12484,7 +12499,7 @@ function _onVideoSearch() {
         switch (_context.prev = _context.next) {
           case 0:
             event.preventDefault();
-            input = _elements_js__WEBPACK_IMPORTED_MODULE_0__.$searchFormInput.value.trim(); //TODO: validation 으로 빼기
+            input = _elements_js__WEBPACK_IMPORTED_MODULE_0__.$searchFormInput.value.trim();
 
             if (!(input === _store_js__WEBPACK_IMPORTED_MODULE_3__.prevSearchResultModel.getItem().lastQuery)) {
               _context.next = 4;
@@ -12512,14 +12527,16 @@ function _onVideoSearch() {
             nextPageToken = _yield$getVideosByKey.nextPageToken;
 
             if (!(videos.length === 0)) {
-              _context.next = 15;
+              _context.next = 17;
               break;
             }
 
+            _view_index_js__WEBPACK_IMPORTED_MODULE_5__.modalView.hideSearchResultIntersector();
             _view_index_js__WEBPACK_IMPORTED_MODULE_5__.modalView.showNotFountImage();
+            _view_index_js__WEBPACK_IMPORTED_MODULE_5__.modalView.hideSkeletons();
             return _context.abrupt("return");
 
-          case 15:
+          case 17:
             _service_modalService_js__WEBPACK_IMPORTED_MODULE_4__.default.saveSearchQuery(input);
             _service_modalService_js__WEBPACK_IMPORTED_MODULE_4__.default.savePrevSearchInfo({
               lastQuery: input,
@@ -12529,8 +12546,9 @@ function _onVideoSearch() {
             _view_index_js__WEBPACK_IMPORTED_MODULE_5__.modalView.hideSkeletons();
             _view_index_js__WEBPACK_IMPORTED_MODULE_5__.modalView.renderSearchQueries(_store_js__WEBPACK_IMPORTED_MODULE_3__.searchQueryModel.getItem());
             _view_index_js__WEBPACK_IMPORTED_MODULE_5__.modalView.renderSearchedVideos(_service_modalService_js__WEBPACK_IMPORTED_MODULE_4__.default.getProcessedVideos(videos));
+            _view_index_js__WEBPACK_IMPORTED_MODULE_5__.modalView.showSearchResultIntersector();
 
-          case 21:
+          case 24:
           case "end":
             return _context.stop();
         }
@@ -12573,6 +12591,33 @@ function _onAdditionalVideosLoad() {
     }, _callee2);
   }));
   return _onAdditionalVideosLoad.apply(this, arguments);
+}
+
+function onSearchedVideoSave(_ref) {
+  var target = _ref.target;
+
+  if (!target.classList.contains(_constants_js__WEBPACK_IMPORTED_MODULE_6__.SELECTOR_CLASS.SEARCHED_CLIP_SAVE_BUTTON)) {
+    return;
+  }
+
+  if (!_service_watchingVideoService_js__WEBPACK_IMPORTED_MODULE_7__.default.isVideoCountUnderLimit()) {
+    _view_index_js__WEBPACK_IMPORTED_MODULE_5__.layoutView.showSnackbar(_constants_js__WEBPACK_IMPORTED_MODULE_6__.SNACKBAR_MESSAGE.SAVE_LIMIT_EXCEEDED, false);
+    return;
+  }
+
+  if (_service_watchingVideoService_js__WEBPACK_IMPORTED_MODULE_7__.default.isVideosEmpty()) {
+    _view_index_js__WEBPACK_IMPORTED_MODULE_5__.watchingVideoView.hideEmptyVideoImage();
+    _view_index_js__WEBPACK_IMPORTED_MODULE_5__.watchedVideoView.hideEmptyVideoImage();
+  }
+
+  _service_watchingVideoService_js__WEBPACK_IMPORTED_MODULE_7__.default.pushNewVideo(target.dataset);
+
+  if (_controllerUtil_js__WEBPACK_IMPORTED_MODULE_2__.default.parseHash(location.hash) === _constants_js__WEBPACK_IMPORTED_MODULE_6__.BROWSER_HASH.WATCHING) {
+    _view_index_js__WEBPACK_IMPORTED_MODULE_5__.watchingVideoView.renderVideos(_store_js__WEBPACK_IMPORTED_MODULE_3__.watchingVideoModel.getItem());
+  }
+
+  _view_index_js__WEBPACK_IMPORTED_MODULE_5__.modalView.hideVideoSaveButton(target);
+  _view_index_js__WEBPACK_IMPORTED_MODULE_5__.layoutView.showSnackbar(_constants_js__WEBPACK_IMPORTED_MODULE_6__.SNACKBAR_MESSAGE.WATCHING_VIDEO_SAVE_SUCCESS, true);
 }
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (modalController);
@@ -12669,8 +12714,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _view__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../view */ "./src/view/index.js");
 /* harmony import */ var _service_watchingVideoService_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../service/watchingVideoService.js */ "./src/service/watchingVideoService.js");
 /* harmony import */ var _constants__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../constants */ "./src/constants.js");
-/* harmony import */ var _controllerUtil__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./controllerUtil */ "./src/controller/controllerUtil.js");
-
 
 
 
@@ -12678,18 +12721,10 @@ __webpack_require__.r(__webpack_exports__);
 
 var watchingVideoController = {
   initEventListeners: function initEventListeners() {
-    _elements__WEBPACK_IMPORTED_MODULE_0__.$searchResultVideoWrapper.addEventListener('click', onWatchingVideoSave);
     _elements__WEBPACK_IMPORTED_MODULE_0__.$watchingVideoWrapper.addEventListener('click', onWatchingVideoInteract);
   },
   loadVideos: function loadVideos() {
-    var watchedVideos = _store__WEBPACK_IMPORTED_MODULE_1__.watchedVideoModel.getItem();
-
-    if (watchedVideos.length === 0) {
-      _view__WEBPACK_IMPORTED_MODULE_2__.watchingVideoView.hideEmptyVideoImage();
-      _view__WEBPACK_IMPORTED_MODULE_2__.watchedVideoView.showEmptyVideoImage();
-    }
-
-    _view__WEBPACK_IMPORTED_MODULE_2__.watchedVideoView.renderVideos(watchedVideos);
+    loadWatchingVideos();
   }
 };
 
@@ -12709,8 +12744,7 @@ function onWatchingVideoInteract(_ref) {
 
 function onClipCheck(button) {
   var videoId = button.dataset.videoId;
-  _store__WEBPACK_IMPORTED_MODULE_1__.watchingVideoModel.sendVideoTo(_store__WEBPACK_IMPORTED_MODULE_1__.watchedVideoModel, videoId); // TODO: controller를 클래스로 나누면 해결됨(아래 중복코드)
-
+  _store__WEBPACK_IMPORTED_MODULE_1__.watchingVideoModel.sendVideoTo(_store__WEBPACK_IMPORTED_MODULE_1__.watchedVideoModel, videoId);
   loadWatchingVideos();
   _view__WEBPACK_IMPORTED_MODULE_2__.layoutView.showSnackbar(_constants__WEBPACK_IMPORTED_MODULE_4__.SNACKBAR_MESSAGE.WATCHED_VIDEO_CHECK_SUCCESS, true);
 }
@@ -12724,34 +12758,6 @@ function onWatchingVideoDelete(button) {
   _store__WEBPACK_IMPORTED_MODULE_1__.watchingVideoModel.popVideoByVideoId(videoId);
   loadWatchingVideos();
   _view__WEBPACK_IMPORTED_MODULE_2__.layoutView.showSnackbar(_constants__WEBPACK_IMPORTED_MODULE_4__.SNACKBAR_MESSAGE.WATCHING_VIDEO_DELETE_SUCCESS, true);
-}
-
-function onWatchingVideoSave(_ref2) {
-  var target = _ref2.target;
-
-  if (!target.classList.contains(_constants__WEBPACK_IMPORTED_MODULE_4__.SELECTOR_CLASS.SEARCHED_CLIP_SAVE_BUTTON)) {
-    return;
-  } // TODO: watching + watched 비디오 합쳐서 100개 이하여야함
-
-
-  if (!_service_watchingVideoService_js__WEBPACK_IMPORTED_MODULE_3__.default.isVideoCountUnderLimit()) {
-    _view__WEBPACK_IMPORTED_MODULE_2__.layoutView.showSnackbar(_constants__WEBPACK_IMPORTED_MODULE_4__.SNACKBAR_MESSAGE.SAVE_LIMIT_EXCEEDED, false);
-    return;
-  }
-
-  if (_service_watchingVideoService_js__WEBPACK_IMPORTED_MODULE_3__.default.isVideosEmpty()) {
-    _view__WEBPACK_IMPORTED_MODULE_2__.watchingVideoView.hideEmptyVideoImage();
-    _view__WEBPACK_IMPORTED_MODULE_2__.watchedVideoView.hideEmptyVideoImage();
-  }
-
-  _service_watchingVideoService_js__WEBPACK_IMPORTED_MODULE_3__.default.pushNewVideo(target.dataset);
-
-  if (_controllerUtil__WEBPACK_IMPORTED_MODULE_5__.default.parseHash(location.hash) === _constants__WEBPACK_IMPORTED_MODULE_4__.BROWSER_HASH.WATCHING) {
-    _view__WEBPACK_IMPORTED_MODULE_2__.watchingVideoView.renderVideos(_store__WEBPACK_IMPORTED_MODULE_1__.watchingVideoModel.getItem());
-  }
-
-  _view__WEBPACK_IMPORTED_MODULE_2__.modalView.hideVideoSaveButton(target);
-  _view__WEBPACK_IMPORTED_MODULE_2__.layoutView.showSnackbar(_constants__WEBPACK_IMPORTED_MODULE_4__.SNACKBAR_MESSAGE.WATCHING_VIDEO_SAVE_SUCCESS, true);
 }
 
 function loadWatchingVideos() {
@@ -12788,6 +12794,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "$searchResultIntersector": () => (/* binding */ $searchResultIntersector),
 /* harmony export */   "$watchingVideoWrapper": () => (/* binding */ $watchingVideoWrapper),
 /* harmony export */   "$searchQueries": () => (/* binding */ $searchQueries),
+/* harmony export */   "$searchedVideoNotFound": () => (/* binding */ $searchedVideoNotFound),
 /* harmony export */   "$emptyWatchingVideo": () => (/* binding */ $emptyWatchingVideo),
 /* harmony export */   "$emptyWatchedVideo": () => (/* binding */ $emptyWatchedVideo),
 /* harmony export */   "$snackbarWrapper": () => (/* binding */ $snackbarWrapper),
@@ -12809,7 +12816,8 @@ var $searchResultVideoWrapper = (0,_utils_querySelector_js__WEBPACK_IMPORTED_MOD
 var $searchResultIntersector = (0,_utils_querySelector_js__WEBPACK_IMPORTED_MODULE_1__.$)("#".concat(_constants_js__WEBPACK_IMPORTED_MODULE_0__.SELECTOR_ID.SERACH_RESULT_INTERSECTOR));
 var $watchingVideoWrapper = (0,_utils_querySelector_js__WEBPACK_IMPORTED_MODULE_1__.$)("#".concat(_constants_js__WEBPACK_IMPORTED_MODULE_0__.SELECTOR_ID.WATCHING_VIDEO_WRAPPER));
 var $searchQueries = (0,_utils_querySelector_js__WEBPACK_IMPORTED_MODULE_1__.$)("#".concat(_constants_js__WEBPACK_IMPORTED_MODULE_0__.SELECTOR_ID.SEARCH_QUERIES));
-var $emptyWatchingVideo = (0,_utils_querySelector_js__WEBPACK_IMPORTED_MODULE_1__.$)("#".concat(_constants_js__WEBPACK_IMPORTED_MODULE_0__.SELECTOR_ID.EMPTY_VIDEO_TO_WATCH));
+var $searchedVideoNotFound = (0,_utils_querySelector_js__WEBPACK_IMPORTED_MODULE_1__.$)("#".concat(_constants_js__WEBPACK_IMPORTED_MODULE_0__.SELECTOR_ID.SEARCHED_VIDEO_NOT_FOUND));
+var $emptyWatchingVideo = (0,_utils_querySelector_js__WEBPACK_IMPORTED_MODULE_1__.$)("#".concat(_constants_js__WEBPACK_IMPORTED_MODULE_0__.SELECTOR_ID.EMPTY_WATCHING_VIDEO));
 var $emptyWatchedVideo = (0,_utils_querySelector_js__WEBPACK_IMPORTED_MODULE_1__.$)("#".concat(_constants_js__WEBPACK_IMPORTED_MODULE_0__.SELECTOR_ID.EMPTY_WATCHED_VIDEO));
 var $snackbarWrapper = (0,_utils_querySelector_js__WEBPACK_IMPORTED_MODULE_1__.$)("#".concat(_constants_js__WEBPACK_IMPORTED_MODULE_0__.SELECTOR_ID.SNACKBAR_WRAPPER));
 var $watchedVideoWrapper = (0,_utils_querySelector_js__WEBPACK_IMPORTED_MODULE_1__.$)("#".concat(_constants_js__WEBPACK_IMPORTED_MODULE_0__.SELECTOR_ID.WATCHED_VIDEO_WRAPPER));
@@ -13630,14 +13638,15 @@ var ModalView = /*#__PURE__*/function (_BasicView) {
 
   var _super = _createSuper(ModalView);
 
-  // TODO: 이게 최선?
   function ModalView(_ref) {
     var _this;
 
     var $modal = _ref.$modal,
         $searchQueries = _ref.$searchQueries,
         $searchResultVideoWrapper = _ref.$searchResultVideoWrapper,
-        $savedVideoCount = _ref.$savedVideoCount;
+        $savedVideoCount = _ref.$savedVideoCount,
+        $searchResultIntersector = _ref.$searchResultIntersector,
+        $searchedVideoNotFound = _ref.$searchedVideoNotFound;
 
     _classCallCheck(this, ModalView);
 
@@ -13645,7 +13654,9 @@ var ModalView = /*#__PURE__*/function (_BasicView) {
       $modal: $modal,
       $searchQueries: $searchQueries,
       $searchResultVideoWrapper: $searchResultVideoWrapper,
-      $savedVideoCount: $savedVideoCount
+      $savedVideoCount: $savedVideoCount,
+      $searchResultIntersector: $searchResultIntersector,
+      $searchedVideoNotFound: $searchedVideoNotFound
     });
 
     _getSearchedVideoTemplate.add(_assertThisInitialized(_this));
@@ -13676,7 +13687,7 @@ var ModalView = /*#__PURE__*/function (_BasicView) {
   }, {
     key: "initSearchEnv",
     value: function initSearchEnv() {
-      this.hideElementBySelector("#".concat(_constants_js__WEBPACK_IMPORTED_MODULE_0__.SELECTOR_ID.NOT_FOUND_CONTENT));
+      this.hideElement(this._element.$searchedVideoNotFound);
 
       _classPrivateMethodGet(this, _renderSkeletonItems, _renderSkeletonItems2).call(this);
     }
@@ -13694,7 +13705,6 @@ var ModalView = /*#__PURE__*/function (_BasicView) {
     key: "renderSearchedVideos",
     value: function renderSearchedVideos(processedVideos) {
       this.renderHTML(this._element.$searchResultVideoWrapper, _classPrivateMethodGet(this, _getSearchedVideoListTemplate, _getSearchedVideoListTemplate2).call(this, processedVideos));
-      this.showElementBySelector("#".concat(_constants_js__WEBPACK_IMPORTED_MODULE_0__.SELECTOR_ID.SERACH_RESULT_INTERSECTOR));
     }
   }, {
     key: "insertSearchedVideos",
@@ -13704,12 +13714,17 @@ var ModalView = /*#__PURE__*/function (_BasicView) {
   }, {
     key: "showNotFountImage",
     value: function showNotFountImage() {
-      this.showElementBySelector("#".concat(_constants_js__WEBPACK_IMPORTED_MODULE_0__.SELECTOR_ID.NOT_FOUND_CONTENT));
+      this.showElement(this._element.$searchedVideoNotFound);
     }
   }, {
     key: "showSearchResultIntersector",
     value: function showSearchResultIntersector() {
-      this.showElementBySelector("#".concat(_constants_js__WEBPACK_IMPORTED_MODULE_0__.SELECTOR_ID.SERACH_RESULT_INTERSECTOR));
+      this.showElement(this._element.$searchResultIntersector);
+    }
+  }, {
+    key: "hideSearchResultIntersector",
+    value: function hideSearchResultIntersector() {
+      this.hideElement(this._element.$searchResultIntersector);
     }
   }, {
     key: "hideSkeletons",
@@ -13905,7 +13920,9 @@ var modalView = new _ModalView__WEBPACK_IMPORTED_MODULE_2__.default({
   $modal: _elements__WEBPACK_IMPORTED_MODULE_0__.$modal,
   $searchQueries: _elements__WEBPACK_IMPORTED_MODULE_0__.$searchQueries,
   $searchResultVideoWrapper: _elements__WEBPACK_IMPORTED_MODULE_0__.$searchResultVideoWrapper,
-  $savedVideoCount: _elements__WEBPACK_IMPORTED_MODULE_0__.$savedVideoCount
+  $savedVideoCount: _elements__WEBPACK_IMPORTED_MODULE_0__.$savedVideoCount,
+  $searchResultIntersector: _elements__WEBPACK_IMPORTED_MODULE_0__.$searchResultIntersector,
+  $searchedVideoNotFound: _elements__WEBPACK_IMPORTED_MODULE_0__.$searchedVideoNotFound
 });
 
 /***/ })
