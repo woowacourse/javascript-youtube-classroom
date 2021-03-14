@@ -55,7 +55,7 @@ const controllerUtil = {
   loadAdditionalVideos(videos) {
     view.insertVideoItems(videos);
     if (videos.length === 0) {
-      view.showNotFountContent();
+      view.showNotFoundContent();
       return;
     }
   },

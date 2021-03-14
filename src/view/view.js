@@ -56,7 +56,7 @@ const view = {
     );
   },
 
-  showNotFountContent() {
+  showNotFoundContent() {
     viewUtil.showElementBySelector(`#${SELECTOR_ID.NOT_FOUND_CONTENT}`);
   },
 

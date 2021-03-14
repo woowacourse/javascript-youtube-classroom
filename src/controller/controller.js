@@ -61,7 +61,7 @@ async function onVideoSearch(event) {
   const { videos, nextPageToken } = await getVideosByKeyword(input);
 
   if (videos.length === 0) {
-    view.showNotFountContent();
+    view.showNotFoundContent();
     return;
   }
   view.hideSkeletons();

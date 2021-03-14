@@ -12412,7 +12412,7 @@ function _onVideoSearch() {
               break;
             }
 
-            _view_view_js__WEBPACK_IMPORTED_MODULE_1__.default.showNotFountContent();
+            _view_view_js__WEBPACK_IMPORTED_MODULE_1__.default.showNotFoundContent();
             return _context2.abrupt("return");
 
           case 15:
@@ -12553,7 +12553,7 @@ var controllerUtil = {
     _view_view_js__WEBPACK_IMPORTED_MODULE_0__.default.insertVideoItems(videos);
 
     if (videos.length === 0) {
-      _view_view_js__WEBPACK_IMPORTED_MODULE_0__.default.showNotFountContent();
+      _view_view_js__WEBPACK_IMPORTED_MODULE_0__.default.showNotFoundContent();
       return;
     }
   },
@@ -12904,7 +12904,7 @@ var view = {
   insertVideoItems: function insertVideoItems(videos) {
     _elements_js__WEBPACK_IMPORTED_MODULE_0__.$searchResultVideoWrapper.insertAdjacentHTML('beforeend', (0,_templates_js__WEBPACK_IMPORTED_MODULE_2__.getVideoListTemplate)(videos));
   },
-  showNotFountContent: function showNotFountContent() {
+  showNotFoundContent: function showNotFoundContent() {
     _viewUtil_js__WEBPACK_IMPORTED_MODULE_3__.default.showElementBySelector("#".concat(_constants_js__WEBPACK_IMPORTED_MODULE_1__.SELECTOR_ID.NOT_FOUND_CONTENT));
   },
   showSearchResultIntersector: function showSearchResultIntersector() {
