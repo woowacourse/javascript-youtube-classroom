@@ -2,6 +2,12 @@ import $DOM from '../../utils/DOM.js';
 import storage from '../../utils/localStorage.js';
 import { LOCAL_STORAGE_KEY } from '../../utils/constant.js';
 
+const sections = {
+  'navigator__unwatched-button': 'watched-section',
+  'navigator__watched-button': 'unwatched-section',
+  'navigator__like-button': 'like-section',
+};
+
 const setSelected = (selectedButton) => {
   $DOM.NAVIGATOR.BUTTONS.forEach((button) =>
     button.classList.remove('bg-cyan-100'),
@@ -11,12 +17,6 @@ const setSelected = (selectedButton) => {
 };
 
 const setSection = (selected) => {
-  const sections = {
-    'navigator__unwatched-button': 'watched-section',
-    'navigator__watched-button': 'unwatched-section',
-    'navigator__like-button': 'like-section',
-  };
-
   const savePageVideoWrapper = $DOM.SAVE_PAGE.VIDEO_WRAPPER;
   savePageVideoWrapper.classList.remove('watched-section');
   savePageVideoWrapper.classList.remove('unwatched-section');
@@ -26,7 +26,7 @@ const setSection = (selected) => {
 };
 
 export const onToggleRenderedClips = ({ target }) => {
-  if (target.dataset.js === 'navigator__search-button') {
+  if (!sections.hasOwnProperty(target.dataset.js)) {
     return;
   }
 

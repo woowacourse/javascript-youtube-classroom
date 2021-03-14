@@ -20,8 +20,8 @@ export const onSaveClip = ({ target }) => {
   const recentSearchResults =
     storage.get(LOCAL_STORAGE_KEY.RECENT_SEARCH_RESULTS) ?? [];
   const savedClip = recentSearchResults[clipIndex];
-  const currentTab =
-    storage.get(LOCAL_STORAGE_KEY.CURRENT_TAB) ?? LOCAL_STORAGE_VALUE.UNWATCHED;
+  // const currentTab =
+  //   storage.get(LOCAL_STORAGE_KEY.CURRENT_TAB) ?? LOCAL_STORAGE_VALUE.UNWATCHED;
   const savedClips = storage.get(LOCAL_STORAGE_KEY.SAVED_CLIPS) ?? [];
   const existClips = savedClips.filter((savedClip) => !savedClip.isDeleted);
 
@@ -37,6 +37,6 @@ export const onSaveClip = ({ target }) => {
   storage.set(LOCAL_STORAGE_KEY.SAVED_CLIPS, savedClips);
 
   showSnackbar(MESSAGE.NOTIFY.SAVE_CLIP);
-  renderSavedClip(savedClip, savedClips.length - 1, currentTab);
+  renderSavedClip(savedClip, savedClips.length - 1);
   renderSaveVideoCount(savedClips);
 };

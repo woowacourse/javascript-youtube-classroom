@@ -28,6 +28,22 @@ const toggleIsWatched = (target) => {
   targetClip.classList.remove('unwatched-clip');
 };
 
+const watchedClip = () => {
+  const targetClip = target.closest('[data-js="saved-page__clip"]');
+  const targetClipIndex = targetClip.dataset.clipIndex;
+  const savedClips = storage.get(LOCAL_STORAGE_KEY.SAVED_CLIPS);
+  const isWatched = savedClips[targetClipIndex].isWatched ?? true;
+
+  savedClips[targetClipIndex].isWatched = !isWatched;
+  storage.set(LOCAL_STORAGE_KEY.SAVED_CLIPS, savedClips);
+
+  if (isWatched) {
+    addLikeClip(targetClip);
+    return;
+  }
+  removeLikeClip(targetClip);
+};
+
 const deleteClip = (target) => {
   const targetClip = target.closest('[data-js="saved-page__clip"]');
   const savedClips = storage.get(LOCAL_STORAGE_KEY.SAVED_CLIPS);
