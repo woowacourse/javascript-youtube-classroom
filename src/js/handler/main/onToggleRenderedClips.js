@@ -33,7 +33,7 @@ const deActivateTargetSection = () => {
 };
 
 const activateTargetSection = (targetClassName) => {
-  $DOM.SAVE_PAGE.VIDEO_WRAPPER.classList.add(targetClassName);
+  $DOM.SAVE_PAGE.VIDEO_WRAPPER.classList.remove(targetClassName);
 };
 
 export const onToggleRenderedClips = ({ target }) => {

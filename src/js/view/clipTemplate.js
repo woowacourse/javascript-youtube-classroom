@@ -31,7 +31,7 @@ const YMDtemplate = (time) => {
 };
 
 export const clipTemplate = (video, index, type) => {
-  const { isModal, currentTab, isWatched, isLiked } = type;
+  const { isModal, isWatched, isLiked } = type;
 
   return `
       <article class="clip ${isWatched ? 'watched-clip' : 'unwatched-clip'}
@@ -47,6 +47,7 @@ export const clipTemplate = (video, index, type) => {
             frameborder="0"
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
             allowfullscreen
+            loading="lazy"
           ></iframe>
         </div>
         <div class="content-container pt-2 px-1">
