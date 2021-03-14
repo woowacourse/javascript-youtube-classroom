@@ -15,6 +15,7 @@ export const getSavedVideoTemplate = ({
     <article id=${videoId} class="${isWatching ? WATCHING : WATCHED} ${isLiked ? LIKED : ''} clip">
       <div class="preview-container">
         <iframe
+          loading="lazy"
           width="100%"
           height="118"
           src=${YOUTUBE_LINK_ENDPOINT.VIDEO}${videoId}
