@@ -35,20 +35,20 @@
 
 ### 🎯🎯 step2 강의실 관리 기능
 
-- [x] 기본 메인 화면은 **👁️볼 영상** 화면이다.
+- [x] 기본 메인 화면은 **🟠 볼 영상** 화면이다.
   - [x] 가장 처음에는 저장된 영상이 없으므로, 비어있다는 것을 사용자에게 알려주는 상태를 보여준다.
-- [x] **볼 영상** 버튼을 누르면 **👁️ 볼 영상** 화면을 보여준다.
-- [x] **본 영상** 버튼을 누르면 **✅ 본 영상** 화면을 보여준다.
-- [x] 저장 버튼을 누르면, 해당 영상을 **볼 영상** 리스트에 추가하고, **👁️ 볼 영상** 화면에서 보여준다.
-- [x] **👁️ 볼 영상** 화면에서 ✅ 버튼을 누른다.
-  - [x] 해당 영상이 **볼 영상** 리스트에서 삭제되고, **👁️ 볼 영상** 화면에서 나타나지 않는다.
-  - [x] 해당 영상이 **본 영상** 리스트에 추가되고, **✅ 본 영상** 화면에서 나타난다.
-- [ ] **✅ 본 영상** 화면에서 ✅ 버튼을 누른다.
-  - [ ] 해당 영상이 **본 영상** 리스트에서 삭제되고, **✅ 본 영상** 화면에서 나타나지 않는다.
-  - [ ] 해당 영상이 **👁️ 볼 영상** 리스트에 추가되고, **👁️ 볼 영상** 화면에서 나타난다.
-- [ ] 🗑️ 버튼을 누르면, 해당 영상이 저장된 리스트(**볼 영상** 또는 **본 영상**)에서 삭제되고, 해당 화면에서 사라진다.
-  - [ ] 삭제 시 사용자에게 정말 삭제할 것인지 물어본다.
-- [ ] 사용자가 ✅ 🗑️ 버튼을 클릭했을 때 해당 행위가 정상적으로 동작하거나, 실패하였음을 `snackbar`를 통해 보여준다.
+- [x] **볼 영상** 버튼을 누르면 **볼 영상** 화면을 보여준다.
+- [x] **본 영상** 버튼을 누르면 **본 영상** 화면을 보여준다.
+- [x] 저장 버튼을 누르면, 해당 영상을 **볼 영상** 리스트에 추가하고, **볼 영상** 화면에서 보여준다.
+- [x] **🟠 볼 영상** 화면에서 🟢 버튼을 누른다.
+  - [x] 해당 영상이 **볼 영상** 리스트에서 삭제되고, **볼 영상** 화면에서 나타나지 않는다.
+  - [x] 해당 영상이 **본 영상** 리스트에 추가되고, **본 영상** 화면에서 나타난다.
+- [ ] **🟢 본 영상** 화면에서 🟠 버튼을 누른다.
+  - [ ] 해당 영상이 **본 영상** 리스트에서 삭제되고, **본 영상** 화면에서 나타나지 않는다.
+  - [ ] 해당 영상이 **볼 영상** 리스트에 추가되고, **볼 영상** 화면에서 나타난다.
+- [x] 🗑️ 버튼을 누르면, 해당 영상이 저장된 리스트(**볼 영상** 또는 **본 영상**)에서 삭제되고, 해당 화면에서 사라진다.
+  - [x] 삭제 시 사용자에게 정말 삭제할 것인지 물어본다.
+- [ ] 사용자가 🟠 🟢 🗑️ 버튼을 클릭했을 때 해당 행위가 정상적으로 동작하거나, 실패하였음을 `snackbar`를 통해 보여준다.
 
 <br>
 
@@ -157,186 +157,6 @@
 
 8. .vscode/settings.json 설정
 
-<br>
-
-⚠️ commit 하기 전
-
-```shell
-yarn eslint .
-yarn prettier . --write
-```
-
-🌷최종 파일 목록
-
-[.eslintrc.json](./.eslintrc.json)
-
-[.prettierignore](./.prettierignore)
-
-[.prettierrc](./.prettierrc)
-
-[.vscode/settings.json](./.vscode/settings.json)
-
-<br>
-
-## 👏 Contributing
-
-만약 미션 수행 중에 개선사항이 보인다면, 언제든 자유롭게 PR을 보내주세요.
-
-<br>
-
-## 🐞 Bug Report
-
-버그를 발견한다면, [Issues](https://github.com/woowacourse/javascript-youtube-classroom/issues)에 등록해주세요.
-
-<br>
-
-## 📝 License
-
-This project is [MIT](https://github.com/woowacourse/javascript-youtube-classroom/blob/main/LICENSE) licensed.
-<br>
-
-⚠️ commit 하기 전
-
-```shell
-yarn eslint .
-yarn prettier . --write
-```
-
-🌷최종 파일 목록
-
-[.eslintrc.json](./.eslintrc.json)
-
-[.prettierignore](./.prettierignore)
-
-[.prettierrc](./.prettierrc)
-
-[.vscode/settings.json](./.vscode/settings.json)
-
-<br>
-
-## 👏 Contributing
-
-만약 미션 수행 중에 개선사항이 보인다면, 언제든 자유롭게 PR을 보내주세요.
-
-<br>
-
-## 🐞 Bug Report
-
-버그를 발견한다면, [Issues](https://github.com/woowacourse/javascript-youtube-classroom/issues)에 등록해주세요.
-
-<br>
-
-## 📝 License
-
-This project is [MIT](https://github.com/woowacourse/javascript-youtube-classroom/blob/main/LICENSE) licensed.
-<br>
-
-⚠️ commit 하기 전
-
-```shell
-yarn eslint .
-yarn prettier . --write
-```
-
-🌷최종 파일 목록
-
-[.eslintrc.json](./.eslintrc.json)
-
-[.prettierignore](./.prettierignore)
-
-[.prettierrc](./.prettierrc)
-
-[.vscode/settings.json](./.vscode/settings.json)
-
-<br>
-
-## 👏 Contributing
-
-만약 미션 수행 중에 개선사항이 보인다면, 언제든 자유롭게 PR을 보내주세요.
-
-<br>
-
-## 🐞 Bug Report
-
-버그를 발견한다면, [Issues](https://github.com/woowacourse/javascript-youtube-classroom/issues)에 등록해주세요.
-
-<br>
-
-## 📝 License
-
-This project is [MIT](https://github.com/woowacourse/javascript-youtube-classroom/blob/main/LICENSE) licensed.
-<br>
-
-⚠️ commit 하기 전
-
-```shell
-yarn eslint .
-yarn prettier . --write
-```
-
-🌷최종 파일 목록
-
-[.eslintrc.json](./.eslintrc.json)
-
-[.prettierignore](./.prettierignore)
-
-[.prettierrc](./.prettierrc)
-
-[.vscode/settings.json](./.vscode/settings.json)
-
-<br>
-
-## 👏 Contributing
-
-만약 미션 수행 중에 개선사항이 보인다면, 언제든 자유롭게 PR을 보내주세요.
-
-<br>
-
-## 🐞 Bug Report
-
-버그를 발견한다면, [Issues](https://github.com/woowacourse/javascript-youtube-classroom/issues)에 등록해주세요.
-
-<br>
-
-## 📝 License
-
-This project is [MIT](https://github.com/woowacourse/javascript-youtube-classroom/blob/main/LICENSE) licensed.
-<br>
-
-⚠️ commit 하기 전
-
-```shell
-yarn eslint .
-yarn prettier . --write
-```
-
-🌷최종 파일 목록
-
-[.eslintrc.json](./.eslintrc.json)
-
-[.prettierignore](./.prettierignore)
-
-[.prettierrc](./.prettierrc)
-
-[.vscode/settings.json](./.vscode/settings.json)
-
-<br>
-
-## 👏 Contributing
-
-만약 미션 수행 중에 개선사항이 보인다면, 언제든 자유롭게 PR을 보내주세요.
-
-<br>
-
-## 🐞 Bug Report
-
-버그를 발견한다면, [Issues](https://github.com/woowacourse/javascript-youtube-classroom/issues)에 등록해주세요.
-
-<br>
-
-## 📝 License
-
-This project is [MIT](https://github.com/woowacourse/javascript-youtube-classroom/blob/main/LICENSE) licensed.
 <br>
 
 ⚠️ commit 하기 전
