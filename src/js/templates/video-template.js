@@ -17,7 +17,9 @@ const savedVideoButtons = info => {
 const searchVideoButtons = (info, save) => {
   return `
           <div class="d-flex justify-end">
-            <button class="btn js-save-button ${save ? CLASS.INVISIBLE : ''}" 
+            <button type="button" class="btn js-save-button ${
+              save ? CLASS.INVISIBLE : ''
+            }" 
 
               data-url="${info.url}"
               data-title="${info.title}"

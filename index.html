@@ -13,13 +13,13 @@
           <header class="my-4">
             <h2 class="text-center font-bold">👩🏻‍💻 나만의 유튜브 강의실 👨🏻‍💻</h2>
             <nav class="d-flex justify-center">
-              <button id="towatch-videos-button" class="btn mx-1">
+              <button type="button" id="towatch-videos-button" class="btn mx-1">
                 👁️ 볼 영상
               </button>
-              <button id="watched-videos-button" class="btn mx-1">
+              <button type="button" id="watched-videos-button" class="btn mx-1">
                 ✅ 본 영상
               </button>
-              <button id="search-modal-button" class="btn mx-1">
+              <button type="button" id="search-modal-button" class="btn mx-1">
                 🔍 동영상 검색
               </button>
             </nav>
@@ -34,7 +34,7 @@
       </div>
       <div class="modal">
         <div class="modal-inner p-8">
-          <button class="modal-close">
+          <button type="button" class="modal-close">
             <svg viewbox="0 0 40 40">
               <path class="close-x" d="M 10,10 L 30,30 M 30,10 L 10,30" />
             </svg>
@@ -45,7 +45,7 @@
           <form id="search-youtube-form" class="d-flex">
             <input
               id="search-youtube-input"
-              type="text"
+              type="search"
               class="w-100 mr-2 pl-2"
               required
               placeholder="검색"
@@ -62,6 +62,7 @@
           </section>
           <img
             id="search-not-found"
+            alt="검색 결과 없음"
             class="show"
             src="./src/images/status/not_found.png"
           />
