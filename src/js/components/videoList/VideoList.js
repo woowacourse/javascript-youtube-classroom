@@ -163,7 +163,7 @@ export default class VideoList extends Component {
         ...savedVideos[lastestVideoId],
       }).createTemplate(TYPES.PAGE.MANAGEMENT);
 
-      this.$target.prepend(newVideo);
+      this.$target.appendChild(newVideo);
 
       this.iframeLoadObserver.observe(newVideo);
 
