@@ -65,12 +65,9 @@ export const showElement = (selector) => {
   $(selector).classList.remove('d-none');
 };
 
-export const colorizeButton = (selector) => {
+export const selectButton = (selector) => {
+  $('.bg-cyan-100').classList.remove('bg-cyan-100');
   $(selector).classList.add('bg-cyan-100');
-};
-
-export const uncolorizeButton = (selector) => {
-  $(selector).classList.remove('bg-cyan-100');
 };
 
 export const getVideoSaveButton = (id) => {

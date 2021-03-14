@@ -174,6 +174,7 @@ export default class YoutubeSearchModal extends Observer {
     const newVideo = {
       videoId: selectedVideoId,
       watched: false,
+      liked: false,
     };
 
     this.store.update(LOCAL_STORAGE_KEYS.WATCH_LIST, [...watchList, newVideo]);

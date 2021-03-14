@@ -8,6 +8,8 @@ export const ALERT_MESSAGE = {
   CONFIRM_DELETE: '정말 삭제하시겠습니까?',
   VIDEO_MOVED_WATCHED_LIST: '영상을 [본 영상] 목록으로 옮겼습니다',
   VIDEO_MOVED_TO_WATCH_LIST: '영상을 [볼 영상] 목록으로 옮겼습니다',
+  VIDEO_LIKED: '영상을 [좋아요] 했습니다',
+  VIDEO_UNLIKED: '영상의 [좋아요]를 취소했습니다',
   VIDEO_DELETED: '영상이 삭제되었습니다.',
   MAX_VIDEO_COUNT_EXCEEDED: `영상은 최대 ${SETTINGS.MAX_VIDEO_COUNT}개까지만 저장할 수 있습니다.`,
 };
@@ -38,10 +40,12 @@ export const SELECTORS = {
     DELETE: '.delete',
     TO_WATCH_LIST_BUTTON: '.to-watch-list-button',
     WATCHED_LIST_BUTTON: '.watched-list-button',
+    LIKED_LIST_BUTTON: '.liked-list-button',
     SENTINEL: '.sentinel',
     MENU_LIST: '.menu-list',
     VIDEO_MODAL: '.video-modal',
     VIDEO_MODAL_PLAYER: '.video-modal iframe',
+    NAV_MENU_BUTTONS: '.nav-menu .btn',
   },
   ID: {
     SEARCH_BUTTON: '#search-button',
@@ -68,4 +72,5 @@ export const SERACH_RESULT = {
 export const MENU = {
   WATCHED: 'watched',
   TO_WATCH: 'toWatch',
+  LIKED: 'liked',
 };
