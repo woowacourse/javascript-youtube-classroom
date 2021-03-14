@@ -49,15 +49,15 @@ export class SavedVideo {
     }
 
     if (target.classList.contains('js-check-button')) {
-      target.closest('article').remove();
-      this.savedVideoManager.checkVideo(target.closest('ul').dataset.videoId);
+      target.closest('.js-clip-article').remove();
+      this.savedVideoManager.checkVideo(target.closest('.js-emoji-button-list').dataset.videoId);
       showSnackbar(this.isChecked ? SNACKBAR_MESSAGE.UNCHECK_VIDEO_SUCCESS : SNACKBAR_MESSAGE.CHECK_VIDEO_SUCCESS);
     }
 
     if (target.classList.contains('js-delete-button')) {
       customConfirm(CONFIRM_MESSAGE.DELETE_VIDEO).then(() => {
-        target.closest('article').remove();
-        this.savedVideoManager.deleteVideo(target.closest('ul').dataset.videoId);
+        target.closest('.js-clip-article').remove();
+        this.savedVideoManager.deleteVideo(target.closest('.js-emoji-button-list').dataset.videoId);
         showSnackbar(SNACKBAR_MESSAGE.DELETE_SUCCESS);
       });
     }
@@ -82,16 +82,16 @@ export class SavedVideo {
 
   getButtonTemplate(videoId) {
     return `
-    <ul class="list-style-none p-0 mt-3 mb-6 d-flex" data-video-id="${videoId}">
-    <li class="mr-2">
-    <button type="button" class="js-check-button emoji-btn ${
-      this.isChecked ? 'scale-hover' : 'scale-hover opacity-hover'
-    }">✅</button>
-    </li>
-    <li class="mr-2"><button type="button" class="js-like-button emoji-btn bg-transparent scale-hover opacity-hover">👍</button></li>
-    <li class="mr-2"><button type="button" class="js-comment-button emoji-btn bg-transparent scale-hover opacity-hover">💬</button></li>
-    <li class="mr-2"><button type="button" class="js-delete-button emoji-btn bg-transparent scale-hover opacity-hover">🗑️</button></li>
-    </ul>
+      <ul class="js-emoji-button-list list-style-none p-0 mt-3 mb-6 d-flex" data-video-id="${videoId}">
+        <li class="mr-2">
+          <button type="button" class="js-check-button emoji-btn ${
+            this.isChecked ? 'scale-hover' : 'scale-hover opacity-hover'
+          }">✅</button>
+        </li>
+        <li class="mr-2"><button type="button" class="js-like-button emoji-btn bg-transparent scale-hover opacity-hover">👍</button></li>
+        <li class="mr-2"><button type="button" class="js-comment-button emoji-btn bg-transparent scale-hover opacity-hover">💬</button></li>
+        <li class="mr-2"><button type="button" class="js-delete-button emoji-btn bg-transparent scale-hover opacity-hover">🗑️</button></li>
+      </ul>
     `;
   }
 
