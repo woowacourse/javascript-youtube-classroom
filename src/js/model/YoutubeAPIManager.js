@@ -3,16 +3,20 @@ import { isEmptyObject } from '../utils/utils.js';
 
 export default class YoutubeAPIManager {
   static cache = {};
-  static youtubeFetchCacheCleaner = setInterval(() => {
-    YoutubeAPIManager.cache = {};
-  }, 3000000);
 
   constructor() {
     this.searchTerm = '';
     this.pageToken = '';
   }
 
+  clearCache() {
+    YoutubeAPIManager.cache = {};
+  }
+
   setSearchTerm(searchTerm) {
+    if (this.searchTerm !== searchTerm) {
+      this.clearCache();
+    }
     this.searchTerm = searchTerm;
     this.pageToken = '';
   }

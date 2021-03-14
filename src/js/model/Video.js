@@ -11,9 +11,6 @@ import {
 
 export default class Video {
   static cache = {};
-  static videoCacheCleaner = setInterval(() => {
-    Video.cache = {};
-  }, 3000000);
 
   constructor({
     videoId,
