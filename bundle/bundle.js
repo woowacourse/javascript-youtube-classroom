@@ -12441,9 +12441,11 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _store_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../store.js */ "./src/store.js");
 /* harmony import */ var _service_modalService_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../service/modalService.js */ "./src/service/modalService.js");
 /* harmony import */ var _view_index_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../view/index.js */ "./src/view/index.js");
+/* harmony import */ var _constants_js__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../constants.js */ "./src/constants.js");
 function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
 
 function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
+
 
 
 
@@ -12457,6 +12459,11 @@ var modalController = {
     _elements_js__WEBPACK_IMPORTED_MODULE_0__.$searchButton.addEventListener('click', onModalOpen);
     _elements_js__WEBPACK_IMPORTED_MODULE_0__.$modalCloseButton.addEventListener('click', onModalClose);
     _elements_js__WEBPACK_IMPORTED_MODULE_0__.$searchForm.addEventListener('submit', onVideoSearch);
+    _elements_js__WEBPACK_IMPORTED_MODULE_0__.$modal.addEventListener('click', function (event) {
+      if (event.target.id === _constants_js__WEBPACK_IMPORTED_MODULE_6__.SELECTOR_ID.MODAL) {
+        onModalClose();
+      }
+    });
   },
   initSearchQueries: function initSearchQueries() {
     _view_index_js__WEBPACK_IMPORTED_MODULE_5__.modalView.renderSearchQueries(_store_js__WEBPACK_IMPORTED_MODULE_3__.searchQueryModel.getItem());
@@ -13508,8 +13515,11 @@ var LayoutView = /*#__PURE__*/function (_BasicView) {
 
   var _super = _createSuper(LayoutView);
 
-  function LayoutView($nav, $snackbarWrapper) {
+  function LayoutView(_ref) {
     var _this;
+
+    var $nav = _ref.$nav,
+        $snackbarWrapper = _ref.$snackbarWrapper;
 
     _classCallCheck(this, LayoutView);
 
@@ -13897,7 +13907,10 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-var layoutView = new _LayoutView__WEBPACK_IMPORTED_MODULE_1__.default(_elements__WEBPACK_IMPORTED_MODULE_0__.$nav, _elements__WEBPACK_IMPORTED_MODULE_0__.$snackbarWrapper);
+var layoutView = new _LayoutView__WEBPACK_IMPORTED_MODULE_1__.default({
+  $nav: _elements__WEBPACK_IMPORTED_MODULE_0__.$nav,
+  $snackbarWrapper: _elements__WEBPACK_IMPORTED_MODULE_0__.$snackbarWrapper
+});
 var watchingVideoView = new _VideoView__WEBPACK_IMPORTED_MODULE_3__.default({
   $videoWrapper: _elements__WEBPACK_IMPORTED_MODULE_0__.$watchingVideoWrapper,
   $emptyVideoImage: _elements__WEBPACK_IMPORTED_MODULE_0__.$emptyWatchingVideo

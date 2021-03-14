@@ -7,7 +7,7 @@ import {
 import BasicView from './BasicView.js';
 
 export default class LayoutView extends BasicView {
-  constructor($nav, $snackbarWrapper) {
+  constructor({ $nav, $snackbarWrapper }) {
     super({ $nav, $snackbarWrapper });
   }
 

@@ -4,6 +4,7 @@ import {
   $searchForm,
   $searchFormInput,
   $searchResultIntersector,
+  $modal,
 } from '../elements.js';
 import { getVideosByKeyword } from '../apis/youtube.js';
 import controllerUtil from './controllerUtil.js';
@@ -15,6 +16,7 @@ import {
 } from '../store.js';
 import modalService from '../service/modalService.js';
 import { modalView } from '../view/index.js';
+import { SELECTOR_ID } from '../constants.js';
 
 const modalController = {
   initEventListeners() {
@@ -25,6 +27,11 @@ const modalController = {
     $searchButton.addEventListener('click', onModalOpen);
     $modalCloseButton.addEventListener('click', onModalClose);
     $searchForm.addEventListener('submit', onVideoSearch);
+    $modal.addEventListener('click', (event) => {
+      if (event.target.id === SELECTOR_ID.MODAL) {
+        onModalClose();
+      }
+    });
   },
   initSearchQueries() {
     modalView.renderSearchQueries(searchQueryModel.getItem());

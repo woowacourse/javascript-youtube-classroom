@@ -14,7 +14,7 @@ import LayoutView from './LayoutView';
 import ModalView from './ModalView';
 import VideoView from './VideoView';
 
-export const layoutView = new LayoutView($nav, $snackbarWrapper);
+export const layoutView = new LayoutView({ $nav, $snackbarWrapper });
 
 export const watchingVideoView = new VideoView(
   {
