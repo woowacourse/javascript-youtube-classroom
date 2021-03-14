@@ -20,12 +20,11 @@
 .modal-inner {
   transition: top 0.25s ease;
   width: 100%;
-  margin: 20px 80px;
+  margin: 40px 80px;
   overflow: auto;
   background: #fff;
   border-radius: 5px;
   position: relative;
-  height: 100%;
 }
 
 .modal-close {
