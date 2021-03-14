@@ -55,7 +55,7 @@ describe("유투브 검색 API를 이용하여 영상들을 검색할 수 있다
         .should("have.length", 0);
     });
 
-    it("검색을 한 경우, 최근 검색 키워드가 추가된다.", () => {
+    it("검색을 한 경우, 최근 검색 키워드가 왼쪽부터 추가된다.", () => {
       const keywords = ["우아한테크코스", "주모", "동동"];
 
       keywords.forEach((keyword, i) => {
@@ -66,7 +66,7 @@ describe("유투브 검색 API를 이용하여 영상들을 검색할 수 있다
         cy.get(`.${CLASSNAME.KEYWORD_HISTORY_SECTION}`)
           .children("a.chip")
           .should("have.length", i + 1)
-          .last()
+          .first()
           .invoke("text")
           .then((text) => {
             expect(text).to.be.equal(keyword);
@@ -74,9 +74,9 @@ describe("유투브 검색 API를 이용하여 영상들을 검색할 수 있다
       });
 
       const fourthKeyword = "배민";
-      const updatedKeywords = [...keywords, fourthKeyword].slice(
-        -MAX_KEYWORDS_COUNT
-      );
+      const updatedKeywords = [...keywords, fourthKeyword]
+        .reverse()
+        .slice(0, MAX_KEYWORDS_COUNT);
 
       cy.get(`.${CLASSNAME.SEARCH_FORM_INPUT}`).type(fourthKeyword);
       cy.get(`.${CLASSNAME.SEARCH_FORM_BUTTON}`).click();
@@ -90,7 +90,7 @@ describe("유투브 검색 API를 이용하여 영상들을 검색할 수 있다
         });
     });
 
-    it("최근 검색 키워드를 다시 검색한 경우, 이전의 키워드가 삭제되고 최근 검색 키워드에 다시 추가된다", () => {
+    it("최근 검색 키워드를 다시 검색한 경우, 이전의 키워드가 삭제되고 최근 검색 키워드의 왼쪽에 다시 추가된다", () => {
       const keywords = ["우아한테크코스", "주모", "동동"];
 
       keywords.forEach((keyword) => {
@@ -100,7 +100,7 @@ describe("유투브 검색 API를 이용하여 영상들을 검색할 수 있다
       });
 
       const duplicatedKeyword = "주모";
-      const updatedKeywords = ["우아한테크코스", "동동", "주모"];
+      const updatedKeywords = ["주모", "동동", "우아한테크코스"];
 
       cy.get(`.${CLASSNAME.SEARCH_FORM_INPUT}`).type(duplicatedKeyword);
       cy.get(`.${CLASSNAME.SEARCH_FORM_BUTTON}`).click();
