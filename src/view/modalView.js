@@ -3,7 +3,6 @@ import {
   SELECTOR_CLASS,
   YOUTUBE,
 } from '../constants.js';
-import { $searchResultIntersector, $searchedVideoNotFound } from '../elements.js';
 
 import BasicView from './BasicView.js';
 export default class ModalView extends BasicView {
@@ -12,12 +11,16 @@ export default class ModalView extends BasicView {
     $searchQueries,
     $searchResultVideoWrapper,
     $savedVideoCount,
+    $searchResultIntersector,
+    $searchedVideoNotFound
   }) {
     super({
       $modal,
       $searchQueries,
       $searchResultVideoWrapper,
       $savedVideoCount,
+      $searchResultIntersector,
+      $searchedVideoNotFound
     });
   }
 
@@ -60,15 +63,15 @@ export default class ModalView extends BasicView {
   }
 
   showNotFountImage() {
-    this.showElement($searchedVideoNotFound);
+    this.showElement(this._element.$searchedVideoNotFound);
   }
 
   showSearchResultIntersector() {
-    this.showElement($searchResultIntersector);
+    this.showElement(this._element.$searchResultIntersector);
   }
 
   hideSearchResultIntersector() {
-    this.hideElement($searchResultIntersector);
+    this.hideElement(this._element.$searchResultIntersector);
   }
 
   hideSkeletons() {

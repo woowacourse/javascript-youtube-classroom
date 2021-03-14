@@ -6,6 +6,8 @@ import {
   $searchResultVideoWrapper,
   $nav,
   $savedVideoCount,
+  $searchResultIntersector,
+  $searchedVideoNotFound
 } from '../elements';
 import LayoutView from './LayoutView';
 import ModalView from './ModalView';
@@ -26,4 +28,6 @@ export const modalView = new ModalView({
   $searchQueries,
   $searchResultVideoWrapper,
   $savedVideoCount,
+  $searchResultIntersector,
+  $searchedVideoNotFound
 });
