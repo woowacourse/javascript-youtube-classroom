@@ -1,5 +1,5 @@
 import { searchYoutube } from '../api.js';
-import { $, showSnackbar, renderSkeletonUI, closeModal, openModal } from '../utils.js';
+import { $, $all, showSnackbar, renderSkeletonUI, closeModal, openModal } from '../utils.js';
 import { ALERT_MESSAGE, SELECTORS, LOCAL_STORAGE_KEYS, SERACH_RESULT, SETTINGS } from '../constants.js';
 import {
   getVideoTemplate,
@@ -19,16 +19,43 @@ export default class YoutubeSearchModal extends Observer {
     this.keyword = '';
     this.selector = SELECTORS.CLASS.YOUTUBE_SEARCH_FORM_CONTAINER;
 
-    this.setScrollObserver();
+    this.setAdditionalSearchObserver();
+    this.setLazyLoadObserver();
   }
 
-  setScrollObserver() {
+  setLazyLoadObserver() {
+    const options = {
+      root: $(SELECTORS.CLASS.YOUTUBE_SEARCH_RESULT_CONTAINER),
+      threshold: 0.5,
+    };
+
+    this.lazyLoadObserver = new IntersectionObserver((entries) => {
+      entries.forEach(async (entry) => {
+        if (entry.isIntersecting) {
+          entry.target.style.backgroundImage = `url(${entry.target.dataset.src})`;
+          entry.target.classList.add(SELECTORS.STATUS.IMAGE_LOADED);
+          this.lazyLoadObserver.unobserve(entry.target);
+        }
+      });
+    }, options);
+  }
+
+  observeLazyLoad(selector) {
+    const $$elements = $all(selector);
+    $$elements.forEach(($element) => {
+      if (!$element.classList.contains(SELECTORS.STATUS.IMAGE_LOADED)) {
+        this.lazyLoadObserver.observe($element);
+      }
+    });
+  }
+
+  setAdditionalSearchObserver() {
     const options = {
       root: $(SELECTORS.CLASS.YOUTUBE_SEARCH_RESULT_CONTAINER),
       threshold: 1,
     };
 
-    this.scrollObserver = new IntersectionObserver((entries) => {
+    this.additionalSearchObserver = new IntersectionObserver((entries) => {
       entries.forEach(async (entry) => {
         if (entry.isIntersecting) {
           this.handleAdditionalSearch();
@@ -44,6 +71,7 @@ export default class YoutubeSearchModal extends Observer {
 
       const template = this.getResultTemplate(response.items);
       this.renderResults(template);
+      this.observeLazyLoad(SELECTORS.CLASS.PREVIEW_CONTAINER);
     } catch (error) {
       showSnackbar(error.message);
     }
@@ -150,7 +178,8 @@ export default class YoutubeSearchModal extends Observer {
       this.renderResults(template);
 
       this.bindPlayVideoEvent();
-      this.scrollObserver.observe($(SELECTORS.CLASS.SENTINEL));
+      this.additionalSearchObserver.observe($(SELECTORS.CLASS.SENTINEL));
+      this.observeLazyLoad(SELECTORS.CLASS.PREVIEW_CONTAINER);
     } catch (error) {
       console.error(error);
       this.renderEmptySearchResult();

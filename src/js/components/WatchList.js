@@ -1,5 +1,6 @@
 import {
   $,
+  $all,
   renderSkeletonUI,
   clearElement,
   showSnackbar,
@@ -23,6 +24,33 @@ export default class WatchList extends Observer {
     this.nowMenu = MENU.TO_WATCH;
 
     this.bindEvents();
+    this.setLazyLoadObserver();
+  }
+
+  setLazyLoadObserver() {
+    const options = {
+      root: null,
+      threshold: 0.1,
+    };
+
+    this.lazyLoadObserver = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.style.backgroundImage = `url(${entry.target.dataset.src})`;
+          entry.target.classList.add(SELECTORS.STATUS.IMAGE_LOADED);
+          this.lazyLoadObserver.unobserve(entry.target);
+        }
+      });
+    }, options);
+  }
+
+  observeLazyLoad(selector) {
+    const $$elements = $all(selector);
+    $$elements.forEach(($element) => {
+      if (!$element.classList.contains(SELECTORS.STATUS.IMAGE_LOADED)) {
+        this.lazyLoadObserver.observe($element);
+      }
+    });
   }
 
   renderSavedVideos(items) {
@@ -74,6 +102,7 @@ export default class WatchList extends Observer {
 
       clearElement(SELECTORS.CLASS.WATCH_LIST);
       this.renderSavedVideos(toWatchVideos);
+      this.observeLazyLoad(SELECTORS.CLASS.PREVIEW_CONTAINER);
     } catch (error) {
       showSnackbar(error.message);
     }
@@ -125,11 +154,12 @@ export default class WatchList extends Observer {
   }
 
   async update() {
-    this.updateList();
+    await this.updateList();
     clearElement(SELECTORS.CLASS.WATCH_LIST);
 
     const selectedMenuVideos = this.getVideosByNowMenu();
     this.renderSavedVideos(selectedMenuVideos);
+    this.observeLazyLoad(SELECTORS.CLASS.PREVIEW_CONTAINER);
   }
 
   handleClickVideoMenu(event) {
@@ -216,6 +246,7 @@ export default class WatchList extends Observer {
 
     const selectedMenuVideos = this.getVideosByNowMenu();
     this.renderSavedVideos(selectedMenuVideos);
+    this.observeLazyLoad(SELECTORS.CLASS.PREVIEW_CONTAINER);
   }
 
   bindEvents() {

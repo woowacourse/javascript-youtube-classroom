@@ -46,6 +46,7 @@ export const SELECTORS = {
     VIDEO_MODAL: '.video-modal',
     VIDEO_MODAL_PLAYER: '.video-modal iframe',
     NAV_MENU_BUTTONS: '.nav-menu .btn',
+    PREVIEW_CONTAINER: '.preview-container',
   },
   ID: {
     SEARCH_BUTTON: '#search-button',
@@ -57,6 +58,7 @@ export const SELECTORS = {
     MODAL_OPEN: 'open',
     SNACKBAR_SHOW: 'show',
     HIDDEN: 'hidden',
+    IMAGE_LOADED: 'loaded',
   },
 };
 

@@ -25,7 +25,7 @@ export const getVideoTemplate = (data, options) => {
 
   return `
     <article class="clip d-flex flex-col" data-video-id="${id}">
-      <div class="preview-container" style="background-image: url(${thumbnailURL})">
+      <div class="preview-container" data-src="${thumbnailURL}">
         <div class="dimmed"></div>
         <button class="play-button" />
       </div>
