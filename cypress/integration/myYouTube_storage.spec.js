@@ -64,7 +64,8 @@ describe('simba-tube', () => {
   });
 
   it('🗑️ 버튼 클릭 시 사용자에게 정말 삭제할 것인지 물어보는 alert가 나오고, 동의 시 snackbar를 띄운다.', () => {
-    setSavedVideoIds(['vRXZj0DzXIA', 'I3U0QAXeOW4', 'BS7tz2rAOSA']);
+    const storageItems = ['vRXZj0DzXIA', 'I3U0QAXeOW4', 'BS7tz2rAOSA'];
+    setVideoIds('savedVideoIds', storageItems);
 
     const confirmStub = cy.stub();
     cy.on('window:confirm', confirmStub);
