@@ -12239,35 +12239,41 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "BROWSER_HASH": () => (/* binding */ BROWSER_HASH)
 /* harmony export */ });
 var SELECTOR_ID = Object.freeze({
-  SEARCH_FORM: 'search-form',
-  SEARCH_FORM_INPUT: 'search-form__input',
-  SEARCH_FORM_SUBMIT: 'search-form__submit',
+  //modal view
   MODAL: 'modal',
   MODAL_CLOSE_BUTTON: 'modal__close-button',
   SEARCH_RESULT_VIDEO_WRAPPER: 'search-result__video-wrapper',
-  WATCHING_VIDEO_WRAPPER: 'watching-video-wrapper',
-  WATCHED_VIDEO_WRAPPER: 'watched-video-wrapper',
-  NOT_FOUND_CONTENT: 'not-found-content',
+  SEARCH_FORM: 'search-form',
+  SEARCH_FORM_INPUT: 'search-form__input',
+  SEARCH_FORM_SUBMIT: 'search-form__submit',
   SEARCH_RESULT_INTERSECTOR: 'search-result__intersector',
   SEARCH_QUERIES: 'search-queries',
   SAVED_VIDEO_COUNT: 'saved-video-count',
-  WATCHED_VIDEO_SWITCH_BUTTON: 'watched-video-switch-button',
-  WATCHING_VIDEO_SWITCH_BUTTON: 'watching-video-switch-button',
-  SEARCH_BUTTON: 'search-button',
-  EMPTY_VIDEO_TO_WATCH: 'empty-video-to-watch',
+  //index view
+  WATCHING_VIDEO_WRAPPER: 'watching-video-wrapper',
+  WATCHED_VIDEO_WRAPPER: 'watched-video-wrapper',
+  NOT_FOUND_CONTENT: 'not-found-content',
+  EMPTY_WATCHING_VIDEO: 'empty-watching-video',
   EMPTY_WATCHED_VIDEO: 'empty-watched-video',
   SNACKBAR_WRAPPER: 'snackbar-wrapper',
-  NAV: 'nav'
+  //navigation view
+  NAV: 'nav',
+  WATCHED_VIDEO_SWITCH_BUTTON: 'watched-video-switch-button',
+  WATCHING_VIDEO_SWITCH_BUTTON: 'watching-video-switch-button',
+  SEARCH_BUTTON: 'search-button'
 });
 var SELECTOR_CLASS = Object.freeze({
-  SKELETON: 'js-skeleton',
+  //modal view
   SEARCHED_CLIP: 'js-searched-clip',
   SEARCHED_CLIP_SAVE_BUTTON: 'js-searched-clip__save-button',
   SEARCH_QUERIES_CHIP: 'js-search-queries__chip',
+  SKELETON: 'js-skeleton',
+  //index view
   NAV_BUTTON: 'js-nav__button',
-  CLIP: 'js-clip',
   CLIP_CHECK_BUTTON: 'js-clip__check-button',
   CLIP_DELETE_BUTTON: 'js-clip__delete-button',
+  //common
+  CLIP: 'js-clip',
   SNACKBAR: 'js-snackbar'
 });
 var STYLE_CLASS = Object.freeze({
@@ -12276,8 +12282,8 @@ var STYLE_CLASS = Object.freeze({
   SUCCESS: 'success',
   FAIL: 'fail',
   SNACKBAR: 'snackbar',
-  CLICKED: 'clicked',
-  CHECKED: 'checked'
+  NAV_CLICKED: 'clicked',
+  VIDEO_CHECKED: 'checked'
 });
 var ANIMATION_CLASS = Object.freeze({
   FADE_IN_AND_OUT: 'fade-in-and-out'
@@ -12302,10 +12308,10 @@ var CONFIRM_MESSAGE = Object.freeze({
 });
 var SNACKBAR_MESSAGE = Object.freeze({
   WATCHED_VIDEO_CHECK_SUCCESS: '본 영상으로 저장되었습니다.',
-  WATCHING_VIDEO_CHECK_SUCCESS: '볼 영상으로 저장되었습니다.',
+  WATCHING_VIDEO_CHECK_SUCCESS: '볼 영상으로 이동되었습니다.',
+  WATCHING_VIDEO_SAVE_SUCCESS: '볼 영상으로 이동되었습니다.',
   WATCHED_VIDEO_DELETE_SUCCESS: '본 영상에서 삭제되었습니다.',
   WATCHING_VIDEO_DELETE_SUCCESS: '볼 영상에서 삭제되었습니다.',
-  WATCHING_VIDEO_SAVE_SUCCESS: '볼 영상으로 저장되었습니다.',
   SAVE_LIMIT_EXCEEDED: "".concat(SETTINGS.MAX_SAVE_COUNT, "\uAC1C \uBCF4\uB2E4 \uB9CE\uC740 \uC601\uC0C1\uC744 \uC800\uC7A5\uD560 \uC218 \uC5C6\uC2B5\uB2C8\uB2E4.")
 });
 var BROWSER_HASH = Object.freeze({
@@ -12744,8 +12750,7 @@ function onWatchingVideoInteract(_ref) {
 
 function onClipCheck(button) {
   var videoId = button.dataset.videoId;
-  _store__WEBPACK_IMPORTED_MODULE_1__.watchingVideoModel.sendVideoTo(_store__WEBPACK_IMPORTED_MODULE_1__.watchedVideoModel, videoId); // TODO: controller를 클래스로 나누면 해결됨(아래 중복코드)
-
+  _store__WEBPACK_IMPORTED_MODULE_1__.watchingVideoModel.sendVideoTo(_store__WEBPACK_IMPORTED_MODULE_1__.watchedVideoModel, videoId);
   loadWatchingVideos();
   _view__WEBPACK_IMPORTED_MODULE_2__.layoutView.showSnackbar(_constants__WEBPACK_IMPORTED_MODULE_4__.SNACKBAR_MESSAGE.WATCHED_VIDEO_CHECK_SUCCESS, true);
 }
@@ -12785,9 +12790,6 @@ function loadWatchingVideos() {
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "$watchingVideoButton": () => (/* binding */ $watchingVideoButton),
-/* harmony export */   "$watchedVideoButton": () => (/* binding */ $watchedVideoButton),
-/* harmony export */   "$searchButton": () => (/* binding */ $searchButton),
 /* harmony export */   "$searchForm": () => (/* binding */ $searchForm),
 /* harmony export */   "$searchFormInput": () => (/* binding */ $searchFormInput),
 /* harmony export */   "$searchFormSubmit": () => (/* binding */ $searchFormSubmit),
@@ -12795,22 +12797,23 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "$modalCloseButton": () => (/* binding */ $modalCloseButton),
 /* harmony export */   "$searchResultVideoWrapper": () => (/* binding */ $searchResultVideoWrapper),
 /* harmony export */   "$searchResultIntersector": () => (/* binding */ $searchResultIntersector),
-/* harmony export */   "$watchingVideoWrapper": () => (/* binding */ $watchingVideoWrapper),
 /* harmony export */   "$searchQueries": () => (/* binding */ $searchQueries),
 /* harmony export */   "$savedVideoCount": () => (/* binding */ $savedVideoCount),
+/* harmony export */   "$nav": () => (/* binding */ $nav),
+/* harmony export */   "$watchingVideoButton": () => (/* binding */ $watchingVideoButton),
+/* harmony export */   "$watchedVideoButton": () => (/* binding */ $watchedVideoButton),
+/* harmony export */   "$searchButton": () => (/* binding */ $searchButton),
+/* harmony export */   "$watchedVideoWrapper": () => (/* binding */ $watchedVideoWrapper),
+/* harmony export */   "$watchingVideoWrapper": () => (/* binding */ $watchingVideoWrapper),
 /* harmony export */   "$emptyWatchingVideo": () => (/* binding */ $emptyWatchingVideo),
 /* harmony export */   "$emptyWatchedVideo": () => (/* binding */ $emptyWatchedVideo),
-/* harmony export */   "$snackbarWrapper": () => (/* binding */ $snackbarWrapper),
-/* harmony export */   "$watchedVideoWrapper": () => (/* binding */ $watchedVideoWrapper),
-/* harmony export */   "$nav": () => (/* binding */ $nav)
+/* harmony export */   "$snackbarWrapper": () => (/* binding */ $snackbarWrapper)
 /* harmony export */ });
 /* harmony import */ var _constants_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./constants.js */ "./src/constants.js");
 /* harmony import */ var _utils_querySelector_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./utils/querySelector.js */ "./src/utils/querySelector.js");
 
+ //modal view
 
-var $watchingVideoButton = (0,_utils_querySelector_js__WEBPACK_IMPORTED_MODULE_1__.$)("#".concat(_constants_js__WEBPACK_IMPORTED_MODULE_0__.SELECTOR_ID.WATCHING_VIDEO_BUTTON));
-var $watchedVideoButton = (0,_utils_querySelector_js__WEBPACK_IMPORTED_MODULE_1__.$)("#".concat(_constants_js__WEBPACK_IMPORTED_MODULE_0__.SELECTOR_ID.WATCHED_VIDEO_BUTTON));
-var $searchButton = (0,_utils_querySelector_js__WEBPACK_IMPORTED_MODULE_1__.$)("#".concat(_constants_js__WEBPACK_IMPORTED_MODULE_0__.SELECTOR_ID.SEARCH_BUTTON));
 var $searchForm = (0,_utils_querySelector_js__WEBPACK_IMPORTED_MODULE_1__.$)("#".concat(_constants_js__WEBPACK_IMPORTED_MODULE_0__.SELECTOR_ID.SEARCH_FORM));
 var $searchFormInput = (0,_utils_querySelector_js__WEBPACK_IMPORTED_MODULE_1__.$)("#".concat(_constants_js__WEBPACK_IMPORTED_MODULE_0__.SELECTOR_ID.SEARCH_FORM_INPUT));
 var $searchFormSubmit = (0,_utils_querySelector_js__WEBPACK_IMPORTED_MODULE_1__.$)("#".concat(_constants_js__WEBPACK_IMPORTED_MODULE_0__.SELECTOR_ID.SEARCH_FORM_SUBMIT));
@@ -12818,14 +12821,19 @@ var $modal = (0,_utils_querySelector_js__WEBPACK_IMPORTED_MODULE_1__.$)("#".conc
 var $modalCloseButton = (0,_utils_querySelector_js__WEBPACK_IMPORTED_MODULE_1__.$)("#".concat(_constants_js__WEBPACK_IMPORTED_MODULE_0__.SELECTOR_ID.MODAL_CLOSE_BUTTON));
 var $searchResultVideoWrapper = (0,_utils_querySelector_js__WEBPACK_IMPORTED_MODULE_1__.$)("#".concat(_constants_js__WEBPACK_IMPORTED_MODULE_0__.SELECTOR_ID.SEARCH_RESULT_VIDEO_WRAPPER));
 var $searchResultIntersector = (0,_utils_querySelector_js__WEBPACK_IMPORTED_MODULE_1__.$)("#".concat(_constants_js__WEBPACK_IMPORTED_MODULE_0__.SELECTOR_ID.SEARCH_RESULT_INTERSECTOR));
-var $watchingVideoWrapper = (0,_utils_querySelector_js__WEBPACK_IMPORTED_MODULE_1__.$)("#".concat(_constants_js__WEBPACK_IMPORTED_MODULE_0__.SELECTOR_ID.WATCHING_VIDEO_WRAPPER));
 var $searchQueries = (0,_utils_querySelector_js__WEBPACK_IMPORTED_MODULE_1__.$)("#".concat(_constants_js__WEBPACK_IMPORTED_MODULE_0__.SELECTOR_ID.SEARCH_QUERIES));
-var $savedVideoCount = (0,_utils_querySelector_js__WEBPACK_IMPORTED_MODULE_1__.$)("#".concat(_constants_js__WEBPACK_IMPORTED_MODULE_0__.SELECTOR_ID.SAVED_VIDEO_COUNT));
-var $emptyWatchingVideo = (0,_utils_querySelector_js__WEBPACK_IMPORTED_MODULE_1__.$)("#".concat(_constants_js__WEBPACK_IMPORTED_MODULE_0__.SELECTOR_ID.EMPTY_VIDEO_TO_WATCH));
-var $emptyWatchedVideo = (0,_utils_querySelector_js__WEBPACK_IMPORTED_MODULE_1__.$)("#".concat(_constants_js__WEBPACK_IMPORTED_MODULE_0__.SELECTOR_ID.EMPTY_WATCHED_VIDEO));
-var $snackbarWrapper = (0,_utils_querySelector_js__WEBPACK_IMPORTED_MODULE_1__.$)("#".concat(_constants_js__WEBPACK_IMPORTED_MODULE_0__.SELECTOR_ID.SNACKBAR_WRAPPER));
-var $watchedVideoWrapper = (0,_utils_querySelector_js__WEBPACK_IMPORTED_MODULE_1__.$)("#".concat(_constants_js__WEBPACK_IMPORTED_MODULE_0__.SELECTOR_ID.WATCHED_VIDEO_WRAPPER));
+var $savedVideoCount = (0,_utils_querySelector_js__WEBPACK_IMPORTED_MODULE_1__.$)("#".concat(_constants_js__WEBPACK_IMPORTED_MODULE_0__.SELECTOR_ID.SAVED_VIDEO_COUNT)); //main view
+
 var $nav = (0,_utils_querySelector_js__WEBPACK_IMPORTED_MODULE_1__.$)("#".concat(_constants_js__WEBPACK_IMPORTED_MODULE_0__.SELECTOR_ID.NAV));
+var $watchingVideoButton = (0,_utils_querySelector_js__WEBPACK_IMPORTED_MODULE_1__.$)("#".concat(_constants_js__WEBPACK_IMPORTED_MODULE_0__.SELECTOR_ID.WATCHING_VIDEO_BUTTON));
+var $watchedVideoButton = (0,_utils_querySelector_js__WEBPACK_IMPORTED_MODULE_1__.$)("#".concat(_constants_js__WEBPACK_IMPORTED_MODULE_0__.SELECTOR_ID.WATCHED_VIDEO_BUTTON));
+var $searchButton = (0,_utils_querySelector_js__WEBPACK_IMPORTED_MODULE_1__.$)("#".concat(_constants_js__WEBPACK_IMPORTED_MODULE_0__.SELECTOR_ID.SEARCH_BUTTON));
+var $watchedVideoWrapper = (0,_utils_querySelector_js__WEBPACK_IMPORTED_MODULE_1__.$)("#".concat(_constants_js__WEBPACK_IMPORTED_MODULE_0__.SELECTOR_ID.WATCHED_VIDEO_WRAPPER));
+var $watchingVideoWrapper = (0,_utils_querySelector_js__WEBPACK_IMPORTED_MODULE_1__.$)("#".concat(_constants_js__WEBPACK_IMPORTED_MODULE_0__.SELECTOR_ID.WATCHING_VIDEO_WRAPPER));
+var $emptyWatchingVideo = (0,_utils_querySelector_js__WEBPACK_IMPORTED_MODULE_1__.$)("#".concat(_constants_js__WEBPACK_IMPORTED_MODULE_0__.SELECTOR_ID.EMPTY_WATCHING_VIDEO));
+var $emptyWatchedVideo = (0,_utils_querySelector_js__WEBPACK_IMPORTED_MODULE_1__.$)("#".concat(_constants_js__WEBPACK_IMPORTED_MODULE_0__.SELECTOR_ID.EMPTY_WATCHED_VIDEO)); //common
+
+var $snackbarWrapper = (0,_utils_querySelector_js__WEBPACK_IMPORTED_MODULE_1__.$)("#".concat(_constants_js__WEBPACK_IMPORTED_MODULE_0__.SELECTOR_ID.SNACKBAR_WRAPPER));
 
 /***/ }),
 
@@ -12896,33 +12904,6 @@ var modalService = {
     _store_js__WEBPACK_IMPORTED_MODULE_1__.prevSearchResultModel.setItem({
       prevSearchedVideos: videos
     });
-  },
-  onWatchingVideoSave: function onWatchingVideoSave(_ref2) {
-    var target = _ref2.target;
-
-    if (!target.classList.contains(SELECTOR_CLASS.SEARCHED_CLIP_SAVE_BUTTON)) {
-      return;
-    } // TODO: watching + watched 비디오 합쳐서 100개 이하여야함
-
-
-    if (!watchingVideoService.isVideoCountUnderLimit()) {
-      layoutView.showSnackbar(SNACKBAR_MESSAGE.SAVE_LIMIT_EXCEEDED, false);
-      return;
-    }
-
-    if (watchingVideoService.isVideosEmpty()) {
-      watchingVideoView.hideEmptyVideoImage();
-      watchedVideoView.hideEmptyVideoImage();
-    }
-
-    watchingVideoService.pushNewVideo(target.dataset);
-
-    if (controllerUtil.parseHash(location.hash) === BROWSER_HASH.WATCHING) {
-      watchingVideoView.renderVideos(_store_js__WEBPACK_IMPORTED_MODULE_1__.watchingVideoModel.getItem());
-    }
-
-    modalView.hideVideoSaveButton(target);
-    layoutView.showSnackbar(SNACKBAR_MESSAGE.WATCHING_VIDEO_SAVE_SUCCESS, true);
   }
 };
 
@@ -13570,17 +13551,18 @@ var LayoutView = /*#__PURE__*/function (_BasicView) {
       setTimeout(function () {
         _this2.deleteElement(_this2._element.$snackbarWrapper, $snackbar);
       }, _constants_js__WEBPACK_IMPORTED_MODULE_0__.SETTINGS.SNACKBAR_PERSISTENT_MILLISEC);
-    }
+    } //TODO: 잘동작하는지 확인해보기
+
   }, {
     key: "highlightNavButton",
     value: function highlightNavButton(hash) {
       this._element.$nav.querySelectorAll(".".concat(_constants_js__WEBPACK_IMPORTED_MODULE_0__.SELECTOR_CLASS.NAV_BUTTON)).forEach(function ($button) {
         if ($button.dataset.id === hash) {
-          $button.classList.add(_constants_js__WEBPACK_IMPORTED_MODULE_0__.STYLE_CLASS.CLICKED);
+          $button.classList.add(_constants_js__WEBPACK_IMPORTED_MODULE_0__.STYLE_CLASS.NAV_CLICKED);
           return;
         }
 
-        $button.classList.remove(_constants_js__WEBPACK_IMPORTED_MODULE_0__.STYLE_CLASS.CLICKED);
+        $button.classList.remove(_constants_js__WEBPACK_IMPORTED_MODULE_0__.STYLE_CLASS.NAV_CLICKED);
       });
     }
   }, {
@@ -13899,7 +13881,7 @@ var VideoView = /*#__PURE__*/function (_BasicView) {
   }, {
     key: "_getVideoTemplate",
     value: function _getVideoTemplate(videoItem, isWatched) {
-      return "\n    <article class=\"".concat(_constants__WEBPACK_IMPORTED_MODULE_0__.SELECTOR_CLASS.CLIP, " clip\">\n      <div class=\"clip__preview\">\n        <iframe\n          width=\"100%\"\n          height=\"118\"\n          src=\"https://www.youtube.com/embed/").concat(videoItem.videoId, "\"\n          frameborder=\"0\"\n          allow=\"accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture\"\n          allowfullscreen\n        ></iframe>\n      </div>\n      <div class=\"clip__content pt-2 px-1\">\n        <h3>").concat(videoItem.title, "</h3>\n        <div>\n          <a\n            href=\"https://www.youtube.com/channel/UC-mOekGSesms0agFntnQang\"\n            target=\"_blank\"\n            class=\"channel-name mt-1\"\n          >\n            ").concat(videoItem.channelTitle, "\n          </a>\n          <div class=\"meta\">\n            <p>").concat(videoItem.publishedAt, "</p>\n          </div>\n          <div>\n            <span \n              class=\"\n                ").concat(_constants__WEBPACK_IMPORTED_MODULE_0__.SELECTOR_CLASS.CLIP_CHECK_BUTTON, "\n                clip__check-button\n                ").concat(isWatched ? _constants__WEBPACK_IMPORTED_MODULE_0__.STYLE_CLASS.CHECKED : '', " \n                opacity-hover\n              \" \n              data-video-id=\"").concat(videoItem.videoId, "\"\n            >\u2705</span>\n            <span class=\"opacity-hover\">\uD83D\uDC4D</span>\n            <span class=\"opacity-hover\">\uD83D\uDCAC</span>\n            <span \n              class=\"").concat(_constants__WEBPACK_IMPORTED_MODULE_0__.SELECTOR_CLASS.CLIP_DELETE_BUTTON, " opacity-hover\" \n              data-video-id=\"").concat(videoItem.videoId, "\"\n            >\uD83D\uDDD1\uFE0F</span>\n          </div>\n        </div>\n      </div>\n    </article>\n    ");
+      return "\n    <article class=\"".concat(_constants__WEBPACK_IMPORTED_MODULE_0__.SELECTOR_CLASS.CLIP, " clip\">\n      <div class=\"clip__preview\">\n        <iframe\n          width=\"100%\"\n          height=\"118\"\n          src=\"https://www.youtube.com/embed/").concat(videoItem.videoId, "\"\n          frameborder=\"0\"\n          allow=\"accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture\"\n          allowfullscreen\n        ></iframe>\n      </div>\n      <div class=\"clip__content pt-2 px-1\">\n        <h3>").concat(videoItem.title, "</h3>\n        <div>\n          <a\n            href=\"https://www.youtube.com/channel/UC-mOekGSesms0agFntnQang\"\n            target=\"_blank\"\n            class=\"channel-name mt-1\"\n          >\n            ").concat(videoItem.channelTitle, "\n          </a>\n          <div class=\"meta\">\n            <p>").concat(videoItem.publishedAt, "</p>\n          </div>\n          <div>\n            <span \n              class=\"\n                ").concat(_constants__WEBPACK_IMPORTED_MODULE_0__.SELECTOR_CLASS.CLIP_CHECK_BUTTON, "\n                clip__check-button\n                ").concat(isWatched ? _constants__WEBPACK_IMPORTED_MODULE_0__.STYLE_CLASS.VIDEO_CHECKED : '', " \n                opacity-hover\n              \" \n              data-video-id=\"").concat(videoItem.videoId, "\"\n            >\u2705</span>\n            <span class=\"opacity-hover\">\uD83D\uDC4D</span>\n            <span class=\"opacity-hover\">\uD83D\uDCAC</span>\n            <span \n              class=\"").concat(_constants__WEBPACK_IMPORTED_MODULE_0__.SELECTOR_CLASS.CLIP_DELETE_BUTTON, " opacity-hover\" \n              data-video-id=\"").concat(videoItem.videoId, "\"\n            >\uD83D\uDDD1\uFE0F</span>\n          </div>\n        </div>\n      </div>\n    </article>\n    ");
     }
   }]);
 

@@ -6,6 +6,7 @@ export default class VideoView extends BasicView {
 
   constructor({ $videoWrapper, $emptyVideoImage }, isChecked) {
     super({ $videoWrapper, $emptyVideoImage });
+
     this.#isChecked = isChecked;
   }
 
@@ -66,7 +67,7 @@ export default class VideoView extends BasicView {
               class="
                 ${SELECTOR_CLASS.CLIP_CHECK_BUTTON}
                 clip__check-button
-                ${isWatched ? STYLE_CLASS.CHECKED : ''} 
+                ${isWatched ? STYLE_CLASS.VIDEO_CHECKED : ''} 
                 opacity-hover
               " 
               data-video-id="${videoItem.videoId}"

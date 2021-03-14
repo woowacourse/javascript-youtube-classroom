@@ -8,12 +8,15 @@ const watchingVideoService = {
 
     return allVideoCount < SETTINGS.MAX_SAVE_COUNT;
   },
+
   isVideosEmpty() {
     return watchingVideoModel.getItem().length === 0;
   },
+
   pushNewVideo(dataset) {
     watchingVideoModel.pushItem(getNewVideo(dataset));
   },
+
 };
 
 function getNewVideo(dataset) {

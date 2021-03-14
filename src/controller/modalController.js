@@ -36,9 +36,11 @@ const modalController = {
       }
     });
   },
+
   initSearchQueries() {
     modalView.renderSearchQueries(searchQueryModel.getItem());
   },
+
 };
 
 function onSelectedVideoSave({ target }) {

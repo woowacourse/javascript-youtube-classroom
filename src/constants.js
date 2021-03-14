@@ -1,38 +1,44 @@
 export const SELECTOR_ID = Object.freeze({
-  SEARCH_FORM: 'search-form',
-  SEARCH_FORM_INPUT: 'search-form__input',
-  SEARCH_FORM_SUBMIT: 'search-form__submit',
+  //modal view
   MODAL: 'modal',
   MODAL_CLOSE_BUTTON: 'modal__close-button',
   SEARCH_RESULT_VIDEO_WRAPPER: 'search-result__video-wrapper',
-  WATCHING_VIDEO_WRAPPER: 'watching-video-wrapper',
-  WATCHED_VIDEO_WRAPPER: 'watched-video-wrapper',
-  NOT_FOUND_CONTENT: 'not-found-content',
+  SEARCH_FORM: 'search-form',
+  SEARCH_FORM_INPUT: 'search-form__input',
+  SEARCH_FORM_SUBMIT: 'search-form__submit',
   SEARCH_RESULT_INTERSECTOR: 'search-result__intersector',
   SEARCH_QUERIES: 'search-queries',
   SAVED_VIDEO_COUNT: 'saved-video-count',
 
+  //index view
+  WATCHING_VIDEO_WRAPPER: 'watching-video-wrapper',
+  WATCHED_VIDEO_WRAPPER: 'watched-video-wrapper',
+  NOT_FOUND_CONTENT: 'not-found-content',
+  EMPTY_WATCHING_VIDEO: 'empty-watching-video',
+  EMPTY_WATCHED_VIDEO: 'empty-watched-video',
+  SNACKBAR_WRAPPER: 'snackbar-wrapper',
+
+  //navigation view
+  NAV: 'nav',
   WATCHED_VIDEO_SWITCH_BUTTON: 'watched-video-switch-button',
   WATCHING_VIDEO_SWITCH_BUTTON: 'watching-video-switch-button',
   SEARCH_BUTTON: 'search-button',
-
-  EMPTY_VIDEO_TO_WATCH: 'empty-video-to-watch',
-  EMPTY_WATCHED_VIDEO: 'empty-watched-video',
-  SNACKBAR_WRAPPER: 'snackbar-wrapper',
-  NAV: 'nav',
 });
 
 export const SELECTOR_CLASS = Object.freeze({
-  SKELETON: 'js-skeleton',
+  //modal view
   SEARCHED_CLIP: 'js-searched-clip',
   SEARCHED_CLIP_SAVE_BUTTON: 'js-searched-clip__save-button',
   SEARCH_QUERIES_CHIP: 'js-search-queries__chip',
-  NAV_BUTTON: 'js-nav__button',
+  SKELETON: 'js-skeleton',
 
-  CLIP: 'js-clip',
+  //index view
+  NAV_BUTTON: 'js-nav__button',
   CLIP_CHECK_BUTTON: 'js-clip__check-button',
   CLIP_DELETE_BUTTON: 'js-clip__delete-button',
 
+  //common
+  CLIP: 'js-clip',
   SNACKBAR: 'js-snackbar',
 });
 
@@ -42,9 +48,11 @@ export const STYLE_CLASS = Object.freeze({
 
   SUCCESS: 'success',
   FAIL: 'fail',
+
   SNACKBAR: 'snackbar',
-  CLICKED: 'clicked',
-  CHECKED: 'checked',
+
+  NAV_CLICKED: 'clicked',
+  VIDEO_CHECKED: 'checked',
 });
 
 export const ANIMATION_CLASS = Object.freeze({
@@ -75,10 +83,13 @@ export const CONFIRM_MESSAGE = Object.freeze({
 
 export const SNACKBAR_MESSAGE = Object.freeze({
   WATCHED_VIDEO_CHECK_SUCCESS: '본 영상으로 저장되었습니다.',
-  WATCHING_VIDEO_CHECK_SUCCESS: '볼 영상으로 저장되었습니다.',
+
+  WATCHING_VIDEO_CHECK_SUCCESS: '볼 영상으로 이동되었습니다.',
+  WATCHING_VIDEO_SAVE_SUCCESS: '볼 영상으로 이동되었습니다.',
+
   WATCHED_VIDEO_DELETE_SUCCESS: '본 영상에서 삭제되었습니다.',
   WATCHING_VIDEO_DELETE_SUCCESS: '볼 영상에서 삭제되었습니다.',
-  WATCHING_VIDEO_SAVE_SUCCESS: '볼 영상으로 저장되었습니다.',
+
   SAVE_LIMIT_EXCEEDED: `${SETTINGS.MAX_SAVE_COUNT}개 보다 많은 영상을 저장할 수 없습니다.`,
 });
 

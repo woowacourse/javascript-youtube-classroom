@@ -36,12 +36,14 @@ export default class BasicView {
 
   hideElementBySelector(selector) {
     const target = $(selector);
+
     if (Array.isArray(target)) {
       target.forEach(item => {
         item.classList.add('removed');
       });
       return;
     }
+
     target.classList.add('removed');
   }
 }

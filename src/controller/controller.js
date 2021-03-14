@@ -36,10 +36,12 @@ function onWatchingVideoShow() {
   const videos = watchingVideoModel.getItem();
   watchedVideoView.eraseVideos();
   watchedVideoView.hideEmptyVideoImage();
+
   if (videos.length === 0) {
     watchingVideoView.showEmptyVideoImage();
     return;
   }
+
   watchingVideoView.renderVideos(videos);
 }
 
@@ -48,10 +50,12 @@ function onWatchedVideoShow() {
   watchingVideoView.hideEmptyVideoImage();
 
   const videos = watchedVideoModel.getItem();
+
   if (videos.length === 0) {
     watchedVideoView.showEmptyVideoImage();
     return;
   }
+
   watchedVideoView.renderVideos(videos);
 }
 

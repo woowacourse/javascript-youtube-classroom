@@ -3,10 +3,12 @@ import BasicStorage from './BasicStorage.js';
 export default class PrevSearchResult extends BasicStorage {
   constructor(key) {
     super(key);
+
     if (!this.getItem()) {
       super.setItem({ prevSearchedVideos: [] });
     }
   }
+
   setItem({ lastQuery, nextPageToken, prevSearchedVideos }) {
     //KEY: PREV_SEARCH_RESULT
     const prevSearchResult = this.getItem();
@@ -19,6 +21,7 @@ export default class PrevSearchResult extends BasicStorage {
         ? prevSearchedVideos
         : prevSearchResult.prevSearchedVideos,
     };
+
     super.setItem(newItem);
   }
 }

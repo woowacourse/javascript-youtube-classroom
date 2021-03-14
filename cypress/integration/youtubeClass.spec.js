@@ -79,7 +79,7 @@ context('유튜브 강의실 테스트', () => {
 
     it('볼 영상에 저장된 영상이 없으면 이를 알려준다.', () => {
       cy.get(`.${SELECTOR_CLASS.CLIP}`).should('not.exist');
-      cy.get(`#${SELECTOR_ID.EMPTY_VIDEO_TO_WATCH}`).should('be.visible');
+      cy.get(`#${SELECTOR_ID.EMPTY_WATCHING_VIDEO}`).should('be.visible');
     });
   });
   describe('검색어', () => {

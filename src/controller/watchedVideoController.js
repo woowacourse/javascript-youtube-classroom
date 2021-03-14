@@ -19,6 +19,7 @@ function onWatchedVideoInteract({ target }) {
     onClipUnCheck(target);
     return;
   }
+
   if (target.classList.contains(SELECTOR_CLASS.CLIP_DELETE_BUTTON)) {
     onWatchedVideoDelete(target);
     return;
@@ -36,6 +37,7 @@ function onWatchedVideoDelete(button) {
   if (!layoutView.confirm(CONFIRM_MESSAGE.WATCHED_VIDEO_DELETE)) {
     return;
   }
+
   const videoId = button.dataset.videoId;
   watchedVideoModel.popVideoByVideoId(videoId);
   loadWatchedVideos();
@@ -44,10 +46,12 @@ function onWatchedVideoDelete(button) {
 
 function loadWatchedVideos() {
   const watchedVideos = watchedVideoModel.getItem();
+
   if (watchedVideoService.isVideosEmpty()) {
     watchedVideoView.showEmptyVideoImage();
     watchingVideoView.hideEmptyVideoImage();
   }
+
   watchedVideoView.renderVideos(watchedVideos);
 }
 

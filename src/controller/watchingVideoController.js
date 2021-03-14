@@ -23,6 +23,7 @@ function onWatchingVideoInteract({ target }) {
     onClipCheck(target);
     return;
   }
+
   if (target.classList.contains(SELECTOR_CLASS.CLIP_DELETE_BUTTON)) {
     onWatchingVideoDelete(target);
     return;
@@ -33,9 +34,7 @@ function onClipCheck(button) {
   const videoId = button.dataset.videoId;
   watchingVideoModel.sendVideoTo(watchedVideoModel, videoId);
 
-  // TODO: controller를 클래스로 나누면 해결됨(아래 중복코드)
   loadWatchingVideos();
-
   layoutView.showSnackbar(SNACKBAR_MESSAGE.WATCHED_VIDEO_CHECK_SUCCESS, true);
 }
 
@@ -43,6 +42,7 @@ function onWatchingVideoDelete(button) {
   if (!layoutView.confirm(CONFIRM_MESSAGE.WATCHING_VIDEO_DELETE)) {
     return;
   }
+
   const videoId = button.dataset.videoId;
   watchingVideoModel.popVideoByVideoId(videoId);
   loadWatchingVideos();
@@ -51,10 +51,12 @@ function onWatchingVideoDelete(button) {
 
 function loadWatchingVideos() {
   const watchingVideos = watchingVideoModel.getItem();
+
   if (watchingVideoService.isVideosEmpty()) {
     watchingVideoView.showEmptyVideoImage();
     watchedVideoView.hideEmptyVideoImage();
   }
+
   watchingVideoView.renderVideos(watchingVideos);
 }
 

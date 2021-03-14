@@ -11,6 +11,7 @@ const controllerUtil = {
     });
     observer.observe($element);
   },
+
   parseHash(hash) {
     if (hash === '') {
       return BROWSER_HASH.WATCHING;
