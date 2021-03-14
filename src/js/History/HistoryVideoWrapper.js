@@ -58,8 +58,8 @@ export default class HistoryVideoWrapper {
 
     this.updateLocalStorage();
 
-    messenger.deliverMessage(MESSAGE.VIDEO_SAVED, {
-      savedVideosCount: this.historyVideoItemsMap.size,
+    messenger.deliverMessage(MESSAGE.SAVED_VIDEOS_COUNT_CHANGED, {
+      change: -1,
     });
 
     this.historyVideosMap.get(videoId).remove();

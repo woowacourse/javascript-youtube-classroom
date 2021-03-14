@@ -19,11 +19,14 @@ export default class SavedVideosCount {
     this.$savedVideosCount.innerText = this.savedVideosCount;
     this.$maxSavedVideosCount.innerText = MAX_SAVED_VIDEOS_COUNT;
 
-    messenger.addMessageListener(MESSAGE.VIDEO_SAVED, this.setCount.bind(this));
+    messenger.addMessageListener(
+      MESSAGE.SAVED_VIDEOS_COUNT_CHANGED,
+      this.setCount.bind(this)
+    );
   }
 
-  setCount({ savedVideosCount }) {
-    this.savedVideosCount = savedVideosCount;
+  setCount({ change }) {
+    this.savedVideosCount += change;
 
     localStorage.setItem(
       LOCAL_STORAGE_KEY.SAVED_VIDEOS_COUNT,
