@@ -41,7 +41,7 @@ export class SavedVideoManager {
     this.setState({
       key: SAVED_VIDEO_SUBSCRIBER_KEY.SAVE,
       videoId,
-      savedVideos: { ...this.savedVideos, [videoId]: { isChecked: false, savedDate: Date.now() } },
+      savedVideos: { ...this.savedVideos, [videoId]: { isChecked: false, updateDate: Date.now() } },
     });
 
     return true;
@@ -59,6 +59,7 @@ export class SavedVideoManager {
 
   checkVideo(videoId) {
     const nextSavedVideos = { ...this.savedVideos };
+    nextSavedVideos[videoId].updateDate = Date.now();
     nextSavedVideos[videoId].isChecked = !nextSavedVideos[videoId].isChecked;
 
     this.setState({
@@ -76,7 +77,9 @@ export class SavedVideoManager {
   }
 
   getSortedSavedVideoIdList() {
-    return Object.keys(this.savedVideos).sort((a, b) => this.savedVideos[b].savedDate - this.savedVideos[a].savedDate);
+    return Object.keys(this.savedVideos).sort(
+      (a, b) => this.savedVideos[b].updateDate - this.savedVideos[a].updateDate
+    );
   }
 
   setState({ key, videoId, savedVideos }) {
