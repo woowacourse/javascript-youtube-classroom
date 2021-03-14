@@ -4,7 +4,7 @@ import { cancelVideoSave, saveVideo } from '../service.js';
 import videoInfos from '../states/videoInfos.js';
 import {
   appendSavedVideo,
-  renderSavedVideoList,
+  removeSavedVideo,
   showSnackBar,
 } from '../viewControllers/app.js';
 import {
@@ -12,6 +12,7 @@ import {
   toggleSaveButton,
 } from '../viewControllers/searchModal.js';
 import videoListType from '../states/videoListType.js';
+import { $$ } from '../utils/DOM.js';
 
 function handleVideoSave($saveButton) {
   if (videoInfos.length >= MAX_SAVED_VIDEO_COUNT) {
@@ -33,13 +34,18 @@ function handleVideoSave($saveButton) {
 
 function handleVideoSaveCancel($saveCancelButton) {
   if (!window.confirm(MESSAGE.CONFIRM.CANCEL_TO_SAVE_VIDEO)) return;
-
   cancelVideoSave($saveCancelButton.closest('.js-video'));
   toggleSaveButton($saveCancelButton);
   showSnackBar(MESSAGE.SNACKBAR.CANCEL_TO_SAVE);
 
-  renderSavedVideoList(videoInfos.get(), videoListType.get());
+  const [$targetVideo] = [...$$('#video-list .js-video')].filter(
+    $video =>
+      $video.dataset.videoId ===
+      $saveCancelButton.closest('.js-video').dataset.videoId
+  );
+
   renderSavedVideoCount(videoInfos.length);
+  removeSavedVideo($targetVideo);
 }
 
 function handleVideoSaveControl({ target }) {

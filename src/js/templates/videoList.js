@@ -35,7 +35,7 @@ function createVideoSnippetTemplate({ id, snippet }, buttonListTemplate) {
                 </div>
               </div>
             </div>
-            <div class=" d-flex justify-end mt-auto">
+            <div class="d-flex justify-end mt-auto js-btn-list">
               ${buttonListTemplate}
             </div>
           </article>`;
