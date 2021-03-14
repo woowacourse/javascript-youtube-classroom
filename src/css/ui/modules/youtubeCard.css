@@ -83,7 +83,7 @@
     #ededed 30px,
     #e0e0e0 60px
   );
-  animation: refresh 2s infinite ease-out;
+  animation: skeleton-refresh 2s infinite ease-out;
 }
 
 .skeleton .image {
@@ -110,7 +110,7 @@
   margin: 3px 0;
 }
 
-@keyframes refresh {
+@keyframes skeleton-refresh {
   0% {
     background-position: calc(-100px);
   }
