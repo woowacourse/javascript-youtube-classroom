@@ -3,8 +3,16 @@ import {
   savedVideoListTemplate,
   emptyVideoListTemplate,
 } from '../templates/videoList.js';
-import { TO_WATCH_TYPE, WATCHED_TYPE } from '../constants/filterType.js';
-import { getToWatchVideoInfos, getWatchedVideoInfos } from '../service.js';
+import {
+  LIKED_TYPE,
+  TO_WATCH_TYPE,
+  WATCHED_TYPE,
+} from '../constants/filterType.js';
+import {
+  getLikedVideoInfos,
+  getToWatchVideoInfos,
+  getWatchedVideoInfos,
+} from '../service.js';
 import videoListType from '../states/videoListType.js';
 
 const $searchModal = $('#video-search-modal');
@@ -24,6 +32,7 @@ function closeModal() {
 const getFilteredVideoList = {
   [TO_WATCH_TYPE]: () => getToWatchVideoInfos(),
   [WATCHED_TYPE]: () => getWatchedVideoInfos(),
+  [LIKED_TYPE]: () => getLikedVideoInfos(),
 };
 
 function renderSavedVideoList() {
@@ -45,6 +54,7 @@ function showSnackBar(contents) {
 const modeButtonSelector = {
   [TO_WATCH_TYPE]: '#to-watch-video-display-button',
   [WATCHED_TYPE]: '#watched-video-display-button',
+  [LIKED_TYPE]: '#liked-video-display-button',
 };
 
 function changeFocusedModeButton(type) {

@@ -9,6 +9,7 @@ function createVideoInfo(videoDataset) {
     id: { videoId },
     snippet: { title, channelId, channelTitle, publishTime },
     isWatched: false,
+    isLiked: false,
   };
 }
 
@@ -38,10 +39,15 @@ function getWatchedVideoInfos() {
   return [...videoInfos.get()].filter(videoInfo => videoInfo.isWatched);
 }
 
+function getLikedVideoInfos() {
+  return [...videoInfos.get()].filter(videoInfo => videoInfo.isLiked);
+}
+
 export {
   saveVideo,
   cancelVideoSave,
   searchVideo,
   getToWatchVideoInfos,
   getWatchedVideoInfos,
+  getLikedVideoInfos,
 };

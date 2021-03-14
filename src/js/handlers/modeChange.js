@@ -23,7 +23,7 @@ function handleModeChange({ target }) {
   if (target.id === 'watched-video-display-button') {
     changeMode(WATCHED_TYPE);
   }
-  if (target.id === 'watched-video-display-button') {
+  if (target.id === 'liked-video-display-button') {
     changeMode(LIKED_TYPE);
   }
 }
