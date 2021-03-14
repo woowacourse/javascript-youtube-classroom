@@ -5,8 +5,7 @@
   "repository": "https://github.com/yujo11/javascript-youtube-classroom.git",
   "license": "MIT",
   "contributors": [
-    "yujo11",
-    "seojihwan"
+    "yujo11"
   ],
   "scripts": {
     "test": "yarn run cypress open",
