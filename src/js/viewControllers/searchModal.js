@@ -52,6 +52,16 @@ function toggleSaveButton($saveButton) {
   }
 }
 
+function renderSaveButton(targetId) {
+  const $saveButton = $(
+    `#video-search-modal [data-video-id='${targetId}'] .js-save-cancel-button`
+  );
+
+  if ($saveButton) {
+    toggleSaveButton($saveButton);
+  }
+}
+
 export {
   renderSavedVideoCount,
   renderLatestKeywordList,
@@ -60,4 +70,5 @@ export {
   appendVideos,
   search,
   toggleSaveButton,
+  renderSaveButton,
 };
