@@ -8,12 +8,11 @@ export async function getVideosByKeyword(searchKeyword, pageToken) {
     maxResults: YOUTUBE.MAX_RESULT_COUNT,
     videoDefinition: 'high',
     key: YOUTUBE_API_KEY,
+    pageToken: pageToken ? `&pageToken=${pageToken}` : ''
   };
   const response = await (
     await fetch(
-      `https://www.googleapis.com/youtube/v3/search?${parseQuery(query)}${
-        pageToken ? `&pageToken=${pageToken}` : ''
-      }`
+      `https://www.googleapis.com/youtube/v3/search?${parseQuery(query)}`
     )
   ).json();
   const { nextPageToken } = response;
