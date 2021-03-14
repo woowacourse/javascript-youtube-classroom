@@ -2,7 +2,7 @@ import { MAX_RESULTS_COUNT } from "../constants.js";
 
 const REDIRECT_SERVER_HOST = "https://jum0.netlify.app";
 
-const fetchData = async (query, nextPageToken = "") => {
+const fetchYoutubeData = async (query, nextPageToken = "") => {
   const url = new URL("youtube/search", REDIRECT_SERVER_HOST);
   const parameters = new URLSearchParams({
     part: "snippet",
@@ -25,4 +25,4 @@ const fetchData = async (query, nextPageToken = "") => {
   return body;
 };
 
-export { REDIRECT_SERVER_HOST, fetchData };
+export { REDIRECT_SERVER_HOST, fetchYoutubeData };

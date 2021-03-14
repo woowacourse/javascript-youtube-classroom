@@ -1,7 +1,7 @@
 import { CLASSNAME, MESSAGE, LOCAL_STORAGE_KEY } from "../constants.js";
 import { $ } from "../utils/querySelector.js";
 import messenger from "../Messenger.js";
-import { fetchData } from "../utils/API.js";
+import { fetchYoutubeData } from "../utils/API.js";
 
 export default class SearchForm {
   constructor() {
@@ -37,7 +37,7 @@ export default class SearchForm {
     });
 
     try {
-      const { nextPageToken, items } = await fetchData(this.query);
+      const { nextPageToken, items } = await fetchYoutubeData(this.query);
 
       messenger.deliverMessage(MESSAGE.DATA_LOADED, {
         nextPageToken,
