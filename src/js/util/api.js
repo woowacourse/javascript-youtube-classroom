@@ -16,20 +16,21 @@ export const getSearchVideoByKeyword = async (keyword, pageToken = '') => {
   });
   searchURL.search = params.toString();
 
-  return await fetch(searchURL.href)
-    .then(response => {
-      if (!response.ok) {
-        if (response.status === 403) {
-          throw new Error(ERROR_MESSAGE.EXCEED_API_REQUEST_COUNT(response.status));
-        } else {
-          throw new Error(ERROR_MESSAGE.API_REQUEST_ERROR(response.status));
-        }
+  try {
+    const response = await fetch(searchURL.href);
+
+    if (!response.ok) {
+      if (response.status === 403) {
+        throw new Error(ERROR_MESSAGE.EXCEED_API_REQUEST_COUNT(response.status));
+      } else {
+        throw new Error(ERROR_MESSAGE.API_REQUEST_ERROR(response.status));
       }
-      return response.json();
-    })
-    .catch(function (error) {
-      throw new Error(error);
-    });
+    }
+
+    return response.json();
+  } catch (error) {
+    throw new Error(error);
+  }
 
   // fetch dummy data for test
   //return await fetch('http://localhost:5500/src/js/dummy.json').then(Response => Response.json());
@@ -44,18 +45,19 @@ export const getVideoByIdList = async idList => {
   });
   videoURL.search = params.toString();
 
-  return await fetch(videoURL.href)
-    .then(response => {
-      if (!response.ok) {
-        if (response.status === 403) {
-          throw new Error(ERROR_MESSAGE.EXCEED_API_REQUEST_COUNT(response.status));
-        } else {
-          throw new Error(ERROR_MESSAGE.API_REQUEST_ERROR(response.status));
-        }
+  try {
+    const response = await fetch(videoURL.href);
+
+    if (!response.ok) {
+      if (response.status === 403) {
+        throw new Error(ERROR_MESSAGE.EXCEED_API_REQUEST_COUNT(response.status));
+      } else {
+        throw new Error(ERROR_MESSAGE.API_REQUEST_ERROR(response.status));
       }
-      return response.json();
-    })
-    .catch(function (error) {
-      throw new Error(error);
-    });
+    }
+
+    return response.json();
+  } catch (error) {
+    throw new Error(error);
+  }
 };
