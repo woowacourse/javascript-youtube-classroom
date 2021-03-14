@@ -32,5 +32,4 @@ export const onToggleRenderedClips = ({ target }) => {
 
   setSelected(target);
   setSection(target);
-  storage.set(LOCAL_STORAGE_KEY.CURRENT_TAB, target.dataset.js);
 };
