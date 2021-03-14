@@ -15,7 +15,7 @@
   width: 400px;
   left: calc(50% - 220px);
   bottom: 50%;
-  background-color: #efefef;
+  background-color: #fff;
   border-radius: 10px;
   border: 3px solid #ccc;
   -webkit-animation: fade 0.3s ease 1 forwards;
