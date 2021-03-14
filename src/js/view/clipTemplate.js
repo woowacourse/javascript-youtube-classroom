@@ -42,6 +42,7 @@ export const clipTemplate = (video, index, type) => {
             height="118"
             src=https://www.youtube.com/embed/${video.id.videoId}
             frameborder="0"
+            loading="lazy"
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
             allowfullscreen
           ></iframe>
