@@ -35,9 +35,17 @@ const SAVED_VIDEO_BUTTON_TEMPLATE = `
 </div>
 `;
 
-const ICON_BUTTONS_TEMPLATE = `
+const WATCH_LATER_ICON_BUTTONS_TEMPLATE = `
 <div class=${CLASSNAME.ICONS_WRAPPER}>
-  <span class="opacity-hover ${CLASSNAME.WATCHED_ICON}">✅</span>
+  <span class="opacity-hover icon watched-icon ${CLASSNAME.WATCHED_ICON}"></span>
+  <span class="opacity-hover ${CLASSNAME.LIKE_ICON}">👍</span>
+  <span class="opacity-hover ${CLASSNAME.COMMENT_ICON}">💬</span>
+  <span class="opacity-hover ${CLASSNAME.DELETE_ICON}">🗑️</span>
+</div>`;
+
+const HISTORY_ICON_BUTTONS_TEMPLATE = `
+<div class=${CLASSNAME.ICONS_WRAPPER}>
+  <span class="opacity-hover icon watch-later-icon ${CLASSNAME.WATCH_LATER_ICON}"></span>
   <span class="opacity-hover ${CLASSNAME.LIKE_ICON}">👍</span>
   <span class="opacity-hover ${CLASSNAME.COMMENT_ICON}">💬</span>
   <span class="opacity-hover ${CLASSNAME.DELETE_ICON}">🗑️</span>
@@ -45,6 +53,14 @@ const ICON_BUTTONS_TEMPLATE = `
 
 const SEARCH_VIDEO_TEMPLATE = GENERATE_TEMPLATE(SAVED_VIDEO_BUTTON_TEMPLATE);
 
-const VIDEO_TEMPLATE = GENERATE_TEMPLATE(ICON_BUTTONS_TEMPLATE);
+const WATCH_LATER_VIDEO_TEMPLATE = GENERATE_TEMPLATE(
+  WATCH_LATER_ICON_BUTTONS_TEMPLATE
+);
 
-export { SEARCH_VIDEO_TEMPLATE, VIDEO_TEMPLATE };
+const HISTORY_VIDEO_TEMPLATE = GENERATE_TEMPLATE(HISTORY_ICON_BUTTONS_TEMPLATE);
+
+export {
+  SEARCH_VIDEO_TEMPLATE,
+  WATCH_LATER_VIDEO_TEMPLATE,
+  HISTORY_VIDEO_TEMPLATE,
+};
