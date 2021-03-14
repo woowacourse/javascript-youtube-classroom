@@ -1,7 +1,7 @@
 import { isSavedVideo } from '../controllers/elementValidator.js';
 import { httpRequest } from '../utils/httpRequest.js';
 import { formatDateKR } from '../utils/formatDate.js';
-import { escape } from '../utils/escapeSpecialCharacter.js';
+import { unescape } from '../utils/specialCharacters.js';
 import { YOUTUBE_API } from '../constants.js';
 
 export default class SearchService {
@@ -41,9 +41,9 @@ export default class SearchService {
 
     return rawData.items.map((item) => ({
       videoId: item.id.videoId,
-      videoTitle: escape(item.snippet.title),
+      videoTitle: unescape(item.snippet.title),
       channelId: item.snippet.channelId,
-      channelTitle: escape(item.snippet.channelTitle),
+      channelTitle: unescape(item.snippet.channelTitle),
       publishedAt: formatDateKR(item.snippet.publishedAt),
       isSaved: isSavedVideo(item.id.videoId),
     }));

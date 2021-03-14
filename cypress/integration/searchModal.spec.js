@@ -1,6 +1,6 @@
 import { MAX_RECENT_KEYWORD_COUNT, YOUTUBE_API, MESSAGE, DB_KEY } from '../../src/js/constants.js';
 import { getListFromLocalStorage } from '../../src/js/utils/localStorage.js';
-import { removeNewLine } from '../../src/js/utils/escapeSpecialCharacter.js';
+import { removeNewLine } from '../../src/js/utils/specialCharacters.js';
 
 const interceptYoutubeApiRequest = (keyword, alias) => {
   cy.intercept({

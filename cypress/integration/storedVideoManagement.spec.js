@@ -1,5 +1,5 @@
 import { YOUTUBE_API, MESSAGE } from '../../src/js/constants';
-import { escape, removeNewLine } from '../../src/js/utils/escapeSpecialCharacter.js';
+import { unescape, removeNewLine } from '../../src/js/utils/specialCharacters.js';
 
 describe('저장된 비디오 관리 기능 테스트', () => {
   beforeEach(() => {
@@ -33,7 +33,7 @@ describe('저장된 비디오 관리 기능 테스트', () => {
     cy.get('.js-saved-videos-wrapper .js-video-title').each(($el, index) => {
       cy.wrap($el)
         .invoke('text')
-        .then((title) => expect(escape(title)).to.be.eq(savedVideoTitles[index]));
+        .then((title) => expect(unescape(title)).to.be.eq(savedVideoTitles[index]));
     });
   });
 
