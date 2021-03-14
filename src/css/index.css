@@ -40,23 +40,19 @@ a {
 .menu-btn:hover,
 .save-btn:hover  {
   background-color: #b3eaf2;
-  animation: pulse 1s ease-in;
+  animation: pulse 0.2s ease-in forwards;
 }
 
 @keyframes pulse {
+
   0% {
-    transform : scale(.9);
-  }
-  40% {
     transform : scale(1);
     box-shadow: 0 0 0 50px rgba(#5a99d4, 0);
   }
-  80% {
-    transform : scale(.9);
-    box-shadow: 0 0 0 0 rgba(#5a99d4, 0);
-  }
+  
   100% {
-    transform : scale(1);
+    transform : scale(1.1);
+    box-shadow: 0 0 0 0 rgba(#5a99d4, 0);
   }
 }
 
