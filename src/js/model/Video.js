@@ -66,7 +66,7 @@ export default class Video {
       thumbnailURL: this.thumbnailURL,
       watched: this.watched,
       liked: this.liked,
-      savedTime: new Date(),
+      savedTime: new Date().getTime(),
     };
   }
 

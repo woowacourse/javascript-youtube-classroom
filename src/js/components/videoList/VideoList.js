@@ -56,7 +56,7 @@ export default class VideoList extends Component {
     const fragment = document.createDocumentFragment();
     const videoIdSortedByDate = Object.keys(savedVideos).sort((a, b) => {
       return (
-        new Date(savedVideos[b].savedTime) - new Date(savedVideos[a].savedTime)
+        Number(savedVideos[b].savedTime) - Number(savedVideos[a].savedTime)
       );
     });
 
@@ -82,12 +82,6 @@ export default class VideoList extends Component {
   selectDOM() {
     this.$snackbar = $(SELECTORS.VIDEO_LIST.SNACKBAR);
     this.$notFoundImage = $(SELECTORS.VIDEO_LIST.NO_VIDEO_MESSAGE_CLASS);
-  }
-
-  toggleVideoList() {
-    $$(SELECTORS.VIDEO_LIST.CLIP_CLASS, this.$target).forEach(($clip) => {
-      $clip.classList.toggle('d-none');
-    });
   }
 
   setFilter(newFilter = TYPES.FILTER.WATCH_LATER) {
@@ -163,7 +157,7 @@ export default class VideoList extends Component {
         ...savedVideos[lastestVideoId],
       }).createTemplate(TYPES.PAGE.MANAGEMENT);
 
-      this.$target.appendChild(newVideo);
+      this.$target.prepend(newVideo);
 
       this.iframeLoadObserver.observe(newVideo);
 

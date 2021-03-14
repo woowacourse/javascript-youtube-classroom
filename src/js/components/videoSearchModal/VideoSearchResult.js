@@ -120,6 +120,8 @@ export default class VideoSearchResult extends Component {
       [videoId]: Video.cache[videoId],
     });
 
+    newSavedVideos[videoId].savedTime = new Date().getTime();
+
     localStorageSetItem(LOCALSTORAGE_KEYS.VIDEOS, newSavedVideos);
 
     event.target.classList.add('d-none');
