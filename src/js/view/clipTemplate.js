@@ -14,7 +14,6 @@ const buttonTemplate = (index, type) => {
     <div class="button-container" data-js="saved-clip-button-container">
       <button class="opacity-hover" data-js="saved-clip-button-container__check">✅</button>
       <button class="opacity-hover" data-js="saved-clip-button-container__like">👍</button>
-      <button class="opacity-hover" data-js="saved-clip-button-container__comment">💬</button>
       <button class="opacity-hover" data-js="saved-clip-button-container__delete">🗑️</button>
     </div>
   `;
