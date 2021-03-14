@@ -10,6 +10,14 @@ import {
   updateModalSaveButton,
 } from '../viewControllers/searchModal.js';
 
+function handleLikeButton($target) {
+  const targetId = $target.closest('.js-video').dataset.videoId;
+
+  videoInfos.toggleLikeType(targetId);
+  renderSavedVideoList();
+  showSnackBar(VIDEO_MOVE_SUCCESS_MSG);
+}
+
 function handleWatchedButton($target) {
   const targetId = $target.closest('.js-video').dataset.videoId;
 
@@ -37,6 +45,10 @@ function handleButtonsControl({ target }) {
   }
   if (target.classList.contains('js-delete-button')) {
     handleDeleteButton(target);
+    return;
+  }
+  if (target.classList.contains('js-like-button')) {
+    handleLikeButton(target);
   }
 }
 

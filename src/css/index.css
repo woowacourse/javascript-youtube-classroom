@@ -42,7 +42,7 @@ a {
   font-size: 1.4rem;
 }
 
-@media (max-width: 500px) {
+@media (max-width: 600px) {
   #search-button {
     top: auto;
     right: 40px;
