@@ -8,7 +8,7 @@ import { $ } from "../utils/querySelector.js";
 import messenger from "../Messenger.js";
 import render from "../Video/render.js";
 import TEMPLATE from "../Video/template.js";
-import { fetchData } from "../utils/API.js";
+import { fetchYoutubeData } from "../utils/API.js";
 
 export default class VideoWrapper {
   constructor() {
@@ -92,7 +92,7 @@ export default class VideoWrapper {
     this.throttle = setTimeout(async () => {
       this.mountTemplate();
 
-      const { nextPageToken, items } = await fetchData(
+      const { nextPageToken, items } = await fetchYoutubeData(
         this.currentQuery,
         this.currentNextPageToken
       );
