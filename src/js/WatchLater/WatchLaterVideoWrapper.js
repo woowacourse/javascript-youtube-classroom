@@ -11,19 +11,23 @@ import { renderWatchLaterVideo } from "../Video/render.js";
 
 export default class WatchLaterVideoWrapper {
   constructor() {
-    this.savedVideoItemsMap = new Map(
-      JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEY.SAVED_VIDEO_ITEMS))
+    this.watchLaterVideoItemsMap = new Map(
+      JSON.parse(
+        localStorage.getItem(LOCAL_STORAGE_KEY.WATCH_LATER_VIDEO_ITEMS)
+      )
     );
 
-    this.savedVideosMap = new Map();
+    this.watchLaterVideosMap = new Map();
 
-    this.$noSavedVideoImage = $(`.${CLASSNAME.NO_SAVED_VIDEO_IMAGE}`);
+    this.$noSavedVideoImage = $(
+      `.${CLASSNAME.WATCH_LATER_CONTAINER} .${CLASSNAME.NO_SAVED_VIDEO_IMAGE}`
+    );
     this.$watchLaterVideoWrapper = $(`.${CLASSNAME.WATCH_LATER_VIDEO_WRAPPER}`);
 
     messenger.addMessageListener(
       MESSAGE.SAVE_VIDEO_BUTTON_CLICKED,
       ({ videoId, item }) => {
-        if (this.savedVideosMap.has(videoId)) {
+        if (this.watchLaterVideosMap.has(videoId)) {
           this.deleteVideo(videoId);
           return;
         }
@@ -37,10 +41,15 @@ export default class WatchLaterVideoWrapper {
     );
 
     this.$watchLaterVideoWrapper.addEventListener("click", (event) => {
+      const { videoId } = event.target.parentElement.dataset;
+
+      if (event.target.classList.contains(CLASSNAME.WATCHED_ICON)) {
+        this.moveVideo(videoId);
+      }
+
       if (event.target.classList.contains(CLASSNAME.DELETE_ICON)) {
         // eslint-disable-next-line no-alert
         if (window.confirm("정말 삭제하시겠습니까?")) {
-          const { videoId } = event.target.parentElement.dataset;
           this.deleteVideo(videoId);
         }
       }
@@ -49,29 +58,47 @@ export default class WatchLaterVideoWrapper {
     this.render();
   }
 
+  moveVideo(videoId) {
+    messenger.deliverMessage(MESSAGE.WATCHED_ICON_CLICKED, {
+      videoId,
+      item: this.watchLaterVideoItemsMap.get(videoId),
+    });
+
+    this.watchLaterVideoItemsMap.delete(videoId);
+
+    this.updateLocalStorage();
+
+    this.watchLaterVideosMap.get(videoId).remove();
+    this.watchLaterVideosMap.delete(videoId);
+
+    if (this.watchLaterVideosMap.size === 0) {
+      $.show(this.$noSavedVideoImage);
+    }
+  }
+
   deleteVideo(videoId) {
-    this.savedVideoItemsMap.delete(videoId);
+    this.watchLaterVideoItemsMap.delete(videoId);
 
     this.updateLocalStorage();
 
     messenger.deliverMessage(MESSAGE.VIDEO_SAVED, {
-      savedVideosCount: this.savedVideoItemsMap.size,
+      savedVideosCount: this.watchLaterVideoItemsMap.size,
     });
 
-    this.savedVideosMap.get(videoId).remove();
-    this.savedVideosMap.delete(videoId);
+    this.watchLaterVideosMap.get(videoId).remove();
+    this.watchLaterVideosMap.delete(videoId);
 
-    if (this.savedVideosMap.size === 0) {
+    if (this.watchLaterVideosMap.size === 0) {
       $.show(this.$noSavedVideoImage);
     }
   }
 
   saveVideoItem({ videoId, item }) {
-    this.savedVideoItemsMap.set(videoId, item);
+    this.watchLaterVideoItemsMap.set(videoId, item);
 
-    if (this.savedVideoItemsMap.size > MAX_SAVED_VIDEOS_COUNT) {
-      this.savedVideoItemsMap = new Map(
-        Array.from(this.savedVideoItemsMap).slice(-MAX_SAVED_VIDEOS_COUNT)
+    if (this.watchLaterVideoItemsMap.size > MAX_SAVED_VIDEOS_COUNT) {
+      this.watchLaterVideoItemsMap = new Map(
+        Array.from(this.watchLaterVideoItemsMap).slice(-MAX_SAVED_VIDEOS_COUNT)
       );
       this.$watchLaterVideoWrapper.children[
         this.$watchLaterVideoWrapper.childElementCount - 1
@@ -81,7 +108,7 @@ export default class WatchLaterVideoWrapper {
     this.updateLocalStorage();
 
     messenger.deliverMessage(MESSAGE.VIDEO_SAVED, {
-      savedVideosCount: this.savedVideoItemsMap.size,
+      savedVideosCount: this.watchLaterVideoItemsMap.size,
     });
 
     this.renderSingleVideo(item);
@@ -89,26 +116,26 @@ export default class WatchLaterVideoWrapper {
 
   updateLocalStorage() {
     localStorage.setItem(
-      LOCAL_STORAGE_KEY.SAVED_VIDEO_ITEMS,
-      JSON.stringify(this.savedVideoItemsMap, (key, value) =>
+      LOCAL_STORAGE_KEY.WATCH_LATER_VIDEO_ITEMS,
+      JSON.stringify(this.watchLaterVideoItemsMap, (key, value) =>
         value instanceof Map ? Array.from(value) : value
       )
     );
   }
 
   hideIfVideoIsSaved({ videoId, callback }) {
-    if (this.savedVideoItemsMap.has(videoId)) {
+    if (this.watchLaterVideoItemsMap.has(videoId)) {
       callback();
     }
   }
 
   render() {
-    if (this.savedVideoItemsMap.size === 0) {
+    if (this.watchLaterVideoItemsMap.size === 0) {
       $.show(this.$noSavedVideoImage);
       return;
     }
 
-    this.savedVideoItemsMap.forEach(this.renderSingleVideo.bind(this));
+    this.watchLaterVideoItemsMap.forEach(this.renderSingleVideo.bind(this));
   }
 
   renderSingleVideo(item) {
@@ -123,6 +150,6 @@ export default class WatchLaterVideoWrapper {
     renderWatchLaterVideo($video, item);
 
     const { videoId } = item.id;
-    this.savedVideosMap.set(videoId, $video);
+    this.watchLaterVideosMap.set(videoId, $video);
   }
 }
