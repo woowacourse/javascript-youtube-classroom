@@ -22,8 +22,8 @@ export default class SavedVideosView extends View {
         videoDelete: this.bindDeleteEvent.bind(this),
       };
 
-      Object.entries(e.target.dataset).forEach(([key, value]) => {
-        buttonPack[key](value);
+      Object.entries(e.target.dataset).forEach(([buttonType, videoId]) => {
+        buttonPack[buttonType](videoId);
       });
     });
   }
