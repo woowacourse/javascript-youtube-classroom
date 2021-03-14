@@ -1,7 +1,7 @@
 import formatDate from '../utils/date.js';
 
-function createVideoSnippetTemplate({ id, snippet }, isSaved = false) {
-  return `<article class="clip js-video"
+function createVideoSnippetTemplate({ id, snippet }, buttonListTemplate) {
+  return `<article class="clip js-video mb-8 d-flex flex-col"
             data-video-id=${id.videoId}
             data-title=${encodeURIComponent(snippet.title)}
             data-channel-id=${snippet.channelId}
@@ -17,6 +17,7 @@ function createVideoSnippetTemplate({ id, snippet }, isSaved = false) {
                 frameborder="0"
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                 allowfullscreen
+                loading="lazy"
               ></iframe>
             </div>
             <div class="content-container pt-2 px-1">
@@ -32,42 +33,71 @@ function createVideoSnippetTemplate({ id, snippet }, isSaved = false) {
                 <div class="meta">
                   <p>${formatDate(snippet.publishTime)}</p>
                 </div>
-                <div class="d-flex justify-end">
-                  <button 
-                    class="btn js-save-button" 
-                    ${isSaved ? 'hidden' : ''}
-                    >
-                      ⬇️ 저장
-                  </button>
-                </div>
               </div>
+            </div>
+            <div class="d-flex justify-end mt-auto js-btn-list">
+              ${buttonListTemplate}
             </div>
           </article>`;
 }
 
-function isSavedVideo(item, videoInfos) {
-  return [...videoInfos].some(
-    videoInfo => videoInfo.id.videoId === item.id.videoId
-  );
+// search modal 내 video templates
+function createSaveButtonTemplate(isSaved) {
+  return isSaved
+    ? `<button class="btn js-save-cancel-button"}>저장 취소</button>`
+    : `<button class="btn bg-cyan-100 js-save-button"}>저장</button>`;
 }
 
-function createVideoListTemplate(resultItems = [], videoInfos) {
-  return [...resultItems]
+function isSavedVideo(item, videoInfos) {
+  return videoInfos.some(videoInfo => videoInfo.id.videoId === item.id.videoId);
+}
+
+function createSearchVideoListTemplate(resultItems = [], videoInfos) {
+  return resultItems
     .map(item =>
-      createVideoSnippetTemplate(item, isSavedVideo(item, videoInfos))
+      createVideoSnippetTemplate(
+        item,
+        createSaveButtonTemplate(isSavedVideo(item, videoInfos))
+      )
+    )
+    .join('');
+}
+
+// main page 내 video templates
+function createControlButtonsTemplate(watchType) {
+  return [
+    {
+      content: '✅',
+      className: 'js-watched-button',
+      isChecked: watchType === 'watched',
+    },
+    { content: '👍', className: 'js-like-button', isChecked: false },
+    { content: '🗑️', className: 'js-delete-button', isChecked: false },
+  ]
+    .map(
+      ({ content, className, isChecked }) =>
+        `<span class="${isChecked ? '' : 'opacity-hover'} ml-2 ${className}">
+          ${content}
+        </span>`
     )
     .join('');
 }
 
 function createSavedVideoListTemplate(savedVideoInfos = []) {
-  return [...savedVideoInfos]
-    .map(item => createVideoSnippetTemplate(item, true))
+  return savedVideoInfos
+    .map(item =>
+      createVideoSnippetTemplate(
+        item,
+        createControlButtonsTemplate(item.watchType)
+      )
+    )
     .join('');
 }
 
-/*
- * data-attirbue 로 다 할당
- * 이미 존재하는 속성들을 그대로 활용 (선택자 접근, 문자열 파싱)
- */
+const emptyVideoListTemplate = `<span id="empty-video-list" class="stretch text-center">영상이 없습니다. 😥</span>`;
 
-export { createVideoListTemplate, createSavedVideoListTemplate };
+export {
+  createSearchVideoListTemplate,
+  createSavedVideoListTemplate,
+  emptyVideoListTemplate,
+};

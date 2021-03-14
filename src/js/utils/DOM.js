@@ -1,3 +1,10 @@
 const $ = selector => document.querySelector(selector);
+const $$ = selector => document.querySelectorAll(selector);
 
-export default $;
+const parseHTML = html => {
+  const parser = new DOMParser();
+
+  return parser.parseFromString(html, 'text/html').body.firstElementChild;
+};
+
+export { $, $$, parseHTML };

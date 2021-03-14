@@ -1,7 +1,7 @@
-import $ from '../utils/DOM.js';
+import { $, $$ } from '../utils/DOM.js';
 import { MAX_SAVED_VIDEO_COUNT } from '../constants/classroom.js';
 import createKeywordListTemplate from '../templates/keywordList.js';
-import { createVideoListTemplate } from '../templates/videoList.js';
+import { createSearchVideoListTemplate } from '../templates/videoList.js';
 import createVideoSkeletonTemplate from '../templates/videoSkeleton.js';
 import notFoundTemplate from '../templates/notFound.js';
 
@@ -23,21 +23,49 @@ function renderVideoLoader() {
 
 function renderSearchVideoList(resultItems, videoInfos) {
   $videoSearchResult.innerHTML = resultItems.length
-    ? createVideoListTemplate(resultItems, videoInfos)
+    ? createSearchVideoListTemplate(resultItems, videoInfos)
     : notFoundTemplate;
 }
 
+function removeVideoLoader() {
+  $$('.skeleton').forEach(element => {
+    element.remove();
+  });
+}
+
+function appendVideoLoader() {
+  $videoSearchResult.innerHTML += createVideoSkeletonTemplate();
+}
+
 function appendVideoList(searchResult, videoInfos) {
-  $videoSearchResult.innerHTML += createVideoListTemplate(
+  removeVideoLoader();
+
+  $videoSearchResult.innerHTML += createSearchVideoListTemplate(
     searchResult,
     videoInfos
   );
+}
+
+function toggleSaveButton($saveButton) {
+  if ($saveButton.classList.contains('js-save-button')) {
+    $saveButton.innerText = '저장 취소';
+    $saveButton.classList.remove('js-save-button');
+    $saveButton.classList.remove('bg-cyan-100');
+    $saveButton.classList.add('js-save-cancel-button');
+  } else {
+    $saveButton.innerText = '저장';
+    $saveButton.classList.remove('js-save-cancel-button');
+    $saveButton.classList.add('js-save-button');
+    $saveButton.classList.add('bg-cyan-100');
+  }
 }
 
 export {
   renderSavedVideoCount,
   renderLatestKeywordList,
   renderVideoLoader,
+  toggleSaveButton,
   renderSearchVideoList,
   appendVideoList,
+  appendVideoLoader,
 };

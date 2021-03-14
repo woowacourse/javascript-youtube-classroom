@@ -19,13 +19,12 @@
 
 .modal-inner {
   transition: top 0.25s ease;
-  width: 960px;
-  margin: auto;
+  width: 100%;
+  margin: 40px 80px;
   overflow: auto;
   background: #fff;
   border-radius: 5px;
   position: relative;
-  height: 100%;
 }
 
 .modal-close {
@@ -40,6 +39,10 @@
   padding: 0;
 }
 
+.modal .btn {
+  height: 30px;
+  font-size: 14px;
+}
 svg {
   display: block;
 }

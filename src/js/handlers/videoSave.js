@@ -1,40 +1,63 @@
-import { EXCEED_SAVED_VIDEO_COUNT_MSG } from '../constants/alertMessage.js';
+import MESSAGE from '../constants/message.js';
 import { MAX_SAVED_VIDEO_COUNT } from '../constants/classroom.js';
+import { cancelVideoSave, saveVideo } from '../service.js';
 import videoInfos from '../states/videoInfos.js';
-import { renderSavedVideoList } from '../viewControllers/app.js';
-import { renderSavedVideoCount } from '../viewControllers/searchModal.js';
+import {
+  appendSavedVideo,
+  removeSavedVideo,
+  showSnackBar,
+} from '../viewControllers/app.js';
+import {
+  renderSavedVideoCount,
+  toggleSaveButton,
+} from '../viewControllers/searchModal.js';
+import videoListType from '../states/videoListType.js';
+import { $$ } from '../utils/DOM.js';
 
-function createVideoInfo(videoDataset) {
-  const { videoId, title, channelId, channelTitle, publishTime } = videoDataset;
-
-  return {
-    id: { videoId },
-    snippet: { title, channelId, channelTitle, publishTime },
-    isWatched: false,
-  };
-}
-
-function saveVideo($video) {
-  const videoInfo = createVideoInfo($video.dataset);
-
-  videoInfos.add(videoInfo);
-
-  renderSavedVideoCount(videoInfos.size);
-  renderSavedVideoList(videoInfos.get());
-}
-
-function handleVideoSave({ target }) {
-  if (!target.classList.contains('js-save-button')) return;
-  if (videoInfos.size >= MAX_SAVED_VIDEO_COUNT) {
-    alert(EXCEED_SAVED_VIDEO_COUNT_MSG);
+function handleVideoSave($saveButton) {
+  if (videoInfos.length >= MAX_SAVED_VIDEO_COUNT) {
+    showSnackBar(MESSAGE.SNACKBAR.EXCEED_SAVED_VIDEO_COUNT);
 
     return;
   }
 
-  const $saveButton = target;
-
   saveVideo($saveButton.closest('.js-video'));
-  $saveButton.hidden = true;
+  toggleSaveButton($saveButton);
+  showSnackBar(MESSAGE.SNACKBAR.SAVE_SUCCESS);
+
+  renderSavedVideoCount(videoInfos.length);
+  appendSavedVideo(
+    videoInfos.get()[videoInfos.length - 1],
+    videoListType.get()
+  );
 }
 
-export default handleVideoSave;
+function handleVideoSaveCancel($saveCancelButton) {
+  if (!window.confirm(MESSAGE.CONFIRM.CANCEL_TO_SAVE_VIDEO)) return;
+  cancelVideoSave($saveCancelButton.closest('.js-video'));
+  toggleSaveButton($saveCancelButton);
+  showSnackBar(MESSAGE.SNACKBAR.CANCEL_TO_SAVE);
+
+  const [$targetVideo] = [...$$('#video-list .js-video')].filter(
+    $video =>
+      $video.dataset.videoId ===
+      $saveCancelButton.closest('.js-video').dataset.videoId
+  );
+
+  renderSavedVideoCount(videoInfos.length);
+  removeSavedVideo($targetVideo);
+}
+
+function handleVideoSaveControl({ target }) {
+  if (target.classList.contains('js-save-button')) {
+    handleVideoSave(target);
+
+    return;
+  }
+
+  if (target.classList.contains('js-save-cancel-button')) {
+    handleVideoSaveCancel(target);
+  }
+}
+
+export default handleVideoSaveControl;
