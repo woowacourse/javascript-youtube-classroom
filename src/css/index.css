@@ -170,7 +170,7 @@ input:checked + .slider {
 }
 
 .dark button:hover {
-  background-color: #333333;
+  opacity: 0.8;
 }
 
 .dark .skeleton .image,
