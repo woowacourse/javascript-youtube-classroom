@@ -232,30 +232,27 @@ export default class VideoList extends Component {
 
     const savedVideos = localStorageGetItem(LOCALSTORAGE_KEYS.VIDEOS);
     const newSavedVideos = {};
-    let message = '';
 
     Object.assign(newSavedVideos, savedVideos);
 
     try {
       if (event.target.classList.contains(CLASS_NAMES.CLIP.WATCHED_BUTTON)) {
         this.toggleWatchedVideo(clip, newSavedVideos);
-        message = MESSAGES.ACTION_SUCCESS.STATE_SETTING;
+        showSnackBar(this.$snackbar, MESSAGES.ACTION_SUCCESS.STATE_SETTING);
       } else if (
         event.target.classList.contains(CLASS_NAMES.CLIP.LIKE_BUTTON)
       ) {
         this.addLikeVideo(clip, newSavedVideos);
-        message = MESSAGES.ACTION_SUCCESS.STATE_SETTING;
+        showSnackBar(this.$snackbar, MESSAGES.ACTION_SUCCESS.STATE_SETTING);
       } else if (
         event.target.classList.contains(CLASS_NAMES.CLIP.DELETE_BUTTON)
       ) {
         this.deleteVideo(clip, newSavedVideos);
-        message = MESSAGES.ACTION_SUCCESS.DELETE;
+        showSnackBar(this.$snackbar, MESSAGES.ACTION_SUCCESS.DELETE);
       }
     } catch (error) {
-      message = error.message;
+      showSnackBar(this.$snackbar, error.message);
     }
-
-    showSnackBar(this.$snackbar, message);
   }
 
   bindEvent() {
