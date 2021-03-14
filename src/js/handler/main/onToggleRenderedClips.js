@@ -5,15 +5,12 @@ import {
   LOCAL_STORAGE_VALUE,
 } from '../../utils/constant.js';
 
-const setSelected = (isWatchedButton) => {
-  if (isWatchedButton) {
-    $DOM.NAVIGATOR.WATCHED_BUTTON.classList.add('bg-cyan-100');
-    $DOM.NAVIGATOR.UNWATCHED_BUTTON.classList.remove('bg-cyan-100');
-    return;
-  }
+const setSelected = (selectedButton) => {
+  $DOM.NAVIGATOR.BUTTONS.forEach((button) =>
+    button.classList.remove('bg-cyan-100'),
+  );
 
-  $DOM.NAVIGATOR.UNWATCHED_BUTTON.classList.add('bg-cyan-100');
-  $DOM.NAVIGATOR.WATCHED_BUTTON.classList.remove('bg-cyan-100');
+  selectedButton.classList.add('bg-cyan-100');
 };
 
 export const onToggleRenderedClips = ({ target }) => {
@@ -24,7 +21,7 @@ export const onToggleRenderedClips = ({ target }) => {
   const isWatchedButton = target.dataset.js === 'navigator__watched-button';
   const savePageVideoWrapper = $DOM.SAVE_PAGE.VIDEO_WRAPPER;
 
-  setSelected(isWatchedButton);
+  setSelected(target);
 
   storage.set(
     LOCAL_STORAGE_KEY.CURRENT_TAB,
