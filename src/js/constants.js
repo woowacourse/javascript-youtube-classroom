@@ -43,10 +43,12 @@ const MESSAGE = Object.freeze({
   SAVE_VIDEO_BUTTON_CLICKED: "SAVE_VIDEO_BUTTON_CLICKED",
   VIDEO_SAVED: "VIDEO_SAVED",
   HIDE_IF_VIDEO_IS_SAVED: "HIDE_IF_VIDEO_IS_SAVED",
+  WATCHED_ICON_CLICKED: "WATCHED_ICON_CLICKED",
 });
 
 const LOCAL_STORAGE_KEY = Object.freeze({
-  SAVED_VIDEO_ITEMS: "savedVideoItems",
+  WATCH_LATER_VIDEO_ITEMS: "watchLaterVideoItems",
+  HISTORY_VIDEO_ITEMS: "historyVideoItems",
   SAVED_VIDEOS_COUNT: "savedVideosCount",
   KEYWORD_HISTORY: "keywordHistory",
   QUERY: "query",
