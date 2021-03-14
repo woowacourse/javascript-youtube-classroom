@@ -18,13 +18,13 @@ export default class YoutubeSearchManager extends Observer {
     this.keyword = '';
     this.selector = SELECTORS.CLASS.YOUTUBE_SEARCH_FORM_CONTAINER;
 
-    this.setScrollObserver();
+    this.setScrollObservers();
   }
 
-  setScrollObserver() {
+  setScrollObservers() {
     const options = {
       root: $(SELECTORS.CLASS.YOUTUBE_SEARCH_RESULT_CONTAINER),
-      threshold: 1,
+      threshold: 0.5,
     };
 
     this.scrollObserver = new IntersectionObserver((entries) => {
@@ -34,6 +34,15 @@ export default class YoutubeSearchManager extends Observer {
         }
       });
     }, options);
+
+    this.lazyLoadingObserver = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          const targetElement = entry.target;
+          targetElement.src = targetElement.dataset.videoUrl;
+        }
+      });
+    });
   }
 
   async handleAdditionalSearch() {
@@ -43,6 +52,9 @@ export default class YoutubeSearchManager extends Observer {
 
       const template = this.getResultTemplate(response.items);
       this.renderResults(template);
+      $all('iframe').forEach(($iframe) => {
+        this.lazyLoadingObserver.observe($iframe);
+      });
     } catch (error) {
       showSnackbar(error.message);
     }
@@ -80,7 +92,8 @@ export default class YoutubeSearchManager extends Observer {
   }
 
   renderResults(template) {
-    $(SELECTORS.CLASS.SENTINEL).insertAdjacentHTML('beforebegin', template);
+    // $(SELECTORS.CLASS.SENTINEL).insertAdjacentHTML('beforebegin', template);
+    $(SELECTORS.CLASS.YOUTUBE_SEARCH_RESULT).insertAdjacentHTML('beforeend', template);
   }
 
   renderNoResult() {
@@ -138,6 +151,9 @@ export default class YoutubeSearchManager extends Observer {
       this.renderResults(template);
 
       this.scrollObserver.observe($(SELECTORS.CLASS.SENTINEL));
+      $all('iframe').forEach(($iframe) => {
+        this.lazyLoadingObserver.observe($iframe);
+      });
     } catch (error) {
       console.error(error);
       this.renderEmptySearchResult();

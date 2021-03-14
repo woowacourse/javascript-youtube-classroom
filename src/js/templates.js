@@ -10,10 +10,10 @@ export const getVideoTemplate = (data, options) => {
         <iframe
           width="100%"
           height="118"
-          src="https://www.youtube.com/embed/${id}"
           frameborder="0"
           allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-          allowfullscreen>
+          allowfullscreen
+          data-video-url="https://www.youtube.com/embed/${id}">
         </iframe>
       </div>
       <div class="content-container pt-2 px-1 d-flex flex-col justify-between flex-1">
@@ -84,8 +84,8 @@ export const getNoResultTemplate = () => {
 export const getEmptySearchResultTemplate = () => {
   return `
     <div class="youtube-search-result video-wrapper">
-      <div class="sentinel"></div>
     </div>
+    <div class="sentinel"></div>
   `;
 };
 
