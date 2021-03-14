@@ -14,4 +14,6 @@ const MESSAGE = {
   },
 };
 
+Object.freeze(MESSAGE);
+
 export default MESSAGE;
