@@ -25,7 +25,7 @@ const YMDtemplate = (time) => {
   return `<p>${year}년 ${month}월 ${day}일</p>`;
 };
 
-export const clipTemplate = (video, index, type) => {
+export const clipTemplate = (video, index, type = {}) => {
   const { isModal } = type;
 
   return `

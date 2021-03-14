@@ -20,8 +20,6 @@ export const onSaveClip = ({ target }) => {
   const recentSearchResults =
     storage.get(LOCAL_STORAGE_KEY.RECENT_SEARCH_RESULTS) ?? [];
   const savedClip = recentSearchResults[clipIndex];
-  // const currentTab =
-  //   storage.get(LOCAL_STORAGE_KEY.CURRENT_TAB) ?? LOCAL_STORAGE_VALUE.UNWATCHED;
   const savedClips = storage.get(LOCAL_STORAGE_KEY.SAVED_CLIPS) ?? [];
   const existClips = savedClips.filter((savedClip) => !savedClip.isDeleted);
 

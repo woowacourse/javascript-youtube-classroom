@@ -7,22 +7,20 @@ import $DOM from '../../utils/DOM.js';
 const addWatchedClip = (targetClip) => {
   targetClip.classList.add('watched-clip');
   targetClip.classList.remove('unwatched-clip');
-
-  showSnackbar(MESSAGE.NOTIFY.CHECK_UNWACTHED_CLIP);
+  showSnackbar(MESSAGE.NOTIFY.CHECK_WACTHED_CLIP);
 };
 
 const removeWatchedClip = (targetClip) => {
   targetClip.classList.add('unwatched-clip');
   targetClip.classList.remove('watched-clip');
-
-  showSnackbar(MESSAGE.NOTIFY.CHECK_WACTHED_CLIP);
+  showSnackbar(MESSAGE.NOTIFY.CHECK_UNWACTHED_CLIP);
 };
 
 const watchedClip = (target) => {
   const targetClip = target.closest('[data-js="saved-page__clip"]');
   const targetClipIndex = targetClip.dataset.clipIndex;
   const savedClips = storage.get(LOCAL_STORAGE_KEY.SAVED_CLIPS);
-  const isWatched = savedClips[targetClipIndex].isWatched ?? true;
+  const isWatched = savedClips[targetClipIndex].isWatched;
 
   savedClips[targetClipIndex].isWatched = !isWatched;
   storage.set(LOCAL_STORAGE_KEY.SAVED_CLIPS, savedClips);

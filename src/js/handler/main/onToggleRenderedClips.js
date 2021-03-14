@@ -3,8 +3,8 @@ import storage from '../../utils/localStorage.js';
 import { LOCAL_STORAGE_KEY } from '../../utils/constant.js';
 
 const sections = {
-  'navigator__unwatched-button': 'watched-section',
-  'navigator__watched-button': 'unwatched-section',
+  'navigator__unwatched-button': 'unwatched-section',
+  'navigator__watched-button': 'watched-section',
   'navigator__like-button': 'like-section',
 };
 
