@@ -33,3 +33,7 @@ a {
 #search-result__intersector {
   height: 30px;
 }
+
+.btn.clicked {
+  background-color: rgb(179, 234, 242);
+}

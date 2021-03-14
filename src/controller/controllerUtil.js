@@ -2,7 +2,8 @@ import view from '../view/view.js';
 import prevSearchResult from '../storage/prevSearchResult.js';
 import searchQuery from '../storage/searchQuery.js';
 import videoToWatch from '../storage/videoToWatch.js';
-import { SETTINGS } from '../constants.js';
+import { SELECTOR_CLASS, SETTINGS, STYLE_CLASS } from '../constants.js';
+import { $ } from '../utils/querySelector.js';
 
 const controllerUtil = {
   setObserver($element, callback) {
@@ -67,6 +68,13 @@ const controllerUtil = {
     const processedVideos = controllerUtil.getProcessedVideos(videos);
     view.insertVideoItems(processedVideos);
     view.showSearchResultIntersector();
+  },
+
+  highlightNavButton($element) {
+    $(`.${SELECTOR_CLASS.NAV_BUTTON}`).forEach((button) => {
+      button.classList.remove(STYLE_CLASS.CLICKED);
+    });
+    $element.classList.add(STYLE_CLASS.CLICKED);
   },
 
   isVideoToWatch(videoId) {

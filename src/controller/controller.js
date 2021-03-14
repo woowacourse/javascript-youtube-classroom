@@ -1,4 +1,5 @@
 import {
+  $watchingVideoButton,
   $searchButton,
   $modalCloseButton,
   $searchForm,
@@ -25,6 +26,7 @@ async function onAdditionalVideosLoad() {
 }
 
 function onModalOpen() {
+  controllerUtil.highlightNavButton($searchButton);
   const savedVideoCount = videoToWatch.getVideos().length;
   const videos = prevSearchResult.getSearchedVideos();
   view.renderSavedVideoCount(savedVideoCount);
@@ -41,6 +43,7 @@ function onModalOpen() {
 }
 
 function onModalClose() {
+  controllerUtil.highlightNavButton($watchingVideoButton);
   view.closeModal();
 }
 
@@ -95,14 +98,15 @@ const controller = {
       onAdditionalVideosLoad
     );
     $searchResultVideoWrapper.addEventListener('click', onSelectedVideoSave);
-    $searchButton.addEventListener('click', onModalOpen);
     $modalCloseButton.addEventListener('click', onModalClose);
     $searchForm.addEventListener('submit', onVideoSearch);
     $modal.addEventListener('click', (event) => {
       if (event.target.id === SELECTOR_ID.MODAL) {
         onModalClose();
       }
-    })
+    });
+
+    $searchButton.addEventListener('click', onModalOpen);
   },
 
   initSearchQueries() {

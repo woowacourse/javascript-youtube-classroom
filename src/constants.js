@@ -1,5 +1,4 @@
 export const SELECTOR_ID = Object.freeze({
-  SEARCH_BUTTON: 'search-button',
   SEARCH_FORM: 'search-form',
   SEARCH_FORM_INPUT: 'search-form__input',
   SEARCH_FORM_SUBMIT: 'search-form__submit',
@@ -8,9 +7,13 @@ export const SELECTOR_ID = Object.freeze({
   SEARCH_RESULT_VIDEO_WRAPPER: 'search-result__video-wrapper',
   VIDEO_WRAPPER: 'video-wrapper',
   NOT_FOUND_CONTENT: 'not-found-content',
-  SERACH_RESULT_INTERSECTOR: 'search-result__intersector',
+  SEARCH_RESULT_INTERSECTOR: 'search-result__intersector',
   SEARCH_QUERIES: 'search-queries',
   SAVED_VIDEO_COUNT: 'saved-video-count',
+
+  WATCHING_VIDEO_BUTTON: 'watching-video-button',
+  WATCHED_VIDEO_BUTTON: 'watched-video-button',
+  SEARCH_BUTTON: 'search-button',
 });
 
 export const SELECTOR_CLASS = Object.freeze({
@@ -18,11 +21,14 @@ export const SELECTOR_CLASS = Object.freeze({
   SKELETON: 'skeleton',
   CLIP_SAVE_BUTTON: 'clip__save-button',
   SEARCH_QUERIES_CHIP: 'search-queries__chip',
+  NAV_BUTTON: 'js-nav__button',
 });
 
 export const STYLE_CLASS = Object.freeze({
   OPEN: 'open',
   CLOSE: 'close',
+
+  CLICKED: 'clicked',
 });
 
 export const YOUTUBE = Object.freeze({
