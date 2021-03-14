@@ -8,8 +8,6 @@
   },
   "editor.detectIndentation": true,
   "liveServer.settings.donotShowInfoMsg": true,
-  "liveshare.authenticationProvider": "GitHub",
   "liveServer.settings.CustomBrowser": "chrome:PrivateMode",
-  "files.insertFinalNewline": true,
-  "prettier.packageManager": "yarn"
+  "files.insertFinalNewline": true
 }
