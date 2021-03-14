@@ -1,6 +1,7 @@
 #snackbar-container {
-  display: table-cell;
-  vertical-align: bottom;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
   position: fixed;
   z-index: 100;
   left: 50%;
@@ -19,7 +20,7 @@
 }
 
 .snackbar.show {
-  visibility: visible !important; /* Show the snackbar */
+  visibility: visible;
   -webkit-animation: fadein 0.5s, fadeout 0.5s 2.7s;
   animation: fadein 0.5s, fadeout 0.5s 2.7s;
 }
