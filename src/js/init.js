@@ -27,7 +27,7 @@ async function initView() {
   await initState();
 
   renderSavedVideoList(videoInfos.get(), videoListType.get());
-  renderSavedVideoCount(videoInfos.size);
+  renderSavedVideoCount(videoInfos.length);
   renderLatestKeywordList(latestKeywords.get());
 }
 

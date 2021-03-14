@@ -11,7 +11,7 @@ function handleWatchedButton($target) {
   showSnackBar(MESSAGE.SNACKBAR.MOVE_SUCCESS);
 
   renderSavedVideoList(videoInfos.get(), videoListType.get());
-  renderSavedVideoCount(videoInfos.size);
+  renderSavedVideoCount(videoInfos.length);
 }
 
 function handleDeleteButton($target) {
@@ -23,7 +23,7 @@ function handleDeleteButton($target) {
   showSnackBar(MESSAGE.SNACKBAR.DELETE_SUCCESS);
 
   renderSavedVideoList(videoInfos.get(), videoListType.get());
-  renderSavedVideoCount(videoInfos.size);
+  renderSavedVideoCount(videoInfos.length);
 }
 
 function handleButtonsControl({ target }) {

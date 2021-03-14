@@ -49,13 +49,11 @@ function createSaveButtonTemplate(isSaved) {
 }
 
 function isSavedVideo(item, videoInfos) {
-  return [...videoInfos].some(
-    videoInfo => videoInfo.id.videoId === item.id.videoId
-  );
+  return videoInfos.some(videoInfo => videoInfo.id.videoId === item.id.videoId);
 }
 
 function createSearchVideoListTemplate(resultItems = [], videoInfos) {
-  return [...resultItems]
+  return resultItems
     .map(item =>
       createVideoSnippetTemplate(
         item,
@@ -86,7 +84,7 @@ function createControlButtonsTemplate(watchType) {
 }
 
 function createSavedVideoListTemplate(savedVideoInfos = []) {
-  return [...savedVideoInfos]
+  return savedVideoInfos
     .map(item =>
       createVideoSnippetTemplate(
         item,

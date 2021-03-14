@@ -10,7 +10,7 @@ import {
 import videoListType from '../states/videoListType.js';
 
 function handleVideoSave($saveButton) {
-  if (videoInfos.size >= MAX_SAVED_VIDEO_COUNT) {
+  if (videoInfos.length >= MAX_SAVED_VIDEO_COUNT) {
     showSnackBar(MESSAGE.SNACKBAR.EXCEED_SAVED_VIDEO_COUNT);
 
     return;
@@ -20,7 +20,7 @@ function handleVideoSave($saveButton) {
   toggleSaveButton($saveButton);
   showSnackBar(MESSAGE.SNACKBAR.SAVE_SUCCESS);
 
-  renderSavedVideoCount(videoInfos.size);
+  renderSavedVideoCount(videoInfos.length);
   renderSavedVideoList(videoInfos.get(), videoListType.get());
 }
 
@@ -32,7 +32,7 @@ function handleVideoSaveCancel($saveCancelButton) {
   showSnackBar(MESSAGE.SNACKBAR.CANCEL_TO_SAVE);
 
   renderSavedVideoList(videoInfos.get(), videoListType.get());
-  renderSavedVideoCount(videoInfos.size);
+  renderSavedVideoCount(videoInfos.length);
 }
 
 function handleVideoSaveControl({ target }) {
