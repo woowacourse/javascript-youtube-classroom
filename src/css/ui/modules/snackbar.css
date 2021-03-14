@@ -17,7 +17,7 @@
 }
 
 .show {
-  visibility: visible !important;
+  visibility: visible;
   -webkit-animation: fadein 0.5s, fadeout 0.5s 2.7s;
   animation: fadein 0.5s, fadeout 0.5s 2.7s;
 }
