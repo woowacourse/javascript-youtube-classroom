@@ -22,7 +22,13 @@ export default class WatchLaterVideoWrapper {
 
     messenger.addMessageListener(
       MESSAGE.SAVE_VIDEO_BUTTON_CLICKED,
-      this.saveVideoItem.bind(this)
+      ({ videoId, item }) => {
+        if (this.savedVideosMap.has(videoId)) {
+          this.deleteVideo(videoId);
+          return;
+        }
+        this.saveVideoItem({ videoId, item });
+      }
     );
 
     messenger.addMessageListener(
@@ -47,6 +53,10 @@ export default class WatchLaterVideoWrapper {
     this.savedVideoItemsMap.delete(videoId);
 
     this.updateLocalStorage();
+
+    messenger.deliverMessage(MESSAGE.VIDEO_SAVED, {
+      savedVideosCount: this.savedVideoItemsMap.size,
+    });
 
     this.savedVideosMap.get(videoId).remove();
     this.savedVideosMap.delete(videoId);

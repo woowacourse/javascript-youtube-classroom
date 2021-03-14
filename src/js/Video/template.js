@@ -30,8 +30,8 @@ const GENERATE_TEMPLATE = (buttonTemplate) => `
 </article>`;
 
 const SAVED_VIDEO_BUTTON_TEMPLATE = `
-<div class="d-flex justify-end --hidden ${CLASSNAME.SAVE_VIDEO_BUTTON_WRAPPER}">
-  <button class="btn ${CLASSNAME.SAVE_VIDEO_BUTTON}">⬇️ 저장</button> 
+<div class="d-flex justify-end ${CLASSNAME.SAVE_VIDEO_BUTTON_WRAPPER}">
+  <button class="btn ${CLASSNAME.SAVE_VIDEO_BUTTON}">저장</button> 
 </div>
 `;
 
