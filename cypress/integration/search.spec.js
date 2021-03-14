@@ -113,7 +113,7 @@ describe("유투브 검색 API를 이용하여 영상들을 검색할 수 있다
         });
     });
 
-    it("최초 검색결과는 10개까지만 보여준다. 더 많은 데이터는 스크롤을 내릴 때 추가로 10개씩 불러온다", () => {
+    it("최초 검색결과는 10개까지만 보여준다. 더 많은 데이터는 스크롤을 내릴 때 추가로 최대 10개씩 불러온다", () => {
       const keyword = "주모";
 
       cy.get(`.${CLASSNAME.SEARCH_FORM_INPUT}`).type(keyword);
@@ -126,12 +126,14 @@ describe("유투브 검색 API를 이용하여 영상들을 검색할 수 있다
 
       cy.get(`.${CLASSNAME.SEARCH_VIDEO_WRAPPER}`)
         .children("article.clip:last-child")
+        .as("lastVideo")
         .scrollIntoView();
       cy.wait("@searchFromScroll");
 
-      cy.get(`.${CLASSNAME.SEARCH_VIDEO_WRAPPER}`)
-        .children()
-        .should("have.length", MAX_RESULTS_COUNT * 2);
+      cy.get("@lastVideo")
+        .nextAll("article.clip")
+        .its("length")
+        .should("be.within", 0, MAX_RESULTS_COUNT);
     });
 
     it("검색 직후 skeleton UI가 나타나고, 데이터 로드된 후 skeleton UI가 없어진다.", () => {
