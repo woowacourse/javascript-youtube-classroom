@@ -1,54 +1,118 @@
 import { ERROR_MESSAGE } from '../../src/js/constants/constant.js';
-
-describe('saved-video-ui', () => {
+describe('like-button-ui', () => {
   before(() => {
     cy.visit('http://127.0.0.1:5502/');
   });
 
-  it('사이트에 접속했을때, 비디오 목록에 "저장된 영상이 없습니다. 볼 영상을 저장해주세요" 라고 표시해줘야 한다', () => {
-    cy.get('#saved-video-wrapper #saved-not-found').should('exist');
-  });
+  //Given When Then (주어진 상황에서 ~~ 한 후에 ~~ 해야한다.)
 
-  it('동영상 검색, 첫번째 영상 저장버튼 클릭, 사이트 새로고침시, 저장한 영상 목록의 길이가 1이여야 한다.', () => {
+  it('검색 모달창을 열고, 검색창에 검색입력한 후에 10개의 동영상 저장하고 모달을 닫는다.', () => {
     cy.get('#search-modal-button').click();
     cy.get('#search-youtube-input').type('우테코');
     cy.get('#search-youtube-button').click();
-    cy.get('.js-save-button').first().click();
-    cy.get('#saved-video-wrapper article').should('have.length', '1');
+    for (let i = 0; i < 10; i++) {
+      cy.get('.js-save-button').eq(i).click();
+    }
+    cy.get('.modal-close').first().click();
   });
 
-  it('저장한 영상의 "본 영상" 버튼을 클릭, "선택한 영상을 본 영상 목록에 저장했습니다" 라는 스낵바 div 3초간 보여진다.', () => {
-    cy.get('.video-info-buttons .watched').first().click();
+  it('다시 돌아온 화면에서 "좋아요"를 누른 후, "좋아요 한 비디오 버튼"을 클릭하면, 해당 영상이 보인다.', () => {
+    cy.get('.video-info-buttons .thumbs-up').first().click();
     cy.get('#snackbar')
       .should('have.class', 'show')
-      .and('have.text', '선택한 영상을 본 영상 목록에 저장했습니다.');
-    cy.wait(3000);
-    cy.get('#snackbar').should('not.have.class', 'show');
+      .and('have.text', '선택한 영상을 좋아요 했습니다.');
+    cy.get('#like-video-button').click();
+    cy.get('#like-video-button').should('have.length', '1');
   });
 
-  it('본 영상 으로 영상 이동하면, "볼 영상 목록" 버튼 클릭하면 해당 영상 안보이고, "본 영상 목록" 버튼 클릭하면, 해당 영상이 보인다.', () => {
-    cy.get('#towatch-videos-button').click();
-    cy.get('#saved-video-wrapper article').should('have.length', '0');
-    cy.get('#watched-videos-button').click();
-    cy.get('#saved-video-wrapper article').should('have.length', '1');
-  });
-
-  it('저장한 영상의 "삭제" 버튼 클릭, "정말로 삭제하시겠습니까?" confirm 창 보여진다', () => {
-    cy.window().then(window => cy.stub(window, 'confirm').as('confirm'));
-    cy.get('.video-info-buttons .delete').first().click();
-    cy.get('@confirm').should('be.calledWith', '정말로 삭제하시겠습니까?');
-  });
-
-  it('저장한 영상 삭제 확인 누르면, "영상이 삭제되었습니다" 라는 스낵바 div가 3초간 보여지고, 저장한 영상 목록의 길이가 0이여야 한다.', () => {
-    cy.get('.video-info-buttons .delete').first().click();
+  it('좋아요 버튼을 다시 클릭하면, 좋아요 버튼이 해지된다.', () => {
+    cy.get('.video-info-buttons .thumbs-up').first().click();
     cy.get('#snackbar')
       .should('have.class', 'show')
-      .and('have.text', '영상이 삭제되었습니다.');
-    cy.wait(3000);
-    cy.get('#snackbar').should('not.have.class', 'show');
-    cy.get('#saved-video-wrapper article').should('have.length', '0');
+      .and('have.text', '선택한 영상을 좋아요 해지 처리했습니다.');
+    cy.get('#like-video-button').click();
+    cy.get('#like-video-button').should('have.length', '0');
+  });
+
+  it('유저가 가로 길이를 줄이면 그에 맞게 페이지에 보이는 video의 개수가 줄어든다.', () => {
+    let resizeEventFired = false;
+    cy.window().then(win => {
+      win.addEventListener('resize', () => {
+        resizeEventFired = true;
+      });
+    });
+
+    cy.viewport(960, 500);
+    cy.wrap().should(() => {
+      expect(resizeEventFired).to.eq(true);
+    });
+
+    cy.viewport(960, 500);
+    cy.wrap().should(() => {
+      expect(resizeEventFired).to.eq(true);
+    });
+
+    cy.viewport(600, 500);
+    cy.wrap().should(() => {
+      expect(resizeEventFired).to.eq(true);
+    });
+
+    cy.viewport(400, 500);
+    cy.wrap().should(() => {
+      expect(resizeEventFired).to.eq(true);
+    });
   });
 });
+
+// describe('saved-video-ui', () => {
+//   before(() => {
+//     cy.visit('http://127.0.0.1:5502/');
+//   });
+
+//   it('사이트에 접속했을때, 비디오 목록에 "저장된 영상이 없습니다. 볼 영상을 저장해주세요" 라고 표시해줘야 한다', () => {
+//     cy.get('#saved-video-wrapper #saved-not-found').should('exist');
+//   });
+
+//   it('동영상 검색, 첫번째 영상 저장버튼 클릭, 사이트 새로고침시, 저장한 영상 목록의 길이가 1이여야 한다.', () => {
+//     cy.get('#search-modal-button').click();
+//     cy.get('#search-youtube-input').type('우테코');
+//     cy.get('#search-youtube-button').click();
+//     cy.get('.js-save-button').first().click();
+//     cy.get('#saved-video-wrapper article').should('have.length', '1');
+//   });
+
+//   it('저장한 영상의 "본 영상" 버튼을 클릭, "선택한 영상을 본 영상 목록에 저장했습니다" 라는 스낵바 div 3초간 보여진다.', () => {
+//     cy.get('.video-info-buttons .watched').first().click();
+//     cy.get('#snackbar')
+//       .should('have.class', 'show')
+//       .and('have.text', '선택한 영상을 본 영상 목록에 저장했습니다.');
+//     cy.wait(3000);
+//     cy.get('#snackbar').should('not.have.class', 'show');
+//   });
+
+//   it('본 영상 으로 영상 이동하면, "볼 영상 목록" 버튼 클릭하면 해당 영상 안보이고, "본 영상 목록" 버튼 클릭하면, 해당 영상이 보인다.', () => {
+//     cy.get('#towatch-videos-button').click();
+//     cy.get('#saved-video-wrapper article').should('have.length', '0');
+//     cy.get('#watched-videos-button').click();
+//     cy.get('#saved-video-wrapper article').should('have.length', '1');
+//   });
+
+//   it('저장한 영상의 "삭제" 버튼 클릭, "정말로 삭제하시겠습니까?" confirm 창 보여진다', () => {
+//     cy.window().then(window => cy.stub(window, 'confirm').as('confirm'));
+//     cy.get('.video-info-buttons .delete').first().click();
+//     cy.get('@confirm').should('be.calledWith', '정말로 삭제하시겠습니까?');
+//   });
+
+//   it('저장한 영상 삭제 확인 누르면, "영상이 삭제되었습니다" 라는 스낵바 div가 3초간 보여지고, 저장한 영상 목록의 길이가 0이여야 한다.', () => {
+//     cy.get('.video-info-buttons .delete').first().click();
+//     cy.get('#snackbar')
+//       .should('have.class', 'show')
+//       .and('have.text', '영상이 삭제되었습니다.');
+//     cy.wait(3000);
+//     cy.get('#snackbar').should('not.have.class', 'show');
+//     cy.get('#saved-video-wrapper article').should('have.length', '0');
+//   });
+// });
 
 // context('search-ui', () => {
 //   beforeEach(() => {
