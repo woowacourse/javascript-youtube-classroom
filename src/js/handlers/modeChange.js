@@ -16,14 +16,15 @@ function changeMode(type) {
 }
 
 function handleModeChange({ target }) {
-  if (target.id === 'to-watch-video-display-button') {
+  if (target.closest('#to-watch-video-display-button')) {
     changeMode(TO_WATCH_TYPE);
     return;
   }
-  if (target.id === 'watched-video-display-button') {
+  if (target.closest('#watched-video-display-button')) {
     changeMode(WATCHED_TYPE);
+    return;
   }
-  if (target.id === 'liked-video-display-button') {
+  if (target.closest('#liked-video-display-button')) {
     changeMode(LIKED_TYPE);
   }
 }
