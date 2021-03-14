@@ -22,8 +22,8 @@ export default class BasicView {
     $element.classList.remove('removed');
   }
 
-  showElementBySelector(selector) {
-    $(selector).classList.remove('removed');
+  showElementBySelector(selectorString) {
+    $(selectorString).classList.remove('removed');
   }
 
   hideElement($element) {
@@ -34,8 +34,8 @@ export default class BasicView {
     $target.removeChild($element);
   }
 
-  hideElementBySelector(selector) {
-    const target = $(selector);
+  hideElementBySelector(selectorString) {
+    const target = $(selectorString);
     if (Array.isArray(target)) {
       target.forEach(item => {
         item.classList.add('removed');
