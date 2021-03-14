@@ -14,7 +14,6 @@ const buttonTemplate = (index, type) => {
     <div class="button-container" data-js="saved-clip-button-container">
       <button class="opacity-hover" data-js="saved-clip-button-container__check">✅</button>
       <button class="opacity-hover" data-js="saved-clip-button-container__like">👍</button>
-      <button class="opacity-hover" data-js="saved-clip-button-container__comment">💬</button>
       <button class="opacity-hover" data-js="saved-clip-button-container__delete">🗑️</button>
     </div>
   `;
@@ -26,13 +25,13 @@ const YMDtemplate = (time) => {
   return `<p>${year}년 ${month}월 ${day}일</p>`;
 };
 
-export const clipTemplate = (video, index, type) => {
-  const { isModal, currentTab } = type;
+export const clipTemplate = (video, index, type = {}) => {
+  const { isModal } = type;
 
   return `
-      <article class="clip ${
-        currentTab === LOCAL_STORAGE_VALUE.WATCHED ? 'd-none' : ''
-      } ${video.isWatched ? 'watched-clip' : 'unwatched-clip'}
+      <article class="clip  ${
+        video.isWatched ? 'watched-clip' : 'unwatched-clip'
+      }${video.isLiked ? 'like-clip' : ''}
         " 
         data-js=${isModal ? 'youtube-search-modal__clip' : 'saved-page__clip'}
         data-clip-index=${index}
@@ -43,6 +42,7 @@ export const clipTemplate = (video, index, type) => {
             height="118"
             src=https://www.youtube.com/embed/${video.id.videoId}
             frameborder="0"
+            loading="lazy"
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
             allowfullscreen
           ></iframe>

@@ -6,6 +6,15 @@
   display: none;
 }
 
+.like-section > .watched-clip,
+.like-section > .unwatched-clip {
+  display: none;
+}
+
+.like-section > .like-clip {
+  display: block;
+}
+
 .deleted-clip {
   display: none;
 }

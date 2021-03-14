@@ -1,11 +1,13 @@
-import { $ } from './querySelector.js';
+import { $, $$ } from './querySelector.js';
 
 export default {
   NAVIGATOR: {
     CONTAINER: $('[data-js="navigator"]'),
     WATCHED_BUTTON: $('[data-js="navigator__watched-button"]'),
     UNWATCHED_BUTTON: $('[data-js="navigator__unwatched-button"]'),
+    LIKE_BUTTON: $('[data-js="navigator__like-button"]'),
     SEARCH_BUTTON: $('[data-js="navigator__search-button"]'),
+    BUTTONS: $$('[data-js="navigator"] > .btn'),
   },
   SEARCH_MODAL: {
     CONTAINER: $('[data-js="youtube-search-modal"]'),

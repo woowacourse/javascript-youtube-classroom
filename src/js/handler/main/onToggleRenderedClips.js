@@ -1,43 +1,35 @@
 import $DOM from '../../utils/DOM.js';
 import storage from '../../utils/localStorage.js';
-import {
-  LOCAL_STORAGE_KEY,
-  LOCAL_STORAGE_VALUE,
-} from '../../utils/constant.js';
+import { LOCAL_STORAGE_KEY } from '../../utils/constant.js';
 
-const setSelected = (isWatchedButton) => {
-  if (isWatchedButton) {
-    $DOM.NAVIGATOR.WATCHED_BUTTON.classList.add('bg-cyan-100');
-    $DOM.NAVIGATOR.UNWATCHED_BUTTON.classList.remove('bg-cyan-100');
-    return;
-  }
+const sections = {
+  'navigator__unwatched-button': 'unwatched-section',
+  'navigator__watched-button': 'watched-section',
+  'navigator__like-button': 'like-section',
+};
 
-  $DOM.NAVIGATOR.UNWATCHED_BUTTON.classList.add('bg-cyan-100');
-  $DOM.NAVIGATOR.WATCHED_BUTTON.classList.remove('bg-cyan-100');
+const setSelected = (selectedButton) => {
+  $DOM.NAVIGATOR.BUTTONS.forEach((button) =>
+    button.classList.remove('bg-cyan-100'),
+  );
+
+  selectedButton.classList.add('bg-cyan-100');
+};
+
+const setSection = (selected) => {
+  const savePageVideoWrapper = $DOM.SAVE_PAGE.VIDEO_WRAPPER;
+  savePageVideoWrapper.classList.remove('watched-section');
+  savePageVideoWrapper.classList.remove('unwatched-section');
+  savePageVideoWrapper.classList.remove('like-section');
+
+  savePageVideoWrapper.classList.add(sections[selected.dataset.js]);
 };
 
 export const onToggleRenderedClips = ({ target }) => {
-  if (target.dataset.js === 'navigator__search-button') {
+  if (!sections.hasOwnProperty(target.dataset.js)) {
     return;
   }
 
-  const isWatchedButton = target.dataset.js === 'navigator__watched-button';
-  const savePageVideoWrapper = $DOM.SAVE_PAGE.VIDEO_WRAPPER;
-
-  setSelected(isWatchedButton);
-
-  storage.set(
-    LOCAL_STORAGE_KEY.CURRENT_TAB,
-    isWatchedButton
-      ? LOCAL_STORAGE_VALUE.WATCHED
-      : LOCAL_STORAGE_VALUE.UNWATCHED,
-  );
-
-  if (isWatchedButton) {
-    savePageVideoWrapper.classList.add('watched-section');
-    savePageVideoWrapper.classList.remove('unwatched-section');
-    return;
-  }
-  savePageVideoWrapper.classList.add('unwatched-section');
-  savePageVideoWrapper.classList.remove('watched-section');
+  setSelected(target);
+  setSection(target);
 };

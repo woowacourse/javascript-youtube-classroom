@@ -14,6 +14,8 @@ export const MESSAGE = {
     DELETE_CLIP: '🗑️ 선택하신 클립을 삭제했습니다 🗑️',
     CHECK_WACTHED_CLIP: '✅ 선택하신 클립을 본 영상으로 이동시켰습니다 ✅',
     CHECK_UNWACTHED_CLIP: '☑️ 선택하신 클립을 볼 영상으로 이동시켰습니다 ☑️',
+    LIKE_CLIP: '👍 선택하신 클립을 좋아요 표시한 영상에 추가했습니다 👍',
+    UNLIKE_CLIP: '👎 선택하신 클립을 좋아요 표시한 영상에서 제외했습니다 👎',
     SAVE_CLIP: '💾 선택하신 클립을 저장했습니다 💾',
   },
   ERROR: {
@@ -31,7 +33,6 @@ export const LOCAL_STORAGE_KEY = {
   NEXT_PAGE_TOKEN: 'nextPageToken',
   SAVED_CLIPS: 'savedClips',
   RECENT_SEARCH_RESULTS: 'recentSearchResults',
-  CURRENT_TAB: 'currentTab',
 };
 
 export const LOCAL_STORAGE_VALUE = {
