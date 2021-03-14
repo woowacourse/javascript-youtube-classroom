@@ -115,7 +115,7 @@ youtubeCard.css 파일에 있는 .video-wrapper의 css 속성 중 grid-template-
   - [x] 👍 좋아요 버튼을 다시 클릭한 경우, localStroge의 likedVideoIds 배열에서 해당 동영상의 id를 삭제한다.
   - [x] 👍 좋아요 버튼을 다시 클릭한 경우, 좋아요 메뉴 탭에서 해당 동영상을 삭제한다.  
 - [x] 스크롤 페이징 방식을 이용해서 Lazy loading을 개선한다.
-- [ ] 반응형 웹: 유저가 사용하는 디바이스의 가로 길이에 따라 검색결과의 row 당 column 개수를 변경한다.
+- [x] 반응형 웹: 유저가 사용하는 디바이스의 가로 길이에 따라 검색결과의 row 당 column 개수와 탭 버튼의 폰트 크기를 변경한다.
 
 ### 👾 TODO(TEST) - step3
 - [x] 좋아요 버튼을 누르면 해당 탭이 선택되어 하이라이트된다.
