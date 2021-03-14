@@ -68,6 +68,7 @@ class StorageModel {
     return (
       getJSONFromLocalStorage(STORAGE.KEY_MY_VIDEO).filter(
         savedVideo => info.url === savedVideo.url
+
       ).length > 0
     );
   };

@@ -1,6 +1,7 @@
 import { api } from '../api/youtubeAPI.js';
 import { SEARCH } from '../constants/constant.js';
 
+
 class YoutubeModel {
   #videoInfos;
   #nextPageToken;
@@ -40,6 +41,7 @@ class YoutubeModel {
   get videoCount() {
     return this.#videoInfos.length;
   }
+
 }
 
 export default YoutubeModel;

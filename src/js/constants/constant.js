@@ -13,6 +13,7 @@ export const SELECTOR = {
   SEARCH_VIDEO_WRAPPER: '#search-video-wrapper',
   SEARCH_YOUTUBE_FORM: '#search-youtube-form',
   SEARCH_YOUTUBE_INPUT: '#search-youtube-input',
+
   SEARCH_NOT_FOUND: '#search-not-found',
   SEARCH_MODAL_BUTTON: '#search-modal-button',
   SAVED_VIDEO_WRAPPER: '#saved-video-wrapper',
@@ -29,6 +30,7 @@ export const SELECTOR = {
   VIDEO_INFO_BUTTONS: '.video-info-buttons',
   TO_WATCH_VIDEOS_BUTTON: '#towatch-videos-button',
   SNACK_BAR: '#snackbar',
+
 };
 
 export const CLASS = {

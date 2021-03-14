@@ -1,4 +1,5 @@
 // TODO : 제일마지막에 상수화. 숫자, 셀렉터 / 파일명좀 바꿀수 있으면 바꾸기 ㅎㅎ.. /모달도 좀 넣어주자
+
 import { CLASS, SEARCH, SELECTOR, SNACK_BAR } from '../constants/constant.js';
 import {
   $,
@@ -117,6 +118,7 @@ class SearchController {
   #handleSearchModalScroll = () => {
     $(SELECTOR.SEARCH_VIDEO_WRAPPER).addEventListener('scroll', event => {
       this.#fetchVideo(event);
+
     });
   };
 }
