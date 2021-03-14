@@ -21,6 +21,7 @@ export default class Store {
       recentKeywords: getStorageData(STORE_KEYS.RECENT_KEYWORDS),
       savedVideoIds: getStorageData(STORE_KEYS.SAVED_VIDEO_IDS),
       watchedVideoIds: getStorageData(STORE_KEYS.WATCHED_VIDEO_IDS),
+      likedVideoIds: getStorageData(STORE_KEYS.LIKED_VIDEO_IDS),
     };
   }
 
@@ -29,6 +30,9 @@ export default class Store {
       [STORE_KEYS.RECENT_KEYWORDS]: updateRecentChips,
       [STORE_KEYS.SAVED_VIDEO_IDS]: isDelete ? removeFromStorage : addToStorage,
       [STORE_KEYS.WATCHED_VIDEO_IDS]: isDelete
+        ? removeFromStorage
+        : toggleStorageValue,
+      [STORE_KEYS.LIKED_VIDEO_IDS]: isDelete
         ? removeFromStorage
         : toggleStorageValue,
     };
