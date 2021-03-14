@@ -5,11 +5,13 @@ class ModalController {
   #storageModel;
   #searchView;
   #$modal;
+  #$modalClose;
 
   constructor({ model, view }) {
     this.#storageModel = model.storageModel;
     this.#searchView = view.searchView;
     this.#$modal = $(SELECTOR.MODAL);
+    this.#$modalClose = $(SELECTOR.MODAL_CLOSE);
   }
 
   init = () => {
@@ -43,11 +45,8 @@ class ModalController {
   };
 
   #handleModalClose = () => {
-    this.#$modal.addEventListener('click', event => {
-      if (
-        event.target.querySelector(SELECTOR.MODAL_INNER) ||
-        event.target.closest(SELECTOR.MODAL_CLOSE)
-      ) {
+    window.addEventListener('click', ({ target }) => {
+      if (target === this.#$modal || this.#$modalClose.contains(target)) {
         this.#onModalClose();
       }
     });
