@@ -1,21 +1,39 @@
 import { CLASSNAME } from "./constants.js";
-import { $ } from "./utils/querySelector.js";
-import VideoSearchModal from "./VideoSearch/VideoSearchModal.js";
-import WatchLater from "./WatchLater/WatchLater.js";
+import { $ } from "./utils/DOM.js";
+import SearchContainer from "./Search/SearchContainer.js";
+import WatchLaterContainer from "./WatchLater/WatchLaterContainer.js";
+import HistoryContainer from "./History/HistoryContainer.js";
 
 export default class App {
   constructor() {
     this.$watchLaterTabButton = $(`.${CLASSNAME.WATCH_LATER_TAB}`);
     this.$historyTabButton = $(`.${CLASSNAME.HISTORY_TAB}`);
-    this.$videoSearchTabButton = $(`.${CLASSNAME.VIDEO_SEARCH_TAB}`);
+    this.$searchTabButton = $(`.${CLASSNAME.SEARCH_TAB}`);
 
-    // TODO: historyTab
-    this.watchLater = new WatchLater();
-    this.videoSearchModal = new VideoSearchModal();
+    this.watchLaterContainer = new WatchLaterContainer();
+    this.historyContainer = new HistoryContainer();
+    this.searchContainer = new SearchContainer();
 
-    this.$videoSearchTabButton.addEventListener(
+    this.$watchLaterTabButton.addEventListener("click", () => {
+      this.historyContainer.hide();
+      $.removeClass(this.$historyTabButton, CLASSNAME.BG_CYAN_100);
+
+      this.watchLaterContainer.show();
+      $.addClass(this.$watchLaterTabButton, CLASSNAME.BG_CYAN_100);
+    });
+
+    this.$historyTabButton.addEventListener("click", () => {
+      this.watchLaterContainer.hide();
+      $.removeClass(this.$watchLaterTabButton, CLASSNAME.BG_CYAN_100);
+
+      this.historyContainer.show();
+
+      $.addClass(this.$historyTabButton, CLASSNAME.BG_CYAN_100);
+    });
+
+    this.$searchTabButton.addEventListener(
       "click",
-      this.videoSearchModal.open.bind(this.videoSearchModal)
+      this.searchContainer.open.bind(this.searchContainer)
     );
   }
 }
