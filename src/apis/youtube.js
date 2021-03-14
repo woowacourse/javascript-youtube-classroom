@@ -38,8 +38,6 @@ export async function getVideosByKeyword(searchKeyword, pageToken) {
 
 function parseQuery(query) {
   return Object.keys(query)
-    .map(key => {
-      return `${key}=${query[key]}`;
-    })
+    .map(key => `${key}=${query[key]}`)
     .join('&');
 }
