@@ -110,6 +110,7 @@ youtubeCard.css 파일에 있는 .video-wrapper의 css 속성 중 grid-template-
 ### ✅ TODO(FEAT) - step3
 - [x] 좋아요 버튼을 누른 데이터만 필터링해서 보여주는 메뉴를 제작한다.
   - [x] 👍 좋아요 버튼을 누른 경우, localStroge의 likedVideoIds 배열에 저장한다.
+  - [x] 좋아요 탭으로 이동 시 실행할 이벤트를 정의한다.
   - [ ] 👍 좋아요 버튼을 누른 경우, 좋아요 메뉴 탭에서 동영상을 보여준다.
   - [x] 👍 좋아요 버튼을 다시 클릭한 경우, localStroge의 likedVideoIds 배열에서 해당 동영상의 id를 삭제한다.
   - [ ] 👍 좋아요 버튼을 다시 클릭한 경우, 좋아요 메뉴 탭에서 해당 동영상을 삭제한다.  
