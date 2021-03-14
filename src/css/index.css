@@ -57,3 +57,129 @@ a {
 .btn:hover {
   opacity: 0.8;
 }
+
+.switch {
+  display: block;
+  width: 36px;
+  height: 18px;
+  background-color: rgb(221, 221, 221);
+  border-radius: 120px;
+  position: fixed;
+  top: 50px;
+  left: 40px;
+  cursor: pointer;
+  border: 2px solid rgb(187, 187, 187);
+}
+
+.switch input {
+  display: none;
+}
+
+.switch .slider {
+  position: absolute;
+  top: -7px;
+  left: -12px;
+  background-color: rgb(21, 85, 110);
+  border: rgb(242, 246, 246) 2px solid;
+  box-sizing: border-box;
+  width: 32px;
+  height: 32px;
+  z-index: 555;
+  border-radius: 100%;
+  transition: 0.4s;
+  -webkit-transition: 0.4s;
+}
+
+.slider {
+  -webkit-transition: all 0.4s ease-in;
+  transition: all 0.4s ease-in;
+}
+
+input:checked + .slider {
+  transform: translateX(24px);
+  background-color: rgb(95, 173, 173);
+  border: rgb(0, 0, 0) 2px solid;
+}
+
+.dark {
+  transition: all 0.4s ease-in-out;
+  color: #ffffff;
+  background: #000000;
+}
+
+.dark body::-webkit-scrollbar {
+  background-color: #000000;
+}
+
+.dark body::-webkit-scrollbar-thumb {
+  background-color: #222222;
+  border-radius: 12px;
+}
+
+.dark .clip .content-container h3 {
+  color: #ffffff;
+}
+
+.dark .clip:hover {
+  background-color: #222222;
+}
+
+.dark .btn {
+  background-color: #222222;
+  color: white;
+}
+
+.dark button:active {
+  background-color: #333333;
+  color: white;
+}
+
+.dark .modal-inner {
+  background-color: #111111;
+  color: white;
+}
+
+.dark .text-gray-700 {
+  color: white;
+}
+
+.dark .bg-cyan-100 {
+  background-color: rgb(21, 85, 110);
+}
+
+.dark #video-search-input {
+  background-color: black;
+  color: white;
+  border-radius: 6px;
+  border: none;
+  outline: none;
+}
+
+.dark #video-search-input:focus {
+  box-shadow: 0 0 0 2px #333333;
+}
+
+.dark .chip {
+  background-color: #222222;
+  color: white;
+}
+
+.dark button {
+  background-color: #222222;
+  border: none;
+}
+
+.dark button:hover {
+  background-color: #333333;
+}
+
+.dark .skeleton .image,
+.dark .skeleton .line {
+  background-image: linear-gradient(
+    90deg,
+    #333333 0px,
+    #333333 30px,
+    #333333 60px
+  );
+  animation: refresh 2s infinite ease-out;
+}

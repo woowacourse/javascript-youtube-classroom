@@ -64,10 +64,15 @@ function changeFocusedModeButton(type) {
   $(modeButtonSelector[type]).classList.add('bg-cyan-100');
 }
 
+function updateDarkMode(isDarkMode) {
+  isDarkMode && $('#dark-mode-toggle').click();
+}
+
 export {
   openModal,
   closeModal,
   renderSavedVideoList,
   showSnackBar,
   changeFocusedModeButton,
+  updateDarkMode,
 };

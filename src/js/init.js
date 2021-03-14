@@ -5,6 +5,7 @@ import {
   openModal,
   closeModal,
   renderSavedVideoList,
+  updateDarkMode,
 } from './viewControllers/app.js';
 import handleLatestKeywordSearch from './handlers/latestKeywordSearch.js';
 import videoInfos from './states/videoInfos.js';
@@ -16,6 +17,8 @@ import {
   renderLatestKeywordList,
   renderSavedVideoCount,
 } from './viewControllers/searchModal.js';
+import { handleDarkMode } from './handlers/darkMode.js';
+import darkMode from './states/darkMode.js';
 
 async function initState() {
   await videoInfos.init();
@@ -24,6 +27,8 @@ async function initState() {
   latestKeywords.init();
   renderLatestKeywordList(latestKeywords.get());
   intersectionObserver.init();
+  darkMode.init();
+  updateDarkMode(darkMode.get());
 }
 
 function initEvent() {
@@ -40,6 +45,8 @@ function initEvent() {
   $('#video-search-modal').addEventListener('click', ({ target }) => {
     if (target.id === 'video-search-modal') closeModal();
   });
+
+  $('#dark-mode-toggle').addEventListener('change', handleDarkMode);
 }
 
 export { initState, initEvent };
