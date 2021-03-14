@@ -133,9 +133,7 @@ export default class YoutubeController {
   generateSavedVideos(response) {
     const { items } = response;
 
-    const savedVideos = [
-      ...items.map((item) => new Video(item.id, item.snippet)),
-    ];
+    const savedVideos = items.map((item) => new Video(item.id, item.snippet));
     const watchedVideos = this.store.state.watchedVideoIds;
 
     this.savedVideosView.renderSavedVideoClips(savedVideos, watchedVideos);
@@ -145,6 +143,10 @@ export default class YoutubeController {
     const savedVideoIds = this.store.state.savedVideoIds;
     const unWatchedVideoIds = this.store.computed.unWatchedVideoIds;
     const response = await videoRequest(savedVideoIds);
+    if (!response) {
+      popSnackbar(ALERT_MESSAGES.API_REQUEST_FAILED);
+      return;
+    }
 
     this.generateSavedVideos(response);
     this.savedVideosView.renderVideoEmptyImg();

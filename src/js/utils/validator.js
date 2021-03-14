@@ -1,4 +1,4 @@
-export function isEmptySearchKeyword(keyword) {
+export function isEmptyString(keyword) {
   return keyword === '';
 }
 

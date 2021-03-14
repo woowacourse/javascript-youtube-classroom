@@ -5,8 +5,6 @@ import View from './View.js';
 export default class NavigationView extends View {
   constructor($element) {
     super($element);
-
-    this.tabButtons = $('.nav-btn');
   }
 
   init() {
