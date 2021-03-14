@@ -26,12 +26,12 @@ const YMDtemplate = (time) => {
 };
 
 export const clipTemplate = (video, index, type) => {
-  const { isModal, currentTab } = type;
+  const { isModal } = type;
 
   return `
-      <article class="clip ${
-        currentTab === LOCAL_STORAGE_VALUE.WATCHED ? 'd-none' : ''
-      } ${video.isWatched ? 'watched-clip' : 'unwatched-clip'}
+      <article class="clip  ${
+        video.isWatched ? 'watched-clip' : 'unwatched-clip'
+      }${video.isLiked ? 'like-clip' : ''}
         " 
         data-js=${isModal ? 'youtube-search-modal__clip' : 'saved-page__clip'}
         data-clip-index=${index}

@@ -3,10 +3,10 @@ import { clipTemplate } from './clipTemplate.js';
 
 const $savedPageVideoWrapper = $('[data-js=saved-page__video-wrapper]');
 
-export const renderSavedClip = (savedClip, index, currentTab) => {
+export const renderSavedClip = (savedClip, index) => {
   $savedPageVideoWrapper.insertAdjacentHTML(
     'beforeend',
-    clipTemplate(savedClip, index, { currentTab }),
+    clipTemplate(savedClip, index),
   );
 };
 

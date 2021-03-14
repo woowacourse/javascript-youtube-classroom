@@ -4,31 +4,21 @@ import { showElement } from '../../utils/setAttribute.js';
 import { showSnackbar } from '../../utils/showSnackbar.js';
 import $DOM from '../../utils/DOM.js';
 
-const toggleIsWatched = (target) => {
-  const targetClip = target.closest('[data-js="saved-page__clip"]');
-  const savedClips = storage.get(LOCAL_STORAGE_KEY.SAVED_CLIPS);
-  const targetClipIndex = targetClip.dataset.clipIndex;
-  const isWatched = savedClips[targetClipIndex].isWatched;
-
-  const notifyMessage = isWatched
-    ? MESSAGE.NOTIFY.CHECK_UNWACTHED_CLIP
-    : MESSAGE.NOTIFY.CHECK_WACTHED_CLIP;
-
-  showSnackbar(notifyMessage);
-
-  savedClips[targetClipIndex].isWatched = !isWatched;
-  storage.set(LOCAL_STORAGE_KEY.SAVED_CLIPS, savedClips);
-
-  if (isWatched) {
-    targetClip.classList.add('unwatched-clip');
-    targetClip.classList.remove('watched-clip');
-    return;
-  }
+const addWatchedClip = (targetClip) => {
   targetClip.classList.add('watched-clip');
   targetClip.classList.remove('unwatched-clip');
+
+  showSnackbar(MESSAGE.NOTIFY.CHECK_UNWACTHED_CLIP);
 };
 
-const watchedClip = () => {
+const removeWatchedClip = (targetClip) => {
+  targetClip.classList.add('unwatched-clip');
+  targetClip.classList.remove('watched-clip');
+
+  showSnackbar(MESSAGE.NOTIFY.CHECK_WACTHED_CLIP);
+};
+
+const watchedClip = (target) => {
   const targetClip = target.closest('[data-js="saved-page__clip"]');
   const targetClipIndex = targetClip.dataset.clipIndex;
   const savedClips = storage.get(LOCAL_STORAGE_KEY.SAVED_CLIPS);
@@ -38,6 +28,32 @@ const watchedClip = () => {
   storage.set(LOCAL_STORAGE_KEY.SAVED_CLIPS, savedClips);
 
   if (isWatched) {
+    removeWatchedClip(targetClip);
+    return;
+  }
+  addWatchedClip(targetClip);
+};
+
+const addLikeClip = (targetClip) => {
+  targetClip.classList.add('like-clip');
+  showSnackbar(MESSAGE.NOTIFY.LIKE_CLIP);
+};
+
+const removeLikeClip = (targetClip) => {
+  targetClip.classList.remove('like-clip');
+  showSnackbar(MESSAGE.NOTIFY.UNLIKE_CLIP);
+};
+
+const likeClip = (target) => {
+  const targetClip = target.closest('[data-js="saved-page__clip"]');
+  const targetClipIndex = targetClip.dataset.clipIndex;
+  const savedClips = storage.get(LOCAL_STORAGE_KEY.SAVED_CLIPS);
+  const isLiked = savedClips[targetClipIndex].isLiked ?? true;
+
+  savedClips[targetClipIndex].isLiked = !isLiked;
+  storage.set(LOCAL_STORAGE_KEY.SAVED_CLIPS, savedClips);
+
+  if (isLiked) {
     addLikeClip(targetClip);
     return;
   }
@@ -68,7 +84,12 @@ const deleteClip = (target) => {
 
 export const onButtonContainer = ({ target }) => {
   if (target.dataset.js === 'saved-clip-button-container__check') {
-    toggleIsWatched(target);
+    watchedClip(target);
+    return;
+  }
+
+  if (target.dataset.js === 'saved-clip-button-container__like') {
+    likeClip(target);
     return;
   }
 
