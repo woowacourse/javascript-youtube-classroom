@@ -2,6 +2,7 @@ import {
   CLASSNAME,
   MAX_KEYWORDS_COUNT,
   MAX_RESULTS_COUNT,
+  REGULAR_EXPRESSION,
 } from "../../src/js/constants.js";
 import { REDIRECT_SERVER_HOST } from "../../src/js/utils/API.js";
 
@@ -15,14 +16,14 @@ describe("유투브 검색 API를 이용하여 영상들을 검색할 수 있다
       cy.intercept({
         url: REDIRECT_SERVER_HOST,
         query: {
-          pageToken: /^$/,
+          pageToken: REGULAR_EXPRESSION.EMPTY_STRING,
         },
       }).as("searchFromKeyword");
 
       cy.intercept({
         url: REDIRECT_SERVER_HOST,
         query: {
-          pageToken: /.+/,
+          pageToken: REGULAR_EXPRESSION.NOT_EMPTY_STRING,
         },
       }).as("searchFromScroll");
     });
