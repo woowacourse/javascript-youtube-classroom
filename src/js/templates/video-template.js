@@ -4,12 +4,12 @@ import { convertDateFormat } from '../utils/util.js';
 const savedVideoButtons = info => {
   return `
           <div class="video-info-buttons" data-url="${info.url}">
-            <span class="watched ${
+            <button type="button" class="watched ${
               info.watched ? null : 'opacity-hover'
-            }">✅</span>
-            <span class="thumbs-up opacity-hover">👍</span>
-            <span class="comments opacity-hover">💬</span>
-            <span class="delete opacity-hover">🗑️</span>
+            }">✅</button>
+            <button type="button" class="thumbs-up opacity-hover">👍</button>
+            <button type="button" class="comments opacity-hover">💬</button>
+            <button type="button" class="delete opacity-hover">🗑️</button>
           </div>
       `;
 };
@@ -48,6 +48,7 @@ export const videoTemplate = (info, save = null) => {
                   <a
                     href="https://www.youtube.com/channel/${info.channelId}"
                     target="_blank"
+                    rel="noopener"
                     class="channel-name mt-1 line">
                     ${info.channelTitle}
                   </a>
