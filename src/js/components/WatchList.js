@@ -54,7 +54,7 @@ export default class WatchList extends Observer {
         });
 
         const video = { id, title, channelId, channelTitle, dateString, thumbnail };
-        const options = { containsMenu: true, isWatched: currentVideo.watched, isLiked: currentVideo.liked };
+        const options = { isContainMenu: true, isWatched: currentVideo.watched, isLiked: currentVideo.liked };
         const videoTemplate = getVideoTemplate(video, options);
 
         return videoTemplate;
@@ -74,7 +74,7 @@ export default class WatchList extends Observer {
       return;
     }
 
-    renderSkeletonUI(SELECTORS.CLASS.WATCH_LIST, watchList.filter(({ watched }) => !watched).length);
+    renderSkeletonUI(SELECTORS.CLASS.WATCH_LIST, toWatchList.length);
 
     try {
       const { items } = await searchYoutubeById(watchListIds);

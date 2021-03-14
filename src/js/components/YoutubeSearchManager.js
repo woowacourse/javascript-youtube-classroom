@@ -77,7 +77,7 @@ export default class YoutubeSearchManager extends Observer {
         });
 
         const video = { id, title, channelId, channelTitle, dateString, thumbnail };
-        const options = { containsSaveButton: !isSaved };
+        const options = { isContainSaveButton: !isSaved };
 
         return getVideoTemplate(video, options);
       })
