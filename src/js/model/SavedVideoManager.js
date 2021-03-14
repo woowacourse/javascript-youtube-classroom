@@ -48,22 +48,22 @@ export class SavedVideoManager {
   }
 
   deleteVideo(videoId) {
-    const temp = { ...this.savedVideos };
-    delete temp[videoId];
+    const nextSavedVideos = { ...this.savedVideos };
+    delete nextSavedVideos[videoId];
 
     this.setState({
       key: SAVED_VIDEO_SUBSCRIBER_KEY.DELETE,
-      savedVideos: temp,
+      savedVideos: nextSavedVideos,
     });
   }
 
   checkVideo(videoId) {
-    const temp = { ...this.savedVideos };
-    temp[videoId].isChecked = !temp[videoId].isChecked;
+    const nextSavedVideos = { ...this.savedVideos };
+    nextSavedVideos[videoId].isChecked = !nextSavedVideos[videoId].isChecked;
 
     this.setState({
       key: SAVED_VIDEO_SUBSCRIBER_KEY.CHECK,
-      savedVideos: temp,
+      savedVideos: nextSavedVideos,
     });
   }
 
