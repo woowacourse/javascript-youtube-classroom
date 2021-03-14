@@ -109,7 +109,7 @@ svg {
   background-color: #ddd;
 }
 
-.intersection-observer {
+.scroll-observer {
   position: absolute;
   transform: translateY(-100px);
   padding: 1.25rem;

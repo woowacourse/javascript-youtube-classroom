@@ -14,7 +14,7 @@ export class SearchVideoResult {
     this.$container = $('.js-video-result-container');
     this.$wrapper = $('.js-video-result-wrapper');
     this.$notFoundImage = $('.js-not-found-image');
-    this.$intersectionObserver = $('.js-intersection-observer');
+    this.$scrollObserver = $('.js-scroll-observer');
 
     this.searchKeywordHistoryManager = searchKeywordHistoryManager;
     this.searchKeywordHistoryManager.subscribe(this.reset.bind(this));
@@ -41,7 +41,7 @@ export class SearchVideoResult {
       });
     });
 
-    this.observer.observe(this.$intersectionObserver);
+    this.observer.observe(this.$scrollObserver);
   }
 
   async handleScroll() {
@@ -113,7 +113,7 @@ export class SearchVideoResult {
       'beforeend',
       this.searchResultData.items.map(item => this.makeTemplate(item)).join('')
     );
-    showElement(this.$intersectionObserver);
+    showElement(this.$scrollObserver);
   }
 
   setState({ searchResultData }) {
@@ -124,6 +124,6 @@ export class SearchVideoResult {
   reset() {
     this.$container.scrollTo(0, 0);
     this.$wrapper.innerHTML = '';
-    hideElement(this.$intersectionObserver);
+    hideElement(this.$scrollObserver);
   }
 }
