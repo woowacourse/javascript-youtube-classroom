@@ -81,4 +81,38 @@ describe('simba-tube', () => {
     cy.on('window:confirm', () => true);
     popSnackbar('동영상이 삭제되었읍니다');
   });
+
+  it('유저가 사용하는 디바이스의 가로 길이에 따라 검색결과의 row 당 column 개수를 변경한다.', () => {
+    const storageItems = ['vRXZj0DzXIA', 'I3U0QAXeOW4', 'BS7tz2rAOSA'];
+    setVideoIds('savedVideoIds', storageItems);
+
+    const clipWidth = '236px ';
+    cy.viewport(1280, 1024);
+    cy.get('.video-wrapper').should(
+      'have.css',
+      'grid-template-columns',
+      clipWidth.repeat(4).trim(),
+    );
+
+    cy.viewport(960, 1024);
+    cy.get('.video-wrapper').should(
+      'have.css',
+      'grid-template-columns',
+      clipWidth.repeat(3).trim(),
+    );
+
+    cy.viewport(600, 1024);
+    cy.get('.video-wrapper').should(
+      'have.css',
+      'grid-template-columns',
+      clipWidth.repeat(2).trim(),
+    );
+
+    cy.viewport(400, 1024);
+    cy.get('.video-wrapper').should(
+      'have.css',
+      'grid-template-columns',
+      clipWidth.repeat(1).trim(),
+    );
+  });
 });
