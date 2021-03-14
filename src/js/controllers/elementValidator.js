@@ -34,3 +34,9 @@ export const isWatchingMenu = ($target) => {
 export const isWatchingVideo = ($target) => {
   return $target.classList.contains(CLASS_NAME.WATCHING);
 };
+export const isConfirmCancelButton = ($target) => {
+  return $target.classList.contains('js-confirm-cancel');
+};
+export const isConfirmApproveButton = ($target) => {
+  return $target.classList.contains('js-confirm-approve');
+};

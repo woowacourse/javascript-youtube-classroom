@@ -1,4 +1,4 @@
-import { isWatchingMenu, isWatchingVideo } from './elementValidator.js';
+import { isWatchingMenu, isWatchingVideo, isConfirmCancelButton, isConfirmApproveButton } from './elementValidator.js';
 import { MESSAGE } from '../constants.js';
 
 export default class ClassroomController {
@@ -16,6 +16,7 @@ export default class ClassroomController {
     this.view.$savedVideosWrapper.addEventListener('click', this.onRequestVideoManagement.bind(this));
     this.view.$watchingMenuButton.addEventListener('click', this.onNavigateWatchingVideos.bind(this));
     this.view.$watchedMenuButton.addEventListener('click', this.onNavigateWatchedVideos.bind(this));
+    this.view.$removalConfirm.addEventListener('click', this.onConfirmRemoval.bind(this));
   }
 
   onRequestVideoManagement({ target }) {
@@ -23,26 +24,51 @@ export default class ClassroomController {
       return;
     }
 
-    const $video = target.closest('article');
-    const isWatching = isWatchingVideo($video);
+    this.model.videoToManage = target.closest('article');
 
     if (target.classList.contains('js-check-button')) {
-      this.model.moveVideo($video.id);
-      this.view.renderMovedVideo($video, isWatching);
-      isWatching
-        ? this.view.renderNotification(MESSAGE.VIDEO_IS_MOVED_TO_WATCHED_MENU)
-        : this.view.renderNotification(MESSAGE.VIDEO_IS_MOVED_TO_WATCHING_MENU);
-      this.showImageNoVideo();
+      this.proceedMovingVideo();
       return;
     }
 
     if (target.classList.contains('js-remove-button')) {
-      if (!window.confirm(MESSAGE.ARE_YOU_SURE_TO_REMOVE_VIDEO)) return;
-      this.model.removeVideo($video.id, isWatching);
-      this.view.removeVideo($video);
-      this.view.renderNotification(MESSAGE.VIDEO_IS_REMOVED_SUCCESSFULLY);
-      this.showImageNoVideo();
+      this.view.renderVisibleRemovalConfirm(MESSAGE.ARE_YOU_SURE_TO_REMOVE_VIDEO);
     }
+  }
+
+  proceedMovingVideo() {
+    const $video = this.model.videoToManage;
+    const isWatching = isWatchingVideo($video);
+
+    this.model.moveVideo();
+    this.view.renderMovedVideo($video, isWatching);
+    isWatching
+      ? this.view.renderNotification(MESSAGE.VIDEO_IS_MOVED_TO_WATCHED_MENU)
+      : this.view.renderNotification(MESSAGE.VIDEO_IS_MOVED_TO_WATCHING_MENU);
+    this.showImageNoVideo();
+  }
+
+  onConfirmRemoval({ target }) {
+    if (isConfirmCancelButton(target)) {
+      this.view.renderInvisibleRemovalConfirm();
+      return;
+    }
+    if (!isConfirmApproveButton(target)) {
+      return;
+    }
+    this.proceedRemovingVideo();
+  }
+
+  proceedRemovingVideo() {
+    this.view.renderInvisibleRemovalConfirm();
+
+    const $video = this.model.videoToManage;
+    const isWatching = isWatchingVideo($video);
+
+    this.model.removeVideo($video.id, isWatching);
+    this.view.removeVideo($video);
+    this.view.renderNotification(MESSAGE.VIDEO_IS_REMOVED_SUCCESSFULLY);
+    this.showImageNoVideo();
   }
 
   onNavigateWatchingVideos() {

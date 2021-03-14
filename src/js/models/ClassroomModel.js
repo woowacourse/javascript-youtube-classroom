@@ -25,9 +25,10 @@ export default class ClassroomModel {
     return this.watchedVideoCount === 0;
   }
 
-  moveVideo(videoId) {
+  moveVideo() {
+    const targetId = this.videoToManage.id;
     const videos = getListByKey(DB_KEY.VIDEOS);
-    const target = videos.find((video) => video.videoId === videoId);
+    const target = videos.find((video) => video.videoId === targetId);
 
     target.isWatching = !target.isWatching;
     this.updateWatchingVideoCount(target.isWatching);

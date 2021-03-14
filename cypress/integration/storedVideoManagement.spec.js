@@ -1,5 +1,5 @@
 import { YOUTUBE_API, MESSAGE } from '../../src/js/constants';
-import { removeNewLine } from '../../src/js/utils/escapeSpecialCharacter.js';
+import { escape, removeNewLine } from '../../src/js/utils/escapeSpecialCharacter.js';
 
 describe('저장된 비디오 관리 기능 테스트', () => {
   beforeEach(() => {
@@ -33,11 +33,11 @@ describe('저장된 비디오 관리 기능 테스트', () => {
     cy.get('.js-saved-videos-wrapper .js-video-title').each(($el, index) => {
       cy.wrap($el)
         .invoke('text')
-        .then((title) => expect(title.replace(/&/g, '&amp;')).to.be.eq(savedVideoTitles[index]));
+        .then((title) => expect(escape(title)).to.be.eq(savedVideoTitles[index]));
     });
   });
 
-  it.only('[시청 중인 영상] 메뉴에서 영상 카드의 시청완료 체크버튼을 클릭하면, 해당 영상이 시청중인 영상에서 시청완료 영상으로 옮겨지고 알림이 표시된다.', () => {
+  it('[시청 중인 영상] 메뉴에서 영상 카드의 시청완료 체크버튼을 클릭하면, 해당 영상이 시청중인 영상에서 시청완료 영상으로 옮겨지고 알림이 표시된다.', () => {
     cy.get('.js-search-menu-button').click();
     cy.get('.js-search-keyword-input').type(KEYWORD);
     cy.get('.js-search-keyword-form').submit();
@@ -94,6 +94,7 @@ describe('저장된 비디오 관리 기능 테스트', () => {
     cy.get('.js-modal-close-button').click();
 
     cy.get('.js-remove-button').click();
+    cy.get('.js-confirm-approve').click();
     cy.get('.js-snackbar').contains(removeNewLine(MESSAGE.VIDEO_IS_REMOVED_SUCCESSFULLY));
     cy.get('.js-saved-videos-wrapper article').should('not.exist');
   });

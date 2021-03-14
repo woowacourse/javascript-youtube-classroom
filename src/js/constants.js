@@ -7,6 +7,7 @@ export const YOUTUBE_API = Object.freeze({
   MAX_RESULT_COUNT: 10,
   SEARCH_TYPE_VIDEO: 'video',
   REGION_CODE: 'KR',
+  EMBEDDABLE: true,
 });
 
 export const YOUTUBE_LINK_ENDPOINT = Object.freeze({
@@ -42,5 +43,5 @@ export const MESSAGE = Object.freeze({
   VIDEO_IS_MOVED_TO_WATCHING_MENU: '[시청 중인 영상]으로 이동되었습니다. 👈👈',
   VIDEO_IS_REMOVED_SUCCESSFULLY: '영상 삭제가 완료되었습니다. 😉',
   REQUEST_HAS_FAILED: '요청하신 작업을 수행할 수 없습니다. 문제가 지속적으로 발생되면 관리자에게 문의해주세요. 🙏',
-  ARE_YOU_SURE_TO_REMOVE_VIDEO: '정말로 삭제하시겠습니까? 🤔🤔',
+  ARE_YOU_SURE_TO_REMOVE_VIDEO: '정말로 삭제하시겠습니까? 🤔',
 });

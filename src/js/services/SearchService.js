@@ -26,6 +26,7 @@ export default class SearchService {
       maxResults: YOUTUBE_API.MAX_RESULT_COUNT,
       regionCode: YOUTUBE_API.REGION_CODE,
       pageToken: this.model.nextPageToken,
+      videoEmbeddable: YOUTUBE_API.EMBEDDABLE,
     };
 
     const queryStringFlattened = Object.entries(options)

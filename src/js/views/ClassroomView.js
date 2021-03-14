@@ -15,6 +15,7 @@ export default class ClassroomView {
     this.$savedVideosWrapper = $('.js-saved-videos-wrapper');
     this.$noVideoFound = $('.js-no-video-found');
     this.$snackbar = $('.js-snackbar');
+    this.$removalConfirm = $('.js-confirm');
   }
 
   renderVideosToPrepare(videos) {
@@ -68,5 +69,15 @@ export default class ClassroomView {
 
   renderNotification(message) {
     showSnackbar({ messenger: this.$snackbar, message, showtime: SNACKBAR_SHOW_TIME });
+  }
+
+  renderVisibleRemovalConfirm(message) {
+    this.$removalConfirm.classList.add('show');
+    this.$removalConfirm.querySelector('h1').innerText = message;
+  }
+
+  renderInvisibleRemovalConfirm() {
+    this.$removalConfirm.classList.remove('show');
+    this.$removalConfirm.querySelector('h1').innerText = '';
   }
 }
