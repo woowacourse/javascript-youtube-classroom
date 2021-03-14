@@ -86,3 +86,27 @@
   opacity: 0.3;
   cursor: not-allowed;
 }
+
+@media screen and (max-width: 1280px) {
+  .videos-wrapper {
+    grid-template-columns: repeat(4, 230px);
+  }
+}
+
+@media screen and (max-width: 960px) {
+  .videos-wrapper {
+    grid-template-columns: repeat(3, 230px);
+  }
+}
+
+@media screen and (max-width: 600px) {
+  .videos-wrapper {
+    grid-template-columns: repeat(2, 230px);
+  }
+}
+
+@media screen and (max-width: 400px) {
+  .videos-wrapper {
+    grid-template-columns: repeat(1, 230px);
+  }
+}
