@@ -12,6 +12,7 @@ export default class ModalView extends BasicView {
     $searchQueries,
     $searchResultVideoWrapper,
     $savedVideoCount,
+    
   }) {
     super({
       $modal,
@@ -29,7 +30,7 @@ export default class ModalView extends BasicView {
   }
 
   initSearchEnv() {
-    this.hideElementBySelector(`#${SELECTOR_ID.NOT_FOUND_CONTENT}`);
+    this.hideElementBySelector(`#${SELECTOR_ID.SEARCHED_VIDEO_NOT_FOUND}`);
     this.#renderSkeletonItems();
   }
 
@@ -59,7 +60,7 @@ export default class ModalView extends BasicView {
     );
   }
   showNotFountImage() {
-    this.showElementBySelector(`#${SELECTOR_ID.NOT_FOUND_CONTENT}`);
+    this.showElementBySelector(`#${SELECTOR_ID.SEARCHED_VIDEO_NOT_FOUND}`);
   }
   showSearchResultIntersector() {
     this.showElementBySelector(`#${SELECTOR_ID.SERACH_RESULT_INTERSECTOR}`);

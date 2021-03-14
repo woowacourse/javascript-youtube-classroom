@@ -67,6 +67,7 @@ async function onVideoSearch(event) {
   const { videos, nextPageToken } = await getVideosByKeyword(input);
   if (videos.length === 0) {
     modalView.showNotFountImage();
+    modalView.hideSkeletons();
     return;
   }
   modalService.saveSearchQuery(input);

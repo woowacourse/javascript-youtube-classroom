@@ -1,4 +1,4 @@
-import { $searchResultVideoWrapper, $watchingVideoWrapper } from '../elements';
+import { $watchingVideoWrapper } from '../elements';
 import { watchedVideoModel, watchingVideoModel } from '../store';
 import {
   layoutView,
@@ -17,13 +17,8 @@ const watchingVideoController = {
     $watchingVideoWrapper.addEventListener('click', onWatchingVideoInteract);
   },
   loadVideos() {
-    const watchedVideos = watchedVideoModel.getItem();
-    if (watchedVideos.length === 0) {
-      watchingVideoView.hideEmptyVideoImage();
-      watchedVideoView.showEmptyVideoImage();
-    }
-    watchedVideoView.renderVideos(watchedVideos);
-  },
+    loadWatchingVideos();
+  }
 };
 
 function onWatchingVideoInteract({ target }) {
@@ -41,7 +36,6 @@ function onClipCheck(button) {
   const videoId = button.dataset.videoId;
   watchingVideoModel.sendVideoTo(watchedVideoModel, videoId);
 
-  // TODO: controller를 클래스로 나누면 해결됨(아래 중복코드)
   loadWatchingVideos();
 
   layoutView.showSnackbar(SNACKBAR_MESSAGE.WATCHED_VIDEO_CHECK_SUCCESS, true);
