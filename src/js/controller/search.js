@@ -104,12 +104,8 @@ class SearchController {
   };
 
   #fetchVideo = event => {
-    const { scrollHeight, offsetHeight, clientHeight } = $(
-      SELECTOR.SEARCH_VIDEO_WRAPPER
-    );
-
-    const scrollArgs = { scrollHeight, offsetHeight, clientHeight };
-    if (isScrollUnfinished(scrollArgs, event.target.scrollTop)) return;
+    const $searchVideoWrapper = $(SELECTOR.SEARCH_VIDEO_WRAPPER);
+    if (isScrollUnfinished($searchVideoWrapper, event.target.scrollTop)) return;
 
     this.#addVideosBySearch();
   };

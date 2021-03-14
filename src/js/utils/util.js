@@ -30,11 +30,11 @@ export const getJSONFromLocalStorage = key => {
   return [];
 };
 
-export const isScrollUnfinished = (args, scrollTop) => {
-  return (
-    scrollTop <
-    Math.max(args.scrollHeight, args.offsetHeight) - args.clientHeight
-  );
+export const isScrollUnfinished = (
+  { scrollHeight, offsetHeight, clientHeight },
+  scrollTop
+) => {
+  return scrollTop < Math.max(scrollHeight, offsetHeight) - clientHeight;
 };
 
 export const convertDateFormat = publishedDate => {
