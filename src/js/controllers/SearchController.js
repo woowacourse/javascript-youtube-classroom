@@ -44,7 +44,7 @@ export default class SearchController {
     if (mostRecentKeyword === '') {
       return;
     }
-    this.searchModel.init(mostRecentKeyword);
+    this.searchModel.updateForNewSearch(mostRecentKeyword);
     this.showSearchGroup();
   }
 
@@ -59,7 +59,7 @@ export default class SearchController {
     if (isRecentKeywordLink(target)) {
       const keyword = target.innerText;
 
-      this.searchModel.init(keyword);
+      this.searchModel.updateForNewSearch(keyword);
       this.searchView.init();
       this.showSearchGroup();
       return;
@@ -83,7 +83,7 @@ export default class SearchController {
       this.searchView.renderNotification(MESSAGE.NO_KEYWORD_IS_SUBMITTED);
       return;
     }
-    this.searchModel.init(keyword);
+    this.searchModel.updateForNewSearch(keyword);
     this.searchView.init();
     this.searchView.renderRecentKeywords(this.searchModel.getRecentKeywords());
     this.showSearchGroup();

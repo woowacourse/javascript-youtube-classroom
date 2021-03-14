@@ -10,30 +10,34 @@ import { MAX_RECENT_KEYWORD_COUNT, DB_KEY } from '../constants.js';
 */
 
 export default class SearchModel {
-  constructor(keyword = '') {
-    this.init(keyword);
+  constructor() {
+    this.initSearchResult();
     this.recentKeywords = getListByKey(DB_KEY.RECENT_KEYWORDS);
   }
 
-  init(keyword) {
+  initSearchResult() {
     this.nextPageToken = '';
     this.totalSearchResult = [];
-    this.keyword = keyword;
-    this.saveKeyword();
   }
 
   setNextPageToken(token) {
     this.nextPageToken = token;
   }
 
-  saveKeyword() {
-    if (this.keyword === '') {
-      return;
-    }
+  updateForNewSearch(keyword) {
+    this.initSearchResult();
+    this.setKeyword(keyword);
+  }
 
+  setKeyword(keyword) {
+    this.keyword = keyword;
     if (this.recentKeywords.includes(this.keyword)) {
       return;
     }
+    this.updateRecentKeywords();
+  }
+
+  updateRecentKeywords() {
     if (this.recentKeywords.length === MAX_RECENT_KEYWORD_COUNT) {
       this.recentKeywords.pop();
     }
