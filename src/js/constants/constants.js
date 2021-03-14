@@ -1,3 +1,5 @@
+export const DOMAIN = 'wonderful-leavitt-5e0985.netlify.app';
+
 export const VALUES = {
   MAXIMUM_VIDEO_SAVE_COUNT: 100,
   MAXIMUM_SEARCH_HISTORY_COUNT: 3,

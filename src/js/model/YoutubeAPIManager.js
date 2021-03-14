@@ -1,4 +1,4 @@
-import { VALUES, ERROR_MESSAGES } from '../constants/constants.js';
+import { VALUES, ERROR_MESSAGES, DOMAIN } from '../constants/constants.js';
 import { isEmptyObject } from '../utils/utils.js';
 
 export default class YoutubeAPIManager {
@@ -8,7 +8,6 @@ export default class YoutubeAPIManager {
   }, 3000000);
 
   constructor() {
-    this.domain = 'wonderful-leavitt-5e0985.netlify.app';
     this.searchTerm = '';
     this.pageToken = '';
   }
@@ -19,9 +18,9 @@ export default class YoutubeAPIManager {
   }
 
   createRequestURL() {
-    const requestURL = `https://${this.domain}/youtube/search?`;
+    const requestURL = `https://${DOMAIN}/youtube/search?`;
     const searchParams = new URLSearchParams({
-      part: 'snippet2',
+      part: 'snippet',
       type: 'video',
       q: this.searchTerm,
       maxResults: VALUES.MAXIMUM_SEARCH_VIDEO_COUNT,
