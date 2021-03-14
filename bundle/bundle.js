@@ -12163,7 +12163,7 @@ function _getVideosByKeyword() {
               type: 'video',
               maxResults: _constants_js__WEBPACK_IMPORTED_MODULE_0__.YOUTUBE.MAX_RESULT_COUNT,
               videoDefinition: 'high',
-              key: undefined
+              key: "AIzaSyBmX5TEH7eS1rqcf33gV0CWUZaQFLoN6b4"
             };
             _context.prev = 1;
             _context.next = 4;
@@ -12898,7 +12898,7 @@ var view = {
   },
   renderSearchedVideos: function renderSearchedVideos(processedVideos) {
     view.insertVideoItems(processedVideos);
-    _viewUtil_js__WEBPACK_IMPORTED_MODULE_3__.default.showElementBySelector("#".concat(_constants_js__WEBPACK_IMPORTED_MODULE_1__.SELECTOR_ID.SERACH_RESULT_INTERSECTOR));
+    _viewUtil_js__WEBPACK_IMPORTED_MODULE_3__.default.showElementBySelector("#".concat(_constants_js__WEBPACK_IMPORTED_MODULE_1__.SELECTOR_ID.SEARCH_RESULT_INTERSECTOR));
   },
   insertVideoItems: function insertVideoItems(videos) {
     _elements_js__WEBPACK_IMPORTED_MODULE_0__.$searchResultVideoWrapper.insertAdjacentHTML('beforeend', (0,_templates_js__WEBPACK_IMPORTED_MODULE_2__.getVideoListTemplate)(videos));
@@ -12907,7 +12907,7 @@ var view = {
     _viewUtil_js__WEBPACK_IMPORTED_MODULE_3__.default.showElementBySelector("#".concat(_constants_js__WEBPACK_IMPORTED_MODULE_1__.SELECTOR_ID.NOT_FOUND_CONTENT));
   },
   showSearchResultIntersector: function showSearchResultIntersector() {
-    _viewUtil_js__WEBPACK_IMPORTED_MODULE_3__.default.showElementBySelector("#".concat(_constants_js__WEBPACK_IMPORTED_MODULE_1__.SELECTOR_ID.SERACH_RESULT_INTERSECTOR));
+    _viewUtil_js__WEBPACK_IMPORTED_MODULE_3__.default.showElementBySelector("#".concat(_constants_js__WEBPACK_IMPORTED_MODULE_1__.SELECTOR_ID.SEARCH_RESULT_INTERSECTOR));
   },
   showMessage: function showMessage(message) {
     alert(message);

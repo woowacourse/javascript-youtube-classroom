@@ -13,7 +13,7 @@ module.exports = {
   devtool: 'source-map',
   plugins: [
     new webpack.DefinePlugin({
-      YOUTUBE_API_KEY: JSON.stringify(process.env.YOUTUBE_API_KEY),
+      YOUTUBE_API_KEY: JSON.stringify(process.env.YOUTUBE_API_KEY_1),
     }),
   ],
   module: {

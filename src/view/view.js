@@ -46,7 +46,7 @@ const view = {
 
   renderSearchedVideos(processedVideos) {
     view.insertVideoItems(processedVideos);
-    viewUtil.showElementBySelector(`#${SELECTOR_ID.SERACH_RESULT_INTERSECTOR}`);
+    viewUtil.showElementBySelector(`#${SELECTOR_ID.SEARCH_RESULT_INTERSECTOR}`);
   },
 
   insertVideoItems(videos) {
@@ -61,7 +61,7 @@ const view = {
   },
 
   showSearchResultIntersector() {
-    viewUtil.showElementBySelector(`#${SELECTOR_ID.SERACH_RESULT_INTERSECTOR}`);
+    viewUtil.showElementBySelector(`#${SELECTOR_ID.SEARCH_RESULT_INTERSECTOR}`);
   },
 
   showMessage(message) {
