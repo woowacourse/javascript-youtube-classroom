@@ -5,6 +5,7 @@ import {
   $searchFormInput,
   $searchResultIntersector,
   $modal,
+  $searchResultVideoWrapper,
 } from '../elements.js';
 import { getVideosByKeyword } from '../apis/youtube.js';
 import controllerUtil from './controllerUtil.js';
@@ -15,8 +16,9 @@ import {
   watchingVideoModel,
 } from '../store.js';
 import modalService from '../service/modalService.js';
-import { modalView } from '../view/index.js';
-import { SELECTOR_ID } from '../constants.js';
+import { layoutView, modalView, watchedVideoView, watchingVideoView } from '../view/index.js';
+import { BROWSER_HASH, SELECTOR_CLASS, SELECTOR_ID, SNACKBAR_MESSAGE } from '../constants.js';
+import watchingVideoService from '../service/watchingVideoService.js';
 
 const modalController = {
   initEventListeners() {
@@ -27,6 +29,7 @@ const modalController = {
     $searchButton.addEventListener('click', onModalOpen);
     $modalCloseButton.addEventListener('click', onModalClose);
     $searchForm.addEventListener('submit', onVideoSearch);
+    $searchResultVideoWrapper.addEventListener('click', onSelectedVideoSave);
     $modal.addEventListener('click', (event) => {
       if (event.target.id === SELECTOR_ID.MODAL) {
         onModalClose();
@@ -37,6 +40,29 @@ const modalController = {
     modalView.renderSearchQueries(searchQueryModel.getItem());
   },
 };
+
+function onSelectedVideoSave({ target }) {
+  if (!target.classList.contains(SELECTOR_CLASS.SEARCHED_CLIP_SAVE_BUTTON)) {
+    return;
+  }
+
+  if (!watchingVideoService.isVideoCountUnderLimit()) {
+    layoutView.showSnackbar(SNACKBAR_MESSAGE.SAVE_LIMIT_EXCEEDED, false);
+    return;
+  }
+
+  if (watchingVideoService.isVideosEmpty()) {
+    watchingVideoView.hideEmptyVideoImage();
+    watchedVideoView.hideEmptyVideoImage();
+  }
+  watchingVideoService.pushNewVideo(target.dataset);
+
+  if (controllerUtil.parseHash(location.hash) === BROWSER_HASH.WATCHING) {
+    watchingVideoView.renderVideos(watchingVideoModel.getItem());
+  }
+  modalView.hideVideoSaveButton(target);
+  layoutView.showSnackbar(SNACKBAR_MESSAGE.WATCHING_VIDEO_SAVE_SUCCESS, true);
+}
 
 function onModalOpen() {
   const allVideoCount =
