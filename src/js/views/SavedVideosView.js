@@ -77,7 +77,7 @@ export default class SavedVideosView extends View {
     this.$element.addInnerHTML(
       `
         <div class="empty-videos stretch d-flex flex-col items-center d-none">
-          <img width="50%" src="./src/images/status/empty_tung.png" alt="empty_video_img"></img>
+          <img width="50%" src="./src/images/status/empty_tung.png" alt="동영상 목록이 비었읍니다."></img>
           <h2>동영상 목록이 비었읍니다 🙄</h2>
         </div>
       `,

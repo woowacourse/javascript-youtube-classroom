@@ -25,7 +25,7 @@ export default class Store {
     };
   }
 
-  save(key, value, isDelete) {
+  updateState(key, value, isDelete) {
     const updateLocalStorage = {
       [STORE_KEYS.RECENT_KEYWORDS]: updateRecentChips,
       [STORE_KEYS.SAVED_VIDEO_IDS]: isDelete
@@ -42,7 +42,7 @@ export default class Store {
 
   update(data = {}, isDelete = false) {
     Object.entries(data).forEach(([key, value]) => {
-      this.save(key, value, isDelete);
+      this.updateState(key, value, isDelete);
     });
 
     this.notify();
@@ -50,12 +50,6 @@ export default class Store {
 
   register(observer) {
     this._observers = [...this._observers, observer];
-  }
-
-  unregister(observer) {
-    this._observers = this._observers.filter(
-      (registeredObserver) => registeredObserver !== observer,
-    );
   }
 
   notify() {

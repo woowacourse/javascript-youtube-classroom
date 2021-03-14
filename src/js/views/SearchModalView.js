@@ -144,7 +144,7 @@ export default class SearchModalView extends View {
     this.modalVideos.setInnerHTML(
       `
         <div class="not-found stretch d-flex flex-col items-center">
-          <img src="./src/images/status/not_found.png" alt="not-found-img"></img>
+          <img src="./src/images/status/not_found.png" alt="검색 결과가 없읍니다."></img>
           <h2>검색 결과가 없읍니다.</h2>
         </div>
       `,
