@@ -6,6 +6,7 @@ export const VIDEO_URL = 'https://zig-youtube-api.netlify.app/youtube/videos?';
 export const TABS = {
   SAVED: $('#saved-btn'),
   WATCHED: $('#watched-btn'),
+  LIKED: $('#liked-btn'),
   SEARCH: $('#search-btn'),
 };
 
@@ -31,13 +32,13 @@ export const ERROR_MESSAGES = {
 };
 
 export const STORE_KEYS = {
-  SELECTED_TAB: 'selectedTab',
-  SAVED_VIDEO_IDS: 'savedVideoIds',
   RECENT_KEYWORDS: 'recentKeywords',
+  SAVED_VIDEO_IDS: 'savedVideoIds',
   WATCHED_VIDEO_IDS: 'watchedVideoIds',
+  LIKED_VIDEO_IDS: 'likedVideoIds',
 };
 
-export const PACK_BUTTON_TYPE = {
+export const BUTTON_PACK_TYPE = {
   WATCHED: 'watched',
   LIKE: 'like',
   COMMENT: 'comment',
@@ -50,12 +51,20 @@ export const SNACKBAR_MESSAGES = {
     FAIL: '동영상 저장에 실패했읍니다',
   },
   WATCH_VIDEO_ADD: {
-    SUCCESS: '동영상이 본 영상 목록에 추가되었읍니다',
+    SUCCESS: '동영상을 본 영상 목록에 추가했읍니다',
     FAIL: '본 영상 목록 추가에 실패했읍니다 ',
   },
   WATCH_VIDEO_REMOVE: {
-    SUCCESS: '동영상이 본 영상 목록에서 제거되었읍니다',
+    SUCCESS: '동영상을 본 영상 목록에서 제거했읍니다',
     FAIL: '본 영상 목록 제거에 실패했읍니다',
+  },
+  LIKE_VIDEO_ADD: {
+    SUCCESS: '동영상을 좋아요 목록에 추가했읍니다',
+    FAIL: '좋아요 목록 추가에 실패했읍니다 ',
+  },
+  LIKE_VIDEO_REMOVE: {
+    SUCCESS: '동영상을 좋아요 목록에서 제거했읍니다',
+    FAIL: '좋아요 목록 제거에 실패했읍니다 ',
   },
   DELETE_VIDEO: {
     SUCCESS: '동영상이 삭제되었읍니다',

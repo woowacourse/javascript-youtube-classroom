@@ -19,6 +19,7 @@ export default class SavedVideosView extends View {
       const buttonPack = {
         videoWatched: this.bindWatchedEvent.bind(this),
         videoDelete: this.bindDeleteEvent.bind(this),
+        videoLike: this.bindLikeEvent.bind(this),
       };
 
       const buttonDataset = e.target.dataset;
@@ -35,6 +36,10 @@ export default class SavedVideosView extends View {
 
   bindDeleteEvent(videoId) {
     this.emit('clickDelete', videoId);
+  }
+
+  bindLikeEvent(videoId) {
+    this.emit('clickLike', videoId);
   }
 
   renderSavedVideoClips(savedVideos, watchedVideos) {
@@ -84,11 +89,11 @@ export default class SavedVideosView extends View {
     $('.empty-videos').show();
   }
 
-  toggleWatchedButton(videoId) {
+  toggleButton(videoId, buttonType, pop = true) {
     const videoClip = $(`[data-article='${videoId}']`);
-    const packButton = $(`[data-video-watched='${videoId}']`);
+    const packButton = $(`[data-video-${buttonType}='${videoId}']`);
 
     packButton.toggleClass('opacity-hover');
-    videoClip.hide();
+    if (pop) videoClip.hide();
   }
 }
