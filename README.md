@@ -64,4 +64,4 @@
 
 ### 🔎 동작 화면
 
-![](./src/images/readme/youtube-step2.gif)
+![](./src/images/readme/youtube-step3.gif)
