@@ -2,7 +2,8 @@ import date from '../utils/date.js';
 import { LOCAL_STORAGE_VALUE } from '../utils/constant.js';
 
 const buttonTemplate = (index, type) => {
-  const { isModal, isSaved } = type;
+  const { isModal, isSaved, isWatched, isLiked } = type;
+  console.log(type);
 
   if (isModal) {
     return isSaved
@@ -12,8 +13,12 @@ const buttonTemplate = (index, type) => {
 
   return `
     <div class="button-container" data-js="saved-clip-button-container">
-      <button class="opacity-hover" data-js="saved-clip-button-container__check">✅</button>
-      <button class="opacity-hover" data-js="saved-clip-button-container__like">👍</button>
+      <button class="${
+        isWatched ? '' : 'opacity-hover'
+      }" data-js="saved-clip-button-container__check">✅</button>
+      <button class="${
+        isLiked ? '' : 'opacity-hover'
+      }" data-js="saved-clip-button-container__like">👍</button>
       <button class="opacity-hover" data-js="saved-clip-button-container__comment">💬</button>
       <button class="opacity-hover" data-js="saved-clip-button-container__delete">🗑️</button>
     </div>
@@ -27,13 +32,12 @@ const YMDtemplate = (time) => {
 };
 
 export const clipTemplate = (video, index, type) => {
-  const { isModal, currentTab } = type;
+  const { isModal, currentTab, isWatched, isLiked } = type;
 
   return `
       <article class="clip ${
         currentTab === LOCAL_STORAGE_VALUE.WATCHED ? 'd-none' : ''
-      } ${video.isWatched ? 'watched-clip' : 'unwatched-clip'}
-        " 
+      } ${video.isWatched ? 'watched-clip' : 'unwatched-clip'}"
         data-js=${isModal ? 'youtube-search-modal__clip' : 'saved-page__clip'}
         data-clip-index=${index}
       >

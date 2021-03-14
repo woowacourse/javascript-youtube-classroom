@@ -38,7 +38,12 @@ export const renderClips = (videoItems, savedClipIds) => {
   $DOM.SEARCH_MODAL.VIDEO_WRAPPER.innerHTML = videoItems
     .map((video, index) => {
       const isSaved = savedClipIds.includes(video.id.videoId);
-      return clipTemplate(video, index, { isModal: true, isSaved });
+      return clipTemplate(video, index, {
+        isModal: true,
+        isSaved,
+        isWatched: video.isWatched,
+        isLiked: video.isLiked,
+      });
     })
     .join('');
 };

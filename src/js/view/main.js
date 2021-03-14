@@ -12,6 +12,11 @@ export const renderSavedClip = (savedClip, index, currentTab) => {
 
 export const renderSavedClips = (savedClips) => {
   $savedPageVideoWrapper.innerHTML = savedClips
-    .map((savedClip, index) => clipTemplate(savedClip, index, {}))
+    .map((savedClip, index) =>
+      clipTemplate(savedClip, index, {
+        isWatched: savedClip.isWatched,
+        isLiked: savedClip.isLiked,
+      }),
+    )
     .join('');
 };

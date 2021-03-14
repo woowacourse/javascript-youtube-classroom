@@ -19,13 +19,9 @@ const toggleIsWatched = (target) => {
   savedClips[targetClipIndex].isWatched = !isWatched;
   storage.set(LOCAL_STORAGE_KEY.SAVED_CLIPS, savedClips);
 
-  if (isWatched) {
-    targetClip.classList.add('unwatched-clip');
-    targetClip.classList.remove('watched-clip');
-    return;
-  }
-  targetClip.classList.add('watched-clip');
-  targetClip.classList.remove('unwatched-clip');
+  targetClip.classList.toggle('watched-clip');
+  targetClip.classList.toggle('unwatched-clip');
+  target.classList.toggle('opacity-hover');
 };
 
 const deleteClip = (target) => {
@@ -50,13 +46,40 @@ const deleteClip = (target) => {
   storage.set(LOCAL_STORAGE_KEY.SAVED_CLIPS, savedClips);
 };
 
+const likeClip = (target) => {
+  const targetClip = target.closest('[data-js="saved-page__clip"]');
+  const savedClips = storage.get(LOCAL_STORAGE_KEY.SAVED_CLIPS);
+  const targetClipIndex = targetClip.dataset.clipIndex;
+  const isLiked = savedClips[targetClipIndex].isLiked;
+
+  const notifyMessage = isLiked
+    ? MESSAGE.NOTIFY.UNLIKE_CLIP
+    : MESSAGE.NOTIFY.LIKE_CLIP;
+
+  showSnackbar(notifyMessage);
+  savedClips[targetClipIndex].isLiked = !isLiked;
+  target.classList.toggle('opacity-hover');
+
+  storage.set(LOCAL_STORAGE_KEY.SAVED_CLIPS, savedClips);
+};
+
 export const onButtonContainer = ({ target }) => {
+  console.log('!');
+  console.log(target.dataset.js);
   if (target.dataset.js === 'saved-clip-button-container__check') {
+    console.log('?');
     toggleIsWatched(target);
+    console.log('??');
     return;
   }
 
   if (target.dataset.js === 'saved-clip-button-container__delete') {
     deleteClip(target);
+    return;
+  }
+
+  if (target.dataset.js === 'saved-clip-button-container__like') {
+    likeClip(target);
+    return;
   }
 };
