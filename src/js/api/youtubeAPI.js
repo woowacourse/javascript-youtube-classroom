@@ -1,6 +1,5 @@
-
 import { YOUTUBE_API_KEY } from '../../../env.js';
-import { SEARCH, URL } from '../constants/constant.js';
+import { SEARCH, REDIRECT_HOST } from '../constants/constant.js';
 
 const youtubeSearchURL = ({ query, nextPageToken, max }) => {
   const urlSearch = new URLSearchParams();
@@ -20,9 +19,8 @@ const youtubeSearchURL = ({ query, nextPageToken, max }) => {
     value && urlSearch.set(key, value);
   });
 
-  return URL.YOUTUBE_SEARCH + urlSearch.toString();
+  return REDIRECT_HOST + urlSearch.toString();
 };
-
 
 export const api = {
   fetchVideoItems: ({
