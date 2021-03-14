@@ -8,3 +8,12 @@
   cursor: pointer;
   font-family: 'Noto Sans KR', sans-serif;
 }
+
+.search-btn {
+  border: 2px solid #efefef;
+  border-radius: 18px;
+}
+
+.search-btn:hover {
+  background-color: #efefef;
+}
