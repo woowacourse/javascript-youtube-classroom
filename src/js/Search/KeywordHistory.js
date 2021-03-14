@@ -27,9 +27,9 @@ export default class KeywordHistory {
       (keyword) => keyword !== query
     );
 
-    this.keywordHistory.push(query);
+    this.keywordHistory.unshift(query);
     if (this.keywordHistory.length > MAX_KEYWORDS_COUNT) {
-      this.keywordHistory.shift();
+      this.keywordHistory.pop();
     }
 
     localStorage.setItem(
