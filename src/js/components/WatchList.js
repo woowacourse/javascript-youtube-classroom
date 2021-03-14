@@ -1,5 +1,6 @@
 import {
   $,
+  $all,
   renderSkeletonUI,
   clearElement,
   showSnackbar,
@@ -23,13 +24,27 @@ export default class WatchList extends Observer {
     this.nowMenu = MENU.TO_WATCH;
 
     this.bindEvents();
+    this.setScrollObservers();
+  }
+
+  setScrollObservers() {
+    this.lazyLoadingObserver = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          const targetElement = entry.target;
+          targetElement.src = targetElement.dataset.videoUrl;
+        }
+      });
+    });
   }
 
   renderSavedVideos(items) {
+    const { watchList } = this.store.get();
     const resultTemplate = items
       .map((item) => {
         const { channelId, title, channelTitle, publishedAt } = item.snippet;
         const { id } = item;
+        const currentVideo = watchList.find((item) => item.videoId === id);
 
         const dateString = new Date(publishedAt).toLocaleDateString('ko-KR', {
           year: 'numeric',
@@ -38,7 +53,7 @@ export default class WatchList extends Observer {
         });
 
         const video = { id, title, channelId, channelTitle, dateString };
-        const options = { containsMenu: true, isWatched: this.nowMenu === MENU.WATCHED };
+        const options = { containsMenu: true, isWatched: currentVideo.watched, isLiked: currentVideo.liked };
         const videoTemplate = getVideoTemplate(video, options);
 
         return videoTemplate;
@@ -72,6 +87,9 @@ export default class WatchList extends Observer {
 
       clearElement(SELECTORS.CLASS.WATCH_LIST);
       this.renderSavedVideos(toWatchVideos);
+      $all('iframe').forEach(($iframe) => {
+        this.lazyLoadingObserver.observe($iframe);
+      });
     } catch (error) {
       showSnackbar(error.message);
     }
@@ -113,6 +131,18 @@ export default class WatchList extends Observer {
         }
 
         const renderingVideos = this.list.filter(({ id }) => toWatchListIds.includes(id));
+        this.renderSavedVideos(renderingVideos);
+      } else if (this.nowMenu === MENU.LIKED) {
+        const likedList = watchList.filter((item) => item.liked);
+        const likedListIds = likedList.map((item) => item.videoId);
+
+        if (likedList.length) {
+          hideElement(SELECTORS.CLASS.NO_VIDEO);
+        } else {
+          showElement(SELECTORS.CLASS.NO_VIDEO);
+        }
+
+        const renderingVideos = this.list.filter(({ id }) => likedListIds.includes(id));
         this.renderSavedVideos(renderingVideos);
       }
     } catch (error) {
@@ -158,12 +188,31 @@ export default class WatchList extends Observer {
         showSnackbar(ALERT_MESSAGE.VIDEO_MOVED_TO_WATCH_LIST);
       }
     }
+
+    if (target.classList.contains('like')) {
+      const targetId = target.closest('.menu-list').dataset.videoId;
+      const newWatchList = watchList.map((video) => {
+        const nowVideo = { ...video };
+        if (nowVideo.videoId === targetId) {
+          nowVideo.liked = !nowVideo.liked;
+          if (nowVideo.liked) {
+            showSnackbar(ALERT_MESSAGE.VIDEO_LIKED);
+          } else {
+            showSnackbar(ALERT_MESSAGE.VIDEO_LIKE_CANCELED);
+          }
+        }
+        return nowVideo;
+      });
+
+      this.store.update(LOCAL_STORAGE_KEYS.WATCH_LIST, newWatchList);
+    }
   }
 
   handleShowToWatchList() {
     this.nowMenu = MENU.TO_WATCH;
     colorizeButton(SELECTORS.CLASS.TO_WATCH_LIST_BUTTON);
     uncolorizeButton(SELECTORS.CLASS.WATCHED_LIST_BUTTON);
+    uncolorizeButton(SELECTORS.CLASS.LIKED_LIST_BUTTON);
     clearElement(SELECTORS.CLASS.WATCH_LIST);
 
     const { watchList } = this.store.get();
@@ -184,6 +233,7 @@ export default class WatchList extends Observer {
     this.nowMenu = MENU.WATCHED;
     colorizeButton(SELECTORS.CLASS.WATCHED_LIST_BUTTON);
     uncolorizeButton(SELECTORS.CLASS.TO_WATCH_LIST_BUTTON);
+    uncolorizeButton(SELECTORS.CLASS.LIKED_LIST_BUTTON);
     clearElement(SELECTORS.CLASS.WATCH_LIST);
 
     const { watchList } = this.store.get();
@@ -200,9 +250,31 @@ export default class WatchList extends Observer {
     this.renderSavedVideos(renderingVideos);
   }
 
+  handleShowLikedList() {
+    this.nowMenu = MENU.LIKED;
+    colorizeButton(SELECTORS.CLASS.LIKED_LIST_BUTTON);
+    uncolorizeButton(SELECTORS.CLASS.WATCHED_LIST_BUTTON);
+    uncolorizeButton(SELECTORS.CLASS.TO_WATCH_LIST_BUTTON);
+    clearElement(SELECTORS.CLASS.WATCH_LIST);
+
+    const { watchList } = this.store.get();
+    const likedList = watchList.filter(({ liked }) => liked);
+    const likedListLIds = likedList.map((item) => item.videoId);
+
+    if (likedList.length) {
+      hideElement(SELECTORS.CLASS.NO_VIDEO);
+    } else {
+      showElement(SELECTORS.CLASS.NO_VIDEO);
+    }
+
+    const renderingVideos = this.list.filter(({ id }) => likedListLIds.includes(id));
+    this.renderSavedVideos(renderingVideos);
+  }
+
   bindEvents() {
     $(SELECTORS.CLASS.WATCH_LIST).addEventListener('click', this.handleClickVideoMenu.bind(this));
     $(SELECTORS.CLASS.TO_WATCH_LIST_BUTTON).addEventListener('click', this.handleShowToWatchList.bind(this));
     $(SELECTORS.CLASS.WATCHED_LIST_BUTTON).addEventListener('click', this.handleShowWatchedList.bind(this));
+    $(SELECTORS.CLASS.LIKED_LIST_BUTTON).addEventListener('click', this.handleShowLikedList.bind(this));
   }
 }

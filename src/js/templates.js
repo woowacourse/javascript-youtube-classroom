@@ -2,7 +2,13 @@ import { generateCSSClass } from './utils.js';
 
 export const getVideoTemplate = (data, options) => {
   const { id, title, channelId, channelTitle, dateString } = data;
-  const { containsSaveButton = false, containsMenu = false, isSaved = false, isWatched = false } = options;
+  const {
+    containsSaveButton = false,
+    containsMenu = false,
+    isSaved = false,
+    isWatched = false,
+    isLiked = false,
+  } = options;
 
   return `
     <article class="clip d-flex flex-col" data-video-id="${id}">
@@ -44,7 +50,7 @@ export const getVideoTemplate = (data, options) => {
             ? `
             <div class="menu-list" data-video-id="${id}"}>
               <span class="cursor-pointer ${generateCSSClass(!isWatched, 'opacity-hover')} watched">✅</span>
-              <span class="cursor-pointer opacity-hover like">👍</span>
+              <span class="cursor-pointer ${generateCSSClass(!isLiked, 'opacity-hover')} like">👍</span>
               <span class="cursor-pointer opacity-hover comment">💬</span>
               <span class="cursor-pointer opacity-hover delete">🗑️</span>
             </div>

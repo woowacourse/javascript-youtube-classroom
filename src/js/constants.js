@@ -10,6 +10,8 @@ export const ALERT_MESSAGE = {
   VIDEO_MOVED_TO_WATCH_LIST: '영상을 [볼 영상] 목록으로 옮겼습니다',
   VIDEO_DELETED: '영상이 삭제되었습니다.',
   MAX_VIDEO_COUNT_EXCEEDED: `영상은 최대 ${SETTINGS.MAX_VIDEO_COUNT}개까지만 저장할 수 있습니다.`,
+  VIDEO_LIKED: '영상을 [좋아요 표시한 영상] 목록으로 옮겼습니다.',
+  VIDEO_LIKE_CANCELED: '영상을 [좋아요 표시한 영상] 목록에서 제외하였습니다.',
 };
 
 export const API_SETTINGS = {
@@ -38,6 +40,7 @@ export const SELECTORS = {
     DELETE: '.delete',
     TO_WATCH_LIST_BUTTON: '.to-watch-list-button',
     WATCHED_LIST_BUTTON: '.watched-list-button',
+    LIKED_LIST_BUTTON: '.liked-list-button',
     SENTINEL: '.sentinel',
   },
   ID: {
@@ -65,4 +68,5 @@ export const SERACH_RESULT = {
 export const MENU = {
   WATCHED: 'watched',
   TO_WATCH: 'toWatch',
+  LIKED: 'liked',
 };
