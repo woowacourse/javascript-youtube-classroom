@@ -1,9 +1,27 @@
 .video-wrapper {
   display: grid;
-  grid-template-columns: repeat(auto-fill, 230px);
+  grid-template-columns: 1fr;
   grid-row-gap: 15px;
   grid-column-gap: 10px;
   justify-content: center;
+}
+
+@media (min-width: 401px) {
+  .video-wrapper {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 601px) {
+  .video-wrapper {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (min-width: 961px) {
+  .video-wrapper {
+    grid-template-columns: repeat(4, 1fr);
+  }
 }
 
 .clip {
