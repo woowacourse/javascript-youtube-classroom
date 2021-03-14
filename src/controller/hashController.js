@@ -10,27 +10,27 @@ import {
 
 const hashController = {
   initRouteEventListeners() {
-    window.onhashchange = routeByHash;
-    window.onload = routeByHash;
+    window.onhashchange = hashController.routeByHash;
+    window.onload = hashController.routeByHash;
+  },
+
+  routeByHash() {
+    const hash = controllerUtil.parseHash(location.hash);
+    layoutView.highlightNavButton(hash);
+
+    if (hash === BROWSER_HASH.WATCHING) {
+      onWatchingVideoShow();
+      return;
+    }
+
+    if (hash === BROWSER_HASH.WATCHED) {
+      onWatchedVideoShow();
+      return;
+    }
+
+    onWatchingVideoShow();
   },
 };
-
-function routeByHash() {
-  const hash = controllerUtil.parseHash(location.hash);
-  layoutView.highlightNavButton(hash);
-
-  if (hash === BROWSER_HASH.WATCHING) {
-    onWatchingVideoShow();
-    return;
-  }
-
-  if (hash === BROWSER_HASH.WATCHED) {
-    onWatchedVideoShow();
-    return;
-  }
-
-  onWatchingVideoShow();
-}
 
 function onWatchingVideoShow() {
   const videos = watchingVideoModel.getItem();

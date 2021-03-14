@@ -12316,7 +12316,8 @@ var SNACKBAR_MESSAGE = Object.freeze({
 });
 var BROWSER_HASH = Object.freeze({
   WATCHING: 'watching',
-  WATCHED: 'watched'
+  WATCHED: 'watched',
+  SEARCH: 'search'
 });
 
 /***/ }),
@@ -12378,27 +12379,26 @@ __webpack_require__.r(__webpack_exports__);
 
 var hashController = {
   initRouteEventListeners: function initRouteEventListeners() {
-    window.onhashchange = routeByHash;
-    window.onload = routeByHash;
+    window.onhashchange = hashController.routeByHash;
+    window.onload = hashController.routeByHash;
+  },
+  routeByHash: function routeByHash() {
+    var hash = _controllerUtil_js__WEBPACK_IMPORTED_MODULE_2__.default.parseHash(location.hash);
+    _view_index_js__WEBPACK_IMPORTED_MODULE_3__.layoutView.highlightNavButton(hash);
+
+    if (hash === _constants_js__WEBPACK_IMPORTED_MODULE_0__.BROWSER_HASH.WATCHING) {
+      onWatchingVideoShow();
+      return;
+    }
+
+    if (hash === _constants_js__WEBPACK_IMPORTED_MODULE_0__.BROWSER_HASH.WATCHED) {
+      onWatchedVideoShow();
+      return;
+    }
+
+    onWatchingVideoShow();
   }
 };
-
-function routeByHash() {
-  var hash = _controllerUtil_js__WEBPACK_IMPORTED_MODULE_2__.default.parseHash(location.hash);
-  _view_index_js__WEBPACK_IMPORTED_MODULE_3__.layoutView.highlightNavButton(hash);
-
-  if (hash === _constants_js__WEBPACK_IMPORTED_MODULE_0__.BROWSER_HASH.WATCHING) {
-    onWatchingVideoShow();
-    return;
-  }
-
-  if (hash === _constants_js__WEBPACK_IMPORTED_MODULE_0__.BROWSER_HASH.WATCHED) {
-    onWatchedVideoShow();
-    return;
-  }
-
-  onWatchingVideoShow();
-}
 
 function onWatchingVideoShow() {
   var videos = _store_js__WEBPACK_IMPORTED_MODULE_1__.watchingVideoModel.getItem();
@@ -12449,9 +12449,11 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _view_index_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../view/index.js */ "./src/view/index.js");
 /* harmony import */ var _constants_js__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../constants.js */ "./src/constants.js");
 /* harmony import */ var _service_watchingVideoService_js__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../service/watchingVideoService.js */ "./src/service/watchingVideoService.js");
+/* harmony import */ var _hashController_js__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./hashController.js */ "./src/controller/hashController.js");
 function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
 
 function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
+
 
 
 
@@ -12507,6 +12509,7 @@ function onSelectedVideoSave(_ref) {
 }
 
 function onModalOpen() {
+  _view_index_js__WEBPACK_IMPORTED_MODULE_5__.layoutView.highlightNavButton(_constants_js__WEBPACK_IMPORTED_MODULE_6__.BROWSER_HASH.SEARCH);
   var allVideoCount = _store_js__WEBPACK_IMPORTED_MODULE_3__.watchingVideoModel.getItem().length + _store_js__WEBPACK_IMPORTED_MODULE_3__.watchedVideoModel.getItem().length;
   var videos = _store_js__WEBPACK_IMPORTED_MODULE_3__.prevSearchResultModel.getItem().prevSearchedVideos;
   var processedVideos = _service_modalService_js__WEBPACK_IMPORTED_MODULE_4__.default.getProcessedVideos(videos);
@@ -12522,6 +12525,7 @@ function onModalOpen() {
 }
 
 function onModalClose() {
+  _hashController_js__WEBPACK_IMPORTED_MODULE_8__.default.routeByHash();
   _view_index_js__WEBPACK_IMPORTED_MODULE_5__.modalView.closeModal();
 }
 
@@ -13555,9 +13559,9 @@ var LayoutView = /*#__PURE__*/function (_BasicView) {
 
   }, {
     key: "highlightNavButton",
-    value: function highlightNavButton(hash) {
+    value: function highlightNavButton(hashId) {
       this._element.$nav.querySelectorAll(".".concat(_constants_js__WEBPACK_IMPORTED_MODULE_0__.SELECTOR_CLASS.NAV_BUTTON)).forEach(function ($button) {
-        if ($button.dataset.id === hash) {
+        if ($button.dataset.hashId === hashId) {
           $button.classList.add(_constants_js__WEBPACK_IMPORTED_MODULE_0__.STYLE_CLASS.NAV_CLICKED);
           return;
         }

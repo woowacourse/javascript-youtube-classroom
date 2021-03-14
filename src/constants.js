@@ -96,4 +96,5 @@ export const SNACKBAR_MESSAGE = Object.freeze({
 export const BROWSER_HASH = Object.freeze({
   WATCHING: 'watching',
   WATCHED: 'watched',
+  SEARCH: 'search',
 });

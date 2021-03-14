@@ -21,11 +21,11 @@ export default class LayoutView extends BasicView {
   }
 
   //TODO: 잘동작하는지 확인해보기
-  highlightNavButton(hash) {
+  highlightNavButton(hashId) {
     this._element.$nav
       .querySelectorAll(`.${SELECTOR_CLASS.NAV_BUTTON}`)
       .forEach($button => {
-        if ($button.dataset.id === hash) {
+        if ($button.dataset.hashId === hashId) {
           $button.classList.add(STYLE_CLASS.NAV_CLICKED);
           return;
         }

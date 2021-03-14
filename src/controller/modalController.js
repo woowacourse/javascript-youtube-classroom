@@ -19,6 +19,7 @@ import modalService from '../service/modalService.js';
 import { layoutView, modalView, watchedVideoView, watchingVideoView } from '../view/index.js';
 import { BROWSER_HASH, SELECTOR_CLASS, SELECTOR_ID, SNACKBAR_MESSAGE } from '../constants.js';
 import watchingVideoService from '../service/watchingVideoService.js';
+import hashController from './hashController.js';
 
 const modalController = {
   initEventListeners() {
@@ -67,6 +68,7 @@ function onSelectedVideoSave({ target }) {
 }
 
 function onModalOpen() {
+  layoutView.highlightNavButton(BROWSER_HASH.SEARCH);
   const allVideoCount =
     watchingVideoModel.getItem().length + watchedVideoModel.getItem().length;
   const videos = prevSearchResultModel.getItem().prevSearchedVideos;
@@ -82,6 +84,7 @@ function onModalOpen() {
 }
 
 function onModalClose() {
+  hashController.routeByHash();
   modalView.closeModal();
 }
 
