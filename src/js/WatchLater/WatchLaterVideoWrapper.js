@@ -40,6 +40,11 @@ export default class WatchLaterVideoWrapper {
       this.hideIfVideoIsSaved.bind(this)
     );
 
+    messenger.addMessageListener(
+      MESSAGE.WATCH_LATER_ICON_CLICKED,
+      this.saveVideoItem.bind(this)
+    );
+
     this.$watchLaterVideoWrapper.addEventListener("click", (event) => {
       const { videoId } = event.target.parentElement.dataset;
 

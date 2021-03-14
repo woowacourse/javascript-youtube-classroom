@@ -19,9 +19,7 @@ export default class HistoryVideoWrapper {
 
     messenger.addMessageListener(
       MESSAGE.WATCHED_ICON_CLICKED,
-      ({ videoId, item }) => {
-        this.saveVideoItem({ videoId, item });
-      }
+      this.saveVideoItem.bind(this)
     );
 
     messenger.addMessageListener(
@@ -48,9 +46,21 @@ export default class HistoryVideoWrapper {
   }
 
   moveVideo(videoId) {
+    messenger.deliverMessage(MESSAGE.WATCH_LATER_ICON_CLICKED, {
+      videoId,
+      item: this.historyVideoItemsMap.get(videoId),
+    });
+
     this.historyVideoItemsMap.delete(videoId);
 
     this.updateLocalStorage();
+
+    this.historyVideosMap.get(videoId).remove();
+    this.historyVideosMap.delete(videoId);
+
+    if (this.historyVideosMap.size === 0) {
+      $.show(this.$noSavedVideoImage);
+    }
   }
 
   deleteVideo(videoId) {
