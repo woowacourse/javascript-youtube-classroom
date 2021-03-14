@@ -143,4 +143,18 @@ describe('저장된 비디오 관리 기능 테스트', () => {
     cy.get('.js-saved-videos-wrapper .watched').each(($el) => cy.wrap($el).should('not.be.visible'));
     cy.get('.js-saved-videos-wrapper .liked').each(($el) => cy.wrap($el).should('be.visible'));
   });
+
+  it('좋아요 메뉴버튼을 누르면 좋아요 로컬에서 데이터를 변경한다.', () => {
+    const FIRST_INDEX = 0;
+    cy.get('.js-search-menu-button').click();
+    cy.get('.js-search-keyword-input').type(KEYWORD);
+    cy.get('.js-search-keyword-form').submit();
+    cy.wait(2000);
+    cy.get('.js-save-button').eq(FIRST_INDEX).click();
+    cy.get('.js-modal-close-button').click();
+
+    expect(false).to.be.eq(getListByKey(DB_KEY.VIDEOS)[FIRST_INDEX].isLiked);
+    cy.get('.js-like-button').click();
+    expect(true).to.be.eq(getListByKey(DB_KEY.VIDEOS)[FIRST_INDEX].isLiked);
+  });
 });
