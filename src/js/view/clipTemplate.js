@@ -34,9 +34,7 @@ export const clipTemplate = (video, index, type) => {
   const { isModal, currentTab, isWatched, isLiked } = type;
 
   return `
-      <article class="clip ${
-        currentTab === LOCAL_STORAGE_VALUE.WATCHED ? 'd-none' : ''
-      } ${isWatched ? 'watched-clip' : 'unwatched-clip'}
+      <article class="clip ${isWatched ? 'watched-clip' : 'unwatched-clip'}
         ${isLiked ? 'liked-clip' : 'unliked-clip'}"
         data-js=${isModal ? 'youtube-search-modal__clip' : 'saved-page__clip'}
         data-clip-index=${index}
