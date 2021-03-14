@@ -134,7 +134,7 @@ describe("유투브 검색 API를 이용하여 영상들을 검색할 수 있다
         .should("have.length", MAX_RESULTS_COUNT * 2);
     });
 
-    it("검색 직후 skeleton UI가 나타나고, 데이터 로드된 후 skeleton UI가 사라진다.", () => {
+    it("검색 직후 skeleton UI가 나타나고, 데이터 로드된 후 skeleton UI가 없어진다.", () => {
       cy.get(`.${CLASSNAME.SEARCH_FORM_INPUT}`).type("우테코");
       cy.get(`.${CLASSNAME.SEARCH_FORM_BUTTON}`).click();
       cy.get(".modal .skeleton").should("have.length", MAX_RESULTS_COUNT);
