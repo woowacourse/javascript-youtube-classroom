@@ -81,8 +81,8 @@ export default class WatchLaterVideoWrapper {
 
     this.updateLocalStorage();
 
-    messenger.deliverMessage(MESSAGE.VIDEO_SAVED, {
-      savedVideosCount: this.watchLaterVideoItemsMap.size,
+    messenger.deliverMessage(MESSAGE.SAVED_VIDEOS_COUNT_CHANGED, {
+      change: -1,
     });
 
     this.watchLaterVideosMap.get(videoId).remove();
@@ -107,8 +107,8 @@ export default class WatchLaterVideoWrapper {
 
     this.updateLocalStorage();
 
-    messenger.deliverMessage(MESSAGE.VIDEO_SAVED, {
-      savedVideosCount: this.watchLaterVideoItemsMap.size,
+    messenger.deliverMessage(MESSAGE.SAVED_VIDEOS_COUNT_CHANGED, {
+      change: +1,
     });
 
     this.renderSingleVideo(item);
