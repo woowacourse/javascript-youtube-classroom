@@ -12321,10 +12321,46 @@ var BROWSER_HASH = Object.freeze({
 
 /***/ }),
 
-/***/ "./src/controller/controller.js":
-/*!**************************************!*\
-  !*** ./src/controller/controller.js ***!
-  \**************************************/
+/***/ "./src/controller/controllerUtil.js":
+/*!******************************************!*\
+  !*** ./src/controller/controllerUtil.js ***!
+  \******************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _constants__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../constants */ "./src/constants.js");
+
+var controllerUtil = {
+  setObserver: function setObserver($element, callback) {
+    var observer = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (entry.intersectionRatio > 0) {
+          callback();
+        }
+      });
+    });
+    observer.observe($element);
+  },
+  parseHash: function parseHash(hash) {
+    if (hash === '') {
+      return _constants__WEBPACK_IMPORTED_MODULE_0__.BROWSER_HASH.WATCHING;
+    }
+
+    return hash.substr(1);
+  }
+};
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (controllerUtil);
+
+/***/ }),
+
+/***/ "./src/controller/hashController.js":
+/*!******************************************!*\
+  !*** ./src/controller/hashController.js ***!
+  \******************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
@@ -12340,7 +12376,7 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-var controller = {
+var hashController = {
   initRouteEventListeners: function initRouteEventListeners() {
     window.onhashchange = routeByHash;
     window.onload = routeByHash;
@@ -12390,43 +12426,7 @@ function onWatchedVideoShow() {
   _view_index_js__WEBPACK_IMPORTED_MODULE_3__.watchedVideoView.renderVideos(videos);
 }
 
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (controller);
-
-/***/ }),
-
-/***/ "./src/controller/controllerUtil.js":
-/*!******************************************!*\
-  !*** ./src/controller/controllerUtil.js ***!
-  \******************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
-/* harmony export */ });
-/* harmony import */ var _constants__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../constants */ "./src/constants.js");
-
-var controllerUtil = {
-  setObserver: function setObserver($element, callback) {
-    var observer = new IntersectionObserver(function (entries) {
-      entries.forEach(function (entry) {
-        if (entry.intersectionRatio > 0) {
-          callback();
-        }
-      });
-    });
-    observer.observe($element);
-  },
-  parseHash: function parseHash(hash) {
-    if (hash === '') {
-      return _constants__WEBPACK_IMPORTED_MODULE_0__.BROWSER_HASH.WATCHING;
-    }
-
-    return hash.substr(1);
-  }
-};
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (controllerUtil);
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (hashController);
 
 /***/ }),
 
@@ -14058,7 +14058,7 @@ define(String.prototype, "padRight", "".padEnd);
   !*** ./src/index.js ***!
   \**********************/
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _controller_controller_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./controller/controller.js */ "./src/controller/controller.js");
+/* harmony import */ var _controller_hashController_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./controller/hashController.js */ "./src/controller/hashController.js");
 /* harmony import */ var _controller_watchingVideoController_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./controller/watchingVideoController.js */ "./src/controller/watchingVideoController.js");
 /* harmony import */ var _controller_watchedVideoController_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./controller/watchedVideoController.js */ "./src/controller/watchedVideoController.js");
 /* harmony import */ var _controller_modalController_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./controller/modalController.js */ "./src/controller/modalController.js");
@@ -14066,7 +14066,7 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-_controller_controller_js__WEBPACK_IMPORTED_MODULE_0__.default.initRouteEventListeners();
+_controller_hashController_js__WEBPACK_IMPORTED_MODULE_0__.default.initRouteEventListeners();
 _controller_modalController_js__WEBPACK_IMPORTED_MODULE_3__.default.initEventListeners();
 _controller_modalController_js__WEBPACK_IMPORTED_MODULE_3__.default.initSearchQueries();
 _controller_watchingVideoController_js__WEBPACK_IMPORTED_MODULE_1__.default.initEventListeners();

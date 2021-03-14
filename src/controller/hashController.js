@@ -8,7 +8,7 @@ import {
   layoutView,
 } from '../view/index.js';
 
-const controller = {
+const hashController = {
   initRouteEventListeners() {
     window.onhashchange = routeByHash;
     window.onload = routeByHash;
@@ -59,4 +59,4 @@ function onWatchedVideoShow() {
   watchedVideoView.renderVideos(videos);
 }
 
-export default controller;
+export default hashController;
