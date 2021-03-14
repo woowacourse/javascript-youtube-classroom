@@ -48,7 +48,7 @@ export const REDIRECT_HOST = 'https://ddongule.netlify.app/youtube/v3/search?';
 export const URL = {
   YOUTUBE_SEARCH: 'https://www.googleapis.com/youtube/v3/search?',
   YOUTUBE_VIDEOS: 'https://www.googleapis.com/youtube/v3/videos?',
-  DUMMY_SEARCH: 'https://dawon.pythonanywhere.com/videos/',
+  DUMMY_SEARCH: 'https://dawon.pythonanywhere.com/videos/?',
 };
 
 export const ERROR_MESSAGE = {

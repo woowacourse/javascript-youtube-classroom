@@ -1,11 +1,11 @@
-import { YOUTUBE_API_KEY } from '../../../env.js';
-import { SEARCH, REDIRECT_HOST } from '../constants/constant.js';
+// import { YOUTUBE_API_KEY } from '../../../env.js';
+import { SEARCH, URL } from '../constants/constant.js';
 
 const youtubeSearchURL = ({ query, nextPageToken, max }) => {
   const urlSearch = new URLSearchParams();
   const queries = {
     q: query.toString(),
-    key: YOUTUBE_API_KEY,
+    // key: YOUTUBE_API_KEY,
     pageToken: nextPageToken,
     max_results: max,
     regionCode: 'kr',
@@ -19,7 +19,7 @@ const youtubeSearchURL = ({ query, nextPageToken, max }) => {
     value && urlSearch.set(key, value);
   });
 
-  return REDIRECT_HOST + urlSearch.toString();
+  return URL.DUMMY_SEARCH + urlSearch.toString();
 };
 
 export const api = {
