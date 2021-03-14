@@ -58,7 +58,9 @@
 - prefix
   - view 에서 render 는 요소의 내부 요소를 조작함을 의미
   - view 에서 show 는 요소의 style.display 값을 조작함을 의미
-- 언더스코어(\_)는 protected의 의미를 가진다.
+- 언더스코어(_)는 protected의 의미를 가진다.
+- controller는 view, model과 종속된다.
+- service는 model, controller와 종속된다.
 
 ## ⚙️ Before Started
 
