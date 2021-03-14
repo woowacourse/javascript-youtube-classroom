@@ -1,5 +1,6 @@
-import controller from './controller/controller.js';
+import modalController from './controller/modalController.js';
+import watchinVideoController from './controller/watchingVideoController.js';
 
-controller.initEventListeners();
-controller.initVideos();
-controller.initSearchQueries();
+modalController.initEventListeners();
+modalController.initSearchQueries();
+watchinVideoController.loadWatchingVideos();

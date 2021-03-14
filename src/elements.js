@@ -13,5 +13,11 @@ export const $searchResultVideoWrapper = $(
 export const $searchResultIntersector = $(
   `#${SELECTOR_ID.SERACH_RESULT_INTERSECTOR}`
 );
-export const $videoWrapper = $(`#${SELECTOR_ID.VIDEO_WRAPPER}`);
+export const $watchingVideoWrapper = $(
+  `#${SELECTOR_ID.WATCHING_VIDEO_WRAPPER}`
+);
 export const $searchQueries = $(`#${SELECTOR_ID.SEARCH_QUERIES}`);
+export const $emptyWatchingVideo = $(`#${SELECTOR_ID.EMPTY_WATCHING_VIDEO}`);
+export const $searchedVideoNotFound = $(`#${SELECTOR_ID.SEARCHED_VIDEO_NOT_FOUND}`);
+export const $nav = $(`#${SELECTOR_ID.NAV}`);
+export const $savedVideoCount = $(`#${SELECTOR_ID.SAVED_VIDEO_COUNT}`);

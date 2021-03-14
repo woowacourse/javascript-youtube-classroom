@@ -12,6 +12,8 @@ lerna-debug.log*
 .stylelintrc.js
 cypress.json
 cypress/intergration/examples/
+
+bundle/bundle.js
 bundle/bundle.js.map
 
 # Diagnostic reports (https://nodejs.org/api/report.html)

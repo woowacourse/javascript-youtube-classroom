@@ -13,7 +13,7 @@ module.exports = {
   devtool: 'source-map',
   plugins: [
     new webpack.DefinePlugin({
-      YOUTUBE_API_KEY: JSON.stringify(process.env.YOUTUBE_API_KEY),
+      YOUTUBE_API_KEY: JSON.stringify(process.env.YOUTUBE_API_KEY_1),
     }),
   ],
   module: {
@@ -24,7 +24,10 @@ module.exports = {
           loader: 'babel-loader',
           options: {
             presets: ['@babel/preset-env'],
-            plugins: ['@babel/plugin-proposal-class-properties'],
+            plugins: [
+              '@babel/plugin-proposal-class-properties',
+              '@babel/plugin-proposal-private-methods',
+            ],
           },
         },
       },
