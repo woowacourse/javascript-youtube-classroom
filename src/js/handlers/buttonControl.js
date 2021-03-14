@@ -1,7 +1,11 @@
 import MESSAGE from '../constants/message.js';
 import videoInfos from '../states/videoInfos.js';
 import videoListType from '../states/videoListType.js';
-import { renderSavedVideoList, showSnackBar } from '../viewControllers/app.js';
+import {
+  removeSavedVideo,
+  renderSavedVideoList,
+  showSnackBar,
+} from '../viewControllers/app.js';
 import { renderSavedVideoCount } from '../viewControllers/searchModal.js';
 
 function handleWatchedButton($target) {
@@ -10,20 +14,20 @@ function handleWatchedButton($target) {
   videoInfos.toggleWatchType(targetId);
   showSnackBar(MESSAGE.SNACKBAR.MOVE_SUCCESS);
 
-  renderSavedVideoList(videoInfos.get(), videoListType.get());
   renderSavedVideoCount(videoInfos.length);
+  renderSavedVideoList(videoInfos.get(), videoListType.get());
 }
 
 function handleDeleteButton($target) {
   if (!window.confirm(MESSAGE.CONFIRM.DELETE_VIDEO)) return;
 
-  const targetId = $target.closest('.js-video').dataset.videoId;
+  const $targetVideo = $target.closest('.js-video');
 
-  videoInfos.remove(targetId);
+  videoInfos.remove($targetVideo.dataset.videoId);
   showSnackBar(MESSAGE.SNACKBAR.DELETE_SUCCESS);
 
-  renderSavedVideoList(videoInfos.get(), videoListType.get());
   renderSavedVideoCount(videoInfos.length);
+  removeSavedVideo($targetVideo);
 }
 
 function handleButtonsControl({ target }) {

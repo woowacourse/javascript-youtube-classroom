@@ -1,4 +1,4 @@
-import { $ } from '../utils/DOM.js';
+import { $, parseHTML } from '../utils/DOM.js';
 import {
   createSavedVideoListTemplate,
   emptyVideoListTemplate,
@@ -33,6 +33,18 @@ function renderSavedVideoList(videoInfos, videoListType) {
     : emptyVideoListTemplate;
 }
 
+function appendSavedVideo(videoInfo) {
+  $videoList.append(
+    parseHTML(
+      createSavedVideoListTemplate([{ ...videoInfo, watchType: 'toWatch' }])
+    )
+  );
+}
+
+function removeSavedVideo($targetVideo) {
+  $targetVideo.remove();
+}
+
 function showSnackBar(contents) {
   const $snackbar = $('#snack-bar');
 
@@ -54,4 +66,6 @@ export {
   renderSavedVideoList,
   showSnackBar,
   toggleFocusedModeButton,
+  appendSavedVideo,
+  removeSavedVideo,
 };

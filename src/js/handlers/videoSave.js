@@ -2,7 +2,11 @@ import MESSAGE from '../constants/message.js';
 import { MAX_SAVED_VIDEO_COUNT } from '../constants/classroom.js';
 import { cancelVideoSave, saveVideo } from '../service.js';
 import videoInfos from '../states/videoInfos.js';
-import { renderSavedVideoList, showSnackBar } from '../viewControllers/app.js';
+import {
+  appendSavedVideo,
+  renderSavedVideoList,
+  showSnackBar,
+} from '../viewControllers/app.js';
 import {
   renderSavedVideoCount,
   toggleSaveButton,
@@ -21,7 +25,10 @@ function handleVideoSave($saveButton) {
   showSnackBar(MESSAGE.SNACKBAR.SAVE_SUCCESS);
 
   renderSavedVideoCount(videoInfos.length);
-  renderSavedVideoList(videoInfos.get(), videoListType.get());
+  appendSavedVideo(
+    videoInfos.get()[videoInfos.length - 1],
+    videoListType.get()
+  );
 }
 
 function handleVideoSaveCancel($saveCancelButton) {
