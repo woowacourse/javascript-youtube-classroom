@@ -16,7 +16,9 @@ const youtubeSearchURL = ({ query, nextPageToken, max }) => {
   };
 
   Object.entries(queries).forEach(([key, value]) => {
-    value && urlSearch.set(key, value);
+    if (value !== null || value !== undefined) {
+      urlSearch.set(key, value);
+    }
   });
 
   return URL.YOUTUBE_SEARCH + urlSearch.toString();
