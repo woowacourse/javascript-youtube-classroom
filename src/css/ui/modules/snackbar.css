@@ -14,7 +14,9 @@
 }
 
 .show {
-  visibility: visible !important; /* Show the snackbar */
+  visibility: visible; /* Show the snackbar */
+  transition-property: opacity;
+  transition-duration: 3s;
   -webkit-animation: fadein 0.5s, fadeout 0.5s 2.7s;
   animation: fadein 0.5s, fadeout 0.5s 2.7s;
 }
