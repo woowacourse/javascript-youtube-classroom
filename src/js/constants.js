@@ -28,6 +28,7 @@ const CLASSNAME = Object.freeze({
   SKELETON: "skeleton",
   OPEN: "open",
   HIDDEN: "--hidden",
+  CANCEL: "cancel",
   BG_CYAN_100: "bg-cyan-100",
   ICONS_WRAPPER: "js-icons-wrapper",
   WATCHED_ICON: "js-watched-icon",

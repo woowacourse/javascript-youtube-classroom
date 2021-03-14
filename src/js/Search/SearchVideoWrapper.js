@@ -1,3 +1,4 @@
+/* eslint-disable no-param-reassign */
 import {
   CLASSNAME,
   MESSAGE,
@@ -53,19 +54,27 @@ export default class SearchVideoWrapper {
         return;
       }
 
-      this.saveVideo(event.target);
+      this.onSaveVideoButtonClick(event.target);
     });
   }
 
   // eslint-disable-next-line class-methods-use-this
-  saveVideo($button) {
+  onSaveVideoButtonClick($button) {
     const { videoId } = $button.dataset;
 
     messenger.deliverMessage(MESSAGE.SAVE_VIDEO_BUTTON_CLICKED, {
       videoId,
       item: this.videoItemsMap.get(videoId),
     });
-    $.hide($button);
+
+    if ($button.classList.contains(CLASSNAME.CANCEL)) {
+      $.removeClass($button, CLASSNAME.CANCEL);
+      $button.innerText = "저장";
+      return;
+    }
+
+    $.addClass($button, CLASSNAME.CANCEL);
+    $button.innerText = "취소";
   }
 
   mountTemplate() {

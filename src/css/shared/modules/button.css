@@ -7,3 +7,13 @@
   border-style: none;
   cursor: pointer;
 }
+
+.js-search-video-wrapper .btn{
+  background-color: rgb(129, 222, 234);
+}
+
+.btn.cancel {
+  color: rgb(68,68,68);
+  background-color: rgb(239,239,239);
+  border-color:rgb(118,118,118); 
+}
