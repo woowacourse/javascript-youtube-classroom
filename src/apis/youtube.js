@@ -9,13 +9,19 @@ export async function getVideosByKeyword(searchKeyword, pageToken) {
     videoDefinition: 'high',
     key: YOUTUBE_API_KEY,
   };
-  const response = await (
-    await fetch(
-      `https://www.googleapis.com/youtube/v3/search?${parseQuery(query)}${
-        pageToken ? `&pageToken=${pageToken}` : ''
-      }`
-    )
-  ).json();
+  let response;
+
+  try {
+    response = await (
+      await fetch(
+        `https://www.googleapis.com/youtube/v3/search?${parseQuery(query)}${pageToken ? `&pageToken=${pageToken}` : ''
+        }`
+      )
+    ).json();
+  } catch (err) {
+    throw new Error(err);
+  }
+
   const { nextPageToken } = response;
   const videos = response.items.map(({ id, snippet }) => ({
     videoId: id.videoId,

@@ -12151,7 +12151,8 @@ function getVideosByKeyword(_x, _x2) {
 
 function _getVideosByKeyword() {
   _getVideosByKeyword = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee(searchKeyword, pageToken) {
-    var query, response, nextPageToken, videos;
+    var query, response, _response, nextPageToken, videos;
+
     return regeneratorRuntime.wrap(function _callee$(_context) {
       while (1) {
         switch (_context.prev = _context.next) {
@@ -12164,16 +12165,26 @@ function _getVideosByKeyword() {
               videoDefinition: 'high',
               key: undefined
             };
-            _context.next = 3;
+            _context.prev = 1;
+            _context.next = 4;
             return fetch("https://www.googleapis.com/youtube/v3/search?".concat(parseQuery(query)).concat(pageToken ? "&pageToken=".concat(pageToken) : ''));
 
-          case 3:
-            _context.next = 5;
+          case 4:
+            _context.next = 6;
             return _context.sent.json();
 
-          case 5:
+          case 6:
             response = _context.sent;
-            nextPageToken = response.nextPageToken;
+            _context.next = 12;
+            break;
+
+          case 9:
+            _context.prev = 9;
+            _context.t0 = _context["catch"](1);
+            throw new Error(_context.t0);
+
+          case 12:
+            _response = response, nextPageToken = _response.nextPageToken;
             videos = response.items.map(function (_ref) {
               var id = _ref.id,
                   snippet = _ref.snippet;
@@ -12189,12 +12200,12 @@ function _getVideosByKeyword() {
               videos: videos
             });
 
-          case 9:
+          case 15:
           case "end":
             return _context.stop();
         }
       }
-    }, _callee);
+    }, _callee, null, [[1, 9]]);
   }));
   return _getVideosByKeyword.apply(this, arguments);
 }
