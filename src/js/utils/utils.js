@@ -30,6 +30,13 @@ export const createElement = ({
   return element;
 };
 
+export const closest = (currElement, selector) => {
+  if (!currElement || !currElement.parentElement) return null;
+  else if (currElement.parentElement.matches(selector))
+    return currElement.parentElement;
+  else return closest(currElement.parentElement, selector);
+};
+
 export const isEmptyString = (string) => {
   return string.trim() === '';
 };

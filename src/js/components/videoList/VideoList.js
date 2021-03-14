@@ -3,6 +3,7 @@ import Video from '../../model/Video.js';
 import {
   $,
   $$,
+  closest,
   localStorageGetItem,
   localStorageSetItem,
 } from '../../utils/utils.js';
@@ -238,7 +239,8 @@ export default class VideoList extends Component {
       return;
     }
 
-    const clip = event.target.closest(SELECTORS.VIDEO_LIST.CLIP_CLASS);
+    const clip = closest(event.target, SELECTORS.VIDEO_LIST.CLIP_CLASS);
+
     const savedVideos = localStorageGetItem(LOCALSTORAGE_KEYS.VIDEOS);
     const newSavedVideos = {};
     let message = '';

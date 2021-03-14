@@ -4,6 +4,7 @@ import { store } from '../../index.js';
 import {
   $,
   $$,
+  closest,
   createElement,
   localStorageGetItem,
   localStorageSetItem,
@@ -111,8 +112,9 @@ export default class VideoSearchResult extends Component {
       return;
     }
 
-    const videoId = event.target.closest(SELECTORS.VIDEO_LIST.CLIP_CLASS)
-      .dataset.videoId;
+    const {
+      dataset: { videoId },
+    } = closest(event.target, SELECTORS.VIDEO_LIST.CLIP_CLASS);
 
     const newSavedVideos = {};
     Object.assign(newSavedVideos, savedVideos, {
