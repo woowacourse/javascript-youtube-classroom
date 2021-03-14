@@ -2,6 +2,7 @@ import { YOUTUBE_API_KEY } from '../../../env.js';
 import { SEARCH, URL } from '../constants/constant.js';
 
 const youtubeSearchURL = ({ query, nextPageToken, max }) => {
+  const urlSearch = new URLSearchParams();
   const queries = {
     q: query,
     key: YOUTUBE_API_KEY,
@@ -14,19 +15,13 @@ const youtubeSearchURL = ({ query, nextPageToken, max }) => {
     part: 'snippet',
   };
 
-  return (
-    URL.YOUTUBE_SEARCH +
-    Object.entries(queries)
-      .map(([key, value]) => {
-        if (value === undefined) {
-          return [];
-        }
+  Object.entries(queries).forEach(([key, value]) => {
+    if (value !== null || value !== undefined) {
+      urlSearch.set(key, value);
+    }
+  });
 
-        return `${key}=${value}`;
-      })
-      .flat()
-      .join('&')
-  );
+  return URL.YOUTUBE_SEARCH + urlSearch.toString();
 };
 
 export const api = {
@@ -35,16 +30,17 @@ export const api = {
     nextPageToken = '',
     max = SEARCH.FETCH_VIDEO_LENGTH,
   }) => {
-    return fetch(youtubeSearchURL({ query, nextPageToken, max }), {
-      method: 'GET',
-    }).then(response => {
-      if (response.ok) {
-        return response.json();
-      } else {
+    return fetch(youtubeSearchURL({ query, nextPageToken, max }))
+      .then(response => {
+        if (response.ok) {
+          return response.json();
+        }
+        return Promise.reject(Error(response.status));
+      })
+      .catch(error => {
         alert(
-          `데이터 불러오기 실패! : 에러코드 - ${response.status} \n다시 검색해주세요!`
+          `데이터 불러오기 실패! : 에러코드 - ${error.message} \n다시 검색해주세요!`
         );
-      }
-    });
+      });
   },
 };

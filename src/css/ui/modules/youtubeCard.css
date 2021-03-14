@@ -13,7 +13,7 @@
 
 .clip .preview-container {
   width: 100%;
-  height: 120px;
+
   position: relative;
 }
 
@@ -64,4 +64,11 @@
 
 .clip .invisible {
   visibility: hidden;
+}
+
+.clip .video-info-buttons button {
+  border: 0;
+  background-color: inherit;
+  padding: 0 1px;
+  cursor: pointer;
 }

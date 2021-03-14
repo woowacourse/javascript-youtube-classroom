@@ -2,31 +2,27 @@ import { api } from '../api/youtubeAPI.js';
 import { SEARCH } from '../constants/constant.js';
 
 class YoutubeModel {
-  #videoInfos;
+  #searchedVideos;
   #nextPageToken;
 
   constructor() {
-    this.#videoInfos = [];
+    this.#searchedVideos = [];
     this.#nextPageToken = '';
   }
 
-  getVideoInfosBySearch = async ({
-    query,
-    max = SEARCH.FETCH_VIDEO_LENGTH,
-  }) => {
+  getVideosBySearch = async ({ query, max = SEARCH.FETCH_VIDEO_LENGTH }) => {
     const nextPageToken = this.#nextPageToken;
+    const json = await api.fetchVideoItems({ query, nextPageToken, max });
 
-    await api.fetchVideoItems({ query, nextPageToken, max }).then(json => {
-      this.#nextPageToken = json.nextPageToken;
-      this.#videoInfos = json.items.map(item => {
-        return {
-          url: item.id.videoId,
-          title: item.snippet.title,
-          channelUrl: item.snippet.channelId,
-          channelTitle: item.snippet.channelTitle,
-          publishTime: item.snippet.publishTime,
-        };
-      });
+    this.#nextPageToken = json.nextPageToken;
+    this.#searchedVideos = json.items.map(item => {
+      return {
+        url: item.id.videoId,
+        title: item.snippet.title,
+        channelId: item.snippet.channelId,
+        channelTitle: item.snippet.channelTitle,
+        publishTime: item.snippet.publishTime,
+      };
     });
   };
 
@@ -34,8 +30,12 @@ class YoutubeModel {
     this.#nextPageToken = '';
   }
 
-  get videoInfos() {
-    return this.#videoInfos;
+  get searchedVideos() {
+    return this.#searchedVideos;
+  }
+
+  get searchedCount() {
+    return this.#searchedVideos.length;
   }
 }
 

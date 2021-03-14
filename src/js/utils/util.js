@@ -1,10 +1,8 @@
+import { CLASS, ERROR_MESSAGE } from '../constants/constant.js';
+
 export const $ = selector => document.querySelector(selector);
 
 export const $$ = selector => document.querySelectorAll(selector);
-
-export const escapeApostrophe = string => {
-  return JSON.stringify(string).replace(/'/gi, '&#039;');
-};
 
 export const parseDOMFromString = string => {
   const parser = new DOMParser();
@@ -12,26 +10,55 @@ export const parseDOMFromString = string => {
 };
 
 export const setJSONToLocalStorage = (key, value) => {
-  localStorage.setItem(key, JSON.stringify(value));
+  try {
+    localStorage.setItem(key, JSON.stringify(value));
+  } catch (error) {
+    alert(ERROR_MESSAGE.FAILED_SET_ITEM);
+  }
 };
 
 export const getJSONFromLocalStorage = key => {
   try {
-    return JSON.parse(localStorage.getItem(key));
-  } catch (e) {
-    return {};
+    const json = JSON.parse(localStorage.getItem(key));
+    if (json === null) return [];
+
+    return json;
+  } catch (error) {
+    alert(ERROR_MESSAGE.FAILED_GET_ITEM);
   }
+
+  return [];
 };
 
-export const isScrollUnfinished = (document, target) => {
-  return (
-    target.scrollTop <
-    Math.max(document.scrollHeight, document.offsetHeight) -
-      document.clientHeight
-  );
+export const isScrollUnfinished = (
+  { scrollHeight, offsetHeight, clientHeight },
+  scrollTop
+) => {
+  return scrollTop < Math.max(scrollHeight, offsetHeight) - clientHeight;
 };
 
 export const convertDateFormat = publishedDate => {
   const date = new Date(publishedDate);
   return `${date.getFullYear()}년 ${date.getMonth() + 1}월 ${date.getDate()}일`;
+};
+
+export const toggleSelectorClass = (selector, className, force = null) => {
+  if (force === null) {
+    selector.classList.toggle(className);
+    return;
+  }
+  selector.classList.toggle(className, force);
+};
+
+const removeArticleSkeleton = event => {
+  const article = event.target.closest('article');
+  article.classList.remove(CLASS.SKELETON);
+};
+
+export const handleVideoLoad = iframe => {
+  iframe.addEventListener('load', event => removeArticleSkeleton(event));
+};
+
+export const handleVideosLoad = iframes => {
+  iframes.forEach(iframe => handleVideoLoad(iframe));
 };

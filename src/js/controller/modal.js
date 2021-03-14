@@ -1,29 +1,55 @@
-import { $ } from '../utils/util.js';
+import { CLASS, SELECTOR } from '../constants/constant.js';
+import { $, toggleSelectorClass } from '../utils/util.js';
 
 class ModalController {
+  #storageModel;
+  #searchView;
+  #$modal;
+  #$modalClose;
+
+  constructor({ model, view }) {
+    this.#storageModel = model.storageModel;
+    this.#searchView = view.searchView;
+    this.#$modal = $(SELECTOR.MODAL);
+    this.#$modalClose = $(SELECTOR.MODAL_CLOSE);
+  }
+
   init = () => {
-    this.handleModalOpen();
-    this.handleModalClose();
+    this.#handleModalOpen();
+    this.#handleModalClose();
   };
 
-  onModalShow = () => {
-    const $modal = $('.modal');
-    $modal.classList.add('open');
+  #loadInfos = () => {
+    this.#searchView.renderSavedVideoCountSection(
+      this.#storageModel.savedVideoCount
+    );
+
+    this.#searchView.renderRecentKeywordSection(
+      this.#storageModel.recentKeywords
+    );
   };
 
-  onModalClose = () => {
-    const $modal = $('.modal');
-    $modal.classList.remove('open');
+  #onModalShow = () => {
+    this.#loadInfos();
+    toggleSelectorClass(this.#$modal, CLASS.OPEN, true);
   };
 
-  handleModalOpen = () => {
-    const $searchModalButton = $('#search-modal-button');
-    $searchModalButton.addEventListener('click', () => this.onModalShow());
+  #onModalClose = () => {
+    toggleSelectorClass(this.#$modal, CLASS.OPEN, false);
   };
 
-  handleModalClose = () => {
-    const $modalClose = $('.modal-close');
-    $modalClose.addEventListener('click', () => this.onModalClose());
+  #handleModalOpen = () => {
+    $(SELECTOR.SEARCH_MODAL_BUTTON).addEventListener('click', () =>
+      this.#onModalShow()
+    );
+  };
+
+  #handleModalClose = () => {
+    window.addEventListener('click', ({ target }) => {
+      if (target === this.#$modal || this.#$modalClose.contains(target)) {
+        this.#onModalClose();
+      }
+    });
   };
 }
 

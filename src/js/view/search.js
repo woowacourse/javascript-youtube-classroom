@@ -1,50 +1,53 @@
-import { SEARCH, SELECTOR } from '../constants/constant.js';
-import { $, parseDOMFromString } from '../utils/util.js';
+import { SEARCH, SELECTOR, CLASS } from '../constants/constant.js';
+import { $, parseDOMFromString, toggleSelectorClass } from '../utils/util.js';
 import {
-  searchNotFoundTemplate,
-  searchVideoTemplate,
+  videoTemplate,
   recentKeywordsTemplate,
-  myVideoInfosTemplate,
-} from './template.js';
+} from '../templates/video-template.js';
 
 class SearchView {
-  init = () => {
-    this.renderSavedVideoCountSection(0);
-    this.renderRecentKeywordSection([]);
-  };
+  #$searchVideoWrapper;
+  #$savedVideoLength;
+  #$recentKeywordsSection;
+  #$searchNotFound;
+
+  constructor() {
+    this.#$searchVideoWrapper = $(SELECTOR.SEARCH_VIDEO_WRAPPER);
+    this.#$savedVideoLength = $(SELECTOR.MY_VIDEO_LENGTH);
+    this.#$recentKeywordsSection = $(SELECTOR.RECENT_KEYWORDS);
+    this.#$searchNotFound = $(SELECTOR.SEARCH_NOT_FOUND);
+  }
 
   renderVideoArticle = (info, save) => {
-    const $searchVideoWrapper = $(SELECTOR.SEARCH_VIDEO_WRAPPER);
-    $searchVideoWrapper.append(
-      parseDOMFromString(searchVideoTemplate(info, save))
-    );
+    const videoArticle = parseDOMFromString(videoTemplate(info, save));
+    this.#$searchVideoWrapper.append(videoArticle);
   };
 
-  renderNotFound = () => {
-    const $searchVideoWrapper = $(SELECTOR.SEARCH_VIDEO_WRAPPER);
-    $searchVideoWrapper.innerHTML = searchNotFoundTemplate();
+  toggleNotFoundSearchedVideo = length => {
+    if (length === 0) {
+      toggleSelectorClass(this.#$searchNotFound, CLASS.SHOW, true);
+      return;
+    }
+
+    toggleSelectorClass(this.#$searchNotFound, CLASS.SHOW, false);
   };
 
   renderSkeletonArticles = () => {
-    const $searchVideoWrapper = $(SELECTOR.SEARCH_VIDEO_WRAPPER);
-    $searchVideoWrapper.innerHTML = videoSkeletonTemplate().repeat(
+    this.#$searchVideoWrapper.innerHTML = videoSkeletonTemplate().repeat(
       SEARCH.FETCH_VIDEO_LENGTH
     );
   };
 
   renderRecentKeywordSection = keywords => {
-    const $recentKeywordsSection = $(SELECTOR.RECENT_KEYWORDS);
-    $recentKeywordsSection.innerHTML = recentKeywordsTemplate(keywords);
+    this.#$recentKeywordsSection.innerHTML = recentKeywordsTemplate(keywords);
   };
 
   renderSavedVideoCountSection = length => {
-    const $myVideoInfosSection = $(SELECTOR.MY_VIDEO_INFOS);
-    $myVideoInfosSection.innerHTML = myVideoInfosTemplate(length);
+    this.#$savedVideoLength.innerHTML = length;
   };
 
   resetView = () => {
-    const $searchVideoWrapper = $(SELECTOR.SEARCH_VIDEO_WRAPPER);
-    $searchVideoWrapper.innerHTML = '';
+    this.#$searchVideoWrapper.innerHTML = '';
   };
 }
 

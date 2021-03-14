@@ -1,0 +1,10 @@
+#saved-not-found {
+  display: none;
+}
+
+#saved-not-found.show {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
