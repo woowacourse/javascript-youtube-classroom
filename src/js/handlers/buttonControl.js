@@ -1,8 +1,4 @@
-import { DELETE_VIDEO_CONFIRM_MSG } from '../constants/confirmMessage.js';
-import {
-  DELETE_SUCCESS_MSG,
-  VIDEO_MOVE_SUCCESS_MSG,
-} from '../constants/snackbarMessage.js';
+import MESSAGE from '../constants/message.js';
 import videoInfos from '../states/videoInfos.js';
 import videoListType from '../states/videoListType.js';
 import { renderSavedVideoList, showSnackBar } from '../viewControllers/app.js';
@@ -12,19 +8,19 @@ function handleWatchedButton($target) {
   const targetId = $target.closest('.js-video').dataset.videoId;
 
   videoInfos.toggleWatchType(targetId);
-  showSnackBar(VIDEO_MOVE_SUCCESS_MSG);
+  showSnackBar(MESSAGE.SNACKBAR.MOVE_SUCCESS);
 
   renderSavedVideoList(videoInfos.get(), videoListType.get());
   renderSavedVideoCount(videoInfos.size);
 }
 
 function handleDeleteButton($target) {
-  if (!window.confirm(DELETE_VIDEO_CONFIRM_MSG)) return;
+  if (!window.confirm(MESSAGE.CONFIRM.DELETE_VIDEO)) return;
 
   const targetId = $target.closest('.js-video').dataset.videoId;
 
   videoInfos.remove(targetId);
-  showSnackBar(DELETE_SUCCESS_MSG);
+  showSnackBar(MESSAGE.SNACKBAR.DELETE_SUCCESS);
 
   renderSavedVideoList(videoInfos.get(), videoListType.get());
   renderSavedVideoCount(videoInfos.size);
