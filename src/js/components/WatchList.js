@@ -42,7 +42,8 @@ export default class WatchList extends Observer {
     const { watchList } = this.store.get();
     const resultTemplate = items
       .map((item) => {
-        const { channelId, title, channelTitle, publishedAt } = item.snippet;
+        const { channelId, title, channelTitle, publishedAt, thumbnails } = item.snippet;
+        const thumbnail = thumbnails.medium.url;
         const { id } = item;
         const currentVideo = watchList.find((item) => item.videoId === id);
 
@@ -52,7 +53,7 @@ export default class WatchList extends Observer {
           day: 'numeric',
         });
 
-        const video = { id, title, channelId, channelTitle, dateString };
+        const video = { id, title, channelId, channelTitle, dateString, thumbnail };
         const options = { containsMenu: true, isWatched: currentVideo.watched, isLiked: currentVideo.liked };
         const videoTemplate = getVideoTemplate(video, options);
 

@@ -63,7 +63,8 @@ export default class YoutubeSearchManager extends Observer {
   getResultTemplate(result) {
     return result
       .map((item) => {
-        const { channelId, title, channelTitle, publishedAt } = item.snippet;
+        const { channelId, title, channelTitle, publishedAt, thumbnails } = item.snippet;
+        const thumbnail = thumbnails.medium.url;
         const id = item.id.videoId;
 
         const { watchList } = this.store.get();
@@ -75,7 +76,7 @@ export default class YoutubeSearchManager extends Observer {
           day: 'numeric',
         });
 
-        const video = { id, title, channelId, channelTitle, dateString };
+        const video = { id, title, channelId, channelTitle, dateString, thumbnail };
         const options = { containsSaveButton: !isSaved };
 
         return getVideoTemplate(video, options);
@@ -92,7 +93,6 @@ export default class YoutubeSearchManager extends Observer {
   }
 
   renderResults(template) {
-    // $(SELECTORS.CLASS.SENTINEL).insertAdjacentHTML('beforebegin', template);
     $(SELECTORS.CLASS.YOUTUBE_SEARCH_RESULT).insertAdjacentHTML('beforeend', template);
   }
 
@@ -136,6 +136,7 @@ export default class YoutubeSearchManager extends Observer {
 
     try {
       const response = await searchYoutube(this.keyword);
+
       this.pageToken = response.nextPageToken;
       this.updateRecentKeywordList(this.keyword);
 
