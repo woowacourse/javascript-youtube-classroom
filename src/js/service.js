@@ -2,13 +2,7 @@ import { fetchSearchResult } from './API.js';
 import intersectionObserver from './states/intersectionObserver.js';
 import pageToken from './states/pageToken.js';
 import videoInfos from './states/videoInfos.js';
-import {
-  renderVideoLoader,
-  renderSearchVideoList,
-} from './viewControllers/searchModal.js';
 import { $ } from './utils/DOM.js';
-import { renderSavedVideoList } from './viewControllers/app.js';
-import videoListType from './states/videoListType.js';
 
 function createVideoInfo(videoDataset) {
   const { videoId, title, channelId, channelTitle, publishTime } = videoDataset;
@@ -21,14 +15,11 @@ function createVideoInfo(videoDataset) {
 }
 
 async function searchVideo(keyword) {
-  renderVideoLoader();
-
   const { nextPageToken, items: videoList } = await fetchSearchResult(keyword);
-  const filteredItems = videoList.filter(video => video.id.videoId);
+  const filteredVideoList = videoList.filter(video => video.id.videoId);
   pageToken.set(nextPageToken);
-  renderSearchVideoList(filteredItems, videoInfos.get());
 
-  return videoList;
+  return filteredVideoList;
 }
 
 function saveVideo($video) {

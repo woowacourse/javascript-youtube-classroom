@@ -1,6 +1,11 @@
 import latestKeywords from '../states/latestKeywords.js';
-import { renderLatestKeywordList } from '../viewControllers/searchModal.js';
+import {
+  renderLatestKeywordList,
+  renderSearchVideoList,
+  renderVideoLoader,
+} from '../viewControllers/searchModal.js';
 import { initInfiniteScroll, searchVideo } from '../service.js';
+import videoInfos from '../states/videoInfos.js';
 
 async function handleVideoSearch(e) {
   e.preventDefault();
@@ -11,7 +16,9 @@ async function handleVideoSearch(e) {
   latestKeywords.add(keyword);
   renderLatestKeywordList(latestKeywords.get());
 
+  renderVideoLoader();
   const searchVideoList = await searchVideo(keyword);
+  renderSearchVideoList(searchVideoList, videoInfos.get());
 
   if (searchVideoList.length) {
     initInfiniteScroll();
