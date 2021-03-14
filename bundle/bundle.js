@@ -12380,7 +12380,7 @@ function _onVideoSearch() {
         switch (_context2.prev = _context2.next) {
           case 0:
             event.preventDefault();
-            input = _elements_js__WEBPACK_IMPORTED_MODULE_0__.$searchFormInput.value.trim();
+            input = event.target["".concat(_constants_js__WEBPACK_IMPORTED_MODULE_6__.SELECTOR_ID.SEARCH_FORM_INPUT)].value.trim();
 
             if (!(input === _storage_prevSearchResult_js__WEBPACK_IMPORTED_MODULE_3__.default.getLastQuery())) {
               _context2.next = 4;
@@ -12564,6 +12564,7 @@ var controllerUtil = {
     _view_view_js__WEBPACK_IMPORTED_MODULE_0__.default.insertVideoItems(processedVideos);
     _view_view_js__WEBPACK_IMPORTED_MODULE_0__.default.showSearchResultIntersector();
   },
+  //TODO: remove, add => view로 옮기기
   highlightNavButton: function highlightNavButton($element) {
     (0,_utils_querySelector_js__WEBPACK_IMPORTED_MODULE_5__.$)(".".concat(_constants_js__WEBPACK_IMPORTED_MODULE_4__.SELECTOR_CLASS.NAV_BUTTON)).forEach(function (button) {
       button.classList.remove(_constants_js__WEBPACK_IMPORTED_MODULE_4__.STYLE_CLASS.CLICKED);

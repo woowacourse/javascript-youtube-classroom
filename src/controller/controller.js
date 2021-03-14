@@ -3,7 +3,6 @@ import {
   $searchButton,
   $modalCloseButton,
   $searchForm,
-  $searchFormInput,
   $searchResultIntersector,
   $searchResultVideoWrapper,
   $modal,
@@ -49,7 +48,7 @@ function onModalClose() {
 
 async function onVideoSearch(event) {
   event.preventDefault();
-  const input = $searchFormInput.value.trim();
+  const input = event.target[`${SELECTOR_ID.SEARCH_FORM_INPUT}`].value.trim();
 
   if (input === prevSearchResult.getLastQuery()) {
     return;

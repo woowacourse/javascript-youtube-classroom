@@ -70,6 +70,7 @@ const controllerUtil = {
     view.showSearchResultIntersector();
   },
 
+  //TODO: remove, add => view로 옮기기
   highlightNavButton($element) {
     $(`.${SELECTOR_CLASS.NAV_BUTTON}`).forEach((button) => {
       button.classList.remove(STYLE_CLASS.CLICKED);
