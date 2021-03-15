@@ -25,7 +25,7 @@ export default class HistoryVideoWrapper {
 
     messenger.addMessageListener(
       MESSAGE.WATCHED_ICON_CLICKED,
-      this.saveVideoItem.bind(this)
+      this.saveVideo.bind(this)
     );
 
     messenger.addMessageListener(
@@ -98,7 +98,7 @@ export default class HistoryVideoWrapper {
     }
   }
 
-  saveVideoItem({ videoId, item }) {
+  saveVideo({ videoId, item }) {
     this.historyVideoItemsMap.set(videoId, item);
 
     this.updateLocalStorage();

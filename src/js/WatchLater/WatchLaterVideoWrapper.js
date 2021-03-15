@@ -27,7 +27,7 @@ export default class WatchLaterVideoWrapper {
 
     messenger.addMessageListener(
       MESSAGE.SAVE_VIDEO_BUTTON_CLICKED,
-      this.saveVideoItem.bind(this)
+      this.saveVideo.bind(this)
     );
 
     messenger.addMessageListener(
@@ -42,7 +42,7 @@ export default class WatchLaterVideoWrapper {
 
     messenger.addMessageListener(
       MESSAGE.WATCH_LATER_ICON_CLICKED,
-      this.saveVideoItem.bind(this)
+      this.saveVideo.bind(this)
     );
 
     this.$watchLaterVideoWrapper.addEventListener("click", (event) => {
@@ -105,7 +105,7 @@ export default class WatchLaterVideoWrapper {
     }
   }
 
-  saveVideoItem({ videoId, item }) {
+  saveVideo({ videoId, item }) {
     this.watchLaterVideoItemsMap.set(videoId, item);
 
     this.updateLocalStorage();
