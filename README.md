@@ -13,10 +13,10 @@
   </a>
 </p>
 
-## 🔥 Projects!
+## [🌎 데모페이지](https://yungo1846.github.io/javascript-youtube-classroom/)
 
 <p align="middle">
-  <img src="./src/images/readme/youtube_classroom_preview.png">
+  <img src="./src/images/readme/step3.gif">
 </p>
 
 ### 🎯 step1 검색 기능
@@ -50,11 +50,11 @@
 
 ### 🎯🎯🎯 step3 유저 경험 증가 기능
 
-- [ ] 👍 좋아요 버튼을 누른 데이터만 필터링해서 보여줄 수 있는 메뉴를 만든다.
-  - [ ] 👍 좋아요 버튼을 누른 경우, 로컬에서 데이터를 변경한다.
-  - [ ] 👍 좋아요 버튼을 다시 클릭해서 해지할 수 있어야 한다.
-- [ ] 스크롤 페이징 방식을 이용해서 Lazy loading을 개선한다.
-- [ ] 반응형 웹: 유저가 사용하는 디바이스의 가로 길이에 따라 검색결과의 row 당 column 갯수를 변경한다.
+- [x] 👍 좋아요 버튼을 누른 데이터만 필터링해서 보여줄 수 있는 메뉴를 만든다.
+  - [x] 👍 좋아요 버튼을 누른 경우, 로컬에서 데이터를 변경한다.
+  - [x] 👍 좋아요 버튼을 다시 클릭해서 해지할 수 있어야 한다.
+- [x] 스크롤 페이징 방식을 이용해서 Lazy loading을 개선한다.
+- [x] 반응형 웹: 유저가 사용하는 디바이스의 가로 길이에 따라 검색결과의 row 당 column 갯수를 변경한다.
   - youtubeCard.css 파일에 있는 .video-wrapper의 css 속성 중 grid-template-columns의 속성을 auto-fill에서 아래의 요구사항에 맞게 변경한다.
   - 1280px 이하: 4개
   - 960px 이하: 3개
