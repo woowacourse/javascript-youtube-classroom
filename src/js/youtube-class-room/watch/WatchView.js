@@ -81,5 +81,11 @@ export default class WatchView {
     elements.$watchedVideos.append(this.appendSavedVideoClips(watchedVideos));
   }
 
-  showLikedVideos(likedVideos) {}
+  showLikedVideos(likedVideos) {
+    this.hideAllSection();
+    showElement(elements.$likedVideos);
+
+    elements.$likedVideos.innerHTML = "";
+    elements.$likedVideos.append(this.appendSavedVideoClips(likedVideos));
+  }
 }

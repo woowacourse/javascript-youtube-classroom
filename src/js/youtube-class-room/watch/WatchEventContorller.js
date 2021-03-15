@@ -2,9 +2,15 @@ import WatchController from "./WatchController.js";
 
 import elements from "../../utils/elements.js";
 import { showSnackbar } from "../../utils/snackbar.js";
-import { ERROR_MESSAGE } from "../../utils/constants.js";
+import {
+  ERROR_MESSAGE,
+  DOM_CONSTANTS,
+  VIDEO_VIEW_NAME,
+} from "../../utils/constants.js";
 
 import videos from "../../state/videos.js";
+import videoViewIndex from "../../state/videoViewIndex.js";
+
 export default class WatchEventController {
   constructor() {
     this.watchController = new WatchController();
@@ -44,33 +50,57 @@ export default class WatchEventController {
 
   bindClipButtonEvents() {
     elements.$watchLaterVideos.addEventListener("click", (e) => {
-      this.onClickWatchedButton(e);
-      this.onClickLikedButton(e);
-      this.onClickDeleteButton(e, false);
+      this.onClipButtonEvents(e, false);
     });
 
     elements.$watchedVideos.addEventListener("click", (e) => {
-      this.onClickClearWatchLogbutton(e);
-      this.onClickLikedButton(e);
-      this.onClickDeleteButton(e, true);
+      this.onClipButtonEvents(e, true);
     });
+  }
+
+  onClipButtonEvents(e, isWatched) {
+    const buttonType = e.target.dataset.buttonType;
+    const videoId = e.target.dataset.videoId;
+
+    if (!buttonType) {
+      return;
+    }
+
+    switch (buttonType) {
+      case DOM_CONSTANTS.DATASET.BUTTON_TYPE.WATCHED:
+        isWatched
+          ? this.watchController.clearWatchedViedoLog(videoId)
+          : this.watchController.watchVideo(videoId);
+        break;
+      case DOM_CONSTANTS.DATASET.BUTTON_TYPE.LIKED:
+        this.watchController.toggleLike(videoId);
+        break;
+      case DOM_CONSTANTS.DATASET.BUTTON_TYPE.DELETE:
+        this.watchController.deleteVideo(videoId);
+        break;
+    }
+
+    this.watchController.updateCurrentView();
   }
 
   onLoadApp() {
     videos.initSavedVideos();
-    this.watchController.updateWatchLaterView(videos.getSavedVideos());
+    this.watchController.updateWatchLaterView();
   }
 
   onClickWatchLaterViewButton() {
-    this.watchController.updateWatchLaterView(videos.getSavedVideos());
+    videoViewIndex.setViewName(VIDEO_VIEW_NAME.WATCH_LATER);
+    this.watchController.updateWatchLaterView();
   }
 
   onClickWatchedViewButton() {
-    this.watchController.updateWatchedView(videos.getSavedVideos());
+    videoViewIndex.setViewName(VIDEO_VIEW_NAME.WATCHED);
+    this.watchController.updateWatchedView();
   }
 
   onClickLikedViewButton() {
-    this.watchController.updateLikedView(videos.getSavedVideos());
+    videoViewIndex.setViewName(VIDEO_VIEW_NAME.LIKED);
+    this.watchController.updateLikedView();
   }
 
   onClickSaveButton(e) {
@@ -78,27 +108,7 @@ export default class WatchEventController {
       return;
     }
 
-    this.watchController.updateWatchLaterView(videos.getSavedVideos());
-  }
-
-  onClickWatchedButton(e) {
-    const videoId = e.target.dataset.watchedButton;
-    if (!videoId) {
-      return;
-    }
-
-    this.watchController.watchVideo(videoId);
-    this.watchController.updateWatchLaterView(videos.getSavedVideos());
-  }
-
-  onClickClearWatchLogbutton(e) {
-    const videoId = e.target.dataset.watchedButton;
-    if (!videoId) {
-      return;
-    }
-
-    this.watchController.clearWatchedViedoLog(videoId);
-    this.watchController.updateWatchedView(videos.getSavedVideos());
+    this.watchController.updateWatchLaterView();
   }
 
   onClickLikedButton(e) {
@@ -107,19 +117,5 @@ export default class WatchEventController {
     }
 
     showSnackbar(ERROR_MESSAGE.NOT_IMPLEMENTED);
-  }
-
-  onClickDeleteButton(e, isWatched) {
-    const videoId = e.target.dataset.deleteButton;
-    if (!videoId) {
-      return;
-    }
-
-    this.watchController.deleteVideo(videoId);
-    if (isWatched) {
-      this.watchController.updateWatchedView(videos.getSavedVideos());
-    } else {
-      this.watchController.updateWatchLaterView(videos.getSavedVideos());
-    }
   }
 }
