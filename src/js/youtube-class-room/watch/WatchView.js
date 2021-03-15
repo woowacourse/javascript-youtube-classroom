@@ -1,12 +1,13 @@
 import { createSavedClipTemplate } from "../../templates/videoClipTemplate.js";
 
-import { PALLET } from "../../utils/constants.js";
+import { PALLET, EMPTY_IMG } from "../../utils/constants.js";
 import elements from "../../utils/elements.js";
 import {
   hideElement,
   showElement,
   removeBackgroundColor,
   addBackgroundColor,
+  createImg,
 } from "../../utils/dom.js";
 
 export default class WatchView {
@@ -16,13 +17,10 @@ export default class WatchView {
     removeBackgroundColor(elements.$likedViewButton, PALLET.CYAN_100);
   }
 
-  hideAllSection() {
+  hideNotFoundImgs() {
     hideElement(elements.$notSaved);
     hideElement(elements.$notWatched);
     hideElement(elements.$noLiked);
-    hideElement(elements.$watchLaterVideos);
-    hideElement(elements.$watchedVideos);
-    hideElement(elements.$likedVideos);
   }
 
   markWatchLaterViewButton() {
@@ -48,44 +46,21 @@ export default class WatchView {
     return fragment;
   }
 
-  showNotSavedImg() {
-    this.hideAllSection();
-    showElement(elements.$notSaved);
-  }
+  showEmptyImg(imgSrc) {
+    hideElement(elements.$savedVidoes);
+    showElement(elements.$emptyImg);
 
-  showNotWatchedImg() {
-    this.hideAllSection();
-    showElement(elements.$notWatched);
-  }
-
-  showNoLikedImg() {
-    this.hideAllSection();
-    showElement(elements.$noLiked);
-  }
-
-  showWatchLaterVideos(watchLaterVideos) {
-    this.hideAllSection();
-    showElement(elements.$watchLaterVideos);
-
-    elements.$watchLaterVideos.innerHTML = "";
-    elements.$watchLaterVideos.append(
-      this.appendSavedVideoClips(watchLaterVideos)
+    elements.$emptyImg.innerHTML = "";
+    elements.$emptyImg.append(
+      createImg(imgSrc, EMPTY_IMG.ALT.NO_VIDEOS, EMPTY_IMG.WIDTH.DEFAULT)
     );
   }
 
-  showWatchedVideos(watchedVideos) {
-    this.hideAllSection();
-    showElement(elements.$watchedVideos);
+  updateSavedVideosView(selectedVideos) {
+    hideElement(elements.$emptyImg);
+    showElement(elements.$savedVidoes);
 
-    elements.$watchedVideos.innerHTML = "";
-    elements.$watchedVideos.append(this.appendSavedVideoClips(watchedVideos));
-  }
-
-  showLikedVideos(likedVideos) {
-    this.hideAllSection();
-    showElement(elements.$likedVideos);
-
-    elements.$likedVideos.innerHTML = "";
-    elements.$likedVideos.append(this.appendSavedVideoClips(likedVideos));
+    elements.$savedVidoes.innerHTML = "";
+    elements.$savedVidoes.append(this.appendSavedVideoClips(selectedVideos));
   }
 }

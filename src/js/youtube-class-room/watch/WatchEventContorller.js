@@ -49,17 +49,7 @@ export default class WatchEventController {
   }
 
   bindClipButtonEvents() {
-    elements.$watchLaterVideos.addEventListener(
-      "click",
-      this.onClipButtonEvents.bind(this)
-    );
-
-    elements.$watchedVideos.addEventListener(
-      "click",
-      this.onClipButtonEvents.bind(this)
-    );
-
-    elements.$likedVideos.addEventListener(
+    elements.$savedVidoes.addEventListener(
       "click",
       this.onClipButtonEvents.bind(this)
     );
