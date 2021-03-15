@@ -1,11 +1,13 @@
 const webpack = require('webpack');
 const dotenv = require('dotenv');
 const path = require('path');
+const CaseSensitivePathsPlugin = require('case-sensitive-paths-webpack-plugin');
 dotenv.config();
+
 
 module.exports = {
   mode: 'development',
-  entry: ['babel-polyfill', './src/index.js'],
+  entry: ['babel-polyfill', path.join(__dirname, 'src', 'index.js')],
   output: {
     path: path.join(__dirname, 'bundle'),
     filename: 'bundle.js',
@@ -15,6 +17,7 @@ module.exports = {
     new webpack.DefinePlugin({
       YOUTUBE_API_KEY: JSON.stringify(process.env.YOUTUBE_API_KEY_1),
     }),
+    new CaseSensitivePathsPlugin(),
   ],
   module: {
     rules: [

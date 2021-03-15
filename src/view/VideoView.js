@@ -1,7 +1,8 @@
 import { SELECTOR_CLASS, STYLE_CLASS } from '../constants';
 import BasicView from './BasicView';
+import { GetVideoIframeMixin } from './mixin';
 
-export default class VideoView extends BasicView {
+export default class VideoView extends GetVideoIframeMixin(BasicView) {
   #isChecked;
 
   constructor({ $videoWrapper, $emptyVideoImage }, isChecked) {
@@ -40,14 +41,7 @@ export default class VideoView extends BasicView {
     return `
     <article class="${SELECTOR_CLASS.CLIP} clip">
       <div class="clip__preview">
-        <iframe
-          width="100%"
-          height="118"
-          src="https://www.youtube.com/embed/${videoItem.videoId}"
-          frameborder="0"
-          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-          allowfullscreen
-        ></iframe>
+        ${this._getIframe(videoItem)}
       </div>
       <div class="clip__content pt-2 px-1">
         <h3>${videoItem.title}</h3>

@@ -2,6 +2,7 @@
   0% {
     opacity: 0;
   }
+
   100% {
     opacity: 1;
   }
@@ -11,6 +12,7 @@
   0% {
     opacity: 1;
   }
+
   100% {
     opacity: 0;
   }
@@ -18,4 +20,14 @@
 
 .fade-in-and-out {
   animation: fade-in 1s forwards, fade-out 1s 2s forwards;
+}
+
+@keyframes zoom-in {
+  0% {
+    font-size: 30px;
+  }
+
+  100% {
+    font-size: 50px;
+  }
 }

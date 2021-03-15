@@ -25,6 +25,7 @@ function getNewVideo(dataset) {
     channelTitle: dataset.channelTitle,
     publishedAt: dataset.publishedAt,
     videoId: dataset.videoId,
+    thumbnailUrl: dataset.thumbnailUrl,
     isSaved: true,
   };
 }

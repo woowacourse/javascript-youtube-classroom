@@ -20,7 +20,6 @@ export default class LayoutView extends BasicView {
     }, SETTINGS.SNACKBAR_PERSISTENT_MILLISEC);
   }
 
-  //TODO: 잘동작하는지 확인해보기
   highlightNavButton(hashId) {
     this._element.$nav
       .querySelectorAll(`.${SELECTOR_CLASS.NAV_BUTTON}`)

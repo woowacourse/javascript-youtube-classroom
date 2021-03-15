@@ -12192,7 +12192,8 @@ function _getVideosByKeyword() {
                 videoId: id.videoId,
                 title: snippet.title,
                 channelTitle: snippet.channelTitle,
-                publishedAt: snippet.publishedAt
+                publishedAt: snippet.publishedAt,
+                thumbnailUrl: snippet.thumbnails.medium.url
               };
             });
             return _context.abrupt("return", {
@@ -12542,7 +12543,7 @@ function _onVideoSearch() {
         switch (_context.prev = _context.next) {
           case 0:
             event.preventDefault();
-            input = _elements_js__WEBPACK_IMPORTED_MODULE_0__.$searchFormInput.value.trim(); //TODO: validation 으로 빼기
+            input = _elements_js__WEBPACK_IMPORTED_MODULE_0__.$searchFormInput.value.trim();
 
             if (!(input === _store_js__WEBPACK_IMPORTED_MODULE_3__.prevSearchResultModel.getItem().lastQuery)) {
               _context.next = 4;
@@ -12977,6 +12978,7 @@ function getNewVideo(dataset) {
     channelTitle: dataset.channelTitle,
     publishedAt: dataset.publishedAt,
     videoId: dataset.videoId,
+    thumbnailUrl: dataset.thumbnailUrl,
     isSaved: true
   };
 }
@@ -13555,8 +13557,7 @@ var LayoutView = /*#__PURE__*/function (_BasicView) {
       setTimeout(function () {
         _this2.deleteElement(_this2._element.$snackbarWrapper, $snackbar);
       }, _constants_js__WEBPACK_IMPORTED_MODULE_0__.SETTINGS.SNACKBAR_PERSISTENT_MILLISEC);
-    } //TODO: 잘동작하는지 확인해보기
-
+    }
   }, {
     key: "highlightNavButton",
     value: function highlightNavButton(hashId) {
@@ -13613,6 +13614,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var _constants_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../constants.js */ "./src/constants.js");
 /* harmony import */ var _BasicView_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./BasicView.js */ "./src/view/BasicView.js");
+/* harmony import */ var _mixin_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./mixin.js */ "./src/view/mixin.js");
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -13640,6 +13642,7 @@ function _classPrivateMethodGet(receiver, privateSet, fn) { if (!privateSet.has(
 
 
 
+
 var _renderSkeletonItems = new WeakSet();
 
 var _getSkeletonListTemplate = new WeakSet();
@@ -13652,8 +13655,8 @@ var _getSearchedVideoListTemplate = new WeakSet();
 
 var _getSearchedVideoTemplate = new WeakSet();
 
-var ModalView = /*#__PURE__*/function (_BasicView) {
-  _inherits(ModalView, _BasicView);
+var ModalView = /*#__PURE__*/function (_GetVideoIframeMixin) {
+  _inherits(ModalView, _GetVideoIframeMixin);
 
   var _super = _createSuper(ModalView);
 
@@ -13750,7 +13753,7 @@ var ModalView = /*#__PURE__*/function (_BasicView) {
   }]);
 
   return ModalView;
-}(_BasicView_js__WEBPACK_IMPORTED_MODULE_1__.default);
+}((0,_mixin_js__WEBPACK_IMPORTED_MODULE_2__.GetVideoIframeMixin)(_BasicView_js__WEBPACK_IMPORTED_MODULE_1__.default));
 
 var _renderSkeletonItems2 = function _renderSkeletonItems2() {
   this.renderHTML(this._element.$searchResultVideoWrapper, _classPrivateMethodGet(this, _getSkeletonListTemplate, _getSkeletonListTemplate2).call(this));
@@ -13769,11 +13772,15 @@ var _getSearchQueryTemplate2 = function _getSearchQueryTemplate2(query) {
 };
 
 var _getSearchedVideoListTemplate2 = function _getSearchedVideoListTemplate2(videos) {
-  return videos.map(_classPrivateMethodGet(this, _getSearchedVideoTemplate, _getSearchedVideoTemplate2)).join('');
+  var _this2 = this;
+
+  return videos.map(function (video) {
+    return _classPrivateMethodGet(_this2, _getSearchedVideoTemplate, _getSearchedVideoTemplate2).call(_this2, video);
+  }).join('');
 };
 
 var _getSearchedVideoTemplate2 = function _getSearchedVideoTemplate2(videoItem) {
-  return "\n    <article class=\"".concat(_constants_js__WEBPACK_IMPORTED_MODULE_0__.SELECTOR_CLASS.SEARCHED_CLIP, " clip\">\n      <div class=\"clip__preview\">\n        <iframe\n          width=\"100%\"\n          height=\"118\"\n          src=\"https://www.youtube.com/embed/").concat(videoItem.videoId, "\"\n          frameborder=\"0\"\n          allow=\"accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture\"\n          allowfullscreen\n        ></iframe>\n      </div>\n      <div class=\"clip__content pt-2 px-1\">\n        <h3>").concat(videoItem.title, "</h3>\n        <div>\n          <a\n            href=\"https://www.youtube.com/channel/UC-mOekGSesms0agFntnQang\"\n            target=\"_blank\"\n            class=\"channel-name mt-1\"\n          >\n            ").concat(videoItem.channelTitle, "\n          </a>\n          <div class=\"meta\">\n            <p>").concat(videoItem.publishedAt, "</p>\n          </div>\n          <div class=\"d-flex justify-end ").concat(videoItem.isSaved ? 'removed' : '', "\">\n            <button class=\"btn ").concat(_constants_js__WEBPACK_IMPORTED_MODULE_0__.SELECTOR_CLASS.SEARCHED_CLIP_SAVE_BUTTON, "\"\n              data-video-id=\"").concat(videoItem.videoId, "\"\n              data-title=\"").concat(videoItem.title, "\"\n              data-channel-title=\"").concat(videoItem.channelTitle, "\"\n              data-published-at=\"").concat(videoItem.publishedAt, "\"\n            >\u2B07\uFE0F \uC800\uC7A5</button>\n          </div>\n        </div>\n      </div>\n    </article>\n    ");
+  return "\n    <article class=\"".concat(_constants_js__WEBPACK_IMPORTED_MODULE_0__.SELECTOR_CLASS.SEARCHED_CLIP, " clip\">\n      <div class=\"clip__preview\">\n        ").concat(this._getIframe(videoItem), "\n      </div>\n      <div class=\"clip__content pt-2 px-1\">\n        <h3>").concat(videoItem.title, "</h3>\n        <div>\n          <a\n            href=\"https://www.youtube.com/channel/UC-mOekGSesms0agFntnQang\"\n            target=\"_blank\"\n            class=\"channel-name mt-1\"\n          >\n            ").concat(videoItem.channelTitle, "\n          </a>\n          <div class=\"meta\">\n            <p>").concat(videoItem.publishedAt, "</p>\n          </div>\n          <div class=\"d-flex justify-end ").concat(videoItem.isSaved ? 'removed' : '', "\">\n            <button class=\"btn ").concat(_constants_js__WEBPACK_IMPORTED_MODULE_0__.SELECTOR_CLASS.SEARCHED_CLIP_SAVE_BUTTON, "\"\n              data-video-id=\"").concat(videoItem.videoId, "\"\n              data-title=\"").concat(videoItem.title, "\"\n              data-channel-title=\"").concat(videoItem.channelTitle, "\"\n              data-published-at=\"").concat(videoItem.publishedAt, "\"\n              data-thumbnail-url=\"").concat(videoItem.thumbnailUrl, "\"\n            >\u2B07\uFE0F \uC800\uC7A5</button>\n          </div>\n        </div>\n      </div>\n    </article>\n    ");
 };
 
 
@@ -13793,6 +13800,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var _constants__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../constants */ "./src/constants.js");
 /* harmony import */ var _BasicView__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./BasicView */ "./src/view/BasicView.js");
+/* harmony import */ var _mixin__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./mixin */ "./src/view/mixin.js");
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -13822,10 +13830,11 @@ function _classPrivateFieldSet(receiver, privateMap, value) { var descriptor = p
 
 
 
+
 var _isChecked = new WeakMap();
 
-var VideoView = /*#__PURE__*/function (_BasicView) {
-  _inherits(VideoView, _BasicView);
+var VideoView = /*#__PURE__*/function (_GetVideoIframeMixin) {
+  _inherits(VideoView, _GetVideoIframeMixin);
 
   var _super = _createSuper(VideoView);
 
@@ -13885,12 +13894,12 @@ var VideoView = /*#__PURE__*/function (_BasicView) {
   }, {
     key: "_getVideoTemplate",
     value: function _getVideoTemplate(videoItem, isWatched) {
-      return "\n    <article class=\"".concat(_constants__WEBPACK_IMPORTED_MODULE_0__.SELECTOR_CLASS.CLIP, " clip\">\n      <div class=\"clip__preview\">\n        <iframe\n          width=\"100%\"\n          height=\"118\"\n          src=\"https://www.youtube.com/embed/").concat(videoItem.videoId, "\"\n          frameborder=\"0\"\n          allow=\"accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture\"\n          allowfullscreen\n        ></iframe>\n      </div>\n      <div class=\"clip__content pt-2 px-1\">\n        <h3>").concat(videoItem.title, "</h3>\n        <div>\n          <a\n            href=\"https://www.youtube.com/channel/UC-mOekGSesms0agFntnQang\"\n            target=\"_blank\"\n            class=\"channel-name mt-1\"\n          >\n            ").concat(videoItem.channelTitle, "\n          </a>\n          <div class=\"meta\">\n            <p>").concat(videoItem.publishedAt, "</p>\n          </div>\n          <div>\n            <span \n              class=\"\n                ").concat(_constants__WEBPACK_IMPORTED_MODULE_0__.SELECTOR_CLASS.CLIP_CHECK_BUTTON, "\n                clip__check-button\n                ").concat(isWatched ? _constants__WEBPACK_IMPORTED_MODULE_0__.STYLE_CLASS.VIDEO_CHECKED : '', " \n                opacity-hover\n              \" \n              data-video-id=\"").concat(videoItem.videoId, "\"\n            >\u2705</span>\n            <span class=\"opacity-hover\">\uD83D\uDC4D</span>\n            <span class=\"opacity-hover\">\uD83D\uDCAC</span>\n            <span \n              class=\"").concat(_constants__WEBPACK_IMPORTED_MODULE_0__.SELECTOR_CLASS.CLIP_DELETE_BUTTON, " opacity-hover\" \n              data-video-id=\"").concat(videoItem.videoId, "\"\n            >\uD83D\uDDD1\uFE0F</span>\n          </div>\n        </div>\n      </div>\n    </article>\n    ");
+      return "\n    <article class=\"".concat(_constants__WEBPACK_IMPORTED_MODULE_0__.SELECTOR_CLASS.CLIP, " clip\">\n      <div class=\"clip__preview\">\n        ").concat(this._getIframe(videoItem), "\n      </div>\n      <div class=\"clip__content pt-2 px-1\">\n        <h3>").concat(videoItem.title, "</h3>\n        <div>\n          <a\n            href=\"https://www.youtube.com/channel/UC-mOekGSesms0agFntnQang\"\n            target=\"_blank\"\n            class=\"channel-name mt-1\"\n          >\n            ").concat(videoItem.channelTitle, "\n          </a>\n          <div class=\"meta\">\n            <p>").concat(videoItem.publishedAt, "</p>\n          </div>\n          <div>\n            <span \n              class=\"\n                ").concat(_constants__WEBPACK_IMPORTED_MODULE_0__.SELECTOR_CLASS.CLIP_CHECK_BUTTON, "\n                clip__check-button\n                ").concat(isWatched ? _constants__WEBPACK_IMPORTED_MODULE_0__.STYLE_CLASS.VIDEO_CHECKED : '', " \n                opacity-hover\n              \" \n              data-video-id=\"").concat(videoItem.videoId, "\"\n            >\u2705</span>\n            <span class=\"opacity-hover\">\uD83D\uDC4D</span>\n            <span class=\"opacity-hover\">\uD83D\uDCAC</span>\n            <span \n              class=\"").concat(_constants__WEBPACK_IMPORTED_MODULE_0__.SELECTOR_CLASS.CLIP_DELETE_BUTTON, " opacity-hover\" \n              data-video-id=\"").concat(videoItem.videoId, "\"\n            >\uD83D\uDDD1\uFE0F</span>\n          </div>\n        </div>\n      </div>\n    </article>\n    ");
     }
   }]);
 
   return VideoView;
-}(_BasicView__WEBPACK_IMPORTED_MODULE_1__.default);
+}((0,_mixin__WEBPACK_IMPORTED_MODULE_2__.GetVideoIframeMixin)(_BasicView__WEBPACK_IMPORTED_MODULE_1__.default));
 
 
 
@@ -13910,32 +13919,107 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "watchedVideoView": () => (/* binding */ watchedVideoView),
 /* harmony export */   "modalView": () => (/* binding */ modalView)
 /* harmony export */ });
-/* harmony import */ var _elements__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../elements */ "./src/elements.js");
-/* harmony import */ var _LayoutView__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./LayoutView */ "./src/view/LayoutView.js");
-/* harmony import */ var _ModalView__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./ModalView */ "./src/view/ModalView.js");
-/* harmony import */ var _VideoView__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./VideoView */ "./src/view/VideoView.js");
+/* harmony import */ var _elements_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../elements.js */ "./src/elements.js");
+/* harmony import */ var _LayoutView_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./LayoutView.js */ "./src/view/LayoutView.js");
+/* harmony import */ var _ModalView_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./ModalView.js */ "./src/view/ModalView.js");
+/* harmony import */ var _VideoView_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./VideoView.js */ "./src/view/VideoView.js");
 
 
 
 
-var layoutView = new _LayoutView__WEBPACK_IMPORTED_MODULE_1__.default({
-  $nav: _elements__WEBPACK_IMPORTED_MODULE_0__.$nav,
-  $snackbarWrapper: _elements__WEBPACK_IMPORTED_MODULE_0__.$snackbarWrapper
+var layoutView = new _LayoutView_js__WEBPACK_IMPORTED_MODULE_1__.default({
+  $nav: _elements_js__WEBPACK_IMPORTED_MODULE_0__.$nav,
+  $snackbarWrapper: _elements_js__WEBPACK_IMPORTED_MODULE_0__.$snackbarWrapper
 });
-var watchingVideoView = new _VideoView__WEBPACK_IMPORTED_MODULE_3__.default({
-  $videoWrapper: _elements__WEBPACK_IMPORTED_MODULE_0__.$watchingVideoWrapper,
-  $emptyVideoImage: _elements__WEBPACK_IMPORTED_MODULE_0__.$emptyWatchingVideo
+var watchingVideoView = new _VideoView_js__WEBPACK_IMPORTED_MODULE_3__.default({
+  $videoWrapper: _elements_js__WEBPACK_IMPORTED_MODULE_0__.$watchingVideoWrapper,
+  $emptyVideoImage: _elements_js__WEBPACK_IMPORTED_MODULE_0__.$emptyWatchingVideo
 }, false);
-var watchedVideoView = new _VideoView__WEBPACK_IMPORTED_MODULE_3__.default({
-  $videoWrapper: _elements__WEBPACK_IMPORTED_MODULE_0__.$watchedVideoWrapper,
-  $emptyVideoImage: _elements__WEBPACK_IMPORTED_MODULE_0__.$emptyWatchedVideo
+var watchedVideoView = new _VideoView_js__WEBPACK_IMPORTED_MODULE_3__.default({
+  $videoWrapper: _elements_js__WEBPACK_IMPORTED_MODULE_0__.$watchedVideoWrapper,
+  $emptyVideoImage: _elements_js__WEBPACK_IMPORTED_MODULE_0__.$emptyWatchedVideo
 }, true);
-var modalView = new _ModalView__WEBPACK_IMPORTED_MODULE_2__.default({
-  $modal: _elements__WEBPACK_IMPORTED_MODULE_0__.$modal,
-  $searchQueries: _elements__WEBPACK_IMPORTED_MODULE_0__.$searchQueries,
-  $searchResultVideoWrapper: _elements__WEBPACK_IMPORTED_MODULE_0__.$searchResultVideoWrapper,
-  $savedVideoCount: _elements__WEBPACK_IMPORTED_MODULE_0__.$savedVideoCount
+var modalView = new _ModalView_js__WEBPACK_IMPORTED_MODULE_2__.default({
+  $modal: _elements_js__WEBPACK_IMPORTED_MODULE_0__.$modal,
+  $searchQueries: _elements_js__WEBPACK_IMPORTED_MODULE_0__.$searchQueries,
+  $searchResultVideoWrapper: _elements_js__WEBPACK_IMPORTED_MODULE_0__.$searchResultVideoWrapper,
+  $savedVideoCount: _elements_js__WEBPACK_IMPORTED_MODULE_0__.$savedVideoCount
 });
+
+/***/ }),
+
+/***/ "./src/view/mixin.js":
+/*!***************************!*\
+  !*** ./src/view/mixin.js ***!
+  \***************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "GetVideoIframeMixin": () => (/* binding */ GetVideoIframeMixin)
+/* harmony export */ });
+function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
+
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
+function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
+
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+
+function _classPrivateMethodGet(receiver, privateSet, fn) { if (!privateSet.has(receiver)) { throw new TypeError("attempted to get private field on non-instance"); } return fn; }
+
+var GetVideoIframeMixin = function GetVideoIframeMixin(superClass) {
+  var _getSrcDoc, _temp, _getSrcDoc2;
+
+  return _temp = (_getSrcDoc = new WeakSet(), /*#__PURE__*/function (_superClass) {
+    _inherits(_class2, _superClass);
+
+    var _super = _createSuper(_class2);
+
+    function _class2() {
+      var _this;
+
+      _classCallCheck(this, _class2);
+
+      for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
+        args[_key] = arguments[_key];
+      }
+
+      _this = _super.call.apply(_super, [this].concat(args));
+
+      _getSrcDoc.add(_assertThisInitialized(_this));
+
+      return _this;
+    }
+
+    _createClass(_class2, [{
+      key: "_getIframe",
+      value: function _getIframe(videoItem) {
+        var videoUrl = "https://www.youtube.com/embed/".concat(videoItem.videoId);
+        return "\n      <iframe\n      width=\"100%\"\n      height=\"118\"\n      scrolling=\"no\"\n      src=\"".concat(videoUrl, "\"\n      srcdoc=\n      \"").concat(_classPrivateMethodGet(this, _getSrcDoc, _getSrcDoc2).call(this, videoUrl, videoItem.thumbnailUrl), "\"\n      frameborder=\"0\"\n      allow=\"accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture\"\n      allowfullscreen\n      ></iframe>\n      ");
+      }
+    }]);
+
+    return _class2;
+  }(superClass)), _getSrcDoc2 = function _getSrcDoc2(videoUrl, thumbnailUrl) {
+    return "<body style=''>\n        <header>\n          <link rel='stylesheet' href='./src/assets/css/index.css'>\n        </header>\n        <div class='thumbnail'>\n          <a href='".concat(videoUrl, "'>\n            <img \n            class='thumbnail__image' \n            src=").concat(thumbnailUrl, " />\n            <div class='d-flex justify-center items-center  thumbnail__play-button'>\n              <span>\u25B6</span>\n            <div>\n          </a>\n        <div>\n      </body>");
+  }, _temp;
+};
 
 /***/ })
 

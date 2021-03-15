@@ -91,19 +91,22 @@ function onModalClose() {
 async function onVideoSearch(event) {
   event.preventDefault();
   const input = $searchFormInput.value.trim();
-  //TODO: validation 으로 빼기
+
   if (input === prevSearchResultModel.getItem().lastQuery) {
     return;
   }
   if (input === '') {
     return;
   }
+
   modalView.initSearchEnv();
   const { videos, nextPageToken } = await getVideosByKeyword(input);
+
   if (videos.length === 0) {
     modalView.showNotFountImage();
     return;
   }
+
   modalService.saveSearchQuery(input);
   modalService.savePrevSearchInfo({ lastQuery: input, nextPageToken });
   modalService.savePrevSearchedVideos(videos);

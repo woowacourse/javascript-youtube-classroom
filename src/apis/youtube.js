@@ -28,8 +28,8 @@ export async function getVideosByKeyword(searchKeyword, pageToken) {
     title: snippet.title,
     channelTitle: snippet.channelTitle,
     publishedAt: snippet.publishedAt,
+    thumbnailUrl: snippet.thumbnails.medium.url,
   }));
-
   return {
     nextPageToken,
     videos,

@@ -9,10 +9,10 @@ import {
   $nav,
   $snackbarWrapper,
   $savedVideoCount,
-} from '../elements';
-import LayoutView from './LayoutView';
-import ModalView from './ModalView';
-import VideoView from './VideoView';
+} from '../elements.js';
+import LayoutView from './LayoutView.js';
+import ModalView from './ModalView.js';
+import VideoView from './VideoView.js';
 
 export const layoutView = new LayoutView({ $nav, $snackbarWrapper });
 
