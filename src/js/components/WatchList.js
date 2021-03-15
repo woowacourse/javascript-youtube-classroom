@@ -54,7 +54,7 @@ export default class WatchList extends Observer {
         });
 
         const video = { id, title, channelId, channelTitle, dateString, thumbnail };
-        const options = { isContainMenu: true, isWatched: currentVideo.watched, isLiked: currentVideo.liked };
+        const options = { isContainingMenu: true, isWatched: currentVideo.watched, isLiked: currentVideo.liked };
         const videoTemplate = getVideoTemplate(video, options);
 
         return videoTemplate;
@@ -177,20 +177,19 @@ export default class WatchList extends Observer {
         const nowVideo = { ...video };
         if (nowVideo.videoId === targetId) {
           nowVideo.watched = !nowVideo.watched;
+          if (nowVideo.watched) {
+            showSnackbar(ALERT_MESSAGE.VIDEO_MOVED_WATCHED_LIST);
+          } else {
+            showSnackbar(ALERT_MESSAGE.VIDEO_MOVED_TO_WATCH_LIST);
+          }
         }
         return nowVideo;
       });
 
       this.store.update(LOCAL_STORAGE_KEYS.WATCH_LIST, newWatchList);
-
-      if (this.nowMenu === MENU.TO_WATCH) {
-        showSnackbar(ALERT_MESSAGE.VIDEO_MOVED_WATCHED_LIST);
-      } else if (this.nowMenu === MENU.WATCHED) {
-        showSnackbar(ALERT_MESSAGE.VIDEO_MOVED_TO_WATCH_LIST);
-      }
     }
 
-    if (target.classList.contains('like')) {
+    if (target.classList.contains('liked')) {
       const targetId = target.closest('.menu-list').dataset.videoId;
       const newWatchList = watchList.map((video) => {
         const nowVideo = { ...video };

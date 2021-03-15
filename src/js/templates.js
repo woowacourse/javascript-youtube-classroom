@@ -3,8 +3,8 @@ import { generateCSSClass } from './utils.js';
 export const getVideoTemplate = (data, options) => {
   const { id, title, channelId, channelTitle, dateString, thumbnail } = data;
   const {
-    isContainSaveButton = false,
-    isContainMenu = false,
+    isContainingSaveButton = false,
+    isContainingMenu = false,
     isSaved = false,
     isWatched = false,
     isLiked = false,
@@ -39,7 +39,7 @@ export const getVideoTemplate = (data, options) => {
           </div>
         </div>
         ${
-          isContainSaveButton
+          isContainingSaveButton
             ? `
               <div class="d-flex justify-end">
                 <button class="btn btn-save ${isSaved ? 'hidden' : ''}" data-video-id="${id}">⬇️ 저장</button>
@@ -48,11 +48,11 @@ export const getVideoTemplate = (data, options) => {
             : ''
         }
         ${
-          isContainMenu
+          isContainingMenu
             ? `
             <div class="menu-list" data-video-id="${id}"}>
               <span class="cursor-pointer ${generateCSSClass(!isWatched, 'opacity-hover')} watched">✅</span>
-              <span class="cursor-pointer ${generateCSSClass(!isLiked, 'opacity-hover')} like">👍</span>
+              <span class="cursor-pointer ${generateCSSClass(!isLiked, 'opacity-hover')} liked">👍</span>
               <span class="cursor-pointer opacity-hover comment">💬</span>
               <span class="cursor-pointer opacity-hover delete">🗑️</span>
             </div>
