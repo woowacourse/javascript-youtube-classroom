@@ -1,5 +1,10 @@
 const videoListType = {
   value: 'toWatch',
+  typeTable: {
+    'liked-video-display-button': 'liked',
+    'to-watch-video-display-button': 'toWatch',
+    'watched-video-display-button': 'watched',
+  },
 
   set(mode) {
     this.value = mode;
@@ -10,15 +15,7 @@ const videoListType = {
   },
 
   toggle(targetId) {
-    if (targetId === 'liked-video-display-button') {
-      this.value = 'liked';
-    }
-    if (targetId === 'to-watch-video-display-button') {
-      this.value = 'toWatch';
-    }
-    if (targetId === 'watched-video-display-button') {
-      this.value = 'watched';
-    }
+    this.value = this.typeTable[targetId];
   },
 };
 

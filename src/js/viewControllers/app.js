@@ -45,7 +45,9 @@ function renderSavedVideoList(videoInfos, videoListType) {
 function appendSavedVideo(videoInfo) {
   $videoList.append(
     parseHTML(
-      createSavedVideoListTemplate([{ ...videoInfo, watchType: 'toWatch' }])
+      createSavedVideoListTemplate([
+        { ...videoInfo, watchType: 'toWatch', likeType: 'toLike' },
+      ])
     )
   );
 }
