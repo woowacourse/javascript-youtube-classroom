@@ -22,10 +22,16 @@ export class SearchVideoModal {
 
   initEvent() {
     this.$closeButton.addEventListener('click', this.closeModal.bind(this));
+    this.$modal.addEventListener('click', ({ currentTarget, target }) => {
+      if (currentTarget === target) {
+        this.closeModal();
+      }
+    });
   }
 
   openModal() {
     this.$modal.classList.add('open');
+    this.$modal.querySelector('.js-search-input').focus();
   }
 
   closeModal() {

@@ -6,7 +6,7 @@ export const getVideoTemplate = ({ videoData, buttonTemplate }) => {
   const { kind, id, snippet } = videoData;
 
   return `
-      <article class="clip d-flex flex-col justify-between">
+      <article class="js-clip-article clip d-flex flex-col justify-between">
         <div class="content-container">
           <div class="preview-container">
             <iframe

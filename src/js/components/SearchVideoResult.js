@@ -5,83 +5,79 @@ import {
   getSearchVideoByKeyword,
   renderSkeleton,
   removeSkeleton,
-  throttle,
+  showSnackbar,
 } from '../util/index.js';
-import { NUM_OF_VIDEO_PER_FETCH, SCROLL_THRTOTTLE_DELAY, getVideoTemplate } from '../constants/index.js';
+import { NUM_OF_VIDEO_PER_FETCH, getVideoTemplate, SNACKBAR_MESSAGE } from '../constants/index.js';
 
 export class SearchVideoResult {
   constructor({ searchKeywordHistoryManager, savedVideoManager }) {
     this.$container = $('.js-video-result-container');
     this.$wrapper = $('.js-video-result-wrapper');
     this.$notFoundImage = $('.js-not-found-image');
+    this.$scrollObserver = $('.js-scroll-observer');
 
     this.searchKeywordHistoryManager = searchKeywordHistoryManager;
     this.searchKeywordHistoryManager.subscribe(this.reset.bind(this));
-    this.searchKeywordHistoryManager.subscribe(this.fetchSearchResultData.bind(this));
+    this.searchKeywordHistoryManager.subscribe(this.render.bind(this));
     this.savedVideoManager = savedVideoManager;
 
     this.searchResultData = {};
+    this.nextPageToken = '';
 
     this.initEvent();
+    this.initIntersectionObeserver();
   }
 
   initEvent() {
-    this.$container.addEventListener('scroll', this.throttleScroll.bind(this));
     this.$wrapper.addEventListener('click', this.handleSaveVideo.bind(this));
   }
 
-  throttleScroll({ target }) {
-    throttle(this.handleContainerScroll.bind(this, target), SCROLL_THRTOTTLE_DELAY);
+  initIntersectionObeserver() {
+    this.observer = new IntersectionObserver((entries, observer) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          this.handleScroll();
+        }
+      });
+    });
+
+    this.observer.observe(this.$scrollObserver);
   }
 
-  async handleContainerScroll(target) {
-    if (target.scrollTop === target.scrollHeight - target.offsetHeight) {
-      try {
-        renderSkeleton(this.$wrapper, NUM_OF_VIDEO_PER_FETCH);
-        const searchResultData = await getSearchVideoByKeyword(
-          this.searchKeywordHistoryManager.getLastKeyword(),
-          this.searchResultData.nextPageToken
-        );
-        removeSkeleton(this.$wrapper);
-
-        this.setState({ searchResultData });
-      } catch (e) {
-        console.error(e);
-      }
+  async handleScroll() {
+    try {
+      this.render();
+    } catch (e) {
+      console.error(e);
+      showSnackbar(SNACKBAR_MESSAGE.API_REQUEST_FAILURE);
     }
   }
 
   async fetchSearchResultData() {
     try {
-      renderSkeleton(this.$wrapper, NUM_OF_VIDEO_PER_FETCH);
-      const searchResultData = await getSearchVideoByKeyword(this.searchKeywordHistoryManager.getLastKeyword());
-      removeSkeleton(this.$wrapper);
+      const searchResultData = await getSearchVideoByKeyword(
+        this.searchKeywordHistoryManager.getLastKeyword(),
+        this.nextPageToken
+      );
       this.setState({ searchResultData });
     } catch (e) {
       console.error(e);
-      // TODO: 오류났음 보여주는 메세지 띄우기
+      showSnackbar(SNACKBAR_MESSAGE.API_REQUEST_FAILURE);
+      this.setState({ searchResultData: { nextPageToken: '', items: [] } });
     }
   }
 
   handleSaveVideo({ target }) {
-    if (target.classList.contains('js-clip-save-button')) {
-      this.savedVideoManager.saveVideo({
-        id: target.dataset.videoId,
-        isCompleted: false,
-      });
-
-      target.disabled = true;
+    if (!target.classList.contains('js-clip-save-button')) {
+      return;
     }
-  }
 
-  setState({ searchResultData }) {
-    this.searchResultData = searchResultData;
-    this.render();
-  }
-
-  reset() {
-    this.$container.scrollTo(0, 0);
-    this.$wrapper.innerHTML = '';
+    if (this.savedVideoManager.saveVideo(target.dataset.videoId)) {
+      showSnackbar(SNACKBAR_MESSAGE.SAVE_SUCCESS);
+      target.disabled = true;
+    } else {
+      showSnackbar(SNACKBAR_MESSAGE.OVER_MAX_NUM_OF_SAVED_VIDEO);
+    }
   }
 
   makeTemplate(videoData) {
@@ -101,17 +97,33 @@ export class SearchVideoResult {
     `;
   }
 
-  render() {
+  async render() {
+    hideElement(this.$notFoundImage);
+    renderSkeleton(this.$wrapper, NUM_OF_VIDEO_PER_FETCH);
+    await this.fetchSearchResultData();
+    removeSkeleton(this.$wrapper);
+
     if (this.$wrapper.querySelectorAll('.clip').length === 0 && this.searchResultData.items.length === 0) {
       showElement(this.$notFoundImage);
 
       return;
     }
 
-    hideElement(this.$notFoundImage);
     this.$wrapper.insertAdjacentHTML(
       'beforeend',
       this.searchResultData.items.map(item => this.makeTemplate(item)).join('')
     );
+    showElement(this.$scrollObserver);
+  }
+
+  setState({ searchResultData }) {
+    this.searchResultData = searchResultData;
+    this.nextPageToken = searchResultData.nextPageToken;
+  }
+
+  reset() {
+    this.$container.scrollTo(0, 0);
+    this.$wrapper.innerHTML = '';
+    hideElement(this.$scrollObserver);
   }
 }
