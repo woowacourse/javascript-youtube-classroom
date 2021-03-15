@@ -43,13 +43,13 @@ class SavedController {
   #deleteVideo(target) {
     if (!confirm(CONFIRM_MESSAGE.DELETE_VIDEO)) return;
 
-    this.#storageModel.deleteSelectedVideo(target);
+    this.#storageModel.updateVideoState(target);
     this.#savedView.hideSelectedVideo(target);
     this.#snackBarView.showSnackBar(SNACK_BAR.DELETE_MESSAGE);
   }
 
   #toggleVideoWatched(target) {
-    this.#storageModel.updateVideoWatched(target);
+    this.#storageModel.updateVideoState(target);
     toggleSelectorClass(target, CLASS.OPACITY_HOVER);
 
     if (this.#storageModel.navValue !== null) {
@@ -60,7 +60,7 @@ class SavedController {
   }
 
   #toggleVideoLiked(target) {
-    this.#storageModel.updateVideoLiked(target);
+    this.#storageModel.updateVideoState(target);
     toggleSelectorClass(target, CLASS.OPACITY_HOVER);
 
     if (target.classList.contains(CLASS.OPACITY_HOVER)) {
@@ -71,6 +71,7 @@ class SavedController {
     this.#snackBarView.showSnackBar(SNACK_BAR.ADDED_LIKE_MESSAGE);
   }
 
+  // TODO : 비디오내 버튼들 도 객체화해서 할수 없나? - 없으면 한번만 확인하게..
   #handleVideoButtons() {
     $(SELECTOR.SAVED_VIDEO_WRAPPER).addEventListener('click', ({ target }) => {
       switch (true) {
@@ -90,9 +91,9 @@ class SavedController {
   }
 
   #handleNav() {
-    $(SELECTOR.NAV).addEventListener('click', event => {
-      if (event.target.tagName === 'BUTTON') {
-        this.#filterVideos(event.target.id);
+    $(SELECTOR.NAV).addEventListener('click', ({ target }) => {
+      if (target.tagName === 'BUTTON' && target.id !== NAV.SEARCH_MODAL) {
+        this.#filterVideos(target.id);
       }
     });
   }

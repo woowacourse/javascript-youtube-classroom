@@ -2,7 +2,13 @@ import {
   setJSONToLocalStorage,
   getJSONFromLocalStorage,
 } from '../utils/util.js';
-import { NAV, SEARCH, SELECTOR, STORAGE } from '../constants/constant.js';
+import {
+  CLASS,
+  NAV,
+  SEARCH,
+  SELECTOR,
+  STORAGE,
+} from '../constants/constant.js';
 class StorageModel {
   #savedVideo;
   #keywords;
@@ -21,43 +27,55 @@ class StorageModel {
 
   filterVideos = navValue => {
     this.#navValue = navValue;
-    // TODO: 아래 개선 - savedView/toggleNavButton 과 일부 겹침
-    if (navValue === NAV.TO_WATCH_VIDEOS) {
-      return this.#savedVideo.filter(video => video.watched === false);
-    } else if (navValue === NAV.WATCHED_VIDEOS) {
-      return this.#savedVideo.filter(video => video.watched === true);
-    } else if (navValue === NAV.LIKED_VIDEOS) {
-      return this.#savedVideo.filter(video => video.liked === true);
-    }
+    const navFunction = {
+      [NAV.TO_WATCH_VIDEOS]: this.#savedVideo.filter(
+        video => video.watched === false
+      ),
+      [NAV.WATCHED_VIDEOS]: this.#savedVideo.filter(
+        video => video.watched === true
+      ),
+      [NAV.LIKED_VIDEOS]: this.#savedVideo.filter(
+        video => video.liked === true
+      ),
+    };
+
+    return navFunction[navValue];
   };
 
-  // TODO : 아래 함수들 일반화 시키기
-  updateVideoWatched(target) {
+  updateVideoState(target) {
     const targetUrl = target.closest(SELECTOR.VIDEO_INFO_BUTTONS).dataset.url;
+    switch (true) {
+      case target.classList.contains(CLASS.WATCHED):
+        this.#updateVideoWatched(targetUrl);
+
+      case target.classList.contains(CLASS.LIKED):
+        this.#updateVideoLiked(targetUrl);
+
+      case target.classList.contains(CLASS.DELETE):
+        this.#deleteSelectedVideo(targetUrl);
+    }
+
+    setJSONToLocalStorage(STORAGE.KEY_MY_VIDEO, this.#savedVideo);
+  }
+
+  #updateVideoWatched(url) {
     this.#savedVideo.forEach(info => {
-      if (info.url === targetUrl) {
+      if (info.url === url) {
         info.watched = !info.watched;
       }
     });
-
-    setJSONToLocalStorage(STORAGE.KEY_MY_VIDEO, this.#savedVideo);
   }
 
-  updateVideoLiked(target) {
-    const targetUrl = target.closest(SELECTOR.VIDEO_INFO_BUTTONS).dataset.url;
+  #updateVideoLiked(url) {
     this.#savedVideo.forEach(info => {
-      if (info.url === targetUrl) {
+      if (info.url === url) {
         info.liked = !info.liked;
       }
     });
-    setJSONToLocalStorage(STORAGE.KEY_MY_VIDEO, this.#savedVideo);
   }
 
-  deleteSelectedVideo(target) {
-    const targetUrl = target.closest(SELECTOR.VIDEO_INFO_BUTTONS).dataset.url;
-    this.#savedVideo = this.#savedVideo.filter(info => info.url !== targetUrl);
-
-    setJSONToLocalStorage(STORAGE.KEY_MY_VIDEO, this.#savedVideo);
+  #deleteSelectedVideo(url) {
+    this.#savedVideo = this.#savedVideo.filter(info => info.url !== url);
   }
 
   saveVideo = json => {
