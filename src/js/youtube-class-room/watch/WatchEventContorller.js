@@ -23,9 +23,15 @@ export default class WatchEventController {
       "click",
       this.onClickWatchLaterViewButton.bind(this)
     );
+
     elements.$watchedViewButton.addEventListener(
       "click",
       this.onClickWatchedViewButton.bind(this)
+    );
+
+    elements.$likedViewButton.addEventListener(
+      "click",
+      this.onClickLikedViewButton.bind(this)
     );
   }
 
@@ -42,6 +48,7 @@ export default class WatchEventController {
       this.onClickLikedButton(e);
       this.onClickDeleteButton(e, false);
     });
+
     elements.$watchedVideos.addEventListener("click", (e) => {
       this.onClickClearWatchLogbutton(e);
       this.onClickLikedButton(e);
@@ -60,6 +67,10 @@ export default class WatchEventController {
 
   onClickWatchedViewButton() {
     this.watchController.updateWatchedView(videos.getSavedVideos());
+  }
+
+  onClickLikedViewButton() {
+    this.watchController.updateLikedView(videos.getSavedVideos());
   }
 
   onClickSaveButton(e) {

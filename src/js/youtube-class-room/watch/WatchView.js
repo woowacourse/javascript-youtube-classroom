@@ -13,13 +13,16 @@ export default class WatchView {
   removeAllButtonColor() {
     removeBackgroundColor(elements.$watchLaterViewButton, PALLET.CYAN_100);
     removeBackgroundColor(elements.$watchedViewButton, PALLET.CYAN_100);
+    removeBackgroundColor(elements.$likedViewButton, PALLET.CYAN_100);
   }
 
   hideAllSection() {
     hideElement(elements.$notSaved);
     hideElement(elements.$notWatched);
+    hideElement(elements.$noLiked);
     hideElement(elements.$watchLaterVideos);
     hideElement(elements.$watchedVideos);
+    hideElement(elements.$likedVideos);
   }
 
   markWatchLaterViewButton() {
@@ -30,6 +33,11 @@ export default class WatchView {
   markWatchedViewButton() {
     this.removeAllButtonColor();
     addBackgroundColor(elements.$watchedViewButton, PALLET.CYAN_100);
+  }
+
+  markLikedViewButton() {
+    this.removeAllButtonColor();
+    addBackgroundColor(elements.$likedViewButton, PALLET.CYAN_100);
   }
 
   appendSavedVideoClips(items) {
@@ -50,6 +58,11 @@ export default class WatchView {
     showElement(elements.$notWatched);
   }
 
+  showNoLikedImg() {
+    this.hideAllSection();
+    showElement(elements.$noLiked);
+  }
+
   showWatchLaterVideos(watchLaterVideos) {
     this.hideAllSection();
     showElement(elements.$watchLaterVideos);
@@ -67,4 +80,6 @@ export default class WatchView {
     elements.$watchedVideos.innerHTML = "";
     elements.$watchedVideos.append(this.appendSavedVideoClips(watchedVideos));
   }
+
+  showLikedVideos(likedVideos) {}
 }
