@@ -12,6 +12,11 @@ export default class YoutubeAPIManager {
   setSearchTerm(searchTerm) {
     this.searchTerm = searchTerm;
     this.pageToken = '';
+    this.clearCache();
+  }
+
+  clearCache() {
+    YoutubeAPIManager.cache = {};
   }
 
   createRequestURL() {
