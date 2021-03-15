@@ -9,6 +9,7 @@ import {
   showElement,
   hideElement,
   customConfirm,
+  setLazyLoading,
 } from '../util/index.js';
 
 export class SavedVideo {
@@ -115,7 +116,7 @@ export class SavedVideo {
 
   getButtonTemplate(videoId) {
     return `
-      <ul class="js-emoji-button-list list-style-none p-0 mt-3 mb-6 d-flex" data-video-id="${videoId}">
+      <ul class="js-emoji-button-list list-style-none p-0 mt-3 mb-6 d-flex justify-end" data-video-id="${videoId}">
         <li class="mr-2">
           <button type="button" class="js-check-button emoji-btn scale-hover ${
             this.isChecked ? '' : 'opacity-hover'
@@ -126,7 +127,6 @@ export class SavedVideo {
             this.savedVideoManager.isLikedVideo(videoId) ? '' : 'opacity-hover'
           }">👍</button>
         </li>
-        <li class="mr-2"><button type="button" class="js-comment-button emoji-btn scale-hover opacity-hover">💬</button></li>
         <li class="mr-2"><button type="button" class="js-delete-button emoji-btn scale-hover opacity-hover">🗑️</button></li>
       </ul>
     `;
@@ -154,6 +154,7 @@ export class SavedVideo {
     const savedVideoData = await this.fetchSavedVideoData(filteredVideoIdList);
     removeSkeleton(this.$savedVideoWrapper);
     this.$savedVideoWrapper.innerHTML = savedVideoData.items.map(item => this.makeTemplate(item)).join('');
+    setLazyLoading();
   }
 
   async renderNewVideo(videoId) {

@@ -6,6 +6,7 @@ import {
   renderSkeleton,
   removeSkeleton,
   showSnackbar,
+  setLazyLoading,
 } from '../util/index.js';
 import { NUM_OF_VIDEO_PER_FETCH, getVideoTemplate, SNACKBAR_MESSAGE } from '../constants/index.js';
 
@@ -114,6 +115,7 @@ export class SearchVideoResult {
       this.searchResultData.items.map(item => this.makeTemplate(item)).join('')
     );
     showElement(this.$scrollObserver);
+    setLazyLoading();
   }
 
   setState({ searchResultData }) {
