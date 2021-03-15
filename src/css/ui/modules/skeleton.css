@@ -5,11 +5,11 @@
 }
 
 .skeleton .image {
-  height: 150px;
+  height: 9.375rem;
 }
 
 .skeleton .line {
-  height: 16px;
+  height: 1rem;
 }
 
 .skeleton .line.video-title,

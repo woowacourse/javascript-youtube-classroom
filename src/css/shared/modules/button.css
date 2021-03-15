@@ -1,8 +1,8 @@
 .btn {
-  height: 36px;
-  min-width: 64px;
-  padding: 0 16px;
-  border-radius: 4px;
+  height: 2.25rem;
+  min-width: 4rem;
+  padding: 0 1rem;
+  border-radius: 0.25rem;
   outline: 0;
   border-style: none;
   cursor: pointer;

@@ -36,3 +36,18 @@
   display: inline-block;
   background-position-x: -67vh;
 }
+
+@media screen and (max-width: 576px) {
+  .menu-title {
+    display: none;
+  }
+
+  .no-video-found {
+    width: 50vh;
+    height: 52vh;
+  }
+
+  .no-video-found.no-watched {
+    background-position-x: -50vh;
+  }
+}
