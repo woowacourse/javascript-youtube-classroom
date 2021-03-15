@@ -164,12 +164,16 @@ class SearchModal {
       const { items, nextPageToken } = await API.searchVideo(keyword);
 
       const videos = items.map(
-        ({ id: { videoId }, snippet: { channelId, channelTitle, publishedAt, title } }) => ({
+        ({
+          id: { videoId },
+          snippet: { channelId, channelTitle, publishedAt, title, thumbnails },
+        }) => ({
           videoId,
           channelId,
           channelTitle,
           publishedAt,
           title,
+          thumbnail: thumbnails.medium.url,
           isSaved: this.savedVideos.map(video => video.videoId).includes(videoId),
         }),
       );
@@ -194,12 +198,16 @@ class SearchModal {
       const { items, nextPageToken } = await API.searchVideo(this.keyword, this.nextPageToken);
 
       const nextVideos = items.map(
-        ({ id: { videoId }, snippet: { channelId, channelTitle, publishedAt, title } }) => ({
+        ({
+          id: { videoId },
+          snippet: { channelId, channelTitle, publishedAt, title, thumbnails },
+        }) => ({
           videoId,
           channelId,
           channelTitle,
           publishedAt,
           title,
+          thumbnail: thumbnails.medium.url,
           isSaved: this.savedVideos.map(video => video.videoId).includes(videoId),
         }),
       );
