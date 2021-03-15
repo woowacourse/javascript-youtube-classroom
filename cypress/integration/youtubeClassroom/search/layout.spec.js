@@ -42,8 +42,8 @@ describe("youtube classroom 레이아웃 테스트", () => {
       .should("be.gt", MIN_NUMBER);
 
     cy.get("#search-results-inner")
-      .then(($searchReulstInner) => {
-        return $searchReulstInner.children().length;
+      .then(($searchResultsInner) => {
+        return $searchResultsInner.children().length;
       })
       .then((itemLen) => {
         cy.get("#skeleton-search-results").should("not.be.visible");
