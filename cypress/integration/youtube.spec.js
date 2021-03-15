@@ -1,4 +1,3 @@
-import { describe } from 'mocha';
 import {
   CLASS,
   CONFIRM_MESSAGE,
@@ -9,14 +8,15 @@ import {
 
 describe('like-button-ui', () => {
   before(() => {
-    cy.visit('http://127.0.0.1:5502/');
-  });
-
-  it("저장한 영상의 '좋아요' 버튼을 클릭, '선택한 영상을 좋아요 목록에 저장했습니다' 라는 스낵바 div 3초간 보여진다", () => {
+    cy.visit('http://127.0.0.1:5500/');
     cy.get(SELECTOR.SEARCH_MODAL_BUTTON).click();
     cy.get(SELECTOR.SEARCH_YOUTUBE_INPUT).type('우테코');
     cy.get(SELECTOR.SEARCH_YOUTUBE_BUTTON).click();
     cy.get(SELECTOR.SAVE_VIDEO_BUTTON).first().click();
+  });
+
+  it("저장한 영상의 '좋아요' 버튼을 클릭, '선택한 영상을 좋아요 목록에 저장했습니다' 라는 스낵바 div 3초간 보여진다", () => {
+    cy.get(SELECTOR.SNACK_BAR).should('not.have.class', CLASS.SHOW);
     cy.get(`${SELECTOR.VIDEO_INFO_BUTTONS} .thumbs-up`)
       .first()
       .click({ force: true });
@@ -38,7 +38,7 @@ describe('like-button-ui', () => {
 
 describe('saved-video-ui', () => {
   before(() => {
-    cy.visit('http://127.0.0.1:5502/');
+    cy.visit('http://127.0.0.1:5500/');
   });
 
   it('사이트에 접속했을때, 비디오 목록에 "저장된 영상이 없습니다. 볼 영상을 저장해주세요" 라고 표시해줘야 한다', () => {
@@ -107,7 +107,7 @@ describe('saved-video-ui', () => {
 // STEP 1
 context('search-ui', () => {
   beforeEach(() => {
-    cy.visit('http://127.0.0.1:5502/');
+    cy.visit('http://127.0.0.1:5500/');
   });
   it('검색 모달창 열고 검색창에 검색어 입력, 검색버튼 클릭, 동영상 목록 보여진다.', () => {
     cy.get(SELECTOR.SEARCH_MODAL_BUTTON).click();

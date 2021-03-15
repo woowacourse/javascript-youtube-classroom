@@ -71,7 +71,6 @@ class SavedController {
     this.#snackBarView.showSnackBar(SNACK_BAR.ADDED_LIKE_MESSAGE);
   }
 
-  // TODO : 비디오내 버튼들 도 객체화해서 할수 없나? - 없으면 한번만 확인하게..
   #handleVideoButtons() {
     $(SELECTOR.SAVED_VIDEO_WRAPPER).addEventListener('click', ({ target }) => {
       switch (true) {
