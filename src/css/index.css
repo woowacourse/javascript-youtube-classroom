@@ -17,6 +17,12 @@ a {
   text-decoration: none;
 }
 
+header {
+  top: 0;
+  z-index: 1;
+  background-color: white;
+}
+
 .opacity-hover {
   opacity: 0.3;
 }
