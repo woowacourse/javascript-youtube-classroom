@@ -5,6 +5,7 @@ import {
   $$,
   createElement,
   localStorageGetItem,
+  localStorageSetItem,
 } from '../../utils/utils.js';
 import {
   LOCALSTORAGE_KEYS,
@@ -12,8 +13,11 @@ import {
   SELECTORS,
   INTERSECTION_OBSERVER_OPTIONS,
   VALUES,
+  ERROR_MESSAGES,
 } from '../../constants/constants.js';
 import { loadIframe } from '../../utils/youtubeClassRoomUtils.js';
+import Video from '../../model/Video.js';
+import { increaseSavedVideoCount } from '../../redux/action.js';
 export default class VideoSearchResult extends Component {
   setup() {
     store.subscribe(this.render.bind(this));
@@ -54,6 +58,10 @@ export default class VideoSearchResult extends Component {
     this.$searchedVideoWrapper = $(
       SELECTORS.SEARCH_MODAL.VIDEO_SEARCH_RESULT.VIDEO_LIST_ID
     );
+  }
+
+  bindEvent() {
+    this.$target.addEventListener('click', this.onSaveVideo.bind(this));
   }
 
   render(preStates, states) {
@@ -157,5 +165,27 @@ export default class VideoSearchResult extends Component {
     $skeltons.forEach((skeleton) => {
       skeleton.remove();
     });
+  }
+
+  onSaveVideo(event) {
+    const eventName = event.target.dataset.eventName;
+    if (eventName !== 'save') {
+      return;
+    }
+    const savedVideos = localStorageGetItem(LOCALSTORAGE_KEYS.VIDEOS);
+    if (Object.keys(savedVideos).length >= VALUES.MAXIMUM_VIDEO_SAVE_COUNT) {
+      alert(ERROR_MESSAGES.MAXIMUM_VIDEO_SAVE_COUNT_ERROR);
+      return;
+    }
+
+    const videoId = event.target.closest(SELECTORS.VIDEO_LIST.CLIP_CLASS)
+      .dataset.videoId;
+
+    // 캐시된 정보로 부터 savedVideos에 새로운 값 추가
+    savedVideos[videoId] = Video.cache[videoId];
+    localStorageSetItem(LOCALSTORAGE_KEYS.VIDEOS, savedVideos);
+
+    event.target.classList.add('d-none');
+    store.dispatch(increaseSavedVideoCount());
   }
 }
