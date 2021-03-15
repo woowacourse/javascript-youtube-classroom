@@ -9,8 +9,16 @@ const videoListType = {
     return this.value;
   },
 
-  toggle() {
-    this.value = this.value === 'toWatch' ? 'watched' : 'toWatch';
+  toggle(targetId) {
+    if (targetId === 'liked-video-display-button') {
+      this.value = 'liked';
+    }
+    if (targetId === 'to-watch-video-display-button') {
+      this.value = 'toWatch';
+    }
+    if (targetId === 'watched-video-display-button') {
+      this.value = 'watched';
+    }
   },
 };
 

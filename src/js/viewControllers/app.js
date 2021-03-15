@@ -1,12 +1,14 @@
-import { $, parseHTML } from '../utils/DOM.js';
+import { $, $$, parseHTML } from '../utils/DOM.js';
 import {
   createSavedVideoListTemplate,
   emptyVideoListTemplate,
 } from '../templates/videoList.js';
+import videoInfos from '../states/videoInfos.js';
 
 const $searchModal = $('#video-search-modal');
 const $videoList = $('#video-list');
 const $body = $('body');
+const $snackbar = $('#snack-bar');
 
 function closeModal() {
   $searchModal.classList.remove('open');
@@ -24,9 +26,16 @@ function openModal() {
 }
 
 function renderSavedVideoList(videoInfos, videoListType) {
-  const filteredVideoInfos = [...videoInfos].filter(
-    videoInfo => videoListType === videoInfo.watchType
-  );
+  let filteredVideoInfos = [];
+  if (videoListType === 'liked') {
+    filteredVideoInfos = [...videoInfos].filter(
+      videoInfo => videoListType === videoInfo.likeType
+    );
+  } else {
+    filteredVideoInfos = [...videoInfos].filter(
+      videoInfo => videoListType === videoInfo.watchType
+    );
+  }
 
   $videoList.innerHTML = filteredVideoInfos.length
     ? createSavedVideoListTemplate(filteredVideoInfos)
@@ -45,9 +54,18 @@ function removeSavedVideo($targetVideo) {
   $targetVideo.remove();
 }
 
-function showSnackBar(contents) {
-  const $snackbar = $('#snack-bar');
+function updateSavedVideo($targetVideo) {
+  const targetVideo = videoInfos
+    .get()
+    .find(videoInfo => videoInfo.id.videoId === $targetVideo.dataset.videoId);
+  const updateTargetVideo = parseHTML(
+    createSavedVideoListTemplate([targetVideo])
+  );
 
+  $videoList.replaceChild(updateTargetVideo, $targetVideo);
+}
+
+function showSnackBar(contents) {
   $snackbar.innerText = contents;
   $snackbar.classList.toggle('show');
   setTimeout(() => {
@@ -55,9 +73,12 @@ function showSnackBar(contents) {
   }, 3000);
 }
 
-function toggleFocusedModeButton() {
-  $('#watched-video-display-button').classList.toggle('bg-cyan-100');
-  $('#to-watch-video-display-button').classList.toggle('bg-cyan-100');
+function toggleFocusedModeButton(targetId) {
+  $$('.js-mode-button').forEach($modeButton =>
+    $modeButton.id === targetId
+      ? $modeButton.classList.add('bg-cyan-100')
+      : $modeButton.classList.remove('bg-cyan-100')
+  );
 }
 
 export {
@@ -68,4 +89,5 @@ export {
   toggleFocusedModeButton,
   appendSavedVideo,
   removeSavedVideo,
+  updateSavedVideo,
 };

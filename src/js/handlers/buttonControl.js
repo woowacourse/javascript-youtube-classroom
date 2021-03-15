@@ -1,6 +1,10 @@
 import MESSAGE from '../constants/message.js';
 import videoInfos from '../states/videoInfos.js';
-import { removeSavedVideo, showSnackBar } from '../viewControllers/app.js';
+import {
+  removeSavedVideo,
+  showSnackBar,
+  updateSavedVideo,
+} from '../viewControllers/app.js';
 import { renderSavedVideoCount } from '../viewControllers/searchModal.js';
 
 function handleWatchedButton($target) {
@@ -25,6 +29,13 @@ function handleDeleteButton($target) {
   removeSavedVideo($targetVideo);
 }
 
+function handleLikedButton($target) {
+  const $targetVideo = $target.closest('.js-video');
+
+  videoInfos.toggleLikeType($targetVideo.dataset.videoId);
+  updateSavedVideo($targetVideo);
+}
+
 function handleButtonsControl({ target }) {
   if (target.classList.contains('js-watched-button')) {
     handleWatchedButton(target);
@@ -32,6 +43,10 @@ function handleButtonsControl({ target }) {
   }
   if (target.classList.contains('js-delete-button')) {
     handleDeleteButton(target);
+    return;
+  }
+  if (target.classList.contains('js-like-button')) {
+    handleLikedButton(target);
   }
 }
 

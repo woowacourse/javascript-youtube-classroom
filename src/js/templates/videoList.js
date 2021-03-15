@@ -64,14 +64,18 @@ function createSearchVideoListTemplate(resultItems = [], videoInfos) {
 }
 
 // main page 내 video templates
-function createControlButtonsTemplate(watchType) {
+function createControlButtonsTemplate(watchType, likeType) {
   return [
     {
       content: '✅',
       className: 'js-watched-button',
       isChecked: watchType === 'watched',
     },
-    { content: '👍', className: 'js-like-button', isChecked: false },
+    {
+      content: '👍',
+      className: 'js-like-button',
+      isChecked: likeType === 'liked',
+    },
     { content: '🗑️', className: 'js-delete-button', isChecked: false },
   ]
     .map(
@@ -88,7 +92,7 @@ function createSavedVideoListTemplate(savedVideoInfos = []) {
     .map(item =>
       createVideoSnippetTemplate(
         item,
-        createControlButtonsTemplate(item.watchType)
+        createControlButtonsTemplate(item.watchType, item.likeType)
       )
     )
     .join('');
