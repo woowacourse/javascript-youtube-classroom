@@ -176,7 +176,7 @@ class SearchModal {
 
       const keywordHistory = [
         keyword,
-        ...this.keywordHistory.filter(_keyword => _keyword !== keyword),
+        ...this.keywordHistory.filter(history => history !== keyword),
       ];
       keywordHistory.splice(STANDARD_NUMS.MAX_SAVE_KEYWORD_COUNT, 1);
       this._setSearchKeywordState({ keyword, keywordHistory, videos, nextPageToken });
