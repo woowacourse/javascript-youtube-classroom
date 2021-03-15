@@ -37,7 +37,10 @@ const activateTargetSection = (targetClassName) => {
 };
 
 export const onToggleRenderedClips = ({ target }) => {
-  if (target.dataset.js === 'navigator__search-button') {
+  if (
+    target.dataset.js === 'navigator__search-button' ||
+    target.dataset.js === 'navigator'
+  ) {
     return;
   }
 
