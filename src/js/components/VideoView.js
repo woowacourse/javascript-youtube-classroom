@@ -17,7 +17,7 @@ class VideoView {
     this._initSubscription();
   }
 
-  async _initState() {
+  _initState() {
     this.savedVideos = savedVideoManager.getSavedVideos();
     this.clickedMenu = MENU.WATCH_LATER;
 
