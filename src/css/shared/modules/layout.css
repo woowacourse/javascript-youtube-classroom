@@ -11,6 +11,10 @@
   position: fixed;
 }
 
+.sticky {
+  position: sticky;
+}
+
 /* Layout - Display */
 .d-flex {
   display: flex;
