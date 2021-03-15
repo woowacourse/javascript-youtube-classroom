@@ -74,7 +74,7 @@ export default class SearchView {
       );
 
       if (!selectedTarget) {
-        throw new Error(ERROR_MESSAGE.CONNOT_FIND_SAVE_BUTTON_ERROR);
+        throw new Error(ERROR_MESSAGE.CANNOT_FIND_SAVE_BUTTON_ERROR);
       }
 
       return selectedTarget;

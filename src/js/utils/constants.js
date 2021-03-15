@@ -81,9 +81,9 @@ export const ERROR_MESSAGE = {
   DELETE_ERROR: "동영상 삭제에 실패했습니다.",
   INVALID_ACTION_ERROR: "유효하지 않은 동작입니다.",
   NOT_IMPLEMENTED: "준비중인 기능입니다.",
-  CONNOT_FIND_SAVE_BUTTON_ERROR: "cannot find save button",
-  CONNOT_FIND_ELEMENT_ERROR: "cannot find element",
-  CONNOT_FIND_INDEX_OF_VIDEO: "cannot find index of video",
+  CANNOT_FIND_SAVE_BUTTON_ERROR: "cannot find save button",
+  CANNOT_FIND_ELEMENT_ERROR: "cannot find element",
+  CANNOT_FIND_INDEX_OF_VIDEO: "cannot find index of video",
 };
 
 export const CONFIRM_MESSAGE = {

@@ -59,7 +59,7 @@ const videos = {
       );
 
       if (watchedVideoIndex === -1) {
-        throw new Error(ERROR_MESSAGE.CONNOT_FIND_INDEX_OF_VIDEO);
+        throw new Error(ERROR_MESSAGE.CANNOT_FIND_INDEX_OF_VIDEO);
       }
 
       const watchedVideo = this.savedVideos[watchedVideoIndex];

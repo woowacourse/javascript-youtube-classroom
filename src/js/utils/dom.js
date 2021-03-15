@@ -6,7 +6,7 @@ export const $ = (selector) => {
     const selected = document.querySelectorAll(selector);
 
     if (selected.length === 0) {
-      throw new Error(ERROR_MESSAGE.CONNOT_FIND_ELEMENT_ERROR);
+      throw new Error(ERROR_MESSAGE.CANNOT_FIND_ELEMENT_ERROR);
     }
 
     return selected.length === 1 ? selected[0] : selected;
@@ -20,7 +20,7 @@ export const getFormElements = ($form, elementName) => {
     const $elements = $form.elements[elementName];
 
     if (!$elements) {
-      throw new Error(ERROR_MESSAGE.CONNOT_FIND_ELEMENT_ERROR);
+      throw new Error(ERROR_MESSAGE.CANNOT_FIND_ELEMENT_ERROR);
     }
 
     return $elements;
