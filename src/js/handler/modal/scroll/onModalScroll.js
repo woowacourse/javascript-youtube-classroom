@@ -26,6 +26,7 @@ export const onModalScroll = async (event) => {
     maxResults: YOUTUBE.NUMBER_TO_LOAD,
     q: keyword,
     pageToken,
+    type: 'video',
   });
   const response = await request(BASE_URL + queryString);
   const recentSearchResults =

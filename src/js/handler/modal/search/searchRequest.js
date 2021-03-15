@@ -80,6 +80,7 @@ export const searchRequest = async (keyword) => {
     part: 'snippet',
     maxResults: YOUTUBE.NUMBER_TO_LOAD,
     q: keyword,
+    type: 'video',
   });
   const response = await request(BASE_URL + queryString);
 
