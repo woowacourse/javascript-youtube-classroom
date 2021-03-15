@@ -1,6 +1,7 @@
 import {
   CLASS,
   CONFIRM_MESSAGE,
+  NAV,
   SELECTOR,
   SNACK_BAR,
 } from '../constants/constant.js';
@@ -19,9 +20,8 @@ class SavedController {
   init() {
     this.#storageModel.init();
     this.#loadSavedVideos();
-    this.#handleVideosToWatch();
-    this.#handleVideosWatched();
-    this.#handleVideoButtons();
+    this.#handleNav();
+    +this.#handleVideoButtons();
   }
 
   #renderSavedVideo = videos => {
@@ -33,11 +33,11 @@ class SavedController {
     this.#renderSavedVideo(this.#storageModel.savedVideos);
   };
 
-  #filterVideos({ showWatched }) {
-    if (this.#storageModel.showWatched === showWatched) return;
+  #filterVideos(navValue) {
+    if (this.#storageModel.navValue === navValue) return;
 
-    this.#savedView.toggleNavButton(showWatched);
-    this.#renderSavedVideo(this.#storageModel.filterVideos(showWatched));
+    this.#savedView.toggleNavButton(navValue);
+    this.#renderSavedVideo(this.#storageModel.filterVideos(navValue));
   }
 
   #deleteVideo(target) {
@@ -89,15 +89,11 @@ class SavedController {
     });
   }
 
-  #handleVideosToWatch() {
-    $(SELECTOR.TO_WATCH_VIDEOS_BUTTON).addEventListener('click', () => {
-      this.#filterVideos({ showWatched: false });
-    });
-  }
-
-  #handleVideosWatched() {
-    $(SELECTOR.WATCHED_VIDEOS_BUTTON).addEventListener('click', () => {
-      this.#filterVideos({ showWatched: true });
+  #handleNav() {
+    $(SELECTOR.NAV).addEventListener('click', event => {
+      if (event.target.tagName === 'BUTTON') {
+        this.#filterVideos(event.target.id);
+      }
     });
   }
 }

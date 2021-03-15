@@ -30,6 +30,7 @@ export const SELECTOR = {
   VIDEO_INFO_BUTTONS: '.video-info-buttons',
   TO_WATCH_VIDEOS_BUTTON: '#towatch-videos-button',
   SNACK_BAR: '#snackbar',
+  NAV: 'header nav',
 };
 
 export const CLASS = {
@@ -43,6 +44,13 @@ export const CLASS = {
   SAVE_BUTTON: 'js-save-button',
   OPEN: 'open',
   BG_CYAN: 'bg-cyan-100',
+};
+
+export const NAV = {
+  LIKED_VIDEOS: 'liked-videos-button',
+  TO_WATCH_VIDEOS: 'towatch-videos-button',
+  WATCHED_VIDEOS: 'watched-videos-button',
+  SEARCH_MODAL: 'search-modal-button',
 };
 
 export const REDIRECT_HOST = 'https://ddongule.netlify.app/youtube/v3/search?';

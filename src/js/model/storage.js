@@ -2,21 +2,16 @@ import {
   setJSONToLocalStorage,
   getJSONFromLocalStorage,
 } from '../utils/util.js';
-import {
-  ERROR_MESSAGE,
-  SEARCH,
-  SELECTOR,
-  STORAGE,
-} from '../constants/constant.js';
+import { NAV, SEARCH, SELECTOR, STORAGE } from '../constants/constant.js';
 class StorageModel {
   #savedVideo;
   #keywords;
-  #showWatched;
+  #navValue;
 
   constructor() {
     this.#savedVideo = [];
     this.#keywords = [];
-    this.#showWatched = null;
+    this.#navValue = null;
   }
 
   init() {
@@ -24,9 +19,16 @@ class StorageModel {
     this.#keywords = getJSONFromLocalStorage(STORAGE.KEY_KEYWORDS);
   }
 
-  filterVideos = showWatched => {
-    this.#showWatched = showWatched;
-    return this.#savedVideo.filter(video => video.watched === showWatched);
+  filterVideos = navValue => {
+    this.#navValue = navValue;
+    // TODO: 아래 개선
+    if (navValue === NAV.TO_WATCH_VIDEOS) {
+      return this.#savedVideo.filter(video => video.watched === false);
+    } else if (navValue === NAV.WATCHED_VIDEOS) {
+      return this.#savedVideo.filter(video => video.watched === true);
+    } else if (navValue === NAV.LIKED_VIDEOS) {
+      return this.#savedVideo.filter(video => video.liked === true);
+    }
   };
 
   // TODO : 아래 함수들 일반화 시키기
@@ -87,8 +89,8 @@ class StorageModel {
     setJSONToLocalStorage(STORAGE.KEY_KEYWORDS, this.#keywords);
   };
 
-  get showWatched() {
-    return this.#showWatched;
+  get navValue() {
+    return this.#navValue;
   }
 
   get savedVideos() {
