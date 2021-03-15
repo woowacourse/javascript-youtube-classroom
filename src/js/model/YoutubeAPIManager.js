@@ -1,6 +1,9 @@
 import { VALUES, ERROR_MESSAGES } from '../constants/constants.js';
+import { isEmptyObject } from '../utils/utils.js';
 
 export default class YoutubeAPIManager {
+  static cache = {};
+
   constructor() {
     this.searchTerm = '';
     this.pageToken = '';
@@ -30,6 +33,16 @@ export default class YoutubeAPIManager {
   // TODO: 에러처리를 보다 유연하게 하기
   async requestVideos() {
     const url = this.createRequestURL(this.searchTerm, this.pageToken);
+
+    const params = url.split('?')[1];
+    if (
+      YoutubeAPIManager.cache[params] &&
+      !isEmptyObject(YoutubeAPIManager.cache[params])
+    ) {
+      this.pageToken = YoutubeAPIManager.cache[params].nextPageToken;
+      return YoutubeAPIManager.cache[params].items;
+    }
+
     const res = await fetch(url).then((data) => {
       if (!data.ok) {
         if (data.status === 403) {
@@ -40,8 +53,12 @@ export default class YoutubeAPIManager {
       return data.json();
     });
 
+    YoutubeAPIManager.cache[params] = res;
     this.pageToken = res.nextPageToken;
 
     return res.items;
+  }
+  catch(error) {
+    console.log(error);
   }
 }

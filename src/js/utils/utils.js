@@ -58,3 +58,12 @@ export const unescapeString = (string) => {
     .parseFromString(string, 'text/html')
     .querySelector('html').textContent;
 };
+
+export const isEmptyObject = (object) => {
+  try {
+    if (Object.keys(object).length === 0) return true;
+  } catch (error) {
+    console.log(error);
+    return false;
+  }
+};
