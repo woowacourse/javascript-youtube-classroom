@@ -61,6 +61,14 @@
   color: #606060;
 }
 
+.button-style-none {
+  padding: 0;
+  border: 0;
+  outline: 0;
+  background-color:rgba(0,0,0,0);
+  font-size: 1rem;
+}
+
 .clip__check-button.checked {
   opacity: 1;
 }

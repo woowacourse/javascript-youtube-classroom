@@ -46,4 +46,8 @@ export default class BasicView {
 
     target.classList.add('removed');
   }
+
+  focusElement($target) {
+    $target.focus();
+  }
 }

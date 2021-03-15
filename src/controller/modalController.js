@@ -81,6 +81,7 @@ function onModalOpen() {
   }
   modalView.renderSearchedVideos(processedVideos);
   modalView.showSearchResultIntersector();
+  modalView.focusElement($searchFormInput);
 }
 
 function onModalClose() {

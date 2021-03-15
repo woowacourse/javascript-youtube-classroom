@@ -12523,6 +12523,7 @@ function onModalOpen() {
 
   _view_index_js__WEBPACK_IMPORTED_MODULE_5__.modalView.renderSearchedVideos(processedVideos);
   _view_index_js__WEBPACK_IMPORTED_MODULE_5__.modalView.showSearchResultIntersector();
+  _view_index_js__WEBPACK_IMPORTED_MODULE_5__.modalView.focusElement(_elements_js__WEBPACK_IMPORTED_MODULE_0__.$searchFormInput);
 }
 
 function onModalClose() {
@@ -13472,6 +13473,11 @@ var BasicView = /*#__PURE__*/function () {
 
       target.classList.add('removed');
     }
+  }, {
+    key: "focusElement",
+    value: function focusElement($target) {
+      $target.focus();
+    }
   }]);
 
   return BasicView;
@@ -13780,7 +13786,7 @@ var _getSearchedVideoListTemplate2 = function _getSearchedVideoListTemplate2(vid
 };
 
 var _getSearchedVideoTemplate2 = function _getSearchedVideoTemplate2(videoItem) {
-  return "\n    <article class=\"".concat(_constants_js__WEBPACK_IMPORTED_MODULE_0__.SELECTOR_CLASS.SEARCHED_CLIP, " clip\">\n      <div class=\"clip__preview\">\n        ").concat(this._getIframe(videoItem), "\n      </div>\n      <div class=\"clip__content pt-2 px-1\">\n        <h3>").concat(videoItem.title, "</h3>\n        <div>\n          <a\n            href=\"https://www.youtube.com/channel/UC-mOekGSesms0agFntnQang\"\n            target=\"_blank\"\n            class=\"channel-name mt-1\"\n          >\n            ").concat(videoItem.channelTitle, "\n          </a>\n          <div class=\"meta\">\n            <p>").concat(videoItem.publishedAt, "</p>\n          </div>\n          <div class=\"d-flex justify-end ").concat(videoItem.isSaved ? 'removed' : '', "\">\n            <button class=\"btn ").concat(_constants_js__WEBPACK_IMPORTED_MODULE_0__.SELECTOR_CLASS.SEARCHED_CLIP_SAVE_BUTTON, "\"\n              data-video-id=\"").concat(videoItem.videoId, "\"\n              data-title=\"").concat(videoItem.title, "\"\n              data-channel-title=\"").concat(videoItem.channelTitle, "\"\n              data-published-at=\"").concat(videoItem.publishedAt, "\"\n              data-thumbnail-url=\"").concat(videoItem.thumbnailUrl, "\"\n            >\u2B07\uFE0F \uC800\uC7A5</button>\n          </div>\n        </div>\n      </div>\n    </article>\n    ");
+  return "\n    <article class=\"".concat(_constants_js__WEBPACK_IMPORTED_MODULE_0__.SELECTOR_CLASS.SEARCHED_CLIP, " clip\">\n      <div class=\"clip__preview\">\n        ").concat(this._getIframe(videoItem), "\n      </div>\n      <div class=\"clip__content pt-2 px-1\">\n        <h3>").concat(videoItem.title, "</h3>\n        <div>\n          <a\n            href=\"https://www.youtube.com/channel/UC-mOekGSesms0agFntnQang\"\n            target=\"_blank\"\n            class=\"channel-name mt-1\"\n          >\n            ").concat(videoItem.channelTitle, "\n          </a>\n          <div class=\"meta\">\n            <p>").concat(videoItem.publishedAt, "</p>\n          </div>\n          <div class=\"d-flex justify-end ").concat(videoItem.isSaved ? 'removed' : '', "\">\n            <button class=\"btn ").concat(_constants_js__WEBPACK_IMPORTED_MODULE_0__.SELECTOR_CLASS.SEARCHED_CLIP_SAVE_BUTTON, "\"\n              data-video-id=\"").concat(videoItem.videoId, "\"\n              data-title=\"").concat(videoItem.title, "\"\n              data-channel-title=\"").concat(videoItem.channelTitle, "\"\n              data-published-at=\"").concat(videoItem.publishedAt, "\"\n              data-thumbnail-url=\"").concat(videoItem.thumbnailUrl, "\"\n            aria-label=\"\uBCFC \uC601\uC0C1\uC73C\uB85C \uC800\uC7A5\">\u2B07\uFE0F \uC800\uC7A5</button>\n          </div>\n        </div>\n      </div>\n    </article>\n    ");
 };
 
 
@@ -13894,7 +13900,7 @@ var VideoView = /*#__PURE__*/function (_GetVideoIframeMixin) {
   }, {
     key: "_getVideoTemplate",
     value: function _getVideoTemplate(videoItem, isWatched) {
-      return "\n    <article class=\"".concat(_constants__WEBPACK_IMPORTED_MODULE_0__.SELECTOR_CLASS.CLIP, " clip\">\n      <div class=\"clip__preview\">\n        ").concat(this._getIframe(videoItem), "\n      </div>\n      <div class=\"clip__content pt-2 px-1\">\n        <h3>").concat(videoItem.title, "</h3>\n        <div>\n          <a\n            href=\"https://www.youtube.com/channel/UC-mOekGSesms0agFntnQang\"\n            target=\"_blank\"\n            class=\"channel-name mt-1\"\n          >\n            ").concat(videoItem.channelTitle, "\n          </a>\n          <div class=\"meta\">\n            <p>").concat(videoItem.publishedAt, "</p>\n          </div>\n          <div>\n            <span \n              class=\"\n                ").concat(_constants__WEBPACK_IMPORTED_MODULE_0__.SELECTOR_CLASS.CLIP_CHECK_BUTTON, "\n                clip__check-button\n                ").concat(isWatched ? _constants__WEBPACK_IMPORTED_MODULE_0__.STYLE_CLASS.VIDEO_CHECKED : '', " \n                opacity-hover\n              \" \n              data-video-id=\"").concat(videoItem.videoId, "\"\n            >\u2705</span>\n            <span class=\"opacity-hover\">\uD83D\uDC4D</span>\n            <span class=\"opacity-hover\">\uD83D\uDCAC</span>\n            <span \n              class=\"").concat(_constants__WEBPACK_IMPORTED_MODULE_0__.SELECTOR_CLASS.CLIP_DELETE_BUTTON, " opacity-hover\" \n              data-video-id=\"").concat(videoItem.videoId, "\"\n            >\uD83D\uDDD1\uFE0F</span>\n          </div>\n        </div>\n      </div>\n    </article>\n    ");
+      return "\n    <article class=\"".concat(_constants__WEBPACK_IMPORTED_MODULE_0__.SELECTOR_CLASS.CLIP, " clip\">\n      <div class=\"clip__preview\">\n        ").concat(this._getIframe(videoItem), "\n      </div>\n      <div class=\"clip__content pt-2 px-1\">\n        <h3>").concat(videoItem.title, "</h3>\n        <div>\n          <a\n            href=\"https://www.youtube.com/channel/UC-mOekGSesms0agFntnQang\"\n            target=\"_blank\"\n            class=\"channel-name mt-1\"\n          >\n            ").concat(videoItem.channelTitle, "\n          </a>\n          <div class=\"meta\">\n            <p>").concat(videoItem.publishedAt, "</p>\n          </div>\n          <div>\n            <button \n              class=\"\n                ").concat(_constants__WEBPACK_IMPORTED_MODULE_0__.SELECTOR_CLASS.CLIP_CHECK_BUTTON, "\n                clip__check-button\n                button-style-none\n                ").concat(isWatched ? _constants__WEBPACK_IMPORTED_MODULE_0__.STYLE_CLASS.VIDEO_CHECKED : '', " \n                opacity-hover\" \n              data-video-id=\"").concat(videoItem.videoId, "\"\n              aria-label=\"\uD574\uB2F9 \uBE44\uB514\uC624\uB97C ").concat(isWatched ? '볼 영상으로 저장' : '본 영상으로 저장', "\"\n            >\u2705</button>\n            <button class=\"opacity-hover button-style-none\">\uD83D\uDC4D</button>\n            <button class=\"opacity-hover button-style-none\">\uD83D\uDCAC</button>\n            <button \n              class=\"").concat(_constants__WEBPACK_IMPORTED_MODULE_0__.SELECTOR_CLASS.CLIP_DELETE_BUTTON, " opacity-hover button-style-none\" \n              data-video-id=\"").concat(videoItem.videoId, "\"\n              aria-label=\"\uD574\uB2F9 \uBE44\uB514\uC624\uB97C \uC0AD\uC81C\"\n            >\uD83D\uDDD1\uFE0F</button>\n          </div>\n        </div>\n      </div>\n    </article>\n    ");
     }
   }]);
 
@@ -14010,14 +14016,13 @@ var GetVideoIframeMixin = function GetVideoIframeMixin(superClass) {
     _createClass(_class2, [{
       key: "_getIframe",
       value: function _getIframe(videoItem) {
-        var videoUrl = "https://www.youtube.com/embed/".concat(videoItem.videoId);
-        return "\n      <iframe\n      width=\"100%\"\n      height=\"118\"\n      scrolling=\"no\"\n      src=\"".concat(videoUrl, "\"\n      srcdoc=\n      \"").concat(_classPrivateMethodGet(this, _getSrcDoc, _getSrcDoc2).call(this, videoUrl, videoItem.thumbnailUrl), "\"\n      frameborder=\"0\"\n      allow=\"accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture\"\n      allowfullscreen\n      ></iframe>\n      ");
+        return "\n      <iframe\n      width=\"100%\"\n      height=\"118\"\n      scrolling=\"no\"\n      allow=\"autoplay\"\n      src=\"https://www.youtube.com/embed/".concat(videoItem.videoId, "?autoplay=1\"\n      srcdoc=\n      \"").concat(_classPrivateMethodGet(this, _getSrcDoc, _getSrcDoc2).call(this, videoItem), "\"\n      frameborder=\"0\"\n      allow=\"accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture\"\n      allowfullscreen\n      ></iframe>\n      ");
       }
     }]);
 
     return _class2;
-  }(superClass)), _getSrcDoc2 = function _getSrcDoc2(videoUrl, thumbnailUrl) {
-    return "<body style=''>\n        <header>\n          <link rel='stylesheet' href='./src/assets/css/index.css'>\n        </header>\n        <div class='thumbnail'>\n          <a href='".concat(videoUrl, "'>\n            <img \n            class='thumbnail__image' \n            src=").concat(thumbnailUrl, " />\n            <div class='d-flex justify-center items-center  thumbnail__play-button'>\n              <span>\u25B6</span>\n            <div>\n          </a>\n        <div>\n      </body>");
+  }(superClass)), _getSrcDoc2 = function _getSrcDoc2(videoItem) {
+    return "\n      <body style=''>\n        <header>\n          <link rel='stylesheet' href='./src/assets/css/index.css'>\n        </header>\n        <div class='thumbnail'>\n          <a href='https://www.youtube.com/embed/".concat(videoItem.videoId, "' \n          aria-label='\uC720\uD29C\uBE0C \uC7AC\uC0DD \uBC84\uD2BC\uC785\uB2C8\uB2E4. \uC81C\uBAA9\uC740 ").concat(videoItem.title, "\uC785\uB2C8\uB2E4.'>\n            <img \n            class='thumbnail__image' \n            src=").concat(videoItem.thumbnailUrl, " />\n            <div class='d-flex justify-center items-center  thumbnail__play-button'>\n              <span>\u25B6</span>\n            <div>\n          </a>\n        <div>\n      </body>\n      ");
   }, _temp;
 };
 

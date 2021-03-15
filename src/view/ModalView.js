@@ -129,7 +129,7 @@ export default class ModalView extends GetVideoIframeMixin(BasicView) {
               data-channel-title="${videoItem.channelTitle}"
               data-published-at="${videoItem.publishedAt}"
               data-thumbnail-url="${videoItem.thumbnailUrl}"
-            >⬇️ 저장</button>
+            aria-label="볼 영상으로 저장">⬇️ 저장</button>
           </div>
         </div>
       </div>
