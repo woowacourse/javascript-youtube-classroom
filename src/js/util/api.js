@@ -19,15 +19,15 @@ export const getSearchVideoByKeyword = async (keyword, pageToken = '') => {
   try {
     const response = await fetch(searchURL.href);
 
-    if (!response.ok) {
-      if (response.status === 403) {
-        throw new Error(ERROR_MESSAGE.EXCEED_API_REQUEST_COUNT(response.status));
-      } else {
-        throw new Error(ERROR_MESSAGE.API_REQUEST_ERROR(response.status));
-      }
+    if (response.ok) {
+      return response.json();
     }
 
-    return response.json();
+    if (response.status === 403) {
+      throw new Error(ERROR_MESSAGE.EXCEED_API_REQUEST_COUNT(response.status));
+    } else {
+      throw new Error(ERROR_MESSAGE.API_REQUEST_ERROR(response.status));
+    }
   } catch (error) {
     throw new Error(error);
   }
@@ -48,15 +48,15 @@ export const getVideoByIdList = async idList => {
   try {
     const response = await fetch(videoURL.href);
 
-    if (!response.ok) {
-      if (response.status === 403) {
-        throw new Error(ERROR_MESSAGE.EXCEED_API_REQUEST_COUNT(response.status));
-      } else {
-        throw new Error(ERROR_MESSAGE.API_REQUEST_ERROR(response.status));
-      }
+    if (response.ok) {
+      return response.json();
     }
 
-    return response.json();
+    if (response.status === 403) {
+      throw new Error(ERROR_MESSAGE.EXCEED_API_REQUEST_COUNT(response.status));
+    } else {
+      throw new Error(ERROR_MESSAGE.API_REQUEST_ERROR(response.status));
+    }
   } catch (error) {
     throw new Error(error);
   }

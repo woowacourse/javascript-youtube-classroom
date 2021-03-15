@@ -55,11 +55,13 @@ export class SavedVideo {
     }
 
     if (target.classList.contains('js-delete-button')) {
-      customConfirm(CONFIRM_MESSAGE.DELETE_VIDEO).then(() => {
-        target.closest('.js-clip-article').remove();
-        this.savedVideoManager.deleteVideo(target.closest('.js-emoji-button-list').dataset.videoId);
-        showSnackbar(SNACKBAR_MESSAGE.DELETE_SUCCESS);
-      });
+      customConfirm(CONFIRM_MESSAGE.DELETE_VIDEO)
+        .then(() => {
+          target.closest('.js-clip-article').remove();
+          this.savedVideoManager.deleteVideo(target.closest('.js-emoji-button-list').dataset.videoId);
+          showSnackbar(SNACKBAR_MESSAGE.DELETE_SUCCESS);
+        })
+        .catch(() => {});
     }
   }
 
