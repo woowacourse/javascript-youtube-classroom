@@ -29,10 +29,10 @@ export const searchYoutubeById = async (ids = []) => {
   return await response.json();
 };
 
-const getParameters = function ({ part, type, key, pageToken = '', maxResults = '', q = '', id = '' }) {
+const getParameters = (params) => {
+  const { part, type, key, pageToken = '', maxResults = '', q = '', id = '' } = params;
   const URLparams = new URLSearchParams({});
 
-  const params = arguments[0];
   Object.keys(params).forEach((key) => {
     if (params[key]) URLparams.set(key, params[key]);
   });

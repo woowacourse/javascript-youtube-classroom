@@ -67,7 +67,7 @@ export default class WatchList extends Observer {
         });
 
         const video = { id, title, channelId, channelTitle, dateString, thumbnailURL };
-        const options = { containsMenu: true, isWatched: watched, isLiked: liked };
+        const options = { isContainMenu: true, isWatched: watched, isLiked: liked };
         const videoTemplate = getVideoTemplate(video, options);
 
         return videoTemplate;
@@ -79,8 +79,8 @@ export default class WatchList extends Observer {
 
   async render() {
     const watchList = this.store.load(LOCAL_STORAGE_KEYS.WATCH_LIST);
-    const watchListIds = watchList.map((item) => item.videoId);
-    const toWatchList = watchList.filter((item) => !item.watched);
+    const watchListIds = watchList.map(({ videoId }) => videoId);
+    const toWatchList = watchList.filter(({ watched }) => !watched);
 
     if (!toWatchList || toWatchList.length <= 0) {
       showElement(SELECTORS.CLASS.NO_VIDEO);
@@ -88,7 +88,7 @@ export default class WatchList extends Observer {
 
     if (!watchList || watchList.length <= 0) return;
 
-    renderSkeletonUI(SELECTORS.CLASS.WATCH_LIST, watchList.filter(({ watched }) => !watched).length);
+    renderSkeletonUI(SELECTORS.CLASS.WATCH_LIST, toWatchList.length);
 
     try {
       const { items } = await searchYoutubeById(watchListIds);

@@ -94,7 +94,7 @@ export default class YoutubeSearchModal extends Observer {
         });
 
         const video = { id, title, channelId, channelTitle, dateString, thumbnailURL };
-        const options = { containsSaveButton: !isSaved };
+        const options = { isContainSaveButton: !isSaved };
 
         return getVideoTemplate(video, options);
       })

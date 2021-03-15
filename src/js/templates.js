@@ -16,8 +16,8 @@ export const getVideoPlayerTemplate = (id) => {
 export const getVideoTemplate = (data, options) => {
   const { id, title, channelId, channelTitle, dateString, thumbnailURL } = data;
   const {
-    containsSaveButton = false,
-    containsMenu = false,
+    isContainSaveButton = false,
+    isContainMenu = false,
     isSaved = false,
     isWatched = false,
     isLiked = false,
@@ -44,7 +44,7 @@ export const getVideoTemplate = (data, options) => {
           </div>
         </div>
         ${
-          containsSaveButton
+          isContainSaveButton
             ? `
               <div class="d-flex justify-end">
                 <button class="btn btn-save ${isSaved ? 'hidden' : ''}" data-video-id="${id}">⬇️ 저장</button>
@@ -53,7 +53,7 @@ export const getVideoTemplate = (data, options) => {
             : ''
         }
         ${
-          containsMenu
+          isContainMenu
             ? `
             <div class="menu-list" data-video-id="${id}"}>
               <span class="cursor-pointer ${generateCSSClass(!isWatched, 'opacity-hover')} watched">✅</span>
