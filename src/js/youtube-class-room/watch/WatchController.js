@@ -72,23 +72,22 @@ export default class WatchController {
     }
   }
 
-  watchVideo(videoId) {
-    const succeed = videos.setVideoWatched(videoId, true);
+  toggleWatched(videoId) {
+    const watched = videos
+      .getSavedVideos()
+      .some((video) => video.videoId === videoId && video.watched);
+    const succeed = videos.setVideoWatched(videoId, !watched);
 
     succeed
-      ? showSnackbar(SUCCESS_MESSAGE.WATCH_VIDEO)
+      ? showSnackbar(
+          watched
+            ? SUCCESS_MESSAGE.CLEAR_WATCH_VIDEO_LOG
+            : SUCCESS_MESSAGE.WATCH_VIDEO
+        )
       : showSnackbar(ERROR_MESSAGE.INVALID_ACTION_ERROR);
   }
 
-  clearWatchedViedoLog(videoId) {
-    const succeed = videos.setVideoWatched(videoId, false);
-
-    succeed
-      ? showSnackbar(SUCCESS_MESSAGE.CLEAR_WATCH_VIDEO_LOG)
-      : showSnackbar(ERROR_MESSAGE.INVALID_ACTION_ERROR);
-  }
-
-  toggleLike(videoId) {
+  toggleLiked(videoId) {
     const liked = videos
       .getSavedVideos()
       .some((video) => video.videoId === videoId && video.liked);
