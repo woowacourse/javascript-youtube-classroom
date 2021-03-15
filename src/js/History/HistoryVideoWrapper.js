@@ -1,8 +1,14 @@
-import { MESSAGE, LOCAL_STORAGE_KEY, CLASSNAME } from "../constants.js";
+import {
+  MESSAGE,
+  LOCAL_STORAGE_KEY,
+  CLASSNAME,
+  SNACKBAR_MESSAGE,
+} from "../constants.js";
 import messenger from "../Messenger.js";
 import { $ } from "../utils/DOM.js";
 import { HISTORY_VIDEO_TEMPLATE } from "../Video/template.js";
 import { renderWatchLaterVideo } from "../Video/render.js";
+import { showSnackbar } from "../utils/snackbar.js";
 
 export default class HistoryVideoWrapper {
   constructor() {
@@ -32,12 +38,14 @@ export default class HistoryVideoWrapper {
 
       if (event.target.classList.contains(CLASSNAME.WATCH_LATER_ICON)) {
         this.moveVideo(videoId);
+        showSnackbar(SNACKBAR_MESSAGE.MOVED_TO_WATCH_LATER_VIDEO);
       }
 
       if (event.target.classList.contains(CLASSNAME.DELETE_ICON)) {
         // eslint-disable-next-line no-alert
         if (window.confirm("정말 삭제하시겠습니까?")) {
           this.deleteVideo(videoId);
+          showSnackbar(SNACKBAR_MESSAGE.VIDEO_DELETED);
         }
       }
     });

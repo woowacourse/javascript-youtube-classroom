@@ -36,6 +36,9 @@ const CLASSNAME = Object.freeze({
   LIKE_ICON: "js-like-icon",
   COMMENT_ICON: "js-comment-icon",
   DELETE_ICON: "js-delete-icon",
+  SNACKBAR: "snackbar",
+  MODAL_SNACKBAR: "js-modal-snackbar",
+  SHOW: "show",
 });
 
 const MESSAGE = Object.freeze({
@@ -46,6 +49,14 @@ const MESSAGE = Object.freeze({
   HIDE_IF_VIDEO_IS_SAVED: "HIDE_IF_VIDEO_IS_SAVED",
   WATCHED_ICON_CLICKED: "WATCHED_ICON_CLICKED",
   WATCH_LATER_ICON_CLICKED: "WATCH_LATER_ICON_CLICKED",
+});
+
+const SNACKBAR_MESSAGE = Object.freeze({
+  MOVED_TO_HISTORY_VIDEO: "🟢 본 영상으로 이동되었습니다",
+  MOVED_TO_WATCH_LATER_VIDEO: "🟠 볼 영상으로 이동되었습니다",
+  VIDEO_DELETED: "영상이 삭제되었습니다",
+  VIDEO_SAVED: "영상이 저장되었습니다",
+  CANCELED_VIDEO_SAVE: "저장을 취소하였습니다",
 });
 
 const LOCAL_STORAGE_KEY = Object.freeze({
@@ -71,12 +82,16 @@ const SCROLL_EVENT_THRESHOLD = 0.7;
 
 const THROTTLE_TIME_IN_MS = 500;
 
+const SNACKBAR_SHOW_TIME_IN_MS = 3000;
+
 export {
   CLASSNAME,
   MAX_KEYWORDS_COUNT,
   MAX_RESULTS_COUNT,
   MAX_SAVED_VIDEOS_COUNT,
   MESSAGE,
+  SNACKBAR_MESSAGE,
+  SNACKBAR_SHOW_TIME_IN_MS,
   SCROLL_EVENT_THRESHOLD,
   THROTTLE_TIME_IN_MS,
   LOCAL_STORAGE_KEY,
