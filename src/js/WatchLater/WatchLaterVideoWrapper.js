@@ -1,7 +1,6 @@
 import {
   MESSAGE,
   SNACKBAR_MESSAGE,
-  MAX_SAVED_VIDEOS_COUNT,
   LOCAL_STORAGE_KEY,
   CLASSNAME,
 } from "../constants.js";
@@ -108,15 +107,6 @@ export default class WatchLaterVideoWrapper {
 
   saveVideoItem({ videoId, item }) {
     this.watchLaterVideoItemsMap.set(videoId, item);
-
-    if (this.watchLaterVideoItemsMap.size > MAX_SAVED_VIDEOS_COUNT) {
-      this.watchLaterVideoItemsMap = new Map(
-        Array.from(this.watchLaterVideoItemsMap).slice(-MAX_SAVED_VIDEOS_COUNT)
-      );
-      this.$watchLaterVideoWrapper.children[
-        this.$watchLaterVideoWrapper.childElementCount - 1
-      ].remove();
-    }
 
     this.updateLocalStorage();
 

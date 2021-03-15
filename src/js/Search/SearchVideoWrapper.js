@@ -86,13 +86,25 @@ export default class SearchVideoWrapper {
       return;
     }
 
-    messenger.deliverMessage(MESSAGE.SAVE_VIDEO_BUTTON_CLICKED, {
-      videoId,
-      item,
+    const resolve = () => {
+      messenger.deliverMessage(MESSAGE.SAVE_VIDEO_BUTTON_CLICKED, {
+        videoId,
+        item,
+      });
+
+      $.addClass($button, CLASSNAME.CANCEL);
+      $button.innerText = "취소";
+      showModalSnackbar(SNACKBAR_MESSAGE.VIDEO_SAVED);
+    };
+
+    const reject = () => {
+      showModalSnackbar(SNACKBAR_MESSAGE.REACHED_MAX_COUNT);
+    };
+
+    messenger.deliverMessage(MESSAGE.SAVE_IF_VIDEOS_COUNT_IS_IN_RANGE, {
+      resolve,
+      reject,
     });
-    $.addClass($button, CLASSNAME.CANCEL);
-    $button.innerText = "취소";
-    showModalSnackbar(SNACKBAR_MESSAGE.VIDEO_SAVED);
   }
 
   mountTemplate() {

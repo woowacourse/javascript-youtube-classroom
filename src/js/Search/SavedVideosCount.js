@@ -23,6 +23,18 @@ export default class SavedVideosCount {
       MESSAGE.SAVED_VIDEOS_COUNT_CHANGED,
       this.setCount.bind(this)
     );
+
+    messenger.addMessageListener(
+      MESSAGE.SAVE_IF_VIDEOS_COUNT_IS_IN_RANGE,
+      ({ resolve, reject }) => {
+        if (this.savedVideosCount >= MAX_SAVED_VIDEOS_COUNT) {
+          reject();
+          return;
+        }
+
+        resolve();
+      }
+    );
   }
 
   setCount({ change }) {
