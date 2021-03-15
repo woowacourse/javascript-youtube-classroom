@@ -63,6 +63,8 @@ function updateSavedVideo($targetVideo) {
   );
 
   $videoList.replaceChild(updateTargetVideo, $targetVideo);
+
+  return updateTargetVideo;
 }
 
 function showSnackBar(contents) {

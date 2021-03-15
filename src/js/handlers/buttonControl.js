@@ -1,5 +1,6 @@
 import MESSAGE from '../constants/message.js';
 import videoInfos from '../states/videoInfos.js';
+import videoListType from '../states/videoListType.js';
 import {
   removeSavedVideo,
   showSnackBar,
@@ -31,9 +32,12 @@ function handleDeleteButton($target) {
 
 function handleLikedButton($target) {
   const $targetVideo = $target.closest('.js-video');
-
   videoInfos.toggleLikeType($targetVideo.dataset.videoId);
-  updateSavedVideo($targetVideo);
+
+  const $updateSavedVideo = updateSavedVideo($targetVideo);
+  if (videoListType.get() === 'liked') {
+    removeSavedVideo($updateSavedVideo);
+  }
 }
 
 function handleButtonsControl({ target }) {
