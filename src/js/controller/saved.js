@@ -60,10 +60,15 @@ class SavedController {
   }
 
   #toggleVideoLiked(target) {
-    console.log('liked');
-    // 1. model에서 videoLiked 상태 업데이트
-    // 2. selector class toggle
-    // 3. 스낵바
+    this.#storageModel.updateVideoLiked(target);
+    toggleSelectorClass(target, CLASS.OPACITY_HOVER);
+
+    if (target.classList.contains(CLASS.OPACITY_HOVER)) {
+      this.#snackBarView.showSnackBar(SNACK_BAR.REMOVE_LIKE_MESSAGE);
+
+      return;
+    }
+    this.#snackBarView.showSnackBar(SNACK_BAR.ADDED_LIKE_MESSAGE);
   }
 
   #handleVideoButtons() {

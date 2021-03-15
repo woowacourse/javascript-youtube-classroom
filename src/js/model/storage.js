@@ -29,6 +29,7 @@ class StorageModel {
     return this.#savedVideo.filter(video => video.watched === showWatched);
   };
 
+  // TODO : 아래 함수들 일반화 시키기
   updateVideoWatched(target) {
     const targetUrl = target.closest(SELECTOR.VIDEO_INFO_BUTTONS).dataset.url;
     this.#savedVideo.forEach(info => {
@@ -37,6 +38,16 @@ class StorageModel {
       }
     });
 
+    setJSONToLocalStorage(STORAGE.KEY_MY_VIDEO, this.#savedVideo);
+  }
+
+  updateVideoLiked(target) {
+    const targetUrl = target.closest(SELECTOR.VIDEO_INFO_BUTTONS).dataset.url;
+    this.#savedVideo.forEach(info => {
+      if (info.url === targetUrl) {
+        info.liked = !info.liked;
+      }
+    });
     setJSONToLocalStorage(STORAGE.KEY_MY_VIDEO, this.#savedVideo);
   }
 

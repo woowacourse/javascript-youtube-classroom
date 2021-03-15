@@ -63,6 +63,8 @@ export const SNACK_BAR = {
   DELETE_MESSAGE: '영상을 목록에서 제거했습니다.',
   SAVED_MESSAGE: '영상을 저장했습니다.',
   LIST_MODIFIED_MESSAGE: '해당 영상의 저장 목록 위치를 변경했습니다.',
+  ADDED_LIKE_MESSAGE: '영상을 좋아요 한 목록에 추가했습니다.',
+  REMOVE_LIKE_MESSAGE: '영상을 좋아요 한 목록에서 제거했습니다.',
   VISIBLE_TIME: 3000,
 };
 
