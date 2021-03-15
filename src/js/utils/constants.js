@@ -80,6 +80,6 @@ export const SNACKBAR_MESSAGES = {
     SUCCESS: '동영상이 좋아하는 영상 목록에 추가되었읍니다',
   },
   LIKE_VIDEO_REMOVE: {
-    SUCCESS: '동영상이 좋아하는 영상 목록에 제거되었읍니다',
+    SUCCESS: '동영상이 좋아하는 영상 목록에서 제거되었읍니다',
   },
 };

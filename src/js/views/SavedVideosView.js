@@ -96,21 +96,33 @@ export default class SavedVideosView extends View {
     }, VALUE.CLIP_TRANSITION_TIME);
   }
 
-  toggleWatchedButton(videoId) {
+  toggleWatchedButton(videoId, isWatchedTabOrUnWatchedTab) {
     const videoClip = $(`[data-article='${videoId}']`);
-    const packButton = $(`[data-video-watched='${videoId}']`);
 
     $('#main-videos > article').removeClass('fadein', 'fadeout');
-    packButton.toggleClass('opacity-hover');
-    videoClip.addClass('fadeout');
+    $(`[data-video-watched='${videoId}']`).toggleClass('opacity-hover');
 
-    setTimeout(() => {
-      videoClip.hide();
-    }, VALUE.CLIP_TRANSITION_TIME);
+    if (isWatchedTabOrUnWatchedTab) {
+      videoClip.addClass('fadeout');
+
+      setTimeout(() => {
+        videoClip.hide();
+      }, VALUE.CLIP_TRANSITION_TIME);
+    }
   }
 
-  toggleLikeButton(videoId) {
+  toggleLikeButton(videoId, isLikedTab) {
+    const videoClip = $(`[data-article='${videoId}']`);
+
     $('#main-videos > article').removeClass('fadein', 'fadeout');
     $(`[data-video-like='${videoId}']`).toggleClass('opacity-hover');
+
+    if (isLikedTab) {
+      videoClip.addClass('fadeout');
+
+      setTimeout(() => {
+        videoClip.hide();
+      }, VALUE.CLIP_TRANSITION_TIME);
+    }
   }
 }
