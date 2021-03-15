@@ -1,7 +1,6 @@
 .snackbar {
   visibility: hidden;
   min-width: 250px;
-  margin-left: -125px;
   background-color: #333;
   color: #fff;
   text-align: center;
@@ -9,7 +8,6 @@
   padding: 20px 28px;
   position: fixed;
   z-index: 3;
-  left: 50%;
   bottom: 0;
 }
 

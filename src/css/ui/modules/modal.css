@@ -114,3 +114,9 @@ svg {
   transform: translateY(-100px);
   padding: 1.25rem;
 }
+
+@media screen and (max-width: 760px) {
+  .num-of-saved-video-container {
+    display: none;
+  }
+}

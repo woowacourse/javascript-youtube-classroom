@@ -16,11 +16,29 @@
           <nav class="d-flex justify-center">
             <ul class="list-style-none d-flex p-0">
               <li>
-                <button type="button" class="js-unchecked-video-button btn bg-cyan-100 mx-1">👁️ 볼 영상</button>
+                <button type="button" class="js-unchecked-video-button btn navigation-btn bg-cyan-100 mx-1 text-sm">
+                  <span class="line-break">👁️</span>
+                  볼 영상
+                </button>
               </li>
-              <li><button type="button" class="js-checked-video-button btn mx-1">✅ 본 영상</button></li>
-              <li><button type="button" class="js-liked-video-button btn mx-1">👍 좋아요 누른 영상</button></li>
-              <li><button type="button" class="js-search-button btn mx-1">🔍 동영상 검색</button></li>
+              <li>
+                <button type="button" class="js-checked-video-button btn navigation-btn mx-1 text-sm">
+                  <span class="line-break">✅</span>
+                  본 영상
+                </button>
+              </li>
+              <li>
+                <button type="button" class="js-liked-video-button btn navigation-btn mx-1 text-sm">
+                  <span class="line-break">👍</span>
+                  좋아요 누른 영상
+                </button>
+              </li>
+              <li>
+                <button type="button" class="js-search-button btn navigation-btn mx-1 text-sm">
+                  <span class="line-break">🔍</span>
+                  동영상 검색
+                </button>
+              </li>
             </ul>
           </nav>
           <main class="mt-10">
@@ -46,11 +64,11 @@
             <button type="submit" class="js-search-submit btn bg-cyan-500">검색</button>
           </form>
           <section class="d-flex justify-between items-center mt-2">
-            <section class="d-flex">
-              <h3 class="text-gray-700">최근 검색어:</h3>
-              <ul class="js-search-keyword-history-list d-flex list-style-none p-0 ml-2"></ul>
-            </section>
-            <div class="d-flex justify-end text-gray-700">
+            <div class="d-flex flex-auto">
+              <h3 class="text-gray-700 text-base my-auto">최근 검색어:</h3>
+              <ul class="js-search-keyword-history-list d-flex flex-auto list-style-none p-0 ml-2"></ul>
+            </div>
+            <div class="num-of-saved-video-container d-flex justify-end text-gray-700">
               저장된 영상 갯수:&nbsp;<span class="js-num-of-saved-video"></span>
             </div>
           </section>
@@ -65,7 +83,7 @@
           </section>
         </div>
       </div>
-      <div class="js-snackbar-container"></div>
+      <div class="js-snackbar-container d-flex justify-center"></div>
     </div>
     <script type="module" src="./src/js/index.js"></script>
   </body>

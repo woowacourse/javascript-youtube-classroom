@@ -8,6 +8,32 @@
   cursor: pointer;
 }
 
+@media screen and (max-width: 960px) {
+  .navigation-btn {
+    padding: 0 12px;
+  }
+}
+
+@media screen and (max-width: 600px) {
+  .navigation-btn {
+    height: 50px;
+    padding: 0 8px;
+  }
+  .line-break {
+    display: block;
+  }
+}
+
+@media screen and (max-width: 400px) {
+  .navigation-btn {
+    height: 50px;
+    padding: 0 4px;
+  }
+  .line-break {
+    display: block;
+  }
+}
+
 .btn:disabled {
   cursor: default;
 }
