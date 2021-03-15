@@ -13,7 +13,7 @@ import { showSnackbar } from "../utils/snackbar.js";
 export default class HistoryVideoWrapper {
   constructor() {
     this.historyVideoItemsMap = new Map(
-      JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEY.HISTORY_VIDEO_ITEMS)) //
+      JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEY.HISTORY_VIDEO_ITEMS))
     );
 
     this.historyVideosMap = new Map();
@@ -45,6 +45,7 @@ export default class HistoryVideoWrapper {
         // eslint-disable-next-line no-alert
         if (window.confirm("정말 삭제하시겠습니까?")) {
           this.deleteVideo(videoId);
+          messenger.deliverMessage(MESSAGE.SAVED_VIDEO_DELETED, { videoId });
           showSnackbar(SNACKBAR_MESSAGE.VIDEO_DELETED);
         }
       }
