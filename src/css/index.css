@@ -68,14 +68,6 @@ label.menu-btn {
   height: none;
 }
 
-.not-saved-video-image {
-  top: 0;
-  left: 50%;
-  transform: translate(-50%, 0%);
-  position: absolute;
-  object-fit: contain;
-}
-
 fieldset {
   border: none;
   padding: 0;

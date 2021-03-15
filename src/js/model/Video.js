@@ -283,6 +283,11 @@ export default class Video {
 
     this.watched && watchedButton.classList.add('checked');
 
+    watchedButton.dataset.eventName = 'watched';
+    likeButton.dataset.eventName = 'like';
+    commentButton.dataset.eventName = 'comment';
+    deleteButton.dataset.eventName = 'delete';
+
     buttonContainer.appendChild(watchedButton);
     buttonContainer.appendChild(likeButton);
     buttonContainer.appendChild(commentButton);

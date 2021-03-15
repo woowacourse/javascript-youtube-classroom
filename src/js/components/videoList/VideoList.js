@@ -121,6 +121,7 @@ export default class VideoList extends Component {
       this.showByFilter();
     }
 
+    // video가 추가된 경우
     if (preStates.savedVideoCount < states.savedVideoCount) {
       const savedVideos = localStorageGetItem(LOCALSTORAGE_KEYS.VIDEOS);
       const lastestVideoId = Object.keys(savedVideos)[
@@ -176,24 +177,37 @@ export default class VideoList extends Component {
   }
 
   onClickManagementButton(event) {
-    if (event.target.localName !== 'button') {
+    const eventName = event.target.dataset.eventName;
+    if (!eventName) {
       return;
     }
 
     let message = '';
 
-    try {
-      if (event.target.classList.contains(CLASS_NAMES.CLIP.WATCHED_BUTTON)) {
+    // TODO:
+    // event Name이 Manager Button에만 있는 경우.
+    // 다른 곳에 Manager Button이 있는 경우 showSnacbard의 위치를 바꾸어야 함.
+    switch (eventName) {
+      case 'watched':
         this.onClickWatchedButton(event);
         message = MESSAGES.ACTION_SUCCESS.WATCHED_STATE_SETTING;
-      } else if (
-        event.target.classList.contains(CLASS_NAMES.CLIP.DELETE_BUTTON)
-      ) {
-        this.onClickDeleteButton(event);
-        message = MESSAGES.ACTION_SUCCESS.DELETE;
-      }
-    } catch (error) {
-      message = error.message;
+        break;
+      case 'like':
+        message = ERROR_MESSAGES.NOT_AVAILABLE_BUTTON;
+        break;
+      case 'comment':
+        message = ERROR_MESSAGES.NOT_AVAILABLE_BUTTON;
+        break;
+      case 'delete':
+        try {
+          this.onClickDeleteButton(event);
+          message = MESSAGES.ACTION_SUCCESS.DELETE;
+        } catch (error) {
+          message = error.message;
+        }
+        break;
+      default:
+        break;
     }
 
     showSnackBar(this.$snackbar, message);

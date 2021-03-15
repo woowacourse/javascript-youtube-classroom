@@ -73,6 +73,8 @@ export default class VideoSearchResult extends Component {
       this.$searchedVideoWrapper.appendChild(this.skeletonTemplate());
     }
 
+    // searchHistory 가 업데이트 될 때 searchedVideo는 비동기로 받아오는 데이터이므로
+    // 동시에 상태가 변화하지 않을 수 있음.
     if (preStates.searchedVideos !== states.searchedVideos) {
       if (states.searchedVideos.length === 0) {
         this.displayNotFound();

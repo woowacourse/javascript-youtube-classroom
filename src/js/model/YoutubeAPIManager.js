@@ -27,6 +27,7 @@ export default class YoutubeAPIManager {
     return `${requestURL}${searchParams}`;
   }
 
+  // TODO: 에러처리를 보다 유연하게 하기
   async requestVideos() {
     const url = this.createRequestURL(this.searchTerm, this.pageToken);
     const res = await fetch(url).then((data) => {
