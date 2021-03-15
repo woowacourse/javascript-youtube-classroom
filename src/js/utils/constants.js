@@ -15,13 +15,12 @@ export const DOM_CONSTANTS = {
     WATCHED_LATER_VIEW_BUTTON: "#watch-later-view-button",
     WATCHED_VIEW_BUTTON: "#watched-view-button",
     LIKED_VIEW_BUTTON: "#liked-view-button",
+    EMPTY_IMG: "#empty-img",
     NOT_SAVED: "#not-saved",
     NOT_WATCHED: "#not-watched",
     NO_LIKED: "#no-liked",
     NOT_FOUND: "#not-found",
-    WATCH_LATER_VIDEOS: "#watch-later-videos",
-    WATCHED_VIDEOS: "#watched-videos",
-    LIKED_VIDEOS: "#liked-videos",
+    SAVED_VIDEOS: "#saved-videos",
     SEARCH_BUTTON: "#search-button",
     SEARCH_MODAL: "#search-modal",
     SEARCH_MODAL_CLOSE: "#search-modal-close",
@@ -59,6 +58,20 @@ export const VIDEO_VIEW_NAME = {
   WATCH_LATER: "watch-later",
   WATCHED: "watched",
   LIKED: "liked",
+};
+
+export const EMPTY_IMG = {
+  SRC: {
+    NOT_SAVED: "./src/images/status/not-saved.png",
+    NOT_WATCHED: "./src/images/status/not-watched.png",
+    NO_LIKED: "./src/images/status/no-liked.png",
+  },
+  ALT: {
+    NO_VIDEOS: "동영상이 존재하지 않습니다.",
+  },
+  WIDTH: {
+    DEFAULT: "300",
+  },
 };
 
 export const CUSTOM_EVENTS = {

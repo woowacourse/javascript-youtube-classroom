@@ -29,6 +29,16 @@ export const getFormElements = ($form, elementName) => {
   }
 };
 
+export const createImg = (src, alt = "", width = "") => {
+  const img = document.createElement("img");
+
+  img.setAttribute("src", src);
+  img.setAttribute("alt", alt);
+  img.setAttribute("width", width);
+
+  return img;
+};
+
 export const showElement = ($target) => {
   $target.classList.remove(DOM_CONSTANTS.CLASS_NAME.D_NONE_HARD);
 };

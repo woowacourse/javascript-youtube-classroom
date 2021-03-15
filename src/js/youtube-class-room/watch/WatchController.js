@@ -3,6 +3,7 @@ import WatchView from "./WatchView.js";
 import { showSnackbar } from "../../utils/snackbar.js";
 import {
   CONFIRM_MESSAGE,
+  EMPTY_IMG,
   ERROR_MESSAGE,
   SUCCESS_MESSAGE,
   VIDEO_VIEW_NAME,
@@ -40,9 +41,9 @@ export default class WatchController {
     this.watchView.markWatchLaterViewButton();
 
     if (watchLaterVideos.length === 0) {
-      this.watchView.showNotSavedImg();
+      this.watchView.showEmptyImg(EMPTY_IMG.SRC.NOT_SAVED);
     } else {
-      this.watchView.showWatchLaterVideos(watchLaterVideos);
+      this.watchView.updateSavedVideosView(watchLaterVideos);
     }
   }
 
@@ -54,9 +55,9 @@ export default class WatchController {
     this.watchView.markWatchedViewButton();
 
     if (watchedVideos.length === 0) {
-      this.watchView.showNotWatchedImg();
+      this.watchView.showEmptyImg(EMPTY_IMG.SRC.NOT_WATCHED);
     } else {
-      this.watchView.showWatchedVideos(watchedVideos);
+      this.watchView.updateSavedVideosView(watchedVideos);
     }
   }
 
@@ -66,9 +67,9 @@ export default class WatchController {
     this.watchView.markLikedViewButton();
 
     if (likedVideos.length === 0) {
-      this.watchView.showNoLikedImg();
+      this.watchView.showEmptyImg(EMPTY_IMG.SRC.NO_LIKED);
     } else {
-      this.watchView.showLikedVideos(likedVideos);
+      this.watchView.updateSavedVideosView(likedVideos);
     }
   }
 
