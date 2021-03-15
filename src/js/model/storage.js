@@ -47,12 +47,15 @@ class StorageModel {
     switch (true) {
       case target.classList.contains(CLASS.WATCHED):
         this.#updateVideoWatched(targetUrl);
+        break;
 
       case target.classList.contains(CLASS.LIKED):
         this.#updateVideoLiked(targetUrl);
+        break;
 
       case target.classList.contains(CLASS.DELETE):
         this.#deleteSelectedVideo(targetUrl);
+        break;
     }
 
     setJSONToLocalStorage(STORAGE.KEY_MY_VIDEO, this.#savedVideo);

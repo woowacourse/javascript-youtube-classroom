@@ -21,7 +21,7 @@ class SavedController {
     this.#storageModel.init();
     this.#loadSavedVideos();
     this.#handleNav();
-    +this.#handleVideoButtons();
+    this.#handleVideoButtons();
   }
 
   #renderSavedVideo = videos => {
