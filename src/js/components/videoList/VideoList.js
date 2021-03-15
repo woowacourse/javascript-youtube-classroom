@@ -117,6 +117,7 @@ export default class VideoList extends Component {
   }
 
   render(preStates, states) {
+    // video가 삭제된 경우
     if (preStates.savedVideoCount > states.savedVideoCount) {
       this.showByFilter();
     }
@@ -124,13 +125,17 @@ export default class VideoList extends Component {
     // video가 추가된 경우
     if (preStates.savedVideoCount < states.savedVideoCount) {
       const savedVideos = localStorageGetItem(LOCALSTORAGE_KEYS.VIDEOS);
-      const lastestVideoId = Object.keys(savedVideos)[
-        Object.keys(savedVideos).length - 1
-      ];
+      const videoIdSortedByDate = Object.keys(savedVideos).sort((a, b) => {
+        return (
+          new Date(savedVideos[b].savedTime) -
+          new Date(savedVideos[a].savedTime)
+        );
+      });
+      const latestVideoId = videoIdSortedByDate[0];
 
       const newVideo = new Video({
-        videoId: lastestVideoId,
-        ...savedVideos[lastestVideoId],
+        videoId: latestVideoId,
+        ...savedVideos[latestVideoId],
       }).createTemplate(TYPES.PAGE.MANAGEMENT);
 
       if (this.filter === TYPES.FILTER.WATCHED) {
