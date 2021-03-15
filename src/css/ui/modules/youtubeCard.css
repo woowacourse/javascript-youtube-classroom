@@ -34,6 +34,7 @@
 
 .clip .content-container {
   position: relative;
+  
 }
 
 .clip .content-container h3 {
@@ -45,8 +46,15 @@
   text-overflow: ellipsis;
   -webkit-line-clamp: 2;
   overflow: hidden;
+  overflow-y : auto;
+  scroll : none;
   color: #0a0a0a;
-  min-height: 40px;
+  min-height: 40px; -ms-overflow-style: none; 
+  scrollbar-width: none;
+}
+
+.clip .content-container h3::-webkit-scrollbar {
+  display: none;
 }
 
 .clip .content-container .channel-name {
@@ -71,6 +79,7 @@
   border: 0;
   background-color: inherit;
   padding: 0 1px;
+  outline : none;
   cursor: pointer;
 }
 
