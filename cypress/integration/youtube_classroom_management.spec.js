@@ -1,15 +1,55 @@
 import {
   LOCALSTORAGE_KEYS,
   SELECTORS,
-  ERROR_MESSAGES,
-  MESSAGES,
 } from '../../src/js/constants/constants.js';
 import { videoInfo } from '../fixtures/videoInfo.js';
 
 describe('유튜브 강의실 관리 기능', () => {
-  beforeEach(() => {
+  before(() => {
+    cy.visit('http://localhost:5500/');
+  });
+
+  it('👍 좋아요 버튼을 누르면 localStorage에서 해당 영상에 대한 정보가 업데이트 되어야 한다.', async () => {
     cy.visit('http://localhost:5500/');
     localStorage.setItem(LOCALSTORAGE_KEYS.VIDEOS, JSON.stringify(videoInfo));
+    cy.get(SELECTORS.CLIP.LIKE_BUTTON)
+      .each(($likeButton) => {
+        $likeButton.click();
+      })
+      .then(() => {
+        const videos = JSON.parse(
+          localStorage.getItem(LOCALSTORAGE_KEYS.VIDEOS)
+        );
+
+        Object.keys(videos).forEach((videoId) => {
+          expect(videos[videoId].liked).to.equal(true);
+        });
+      });
+  });
+
+  it('볼/본 영상 및 동영상 검색 결과에서 디바이스의 가로길이에 따라 row당 적절한 video개수가 노출되어야 한다.', () => {
+    localStorage.setItem(LOCALSTORAGE_KEYS.VIDEOS, JSON.stringify(videoInfo));
+    cy.visit('http://localhost:5500/');
+    cy.viewport(992, 1000).wait(200);
+    cy.get('.video-wrapper').should(
+      'have.css',
+      'grid-template-columns',
+      '234px 234px 234px 234px'
+    );
+
+    cy.viewport(768, 1000).wait(200);
+    cy.get('.video-wrapper').should(
+      'have.css',
+      'grid-template-columns',
+      '380px 380px'
+    );
+
+    cy.viewport(576, 1000).wait(200);
+    cy.get('.video-wrapper').should(
+      'have.css',
+      'grid-template-columns',
+      '576px'
+    );
   });
 
   it('첫 화면에 로컬스토리지에 있는 볼 영상의 video 배열이 화면에 나타나는지 확인한다.', () => {
@@ -129,7 +169,7 @@ describe('유튜브 강의실 관리 기능', () => {
 
     cy.get(SELECTORS.VIDEO_LIST.SNACKBAR)
       .should('be.visible')
-      .should('have.text', MESSAGES.ACTION_SUCCESS.WATCHED_STATE_SETTING);
+      .should('have.text', MESSAGES.ACTION_SUCCESS.STATE_SETTING);
   });
 
   it('저장된 영상이 없을때, 비어있다는 것을 사용자에게 알려주는 상태를 보여준다.(영상 삭제 시)', () => {

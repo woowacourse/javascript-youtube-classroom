@@ -1,3 +1,5 @@
+export const DOMAIN = 'wonderful-leavitt-5e0985.netlify.app';
+
 export const VALUES = {
   MAXIMUM_VIDEO_SAVE_COUNT: 100,
   MAXIMUM_SEARCH_HISTORY_COUNT: 3,
@@ -9,7 +11,8 @@ export const MESSAGES = {
     DELETE: '정말로 삭제하시겠습니까? 되돌릴 수 없습니다.',
   },
   ACTION_SUCCESS: {
-    WATCHED_STATE_SETTING: '설정이 완료되었습니다.',
+    STATE_SETTING: '설정이 완료되었습니다.',
+    SAVE: '저장이 완료되었습니다.',
     DELETE: '정상적으로 삭제되었습니다.',
   },
 };
@@ -39,6 +42,7 @@ export const TYPES = {
   FILTER: {
     WATCH_LATER: 'watchLater',
     WATCHED: 'watched',
+    LIKED: 'liked',
   },
   PAGE: {
     MANAGEMENT: 'management',
@@ -50,6 +54,7 @@ export const SELECTORS = {
   MENU_BUTTON: {
     WATCH_LATER_ID: '#watch-later-button',
     WATCHED_ID: '#watched-button',
+    LIKE_ID: '#like-button',
     SEARCH_ID: '#search-button',
   },
 
@@ -58,6 +63,7 @@ export const SELECTORS = {
     CLIP_CLASS: '.clip',
     SNACKBAR: '#snackbar',
     NO_VIDEO_MESSAGE_CLASS: '.not-saved-video-image',
+    NOT_FOUND_IMAGE_CLASS: '.not-found-image',
   },
 
   SEARCH_MODAL: {
@@ -95,7 +101,6 @@ export const SELECTORS = {
     VIDEO_SAVE_BUTTON: '.save-btn',
     WATCHED_BUTTON: '.watched-button',
     LIKE_BUTTON: '.like-button',
-    COMMENT_BUTTON: '.comment-button',
     DELETE_BUTTON: '.delete-button',
   },
 };
@@ -109,7 +114,7 @@ export const CLASS_NAMES = {
     MANAGEMENT_BUTTONS: 'management-buttons',
     WATCHED_BUTTON: 'watched-button',
     LIKE_BUTTON: 'like-button',
-    COMMENT_BUTTON: 'comment-button',
     DELETE_BUTTON: 'delete-button',
+    SEARCH_BUTTON_GUIDE: 'search-button-guide',
   },
 };

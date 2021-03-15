@@ -3,9 +3,9 @@ import Video from '../../model/Video.js';
 import {
   $,
   $$,
+  closest,
   localStorageGetItem,
   localStorageSetItem,
-  createElement,
 } from '../../utils/utils.js';
 import {
   LOCALSTORAGE_KEYS,
@@ -25,10 +25,18 @@ import {
 } from '../../utils/youtubeClassRoomUtils.js';
 
 export default class VideoList extends Component {
+  constructor($target, $props) {
+    super($target, $props);
+    this.showByFilter();
+  }
+
   setup() {
     store.subscribe(this.render.bind(this));
     this.filter = TYPES.FILTER.WATCH_LATER;
+    this.setIntersectionObserver();
+  }
 
+  setIntersectionObserver() {
     const options = {
       threshold: INTERSECTION_OBSERVER_OPTIONS.IFRAME_LOAD_THRESHOLD,
     };
@@ -44,51 +52,36 @@ export default class VideoList extends Component {
     clips.forEach((clip) => this.iframeLoadObserver.observe(clip));
   }
 
-  initRender() {
-    const savedVideos = localStorageGetItem(LOCALSTORAGE_KEYS.VIDEOS);
+  displayVideosByTime(savedVideos = {}) {
     const fragment = document.createDocumentFragment();
-
     const videoIdSortedByDate = Object.keys(savedVideos).sort((a, b) => {
       return (
-        new Date(savedVideos[b].savedTime) - new Date(savedVideos[a].savedTime)
+        Number(savedVideos[b].savedTime) - Number(savedVideos[a].savedTime)
       );
     });
+
+    const newSaveVideos = videoIdSortedByDate.map((videoId) =>
+      new Video({
+        videoId,
+        ...savedVideos[videoId],
+      }).createTemplate(TYPES.PAGE.MANAGEMENT)
+    );
 
     if (videoIdSortedByDate.length > 0) {
-      fragment.append(
-        ...videoIdSortedByDate.map((videoId) =>
-          new Video({
-            videoId,
-            ...savedVideos[videoId],
-          }).createTemplate(TYPES.PAGE.MANAGEMENT)
-        )
-      );
+      fragment.append(...newSaveVideos);
+      this.$target.appendChild(fragment);
     }
+  }
 
-    const notSavedVideoImage = createElement({
-      tag: 'img',
-      classes: ['not-saved-video-image'],
-    });
-
-    notSavedVideoImage.src =
-      './src/images/status/youtube_no_saved_image_light.jpeg';
-    notSavedVideoImage.alt = 'no_saved_video';
-
-    fragment.appendChild(notSavedVideoImage);
-    this.$target.appendChild(fragment);
-
-    this.showByFilter();
+  initRender() {
+    const savedVideos = localStorageGetItem(LOCALSTORAGE_KEYS.VIDEOS);
+    this.displayVideosByTime(savedVideos);
     this.setLazyloading();
   }
 
   selectDOM() {
     this.$snackbar = $(SELECTORS.VIDEO_LIST.SNACKBAR);
-  }
-
-  toggleVideoList() {
-    $$(SELECTORS.VIDEO_LIST.CLIP_CLASS, this.$target).forEach(($clip) => {
-      $clip.classList.toggle('d-none');
-    });
+    this.$notFoundImage = $(SELECTORS.VIDEO_LIST.NO_VIDEO_MESSAGE_CLASS);
   }
 
   setFilter(newFilter = TYPES.FILTER.WATCH_LATER) {
@@ -97,23 +90,55 @@ export default class VideoList extends Component {
     }
 
     pauseAllIframeVideo();
-    this.toggleVideoList();
     this.filter = newFilter;
     this.showByFilter();
   }
 
   showByFilter() {
     const savedVideos = localStorageGetItem(LOCALSTORAGE_KEYS.VIDEOS);
-    const isWatched = this.filter === TYPES.FILTER.WATCHED;
-    const watchedVideos = Object.keys(savedVideos).filter(
-      (videoId) => savedVideos[videoId].watched === isWatched
-    );
+    const filteredKeys = [];
+    $$(SELECTORS.VIDEO_LIST.CLIP_CLASS, this.$target).forEach(($clip) => {
+      const {
+        dataset: { videoId },
+      } = $clip;
 
-    watchedVideos.length === 0
-      ? $(SELECTORS.VIDEO_LIST.NO_VIDEO_MESSAGE_CLASS).classList.remove(
-          'd-none'
-        )
-      : $(SELECTORS.VIDEO_LIST.NO_VIDEO_MESSAGE_CLASS).classList.add('d-none');
+      if (this.isRightVideoToShow(savedVideos[videoId])) {
+        $clip.classList.remove('d-none');
+        filteredKeys.push(videoId);
+      } else {
+        $clip.classList.add('d-none');
+      }
+    });
+
+    filteredKeys.length === 0
+      ? this.setNoResultDisplay()
+      : this.setResultDisplay();
+  }
+
+  isRightVideoToShow(videoObject = {}) {
+    if (
+      (this.filter === TYPES.FILTER.WATCH_LATER &&
+        videoObject.watched === false) ||
+      (this.filter === TYPES.FILTER.WATCHED && videoObject.watched) ||
+      (this.filter === TYPES.FILTER.LIKED && videoObject.liked)
+    ) {
+      return true;
+    }
+    return false;
+  }
+
+  setNoResultDisplay() {
+    this.$notFoundImage.classList.remove('d-none');
+    $(SELECTORS.MENU_BUTTON.SEARCH_ID).classList.add(
+      CLASS_NAMES.CLIP.SEARCH_BUTTON_GUIDE
+    );
+  }
+
+  setResultDisplay() {
+    this.$notFoundImage.classList.add('d-none');
+    $(SELECTORS.MENU_BUTTON.SEARCH_ID).classList.remove(
+      CLASS_NAMES.CLIP.SEARCH_BUTTON_GUIDE
+    );
   }
 
   render(preStates, states) {
@@ -132,10 +157,6 @@ export default class VideoList extends Component {
         ...savedVideos[lastestVideoId],
       }).createTemplate(TYPES.PAGE.MANAGEMENT);
 
-      if (this.filter === TYPES.FILTER.WATCHED) {
-        newVideo.classList.add('d-none');
-      }
-
       this.$target.prepend(newVideo);
 
       this.iframeLoadObserver.observe(newVideo);
@@ -144,41 +165,62 @@ export default class VideoList extends Component {
     }
   }
 
-  onClickWatchedButton(event) {
-    const clip = event.target.closest(SELECTORS.VIDEO_LIST.CLIP_CLASS);
-    const savedVideos = localStorageGetItem(LOCALSTORAGE_KEYS.VIDEOS);
+  toggleWatchedVideo(clip, newSavedVideos = {}) {
+    if (clip === undefined) {
+      throw new Error('clip is not defined.');
+    }
 
-    const newObject = {};
-    Object.assign(newObject, savedVideos);
+    newSavedVideos[clip.dataset.videoId].watched = !newSavedVideos[
+      clip.dataset.videoId
+    ].watched;
 
-    newObject[clip.dataset.videoId].watched = !newObject[clip.dataset.videoId]
-      .watched;
+    localStorageSetItem(LOCALSTORAGE_KEYS.VIDEOS, newSavedVideos);
 
-    localStorageSetItem(LOCALSTORAGE_KEYS.VIDEOS, newObject);
     clip.classList.toggle('d-none');
+
     $(SELECTORS.CLIP.WATCHED_BUTTON, clip).classList.toggle('checked');
+
     this.showByFilter();
   }
 
-  onClickDeleteButton(event) {
-    const clip = event.target.closest(SELECTORS.VIDEO_LIST.CLIP_CLASS);
-    const savedVideos = localStorageGetItem(LOCALSTORAGE_KEYS.VIDEOS);
+  addLikeVideo(clip, newSavedVideos = {}) {
+    if (clip === undefined) {
+      throw new Error('clip is not defined.');
+    }
+
+    newSavedVideos[clip.dataset.videoId].liked = !newSavedVideos[
+      clip.dataset.videoId
+    ].liked;
+
+    localStorageSetItem(LOCALSTORAGE_KEYS.VIDEOS, newSavedVideos);
+
+    $(SELECTORS.CLIP.LIKE_BUTTON, clip).classList.toggle('checked');
+
+    this.showByFilter();
+  }
+
+  deleteVideo(clip, newSavedVideos = {}) {
+    if (clip === undefined) {
+      throw new Error('clip is not defined.');
+    }
 
     if (
-      !(confirm(MESSAGES.CONFIRM.DELETE) && savedVideos[clip.dataset.videoId])
+      !(
+        confirm(MESSAGES.CONFIRM.DELETE) && newSavedVideos[clip.dataset.videoId]
+      )
     ) {
       throw new Error(ERROR_MESSAGES.VIDEO_DELETE_ERROR);
     }
 
-    const newObject = {};
-    Object.assign(newObject, savedVideos);
+    delete newSavedVideos[clip.dataset.videoId];
+    delete Video.cache[clip.dataset.videoId];
+    clip.remove();
 
-    delete newObject[clip.dataset.videoId];
-    localStorageSetItem(LOCALSTORAGE_KEYS.VIDEOS, newObject);
+    localStorageSetItem(LOCALSTORAGE_KEYS.VIDEOS, newSavedVideos);
 
     store.dispatch(decreaseSavedVideoCount());
 
-    clip.remove();
+    this.showByFilter();
   }
 
   onClickManagementButton(event) {
@@ -186,23 +228,31 @@ export default class VideoList extends Component {
       return;
     }
 
-    let message = '';
+    const clip = closest(event.target, SELECTORS.VIDEO_LIST.CLIP_CLASS);
+
+    const savedVideos = localStorageGetItem(LOCALSTORAGE_KEYS.VIDEOS);
+    const newSavedVideos = {};
+
+    Object.assign(newSavedVideos, savedVideos);
 
     try {
       if (event.target.classList.contains(CLASS_NAMES.CLIP.WATCHED_BUTTON)) {
-        this.onClickWatchedButton(event);
-        message = MESSAGES.ACTION_SUCCESS.WATCHED_STATE_SETTING;
+        this.toggleWatchedVideo(clip, newSavedVideos);
+        showSnackBar(this.$snackbar, MESSAGES.ACTION_SUCCESS.STATE_SETTING);
+      } else if (
+        event.target.classList.contains(CLASS_NAMES.CLIP.LIKE_BUTTON)
+      ) {
+        this.addLikeVideo(clip, newSavedVideos);
+        showSnackBar(this.$snackbar, MESSAGES.ACTION_SUCCESS.STATE_SETTING);
       } else if (
         event.target.classList.contains(CLASS_NAMES.CLIP.DELETE_BUTTON)
       ) {
-        this.onClickDeleteButton(event);
-        message = MESSAGES.ACTION_SUCCESS.DELETE;
+        this.deleteVideo(clip, newSavedVideos);
+        showSnackBar(this.$snackbar, MESSAGES.ACTION_SUCCESS.DELETE);
       }
     } catch (error) {
-      message = error.message;
+      showSnackBar(this.$snackbar, error.message);
     }
-
-    showSnackBar(this.$snackbar, message);
   }
 
   bindEvent() {

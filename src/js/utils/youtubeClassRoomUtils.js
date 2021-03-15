@@ -37,10 +37,14 @@ export const saveHistoryToLocalStorage = (searchTerm) => {
   }
 };
 
+let snackbarDebounce = null;
 export const showSnackBar = ($snackbar, text) => {
+  if (snackbarDebounce) {
+    clearTimeout(snackbarDebounce);
+  }
   $snackbar.textContent = text;
   $snackbar.classList.add('show');
-  setTimeout(() => {
+  snackbarDebounce = setTimeout(() => {
     $snackbar.classList.remove('show');
   }, 3000);
 };

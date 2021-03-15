@@ -21,7 +21,6 @@ export default class VideoSearchModal extends Component {
 
   initRender() {
     this.$target.innerHTML = `
-    <div class="video-search-overlay w-100"></div>
     <div class="modal-inner p-8">
         <button class="modal-close" aria-label="검색창 닫기">
           <svg viewbox="0 0 40 40">
@@ -72,7 +71,7 @@ export default class VideoSearchModal extends Component {
   }
 
   onClickOutsideModal(event) {
-    if (event.target === this.$overlay) {
+    if (event.target === event.currentTarget) {
       this.onModalClose();
     }
   }
@@ -80,7 +79,6 @@ export default class VideoSearchModal extends Component {
   onModalShow() {
     pauseAllIframeVideo();
 
-    $('body').classList.add('overflow-hidden');
     this.$target.classList.add('open');
 
     const latestSearchTerm = store.getStates().searchHistory[0];
@@ -93,28 +91,24 @@ export default class VideoSearchModal extends Component {
 
   onModalClose() {
     pauseAllIframeVideo();
-    $('body').classList.remove('overflow-hidden');
     this.$target.classList.remove('open');
   }
 
-  requestVideos(searchTerm) {
+  async requestVideos(searchTerm) {
     if (searchTerm) {
       store.dispatch(addSearchHistory(searchTerm));
       youtubeAPIManager.setSearchTerm(searchTerm);
     }
 
-    store.dispatch(updateRequestPending(true));
-
-    youtubeAPIManager
-      .requestVideos()
-      .then((videoInfos) => {
-        store.dispatch(updateRequestPending(false));
-        store.dispatch(updateVideosToBeShown(videoInfos));
-      })
-      .catch((error) => {
-        this.videoSearchResult.removeSkeletons();
-        store.dispatch(updateRequestPending(false));
-        alert(error);
-      });
+    try {
+      store.dispatch(updateRequestPending(true));
+      const videoInfos = await youtubeAPIManager.requestVideos();
+      store.dispatch(updateVideosToBeShown(videoInfos));
+    } catch (error) {
+      alert(error);
+    } finally {
+      store.dispatch(updateRequestPending(false));
+      this.videoSearchResult.removeSkeletons();
+    }
   }
 }

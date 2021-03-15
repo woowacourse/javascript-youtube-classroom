@@ -7,7 +7,8 @@ export const videoInfo = {
     channelURL: 'https://www.youtube.com/channel/UCa56qkMvVvq1IMn4xbXaKEA',
     uploadTime: '2021년 2월 7일',
     thumbnailURL: 'https://i.ytimg.com/vi/EbPyvpmcWr8/default.jpg',
-    watched: true,
+    watched: false,
+    liked: false,
   },
   mF4Z1REC6W0: {
     videoTitle: '치킨월드컵 실사판🍗 - 치킨 브랜드별 최강자 먹방 리뷰🧐',
@@ -17,7 +18,8 @@ export const videoInfo = {
     channelURL: 'https://www.youtube.com/channel/UCJmcPVY4dC0e3L5_eemKtlg',
     uploadTime: '2020년 8월 25일',
     thumbnailURL: 'https://i.ytimg.com/vi/mF4Z1REC6W0/default.jpg',
-    watched: true,
+    watched: false,
+    liked: false,
   },
   'W-zXJ6u1He4': {
     videoTitle: '군대음식 1위라는 슈넬치킨 먹어봤습니다',
@@ -27,7 +29,8 @@ export const videoInfo = {
     channelURL: 'https://www.youtube.com/channel/UC48NSSfUBsmL0k0wKxSqRkw',
     uploadTime: '2021년 1월 6일',
     thumbnailURL: 'https://i.ytimg.com/vi/W-zXJ6u1He4/default.jpg',
-    watched: true,
+    watched: false,
+    liked: false,
   },
   mhzO8PTm8W8: {
     videoTitle:
@@ -38,7 +41,8 @@ export const videoInfo = {
     channelURL: 'https://www.youtube.com/channel/UCF4Wxdo3inmxP-Y59wXDsFw',
     uploadTime: '2021년 1월 25일',
     thumbnailURL: 'https://i.ytimg.com/vi/mhzO8PTm8W8/default.jpg',
-    watched: true,
+    watched: false,
+    liked: false,
   },
   yJHCqB7SBfo: {
     videoTitle: '자담치킨 맵슐랭 드디어 먹어봤습니다',
@@ -48,7 +52,8 @@ export const videoInfo = {
     channelURL: 'https://www.youtube.com/channel/UCrpoE9e2-eWcj8AYvwYdebw',
     uploadTime: '2021년 2월 6일',
     thumbnailURL: 'https://i.ytimg.com/vi/yJHCqB7SBfo/default.jpg',
-    watched: true,
+    watched: false,
+    liked: false,
   },
   lVZSQ0ZdRfg: {
     videoTitle: '요즘 핫하다고 해서 철인7호치킨 먹방입니다!!',
@@ -58,7 +63,8 @@ export const videoInfo = {
     channelURL: 'https://www.youtube.com/channel/UCGMsFBPnR2hcrM0xGoFUL-A',
     uploadTime: '2021년 2월 8일',
     thumbnailURL: 'https://i.ytimg.com/vi/lVZSQ0ZdRfg/default.jpg',
-    watched: true,
+    watched: false,
+    liked: false,
   },
   '51UM_hAikgY': {
     videoTitle:
@@ -69,7 +75,8 @@ export const videoInfo = {
     channelURL: 'https://www.youtube.com/channel/UCuD_5vico-nuukZPXGrNYlQ',
     uploadTime: '2020년 5월 4일',
     thumbnailURL: 'https://i.ytimg.com/vi/51UM_hAikgY/default.jpg',
-    watched: true,
+    watched: false,
+    liked: false,
   },
   kExWcwc7aYM: {
     videoTitle:
@@ -81,6 +88,7 @@ export const videoInfo = {
     uploadTime: '2018년 7월 22일',
     thumbnailURL: 'https://i.ytimg.com/vi/kExWcwc7aYM/default.jpg',
     watched: false,
+    liked: false,
   },
   '3mu4fNfYkiA': {
     videoTitle: '설연휴 서니랑 모바일레전드. 낮방송 꾸울잼❤️',
@@ -90,7 +98,8 @@ export const videoInfo = {
     channelURL: 'https://www.youtube.com/channel/UCuGHsugfoeUmDae5O39Rm6w',
     uploadTime: '2021년 1월 14일',
     thumbnailURL: 'https://i.ytimg.com/vi/3mu4fNfYkiA/default.jpg',
-    watched: true,
+    watched: false,
+    liked: false,
   },
   'qDiVNXlt-SI': {
     videoTitle: '모바일레전드 서니짱 일섭 솔랭갑니당',
@@ -100,7 +109,8 @@ export const videoInfo = {
     channelURL: 'https://www.youtube.com/channel/UCuGHsugfoeUmDae5O39Rm6w',
     uploadTime: '2021년 1월 25일',
     thumbnailURL: 'https://i.ytimg.com/vi/qDiVNXlt-SI/default.jpg',
-    watched: true,
+    watched: false,
+    liked: false,
   },
   PdiJXEUeLyc: {
     videoTitle:
@@ -112,6 +122,7 @@ export const videoInfo = {
     uploadTime: '2018년 6월 13일',
     thumbnailURL: 'https://i.ytimg.com/vi/PdiJXEUeLyc/default.jpg',
     watched: false,
+    liked: false,
   },
   yE7OivUmNEg: {
     videoTitle: '더 이상의 설명은 생략한다 (Ft.기우쌤팀)',
@@ -122,6 +133,7 @@ export const videoInfo = {
     uploadTime: '2021년 2월 3일',
     thumbnailURL: 'https://i.ytimg.com/vi/yE7OivUmNEg/default.jpg',
     watched: false,
+    liked: false,
   },
   I8Z4PQC2EV0: {
     videoTitle: '드디어 혜서니 신상털다 ! 기우쌤이 남자로 보인 순간은 ?',
@@ -132,6 +144,7 @@ export const videoInfo = {
     uploadTime: '2019년 5월 7일',
     thumbnailURL: 'https://i.ytimg.com/vi/I8Z4PQC2EV0/default.jpg',
     watched: false,
+    liked: false,
   },
   wgGSEX6Iimo: {
     videoTitle: '[로또의명방] #953회 주초 오행 흐름 및 분석',
@@ -142,6 +155,7 @@ export const videoInfo = {
     uploadTime: '2021년 1월 28일',
     thumbnailURL: 'https://i.ytimg.com/vi/wgGSEX6Iimo/default.jpg',
     watched: false,
+    liked: false,
   },
   lwcC6Tm2fl4: {
     videoTitle: '[로또의명방] #953회 목요일 마무리 분석',
@@ -152,5 +166,6 @@ export const videoInfo = {
     uploadTime: '2021년 2월 5일',
     thumbnailURL: 'https://i.ytimg.com/vi/lwcC6Tm2fl4/default.jpg',
     watched: false,
+    liked: false,
   },
 };

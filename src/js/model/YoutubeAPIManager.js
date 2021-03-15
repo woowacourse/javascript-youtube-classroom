@@ -1,4 +1,4 @@
-import { VALUES, ERROR_MESSAGES } from '../constants/constants.js';
+import { VALUES, ERROR_MESSAGES, DOMAIN } from '../constants/constants.js';
 import { isEmptyObject } from '../utils/utils.js';
 
 export default class YoutubeAPIManager {
@@ -9,13 +9,20 @@ export default class YoutubeAPIManager {
     this.pageToken = '';
   }
 
+  clearCache() {
+    YoutubeAPIManager.cache = {};
+  }
+
   setSearchTerm(searchTerm) {
+    if (this.searchTerm !== searchTerm) {
+      this.clearCache();
+    }
     this.searchTerm = searchTerm;
     this.pageToken = '';
   }
 
   createRequestURL() {
-    const requestURL = `https://wonderful-leavitt-5e0985.netlify.app/youtube/search?`;
+    const requestURL = `https://${DOMAIN}/youtube/search?`;
     const searchParams = new URLSearchParams({
       part: 'snippet',
       type: 'video',
@@ -41,22 +48,18 @@ export default class YoutubeAPIManager {
       return YoutubeAPIManager.cache[params].items;
     }
 
-    try {
-      const data = await fetch(url);
-      if (!data.ok) {
-        if (data.status === 403) {
-          throw new Error(ERROR_MESSAGES.EXCEED_API_REQUEST_COUNT(data.status));
-        }
-        throw new Error(ERROR_MESSAGES.API_REQUEST_ERROR(data.status));
+    const data = await fetch(url);
+    if (!data.ok) {
+      if (data.status === 403) {
+        throw new Error(ERROR_MESSAGES.EXCEED_API_REQUEST_COUNT(data.status));
       }
-
-      const dataJSON = await data.json();
-      YoutubeAPIManager.cache[params] = dataJSON;
-      this.pageToken = dataJSON.nextPageToken;
-
-      return dataJSON.items;
-    } catch (error) {
-      console.log(error);
+      throw new Error(ERROR_MESSAGES.API_REQUEST_ERROR(data.status));
     }
+
+    const dataJSON = await data.json();
+    YoutubeAPIManager.cache[params] = dataJSON;
+    this.pageToken = dataJSON.nextPageToken;
+
+    return dataJSON.items;
   }
 }

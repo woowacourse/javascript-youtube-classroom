@@ -4,6 +4,7 @@ import { store } from '../../index.js';
 import {
   $,
   $$,
+  closest,
   createElement,
   localStorageGetItem,
   localStorageSetItem,
@@ -13,10 +14,12 @@ import {
   TYPES,
   SELECTORS,
   INTERSECTION_OBSERVER_OPTIONS,
+  MESSAGES,
+  ERROR_MESSAGES,
   VALUES,
   CLASS_NAMES,
 } from '../../constants/constants.js';
-import { loadIframe } from '../../utils/youtubeClassRoomUtils.js';
+import { loadIframe, showSnackBar } from '../../utils/youtubeClassRoomUtils.js';
 import { increaseSavedVideoCount } from '../../redux/action.js';
 export default class VideoSearchResult extends Component {
   setup() {
@@ -59,7 +62,8 @@ export default class VideoSearchResult extends Component {
     this.$searchedVideoWrapper = $(
       SELECTORS.SEARCH_MODAL.VIDEO_SEARCH_RESULT.VIDEO_LIST_ID
     );
-    this.$notFoundImage = $('.not-found-image');
+    this.$notFoundImage = $(SELECTORS.VIDEO_LIST.NOT_FOUND_IMAGE_CLASS);
+    this.$snackbar = $(SELECTORS.VIDEO_LIST.SNACKBAR);
   }
 
   render(preStates, states) {
@@ -89,7 +93,6 @@ export default class VideoSearchResult extends Component {
 
       this.displayVideos(states.searchedVideos);
       this.setLazyloading();
-      this.removeSkeletons();
     }
   }
 
@@ -108,16 +111,22 @@ export default class VideoSearchResult extends Component {
       return;
     }
 
-    const videoId = event.target.closest(SELECTORS.VIDEO_LIST.CLIP_CLASS)
-      .dataset.videoId;
+    const {
+      dataset: { videoId },
+    } = closest(event.target, SELECTORS.VIDEO_LIST.CLIP_CLASS);
 
-    const newObject = {};
-    Object.assign(newObject, savedVideos, { [videoId]: Video.cache[videoId] });
+    const newSavedVideos = {};
+    Object.assign(newSavedVideos, savedVideos, {
+      [videoId]: Video.cache[videoId],
+    });
 
-    localStorageSetItem(LOCALSTORAGE_KEYS.VIDEOS, newObject);
+    newSavedVideos[videoId].savedTime = new Date().getTime();
+
+    localStorageSetItem(LOCALSTORAGE_KEYS.VIDEOS, newSavedVideos);
 
     event.target.classList.add('d-none');
     store.dispatch(increaseSavedVideoCount());
+    showSnackBar(this.$snackbar, MESSAGES.ACTION_SUCCESS.SAVE);
   }
 
   hideNotFoundImage() {

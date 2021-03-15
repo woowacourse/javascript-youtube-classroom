@@ -56,9 +56,11 @@ export default class App {
         <nav id="menu-buttons" class="d-flex justify-between">  
           <fieldset id="menu">  
             <input type="radio" name="menu" id="watch-later-button" class="d-none" value="👁️ 볼 영상" checked/>
-            <label for="watch-later-button" class="d-inline-block btn menu-btn text-base">👁️ 볼 영상</label>
+            <label for="watch-later-button" class="d-inline-block btn menu-btn mx-1 text-base">👁️ 볼 영상</label>
             <input type="radio" name="menu" id="watched-button" class="d-none" value="✅ 본 영상"/>
             <label for="watched-button" class="d-inline-block btn menu-btn mx-1 text-base">✅ 본 영상</label>
+            <input type="radio" name="menu" id="like-button" class="d-none" value="👍 좋아요를 누른 영상"/>
+            <label for="like-button" class="d-inline-block btn menu-btn mx-1 text-base">👍 좋아요를 누른 영상</label>
           </fieldset>
         <div class="d-flex">
           <button id="search-button" class="btn menu-btn text-base" type="button">🔍 동영상 검색</button>
@@ -67,6 +69,7 @@ export default class App {
       </header>
       <main class="mt-10">
         <section id="video-list-wrapper" class="video-wrapper relative">
+          <img class="not-saved-video-image d-none" src="./src/images/status/youtube_no_saved_image_light.jpeg" alt="no_saved_video"/>
         </section>
       </main>
     </div>
@@ -86,6 +89,7 @@ export default class App {
   selectDOM() {
     this.$watchLaterButton = $(SELECTORS.MENU_BUTTON.WATCH_LATER_ID);
     this.$watchedButton = $(SELECTORS.MENU_BUTTON.WATCHED_ID);
+    this.$likeButton = $(SELECTORS.MENU_BUTTON.LIKE_ID);
     this.$searchButton = $(SELECTORS.MENU_BUTTON.SEARCH_ID);
   }
 
@@ -96,6 +100,10 @@ export default class App {
 
     this.$watchedButton.addEventListener('click', () => {
       this.videoList.setFilter(TYPES.FILTER.WATCHED);
+    });
+
+    this.$likeButton.addEventListener('click', () => {
+      this.videoList.setFilter(TYPES.FILTER.LIKED);
     });
 
     this.$searchButton.addEventListener('click', () =>
