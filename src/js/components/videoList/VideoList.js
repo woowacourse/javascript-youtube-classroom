@@ -14,7 +14,6 @@ import {
   INTERSECTION_OBSERVER_OPTIONS,
   ERROR_MESSAGES,
   MESSAGES,
-  CLASS_NAMES,
 } from '../../constants/constants.js';
 import { store } from '../../index.js';
 import { decreaseSavedVideoCount } from '../../redux/action.js';
@@ -191,7 +190,7 @@ export default class VideoList extends Component {
 
     // TODO:
     // event Name이 Manager Button에만 있는 경우.
-    // 다른 곳에 Manager Button이 있는 경우 showSnacbard의 위치를 바꾸어야 함.
+    // 다른 곳에 eventName이 있는 경우 showSnacbard의 위치를 바꾸어야 함.
     switch (eventName) {
       case 'watched':
         this.onClickWatchedButton(event);
