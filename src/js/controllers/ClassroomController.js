@@ -15,11 +15,7 @@ export default class ClassroomController {
   showClassroom() {
     this.view.renderVideosToPrepare(this.model.videos);
 
-    if (isWatchingMenu(this.view.$savedVideosWrapper)) {
-      this.showWatchingVideos();
-      return;
-    }
-    this.showWatchedVideos();
+    isWatchingMenu(this.view.$savedVideosWrapper) ? this.showWatchingVideos() : this.showWatchedVideos();
   }
 
   attachEvents() {
