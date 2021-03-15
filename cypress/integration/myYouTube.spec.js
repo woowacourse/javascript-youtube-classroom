@@ -6,7 +6,7 @@ describe('simba-tube', () => {
   });
 
   const searchVideo = (keyword) => {
-    cy.get('#search-btn').click();
+    cy.get('#search-tab').click();
     cy.get('#modal-search-input').type(keyword);
     cy.get('#modal-search-button').click();
   };
@@ -34,15 +34,15 @@ describe('simba-tube', () => {
   });
 
   it('동영상 검색 버튼을 클릭하면 모달 창이 열린다.', () => {
-    cy.get('#search-btn').click();
+    cy.get('#search-tab').click();
     cy.get('.modal').should('be.visible');
   });
 
   it('검색 모달 창의 x 버튼을 누르면 검색 모달 창이 닫히고, 볼 영상 목록으로 돌아간다.', () => {
-    cy.get('#search-btn').click();
+    cy.get('#search-tab').click();
     cy.get('.modal-close').click();
     cy.get('.modal').should('not.be.visible');
-    cy.get('#saved-btn').should(
+    cy.get('#saved-tab').should(
       'have.css',
       'background-color',
       'rgb(179, 234, 242)',

@@ -12,7 +12,7 @@ describe('simba-tube', () => {
   };
 
   const searchVideo = (keyword) => {
-    cy.get('#search-btn').click();
+    cy.get('#search-tab').click();
     cy.get('#modal-search-input').type(keyword);
     cy.get('#modal-search-button').click();
   };
@@ -46,7 +46,7 @@ describe('simba-tube', () => {
 
     popSnackbar('동영상이 본 영상 목록에 추가되었읍니다');
 
-    cy.get('#watched-btn').click();
+    cy.get('#watched-tab').click();
     cy.get(`[data-article='vRXZj0DzXIA']`).should('be.visible');
   });
 
@@ -79,7 +79,7 @@ describe('simba-tube', () => {
 
     popSnackbar('동영상이 좋아하는 영상 목록에 추가되었읍니다');
 
-    cy.get('#liked-btn').click();
+    cy.get('#liked-tab').click();
     cy.get(`[data-article='vRXZj0DzXIA']`).should('be.visible');
   });
 });

@@ -42,12 +42,13 @@ export default class SavedVideosView extends View {
     this.emit('clickDelete', videoId);
   }
 
-  renderSavedVideoClips(savedVideos, watchedVideos) {
+  renderSavedVideoClips(savedVideos, watchedVideos, likedVideos) {
     const savedVideoClips = savedVideos
       .map((video) => {
         const isWatched = watchedVideos.includes(video.id);
+        const isLiked = likedVideos.includes(video.id);
 
-        return clipMaker(video, { isModal: false, isWatched });
+        return clipMaker(video, { isModal: false, isWatched, isLiked });
       })
       .join('');
 
@@ -62,7 +63,7 @@ export default class SavedVideosView extends View {
     $(`[data-article='${videoId}']`).removeElement();
   }
 
-  showMatchedVideos(prevTabVideos, currentTabVideos) {
+  showMatchedVideos(currentTabVideos) {
     const savedVideos = $('#main-videos > article');
 
     clearTimeout(this.clipTransition);

@@ -1,5 +1,5 @@
 export default function clipMaker(video, type) {
-  const { isModal, isSaved, isWatched } = type;
+  const { isModal, isSaved, isWatched, isLiked } = type;
 
   return `
     <article class="clip" data-article="${video.id}">
@@ -33,7 +33,7 @@ export default function clipMaker(video, type) {
       ${
         isModal
           ? saveButtonTemplate(video.id, isSaved)
-          : buttonPackTemplate(video.id, isWatched)
+          : buttonPackTemplate(video.id, isWatched, isLiked)
       }
     </article>
   `;
@@ -53,7 +53,7 @@ function saveButtonTemplate(videoId, isSaved) {
   `;
 }
 
-function buttonPackTemplate(videoId, isWatched) {
+function buttonPackTemplate(videoId, isWatched, isLiked) {
   return `
     <div class="video-button-pack">
       <span
@@ -61,7 +61,11 @@ function buttonPackTemplate(videoId, isWatched) {
         class="pack-button ${isWatched ? '' : 'opacity-hover'}"
       >✅
       </span>
-      <span data-video-like=${videoId} class="pack-button opacity-hover">👍</span>
+      <span 
+        data-video-like=${videoId} 
+        class="pack-button ${isLiked ? '' : 'opacity-hover'}"
+      >👍
+      </span>
       <span data-video-comment=${videoId} class="pack-button opacity-hover">💬</span>
       <span data-video-delete=${videoId} class="pack-button opacity-hover">🗑️</span>
     </div>

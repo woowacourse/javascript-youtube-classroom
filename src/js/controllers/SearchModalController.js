@@ -89,6 +89,7 @@ export default class SearchModalController {
     this.searchModalView.scrollToTop();
 
     const response = await searchRequest(keyword, this.nextPageToken);
+
     if (!response) {
       popSnackbar(ALERT_MESSAGES.API_REQUEST_FAILED);
       return;

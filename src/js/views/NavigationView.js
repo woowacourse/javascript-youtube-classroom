@@ -18,23 +18,8 @@ export default class NavigationView extends View {
       $('iframe').each((iframe) => stopVideo(iframe));
     });
 
-    $('#saved-tab').setEvent('click', () => {
-      this.emit('clickSavedTab');
-      $('iframe').each((iframe) => stopVideo(iframe));
-    });
-
-    $('#unwatched-tab').setEvent('click', () => {
-      this.emit('clickUnWatchedTab');
-      $('iframe').each((iframe) => stopVideo(iframe));
-    });
-
-    $('#watched-tab').setEvent('click', () => {
-      this.emit('clickWatchedTab');
-      $('iframe').each((iframe) => stopVideo(iframe));
-    });
-
-    $('#liked-tab').setEvent('click', () => {
-      this.emit('clickLikedTab');
+    $('#pickle-tab > .nav-btn').setEvent('click', (e) => {
+      this.emit('clickNavTab', e.target.id);
       $('iframe').each((iframe) => stopVideo(iframe));
     });
 

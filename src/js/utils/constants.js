@@ -15,6 +15,23 @@ export const VALUE = {
   HAMBURGER_DELAY_TIME: 60,
 };
 
+export const TAB = {
+  SELECTOR: {
+    SAVED: $('#saved-tab'),
+    UNWATCHED: $('#unwatched-tab'),
+    WATCHED: $('#watched-tab'),
+    LIKED: $('#liked-tab'),
+    SEARCH: $('#search-tab'),
+  },
+  ID: {
+    SAVED: 'saved-tab',
+    UNWATCHED: 'unwatched-tab',
+    WATCHED: 'watched-tab',
+    LIKED: 'liked-tab',
+    SEARCH: 'search-tab',
+  },
+};
+
 export const ALERT_MESSAGES = {
   EMPTY_SEARCH_KEYWORD: '검색어를 입력해주세요',
   OVER_SAVED_VIDEO_COUNT: '동영상 저장은 최대 100개까지 가능합니다',
