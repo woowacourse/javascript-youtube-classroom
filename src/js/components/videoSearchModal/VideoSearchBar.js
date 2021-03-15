@@ -15,7 +15,7 @@ export default class VideoSearchBar extends Component {
   initRender() {
     this.$target.innerHTML = `
       <form id="youtube-search-form" class="d-flex">
-        <input id="youtube-search-input" name="youtube-search-input" type="text" class="w-100 mr-2 pl-2" placeholder="검색" aria-label="비디오 검색 입력창" required/>
+        <input id="youtube-search-input" name="youtube-search-input" type="search" class="w-100 mr-2 pl-2" placeholder="검색" required/>
         <button id="youtube-search-button" type="submit" class="btn bg-cyan-500">검색</button>
       </form>
     `;
