@@ -19,7 +19,8 @@ export async function getVideosByKeyword(searchKeyword, pageToken) {
       )
     ).json();
   } catch (err) {
-    throw new Error(err);
+    alert(new Error(err));
+    return;
   }
 
   const { nextPageToken } = response;

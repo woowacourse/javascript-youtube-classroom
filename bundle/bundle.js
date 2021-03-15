@@ -12175,15 +12175,16 @@ function _getVideosByKeyword() {
 
           case 6:
             response = _context.sent;
-            _context.next = 12;
+            _context.next = 13;
             break;
 
           case 9:
             _context.prev = 9;
             _context.t0 = _context["catch"](1);
-            throw new Error(_context.t0);
+            alert(new Error(_context.t0));
+            return _context.abrupt("return");
 
-          case 12:
+          case 13:
             _response = response, nextPageToken = _response.nextPageToken;
             videos = response.items.map(function (_ref) {
               var id = _ref.id,
@@ -12201,7 +12202,7 @@ function _getVideosByKeyword() {
               videos: videos
             });
 
-          case 15:
+          case 16:
           case "end":
             return _context.stop();
         }
