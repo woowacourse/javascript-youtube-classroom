@@ -1,4 +1,5 @@
 .video-wrapper {
+  margin : 0 20px;
   display: grid;
   grid-template-columns: repeat(auto-fill, 236px);
   grid-row-gap: 10px;
@@ -71,4 +72,29 @@
   background-color: inherit;
   padding: 0 1px;
   cursor: pointer;
+}
+
+
+@media only screen and (max-width: 1280px) {
+  .video-wrapper {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+@media only screen and (max-width: 960px) {
+  .video-wrapper {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media only screen and (max-width: 600px) {
+  .video-wrapper {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media only screen and (max-width: 480px) {
+  .video-wrapper {
+    grid-template-columns: repeat(1, 1fr);
+  }
 }
