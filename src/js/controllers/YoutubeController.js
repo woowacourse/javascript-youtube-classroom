@@ -15,7 +15,7 @@ import Video from '../models/Video.js';
 export default class YoutubeController {
   constructor(store) {
     this.store = store;
-    this.selectedTab = $('#saved-btn');
+    this.selectedTab = $('#saved-tab');
     this.navigationView = new NavigationView($('#nav-bar'));
     this.searchModalView = new SearchModalView($('.modal'));
     this.savedVideosView = new SavedVideosView($('#main-videos'));
@@ -32,8 +32,11 @@ export default class YoutubeController {
 
   bindEvents() {
     this.navigationView
+      .on('clickHamburgerTab', () => this.navigationView.toggleHamburger())
       .on('clickSavedTab', () => this.focusSavedTab())
+      .on('clickUnWatchedTab', () => this.focusUnWatchedTab())
       .on('clickWatchedTab', () => this.focusWatchedTab())
+      .on('clickLikedTab', () => this.focusLikedTab())
       .on('clickSearchTab', () => this.focusSearchTab());
     this.searchModalView.on('closeModal', () => this.focusSavedTab());
     this.savedVideosView
@@ -43,11 +46,21 @@ export default class YoutubeController {
   }
 
   focusSavedTab() {
-    const watchedVideoIds = this.store.state.watchedVideoIds;
+    const savedVideoIds = this.store.state.savedVideoIds;
+
+    this.updateNavTab($('#saved-tab'));
+    this.savedVideosView.showMatchedVideos(savedVideoIds);
+
+    if (isEmptyArray(savedVideoIds)) {
+      this.savedVideosView.showVideoEmptyImg();
+    }
+  }
+
+  focusUnWatchedTab() {
     const unWatchedVideoIds = this.store.computed.unWatchedVideoIds;
 
-    this.updateNavTab($('#saved-btn'));
-    this.savedVideosView.showMatchedVideos(watchedVideoIds, unWatchedVideoIds);
+    this.updateNavTab($('#unwatched-tab'));
+    this.savedVideosView.showMatchedVideos(unWatchedVideoIds);
 
     if (isEmptyArray(unWatchedVideoIds)) {
       this.savedVideosView.showVideoEmptyImg();
@@ -56,10 +69,9 @@ export default class YoutubeController {
 
   focusWatchedTab() {
     const watchedVideoIds = this.store.state.watchedVideoIds;
-    const unWatchedVideoIds = this.store.computed.unWatchedVideoIds;
 
-    this.updateNavTab($('#watched-btn'));
-    this.savedVideosView.showMatchedVideos(unWatchedVideoIds, watchedVideoIds);
+    this.updateNavTab($('#watched-tab'));
+    this.savedVideosView.showMatchedVideos(watchedVideoIds);
 
     if (isEmptyArray(watchedVideoIds)) {
       this.savedVideosView.showVideoEmptyImg();

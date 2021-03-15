@@ -10,19 +10,52 @@
     <div id="app">
       <div class="d-flex justify-center mt-5 w-100">
         <div class="w-100">
-          <header class="my-4">
+          <header class="my-4 mx-4">
             <h2 class="text-center font-bold">👩🏻‍💻 나만의 유튜브 강의실 👨🏻‍💻</h2>
-            <nav id="nav-bar" class="d-flex justify-center">
-              <button id="saved-btn" class="nav-btn btn bg-cyan-100 mx-1">
-                👁️ 볼 영상
-              </button>
-              <button id="watched-btn" class="nav-btn btn mx-1">
-                ✅ 본 영상
-              </button>
-              <button id="search-btn" class="nav-btn btn mx-1">
+            <nav id="nav-bar" class="d-flex justify-between">
+              <div class="d-flex justify-center">
+                <button id="hamburger-tab" class="nav-btn btn mx-1">
+                  🍔 메뉴 보기
+                </button>
+                <div id="pickle-tab" class="pickle-tab d-flex">
+                  <button id="saved-tab" class="nav-btn btn bg-cyan-100 mx-1">
+                    📼 전체 영상
+                  </button>
+                  <button id="unwatched-tab" class="nav-btn btn mx-1">
+                    👁️ 볼 영상
+                  </button>
+                  <button id="watched-tab" class="nav-btn btn mx-1">
+                    ✅ 본 영상
+                  </button>
+                  <button id="liked-tab" class="nav-btn btn mx-1">
+                    👍 좋아하는 영상
+                  </button>
+                </div>
+              </div>
+              <button id="search-tab" class="nav-btn btn mx-1">
                 🔍 동영상 검색
               </button>
             </nav>
+            <div id="hamburger-menu" class="my-1 mx-1 d-none">
+              <button
+                id="saved-tab"
+                class="hamburger-btn nav-btn btn bg-cyan-100 d-none"
+              >
+                📼 전체 영상
+              </button>
+              <button
+                id="unwatched-tab"
+                class="hamburger-btn nav-btn btn d-none"
+              >
+                👁️ 볼 영상
+              </button>
+              <button id="watched-tab" class="hamburger-btn nav-btn btn d-none">
+                ✅ 본 영상
+              </button>
+              <button id="liked-tab" class="hamburger-btn nav-btn btn d-none">
+                👍 좋아하는 영상
+              </button>
+            </div>
           </header>
           <main class="mt-10">
             <section id="main-videos" class="video-wrapper"></section>
