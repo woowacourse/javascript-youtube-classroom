@@ -11,12 +11,13 @@ import {
 class StorageModel {
   #savedVideo;
   #keywords;
+  #showWatched;
   #filterOption;
 
   constructor() {
     this.#savedVideo = [];
     this.#keywords = [];
-    // this.#showWatched = null;
+    this.#showWatched = null;
     this.#filterOption = 'all';
   }
 
