@@ -5,7 +5,7 @@
   "repository": "https://github.com/hchayan/javascript-youtube-classroom",
   "author": "ddongule <mnk918p@gmail.com>",
   "license": "MIT",
-  "dependencies": {
+  "devDependencies": {
     "cypress": "^6.6.0"
   }
 }

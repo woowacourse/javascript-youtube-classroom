@@ -30,6 +30,7 @@ export const SELECTOR = {
   VIDEO_INFO_BUTTONS: '.video-info-buttons',
   TO_WATCH_VIDEOS_BUTTON: '#towatch-videos-button',
   SNACK_BAR: '#snackbar',
+  NAV: 'header nav',
 };
 
 export const CLASS = {
@@ -38,10 +39,18 @@ export const CLASS = {
   SHOW: 'show',
   WATCHED: 'watched',
   DELETE: 'delete',
+  LIKED: 'thumbs-up',
   OPACITY_HOVER: 'opacity-hover',
   SAVE_BUTTON: 'js-save-button',
   OPEN: 'open',
   BG_CYAN: 'bg-cyan-100',
+};
+
+export const NAV = {
+  LIKED_VIDEOS: 'liked-videos-button',
+  TO_WATCH_VIDEOS: 'towatch-videos-button',
+  WATCHED_VIDEOS: 'watched-videos-button',
+  SEARCH_MODAL: 'search-modal-button',
 };
 
 export const REDIRECT_HOST = 'https://ddongule.netlify.app/youtube/v3/search?';
@@ -62,6 +71,8 @@ export const SNACK_BAR = {
   DELETE_MESSAGE: '영상을 목록에서 제거했습니다.',
   SAVED_MESSAGE: '영상을 저장했습니다.',
   LIST_MODIFIED_MESSAGE: '해당 영상의 저장 목록 위치를 변경했습니다.',
+  ADDED_LIKE_MESSAGE: '영상을 좋아요 한 목록에 추가했습니다.',
+  REMOVE_LIKE_MESSAGE: '영상을 좋아요 한 목록에서 제거했습니다.',
   VISIBLE_TIME: 3000,
 };
 

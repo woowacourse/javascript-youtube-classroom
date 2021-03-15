@@ -1,6 +1,7 @@
 import {
   CLASS,
   CONFIRM_MESSAGE,
+  NAV,
   SELECTOR,
   SNACK_BAR,
 } from '../constants/constant.js';
@@ -19,8 +20,7 @@ class SavedController {
   init() {
     this.#storageModel.init();
     this.#loadSavedVideos();
-    this.#handleVideosToWatch();
-    this.#handleVideosWatched();
+    this.#handleNav();
     this.#handleVideoButtons();
   }
 
@@ -33,53 +33,74 @@ class SavedController {
     this.#renderSavedVideo(this.#storageModel.savedVideos);
   };
 
-  #filterVideos({ showWatched }) {
-    if (this.#storageModel.showWatched === showWatched) return;
+  #filterVideos(navValue) {
+    if (this.#storageModel.navValue === navValue) return;
 
-    this.#savedView.toggleNavButton(showWatched);
-    this.#renderSavedVideo(this.#storageModel.filterVideos(showWatched));
+    this.#savedView.toggleNavButton(navValue);
+    this.#renderSavedVideo(this.#storageModel.filterVideos(navValue));
   }
 
   #deleteVideo(target) {
     if (!confirm(CONFIRM_MESSAGE.DELETE_VIDEO)) return;
 
-    this.#storageModel.deleteSelectedVideo(target);
+    this.#storageModel.updateVideoState(target);
     this.#savedView.hideSelectedVideo(target);
     this.#snackBarView.showSnackBar(SNACK_BAR.DELETE_MESSAGE);
   }
 
   #toggleVideoWatched(target) {
-    this.#storageModel.updateVideoWatched(target);
+    this.#storageModel.updateVideoState(target);
     toggleSelectorClass(target, CLASS.OPACITY_HOVER);
 
-    if (this.#storageModel.showWatched !== null) {
+    if (
+      [CLASS.TO_WATCH_VIDEOS, CLASS.WATCHED_VIDEOS].includes(
+        this.#storageModel.navValue
+      )
+    ) {
       this.#savedView.hideSelectedVideo(target);
     }
 
     this.#snackBarView.showSnackBar(SNACK_BAR.LIST_MODIFIED_MESSAGE);
   }
 
+  #toggleVideoLiked(target) {
+    this.#storageModel.updateVideoState(target);
+    toggleSelectorClass(target, CLASS.OPACITY_HOVER);
+
+    if (this.#storageModel.navValue === NAV.LIKED_VIDEOS) {
+      this.#savedView.hideSelectedVideo(target);
+    }
+    if (target.classList.contains(CLASS.OPACITY_HOVER)) {
+      this.#snackBarView.showSnackBar(SNACK_BAR.REMOVE_LIKE_MESSAGE);
+
+      return;
+    }
+    this.#snackBarView.showSnackBar(SNACK_BAR.ADDED_LIKE_MESSAGE);
+  }
+
   #handleVideoButtons() {
     $(SELECTOR.SAVED_VIDEO_WRAPPER).addEventListener('click', ({ target }) => {
-      if (target.classList.contains(CLASS.WATCHED)) {
-        this.#toggleVideoWatched(target);
-      }
+      switch (true) {
+        case target.classList.contains(CLASS.WATCHED):
+          this.#toggleVideoWatched(target);
+          break;
 
-      if (target.classList.contains(CLASS.DELETE)) {
-        this.#deleteVideo(target);
+        case target.classList.contains(CLASS.LIKED):
+          this.#toggleVideoLiked(target);
+          break;
+
+        case target.classList.contains(CLASS.DELETE):
+          this.#deleteVideo(target);
+          break;
       }
     });
   }
 
-  #handleVideosToWatch() {
-    $(SELECTOR.TO_WATCH_VIDEOS_BUTTON).addEventListener('click', () => {
-      this.#filterVideos({ showWatched: false });
-    });
-  }
-
-  #handleVideosWatched() {
-    $(SELECTOR.WATCHED_VIDEOS_BUTTON).addEventListener('click', () => {
-      this.#filterVideos({ showWatched: true });
+  #handleNav() {
+    $(SELECTOR.NAV).addEventListener('click', ({ target }) => {
+      if (target.tagName === 'BUTTON' && target.id !== NAV.SEARCH_MODAL) {
+        this.#filterVideos(target.id);
+      }
     });
   }
 }

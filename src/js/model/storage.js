@@ -3,7 +3,8 @@ import {
   getJSONFromLocalStorage,
 } from '../utils/util.js';
 import {
-  ERROR_MESSAGE,
+  CLASS,
+  NAV,
   SEARCH,
   SELECTOR,
   STORAGE,
@@ -11,12 +12,12 @@ import {
 class StorageModel {
   #savedVideo;
   #keywords;
-  #showWatched;
+  #navValue;
 
   constructor() {
     this.#savedVideo = [];
     this.#keywords = [];
-    this.#showWatched = null;
+    this.#navValue = null;
   }
 
   init() {
@@ -24,27 +25,60 @@ class StorageModel {
     this.#keywords = getJSONFromLocalStorage(STORAGE.KEY_KEYWORDS);
   }
 
-  filterVideos = showWatched => {
-    this.#showWatched = showWatched;
-    return this.#savedVideo.filter(video => video.watched === showWatched);
+  filterVideos = navValue => {
+    this.#navValue = navValue;
+    const navFunction = {
+      [NAV.TO_WATCH_VIDEOS]: this.#savedVideo.filter(
+        video => video.watched === false
+      ),
+      [NAV.WATCHED_VIDEOS]: this.#savedVideo.filter(
+        video => video.watched === true
+      ),
+      [NAV.LIKED_VIDEOS]: this.#savedVideo.filter(
+        video => video.liked === true
+      ),
+    };
+
+    return navFunction[navValue];
   };
 
-  updateVideoWatched(target) {
+  updateVideoState(target) {
     const targetUrl = target.closest(SELECTOR.VIDEO_INFO_BUTTONS).dataset.url;
-    this.#savedVideo.forEach(info => {
-      if (info.url === targetUrl) {
-        info.watched = !info.watched;
-      }
-    });
+    switch (true) {
+      case target.classList.contains(CLASS.WATCHED):
+        this.#updateVideoWatched(targetUrl);
+        break;
+
+      case target.classList.contains(CLASS.LIKED):
+        this.#updateVideoLiked(targetUrl);
+        break;
+
+      case target.classList.contains(CLASS.DELETE):
+        this.#deleteSelectedVideo(targetUrl);
+        break;
+    }
 
     setJSONToLocalStorage(STORAGE.KEY_MY_VIDEO, this.#savedVideo);
   }
 
-  deleteSelectedVideo(target) {
-    const targetUrl = target.closest(SELECTOR.VIDEO_INFO_BUTTONS).dataset.url;
-    this.#savedVideo = this.#savedVideo.filter(info => info.url !== targetUrl);
+  #updateVideoWatched(url) {
+    this.#savedVideo.forEach(info => {
+      if (info.url === url) {
+        info.watched = !info.watched;
+      }
+    });
+  }
 
-    setJSONToLocalStorage(STORAGE.KEY_MY_VIDEO, this.#savedVideo);
+  #updateVideoLiked(url) {
+    this.#savedVideo.forEach(info => {
+      if (info.url === url) {
+        info.liked = !info.liked;
+      }
+    });
+  }
+
+  #deleteSelectedVideo(url) {
+    this.#savedVideo = this.#savedVideo.filter(info => info.url !== url);
   }
 
   saveVideo = json => {
@@ -76,8 +110,8 @@ class StorageModel {
     setJSONToLocalStorage(STORAGE.KEY_KEYWORDS, this.#keywords);
   };
 
-  get showWatched() {
-    return this.#showWatched;
+  get navValue() {
+    return this.#navValue;
   }
 
   get savedVideos() {

@@ -5,10 +5,11 @@ const savedVideoButtons = info => {
   return `
           <div class="video-info-buttons" data-url="${info.url}">
             <button type="button" class="watched ${
-              info.watched ? null : 'opacity-hover'
+              info.watched ? '' : 'opacity-hover'
             }">✅</button>
-            <button type="button" class="thumbs-up opacity-hover">👍</button>
-            <button type="button" class="comments opacity-hover">💬</button>
+            <button type="button" class="thumbs-up  ${
+              info.liked ? '' : 'opacity-hover'
+            }">👍</button>
             <button type="button" class="delete opacity-hover">🗑️</button>
           </div>
       `;
@@ -38,6 +39,7 @@ export const videoTemplate = (info, save = null) => {
               height="118"
               src='https://www.youtube.com/embed/${info.url}'
               frameborder="0"
+              loading="lazy"
               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
               allowfullscreen
               ></iframe>

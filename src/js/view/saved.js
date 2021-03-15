@@ -1,4 +1,9 @@
-import { $, parseDOMFromString, toggleSelectorClass } from '../utils/util.js';
+import {
+  $,
+  $$,
+  parseDOMFromString,
+  toggleSelectorClass,
+} from '../utils/util.js';
 import { videoTemplate } from '../templates/video-template.js';
 import { SELECTOR, CLASS } from '../constants/constant.js';
 class SavedView {
@@ -42,18 +47,15 @@ class SavedView {
     }
   }
 
-  toggleNavButton(watched) {
-    toggleSelectorClass(
-      $(SELECTOR.TO_WATCH_VIDEOS_BUTTON),
-      CLASS.BG_CYAN,
-      !watched
-    );
+  toggleNavButton(value) {
+    $$('header nav button').forEach(button => {
+      if (button.id === value) {
+        toggleSelectorClass(button, CLASS.BG_CYAN, true);
+        return;
+      }
 
-    toggleSelectorClass(
-      $(SELECTOR.WATCHED_VIDEOS_BUTTON),
-      CLASS.BG_CYAN,
-      watched
-    );
+      toggleSelectorClass(button, CLASS.BG_CYAN, false);
+    });
   }
 }
 
