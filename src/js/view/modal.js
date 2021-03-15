@@ -20,14 +20,16 @@ export const renderRecentKeywords = (recentKeywords) => {
 };
 
 export const renderSaveVideoCount = (saveClips) => {
-  $DOM.SEARCH_MODAL.SAVE_VIDEO_COUNT.innerText = `저장된 영상 갯수: ${saveClips.length}개`;
+  $DOM.SEARCH_MODAL.SAVE_VIDEO_COUNT.innerText = `저장된 영상 갯수: ${
+    Object.keys(saveClips).length
+  } / 100개`;
 };
 
 export const renderExtraClips = (videoItems, savedClipIds) => {
   const extraClips = videoItems
-    .map((video, index) => {
+    .map((video) => {
       const isSaved = savedClipIds.includes(video.id.videoId);
-      return clipTemplate(video, index, { isModal: true, isSaved });
+      return clipTemplate(video, { isModal: true, isSaved });
     })
     .join('');
 
@@ -38,12 +40,16 @@ export const renderClips = (videoItems, savedClipIds) => {
   $DOM.SEARCH_MODAL.VIDEO_WRAPPER.innerHTML = videoItems
     .map((video, index) => {
       const isSaved = savedClipIds.includes(video.id.videoId);
-      return clipTemplate(video, index, {
-        isModal: true,
-        isSaved,
-        isWatched: video.isWatched,
-        isLiked: video.isLiked,
-      });
+      return clipTemplate(
+        video,
+        {
+          isModal: true,
+          isSaved,
+          isWatched: video.isWatched,
+          isLiked: video.isLiked,
+        },
+        index,
+      );
     })
     .join('');
 };

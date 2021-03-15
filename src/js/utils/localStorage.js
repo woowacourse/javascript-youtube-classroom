@@ -2,7 +2,12 @@ import { MESSAGE } from './constant.js';
 
 export default {
   set: (key, value) => {
-    if (typeof value !== 'string' && !Array.isArray(value)) {
+    if (
+      (typeof value !== 'string' &&
+        !Array.isArray(value) &&
+        typeof value !== 'object') ||
+      value === null
+    ) {
       throw new Error(
         MESSAGE.ERROR.ONLY_STRING_OR_ARRAY_CAN_BE_STORED_IN_LOCAL_STORAGE,
       );

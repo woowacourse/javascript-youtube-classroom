@@ -6,9 +6,9 @@ import $DOM from '../../utils/DOM.js';
 
 const toggleIsWatched = (target) => {
   const targetClip = target.closest('[data-js="saved-page__clip"]');
-  const savedClips = storage.get(LOCAL_STORAGE_KEY.SAVED_CLIPS);
-  const targetClipIndex = targetClip.dataset.clipIndex;
-  const isWatched = savedClips[targetClipIndex].isWatched;
+  const savedClips = storage.get(LOCAL_STORAGE_KEY.SAVED_CLIPS) ?? {};
+  const targetClipId = targetClip.dataset.clipId;
+  const isWatched = savedClips[targetClipId].isWatched;
 
   const notifyMessage = isWatched
     ? MESSAGE.NOTIFY.CHECK_UNWACTHED_CLIP
@@ -16,7 +16,7 @@ const toggleIsWatched = (target) => {
 
   showSnackbar(notifyMessage);
 
-  savedClips[targetClipIndex].isWatched = !isWatched;
+  savedClips[targetClipId].isWatched = !isWatched;
   storage.set(LOCAL_STORAGE_KEY.SAVED_CLIPS, savedClips);
 
   targetClip.classList.toggle('watched-clip');
@@ -26,31 +26,30 @@ const toggleIsWatched = (target) => {
 
 const deleteClip = (target) => {
   const targetClip = target.closest('[data-js="saved-page__clip"]');
-  const savedClips = storage.get(LOCAL_STORAGE_KEY.SAVED_CLIPS);
-  const targetClipIndex = targetClip.dataset.clipIndex;
+  const savedClips = storage.get(LOCAL_STORAGE_KEY.SAVED_CLIPS) ?? {};
+  const savedClipsLength = Object.keys(savedClips).length;
+  const targetClipId = targetClip.dataset.clipId;
 
   if (!confirm(MESSAGE.CONFIRM.DELETE_CLIP)) {
     return;
   }
 
   showSnackbar(MESSAGE.NOTIFY.DELETE_CLIP);
-  savedClips[targetClipIndex].isDeleted = true;
-  targetClip.classList.add('deleted-clip');
+  delete savedClips[targetClipId];
 
-  const existClips = savedClips.filter((savedClip) => !savedClip.isDeleted);
-
-  if (existClips.length === 0) {
+  if (savedClipsLength === 0) {
     showElement($DOM.SAVE_PAGE.NOT_FOUND);
   }
 
+  targetClip.remove();
   storage.set(LOCAL_STORAGE_KEY.SAVED_CLIPS, savedClips);
 };
 
 const likeClip = (target) => {
   const targetClip = target.closest('[data-js="saved-page__clip"]');
   const savedClips = storage.get(LOCAL_STORAGE_KEY.SAVED_CLIPS);
-  const targetClipIndex = targetClip.dataset.clipIndex;
-  const isLiked = savedClips[targetClipIndex].isLiked;
+  const targetClipId = targetClip.dataset.clipId;
+  const isLiked = savedClips[targetClipId].isLiked;
 
   const notifyMessage = isLiked
     ? MESSAGE.NOTIFY.UNLIKE_CLIP
@@ -58,7 +57,7 @@ const likeClip = (target) => {
 
   showSnackbar(notifyMessage);
 
-  savedClips[targetClipIndex].isLiked = !isLiked;
+  savedClips[targetClipId].isLiked = !isLiked;
   targetClip.classList.toggle('liked-clip');
   targetClip.classList.toggle('unliked-clip');
   target.classList.toggle('opacity-hover');

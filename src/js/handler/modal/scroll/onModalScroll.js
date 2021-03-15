@@ -30,8 +30,8 @@ export const onModalScroll = async (event) => {
   const response = await request(BASE_URL + queryString);
   const recentSearchResults =
     storage.get(LOCAL_STORAGE_KEY.RECENT_SEARCH_RESULTS) ?? [];
-  const savedClips = storage.get(LOCAL_STORAGE_KEY.SAVED_CLIPS) ?? [];
-  const savedClipIds = savedClips.map((savedClip) => savedClip.id.videoId);
+  const savedClips = storage.get(LOCAL_STORAGE_KEY.SAVED_CLIPS) ?? {};
+  const savedClipIds = Object.keys(savedClips);
 
   recentSearchResults.push(...response.items);
   storage.set(LOCAL_STORAGE_KEY.RECENT_SEARCH_RESULTS, recentSearchResults);

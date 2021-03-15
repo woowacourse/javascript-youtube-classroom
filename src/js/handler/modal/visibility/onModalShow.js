@@ -9,8 +9,8 @@ import {
 } from '../../../view/modal.js';
 
 export const onModalShow = () => {
-  const savedClips = storage.get(LOCAL_STORAGE_KEY.SAVED_CLIPS) ?? [];
-  const savedClipIds = savedClips.map((savedClip) => savedClip.id.videoId);
+  const savedClips = storage.get(LOCAL_STORAGE_KEY.SAVED_CLIPS) ?? {};
+  const savedClipIds = Object.keys(savedClips);
   const recentKeywords = storage.get(LOCAL_STORAGE_KEY.RECENT_KETWORDS) ?? [];
   const recentSearchResults = storage.get(
     LOCAL_STORAGE_KEY.RECENT_SEARCH_RESULTS,
