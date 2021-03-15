@@ -21,7 +21,7 @@ class StorageModel {
 
   filterVideos = navValue => {
     this.#navValue = navValue;
-    // TODO: 아래 개선
+    // TODO: 아래 개선 - savedView/toggleNavButton 과 일부 겹침
     if (navValue === NAV.TO_WATCH_VIDEOS) {
       return this.#savedVideo.filter(video => video.watched === false);
     } else if (navValue === NAV.WATCHED_VIDEOS) {

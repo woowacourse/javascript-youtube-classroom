@@ -40,6 +40,7 @@ export const videoTemplate = (info, save = null) => {
               height="118"
               src='https://www.youtube.com/embed/${info.url}'
               frameborder="0"
+              loading="lazy"
               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
               allowfullscreen
               ></iframe>
