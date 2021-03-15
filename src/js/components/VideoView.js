@@ -1,27 +1,31 @@
 import { $, popMessage } from "../utils/dom.js";
-import { getDataFromLocalStorage, setDataToLocalStorage } from "../utils/localStorage.js";
 import {
   MENU,
   SECTION,
-  STORAGE,
   CONFIRM_MESSAGE,
   SNACKBAR_MESSAGE,
   CLASS_NAME,
 } from "../utils/constants.js";
 import { createVideoTemplate } from "../utils/templates.js";
+import savedVideoManager from "../model/SavedVideoManager.js";
 
 class VideoView {
   constructor() {
     this.selectDOM();
     this.initState();
     this.bindEvent();
+    this.initSubscription();
   }
 
   async initState() {
-    this.savedVideos = getDataFromLocalStorage(STORAGE.SAVED_VIDEOS, []);
+    this.savedVideos = savedVideoManager.getSavedVideos();
     this.clickedMenu = MENU.WATCH_LATER;
 
     this.render();
+  }
+
+  initSubscription() {
+    savedVideoManager.subscribe(this.setState.bind(this));
   }
 
   setState({ savedVideos, clickedMenu }) {
@@ -59,8 +63,7 @@ class VideoView {
       return video;
     });
 
-    this.setState({ savedVideos });
-    setDataToLocalStorage(STORAGE.SAVED_VIDEOS, this.savedVideos);
+    savedVideoManager.setState({ savedVideos });
 
     const message = SNACKBAR_MESSAGE.MOVE(this.clickedMenu === MENU.WATCH_LATER ? "본" : "볼");
     popMessage(this.$snackbar, message);
@@ -71,8 +74,7 @@ class VideoView {
       const removeVideoId = e.target.closest(`.${CLASS_NAME.CLIP_ACTIONS}`).dataset.videoId;
       const savedVideos = this.savedVideos.filter(video => video.videoId !== removeVideoId);
 
-      this.setState({ savedVideos });
-      setDataToLocalStorage(STORAGE.SAVED_VIDEOS, this.savedVideos);
+      savedVideoManager.setState({ savedVideos });
       popMessage(this.$snackbar, SNACKBAR_MESSAGE.DELETE);
     }
   }

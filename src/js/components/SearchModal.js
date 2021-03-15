@@ -3,14 +3,13 @@ import {
   MENU,
   STANDARD_NUMS,
   ALERT_MESSAGE,
-  STORAGE,
   SECTION,
   CLASS_NAME,
   SNACKBAR_MESSAGE,
 } from "../utils/constants.js";
 import API from "../utils/api.js";
-import { setDataToLocalStorage, getDataFromLocalStorage } from "../utils/localStorage.js";
 import { createVideoTemplate } from "../utils/templates.js";
+import savedVideoManager from "../model/SavedVideoManager.js";
 
 // dummy API Response 사용할 경우
 // import { dummySearchedData } from "../data/dummy.js";
@@ -21,14 +20,32 @@ class SearchModal {
     this.selectDOM();
     this.bindEvent();
     this.initObserver();
+    this.initSubscription();
   }
 
   initState() {
     this.keyword = "";
     this.keywordHistory = [];
     this.videos = [];
-    this.savedVideos = getDataFromLocalStorage(STORAGE.SAVED_VIDEOS, []);
+    this.savedVideos = savedVideoManager.getSavedVideos();
     this.nextPageToken = "";
+  }
+
+  updateIsSavedOfVideos({ savedVideos }) {
+    const videos = this.videos.map(video => {
+      return {
+        ...video,
+        isSaved: savedVideos.map(_video => _video.videoId).includes(video.videoId),
+      };
+    });
+
+    this.setVideosState({ videos });
+  }
+
+  setVideosState({ videos }) {
+    this.videos = videos;
+
+    this.renderCachedContent();
   }
 
   setSearchKeywordState({ keyword, keywordHistory, videos, nextPageToken }) {
@@ -50,8 +67,12 @@ class SearchModal {
   setSaveVideosState({ savedVideos }) {
     this.savedVideos = savedVideos ?? this.savedVideos;
 
-    setDataToLocalStorage(STORAGE.SAVED_VIDEOS, this.savedVideos);
     this.renderSavedCount();
+  }
+
+  initSubscription() {
+    savedVideoManager.subscribe(this.setSaveVideosState.bind(this));
+    savedVideoManager.subscribe(this.updateIsSavedOfVideos.bind(this));
   }
 
   selectDOM() {
@@ -208,7 +229,7 @@ class SearchModal {
       isLiked: false,
     };
     const savedVideos = [...this.savedVideos, newSavedVideo];
-    this.setSaveVideosState({ savedVideos });
+    savedVideoManager.setState({ savedVideos });
     $saveBtn.classList.add("hidden");
 
     popMessage(this.$snackBar, SNACKBAR_MESSAGE.SAVE);
@@ -235,6 +256,15 @@ class SearchModal {
     this.hideLoadingAnimation();
   }
 
+  renderCachedContent() {
+    this.$videoWrapper.innerHTML = this.videos.length
+      ? this.videos
+          .filter(video => video.videoId)
+          .map(video => createVideoTemplate(video, SECTION.MODAL))
+          .join("")
+      : createNoSearchResultTemplate();
+  }
+
   renderSavedCount() {
     this.$savedVideoCount.textContent = `저장된 영상 갯수: ${this.savedVideos.length}/${STANDARD_NUMS.MAX_SAVE_VIDEO_COUNT}개`;
   }
@@ -256,7 +286,9 @@ const createNoSearchResultTemplate = () =>
 
 const createKeywordHistoryTemplate = keywords => `
   <span class="text-gray-700">최근 검색어: </span>
-  ${keywords.map(keyword => `<a class="keyword-history__keyword chip">${keyword}</a>`).join("")}
+  ${keywords
+    .map(keyword => `<a class="keyword-history__keyword chip mr-1">${keyword}</a>`)
+    .join("")}
 `;
 
 export default SearchModal;

@@ -62,7 +62,9 @@ class MenuSection {
       [CLASS_NAME.WATCHED_BTN]: () => {
         this.props.changeMenu(MENU.WATCHED);
       },
-      [CLASS_NAME.VIDEO_SEARCH_BTN]: this.props.openModal,
+      [CLASS_NAME.VIDEO_SEARCH_BTN]: () => {
+        this.props.openModal();
+      },
     };
 
     return menuAction[selectedMenu];
