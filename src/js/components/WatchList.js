@@ -145,20 +145,20 @@ export default class WatchList extends Observer {
     if (target.classList.contains('delete')) {
       if (!window.confirm(ALERT_MESSAGE.CONFIRM_DELETE)) return;
 
-      const targetId = target.closest('.menu-list').dataset.videoId;
+      const targetId = target.closest(SELECTORS.CLASS.MENU_LIST).dataset.videoId;
       const newWatchList = watchList.filter(({ videoId }) => videoId !== targetId);
       this.store.update(LOCAL_STORAGE_KEYS.WATCH_LIST, newWatchList);
 
       const $saveButton = getVideoSaveButton(targetId);
       if ($saveButton) {
-        $saveButton.classList.remove('hidden');
+        $saveButton.classList.remove(SELECTORS.STATUS.HIDDEN);
       }
 
       showSnackbar(ALERT_MESSAGE.VIDEO_DELETED);
     }
 
     if (target.classList.contains('watched')) {
-      const targetId = target.closest('.menu-list').dataset.videoId;
+      const targetId = target.closest(SELECTORS.CLASS.MENU_LIST).dataset.videoId;
       const newWatchList = watchList.map((video) => {
         const nowVideo = { ...video };
         if (nowVideo.videoId === targetId) {
@@ -176,7 +176,7 @@ export default class WatchList extends Observer {
     }
 
     if (target.classList.contains('liked')) {
-      const targetId = target.closest('.menu-list').dataset.videoId;
+      const targetId = target.closest(SELECTORS.CLASS.MENU_LIST).dataset.videoId;
       const newWatchList = watchList.map((video) => {
         const nowVideo = { ...video };
         if (nowVideo.videoId === targetId) {

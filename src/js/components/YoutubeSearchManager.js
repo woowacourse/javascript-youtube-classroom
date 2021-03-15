@@ -24,7 +24,7 @@ export default class YoutubeSearchManager extends Observer {
   setScrollObservers() {
     const options = {
       root: $(SELECTORS.CLASS.YOUTUBE_SEARCH_RESULT_CONTAINER),
-      threshold: 0.5,
+      threshold: SETTINGS.SCROLL_SENTINEL_THRESHOLD,
     };
 
     this.scrollObserver = new IntersectionObserver((entries) => {
@@ -119,7 +119,7 @@ export default class YoutubeSearchManager extends Observer {
     const { recentKeywordList } = this.store.get();
     const newKeywordList = recentKeywordList.filter((item) => item !== keyword);
 
-    if (newKeywordList.length >= 3) {
+    if (newKeywordList.length >= SETTINGS.MAX_KEYWORD_COUNT) {
       newKeywordList.pop();
     }
     newKeywordList.unshift(keyword);

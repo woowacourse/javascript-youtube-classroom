@@ -1,5 +1,7 @@
 export const SETTINGS = {
   MAX_VIDEO_COUNT: 100,
+  MAX_KEYWORD_COUNT: 3,
+  SCROLL_SENTINEL_THRESHOLD: 0.5,
 };
 
 export const ALERT_MESSAGE = {
@@ -42,6 +44,7 @@ export const SELECTORS = {
     WATCHED_LIST_BUTTON: '.watched-list-button',
     LIKED_LIST_BUTTON: '.liked-list-button',
     SENTINEL: '.sentinel',
+    MENU_LIST: '.menu-list',
   },
   ID: {
     SEARCH_BUTTON: '#search-button',
