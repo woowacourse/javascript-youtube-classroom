@@ -12162,12 +12162,11 @@ function _getVideosByKeyword() {
               q: searchKeyword,
               type: 'video',
               maxResults: _constants_js__WEBPACK_IMPORTED_MODULE_0__.YOUTUBE.MAX_RESULT_COUNT,
-              videoDefinition: 'high',
-              key: "AIzaSyBmX5TEH7eS1rqcf33gV0CWUZaQFLoN6b4"
+              videoDefinition: 'high'
             };
             _context.prev = 1;
             _context.next = 4;
-            return fetch("https://www.googleapis.com/youtube/v3/search?".concat(parseQuery(query)).concat(pageToken ? "&pageToken=".concat(pageToken) : ''));
+            return fetch("https://stoic-poitras-9ccddb.netlify.app/.netlify/functions/youtube/search?".concat(parseQuery(query)).concat(pageToken ? "&pageToken=".concat(pageToken) : ''));
 
           case 4:
             _context.next = 6;

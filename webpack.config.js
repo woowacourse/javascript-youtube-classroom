@@ -1,9 +1,5 @@
-const webpack = require('webpack');
-const dotenv = require('dotenv');
 const path = require('path');
 const CaseSensitivePathsPlugin = require('case-sensitive-paths-webpack-plugin');
-dotenv.config();
-
 
 module.exports = {
   mode: 'development',
@@ -14,9 +10,6 @@ module.exports = {
   },
   devtool: 'source-map',
   plugins: [
-    new webpack.DefinePlugin({
-      YOUTUBE_API_KEY: JSON.stringify(process.env.YOUTUBE_API_KEY_1),
-    }),
     new CaseSensitivePathsPlugin(),
   ],
   module: {
