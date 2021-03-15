@@ -1,4 +1,4 @@
-export const escape = (text) => {
+export const unescape = (text) => {
   return text
     .replaceAll('&#60;', '<')
     .replaceAll('&lt;', '<')
