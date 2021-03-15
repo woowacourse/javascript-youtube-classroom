@@ -83,9 +83,9 @@ export default class ClassroomController {
   moveVideo($video, isWatching) {
     this.model.moveVideo($video.id);
     this.view.renderMovedVideo($video, isWatching);
-    isWatching
-      ? this.view.renderNotification(MESSAGE.VIDEO_IS_MOVED_TO_WATCHED_MENU)
-      : this.view.renderNotification(MESSAGE.VIDEO_IS_MOVED_TO_WATCHING_MENU);
+    this.view.renderNotification(
+      isWatching ? MESSAGE.VIDEO_IS_MOVED_TO_WATCHED_MENU : MESSAGE.VIDEO_IS_MOVED_TO_WATCHING_MENU,
+    );
     this.showImageNoVideo();
   }
 
