@@ -7,11 +7,16 @@ export const sleep = (ms) => {
   return new Promise((resolve) => setTimeout(resolve, ms));
 };
 
+let snackbarTimeoutID = null;
 export const showSnackbar = (message, second = 3) => {
+  if (snackbarTimeoutID) {
+    clearTimeout(snackbarTimeoutID);
+  }
+
   $(SELECTORS.ID.SNACKBAR).textContent = message;
   $(SELECTORS.ID.SNACKBAR).classList.add(SELECTORS.STATUS.SNACKBAR_SHOW);
 
-  setTimeout(() => {
+  snackbarTimeoutID = setTimeout(() => {
     $(SELECTORS.ID.SNACKBAR).classList.remove(SELECTORS.STATUS.SNACKBAR_SHOW);
   }, second * 1000);
 };
@@ -38,10 +43,37 @@ export const formatDate = (publishedAt) => {
   return `${year}년 ${month}월 ${day}일`;
 };
 
-export const openModal = () => {
-  $(SELECTORS.CLASS.MODAL).classList.add(SELECTORS.STATUS.MODAL_OPEN);
+export const openModal = (selector) => {
+  document.body.classList.add('overflow-hidden');
+  $(selector).classList.add(SELECTORS.STATUS.MODAL_OPEN);
 };
 
-export const closeModal = () => {
-  $(SELECTORS.CLASS.MODAL).classList.remove(SELECTORS.STATUS.MODAL_OPEN);
+export const closeModal = (selector) => {
+  document.body.classList.remove('overflow-hidden');
+  $(selector).classList.remove(SELECTORS.STATUS.MODAL_OPEN);
+};
+
+export const generateCSSClass = (condition, className) => {
+  return condition ? className : '';
+};
+
+export const hideElement = (selector) => {
+  $(selector).classList.add('d-none');
+};
+
+export const showElement = (selector) => {
+  $(selector).classList.remove('d-none');
+};
+
+export const colorizeButton = (selector) => {
+  $(selector).classList.add('bg-cyan-100');
+};
+
+export const uncolorizeButton = (selector) => {
+  $(selector).classList.remove('bg-cyan-100');
+};
+
+export const getVideoSaveButton = (id) => {
+  const { YOUTUBE_SEARCH_RESULT, CLIP, BTN_SAVE } = SELECTORS.CLASS;
+  return $(`${YOUTUBE_SEARCH_RESULT} ${CLIP}[data-video-id="${id}"] ${BTN_SAVE}`);
 };

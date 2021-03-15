@@ -1,19 +1,46 @@
+import { LOCAL_STORAGE_KEYS } from '../constants.js';
+
 export default class Subject {
   constructor() {
-    this.observers = [];
+    this.observers = {};
+
+    this.initObservers();
   }
 
-  subscribe(observer) {
-    this.observers = [...this.observers, observer];
+  initObservers() {
+    Object.values(LOCAL_STORAGE_KEYS).forEach((key) => {
+      this.observers = {
+        ...this.observers,
+        [key]: [],
+      };
+    });
   }
 
-  unsubscribe(observer) {
-    this.observers = this.observers.filter((_observer) => _observer !== observer);
+  subscribe(key, observer) {
+    const newObservers = Object.assign({}, this.observers);
+    newObservers[key] = [...newObservers[key], observer];
+
+    this.observers = newObservers;
   }
 
-  notify() {
-    if (this.observers.length > 0) {
-      this.observers.forEach((observer) => observer.update());
+  unsubscribe(key, observer) {
+    const newObservers = Object.assign({}, this.observers);
+    newObservers[key] = newObservers[key].filter((currentObserver) => currentObserver !== observer);
+
+    this.observers = newObservers;
+  }
+
+  notify(key) {
+    if (this.observers[key].length > 0) {
+      this.observers[key].forEach((observer) => observer.update());
     }
+  }
+
+  notifyAll() {
+    Object.keys(this.observers).forEach((key) => {
+      if (this.observers[key].length > 0) {
+        this.observers[key].forEach((observer) => observer.update());
+      }
+    });
   }
 }

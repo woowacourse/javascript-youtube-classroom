@@ -31,17 +31,24 @@ export default class Store extends Subject {
     }
   }
 
-  update(data = {}) {
-    this.state = { ...this.state, ...data };
+  update(key, data = {}) {
+    this.state = { ...this.state, [key]: data };
+    this.save(key, data);
+
+    this.notify(key);
+  }
+
+  updateAll(data = {}) {
+    this.state = { ...this.state, data };
 
     Object.entries(data).forEach(([key, value]) => {
       this.save(key, value);
     });
 
-    this.notify();
+    this.notifyAll();
   }
 
   get() {
-    return this.state;
+    return Object.assign({}, this.state);
   }
 }

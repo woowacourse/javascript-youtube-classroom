@@ -1,20 +1,19 @@
-import { $, openModal, closeModal } from './utils.js';
-import { SELECTORS } from './constants.js';
+import { LOCAL_STORAGE_KEYS, SELECTORS } from './constants.js';
 import Store from './lib/Store.js';
 import WatchList from './components/WatchList.js';
-import YoutubeSearchManager from './components/YoutubeSearchManager.js';
+import YoutubeSearchModal from './components/YoutubeSearchModal.js';
+import ModalManager from './components/ModalManager.js';
 
 const store = new Store();
 
-// Note: modal 관련 이벤트 메소드는 추후 2단계에서 새로운 컴포넌트를 만들어 옮길 예정입니다.
-$(SELECTORS.ID.SEARCH_BUTTON).addEventListener('click', openModal);
-$(SELECTORS.CLASS.MODAL_CLOSE).addEventListener('click', closeModal);
-
+const modalManager = new ModalManager();
 const watchList = new WatchList(store);
-const youtubeSearchManager = new YoutubeSearchManager(store);
+const youtubeSearchModal = new YoutubeSearchModal(store);
 
-store.subscribe(watchList);
-store.subscribe(youtubeSearchManager);
+store.subscribe(LOCAL_STORAGE_KEYS.WATCH_LIST, watchList);
+store.subscribe(LOCAL_STORAGE_KEYS.WATCH_LIST, youtubeSearchModal);
+store.subscribe(LOCAL_STORAGE_KEYS.RECENT_KEYWORD_LIST, youtubeSearchModal);
 
+modalManager.init();
 watchList.render();
-youtubeSearchManager.render();
+youtubeSearchModal.render();
