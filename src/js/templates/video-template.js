@@ -5,10 +5,10 @@ const savedVideoButtons = info => {
   return `
           <div class="video-info-buttons" data-url="${info.url}">
             <button type="button" class="watched ${
-              info.watched ? null : 'opacity-hover'
+              info.watched ? '' : 'opacity-hover'
             }">✅</button>
             <button type="button" class="thumbs-up  ${
-              info.liked ? null : 'opacity-hover'
+              info.liked ? '' : 'opacity-hover'
             }">👍</button>
             <button type="button" class="comments opacity-hover">💬</button>
             <button type="button" class="delete opacity-hover">🗑️</button>

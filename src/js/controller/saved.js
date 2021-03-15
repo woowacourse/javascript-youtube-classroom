@@ -52,7 +52,7 @@ class SavedController {
     this.#storageModel.updateVideoWatched(target);
     toggleSelectorClass(target, CLASS.OPACITY_HOVER);
 
-    if (this.#storageModel.showWatched !== null) {
+    if (this.#storageModel.navValue !== null) {
       this.#savedView.hideSelectedVideo(target);
     }
 
