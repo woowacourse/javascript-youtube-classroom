@@ -2,6 +2,7 @@ export const STANDARD_NUMS = Object.freeze({
   MAX_SAVE_VIDEO_COUNT: 100,
   MAX_SAVE_KEYWORD_COUNT: 3,
   LOAD_CLIP_COUNT: 10,
+  SNACKBAR_DELAY: 1000,
 });
 
 export const ALERT_MESSAGE = Object.freeze({

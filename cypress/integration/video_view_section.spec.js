@@ -1,6 +1,6 @@
 /// <reference types="cypress" />
 import { setDataToLocalStorage } from "../../src/js/utils/localStorage.js";
-import { STORAGE, CLASS_NAME } from "../../src/js/utils/constants.js";
+import { STORAGE, CLASS_NAME, STANDARD_NUMS } from "../../src/js/utils/constants.js";
 
 context("저장된 비디오 관리", () => {
   beforeEach(() => {
@@ -105,7 +105,7 @@ context("저장된 비디오 관리", () => {
     });
 
     cy.get(`.${CLASS_NAME.SNACKBAR}`).should("have.class", "show");
-    cy.wait(4000);
+    cy.wait(STANDARD_NUMS.SNACKBAR_DELAY);
     cy.get(`.${CLASS_NAME.SNACKBAR}`).should("not.have.class", "show");
 
     cy.get(`.${CLASS_NAME.CLIP_ACTIONS}`).then($clipActions => {
@@ -113,7 +113,7 @@ context("저장된 비디오 관리", () => {
     });
 
     cy.get(`.${CLASS_NAME.SNACKBAR}`).should("have.class", "show");
-    cy.wait(4000);
+    cy.wait(STANDARD_NUMS.SNACKBAR_DELAY);
     cy.get(`.${CLASS_NAME.SNACKBAR}`).should("not.have.class", "show");
   });
 });
