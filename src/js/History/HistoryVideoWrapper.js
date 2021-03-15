@@ -2,8 +2,8 @@ import {
   MESSAGE,
   LOCAL_STORAGE_KEY,
   CLASSNAME,
-  SNACKBAR_MESSAGE,
-} from "../constants.js";
+  SNACKBAR_TEXT,
+} from "../constants/index.js";
 import messenger from "../Messenger.js";
 import { $ } from "../utils/DOM.js";
 import { HISTORY_VIDEO_TEMPLATE } from "../Video/template.js";
@@ -43,7 +43,7 @@ export default class HistoryVideoWrapper {
 
       if (event.target.classList.contains(CLASSNAME.WATCH_LATER_ICON)) {
         this.moveVideo(videoId);
-        showSnackbar(SNACKBAR_MESSAGE.MOVED_TO_WATCH_LATER_VIDEO);
+        showSnackbar(SNACKBAR_TEXT.MOVED_TO_WATCH_LATER_VIDEO);
       }
 
       if (event.target.classList.contains(CLASSNAME.DELETE_ICON)) {
@@ -51,7 +51,7 @@ export default class HistoryVideoWrapper {
         if (window.confirm("정말 삭제하시겠습니까?")) {
           this.deleteVideo({ videoId });
           messenger.deliverMessage(MESSAGE.SAVED_VIDEO_DELETED, { videoId });
-          showSnackbar(SNACKBAR_MESSAGE.VIDEO_DELETED);
+          showSnackbar(SNACKBAR_TEXT.VIDEO_DELETED);
         }
       }
     });

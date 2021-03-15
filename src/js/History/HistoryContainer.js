@@ -1,4 +1,4 @@
-import { CLASSNAME } from "../constants.js";
+import { CLASSNAME } from "../constants/index.js";
 import { $ } from "../utils/DOM.js";
 import HistoryVideoWrapper from "./HistoryVideoWrapper.js";
 

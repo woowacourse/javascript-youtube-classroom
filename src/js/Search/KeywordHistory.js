@@ -1,9 +1,9 @@
 import {
   CLASSNAME,
   LOCAL_STORAGE_KEY,
-  MAX_KEYWORDS_COUNT,
+  NUMBER,
   MESSAGE,
-} from "../constants.js";
+} from "../constants/index.js";
 import { $ } from "../utils/DOM.js";
 import messenger from "../Messenger.js";
 
@@ -28,7 +28,7 @@ export default class KeywordHistory {
     );
 
     this.keywordHistory.unshift(query);
-    if (this.keywordHistory.length > MAX_KEYWORDS_COUNT) {
+    if (this.keywordHistory.length > NUMBER.MAX_KEYWORDS_COUNT) {
       this.keywordHistory.pop();
     }
 

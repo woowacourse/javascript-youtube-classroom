@@ -1,9 +1,8 @@
 import {
   CLASSNAME,
-  MAX_KEYWORDS_COUNT,
-  MAX_RESULTS_COUNT,
+  NUMBER,
   REGULAR_EXPRESSION,
-} from "../../src/js/constants.js";
+} from "../../src/js/constants/index.js";
 import { REDIRECT_SERVER_HOST } from "../../src/js/utils/API.js";
 
 describe("유투브 검색 API를 이용하여 영상들을 검색할 수 있다.", () => {
@@ -76,7 +75,7 @@ describe("유투브 검색 API를 이용하여 영상들을 검색할 수 있다
       const fourthKeyword = "배민";
       const updatedKeywords = [...keywords, fourthKeyword]
         .reverse()
-        .slice(0, MAX_KEYWORDS_COUNT);
+        .slice(0, NUMBER.MAX_KEYWORDS_COUNT);
 
       cy.get(`.${CLASSNAME.SEARCH_FORM_INPUT}`).type(fourthKeyword);
       cy.get(`.${CLASSNAME.SEARCH_FORM_BUTTON}`).click();
@@ -84,7 +83,7 @@ describe("유투브 검색 API를 이용하여 영상들을 검색할 수 있다
 
       cy.get(`.${CLASSNAME.KEYWORD_HISTORY_SECTION}`)
         .children("a.chip")
-        .should("have.length", MAX_KEYWORDS_COUNT)
+        .should("have.length", NUMBER.MAX_KEYWORDS_COUNT)
         .each(($keyword, index) => {
           expect($keyword.text()).to.be.equal(updatedKeywords[index]);
         });
@@ -108,7 +107,7 @@ describe("유투브 검색 API를 이용하여 영상들을 검색할 수 있다
 
       cy.get(`.${CLASSNAME.KEYWORD_HISTORY_SECTION}`)
         .children("a.chip")
-        .should("have.length", MAX_KEYWORDS_COUNT)
+        .should("have.length", NUMBER.MAX_KEYWORDS_COUNT)
         .each(($keyword, index) => {
           expect($keyword.text()).to.be.equal(updatedKeywords[index]);
         });
@@ -123,7 +122,7 @@ describe("유투브 검색 API를 이용하여 영상들을 검색할 수 있다
 
       cy.get(`.${CLASSNAME.SEARCH_VIDEO_WRAPPER}`)
         .children()
-        .should("have.length", MAX_RESULTS_COUNT);
+        .should("have.length", NUMBER.MAX_RESULTS_COUNT);
 
       cy.get(`.${CLASSNAME.SEARCH_VIDEO_WRAPPER}`)
         .children("article.clip:last-child")
@@ -134,13 +133,16 @@ describe("유투브 검색 API를 이용하여 영상들을 검색할 수 있다
       cy.get("@lastVideo")
         .nextAll("article.clip")
         .its("length")
-        .should("be.within", 0, MAX_RESULTS_COUNT);
+        .should("be.within", 0, NUMBER.MAX_RESULTS_COUNT);
     });
 
     it("검색 직후 skeleton UI가 나타나고, 데이터 로드된 후 skeleton UI가 없어진다.", () => {
       cy.get(`.${CLASSNAME.SEARCH_FORM_INPUT}`).type("우테코");
       cy.get(`.${CLASSNAME.SEARCH_FORM_BUTTON}`).click();
-      cy.get(".modal .skeleton").should("have.length", MAX_RESULTS_COUNT);
+      cy.get(".modal .skeleton").should(
+        "have.length",
+        NUMBER.MAX_RESULTS_COUNT
+      );
       cy.wait("@searchFromKeyword");
 
       cy.get(".modal .skeleton").should("have.length", 0);

@@ -1,4 +1,4 @@
-import { CLASSNAME, SNACKBAR_SHOW_TIME_IN_MS } from "../constants.js";
+import { CLASSNAME, NUMBER } from "../constants/index.js";
 import { $ } from "./DOM.js";
 
 const $snackbar = $(`.${CLASSNAME.SNACKBAR}`);
@@ -10,7 +10,7 @@ const showSnackbar = (message) => {
   $snackbar.classList.toggle(CLASSNAME.SHOW);
   setTimeout(() => {
     $snackbar.classList.toggle(CLASSNAME.SHOW);
-  }, SNACKBAR_SHOW_TIME_IN_MS);
+  }, NUMBER.SNACKBAR_SHOW_TIME_IN_MS);
 };
 
 const showModalSnackbar = (message) => {
@@ -19,7 +19,7 @@ const showModalSnackbar = (message) => {
   $modalSnackbar.classList.toggle(CLASSNAME.SHOW);
   setTimeout(() => {
     $modalSnackbar.classList.toggle(CLASSNAME.SHOW);
-  }, SNACKBAR_SHOW_TIME_IN_MS);
+  }, NUMBER.SNACKBAR_SHOW_TIME_IN_MS);
 };
 
 export { showSnackbar, showModalSnackbar };
