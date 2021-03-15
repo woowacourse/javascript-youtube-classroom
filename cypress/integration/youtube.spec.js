@@ -1,3 +1,4 @@
+import { describe } from 'mocha';
 import {
   CLASS,
   CONFIRM_MESSAGE,
@@ -5,6 +6,35 @@ import {
   SNACK_BAR,
   STORAGE,
 } from '../../src/js/constants/constant.js';
+
+describe('like-button-ui', () => {
+  before(() => {
+    cy.visit('http://127.0.0.1:5502/');
+  });
+
+  it("저장한 영상의 '좋아요' 버튼을 클릭, '선택한 영상을 좋아요 목록에 저장했습니다' 라는 스낵바 div 3초간 보여진다", () => {
+    cy.get(SELECTOR.SEARCH_MODAL_BUTTON).click();
+    cy.get(SELECTOR.SEARCH_YOUTUBE_INPUT).type('우테코');
+    cy.get(SELECTOR.SEARCH_YOUTUBE_BUTTON).click();
+    cy.get(SELECTOR.SAVE_VIDEO_BUTTON).first().click();
+    cy.get(`${SELECTOR.VIDEO_INFO_BUTTONS} .thumbs-up`)
+      .first()
+      .click({ force: true });
+    cy.get(SELECTOR.SNACK_BAR)
+      .should('have.class', CLASS.SHOW)
+      .and('have.text', SNACK_BAR.LIKE_MODIFIED_MESSAGE);
+    cy.wait(3000);
+    cy.get(SELECTOR.SNACK_BAR).should('not.have.class', CLASS.SHOW);
+  });
+
+  it("'좋아요 한 영상' 목록으로 이동하면, '좋아요' 버튼 안누른 영상은 목록에 보이지 않는다.", () => {
+    cy.get('#liked-videos-button').click({ force: true });
+    cy.get(`${SELECTOR.SAVED_VIDEO_WRAPPER} article`).should(
+      'have.length',
+      '1'
+    );
+  });
+});
 
 describe('saved-video-ui', () => {
   before(() => {
