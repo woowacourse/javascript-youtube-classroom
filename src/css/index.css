@@ -8,6 +8,10 @@ body {
   font-size: 16px;
 }
 
+body {
+  overflow-y: scroll;
+}
+
 #app {
   max-width: 960px;
   margin: 0 auto;
