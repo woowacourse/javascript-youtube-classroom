@@ -59,7 +59,7 @@ export default class ModalView extends GetVideoIframeMixin(BasicView) {
       this.#getSearchedVideoListTemplate(processedVideos)
     );
   }
-  showNotFountImage() {
+  showNotFoundImage() {
     this.showElementBySelector(`#${SELECTOR_ID.NOT_FOUND_CONTENT}`);
   }
   showSearchResultIntersector() {

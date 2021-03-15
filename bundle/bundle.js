@@ -12577,7 +12577,7 @@ function _onVideoSearch() {
               break;
             }
 
-            _view_index_js__WEBPACK_IMPORTED_MODULE_5__.modalView.showNotFountImage();
+            _view_index_js__WEBPACK_IMPORTED_MODULE_5__.modalView.showNotFoundImage();
             return _context.abrupt("return");
 
           case 15:
@@ -13738,8 +13738,8 @@ var ModalView = /*#__PURE__*/function (_GetVideoIframeMixin) {
       this.insertHTML(this._element.$searchResultVideoWrapper, _classPrivateMethodGet(this, _getSearchedVideoListTemplate, _getSearchedVideoListTemplate2).call(this, processedVideos));
     }
   }, {
-    key: "showNotFountImage",
-    value: function showNotFountImage() {
+    key: "showNotFoundImage",
+    value: function showNotFoundImage() {
       this.showElementBySelector("#".concat(_constants_js__WEBPACK_IMPORTED_MODULE_0__.SELECTOR_ID.NOT_FOUND_CONTENT));
     }
   }, {
