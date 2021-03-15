@@ -4,17 +4,17 @@ describe("youtube classroom 레이아웃 테스트", () => {
   });
 
   it("최초 프로그램 실행하면, 볼 영상이 없다는 이미지를 보여준다.", () => {
-    cy.get("#not-saved").should("be.visible");
+    cy.get("#empty-img").should("be.visible");
   });
 
   it("최초 프로그램 실행하면, 본 영상이 없다는 이미지를 보여준다.", () => {
     cy.get("#watched-view-button").click();
-    cy.get("#not-watched").should("be.visible");
+    cy.get("#empty-img").should("be.visible");
   });
 
   it("최초 프로그램 실행하면, 좋아요한 영상이 없다는 이미지를 보여준다.", () => {
     cy.get("#liked-view-button").click();
-    cy.get("#no-liked").should("be.visible");
+    cy.get("#empty-img").should("be.visible");
   });
 
   it("선택된 볼 영상 버튼의 색깔이 바뀐다.", () => {
