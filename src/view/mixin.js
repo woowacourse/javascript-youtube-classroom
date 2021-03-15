@@ -6,8 +6,7 @@ export const GetVideoIframeMixin = (superClass) =>
       width="100%"
       height="118"
       scrolling="no"
-      allow="autoplay"
-      src="https://www.youtube.com/embed/${videoItem.videoId}?autoplay=1"
+      src="https://www.youtube.com/embed/${videoItem.videoId}"
       srcdoc=
       "${this.#getSrcDoc(videoItem)}"
       frameborder="0"

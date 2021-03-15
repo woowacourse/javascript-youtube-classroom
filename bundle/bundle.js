@@ -14016,7 +14016,7 @@ var GetVideoIframeMixin = function GetVideoIframeMixin(superClass) {
     _createClass(_class2, [{
       key: "_getIframe",
       value: function _getIframe(videoItem) {
-        return "\n      <iframe\n      width=\"100%\"\n      height=\"118\"\n      scrolling=\"no\"\n      allow=\"autoplay\"\n      src=\"https://www.youtube.com/embed/".concat(videoItem.videoId, "?autoplay=1\"\n      srcdoc=\n      \"").concat(_classPrivateMethodGet(this, _getSrcDoc, _getSrcDoc2).call(this, videoItem), "\"\n      frameborder=\"0\"\n      allow=\"accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture\"\n      allowfullscreen\n      ></iframe>\n      ");
+        return "\n      <iframe\n      width=\"100%\"\n      height=\"118\"\n      scrolling=\"no\"\n      src=\"https://www.youtube.com/embed/".concat(videoItem.videoId, "\"\n      srcdoc=\n      \"").concat(_classPrivateMethodGet(this, _getSrcDoc, _getSrcDoc2).call(this, videoItem), "\"\n      frameborder=\"0\"\n      allow=\"accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture\"\n      allowfullscreen\n      ></iframe>\n      ");
       }
     }]);
 
