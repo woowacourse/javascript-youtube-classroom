@@ -181,7 +181,7 @@ export default class VideoSearchResult extends Component {
     const videoId = event.target.closest(SELECTORS.VIDEO_LIST.CLIP_CLASS)
       .dataset.videoId;
 
-    // 캐시된 정보로 부터 savedVideos에 새로운 값 추가
+    Video.cache[videoId].savedTime = new Date();
     savedVideos[videoId] = Video.cache[videoId];
     localStorageSetItem(LOCALSTORAGE_KEYS.VIDEOS, savedVideos);
 

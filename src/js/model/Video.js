@@ -63,7 +63,6 @@ export default class Video {
       uploadTime: this.uploadTime,
       thumbnailURL: this.thumbnailURL,
       watched: this.watched,
-      savedTime: new Date(),
     };
   }
 
