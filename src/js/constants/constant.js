@@ -17,6 +17,7 @@ export const SELECTOR = {
   SEARCH_MODAL_BUTTON: '#search-modal-button',
   SAVED_VIDEO_WRAPPER: '#saved-video-wrapper',
   SAVED_NOT_FOUND: '#saved-not-found',
+  LIKED_VIDEOS_BUTTON: '#liked-videos-button',
   WATCHED_VIDEOS_BUTTON: '#watched-videos-button',
   SAVE_VIDEO_BUTTON: '.js-save-button',
   VIDEO_IFRAME: '.clip iframe',
@@ -37,6 +38,7 @@ export const CLASS = {
   SHOW: 'show',
   WATCHED: 'watched',
   DELETE: 'delete',
+  LIKE: 'thumbs-up',
   OPACITY_HOVER: 'opacity-hover',
   SAVE_BUTTON: 'js-save-button',
   OPEN: 'open',
@@ -60,6 +62,8 @@ export const ERROR_MESSAGE = {
 export const SNACK_BAR = {
   DELETE_MESSAGE: '영상을 목록에서 제거했습니다.',
   SAVED_MESSAGE: '영상을 저장했습니다.',
+  LIKED_MESSAGE: '영상을 좋아요 했습니다.',
+  CANCEL_LIKED_MESSAGE: '좋아요를 취소했습니다.',
   LIST_MODIFIED_MESSAGE: '해당 영상의 저장 목록 위치를 변경했습니다.',
   VISIBLE_TIME: 3000,
 };

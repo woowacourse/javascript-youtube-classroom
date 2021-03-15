@@ -19,8 +19,7 @@ class SavedController {
   init() {
     this.#storageModel.init();
     this.#loadSavedVideos();
-    this.#handleVideosToWatch();
-    this.#handleVideosWatched();
+    this.#handleFilteredVideos();
     this.#handleVideoButtons();
   }
 
@@ -38,11 +37,9 @@ class SavedController {
     this.#renderSavedVideo(this.#storageModel.savedVideos);
   };
 
-  #filterVideos({ showWatched }) {
-    if (this.#storageModel.showWatched === showWatched) return;
-
-    this.#savedView.toggleNavButton(showWatched);
-    this.#renderSavedVideo(this.#storageModel.filterVideos(showWatched));
+  #filterVideos(target, filterOption) {
+    this.#savedView.toggleNavButton(target);
+    this.#renderSavedVideo(this.#storageModel.filterVideos(filterOption));
   }
 
   #deleteVideo(target) {
@@ -58,21 +55,58 @@ class SavedController {
     this.#snackBarView.showSnackBar(SNACK_BAR.DELETE_MESSAGE);
   }
 
-  #toggleVideoWatched(target) {
-    this.#storageModel.updateVideoWatched(target);
+  #toggleVideoButtons(target) {
+    this.#storageModel.updateVideoButtons(target);
     toggleSelectorClass(target, CLASS.OPACITY_HOVER);
 
-    if (this.#storageModel.showWatched !== null) {
-      this.#savedView.hideSelectedVideo(target);
+    switch (this.#storageModel.filterOption) {
+      case 'all':
+        return;
+
+      case 'liked':
+        if (target.classList.contains('watched')) {
+          break;
+        }
+        this.#savedView.hideSelectedVideo(target);
+
+      case 'watched':
+      case 'willWatch':
+        if (target.classList.contains('thumbs-up')) {
+          break;
+        }
+        this.#savedView.hideSelectedVideo(target);
+
+      default:
+        return;
     }
 
-    this.#snackBarView.showSnackBar(SNACK_BAR.LIST_MODIFIED_MESSAGE);
+    this.#handleShowSnackbar(target);
+  }
+
+  #handleShowSnackbar(target) {
+    if (target.classList.contains(CLASS.WATCHED)) {
+      this.#snackBarView.showSnackBar(SNACK_BAR.LIST_MODIFIED_MESSAGE);
+      return;
+    }
+
+    if (target.classList.contains(CLASS.LIKE)) {
+      if (target.classList.contains(CLASS.OPACITY_HOVER)) {
+        this.#snackBarView.showSnackBar(SNACK_BAR.CANCEL_LIKED_MESSAGE);
+        return;
+      }
+
+      this.#snackBarView.showSnackBar(SNACK_BAR.LIKED_MESSAGE);
+      return;
+    }
   }
 
   #handleVideoButtons() {
     $(SELECTOR.SAVED_VIDEO_WRAPPER).addEventListener('click', ({ target }) => {
-      if (target.classList.contains(CLASS.WATCHED)) {
-        this.#toggleVideoWatched(target);
+      if (
+        target.classList.contains(CLASS.WATCHED) ||
+        target.classList.contains(CLASS.LIKE)
+      ) {
+        this.#toggleVideoButtons(target);
       }
 
       if (target.classList.contains(CLASS.DELETE)) {
@@ -81,15 +115,27 @@ class SavedController {
     });
   }
 
-  #handleVideosToWatch() {
-    $(SELECTOR.TO_WATCH_VIDEOS_BUTTON).addEventListener('click', () => {
-      this.#filterVideos({ showWatched: false });
-    });
-  }
+  #handleFilteredVideos() {
+    $('nav').addEventListener('click', ({ target }) => {
+      if (target.classList.contains('btn')) {
+        switch (`#${target.id}`) {
+          case SELECTOR.WATCHED_VIDEOS_BUTTON:
+            this.#storageModel.filterOption = 'watched';
+            return this.#filterVideos(target, 'watched');
 
-  #handleVideosWatched() {
-    $(SELECTOR.WATCHED_VIDEOS_BUTTON).addEventListener('click', () => {
-      this.#filterVideos({ showWatched: true });
+          case SELECTOR.TO_WATCH_VIDEOS_BUTTON:
+            this.#storageModel.filterOption = 'willWatch';
+            return this.#filterVideos(target, 'willWatch');
+
+          case SELECTOR.LIKED_VIDEOS_BUTTON:
+            this.#storageModel.filterOption = 'liked';
+            return this.#filterVideos(target, 'liked');
+
+          default:
+            this.#storageModel.filterOption = 'all';
+            return;
+        }
+      }
     });
   }
 }

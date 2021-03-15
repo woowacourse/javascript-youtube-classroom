@@ -80,7 +80,7 @@ class SearchController {
   #saveVideo = e => {
     e.target.classList.add(CLASS.INVISIBLE);
 
-    const videoInfo = { ...e.target.dataset, watched: false };
+    const videoInfo = { ...e.target.dataset, watched: false, liked: false };
     this.#storageModel.saveVideo(videoInfo);
     this.#renderSavedVideo(videoInfo);
 

@@ -11,39 +11,58 @@ import {
 class StorageModel {
   #savedVideo;
   #keywords;
-  #showWatched;
+  #filterOption;
 
   constructor() {
     this.#savedVideo = [];
     this.#keywords = [];
-    this.#showWatched = null;
+    // this.#showWatched = null;
+    this.#filterOption = 'all';
   }
 
   init() {
     this.#savedVideo = getJSONFromLocalStorage(STORAGE.KEY_MY_VIDEO);
     this.#keywords = getJSONFromLocalStorage(STORAGE.KEY_KEYWORDS);
-    console.log(this.#savedVideo);
   }
 
-  updateVideoWatched(target) {
-    this.#savedVideo.forEach(info => {
-      if (
-        info.url === target.closest(SELECTOR.VIDEO_INFO_BUTTONS).dataset.url
-      ) {
-        info.watched = !info.watched;
-      }
-    });
-    setJSONToLocalStorage(STORAGE.KEY_MY_VIDEO, this.#savedVideo);
+  updateVideoButtons(target) {
+    const targetUrl = target.closest(SELECTOR.VIDEO_INFO_BUTTONS).dataset.url;
+
+    if (target.classList.contains('watched')) {
+      this.#savedVideo.forEach(info => {
+        if (info.url === targetUrl) {
+          info.watched = !info.watched;
+        }
+      });
+      setJSONToLocalStorage(STORAGE.KEY_MY_VIDEO, this.#savedVideo);
+    } else if (target.classList.contains('thumbs-up')) {
+      this.#savedVideo.forEach(info => {
+        if (info.url === targetUrl) {
+          info.liked = !info.liked;
+        }
+      });
+      setJSONToLocalStorage(STORAGE.KEY_MY_VIDEO, this.#savedVideo);
+    }
   }
 
-  filterVideos = showWatched => {
-    this.#showWatched = showWatched;
-    return this.#savedVideo.filter(video => video.watched === showWatched);
+  filterVideos = filterOption => {
+    switch (filterOption) {
+      case 'all':
+        return this.#savedVideo;
+
+      case 'liked':
+        return this.#savedVideo.filter(video => video.liked);
+
+      case 'watched':
+        return this.#savedVideo.filter(video => video.watched);
+
+      case 'willWatch':
+        return this.#savedVideo.filter(video => !video.watched);
+
+      default:
+        return this.#savedVideo;
+    }
   };
-
-  get showWatched() {
-    return this.#showWatched;
-  }
 
   deleteSelectedVideo(target) {
     this.#savedVideo = this.#savedVideo.filter(
@@ -53,13 +72,13 @@ class StorageModel {
     setJSONToLocalStorage(STORAGE.KEY_MY_VIDEO, this.#savedVideo);
   }
 
-  // TODO: keyword와 savedVideo 분리하는거는 어떨까?
   saveVideo = json => {
     this.#savedVideo = getJSONFromLocalStorage(STORAGE.KEY_MY_VIDEO);
     if (this.#savedVideo.length === STORAGE.MAX_SAVED_VIDEO_LENGTH) {
       alert(ERROR_MESSAGE.OVER_MAX_VIDEO_LENGTH);
       return;
     }
+
     this.#savedVideo.push(json);
     setJSONToLocalStorage(STORAGE.KEY_MY_VIDEO, this.#savedVideo);
   };
@@ -86,6 +105,14 @@ class StorageModel {
 
     setJSONToLocalStorage(STORAGE.KEY_KEYWORDS, this.#keywords);
   };
+
+  get filterOption() {
+    return this.#filterOption;
+  }
+
+  set filterOption(newFilter) {
+    return (this.#filterOption = newFilter);
+  }
 
   get savedVideos() {
     return this.#savedVideo;

@@ -1,15 +1,14 @@
 import { CLASS } from '../constants/constant.js';
 import { convertDateFormat } from '../utils/util.js';
 
-// TODO: 템플릿 중복 - 빼야함
-//export const videoTemplate = info => {
 const savedVideoButtons = info => {
-  return `
-          <div class="video-info-buttons" data-url="${info.url}">
+  return `<div class="video-info-buttons" data-url="${info.url}">
             <span class="watched ${
               info.watched ? null : 'opacity-hover'
             }">✅</span>
-            <span class="thumbs-up opacity-hover">👍</span>
+            <span class="thumbs-up ${
+              info.liked ? null : 'opacity-hover'
+            }">👍</span>
             <span class="comments opacity-hover">💬</span>
             <span class="delete opacity-hover">🗑️</span>
           </div>
@@ -17,17 +16,14 @@ const savedVideoButtons = info => {
 };
 
 const searchVideoButtons = (info, save) => {
-  return `
-          <div class="d-flex justify-end">
+  return `<div class="d-flex justify-end">
             <button class="btn js-save-button ${save ? CLASS.INVISIBLE : ''}" 
-
               data-url="${info.url}"
               data-title="${info.title}"
               data-channel-id="${info.channelId}"
               data-channel-title="${info.channelTitle}"
               data-publish-time="${info.publishTime}">⬇️ 저장</button>
-          </div>
-              `;
+          </div>`;
 };
 
 export const videoTemplate = (info, save = null) => {
@@ -65,13 +61,10 @@ export const videoTemplate = (info, save = null) => {
 };
 
 export const recentKeywordsTemplate = keywords => {
-  return `
-    <span class="text-gray-700">최근 검색어: </span>
-    ${keywords
-      .map(keyword => {
-        return `<a class="chip ml-2">${keyword}</a>`;
-      })
-      .join('')}
-
-    `;
+  return `<span class="text-gray-700">최근 검색어: </span>
+          ${keywords
+            .map(keyword => {
+              return `<a class="chip ml-2">${keyword}</a>`;
+            })
+            .join('')}`;
 };

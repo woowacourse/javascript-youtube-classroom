@@ -10,7 +10,7 @@ class SavedView {
     this.#$savedNotFound = $(SELECTOR.SAVED_NOT_FOUND);
   }
 
-  // TODO : 개선해보기..
+  // TODO: 개선해보기..
   renderSavedVideos(infos) {
     this.#$savedVideoWrapper.innerHTML = ``;
 
@@ -20,7 +20,6 @@ class SavedView {
     }
 
     toggleSelectorClass(this.#$savedNotFound, CLASS.SHOW, false);
-    console.log(infos);
     infos.forEach(info => {
       this.#$savedVideoWrapper.innerHTML += videoTemplate(info);
     });
@@ -44,17 +43,11 @@ class SavedView {
     }
   }
 
-  toggleNavButton(watched) {
-    toggleSelectorClass(
-      $(SELECTOR.TO_WATCH_VIDEOS_BUTTON),
-      CLASS.BG_CYAN,
-      !watched
+  toggleNavButton(target) {
+    [...target.parentNode.children].forEach(child =>
+      child.classList.remove(CLASS.BG_CYAN)
     );
-    toggleSelectorClass(
-      $(SELECTOR.WATCHED_VIDEOS_BUTTON),
-      CLASS.BG_CYAN,
-      watched
-    );
+    target.classList.add(CLASS.BG_CYAN);
   }
 }
 
