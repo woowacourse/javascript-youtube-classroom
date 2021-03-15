@@ -125,4 +125,60 @@ describe("youtube classroom 기능 테스트", () => {
       });
     cy.get("#not-watched").should("be.visible");
   });
+
+  it("볼 영상에서 좋아요 버튼을 누르면 좋아요 한 영상에 해당 영상이 추가된다.", () => {
+    cy.get("#search-button").click();
+    cy.get("#search-results button[data-video-id]").eq(0).click();
+    cy.get("#search-modal-close").click();
+    cy.get("watch-later-view-button").click();
+
+    cy.get("#watch-later-videos button[data-liked-button]")
+      .eq(0)
+      .click()
+      .then(($clickedButton) => $clickedButton.dataset.likedButton)
+      .then((likedVideoId) => {
+        cy.get("#watch-later-videos button[data-watched-button]")
+          .eq(0)
+          .should("not.have.class", "opacity-hover");
+
+        cy.get("#liked-view-button").click();
+        cy.get("#watched-videos > article button")
+          .eq(0)
+          .then(([$likedButton]) => {
+            expect($likedButton.dataset.likedButton).to.eq(likedVideoId);
+          });
+
+        cy.get("#liked-videos button[data-watched-button]")
+          .eq(0)
+          .should("not.have.class", "opacity-hover");
+      });
+  });
+
+  it("본 영상에서 좋아요 버튼을 누르면 좋아요 한 영상에 해당 영상이 추가된다.", () => {
+    cy.get("#search-button").click();
+    cy.get("#search-results button[data-video-id]").eq(2).click();
+    cy.get("#search-modal-close").click();
+    cy.get("watched-view-button").click();
+
+    cy.get("#watched-videos button[data-liked-button]")
+      .eq(2)
+      .click()
+      .then(($clickedButton) => $clickedButton.dataset.likedButton)
+      .then((likedVideoId) => {
+        cy.get("#watched-videos button[data-watched-button]")
+          .eq(2)
+          .should("not.have.class", "opacity-hover");
+
+        cy.get("#liked-view-button").click();
+        cy.get("#watched-videos > article button")
+          .eq(2)
+          .then(([$likedButton]) => {
+            expect($likedButton.dataset.likedButton).to.eq(likedVideoId);
+          });
+
+        cy.get("#liked-videos button[data-watched-button]")
+          .eq(2)
+          .should("not.have.class", "opacity-hover");
+      });
+  });
 });
