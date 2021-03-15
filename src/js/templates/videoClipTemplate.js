@@ -83,17 +83,20 @@ function getClipButtons(item) {
   return `
     <div>
       <button 
-        data-watched-button=${item.videoId} 
+        data-video-id=${item.videoId} 
+        data-button-type="watched"
         class=${item.watched ? "" : "opacity-hover"}>
         ✅
       </button>
       <button 
-        data-liked-button=${item.videoId} 
+        data-video-id=${item.videoId} 
+        data-button-type="liked"
         class=${item.liked ? "" : "opacity-hover"}>
         👍
       </button>
       <button 
-        data-delete-button=${item.videoId} 
+        data-video-id=${item.videoId} 
+        data-button-type="delete"
         class="opacity-hover">
         🗑️
       </button>

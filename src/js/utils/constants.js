@@ -44,10 +44,21 @@ export const DOM_CONSTANTS = {
   },
   DATASET: {
     VIDEO_ID: "data-video-id",
+    BUTTON_TYPE: {
+      WATCHED: "watched",
+      LIKED: "liked",
+      DELETE: "delete",
+    },
   },
   NAME: {
     SEARCH_KEYWORD: "search-keyword",
   },
+};
+
+export const VIDEO_VIEW_NAME = {
+  WATCH_LATER: "watch-later",
+  WATCHED: "watched",
+  LIKED: "liked",
 };
 
 export const CUSTOM_EVENTS = {
@@ -75,6 +86,8 @@ export const SUCCESS_MESSAGE = {
   DELETE_VIDEO: "저장된 동영상을 삭제하였습니다.",
   WATCH_VIDEO: "동영상을 시청했습니다",
   CLEAR_WATCH_VIDEO_LOG: "볼 영상으로 이동합니다.",
+  LIKE_VIDEO: "동영상을 좋아합니다.",
+  DISLIKE_VIDEO: "좋아요를 취소합니다.",
 };
 
 export const ERROR_MESSAGE = {
@@ -82,6 +95,8 @@ export const ERROR_MESSAGE = {
   SEARCH_ERROR: "동영상을 검색할 수 없습니다",
   SAVE_ERROR: "동영상 저장에 실패했습니다.",
   DELETE_ERROR: "동영상 삭제에 실패했습니다.",
+  LIKE_ERROR: "좋아요 누르기에 실패했습니다.",
+  DISLIKE_ERROR: "좋아요 취소에 실패했습니다.",
   INVALID_ACTION_ERROR: "유효하지 않은 동작입니다.",
   NOT_IMPLEMENTED: "준비중인 기능입니다.",
   CONNOT_FIND_SAVE_BUTTON_ERROR: "cannot find save button",
