@@ -169,4 +169,9 @@ describe("youtube classroom 기능 테스트", () => {
           });
       });
   });
+
+  it("좋아요 취소를 누르면 좋아요 한 영상에서 사라진다.", () => {
+    cy.get("#saved-videos button[data-button-type='liked']").eq(0).click();
+    cy.get("#saved-videos").children().should("have.length", 1);
+  });
 });
