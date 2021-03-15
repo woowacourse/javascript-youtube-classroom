@@ -4,36 +4,36 @@ import { CLASS_NAME, MENU } from "../utils/constants.js";
 class MenuSection {
   constructor(props) {
     this.props = props;
-    this.selectDOM();
-    this.bindEvent();
+    this._selectDOM();
+    this._bindEvent();
   }
 
-  initState() {
+  _initState() {
     this.clickedMenu = MENU.WATCH_LATER;
   }
 
   setState({ clickedMenu }) {
     this.clickedMenu = clickedMenu ?? this.clickedMenu;
 
-    this.render();
+    this._render();
   }
 
-  selectDOM() {
+  _selectDOM() {
     this.$target = $(`.${CLASS_NAME.MENU_SECTION}`);
     this.$watchLaterBtn = $(`.${CLASS_NAME.WATCH_LATER_BTN}`);
     this.$watchedBtn = $(`.${CLASS_NAME.WATCHED_BTN}`);
     this.$videoSearchBtn = $(`.${CLASS_NAME.VIDEO_SEARCH_BTN}`);
   }
 
-  bindEvent() {
+  _bindEvent() {
     this.$target.addEventListener("click", e => {
       if (!e.target.classList.contains(CLASS_NAME.MENU_BTN)) return;
 
-      this.handleSelectMenu(e.target);
+      this._handleSelectMenu(e.target);
     });
   }
 
-  handleSelectMenu(target) {
+  _handleSelectMenu(target) {
     const menuNames = [
       CLASS_NAME.WATCH_LATER_BTN,
       CLASS_NAME.WATCHED_BTN,
@@ -42,11 +42,11 @@ class MenuSection {
 
     const selectedMenu = menuNames.find(name => target.classList.contains(name));
 
-    this.changeMenuBtnColor(target);
-    this.getMatchedAction(selectedMenu)();
+    this._changeMenuBtnColor(target);
+    this._getMatchedAction(selectedMenu)();
   }
 
-  changeMenuBtnColor(target) {
+  _changeMenuBtnColor(target) {
     [this.$watchLaterBtn, this.$watchedBtn].forEach($btn => $btn.classList.remove("bg-cyan-100"));
 
     if (!target.classList.contains(CLASS_NAME.VIDEO_SEARCH_BTN)) {
@@ -54,7 +54,7 @@ class MenuSection {
     }
   }
 
-  getMatchedAction(selectedMenu) {
+  _getMatchedAction(selectedMenu) {
     const menuAction = {
       [CLASS_NAME.WATCH_LATER_BTN]: () => {
         this.props.changeMenu(MENU.WATCH_LATER);
@@ -70,7 +70,7 @@ class MenuSection {
     return menuAction[selectedMenu];
   }
 
-  render() {
+  _render() {
     const mappingMenu = {
       [MENU.WATCH_LATER]: this.$watchLaterBtn,
       [MENU.WATCHED]: this.$watchedBtn,

@@ -11,20 +11,20 @@ import savedVideoManager from "../model/SavedVideoManager.js";
 
 class VideoView {
   constructor() {
-    this.selectDOM();
-    this.initState();
-    this.bindEvent();
-    this.initSubscription();
+    this._selectDOM();
+    this._initState();
+    this._bindEvent();
+    this._initSubscription();
   }
 
-  async initState() {
+  async _initState() {
     this.savedVideos = savedVideoManager.getSavedVideos();
     this.clickedMenu = MENU.WATCH_LATER;
 
-    this.render();
+    this._render();
   }
 
-  initSubscription() {
+  _initSubscription() {
     savedVideoManager.subscribe(this.setState.bind(this));
   }
 
@@ -32,28 +32,28 @@ class VideoView {
     this.savedVideos = savedVideos ?? this.savedVideos;
     this.clickedMenu = clickedMenu ?? this.clickedMenu;
 
-    this.render();
+    this._render();
   }
 
-  selectDOM() {
+  _selectDOM() {
     this.$target = $(`.${CLASS_NAME.VIDEO_VIEW}`);
     this.$videoViewVideoWrapper = $(`.${CLASS_NAME.VIDEO_VIEW_VIDEO_WRAPPER}`);
     this.$snackbar = $(`.${CLASS_NAME.SNACKBAR}`);
   }
 
-  bindEvent() {
+  _bindEvent() {
     this.$videoViewVideoWrapper.addEventListener("click", e => {
       if (e.target.classList.contains(`${CLASS_NAME.WATCHED_CHECK}`)) {
-        this.handleCheckWatched(e);
+        this._handleCheckWatched(e);
       }
 
       if (e.target.classList.contains(`${CLASS_NAME.TRASH_CAN}`)) {
-        this.handleRemoveSaved(e);
+        this._handleRemoveSaved(e);
       }
     });
   }
 
-  handleCheckWatched(e) {
+  _handleCheckWatched(e) {
     const watchedVideoId = e.target.closest(`.${CLASS_NAME.CLIP_ACTIONS}`).dataset.videoId;
     const savedVideos = this.savedVideos.map(video => {
       if (video.videoId === watchedVideoId) {
@@ -63,23 +63,23 @@ class VideoView {
       return video;
     });
 
-    savedVideoManager.setState({ savedVideos });
+    savedVideoManager._setState({ savedVideos });
 
     const message = SNACKBAR_MESSAGE.MOVE(this.clickedMenu === MENU.WATCH_LATER ? "본" : "볼");
     popMessage(this.$snackbar, message);
   }
 
-  handleRemoveSaved(e) {
+  _handleRemoveSaved(e) {
     if (confirm(CONFIRM_MESSAGE.DELETE)) {
       const removeVideoId = e.target.closest(`.${CLASS_NAME.CLIP_ACTIONS}`).dataset.videoId;
       const savedVideos = this.savedVideos.filter(video => video.videoId !== removeVideoId);
 
-      savedVideoManager.setState({ savedVideos });
+      savedVideoManager._setState({ savedVideos });
       popMessage(this.$snackbar, SNACKBAR_MESSAGE.DELETE);
     }
   }
 
-  render() {
+  _render() {
     if (this.clickedMenu === MENU.WATCH_LATER) {
       this.$videoViewVideoWrapper.innerHTML = this.savedVideos.length
         ? this.savedVideos

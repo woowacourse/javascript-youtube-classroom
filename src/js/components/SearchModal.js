@@ -16,14 +16,14 @@ import savedVideoManager from "../model/SavedVideoManager.js";
 class SearchModal {
   constructor(props) {
     this.props = props;
-    this.initState();
-    this.selectDOM();
-    this.bindEvent();
-    this.initObserver();
-    this.initSubscription();
+    this._initState();
+    this._selectDOM();
+    this._bindEvent();
+    this._initObserver();
+    this._initSubscription();
   }
 
-  initState() {
+  _initState() {
     this.keyword = "";
     this.keywordHistory = [];
     this.videos = [];
@@ -31,51 +31,7 @@ class SearchModal {
     this.nextPageToken = "";
   }
 
-  updateIsSavedOfVideos({ savedVideos }) {
-    const videos = this.videos.map(video => {
-      return {
-        ...video,
-        isSaved: savedVideos.map(_video => _video.videoId).includes(video.videoId),
-      };
-    });
-
-    this.setVideosState({ videos });
-  }
-
-  setVideosState({ videos }) {
-    this.videos = videos;
-
-    this.renderCachedContent();
-  }
-
-  setSearchKeywordState({ keyword, keywordHistory, videos, nextPageToken }) {
-    this.keyword = keyword ?? this.keyword;
-    this.keywordHistory = keywordHistory ?? this.keywordHistory;
-    this.videos = videos ?? this.videos;
-    this.nextPageToken = nextPageToken ?? this.nextPageToken;
-
-    this.render();
-  }
-
-  setLoadMoreState({ videos, nextPageToken }) {
-    this.videos = videos ?? this.videos;
-    this.nextPageToken = nextPageToken ?? this.nextPageToken;
-
-    this.render();
-  }
-
-  setSaveVideosState({ savedVideos }) {
-    this.savedVideos = savedVideos ?? this.savedVideos;
-
-    this.renderSavedCount();
-  }
-
-  initSubscription() {
-    savedVideoManager.subscribe(this.setSaveVideosState.bind(this));
-    savedVideoManager.subscribe(this.updateIsSavedOfVideos.bind(this));
-  }
-
-  selectDOM() {
+  _selectDOM() {
     this.$target = $(`.${CLASS_NAME.SEARCH_MODAL}`);
     this.$searchInput = $(`.${CLASS_NAME.SEARCH_MODAL_INPUT}`);
     this.$videoWrapper = $(`.${CLASS_NAME.SEARCH_MODAL_VIDEO_WRAPPER}`);
@@ -87,39 +43,39 @@ class SearchModal {
     this.$snackBar = $(`.${CLASS_NAME.SNACKBAR}`);
   }
 
-  bindEvent() {
+  _bindEvent() {
     this.$target.addEventListener("submit", e => {
       e.preventDefault();
 
-      this.handleSearchKeyword();
+      this._handleSearchKeyword();
     });
 
     this.$target.addEventListener("click", e => {
       if (!e.target.classList.contains(`${CLASS_NAME.SEARCH_MODAL}`)) return;
 
-      this.handleCloseModal();
+      this._handleCloseModal();
     });
 
-    this.$modalCloseBtn.addEventListener("click", this.handleCloseModal.bind(this));
+    this.$modalCloseBtn.addEventListener("click", this._handleCloseModal.bind(this));
 
     this.$videoWrapper.addEventListener("click", e => {
       if (!e.target.classList.contains(`${CLASS_NAME.CLIP_SAVE_BTN}`)) return;
 
-      this.handleSaveVideo(e.target);
+      this._handleSaveVideo(e.target);
     });
 
     this.$keywordHistory.addEventListener("click", e => {
       if (!e.target.classList.contains(`${CLASS_NAME.KEYWORD}`)) return;
 
-      this.handleSearchClickedHistory(e.target.innerText);
+      this._handleSearchClickedHistory(e.target.innerText);
     });
   }
 
-  initObserver() {
+  _initObserver() {
     this.observer = new IntersectionObserver(
       ([{ isIntersecting }]) => {
         if (isIntersecting) {
-          this.handleLoadMore();
+          this._handleLoadMore();
         }
       },
       { root: this.$scrollArea },
@@ -128,7 +84,51 @@ class SearchModal {
     this.observer.observe(this.$moreArea);
   }
 
-  showLoadingAnimation() {
+  _initSubscription() {
+    savedVideoManager.subscribe(this._setSaveVideosState.bind(this));
+    savedVideoManager.subscribe(this._updateIsSavedOfVideos.bind(this));
+  }
+
+  _updateIsSavedOfVideos({ savedVideos }) {
+    const videos = this.videos.map(video => {
+      return {
+        ...video,
+        isSaved: savedVideos.map(_video => _video.videoId).includes(video.videoId),
+      };
+    });
+
+    this._setVideosState({ videos });
+  }
+
+  _setSearchKeywordState({ keyword, keywordHistory, videos, nextPageToken }) {
+    this.keyword = keyword ?? this.keyword;
+    this.keywordHistory = keywordHistory ?? this.keywordHistory;
+    this.videos = videos ?? this.videos;
+    this.nextPageToken = nextPageToken ?? this.nextPageToken;
+
+    this._render();
+  }
+
+  _setLoadMoreState({ videos, nextPageToken }) {
+    this.videos = videos ?? this.videos;
+    this.nextPageToken = nextPageToken ?? this.nextPageToken;
+
+    this._render();
+  }
+
+  _setSaveVideosState({ savedVideos }) {
+    this.savedVideos = savedVideos ?? this.savedVideos;
+
+    this._renderSavedCount();
+  }
+
+  _setVideosState({ videos }) {
+    this.videos = videos;
+
+    this._renderCachedContent();
+  }
+
+  _showLoadingAnimation() {
     const skeletonCardTemplate = `
     <div class="skeleton">
       <div class="image"></div>
@@ -143,11 +143,11 @@ class SearchModal {
     );
   }
 
-  hideLoadingAnimation() {
+  _hideLoadingAnimation() {
     $$(".skeleton").forEach($skeleton => $skeleton.remove());
   }
 
-  async handleSearchKeyword() {
+  async _handleSearchKeyword() {
     const keyword = this.$searchInput.value.trim();
 
     if (keyword.length === 0) {
@@ -157,7 +157,7 @@ class SearchModal {
 
     try {
       this.$scrollArea.scrollTo({ top: 0 });
-      this.showLoadingAnimation();
+      this._showLoadingAnimation();
 
       // dummy API Response 사용할 경우
       // const { items, nextPageToken } = dummySearchedData;
@@ -179,17 +179,17 @@ class SearchModal {
         ...this.keywordHistory.filter(_keyword => _keyword !== keyword),
       ];
       keywordHistory.splice(STANDARD_NUMS.MAX_SAVE_KEYWORD_COUNT, 1);
-      this.setSearchKeywordState({ keyword, keywordHistory, videos, nextPageToken });
+      this._setSearchKeywordState({ keyword, keywordHistory, videos, nextPageToken });
     } catch (err) {
       console.error(err);
     }
   }
 
-  async handleLoadMore() {
+  async _handleLoadMore() {
     if (!this.$target.classList.contains("open")) return;
 
     try {
-      this.showLoadingAnimation();
+      this._showLoadingAnimation();
 
       const { items, nextPageToken } = await API.searchVideo(this.keyword, this.nextPageToken);
 
@@ -204,18 +204,18 @@ class SearchModal {
         }),
       );
 
-      this.setLoadMoreState({ videos: [...this.videos, ...nextVideos], nextPageToken });
+      this._setLoadMoreState({ videos: [...this.videos, ...nextVideos], nextPageToken });
     } catch (err) {
       console.error(err);
     }
   }
 
-  handleCloseModal() {
-    this.hideModal();
+  _handleCloseModal() {
+    this._hideModal();
     this.props.changeMenu(MENU.WATCH_LATER);
   }
 
-  handleSaveVideo($saveBtn) {
+  _handleSaveVideo($saveBtn) {
     const savedVideoId = $saveBtn.dataset.videoId;
 
     if (this.savedVideos.length === STANDARD_NUMS.MAX_SAVE_VIDEO_COUNT) {
@@ -230,18 +230,18 @@ class SearchModal {
       isLiked: false,
     };
     const savedVideos = [...this.savedVideos, newSavedVideo];
-    savedVideoManager.setState({ savedVideos });
+    savedVideoManager._setState({ savedVideos });
     $saveBtn.classList.add("hidden");
 
     popMessage(this.$snackBar, SNACKBAR_MESSAGE.SAVE);
   }
 
-  handleSearchClickedHistory(keyword) {
+  _handleSearchClickedHistory(keyword) {
     this.$searchInput.value = keyword;
-    this.handleSearchKeyword();
+    this._handleSearchKeyword();
   }
 
-  render() {
+  _render() {
     this.$videoWrapper.insertAdjacentHTML(
       "beforeend",
       this.videos.length
@@ -252,12 +252,12 @@ class SearchModal {
         : createNoSearchResultTemplate(),
     );
 
-    this.renderSavedCount();
+    this._renderSavedCount();
     this.$keywordHistory.innerHTML = createKeywordHistoryTemplate(this.keywordHistory);
-    this.hideLoadingAnimation();
+    this._hideLoadingAnimation();
   }
 
-  renderCachedContent() {
+  _renderCachedContent() {
     this.$videoWrapper.innerHTML = this.videos.length
       ? this.videos
           .filter(video => video.videoId)
@@ -266,7 +266,7 @@ class SearchModal {
       : createNoSearchResultTemplate();
   }
 
-  renderSavedCount() {
+  _renderSavedCount() {
     this.$savedVideoCount.textContent = `저장된 영상 갯수: ${this.savedVideos.length}/${STANDARD_NUMS.MAX_SAVE_VIDEO_COUNT}개`;
   }
 
@@ -274,7 +274,7 @@ class SearchModal {
     this.$target.classList.add("open");
   }
 
-  hideModal() {
+  _hideModal() {
     this.$target.classList.remove("open");
   }
 }

@@ -11,17 +11,17 @@ class SavedVideoManager {
     this.subscribers.push(subscriber);
   }
 
-  publish() {
+  _publish() {
     this.subscribers.forEach(subscriber => {
       subscriber({ savedVideos: this.getSavedVideos() });
     });
   }
 
-  setState({ savedVideos }) {
+  _setState({ savedVideos }) {
     this.savedVideos = savedVideos ?? this.savedVideos;
 
     setDataToLocalStorage(STORAGE.SAVED_VIDEOS, this.savedVideos);
-    this.publish();
+    this._publish();
   }
 
   getSavedVideos() {
