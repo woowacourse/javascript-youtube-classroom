@@ -7,7 +7,9 @@ const savedVideoButtons = info => {
             <button type="button" class="watched ${
               info.watched ? null : 'opacity-hover'
             }">✅</button>
-            <button type="button" class="thumbs-up opacity-hover">👍</button>
+            <button type="button" class="thumbs-up  ${
+              info.liked ? null : 'opacity-hover'
+            }">👍</button>
             <button type="button" class="comments opacity-hover">💬</button>
             <button type="button" class="delete opacity-hover">🗑️</button>
           </div>

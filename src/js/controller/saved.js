@@ -59,14 +59,27 @@ class SavedController {
     this.#snackBarView.showSnackBar(SNACK_BAR.LIST_MODIFIED_MESSAGE);
   }
 
+  #toggleVideoLiked(target) {
+    console.log('liked');
+    // 1. model에서 videoLiked 상태 업데이트
+    // 2. selector class toggle
+    // 3. 스낵바
+  }
+
   #handleVideoButtons() {
     $(SELECTOR.SAVED_VIDEO_WRAPPER).addEventListener('click', ({ target }) => {
-      if (target.classList.contains(CLASS.WATCHED)) {
-        this.#toggleVideoWatched(target);
-      }
+      switch (true) {
+        case target.classList.contains(CLASS.WATCHED):
+          this.#toggleVideoWatched(target);
+          break;
 
-      if (target.classList.contains(CLASS.DELETE)) {
-        this.#deleteVideo(target);
+        case target.classList.contains(CLASS.LIKED):
+          this.#toggleVideoLiked(target);
+          break;
+
+        case target.classList.contains(CLASS.DELETE):
+          this.#deleteVideo(target);
+          break;
       }
     });
   }

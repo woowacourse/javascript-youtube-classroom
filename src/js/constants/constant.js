@@ -38,6 +38,7 @@ export const CLASS = {
   SHOW: 'show',
   WATCHED: 'watched',
   DELETE: 'delete',
+  LIKED: 'thumbs-up',
   OPACITY_HOVER: 'opacity-hover',
   SAVE_BUTTON: 'js-save-button',
   OPEN: 'open',
