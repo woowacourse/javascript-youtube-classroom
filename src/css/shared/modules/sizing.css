@@ -2,3 +2,7 @@
 .w-100 {
   width: 100%;
 }
+
+.mh-300 {
+  max-height: 300px;
+}
