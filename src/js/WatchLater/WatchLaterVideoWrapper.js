@@ -1,5 +1,6 @@
 import {
   MESSAGE,
+  SNACKBAR_MESSAGE,
   MAX_SAVED_VIDEOS_COUNT,
   LOCAL_STORAGE_KEY,
   CLASSNAME,
@@ -8,6 +9,7 @@ import messenger from "../Messenger.js";
 import { $ } from "../utils/DOM.js";
 import { WATCH_LATER_VIDEO_TEMPLATE } from "../Video/template.js";
 import { renderWatchLaterVideo } from "../Video/render.js";
+import { showSnackbar } from "../utils/snackbar.js";
 
 export default class WatchLaterVideoWrapper {
   constructor() {
@@ -50,12 +52,14 @@ export default class WatchLaterVideoWrapper {
 
       if (event.target.classList.contains(CLASSNAME.WATCHED_ICON)) {
         this.moveVideo(videoId);
+        showSnackbar(SNACKBAR_MESSAGE.MOVED_TO_HISTORY_VIDEO);
       }
 
       if (event.target.classList.contains(CLASSNAME.DELETE_ICON)) {
         // eslint-disable-next-line no-alert
         if (window.confirm("정말 삭제하시겠습니까?")) {
           this.deleteVideo(videoId);
+          showSnackbar(SNACKBAR_MESSAGE.VIDEO_DELETED);
         }
       }
     });

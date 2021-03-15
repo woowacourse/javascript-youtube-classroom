@@ -24,6 +24,7 @@
   background-color: #fff;
   border-radius: 5px;
   position: relative;
+  transform: perspective(0);
 }
 
 .modal-close {

@@ -4,12 +4,14 @@ import {
   MESSAGE,
   MAX_RESULTS_COUNT,
   SCROLL_EVENT_THRESHOLD,
+  SNACKBAR_MESSAGE,
 } from "../constants.js";
 import { $ } from "../utils/DOM.js";
 import messenger from "../Messenger.js";
 import { renderSearchVideo } from "../Video/render.js";
 import { SEARCH_VIDEO_TEMPLATE } from "../Video/template.js";
 import { fetchYoutubeData } from "../utils/API.js";
+import { showModalSnackbar } from "../utils/snackbar.js";
 
 export default class SearchVideoWrapper {
   constructor() {
@@ -70,11 +72,13 @@ export default class SearchVideoWrapper {
     if ($button.classList.contains(CLASSNAME.CANCEL)) {
       $.removeClass($button, CLASSNAME.CANCEL);
       $button.innerText = "저장";
+      showModalSnackbar(SNACKBAR_MESSAGE.CANCELED_VIDEO_SAVE);
       return;
     }
 
     $.addClass($button, CLASSNAME.CANCEL);
     $button.innerText = "취소";
+    showModalSnackbar(SNACKBAR_MESSAGE.VIDEO_SAVED);
   }
 
   mountTemplate() {
