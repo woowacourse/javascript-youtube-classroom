@@ -52,7 +52,11 @@ class SavedController {
     this.#storageModel.updateVideoState(target);
     toggleSelectorClass(target, CLASS.OPACITY_HOVER);
 
-    if (this.#storageModel.navValue !== null) {
+    if (
+      [CLASS.TO_WATCH_VIDEOS, CLASS.WATCHED_VIDEOS].includes(
+        this.#storageModel.navValue
+      )
+    ) {
       this.#savedView.hideSelectedVideo(target);
     }
 
@@ -63,6 +67,9 @@ class SavedController {
     this.#storageModel.updateVideoState(target);
     toggleSelectorClass(target, CLASS.OPACITY_HOVER);
 
+    if (this.#storageModel.navValue === NAV.LIKED_VIDEOS) {
+      this.#savedView.hideSelectedVideo(target);
+    }
     if (target.classList.contains(CLASS.OPACITY_HOVER)) {
       this.#snackBarView.showSnackBar(SNACK_BAR.REMOVE_LIKE_MESSAGE);
 
