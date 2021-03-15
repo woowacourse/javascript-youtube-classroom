@@ -54,14 +54,14 @@ export default class VideoList extends Component {
     });
 
     if (videoIdSortedByDate.length > 0) {
-      videoIdSortedByDate.forEach((videoId) => {
-        fragment.appendChild(
+      fragment.append(
+        ...videoIdSortedByDate.map((videoId) =>
           new Video({
             videoId,
             ...savedVideos[videoId],
           }).createTemplate(TYPES.PAGE.MANAGEMENT)
-        );
-      });
+        )
+      );
     }
 
     const notSavedVideoImage = createElement({
