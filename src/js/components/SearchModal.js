@@ -156,6 +156,7 @@ class SearchModal {
     }
 
     try {
+      this.$scrollArea.scrollTo({ top: 0 });
       this.showLoadingAnimation();
 
       // dummy API Response 사용할 경우
