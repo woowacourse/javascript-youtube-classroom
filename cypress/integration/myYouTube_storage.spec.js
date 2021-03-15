@@ -67,4 +67,19 @@ describe('simba-tube', () => {
     cy.on('window:confirm', () => true);
     popSnackbar('동영상이 삭제되었읍니다');
   });
+
+  it('👍 좋아요 버튼을 클릭하면 좋아요 표시를 한 영상 목록에 추가된다. snackbar를 띄운다.', () => {
+    setSavedVideoIds(['vRXZj0DzXIA', 'I3U0QAXeOW4', 'BS7tz2rAOSA']);
+
+    cy.get(`[data-video-like='vRXZj0DzXIA']`)
+      .click()
+      .then((button) => {
+        cy.wrap(button).should('have.css', 'opacity', '1');
+      });
+
+    popSnackbar('동영상이 좋아하는 영상 목록에 추가되었읍니다');
+
+    cy.get('#liked-btn').click();
+    cy.get(`[data-article='vRXZj0DzXIA']`).should('be.visible');
+  });
 });
