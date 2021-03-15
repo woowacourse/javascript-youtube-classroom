@@ -46,6 +46,16 @@ export default class SearchVideoWrapper {
       }
     );
 
+    messenger.addMessageListener(MESSAGE.SAVED_VIDEO_DELETED, ({ videoId }) => {
+      const $button = $(
+        `.${CLASSNAME.SAVE_VIDEO_BUTTON}[data-video-id=${videoId}]`
+      );
+
+      $.removeClass($button, CLASSNAME.CANCEL);
+      $button.innerText = "저장";
+      showModalSnackbar(SNACKBAR_MESSAGE.CANCELED_VIDEO_SAVE);
+    });
+
     this.$searchVideoWrapper.addEventListener(
       "scroll",
       this.handlePageScroll.bind(this)

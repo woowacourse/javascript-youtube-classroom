@@ -59,6 +59,7 @@ export default class WatchLaterVideoWrapper {
         // eslint-disable-next-line no-alert
         if (window.confirm("정말 삭제하시겠습니까?")) {
           this.deleteVideo(videoId);
+          messenger.deliverMessage(MESSAGE.SAVED_VIDEO_DELETED, { videoId });
           showSnackbar(SNACKBAR_MESSAGE.VIDEO_DELETED);
         }
       }
