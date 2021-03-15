@@ -52,32 +52,36 @@ export default class ClassroomController {
 
   showWatchingVideos() {
     this.view.renderOnlyWatchingVideos();
-    this.showImageNoWatchingVideoSaved();
+    this.checkWhetherToShowImageNoWatching();
   }
 
   showWatchedVideos() {
     this.view.renderOnlyWatchedVideos();
-    this.showImageNoWatchedVideoSaved();
+    this.checkWhetherToShowImageNoWatched();
   }
 
   showImageNoVideo() {
     isWatchingMenu(this.view.$savedVideosWrapper)
-      ? this.showImageNoWatchingVideoSaved()
-      : this.showImageNoWatchedVideoSaved();
+      ? this.checkWhetherToShowImageNoWatching()
+      : this.checkWhetherToShowImageNoWatched();
+  }
+
+  checkWhetherToShowImageNoWatching() {
+    this.model.hasNoWatchingVideoSaved() && this.showImageNoWatchingVideoSaved();
+  }
+
+  checkWhetherToShowImageNoWatched() {
+    this.model.hasNoWatchedVideoSaved() && this.showImageNoWatchedVideoSaved();
   }
 
   showImageNoWatchingVideoSaved() {
-    if (this.model.hasNoWatchingVideoSaved()) {
-      this.view.renderImageNoWatchingVideo();
-    }
+    this.view.renderImageNoWatchingVideo();
   }
 
   showImageNoWatchedVideoSaved() {
-    if (this.model.hasNoWatchedVideoSaved()) {
-      this.model.hasNoWatchingVideoSaved()
-        ? this.view.renderImageNoWatchingVideo()
-        : this.view.renderImageNoWatchedVideo();
-    }
+    this.model.hasNoWatchingVideoSaved()
+      ? this.view.renderImageNoWatchingVideo()
+      : this.view.renderImageNoWatchedVideo();
   }
 
   moveVideo($video, isWatching) {
@@ -86,6 +90,7 @@ export default class ClassroomController {
     this.view.renderNotification(
       isWatching ? MESSAGE.VIDEO_IS_MOVED_TO_WATCHED_MENU : MESSAGE.VIDEO_IS_MOVED_TO_WATCHING_MENU,
     );
+
     this.showImageNoVideo();
   }
 
