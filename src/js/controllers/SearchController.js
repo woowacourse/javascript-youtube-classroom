@@ -40,7 +40,7 @@ export default class SearchController {
     const recentKeywords = this.searchModel.getRecentKeywords();
     const mostRecentKeyword = recentKeywords[0] ?? '';
 
-    this.searchView.renderVisibleModal(this.classroomModel.videosCount, recentKeywords);
+    this.searchView.renderVisibleModal(this.classroomModel.getVideoCount(), recentKeywords);
     if (mostRecentKeyword === '') {
       return;
     }
@@ -105,7 +105,7 @@ export default class SearchController {
       return;
     }
 
-    const savedCount = this.classroomModel.videosCount;
+    const savedCount = this.classroomModel.getVideoCount();
 
     if (savedCount >= MAX_VIDEO_STORAGE_CAPACITY) {
       this.searchView.renderNotification(MESSAGE.STORAGE_CAPACITY_IS_FULL);
@@ -114,8 +114,8 @@ export default class SearchController {
 
     const targetVideoData = this.searchModel.getTargetVideoData(target.id);
 
-    this.searchModel.saveVideo(targetVideoData);
-    this.classroomModel.updateWatchingVideoCount(true);
+    this.classroomModel.saveVideo(targetVideoData);
+    this.classroomModel.updateWatchingVideoCount();
     this.searchView.renderInvisibleSaveButton(target);
     this.searchView.renderSaveVideoCount(savedCount + 1);
     this.searchView.renderNotification(MESSAGE.VIDEO_IS_SAVED_SUCCESSFULLY);

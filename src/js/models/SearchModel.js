@@ -60,10 +60,4 @@ export default class SearchModel {
   getTargetVideoData(targetId) {
     return this.totalSearchResult.find((video) => video.videoId === targetId);
   }
-
-  saveVideo(targetVideo) {
-    targetVideo.isSaved = true;
-    targetVideo.isWatching = true;
-    insertItemByKey(DB_KEY.VIDEOS, targetVideo);
-  }
 }
