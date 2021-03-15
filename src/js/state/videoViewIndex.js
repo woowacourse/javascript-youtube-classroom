@@ -4,7 +4,7 @@ const videoViewIndex = {
   viewName: "",
 
   init() {
-    this.viewName = VIDEO_VIEW_NAME.WATCHED;
+    this.viewName = VIDEO_VIEW_NAME.WATCH_LATER;
   },
 
   setViewName(viewName) {
@@ -15,5 +15,7 @@ const videoViewIndex = {
     return this.viewName;
   },
 };
+
+videoViewIndex.init();
 
 export default videoViewIndex;
