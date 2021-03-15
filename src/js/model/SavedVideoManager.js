@@ -5,22 +5,28 @@ export const SAVED_VIDEO_SUBSCRIBER_KEY = Object.freeze({
   SAVE: 'save',
   DELETE: 'delete',
   CHECK: 'check',
+  LIKE: 'like',
 });
 
 export class SavedVideoManager {
   constructor(defaultValue = {}) {
-    const { SAVE, DELETE, CHECK } = SAVED_VIDEO_SUBSCRIBER_KEY;
+    const { SAVE, DELETE, CHECK, LIKE } = SAVED_VIDEO_SUBSCRIBER_KEY;
 
     this.subscribers = {
       [SAVE]: [],
       [DELETE]: [],
       [CHECK]: [],
+      [LIKE]: [],
     };
     this.savedVideos = getLocalStorageItem({ key: LOCAL_STORAGE_SAVED_VIDEO_KEY, defaultValue });
   }
 
   subscribe({ key, subscriber }) {
     this.subscribers[key].push(subscriber);
+  }
+
+  subscribeAll({ subscriber }) {
+    Object.values(SAVED_VIDEO_SUBSCRIBER_KEY).forEach(key => this.subscribe({ key: key, subscriber: subscriber }));
   }
 
   unsubscribe({ key, subscriber }) {
@@ -41,7 +47,7 @@ export class SavedVideoManager {
     this.setState({
       key: SAVED_VIDEO_SUBSCRIBER_KEY.SAVE,
       videoId,
-      savedVideos: { ...this.savedVideos, [videoId]: { isChecked: false, updateDate: Date.now() } },
+      savedVideos: { ...this.savedVideos, [videoId]: { isChecked: false, isLiked: false, updateDate: Date.now() } },
     });
 
     return true;
@@ -68,6 +74,16 @@ export class SavedVideoManager {
     });
   }
 
+  likeVideo(videoId) {
+    const temp = { ...this.savedVideos };
+    temp[videoId].isLiked = !temp[videoId].isLiked;
+
+    this.setState({
+      key: SAVED_VIDEO_SUBSCRIBER_KEY.LIKE,
+      savedVideos: temp,
+    });
+  }
+
   getSavedVideos() {
     return { ...this.savedVideos };
   }
@@ -80,6 +96,14 @@ export class SavedVideoManager {
     return Object.keys(this.savedVideos).sort(
       (a, b) => this.savedVideos[b].updateDate - this.savedVideos[a].updateDate
     );
+  }
+
+  isCheckedVideo(videoId) {
+    return this.savedVideos[videoId].isChecked ? true : false;
+  }
+
+  isLikedVideo(videoId) {
+    return this.savedVideos[videoId].isLiked ? true : false;
   }
 
   setState({ key, videoId, savedVideos }) {

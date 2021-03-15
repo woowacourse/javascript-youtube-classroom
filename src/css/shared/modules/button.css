@@ -17,6 +17,7 @@
   border: 0;
   padding: 0;
   font-size: 16px;
+  background-color: transparent;
 }
 
 .scale-hover:hover {
