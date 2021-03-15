@@ -25,6 +25,7 @@ export default class ModalView extends GetVideoIframeMixin(BasicView) {
   openModal() {
     this._element.$modal.classList.add(STYLE_CLASS.OPEN);
   }
+
   closeModal() {
     this._element.$modal.classList.remove(STYLE_CLASS.OPEN);
   }
@@ -59,15 +60,19 @@ export default class ModalView extends GetVideoIframeMixin(BasicView) {
       this.#getSearchedVideoListTemplate(processedVideos)
     );
   }
+
   showNotFoundImage() {
     this.showElementBySelector(`#${SELECTOR_ID.NOT_FOUND_CONTENT}`);
   }
+
   showSearchResultIntersector() {
     this.showElementBySelector(`#${SELECTOR_ID.SEARCH_RESULT_INTERSECTOR}`);
   }
+
   hideSkeletons() {
     this.hideElementBySelector(`.${SELECTOR_CLASS.SKELETON}`);
   }
+
   hideVideoSaveButton($button) {
     this.hideElement($button);
   }

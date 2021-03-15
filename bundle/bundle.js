@@ -12545,7 +12545,7 @@ function _onVideoSearch() {
         switch (_context.prev = _context.next) {
           case 0:
             event.preventDefault();
-            input = _elements_js__WEBPACK_IMPORTED_MODULE_0__.$searchFormInput.value.trim();
+            input = event.target["".concat(_constants_js__WEBPACK_IMPORTED_MODULE_6__.SELECTOR_ID.SEARCH_FORM_INPUT)].value.trim();
 
             if (!(input === _store_js__WEBPACK_IMPORTED_MODULE_3__.prevSearchResultModel.getItem().lastQuery)) {
               _context.next = 4;

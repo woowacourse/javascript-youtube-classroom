@@ -63,6 +63,7 @@ function onSelectedVideoSave({ target }) {
   if (controllerUtil.parseHash(location.hash) === BROWSER_HASH.WATCHING) {
     watchingVideoView.renderVideos(watchingVideoModel.getItem());
   }
+
   modalView.hideVideoSaveButton(target);
   layoutView.showSnackbar(SNACKBAR_MESSAGE.WATCHING_VIDEO_SAVE_SUCCESS, true);
 }
@@ -76,9 +77,11 @@ function onModalOpen() {
 
   modalView.openModal();
   modalView.renderSavedVideoCount(allVideoCount);
+
   if (videos.length === 0) {
     return;
   }
+
   modalView.renderSearchedVideos(processedVideos);
   modalView.showSearchResultIntersector();
   modalView.focusElement($searchFormInput);
@@ -91,7 +94,7 @@ function onModalClose() {
 
 async function onVideoSearch(event) {
   event.preventDefault();
-  const input = $searchFormInput.value.trim();
+  const input = event.target[`${SELECTOR_ID.SEARCH_FORM_INPUT}`].value.trim();
 
   if (input === prevSearchResultModel.getItem().lastQuery) {
     return;
@@ -122,6 +125,7 @@ async function onAdditionalVideosLoad() {
     lastQuery,
     pageToken
   );
+
   modalView.insertSearchedVideos(videos);
   modalService.savePrevSearchInfo({ nextPageToken });
 }

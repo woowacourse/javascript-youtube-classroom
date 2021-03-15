@@ -23,6 +23,7 @@ export const watchingVideoView = new VideoView(
   },
   false
 );
+
 export const watchedVideoView = new VideoView(
   {
     $videoWrapper: $watchedVideoWrapper,
