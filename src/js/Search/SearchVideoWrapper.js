@@ -48,7 +48,7 @@ export default class SearchVideoWrapper {
 
     messenger.addMessageListener(MESSAGE.SAVED_VIDEO_DELETED, ({ videoId }) => {
       const $button = $(
-        `.${CLASSNAME.SAVE_VIDEO_BUTTON}[data-video-id=${videoId}]`
+        `.${CLASSNAME.SAVE_VIDEO_BUTTON}[data-video-id="${videoId}"]`
       );
 
       $.removeClass($button, CLASSNAME.CANCEL);
@@ -73,19 +73,23 @@ export default class SearchVideoWrapper {
   // eslint-disable-next-line class-methods-use-this
   onSaveVideoButtonClick($button) {
     const { videoId } = $button.dataset;
-
-    messenger.deliverMessage(MESSAGE.SAVE_VIDEO_BUTTON_CLICKED, {
-      videoId,
-      item: this.videoItemsMap.get(videoId),
-    });
+    const item = this.videoItemsMap.get(videoId);
 
     if ($button.classList.contains(CLASSNAME.CANCEL)) {
+      messenger.deliverMessage(MESSAGE.CANCEL_VIDEO_BUTTON_CLICKED, {
+        videoId,
+        item,
+      });
       $.removeClass($button, CLASSNAME.CANCEL);
       $button.innerText = "저장";
       showModalSnackbar(SNACKBAR_MESSAGE.CANCELED_VIDEO_SAVE);
       return;
     }
 
+    messenger.deliverMessage(MESSAGE.SAVE_VIDEO_BUTTON_CLICKED, {
+      videoId,
+      item,
+    });
     $.addClass($button, CLASSNAME.CANCEL);
     $button.innerText = "취소";
     showModalSnackbar(SNACKBAR_MESSAGE.VIDEO_SAVED);

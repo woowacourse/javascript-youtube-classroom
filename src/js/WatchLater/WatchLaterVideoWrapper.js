@@ -28,13 +28,12 @@ export default class WatchLaterVideoWrapper {
 
     messenger.addMessageListener(
       MESSAGE.SAVE_VIDEO_BUTTON_CLICKED,
-      ({ videoId, item }) => {
-        if (this.watchLaterVideosMap.has(videoId)) {
-          this.deleteVideo(videoId);
-          return;
-        }
-        this.saveVideoItem({ videoId, item });
-      }
+      this.saveVideoItem.bind(this)
+    );
+
+    messenger.addMessageListener(
+      MESSAGE.CANCEL_VIDEO_BUTTON_CLICKED,
+      this.deleteVideo.bind(this)
     );
 
     messenger.addMessageListener(
@@ -51,14 +50,14 @@ export default class WatchLaterVideoWrapper {
       const { videoId } = event.target.parentElement.dataset;
 
       if (event.target.classList.contains(CLASSNAME.WATCHED_ICON)) {
-        this.moveVideo(videoId);
+        this.moveVideo({ videoId });
         showSnackbar(SNACKBAR_MESSAGE.MOVED_TO_HISTORY_VIDEO);
       }
 
       if (event.target.classList.contains(CLASSNAME.DELETE_ICON)) {
         // eslint-disable-next-line no-alert
         if (window.confirm("정말 삭제하시겠습니까?")) {
-          this.deleteVideo(videoId);
+          this.deleteVideo({ videoId });
           messenger.deliverMessage(MESSAGE.SAVED_VIDEO_DELETED, { videoId });
           showSnackbar(SNACKBAR_MESSAGE.VIDEO_DELETED);
         }
@@ -68,7 +67,7 @@ export default class WatchLaterVideoWrapper {
     this.render();
   }
 
-  moveVideo(videoId) {
+  moveVideo({ videoId }) {
     messenger.deliverMessage(MESSAGE.WATCHED_ICON_CLICKED, {
       videoId,
       item: this.watchLaterVideoItemsMap.get(videoId),
@@ -86,7 +85,11 @@ export default class WatchLaterVideoWrapper {
     }
   }
 
-  deleteVideo(videoId) {
+  deleteVideo({ videoId }) {
+    if (!this.watchLaterVideoItemsMap.has(videoId)) {
+      return;
+    }
+
     this.watchLaterVideoItemsMap.delete(videoId);
 
     this.updateLocalStorage();

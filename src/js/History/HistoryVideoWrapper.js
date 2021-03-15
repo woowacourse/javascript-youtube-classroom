@@ -29,6 +29,11 @@ export default class HistoryVideoWrapper {
     );
 
     messenger.addMessageListener(
+      MESSAGE.CANCEL_VIDEO_BUTTON_CLICKED,
+      this.deleteVideo.bind(this)
+    );
+
+    messenger.addMessageListener(
       MESSAGE.HIDE_IF_VIDEO_IS_SAVED,
       this.hideIfVideoIsSaved.bind(this)
     );
@@ -44,7 +49,7 @@ export default class HistoryVideoWrapper {
       if (event.target.classList.contains(CLASSNAME.DELETE_ICON)) {
         // eslint-disable-next-line no-alert
         if (window.confirm("정말 삭제하시겠습니까?")) {
-          this.deleteVideo(videoId);
+          this.deleteVideo({ videoId });
           messenger.deliverMessage(MESSAGE.SAVED_VIDEO_DELETED, { videoId });
           showSnackbar(SNACKBAR_MESSAGE.VIDEO_DELETED);
         }
@@ -54,7 +59,7 @@ export default class HistoryVideoWrapper {
     this.render();
   }
 
-  moveVideo(videoId) {
+  moveVideo({ videoId }) {
     messenger.deliverMessage(MESSAGE.WATCH_LATER_ICON_CLICKED, {
       videoId,
       item: this.historyVideoItemsMap.get(videoId),
@@ -72,7 +77,11 @@ export default class HistoryVideoWrapper {
     }
   }
 
-  deleteVideo(videoId) {
+  deleteVideo({ videoId }) {
+    if (!this.historyVideoItemsMap.has(videoId)) {
+      return;
+    }
+
     this.historyVideoItemsMap.delete(videoId);
 
     this.updateLocalStorage();
