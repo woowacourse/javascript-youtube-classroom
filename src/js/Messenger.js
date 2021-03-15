@@ -1,4 +1,4 @@
-import { MESSAGE } from "./constants.js";
+import { MESSAGE } from "./constants/index.js";
 
 class Messenger {
   constructor() {

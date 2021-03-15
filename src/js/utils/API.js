@@ -1,4 +1,4 @@
-import { MAX_RESULTS_COUNT } from "../constants.js";
+import { NUMBER } from "../constants/index.js";
 
 const REDIRECT_SERVER_HOST = "https://bigsaigon333.netlify.app";
 
@@ -7,7 +7,7 @@ const fetchYoutubeData = async (query, nextPageToken = "") => {
   const parameters = new URLSearchParams({
     part: "snippet",
     type: "video",
-    maxResults: MAX_RESULTS_COUNT,
+    maxResults: NUMBER.MAX_RESULTS_COUNT,
     regionCode: "kr",
     safeSearch: "strict",
     pageToken: nextPageToken || "",

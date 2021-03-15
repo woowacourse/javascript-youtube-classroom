@@ -1,4 +1,4 @@
-import { CLASSNAME } from "../constants.js";
+import { CLASSNAME } from "../constants/index.js";
 
 const GENERATE_TEMPLATE = (buttonTemplate) => `
 <article class="clip ${CLASSNAME.SKELETON}">

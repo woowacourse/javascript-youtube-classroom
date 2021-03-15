@@ -1,4 +1,4 @@
-import { CLASSNAME, MESSAGE, LOCAL_STORAGE_KEY } from "../constants.js";
+import { CLASSNAME, MESSAGE, LOCAL_STORAGE_KEY } from "../constants/index.js";
 import { $ } from "../utils/DOM.js";
 import messenger from "../Messenger.js";
 import { fetchYoutubeData } from "../utils/API.js";

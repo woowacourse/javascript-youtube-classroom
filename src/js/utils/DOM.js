@@ -1,4 +1,4 @@
-import { CLASSNAME } from "../constants.js";
+import { CLASSNAME } from "../constants/index.js";
 
 const addClass = ($element, className) => {
   $element.classList.add(className);

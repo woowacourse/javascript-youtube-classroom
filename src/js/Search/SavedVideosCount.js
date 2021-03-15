@@ -1,9 +1,9 @@
 import {
   CLASSNAME,
   MESSAGE,
-  MAX_SAVED_VIDEOS_COUNT,
+  NUMBER,
   LOCAL_STORAGE_KEY,
-} from "../constants.js";
+} from "../constants/index.js";
 import messenger from "../Messenger.js";
 import { $ } from "../utils/DOM.js";
 
@@ -17,7 +17,7 @@ export default class SavedVideosCount {
     this.$maxSavedVideosCount = $(`.${CLASSNAME.MAX_SAVED_VIDEOS_COUNT}`);
 
     this.$savedVideosCount.innerText = this.savedVideosCount;
-    this.$maxSavedVideosCount.innerText = MAX_SAVED_VIDEOS_COUNT;
+    this.$maxSavedVideosCount.innerText = NUMBER.MAX_SAVED_VIDEOS_COUNT;
 
     messenger.addMessageListener(
       MESSAGE.SAVED_VIDEOS_COUNT_CHANGED,
@@ -27,7 +27,7 @@ export default class SavedVideosCount {
     messenger.addMessageListener(
       MESSAGE.SAVE_IF_VIDEOS_COUNT_IS_IN_RANGE,
       ({ resolve, reject }) => {
-        if (this.savedVideosCount >= MAX_SAVED_VIDEOS_COUNT) {
+        if (this.savedVideosCount >= NUMBER.MAX_SAVED_VIDEOS_COUNT) {
           reject();
           return;
         }

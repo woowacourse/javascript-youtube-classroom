@@ -1,4 +1,4 @@
-import { CLASSNAME, MESSAGE } from "../constants.js";
+import { CLASSNAME, MESSAGE } from "../constants/index.js";
 import messenger from "../Messenger.js";
 import { $ } from "../utils/DOM.js";
 

@@ -1,4 +1,4 @@
-import { CLASSNAME } from "./constants.js";
+import { CLASSNAME } from "./constants/index.js";
 import { $ } from "./utils/DOM.js";
 import SearchContainer from "./Search/SearchContainer.js";
 import WatchLaterContainer from "./WatchLater/WatchLaterContainer.js";

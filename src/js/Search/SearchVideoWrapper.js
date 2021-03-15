@@ -2,10 +2,9 @@
 import {
   CLASSNAME,
   MESSAGE,
-  MAX_RESULTS_COUNT,
-  SCROLL_EVENT_THRESHOLD,
-  SNACKBAR_MESSAGE,
-} from "../constants.js";
+  NUMBER,
+  SNACKBAR_TEXT,
+} from "../constants/index.js";
 import { $ } from "../utils/DOM.js";
 import messenger from "../Messenger.js";
 import { renderSearchVideo } from "../Video/render.js";
@@ -53,7 +52,7 @@ export default class SearchVideoWrapper {
 
       $.removeClass($button, CLASSNAME.CANCEL);
       $button.innerText = "저장";
-      showModalSnackbar(SNACKBAR_MESSAGE.CANCELED_VIDEO_SAVE);
+      showModalSnackbar(SNACKBAR_TEXT.CANCELED_VIDEO_SAVE);
     });
 
     this.$searchVideoWrapper.addEventListener(
@@ -82,7 +81,7 @@ export default class SearchVideoWrapper {
       });
       $.removeClass($button, CLASSNAME.CANCEL);
       $button.innerText = "저장";
-      showModalSnackbar(SNACKBAR_MESSAGE.CANCELED_VIDEO_SAVE);
+      showModalSnackbar(SNACKBAR_TEXT.CANCELED_VIDEO_SAVE);
       return;
     }
 
@@ -94,11 +93,11 @@ export default class SearchVideoWrapper {
 
       $.addClass($button, CLASSNAME.CANCEL);
       $button.innerText = "취소";
-      showModalSnackbar(SNACKBAR_MESSAGE.VIDEO_SAVED);
+      showModalSnackbar(SNACKBAR_TEXT.VIDEO_SAVED);
     };
 
     const reject = () => {
-      showModalSnackbar(SNACKBAR_MESSAGE.REACHED_MAX_COUNT);
+      showModalSnackbar(SNACKBAR_TEXT.REACHED_MAX_COUNT);
     };
 
     messenger.deliverMessage(MESSAGE.SAVE_IF_VIDEOS_COUNT_IS_IN_RANGE, {
@@ -108,7 +107,7 @@ export default class SearchVideoWrapper {
   }
 
   mountTemplate() {
-    Array.from({ length: MAX_RESULTS_COUNT }).forEach(() => {
+    Array.from({ length: NUMBER.MAX_RESULTS_COUNT }).forEach(() => {
       this.$searchVideoWrapper.insertAdjacentHTML(
         "beforeEnd",
         SEARCH_VIDEO_TEMPLATE
@@ -118,10 +117,10 @@ export default class SearchVideoWrapper {
 
   attachData(items) {
     const $$videos = Array.from(this.$searchVideoWrapper.children).slice(
-      -MAX_RESULTS_COUNT
+      -NUMBER.MAX_RESULTS_COUNT
     );
 
-    Array.from({ length: MAX_RESULTS_COUNT })
+    Array.from({ length: NUMBER.MAX_RESULTS_COUNT })
       .map((_, i) => [$$videos[i], items[i]])
       .forEach(([$video, item]) => {
         const { videoId } = item.id;
@@ -137,7 +136,7 @@ export default class SearchVideoWrapper {
     if (
       this.$searchVideoWrapper.scrollTop +
         this.$searchVideoWrapper.clientHeight <=
-      this.$searchVideoWrapper.scrollHeight * SCROLL_EVENT_THRESHOLD
+      this.$searchVideoWrapper.scrollHeight * NUMBER.SCROLL_EVENT_THRESHOLD
     ) {
       return;
     }

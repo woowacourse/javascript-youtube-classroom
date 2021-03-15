@@ -1,4 +1,4 @@
-import { CLASSNAME, REGULAR_EXPRESSION } from "../../src/js/constants.js";
+import { CLASSNAME, REGULAR_EXPRESSION } from "../../src/js/constants/index.js";
 import { REDIRECT_SERVER_HOST } from "../../src/js/utils/API.js";
 
 describe("볼 영상 화면을 테스트한다.", () => {
