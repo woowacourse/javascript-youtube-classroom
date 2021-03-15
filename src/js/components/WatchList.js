@@ -88,6 +88,7 @@ export default class WatchList extends Observer {
 
       clearElement(SELECTORS.CLASS.WATCH_LIST);
       this.renderSavedVideos(toWatchVideos);
+
       $all('iframe').forEach(($iframe) => {
         this.lazyLoadingObserver.observe($iframe);
       });
@@ -99,8 +100,6 @@ export default class WatchList extends Observer {
   async update() {
     try {
       const { watchList } = this.store.get();
-      clearElement(SELECTORS.CLASS.WATCH_LIST);
-
       const currentIds = this.list.map((video) => video.id);
       const newVideo = watchList.find((item) => !currentIds.includes(item.videoId));
 
@@ -109,47 +108,34 @@ export default class WatchList extends Observer {
         this.list = [...this.list, ...items];
       }
 
-      if (this.nowMenu === MENU.WATCHED) {
-        const watchedList = watchList.filter((item) => item.watched);
-        const watchedListIds = watchedList.map((item) => item.videoId);
-
-        if (watchedList.length) {
-          hideElement(SELECTORS.CLASS.NO_VIDEO);
-        } else {
-          showElement(SELECTORS.CLASS.NO_VIDEO);
-        }
-
-        const renderingVideos = this.list.filter(({ id }) => watchedListIds.includes(id));
-        this.renderSavedVideos(renderingVideos);
-      } else if (this.nowMenu === MENU.TO_WATCH) {
-        const toWatchList = watchList.filter((item) => !item.watched);
-        const toWatchListIds = toWatchList.map((item) => item.videoId);
-
-        if (toWatchList.length) {
-          hideElement(SELECTORS.CLASS.NO_VIDEO);
-        } else {
-          showElement(SELECTORS.CLASS.NO_VIDEO);
-        }
-
-        const renderingVideos = this.list.filter(({ id }) => toWatchListIds.includes(id));
-        this.renderSavedVideos(renderingVideos);
-      } else if (this.nowMenu === MENU.LIKED) {
-        const likedList = watchList.filter((item) => item.liked);
-        const likedListIds = likedList.map((item) => item.videoId);
-
-        if (likedList.length) {
-          hideElement(SELECTORS.CLASS.NO_VIDEO);
-        } else {
-          showElement(SELECTORS.CLASS.NO_VIDEO);
-        }
-
-        const renderingVideos = this.list.filter(({ id }) => likedListIds.includes(id));
-        this.renderSavedVideos(renderingVideos);
-      }
+      this.showWatchList(watchList);
     } catch (error) {
       console.error(error);
       showSnackbar(error.message);
     }
+  }
+
+  showWatchList(watchList) {
+    const selectedList = watchList.filter((item) => {
+      if (this.nowMenu === MENU.LIKED) {
+        return item.liked;
+      } else if (this.nowMenu === MENU.WATCHED) {
+        return item.watched;
+      }
+      return !item.watched;
+    });
+    const selectedListIds = selectedList.map((item) => item.videoId);
+
+    clearElement(SELECTORS.CLASS.WATCH_LIST);
+
+    if (selectedList.length) {
+      hideElement(SELECTORS.CLASS.NO_VIDEO);
+    } else {
+      showElement(SELECTORS.CLASS.NO_VIDEO);
+    }
+
+    const renderingVideos = this.list.filter(({ id }) => selectedListIds.includes(id));
+    this.renderSavedVideos(renderingVideos);
   }
 
   handleClickVideoMenu(event) {
@@ -213,20 +199,9 @@ export default class WatchList extends Observer {
     colorizeButton(SELECTORS.CLASS.TO_WATCH_LIST_BUTTON);
     uncolorizeButton(SELECTORS.CLASS.WATCHED_LIST_BUTTON);
     uncolorizeButton(SELECTORS.CLASS.LIKED_LIST_BUTTON);
-    clearElement(SELECTORS.CLASS.WATCH_LIST);
 
     const { watchList } = this.store.get();
-    const toWatchList = watchList.filter(({ watched }) => !watched);
-    const toWatchListIds = toWatchList.map((item) => item.videoId);
-
-    if (toWatchList.length) {
-      hideElement(SELECTORS.CLASS.NO_VIDEO);
-    } else {
-      showElement(SELECTORS.CLASS.NO_VIDEO);
-    }
-
-    const renderingVideos = this.list.filter(({ id }) => toWatchListIds.includes(id));
-    this.renderSavedVideos(renderingVideos);
+    this.showWatchList(watchList);
   }
 
   handleShowWatchedList() {
@@ -234,20 +209,9 @@ export default class WatchList extends Observer {
     colorizeButton(SELECTORS.CLASS.WATCHED_LIST_BUTTON);
     uncolorizeButton(SELECTORS.CLASS.TO_WATCH_LIST_BUTTON);
     uncolorizeButton(SELECTORS.CLASS.LIKED_LIST_BUTTON);
-    clearElement(SELECTORS.CLASS.WATCH_LIST);
 
     const { watchList } = this.store.get();
-    const watchedList = watchList.filter(({ watched }) => watched);
-    const watchedListIds = watchedList.map((item) => item.videoId);
-
-    if (watchedList.length) {
-      hideElement(SELECTORS.CLASS.NO_VIDEO);
-    } else {
-      showElement(SELECTORS.CLASS.NO_VIDEO);
-    }
-
-    const renderingVideos = this.list.filter(({ id }) => watchedListIds.includes(id));
-    this.renderSavedVideos(renderingVideos);
+    this.showWatchList(watchList);
   }
 
   handleShowLikedList() {
@@ -255,20 +219,9 @@ export default class WatchList extends Observer {
     colorizeButton(SELECTORS.CLASS.LIKED_LIST_BUTTON);
     uncolorizeButton(SELECTORS.CLASS.WATCHED_LIST_BUTTON);
     uncolorizeButton(SELECTORS.CLASS.TO_WATCH_LIST_BUTTON);
-    clearElement(SELECTORS.CLASS.WATCH_LIST);
 
     const { watchList } = this.store.get();
-    const likedList = watchList.filter(({ liked }) => liked);
-    const likedListLIds = likedList.map((item) => item.videoId);
-
-    if (likedList.length) {
-      hideElement(SELECTORS.CLASS.NO_VIDEO);
-    } else {
-      showElement(SELECTORS.CLASS.NO_VIDEO);
-    }
-
-    const renderingVideos = this.list.filter(({ id }) => likedListLIds.includes(id));
-    this.renderSavedVideos(renderingVideos);
+    this.showWatchList(watchList);
   }
 
   bindEvents() {
