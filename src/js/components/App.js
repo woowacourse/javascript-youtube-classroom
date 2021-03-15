@@ -65,9 +65,10 @@ export default class App {
           </div>
           </nav>
         </header>
-        <main class="mt-10">
+        <main class="mt-10 d-flex flex-col items-center">
           <section id="video-list-wrapper" class="video-wrapper relative">
           </section>
+          <img src="./src/images/status/youtube_no_saved_image_light.jpeg" alt="no_saved_video" class="no-saved-video-image d-none"/>
         </main>
       </div>
       <div class="modal" role="dialog" aria-modal="true">

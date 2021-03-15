@@ -64,16 +64,6 @@ export default class VideoList extends Component {
       );
     }
 
-    const notSavedVideoImage = createElement({
-      tag: 'img',
-      classes: ['not-saved-video-image'],
-    });
-
-    notSavedVideoImage.src =
-      './src/images/status/youtube_no_saved_image_light.jpeg';
-    notSavedVideoImage.alt = 'no_saved_video';
-
-    fragment.appendChild(notSavedVideoImage);
     this.$target.appendChild(fragment);
 
     this.showByFilter();
