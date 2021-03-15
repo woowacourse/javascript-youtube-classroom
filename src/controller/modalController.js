@@ -77,6 +77,7 @@ function onModalOpen() {
 
   modalView.openModal();
   modalView.renderSavedVideoCount(allVideoCount);
+  modalView.focusElement($searchFormInput);
 
   if (videos.length === 0) {
     return;
@@ -84,7 +85,6 @@ function onModalOpen() {
 
   modalView.renderSearchedVideos(processedVideos);
   modalView.showSearchResultIntersector();
-  modalView.focusElement($searchFormInput);
 }
 
 function onModalClose() {

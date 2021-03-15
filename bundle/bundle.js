@@ -12516,6 +12516,7 @@ function onModalOpen() {
   var processedVideos = _service_modalService_js__WEBPACK_IMPORTED_MODULE_4__.default.getProcessedVideos(videos);
   _view_index_js__WEBPACK_IMPORTED_MODULE_5__.modalView.openModal();
   _view_index_js__WEBPACK_IMPORTED_MODULE_5__.modalView.renderSavedVideoCount(allVideoCount);
+  _view_index_js__WEBPACK_IMPORTED_MODULE_5__.modalView.focusElement(_elements_js__WEBPACK_IMPORTED_MODULE_0__.$searchFormInput);
 
   if (videos.length === 0) {
     return;
@@ -12523,7 +12524,6 @@ function onModalOpen() {
 
   _view_index_js__WEBPACK_IMPORTED_MODULE_5__.modalView.renderSearchedVideos(processedVideos);
   _view_index_js__WEBPACK_IMPORTED_MODULE_5__.modalView.showSearchResultIntersector();
-  _view_index_js__WEBPACK_IMPORTED_MODULE_5__.modalView.focusElement(_elements_js__WEBPACK_IMPORTED_MODULE_0__.$searchFormInput);
 }
 
 function onModalClose() {
