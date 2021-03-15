@@ -38,6 +38,7 @@ export default class YoutubeController {
     this.searchModalView.on('closeModal', () => this.focusSavedTab());
     this.savedVideosView
       .on('clickWatched', (e) => this.watchVideo(e.detail))
+      .on('clickLike', (e) => this.likeVideo(e.detail))
       .on('clickDelete', (e) => this.deleteVideo(e.detail));
   }
 
@@ -127,6 +128,19 @@ export default class YoutubeController {
       if (isEmptyArray(unWatchedVideoIds)) {
         this.savedVideosView.showVideoEmptyImg();
       }
+    }
+  }
+
+  likeVideo(videoId) {
+    this.store.update({ [STORE_KEYS.LIKED_VIDEO_IDS]: videoId });
+    this.savedVideosView.toggleLikeButton(videoId);
+
+    const likedVideoIds = this.store.state.likedVideoIds;
+
+    if (likedVideoIds.includes(videoId)) {
+      popSnackbar(SNACKBAR_MESSAGES.LIKE_VIDEO_REMOVE.SUCCESS);
+    } else {
+      popSnackbar(SNACKBAR_MESSAGES.LIKE_VIDEO_ADD.SUCCESS);
     }
   }
 

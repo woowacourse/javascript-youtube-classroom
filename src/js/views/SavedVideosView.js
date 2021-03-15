@@ -19,6 +19,7 @@ export default class SavedVideosView extends View {
 
       const buttonPack = {
         videoWatched: this.bindWatchedEvent.bind(this),
+        videoLike: this.bindLikeEvent.bind(this),
         videoDelete: this.bindDeleteEvent.bind(this),
       };
 
@@ -31,6 +32,10 @@ export default class SavedVideosView extends View {
   bindWatchedEvent(videoId) {
     this.emit('clickWatched', videoId);
     $(`[data-article="${videoId}"] iframe`).each((iframe) => stopVideo(iframe));
+  }
+
+  bindLikeEvent(videoId) {
+    this.emit('clickLike', videoId);
   }
 
   bindDeleteEvent(videoId) {
@@ -58,15 +63,15 @@ export default class SavedVideosView extends View {
   }
 
   showMatchedVideos(prevTabVideos, currentTabVideos) {
+    const savedVideos = $('#main-videos > article');
+
     clearTimeout(this.clipTransition);
     $('.empty-videos').hide();
-    $('#main-videos > article').removeClass('fadein', 'fadeout');
-    $('#main-videos > article').addClass('fadeout');
+    savedVideos.removeClass('fadein', 'fadeout');
+    savedVideos.addClass('fadeout');
 
     this.clipTransition = setTimeout(() => {
-      prevTabVideos.forEach((prevTabVideo) => {
-        $(`[data-article='${prevTabVideo}']`).hide();
-      });
+      savedVideos.hide();
       currentTabVideos.forEach((currentTabVideo) => {
         $(`[data-article='${currentTabVideo}']`).show().addClass('fadein');
       });
@@ -101,5 +106,10 @@ export default class SavedVideosView extends View {
     setTimeout(() => {
       videoClip.hide();
     }, VALUE.CLIP_TRANSITION_TIME);
+  }
+
+  toggleLikeButton(videoId) {
+    $('#main-videos > article').removeClass('fadein', 'fadeout');
+    $(`[data-video-like='${videoId}']`).toggleClass('opacity-hover');
   }
 }
