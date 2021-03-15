@@ -8,8 +8,18 @@ export default class ClassroomController {
   }
 
   init() {
-    this.onShowClassroom();
+    this.showClassroom();
     this.attachEvents();
+  }
+
+  showClassroom() {
+    this.view.renderVideosToPrepare(this.model.videos);
+
+    if (isWatchingMenu(this.view.$savedVideosWrapper)) {
+      this.showWatchingVideos();
+      return;
+    }
+    this.showWatchedVideos();
   }
 
   attachEvents() {
@@ -41,16 +51,6 @@ export default class ClassroomController {
   }
 
   onNavigateWatchedVideos() {
-    this.showWatchedVideos();
-  }
-
-  onShowClassroom() {
-    this.view.renderVideosToPrepare(this.model.videos);
-
-    if (isWatchingMenu(this.view.$savedVideosWrapper)) {
-      this.showWatchingVideos();
-      return;
-    }
     this.showWatchedVideos();
   }
 
