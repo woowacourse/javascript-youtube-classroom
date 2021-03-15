@@ -32,6 +32,18 @@ export default class WatchController {
     }
   }
 
+  updateLikedView(savedVideos) {
+    const likedVideos = savedVideos.filter((video) => video.liked);
+
+    this.watchView.markLikedViewButton();
+
+    if (likedVideos.length === 0) {
+      this.watchView.showNoLikedImg();
+    } else {
+      this.watchView.showLikedVideos(likedVideos);
+    }
+  }
+
   watchVideo(videoId) {
     videos.setVideoWatched(videoId, true);
   }
