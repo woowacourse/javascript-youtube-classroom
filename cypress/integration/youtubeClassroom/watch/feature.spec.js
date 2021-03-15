@@ -11,9 +11,7 @@ describe("youtube classroom 기능 테스트", () => {
     cy.get("#search-results button[data-video-id]")
       .eq(0)
       .click()
-      .then(([$clickedButton]) => {
-        return $clickedButton.dataset.videoId;
-      })
+      .then(([$clickedButton]) => $clickedButton.dataset.videoId)
       .then((savedVideoId) => {
         cy.get("#search-modal-close").click();
         cy.get("#saved-videos").children().should("have.length", 1);
@@ -29,11 +27,8 @@ describe("youtube classroom 기능 테스트", () => {
     cy.get("#saved-videos button[data-button-type='watched']")
       .eq(0)
       .click()
-      .then(([$clickedButton]) => {
-        return $clickedButton.dataset.videoId;
-      })
+      .then(([$clickedButton]) => $clickedButton.dataset.videoId)
       .then((watchedVideoId) => {
-        cy.get("#saved-videos").should("not.be.visible");
         cy.get("#empty-img").should("be.visible");
 
         cy.get("#watched-view-button").click();
@@ -54,14 +49,11 @@ describe("youtube classroom 기능 테스트", () => {
     cy.get("#saved-videos button[data-button-type='watched']")
       .eq(0)
       .click()
-      .then(([$clickedButton]) => {
-        return $clickedButton.dataset.videoId;
-      })
+      .then(([$clickedButton]) => $clickedButton.dataset.videoId)
       .then((watchedVideoId) => {
-        cy.get("#saved-videos").should("not.be.visible");
         cy.get("#empty-img").should("be.visible");
 
-        cy.get("#saved-view-button").click();
+        cy.get("#watch-later-view-button").click();
         cy.get("#saved-videos").children().should("have.length", 1);
         cy.get("#saved-videos > article button")
           .eq(0)
@@ -69,7 +61,7 @@ describe("youtube classroom 기능 테스트", () => {
             expect($watchedButton.dataset.videoId).to.eq(watchedVideoId);
           });
 
-        cy.get("#saved-videos button[data-button-type='watched]")
+        cy.get("#saved-videos button[data-button-type='watched']")
           .eq(0)
           .should("have.class", "opacity-hover");
       });
@@ -128,14 +120,13 @@ describe("youtube classroom 기능 테스트", () => {
     cy.get("#search-button").click();
     cy.get("#search-results button[data-video-id]").eq(0).click();
     cy.get("#search-modal-close").click();
-    cy.get("watch-later-view-button").click();
 
     cy.get("#saved-videos button[data-button-type='liked']")
       .eq(0)
       .click()
-      .then(($clickedButton) => $clickedButton.dataset.videoId)
+      .then(([$clickedButton]) => $clickedButton.dataset.videoId)
       .then((likedVideoId) => {
-        cy.get("#saved-videos button[data-button-type='watched']")
+        cy.get("#saved-videos button[data-button-type='liked']")
           .eq(0)
           .should("not.have.class", "opacity-hover");
 
@@ -146,7 +137,7 @@ describe("youtube classroom 기능 테스트", () => {
             expect($likedButton.dataset.videoId).to.eq(likedVideoId);
           });
 
-        cy.get("#saved-videos button[data-button-type='watched']")
+        cy.get("#saved-videos button[data-button-type='liked']")
           .eq(0)
           .should("not.have.class", "opacity-hover");
       });
@@ -156,27 +147,26 @@ describe("youtube classroom 기능 테스트", () => {
     cy.get("#search-button").click();
     cy.get("#search-results button[data-video-id]").eq(2).click();
     cy.get("#search-modal-close").click();
-    cy.get("watched-view-button").click();
 
-    cy.get("#saved-videos button[data-button-type='liked]")
-      .eq(2)
+    cy.get("#saved-videos button[data-button-type='watched']").eq(1).click();
+
+    cy.get("#watched-view-button").click();
+
+    cy.get("#saved-videos button[data-button-type='liked']")
+      .eq(0)
       .click()
-      .then(($clickedButton) => $clickedButton.dataset.videoId)
+      .then(([$clickedButton]) => $clickedButton.dataset.videoId)
       .then((likedVideoId) => {
-        cy.get("#saved-videos button[data-button-type='watched']")
-          .eq(2)
+        cy.get("#saved-videos button[data-button-type='liked']")
+          .eq(0)
           .should("not.have.class", "opacity-hover");
 
         cy.get("#liked-view-button").click();
-        cy.get("#saved-videos > article button")
-          .eq(2)
+        cy.get("#saved-videos button[data-button-type='liked']")
+          .eq(1)
           .then(([$likedButton]) => {
             expect($likedButton.dataset.videoId).to.eq(likedVideoId);
           });
-
-        cy.get("#saved-videos button[data-button-type='watched']")
-          .eq(2)
-          .should("not.have.class", "opacity-hover");
       });
   });
 });

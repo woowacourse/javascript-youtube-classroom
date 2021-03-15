@@ -55,6 +55,11 @@ export default class WatchEventController {
     );
   }
 
+  onLoadApp() {
+    videos.initSavedVideos();
+    this.watchController.updateWatchLaterView();
+  }
+
   onClipButtonEvents(e) {
     const buttonType = e.target.dataset.buttonType;
     const videoId = e.target.dataset.videoId;
@@ -78,23 +83,15 @@ export default class WatchEventController {
     this.watchController.updateCurrentView();
   }
 
-  onLoadApp() {
-    videos.initSavedVideos();
-    this.watchController.updateWatchLaterView();
-  }
-
   onClickWatchLaterViewButton() {
-    videoViewIndex.setViewName(VIDEO_VIEW_NAME.WATCH_LATER);
     this.watchController.updateWatchLaterView();
   }
 
   onClickWatchedViewButton() {
-    videoViewIndex.setViewName(VIDEO_VIEW_NAME.WATCHED);
     this.watchController.updateWatchedView();
   }
 
   onClickLikedViewButton() {
-    videoViewIndex.setViewName(VIDEO_VIEW_NAME.LIKED);
     this.watchController.updateLikedView();
   }
 

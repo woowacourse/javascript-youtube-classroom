@@ -45,6 +45,8 @@ export default class WatchController {
     } else {
       this.watchView.updateSavedVideosView(watchLaterVideos);
     }
+
+    videoViewIndex.setViewName(VIDEO_VIEW_NAME.WATCH_LATER);
   }
 
   updateWatchedView() {
@@ -59,6 +61,8 @@ export default class WatchController {
     } else {
       this.watchView.updateSavedVideosView(watchedVideos);
     }
+
+    videoViewIndex.setViewName(VIDEO_VIEW_NAME.WATCHED);
   }
 
   updateLikedView() {
@@ -71,6 +75,8 @@ export default class WatchController {
     } else {
       this.watchView.updateSavedVideosView(likedVideos);
     }
+
+    videoViewIndex.setViewName(VIDEO_VIEW_NAME.LIKED);
   }
 
   toggleWatched(videoId) {
