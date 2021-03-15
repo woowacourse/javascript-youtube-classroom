@@ -25,6 +25,12 @@ export default class SearchModel {
     this.nextPageToken = token;
   }
 
+  saveVideo(targetVideo) {
+    targetVideo.isSaved = true;
+    targetVideo.isWatching = true;
+    insertItemByKey(DB_KEY.VIDEOS, targetVideo);
+  }
+
   saveKeyword() {
     if (this.keyword === '') {
       return;

@@ -12,6 +12,10 @@ export default class ClassroomModel {
     return this.videos.find((video) => video.videoId === videoId);
   }
 
+  addVideo(video) {
+    this.videos.push(video);
+  }
+
   getVideoCount() {
     return this.videos.length;
   }
@@ -34,14 +38,6 @@ export default class ClassroomModel {
 
   hasNoWatchedVideoSaved() {
     return this.watchedVideoCount === 0;
-  }
-
-  saveVideo(targetVideo) {
-    targetVideo.isSaved = true;
-    targetVideo.isWatching = true;
-    this.videos.push(targetVideo);
-    this.updateWatchingVideoCount();
-    setListByKey(DB_KEY.VIDEOS, this.videos);
   }
 
   moveVideo(videoId) {
