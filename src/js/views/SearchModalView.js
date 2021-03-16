@@ -1,8 +1,8 @@
 import { $ } from '../utils/dom.js';
-import { VALUE, STORAGE_KEYS } from '../utils/constants.js';
+import { VALUE } from '../utils/constants.js';
 import throttle from '../utils/throttle.js';
 import clipMaker from '../utils/clipMaker.js';
-import { getValidJson } from '../utils/localStorage.js';
+import stopVideo from '../utils/stopVideo.js';
 import View from './View.js';
 
 export default class SearchModalView extends View {
@@ -12,15 +12,18 @@ export default class SearchModalView extends View {
     this.closeButton = $('.modal-close');
     this.searchForm = $('#modal-search-form');
     this.modalVideos = $('#modal-videos');
-    this.searchKeyword;
+  }
 
-    this.updateChips();
+  init() {
     this.bindModalEvents();
     this.bindScrollEvent();
+    this.bindSaveEvent();
+    this.bindChipsEvent();
   }
 
   bindModalEvents() {
     this.closeButton.setEvent('click', () => {
+      $('iframe').each((iframe) => stopVideo(iframe));
       this.closeModal();
       this.emit('closeModal');
     });
@@ -28,8 +31,8 @@ export default class SearchModalView extends View {
     this.searchForm.setEvent('submit', (e) => {
       e.preventDefault();
 
-      this.searchKeyword = e.target.elements.search.value;
-      this.emit('submitSearch', this.searchKeyword);
+      const searchKeyword = e.target.elements.search.value;
+      this.emit('submitSearch', searchKeyword);
     });
   }
 
@@ -38,44 +41,39 @@ export default class SearchModalView extends View {
       'scroll',
       throttle(function (event) {
         const { scrollTop, scrollHeight, offsetHeight } = event.target;
+        const isScrollEnded = scrollTop === scrollHeight - offsetHeight;
 
-        if (scrollTop === scrollHeight - offsetHeight) {
-          this.emit('scrollResult', this.searchKeyword);
+        if (isScrollEnded) {
+          this.emit('scrollResult');
         }
       }, VALUE.THROTTLE_TIME).bind(this),
     );
   }
 
   bindSaveEvent() {
-    $('.clip-save-btn').setEvent('click', (e) => {
-      e.target.setAttribute('disabled', true);
-      const videoId = e.target.dataset.videoId;
-
-      this.emit('clickSaveButton', videoId);
-      this.updateSavedCount();
+    $('#modal-videos').setEvent('click', (e) => {
+      if (e.target.classList.contains('clip-save-btn')) {
+        this.emit('clickSaveButton', e.target);
+      }
     });
   }
 
   bindChipsEvent() {
-    $('.chip').setEvent('click', (e) => {
-      const chipText = e.target.innerText;
-      $('#modal-search-input').setValue(chipText);
-      this.searchKeyword = chipText;
-      this.clearVideoClips();
+    $('#chip-container').setEvent('click', (e) => {
+      if (e.target.classList.contains('chip')) {
+        const chipText = e.target.innerText;
 
-      this.emit('clickChip', chipText);
+        $('#modal-search-input').setValue(chipText);
+        this.emit('clickChip', chipText);
+      }
     });
   }
 
   openModal() {
     this.$element.addClass('open');
-    this.updateSavedCount();
-    this.clearVideoClips();
 
     try {
       const latestKeyword = $('#chip-1').getText();
-
-      this.searchKeyword = latestKeyword;
       $('#modal-search-input').setValue(latestKeyword);
 
       this.emit('openModal', latestKeyword);
@@ -85,10 +83,12 @@ export default class SearchModalView extends View {
     }
   }
 
-  updateSavedCount() {
-    const savedVideoIds = getValidJson(STORAGE_KEYS.SAVED_VIDEO_IDS, []);
+  disableSaveButton(target) {
+    target.setAttribute('disabled', true);
+  }
 
-    $('#saved-video-count').setText(savedVideoIds.length);
+  updateSavedCount(savedVideos) {
+    $('#saved-video-count').setText(savedVideos.length);
   }
 
   chipTemplate(recentKeywords) {
@@ -99,11 +99,8 @@ export default class SearchModalView extends View {
       .join('');
   }
 
-  updateChips() {
-    const recentKeywords = getValidJson(STORAGE_KEYS.RECENT_KEYWORDS, []);
+  updateChips(recentKeywords) {
     $('#chip-container').setInnerHTML(this.chipTemplate(recentKeywords));
-
-    this.bindChipsEvent();
   }
 
   scrollToTop() {
@@ -120,25 +117,23 @@ export default class SearchModalView extends View {
     `;
   }
 
-  startSearch() {
+  renderSkeletonTemplate() {
     this.modalVideos.addInnerHTML(
       this.skeletonTemplate().repeat(VALUE.CLIPS_PER_SCROLL),
     );
   }
 
-  renderVideoClips(videos) {
+  renderVideoClips(videos, savedVideos) {
     $('.skeleton').removeElement();
 
-    const savedVideoIds = getValidJson(STORAGE_KEYS.SAVED_VIDEO_IDS, []);
     const videoClips = videos
       .map((video) => {
-        const isSaved = savedVideoIds.includes(video.id);
+        const isSaved = savedVideos.includes(video.id);
 
-        return clipMaker(video, { isModal: true, isSaved: isSaved });
+        return clipMaker(video, { isModal: true, isSaved });
       })
       .join('');
     this.modalVideos.addInnerHTML(videoClips);
-    this.bindSaveEvent();
   }
 
   clearVideoClips() {

@@ -1,36 +1,66 @@
-import { VALUE, STORAGE_KEYS } from './constants.js';
+import { VALUE } from './constants.js';
 
-export function setRecentChip(keyword) {
-  const recentKeywords = getValidJson(STORAGE_KEYS.RECENT_KEYWORDS, []);
+export function addToStorage(key, value) {
+  const items = getStorageData(key);
 
-  if (recentKeywords.includes(keyword)) {
-    recentKeywords.splice(recentKeywords.indexOf(keyword), 1);
+  if (items.includes(value)) return items;
+
+  items.push(value);
+  localStorage.setItem(key, JSON.stringify(items));
+
+  return items;
+}
+
+export function removeFromStorage(key, value) {
+  const items = getStorageData(key);
+
+  if (!items.includes(value)) return items;
+
+  items.splice(items.indexOf(value), 1);
+  localStorage.setItem(key, JSON.stringify(items));
+
+  return items;
+}
+
+export function toggleStorageValue(key, value) {
+  const items = getStorageData(key);
+
+  if (items.includes(value)) {
+    items.splice(items.indexOf(value), 1);
+  } else {
+    items.push(value);
+  }
+
+  localStorage.setItem(key, JSON.stringify(items));
+
+  return items;
+}
+
+export function updateRecentChips(key, value) {
+  const recentKeywords = getStorageData(key);
+
+  if (recentKeywords.includes(value)) {
+    recentKeywords.splice(recentKeywords.indexOf(value), 1);
   }
 
   if (recentKeywords.length >= VALUE.KEYWORD_COUNT) {
     recentKeywords.pop();
   }
 
-  recentKeywords.unshift(keyword);
-  localStorage.setItem(STORAGE_KEYS.RECENT_KEYWORDS, recentKeywords);
+  recentKeywords.unshift(value);
+  localStorage.setItem(key, JSON.stringify(recentKeywords));
+
+  return recentKeywords;
 }
 
-export function setSavedVideoId(videoId) {
-  const savedVideoIds = getValidJson(STORAGE_KEYS.SAVED_VIDEO_IDS, []);
-
-  if (savedVideoIds.includes(videoId)) return;
-
-  savedVideoIds.push(videoId);
-  localStorage.setItem(STORAGE_KEYS.SAVED_VIDEO_IDS, savedVideoIds);
-}
-
-export function getValidJson(str, defaultValue) {
+export function getStorageData(key, defaultValue = []) {
   try {
-    const items = localStorage.getItem(str);
+    const items = JSON.parse(localStorage.getItem(key));
 
-    if (items) return items.split(',');
+    return items || defaultValue;
   } catch (e) {
+    console.error(e);
+
     return defaultValue;
   }
-  return defaultValue;
 }

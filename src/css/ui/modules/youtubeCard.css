@@ -72,3 +72,21 @@
   margin: 0;
   color: #606060;
 }
+
+.clip {
+  animation-name: fade-in;
+  animation-duration: 1s;
+}
+
+.empty-videos {
+  animation: fade-in 1s;
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
