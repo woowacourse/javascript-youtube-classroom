@@ -67,7 +67,7 @@ class MenuSection {
       },
     };
 
-    return menuAction[selectedMenu];
+    return menuAction[selectedMenu] || menuAction[MENU.WATCH_LATER];
   }
 
   _render() {
@@ -77,7 +77,7 @@ class MenuSection {
     };
 
     [this.$watchLaterBtn, this.$watchedBtn].forEach($btn => $btn.classList.remove("bg-cyan-100"));
-    mappingMenu[this.clickedMenu].classList.add("bg-cyan-100");
+    mappingMenu[this.clickedMenu]?.classList.add("bg-cyan-100");
   }
 }
 
