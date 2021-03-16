@@ -1,12 +1,18 @@
 import { $ } from './index.js';
 
-const $snackbar = $('.js-snackbar');
+export const snackbar = (() => {
+  const $snackbar = $('.js-snackbar');
+  let timer = null;
 
-export const showSnackbar = message => {
-  $snackbar.innerText = message;
-  $snackbar.classList.toggle('show');
+  return {
+    show: message => {
+      $snackbar.textContent = message;
+      $snackbar.classList.add('show');
 
-  setTimeout(() => {
-    $snackbar.classList.toggle('show');
-  }, 3000);
-};
+      timer = setTimeout(() => {
+        timer = null;
+        $snackbar.classList.remove('show');
+      }, 3000);
+    },
+  };
+})();

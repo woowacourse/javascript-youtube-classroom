@@ -5,7 +5,7 @@ import {
   $,
   renderSkeleton,
   removeSkeleton,
-  showSnackbar,
+  snackbar,
   showElement,
   hideElement,
   customConfirm,
@@ -55,14 +55,14 @@ export class SavedVideo {
     if (target.classList.contains('js-check-button')) {
       target.closest('article').remove();
       this.savedVideoManager.checkVideo(target.closest('ul').dataset.videoId);
-      showSnackbar(this.isChecked ? SNACKBAR_MESSAGE.UNCHECK_VIDEO_SUCCESS : SNACKBAR_MESSAGE.CHECK_VIDEO_SUCCESS);
+      snackbar.show(this.isChecked ? SNACKBAR_MESSAGE.UNCHECK_VIDEO_SUCCESS : SNACKBAR_MESSAGE.CHECK_VIDEO_SUCCESS);
     }
 
     if (target.classList.contains('js-delete-button')) {
       customConfirm(CONFIRM_MESSAGE.DELETE_VIDEO, () => {
         target.closest('article').remove();
         this.savedVideoManager.deleteVideo(target.closest('ul').dataset.videoId);
-        showSnackbar(SNACKBAR_MESSAGE.DELETE_SUCCESS);
+        snackbar.show(SNACKBAR_MESSAGE.DELETE_SUCCESS);
       });
     }
   }
@@ -72,7 +72,7 @@ export class SavedVideo {
       return await getVideoByIdList(idList);
     } catch (e) {
       console.error(e);
-      showSnackbar(SNACKBAR_MESSAGE.API_REQUEST_FAILURE);
+      snackbar.show(SNACKBAR_MESSAGE.API_REQUEST_FAILURE);
       return { items: [] };
     }
   }

@@ -5,7 +5,7 @@ import {
   getSearchVideoByKeyword,
   renderSkeleton,
   removeSkeleton,
-  showSnackbar,
+  snackbar,
 } from '../util/index.js';
 import { NUM_OF_VIDEO_PER_FETCH, getVideoTemplate, SNACKBAR_MESSAGE } from '../constants/index.js';
 
@@ -59,7 +59,7 @@ export class SearchVideoResult {
       this.setState({ searchResultData });
     } catch (e) {
       console.error(e);
-      showSnackbar(SNACKBAR_MESSAGE.API_REQUEST_FAILURE);
+      snackbar.show(SNACKBAR_MESSAGE.API_REQUEST_FAILURE);
       return { items: [] };
     }
   }
@@ -76,7 +76,7 @@ export class SearchVideoResult {
       return await getSearchVideoByKeyword(keyword);
     } catch (e) {
       console.error(e);
-      showSnackbar(SNACKBAR_MESSAGE.API_REQUEST_FAILURE);
+      snackbar.show(SNACKBAR_MESSAGE.API_REQUEST_FAILURE);
       return { nextPageToken: '', items: [] };
     }
   }
@@ -87,10 +87,10 @@ export class SearchVideoResult {
     }
 
     if (this.savedVideoManager.saveVideo(target.dataset.videoId)) {
-      showSnackbar(SNACKBAR_MESSAGE.SAVE_SUCCESS);
+      snackbar.show(SNACKBAR_MESSAGE.SAVE_SUCCESS);
       target.disabled = true;
     } else {
-      showSnackbar(SNACKBAR_MESSAGE.OVER_MAX_NUM_OF_SAVED_VIDEO);
+      snackbar.show(SNACKBAR_MESSAGE.OVER_MAX_NUM_OF_SAVED_VIDEO);
     }
   }
 
