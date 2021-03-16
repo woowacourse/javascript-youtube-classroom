@@ -75,12 +75,12 @@ export class SavedVideoManager {
   }
 
   likeVideo(videoId) {
-    const temp = { ...this.savedVideos };
-    temp[videoId].isLiked = !temp[videoId].isLiked;
+    const nextSavedVideos = { ...this.savedVideos };
+    nextSavedVideos[videoId].isLiked = !nextSavedVideos[videoId].isLiked;
 
     this.setState({
       key: SAVED_VIDEO_SUBSCRIBER_KEY.LIKE,
-      savedVideos: temp,
+      savedVideos: nextSavedVideos,
     });
   }
 
