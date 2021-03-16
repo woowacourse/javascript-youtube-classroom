@@ -19,6 +19,7 @@ export default class SavedVideosView extends View {
 
       const buttonPack = {
         videoWatched: this.bindWatchedEvent.bind(this),
+        videoLike: this.bindLikeEvent.bind(this),
         videoDelete: this.bindDeleteEvent.bind(this),
       };
 
@@ -33,16 +34,21 @@ export default class SavedVideosView extends View {
     $(`[data-article="${videoId}"] iframe`).each((iframe) => stopVideo(iframe));
   }
 
+  bindLikeEvent(videoId) {
+    this.emit('clickLike', videoId);
+  }
+
   bindDeleteEvent(videoId) {
     this.emit('clickDelete', videoId);
   }
 
-  renderSavedVideoClips(savedVideos, watchedVideos) {
+  renderSavedVideoClips(savedVideos, watchedVideos, likedVideos) {
     const savedVideoClips = savedVideos
       .map((video) => {
         const isWatched = watchedVideos.includes(video.id);
+        const isLiked = likedVideos.includes(video.id);
 
-        return clipMaker(video, { isModal: false, isWatched });
+        return clipMaker(video, { isModal: false, isWatched, isLiked });
       })
       .join('');
 
@@ -57,16 +63,16 @@ export default class SavedVideosView extends View {
     $(`[data-article='${videoId}']`).removeElement();
   }
 
-  showMatchedVideos(prevTabVideos, currentTabVideos) {
+  showMatchedVideos(currentTabVideos) {
+    const savedVideos = $('#main-videos > article');
+
     clearTimeout(this.clipTransition);
     $('.empty-videos').hide();
-    $('#main-videos > article').removeClass('fadein', 'fadeout');
-    $('#main-videos > article').addClass('fadeout');
+    savedVideos.removeClass('fadein', 'fadeout');
+    savedVideos.addClass('fadeout');
 
     this.clipTransition = setTimeout(() => {
-      prevTabVideos.forEach((prevTabVideo) => {
-        $(`[data-article='${prevTabVideo}']`).hide();
-      });
+      savedVideos.hide();
       currentTabVideos.forEach((currentTabVideo) => {
         $(`[data-article='${currentTabVideo}']`).show().addClass('fadein');
       });
@@ -90,16 +96,33 @@ export default class SavedVideosView extends View {
     }, VALUE.CLIP_TRANSITION_TIME);
   }
 
-  toggleWatchedButton(videoId) {
+  toggleWatchedButton(videoId, isWatchedTabOrUnWatchedTab) {
     const videoClip = $(`[data-article='${videoId}']`);
-    const packButton = $(`[data-video-watched='${videoId}']`);
 
     $('#main-videos > article').removeClass('fadein', 'fadeout');
-    packButton.toggleClass('opacity-hover');
-    videoClip.addClass('fadeout');
+    $(`[data-video-watched='${videoId}']`).toggleClass('opacity-hover');
 
-    setTimeout(() => {
-      videoClip.hide();
-    }, VALUE.CLIP_TRANSITION_TIME);
+    if (isWatchedTabOrUnWatchedTab) {
+      videoClip.addClass('fadeout');
+
+      setTimeout(() => {
+        videoClip.hide();
+      }, VALUE.CLIP_TRANSITION_TIME);
+    }
+  }
+
+  toggleLikeButton(videoId, isLikedTab) {
+    const videoClip = $(`[data-article='${videoId}']`);
+
+    $('#main-videos > article').removeClass('fadein', 'fadeout');
+    $(`[data-video-like='${videoId}']`).toggleClass('opacity-hover');
+
+    if (isLikedTab) {
+      videoClip.addClass('fadeout');
+
+      setTimeout(() => {
+        videoClip.hide();
+      }, VALUE.CLIP_TRANSITION_TIME);
+    }
   }
 }

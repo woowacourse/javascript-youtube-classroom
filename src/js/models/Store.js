@@ -4,6 +4,8 @@ import {
   popSavedVideoId,
   updateWatchedVideoIds,
   popWatchedVideoId,
+  updateLikedVideoIds,
+  popLikedVideoId,
   getStorageData,
 } from '../utils/localStorage.js';
 import { STORE_KEYS } from '../utils/constants.js';
@@ -22,6 +24,7 @@ export default class Store {
       recentKeywords: getStorageData(STORE_KEYS.RECENT_KEYWORDS),
       savedVideoIds: getStorageData(STORE_KEYS.SAVED_VIDEO_IDS),
       watchedVideoIds: getStorageData(STORE_KEYS.WATCHED_VIDEO_IDS),
+      likedVideoIds: getStorageData(STORE_KEYS.LIKED_VIDEO_IDS),
     };
   }
 
@@ -34,6 +37,9 @@ export default class Store {
       [STORE_KEYS.WATCHED_VIDEO_IDS]: isDelete
         ? popWatchedVideoId
         : updateWatchedVideoIds,
+      [STORE_KEYS.LIKED_VIDEO_IDS]: isDelete
+        ? popLikedVideoId
+        : updateLikedVideoIds,
     };
 
     const updatedResult = updateLocalStorage[key](value);

@@ -5,7 +5,6 @@ export const SEARCH_URL =
 export const VIDEO_URL =
   'https://simba-tube-api.netlify.app/youtube/v3/videos?';
 
-
 export const VALUE = {
   KEYWORD_COUNT: 3,
   CLIPS_PER_SCROLL: 10,
@@ -13,6 +12,24 @@ export const VALUE = {
   MAX_SAVED_COUNT: 100,
   SNACKBAR_TIME: 3000,
   CLIP_TRANSITION_TIME: 300,
+  HAMBURGER_DELAY_TIME: 60,
+};
+
+export const TAB = {
+  SELECTOR: {
+    SAVED: $('#saved-tab'),
+    UNWATCHED: $('#unwatched-tab'),
+    WATCHED: $('#watched-tab'),
+    LIKED: $('#liked-tab'),
+    SEARCH: $('#search-tab'),
+  },
+  ID: {
+    SAVED: 'saved-tab',
+    UNWATCHED: 'unwatched-tab',
+    WATCHED: 'watched-tab',
+    LIKED: 'liked-tab',
+    SEARCH: 'search-tab',
+  },
 };
 
 export const ALERT_MESSAGES = {
@@ -29,10 +46,10 @@ export const ERROR_MESSAGES = {
 };
 
 export const STORE_KEYS = {
-  SELECTED_TAB: 'selectedTab',
   SAVED_VIDEO_IDS: 'savedVideoIds',
   RECENT_KEYWORDS: 'recentKeywords',
   WATCHED_VIDEO_IDS: 'watchedVideoIds',
+  LIKED_VIDEO_IDS: 'likedVideoIds',
 };
 
 export const PACK_BUTTON_TYPE = {
@@ -58,5 +75,11 @@ export const SNACKBAR_MESSAGES = {
   DELETE_VIDEO: {
     SUCCESS: '동영상이 삭제되었읍니다',
     FAIL: '동영상 삭제에 실패했읍니다',
+  },
+  LIKE_VIDEO_ADD: {
+    SUCCESS: '동영상이 좋아하는 영상 목록에 추가되었읍니다',
+  },
+  LIKE_VIDEO_REMOVE: {
+    SUCCESS: '동영상이 좋아하는 영상 목록에서 제거되었읍니다',
   },
 };

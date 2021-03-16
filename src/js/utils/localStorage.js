@@ -89,6 +89,44 @@ export function popWatchedVideoId(videoId) {
   return updatedWatchedVideoIds;
 }
 
+export function updateLikedVideoIds(videoId) {
+  const likedVideoIds = getStorageData(STORE_KEYS.LIKED_VIDEO_IDS);
+  let updatedLikedVideoIds;
+
+  if (likedVideoIds.includes(videoId)) {
+    updatedLikedVideoIds = likedVideoIds.filter(
+      (likedVideoId) => likedVideoId !== videoId,
+    );
+  } else {
+    likedVideoIds.push(videoId);
+    updatedLikedVideoIds = [...likedVideoIds];
+  }
+
+  localStorage.setItem(
+    STORE_KEYS.LIKED_VIDEO_IDS,
+    JSON.stringify(updatedLikedVideoIds),
+  );
+
+  return updatedLikedVideoIds;
+}
+
+export function popLikedVideoId(videoId) {
+  const likedVideoIds = getStorageData(STORE_KEYS.LIKED_VIDEO_IDS);
+
+  if (!likedVideoIds.includes(videoId)) return likedVideoIds;
+
+  const updatedLikedVideoIds = likedVideoIds.filter(
+    (likedVideoId) => likedVideoId !== videoId,
+  );
+
+  localStorage.setItem(
+    STORE_KEYS.LIKED_VIDEO_IDS,
+    JSON.stringify(updatedLikedVideoIds),
+  );
+
+  return updatedLikedVideoIds;
+}
+
 export function getStorageData(str, defaultValue = []) {
   try {
     const items = JSON.parse(localStorage.getItem(str));
