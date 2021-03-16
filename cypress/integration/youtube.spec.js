@@ -6,6 +6,7 @@ import {
   SNACKBAR_MESSAGE,
 } from '../../src/js/constants/index.js';
 import { SavedVideoManager } from '../../src/js/model/index.js';
+import { $ } from '../../src/js/util/index.js';
 
 describe('유튜브 검색 테스트', () => {
   before(() => {
@@ -54,7 +55,7 @@ describe('유튜브 검색 테스트', () => {
 
     cy.document().then(document => {
       const savedCilpList = localStorage.getItem(LOCAL_STORAGE_SAVED_VIDEO_KEY);
-      const clipId = document.querySelector('.js-clip-save-button').dataset.clipId;
+      const clipId = $('.js-clip-save-button').dataset.clipId;
 
       expect(savedCilpList[0].id === clipId).to.equal(true);
       cy.get('.js-num-of-saved-video').should('have.text', `1/${MAX_NUM_OF_SAVED_VIDEO}`);
@@ -87,13 +88,13 @@ describe('유튜브 검색 테스트', () => {
       cy.get('.js-search-input').clear();
       cy.get('.js-search-input').type(keyword).type('{enter}');
 
-      const searchResult = document.querySelector('.modal');
+      const searchResult = $('.modal');
 
       cy.get('.js-search-modal-close-button').click();
       cy.get('.modal').should('not.be.visible');
       cy.get('.js-search-button').click();
 
-      expect(document.querySelector('.modal') === searchResult).to.equal(true);
+      expect($('.modal') === searchResult).to.equal(true);
     });
 
     cy.get('.js-search-modal-close-button').click();

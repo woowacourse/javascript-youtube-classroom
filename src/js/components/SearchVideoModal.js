@@ -31,7 +31,7 @@ export class SearchVideoModal {
 
   openModal() {
     this.$modal.classList.add('open');
-    this.$modal.querySelector('input[type="search"]').focus();
+    $('input[type="search"]', this.$modal).focus();
   }
 
   closeModal() {

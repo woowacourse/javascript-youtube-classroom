@@ -123,7 +123,7 @@ export class SearchVideoResult {
   }
 
   render() {
-    if (this.$wrapper.querySelectorAll('.clip').length === 0 && this.searchResultData.items.length === 0) {
+    if ($$('.clip', this.$wrapper).length === 0 && this.searchResultData.items.length === 0) {
       showElement(this.$notFoundImage);
 
       return;
