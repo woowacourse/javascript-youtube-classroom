@@ -65,8 +65,8 @@ export default class SearchController {
     }
 
     if (isRecentKeywordRemoveButton(target)) {
-      const $keyword = target.closest('.js-recent-keyword');
-      const keyword = $keyword.querySelector('.js-keyword-link').innerText;
+      const $keyword = target.closest('.recent-keyword');
+      const keyword = $keyword.querySelector('.keyword-link').innerText;
 
       this.searchModel.removeRecentKeyword(keyword);
       this.searchView.removeRecentKeyword(this.searchModel.recentKeywords);
@@ -96,7 +96,7 @@ export default class SearchController {
   }
 
   onRequestSaveVideo({ target }) {
-    if (!target.classList.contains('js-save-button')) {
+    if (!target.classList.contains('save-button')) {
       return;
     }
     if (target.classList.contains('saved')) {

@@ -12,21 +12,21 @@
         <div class="w-100">
           <header class="my-4">
             <h2 class="text-center font-bold">👩🏻‍💻 나만의 유튜브 강의실 👨🏻‍💻</h2>
-            <nav class="js-classroom-nav d-flex justify-center">
-              <button class="js-watching-menu-button btn mx-1">👁️ 시청 중인 영상</button>
-              <button class="js-watched-menu-button btn mx-1">✅ 시청 완료 영상</button>
-              <button class="js-search-menu-button btn mx-5">🔍 동영상 검색</button>
+            <nav class="d-flex justify-center">
+              <button id="watching-menu-button" class="btn mx-1">👁️ 시청 중인 영상</button>
+              <button id="watched-menu-button" class="btn mx-1">✅ 시청 완료 영상</button>
+              <button id="search-menu-button" class="btn mx-5">🔍 동영상 검색</button>
             </nav>
           </header>
           <main class="mt-10">
-            <section class="js-saved-videos-wrapper watching-section videos-wrapper"></section>
-            <div class="js-no-video-found no-video-found"></div>
+            <section id="saved-videos-wrapper" class="watching-section videos-wrapper"></section>
+            <div id="no-video-found" class="no-video-found"></div>
           </main>
         </div>
       </div>
-      <section class="js-modal modal">
+      <section id="modal" class="modal-section">
         <div class="modal-inner p-8">
-          <button class="js-modal-close-button modal-close">
+          <button id="modal-close-button" class="modal-close">
             <svg viewbox="0 0 40 40">
               <path class="close-x" d="M 10,10 L 30,30 M 30,10 L 10,30" />
             </svg>
@@ -34,39 +34,33 @@
           <header>
             <h2 class="text-center">🔎 유튜브 검색</h2>
           </header>
-          <form class="js-search-keyword-form d-flex">
-            <input
-              type="text"
-              id="search-keyword-input"
-              class="js-search-keyword-input w-100 mr-2 pl-2"
-              placeholder="검색"
-              required
-            />
-            <button type="submit" class="js-search-keyword-button btn bg-cyan-500">검색</button>
+          <form id="search-keyword-form" class="d-flex">
+            <input type="text" id="search-keyword-input" class="w-100 mr-2 pl-2" placeholder="검색" required />
+            <button type="submit" id="search-keyword-button" class="btn bg-cyan-500">검색</button>
           </form>
           <section class="mt-2">
             <div class="text-gray-700 d-inline-block">
               최근 검색어:
-              <span class="js-recent-keywords">
-                <span class="js-recent-keyword v-hidden chip">
-                  <a class="js-keyword-link mr-2"> </a>
-                  <button class="js-keyword-remove-button keyword-remove-button">
+              <span id="recent-keywords">
+                <span class="recent-keyword v-hidden chip">
+                  <a class="keyword-link mr-2"> </a>
+                  <button class="keyword-remove-button">
                     <svg viewbox="0 0 40 40">
                       <path class="close-x" d="M 10,10 L 30,30 M 30,10 L 10,30" />
                     </svg>
                   </button>
                 </span>
-                <span class="js-recent-keyword v-hidden chip">
-                  <a class="js-keyword-link mr-2"> </a>
-                  <button class="js-keyword-remove-button keyword-remove-button">
+                <span class="recent-keyword v-hidden chip">
+                  <a class="keyword-link mr-2"> </a>
+                  <button class="keyword-remove-button">
                     <svg viewbox="0 0 40 40">
                       <path class="close-x" d="M 10,10 L 30,30 M 30,10 L 10,30" />
                     </svg>
                   </button>
                 </span>
-                <span class="js-recent-keyword v-hidden chip">
-                  <a class="js-keyword-link mr-2"> </a>
-                  <button class="js-keyword-remove-button keyword-remove-button">
+                <span class="recent-keyword v-hidden chip">
+                  <a class="keyword-link mr-2"> </a>
+                  <button class="keyword-remove-button">
                     <svg viewbox="0 0 40 40">
                       <path class="close-x" d="M 10,10 L 30,30 M 30,10 L 10,30" />
                     </svg>
@@ -77,13 +71,13 @@
           </section>
           <section>
             <div class="d-flex justify-end text-gray-700 my-2">
-              저장된 영상 갯수:&nbsp;<span class="js-saved-video-count"></span>&nbsp;/&nbsp;100개
+              저장된 영상 갯수:&nbsp;<span id="saved-video-count"></span>&nbsp;/&nbsp;100개
             </div>
-            <section class="js-search-result-wrapper videos-wrapper"></section>
+            <section id="search-result-wrapper" class="videos-wrapper"></section>
           </section>
         </div>
       </section>
-      <div class="js-snackbar-wrapper"></div>
+      <div id="snackbar-wrapper"></div>
     </div>
     <script type="module" src="./src/js/index.js"></script>
   </body>

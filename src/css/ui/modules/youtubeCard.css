@@ -6,12 +6,12 @@
   justify-content: center;
 }
 
-.modal .videos-wrapper {
+.modal-section .videos-wrapper {
   overflow-y: auto;
   height: 70vh;
 }
 
-.modal .search-result-group {
+.modal-section .search-result-group {
   margin: 0 6px;
   display: contents;
 }

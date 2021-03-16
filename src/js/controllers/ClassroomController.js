@@ -32,12 +32,12 @@ export default class ClassroomController {
     const $video = target.closest('article');
     const isWatching = isWatchingVideo($video);
 
-    if (target.classList.contains('js-check-button')) {
+    if (target.classList.contains('check-button')) {
       this.moveVideo($video, isWatching);
       return;
     }
 
-    if (target.classList.contains('js-remove-button')) {
+    if (target.classList.contains('remove-button')) {
       this.removeVideo($video, isWatching);
     }
   }

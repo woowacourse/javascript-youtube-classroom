@@ -9,14 +9,14 @@ export default class SearchView {
   }
 
   selectDOMs() {
-    this.$searchMenuButton = $('.js-search-menu-button');
-    this.$searchSection = $('.js-modal');
-    this.$searchResultWrapper = $('.js-search-result-wrapper');
-    this.$searchKeywordForm = $('.js-search-keyword-form');
-    this.$modalCloseButton = $('.js-modal-close-button');
-    this.$recentKeywords = $('.js-recent-keywords');
-    this.$savedVideoCount = $('.js-saved-video-count');
-    this.$snackbarWrapper = $('.js-snackbar-wrapper');
+    this.$searchMenuButton = $('#search-menu-button');
+    this.$searchSection = $('#modal');
+    this.$searchResultWrapper = $('#search-result-wrapper');
+    this.$searchKeywordForm = $('#search-keyword-form');
+    this.$modalCloseButton = $('#modal-close-button');
+    this.$recentKeywords = $('#recent-keywords');
+    this.$savedVideoCount = $('#saved-video-count');
+    this.$snackbarWrapper = $('#snackbar-wrapper');
   }
 
   init() {
@@ -24,13 +24,13 @@ export default class SearchView {
   }
 
   setCurrentGroupElements() {
-    this.$currentGroup = $('.js-search-result-group.skeleton');
+    this.$currentGroup = $('.search-result-group.skeleton');
     this.$currentGroupVideos = this.$currentGroup.querySelectorAll('article');
   }
 
   setCurrentVideoElements($video) {
     this.$video = $video;
-    this.$saveButton = this.$video.querySelector('.js-save-button');
+    this.$saveButton = this.$video.querySelector('.save-button');
   }
 
   setCurrentSaveButton($saveButton) {
@@ -64,7 +64,7 @@ export default class SearchView {
   renderVideos(searchResult) {
     this.$currentGroupVideos.forEach(($video, i) => {
       const result = searchResult[i];
-      const $saveButton = $video.querySelector('.js-save-button');
+      const $saveButton = $video.querySelector('.save-button');
 
       this.renderVideo($video, result);
       $saveButton.id = result.videoId;
@@ -73,13 +73,10 @@ export default class SearchView {
   }
 
   renderVideo($video, result) {
-    $video.querySelector('.js-preview-container').innerHTML = getThumbnailTemplate(result.videoId);
-    $video.querySelector('.js-video-title').innerText = result.videoTitle;
-    $video.querySelector('.js-channel-title').innerHTML = getChannelTitleTemplate(
-      result.channelId,
-      result.channelTitle,
-    );
-    $video.querySelector('.js-published-at').innerText = result.publishedAt;
+    $video.querySelector('.preview-container').innerHTML = getThumbnailTemplate(result.videoId);
+    $video.querySelector('.video-title').innerText = result.videoTitle;
+    $video.querySelector('.channel-title').innerHTML = getChannelTitleTemplate(result.channelId, result.channelTitle);
+    $video.querySelector('.published-at').innerText = result.publishedAt;
   }
 
   renderVisibleSaveButton($saveButton) {

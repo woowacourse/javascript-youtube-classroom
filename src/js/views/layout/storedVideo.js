@@ -16,7 +16,7 @@ export const getSavedVideoTemplate = ({ videoId, videoTitle, channelId, channelT
         ></iframe>
       </div>
       <div class="content-container pt-2 px-1">
-        <h3 class="js-video-title video-title">${videoTitle}</h3>
+        <h3 class="video-title">${videoTitle}</h3>
         <div class="channel-title">
           <a href=${
             YOUTUBE_LINK_ENDPOINT.CHANNEL
@@ -26,10 +26,10 @@ export const getSavedVideoTemplate = ({ videoId, videoTitle, channelId, channelT
         </div>
         <div class="published-at">${publishedAt}</div>
         <div>
-          <span class="js-check-button video-manage-btn ${className === WATCHING ? '' : CHECKED}">✅</span>
-          <span class="js-like-button video-manage-btn">👍</span>
-          <span class="js-comment-button video-manage-btn disabled">💬</span>
-          <span class="js-remove-button video-manage-btn">🗑️</span>
+          <span class="check-button video-manage-btn ${className === WATCHING ? '' : CHECKED}">✅</span>
+          <span class="like-button video-manage-btn">👍</span>
+          <span class="comment-button video-manage-btn disabled">💬</span>
+          <span class="remove-button video-manage-btn">🗑️</span>
         </div>
       </div>
     </article>

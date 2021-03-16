@@ -10,11 +10,11 @@ export default class ClassroomView {
   }
 
   selectDOMs() {
-    this.$watchingMenuButton = $('.js-watching-menu-button');
-    this.$watchedMenuButton = $('.js-watched-menu-button');
-    this.$savedVideosWrapper = $('.js-saved-videos-wrapper');
-    this.$noVideoFound = $('.js-no-video-found');
-    this.$snackbarWrapper = $('.js-snackbar-wrapper');
+    this.$watchingMenuButton = $('#watching-menu-button');
+    this.$watchedMenuButton = $('#watched-menu-button');
+    this.$savedVideosWrapper = $('#saved-videos-wrapper');
+    this.$noVideoFound = $('#no-video-found');
+    this.$snackbarWrapper = $('#snackbar-wrapper');
   }
 
   renderVideosToPrepare(videos) {
@@ -52,7 +52,7 @@ export default class ClassroomView {
   }
 
   renderMovedVideo($video, wasWatching) {
-    $video.querySelector('.js-check-button').classList.toggle('checked');
+    $video.querySelector('.check-button').classList.toggle('checked');
     if (wasWatching) {
       $video.classList.remove(WATCHING);
       $video.classList.add(WATCHED);

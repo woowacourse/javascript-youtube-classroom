@@ -2,23 +2,23 @@ import { getListByKey } from '../utils/localStorage.js';
 import { DB_KEY, CLASS_NAME } from '../constants.js';
 
 export const isModalOpen = ($target) => {
-  return $target.querySelector('.modal').classList.contains('open');
+  return $target.querySelector('#modal').classList.contains('open');
 };
 
 export const isModalDimmedArea = ($target) => {
-  return $target.classList.contains('modal');
+  return $target.classList.contains('modal-section');
 };
 
 export const isModalCloseButton = ($target) => {
-  return $target.closest('.js-modal-close-button');
+  return $target.closest('#modal-close-button');
 };
 
 export const isRecentKeywordLink = ($target) => {
-  return $target.closest('.js-keyword-link');
+  return $target.closest('.keyword-link');
 };
 
 export const isRecentKeywordRemoveButton = ($target) => {
-  return $target.closest('.js-keyword-remove-button');
+  return $target.closest('.keyword-remove-button');
 };
 
 export const isSavedVideo = (targetId) => {

@@ -1,4 +1,4 @@
-.modal {
+.modal-section {
   opacity: 0;
   visibility: hidden;
   display: flex;
@@ -12,7 +12,7 @@
   z-index: 2;
 }
 
-.modal.open {
+.modal-section.open {
   opacity: 1;
   visibility: visible;
 }
