@@ -18,7 +18,7 @@ export default class NavigationView extends View {
       $('iframe').each((iframe) => stopVideo(iframe));
     });
 
-    $('#pickle-tab > .nav-btn').setEvent('click', (e) => {
+    $('.nav-menu > .nav-btn').setEvent('click', (e) => {
       this.emit('clickNavTab', e.target.id);
       $('iframe').each((iframe) => stopVideo(iframe));
     });
