@@ -18,9 +18,7 @@ export default class HistoryVideoWrapper {
 
     this.historyVideosMap = new Map();
 
-    this.$noSavedVideoImage = $(
-      `.${CLASSNAME.HISTORY_CONTAINER} .${CLASSNAME.NO_SAVED_VIDEO_IMAGE}`
-    );
+    this.$noSavedVideoImage = $(`.${CLASSNAME.NO_WATCHED_VIDEO_IMAGE}`);
     this.$historyVideoWrapper = $(`.${CLASSNAME.HISTORY_VIDEO_WRAPPER}`);
 
     messenger.addMessageListener(

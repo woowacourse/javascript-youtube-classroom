@@ -20,9 +20,7 @@ export default class WatchLaterVideoWrapper {
 
     this.watchLaterVideosMap = new Map();
 
-    this.$noSavedVideoImage = $(
-      `.${CLASSNAME.WATCH_LATER_CONTAINER} .${CLASSNAME.NO_SAVED_VIDEO_IMAGE}`
-    );
+    this.$noSavedVideoImage = $(`.${CLASSNAME.NO_WATCHING_VIDEO_IMAGE}`);
     this.$watchLaterVideoWrapper = $(`.${CLASSNAME.WATCH_LATER_VIDEO_WRAPPER}`);
 
     messenger.addMessageListener(
