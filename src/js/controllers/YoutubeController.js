@@ -128,8 +128,26 @@ export default class YoutubeController {
 
   markVideoWatched(videoId) {
     this.store.update({ [STORE_KEYS.WATCHED_VIDEO_IDS]: videoId });
-    this.savedVideosView.toggleButton(videoId, BUTTON_PACK_TYPE.WATCHED);
-    this.checkEmptyWhenMarked();
+    const watchedVideoIds = this.store.state.watchedVideoIds;
+    const unWatchedVideoIds = this.store.computed.unWatchedVideoIds;
+
+    if (this.selectedTab === TABS.SAVED) {
+      this.savedVideosView.toggleButton(videoId, BUTTON_PACK_TYPE.WATCHED); 
+      popSnackbar(SNACKBAR_MESSAGES.WATCH_VIDEO_ADD.SUCCESS);
+      if (isEmptyArray(unWatchedVideoIds)) {
+        this.savedVideosView.showVideoEmptyImg();
+      }
+    } else if (this.selectedTab === TABS.WATCHED) {
+      this.savedVideosView.toggleButton(videoId, BUTTON_PACK_TYPE.WATCHED); 
+      popSnackbar(SNACKBAR_MESSAGES.WATCH_VIDEO_REMOVE.SUCCESS);
+      if (isEmptyArray(watchedVideoIds)) {
+        this.savedVideosView.showVideoEmptyImg();
+      }
+    } else if (this.selectedTab === TABS.LIKED) {
+      const pop = false;
+      this.savedVideosView.toggleButton(videoId, BUTTON_PACK_TYPE.WATCHED, pop); 
+      popSnackbar(SNACKBAR_MESSAGES.WATCH_VIDEO_ADD.SUCCESS);
+    }
   }
 
   markVideoLiked(videoId) {
@@ -148,23 +166,6 @@ export default class YoutubeController {
       this.savedVideosView.toggleButton(videoId, BUTTON_PACK_TYPE.LIKE);
       popSnackbar(SNACKBAR_MESSAGES.LIKE_VIDEO_REMOVE.SUCCESS);
       if (isEmptyArray(likedVideoIds)) {
-        this.savedVideosView.showVideoEmptyImg();
-      }
-    }
-  }
-
-  checkEmptyWhenMarked() {
-    const watchedVideoIds = this.store.state.watchedVideoIds;
-    const unWatchedVideoIds = this.store.computed.unWatchedVideoIds;
-
-    if (this.selectedTab === TABS.SAVED) {
-      popSnackbar(SNACKBAR_MESSAGES.WATCH_VIDEO_ADD.SUCCESS);
-      if (isEmptyArray(unWatchedVideoIds)) {
-        this.savedVideosView.showVideoEmptyImg();
-      }
-    } else {
-      popSnackbar(SNACKBAR_MESSAGES.WATCH_VIDEO_REMOVE.SUCCESS);
-      if (isEmptyArray(watchedVideoIds)) {
         this.savedVideosView.showVideoEmptyImg();
       }
     }
