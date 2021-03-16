@@ -1,0 +1,11 @@
+.watched-section > .unwatched-clip {
+  display: none;
+}
+
+.unwatched-section > .watched-clip {
+  display: none;
+}
+
+.deleted-clip {
+  display: none;
+}

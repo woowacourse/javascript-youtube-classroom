@@ -1,4 +1,5 @@
 import date from '../utils/date.js';
+import { LOCAL_STORAGE_VALUE } from '../utils/constant.js';
 
 const buttonTemplate = (index, type) => {
   const { isModal, isSaved } = type;
@@ -10,11 +11,11 @@ const buttonTemplate = (index, type) => {
   }
 
   return `
-    <div>
-      <span class="opacity-hover">✅</span>
-      <span class="opacity-hover">👍</span>
-      <span class="opacity-hover">💬</span>
-      <span class="opacity-hover">🗑️</span>
+    <div class="button-container" data-js="saved-clip-button-container">
+      <button class="opacity-hover" data-js="saved-clip-button-container__check">✅</button>
+      <button class="opacity-hover" data-js="saved-clip-button-container__like">👍</button>
+      <button class="opacity-hover" data-js="saved-clip-button-container__comment">💬</button>
+      <button class="opacity-hover" data-js="saved-clip-button-container__delete">🗑️</button>
     </div>
   `;
 };
@@ -26,8 +27,16 @@ const YMDtemplate = (time) => {
 };
 
 export const clipTemplate = (video, index, type) => {
+  const { isModal, currentTab } = type;
+
   return `
-      <article class="clip" data-js="youtube-search-modal__clip">
+      <article class="clip ${
+        currentTab === LOCAL_STORAGE_VALUE.WATCHED ? 'd-none' : ''
+      } ${video.isWatched ? 'watched-clip' : 'unwatched-clip'}
+        " 
+        data-js=${isModal ? 'youtube-search-modal__clip' : 'saved-page__clip'}
+        data-clip-index=${index}
+      >
         <div class="preview-container">
           <iframe 
             width="100%"
@@ -52,7 +61,7 @@ export const clipTemplate = (video, index, type) => {
             <div class="meta">
               ${YMDtemplate(video.snippet.publishTime)}
             </div>
-            <div class="d-flex justify-end" data-clip-index=${index}>
+            <div class="d-flex justify-end">
              ${buttonTemplate(index, type)}            
             </div>
           </div>
