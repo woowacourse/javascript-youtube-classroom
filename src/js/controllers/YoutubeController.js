@@ -115,11 +115,20 @@ export default class YoutubeController {
     );
 
     const watchedVideoIds = this.store.state.watchedVideoIds;
+    const unWatchedVideoIds = this.store.computed.unWatchedVideoIds;
 
     if (watchedVideoIds.includes(videoId)) {
       popSnackbar(SNACKBAR_MESSAGES.WATCH_VIDEO_ADD.SUCCESS);
     } else {
       popSnackbar(SNACKBAR_MESSAGES.WATCH_VIDEO_REMOVE.SUCCESS);
+    }
+
+    if (this.isNow(TAB.SELECTOR.UNWATCHED) && isEmptyArray(unWatchedVideoIds)) {
+      this.savedVideosView.showVideoEmptyImg();
+    }
+
+    if (this.isNow(TAB.SELECTOR.WATCHED) && isEmptyArray(watchedVideoIds)) {
+      this.savedVideosView.showVideoEmptyImg();
     }
   }
 
@@ -135,6 +144,10 @@ export default class YoutubeController {
       popSnackbar(SNACKBAR_MESSAGES.LIKE_VIDEO_ADD.SUCCESS);
     } else {
       popSnackbar(SNACKBAR_MESSAGES.LIKE_VIDEO_REMOVE.SUCCESS);
+    }
+
+    if (this.isNow(TAB.SELECTOR.LIKED) && isEmptyArray(likedVideoIds)) {
+      this.savedVideosView.showVideoEmptyImg();
     }
   }
 
