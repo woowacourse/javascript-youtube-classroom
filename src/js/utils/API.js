@@ -3,7 +3,7 @@ import { NUMBER } from "../constants/index.js";
 const REDIRECT_SERVER_HOST = "https://bigsaigon333.netlify.app";
 
 const fetchYoutubeData = async (query, nextPageToken = "") => {
-  const url = new URL("youtube/search", REDIRECT_SERVER_HOST);
+  const url = new URL("youtube/v3/search", REDIRECT_SERVER_HOST);
   const parameters = new URLSearchParams({
     part: "snippet",
     type: "video",
