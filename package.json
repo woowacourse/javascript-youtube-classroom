@@ -16,6 +16,17 @@
     "eslint-config-prettier": "^8.1.0",
     "eslint-plugin-cypress": "^2.11.2",
     "eslint-plugin-import": "^2.22.1",
+    "husky": "=4",
+    "lint-staged": ">=10",
     "prettier": "2.2.1"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "*.js": "eslint --cache",
+    "*.{js,css,md,json,html}": "prettier --write"
   }
 }
