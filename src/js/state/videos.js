@@ -61,7 +61,7 @@ const videos = {
       );
 
       if (videoIndex === -1) {
-        throw new Error(ERROR_MESSAGE.CONNOT_FIND_INDEX_OF_VIDEO);
+        throw new Error(ERROR_MESSAGE.CANNOT_FIND_INDEX_OF_VIDEO);
       }
 
       const video = this.savedVideos[videoIndex];
@@ -90,7 +90,7 @@ const videos = {
       );
 
       if (videoIndex === -1) {
-        throw new Error(ERROR_MESSAGE.CONNOT_FIND_INDEX_OF_VIDEO);
+        throw new Error(ERROR_MESSAGE.CANNOT_FIND_INDEX_OF_VIDEO);
       }
 
       const video = this.savedVideos[videoIndex];
