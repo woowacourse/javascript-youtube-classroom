@@ -132,4 +132,15 @@ describe('Youtube classroom test', () => {
     cy.get('.js-video .js-delete-button').click();
     cy.get('#video-list #empty-video-list').should('exist');
   });
+
+  it('영상 카드의 좋아요 버튼을 눌렀을 때, 좋아요 표시한 영상으로 모아볼 수 있다.', () => {
+    cy.get('#search-button').click();
+    cy.get('#video-search-input').type('로이드1');
+    cy.get('#video-search-submit').click();
+    cy.get('.js-save-button').eq(0).click();
+    cy.reload();
+    cy.get('.js-video .js-like-button').click();
+    cy.get('#liked-video-display-button').click();
+    cy.get('#video-list .js-video').should('have.length', 1);
+  });
 });

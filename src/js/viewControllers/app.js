@@ -1,13 +1,24 @@
-import $ from '../utils/DOM.js';
+import { $, $$ } from '../utils/DOM.js';
 import {
   savedVideoListTemplate,
   emptyVideoListTemplate,
 } from '../templates/videoList.js';
-import { TO_WATCH_TYPE } from '../constants/filterType.js';
+import {
+  LIKED_TYPE,
+  TO_WATCH_TYPE,
+  WATCHED_TYPE,
+} from '../constants/filterType.js';
+import {
+  getLikedVideoInfos,
+  getToWatchVideoInfos,
+  getWatchedVideoInfos,
+} from '../service.js';
+import videoListType from '../states/videoListType.js';
 
 const $searchModal = $('#video-search-modal');
 const $videoList = $('#video-list');
 const $videoSearchInput = $('#video-search-input');
+const $snackbar = $('#snack-bar');
 
 function openModal() {
   $searchModal.classList.add('open');
@@ -18,20 +29,21 @@ function closeModal() {
   $searchModal.classList.remove('open');
 }
 
-function renderSavedVideoList(videoInfos, videoListType) {
-  const filteredVideoInfos =
-    videoListType === TO_WATCH_TYPE
-      ? [...videoInfos].filter(videoInfo => !videoInfo.isWatched)
-      : [...videoInfos].filter(videoInfo => videoInfo.isWatched);
+const getFilteredVideoList = {
+  [TO_WATCH_TYPE]: () => getToWatchVideoInfos(),
+  [WATCHED_TYPE]: () => getWatchedVideoInfos(),
+  [LIKED_TYPE]: () => getLikedVideoInfos(),
+};
 
-  $videoList.innerHTML = filteredVideoInfos.length
-    ? savedVideoListTemplate(filteredVideoInfos)
+function renderSavedVideoList() {
+  const filteredVideoList = getFilteredVideoList[videoListType.get()]();
+
+  $videoList.innerHTML = filteredVideoList.length
+    ? savedVideoListTemplate(filteredVideoList)
     : emptyVideoListTemplate;
 }
 
 function showSnackBar(contents) {
-  const $snackbar = $('#snack-bar');
-
   $snackbar.innerText = contents;
   $snackbar.classList.toggle('show');
   setTimeout(() => {
@@ -39,9 +51,21 @@ function showSnackBar(contents) {
   }, 3000);
 }
 
-function toggleFocusedModeButton() {
-  $('#watched-video-display-button').classList.toggle('bg-cyan-100');
-  $('#to-watch-video-display-button').classList.toggle('bg-cyan-100');
+const modeButtonSelector = {
+  [TO_WATCH_TYPE]: '#to-watch-video-display-button',
+  [WATCHED_TYPE]: '#watched-video-display-button',
+  [LIKED_TYPE]: '#liked-video-display-button',
+};
+
+function changeFocusedModeButton(type) {
+  $$('#mode-wrapper .js-mode-button').forEach($modeButton =>
+    $modeButton.classList.remove('bg-cyan-100')
+  );
+  $(modeButtonSelector[type]).classList.add('bg-cyan-100');
+}
+
+function updateDarkMode(isDarkMode) {
+  isDarkMode && $('#dark-mode-toggle').click();
 }
 
 export {
@@ -49,5 +73,6 @@ export {
   closeModal,
   renderSavedVideoList,
   showSnackBar,
-  toggleFocusedModeButton,
+  changeFocusedModeButton,
+  updateDarkMode,
 };

@@ -1,3 +1,12 @@
 const YOUTUBE_BASE_URL = 'https://www.googleapis.com/youtube/v3';
 
-export { YOUTUBE_BASE_URL };
+const YOUTUBE_QUERY = {
+  PART: {
+    SNIPPET: 'snippet',
+  },
+  ORDER: {
+    VIEW_COUNT: 'viewCount',
+  },
+};
+
+export { YOUTUBE_BASE_URL, YOUTUBE_QUERY };

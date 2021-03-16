@@ -16,6 +16,7 @@ async function updateVideoInfos(videoInfos) {
     },
     isWatched: videoInfos.find(videoInfo => videoInfo.id.videoId === id)
       .isWatched,
+    isLiked: videoInfos.find(videoInfo => videoInfo.id.videoId === id).isLiked,
   }));
 }
 
@@ -53,6 +54,19 @@ const videoInfos = {
         ? {
             ...videoInfo,
             isWatched: !videoInfo.isWatched,
+          }
+        : videoInfo
+    );
+
+    this.set(newVideoInfos);
+  },
+
+  toggleLikeType(targetId) {
+    const newVideoInfos = [...this.value].map(videoInfo =>
+      videoInfo.id.videoId === targetId
+        ? {
+            ...videoInfo,
+            isLiked: !videoInfo.isLiked,
           }
         : videoInfo
     );

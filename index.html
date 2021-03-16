@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="./src/css/index.css" />
     <link rel="preconnect" href="https://fonts.gstatic.com" />
     <link
-      href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100&display=swap"
+      href="LIKED_TYPEhttps://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100&display=swap"
       rel="stylesheet"
     />
   </head>
@@ -16,20 +16,40 @@
       <div class="d-flex justify-center mt-5 w-100">
         <div class="w-100">
           <header class="my-4">
+            <label id="dark-mode-toggle" class="switch">
+              <input type="checkbox" />
+              <div class="slider round d-flex items-center">
+                <img
+                  src="./src/images/half-moon-moon-svgrepo-com.svg"
+                  alt="moon"
+                  style="height: 15px; padding-left: 4px"
+                />
+              </div>
+            </label>
+
             <h2 class="text-center font-bold">👩🏻‍💻 나만의 유튜브 강의실 👨🏻‍💻</h2>
-            <nav id="mode-wrapper" class="d-flex justify-center">
+            <nav id="mode-wrapper" class="d-flex justify-center mt-10">
               <button
                 id="to-watch-video-display-button"
-                class="btn mx-1 bg-cyan-100"
+                class="js-mode-button btn mx-1 bg-cyan-100"
               >
-                👁️ 볼 영상
+                👁️ <span class="linebreak" />볼 영상
               </button>
-              <button id="watched-video-display-button" class="btn mx-1">
-                ✅ 본 영상
+              <button
+                id="watched-video-display-button"
+                class="js-mode-button btn mx-1"
+              >
+                ✅<span class="linebreak" /> 본 영상
               </button>
-              <button id="search-button" class="mx-1 rounded-full">🔍</button>
+              <button
+                id="liked-video-display-button"
+                class="js-mode-button btn mx-1"
+              >
+                👍<span class="linebreak" /> 좋아요 표시한 영상
+              </button>
             </nav>
           </header>
+          <button id="search-button" class="mx-1 rounded-full">🔍</button>
           <main class="mt-10">
             <section id="video-list" class="video-wrapper"></section>
           </main>
@@ -45,7 +65,7 @@
           <header>
             <h2 class="text-center">🔎 유튜브 검색</h2>
           </header>
-          <form id="video-search-form" class="d-flex">
+          <form id="video-search-form" class="d-flex mt-10">
             <input
               id="video-search-input"
               type="text"
@@ -63,7 +83,7 @@
               검색
             </button>
           </form>
-          <section id="latest-keyword-list" class="mt-2"></section>
+          <section id="latest-keyword-list" class="mt-6"></section>
           <section>
             <div class="d-flex justify-end text-gray-700">
               저장된 영상 개수:&nbsp;<span id="saved-video-count"></span>

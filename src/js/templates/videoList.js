@@ -63,15 +63,14 @@ function videoListTemplate(resultItems = [], videoInfos) {
     .join('');
 }
 
-function controlButtonsTemplate(isWatched) {
+function controlButtonsTemplate({ isWatched, isLiked }) {
   return [
     {
       content: '✅',
       className: 'js-watched-button',
       isChecked: isWatched,
     },
-    { content: '👍', className: 'js-like-button', isChecked: false },
-    { content: '💬', className: 'js-comment-button', isChecked: false },
+    { content: '👍', className: 'js-like-button', isChecked: isLiked },
     { content: '🗑️', className: 'js-delete-button', isChecked: false },
   ]
     .map(
@@ -86,7 +85,13 @@ function controlButtonsTemplate(isWatched) {
 function savedVideoListTemplate(savedVideoInfos = []) {
   return [...savedVideoInfos]
     .map(item =>
-      videoSnippetTemplate(item, controlButtonsTemplate(item.watchType))
+      videoSnippetTemplate(
+        item,
+        controlButtonsTemplate({
+          isWatched: item.isWatched,
+          isLiked: item.isLiked,
+        })
+      )
     )
     .join('');
 }

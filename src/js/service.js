@@ -9,6 +9,7 @@ function createVideoInfo(videoDataset) {
     id: { videoId },
     snippet: { title, channelId, channelTitle, publishTime },
     isWatched: false,
+    isLiked: false,
   };
 }
 
@@ -30,4 +31,23 @@ async function searchVideo(keyword) {
   return items.filter(item => item.id.videoId);
 }
 
-export { saveVideo, cancelVideoSave, searchVideo };
+function getToWatchVideoInfos() {
+  return [...videoInfos.get()].filter(videoInfo => !videoInfo.isWatched);
+}
+
+function getWatchedVideoInfos() {
+  return [...videoInfos.get()].filter(videoInfo => videoInfo.isWatched);
+}
+
+function getLikedVideoInfos() {
+  return [...videoInfos.get()].filter(videoInfo => videoInfo.isLiked);
+}
+
+export {
+  saveVideo,
+  cancelVideoSave,
+  searchVideo,
+  getToWatchVideoInfos,
+  getWatchedVideoInfos,
+  getLikedVideoInfos,
+};
