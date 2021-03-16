@@ -1,5 +1,8 @@
+@import 'modules/classroom.css';
 @import 'modules/modal.css';
 @import 'modules/skeleton.css';
 @import 'modules/chip.css';
 @import 'modules/youtubeCard.css';
 @import 'modules/snackbar.css';
+@import 'modules/videoManager.css';
+@import 'modules/confirm.css';

@@ -1,4 +1,4 @@
-.video-wrapper {
+.videos-wrapper {
   display: grid;
   grid-template-columns: repeat(auto-fill, 230px);
   grid-row-gap: 50px;
@@ -6,7 +6,7 @@
   justify-content: center;
 }
 
-.modal .video-wrapper {
+.modal .videos-wrapper {
   overflow-y: auto;
   height: 70vh;
 }
@@ -58,22 +58,31 @@
   overflow: hidden;
   color: #0a0a0a;
   white-space: nowrap;
+  cursor: text;
 }
 
-.clip .content-container .channel-link {
+.clip .channel-link {
   font-size: 12px;
-  color: #606060;
+  color: #105f6a;
+  font-weight: 800;
   display: block;
   width: 100%;
+}
+
+.clip .channel-link:hover {
+  color: #3b9fac;
 }
 
 .clip .published-at {
   font-size: 12px;
   display: inline-block;
   color: #606060;
+  cursor: text;
 }
 
-.clip .save-button.saved {
+.clip .save-button.saved,
+.clip .save-button.saved:hover {
+  background-color: #efefef;
   opacity: 0.3;
   cursor: not-allowed;
 }

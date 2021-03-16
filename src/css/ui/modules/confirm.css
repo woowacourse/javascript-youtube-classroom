@@ -1,0 +1,95 @@
+.confirm {
+  visibility: hidden;
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background: rgba(0, 0, 0, 0.3);
+  transition: opacity 0.25s ease;
+  z-index: 2;
+}
+
+.confirm-inner {
+  position: fixed;
+  width: 400px;
+  left: calc(50% - 220px);
+  bottom: 50%;
+  background-color: #fff;
+  border-radius: 10px;
+  border: 3px solid #ccc;
+  -webkit-animation: fade 0.3s ease 1 forwards;
+  animation: fade 0.3s ease 1 forwards;
+  box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.2);
+}
+
+.confirm.show {
+  visibility: visible;
+}
+
+.confirm h1 {
+  color: #444;
+  text-align: center;
+  font-size: 1.2rem;
+  margin: 1.5rem 2rem 5rem;
+}
+
+.confirm button {
+  background: transparent;
+  color: #333;
+  height: 3rem;
+  font-size: 1rem;
+  width: 50%;
+  position: absolute;
+  bottom: 0;
+  cursor: pointer;
+}
+
+.confirm-cancel {
+  border-width: 2px 1px 0 0;
+  border-style: solid;
+  border-color: #ccc;
+  border-radius: 0 0 0 7px;
+  left: 0;
+}
+
+.confirm-approve {
+  border-width: 2px 0 0 1px;
+  border-style: solid;
+  border-color: #ccc;
+  border-radius: 0 0 7px 0;
+  right: 0;
+}
+
+.confirm button:focus,
+.confirm button:hover {
+  font-weight: bold;
+  background: #ccc;
+  outline-color: black;
+}
+
+.confirm button:active {
+  background: #d6d6d6;
+}
+
+@-webkit-keyframes fade {
+  from {
+    opacity: 0;
+    transform: scale(0.8);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes fade {
+  from {
+    opacity: 0;
+    transform: scale(0.8);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}

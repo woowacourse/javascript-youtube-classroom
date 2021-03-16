@@ -1,6 +1,6 @@
-import { getThumbnailTemplate, getChannelTitleTemplate, resultNotFoundTemplate } from '../layout/searchResult.js';
-import { getSkeletonTemplate } from '../layout/skeleton.js';
-import { $ } from '../utils/DOM.js';
+import { getSkeletonTemplate } from './layout/skeleton.js';
+import { getThumbnailTemplate, getChannelTitleTemplate, resultNotFoundTemplate } from './layout/searchResult.js';
+import { $, showSnackbar } from '../utils/DOM.js';
 import { SNACKBAR_SHOW_TIME } from '../constants.js';
 
 export default class SearchView {
@@ -9,12 +9,12 @@ export default class SearchView {
   }
 
   selectDOMs() {
-    this.$searchResultWrapper = $('.js-search-result-wrapper');
+    this.$searchMenuButton = $('.js-search-menu-button');
     this.$searchSection = $('.js-modal');
+    this.$searchResultWrapper = $('.js-search-result-wrapper');
     this.$searchKeywordForm = $('.js-search-keyword-form');
-    this.$searchButton = $('.js-search-button');
     this.$modalCloseButton = $('.js-modal-close-button');
-    this.$recentKeywords = $('.js-recent-keyword');
+    this.$recentKeywords = $('.js-recent-keywords');
     this.$savedVideoCount = $('.js-saved-video-count');
     this.$snackbar = $('.js-snackbar');
   }
@@ -91,11 +91,7 @@ export default class SearchView {
   }
 
   renderNotification(message) {
-    this.$snackbar.innerText = message;
-    this.$snackbar.classList.add('show');
-    setTimeout(() => {
-      this.$snackbar.classList.remove('show');
-    }, SNACKBAR_SHOW_TIME);
+    showSnackbar({ messenger: this.$snackbar, message, showtime: SNACKBAR_SHOW_TIME });
   }
 
   renderSaveVideoCount(videoCount) {
@@ -104,9 +100,16 @@ export default class SearchView {
 
   renderRecentKeywords(keywords) {
     keywords.forEach((keyword, index) => {
-      this.$recentKeywords.children[index].innerText = keyword;
+      this.$recentKeywords.children[index].querySelector('a').innerText = keyword;
       this.$recentKeywords.children[index].classList.remove('v-hidden');
     });
+  }
+
+  removeRecentKeyword(keywords) {
+    [...this.$recentKeywords.children].forEach(($keyword) => {
+      $keyword.classList.add('v-hidden');
+    });
+    this.renderRecentKeywords(keywords);
   }
 
   renderVisibleModal(videoCount, keywords) {
