@@ -1,19 +1,17 @@
-import { $$ } from './index.js';
-
-export const setLazyLoading = () => {
-  const lazyLoadIframes = $$('.lazy');
+export const setLazyLoading = elements => {
+  const lazyLoadingElements = elements.querySelectorAll('[data-src]');
   const imageObserver = new IntersectionObserver((entries, observer) => {
     entries.forEach(entry => {
       if (entry.isIntersecting) {
-        entry.target.classList.remove('lazy');
         const image = entry.target;
         image.src = image.dataset.src;
+        image.removeAttribute('data-src');
         imageObserver.unobserve(image);
       }
     });
   });
 
-  lazyLoadIframes.forEach(image => {
+  lazyLoadingElements.forEach(image => {
     imageObserver.observe(image);
   });
 };

@@ -154,7 +154,7 @@ export class SavedVideo {
     const savedVideoData = await this.fetchSavedVideoData(filteredVideoIdList);
     removeSkeleton(this.$savedVideoWrapper);
     this.$savedVideoWrapper.innerHTML = savedVideoData.items.map(item => this.makeTemplate(item)).join('');
-    setLazyLoading();
+    setLazyLoading(this.$savedVideoWrapper);
   }
 
   async renderNewVideo(videoId) {

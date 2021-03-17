@@ -115,7 +115,7 @@ export class SearchVideoResult {
       this.searchResultData.items.map(item => this.makeTemplate(item)).join('')
     );
     showElement(this.$scrollObserver);
-    setLazyLoading();
+    setLazyLoading(this.$container);
   }
 
   setState({ searchResultData }) {

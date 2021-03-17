@@ -10,7 +10,6 @@ export const getVideoTemplate = ({ videoData, buttonTemplate }) => {
         <div class="content-container">
           <div class="preview-container">
             <iframe
-              class="lazy"
               width="100%"
               height="118"
               data-src="https://www.youtube.com/embed/${kind === searchKind ? id.videoId : id}"
