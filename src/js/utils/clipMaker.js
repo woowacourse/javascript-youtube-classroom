@@ -10,7 +10,7 @@ export default function clipMaker(video, type) {
         <iframe
           width="100%"
           height="118"
-          src="https://www.youtube.com/embed/${video.id}?enablejsapi=1"
+          data-src="https://www.youtube.com/embed/${video.id}?enablejsapi=1"
           frameborder="0"
           allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
           allowscriptaccess="always"

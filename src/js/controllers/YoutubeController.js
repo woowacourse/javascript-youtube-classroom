@@ -3,6 +3,7 @@ import { isEmptyArray } from '../utils/validator.js';
 import {
   TABS,
   STORE_KEYS,
+  BUTTON_PACK_TYPE,
   ALERT_MESSAGES,
   SNACKBAR_MESSAGES,
 } from '../utils/constants.js';
@@ -31,15 +32,51 @@ export default class YoutubeController {
     this.bindEvents();
   }
 
+  update() {
+    const watchedVideoIds = this.store.state.watchedVideoIds;
+    const unWatchedVideoIds = this.store.computed.unWatchedVideoIds;
+    const likedVideoIds = this.store.state.likedVideoIds;
+
+    const isEmptySavedTab =
+      this.selectedTab === TABS.SAVED && isEmptyArray(unWatchedVideoIds);
+    const isEmptyWatchedTab =
+      this.selectedTab === TABS.WATCHED && isEmptyArray(watchedVideoIds);
+    const isEmptyLikedTab =
+      this.selectedTab === TABS.LIKED && isEmptyArray(likedVideoIds);
+
+    if (isEmptySavedTab || isEmptyWatchedTab || isEmptyLikedTab) {
+      this.savedVideosView.showVideoEmptyImg();
+    }
+  }
+
   bindEvents() {
     this.navigationView
       .on('clickSavedTab', () => this.focusSavedTab())
       .on('clickWatchedTab', () => this.focusWatchedTab())
+      .on('clickLikedTab', () => this.focusLikedTab())
       .on('clickSearchTab', () => this.focusSearchTab());
     this.searchModalView.on('closeModal', () => this.focusSavedTab());
     this.savedVideosView
       .on('clickWatched', (e) => this.markVideoWatched(e.detail))
+      .on('clickLike', (e) => this.markVideoLiked(e.detail))
       .on('clickDelete', (e) => this.deleteVideo(e.detail));
+  }
+
+  async initialLoad() {
+    const savedVideoIds = this.store.state.savedVideoIds;
+    const unWatchedVideoIds = this.store.computed.unWatchedVideoIds;
+    const response = await videoRequest(savedVideoIds);
+    if (!response) {
+      popSnackbar(ALERT_MESSAGES.API_REQUEST_FAILED);
+      return;
+    }
+
+    this.generateSavedVideos(response);
+    this.savedVideosView.renderVideoEmptyImg();
+
+    if (isEmptyArray(unWatchedVideoIds)) {
+      this.savedVideosView.showVideoEmptyImg();
+    }
   }
 
   focusSavedTab() {
@@ -62,6 +99,18 @@ export default class YoutubeController {
     this.savedVideosView.showMatchedVideos(unWatchedVideoIds, watchedVideoIds);
 
     if (isEmptyArray(watchedVideoIds)) {
+      this.savedVideosView.showVideoEmptyImg();
+    }
+  }
+
+  focusLikedTab() {
+    const savedVideoIds = this.store.state.savedVideoIds;
+    const likedVideoIds = this.store.state.likedVideoIds;
+
+    this.updateNavTab(TABS.LIKED);
+    this.savedVideosView.showMatchedVideos(savedVideoIds, likedVideoIds);
+
+    if (isEmptyArray(likedVideoIds)) {
       this.savedVideosView.showVideoEmptyImg();
     }
   }
@@ -92,29 +141,43 @@ export default class YoutubeController {
     );
     this.savedVideosView.removeSavedVideoClip(videoId);
     popSnackbar(SNACKBAR_MESSAGES.DELETE_VIDEO.SUCCESS);
-    this.checkCurrentTabEmpty();
   }
 
   markVideoWatched(videoId) {
     this.store.update({ [STORE_KEYS.WATCHED_VIDEO_IDS]: videoId });
-    this.savedVideosView.toggleWatchedButton(videoId);
-    this.checkCurrentTabEmpty();
-  }
-
-  checkCurrentTabEmpty() {
-    const watchedVideoIds = this.store.state.watchedVideoIds;
-    const unWatchedVideoIds = this.store.computed.unWatchedVideoIds;
 
     if (this.selectedTab === TABS.SAVED) {
-      popSnackbar(SNACKBAR_MESSAGES.WATCH_VIDEO_REMOVE.SUCCESS);
-      if (isEmptyArray(unWatchedVideoIds)) {
-        this.savedVideosView.showVideoEmptyImg();
-      }
-    } else {
+      this.savedVideosView.toggleButton(videoId, BUTTON_PACK_TYPE.WATCHED);
       popSnackbar(SNACKBAR_MESSAGES.WATCH_VIDEO_ADD.SUCCESS);
-      if (isEmptyArray(watchedVideoIds)) {
-        this.savedVideosView.showVideoEmptyImg();
+    } else if (this.selectedTab === TABS.WATCHED) {
+      this.savedVideosView.toggleButton(videoId, BUTTON_PACK_TYPE.WATCHED);
+      popSnackbar(SNACKBAR_MESSAGES.WATCH_VIDEO_REMOVE.SUCCESS);
+    } else if (this.selectedTab === TABS.LIKED) {
+      const isPop = false;
+      this.savedVideosView.toggleButton(
+        videoId,
+        BUTTON_PACK_TYPE.WATCHED,
+        isPop,
+      );
+      popSnackbar(SNACKBAR_MESSAGES.WATCH_VIDEO_ADD.SUCCESS);
+    }
+  }
+
+  markVideoLiked(videoId) {
+    this.store.update({ [STORE_KEYS.LIKED_VIDEO_IDS]: videoId });
+    const likedVideoIds = this.store.state.likedVideoIds;
+
+    if (this.selectedTab === TABS.SAVED || this.selectedTab === TABS.WATCHED) {
+      const isPop = false;
+      this.savedVideosView.toggleButton(videoId, BUTTON_PACK_TYPE.LIKE, isPop);
+      if (likedVideoIds.includes(videoId)) {
+        popSnackbar(SNACKBAR_MESSAGES.LIKE_VIDEO_ADD.SUCCESS);
+      } else {
+        popSnackbar(SNACKBAR_MESSAGES.LIKE_VIDEO_REMOVE.SUCCESS);
       }
+    } else if (this.selectedTab === TABS.LIKED) {
+      this.savedVideosView.toggleButton(videoId, BUTTON_PACK_TYPE.LIKE);
+      popSnackbar(SNACKBAR_MESSAGES.LIKE_VIDEO_REMOVE.SUCCESS);
     }
   }
 
@@ -125,22 +188,5 @@ export default class YoutubeController {
     const watchedVideos = this.store.state.watchedVideoIds;
 
     this.savedVideosView.renderSavedVideoClips(savedVideos, watchedVideos);
-  }
-
-  async initialLoad() {
-    const savedVideoIds = this.store.state.savedVideoIds;
-    const unWatchedVideoIds = this.store.computed.unWatchedVideoIds;
-    const response = await videoRequest(savedVideoIds);
-    if (!response) {
-      popSnackbar(ALERT_MESSAGES.API_REQUEST_FAILED);
-      return;
-    }
-
-    this.generateSavedVideos(response);
-    this.savedVideosView.renderVideoEmptyImg();
-
-    if (isEmptyArray(unWatchedVideoIds)) {
-      this.savedVideosView.showVideoEmptyImg();
-    }
   }
 }

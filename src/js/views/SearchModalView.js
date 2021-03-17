@@ -3,6 +3,7 @@ import { VALUE } from '../utils/constants.js';
 import throttle from '../utils/throttle.js';
 import clipMaker from '../utils/clipMaker.js';
 import stopVideo from '../utils/stopVideo.js';
+import lazyLoading from '../utils/lazyLoading.js';
 import View from './View.js';
 
 export default class SearchModalView extends View {
@@ -134,6 +135,7 @@ export default class SearchModalView extends View {
       })
       .join('');
     this.modalVideos.addInnerHTML(videoClips);
+    lazyLoading();
   }
 
   clearVideoClips() {

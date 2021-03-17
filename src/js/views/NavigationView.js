@@ -12,19 +12,18 @@ export default class NavigationView extends View {
   }
 
   bindTabEvents() {
-    $('#saved-btn').setEvent('click', () => {
-      this.emit('clickSavedTab');
-      $('iframe').each((iframe) => stopVideo(iframe));
-    });
+    const customEvents = {
+      'saved-btn': 'clickSavedTab',
+      'watched-btn': 'clickWatchedTab',
+      'liked-btn': 'clickLikedTab',
+      'search-btn': 'clickSearchTab',
+    };
 
-    $('#watched-btn').setEvent('click', () => {
-      this.emit('clickWatchedTab');
-      $('iframe').each((iframe) => stopVideo(iframe));
-    });
-
-    $('#search-btn').setEvent('click', () => {
-      this.emit('clickSearchTab');
-      $('iframe').each((iframe) => stopVideo(iframe));
+    $('.nav-btn').each((tab) => {
+      $(`#${tab.id}`).setEvent('click', () => {
+        this.emit(customEvents[tab.id]);
+        $('iframe').each((iframe) => stopVideo(iframe));
+      });
     });
   }
 

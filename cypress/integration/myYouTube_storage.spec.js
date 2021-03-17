@@ -1,12 +1,9 @@
 // WARN: 아래 테스트 코드는 mock data를 사용해야 한다.
 describe('simba-tube', () => {
-  const setSavedVideoIds = (savedVideoIds) => {
+  const setVideoIds = (key, items) => {
     cy.visit('http://localhost:5500/', {
       onBeforeLoad: function (window) {
-        window.localStorage.setItem(
-          'savedVideoIds',
-          JSON.stringify(savedVideoIds),
-        );
+        window.localStorage.setItem(key, JSON.stringify(items));
       },
     });
   };
@@ -23,7 +20,7 @@ describe('simba-tube', () => {
   };
 
   it('저장한 동영상이 100개 이상이면 alert 창과 snackbar를 보여준다.', () => {
-    setSavedVideoIds(Array(100).fill('mock-a1b2'));
+    setVideoIds('savedVideoIds', Array(100).fill('mock-a1b2'));
     cy.window().then((win) => cy.stub(win, 'alert').as('windowAlert'));
     searchVideo('bts');
 
@@ -39,19 +36,36 @@ describe('simba-tube', () => {
   });
 
   it('✅ 본 영상을 체크하면 볼 목록에서 해당 영상이 사라지고, 본 영상 목록에 추가된다. snackbar를 띄운다.', () => {
-    setSavedVideoIds(['vRXZj0DzXIA', 'I3U0QAXeOW4', 'BS7tz2rAOSA']);
+    const storageItems = ['vRXZj0DzXIA', 'I3U0QAXeOW4', 'BS7tz2rAOSA'];
+    setVideoIds('savedVideoIds', storageItems);
 
     cy.get(`[data-video-watched='vRXZj0DzXIA']`).click();
     cy.get(`[data-article='vRXZj0DzXIA']`).should('not.be.visible');
 
-    popSnackbar('동영상이 본 영상 목록에 추가되었읍니다');
+    popSnackbar('동영상을 본 영상 목록에 추가했읍니다');
 
     cy.get('#watched-btn').click();
     cy.get(`[data-article='vRXZj0DzXIA']`).should('be.visible');
   });
 
+  it('👍 좋아요 버튼을 클릭하면 좋아요 탭에서 해당 동영상을 보여주고, 다시 클릭하면 좋아요 탭에서 해당 동영상을 삭제한다. snackbar를 띄운다.', () => {
+    const storageItems = ['vRXZj0DzXIA', 'I3U0QAXeOW4', 'BS7tz2rAOSA'];
+    setVideoIds('savedVideoIds', storageItems);
+
+    cy.get(`[data-video-like='vRXZj0DzXIA']`).click();
+    popSnackbar('동영상을 좋아요 목록에 추가했읍니다');
+
+    cy.get('#liked-btn').click();
+    cy.get(`[data-article='vRXZj0DzXIA']`).should('be.visible');
+
+    cy.get(`[data-video-like='vRXZj0DzXIA']`).click();
+    popSnackbar('동영상을 좋아요 목록에서 제거했읍니다');
+    cy.get(`[data-article='vRXZj0DzXIA']`).should('not.be.visible');
+  });
+
   it('🗑️ 버튼 클릭 시 사용자에게 정말 삭제할 것인지 물어보는 alert가 나오고, 동의 시 snackbar를 띄운다.', () => {
-    setSavedVideoIds(['vRXZj0DzXIA', 'I3U0QAXeOW4', 'BS7tz2rAOSA']);
+    const storageItems = ['vRXZj0DzXIA', 'I3U0QAXeOW4', 'BS7tz2rAOSA'];
+    setVideoIds('savedVideoIds', storageItems);
 
     const confirmStub = cy.stub();
     cy.on('window:confirm', confirmStub);
@@ -66,5 +80,39 @@ describe('simba-tube', () => {
 
     cy.on('window:confirm', () => true);
     popSnackbar('동영상이 삭제되었읍니다');
+  });
+
+  it('유저가 사용하는 디바이스의 가로 길이에 따라 검색결과의 row 당 column 개수를 변경한다.', () => {
+    const storageItems = ['vRXZj0DzXIA', 'I3U0QAXeOW4', 'BS7tz2rAOSA'];
+    setVideoIds('savedVideoIds', storageItems);
+
+    const clipWidth = '236px ';
+    cy.viewport(1280, 1024);
+    cy.get('.video-wrapper').should(
+      'have.css',
+      'grid-template-columns',
+      clipWidth.repeat(4).trim(),
+    );
+
+    cy.viewport(960, 1024);
+    cy.get('.video-wrapper').should(
+      'have.css',
+      'grid-template-columns',
+      clipWidth.repeat(3).trim(),
+    );
+
+    cy.viewport(600, 1024);
+    cy.get('.video-wrapper').should(
+      'have.css',
+      'grid-template-columns',
+      clipWidth.repeat(2).trim(),
+    );
+
+    cy.viewport(400, 1024);
+    cy.get('.video-wrapper').should(
+      'have.css',
+      'grid-template-columns',
+      clipWidth.repeat(1).trim(),
+    );
   });
 });

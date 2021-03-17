@@ -7,3 +7,10 @@
   border-style: none;
   cursor: pointer;
 }
+
+@media screen and (max-width: 416px) {
+  .btn {
+    font-size: 0.75rem;
+    padding: 0 4px;
+  }
+}
