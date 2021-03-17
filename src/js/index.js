@@ -11,6 +11,7 @@ const App = () => {
   youtubeController.init();
   searchModalController.init();
 
+  store.register(youtubeController);
   store.register(searchModalController);
 };
 

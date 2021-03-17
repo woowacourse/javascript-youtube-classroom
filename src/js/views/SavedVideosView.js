@@ -89,11 +89,11 @@ export default class SavedVideosView extends View {
     $('.empty-videos').show();
   }
 
-  toggleButton(videoId, buttonType, pop = true) {
+  toggleButton(videoId, buttonType, isPop = true) {
     const videoClip = $(`[data-article='${videoId}']`);
     const packButton = $(`[data-video-${buttonType}='${videoId}']`);
 
     packButton.toggleClass('opacity-hover');
-    if (pop) videoClip.hide();
+    if (isPop) videoClip.hide();
   }
 }
