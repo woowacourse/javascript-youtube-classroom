@@ -40,6 +40,7 @@
 }
 
 .video-result-container {
+  position: relative;
   margin-top: 10px;
   height: calc(100% - 220px);
   overflow-y: auto;
@@ -62,4 +63,54 @@ svg {
     height: 90%;
     box-sizing: border-box;
   }
+}
+
+.confirm-inner {
+  transition: top 0.25s ease;
+  width: 400px;
+  height: 250px;
+  margin: auto;
+  background: #fff;
+  border-radius: 5px;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.confirm-text {
+  padding: 20px;
+  flex-grow: 1;
+  font-size: 1.2rem;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.confirm-button-list {
+  margin-top: 0;
+  margin-bottom: 30px;
+  flex-grow: 0;
+  display: flex;
+  justify-content: center;
+}
+
+.confirm-inner button {
+  width: 120px;
+  height: 50px;
+  background-color: #eee;
+  transition: background-color 0.3s;
+  border: 0;
+  font-size: 1.2rem;
+  cursor: pointer;
+}
+.confirm-inner button:hover {
+  background-color: #ddd;
+}
+
+.intersection-observer {
+  position: absolute;
+  transform: translateY(-200px);
+  padding: 1.25rem;
 }

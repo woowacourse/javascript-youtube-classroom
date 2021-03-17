@@ -1,10 +1,23 @@
 import { NUM_OF_VIDEO_PER_FETCH } from '../constants/index.js';
-import { YOUTUBE_API_KEY } from '../../../env.js';
 
-const END_POINT = 'https://www.googleapis.com/';
+const END_POINT = 'https://jolly-lalande-122025.netlify.app';
+
+const HttpRequest = async url => {
+  try {
+    const response = await fetch(url);
+
+    if (!response.ok) {
+      throw new Error(`${response.status}: http request error!`);
+    }
+
+    return await response.json();
+  } catch (e) {
+    console.error(e);
+  }
+};
 
 export const getSearchVideoByKeyword = async (keyword, pageToken = '') => {
-  const searchURL = new URL('/youtube/v3/search', END_POINT);
+  const searchURL = new URL('/.netlify/functions/youtube/search', END_POINT);
   const params = new URLSearchParams({
     part: 'snippet',
     q: keyword,
@@ -12,21 +25,19 @@ export const getSearchVideoByKeyword = async (keyword, pageToken = '') => {
     type: 'video',
     videoEmbeddable: true,
     pageToken,
-    key: YOUTUBE_API_KEY,
   });
   searchURL.search = params.toString();
 
-  return await fetch(searchURL.href).then(Response => Response.json());
+  return await HttpRequest(searchURL.href);
 };
 
 export const getVideoByIdList = async idList => {
-  const videoURL = new URL('/youtube/v3/videos', END_POINT);
+  const videoURL = new URL('/.netlify/functions/youtube/videos', END_POINT);
   const params = new URLSearchParams({
     part: 'snippet',
-    id: idList.join(','),
-    key: YOUTUBE_API_KEY,
+    id: Array.isArray(idList) ? idList.join(',') : idList,
   });
   videoURL.search = params.toString();
 
-  return await fetch(videoURL.href).then(Response => Response.json());
+  return await HttpRequest(videoURL.href);
 };

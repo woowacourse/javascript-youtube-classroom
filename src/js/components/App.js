@@ -1,32 +1,33 @@
-import { SavedVideoManager } from '../model/index.js';
+import { Router, SavedVideoManager } from '../model/index.js';
 import { Navigation, SearchVideoModal, SavedVideo } from './index.js';
 
 export class App {
   constructor() {
     this.savedVideoManager = new SavedVideoManager();
     this.navigation = new Navigation({
-      handleIsCompleted: this.handleIsCompleted.bind(this),
+      handleIsChecked: this.handleIsChecked.bind(this),
       handleOpenModal: this.handleOpenModal.bind(this),
     });
+    this.router = new Router({ onChangePage: this.handleIsChecked.bind(this) });
     this.savedVideo = new SavedVideo({
       savedVideoManager: this.savedVideoManager,
-      isCompleted: false,
+      isChecked: false,
     });
     this.searchVideoModal = new SearchVideoModal({ savedVideoManager: this.savedVideoManager });
 
-    this.isCompleted = false;
+    this.isChecked = false;
   }
 
-  handleIsCompleted(isCompleted) {
-    this.setState({ isCompleted });
+  handleIsChecked(isChecked) {
+    this.setState({ isChecked });
   }
 
   handleOpenModal() {
     this.searchVideoModal.openModal();
   }
 
-  setState({ isCompleted }) {
-    this.isCompleted = isCompleted;
-    this.savedVideo.setState({ isCompleted: this.isCompleted });
+  setState({ isChecked }) {
+    this.isChecked = isChecked;
+    this.savedVideo.setState({ isChecked: this.isChecked });
   }
 }

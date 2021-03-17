@@ -1,30 +1,19 @@
 import { $ } from '../util/index.js';
 
 export class Navigation {
-  constructor({ handleIsCompleted, handleOpenModal }) {
+  constructor({ handleIsChecked, handleOpenModal }) {
     this.$navigation = $('nav');
-    this.handleIsCompleted = handleIsCompleted;
+    this.$searchButton = $('.js-search-button');
+    this.$checkedButton = $('.js-checked-video');
+    this.handleIsChecked = handleIsChecked;
     this.handleOpenModal = handleOpenModal;
 
     this.initEvent();
   }
 
   initEvent() {
-    this.$navigation.addEventListener('click', ({ target }) => {
-      if (target.classList.contains('js-uncompleted-video-button')) {
-        this.handleIsCompleted(false);
-        return;
-      }
-
-      if (target.classList.contains('js-completed-video-button')) {
-        this.handleIsCompleted(true);
-        return;
-      }
-
-      if (target.classList.contains('js-search-button')) {
-        this.handleOpenModal();
-        return;
-      }
+    this.$searchButton.addEventListener('click', event => {
+      this.handleOpenModal();
     });
   }
 }

@@ -1,3 +1,5 @@
+import { $$ } from './index.js';
+
 const skeletonTemplate = `
   <div class="skeleton">
     <div class="image"></div>
@@ -11,7 +13,7 @@ export const renderSkeleton = ($target, repeatNumber) => {
 };
 
 export const removeSkeleton = $target => {
-  $target.querySelectorAll('.skeleton').forEach($skeleton => {
+  $$('.skeleton', $target).forEach($skeleton => {
     $skeleton.remove();
   });
 };

@@ -1,3 +1,4 @@
+import { SAVED_VIDEO_SUBSCRIBER_KEY } from '../model/index.js';
 import { MAX_NUM_OF_SAVED_VIDEO } from '../constants/index.js';
 import { $ } from '../util/index.js';
 
@@ -9,13 +10,20 @@ export class SearchVideoInput {
     this.$numOfSavedVideo = $('.js-num-of-saved-video');
 
     this.searchKeywordHistoryManager = searchKeywordHistoryManager;
-    this.searchKeywordHistoryManager.subscribe(this.renderSearchKeywordHistory.bind(this));
     this.savedVideoManager = savedVideoManager;
-    this.savedVideoManager.subscribe(this.renderNumOfSavedVideo.bind(this));
+    this.initSubscription();
 
     this.initEvent();
     this.renderSearchKeywordHistory();
     this.renderNumOfSavedVideo();
+  }
+
+  initSubscription() {
+    this.searchKeywordHistoryManager.subscribe(this.renderSearchKeywordHistory.bind(this));
+    this.savedVideoManager.subscribe({
+      key: SAVED_VIDEO_SUBSCRIBER_KEY.SAVE,
+      subscriber: this.renderNumOfSavedVideo.bind(this),
+    });
   }
 
   initEvent() {

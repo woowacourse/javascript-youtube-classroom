@@ -3,4 +3,5 @@ export { getSearchVideoByKeyword, getVideoByIdList } from './api.js';
 export { getLocalStorageItem, setLocalStorageItem } from './localStorage.js';
 export { formatDateTime } from './general.js';
 export { renderSkeleton, removeSkeleton } from './skeleton.js';
-export { throttle } from './throttle.js';
+export { snackbar } from './snackbar.js';
+export { customConfirm } from './customConfirm.js';
