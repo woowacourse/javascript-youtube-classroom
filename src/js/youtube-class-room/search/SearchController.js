@@ -1,13 +1,19 @@
 import SearchView from "./SearchView.js";
 
-import searchHistory from "../state/searchHistory.js";
-import videos from "../state/videos.js";
-import loadingSearchResults from "../state/loadingSearchResults.js";
+import searchHistory from "../../state/searchHistory.js";
+import videos from "../../state/videos.js";
+import loadingSearchResults from "../../state/loadingSearchResults.js";
 
-import { API, VIDEOS, YOUTUBE_URL } from "../utils/constants.js";
-import { observeScrollBottom } from "../utils/scrollBottomObserver.js";
+import {
+  API,
+  ERROR_MESSAGE,
+  VIDEOS,
+  YOUTUBE_URL,
+} from "../../utils/constants.js";
+import { observeScrollBottom } from "../../utils/scrollBottomObserver.js";
+import { showSnackbar } from "../../utils/snackbar.js";
 
-import { getSearchQueryString } from "../queries/searchQuery.js";
+import { getSearchQueryString } from "../../queries/searchQuery.js";
 
 export default class SearchController {
   constructor() {
@@ -33,7 +39,7 @@ export default class SearchController {
     const videoItems = await this.fetchSearchResult(searchKeyword);
 
     if (videoItems.length === 0) {
-      this.searchView.showNotFoundImg(searchHistory.getPageToken());
+      searchHistory.getPageToken() === "" && this.searchView.showNotFoundImg();
     } else {
       this.attachVideos(videoItems);
     }
@@ -53,15 +59,15 @@ export default class SearchController {
       }
 
       const { items, nextPageToken } = await res.json();
-      this.nextPageToken = nextPageToken;
 
-      searchHistory.setKeyword(searchKeyword);
+      this.nextPageToken === "" && searchHistory.setKeyword(searchKeyword);
       this.updateKeywordHistory();
+      this.nextPageToken = nextPageToken;
 
       return items;
     } catch (err) {
       this.searchView.resetSearchResults();
-      alert(ERROR_MESSAGE.SEARCH_ERROR);
+      showSnackbar(ERROR_MESSAGE.SEARCH_ERROR);
       return;
     }
   }
@@ -94,6 +100,7 @@ export default class SearchController {
 
   searchVideos(searchKeyword) {
     searchHistory.resetPageToken();
+    this.nextPageToken = "";
     this.updateSearchResultView(searchKeyword);
   }
 
@@ -116,5 +123,10 @@ export default class SearchController {
     videos.removeSavedVideo(videoId);
     this.searchView.showSaveButton(videoId);
     this.showSavedVideoCount();
+  }
+
+  resetSearchView() {
+    this.searchView.resetSearchInput();
+    this.searchView.resetSearchResults();
   }
 }

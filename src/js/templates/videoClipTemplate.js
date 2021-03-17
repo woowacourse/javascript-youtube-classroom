@@ -57,7 +57,50 @@ function getSrcDocTemplate(item) {
   `;
 }
 
-function getVideoClipInnerTemplate(item) {
+function getSaveButtons(item) {
+  return `
+    <div class="save-button-container">
+      <button 
+        data-video-id=${item.videoId}
+        data-video-saved=""
+        class="btn btn-hover-cyan-700 bg-cyan-500 ${
+          item.saved ? "d-none-hard" : ""
+        }"
+        >
+        ⬇️ 저장
+      </button>
+      <button 
+        data-video-id=${item.videoId}
+        data-video-saved="saved" 
+        class="btn btn-hover-gray-300 ${item.saved ? "" : "d-none-hard"}"
+        >
+        저장 취소
+      </button>
+    </div>`;
+}
+
+function getClipButtons(item) {
+  return `
+    <div>
+      <button 
+        data-watched-button=${item.videoId} 
+        class=${item.watched ? "" : "opacity-hover"}>
+        ✅
+      </button>
+      <button 
+        data-liked-button=${item.videoId} 
+        class=${item.liked ? "" : "opacity-hover"}>
+        👍
+      </button>
+      <button 
+        data-delete-button=${item.videoId} 
+        class="opacity-hover">
+        🗑️
+      </button>
+    </div>`;
+}
+
+function getVideoClipInnerTemplate(item, buttonsContainer) {
   return `
     <div class="preview-container">
       <iframe
@@ -84,33 +127,31 @@ function getVideoClipInnerTemplate(item) {
         <div class="meta">
           <p>${parseDate(item.publishedAt)}</p>
         </div>
-        <div class="save-button-container">
-          <button 
-            data-video-id=${item.videoId}
-            data-video-saved=""
-            class="btn btn-hover-cyan-700 bg-cyan-500 ${
-              item.saved ? "d-none-hard" : ""
-            }"
-            >
-            ⬇️ 저장
-          </button>
-          <button 
-            data-video-id=${item.videoId}
-            data-video-saved="saved" 
-            class="btn btn-hover-gray-300 ${item.saved ? "" : "d-none-hard"}"
-            >
-            저장 취소
-          </button>
-        </div>
+        ${buttonsContainer}
       </div>
     </div>`;
 }
 
-export default function createVideoClipTemplate(item) {
+export function createSavedClipTemplate(item) {
   const videoArticle = document.createElement("article");
   videoArticle.classList.add("clip");
   videoArticle.classList.add("mt-10");
-  videoArticle.insertAdjacentHTML("beforeend", getVideoClipInnerTemplate(item));
+  videoArticle.insertAdjacentHTML(
+    "beforeend",
+    getVideoClipInnerTemplate(item, getClipButtons(item))
+  );
+
+  return videoArticle;
+}
+
+export function createSearchedClipTemplate(item) {
+  const videoArticle = document.createElement("article");
+  videoArticle.classList.add("clip");
+  videoArticle.classList.add("mt-10");
+  videoArticle.insertAdjacentHTML(
+    "beforeend",
+    getVideoClipInnerTemplate(item, getSaveButtons(item))
+  );
 
   return videoArticle;
 }

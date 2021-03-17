@@ -1,12 +1,18 @@
-import videos from "../state/videos.js";
+import videos from "../../state/videos.js";
 
-import getKeywordHistoryTemplate from "../templates/keywordHistoryTemplate.js";
-import getVideoClipTemplate from "../templates/videoClipTemplate.js";
-import getSkeletonUITemplate from "../templates/skeletonUITemplate.js";
+import getKeywordHistoryTemplate from "../../templates/keywordHistoryTemplate.js";
+import { createSearchedClipTemplate } from "../../templates/videoClipTemplate.js";
+import getSkeletonUITemplate from "../../templates/skeletonUITemplate.js";
 
-import { $, getFormElements, hideElement, showElement } from "../utils/dom.js";
-import { ERROR_MESSAGE, VIDEOS } from "../utils/constants.js";
-import elements from "../utils/elements.js";
+import {
+  $,
+  getFormElements,
+  hideElement,
+  showElement,
+} from "../../utils/dom.js";
+import { DOM_CONSTANTS, ERROR_MESSAGE, VIDEOS } from "../../utils/constants.js";
+import elements from "../../utils/elements.js";
+import { showSnackbar } from "../../utils/snackbar.js";
 
 export default class SearchView {
   resetSearchResults() {
@@ -15,11 +21,11 @@ export default class SearchView {
     hideElement(elements.$notFound);
   }
 
-  showNotFoundImg(pageToken) {
-    if (pageToken !== "") {
-      return;
-    }
+  resetSearchInput() {
+    elements.$searchForm.elements[DOM_CONSTANTS.NAME.SEARCH_KEYWORD].value = "";
+  }
 
+  showNotFoundImg() {
     hideElement(elements.$searchResults);
     hideElement(elements.$skeletonSearchResults);
     showElement(elements.$notFound);
@@ -37,7 +43,7 @@ export default class SearchView {
 
   appendVideoClips(items) {
     const fragment = document.createDocumentFragment();
-    items.forEach((item) => fragment.append(getVideoClipTemplate(item)));
+    items.forEach((item) => fragment.append(createSearchedClipTemplate(item)));
     return fragment;
   }
 
@@ -59,7 +65,9 @@ export default class SearchView {
 
   selectSaveButton(videoId, isSaved = false) {
     try {
-      const selectedTarget = Array.from($("button[data-video-id]")).find(
+      const selectedTarget = Array.from(
+        $(`${DOM_CONSTANTS.ELEMENT.BUTTON}[${DOM_CONSTANTS.DATASET.VIDEO_ID}]`)
+      ).find(
         ($saveButton) =>
           $saveButton.dataset.videoId === videoId &&
           $saveButton.dataset.videoSaved === (isSaved ? "saved" : "")
@@ -68,9 +76,11 @@ export default class SearchView {
       if (!selectedTarget) {
         throw new Error(ERROR_MESSAGE.CONNOT_FIND_SAVE_BUTTON_ERROR);
       }
+
+      return selectedTarget;
     } catch (e) {
       console.error(e);
-      alert(ERROR_MESSAGE.INVALID_ACTION_ERROR);
+      showSnackbar(ERROR_MESSAGE.INVALID_ACTION_ERROR);
     }
   }
 
@@ -93,7 +103,7 @@ export default class SearchView {
   setSearchInputValue(searchKeyword) {
     getFormElements(
       elements.$searchForm,
-      "search-keyword"
+      DOM_CONSTANTS.NAME.SEARCH_KEYWORD
     ).value = searchKeyword;
   }
 
