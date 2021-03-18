@@ -1,0 +1,27 @@
+:root {
+  --orange: orange;
+  --green: mediumseagreen;
+}
+
+.icon {
+  border-radius: 100%;
+  display: inline-block;
+  width: 0.85rem;
+  height: 0.85rem;
+}
+
+.watched-icon {
+  background-color: var(--orange);
+}
+
+.watch-later-icon {
+  background-color: var(--green);
+}
+
+.js-icons-wrapper .watched-icon:hover {
+  background-color: var(--green);
+}
+
+.js-icons-wrapper .watch-later-icon:hover {
+  background-color: var(--orange);
+}

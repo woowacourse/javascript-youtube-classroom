@@ -1,11 +1,11 @@
 import {
   CLASSNAME,
   MESSAGE,
-  MAX_SAVED_VIDEOS_COUNT,
+  NUMBER,
   LOCAL_STORAGE_KEY,
-} from "../constants.js";
+} from "../constants/index.js";
 import messenger from "../Messenger.js";
-import { $ } from "../utils/querySelector.js";
+import { $ } from "../utils/DOM.js";
 
 export default class SavedVideosCount {
   constructor() {
@@ -17,13 +17,28 @@ export default class SavedVideosCount {
     this.$maxSavedVideosCount = $(`.${CLASSNAME.MAX_SAVED_VIDEOS_COUNT}`);
 
     this.$savedVideosCount.innerText = this.savedVideosCount;
-    this.$maxSavedVideosCount.innerText = MAX_SAVED_VIDEOS_COUNT;
+    this.$maxSavedVideosCount.innerText = NUMBER.MAX_SAVED_VIDEOS_COUNT;
 
-    messenger.addMessageListener(MESSAGE.VIDEO_SAVED, this.setCount.bind(this));
+    messenger.addMessageListener(
+      MESSAGE.SAVED_VIDEOS_COUNT_CHANGED,
+      this.setCount.bind(this)
+    );
+
+    messenger.addMessageListener(
+      MESSAGE.SAVE_IF_VIDEOS_COUNT_IS_IN_RANGE,
+      ({ resolve, reject }) => {
+        if (this.savedVideosCount >= NUMBER.MAX_SAVED_VIDEOS_COUNT) {
+          reject();
+          return;
+        }
+
+        resolve();
+      }
+    );
   }
 
-  setCount({ savedVideosCount }) {
-    this.savedVideosCount = savedVideosCount;
+  setCount({ change }) {
+    this.savedVideosCount += change;
 
     localStorage.setItem(
       LOCAL_STORAGE_KEY.SAVED_VIDEOS_COUNT,
