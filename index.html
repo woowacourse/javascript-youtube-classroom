@@ -16,54 +16,55 @@
         <div class="w-100">
           <header class="d-flex flex-col items-center my-4">
             <h1 class="text-center font-bold">👩🏻‍💻 나만의 유튜브 강의실 👨🏻‍💻</h1>
-            <nav class="d-flex justify-between items-center w-100">
-              <div>
-                <button class="btn bg-cyan-100 mx-1">👁️ 볼 영상</button>
-                <button class="btn mx-1">✅ 본 영상</button>
-              </div>
+            <div class="d-flex justify-between items-center w-100">
+              <nav id="navigator">
+                <button id="watch-later-view-button" class="btn mx-1" type="button">
+                  👁️ 볼 영상
+                </button>
+                <button id="watched-view-button" class="btn mx-1" type="button">
+                  ✅ 본 영상
+                </button>
+              </nav>
               <button
                 id="search-button"
                 class="round-btn btn-hover-gray-300 mx-1"
+                type="button"
               >
                 🔍 검색
               </button>
-            </nav>
+            </div>
           </header>
           <main class="mt-10">
-            <section class="video-wrapper">
-              <article class="clip">
-                <div class="preview-container">
-                  <iframe
-                    width="100%"
-                    height="118"
-                    src="https://www.youtube.com/embed/Ngj3498Tm_0"
-                    frameborder="0"
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                    allowfullscreen
-                  ></iframe>
-                </div>
-                <div class="content-container pt-2 px-1">
-                  <h3>아두이노 무드등</h3>
-                  <div>
-                    <a
-                      href="https://www.youtube.com/channel/UC-mOekGSesms0agFntnQang"
-                      target="_blank"
-                      class="channel-name mt-1"
-                    >
-                      메이커준
-                    </a>
-                    <div class="meta">
-                      <p>2021년 3월 2일</p>
-                    </div>
-                    <div>
-                      <span class="opacity-hover">✅</span>
-                      <span class="opacity-hover">👍</span>
-                      <span class="opacity-hover">💬</span>
-                      <span class="opacity-hover">🗑️</span>
-                    </div>
-                  </div>
-                </div>
-              </article>
+            <section
+              aria-label="저장된 영상이 없음"
+              id="not-saved"
+              class="vh-70 d-flex justify-center items-center d-none-hard"
+            >
+              <img
+                width="300"
+                src="./src/images/status/not-saved.png"
+                alt="저장된 영상이 없습니다."
+              />
+            </section>
+
+            <section
+              aria-label="본 영상이 없음"
+              id="not-watched"
+              class="vh-70 d-flex justify-center items-center d-none-hard"
+            >
+              <img
+                width="300"
+                src="./src/images/status/not-watched.png"
+                alt="본 영상이 없습니다."
+              />
+            </section>
+
+            <section id="watch-later-videos" class="video-wrapper d-none-hard">
+              <!-- 볼영상 영상 clip -->
+            </section>
+
+            <section id="watched-videos" class="video-wrapper d-none-hard">
+              <!-- 볼영상 영상 clip -->
             </section>
           </main>
         </div>
@@ -78,7 +79,7 @@
         labelledby="search-dialog"
       >
         <div class="modal-inner p-8">
-          <button id="search-modal-close" class="modal-close" type="button">
+          <button id="search-modal-close" class="modal-close" type="button" aria-label="modal-close-button">
             <svg viewbox="0 0 40 40">
               <path class="close-x" d="M 10,10 L 30,30 M 30,10 L 10,30" />
             </svg>
@@ -90,7 +91,7 @@
 
           <form id="search-form" class="d-flex">
             <input
-              type="text"
+              type="search"
               class="w-100 mr-2 pl-2"
               placeholder="검색"
               required
@@ -136,13 +137,15 @@
             <section
               aria-label="검색 결과가 나오기까지의 로딩"
               id="skeleton-search-results"
-              class="d-none-hard"
+              class="d-none-hard overflow-scroll vh-60"
             >
               <ul id="skeleton-ui-container" class="video-wrapper"></ul>
             </section>
           </section>
         </div>
       </div>
+    </div>
+    <div id="snackbar-container">
     </div>
     <script type="module" src="./src/js/index.js"></script>
   </body>

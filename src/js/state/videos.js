@@ -1,24 +1,85 @@
-import { STORAGE_NAME } from "../utils/constants.js";
+import {
+  ERROR_MESSAGE,
+  STORAGE_NAME,
+  SUCCESS_MESSAGE,
+} from "../utils/constants.js";
+import { showSnackbar } from "../utils/snackbar.js";
 
 const videos = {
   fetchedVideos: [],
   recentVideos: [],
+  savedVideos: [],
+
+  initSavedVideos() {
+    const videos = localStorage.getItem(STORAGE_NAME.SAVED_VIDEOS);
+
+    this.savedVideos = videos ? JSON.parse(videos) : [];
+  },
+
+  storeSavedVideos() {
+    localStorage.setItem(
+      STORAGE_NAME.SAVED_VIDEOS,
+      JSON.stringify(this.savedVideos)
+    );
+  },
 
   setFetchedVideos(videoItems) {
-    const parsedVideoItems = videoItems
+    this.recentVideos = videoItems
       .filter((videoItem) => videoItem.id.videoId)
       .map((videoItem) => this.parseVideoItem(videoItem));
-    this.recentVideos = parsedVideoItems;
-    this.fetchedVideos = [...this.fetchedVideos, ...parsedVideoItems];
+
+    this.fetchedVideos = [...this.fetchedVideos, ...this.recentVideos];
   },
 
   setSavedVideos(videoId) {
-    const selectedVideo = this.selectVideoItemById(videoId);
+    try {
+      const selectedVideo = this.selectFetchedVideoById(videoId);
 
-    localStorage.setItem(
-      STORAGE_NAME.SAVED_VIDEOS,
-      JSON.stringify([...this.getSavedVideos(), selectedVideo])
-    );
+      if (!selectedVideo) {
+        throw new Error(ERROR_MESSAGE.SAVE_ERROR);
+      }
+
+      this.savedVideos = [
+        ...this.savedVideos,
+        { ...selectedVideo, saved: true },
+      ];
+
+      this.storeSavedVideos();
+      showSnackbar(SUCCESS_MESSAGE.SAVE_VIDEO);
+    } catch (e) {
+      console.error(e);
+      showSnackbar(e.message);
+    }
+  },
+
+  setVideoWatched(videoId, watched) {
+    try {
+      const watchedVideoIndex = this.savedVideos.findIndex(
+        (video) => video.videoId === videoId
+      );
+
+      if (watchedVideoIndex === -1) {
+        throw new Error(ERROR_MESSAGE.CANNOT_FIND_INDEX_OF_VIDEO);
+      }
+
+      const watchedVideo = this.savedVideos[watchedVideoIndex];
+
+      this.savedVideos = [
+        ...this.savedVideos.slice(0, watchedVideoIndex),
+        { ...watchedVideo, watched },
+        ...this.savedVideos.slice(watchedVideoIndex + 1),
+      ];
+
+      this.storeSavedVideos();
+      showSnackbar(
+        watched
+          ? SUCCESS_MESSAGE.WATCH_VIDEO
+          : SUCCESS_MESSAGE.CLEAR_WATCH_VIDEO_LOG
+      );
+    } catch (e) {
+      console.error(e);
+      showSnackbar(ERROR_MESSAGE.INVALID_ACTION_ERROR);
+    }
   },
 
   getRecentVideos() {
@@ -26,16 +87,14 @@ const videos = {
   },
 
   getSavedVideos() {
-    const videos = localStorage.getItem(STORAGE_NAME.SAVED_VIDEOS);
-
-    return videos ? JSON.parse(videos) : [];
+    return this.savedVideos;
   },
 
   getSavedVideoCount() {
-    return this.getSavedVideos().length;
+    return this.savedVideos.length;
   },
 
-  selectVideoItemById(videoId) {
+  selectFetchedVideoById(videoId) {
     return this.fetchedVideos.find(
       (fetchedVideo) => fetchedVideo.videoId === videoId
     );
@@ -56,20 +115,24 @@ const videos = {
   },
 
   isSavedVideo(videoId) {
-    return this.getSavedVideos().some(
+    return this.savedVideos.some(
       (savedVideo) => savedVideo.videoId === videoId
     );
   },
 
   removeSavedVideo(videoId) {
-    const filteredVideos = this.getSavedVideos().filter(
+    const prevLength = this.savedVideos.length;
+    this.savedVideos = this.savedVideos.filter(
       (video) => video.videoId !== videoId
     );
 
-    localStorage.setItem(
-      STORAGE_NAME.SAVED_VIDEOS,
-      JSON.stringify(filteredVideos)
-    );
+    const isChanged = prevLength !== this.savedVideos.length;
+    if (isChanged) {
+      showSnackbar(SUCCESS_MESSAGE.DELETE_VIDEO);
+      this.storeSavedVideos();
+    } else {
+      showSnackbar(ERROR_MESSAGE.DELETE_ERROR);
+    }
   },
 };
 

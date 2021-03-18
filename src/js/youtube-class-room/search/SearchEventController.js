@@ -1,18 +1,24 @@
 import SearchController from "./SearchController.js";
 
-import videos from "../state/videos.js";
+import videos from "../../state/videos.js";
 
-import elements from "../utils/elements.js";
-import { ERROR_MESSAGE, VIDEOS } from "../utils/constants.js";
+import elements from "../../utils/elements.js";
+import {
+  ERROR_MESSAGE,
+  VIDEOS,
+  DOM_CONSTANTS,
+  CUSTOM_EVENTS,
+} from "../../utils/constants.js";
+import { showSnackbar } from "../../utils/snackbar.js";
 import {
   openModal,
   closeModal,
   showElement,
   hideElement,
   getFormElements,
-} from "../utils/dom.js";
+} from "../../utils/dom.js";
 
-import searchHistory from "../state/searchHistory.js";
+import searchHistory from "../../state/searchHistory.js";
 
 export default class SearchEventController {
   constructor() {
@@ -20,9 +26,11 @@ export default class SearchEventController {
   }
 
   bindEvents() {
+    window.addEventListener("load", () => searchHistory.initKeywords());
+
     this.bindModalEvents();
     this.bindSearchEvents();
-    this.bindSaveVideoEvent();
+    this.bindSaveVideoEvents();
   }
 
   bindModalEvents() {
@@ -30,10 +38,13 @@ export default class SearchEventController {
       "click",
       this.onClickSearchButton.bind(this)
     );
-    elements.$searchModal.addEventListener("mousedown", this.onClickDimmed);
+    elements.$searchModal.addEventListener(
+      "mousedown",
+      this.onClickDimmed.bind(this)
+    );
     elements.$searchModalClose.addEventListener(
       "click",
-      this.onClickSearchModalCloseButton
+      this.onClickSearchModalCloseButton.bind(this)
     );
   }
 
@@ -44,12 +55,12 @@ export default class SearchEventController {
       this.onClickKeywordHistory.bind(this)
     );
     elements.$searchResults.addEventListener(
-      "loadSearchAll",
+      CUSTOM_EVENTS.LOAD_SEARCH_ALL,
       this.onLoadSearchAll
     );
   }
 
-  bindSaveVideoEvent() {
+  bindSaveVideoEvents() {
     elements.$searchResults.addEventListener(
       "click",
       this.onClickSaveVideoButtons.bind(this)
@@ -57,21 +68,30 @@ export default class SearchEventController {
   }
 
   onClickSearchButton() {
-    searchHistory.initKeywords();
     openModal(elements.$searchModal);
-    getFormElements(elements.$searchForm, "search-keyword").focus();
+    getFormElements(
+      elements.$searchForm,
+      DOM_CONSTANTS.NAME.SEARCH_KEYWORD
+    ).focus();
 
     this.searchController.updateKeywordHistory();
     this.searchController.showSavedVideoCount();
+
+    const recentKeyword = searchHistory.getKeyword();
+    if (recentKeyword && searchHistory.getKeywordAll().length) {
+      this.searchController.searchVideos(recentKeyword);
+    }
   }
 
   onClickDimmed(e) {
-    if (e.target.classList.contains("modal")) {
+    if (e.target.classList.contains(DOM_CONSTANTS.CLASS_NAME.MODAL)) {
+      this.searchController.resetSearchView();
       closeModal(elements.$searchModal);
     }
   }
 
   onClickSearchModalCloseButton() {
+    this.searchController.resetSearchView();
     closeModal(elements.$searchModal);
   }
 
@@ -79,7 +99,7 @@ export default class SearchEventController {
     e.preventDefault();
     const searchKeyword = getFormElements(
       elements.$searchForm,
-      "search-keyword"
+      DOM_CONSTANTS.NAME.SEARCH_KEYWORD
     ).value;
     this.searchController.searchVideos(searchKeyword);
   }
@@ -91,11 +111,11 @@ export default class SearchEventController {
 
     const keyword = e.target.dataset.keyword.replace("+", " ");
 
-    if (e.target.classList.contains("js-remove-btn")) {
-      this.searchController.removeKeywordHistoryChip(keyword);
-    }
-    if (e.target.classList.contains("icon")) {
+    if (e.target.classList.contains(DOM_CONSTANTS.CLASS_NAME.ICON)) {
       this.searchController.searchVideosByHistory(keyword);
+    }
+    if (e.target.classList.contains(DOM_CONSTANTS.CLASS_NAME.JS_REMOVE_BTN)) {
+      this.searchController.removeKeywordHistoryChip(keyword);
     }
   }
 
@@ -112,9 +132,10 @@ export default class SearchEventController {
 
     if (e.target.dataset.videoSaved === "") {
       if (videos.getSavedVideoCount() >= VIDEOS.SAVED_VIDEOS_MAX_COUNT) {
-        alert(ERROR_MESSAGE.SAVE_COUNT_EXCEEDED_ERROR);
+        showSnackbar(ERROR_MESSAGE.SAVE_COUNT_EXCEEDED_ERROR);
         return;
       }
+
       this.searchController.saveVideo(videoId);
     } else {
       this.searchController.cancelSavedVideo(videoId);

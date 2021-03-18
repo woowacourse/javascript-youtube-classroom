@@ -1,6 +1,6 @@
 import searchHistory from "../state/searchHistory.js";
 
-export default function getKeywordHistoryTemplate() {
+export default function getKeywordHistoryElement() {
   return searchHistory
     .getKeywordAll()
     .map((keyword) => {
@@ -9,7 +9,7 @@ export default function getKeywordHistoryTemplate() {
       return `<li>
         <a class="chip">
           <div class="icon" data-keyword=${rejoinedKeyword}>${keyword}</div>
-          <button type="button" class="small-btn">
+          <button class="small-btn" type="submit">
             <i class="fas fa-window-close ml-2 js-remove-btn" data-keyword=${rejoinedKeyword}></i>
           </button>
         </a>
