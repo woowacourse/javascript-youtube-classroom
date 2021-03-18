@@ -13,6 +13,7 @@ import { onWindowInput } from './handler/window/onWindowInput.js';
 import $DOM from './utils/DOM.js';
 import { onSearchClip } from './handler/modal/search/onSearchClip.js';
 import { onSearchByKeyword } from './handler/modal/search/onSearchBykeyword.js';
+import { onToggleColorMode } from './handler/main/onToggleColorMode.js';
 
 const initDisplay = () => {
   const savedClips = storage.get(LOCAL_STORAGE_KEY.SAVED_CLIPS) ?? {};
@@ -35,6 +36,8 @@ const initDisplay = () => {
 const YoutubeClassRoom = () => {
   $DOM.NAVIGATOR.CONTAINER.addEventListener('click', onToggleRenderedClips);
   $DOM.NAVIGATOR.SEARCH_BUTTON.addEventListener('click', onModalShow);
+
+  $DOM.TOGGLE_THUMB.addEventListener('click', onToggleColorMode);
 
   $DOM.SEARCH_MODAL.FORM.addEventListener('submit', onSearchClip);
   $DOM.SEARCH_MODAL.CHIP_CONTAINER.addEventListener('click', onSearchByKeyword);

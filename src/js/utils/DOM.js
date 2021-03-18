@@ -27,4 +27,6 @@ export default {
   SNACK_BAR: {
     CONTAINER: $('[data-js="snackbar-container"]'),
   },
+  TOGGLE_THUMB: $('[data-js="color-modes-toggle__thumb"]'),
+  HTML: document.documentElement,
 };

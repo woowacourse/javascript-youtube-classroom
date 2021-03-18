@@ -17,15 +17,54 @@
   visibility: visible;
 }
 
+.modal__input {
+  background-color: var(--color-modal-search-input-background);
+  border: 1px solid var(--color-modal-search-input-border);
+  color: var(--color-modal-search-input);
+  outline: none;
+}
+
+.modal__input:focus {
+  border: 1px solid var(--color-modal-search-input-border-focus);
+  outline: none;
+}
+
 .modal-inner {
   width: 960px;
   height: 90%;
   margin: auto;
   overflow: auto;
-  background: #fff;
+  background: var(--color-modal-inner);
+  scrollbar-width: thin;
+  scrollbar-color: var(--thumbBG) var(--scrollbarBG);
   border-radius: 5px;
   position: relative;
   transition: top 0.25s ease;
+  color: var(--color-modal-inner-text);
+  transition: color 1s cubic-bezier(0.89, 0.14, 0.64, 0.8);
+}
+
+.modal-inner:hover {
+  color: var(--color-modal-inner-hover-text);
+}
+
+.modal-inner::-webkit-scrollbar {
+  width: 15px;
+}
+
+.modal-inner::-webkit-scrollbar-thumb {
+  border: 1px solid transparent;
+  box-shadow: inset 0 0 0 10px;
+}
+
+.modal-inner::-webkit-scrollbar-thumb:hover {
+  color: var(--color-scrollbar-thumb-hover);
+}
+
+.modal-inner::-webkit-scrollbar-track {
+  width: 20px;
+  border: 1px solid var(--color-scale-gray-4);
+  background-color: var(--color-scrollbar-background);
 }
 
 .modal-close {
@@ -38,6 +77,19 @@
   background: no-repeat;
   border: none;
   padding: 0;
+}
+
+.modal__search-button {
+  background-color: var(--color-modal-search-button-background);
+  color: var(--color-modal-search-button);
+}
+
+.modal__keyword {
+  color: var(--color-modal-search-keyword);
+}
+
+.modal__save-count {
+  color: var(--color-modal-save-count);
 }
 
 svg {

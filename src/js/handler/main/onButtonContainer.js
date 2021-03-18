@@ -3,6 +3,7 @@ import { LOCAL_STORAGE_KEY, MESSAGE } from '../../utils/constant.js';
 import { showElement } from '../../utils/setAttribute.js';
 import { showSnackbar } from '../../utils/showSnackbar.js';
 import $DOM from '../../utils/DOM.js';
+import { $$ } from '../../utils/querySelector.js';
 
 const toggleIsWatched = (target) => {
   const targetClip = target.closest('[data-js="saved-page__clip"]');
@@ -16,6 +17,10 @@ const toggleIsWatched = (target) => {
 
   showSnackbar(notifyMessage);
 
+  if ($$('.watched-clip').length === 0) {
+    showElement($DOM.SAVE_PAGE.NOT_FOUND);
+  }
+
   savedClips[targetClipId].isWatched = !isWatched;
   storage.set(LOCAL_STORAGE_KEY.SAVED_CLIPS, savedClips);
 
@@ -27,7 +32,6 @@ const toggleIsWatched = (target) => {
 const deleteClip = (target) => {
   const targetClip = target.closest('[data-js="saved-page__clip"]');
   const savedClips = storage.get(LOCAL_STORAGE_KEY.SAVED_CLIPS) ?? {};
-  const savedClipsLength = Object.keys(savedClips).length;
   const targetClipId = targetClip.dataset.clipId;
 
   if (!confirm(MESSAGE.CONFIRM.DELETE_CLIP)) {
@@ -36,6 +40,8 @@ const deleteClip = (target) => {
 
   showSnackbar(MESSAGE.NOTIFY.DELETE_CLIP);
   delete savedClips[targetClipId];
+
+  const savedClipsLength = Object.keys(savedClips).length;
 
   if (savedClipsLength === 0) {
     showElement($DOM.SAVE_PAGE.NOT_FOUND);
@@ -56,6 +62,10 @@ const likeClip = (target) => {
     : MESSAGE.NOTIFY.LIKE_CLIP;
 
   showSnackbar(notifyMessage);
+
+  // if (.length === 0) {
+  //   showElement($DOM.SAVE_PAGE.NOT_FOUND);
+  // }
 
   savedClips[targetClipId].isLiked = !isLiked;
   targetClip.classList.toggle('liked-clip');

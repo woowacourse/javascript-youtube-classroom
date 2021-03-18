@@ -1,3 +1,8 @@
-nav > .active {
-  background-color: rgb(179, 234, 242);
+.navigator__button {
+  background-color: var(--color-nav-button-background);
+  color: var(--color-nav-button-text);
+}
+
+.navigator > .active {
+  background-color: var(--color-nav-button-active-background);
 }

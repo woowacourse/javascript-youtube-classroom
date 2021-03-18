@@ -6,7 +6,7 @@ const buttonTemplate = (clipId, type, clipindex) => {
   if (isModal) {
     return isSaved
       ? ''
-      : `<button class="btn" data-js="save-button" data-clip-index=${clipindex} data-clip-id=${clipId}>⬇️ 저장</button>`;
+      : `<button class="chip__save-button btn" data-js="save-button" data-clip-index=${clipindex} data-clip-id=${clipId}>⬇️ 저장</button>`;
   }
 
   return `

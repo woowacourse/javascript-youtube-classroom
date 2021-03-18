@@ -65,7 +65,7 @@
   height: 2rem;
   -webkit-line-clamp: 2;
   overflow: hidden;
-  color: #0a0a0a;
+  color: var(--color-clip-content-text);
 }
 
 .clip .content-container .channel-name {
