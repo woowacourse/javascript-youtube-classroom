@@ -42,7 +42,7 @@ export default class HistoryVideoWrapper {
       const { videoId } = event.target.parentElement.dataset;
 
       if (event.target.classList.contains(CLASSNAME.WATCH_LATER_ICON)) {
-        this.moveVideo(videoId);
+        this.moveVideo({ videoId });
         showSnackbar(SNACKBAR_TEXT.MOVED_TO_WATCH_LATER_VIDEO);
       }
 
