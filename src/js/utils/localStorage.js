@@ -24,11 +24,3 @@ export const insertItemByKey = (key, item) => {
   list.push(item);
   setListByKey(key, list);
 };
-
-export const deleteTargetItemByKey = ({ key, secondKey }, value) => {
-  const list = getListByKey(key);
-  const filteredList = secondKey
-    ? list.filter((item) => item[secondKey] !== value)
-    : list.filter((item) => item !== value);
-  setListByKey(key, filteredList);
-};

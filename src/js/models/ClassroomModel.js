@@ -4,28 +4,26 @@ import { DB_KEY } from '../constants.js';
 export default class ClassroomModel {
   constructor() {
     this.videos = getListByKey(DB_KEY.VIDEOS);
-    this.watchingVideoCount = this.getWatchingVideoCount();
-    this.watchedVideoCount = this.getWatchedVideoCount();
   }
 
-  getVideo(videoId) {
+  get videoCount() {
+    return this.videos.length;
+  }
+
+  get watchingVideoCount() {
+    return this.videos.filter((video) => video.isWatching).length;
+  }
+
+  get watchedVideoCount() {
+    return this.videos.filter((video) => !video.isWatching).length;
+  }
+
+  getTargetVideo(videoId) {
     return this.videos.find((video) => video.videoId === videoId);
   }
 
   addVideo(video) {
     this.videos.push(video);
-  }
-
-  getVideoCount() {
-    return this.videos.length;
-  }
-
-  getWatchingVideoCount() {
-    return this.videos.filter((video) => video.isWatching).length;
-  }
-
-  getWatchedVideoCount() {
-    return this.videos.filter((video) => !video.isWatching).length;
   }
 
   isOnlyWatchingVideoSaved() {
@@ -41,24 +39,13 @@ export default class ClassroomModel {
   }
 
   moveVideo(videoId) {
-    const target = this.getVideo(videoId);
+    const target = this.getTargetVideo(videoId);
     target.isWatching = !target.isWatching;
-    this.updateWatchingVideoCount();
-    this.updateWatchedVideoCount();
     setListByKey(DB_KEY.VIDEOS, this.videos);
   }
 
-  removeVideo(videoId, isWatching) {
+  removeVideo(videoId) {
     this.videos = this.videos.filter((video) => video.videoId !== videoId);
-    isWatching ? this.updateWatchingVideoCount() : this.updateWatchedVideoCount();
     setListByKey(DB_KEY.VIDEOS, this.videos);
-  }
-
-  updateWatchingVideoCount() {
-    this.watchingVideoCount = this.getWatchingVideoCount();
-  }
-
-  updateWatchedVideoCount() {
-    this.watchedVideoCount = this.getWatchedVideoCount();
   }
 }

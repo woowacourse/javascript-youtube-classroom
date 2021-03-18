@@ -9,7 +9,7 @@ export default class YoutubeManager {
   }
 
   showModal(recentKeywords) {
-    this.searchView.renderVisibleModal(this.classroomModel.getVideoCount(), recentKeywords);
+    this.searchView.renderVisibleModal(this.classroomModel.videoCount, recentKeywords);
   }
 
   closeModal() {
@@ -17,7 +17,7 @@ export default class YoutubeManager {
   }
 
   saveVideo($target) {
-    const savedCount = this.classroomModel.getVideoCount();
+    const savedCount = this.classroomModel.videoCount;
 
     if (savedCount >= MAX_VIDEO_STORAGE_CAPACITY) {
       this.searchView.renderNotification(MESSAGE.STORAGE_CAPACITY_IS_FULL);
@@ -27,7 +27,6 @@ export default class YoutubeManager {
     const targetVideoData = this.searchModel.getTargetVideoData($target.id);
 
     this.classroomModel.addVideo(targetVideoData);
-    this.classroomModel.updateWatchingVideoCount();
     this.classroomView.renderSavedVideo(targetVideoData);
 
     this.searchModel.saveVideo(targetVideoData);

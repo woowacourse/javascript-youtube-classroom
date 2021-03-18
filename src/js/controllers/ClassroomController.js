@@ -94,9 +94,9 @@ export default class ClassroomController {
     this.showImageNoVideo();
   }
 
-  removeVideo($video, isWatching) {
+  removeVideo($video) {
     if (!window.confirm(MESSAGE.ARE_YOU_SURE_TO_REMOVE_VIDEO)) return;
-    this.model.removeVideo($video.id, isWatching);
+    this.model.removeVideo($video.id);
     this.view.removeVideo($video);
     this.view.renderNotification(MESSAGE.VIDEO_IS_REMOVED_SUCCESSFULLY);
     this.showImageNoVideo();
