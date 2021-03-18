@@ -21,6 +21,10 @@ export default class SearchModel {
     this.saveKeyword();
   }
 
+  get videoCount() {
+    return getListByKey(DB_KEY.VIDEOS).length;
+  }
+
   setNextPageToken(token) {
     this.nextPageToken = token;
   }

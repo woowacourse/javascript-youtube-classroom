@@ -6,10 +6,6 @@ export default class ClassroomModel {
     this.videos = getListByKey(DB_KEY.VIDEOS);
   }
 
-  get videoCount() {
-    return this.videos.length;
-  }
-
   get watchingVideoCount() {
     return this.videos.filter((video) => video.isWatching).length;
   }

@@ -17,6 +17,7 @@ export default class SearchView {
     this.$recentKeywords = $('#recent-keywords');
     this.$savedVideoCount = $('#saved-video-count');
     this.$snackbarWrapper = $('#snackbar-wrapper');
+    this.$watchingMenuButton = $('#watching-menu-button');
   }
 
   init() {

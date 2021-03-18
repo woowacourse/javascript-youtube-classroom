@@ -1,3 +1,4 @@
+import VideoSaveManager from '../manager/VideoSaveManager.js';
 import { isWatchingMenu, isWatchingVideo } from './elementValidator.js';
 import { MESSAGE } from '../constants.js';
 
@@ -5,11 +6,14 @@ export default class ClassroomController {
   constructor({ classroomModel, classroomView }) {
     this.view = classroomView;
     this.model = classroomModel;
+    this.videoSaveManager = new VideoSaveManager();
   }
 
   init() {
     this.showClassroom();
     this.attachEvents();
+    this.videoSaveManager.subscribe(this.model.addVideo.bind(this.model));
+    this.videoSaveManager.subscribe(this.view.renderSavedVideo.bind(this.view));
   }
 
   showClassroom() {

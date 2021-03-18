@@ -1,3 +1,4 @@
+import VideoSaveManager from '../manager/VideoSaveManager.js';
 import {
   isModalOpen,
   isModalCloseButton,
@@ -7,14 +8,14 @@ import {
 } from './elementValidator.js';
 import { isEndOfScroll } from '../utils/DOM.js';
 import { doThrottling } from '../utils/throttle.js';
-import { MESSAGE, SCROLL_DELAY_TIME } from '../constants.js';
+import { MESSAGE, SCROLL_DELAY_TIME, MAX_VIDEO_STORAGE_CAPACITY } from '../constants.js';
 
 export default class SearchController {
-  constructor({ searchModel, searchView, searchService, youtubeManager }) {
+  constructor({ searchModel, searchView, searchService }) {
     this.searchModel = searchModel;
     this.searchView = searchView;
     this.searchService = searchService;
-    this.youtubeManager = youtubeManager;
+    this.videoSaveManager = new VideoSaveManager();
   }
 
   init() {
@@ -39,7 +40,7 @@ export default class SearchController {
     const recentKeywords = this.searchModel.getRecentKeywords();
     const mostRecentKeyword = recentKeywords[0] ?? '';
 
-    this.youtubeManager.showModal(recentKeywords);
+    this.searchView.renderVisibleModal(this.searchModel.videoCount, recentKeywords);
     if (mostRecentKeyword === '') {
       return;
     }
@@ -51,7 +52,7 @@ export default class SearchController {
     if ((key === 'Escape' && isModalOpen(currentTarget)) || isModalDimmedArea(target) || isModalCloseButton(target)) {
       this.searchView.renderInvisibleModal();
     }
-    this.youtubeManager.closeModal();
+    this.searchView.$watchingMenuButton.click();
   }
 
   onClickRecentKeyword({ target }) {
@@ -104,7 +105,21 @@ export default class SearchController {
       return;
     }
 
-    this.youtubeManager.saveVideo(target);
+    const savedCount = this.searchModel.videoCount;
+
+    if (savedCount >= MAX_VIDEO_STORAGE_CAPACITY) {
+      this.searchView.renderNotification(MESSAGE.STORAGE_CAPACITY_IS_FULL);
+      return;
+    }
+
+    const targetVideoData = this.searchModel.getTargetVideoData(target.id);
+
+    this.searchModel.saveVideo(targetVideoData);
+    this.searchView.renderInvisibleSaveButton(target);
+    this.searchView.renderSaveVideoCount(savedCount + 1);
+    this.searchView.renderNotification(MESSAGE.VIDEO_IS_SAVED_SUCCESSFULLY);
+
+    this.videoSaveManager.notify(targetVideoData);
   }
 
   showSearchGroup() {
