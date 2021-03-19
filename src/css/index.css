@@ -49,3 +49,11 @@ a {
 .saved-video-count {
   margin-left: 0.5rem;
 }
+
+.no-video {
+  text-align: center;
+}
+
+.overflow-hidden {
+  overflow: hidden;
+}
