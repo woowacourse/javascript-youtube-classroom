@@ -23,8 +23,8 @@ const setSelected = (target) => {
 };
 
 const targetSectionClassName = [
-  'watched-section',
   'unwatched-section',
+  'watched-section',
   'liked-section',
 ];
 
@@ -63,7 +63,7 @@ export const onToggleRenderedClips = ({ target }) => {
 
   let targetIndex = 0;
   storage.set(LOCAL_STORAGE_KEY.CURRENT_TAB, '볼 영상');
-  if (isUnwatchedButton) {
+  if (isWatchedButton) {
     targetIndex = 1;
     storage.set(LOCAL_STORAGE_KEY.CURRENT_TAB, '본 영상');
   }
