@@ -1,13 +1,13 @@
 import storage from '../../utils/localStorage.js';
 import { LOCAL_STORAGE_KEY, MESSAGE } from '../../utils/constant.js';
-import { showElement } from '../../utils/setAttribute.js';
+import { hideElement, showElement } from '../../utils/setAttribute.js';
 import { showSnackbar } from '../../utils/showSnackbar.js';
 import $DOM from '../../utils/DOM.js';
 import { $$ } from '../../utils/querySelector.js';
+import { isEmptyDisplayClipCountFromCurrentTab } from '../shared/isEmptyDisplayClipCountFromCurrentTab.js';
 
-const toggleIsWatched = (target) => {
+const toggleIsWatched = (savedClips, target) => {
   const targetClip = target.closest('[data-js="saved-page__clip"]');
-  const savedClips = storage.get(LOCAL_STORAGE_KEY.SAVED_CLIPS) ?? {};
   const targetClipId = targetClip.dataset.clipId;
   const isWatched = savedClips[targetClipId].isWatched;
 
@@ -29,9 +29,8 @@ const toggleIsWatched = (target) => {
   target.classList.toggle('opacity-hover');
 };
 
-const deleteClip = (target) => {
+const deleteClip = (savedClips, target) => {
   const targetClip = target.closest('[data-js="saved-page__clip"]');
-  const savedClips = storage.get(LOCAL_STORAGE_KEY.SAVED_CLIPS) ?? {};
   const targetClipId = targetClip.dataset.clipId;
 
   if (!confirm(MESSAGE.CONFIRM.DELETE_CLIP)) {
@@ -51,9 +50,8 @@ const deleteClip = (target) => {
   storage.set(LOCAL_STORAGE_KEY.SAVED_CLIPS, savedClips);
 };
 
-const likeClip = (target) => {
+const likeClip = (savedClips, target) => {
   const targetClip = target.closest('[data-js="saved-page__clip"]');
-  const savedClips = storage.get(LOCAL_STORAGE_KEY.SAVED_CLIPS);
   const targetClipId = targetClip.dataset.clipId;
   const isLiked = savedClips[targetClipId].isLiked;
 
@@ -62,10 +60,6 @@ const likeClip = (target) => {
     : MESSAGE.NOTIFY.LIKE_CLIP;
 
   showSnackbar(notifyMessage);
-
-  // if (.length === 0) {
-  //   showElement($DOM.SAVE_PAGE.NOT_FOUND);
-  // }
 
   savedClips[targetClipId].isLiked = !isLiked;
   targetClip.classList.toggle('liked-clip');
@@ -76,18 +70,25 @@ const likeClip = (target) => {
 };
 
 export const onButtonContainer = ({ target }) => {
+  const savedClips = storage.get(LOCAL_STORAGE_KEY.SAVED_CLIPS) || {};
+
   if (target.dataset.js === 'saved-clip-button-container__check') {
-    toggleIsWatched(target);
-    return;
+    toggleIsWatched(savedClips, target);
   }
 
   if (target.dataset.js === 'saved-clip-button-container__delete') {
-    deleteClip(target);
-    return;
+    deleteClip(savedClips, target);
   }
 
   if (target.dataset.js === 'saved-clip-button-container__like') {
-    likeClip(target);
+    likeClip(savedClips, target);
+  }
+
+  const currentTab = storage.get(LOCAL_STORAGE_KEY.CURRENT_TAB) || '볼 영상';
+  if (isEmptyDisplayClipCountFromCurrentTab[currentTab](savedClips)) {
+    showElement($DOM.SAVE_PAGE.NOT_FOUND);
     return;
   }
+
+  hideElement($DOM.SAVE_PAGE.NOT_FOUND);
 };

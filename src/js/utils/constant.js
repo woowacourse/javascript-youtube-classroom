@@ -29,6 +29,7 @@ export const MESSAGE = {
 
 export const LOCAL_STORAGE_KEY = {
   CURRENT_KEYWORD: 'currentKeyword',
+  CURRENT_TAB: 'currentTab',
   RECENT_KETWORDS: 'recentKeywords',
   NEXT_PAGE_TOKEN: 'nextPageToken',
   SAVED_CLIPS: 'savedClips',
