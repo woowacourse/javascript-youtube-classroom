@@ -1,19 +1,14 @@
 import WatchController from "./WatchController.js";
 
 import elements from "../../utils/elements.js";
-import showSnackbar from "../../utils/snackbar.js";
-import {
-  ERROR_MESSAGE,
-  DOM_CONSTANTS,
-  VIDEO_VIEW_NAME,
-} from "../../utils/constants.js";
+import { DOM_CONSTANTS } from "../../utils/constants.js";
 
 import videos from "../../state/videos.js";
-import videoViewIndex from "../../state/videoViewIndex.js";
 
 export default class WatchEventController {
   constructor() {
     this.watchController = new WatchController();
+    this.pageIndex = 0;
   }
 
   bindEvents() {
@@ -38,6 +33,11 @@ export default class WatchEventController {
     elements.$likedViewButton.addEventListener(
       "click",
       this.onClickLikedViewButton.bind(this)
+    );
+
+    elements.$minimalNavInner.addEventListener(
+      "click",
+      this.onClickMinNavInner.bind(this)
     );
   }
 
@@ -84,15 +84,33 @@ export default class WatchEventController {
   }
 
   onClickWatchLaterViewButton() {
+    this.pageIndex = 0;
     this.watchController.updateWatchLaterView();
   }
 
   onClickWatchedViewButton() {
+    this.pageIndex = 1;
     this.watchController.updateWatchedView();
   }
 
   onClickLikedViewButton() {
+    this.pageIndex = 3;
     this.watchController.updateLikedView();
+  }
+
+  onClickMinNavInner() {
+    this.pageIndex = (this.pageIndex + 1) % 3;
+
+    switch (this.pageIndex) {
+      case 0:
+        this.watchController.updateWatchLaterView();
+        break;
+      case 1:
+        this.watchController.updateWatchedView();
+        break;
+      case 2:
+        this.watchController.updateLikedView();
+    }
   }
 
   onClickSaveButton(e) {

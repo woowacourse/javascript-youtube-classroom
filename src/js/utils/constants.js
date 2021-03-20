@@ -29,6 +29,7 @@ export const DOM_CONSTANTS = {
     HIDDEN_TARGET: "#hidden-target",
     KEYWORD_HISTORY: "#keyword-history",
     SAVED_VIDEO_COUNT: "#saved-video-count",
+    MINIMAL_NAV_INNER: "#minimal-nav-inner",
   },
   CLASS_NAME: {
     MODAL: "modal",
@@ -37,6 +38,9 @@ export const DOM_CONSTANTS = {
     D_NONE_HARD: "d-none-hard",
     OVERFLOW_HIDDEN: "overflow-hidden",
     OPEN: "open",
+    MIN_NAV_INDEX_0: "min-nav-index-0",
+    MIN_NAV_INDEX_1: "min-nav-index-1",
+    MIN_NAV_INDEX_2: "min-nav-index-2",
   },
   DATASET: {
     VIDEO_ID: "data-video-id",

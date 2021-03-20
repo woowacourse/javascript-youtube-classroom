@@ -1,6 +1,6 @@
 import { createSavedClipTemplate } from "../../templates/videoClipTemplate.js";
 
-import { PALLET, EMPTY_IMG } from "../../utils/constants.js";
+import { PALLET, EMPTY_IMG, DOM_CONSTANTS } from "../../utils/constants.js";
 import elements from "../../utils/elements.js";
 import {
   hideElement,
@@ -17,6 +17,18 @@ export default class WatchView {
     removeBackgroundColor(elements.$likedViewButton, PALLET.CYAN_100);
   }
 
+  removeAllTranslates() {
+    elements.$minimalNavInner.classList.remove(
+      DOM_CONSTANTS.CLASS_NAME.MIN_NAV_INDEX_0
+    );
+    elements.$minimalNavInner.classList.remove(
+      DOM_CONSTANTS.CLASS_NAME.MIN_NAV_INDEX_1
+    );
+    elements.$minimalNavInner.classList.remove(
+      DOM_CONSTANTS.CLASS_NAME.MIN_NAV_INDEX_2
+    );
+  }
+
   hideNotFoundImgs() {
     hideElement(elements.$notSaved);
     hideElement(elements.$notWatched);
@@ -25,17 +37,32 @@ export default class WatchView {
 
   markWatchLaterViewButton() {
     this.removeAllButtonColor();
+    this.removeAllTranslates();
+
     addBackgroundColor(elements.$watchLaterViewButton, PALLET.CYAN_100);
+    elements.$minimalNavInner.classList.add(
+      DOM_CONSTANTS.CLASS_NAME.MIN_NAV_INDEX_0
+    );
   }
 
   markWatchedViewButton() {
     this.removeAllButtonColor();
+    this.removeAllTranslates();
+
     addBackgroundColor(elements.$watchedViewButton, PALLET.CYAN_100);
+    elements.$minimalNavInner.classList.add(
+      DOM_CONSTANTS.CLASS_NAME.MIN_NAV_INDEX_1
+    );
   }
 
   markLikedViewButton() {
     this.removeAllButtonColor();
+    this.removeAllTranslates();
+
     addBackgroundColor(elements.$likedViewButton, PALLET.CYAN_100);
+    elements.$minimalNavInner.classList.add(
+      DOM_CONSTANTS.CLASS_NAME.MIN_NAV_INDEX_2
+    );
   }
 
   appendSavedVideoClips(items) {

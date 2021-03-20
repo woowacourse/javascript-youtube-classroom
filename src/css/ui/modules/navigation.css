@@ -1,0 +1,43 @@
+.minimal-nav {
+  display: none;
+  overflow: hidden;
+  width: 120px;
+}
+
+.minimal-nav-inner {
+  width: 360px;
+  display: flex;
+}
+
+.min-nav-index-0 {
+  transform: translateX(0);
+}
+
+.min-nav-index-1 {
+  transform: translateX(-120px);
+}
+
+.min-nav-index-2 {
+  transform: translateX(-240px);
+}
+
+.min-view-btn {
+  width: 120px;
+  margin: 0;
+  background-color: rgb(179, 234, 242);
+  cursor: pointer;
+}
+
+.min-view-btn:hover {
+  background-color: rgb(129, 222, 234);
+}
+
+@media (max-width: 450px) {
+  .full-nav {
+    display: none;
+  }
+
+  .minimal-nav {
+    display: block;
+  }
+}

@@ -1,6 +1,6 @@
 .video-wrapper {
   display: grid;
-  grid-template-columns: repeat(auto-fill, 236px);
+  grid-template-columns: repeat(1, 200px);
   grid-row-gap: 0px;
   grid-column-gap: 4px;
   justify-content: center;
@@ -69,4 +69,22 @@
   position: absolute;
   right: 0;
   top: 100%;
+}
+
+@media (min-width: 400px) {
+  .video-wrapper {
+    grid-template-columns: repeat(2, 200px);
+  }
+}
+
+@media (min-width: 600px) {
+  .video-wrapper {
+    grid-template-columns: repeat(3, 200px);
+  }
+}
+
+@media (min-width: 960px) {
+  .video-wrapper {
+    grid-template-columns: repeat(4, 200px);
+  }
 }
