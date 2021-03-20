@@ -3,6 +3,7 @@ import { getVideoTemplate, SNACKBAR_MESSAGE, CONFIRM_MESSAGE } from '../constant
 import {
   getVideoByIdList,
   $,
+  $$,
   renderSkeleton,
   removeSkeleton,
   showSnackbar,
@@ -28,7 +29,7 @@ export class SavedVideo {
     this.isLiked = isLiked;
 
     this.initEvent();
-    this.renderTotalVideo();
+    this.initLoad();
   }
 
   initEvent() {
@@ -55,7 +56,7 @@ export class SavedVideo {
 
   handleCheckButton(target) {
     if (!this.isLiked) {
-      target.closest('.js-clip-article').remove();
+      target.closest('.js-saved-clip-article').classList.add('d-none');
     }
 
     this.savedVideoManager.checkVideo(target.closest('.js-emoji-button-list').dataset.videoId);
@@ -74,7 +75,7 @@ export class SavedVideo {
 
   handleLikeButton(target) {
     if (this.isLiked) {
-      target.closest('.js-clip-article').remove();
+      target.closest('.js-saved-clip-article').classList.add('d-none');
     }
 
     this.savedVideoManager.likeVideo(target.closest('.js-emoji-button-list').dataset.videoId);
@@ -90,11 +91,13 @@ export class SavedVideo {
   }
 
   handleDeleteButton(target) {
-    customConfirm(CONFIRM_MESSAGE.DELETE_VIDEO).then(() => {
-      target.closest('.js-clip-article').remove();
-      this.savedVideoManager.deleteVideo(target.closest('.js-emoji-button-list').dataset.videoId);
-      showSnackbar(SNACKBAR_MESSAGE.DELETE_SUCCESS);
-    });
+    customConfirm(CONFIRM_MESSAGE.DELETE_VIDEO)
+      .then(() => {
+        target.closest('.js-saved-clip-article').remove();
+        this.savedVideoManager.deleteVideo(target.closest('.js-emoji-button-list').dataset.videoId);
+        showSnackbar(SNACKBAR_MESSAGE.DELETE_SUCCESS);
+      })
+      .catch(() => {});
   }
 
   async fetchSavedVideoData(idList) {
@@ -107,9 +110,10 @@ export class SavedVideo {
     }
   }
 
-  makeTemplate(videoData) {
+  makeTemplate(videoData, classList = []) {
     return getVideoTemplate({
       videoData,
+      classList,
       buttonTemplate: this.getButtonTemplate(videoData.id),
     });
   }
@@ -119,7 +123,7 @@ export class SavedVideo {
       <ul class="js-emoji-button-list list-style-none p-0 mt-3 mb-6 d-flex justify-end" data-video-id="${videoId}">
         <li class="mr-2">
           <button type="button" class="js-check-button emoji-btn scale-hover ${
-            this.isChecked ? '' : 'opacity-hover'
+            this.savedVideoManager.isCheckedVideo(videoId) ? '' : 'opacity-hover'
           }">✅</button>
         </li>
         <li class="mr-2">
@@ -136,24 +140,30 @@ export class SavedVideo {
     this.$savedVideoWrapper.innerHTML = '';
 
     const savedVideos = this.savedVideoManager.getSavedVideos();
-    const sortedSavedVideoIdList = this.savedVideoManager.getSortedSavedVideoIdList();
-    let filteredVideoIdList;
 
     if (this.isLiked) {
-      filteredVideoIdList = sortedSavedVideoIdList.filter(id => savedVideos[id].isLiked === this.isLiked);
+      this.$savedVideoWrapper.innerHTML = this.savedVideoData.items
+        .map(item => {
+          if (savedVideos[item.id].isLiked === this.isLiked) {
+            return this.makeTemplate(item, ['js-saved-clip-article']);
+          }
+          return this.makeTemplate(item, ['js-saved-clip-article', 'd-none']);
+        })
+        .join('');
     } else {
-      filteredVideoIdList = sortedSavedVideoIdList.filter(id => savedVideos[id].isChecked === this.isChecked);
+      this.$savedVideoWrapper.innerHTML = this.savedVideoData.items
+        .map(item => {
+          if (savedVideos[item.id].isChecked === this.isChecked) {
+            return this.makeTemplate(item, ['js-saved-clip-article']);
+          }
+          return this.makeTemplate(item, ['js-saved-clip-article', 'd-none']);
+        })
+        .join('');
     }
 
-    if (filteredVideoIdList.length === 0) {
+    if ($$('.js-saved-clip-article').length === $$('.js-saved-clip-article.d-none').length) {
       showElement(this.$emptyImage);
-      return;
     }
-    hideElement(this.$emptyImage);
-    renderSkeleton(this.$savedVideoWrapper, filteredVideoIdList.length);
-    const savedVideoData = await this.fetchSavedVideoData(filteredVideoIdList);
-    removeSkeleton(this.$savedVideoWrapper);
-    this.$savedVideoWrapper.innerHTML = savedVideoData.items.map(item => this.makeTemplate(item)).join('');
     setLazyLoading(this.$savedVideoWrapper);
   }
 
@@ -166,7 +176,11 @@ export class SavedVideo {
     const newVideoData = await this.fetchSavedVideoData(videoId);
     removeSkeleton(this.$savedVideoWrapper);
 
-    this.$savedVideoWrapper.insertAdjacentHTML('afterbegin', this.makeTemplate(newVideoData.items[0]));
+    this.$savedVideoWrapper.insertAdjacentHTML(
+      'afterbegin',
+      this.makeTemplate(newVideoData.items[0], ['js-saved-clip-article'])
+    );
+    setLazyLoading(this.$savedVideoWrapper);
   }
 
   renderEmptyImage() {
@@ -187,10 +201,60 @@ export class SavedVideo {
     }
   }
 
+  renderMatchedVideo() {
+    hideElement(this.$emptyImage);
+    const savedVideos = this.savedVideoManager.getSavedVideos();
+    const sortedSavedVideoIdList = this.savedVideoManager.getSortedSavedVideoIdList();
+    let filteredVideoIdList;
+
+    if (this.isLiked) {
+      filteredVideoIdList = sortedSavedVideoIdList.filter(id => savedVideos[id].isLiked === this.isLiked);
+    } else {
+      filteredVideoIdList = sortedSavedVideoIdList.filter(id => savedVideos[id].isChecked === this.isChecked);
+    }
+
+    if (filteredVideoIdList.length === 0) {
+      showElement(this.$emptyImage);
+    }
+
+    if (this.isLiked) {
+      $$('.js-saved-clip-article').forEach(clip => {
+        if (savedVideos[clip.dataset.videoId].isLiked === this.isLiked) {
+          clip.classList.remove('d-none');
+        } else {
+          clip.classList.add('d-none');
+        }
+      });
+
+      return;
+    }
+
+    $$('.js-saved-clip-article').forEach(clip => {
+      if (savedVideos[clip.dataset.videoId].isChecked === this.isChecked) {
+        clip.classList.remove('d-none');
+      } else {
+        clip.classList.add('d-none');
+      }
+    });
+  }
+
+  async initLoad() {
+    const savedVideos = this.savedVideoManager.getSavedVideos();
+    const sortedSavedVideoIdList = this.savedVideoManager.getSortedSavedVideoIdList();
+    let filteredVideoIdList;
+
+    filteredVideoIdList = sortedSavedVideoIdList.filter(id => savedVideos[id].isChecked === false);
+
+    renderSkeleton(this.$savedVideoWrapper, filteredVideoIdList.length);
+    this.savedVideoData = await this.fetchSavedVideoData(sortedSavedVideoIdList);
+    removeSkeleton(this.$savedVideoWrapper);
+    this.renderTotalVideo();
+  }
+
   setState({ isChecked, isLiked }) {
     this.isChecked = isChecked ?? this.isChecked;
     this.isLiked = isLiked ?? this.isLiked;
 
-    this.renderTotalVideo();
+    this.renderMatchedVideo();
   }
 }

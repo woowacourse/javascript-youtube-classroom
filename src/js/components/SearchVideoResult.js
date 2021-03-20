@@ -81,9 +81,10 @@ export class SearchVideoResult {
     }
   }
 
-  makeTemplate(videoData) {
+  makeTemplate(videoData, classList = []) {
     return getVideoTemplate({
       videoData,
+      classList,
       buttonTemplate: this.makeSaveButtonTemplete(videoData.id.videoId),
     });
   }
@@ -112,7 +113,7 @@ export class SearchVideoResult {
 
     this.$wrapper.insertAdjacentHTML(
       'beforeend',
-      this.searchResultData.items.map(item => this.makeTemplate(item)).join('')
+      this.searchResultData.items.map(item => this.makeTemplate(item, ['js-search-clip-article'])).join('')
     );
     showElement(this.$scrollObserver);
     setLazyLoading(this.$container);

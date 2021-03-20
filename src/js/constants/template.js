@@ -2,11 +2,11 @@ import { formatDateTime } from '../util/index.js';
 
 const searchKind = 'youtube#searchResult';
 
-export const getVideoTemplate = ({ videoData, buttonTemplate }) => {
+export const getVideoTemplate = ({ videoData, classList = [], buttonTemplate }) => {
   const { kind, id, snippet } = videoData;
 
   return `
-      <article class="js-clip-article clip d-flex flex-col justify-between">
+      <article class="clip ${classList.join(' ')} d-flex flex-col justify-between" data-video-id=${id}>
         <div class="content-container">
           <div class="preview-container">
             <iframe

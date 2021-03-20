@@ -99,11 +99,11 @@ export class SavedVideoManager {
   }
 
   isCheckedVideo(videoId) {
-    return this.savedVideos[videoId].isChecked ? true : false;
+    return this.savedVideos[videoId].isChecked;
   }
 
   isLikedVideo(videoId) {
-    return this.savedVideos[videoId].isLiked ? true : false;
+    return this.savedVideos[videoId].isLiked;
   }
 
   setState({ key, videoId, savedVideos }) {
