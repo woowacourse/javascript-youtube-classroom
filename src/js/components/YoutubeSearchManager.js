@@ -77,7 +77,7 @@ export default class YoutubeSearchManager extends Observer {
         });
 
         const video = { id, title, channelId, channelTitle, dateString, thumbnail };
-        const options = { isContainingSaveButton: !isSaved };
+        const options = { isContainingSaveButton: true, isContainingMenu: false, isSaved };
 
         return getVideoTemplate(video, options);
       })
@@ -163,29 +163,48 @@ export default class YoutubeSearchManager extends Observer {
     }
   }
 
-  async handleSaveVideo(event) {
-    if (!event.target.classList.contains('btn-save')) return;
-
-    const watchList = this.store.get()[LOCAL_STORAGE_KEYS.WATCH_LIST];
-    if (watchList.length >= SETTINGS.MAX_VIDEO_COUNT) {
-      showSnackbar(ALERT_MESSAGE.MAX_VIDEO_COUNT_EXCEEDED);
-      return;
-    }
+  handleSaveVideo(event) {
+    if (!event.target.classList.contains('saving-btn')) return;
 
     const $selectedButton = event.target;
-    const selectedVideoId = $selectedButton.dataset.videoId;
 
-    const newVideo = {
-      videoId: selectedVideoId,
-      watched: false,
-      liked: false,
-    };
+    if ($selectedButton.classList.contains('btn-save')) {
+      const watchList = this.store.get()[LOCAL_STORAGE_KEYS.WATCH_LIST];
+      if (watchList.length >= SETTINGS.MAX_VIDEO_COUNT) {
+        showSnackbar(ALERT_MESSAGE.MAX_VIDEO_COUNT_EXCEEDED);
+        return;
+      }
 
-    this.store.update(LOCAL_STORAGE_KEYS.WATCH_LIST, [...watchList, newVideo]);
+      const selectedVideoId = $selectedButton.dataset.videoId;
 
-    $selectedButton.classList.add(SELECTORS.STATUS.HIDDEN);
+      const newVideo = {
+        videoId: selectedVideoId,
+        watched: false,
+        liked: false,
+      };
 
-    showSnackbar(ALERT_MESSAGE.VIDEO_SAVED);
+      this.store.update(LOCAL_STORAGE_KEYS.WATCH_LIST, [...watchList, newVideo]);
+
+      $selectedButton.innerText = '⬆️ 저장 취소';
+      $selectedButton.classList.add('btn-cancel-save');
+      $selectedButton.classList.remove('btn-save');
+
+      showSnackbar(ALERT_MESSAGE.VIDEO_SAVED);
+    } else {
+      const watchList = this.store.get()[LOCAL_STORAGE_KEYS.WATCH_LIST];
+      const $selectedButton = event.target;
+      const selectedVideoId = $selectedButton.dataset.videoId;
+
+      const filteredList = watchList.filter((video) => video.videoId !== selectedVideoId);
+
+      this.store.update(LOCAL_STORAGE_KEYS.WATCH_LIST, [...filteredList]);
+
+      $selectedButton.innerText = '⬇️ 저장';
+      $selectedButton.classList.add('btn-save');
+      $selectedButton.classList.remove('btn-cancel-save');
+
+      showSnackbar(ALERT_MESSAGE.VIDEO_SAVE_CANCELED);
+    }
   }
 
   handleClickRecentKeyword(event) {

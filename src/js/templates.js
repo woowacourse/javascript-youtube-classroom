@@ -41,9 +41,19 @@ export const getVideoTemplate = (data, options) => {
         ${
           isContainingSaveButton
             ? `
-              <div class="d-flex justify-end">
-                <button class="btn btn-save ${isSaved ? 'hidden' : ''}" data-video-id="${id}">⬇️ 저장</button>
-              </div>
+              ${
+                isSaved
+                  ? `
+                  <div class="d-flex justify-end">
+                    <button class="btn saving-btn btn-cancel-save" data-video-id="${id}">⬆️ 저장 취소</button>
+                  </div>
+                `
+                  : `
+                  <div class="d-flex justify-end">
+                    <button class="btn saving-btn btn-save" data-video-id="${id}">⬇️ 저장</button>
+                  </div>
+                `
+              }
             `
             : ''
         }

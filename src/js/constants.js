@@ -7,6 +7,7 @@ export const SETTINGS = {
 export const ALERT_MESSAGE = {
   EMPTY_SEARCH_KEYWORD: '검색어를 입력해주세요',
   VIDEO_SAVED: '선택한 동영상을 저장했습니다',
+  VIDEO_SAVE_CANCELED: '동영상의 저장이 취소되었습니다',
   CONFIRM_DELETE: '정말 삭제하시겠습니까?',
   VIDEO_MOVED_WATCHED_LIST: '영상을 [본 영상] 목록으로 옮겼습니다',
   VIDEO_MOVED_TO_WATCH_LIST: '영상을 [볼 영상] 목록으로 옮겼습니다',
@@ -31,6 +32,7 @@ export const SELECTORS = {
     YOUTUBE_SEARCH_RESULT_CONTAINER: '.youtube-search-result-container',
     YOUTUBE_SEARCH_RESULT: '.youtube-search-result',
     BTN_SAVE: '.btn-save',
+    BTN_CANCEL_SAVE: '.btn-cancel-save',
     VIDEO_TITLE: '.video-title',
     RECENT_KEYWORD_LIST: '.recent-keyword-list',
     SAVED_VIDEO_COUNT: '.saved-video-count',

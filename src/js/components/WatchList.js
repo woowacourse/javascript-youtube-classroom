@@ -54,7 +54,12 @@ export default class WatchList extends Observer {
         });
 
         const video = { id, title, channelId, channelTitle, dateString, thumbnail };
-        const options = { isContainingMenu: true, isWatched: currentVideo.watched, isLiked: currentVideo.liked };
+        const options = {
+          isContainingSaveButton: false,
+          isContainingMenu: true,
+          isWatched: currentVideo.watched,
+          isLiked: currentVideo.liked,
+        };
         const videoTemplate = getVideoTemplate(video, options);
 
         return videoTemplate;
