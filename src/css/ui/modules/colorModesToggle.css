@@ -1,7 +1,12 @@
+.color-modes-toggle-wrapper {
+  position: relative;
+  height: 42px;
+}
+
 .color-modes-toggle {
   position: absolute;
-  top: 20px;
-  right: 100px;
+  top: 5px;
+  right: 10px;
 }
 
 .color-modes-toggle__track {
