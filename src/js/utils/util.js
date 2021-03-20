@@ -13,7 +13,7 @@ export const setJSONToLocalStorage = (key, value) => {
   try {
     localStorage.setItem(key, JSON.stringify(value));
   } catch (error) {
-    alert(ERROR_MESSAGE.FAILED_SET_ITEM);
+    throw new Error(ERROR_MESSAGE.FAILED_SET_ITEM);
   }
 };
 
@@ -24,10 +24,8 @@ export const getJSONFromLocalStorage = key => {
 
     return json;
   } catch (error) {
-    alert(ERROR_MESSAGE.FAILED_GET_ITEM);
+    throw new Error(ERROR_MESSAGE.FAILED_GET_ITEM);
   }
-
-  return [];
 };
 
 export const isScrollUnfinished = (args, scrollTop) => {

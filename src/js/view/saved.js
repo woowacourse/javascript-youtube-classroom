@@ -10,7 +10,6 @@ class SavedView {
     this.#$savedNotFound = $(SELECTOR.SAVED_NOT_FOUND);
   }
 
-  // TODO: 개선해보기..
   renderSavedVideos(infos) {
     this.#$savedVideoWrapper.innerHTML = ``;
 

@@ -133,7 +133,7 @@ class SavedController {
 
           default:
             this.#storageModel.filterOption = 'all';
-            return;
+            return this.#storageModel.savedVideos;
         }
       }
     });
