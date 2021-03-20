@@ -168,11 +168,9 @@ export default class WatchList extends Observer {
         const nowVideo = { ...video };
         if (nowVideo.videoId === targetId) {
           nowVideo.watched = !nowVideo.watched;
-          if (nowVideo.watched) {
-            showSnackbar(ALERT_MESSAGE.VIDEO_MOVED_WATCHED_LIST);
-          } else {
-            showSnackbar(ALERT_MESSAGE.VIDEO_MOVED_TO_WATCH_LIST);
-          }
+          showSnackbar(
+            nowVideo.watched ? ALERT_MESSAGE.VIDEO_MOVED_WATCHED_LIST : ALERT_MESSAGE.VIDEO_MOVED_TO_WATCH_LIST
+          );
         }
         return nowVideo;
       });
@@ -186,11 +184,7 @@ export default class WatchList extends Observer {
         const nowVideo = { ...video };
         if (nowVideo.videoId === targetId) {
           nowVideo.liked = !nowVideo.liked;
-          if (nowVideo.liked) {
-            showSnackbar(ALERT_MESSAGE.VIDEO_LIKED);
-          } else {
-            showSnackbar(ALERT_MESSAGE.VIDEO_LIKE_CANCELED);
-          }
+          showSnackbar(nowVideo.liked ? ALERT_MESSAGE.VIDEO_LIKED : ALERT_MESSAGE.VIDEO_LIKE_CANCELED);
         }
         return nowVideo;
       });
