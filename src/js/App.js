@@ -27,7 +27,6 @@ export default class App {
       $.removeClass(this.$watchLaterTabButton, CLASSNAME.BG_CYAN_100);
 
       this.historyContainer.show();
-
       $.addClass(this.$historyTabButton, CLASSNAME.BG_CYAN_100);
     });
 
