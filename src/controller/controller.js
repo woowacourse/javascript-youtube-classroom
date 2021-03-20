@@ -2,11 +2,7 @@ import { BROWSER_HASH } from '../constants.js';
 import { watchingVideoModel, watchedVideoModel } from '../store.js';
 import controllerUtil from './controllerUtil.js';
 
-import {
-  watchingVideoView,
-  watchedVideoView,
-  layoutView,
-} from '../view/index.js';
+import { watchingVideoView, watchedVideoView, layoutView } from '../view/index.js';
 
 const controller = {
   initRouteEventListeners() {
@@ -19,17 +15,17 @@ function routeByHash() {
   const hash = controllerUtil.parseHash(location.hash);
   layoutView.highlightNavButton(hash);
   if (hash === BROWSER_HASH.WATCHING) {
-    onWatchingVideoShow();
+    showWatchingVideo();
     return;
   }
   if (hash === BROWSER_HASH.WATCHED) {
-    onWatchedVideoShow();
+    showWatchedVideo();
     return;
   }
-  onWatchingVideoShow();
+  showWatchingVideo();
 }
 
-function onWatchingVideoShow() {
+function showWatchingVideo() {
   const videos = watchingVideoModel.getItem();
   watchedVideoView.eraseVideos();
   watchedVideoView.hideEmptyVideoImage();
@@ -40,7 +36,7 @@ function onWatchingVideoShow() {
   watchingVideoView.renderVideos(videos);
 }
 
-function onWatchedVideoShow() {
+function showWatchedVideo() {
   watchingVideoView.eraseVideos();
   watchingVideoView.hideEmptyVideoImage();
 

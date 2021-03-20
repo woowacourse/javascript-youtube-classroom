@@ -12167,7 +12167,7 @@ function _getVideosByKeyword() {
 
           case 6:
             data = _context.sent;
-            nextPageToken = response.nextPageToken;
+            nextPageToken = data.nextPageToken;
             videos = data.items.map(function (_ref) {
               var id = _ref.id,
                   snippet = _ref.snippet;
@@ -12345,19 +12345,19 @@ function routeByHash() {
   _view_index_js__WEBPACK_IMPORTED_MODULE_3__.layoutView.highlightNavButton(hash);
 
   if (hash === _constants_js__WEBPACK_IMPORTED_MODULE_0__.BROWSER_HASH.WATCHING) {
-    onWatchingVideoShow();
+    showWatchingVideo();
     return;
   }
 
   if (hash === _constants_js__WEBPACK_IMPORTED_MODULE_0__.BROWSER_HASH.WATCHED) {
-    onWatchedVideoShow();
+    showWatchedVideo();
     return;
   }
 
-  onWatchingVideoShow();
+  showWatchingVideo();
 }
 
-function onWatchingVideoShow() {
+function showWatchingVideo() {
   var videos = _store_js__WEBPACK_IMPORTED_MODULE_1__.watchingVideoModel.getItem();
   _view_index_js__WEBPACK_IMPORTED_MODULE_3__.watchedVideoView.eraseVideos();
   _view_index_js__WEBPACK_IMPORTED_MODULE_3__.watchedVideoView.hideEmptyVideoImage();
@@ -12370,7 +12370,7 @@ function onWatchingVideoShow() {
   _view_index_js__WEBPACK_IMPORTED_MODULE_3__.watchingVideoView.renderVideos(videos);
 }
 
-function onWatchedVideoShow() {
+function showWatchedVideo() {
   _view_index_js__WEBPACK_IMPORTED_MODULE_3__.watchingVideoView.eraseVideos();
   _view_index_js__WEBPACK_IMPORTED_MODULE_3__.watchingVideoView.hideEmptyVideoImage();
   var videos = _store_js__WEBPACK_IMPORTED_MODULE_1__.watchedVideoModel.getItem();
@@ -12468,135 +12468,43 @@ var modalController = {
 };
 
 function onModalOpen() {
-  var allVideoCount = _store_js__WEBPACK_IMPORTED_MODULE_3__.watchingVideoModel.getItem().length + _store_js__WEBPACK_IMPORTED_MODULE_3__.watchedVideoModel.getItem().length;
-  var videos = _store_js__WEBPACK_IMPORTED_MODULE_3__.prevSearchResultModel.getItem().prevSearchedVideos;
-  var processedVideos = _service_modalService_js__WEBPACK_IMPORTED_MODULE_4__.default.getProcessedVideos(videos);
-  _view_index_js__WEBPACK_IMPORTED_MODULE_5__.modalView.openModal();
-  _view_index_js__WEBPACK_IMPORTED_MODULE_5__.modalView.renderSavedVideoCount(allVideoCount);
+  var prevSearchedVideos = getProcessedVideos();
 
-  if (videos.length === 0) {
+  if (prevSearchedVideos.length === 0) {
     return;
   }
 
-  _view_index_js__WEBPACK_IMPORTED_MODULE_5__.modalView.renderSearchedVideos(processedVideos);
-  _view_index_js__WEBPACK_IMPORTED_MODULE_5__.modalView.showSearchResultIntersector();
+  _view_index_js__WEBPACK_IMPORTED_MODULE_5__.modalView.openModal();
+  renderModalContents(prevSearchedVideos);
 }
 
 function onModalClose() {
   _view_index_js__WEBPACK_IMPORTED_MODULE_5__.modalView.closeModal();
 }
 
-function onVideoSearch(_x) {
-  return _onVideoSearch.apply(this, arguments);
-}
+function onVideoSearch(event) {
+  event.preventDefault();
+  var inputQuery = _elements_js__WEBPACK_IMPORTED_MODULE_0__.$searchFormInput.value.trim();
 
-function _onVideoSearch() {
-  _onVideoSearch = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee(event) {
-    var input, _yield$getVideosByKey, videos, nextPageToken;
+  if (inputQuery === _store_js__WEBPACK_IMPORTED_MODULE_3__.prevSearchResultModel.getItem().lastQuery || inputQuery === '') {
+    return;
+  }
 
-    return regeneratorRuntime.wrap(function _callee$(_context) {
-      while (1) {
-        switch (_context.prev = _context.next) {
-          case 0:
-            event.preventDefault();
-            input = _elements_js__WEBPACK_IMPORTED_MODULE_0__.$searchFormInput.value.trim();
-
-            if (!(input === _store_js__WEBPACK_IMPORTED_MODULE_3__.prevSearchResultModel.getItem().lastQuery)) {
-              _context.next = 4;
-              break;
-            }
-
-            return _context.abrupt("return");
-
-          case 4:
-            if (!(input === '')) {
-              _context.next = 6;
-              break;
-            }
-
-            return _context.abrupt("return");
-
-          case 6:
-            _view_index_js__WEBPACK_IMPORTED_MODULE_5__.modalView.initSearchEnv();
-            _context.next = 9;
-            return (0,_apis_youtube_js__WEBPACK_IMPORTED_MODULE_1__.getVideosByKeyword)(input);
-
-          case 9:
-            _yield$getVideosByKey = _context.sent;
-            videos = _yield$getVideosByKey.videos;
-            nextPageToken = _yield$getVideosByKey.nextPageToken;
-
-            if (!(videos.length === 0)) {
-              _context.next = 17;
-              break;
-            }
-
-            _view_index_js__WEBPACK_IMPORTED_MODULE_5__.modalView.hideSearchResultIntersector();
-            _view_index_js__WEBPACK_IMPORTED_MODULE_5__.modalView.showNotFountImage();
-            _view_index_js__WEBPACK_IMPORTED_MODULE_5__.modalView.hideSkeletons();
-            return _context.abrupt("return");
-
-          case 17:
-            _service_modalService_js__WEBPACK_IMPORTED_MODULE_4__.default.saveSearchQuery(input);
-            _service_modalService_js__WEBPACK_IMPORTED_MODULE_4__.default.savePrevSearchInfo({
-              lastQuery: input,
-              nextPageToken: nextPageToken
-            });
-            _service_modalService_js__WEBPACK_IMPORTED_MODULE_4__.default.savePrevSearchedVideos(videos);
-            _view_index_js__WEBPACK_IMPORTED_MODULE_5__.modalView.hideSkeletons();
-            _view_index_js__WEBPACK_IMPORTED_MODULE_5__.modalView.renderSearchQueries(_store_js__WEBPACK_IMPORTED_MODULE_3__.searchQueryModel.getItem());
-            _view_index_js__WEBPACK_IMPORTED_MODULE_5__.modalView.renderSearchedVideos(_service_modalService_js__WEBPACK_IMPORTED_MODULE_4__.default.getProcessedVideos(videos));
-            _view_index_js__WEBPACK_IMPORTED_MODULE_5__.modalView.showSearchResultIntersector();
-
-          case 24:
-          case "end":
-            return _context.stop();
-        }
-      }
-    }, _callee);
-  }));
-  return _onVideoSearch.apply(this, arguments);
+  searchVideo(inputQuery);
 }
 
 function onAdditionalVideosLoad() {
-  return _onAdditionalVideosLoad.apply(this, arguments);
-}
+  var _modalService$getPrev = _service_modalService_js__WEBPACK_IMPORTED_MODULE_4__.default.getPrevSearchInfo(),
+      lastQuery = _modalService$getPrev.lastQuery,
+      pageToken = _modalService$getPrev.pageToken;
 
-function _onAdditionalVideosLoad() {
-  _onAdditionalVideosLoad = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee2() {
-    var _modalService$getPrev, lastQuery, pageToken, _yield$getVideosByKey2, videos, nextPageToken;
-
-    return regeneratorRuntime.wrap(function _callee2$(_context2) {
-      while (1) {
-        switch (_context2.prev = _context2.next) {
-          case 0:
-            _modalService$getPrev = _service_modalService_js__WEBPACK_IMPORTED_MODULE_4__.default.getPrevSearchInfo(), lastQuery = _modalService$getPrev.lastQuery, pageToken = _modalService$getPrev.pageToken;
-            _context2.next = 3;
-            return (0,_apis_youtube_js__WEBPACK_IMPORTED_MODULE_1__.getVideosByKeyword)(lastQuery, pageToken);
-
-          case 3:
-            _yield$getVideosByKey2 = _context2.sent;
-            videos = _yield$getVideosByKey2.videos;
-            nextPageToken = _yield$getVideosByKey2.nextPageToken;
-            _view_index_js__WEBPACK_IMPORTED_MODULE_5__.modalView.insertSearchedVideos(videos);
-            _service_modalService_js__WEBPACK_IMPORTED_MODULE_4__.default.savePrevSearchInfo({
-              nextPageToken: nextPageToken
-            });
-
-          case 8:
-          case "end":
-            return _context2.stop();
-        }
-      }
-    }, _callee2);
-  }));
-  return _onAdditionalVideosLoad.apply(this, arguments);
+  loadAdditionalVideos(lastQuery, pageToken);
 }
 
 function onSearchedVideoSave(_ref) {
-  var target = _ref.target;
+  var button = _ref.button;
 
-  if (!target.classList.contains(_constants_js__WEBPACK_IMPORTED_MODULE_6__.SELECTOR_CLASS.SEARCHED_CLIP_SAVE_BUTTON)) {
+  if (!button.classList.contains(_constants_js__WEBPACK_IMPORTED_MODULE_6__.SELECTOR_CLASS.SEARCHED_CLIP_SAVE_BUTTON)) {
     return;
   }
 
@@ -12605,18 +12513,136 @@ function onSearchedVideoSave(_ref) {
     return;
   }
 
+  saveSearcedVideo(button);
+}
+
+function renderModalContents(prevSearchedVideos) {
+  _view_index_js__WEBPACK_IMPORTED_MODULE_5__.modalView.renderSearchedVideos(prevSearchedVideos);
+  _view_index_js__WEBPACK_IMPORTED_MODULE_5__.modalView.showSearchResultIntersector();
+  _view_index_js__WEBPACK_IMPORTED_MODULE_5__.modalView.renderSavedVideoCount(getAllVideoCount());
+}
+
+function getAllVideoCount() {
+  _store_js__WEBPACK_IMPORTED_MODULE_3__.watchingVideoModel.getItem().length + _store_js__WEBPACK_IMPORTED_MODULE_3__.watchedVideoModel.getItem().length;
+}
+
+function getProcessedVideos() {
+  var videos = _store_js__WEBPACK_IMPORTED_MODULE_3__.prevSearchResultModel.getItem().prevSearchedVideos;
+  return _service_modalService_js__WEBPACK_IMPORTED_MODULE_4__.default.getProcessedVideos(videos);
+}
+
+function searchVideo(_x) {
+  return _searchVideo.apply(this, arguments);
+}
+
+function _searchVideo() {
+  _searchVideo = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee(inputQuery) {
+    var _yield$getVideosByKey, videos, nextPageToken;
+
+    return regeneratorRuntime.wrap(function _callee$(_context) {
+      while (1) {
+        switch (_context.prev = _context.next) {
+          case 0:
+            _view_index_js__WEBPACK_IMPORTED_MODULE_5__.modalView.showSearchPrepartion();
+            _context.next = 3;
+            return (0,_apis_youtube_js__WEBPACK_IMPORTED_MODULE_1__.getVideosByKeyword)(inputQuery);
+
+          case 3:
+            _yield$getVideosByKey = _context.sent;
+            videos = _yield$getVideosByKey.videos;
+            nextPageToken = _yield$getVideosByKey.nextPageToken;
+
+            if (!(videos.length === 0)) {
+              _context.next = 9;
+              break;
+            }
+
+            renderEmptySearchResult();
+            return _context.abrupt("return");
+
+          case 9:
+            saveSearchInfo(inputQuery, nextPageToken, videos);
+            showSearchResult(videos);
+
+          case 11:
+          case "end":
+            return _context.stop();
+        }
+      }
+    }, _callee);
+  }));
+  return _searchVideo.apply(this, arguments);
+}
+
+function renderEmptySearchResult() {
+  _view_index_js__WEBPACK_IMPORTED_MODULE_5__.modalView.hideSearchResultIntersector();
+  _view_index_js__WEBPACK_IMPORTED_MODULE_5__.modalView.showNotFountImage();
+  _view_index_js__WEBPACK_IMPORTED_MODULE_5__.modalView.hideSkeletons();
+}
+
+function saveSearchInfo(inputQuery, nextPageToken, videos) {
+  _service_modalService_js__WEBPACK_IMPORTED_MODULE_4__.default.saveSearchQuery(inputQuery);
+  _service_modalService_js__WEBPACK_IMPORTED_MODULE_4__.default.savePrevSearchInfo({
+    lastQuery: inputQuery,
+    nextPageToken: nextPageToken
+  });
+  _service_modalService_js__WEBPACK_IMPORTED_MODULE_4__.default.savePrevSearchedVideos(videos);
+}
+
+function showSearchResult(videos) {
+  _view_index_js__WEBPACK_IMPORTED_MODULE_5__.modalView.hideSkeletons();
+  _view_index_js__WEBPACK_IMPORTED_MODULE_5__.modalView.renderSearchQueries(_store_js__WEBPACK_IMPORTED_MODULE_3__.searchQueryModel.getItem());
+  _view_index_js__WEBPACK_IMPORTED_MODULE_5__.modalView.renderSearchedVideos(_service_modalService_js__WEBPACK_IMPORTED_MODULE_4__.default.getProcessedVideos(videos));
+  _view_index_js__WEBPACK_IMPORTED_MODULE_5__.modalView.showSearchResultIntersector();
+}
+
+function loadAdditionalVideos(_x2, _x3) {
+  return _loadAdditionalVideos.apply(this, arguments);
+}
+
+function _loadAdditionalVideos() {
+  _loadAdditionalVideos = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee2(lastQuery, pageToken) {
+    var _yield$getVideosByKey2, videos, nextPageToken;
+
+    return regeneratorRuntime.wrap(function _callee2$(_context2) {
+      while (1) {
+        switch (_context2.prev = _context2.next) {
+          case 0:
+            _context2.next = 2;
+            return (0,_apis_youtube_js__WEBPACK_IMPORTED_MODULE_1__.getVideosByKeyword)(lastQuery, pageToken);
+
+          case 2:
+            _yield$getVideosByKey2 = _context2.sent;
+            videos = _yield$getVideosByKey2.videos;
+            nextPageToken = _yield$getVideosByKey2.nextPageToken;
+            _view_index_js__WEBPACK_IMPORTED_MODULE_5__.modalView.insertSearchedVideos(videos);
+            _service_modalService_js__WEBPACK_IMPORTED_MODULE_4__.default.savePrevSearchInfo({
+              nextPageToken: nextPageToken
+            });
+
+          case 7:
+          case "end":
+            return _context2.stop();
+        }
+      }
+    }, _callee2);
+  }));
+  return _loadAdditionalVideos.apply(this, arguments);
+}
+
+function saveSearcedVideo(button) {
   if (_service_watchingVideoService_js__WEBPACK_IMPORTED_MODULE_7__.default.isVideosEmpty()) {
     _view_index_js__WEBPACK_IMPORTED_MODULE_5__.watchingVideoView.hideEmptyVideoImage();
     _view_index_js__WEBPACK_IMPORTED_MODULE_5__.watchedVideoView.hideEmptyVideoImage();
   }
 
-  _service_watchingVideoService_js__WEBPACK_IMPORTED_MODULE_7__.default.pushNewVideo(target.dataset);
+  _service_watchingVideoService_js__WEBPACK_IMPORTED_MODULE_7__.default.pushNewVideo(button.dataset);
 
   if (_controllerUtil_js__WEBPACK_IMPORTED_MODULE_2__.default.parseHash(location.hash) === _constants_js__WEBPACK_IMPORTED_MODULE_6__.BROWSER_HASH.WATCHING) {
     _view_index_js__WEBPACK_IMPORTED_MODULE_5__.watchingVideoView.renderVideos(_store_js__WEBPACK_IMPORTED_MODULE_3__.watchingVideoModel.getItem());
   }
 
-  _view_index_js__WEBPACK_IMPORTED_MODULE_5__.modalView.hideVideoSaveButton(target);
+  _view_index_js__WEBPACK_IMPORTED_MODULE_5__.modalView.hideVideoSaveButton(button);
   _view_index_js__WEBPACK_IMPORTED_MODULE_5__.layoutView.showSnackbar(_constants_js__WEBPACK_IMPORTED_MODULE_6__.SNACKBAR_MESSAGE.WATCHING_VIDEO_SAVE_SUCCESS, true);
 }
 
@@ -12655,29 +12681,27 @@ function onWatchedVideoInteract(_ref) {
   var target = _ref.target;
 
   if (target.classList.contains(_constants__WEBPACK_IMPORTED_MODULE_0__.SELECTOR_CLASS.CLIP_CHECK_BUTTON)) {
-    onClipUnCheck(target);
+    unCheckClip(target.dataset.videoId);
     return;
   }
 
   if (target.classList.contains(_constants__WEBPACK_IMPORTED_MODULE_0__.SELECTOR_CLASS.CLIP_DELETE_BUTTON)) {
-    onWatchedVideoDelete(target);
+    deleteWatchedVideo(target.dataset.videoId);
     return;
   }
 }
 
-function onClipUnCheck(button) {
-  var videoId = button.dataset.videoId;
+function unCheckClip(videoId) {
   _store__WEBPACK_IMPORTED_MODULE_3__.watchedVideoModel.sendVideoTo(_store__WEBPACK_IMPORTED_MODULE_3__.watchingVideoModel, videoId);
   loadWatchedVideos();
   _view__WEBPACK_IMPORTED_MODULE_4__.layoutView.showSnackbar(_constants__WEBPACK_IMPORTED_MODULE_0__.SNACKBAR_MESSAGE.WATCHING_VIDEO_CHECK_SUCCESS, true);
 }
 
-function onWatchedVideoDelete(button) {
+function deleteWatchedVideo(videoId) {
   if (!_view__WEBPACK_IMPORTED_MODULE_4__.layoutView.confirm(_constants__WEBPACK_IMPORTED_MODULE_0__.CONFIRM_MESSAGE.WATCHED_VIDEO_DELETE)) {
     return;
   }
 
-  var videoId = button.dataset.videoId;
   _store__WEBPACK_IMPORTED_MODULE_3__.watchedVideoModel.popVideoByVideoId(videoId);
   loadWatchedVideos();
   _view__WEBPACK_IMPORTED_MODULE_4__.layoutView.showSnackbar(_constants__WEBPACK_IMPORTED_MODULE_0__.SNACKBAR_MESSAGE.WATCHED_VIDEO_DELETE_SUCCESS, true);
@@ -12732,29 +12756,27 @@ function onWatchingVideoInteract(_ref) {
   var target = _ref.target;
 
   if (target.classList.contains(_constants__WEBPACK_IMPORTED_MODULE_4__.SELECTOR_CLASS.CLIP_CHECK_BUTTON)) {
-    onClipCheck(target);
+    checkClip(target.dataset.videoId);
     return;
   }
 
   if (target.classList.contains(_constants__WEBPACK_IMPORTED_MODULE_4__.SELECTOR_CLASS.CLIP_DELETE_BUTTON)) {
-    onWatchingVideoDelete(target);
+    deleteWatchingVideo(target.dataset.videoId);
     return;
   }
 }
 
-function onClipCheck(button) {
-  var videoId = button.dataset.videoId;
+function checkClip(videoId) {
   _store__WEBPACK_IMPORTED_MODULE_1__.watchingVideoModel.sendVideoTo(_store__WEBPACK_IMPORTED_MODULE_1__.watchedVideoModel, videoId);
   loadWatchingVideos();
   _view__WEBPACK_IMPORTED_MODULE_2__.layoutView.showSnackbar(_constants__WEBPACK_IMPORTED_MODULE_4__.SNACKBAR_MESSAGE.WATCHED_VIDEO_CHECK_SUCCESS, true);
 }
 
-function onWatchingVideoDelete(button) {
+function deleteWatchingVideo(videoId) {
   if (!_view__WEBPACK_IMPORTED_MODULE_2__.layoutView.confirm(_constants__WEBPACK_IMPORTED_MODULE_4__.CONFIRM_MESSAGE.WATCHING_VIDEO_DELETE)) {
     return;
   }
 
-  var videoId = button.dataset.videoId;
   _store__WEBPACK_IMPORTED_MODULE_1__.watchingVideoModel.popVideoByVideoId(videoId);
   loadWatchingVideos();
   _view__WEBPACK_IMPORTED_MODULE_2__.layoutView.showSnackbar(_constants__WEBPACK_IMPORTED_MODULE_4__.SNACKBAR_MESSAGE.WATCHING_VIDEO_DELETE_SUCCESS, true);
@@ -13685,8 +13707,8 @@ var ModalView = /*#__PURE__*/function (_BasicView) {
       this._element.$modal.classList.remove(_constants_js__WEBPACK_IMPORTED_MODULE_0__.STYLE_CLASS.OPEN);
     }
   }, {
-    key: "initSearchEnv",
-    value: function initSearchEnv() {
+    key: "showSearchPrepartion",
+    value: function showSearchPrepartion() {
       this.hideElement(this._element.$searchedVideoNotFound);
 
       _classPrivateMethodGet(this, _renderSkeletonItems, _renderSkeletonItems2).call(this);

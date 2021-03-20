@@ -1,16 +1,8 @@
 import { $watchingVideoWrapper } from '../elements';
 import { watchedVideoModel, watchingVideoModel } from '../store';
-import {
-  layoutView,
-  watchedVideoView,
-  watchingVideoView,
-} from '../view';
+import { layoutView, watchedVideoView, watchingVideoView } from '../view';
 import watchingVideoService from '../service/watchingVideoService.js';
-import {
-  CONFIRM_MESSAGE,
-  SELECTOR_CLASS,
-  SNACKBAR_MESSAGE,
-} from '../constants';
+import { CONFIRM_MESSAGE, SELECTOR_CLASS, SNACKBAR_MESSAGE } from '../constants';
 
 const watchingVideoController = {
   initEventListeners() {
@@ -18,32 +10,30 @@ const watchingVideoController = {
   },
   loadVideos() {
     loadWatchingVideos();
-  }
+  },
 };
 
 function onWatchingVideoInteract({ target }) {
   if (target.classList.contains(SELECTOR_CLASS.CLIP_CHECK_BUTTON)) {
-    onClipCheck(target);
+    checkClip(target.dataset.videoId);
     return;
   }
   if (target.classList.contains(SELECTOR_CLASS.CLIP_DELETE_BUTTON)) {
-    onWatchingVideoDelete(target);
+    deleteWatchingVideo(target.dataset.videoId);
     return;
   }
 }
 
-function onClipCheck(button) {
-  const videoId = button.dataset.videoId;
+function checkClip(videoId) {
   watchingVideoModel.sendVideoTo(watchedVideoModel, videoId);
   loadWatchingVideos();
   layoutView.showSnackbar(SNACKBAR_MESSAGE.WATCHED_VIDEO_CHECK_SUCCESS, true);
 }
 
-function onWatchingVideoDelete(button) {
+function deleteWatchingVideo(videoId) {
   if (!layoutView.confirm(CONFIRM_MESSAGE.WATCHING_VIDEO_DELETE)) {
     return;
   }
-  const videoId = button.dataset.videoId;
   watchingVideoModel.popVideoByVideoId(videoId);
   loadWatchingVideos();
   layoutView.showSnackbar(SNACKBAR_MESSAGE.WATCHING_VIDEO_DELETE_SUCCESS, true);

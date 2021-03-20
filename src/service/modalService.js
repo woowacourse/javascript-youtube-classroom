@@ -1,10 +1,5 @@
 import { SETTINGS } from '../constants';
-import {
-  watchedVideoModel,
-  watchingVideoModel,
-  prevSearchResultModel,
-  searchQueryModel,
-} from '../store.js';
+import { watchedVideoModel, watchingVideoModel, prevSearchResultModel, searchQueryModel } from '../store.js';
 
 const modalService = {
   getPrevSearchInfo() {
@@ -22,9 +17,7 @@ const modalService = {
     }));
   },
   saveSearchQuery(searchQuery) {
-    const filteredQueries = searchQueryModel
-      .getItem()
-      .filter(query => searchQuery !== query);
+    const filteredQueries = searchQueryModel.getItem().filter(query => searchQuery !== query);
     filteredQueries.push(searchQuery);
     if (filteredQueries.length > SETTINGS.MAX_SAVED_SEARCH_QUERY_COUNT) {
       filteredQueries.shift();
