@@ -54,15 +54,15 @@ function onAdditionalVideosLoad() {
   loadAdditionalVideos(lastQuery, pageToken);
 }
 
-function onSearchedVideoSave({ button }) {
-  if (!button.classList.contains(SELECTOR_CLASS.SEARCHED_CLIP_SAVE_BUTTON)) {
+function onSearchedVideoSave({ target }) {
+  if (!target.classList.contains(SELECTOR_CLASS.SEARCHED_CLIP_SAVE_BUTTON)) {
     return;
   }
   if (!watchingVideoService.isVideoCountUnderLimit()) {
     layoutView.showSnackbar(SNACKBAR_MESSAGE.SAVE_LIMIT_EXCEEDED, false);
     return;
   }
-  saveSearcedVideo(button);
+  saveSearcedVideo(target);
 }
 
 function renderModalContents(prevSearchedVideos) {
