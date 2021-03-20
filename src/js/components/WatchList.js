@@ -162,62 +162,47 @@ export default class WatchList extends Observer {
     this.observeLazyLoad(SELECTORS.CLASS.PREVIEW_CONTAINER);
   }
 
+  updateVideoStatus(property, target) {
+    const { watchList } = this.store.get();
+    const updatedWatchList = [...watchList];
+    const targetId = target.closest(SELECTORS.CLASS.MENU_LIST).dataset.videoId;
+    const targetVideo = updatedWatchList.find((video) => video.videoId === targetId);
+    targetVideo[property] = !targetVideo[property];
+    this.store.update(LOCAL_STORAGE_KEYS.WATCH_LIST, updatedWatchList);
+
+    return targetVideo[property];
+  }
+
+  deleteVideo(target) {
+    const { watchList } = this.store.get();
+    const targetId = target.closest(SELECTORS.CLASS.MENU_LIST).dataset.videoId;
+    const updatedWatchList = watchList.filter(({ videoId }) => videoId !== targetId);
+    this.store.update(LOCAL_STORAGE_KEYS.WATCH_LIST, updatedWatchList);
+
+    const $saveButton = getVideoSaveButton(targetId);
+    if ($saveButton) {
+      $saveButton.classList.remove('hidden');
+    }
+  }
+
   handleClickVideoMenu(event) {
     const { target } = event;
-    const { watchList } = this.store.get();
 
     if (target.classList.contains('delete')) {
       if (!window.confirm(ALERT_MESSAGE.CONFIRM_DELETE)) return;
 
-      const targetId = target.closest(SELECTORS.CLASS.MENU_LIST).dataset.videoId;
-      const newWatchList = watchList.filter(({ videoId }) => videoId !== targetId);
-      this.store.update(LOCAL_STORAGE_KEYS.WATCH_LIST, newWatchList);
-
-      const $saveButton = getVideoSaveButton(targetId);
-      if ($saveButton) {
-        $saveButton.classList.remove('hidden');
-      }
-
+      this.deleteVideo(target);
       showSnackbar(ALERT_MESSAGE.VIDEO_DELETED);
     }
 
     if (target.classList.contains('watched')) {
-      const targetId = target.closest(SELECTORS.CLASS.MENU_LIST).dataset.videoId;
-      const newWatchList = watchList.map((video) => {
-        const nowVideo = { ...video };
-        if (nowVideo.videoId === targetId) {
-          nowVideo.watched = !nowVideo.watched;
-        }
-        return nowVideo;
-      });
-
-      this.store.update(LOCAL_STORAGE_KEYS.WATCH_LIST, newWatchList);
-
-      if (this.nowMenu === MENU.TO_WATCH) {
-        showSnackbar(ALERT_MESSAGE.VIDEO_MOVED_WATCHED_LIST);
-      } else if (this.nowMenu === MENU.WATCHED) {
-        showSnackbar(ALERT_MESSAGE.VIDEO_MOVED_TO_WATCH_LIST);
-      }
+      const updatedStatus = this.updateVideoStatus('watched', target);
+      showSnackbar(updatedStatus ? ALERT_MESSAGE.VIDEO_MOVED_WATCHED_LIST : ALERT_MESSAGE.VIDEO_MOVED_TO_WATCH_LIST);
     }
 
-    if (target.classList.contains('like')) {
-      let isLiked = false;
-      const targetId = target.closest(SELECTORS.CLASS.MENU_LIST).dataset.videoId;
-      const newWatchList = watchList.map((video) => {
-        const nowVideo = { ...video };
-        if (nowVideo.videoId === targetId) {
-          isLiked = nowVideo.liked = !nowVideo.liked;
-        }
-        return nowVideo;
-      });
-
-      this.store.update(LOCAL_STORAGE_KEYS.WATCH_LIST, newWatchList);
-
-      if (isLiked) {
-        showSnackbar(ALERT_MESSAGE.VIDEO_LIKED);
-      } else {
-        showSnackbar(ALERT_MESSAGE.VIDEO_UNLIKED);
-      }
+    if (target.classList.contains('liked')) {
+      const updatedStatus = this.updateVideoStatus('liked', target);
+      showSnackbar(updatedStatus ? ALERT_MESSAGE.VIDEO_LIKED : ALERT_MESSAGE.VIDEO_UNLIKED);
     }
   }
 

@@ -35,7 +35,7 @@ export const SELECTORS = {
     NO_VIDEO: '.no-video',
     CLIP: '.clip',
     WATCHED: '.watched',
-    LIKE: '.like',
+    LIKED: '.liked',
     COMMENT: '.comment',
     DELETE: '.delete',
     TO_WATCH_LIST_BUTTON: '.to-watch-list-button',
