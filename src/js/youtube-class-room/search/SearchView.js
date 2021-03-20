@@ -12,7 +12,7 @@ import {
 } from "../../utils/dom.js";
 import { DOM_CONSTANTS, ERROR_MESSAGE, VIDEOS } from "../../utils/constants.js";
 import elements from "../../utils/elements.js";
-import { showSnackbar } from "../../utils/snackbar.js";
+import showSnackbar from "../../utils/snackbar.js";
 
 export default class SearchView {
   resetSearchResults() {

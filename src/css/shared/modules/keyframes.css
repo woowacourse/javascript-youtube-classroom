@@ -1,4 +1,4 @@
-@-webkit-keyframes fadein {
+@-webkit-keyframes fade-in {
   from {
     bottom: 0;
     opacity: 0;
@@ -9,35 +9,35 @@
   }
 }
 
-@keyframes fadein {
+@keyframes fade-in {
   from {
     bottom: 0;
     opacity: 0;
   }
   to {
-    bottom: 0;
+    bottom: 30px;
     opacity: 0.8;
   }
 }
 
-@-webkit-keyframes fadeout {
+@-webkit-keyframes fade-out {
   from {
-    bottom: 0;
+    bottom: 30px;
     opacity: 0.8;
   }
   to {
-    bottom: -30px;
+    bottom: 0;
     opacity: 0;
   }
 }
 
-@keyframes fadeout {
+@keyframes fade-out {
   from {
-    bottom: 0;
+    bottom: 30px;
     opacity: 0.8;
   }
   to {
-    bottom: -30px;
+    bottom: 0;
     opacity: 0;
   }
 }

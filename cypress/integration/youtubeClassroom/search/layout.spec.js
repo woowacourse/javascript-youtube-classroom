@@ -45,14 +45,14 @@ describe("youtube classroom 레이아웃 테스트", () => {
       .then(($searchReulstInner) => {
         return $searchReulstInner.children().length;
       })
-      .then((itemLen) => {
+      .then((itemLength) => {
         cy.get("#skeleton-search-results").should("not.be.visible");
         cy.get("#search-results").scrollTo("bottom");
         cy.wait(1000);
         cy.get("#search-results-inner")
           .children()
           .its("length")
-          .should("be.gt", itemLen);
+          .should("be.gt", itemLength);
       });
   });
 });

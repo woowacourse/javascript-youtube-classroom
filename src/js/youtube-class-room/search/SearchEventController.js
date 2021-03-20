@@ -9,7 +9,7 @@ import {
   DOM_CONSTANTS,
   CUSTOM_EVENTS,
 } from "../../utils/constants.js";
-import { showSnackbar } from "../../utils/snackbar.js";
+import showSnackbar from "../../utils/snackbar.js";
 import {
   openModal,
   closeModal,

@@ -3,9 +3,9 @@ import WatchEventController from "./youtube-class-room/watch/WatchEventContorlle
 
 function initApp() {
   const searchEventController = new SearchEventController();
-  searchEventController.bindEvents();
-
   const watchEventController = new WatchEventController();
+
+  searchEventController.bindEvents();
   watchEventController.bindEvents();
 }
 

@@ -3,7 +3,7 @@ import {
   STORAGE_NAME,
   SUCCESS_MESSAGE,
 } from "../utils/constants.js";
-import { showSnackbar } from "../utils/snackbar.js";
+import showSnackbar from "../utils/snackbar.js";
 
 const videos = {
   fetchedVideos: [],
@@ -24,6 +24,10 @@ const videos = {
   },
 
   setFetchedVideos(videoItems) {
+    if (!videoItems instanceof Array) {
+      return;
+    }
+
     this.recentVideos = videoItems
       .filter((videoItem) => videoItem.id.videoId)
       .map((videoItem) => this.parseVideoItem(videoItem));

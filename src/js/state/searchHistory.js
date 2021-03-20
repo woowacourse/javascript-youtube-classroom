@@ -46,7 +46,9 @@ const searchHistory = {
   },
 
   setPageToken(newToken) {
-    this.pageToken = newToken;
+    if (typeof newToken === "string") {
+      this.pageToken = newToken;
+    }
   },
 
   getPageToken() {
@@ -55,6 +57,10 @@ const searchHistory = {
 
   resetPageToken() {
     this.pageToken = "";
+  },
+
+  isNewSearch() {
+    return this.pageToken === "";
   },
 };
 

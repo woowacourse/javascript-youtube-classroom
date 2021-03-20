@@ -1,7 +1,7 @@
 import WatchController from "./WatchController.js";
 
 import elements from "../../utils/elements.js";
-import { showSnackbar } from "../../utils/snackbar.js";
+import showSnackbar from "../../utils/snackbar.js";
 import {
   ERROR_MESSAGE,
   DOM_CONSTANTS,
