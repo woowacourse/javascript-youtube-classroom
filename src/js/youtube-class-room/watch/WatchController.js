@@ -1,6 +1,6 @@
 import WatchView from "./WatchView.js";
 
-import { showSnackbar } from "../../utils/snackbar.js";
+import showSnackbar from "../../utils/snackbar.js";
 import {
   CONFIRM_MESSAGE,
   EMPTY_IMG,

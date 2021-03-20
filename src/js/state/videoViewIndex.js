@@ -8,7 +8,9 @@ const videoViewIndex = {
   },
 
   setViewName(viewName) {
-    this.viewName = viewName;
+    if (Object.values(VIDEO_VIEW_NAME).includes(viewName)) {
+      this.viewName = viewName;
+    }
   },
 
   getCurrentViewName() {

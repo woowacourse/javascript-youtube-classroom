@@ -11,7 +11,7 @@ import {
   YOUTUBE_URL,
 } from "../../utils/constants.js";
 import { observeScrollBottom } from "../../utils/scrollBottomObserver.js";
-import { showSnackbar } from "../../utils/snackbar.js";
+import showSnackbar from "../../utils/snackbar.js";
 
 import { getSearchQueryString } from "../../queries/searchQuery.js";
 
@@ -33,13 +33,13 @@ export default class SearchController {
   }
 
   async updateSearchResultView(searchKeyword) {
-    if (searchHistory.getPageToken() === "") {
+    if (searchHistory.isNewSearch()) {
       this.activateSearchLoading();
     }
     const videoItems = await this.fetchSearchResult(searchKeyword);
 
-    if (videoItems.length === 0) {
-      searchHistory.getPageToken() === "" && this.searchView.showNotFoundImg();
+    if (videoItems && videoItems.length === 0) {
+      searchHistory.isNewSearch() && this.searchView.showNotFoundImg();
     } else {
       this.attachVideos(videoItems);
     }
@@ -79,7 +79,7 @@ export default class SearchController {
       searchHistory.getPageToken()
     );
 
-    if (searchHistory.getPageToken() === "") {
+    if (searchHistory.isNewSearch) {
       observeScrollBottom(this.addVideosByScroll.bind(this));
     }
     searchHistory.setPageToken(this.nextPageToken);
