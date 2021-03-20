@@ -65,6 +65,11 @@ export default class WatchView {
     );
   }
 
+  markLikedViewButton() {
+    this.removeAllButtonColor();
+    addBackgroundColor(elements.$likedViewButton, PALLET.CYAN_100);
+  }
+
   appendSavedVideoClips(items) {
     const fragment = document.createDocumentFragment();
 
