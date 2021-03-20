@@ -136,7 +136,7 @@ export class SavedVideo {
     `;
   }
 
-  async renderTotalVideo() {
+  renderTotalVideo() {
     this.$savedVideoWrapper.innerHTML = '';
 
     const savedVideos = this.savedVideoManager.getSavedVideos();

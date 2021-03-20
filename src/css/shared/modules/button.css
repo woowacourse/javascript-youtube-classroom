@@ -20,6 +20,7 @@ input[type='radio'].navigation-radio:checked + label {
   display: flex;
   align-items: center;
   background-color: rgb(239, 239, 239);
+  text-align: center;
 }
 
 @media screen and (max-width: 960px) {
