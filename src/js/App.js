@@ -1,3 +1,4 @@
+/* eslint-disable class-methods-use-this */
 import { CLASSNAME } from "./constants/index.js";
 import { $ } from "./utils/DOM.js";
 import SearchContainer from "./Search/SearchContainer.js";
@@ -16,23 +17,31 @@ export default class App {
 
     this.$watchLaterTabButton.addEventListener("click", () => {
       this.historyContainer.hide();
-      $.removeClass(this.$historyTabButton, CLASSNAME.BG_CYAN_100);
+      this.deactivateTabButton(this.$historyTabButton);
 
       this.watchLaterContainer.show();
-      $.addClass(this.$watchLaterTabButton, CLASSNAME.BG_CYAN_100);
+      this.activateTabButton(this.$watchLaterTabButton);
     });
 
     this.$historyTabButton.addEventListener("click", () => {
       this.watchLaterContainer.hide();
-      $.removeClass(this.$watchLaterTabButton, CLASSNAME.BG_CYAN_100);
+      this.deactivateTabButton(this.$watchLaterTabButton);
 
       this.historyContainer.show();
-      $.addClass(this.$historyTabButton, CLASSNAME.BG_CYAN_100);
+      this.activateTabButton(this.$historyTabButton);
     });
 
     this.$searchTabButton.addEventListener(
       "click",
       this.searchContainer.open.bind(this.searchContainer)
     );
+  }
+
+  activateTabButton($tabButton) {
+    $.addClass($tabButton, CLASSNAME.BG_CYAN_100);
+  }
+
+  deactivateTabButton($tabButton) {
+    $.removeClass($tabButton, CLASSNAME.BG_CYAN_100);
   }
 }
