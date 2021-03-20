@@ -19,8 +19,7 @@ class SavedController {
   init() {
     this.#storageModel.init();
     this.#loadSavedVideos();
-    this.#handleVideosToWatch();
-    this.#handleVideosWatched();
+    this.#handleFilteredVideos();
     this.#handleVideoButtons();
   }
 
@@ -81,15 +80,27 @@ class SavedController {
     });
   }
 
-  #handleVideosToWatch() {
-    $(SELECTOR.TO_WATCH_VIDEOS_BUTTON).addEventListener('click', () => {
-      this.#filterVideos({ showWatched: false });
-    });
-  }
+  #handleFilteredVideos() {
+    $('nav').addEventListener('click', ({ target }) => {
+      if (target.classList.contains('btn')) {
+        switch (`#${target.id}`) {
+          case SELECTOR.WATCHED_VIDEOS_BUTTON:
+            this.#storageModel.filterOption = 'watched';
+            return this.#filterVideos(target, 'watched');
 
-  #handleVideosWatched() {
-    $(SELECTOR.WATCHED_VIDEOS_BUTTON).addEventListener('click', () => {
-      this.#filterVideos({ showWatched: true });
+          case SELECTOR.TO_WATCH_VIDEOS_BUTTON:
+            this.#storageModel.filterOption = 'willWatch';
+            return this.#filterVideos(target, 'willWatch');
+
+          case SELECTOR.LIKED_VIDEOS_BUTTON:
+            this.#storageModel.filterOption = 'liked';
+            return this.#filterVideos(target, 'liked');
+
+          default:
+            this.#storageModel.filterOption = 'all';
+            return this.#storageModel.savedVideos;
+        }
+      }
     });
   }
 }

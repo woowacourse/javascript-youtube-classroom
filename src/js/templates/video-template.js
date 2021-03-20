@@ -34,6 +34,7 @@ export const videoTemplate = (info, save = null) => {
   return `<article class="clip skeleton">
             <div class="preview-container image">
               <iframe
+              loading="lazy"
               width="100%"
               height="118"
               src='https://www.youtube.com/embed/${info.url}'

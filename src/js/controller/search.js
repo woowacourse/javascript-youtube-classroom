@@ -59,7 +59,7 @@ class SearchController {
       this.#storageModel.recentKeywords
     );
 
-    await this.#youtubeModel.getVideosBySearch({ query });
+    await this.#youtubeModel.getVideoInfosBySearch({ query });
 
     this.#searchView.toggleNotFoundSearchedVideo(
       this.#youtubeModel.searchedCount
