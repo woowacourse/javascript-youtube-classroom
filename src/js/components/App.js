@@ -4,29 +4,22 @@ import { Navigation, SearchVideoModal, SavedVideo } from './index.js';
 export class App {
   constructor() {
     this.savedVideoManager = new SavedVideoManager();
-    this.navigation = new Navigation({
-      handleIsChecked: this.handleIsChecked.bind(this),
-      handleOpenModal: this.handleOpenModal.bind(this),
-    });
     this.savedVideo = new SavedVideo({
       savedVideoManager: this.savedVideoManager,
       isChecked: false,
+      isLiked: false,
+    });
+    this.navigation = new Navigation({
+      savedVideo: this.savedVideo,
+      handleOpenModal: this.handleOpenModal.bind(this),
     });
     this.searchVideoModal = new SearchVideoModal({ savedVideoManager: this.savedVideoManager });
 
     this.isChecked = false;
-  }
-
-  handleIsChecked(isChecked) {
-    this.setState({ isChecked });
+    this.isLiked = false;
   }
 
   handleOpenModal() {
     this.searchVideoModal.openModal();
-  }
-
-  setState({ isChecked }) {
-    this.isChecked = isChecked;
-    this.savedVideo.setState({ isChecked: this.isChecked });
   }
 }

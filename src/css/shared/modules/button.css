@@ -8,6 +8,47 @@
   cursor: pointer;
 }
 
+input[type='radio'].navigation-radio {
+  opacity: 0;
+}
+
+input[type='radio'].navigation-radio:checked + label {
+  background-color: rgb(179, 234, 242);
+}
+
+.navigation-btn {
+  display: flex;
+  align-items: center;
+  background-color: rgb(239, 239, 239);
+  text-align: center;
+}
+
+@media screen and (max-width: 960px) {
+  .navigation-btn {
+    padding: 0 12px;
+  }
+}
+
+@media screen and (max-width: 600px) {
+  .navigation-btn {
+    height: 50px;
+    padding: 0 8px;
+  }
+  .line-break {
+    display: block;
+  }
+}
+
+@media screen and (max-width: 400px) {
+  .navigation-btn {
+    height: 50px;
+    padding: 0 4px;
+  }
+  .line-break {
+    display: block;
+  }
+}
+
 .btn:disabled {
   cursor: default;
 }
@@ -17,6 +58,7 @@
   border: 0;
   padding: 0;
   font-size: 16px;
+  background-color: transparent;
 }
 
 .scale-hover:hover {

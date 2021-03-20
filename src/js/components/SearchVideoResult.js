@@ -6,6 +6,7 @@ import {
   renderSkeleton,
   removeSkeleton,
   showSnackbar,
+  setLazyLoading,
 } from '../util/index.js';
 import { NUM_OF_VIDEO_PER_FETCH, getVideoTemplate, SNACKBAR_MESSAGE } from '../constants/index.js';
 
@@ -80,9 +81,10 @@ export class SearchVideoResult {
     }
   }
 
-  makeTemplate(videoData) {
+  makeTemplate(videoData, classList = []) {
     return getVideoTemplate({
       videoData,
+      classList,
       buttonTemplate: this.makeSaveButtonTemplete(videoData.id.videoId),
     });
   }
@@ -111,9 +113,10 @@ export class SearchVideoResult {
 
     this.$wrapper.insertAdjacentHTML(
       'beforeend',
-      this.searchResultData.items.map(item => this.makeTemplate(item)).join('')
+      this.searchResultData.items.map(item => this.makeTemplate(item, ['js-search-clip-article'])).join('')
     );
     showElement(this.$scrollObserver);
+    setLazyLoading(this.$container);
   }
 
   setState({ searchResultData }) {

@@ -7,5 +7,7 @@ export const SNACKBAR_MESSAGE = Object.freeze({
   SAVE_FAILURE: '동영상을 저장하는데 실패하였습니다.',
   CHECK_VIDEO_SUCCESS: '해당 영상은 "본 영상" 탭에서 확인할 수 있습니다.',
   UNCHECK_VIDEO_SUCCESS: '해당 영상은 "볼 영상" 탭에서 확인할 수 있습니다.',
+  LIKE_VIDEO_SUCCESS: '해당 영상은 "좋아요 누른 영상" 탭에서 확인할 수 있습니다.',
+  UNLIKE_VIDEO_SUCCESS: '해당 영상의 "좋아요"를 취소하셨습니다.',
   API_REQUEST_FAILURE: '유튜브에서 정보를 불러오는데 실패하였습니다.',
 });

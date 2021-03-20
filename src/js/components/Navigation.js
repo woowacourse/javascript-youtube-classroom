@@ -1,11 +1,12 @@
 import { $ } from '../util/index.js';
 
 export class Navigation {
-  constructor({ handleIsChecked, handleOpenModal }) {
+  constructor({ savedVideo, handleOpenModal }) {
     this.$navigation = $('nav');
     this.$uncheckedButton = $('.js-unchecked-video-button');
     this.$checkedButton = $('.js-checked-video-button');
-    this.handleIsChecked = handleIsChecked;
+    this.$likedButton = $('.js-liked-video-button');
+    this.savedVideo = savedVideo;
     this.handleOpenModal = handleOpenModal;
 
     this.initEvent();
@@ -13,30 +14,27 @@ export class Navigation {
 
   initEvent() {
     this.$navigation.addEventListener('click', ({ target }) => {
-      if (target.classList.contains('js-unchecked-video-button') && !target.classList.contains('bg-cyan-100')) {
-        this.handleIsChecked(false);
-        this.toggleButtonColor();
+      if (target.classList.contains('js-unchecked-video-button')) {
+        this.savedVideo.setState({ isChecked: false, isLiked: false });
 
         return;
       }
 
-      if (target.classList.contains('js-checked-video-button') && !target.classList.contains('bg-cyan-100')) {
-        this.handleIsChecked(true);
-        this.toggleButtonColor();
+      if (target.classList.contains('js-checked-video-button')) {
+        this.savedVideo.setState({ isChecked: true, isLiked: false });
 
         return;
       }
 
+      if (target.classList.contains('js-liked-video-button')) {
+        this.savedVideo.setState({ isChecked: false, isLiked: true });
+
+        return;
+      }
       if (target.classList.contains('js-search-button')) {
         this.handleOpenModal();
-
         return;
       }
     });
-  }
-
-  toggleButtonColor() {
-    this.$uncheckedButton.classList.toggle('bg-cyan-100');
-    this.$checkedButton.classList.toggle('bg-cyan-100');
   }
 }

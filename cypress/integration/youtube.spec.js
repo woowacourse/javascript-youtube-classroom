@@ -109,10 +109,15 @@ describe('유튜브 검색 테스트', () => {
       .then($clip => {
         cy.get('.js-check-button').first().click();
         cy.get('.js-snackbar').should('have.text', SNACKBAR_MESSAGE.CHECK_VIDEO_SUCCESS);
-        cy.wrap($clip).should('not.exist');
         cy.get('.js-checked-video-button').click();
         cy.get('.js-saved-video-wrapper .clip').should('have.length', 1);
       });
+  });
+
+  it('👍 버튼을 누르면 "좋아요를 누른 영상" 탭에서 영상을 확인할 수 있다.', () => {
+    cy.get('.js-like-button').first().click();
+    cy.get('.js-liked-video-button').click();
+    cy.get('.js-saved-video-wrapper .clip').should('have.length', 1);
   });
 
   it('🗑️ 버튼을 누르면 사용자에게 정말 삭제할 것인지 물어본 후 저장된 리스트에서 해당 영상을 삭제한다.', () => {

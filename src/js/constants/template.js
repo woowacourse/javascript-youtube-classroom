@@ -2,17 +2,17 @@ import { formatDateTime } from '../util/index.js';
 
 const searchKind = 'youtube#searchResult';
 
-export const getVideoTemplate = ({ videoData, buttonTemplate }) => {
+export const getVideoTemplate = ({ videoData, classList = [], buttonTemplate }) => {
   const { kind, id, snippet } = videoData;
 
   return `
-      <article class="js-clip-article clip d-flex flex-col justify-between">
+      <article class="clip ${classList.join(' ')} d-flex flex-col justify-between" data-video-id=${id}>
         <div class="content-container">
           <div class="preview-container">
             <iframe
               width="100%"
               height="118"
-              src="https://www.youtube.com/embed/${kind === searchKind ? id.videoId : id}"
+              data-src="https://www.youtube.com/embed/${kind === searchKind ? id.videoId : id}"
               frameborder="0"
               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
               allowfullscreen
