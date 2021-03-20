@@ -30,7 +30,7 @@
   --color-modal-inner-hover-text: #666666ff;
   --color-scrollbar-background: var(--color-scale-black);
   --color-scrollbar-thumb-hover: var(--color-scale-gray-4);
-  --image-not-found: url('../../../src/images/status/dark_main_not_found.png');
+  --image-not-found: url('../images/status/dark_main_not_found.png');
 }
 
 [data-color-mode='light'][data-light-theme*='light'] {
@@ -63,5 +63,5 @@
   --color-modal-inner-hover-text: #666666ff;
   --color-scrollbar-background: var(--color-scale-black);
   --color-scrollbar-thumb-hover: var(--color-scale-gray-4);
-  --image-not-found: url('../../../src/images/status/light_main_not_found.png');
+  --image-not-found: url('../images/status/light_main_not_found.png');
 }
