@@ -1,11 +1,6 @@
-import {
-  CLASSNAME,
-  LOCAL_STORAGE_KEY,
-  NUMBER,
-  MESSAGE,
-} from "../constants/index.js";
+import { CLASSNAME, LOCAL_STORAGE_KEY, NUMBER } from "../constants/index.js";
 import { $ } from "../utils/DOM.js";
-import messenger from "../Messenger.js";
+import { messenger, MESSAGE } from "../messenger/index.js";
 
 export default class KeywordHistory {
   constructor() {

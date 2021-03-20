@@ -1,12 +1,7 @@
 /* eslint-disable no-param-reassign */
-import {
-  CLASSNAME,
-  MESSAGE,
-  NUMBER,
-  SNACKBAR_TEXT,
-} from "../constants/index.js";
+import { CLASSNAME, NUMBER, SNACKBAR_TEXT } from "../constants/index.js";
 import { $ } from "../utils/DOM.js";
-import messenger from "../Messenger.js";
+import { messenger, MESSAGE } from "../messenger/index.js";
 import { renderSearchVideo } from "../Video/render.js";
 import { SEARCH_VIDEO_TEMPLATE } from "../Video/template.js";
 import { fetchYoutubeData } from "../utils/API.js";

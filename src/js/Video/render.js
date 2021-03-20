@@ -1,5 +1,5 @@
-import { CLASSNAME, MESSAGE } from "../constants/index.js";
-import messenger from "../Messenger.js";
+import { CLASSNAME } from "../constants/index.js";
+import { messenger, MESSAGE } from "../messenger/index.js";
 import { $ } from "../utils/DOM.js";
 
 const DOMAIN = "https://www.youtube.com";

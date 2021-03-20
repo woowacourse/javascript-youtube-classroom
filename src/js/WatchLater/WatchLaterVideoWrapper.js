@@ -1,10 +1,9 @@
 import {
-  MESSAGE,
   SNACKBAR_TEXT,
   LOCAL_STORAGE_KEY,
   CLASSNAME,
 } from "../constants/index.js";
-import messenger from "../Messenger.js";
+import { messenger, MESSAGE } from "../messenger/index.js";
 import { $ } from "../utils/DOM.js";
 import { WATCH_LATER_VIDEO_TEMPLATE } from "../Video/template.js";
 import { renderWatchLaterVideo } from "../Video/render.js";
