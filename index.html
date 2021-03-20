@@ -16,22 +16,28 @@
           <nav class="d-flex justify-center">
             <ul class="list-style-none d-flex p-0">
               <li>
-                <button type="button" class="js-unchecked-video-button btn navigation-btn bg-cyan-100 mx-1 text-sm">
-                  👁️ 볼 영상
-                </button>
+                <input type="radio" id="navigation-unwatched" class="navigation-radio" name="navigation-tab" checked />
+                <label for="navigation-unwatched" class="js-unchecked-video-button btn navigation-btn mx-1 text-sm"
+                  >👁️ 볼 영상</label
+                >
               </li>
               <li>
-                <button type="button" class="js-checked-video-button btn navigation-btn mx-1 text-sm">
-                  ✅ 본 영상
-                </button>
+                <input type="radio" id="navigation-watched" class="navigation-radio" name="navigation-tab" />
+                <label for="navigation-watched" class="js-checked-video-button btn navigation-btn mx-1 text-sm"
+                  >✅ 본 영상</label
+                >
               </li>
               <li>
-                <button type="button" class="js-liked-video-button btn navigation-btn mx-1 text-sm">
-                  👍 좋아요 누른 영상
-                </button>
+                <input type="radio" id="navigation-liked" class="navigation-radio" name="navigation-tab" />
+                <label for="navigation-liked" class="js-liked-video-button btn navigation-btn mx-1 text-sm"
+                  >👍 좋아요 누른 영상</label
+                >
               </li>
               <li>
-                <button type="button" class="js-search-button btn navigation-btn mx-1 text-sm">🔍 동영상 검색</button>
+                <input type="radio" id="navigation-search" class="navigation-radio" name="navigation-tab" />
+                <label for="navigation-search" class="js-search-button btn navigation-btn mx-1 text-sm"
+                  >🔍 동영상 검색</label
+                >
               </li>
             </ul>
           </nav>

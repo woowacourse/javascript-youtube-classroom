@@ -16,7 +16,6 @@ export class Navigation {
     this.$navigation.addEventListener('click', ({ target }) => {
       if (target.classList.contains('js-unchecked-video-button')) {
         this.savedVideo.setState({ isChecked: false, isLiked: false });
-        this.repaintButtonColor(target);
 
         return;
       }
@@ -24,14 +23,11 @@ export class Navigation {
       if (target.classList.contains('js-checked-video-button')) {
         this.savedVideo.setState({ isChecked: true, isLiked: false });
 
-        this.repaintButtonColor(target);
-
         return;
       }
 
       if (target.classList.contains('js-liked-video-button')) {
         this.savedVideo.setState({ isChecked: false, isLiked: true });
-        this.repaintButtonColor(target);
 
         return;
       }
@@ -40,12 +36,5 @@ export class Navigation {
         return;
       }
     });
-  }
-
-  repaintButtonColor(element) {
-    this.$uncheckedButton.classList.remove('bg-cyan-100');
-    this.$checkedButton.classList.remove('bg-cyan-100');
-    this.$likedButton.classList.remove('bg-cyan-100');
-    element.classList.add('bg-cyan-100');
   }
 }

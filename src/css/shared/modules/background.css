@@ -374,3 +374,7 @@
 .bg-pink-900 {
   background-color: rgb(131, 24, 67);
 }
+
+.opacity-0 {
+  opacity: 0;
+}
