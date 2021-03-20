@@ -7,8 +7,16 @@ import {
 import BasicView from './BasicView.js';
 
 export default class LayoutView extends BasicView {
-  constructor($nav) {
-    super({ $nav });
+  constructor($nav, $snackbarWrapper) {
+    super({ $nav, $snackbarWrapper });
+  }
+
+  showSnackbar(message, isSuccess) {
+    const $snackbar = this.#createSnackbar(message, isSuccess);
+    this.insertElement(this._element.$snackbarWrapper, $snackbar);
+    setTimeout(() => {
+      this.deleteElement(this._element.$snackbarWrapper, $snackbar);
+    }, SETTINGS.SNACKBAR_PERSISTENT_MILLISEC);
   }
 
   highlightNavButton(hash) {
@@ -27,7 +35,15 @@ export default class LayoutView extends BasicView {
     return confirm(message);
   }
 
-  alert(message) {
-    return alert(message);
+  #createSnackbar(message, isSuccess) {
+    const $snackbar = document.createElement('div');
+    $snackbar.className = `
+      ${SELECTOR_CLASS.SNACKBAR} 
+      ${STYLE_CLASS.SNACKBAR} 
+      ${isSuccess ? STYLE_CLASS.SUCCESS : STYLE_CLASS.FAIL}
+      ${ANIMATION_CLASS.FADE_IN_AND_OUT}
+    `;
+    $snackbar.innerText = message;
+    return $snackbar;
   }
 }

@@ -8,6 +8,7 @@ export default class PrevSearchResult extends BasicStorage {
     }
   }
   setItem({ lastQuery, nextPageToken, prevSearchedVideos }) {
+    //KEY: PREV_SEARCH_RESULT
     const prevSearchResult = this.getItem();
     const newItem = {
       lastQuery: lastQuery ? lastQuery : prevSearchResult.lastQuery,

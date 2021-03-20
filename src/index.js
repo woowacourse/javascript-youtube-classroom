@@ -1,6 +1,11 @@
+import controller from './controller/controller.js';
+import watchingVideoController from './controller/watchingVideoController.js';
+import watchedVideoController from './controller/watchedVideoController.js';
 import modalController from './controller/modalController.js';
-import watchinVideoController from './controller/watchingVideoController.js';
 
+controller.initRouteEventListeners();
 modalController.initEventListeners();
 modalController.initSearchQueries();
-watchinVideoController.loadWatchingVideos();
+watchingVideoController.initEventListeners();
+watchedVideoController.initEventListeners();
+watchingVideoController.loadVideos();

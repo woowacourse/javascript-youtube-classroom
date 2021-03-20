@@ -11,6 +11,12 @@ const controllerUtil = {
     });
     observer.observe($element);
   },
+  parseHash(hash) {
+    if (hash === '') {
+      return BROWSER_HASH.WATCHING;
+    }
+    return hash.substr(1);
+  },
 };
 
 export default controllerUtil;

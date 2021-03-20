@@ -1,8 +1,4 @@
-import {
-  STYLE_CLASS,
-  SELECTOR_CLASS,
-  YOUTUBE,
-} from '../constants.js';
+import { STYLE_CLASS, SELECTOR_CLASS, YOUTUBE } from '../constants.js';
 
 import BasicView from './BasicView.js';
 export default class ModalView extends BasicView {
@@ -12,7 +8,7 @@ export default class ModalView extends BasicView {
     $searchResultVideoWrapper,
     $savedVideoCount,
     $searchResultIntersector,
-    $searchedVideoNotFound
+    $searchedVideoNotFound,
   }) {
     super({
       $modal,
@@ -20,7 +16,7 @@ export default class ModalView extends BasicView {
       $searchResultVideoWrapper,
       $savedVideoCount,
       $searchResultIntersector,
-      $searchedVideoNotFound
+      $searchedVideoNotFound,
     });
   }
 
@@ -31,16 +27,13 @@ export default class ModalView extends BasicView {
     this._element.$modal.classList.remove(STYLE_CLASS.OPEN);
   }
 
-  initSearchEnv() {
-    this.hideElement($searchedVideoNotFound);
+  showSearchPrepartion() {
+    this.hideElement(this._element.$searchedVideoNotFound);
     this.#renderSkeletonItems();
   }
 
   renderSearchQueries(queries) {
-    this.renderHTML(
-      this._element.$searchQueries,
-      this.#getSearchQueriesTemplate(queries)
-    );
+    this.renderHTML(this._element.$searchQueries, this.#getSearchQueriesTemplate(queries));
   }
 
   renderSavedVideoCount(count) {
@@ -48,18 +41,11 @@ export default class ModalView extends BasicView {
   }
 
   renderSearchedVideos(processedVideos) {
-    this.renderHTML(
-      this._element.$searchResultVideoWrapper,
-      this.#getSearchedVideoListTemplate(processedVideos)
-    );
-    this.showElement($searchResultIntersector);
+    this.renderHTML(this._element.$searchResultVideoWrapper, this.#getSearchedVideoListTemplate(processedVideos));
   }
 
   insertSearchedVideos(processedVideos) {
-    this.insertHTML(
-      this._element.$searchResultVideoWrapper,
-      this.#getSearchedVideoListTemplate(processedVideos)
-    );
+    this.insertHTML(this._element.$searchResultVideoWrapper, this.#getSearchedVideoListTemplate(processedVideos));
   }
 
   showNotFountImage() {
@@ -83,10 +69,7 @@ export default class ModalView extends BasicView {
   }
 
   #renderSkeletonItems() {
-    this.renderHTML(
-      this._element.$searchResultVideoWrapper,
-      this.#getSkeletonListTemplate()
-    );
+    this.renderHTML(this._element.$searchResultVideoWrapper, this.#getSkeletonListTemplate());
   }
 
   #getSkeletonListTemplate() {

@@ -17,7 +17,10 @@ export const $watchingVideoWrapper = $(
   `#${SELECTOR_ID.WATCHING_VIDEO_WRAPPER}`
 );
 export const $searchQueries = $(`#${SELECTOR_ID.SEARCH_QUERIES}`);
-export const $emptyWatchingVideo = $(`#${SELECTOR_ID.EMPTY_WATCHING_VIDEO}`);
 export const $searchedVideoNotFound = $(`#${SELECTOR_ID.SEARCHED_VIDEO_NOT_FOUND}`);
+export const $emptyWatchingVideo = $(`#${SELECTOR_ID.EMPTY_WATCHING_VIDEO}`);
+export const $emptyWatchedVideo = $(`#${SELECTOR_ID.EMPTY_WATCHED_VIDEO}`);
+export const $snackbarWrapper = $(`#${SELECTOR_ID.SNACKBAR_WRAPPER}`);
+export const $watchedVideoWrapper = $(`#${SELECTOR_ID.WATCHED_VIDEO_WRAPPER}`);
 export const $nav = $(`#${SELECTOR_ID.NAV}`);
 export const $savedVideoCount = $(`#${SELECTOR_ID.SAVED_VIDEO_COUNT}`);
