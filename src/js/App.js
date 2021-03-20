@@ -1,9 +1,10 @@
 /* eslint-disable class-methods-use-this */
 import { CLASSNAME } from "./constants/index.js";
 import { $ } from "./utils/DOM.js";
+import Container from "./Main/Container.js";
 import SearchContainer from "./Search/SearchContainer.js";
-import WatchLaterContainer from "./WatchLater/WatchLaterContainer.js";
-import HistoryContainer from "./History/HistoryContainer.js";
+import WatchLaterVideoWrapper from "./Main/WatchLaterVideoWrapper.js";
+import HistoryVideoWrapper from "./Main/HistoryVideoWrapper.js";
 
 export default class App {
   constructor() {
@@ -11,8 +12,14 @@ export default class App {
     this.$historyTabButton = $(`.${CLASSNAME.HISTORY_TAB}`);
     this.$searchTabButton = $(`.${CLASSNAME.SEARCH_TAB}`);
 
-    this.watchLaterContainer = new WatchLaterContainer();
-    this.historyContainer = new HistoryContainer();
+    this.watchLaterContainer = new Container(
+      CLASSNAME.WATCH_LATER_CONTAINER,
+      WatchLaterVideoWrapper
+    );
+    this.historyContainer = new Container(
+      CLASSNAME.HISTORY_CONTAINER,
+      HistoryVideoWrapper
+    );
     this.searchContainer = new SearchContainer();
 
     this.$watchLaterTabButton.addEventListener("click", () => {
