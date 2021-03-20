@@ -136,7 +136,6 @@ export default class YoutubeSearchManager extends Observer {
 
     try {
       const response = await searchYoutube(this.keyword);
-
       this.pageToken = response.nextPageToken;
       this.updateRecentKeywordList(this.keyword);
 
