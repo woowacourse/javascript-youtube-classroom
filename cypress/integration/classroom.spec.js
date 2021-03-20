@@ -65,8 +65,6 @@ describe('나만의 유튜브 강의실 Test', () => {
   });
 
   it('특정 영상의 ✅ 버튼을 누르면 그 영상이 본 영상 목록에 옮겨지고, ✅ 버튼이 불투명해진다.', () => {
-    // 해당 영상은 볼 영상 목록에서 사라진다.
-    // 스낵바로 영상이 옮겨졌음을 알려주는 메시지가 출력된다.
     cy.get(SELECTORS.CLASS.WATCHED).first().click();
     cy.get(SELECTORS.ID.SNACKBAR).should('be.visible').should('have.text', ALERT_MESSAGE.VIDEO_MOVED_WATCHED_LIST);
     cy.get(SELECTORS.CLASS.WATCH_LIST).children().should('have.length', 0);
@@ -79,8 +77,6 @@ describe('나만의 유튜브 강의실 Test', () => {
   });
 
   it('동일한 영상의 ✅ 버튼을 누르면 그 영상이 볼 영상 목록으로 다시 옮겨지고, ✅ 버튼이 투명해진다.', () => {
-    // 해당 영상은 본 영상 목록에서 사라진다.
-    // 스낵바로 영상이 옮겨졌음을 알려주는 메시지가 출력된다.
     cy.get(SELECTORS.CLASS.WATCHED).first().click();
     cy.get(SELECTORS.ID.SNACKBAR).should('be.visible').should('have.text', ALERT_MESSAGE.VIDEO_MOVED_TO_WATCH_LIST);
     cy.get(SELECTORS.CLASS.WATCH_LIST).children().should('have.length', 0);
