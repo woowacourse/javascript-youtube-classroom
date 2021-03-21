@@ -21,6 +21,7 @@ class SavedController {
     this.#loadSavedVideos();
     this.#handleFilteredVideos();
     this.#handleVideoButtons();
+    this.#handleLazyLoad();
   }
 
   #renderSavedVideo = videos => {
@@ -136,6 +137,28 @@ class SavedController {
             return this.#storageModel.savedVideos;
         }
       }
+    });
+  }
+
+  #handleLazyLoad() {
+    const options = {
+      root: null,
+      rootMargin: '0px 0px 30px 0px',
+      threshold: 0,
+    };
+
+    const io = new IntersectionObserver((entries, observer) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.src = entry.target.dataset.src;
+          observer.unobserve(entry.target);
+        }
+      });
+    }, options);
+
+    const videos = document.querySelectorAll('iframe');
+    videos.forEach(el => {
+      io.observe(el);
     });
   }
 }

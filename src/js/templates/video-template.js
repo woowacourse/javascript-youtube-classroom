@@ -33,7 +33,7 @@ export const videoTemplate = (info, save = null) => {
               loading="lazy"
               width="100%"
               height="118"
-              src='https://www.youtube.com/embed/${info.url}'
+              data-src='https://www.youtube.com/embed/${info.url}'
               frameborder="0"
               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
               allowfullscreen
