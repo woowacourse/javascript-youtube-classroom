@@ -1,33 +1,51 @@
 import { api } from '../api/youtubeAPI.js';
-import { dummyData } from '../../../dummy-data.js';
+import { SEARCH } from '../constants/constant.js';
+
 class YoutubeModel {
-  #videoInfos;
+  #searchedVideos;
   #nextPageToken;
+  #videoInfos;
 
   constructor() {
-    this.#videoInfos = [];
+    this.#searchedVideos = [];
     this.#nextPageToken = '';
   }
 
-  getVideoInfosBySearch = async ({ query, max = 10 }) => {
-    const nextPageToken = this.#nextPageToken;
-
-    await api.fetchVideoItems({ query, nextPageToken, max }).then(json => {
-      this.#nextPageToken = json.nextPageToken;
-      this.#videoInfos = json.map(item => {
-        return {
-          url: item.url,
-          title: item.title,
-          channelUrl: item.channelUrl,
-          channelTitle: item.channelTitle,
-          publishTime: item.publishTime,
-        };
-      });
+  getVideoInfos(items) {
+    return items.map(item => {
+      return {
+        url: item.id.videoId,
+        title: item.snippet.title,
+        channelId: item.snippet.channelId,
+        channelTitle: item.snippet.channelTitle,
+        publishTime: item.snippet.publishTime,
+      };
     });
+  }
+
+  getVideoInfosBySearch = async ({
+    query,
+    max = SEARCH.FETCH_VIDEO_LENGTH,
+  }) => {
+    const nextPageToken = this.#nextPageToken;
+    const json = await api.fetchVideoItems({ query, nextPageToken, max });
+    console.log(json);
+
+    this.#nextPageToken = json.nextPageToken;
+    this.#searchedVideos = this.getVideoInfos(json.items);
+    return this.#searchedVideos;
   };
 
-  get videoInfos() {
-    return this.#videoInfos;
+  resetNextPageToken() {
+    this.#nextPageToken = '';
+  }
+
+  get searchedVideos() {
+    return this.#searchedVideos;
+  }
+
+  get searchedCount() {
+    return this.#searchedVideos.length;
   }
 }
 

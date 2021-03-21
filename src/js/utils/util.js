@@ -1,10 +1,9 @@
+
+import { CLASS, ERROR_MESSAGE } from '../constants/constant.js';
+
 export const $ = selector => document.querySelector(selector);
 
 export const $$ = selector => document.querySelectorAll(selector);
-
-export const escapeApostrophe = string => {
-  return JSON.stringify(string).replace(/'/gi, '&#039;');
-};
 
 export const parseDOMFromString = string => {
   const parser = new DOMParser();
@@ -12,18 +11,29 @@ export const parseDOMFromString = string => {
 };
 
 export const setJSONToLocalStorage = (key, value) => {
-  localStorage.setItem(key, JSON.stringify(value));
+
+  try {
+    localStorage.setItem(key, JSON.stringify(value));
+  } catch (error) {
+    throw new Error(ERROR_MESSAGE.FAILED_SET_ITEM);
+  }
 };
 
 export const getJSONFromLocalStorage = key => {
-  return JSON.parse(localStorage.getItem(key));
+  try {
+    const json = JSON.parse(localStorage.getItem(key));
+    if (json === null) return [];
+
+    return json;
+  } catch (error) {
+    throw new Error(ERROR_MESSAGE.FAILED_GET_ITEM);
+  }
 };
 
-export const isScrollUnfinished = (document, target) => {
+export const isScrollUnfinished = (args, scrollTop) => {
   return (
-    target.scrollTop <
-    Math.max(document.scrollHeight, document.offsetHeight) -
-      document.clientHeight
+    scrollTop <
+    Math.max(args.scrollHeight, args.offsetHeight) - args.clientHeight
   );
 };
 
@@ -31,3 +41,25 @@ export const convertDateFormat = publishedDate => {
   const date = new Date(publishedDate);
   return `${date.getFullYear()}년 ${date.getMonth() + 1}월 ${date.getDate()}일`;
 };
+
+export const toggleSelectorClass = (selector, className, force = null) => {
+  if (force === null) {
+    selector.classList.toggle(className);
+    return;
+  }
+  selector.classList.toggle(className, force);
+};
+
+const removeArticleSkeleton = event => {
+  const article = event.target.closest('article');
+  article.classList.remove(CLASS.SKELETON);
+};
+
+export const handleVideoLoad = iframe => {
+  iframe.addEventListener('load', event => removeArticleSkeleton(event));
+};
+
+export const handleVideosLoad = iframes => {
+  iframes.forEach(iframe => handleVideoLoad(iframe));
+};
+

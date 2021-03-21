@@ -1,12 +1,17 @@
 #search-video-wrapper {
   height: 500px;
-  overflow-y: scroll;
+  overflow-y: auto;
 }
 
-#search-video-wrapper #search-not-found {
-  width: 100%;
-  grid-column-start: 2;
-  grid-column-end: 4;
+#search-not-found.show {
+  display: block;
+  width: 30%;
+  min-width: 200px;
+  margin: 10px auto;
+}
+
+#search-not-found {
+  display: none;
 }
 
 #recent-keywords {
