@@ -12,9 +12,9 @@ import { MESSAGE, SCROLL_DELAY_TIME, MAX_VIDEO_STORAGE_CAPACITY } from '../const
 
 export default class SearchController {
   constructor({ searchModel, searchView, searchService }) {
-    this.searchModel = searchModel;
-    this.searchView = searchView;
-    this.searchService = searchService;
+    this.model = searchModel;
+    this.view = searchView;
+    this.service = searchService;
     this.videoSaveManager = new VideoSaveManager();
   }
 
@@ -23,13 +23,13 @@ export default class SearchController {
   }
 
   attachEvents() {
-    this.searchView.$searchMenuButton.addEventListener('click', this.onShowModal.bind(this));
-    this.searchView.$searchSection.addEventListener('click', this.onCloseModal.bind(this));
+    this.view.$searchMenuButton.addEventListener('click', this.onShowModal.bind(this));
+    this.view.$searchSection.addEventListener('click', this.onCloseModal.bind(this));
     document.body.addEventListener('keyup', this.onCloseModal.bind(this));
-    this.searchView.$recentKeywords.addEventListener('click', this.onClickRecentKeyword.bind(this));
-    this.searchView.$searchKeywordForm.addEventListener('submit', this.onRequestSearchKeyword.bind(this));
-    this.searchView.$searchResultWrapper.addEventListener('click', this.onRequestSaveVideo.bind(this));
-    this.searchView.$searchResultWrapper.addEventListener(
+    this.view.$recentKeywords.addEventListener('click', this.onClickRecentKeyword.bind(this));
+    this.view.$searchKeywordForm.addEventListener('submit', this.onRequestSearchKeyword.bind(this));
+    this.view.$searchResultWrapper.addEventListener('click', this.onRequestSaveVideo.bind(this));
+    this.view.$searchResultWrapper.addEventListener(
       'scroll',
       doThrottling(this.onRequestNextResult.bind(this), SCROLL_DELAY_TIME),
       { passive: true },
@@ -37,30 +37,30 @@ export default class SearchController {
   }
 
   onShowModal() {
-    const recentKeywords = this.searchModel.getRecentKeywords();
+    const recentKeywords = this.model.getRecentKeywords();
     const mostRecentKeyword = recentKeywords[0] ?? '';
 
-    this.searchView.renderVisibleModal(this.searchModel.videoCount, recentKeywords);
+    this.view.renderVisibleModal(this.model.videoCount, recentKeywords);
     if (mostRecentKeyword === '') {
       return;
     }
-    this.searchModel.init(mostRecentKeyword);
+    this.model.init(mostRecentKeyword);
     this.showSearchGroup();
   }
 
   onCloseModal({ key, target, currentTarget }) {
     if ((key === 'Escape' && isModalOpen(currentTarget)) || isModalDimmedArea(target) || isModalCloseButton(target)) {
-      this.searchView.renderInvisibleModal();
+      this.view.renderInvisibleModal();
     }
-    this.searchView.$watchingMenuButton.click();
+    this.view.$watchingMenuButton.click();
   }
 
   onClickRecentKeyword({ target }) {
     if (isRecentKeywordLink(target)) {
       const keyword = target.innerText;
 
-      this.searchModel.init(keyword);
-      this.searchView.init();
+      this.model.init(keyword);
+      this.view.init();
       this.showSearchGroup();
       return;
     }
@@ -69,8 +69,8 @@ export default class SearchController {
       const $keyword = target.closest('.recent-keyword');
       const keyword = $keyword.querySelector('.keyword-link').innerText;
 
-      this.searchModel.removeRecentKeyword(keyword);
-      this.searchView.removeRecentKeyword(this.searchModel.recentKeywords);
+      this.model.removeRecentKeyword(keyword);
+      this.view.removeRecentKeyword(this.model.recentKeywords);
     }
   }
 
@@ -80,17 +80,17 @@ export default class SearchController {
     const keyword = e.target.elements['search-keyword-input'].value;
 
     if (keyword === '') {
-      this.searchView.renderNotification(MESSAGE.NO_KEYWORD_IS_SUBMITTED);
+      this.view.renderNotification(MESSAGE.NO_KEYWORD_IS_SUBMITTED);
       return;
     }
-    this.searchModel.init(keyword);
-    this.searchView.init();
-    this.searchView.renderRecentKeywords(this.searchModel.getRecentKeywords());
+    this.model.init(keyword);
+    this.view.init();
+    this.view.renderRecentKeywords(this.model.getRecentKeywords());
     this.showSearchGroup();
   }
 
   onRequestNextResult() {
-    if (!isEndOfScroll(this.searchView.$searchResultWrapper)) {
+    if (!isEndOfScroll(this.view.$searchResultWrapper)) {
       return;
     }
     this.showSearchGroup();
@@ -101,35 +101,35 @@ export default class SearchController {
       return;
     }
     if (target.classList.contains('saved')) {
-      this.searchView.renderNotification(MESSAGE.VIDEO_IS_ALREADY_SAVED);
+      this.view.renderNotification(MESSAGE.VIDEO_IS_ALREADY_SAVED);
       return;
     }
 
-    const savedCount = this.searchModel.videoCount;
+    const savedCount = this.model.videoCount;
 
     if (savedCount >= MAX_VIDEO_STORAGE_CAPACITY) {
-      this.searchView.renderNotification(MESSAGE.STORAGE_CAPACITY_IS_FULL);
+      this.view.renderNotification(MESSAGE.STORAGE_CAPACITY_IS_FULL);
       return;
     }
 
-    const targetVideoData = this.searchModel.getTargetVideoData(target.id);
+    const targetVideoData = this.model.getTargetVideoData(target.id);
 
-    this.searchModel.saveVideo(targetVideoData);
-    this.searchView.renderInvisibleSaveButton(target);
-    this.searchView.renderSaveVideoCount(savedCount + 1);
-    this.searchView.renderNotification(MESSAGE.VIDEO_IS_SAVED_SUCCESSFULLY);
+    this.model.saveVideo(targetVideoData);
+    this.view.renderInvisibleSaveButton(target);
+    this.view.renderSaveVideoCount(savedCount + 1);
+    this.view.renderNotification(MESSAGE.VIDEO_IS_SAVED_SUCCESSFULLY);
 
     this.videoSaveManager.notify(targetVideoData);
   }
 
   showSearchGroup() {
-    this.searchView.renderSkeleton();
-    this.searchService
+    this.view.renderSkeleton();
+    this.service
       .getSearchResultAsync()
-      .then((result) => this.searchView.renderSearchResult(result))
+      .then((result) => this.view.renderSearchResult(result))
       .catch(() => {
-        this.searchView.init();
-        this.searchView.renderNotification(MESSAGE.SEARCH_REQUEST_HAS_FAILED);
+        this.view.init();
+        this.view.renderNotification(MESSAGE.SEARCH_REQUEST_HAS_FAILED);
       });
   }
 }
