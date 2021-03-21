@@ -76,7 +76,7 @@ export default class ClassroomController {
 
   showLikedVideos() {
     this.view.renderOnlyLikedVideos();
-    this.showImageNoLikedVideoSaved();
+    this.checkWhetherToShowImageNoLiked();
   }
 
   showImageNoVideo() {
@@ -100,7 +100,6 @@ export default class ClassroomController {
   }
 
   checkWhetherToShowImageNoLiked() {
-    console.log(this.model.likedVideoCount);
     this.model.hasNoLikedVideoSaved() && this.showImageNoLikedVideoSaved();
   }
 
@@ -115,7 +114,9 @@ export default class ClassroomController {
   }
 
   showImageNoLikedVideoSaved() {
-    this.model.hasNoWatchingVideoSaved() ? this.view.renderImageNoWatchingVideo() : this.view.renderImageNoLikedVideo();
+    this.model.hasNoWatchingVideoSaved() && this.model.hasNoWatchedVideoSaved()
+      ? this.view.renderImageNoWatchingVideo()
+      : this.view.renderImageNoLikedVideo();
   }
 
   toggleWatchingVideo($video, isWatching) {

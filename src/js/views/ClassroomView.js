@@ -75,7 +75,9 @@ export default class ClassroomView {
   }
 
   setSection(className) {
+    this.$noVideoFound.classList.remove(NO_WATCHING, NO_WATCHED, NO_LIKED);
     this.$savedVideosWrapper.classList.remove(WATCHING_SECTION, WATCHED_SECTION, LIKED_SECTION);
+
     this.$savedVideosWrapper.classList.add(className);
   }
 
