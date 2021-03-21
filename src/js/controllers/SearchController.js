@@ -1,4 +1,4 @@
-import VideoSaveManager from '../manager/VideoSaveManager.js';
+import VideoManager from '../manager/VideoManager.js';
 import {
   isModalOpen,
   isModalCloseButton,
@@ -8,14 +8,14 @@ import {
 } from './elementValidator.js';
 import { isEndOfScroll } from '../utils/DOM.js';
 import { doThrottling } from '../utils/throttle.js';
-import { MESSAGE, SCROLL_DELAY_TIME, MAX_VIDEO_STORAGE_CAPACITY } from '../constants.js';
+import { MESSAGE, SCROLL_DELAY_TIME, MAX_VIDEO_STORAGE_CAPACITY, MANAGER_KEY } from '../constants.js';
 
 export default class SearchController {
   constructor({ searchModel, searchView, searchService }) {
     this.model = searchModel;
     this.view = searchView;
     this.service = searchService;
-    this.videoSaveManager = new VideoSaveManager();
+    this.VideoManager = new VideoManager();
   }
 
   init() {
@@ -119,7 +119,7 @@ export default class SearchController {
     this.view.renderSaveVideoCount(savedCount + 1);
     this.view.renderNotification(MESSAGE.VIDEO_IS_SAVED_SUCCESSFULLY);
 
-    this.videoSaveManager.notify(targetVideoData);
+    this.VideoManager.notify({ key: MANAGER_KEY.SAVE, data: targetVideoData });
   }
 
   showSearchGroup() {

@@ -1,6 +1,10 @@
 export const MAX_RECENT_KEYWORD_COUNT = 3;
 export const MAX_VIDEO_STORAGE_CAPACITY = 100;
 
+export const MANAGER_KEY = Object.freeze({
+  SAVE: 'save',
+});
+
 export const YOUTUBE_API = Object.freeze({
   SEARCH_ENDPOINT: 'https://optimistic-khorana-9d30c5.netlify.app/youtube/search',
   PART_TYPE: 'snippet',

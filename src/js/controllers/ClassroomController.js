@@ -1,19 +1,19 @@
-import VideoSaveManager from '../manager/VideoSaveManager.js';
+import VideoManager from '../manager/VideoManager.js';
 import { isWatchingMenu, isWatchingVideo, isLikedVideo, isLikedMenu } from './elementValidator.js';
-import { MESSAGE } from '../constants.js';
+import { MESSAGE, MANAGER_KEY } from '../constants.js';
 
 export default class ClassroomController {
   constructor({ classroomModel, classroomView }) {
     this.view = classroomView;
     this.model = classroomModel;
-    this.videoSaveManager = new VideoSaveManager();
+    this.VideoManager = new VideoManager();
   }
 
   init() {
     this.showClassroom();
     this.attachEvents();
-    this.videoSaveManager.subscribe(this.model.addVideo.bind(this.model));
-    this.videoSaveManager.subscribe(this.view.renderSavedVideo.bind(this.view));
+    this.VideoManager.subscribe({ key: MANAGER_KEY.SAVE, subscribe: this.model.addVideo.bind(this.model) });
+    this.VideoManager.subscribe({ key: MANAGER_KEY.SAVE, subscribe: this.view.renderSavedVideo.bind(this.view) });
   }
 
   showClassroom() {
