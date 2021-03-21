@@ -1,24 +1,17 @@
-import {
-  MAX_RECENT_KEYWORD_COUNT,
-  KEY_VIDEOS_WATCHING,
-  KEY_VIDEOS_WATCHED,
-  KEY_RECENT_KEYWORDS,
-} from '../constants.js';
-
-import { getListByKey, insertItemByKey, insertItemAtFirstByKey, deleteLastItemByKey } from '../utils/localStorage.js';
+import { getListByKey, insertItemByKey, setListByKey } from '../utils/localStorage.js';
+import { MAX_RECENT_KEYWORD_COUNT, DB_KEY } from '../constants.js';
 
 /*
 로컬스토리지 데이터 저장구조
   {
-    videosWatching: [ { videoId: 'TVUNi0zi1yw', ... }, ... ],
-    videosWatched: [ { videoId: '0nxsS4B85E8', ... }, ... ],
+    videos: [ { videoId: 'TVUNi0zi1yw', ..., isWatching: true }, ... ],
     recentKeywords: [ 'keyword1', 'keyword2', 'keyword3' ],
   }
 */
 
 export default class SearchModel {
-  constructor(keyword = '') {
-    this.init(keyword);
+  constructor() {
+    this.recentKeywords = getListByKey(DB_KEY.RECENT_KEYWORDS);
   }
 
   init(keyword) {
@@ -28,8 +21,18 @@ export default class SearchModel {
     this.saveKeyword();
   }
 
+  get videoCount() {
+    return getListByKey(DB_KEY.VIDEOS).length;
+  }
+
   setNextPageToken(token) {
     this.nextPageToken = token;
+  }
+
+  saveVideo(targetVideo) {
+    targetVideo.isSaved = true;
+    targetVideo.isWatching = true;
+    insertItemByKey(DB_KEY.VIDEOS, targetVideo);
   }
 
   saveKeyword() {
@@ -37,37 +40,34 @@ export default class SearchModel {
       return;
     }
 
-    const recentKeywords = getListByKey(KEY_RECENT_KEYWORDS);
-
-    if (recentKeywords.includes(this.keyword)) {
+    if (this.recentKeywords.includes(this.keyword)) {
       return;
     }
-    if (recentKeywords.length === MAX_RECENT_KEYWORD_COUNT) {
-      deleteLastItemByKey(KEY_RECENT_KEYWORDS);
+    if (this.recentKeywords.length === MAX_RECENT_KEYWORD_COUNT) {
+      this.recentKeywords.pop();
     }
-    insertItemAtFirstByKey(KEY_RECENT_KEYWORDS, this.keyword);
+    this.recentKeywords.unshift(this.keyword);
+    setListByKey(DB_KEY.RECENT_KEYWORDS, this.recentKeywords);
   }
 
   getRecentKeywords() {
     try {
-      return getListByKey(KEY_RECENT_KEYWORDS);
+      return getListByKey(DB_KEY.RECENT_KEYWORDS);
     } catch (e) {
       return '';
     }
+  }
+
+  removeRecentKeyword(target) {
+    this.recentKeywords = this.recentKeywords.filter((keyword) => keyword !== target);
+    setListByKey(DB_KEY.RECENT_KEYWORDS, this.recentKeywords);
   }
 
   addNewSearchResult(newSearchResult) {
     this.totalSearchResult.push(...newSearchResult);
   }
 
-  saveVideo(targetId) {
-    const targetVideo = this.totalSearchResult.find((video) => video.videoId === targetId);
-
-    targetVideo.isSaved = true;
-    insertItemByKey(KEY_VIDEOS_WATCHING, targetVideo);
-  }
-
-  getSavedVideoCount() {
-    return getListByKey(KEY_VIDEOS_WATCHING).length + getListByKey(KEY_VIDEOS_WATCHED).length;
+  getTargetVideoData(targetId) {
+    return this.totalSearchResult.find((video) => video.videoId === targetId);
   }
 }

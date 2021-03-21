@@ -1,7 +1,8 @@
-import { API_SEARCH_ENDPOINT, PART_TYPE, SEARCH_TYPE_VIDEO, MAX_RESULT_COUNT, REGION_CODE } from '../constants.js';
-import { formatDateKR } from '../utils/formatDate.js';
-import { httpRequest } from '../utils/httpRequest.js';
 import { isSavedVideo } from '../controllers/elementValidator.js';
+import { httpRequest } from '../utils/httpRequest.js';
+import { formatDateKR } from '../utils/formatDate.js';
+import { unescape } from '../utils/unescapeSpecialCharacter.js';
+import { YOUTUBE_API } from '../constants.js';
 
 export default class SearchService {
   constructor(model) {
@@ -19,11 +20,11 @@ export default class SearchService {
 
   getSearchApiURI() {
     const options = {
-      part: PART_TYPE,
+      part: YOUTUBE_API.PART_TYPE,
       q: this.model.keyword,
-      type: SEARCH_TYPE_VIDEO,
-      maxResults: MAX_RESULT_COUNT,
-      regionCode: REGION_CODE,
+      type: YOUTUBE_API.SEARCH_TYPE_VIDEO,
+      maxResults: YOUTUBE_API.MAX_RESULT_COUNT,
+      regionCode: YOUTUBE_API.REGION_CODE,
       pageToken: this.model.nextPageToken,
     };
 
@@ -31,7 +32,7 @@ export default class SearchService {
       .map(([key, value]) => `${key}=${value}`)
       .join('&');
 
-    return `${API_SEARCH_ENDPOINT}?${queryStringFlattened}`;
+    return `${YOUTUBE_API.SEARCH_ENDPOINT}?${queryStringFlattened}`;
   }
 
   processJSON(rawData) {
@@ -39,9 +40,9 @@ export default class SearchService {
 
     return rawData.items.map((item) => ({
       videoId: item.id.videoId,
-      videoTitle: item.snippet.title,
+      videoTitle: unescape(item.snippet.title),
       channelId: item.snippet.channelId,
-      channelTitle: item.snippet.channelTitle,
+      channelTitle: unescape(item.snippet.channelTitle),
       publishedAt: formatDateKR(item.snippet.publishedAt),
       isSaved: isSavedVideo(item.id.videoId),
     }));

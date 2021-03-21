@@ -1,22 +1,21 @@
-import SearchModel from '../models/SearchModel.js';
-import SearchService from '../services/SearchService.js';
-import SearchView from '../views/SearchView.js';
-import { isModalOpen, isModalCloseButton, isModalDimmedArea } from './elementValidator.js';
+import VideoSaveManager from '../manager/VideoSaveManager.js';
 import {
-  MAX_VIDEO_STORAGE_CAPACITY,
-  NO_KEYWORD_IS_SUBMITTED,
-  STORAGE_CAPACITY_IS_FULL,
-  VIDEO_IS_SAVED_SUCCESSFULLY,
-  VIDEO_IS_ALREADY_SAVED,
-  SEARCH_REQUEST_HAS_FAILED,
-} from '../constants.js';
+  isModalOpen,
+  isModalCloseButton,
+  isModalDimmedArea,
+  isRecentKeywordLink,
+  isRecentKeywordRemoveButton,
+} from './elementValidator.js';
 import { isEndOfScroll } from '../utils/DOM.js';
+import { doThrottling } from '../utils/throttle.js';
+import { MESSAGE, SCROLL_DELAY_TIME, MAX_VIDEO_STORAGE_CAPACITY } from '../constants.js';
 
 export default class SearchController {
-  constructor() {
-    this.model = new SearchModel();
-    this.service = new SearchService(this.model);
-    this.view = new SearchView();
+  constructor({ searchModel, searchView, searchService }) {
+    this.searchModel = searchModel;
+    this.searchView = searchView;
+    this.searchService = searchService;
+    this.videoSaveManager = new VideoSaveManager();
   }
 
   init() {
@@ -24,40 +23,55 @@ export default class SearchController {
   }
 
   attachEvents() {
-    this.view.$searchButton.addEventListener('click', this.onShowModal.bind(this));
-    this.view.$searchSection.addEventListener('click', this.onCloseModal.bind(this));
+    this.searchView.$searchMenuButton.addEventListener('click', this.onShowModal.bind(this));
+    this.searchView.$searchSection.addEventListener('click', this.onCloseModal.bind(this));
     document.body.addEventListener('keyup', this.onCloseModal.bind(this));
-    this.view.$recentKeywords.addEventListener('click', this.onRequestSearchRecentKeyword.bind(this));
-    this.view.$searchKeywordForm.addEventListener('submit', this.onRequestSearchKeyword.bind(this));
-    this.view.$searchResultWrapper.addEventListener('scroll', this.onRequestNextResult.bind(this));
-    this.view.$searchResultWrapper.addEventListener('click', this.onRequestSaveVideo.bind(this));
+    this.searchView.$recentKeywords.addEventListener('click', this.onClickRecentKeyword.bind(this));
+    this.searchView.$searchKeywordForm.addEventListener('submit', this.onRequestSearchKeyword.bind(this));
+    this.searchView.$searchResultWrapper.addEventListener('click', this.onRequestSaveVideo.bind(this));
+    this.searchView.$searchResultWrapper.addEventListener(
+      'scroll',
+      doThrottling(this.onRequestNextResult.bind(this), SCROLL_DELAY_TIME),
+      { passive: true },
+    );
   }
 
   onShowModal() {
-    const videoCount = this.model.getSavedVideoCount();
-    const recentKeywords = this.model.getRecentKeywords();
+    const recentKeywords = this.searchModel.getRecentKeywords();
     const mostRecentKeyword = recentKeywords[0] ?? '';
 
-    this.view.renderVisibleModal(videoCount, recentKeywords);
+    this.searchView.renderVisibleModal(this.searchModel.videoCount, recentKeywords);
     if (mostRecentKeyword === '') {
       return;
     }
-    this.model.init(mostRecentKeyword);
+    this.searchModel.init(mostRecentKeyword);
     this.showSearchGroup();
   }
 
   onCloseModal({ key, target, currentTarget }) {
     if ((key === 'Escape' && isModalOpen(currentTarget)) || isModalDimmedArea(target) || isModalCloseButton(target)) {
-      this.view.renderInvisibleModal();
+      this.searchView.renderInvisibleModal();
     }
+    this.searchView.$watchingMenuButton.click();
   }
 
-  onRequestSearchRecentKeyword({ target }) {
-    const keyword = target.innerText;
+  onClickRecentKeyword({ target }) {
+    if (isRecentKeywordLink(target)) {
+      const keyword = target.innerText;
 
-    this.model.init(keyword);
-    this.view.init();
-    this.showSearchGroup();
+      this.searchModel.init(keyword);
+      this.searchView.init();
+      this.showSearchGroup();
+      return;
+    }
+
+    if (isRecentKeywordRemoveButton(target)) {
+      const $keyword = target.closest('.recent-keyword');
+      const keyword = $keyword.querySelector('.keyword-link').innerText;
+
+      this.searchModel.removeRecentKeyword(keyword);
+      this.searchView.removeRecentKeyword(this.searchModel.recentKeywords);
+    }
   }
 
   onRequestSearchKeyword(e) {
@@ -66,51 +80,56 @@ export default class SearchController {
     const keyword = e.target.elements['search-keyword-input'].value;
 
     if (keyword === '') {
-      this.view.renderNotification(NO_KEYWORD_IS_SUBMITTED);
+      this.searchView.renderNotification(MESSAGE.NO_KEYWORD_IS_SUBMITTED);
       return;
     }
-    this.model.init(keyword);
-    this.view.init();
-    this.view.renderRecentKeywords(this.model.getRecentKeywords());
+    this.searchModel.init(keyword);
+    this.searchView.init();
+    this.searchView.renderRecentKeywords(this.searchModel.getRecentKeywords());
     this.showSearchGroup();
   }
 
   onRequestNextResult() {
-    if (!isEndOfScroll(this.view.$searchResultWrapper)) {
+    if (!isEndOfScroll(this.searchView.$searchResultWrapper)) {
       return;
     }
     this.showSearchGroup();
   }
 
   onRequestSaveVideo({ target }) {
-    if (!target.classList.contains('js-save-button')) {
+    if (!target.classList.contains('save-button')) {
       return;
     }
     if (target.classList.contains('saved')) {
-      this.view.renderNotification(VIDEO_IS_ALREADY_SAVED);
+      this.searchView.renderNotification(MESSAGE.VIDEO_IS_ALREADY_SAVED);
       return;
     }
 
-    const savedCount = this.model.getSavedVideoCount();
+    const savedCount = this.searchModel.videoCount;
 
     if (savedCount >= MAX_VIDEO_STORAGE_CAPACITY) {
-      this.view.renderNotification(STORAGE_CAPACITY_IS_FULL);
+      this.searchView.renderNotification(MESSAGE.STORAGE_CAPACITY_IS_FULL);
       return;
     }
-    this.model.saveVideo(target.id);
-    this.view.renderInvisibleSaveButton(target);
-    this.view.renderSaveVideoCount(savedCount + 1);
-    this.view.renderNotification(VIDEO_IS_SAVED_SUCCESSFULLY);
+
+    const targetVideoData = this.searchModel.getTargetVideoData(target.id);
+
+    this.searchModel.saveVideo(targetVideoData);
+    this.searchView.renderInvisibleSaveButton(target);
+    this.searchView.renderSaveVideoCount(savedCount + 1);
+    this.searchView.renderNotification(MESSAGE.VIDEO_IS_SAVED_SUCCESSFULLY);
+
+    this.videoSaveManager.notify(targetVideoData);
   }
 
   showSearchGroup() {
-    this.view.renderSkeleton();
-    this.service
+    this.searchView.renderSkeleton();
+    this.searchService
       .getSearchResultAsync()
-      .then((result) => this.view.renderSearchResult(result))
+      .then((result) => this.searchView.renderSearchResult(result))
       .catch(() => {
-        this.view.init();
-        this.view.renderNotification(SEARCH_REQUEST_HAS_FAILED);
+        this.searchView.init();
+        this.searchView.renderNotification(MESSAGE.SEARCH_REQUEST_HAS_FAILED);
       });
   }
 }
