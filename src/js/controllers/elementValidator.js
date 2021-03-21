@@ -31,6 +31,14 @@ export const isWatchingMenu = ($target) => {
   return $target.classList.contains(CLASS_NAME.WATCHING_SECTION);
 };
 
+export const isLikedMenu = ($target) => {
+  return $target.classList.contains(CLASS_NAME.LIKED_SECTION);
+};
+
 export const isWatchingVideo = ($target) => {
   return $target.classList.contains(CLASS_NAME.WATCHING);
+};
+
+export const isLikedVideo = ($target) => {
+  return $target.classList.contains(CLASS_NAME.LIKED);
 };

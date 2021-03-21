@@ -22,10 +22,13 @@ export const DB_KEY = Object.freeze({
 export const CLASS_NAME = Object.freeze({
   WATCHING_SECTION: 'watching-section',
   WATCHED_SECTION: 'watched-section',
+  LIKED_SECTION: 'liked-section',
   WATCHING: 'watching',
   WATCHED: 'watched',
+  LIKED: 'liked',
   NO_WATCHING: 'no-watching',
   NO_WATCHED: 'no-watched',
+  NO_LIKED: 'no-liked',
   CHECKED: 'checked',
 });
 
@@ -43,4 +46,6 @@ export const MESSAGE = Object.freeze({
   VIDEO_IS_REMOVED_SUCCESSFULLY: '영상 삭제가 완료되었습니다. 😉',
   REQUEST_HAS_FAILED: '요청하신 작업을 수행할 수 없습니다. 문제가 지속적으로 발생되면 관리자에게 문의해주세요. 🙏',
   ARE_YOU_SURE_TO_REMOVE_VIDEO: '정말로 삭제하시겠습니까? 🤔🤔',
+  CHECK_LIKE_BUTTON: '좋아요 표시한 동영상에 추가되었습니다.',
+  UNCHECK_LIKE_BUTTON: '좋아요 표시한 동영상에서 삭제되었습니다.',
 });
