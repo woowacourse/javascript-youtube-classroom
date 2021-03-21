@@ -13,7 +13,7 @@ export const setJSONToLocalStorage = (key, value) => {
   try {
     localStorage.setItem(key, JSON.stringify(value));
   } catch (error) {
-    throw new Error(ERROR_MESSAGE.FAILED_SET_ITEM);
+    console.error(ERROR_MESSAGE.FAILED_SET_ITEM);
   }
 };
 
@@ -22,9 +22,12 @@ export const getJSONFromLocalStorage = key => {
     const json = JSON.parse(localStorage.getItem(key));
     if (json === null) return [];
 
+    if (!json) {
+      throw new Error(ERROR_MESSAGE.FAILED_GET_ITEM);
+    }
     return json;
   } catch (error) {
-    throw new Error(ERROR_MESSAGE.FAILED_GET_ITEM);
+    console.error(error);
   }
 };
 

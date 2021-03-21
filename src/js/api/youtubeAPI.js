@@ -26,14 +26,8 @@ export const api = {
   }) => {
     return fetch(youtubeSearchURL({ query, nextPageToken, max }))
       .then(response => successLoadingData(response))
-      .catch(error => failedLoadingData(error));
+      .catch(error => console.log(error));
   },
-};
-
-const failedLoadingData = error => {
-  throw new Error(
-    `데이터 불러오기 실패! ${error.messages}\n다시 검색해주세요!`
-  );
 };
 
 const successLoadingData = response => {
@@ -41,5 +35,7 @@ const successLoadingData = response => {
     return response.json();
   }
 
-  return Promise.reject(Error(response.status));
+  throw new Error(
+    `데이터 불러오기 실패! ${error.messages}\n다시 검색해주세요!`
+  );
 };
