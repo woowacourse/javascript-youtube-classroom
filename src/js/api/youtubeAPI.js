@@ -2,7 +2,7 @@ import { YOUTUBE_API_KEY } from '../../../env.js';
 import { SEARCH, URL } from '../constants/constant.js';
 
 const youtubeSearchURL = ({ query, nextPageToken, max }) => {
-  const queries = {
+  const queryString = {
     q: query.toString(),
     key: YOUTUBE_API_KEY,
     pageToken: nextPageToken,
@@ -13,7 +13,7 @@ const youtubeSearchURL = ({ query, nextPageToken, max }) => {
     videoEmbeddable: true,
     part: 'snippet',
   };
-  const urlSearch = new URLSearchParams(queries).toString();
+  const urlSearch = new URLSearchParams(queryString).toString();
 
   return URL.YOUTUBE_SEARCH + urlSearch;
 };
