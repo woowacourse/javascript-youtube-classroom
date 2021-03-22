@@ -24,7 +24,7 @@ export default class StorageController {
       return;
     }
 
-    this.model.videoToManage = target.closest('article');
+    this.model.targetVideo = target.closest('article');
 
     if (target.classList.contains('js-check-button')) {
       this.proceedMovingVideo();
@@ -37,15 +37,20 @@ export default class StorageController {
   }
 
   proceedMovingVideo() {
-    const $video = this.model.videoToManage;
+    const $video = this.model.targetVideo;
     const isWatching = isWatchingVideo($video);
 
-    this.model.moveVideo();
-    this.view.renderMovedVideo($video, isWatching);
-    isWatching
-      ? this.view.renderNotification(MESSAGE.VIDEO_IS_MOVED_TO_WATCHED_MENU)
-      : this.view.renderNotification(MESSAGE.VIDEO_IS_MOVED_TO_WATCHING_MENU);
-    this.showImageNoVideo();
+    try {
+      this.model.moveVideo();
+      this.view.renderMovedVideo($video, isWatching);
+
+      const message = isWatching ? MESSAGE.VIDEO_IS_MOVED_TO_WATCHED_MENU : MESSAGE.VIDEO_IS_MOVED_TO_WATCHING_MENU;
+
+      this.view.renderNotification(message);
+      this.showImageNoVideo();
+    } catch (error) {
+      this.view.renderNotification(MESSAGE.REQUEST_HAS_FAILED);
+    }
   }
 
   onConfirmRemoval({ target }) {
@@ -62,7 +67,7 @@ export default class StorageController {
   proceedRemovingVideo() {
     this.view.renderInvisibleRemovalConfirm();
 
-    const $video = this.model.videoToManage;
+    const $video = this.model.targetVideo;
     const isWatching = isWatchingVideo($video);
 
     this.model.removeVideo($video.id, isWatching);

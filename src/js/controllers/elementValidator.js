@@ -1,4 +1,4 @@
-import { getListByKey } from '../utils/localStorage.js';
+import { getListFromDB } from '../utils/localStorage.js';
 import { DB_KEY, CLASS_NAME } from '../constants.js';
 
 export const isModalOpen = ($target) => {
@@ -22,7 +22,7 @@ export const isRecentKeywordRemoveButton = ($target) => {
 };
 
 export const isSavedVideo = (targetId) => {
-  const videos = getListByKey(DB_KEY.VIDEOS);
+  const videos = getListFromDB(DB_KEY.VIDEOS);
 
   return videos.some((video) => video.videoId === targetId);
 };

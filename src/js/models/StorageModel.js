@@ -1,16 +1,25 @@
-import { getListByKey, setListByKey, deleteTargetItemByKey } from '../utils/localStorage.js';
+import { getListFromDB, setListToDB, deleteTargetItemByKey } from '../utils/localStorage.js';
 import { DB_KEY } from '../constants.js';
 
 export default class StorageModel {
   constructor() {
-    this.init();
+    this.setVideos();
   }
 
-  init() {
-    this.videos = getListByKey(DB_KEY.VIDEOS);
-    this.videosCount = this.videos.length;
-    this.watchingVideoCount = this.videos.filter((video) => video.isWatching).length;
-    this.watchedVideoCount = this.videosCount - this.watchingVideoCount;
+  setVideos() {
+    this.videos = getListFromDB(DB_KEY.VIDEOS);
+  }
+
+  get videosCount() {
+    return this.videos.length;
+  }
+
+  get watchingVideoCount() {
+    return this.videos.filter((video) => video.isWatching).length;
+  }
+
+  get watchedVideoCount() {
+    return this.videos.filter((video) => !video.isWatching).length;
   }
 
   isOnlyWatchingVideoSaved() {
@@ -26,26 +35,23 @@ export default class StorageModel {
   }
 
   moveVideo() {
-    const targetId = this.videoToManage.id;
-    const videos = getListByKey(DB_KEY.VIDEOS);
+    const targetId = this.targetVideo.id;
+    const videos = getListFromDB(DB_KEY.VIDEOS);
     const target = videos.find((video) => video.videoId === targetId);
 
     target.isWatching = !target.isWatching;
-    this.updateWatchingVideoCount(target.isWatching);
-    this.updateWatchedVideoCount(!target.isWatching);
-    setListByKey(DB_KEY.VIDEOS, videos);
+    setListToDB(DB_KEY.VIDEOS, videos);
+    this.setVideos();
   }
 
-  updateWatchingVideoCount(isWatching) {
-    this.watchingVideoCount += isWatching ? 1 : -1;
-  }
-
-  updateWatchedVideoCount(isWatched) {
-    this.watchedVideoCount += isWatched ? 1 : -1;
-  }
-
-  removeVideo(videoId, isWatching) {
-    deleteTargetItemByKey({ key: DB_KEY.VIDEOS, secondKey: 'videoId' }, videoId);
-    isWatching ? (this.watchingVideoCount -= 1) : (this.watchedVideoCount -= 1);
+  removeVideo() {
+    deleteTargetItemByKey(
+      {
+        key: DB_KEY.VIDEOS,
+        secondKey: 'videoId',
+      },
+      this.targetVideo.id,
+    );
+    this.setVideos();
   }
 }

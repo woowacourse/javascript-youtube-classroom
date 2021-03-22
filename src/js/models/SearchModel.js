@@ -1,4 +1,4 @@
-import { getListByKey, insertItemByKey, setListByKey } from '../utils/localStorage.js';
+import { getListFromDB, insertItemByKey, setListToDB } from '../utils/localStorage.js';
 import { MAX_RECENT_KEYWORD_COUNT, DB_KEY } from '../constants.js';
 
 /*
@@ -12,7 +12,7 @@ import { MAX_RECENT_KEYWORD_COUNT, DB_KEY } from '../constants.js';
 export default class SearchModel {
   constructor() {
     this.initSearchResult();
-    this.recentKeywords = getListByKey(DB_KEY.RECENT_KEYWORDS);
+    this.recentKeywords = getListFromDB(DB_KEY.RECENT_KEYWORDS);
   }
 
   initSearchResult() {
@@ -42,12 +42,12 @@ export default class SearchModel {
       this.recentKeywords.pop();
     }
     this.recentKeywords.unshift(this.keyword);
-    setListByKey(DB_KEY.RECENT_KEYWORDS, this.recentKeywords);
+    setListToDB(DB_KEY.RECENT_KEYWORDS, this.recentKeywords);
   }
 
   getRecentKeywords() {
     try {
-      return getListByKey(DB_KEY.RECENT_KEYWORDS);
+      return getListFromDB(DB_KEY.RECENT_KEYWORDS);
     } catch (e) {
       return '';
     }
@@ -55,7 +55,7 @@ export default class SearchModel {
 
   removeRecentKeyword(target) {
     this.recentKeywords = this.recentKeywords.filter((keyword) => keyword !== target);
-    setListByKey(DB_KEY.RECENT_KEYWORDS, this.recentKeywords);
+    setListToDB(DB_KEY.RECENT_KEYWORDS, this.recentKeywords);
   }
 
   addNewSearchResult(newSearchResult) {
