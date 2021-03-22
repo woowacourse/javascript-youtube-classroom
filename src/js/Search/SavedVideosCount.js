@@ -28,6 +28,7 @@ export default class SavedVideosCount {
         }
 
         resolve();
+        this.setCount({ change: +1 });
       }
     );
   }

@@ -6,19 +6,36 @@ import {
 import { messenger, MESSAGE } from "../messenger/index.js";
 import { $ } from "../utils/DOM.js";
 import { HISTORY_VIDEO_TEMPLATE } from "../Video/template.js";
-import { renderWatchLaterVideo } from "../Video/render.js";
+import { renderMainVideo } from "../Video/render.js";
 import { showSnackbar } from "../utils/snackbar.js";
 
 export default class HistoryVideoWrapper {
   constructor() {
+    this.initializeVariables();
+    this.selectHTMLElements();
+    this.addMessageListeners();
+    this.addEventListeners();
+    this.render();
+  }
+
+  initializeVariables() {
     this.historyVideoItemsMap = new Map(
       JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEY.HISTORY_VIDEO_ITEMS))
     );
 
     this.historyVideosMap = new Map();
+  }
 
+  selectHTMLElements() {
     this.$noSavedVideoImage = $(`.${CLASSNAME.NO_WATCHED_VIDEO_IMAGE}`);
     this.$historyVideoWrapper = $(`.${CLASSNAME.HISTORY_VIDEO_WRAPPER}`);
+  }
+
+  addMessageListeners() {
+    messenger.addMessageListener(
+      MESSAGE.CANCEL_VIDEO_BUTTON_CLICKED,
+      this.deleteVideo.bind(this)
+    );
 
     messenger.addMessageListener(
       MESSAGE.WATCHED_ICON_CLICKED,
@@ -26,34 +43,52 @@ export default class HistoryVideoWrapper {
     );
 
     messenger.addMessageListener(
-      MESSAGE.CANCEL_VIDEO_BUTTON_CLICKED,
-      this.deleteVideo.bind(this)
-    );
-
-    messenger.addMessageListener(
       MESSAGE.HIDE_IF_VIDEO_IS_SAVED,
       this.hideIfVideoIsSaved.bind(this)
     );
+  }
 
-    this.$historyVideoWrapper.addEventListener("click", (event) => {
-      const { videoId } = event.target.parentElement.dataset;
+  addEventListeners() {
+    this.$historyVideoWrapper.addEventListener(
+      "click",
+      this.handleVideoWrapperClick.bind(this)
+    );
+  }
 
-      if (event.target.classList.contains(CLASSNAME.WATCH_LATER_ICON)) {
-        this.moveVideo(videoId);
-        showSnackbar(SNACKBAR_TEXT.MOVED_TO_WATCH_LATER_VIDEO);
-      }
+  handleVideoWrapperClick(event) {
+    const { target: $videoWrapper } = event;
+    const { videoId } = event.target.parentElement.dataset;
 
-      if (event.target.classList.contains(CLASSNAME.DELETE_ICON)) {
-        // eslint-disable-next-line no-alert
-        if (window.confirm("정말 삭제하시겠습니까?")) {
-          this.deleteVideo({ videoId });
-          messenger.deliverMessage(MESSAGE.SAVED_VIDEO_DELETED, { videoId });
-          showSnackbar(SNACKBAR_TEXT.VIDEO_DELETED);
-        }
-      }
-    });
+    if ($videoWrapper.classList.contains(CLASSNAME.WATCH_LATER_ICON)) {
+      this.handleWatchingIconClick(videoId);
+      return;
+    }
 
-    this.render();
+    if ($videoWrapper.classList.contains(CLASSNAME.DELETE_ICON)) {
+      this.handleDeleteIconClick(videoId);
+    }
+  }
+
+  handleWatchingIconClick(videoId) {
+    this.moveVideo({ videoId });
+    showSnackbar(SNACKBAR_TEXT.MOVED_TO_WATCH_LATER_VIDEO);
+  }
+
+  handleDeleteIconClick(videoId) {
+    // eslint-disable-next-line no-alert
+    if (!window.confirm("정말 삭제하시겠습니까?")) {
+      return;
+    }
+
+    this.deleteVideo({ videoId });
+    messenger.deliverMessage(MESSAGE.SAVED_VIDEO_DELETED, { videoId });
+    showSnackbar(SNACKBAR_TEXT.VIDEO_DELETED);
+  }
+
+  saveVideo({ videoId, item }) {
+    this.historyVideoItemsMap.set(videoId, item);
+    this.updateLocalStorage();
+    this.renderSingleVideo({ videoId, item });
   }
 
   moveVideo({ videoId }) {
@@ -62,16 +97,7 @@ export default class HistoryVideoWrapper {
       item: this.historyVideoItemsMap.get(videoId),
     });
 
-    this.historyVideoItemsMap.delete(videoId);
-
-    this.updateLocalStorage();
-
-    this.historyVideosMap.get(videoId).remove();
-    this.historyVideosMap.delete(videoId);
-
-    if (this.historyVideosMap.size === 0) {
-      $.show(this.$noSavedVideoImage);
-    }
+    this.removeVideo({ videoId });
   }
 
   deleteVideo({ videoId }) {
@@ -79,27 +105,19 @@ export default class HistoryVideoWrapper {
       return;
     }
 
-    this.historyVideoItemsMap.delete(videoId);
-
-    this.updateLocalStorage();
-
     messenger.deliverMessage(MESSAGE.SAVED_VIDEOS_COUNT_CHANGED, {
       change: -1,
     });
 
-    this.historyVideosMap.get(videoId).remove();
-    this.historyVideosMap.delete(videoId);
-
-    if (this.historyVideosMap.size === 0) {
-      $.show(this.$noSavedVideoImage);
-    }
+    this.removeVideo({ videoId });
   }
 
-  saveVideo({ videoId, item }) {
-    this.historyVideoItemsMap.set(videoId, item);
-
+  removeVideo({ videoId }) {
+    this.historyVideoItemsMap.delete(videoId);
+    this.historyVideosMap.get(videoId).remove();
+    this.historyVideosMap.delete(videoId);
     this.updateLocalStorage();
-    this.renderSingleVideo(item);
+    this.render();
   }
 
   updateLocalStorage() {
@@ -126,7 +144,7 @@ export default class HistoryVideoWrapper {
     this.historyVideoItemsMap.forEach(this.renderSingleVideo.bind(this));
   }
 
-  renderSingleVideo(item) {
+  renderSingleVideo({ videoId, item }) {
     $.hide(this.$noSavedVideoImage);
 
     this.$historyVideoWrapper.insertAdjacentHTML(
@@ -135,9 +153,9 @@ export default class HistoryVideoWrapper {
     );
 
     const $video = this.$historyVideoWrapper.children[0];
-    renderWatchLaterVideo($video, item);
 
-    const { videoId } = item.id;
+    renderMainVideo($video, item);
+
     this.historyVideosMap.set(videoId, $video);
   }
 }

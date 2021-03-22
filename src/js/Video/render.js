@@ -31,7 +31,7 @@ const renderVideo = ($video, item) => {
   $.removeClass($video, CLASSNAME.SKELETON);
 };
 
-const renderWatchLaterVideo = ($video, item) => {
+const renderMainVideo = ($video, item) => {
   renderVideo($video, item);
 
   const { videoId } = item.id;
@@ -70,4 +70,4 @@ const renderSearchVideo = ($video, item) => {
   $video.classList.remove(CLASSNAME.SKELETON);
 };
 
-export { renderWatchLaterVideo, renderSearchVideo };
+export { renderMainVideo, renderSearchVideo };
