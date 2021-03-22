@@ -32,10 +32,7 @@ export default class WatchLaterVideoWrapper {
   }
 
   addMessageListeners() {
-    messenger.addMessageListener(
-      MESSAGE.SAVE_VIDEO_BUTTON_CLICKED,
-      this.saveVideo.bind(this)
-    );
+    messenger.addMessageListener(MESSAGE.SAVE_VIDEO, this.saveVideo.bind(this));
 
     messenger.addMessageListener(
       MESSAGE.CANCEL_VIDEO_BUTTON_CLICKED,
@@ -43,7 +40,7 @@ export default class WatchLaterVideoWrapper {
     );
 
     messenger.addMessageListener(
-      MESSAGE.WATCH_LATER_ICON_CLICKED,
+      MESSAGE.MOVE_TO_WATCH_LATER_ICON_CLICKED,
       this.saveVideo.bind(this)
     );
 
@@ -64,7 +61,7 @@ export default class WatchLaterVideoWrapper {
     const { target: $videoWrapper } = event;
     const { videoId } = $videoWrapper.parentElement.dataset;
 
-    if ($videoWrapper.classList.contains(CLASSNAME.WATCHED_ICON)) {
+    if ($videoWrapper.classList.contains(CLASSNAME.MOVE_TO_HISTORY_ICON)) {
       this.handleWatchedIconClick(videoId);
       return;
     }
@@ -96,7 +93,7 @@ export default class WatchLaterVideoWrapper {
   }
 
   moveVideo({ videoId }) {
-    messenger.deliverMessage(MESSAGE.WATCHED_ICON_CLICKED, {
+    messenger.deliverMessage(MESSAGE.MOVE_TO_HISTORY_ICON_CLICKED, {
       videoId,
       item: this.watchLaterVideoItemsMap.get(videoId),
     });
@@ -108,10 +105,6 @@ export default class WatchLaterVideoWrapper {
     if (!this.watchLaterVideoItemsMap.has(videoId)) {
       return;
     }
-
-    messenger.deliverMessage(MESSAGE.SAVED_VIDEOS_COUNT_CHANGED, {
-      change: -1,
-    });
 
     this.removeVideo();
   }

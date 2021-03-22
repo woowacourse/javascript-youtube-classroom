@@ -92,20 +92,14 @@ export default class SearchVideoWrapper {
       return;
     }
 
-    const resolve = () => {
-      messenger.deliverMessage(MESSAGE.SAVE_VIDEO_BUTTON_CLICKED, {
-        videoId,
-        item,
-      });
-
-      this.setButtonCancelMode($button);
-    };
-
-    const reject = () => showModalSnackbar(SNACKBAR_TEXT.REACHED_MAX_COUNT);
-
-    messenger.deliverMessage(MESSAGE.SAVE_IF_VIDEOS_COUNT_IS_IN_RANGE, {
-      resolve,
-      reject,
+    messenger.deliverMessage(MESSAGE.SAVE_VIDEO_BUTTON_CLICKED, {
+      resolve: this.setButtonCancelMode.bind(this, $button),
+      reject: this.showModalSnackbar.bind(
+        this,
+        SNACKBAR_TEXT.REACHED_MAX_COUNT
+      ),
+      videoId,
+      item,
     });
   }
 

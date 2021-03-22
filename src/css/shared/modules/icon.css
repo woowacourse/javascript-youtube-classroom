@@ -10,18 +10,18 @@
   height: 0.85rem;
 }
 
-.watched-icon {
+.move-to-history-icon {
   background-color: var(--orange);
 }
 
-.watch-later-icon {
+.move-to-watch-later-icon {
   background-color: var(--green);
 }
 
-.js-icons-wrapper .watched-icon:hover {
+.js-icons-wrapper .move-to-history-icon:hover {
   background-color: var(--green);
 }
 
-.js-icons-wrapper .watch-later-icon:hover {
+.js-icons-wrapper .move-to-watch-later-icon:hover {
   background-color: var(--orange);
 }

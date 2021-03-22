@@ -36,7 +36,7 @@ export default class HistoryVideoWrapper {
     );
 
     messenger.addMessageListener(
-      MESSAGE.WATCHED_ICON_CLICKED,
+      MESSAGE.MOVE_TO_HISTORY_ICON_CLICKED,
       this.saveVideo.bind(this)
     );
 
@@ -57,7 +57,7 @@ export default class HistoryVideoWrapper {
     const { target: $videoWrapper } = event;
     const { videoId } = event.target.parentElement.dataset;
 
-    if ($videoWrapper.classList.contains(CLASSNAME.WATCH_LATER_ICON)) {
+    if ($videoWrapper.classList.contains(CLASSNAME.MOVE_TO_WATCH_LATER_ICON)) {
       this.handleWatchingIconClick(videoId);
       return;
     }
@@ -90,7 +90,7 @@ export default class HistoryVideoWrapper {
   }
 
   moveVideo({ videoId }) {
-    messenger.deliverMessage(MESSAGE.WATCH_LATER_ICON_CLICKED, {
+    messenger.deliverMessage(MESSAGE.MOVE_TO_WATCH_LATER_ICON_CLICKED, {
       videoId,
       item: this.historyVideoItemsMap.get(videoId),
     });
@@ -102,10 +102,6 @@ export default class HistoryVideoWrapper {
     if (!this.historyVideoItemsMap.has(videoId)) {
       return;
     }
-
-    messenger.deliverMessage(MESSAGE.SAVED_VIDEOS_COUNT_CHANGED, {
-      change: -1,
-    });
 
     this.removeVideo({ videoId });
   }
