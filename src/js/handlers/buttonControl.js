@@ -1,11 +1,7 @@
 import MESSAGE from '../constants/message.js';
 import videoInfos from '../states/videoInfos.js';
 import videoListType from '../states/videoListType.js';
-import {
-  removeSavedVideo,
-  showSnackBar,
-  updateSavedVideo,
-} from '../viewControllers/app.js';
+import { removeSavedVideo, showSnackBar } from '../viewControllers/app.js';
 import { renderSavedVideoCount } from '../viewControllers/searchModal.js';
 
 function handleWatchedButton($target) {
@@ -32,11 +28,14 @@ function handleDeleteButton($target) {
 
 function handleLikedButton($target) {
   const $targetVideo = $target.closest('.js-video');
-  videoInfos.toggleLikeType($targetVideo.dataset.videoId);
 
-  const $updateSavedVideo = updateSavedVideo($targetVideo);
+  $target.classList.contains('opacity-hover')
+    ? $target.classList.remove('opacity-hover')
+    : $target.classList.add('opacity-hover');
+
+  videoInfos.toggleLikeType($targetVideo.dataset.videoId);
   if (videoListType.get() === 'liked') {
-    removeSavedVideo($updateSavedVideo);
+    removeSavedVideo($targetVideo);
   }
 }
 

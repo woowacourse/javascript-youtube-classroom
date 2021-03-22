@@ -3,7 +3,6 @@ import {
   createSavedVideoListTemplate,
   emptyVideoListTemplate,
 } from '../templates/videoList.js';
-import videoInfos from '../states/videoInfos.js';
 
 const $searchModal = $('#video-search-modal');
 const $videoList = $('#video-list');
@@ -50,19 +49,6 @@ function removeSavedVideo($targetVideo) {
   $targetVideo.remove();
 }
 
-function updateSavedVideo($targetVideo) {
-  const targetVideo = videoInfos
-    .get()
-    .find(videoInfo => videoInfo.id.videoId === $targetVideo.dataset.videoId);
-  const updateTargetVideo = parseHTML(
-    createSavedVideoListTemplate([targetVideo])
-  );
-
-  $videoList.replaceChild(updateTargetVideo, $targetVideo);
-
-  return updateTargetVideo;
-}
-
 function showSnackBar(contents) {
   $snackbar.innerText = contents;
   $snackbar.classList.toggle('show');
@@ -87,5 +73,4 @@ export {
   toggleFocusedModeButton,
   appendSavedVideo,
   removeSavedVideo,
-  updateSavedVideo,
 };
