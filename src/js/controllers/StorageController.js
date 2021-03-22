@@ -8,7 +8,7 @@ export default class StorageController {
   }
 
   init() {
-    this.onShowStorage();
+    this.showStorage();
     this.attachEvents();
   }
 
@@ -84,7 +84,7 @@ export default class StorageController {
     this.showWatchedVideos();
   }
 
-  onShowStorage() {
+  showStorage() {
     this.view.renderVideosToPrepare(this.model.videos);
 
     if (isWatchingMenu(this.view.$savedVideosWrapper)) {
