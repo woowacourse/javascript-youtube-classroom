@@ -1,4 +1,4 @@
-import { $, parseHTML } from '../utils/DOM.js';
+import { $, $$, parseHTML } from '../utils/DOM.js';
 import {
   createSavedVideoListTemplate,
   emptyVideoListTemplate,
@@ -7,6 +7,7 @@ import {
 const $searchModal = $('#video-search-modal');
 const $videoList = $('#video-list');
 const $body = $('body');
+const $snackbar = $('#snack-bar');
 
 function closeModal() {
   $searchModal.classList.remove('open');
@@ -24,8 +25,9 @@ function openModal() {
 }
 
 function renderSavedVideoList(videoInfos, videoListType) {
+  const targetType = videoListType === 'liked' ? 'likeType' : 'watchType';
   const filteredVideoInfos = [...videoInfos].filter(
-    videoInfo => videoListType === videoInfo.watchType
+    videoInfo => videoListType === videoInfo[targetType]
   );
 
   $videoList.innerHTML = filteredVideoInfos.length
@@ -36,7 +38,9 @@ function renderSavedVideoList(videoInfos, videoListType) {
 function appendSavedVideo(videoInfo) {
   $videoList.append(
     parseHTML(
-      createSavedVideoListTemplate([{ ...videoInfo, watchType: 'toWatch' }])
+      createSavedVideoListTemplate([
+        { ...videoInfo, watchType: 'toWatch', likeType: 'toLike' },
+      ])
     )
   );
 }
@@ -46,8 +50,6 @@ function removeSavedVideo($targetVideo) {
 }
 
 function showSnackBar(contents) {
-  const $snackbar = $('#snack-bar');
-
   $snackbar.innerText = contents;
   $snackbar.classList.toggle('show');
   setTimeout(() => {
@@ -55,9 +57,12 @@ function showSnackBar(contents) {
   }, 3000);
 }
 
-function toggleFocusedModeButton() {
-  $('#watched-video-display-button').classList.toggle('bg-cyan-100');
-  $('#to-watch-video-display-button').classList.toggle('bg-cyan-100');
+function toggleFocusedModeButton(targetId) {
+  $$('.js-mode-button').forEach($modeButton =>
+    $modeButton.id === targetId
+      ? $modeButton.classList.add('bg-cyan-100')
+      : $modeButton.classList.remove('bg-cyan-100')
+  );
 }
 
 export {

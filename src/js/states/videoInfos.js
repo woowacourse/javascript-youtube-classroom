@@ -44,6 +44,19 @@ const videoInfos = {
     this.set(newVideoInfos);
   },
 
+  toggleLikeType(targetId) {
+    const newVideoInfos = this.value.map(videoInfo =>
+      videoInfo.id.videoId === targetId
+        ? {
+            ...videoInfo,
+            likeType: videoInfo.likeType === 'toLike' ? 'liked' : 'toLike',
+          }
+        : videoInfo
+    );
+
+    this.set(newVideoInfos);
+  },
+
   get() {
     return this.value;
   },
@@ -64,8 +77,12 @@ const videoInfos = {
         channelTitle: snippet.channelTitle,
         publishTime: snippet.publishedAt,
       },
-      watchType: oldVideoInfos.find(videoInfo => videoInfo.id.videoId === id)
-        .watchType,
+      watchType:
+        oldVideoInfos.find(videoInfo => videoInfo.id.videoId === id)
+          .watchType ?? `toWatch`,
+      likeType:
+        oldVideoInfos.find(videoInfo => videoInfo.id.videoId === id).likeType ??
+        `toLike`,
     }));
   },
 };

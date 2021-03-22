@@ -5,26 +5,32 @@ import {
   toggleFocusedModeButton,
 } from '../viewControllers/app.js';
 
-function toggleMode() {
-  videoListType.toggle();
+function toggleMode(targetId) {
+  videoListType.toggle(targetId);
 
   renderSavedVideoList(videoInfos.get(), videoListType.get());
-  toggleFocusedModeButton();
+  toggleFocusedModeButton(targetId);
 }
 
 function handleModeChange({ target }) {
   if (
-    target.id === 'to-watch-video-display-button' &&
-    videoListType.get() === 'watched'
+    (target.id === 'to-watch-video-display-button' &&
+      videoListType.get() === 'watched') ||
+    videoListType.get() === 'liked'
   ) {
-    toggleMode();
+    toggleMode(target.id);
     return;
   }
   if (
-    target.id === 'watched-video-display-button' &&
-    videoListType.get() === 'toWatch'
+    (target.id === 'watched-video-display-button' &&
+      videoListType.get() === 'toWatch') ||
+    videoListType.get() === 'liked'
   ) {
-    toggleMode();
+    toggleMode(target.id);
+    return;
+  }
+  if (target.id === 'liked-video-display-button') {
+    toggleMode(target.id);
   }
 }
 
