@@ -133,9 +133,9 @@ export default class WatchLaterVideoWrapper {
     );
   }
 
-  hideIfVideoIsSaved({ videoId, callback }) {
+  hideIfVideoIsSaved({ videoId, hide }) {
     if (this.watchLaterVideoItemsMap.has(videoId)) {
-      callback();
+      hide();
     }
   }
 

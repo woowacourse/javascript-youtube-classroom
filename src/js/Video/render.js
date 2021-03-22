@@ -59,7 +59,7 @@ const renderSearchVideo = ($video, item) => {
 
   messenger.deliverMessage(MESSAGE.HIDE_IF_VIDEO_IS_SAVED, {
     videoId,
-    callback: () => {
+    hide: () => {
       $.addClass($saveVideoButton, CLASSNAME.CANCEL);
       $saveVideoButton.innerText = "취소";
     },

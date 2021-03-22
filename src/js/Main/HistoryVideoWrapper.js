@@ -127,9 +127,9 @@ export default class HistoryVideoWrapper {
     );
   }
 
-  hideIfVideoIsSaved({ videoId, callback }) {
+  hideIfVideoIsSaved({ videoId, hide }) {
     if (this.historyVideoItemsMap.has(videoId)) {
-      callback();
+      hide();
     }
   }
 
