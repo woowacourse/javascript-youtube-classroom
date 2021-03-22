@@ -1,5 +1,18 @@
-/* [보고있는 영상] 메뉴 */
+nav {
+  position: relative;
+}
 
+nav .align-left {
+  position: relative;
+  left: 0;
+}
+
+nav .align-right {
+  position: absolute;
+  right: 0;
+}
+
+/* [보고있는 영상] 메뉴 */
 .watching-section .watching {
   display: block;
 }

@@ -1,13 +1,34 @@
 .btn {
   height: 2.25rem;
-  min-width: 8rem;
+  min-width: 7rem;
   padding: 0 1rem;
-  border-radius: 0.25rem;
+  font-size: 0.8rem;
+  border-radius: 0.5rem;
   outline: 0;
   border-style: none;
   cursor: pointer;
 }
 
-.btn:hover {
+.btn-round {
+  height: 2.25rem;
+  min-width: 1rem;
+  padding: 0 1rem;
+  font-size: 0.8rem;
+  border-radius: 2rem;
+  outline: 0;
+  border-style: none;
+  cursor: pointer;
+}
+
+.btn:hover,
+.btn-round:hover {
+  transition: 0.2s;
+  font-weight: bolder;
   background-color: rgb(179, 234, 242);
+}
+
+@media screen and (max-width: 576px) {
+  .btn {
+    min-width: 4rem;
+  }
 }
