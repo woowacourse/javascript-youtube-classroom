@@ -10,11 +10,11 @@ import { doThrottling } from '../utils/throttle.js';
 import { MESSAGE, MAX_VIDEO_STORAGE_CAPACITY, SCROLL_DELAY_TIME } from '../constants.js';
 
 export default class SearchController {
-  constructor({ searchModel, classroomModel, searchView, classroomView, searchService }) {
+  constructor({ searchModel, storageModel, searchView, storageView, searchService }) {
     this.searchModel = searchModel;
-    this.classroomModel = classroomModel;
+    this.storageModel = storageModel;
     this.searchView = searchView;
-    this.classroomView = classroomView;
+    this.storageView = storageView;
     this.searchService = searchService;
   }
 
@@ -40,7 +40,7 @@ export default class SearchController {
     const recentKeywords = this.searchModel.getRecentKeywords();
     const mostRecentKeyword = recentKeywords[0] ?? '';
 
-    this.searchView.renderVisibleModal(this.classroomModel.videosCount, recentKeywords);
+    this.searchView.renderVisibleModal(this.storageModel.videosCount, recentKeywords);
     if (mostRecentKeyword === '') {
       return;
     }
@@ -52,7 +52,7 @@ export default class SearchController {
     if ((key === 'Escape' && isModalOpen(currentTarget)) || isModalDimmedArea(target) || isModalCloseButton(target)) {
       this.searchView.renderInvisibleModal();
     }
-    this.classroomView.$watchingMenuButton.click();
+    this.storageView.$watchingMenuButton.click();
   }
 
   onClickRecentKeyword({ target }) {
@@ -105,7 +105,7 @@ export default class SearchController {
       return;
     }
 
-    const savedCount = this.classroomModel.videosCount;
+    const savedCount = this.storageModel.videosCount;
 
     if (savedCount >= MAX_VIDEO_STORAGE_CAPACITY) {
       this.searchView.renderNotification(MESSAGE.STORAGE_CAPACITY_IS_FULL);
@@ -115,11 +115,11 @@ export default class SearchController {
     const targetVideoData = this.searchModel.getTargetVideoData(target.id);
 
     this.searchModel.saveVideo(targetVideoData);
-    this.classroomModel.updateWatchingVideoCount(true);
+    this.storageModel.updateWatchingVideoCount(true);
     this.searchView.renderInvisibleSaveButton(target);
     this.searchView.renderSaveVideoCount(savedCount + 1);
     this.searchView.renderNotification(MESSAGE.VIDEO_IS_SAVED_SUCCESSFULLY);
-    this.classroomView.renderSavedVideo(targetVideoData);
+    this.storageView.renderSavedVideo(targetVideoData);
   }
 
   showSearchGroup() {

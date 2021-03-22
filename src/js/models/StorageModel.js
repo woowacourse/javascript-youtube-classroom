@@ -1,7 +1,7 @@
 import { getListByKey, setListByKey, deleteTargetItemByKey } from '../utils/localStorage.js';
 import { DB_KEY } from '../constants.js';
 
-export default class ClassroomModel {
+export default class StorageModel {
   constructor() {
     this.init();
   }

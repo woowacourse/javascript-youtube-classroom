@@ -1,14 +1,14 @@
 import { isWatchingMenu, isWatchingVideo, isConfirmCancelButton, isConfirmApproveButton } from './elementValidator.js';
 import { MESSAGE } from '../constants.js';
 
-export default class ClassroomController {
-  constructor({ classroomModel, classroomView }) {
-    this.view = classroomView;
-    this.model = classroomModel;
+export default class StorageController {
+  constructor({ storageModel, storageView }) {
+    this.view = storageView;
+    this.model = storageModel;
   }
 
   init() {
-    this.onShowClassroom();
+    this.onShowStorage();
     this.attachEvents();
   }
 
@@ -79,7 +79,7 @@ export default class ClassroomController {
     this.showWatchedVideos();
   }
 
-  onShowClassroom() {
+  onShowStorage() {
     this.view.renderVideosToPrepare(this.model.videos);
 
     if (isWatchingMenu(this.view.$savedVideosWrapper)) {

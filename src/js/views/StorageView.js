@@ -4,7 +4,7 @@ import { CLASS_NAME, SNACKBAR_SHOW_TIME } from '../constants.js';
 
 const { WATCHING_SECTION, WATCHED_SECTION, WATCHING, WATCHED, NO_WATCHING, NO_WATCHED } = CLASS_NAME;
 
-export default class ClassroomView {
+export default class StorageView {
   constructor() {
     this.selectDOMs();
   }
