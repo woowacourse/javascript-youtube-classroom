@@ -26,16 +26,10 @@ function openModal() {
 }
 
 function renderSavedVideoList(videoInfos, videoListType) {
-  let filteredVideoInfos = [];
-  if (videoListType === 'liked') {
-    filteredVideoInfos = [...videoInfos].filter(
-      videoInfo => videoListType === videoInfo.likeType
-    );
-  } else {
-    filteredVideoInfos = [...videoInfos].filter(
-      videoInfo => videoListType === videoInfo.watchType
-    );
-  }
+  const targetType = videoListType === 'liked' ? 'likeType' : 'watchType';
+  const filteredVideoInfos = [...videoInfos].filter(
+    videoInfo => videoListType === videoInfo[targetType]
+  );
 
   $videoList.innerHTML = filteredVideoInfos.length
     ? createSavedVideoListTemplate(filteredVideoInfos)
