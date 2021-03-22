@@ -3,7 +3,7 @@ import {
   STORAGE_NAME,
   SUCCESS_MESSAGE,
 } from "../utils/constants.js";
-import { showSnackbar } from "../utils/snackbar.js";
+import showSnackbar from "../utils/snackbar.js";
 
 const videos = {
   fetchedVideos: [],
@@ -24,6 +24,10 @@ const videos = {
   },
 
   setFetchedVideos(videoItems) {
+    if (!videoItems instanceof Array) {
+      return;
+    }
+
     this.recentVideos = videoItems
       .filter((videoItem) => videoItem.id.videoId)
       .map((videoItem) => this.parseVideoItem(videoItem));
@@ -53,32 +57,60 @@ const videos = {
   },
 
   setVideoWatched(videoId, watched) {
+    const succeeded = true;
+
     try {
-      const watchedVideoIndex = this.savedVideos.findIndex(
+      const videoIndex = this.savedVideos.findIndex(
         (video) => video.videoId === videoId
       );
 
-      if (watchedVideoIndex === -1) {
-        throw new Error(ERROR_MESSAGE.CONNOT_FIND_INDEX_OF_VIDEO);
+      if (videoIndex === -1) {
+        throw new Error(ERROR_MESSAGE.CANNOT_FIND_INDEX_OF_VIDEO);
       }
 
-      const watchedVideo = this.savedVideos[watchedVideoIndex];
+      const video = this.savedVideos[videoIndex];
 
       this.savedVideos = [
-        ...this.savedVideos.slice(0, watchedVideoIndex),
-        { ...watchedVideo, watched },
-        ...this.savedVideos.slice(watchedVideoIndex + 1),
+        ...this.savedVideos.slice(0, videoIndex),
+        { ...video, watched },
+        ...this.savedVideos.slice(videoIndex + 1),
       ];
 
       this.storeSavedVideos();
-      showSnackbar(
-        watched
-          ? SUCCESS_MESSAGE.WATCH_VIDEO
-          : SUCCESS_MESSAGE.CLEAR_WATCH_VIDEO_LOG
-      );
     } catch (e) {
       console.error(e);
-      showSnackbar(ERROR_MESSAGE.INVALID_ACTION_ERROR);
+      succeeded = false;
+    } finally {
+      return succeeded;
+    }
+  },
+
+  setVideoLiked(videoId, liked) {
+    const succeeded = true;
+
+    try {
+      const videoIndex = this.savedVideos.findIndex(
+        (video) => video.videoId === videoId
+      );
+
+      if (videoIndex === -1) {
+        throw new Error(ERROR_MESSAGE.CANNOT_FIND_INDEX_OF_VIDEO);
+      }
+
+      const video = this.savedVideos[videoIndex];
+
+      this.savedVideos = [
+        ...this.savedVideos.slice(0, videoIndex),
+        { ...video, liked },
+        ...this.savedVideos.slice(videoIndex + 1),
+      ];
+
+      this.storeSavedVideos();
+    } catch (e) {
+      console.error(e);
+      succeeded = false;
+    } finally {
+      return succeeded;
     }
   },
 

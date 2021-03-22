@@ -14,22 +14,22 @@ export const DOM_CONSTANTS = {
     SNACKBAR: "#snackbar",
     WATCHED_LATER_VIEW_BUTTON: "#watch-later-view-button",
     WATCHED_VIEW_BUTTON: "#watched-view-button",
-    NOT_SAVED: "#not-saved",
-    NOT_WATCHED: "#not-watched",
-    WATCH_LATER_VIDEOS: "#watch-later-videos",
-    WATCHED_VIDEOS: "#watched-videos",
+    LIKED_VIEW_BUTTON: "#liked-view-button",
+    EMPTY_IMG: "#empty-img",
+    NOT_FOUND: "#not-found",
+    SAVED_VIDEOS: "#saved-videos",
     SEARCH_BUTTON: "#search-button",
     SEARCH_MODAL: "#search-modal",
     SEARCH_MODAL_CLOSE: "#search-modal-close",
     SEARCH_FORM: "#search-form",
     SEARCH_RESULTS: "#search-results",
     SEARCH_RESULTS_INNER: "#search-results-inner",
-    HIDDEN_TARGET: "#hidden-target",
     SKELETON_SEARCH_RESULTS: "#skeleton-search-results",
     SKELETON_UI_CONTAINER: "#skeleton-ui-container",
-    NOT_FOUND: "#not-found",
+    HIDDEN_TARGET: "#hidden-target",
     KEYWORD_HISTORY: "#keyword-history",
     SAVED_VIDEO_COUNT: "#saved-video-count",
+    MINIMAL_NAV_INNER: "#minimal-nav-inner",
   },
   CLASS_NAME: {
     MODAL: "modal",
@@ -38,12 +38,40 @@ export const DOM_CONSTANTS = {
     D_NONE_HARD: "d-none-hard",
     OVERFLOW_HIDDEN: "overflow-hidden",
     OPEN: "open",
+    MIN_NAV_INDEX_0: "min-nav-index-0",
+    MIN_NAV_INDEX_1: "min-nav-index-1",
+    MIN_NAV_INDEX_2: "min-nav-index-2",
   },
   DATASET: {
     VIDEO_ID: "data-video-id",
+    BUTTON_TYPE: {
+      WATCHED: "watched",
+      LIKED: "liked",
+      DELETE: "delete",
+    },
   },
   NAME: {
     SEARCH_KEYWORD: "search-keyword",
+  },
+};
+
+export const VIDEO_VIEW_NAME = {
+  WATCH_LATER: "watch-later",
+  WATCHED: "watched",
+  LIKED: "liked",
+};
+
+export const EMPTY_IMG = {
+  SRC: {
+    NOT_SAVED: "./src/images/status/not-saved.png",
+    NOT_WATCHED: "./src/images/status/not-watched.png",
+    NO_LIKED: "./src/images/status/no-liked.png",
+  },
+  ALT: {
+    NO_VIDEOS: "동영상이 존재하지 않습니다.",
+  },
+  WIDTH: {
+    DEFAULT: "300",
   },
 };
 
@@ -72,6 +100,8 @@ export const SUCCESS_MESSAGE = {
   DELETE_VIDEO: "저장된 동영상을 삭제하였습니다.",
   WATCH_VIDEO: "동영상을 시청했습니다",
   CLEAR_WATCH_VIDEO_LOG: "볼 영상으로 이동합니다.",
+  LIKE_VIDEO: "동영상을 좋아합니다.",
+  DISLIKE_VIDEO: "좋아요를 취소합니다.",
 };
 
 export const ERROR_MESSAGE = {
@@ -79,11 +109,13 @@ export const ERROR_MESSAGE = {
   SEARCH_ERROR: "동영상을 검색할 수 없습니다",
   SAVE_ERROR: "동영상 저장에 실패했습니다.",
   DELETE_ERROR: "동영상 삭제에 실패했습니다.",
+  LIKE_ERROR: "좋아요 누르기에 실패했습니다.",
+  DISLIKE_ERROR: "좋아요 취소에 실패했습니다.",
   INVALID_ACTION_ERROR: "유효하지 않은 동작입니다.",
   NOT_IMPLEMENTED: "준비중인 기능입니다.",
-  CONNOT_FIND_SAVE_BUTTON_ERROR: "cannot find save button",
-  CONNOT_FIND_ELEMENT_ERROR: "cannot find element",
-  CONNOT_FIND_INDEX_OF_VIDEO: "cannot find index of video",
+  CANNOT_FIND_SAVE_BUTTON_ERROR: "cannot find save button",
+  CANNOT_FIND_ELEMENT_ERROR: "cannot find element",
+  CANNOT_FIND_INDEX_OF_VIDEO: "cannot find index of video",
 };
 
 export const CONFIRM_MESSAGE = {

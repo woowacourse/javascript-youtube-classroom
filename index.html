@@ -14,16 +14,45 @@
     <div id="app">
       <div class="d-flex justify-center mt-5 w-100">
         <div class="w-100">
-          <header class="d-flex flex-col items-center my-4">
-            <h1 class="text-center font-bold">👩🏻‍💻 나만의 유튜브 강의실 👨🏻‍💻</h1>
+          <header class="d-flex flex-col items-center m-4">
+            <h1 class="main-title text-center font-bold">
+              👩🏻‍💻 나만의 유튜브 강의실 👨🏻‍💻
+            </h1>
             <div class="d-flex justify-between items-center w-100">
               <nav id="navigator">
-                <button id="watch-later-view-button" class="btn mx-1">
-                  👁️ 볼 영상
-                </button>
-                <button id="watched-view-button" class="btn mx-1">
-                  ✅ 본 영상
-                </button>
+                <div class="full-nav">
+                  <button id="watch-later-view-button" class="btn mx-1">
+                    👁️ 볼 영상
+                  </button>
+                  <button id="watched-view-button" class="btn mx-1">
+                    ✅ 본 영상
+                  </button>
+                  <button id="liked-view-button" class="btn mx-1">
+                    👍 좋아요 한 영상
+                  </button>
+                </div>
+                <div class="minimal-nav">
+                  <div id="minimal-nav-inner" class="minimal-nav-inner">
+                    <button
+                      id="min-watch-later-view-button"
+                      class="min-view-btn btn mx-1"
+                    >
+                      👁️ 볼 영상
+                    </button>
+                    <button
+                      id="min-watched-view-button"
+                      class="min-view-btn btn mx-1"
+                    >
+                      ✅ 본 영상
+                    </button>
+                    <button
+                      id="min-liked-view-button"
+                      class="min-view-btn btn mx-1"
+                    >
+                      👍 좋아요
+                    </button>
+                  </div>
+                </div>
               </nav>
               <button
                 id="search-button"
@@ -33,37 +62,17 @@
               </button>
             </div>
           </header>
-          <main class="mt-10">
+          <main class="mt-10 mx-4">
             <section
-              aria-label="저장된 영상이 없음"
-              id="not-saved"
+              aria-label="보여줄 영상이 없음"
+              id="empty-img"
               class="vh-70 d-flex justify-center items-center d-none-hard"
             >
-              <img
-                width="300"
-                src="./src/images/status/not-saved.png"
-                alt="저장된 영상이 없습니다."
-              />
+              <!-- empty img -->
             </section>
 
-            <section
-              aria-label="본 영상이 없음"
-              id="not-watched"
-              class="vh-70 d-flex justify-center items-center d-none-hard"
-            >
-              <img
-                width="300"
-                src="./src/images/status/not-watched.png"
-                alt="본 영상이 없습니다."
-              />
-            </section>
-
-            <section id="watch-later-videos" class="video-wrapper d-none-hard">
-              <!-- 볼영상 영상 clip -->
-            </section>
-
-            <section id="watched-videos" class="video-wrapper d-none-hard">
-              <!-- 볼영상 영상 clip -->
+            <section id="saved-videos" class="video-wrapper d-none-hard">
+              <!-- clips -->
             </section>
           </main>
         </div>
@@ -136,7 +145,7 @@
             <section
               aria-label="검색 결과가 나오기까지의 로딩"
               id="skeleton-search-results"
-              class="d-none-hard"
+              class="d-none-hard overflow-scroll vh-60"
             >
               <ul id="skeleton-ui-container" class="video-wrapper"></ul>
             </section>

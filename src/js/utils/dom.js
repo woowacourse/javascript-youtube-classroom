@@ -6,7 +6,7 @@ export const $ = (selector) => {
     const selected = document.querySelectorAll(selector);
 
     if (selected.length === 0) {
-      throw new Error(ERROR_MESSAGE.CONNOT_FIND_ELEMENT_ERROR);
+      throw new Error(ERROR_MESSAGE.CANNOT_FIND_ELEMENT_ERROR);
     }
 
     return selected.length === 1 ? selected[0] : selected;
@@ -20,13 +20,23 @@ export const getFormElements = ($form, elementName) => {
     const $elements = $form.elements[elementName];
 
     if (!$elements) {
-      throw new Error(ERROR_MESSAGE.CONNOT_FIND_ELEMENT_ERROR);
+      throw new Error(ERROR_MESSAGE.CANNOT_FIND_ELEMENT_ERROR);
     }
 
     return $elements;
   } catch (e) {
     console.error(e);
   }
+};
+
+export const createImg = (src, alt = "", width = "") => {
+  const img = document.createElement("img");
+
+  img.setAttribute("src", src);
+  img.setAttribute("alt", alt);
+  img.setAttribute("width", width);
+
+  return img;
 };
 
 export const showElement = ($target) => {
