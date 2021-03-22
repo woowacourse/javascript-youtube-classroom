@@ -1,3 +1,5 @@
+/* [보고있는 영상] 메뉴 */
+
 .watching-section .watching {
   display: block;
 }
@@ -6,6 +8,7 @@
   display: none;
 }
 
+/* [다 본 영상] 메뉴 */
 .watched-section .watched {
   display: block;
 }
@@ -14,6 +17,16 @@
   display: none;
 }
 
+/* [좋아요한 영상] 메뉴 */
+.liked-section .liked {
+  display: block;
+}
+
+.liked-section .not-liked {
+  display: none;
+}
+
+/* 결과없음 이미지 */
 .no-video-found {
   display: none;
   text-align: center;
@@ -21,7 +34,7 @@
   bottom: 0;
   left: 50%;
   transform: translate3d(-50%, 0, 0);
-  background-image: url('../../../images/status/no_video.png');
+  background-image: url('../../../images/status/image_sprite.png');
   background-repeat: no-repeat;
   background-size: cover;
   width: 67vh;
@@ -34,7 +47,12 @@
 
 .no-video-found.no-watched {
   display: inline-block;
-  background-position-x: -67vh;
+  background-position-x: -67.5vh;
+}
+
+.no-video-found.no-liked {
+  display: inline-block;
+  background-position-x: -135vh;
 }
 
 @media screen and (max-width: 576px) {
@@ -49,5 +67,9 @@
 
   .no-video-found.no-watched {
     background-position-x: -50vh;
+  }
+
+  .no-video-found.no-liked {
+    background-position-x: -100vh;
   }
 }

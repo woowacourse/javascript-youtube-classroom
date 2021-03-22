@@ -1,4 +1,12 @@
-import { isWatchingMenu, isWatchingVideo, isConfirmCancelButton, isConfirmApproveButton } from './elementValidator.js';
+import {
+  isWatchingMenu,
+  isWatchedMenu,
+  isLikedMenu,
+  isWatchingVideo,
+  isLikedVideo,
+  isConfirmCancelButton,
+  isConfirmApproveButton,
+} from './elementValidator.js';
 import { MESSAGE } from '../constants.js';
 
 export default class StorageController {
@@ -13,9 +21,10 @@ export default class StorageController {
   }
 
   attachEvents() {
-    this.view.$savedVideosWrapper.addEventListener('click', this.onRequestVideoManagement.bind(this));
+    this.view.$storageSection.addEventListener('click', this.onRequestVideoManagement.bind(this));
     this.view.$watchingMenuButton.addEventListener('click', this.onNavigateWatchingVideos.bind(this));
     this.view.$watchedMenuButton.addEventListener('click', this.onNavigateWatchedVideos.bind(this));
+    this.view.$likedMenuButton.addEventListener('click', this.onNavigateLikedVideos.bind(this));
     this.view.$removalConfirm.addEventListener('click', this.onConfirmRemoval.bind(this));
   }
 
@@ -27,7 +36,12 @@ export default class StorageController {
     this.model.targetVideo = target.closest('article');
 
     if (target.classList.contains('js-check-button')) {
-      this.proceedMovingVideo();
+      this.proceedSwitchingWatchFlag();
+      return;
+    }
+
+    if (target.classList.contains('js-like-button')) {
+      this.proceedSwitchingLikeFlag();
       return;
     }
 
@@ -36,16 +50,29 @@ export default class StorageController {
     }
   }
 
-  proceedMovingVideo() {
+  proceedSwitchingWatchFlag() {
     const $video = this.model.targetVideo;
     const isWatching = isWatchingVideo($video);
+    const message = isWatching ? MESSAGE.VIDEO_IS_MOVED_TO_WATCHED_MENU : MESSAGE.VIDEO_IS_MOVED_TO_WATCHING_MENU;
 
     try {
-      this.model.moveVideo();
-      this.view.renderMovedVideo($video, isWatching);
+      this.model.switchWatchFlag();
+      this.view.renderWatchFlagSwitchedVideo($video, isWatching);
+      this.view.renderNotification(message);
+      this.showImageNoVideo();
+    } catch (error) {
+      this.view.renderNotification(MESSAGE.REQUEST_HAS_FAILED);
+    }
+  }
 
-      const message = isWatching ? MESSAGE.VIDEO_IS_MOVED_TO_WATCHED_MENU : MESSAGE.VIDEO_IS_MOVED_TO_WATCHING_MENU;
+  proceedSwitchingLikeFlag() {
+    const $video = this.model.targetVideo;
+    const isLiked = isLikedVideo($video);
+    const message = isLiked ? MESSAGE.VIDEO_IS_REMOVED_FROM_LIKED_MENU : MESSAGE.VIDEO_IS_ADDED_TO_LIKED_MENU;
 
+    try {
+      this.model.switchLikeFlag();
+      this.view.renderLikeFlagSwitchedVideo($video, isLiked);
       this.view.renderNotification(message);
       this.showImageNoVideo();
     } catch (error) {
@@ -58,9 +85,11 @@ export default class StorageController {
       this.view.renderInvisibleRemovalConfirm();
       return;
     }
+
     if (!isConfirmApproveButton(target)) {
       return;
     }
+
     this.proceedRemovingVideo();
   }
 
@@ -84,43 +113,80 @@ export default class StorageController {
     this.showWatchedVideos();
   }
 
+  onNavigateLikedVideos() {
+    this.showLikedVideos();
+  }
+
   showStorage() {
     this.view.renderVideosToPrepare(this.model.videos);
 
-    if (isWatchingMenu(this.view.$savedVideosWrapper)) {
-      this.showWatchingVideos();
+    if (isLikedMenu(this.view.$storageSection)) {
+      this.showLikedVideos();
       return;
     }
-    this.showWatchedVideos();
+
+    if (isWatchedMenu(this.view.$storageSection)) {
+      this.showWatchedVideos();
+      return;
+    }
+
+    this.showWatchingVideos();
   }
 
   showWatchingVideos() {
     this.view.renderOnlyWatchingVideos();
-    this.showImageNoWatchingVideoSaved();
+    this.showImageNoWatchingVideo();
   }
 
   showWatchedVideos() {
     this.view.renderOnlyWatchedVideos();
-    this.showImageNoWatchedVideoSaved();
+    this.showImageNoWatchedVideo();
+  }
+
+  showLikedVideos() {
+    this.view.renderOnlyLikedVideos();
+    this.showImageNoLikedVideo();
   }
 
   showImageNoVideo() {
-    isWatchingMenu(this.view.$savedVideosWrapper)
-      ? this.showImageNoWatchingVideoSaved()
-      : this.showImageNoWatchedVideoSaved();
+    if (isWatchingMenu(this.view.$storageSection)) {
+      this.showImageNoWatchingVideo();
+      return;
+    }
+
+    if (isWatchedMenu(this.view.$storageSection)) {
+      this.showImageNoWatchedVideo();
+      return;
+    }
+
+    this.showImageNoLikedVideo();
   }
 
-  showImageNoWatchingVideoSaved() {
-    if (this.model.hasNoWatchingVideoSaved()) {
+  showImageNoWatchingVideo() {
+    if (this.model.watchingVideoCount > 0) {
+      return;
+    }
+
+    this.view.renderImageNoWatchingVideo();
+  }
+
+  showImageNoWatchedVideo() {
+    if (this.model.watchedVideoCount > 0) {
+      return;
+    }
+
+    if (this.model.watchingVideoCount === 0) {
       this.view.renderImageNoWatchingVideo();
+    } else {
+      this.view.renderImageNoWatchedVideo();
     }
   }
 
-  showImageNoWatchedVideoSaved() {
-    if (this.model.hasNoWatchedVideoSaved()) {
-      this.model.hasNoWatchingVideoSaved()
-        ? this.view.renderImageNoWatchingVideo()
-        : this.view.renderImageNoWatchedVideo();
+  showImageNoLikedVideo() {
+    if (this.model.likedVideoCount > 0) {
+      return;
     }
+
+    this.view.renderImageNoLikedVideo();
   }
 }

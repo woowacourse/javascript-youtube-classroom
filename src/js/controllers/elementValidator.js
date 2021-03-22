@@ -31,12 +31,30 @@ export const isWatchingMenu = ($target) => {
   return $target.classList.contains(CLASS_NAME.WATCHING_SECTION);
 };
 
+export const isWatchedMenu = ($target) => {
+  return $target.classList.contains(CLASS_NAME.WATCHED_SECTION);
+};
+
+export const isLikedMenu = ($target) => {
+  return $target.classList.contains(CLASS_NAME.LIKED_SECTION);
+};
+
 export const isWatchingVideo = ($target) => {
   return $target.classList.contains(CLASS_NAME.WATCHING);
 };
+
+export const isWatchedVideo = ($target) => {
+  return $target.classList.contains(CLASS_NAME.WATCHED);
+};
+
+export const isLikedVideo = ($target) => {
+  return $target.classList.contains(CLASS_NAME.LIKED);
+};
+
 export const isConfirmCancelButton = ($target) => {
   return $target.classList.contains('js-confirm-cancel');
 };
+
 export const isConfirmApproveButton = ($target) => {
   return $target.classList.contains('js-confirm-approve');
 };

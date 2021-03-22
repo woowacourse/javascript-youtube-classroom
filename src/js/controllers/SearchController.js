@@ -115,7 +115,6 @@ export default class SearchController {
     const targetVideoData = this.searchModel.getTargetVideoData(target.id);
 
     this.searchModel.saveVideo(targetVideoData);
-    this.storageModel.updateWatchingVideoCount(true);
     this.searchView.renderInvisibleSaveButton(target);
     this.searchView.renderSaveVideoCount(savedCount + 1);
     this.searchView.renderNotification(MESSAGE.VIDEO_IS_SAVED_SUCCESSFULLY);

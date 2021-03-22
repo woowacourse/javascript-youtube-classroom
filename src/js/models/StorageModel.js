@@ -15,31 +15,39 @@ export default class StorageModel {
   }
 
   get watchingVideoCount() {
-    return this.videos.filter((video) => video.isWatching).length;
+    return this.videos.filter((video) => !video.isWatched).length;
   }
 
   get watchedVideoCount() {
-    return this.videos.filter((video) => !video.isWatching).length;
+    return this.videos.filter((video) => video.isWatched).length;
+  }
+
+  get likedVideoCount() {
+    return this.videos.filter((video) => video.isLiked).length;
   }
 
   isOnlyWatchingVideoSaved() {
     return this.watchingVideoCount > 0 && this.watchedVideoCount === 0;
   }
 
-  hasNoWatchingVideoSaved() {
-    return this.watchingVideoCount === 0;
-  }
-
-  hasNoWatchedVideoSaved() {
-    return this.watchedVideoCount === 0;
-  }
-
-  moveVideo() {
+  switchWatchFlag() {
     const targetId = this.targetVideo.id;
     const videos = getListFromDB(DB_KEY.VIDEOS);
     const target = videos.find((video) => video.videoId === targetId);
 
-    target.isWatching = !target.isWatching;
+    target.isWatched = !target.isWatched;
+
+    setListToDB(DB_KEY.VIDEOS, videos);
+    this.setVideos();
+  }
+
+  switchLikeFlag() {
+    const targetId = this.targetVideo.id;
+    const videos = getListFromDB(DB_KEY.VIDEOS);
+    const target = videos.find((video) => video.videoId === targetId);
+
+    target.isLiked = !target.isLiked;
+
     setListToDB(DB_KEY.VIDEOS, videos);
     this.setVideos();
   }

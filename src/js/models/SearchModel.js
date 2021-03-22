@@ -4,7 +4,7 @@ import { MAX_RECENT_KEYWORD_COUNT, DB_KEY } from '../constants.js';
 /*
 로컬스토리지 데이터 저장구조
   {
-    videos: [ { videoId: 'TVUNi0zi1yw', ..., isWatching: true }, ... ],
+    videos: [ { videoId: 'TVUNi0zi1yw', ..., isWatched: false }, ... ],
     recentKeywords: [ 'keyword1', 'keyword2', 'keyword3' ],
   }
 */
@@ -68,7 +68,8 @@ export default class SearchModel {
 
   saveVideo(targetVideo) {
     targetVideo.isSaved = true;
-    targetVideo.isWatching = true;
+    targetVideo.isWatched = false;
+    targetVideo.isLiked = false;
     insertItemByKey(DB_KEY.VIDEOS, targetVideo);
   }
 }

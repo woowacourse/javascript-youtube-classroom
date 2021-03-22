@@ -3,7 +3,19 @@ import { showSnackbar } from '../utils/snackbar.js';
 import { getSavedVideoTemplate } from './layout/storedVideo.js';
 import { CLASS_NAME, NOTIFICATION_SHOW_TIME } from '../constants.js';
 
-const { WATCHING_SECTION, WATCHED_SECTION, WATCHING, WATCHED, NO_WATCHING, NO_WATCHED } = CLASS_NAME;
+const buttonSelectedStyle = 'bg-cyan-100';
+const {
+  WATCHING_SECTION,
+  WATCHED_SECTION,
+  LIKED_SECTION,
+  WATCHING,
+  WATCHED,
+  LIKED,
+  NOT_LIKED,
+  NO_WATCHING,
+  NO_WATCHED,
+  NO_LIKED,
+} = CLASS_NAME;
 
 export default class StorageView {
   constructor() {
@@ -13,22 +25,21 @@ export default class StorageView {
   selectDOMs() {
     this.$watchingMenuButton = $('.js-watching-menu-button');
     this.$watchedMenuButton = $('.js-watched-menu-button');
-    this.$savedVideosWrapper = $('.js-saved-videos-wrapper');
+    this.$likedMenuButton = $('.js-liked-menu-button');
+    this.$storageSection = $('.js-storage-section');
     this.$noVideoFound = $('.js-no-video-found');
     this.$snackbar = $('.js-snackbar');
     this.$removalConfirm = $('.js-confirm');
   }
 
   renderVideosToPrepare(videos) {
-    const videosHTML = videos
-      .map((video) => getSavedVideoTemplate(video, video.isWatching ? WATCHING : WATCHED))
-      .join('');
+    const videosHTML = videos.map((video) => getSavedVideoTemplate(video)).join('');
 
-    this.$savedVideosWrapper.innerHTML = videosHTML;
+    this.$storageSection.innerHTML = videosHTML;
   }
 
   renderSavedVideo(video) {
-    this.$savedVideosWrapper.insertAdjacentHTML('beforeEnd', getSavedVideoTemplate(video, WATCHING));
+    this.$storageSection.insertAdjacentHTML('beforeEnd', getSavedVideoTemplate(video, WATCHING));
   }
 
   renderImageNoWatchingVideo() {
@@ -39,21 +50,41 @@ export default class StorageView {
     this.$noVideoFound.classList.add(NO_WATCHED);
   }
 
+  renderImageNoLikedVideo() {
+    this.$noVideoFound.classList.add(NO_LIKED);
+  }
+
   renderOnlyWatchingVideos() {
-    this.$watchingMenuButton.classList.add('bg-cyan-100');
-    this.$watchedMenuButton.classList.remove('bg-cyan-100');
-    this.$noVideoFound.classList.remove(NO_WATCHING, NO_WATCHED);
-    this.$savedVideosWrapper.classList.replace(WATCHED_SECTION, WATCHING_SECTION);
+    this.$watchingMenuButton.classList.add(buttonSelectedStyle);
+    this.$watchedMenuButton.classList.remove(buttonSelectedStyle);
+    this.$likedMenuButton.classList.remove(buttonSelectedStyle);
+
+    this.$noVideoFound.classList.remove(NO_WATCHING, NO_WATCHED, NO_LIKED);
+    this.$storageSection.classList.remove(WATCHED_SECTION, LIKED_SECTION);
+    this.$storageSection.classList.add(WATCHING_SECTION);
   }
 
   renderOnlyWatchedVideos() {
-    this.$watchedMenuButton.classList.add('bg-cyan-100');
-    this.$watchingMenuButton.classList.remove('bg-cyan-100');
-    this.$noVideoFound.classList.remove(NO_WATCHING, NO_WATCHED);
-    this.$savedVideosWrapper.classList.replace(WATCHING_SECTION, WATCHED_SECTION);
+    this.$watchedMenuButton.classList.add(buttonSelectedStyle);
+    this.$watchingMenuButton.classList.remove(buttonSelectedStyle);
+    this.$likedMenuButton.classList.remove(buttonSelectedStyle);
+
+    this.$noVideoFound.classList.remove(NO_WATCHING, NO_WATCHED, NO_LIKED);
+    this.$storageSection.classList.remove(WATCHING_SECTION, LIKED_SECTION);
+    this.$storageSection.classList.add(WATCHED_SECTION);
   }
 
-  renderMovedVideo($video, wasWatching) {
+  renderOnlyLikedVideos() {
+    this.$likedMenuButton.classList.add(buttonSelectedStyle);
+    this.$watchingMenuButton.classList.remove(buttonSelectedStyle);
+    this.$watchedMenuButton.classList.remove(buttonSelectedStyle);
+
+    this.$noVideoFound.classList.remove(NO_WATCHING, NO_WATCHED, NO_LIKED);
+    this.$storageSection.classList.remove(WATCHING_SECTION, WATCHED_SECTION);
+    this.$storageSection.classList.add(LIKED_SECTION);
+  }
+
+  renderWatchFlagSwitchedVideo($video, wasWatching) {
     $video.querySelector('.js-check-button').classList.toggle('checked');
     if (wasWatching) {
       $video.classList.remove(WATCHING);
@@ -61,6 +92,17 @@ export default class StorageView {
     } else {
       $video.classList.remove(WATCHED);
       $video.classList.add(WATCHING);
+    }
+  }
+
+  renderLikeFlagSwitchedVideo($video, wasLiked) {
+    $video.querySelector('.js-like-button').classList.toggle('checked');
+    if (wasLiked) {
+      $video.classList.remove(LIKED);
+      $video.classList.add(NOT_LIKED);
+    } else {
+      $video.classList.add(LIKED);
+      $video.classList.remove(NOT_LIKED);
     }
   }
 
