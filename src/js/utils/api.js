@@ -1,10 +1,9 @@
 import { STANDARD_NUMS } from "./constants.js";
-import { API_KEY } from "../apiKey.js";
 
-const BASE_URL = "https://content.googleapis.com/youtube/v3";
+const BASE_URL = "https://shinsehantan-youtube.netlify.app/youtube/";
 
-const getParams = ({ part, q, maxResults, key, pageToken }) =>
-  new URLSearchParams({ part, q, maxResults, key, pageToken }).toString();
+const getParams = ({ part, q, maxResults, pageToken }) =>
+  new URLSearchParams({ part, q, maxResults, pageToken }).toString();
 
 const request = async (url, option = {}) => {
   try {
@@ -28,7 +27,6 @@ const API = {
         part: "snippet",
         q: keyword,
         maxResults: STANDARD_NUMS.LOAD_CLIP_COUNT,
-        key: API_KEY,
         pageToken: nextPageToken,
       })}`,
     );

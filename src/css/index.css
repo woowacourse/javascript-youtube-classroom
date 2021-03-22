@@ -25,6 +25,10 @@ a {
   opacity: 1;
 }
 
+.opacity-1 {
+  opacity: 1;
+}
+
 .hidden {
   visibility: hidden;
 }
