@@ -4,16 +4,25 @@ import { $ } from "../utils/index.js";
 
 export default class SavedVideosCount {
   constructor() {
+    this.initializeVariables();
+    this.selectHTMLElements();
+    this.addMessageListeners();
+    this.render();
+    this.$maxSavedVideosCount.innerText = NUMBER.MAX_SAVED_VIDEOS_COUNT;
+  }
+
+  initializeVariables() {
     this.savedVideosCount =
       JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEY.SAVED_VIDEOS_COUNT)) ||
       0;
+  }
 
+  selectHTMLElements() {
     this.$savedVideosCount = $(`.${CLASSNAME.SAVED_VIDEOS_COUNT}`);
     this.$maxSavedVideosCount = $(`.${CLASSNAME.MAX_SAVED_VIDEOS_COUNT}`);
+  }
 
-    this.$savedVideosCount.innerText = this.savedVideosCount;
-    this.$maxSavedVideosCount.innerText = NUMBER.MAX_SAVED_VIDEOS_COUNT;
-
+  addMessageListeners() {
     messenger.addMessageListener(
       MESSAGE.SAVED_VIDEOS_COUNT_CHANGED,
       this.setCount.bind(this)
@@ -41,6 +50,10 @@ export default class SavedVideosCount {
       JSON.stringify(this.savedVideosCount)
     );
 
+    this.render();
+  }
+
+  render() {
     this.$savedVideosCount.innerText = this.savedVideosCount;
   }
 }

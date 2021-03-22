@@ -4,12 +4,22 @@ import { messenger, MESSAGE } from "../messenger/index.js";
 
 export default class SearchForm {
   constructor() {
+    this.initializeVariables();
+    this.selectHTMLElements();
+    this.addEventListeners();
+  }
+
+  initializeVariables() {
     this.query =
       JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEY.QUERY)) || "";
+  }
 
+  selectHTMLElements() {
     this.$youtubeSearchForm = $(`.${CLASSNAME.SEARCH_FORM}`);
     this.$youtubeSearchFormInput = $(`.${CLASSNAME.SEARCH_FORM_INPUT}`);
+  }
 
+  addEventListeners() {
     this.$youtubeSearchForm.addEventListener(
       "submit",
       this.handleFormSubmit.bind(this)

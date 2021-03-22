@@ -8,10 +8,12 @@ import HistoryVideoWrapper from "./Main/HistoryVideoWrapper.js";
 
 export default class App {
   constructor() {
-    this.$watchLaterTabButton = $(`.${CLASSNAME.WATCH_LATER_TAB}`);
-    this.$historyTabButton = $(`.${CLASSNAME.HISTORY_TAB}`);
-    this.$searchTabButton = $(`.${CLASSNAME.SEARCH_TAB}`);
+    this.initializeVariables();
+    this.selectHTMLElements();
+    this.addEventListeners();
+  }
 
+  initializeVariables() {
     this.watchLaterContainer = new Container(
       CLASSNAME.WATCH_LATER_CONTAINER,
       WatchLaterVideoWrapper
@@ -21,27 +23,45 @@ export default class App {
       HistoryVideoWrapper
     );
     this.searchContainer = new SearchContainer();
+  }
 
-    this.$watchLaterTabButton.addEventListener("click", () => {
-      this.historyContainer.hide();
-      this.deactivateTabButton(this.$historyTabButton);
+  selectHTMLElements() {
+    this.$watchLaterTabButton = $(`.${CLASSNAME.WATCH_LATER_TAB}`);
+    this.$historyTabButton = $(`.${CLASSNAME.HISTORY_TAB}`);
+    this.$searchTabButton = $(`.${CLASSNAME.SEARCH_TAB}`);
+  }
 
-      this.watchLaterContainer.show();
-      this.activateTabButton(this.$watchLaterTabButton);
-    });
+  addEventListeners() {
+    this.$watchLaterTabButton.addEventListener(
+      "click",
+      this.showWatchLaterOnly.bind(this)
+    );
 
-    this.$historyTabButton.addEventListener("click", () => {
-      this.watchLaterContainer.hide();
-      this.deactivateTabButton(this.$watchLaterTabButton);
-
-      this.historyContainer.show();
-      this.activateTabButton(this.$historyTabButton);
-    });
+    this.$historyTabButton.addEventListener(
+      "click",
+      this.showHistoryOnly.bind(this)
+    );
 
     this.$searchTabButton.addEventListener(
       "click",
       this.searchContainer.open.bind(this.searchContainer)
     );
+  }
+
+  showWatchLaterOnly() {
+    this.watchLaterContainer.show();
+    this.activateTabButton(this.$watchLaterTabButton);
+
+    this.historyContainer.hide();
+    this.deactivateTabButton(this.$historyTabButton);
+  }
+
+  showHistoryOnly() {
+    this.watchLaterContainer.hide();
+    this.deactivateTabButton(this.$watchLaterTabButton);
+
+    this.historyContainer.show();
+    this.activateTabButton(this.$historyTabButton);
   }
 
   activateTabButton($tabButton) {

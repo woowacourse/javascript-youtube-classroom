@@ -7,17 +7,27 @@ import SavedVideosCount from "./SavedVideosCount.js";
 
 export default class SearchContainer {
   constructor() {
-    this.$modal = $(`.${CLASSNAME.MODAL}`);
-    this.$modalClose = $(`.${CLASSNAME.MODAL_CLOSE}`);
-    this.$modalInner = $(`.${CLASSNAME.MODAL_INNER}`);
+    this.initializeVariables();
+    this.selectHTMLElements();
+    this.addEventListeners();
 
+    this.searchForm.searchKeyword();
+  }
+
+  initializeVariables() {
     this.searchForm = new SearchForm();
     this.keywordHistory = new KeywordHistory();
     this.savedVideosCount = new SavedVideosCount();
     this.searchVideoWrapper = new SearchVideoWrapper();
+  }
 
-    this.searchForm.searchKeyword();
+  selectHTMLElements() {
+    this.$modal = $(`.${CLASSNAME.MODAL}`);
+    this.$modalClose = $(`.${CLASSNAME.MODAL_CLOSE}`);
+    this.$modalInner = $(`.${CLASSNAME.MODAL_INNER}`);
+  }
 
+  addEventListeners() {
     this.$modalClose.addEventListener("click", this.close.bind(this));
   }
 

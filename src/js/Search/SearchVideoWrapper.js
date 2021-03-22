@@ -1,3 +1,4 @@
+/* eslint-disable class-methods-use-this */
 /* eslint-disable no-param-reassign */
 import { CLASSNAME, NUMBER, SNACKBAR_TEXT } from "../constants/index.js";
 import { messenger, MESSAGE } from "../messenger/index.js";
@@ -6,17 +7,30 @@ import { $, fetchYoutubeData, showModalSnackbar } from "../utils/index.js";
 
 export default class SearchVideoWrapper {
   constructor() {
+    this.initializeVariables();
+    this.selectHTMLElements();
+    this.addMessageListeners();
+    this.addEventListeners();
+  }
+
+  initializeVariables() {
     this.currentQuery = "";
     this.currentNextPageToken = "";
     this.videoItemsMap = new Map();
+  }
 
+  selectHTMLElements() {
     this.$searchVideoWrapper = $(`.${CLASSNAME.SEARCH_VIDEO_WRAPPER}`);
     this.$notFoundImg = $(`.${CLASSNAME.NOT_FOUND_IMAGE}`);
+  }
 
+  addMessageListeners() {
     messenger.addMessageListener(MESSAGE.KEYWORD_SUBMITTED, ({ query }) => {
-      this.$notFoundImg.classList.add(CLASSNAME.HIDDEN);
-      this.$searchVideoWrapper.innerHTML = "";
       this.currentQuery = query;
+
+      $.hide(this.$notFoundImg);
+      $.clear(this.$searchVideoWrapper);
+
       this.mountTemplate();
       this.$searchVideoWrapper.scrollTo({ top: 0 });
     });
@@ -25,7 +39,7 @@ export default class SearchVideoWrapper {
       MESSAGE.DATA_LOADED,
       ({ nextPageToken, items }) => {
         if (items.length === 0) {
-          this.$searchVideoWrapper.innerHTML = "";
+          $.clear(this.$searchVideoWrapper);
           $.show(this.$notFoundImg);
 
           return;
@@ -42,38 +56,39 @@ export default class SearchVideoWrapper {
         `.${CLASSNAME.SAVE_VIDEO_BUTTON}[data-video-id="${videoId}"]`
       );
 
-      $.removeClass($button, CLASSNAME.CANCEL);
-      $button.innerText = "저장";
-      showModalSnackbar(SNACKBAR_TEXT.CANCELED_VIDEO_SAVE);
+      this.setButtonSaveMode($button);
     });
+  }
 
+  addEventListeners() {
     this.$searchVideoWrapper.addEventListener(
       "scroll",
       this.handlePageScroll.bind(this)
     );
 
-    this.$searchVideoWrapper.addEventListener("click", (event) => {
-      if (!event.target.classList.contains(CLASSNAME.SAVE_VIDEO_BUTTON)) {
-        return;
-      }
+    this.$searchVideoWrapper.addEventListener(
+      "click",
+      ({ target: $target }) => {
+        if (!$target.classList.contains(CLASSNAME.SAVE_VIDEO_BUTTON)) {
+          return;
+        }
 
-      this.onSaveVideoButtonClick(event.target);
-    });
+        this.handleSaveVideoButtonClick($target);
+      }
+    );
   }
 
-  // eslint-disable-next-line class-methods-use-this
-  onSaveVideoButtonClick($button) {
+  handleSaveVideoButtonClick($button) {
     const { videoId } = $button.dataset;
     const item = this.videoItemsMap.get(videoId);
 
-    if ($button.classList.contains(CLASSNAME.CANCEL)) {
+    if (this.isButtonCancelMode($button)) {
       messenger.deliverMessage(MESSAGE.CANCEL_VIDEO_BUTTON_CLICKED, {
         videoId,
         item,
       });
-      $.removeClass($button, CLASSNAME.CANCEL);
-      $button.innerText = "저장";
-      showModalSnackbar(SNACKBAR_TEXT.CANCELED_VIDEO_SAVE);
+      this.setButtonSaveMode($button);
+
       return;
     }
 
@@ -83,19 +98,56 @@ export default class SearchVideoWrapper {
         item,
       });
 
-      $.addClass($button, CLASSNAME.CANCEL);
-      $button.innerText = "취소";
-      showModalSnackbar(SNACKBAR_TEXT.VIDEO_SAVED);
+      this.setButtonCancelMode($button);
     };
 
-    const reject = () => {
-      showModalSnackbar(SNACKBAR_TEXT.REACHED_MAX_COUNT);
-    };
+    const reject = () => showModalSnackbar(SNACKBAR_TEXT.REACHED_MAX_COUNT);
 
     messenger.deliverMessage(MESSAGE.SAVE_IF_VIDEOS_COUNT_IS_IN_RANGE, {
       resolve,
       reject,
     });
+  }
+
+  isButtonCancelMode($button) {
+    return $button.classList.contains(CLASSNAME.CANCEL);
+  }
+
+  setButtonCancelMode($button) {
+    $.addClass($button, CLASSNAME.CANCEL);
+    $button.innerText = "취소";
+    showModalSnackbar(SNACKBAR_TEXT.VIDEO_SAVED);
+  }
+
+  setButtonSaveMode($button) {
+    $.removeClass($button, CLASSNAME.CANCEL);
+    $button.innerText = "저장";
+    showModalSnackbar(SNACKBAR_TEXT.CANCELED_VIDEO_SAVE);
+  }
+
+  handlePageScroll() {
+    if (this.throttle) return;
+
+    const { scrollTop, clientHeight, scrollHeight } = this.$searchVideoWrapper;
+
+    if (
+      scrollTop + clientHeight <=
+      scrollHeight * NUMBER.SCROLL_EVENT_THRESHOLD
+    ) {
+      return;
+    }
+
+    this.throttle = setTimeout(async () => {
+      this.mountTemplate();
+      const { nextPageToken, items } = await fetchYoutubeData(
+        this.currentQuery,
+        this.currentNextPageToken
+      );
+      this.currentNextPageToken = nextPageToken;
+      this.attachData(items);
+
+      this.throttle = null;
+    }, 0);
   }
 
   mountTemplate() {
@@ -120,29 +172,5 @@ export default class SearchVideoWrapper {
 
         renderSearchVideo($video, item);
       });
-  }
-
-  handlePageScroll() {
-    if (this.throttle) return;
-
-    if (
-      this.$searchVideoWrapper.scrollTop +
-        this.$searchVideoWrapper.clientHeight <=
-      this.$searchVideoWrapper.scrollHeight * NUMBER.SCROLL_EVENT_THRESHOLD
-    ) {
-      return;
-    }
-
-    this.throttle = setTimeout(async () => {
-      this.mountTemplate();
-      const { nextPageToken, items } = await fetchYoutubeData(
-        this.currentQuery,
-        this.currentNextPageToken
-      );
-      this.currentNextPageToken = nextPageToken;
-      this.attachData(items);
-
-      this.throttle = null;
-    }, 0);
   }
 }

@@ -4,17 +4,23 @@ import { messenger, MESSAGE } from "../messenger/index.js";
 
 export default class KeywordHistory {
   constructor() {
+    this.initializeVariables();
+    this.addMessageListeners();
+    this.render();
+  }
+
+  initializeVariables() {
     this.keywordHistory =
       JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEY.KEYWORD_HISTORY)) || [];
 
     this.$keywordHistorySection = $(`.${CLASSNAME.KEYWORD_HISTORY_SECTION}`);
+  }
 
+  addMessageListeners() {
     messenger.addMessageListener(
       MESSAGE.KEYWORD_SUBMITTED,
       this.addKeyword.bind(this)
     );
-
-    this.render();
   }
 
   addKeyword({ query }) {
