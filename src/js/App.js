@@ -1,10 +1,8 @@
 /* eslint-disable class-methods-use-this */
 import { CLASSNAME } from "./constants/index.js";
 import { $ } from "./utils/index.js";
-import Container from "./Main/Container.js";
+import { WatchLaterContainer, HistoryContainer } from "./Main/Container.js";
 import SearchContainer from "./Search/SearchContainer.js";
-import WatchLaterVideoWrapper from "./Main/WatchLaterVideoWrapper.js";
-import HistoryVideoWrapper from "./Main/HistoryVideoWrapper.js";
 
 export default class App {
   constructor() {
@@ -14,14 +12,8 @@ export default class App {
   }
 
   initializeVariables() {
-    this.watchLaterContainer = new Container(
-      CLASSNAME.WATCH_LATER_CONTAINER,
-      WatchLaterVideoWrapper
-    );
-    this.historyContainer = new Container(
-      CLASSNAME.HISTORY_CONTAINER,
-      HistoryVideoWrapper
-    );
+    this.watchLaterContainer = new WatchLaterContainer();
+    this.historyContainer = new HistoryContainer();
     this.searchContainer = new SearchContainer();
   }
 
