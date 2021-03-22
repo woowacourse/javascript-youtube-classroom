@@ -22,6 +22,7 @@ class SavedController {
     this.#handleFilteredVideos();
     this.#handleVideoButtons();
     this.#handleLazyLoad();
+
   }
 
   #renderSavedVideo = videos => {
@@ -41,6 +42,7 @@ class SavedController {
   #filterVideos(target, filterOption) {
     this.#savedView.toggleNavButton(target);
     this.#renderSavedVideo(this.#storageModel.filterVideos(filterOption));
+
   }
 
   #deleteVideo(target) {
@@ -103,11 +105,13 @@ class SavedController {
 
   #handleVideoButtons() {
     $(SELECTOR.SAVED_VIDEO_WRAPPER).addEventListener('click', ({ target }) => {
+
       if (
         target.classList.contains(CLASS.WATCHED) ||
         target.classList.contains(CLASS.LIKE)
       ) {
         this.#toggleVideoButtons(target);
+
       }
 
       if (target.classList.contains(CLASS.DELETE)) {

@@ -2,6 +2,7 @@ import { YOUTUBE_API_KEY } from '../../../env.js';
 import { SEARCH, URL } from '../constants/constant.js';
 
 const youtubeSearchURL = ({ query, nextPageToken, max }) => {
+
   const queryString = {
     q: query.toString(),
     key: YOUTUBE_API_KEY,
@@ -26,9 +27,11 @@ export const api = {
   }) => {
     return fetch(youtubeSearchURL({ query, nextPageToken, max }))
       .then(response => successLoadingData(response))
+
       .catch(error => console.log(error));
   },
 };
+
 
 const successLoadingData = response => {
   if (response.ok) {

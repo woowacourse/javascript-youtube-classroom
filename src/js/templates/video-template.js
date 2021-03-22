@@ -9,6 +9,7 @@ const savedVideoButtons = info => {
             <span class="thumbs-up ${
               info.liked ? null : 'opacity-hover'
             }">👍</span>
+
             <span class="comments opacity-hover">💬</span>
             <span class="delete opacity-hover">🗑️</span>
           </div>

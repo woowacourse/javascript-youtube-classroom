@@ -1,3 +1,4 @@
+
 import { CLASS, ERROR_MESSAGE } from '../constants/constant.js';
 
 export const $ = selector => document.querySelector(selector);
@@ -14,6 +15,7 @@ export const setJSONToLocalStorage = (key, value) => {
     localStorage.setItem(key, JSON.stringify(value));
   } catch (error) {
     console.error(ERROR_MESSAGE.FAILED_SET_ITEM);
+
   }
 };
 
@@ -28,6 +30,7 @@ export const getJSONFromLocalStorage = key => {
     return json;
   } catch (error) {
     console.error(error);
+
   }
 };
 
@@ -63,3 +66,4 @@ export const handleVideoLoad = iframe => {
 export const handleVideosLoad = iframes => {
   iframes.forEach(iframe => handleVideoLoad(iframe));
 };
+

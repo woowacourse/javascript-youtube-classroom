@@ -7,6 +7,7 @@ class YoutubeModel {
 
   constructor() {
     this.#videoInfos = [];
+
     this.#nextPageToken = '';
   }
 
@@ -28,9 +29,9 @@ class YoutubeModel {
   }) => {
     const nextPageToken = this.#nextPageToken;
     const json = await api.fetchVideoItems({ query, nextPageToken, max });
-
     this.#nextPageToken = json.nextPageToken;
     this.#videoInfos = this.getVideoInfos(json.items);
+
   };
 
   resetNextPageToken() {
@@ -43,6 +44,7 @@ class YoutubeModel {
 
   get videoCount() {
     return this.#videoInfos.length;
+
   }
 }
 

@@ -12,13 +12,16 @@ class StorageModel {
   #savedVideo;
   #keywords;
   #showWatched;
+
   #filterOption;
+
 
   constructor() {
     this.#savedVideo = [];
     this.#keywords = [];
     this.#showWatched = null;
     this.#filterOption = 'all';
+
   }
 
   init() {
@@ -80,11 +83,13 @@ class StorageModel {
       return;
     }
 
+
     this.#savedVideo.push(json);
     setJSONToLocalStorage(STORAGE.KEY_MY_VIDEO, this.#savedVideo);
   };
 
   findVideoByInfo = info => {
+
     return (
       getJSONFromLocalStorage(STORAGE.KEY_MY_VIDEO).filter(
         savedVideo => info.url === savedVideo.url

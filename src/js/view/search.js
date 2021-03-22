@@ -1,3 +1,4 @@
+
 import { SEARCH, SELECTOR, CLASS } from '../constants/constant.js';
 import { $, parseDOMFromString, toggleSelectorClass } from '../utils/util.js';
 import {
@@ -22,6 +23,7 @@ class SearchView {
     this.#$searchVideoWrapper.append(
       parseDOMFromString(videoTemplate(info, save))
     );
+
   };
 
   toggleNotFoundSearchedVideo = length => {

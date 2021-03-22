@@ -44,6 +44,7 @@ class SearchController {
 
     this.#youtubeModel.videoInfos.forEach(info => {
       const isSaved = this.#storageModel.findVideoByInfo(info);
+
       this.#searchView.renderVideoArticle(info, isSaved);
     });
 
@@ -59,8 +60,8 @@ class SearchController {
     );
 
     await this.#youtubeModel.getVideoInfosBySearch({ query });
-
     this.#searchView.toggleNotFoundSearchedVideo(this.#youtubeModel.videoCount);
+
     this.#renderSearchedVideo();
   };
 
@@ -81,6 +82,7 @@ class SearchController {
     e.target.classList.add(CLASS.INVISIBLE);
 
     const videoInfo = { ...e.target.dataset, watched: false, liked: false };
+
     this.#storageModel.saveVideo(videoInfo);
     this.#renderSavedVideo(videoInfo);
 

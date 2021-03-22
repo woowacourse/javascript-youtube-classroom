@@ -1,4 +1,5 @@
 import { ERROR_MESSAGE } from '../../src/js/constants/constant.js';
+
 describe('like-button-ui', () => {
   before(() => {
     cy.visit('http://127.0.0.1:5502/');
