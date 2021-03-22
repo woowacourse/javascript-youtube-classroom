@@ -31,7 +31,7 @@ export const CLASS_NAME = Object.freeze({
 });
 
 export const SCROLL_DELAY_TIME = 300;
-export const SNACKBAR_SHOW_TIME = 1500;
+export const NOTIFICATION_SHOW_TIME = 1500;
 
 export const MESSAGE = Object.freeze({
   NO_KEYWORD_IS_SUBMITTED: `검색키워드가 입력되지 않았습니다.\n저장하고 싶은 검색키워드를 입력해주세요! 😁`,

@@ -1,6 +1,7 @@
-import { $, showSnackbar } from '../utils/DOM.js';
+import { $ } from '../utils/DOM.js';
+import { showSnackbar } from '../utils/snackbar.js';
 import { getSavedVideoTemplate } from './layout/storedVideo.js';
-import { CLASS_NAME, SNACKBAR_SHOW_TIME } from '../constants.js';
+import { CLASS_NAME, NOTIFICATION_SHOW_TIME } from '../constants.js';
 
 const { WATCHING_SECTION, WATCHED_SECTION, WATCHING, WATCHED, NO_WATCHING, NO_WATCHED } = CLASS_NAME;
 
@@ -68,7 +69,7 @@ export default class StorageView {
   }
 
   renderNotification(message) {
-    showSnackbar({ messenger: this.$snackbar, message, showtime: SNACKBAR_SHOW_TIME });
+    showSnackbar({ message, showtime: NOTIFICATION_SHOW_TIME });
   }
 
   renderVisibleRemovalConfirm(message) {
