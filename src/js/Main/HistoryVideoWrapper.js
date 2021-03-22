@@ -4,10 +4,8 @@ import {
   SNACKBAR_TEXT,
 } from "../constants/index.js";
 import { messenger, MESSAGE } from "../messenger/index.js";
-import { $ } from "../utils/DOM.js";
-import { HISTORY_VIDEO_TEMPLATE } from "../Video/template.js";
-import { renderMainVideo } from "../Video/render.js";
-import { showSnackbar } from "../utils/snackbar.js";
+import { $, showSnackbar } from "../utils/index.js";
+import { HISTORY_VIDEO_TEMPLATE, renderMainVideo } from "../Video/index.js";
 
 export default class HistoryVideoWrapper {
   constructor() {

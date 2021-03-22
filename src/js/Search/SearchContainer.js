@@ -1,5 +1,5 @@
 import { CLASSNAME } from "../constants/index.js";
-import { $ } from "../utils/DOM.js";
+import { $ } from "../utils/index.js";
 import SearchForm from "./SearchForm.js";
 import KeywordHistory from "./KeywordHistory.js";
 import SearchVideoWrapper from "./SearchVideoWrapper.js";

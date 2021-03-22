@@ -1,7 +1,6 @@
 import { CLASSNAME, LOCAL_STORAGE_KEY } from "../constants/index.js";
-import { $ } from "../utils/DOM.js";
+import { $, fetchYoutubeData } from "../utils/index.js";
 import { messenger, MESSAGE } from "../messenger/index.js";
-import { fetchYoutubeData } from "../utils/API.js";
 
 export default class SearchForm {
   constructor() {

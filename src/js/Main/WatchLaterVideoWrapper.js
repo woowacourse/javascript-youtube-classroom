@@ -4,10 +4,8 @@ import {
   SNACKBAR_TEXT,
 } from "../constants/index.js";
 import { messenger, MESSAGE } from "../messenger/index.js";
-import { $ } from "../utils/DOM.js";
-import { WATCH_LATER_VIDEO_TEMPLATE } from "../Video/template.js";
-import { renderMainVideo } from "../Video/render.js";
-import { showSnackbar } from "../utils/snackbar.js";
+import { $, showSnackbar } from "../utils/index.js";
+import { WATCH_LATER_VIDEO_TEMPLATE, renderMainVideo } from "../Video/index.js";
 
 export default class WatchLaterVideoWrapper {
   constructor() {

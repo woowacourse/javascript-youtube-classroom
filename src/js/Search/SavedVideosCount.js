@@ -1,6 +1,6 @@
 import { CLASSNAME, NUMBER, LOCAL_STORAGE_KEY } from "../constants/index.js";
 import { messenger, MESSAGE } from "../messenger/index.js";
-import { $ } from "../utils/DOM.js";
+import { $ } from "../utils/index.js";
 
 export default class SavedVideosCount {
   constructor() {

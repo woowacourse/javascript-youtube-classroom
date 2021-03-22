@@ -1,6 +1,6 @@
 import { CLASSNAME } from "../constants/index.js";
 import { messenger, MESSAGE } from "../messenger/index.js";
-import { $ } from "../utils/DOM.js";
+import { $ } from "../utils/index.js";
 
 const DOMAIN = "https://www.youtube.com";
 
@@ -64,8 +64,6 @@ const renderSearchVideo = ($video, item) => {
       $saveVideoButton.innerText = "취소";
     },
   });
-
-  $saveVideoButtonWrapper.classList.remove(CLASSNAME.HIDDEN);
 
   $video.classList.remove(CLASSNAME.SKELETON);
 };

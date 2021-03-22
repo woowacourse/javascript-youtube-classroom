@@ -1,11 +1,8 @@
 /* eslint-disable no-param-reassign */
 import { CLASSNAME, NUMBER, SNACKBAR_TEXT } from "../constants/index.js";
-import { $ } from "../utils/DOM.js";
 import { messenger, MESSAGE } from "../messenger/index.js";
-import { renderSearchVideo } from "../Video/render.js";
-import { SEARCH_VIDEO_TEMPLATE } from "../Video/template.js";
-import { fetchYoutubeData } from "../utils/API.js";
-import { showModalSnackbar } from "../utils/snackbar.js";
+import { renderSearchVideo, SEARCH_VIDEO_TEMPLATE } from "../Video/index.js";
+import { $, fetchYoutubeData, showModalSnackbar } from "../utils/index.js";
 
 export default class SearchVideoWrapper {
   constructor() {

@@ -1,4 +1,4 @@
-import { $ } from "../utils/DOM.js";
+import { $ } from "../utils/index.js";
 
 export default class Container {
   constructor(className, WrapperClass) {

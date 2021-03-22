@@ -1,6 +1,6 @@
 /* eslint-disable class-methods-use-this */
 import { CLASSNAME } from "./constants/index.js";
-import { $ } from "./utils/DOM.js";
+import { $ } from "./utils/index.js";
 import Container from "./Main/Container.js";
 import SearchContainer from "./Search/SearchContainer.js";
 import WatchLaterVideoWrapper from "./Main/WatchLaterVideoWrapper.js";
