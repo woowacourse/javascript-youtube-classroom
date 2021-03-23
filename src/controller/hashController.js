@@ -19,20 +19,20 @@ const hashController = {
     layoutView.highlightNavButton(hash);
 
     if (hash === BROWSER_HASH.WATCHING) {
-      onWatchingVideoShow();
+      activeWatchingVideoShow();
       return;
     }
 
     if (hash === BROWSER_HASH.WATCHED) {
-      onWatchedVideoShow();
+      activeWatchedVideoShow();
       return;
     }
 
-    onWatchingVideoShow();
+    activeWatchingVideoShow();
   },
 };
 
-function onWatchingVideoShow() {
+function activeWatchingVideoShow() {
   const videos = watchingVideoModel.getItem();
   watchedVideoView.eraseVideos();
   watchedVideoView.hideEmptyVideoImage();
@@ -45,7 +45,7 @@ function onWatchingVideoShow() {
   watchingVideoView.renderVideos(videos);
 }
 
-function onWatchedVideoShow() {
+function activeWatchedVideoShow() {
   watchingVideoView.eraseVideos();
   watchingVideoView.hideEmptyVideoImage();
 
