@@ -106,7 +106,7 @@ export default class WatchLaterVideoWrapper {
       return;
     }
 
-    this.removeVideo();
+    this.removeVideo({ videoId });
   }
 
   removeVideo({ videoId }) {

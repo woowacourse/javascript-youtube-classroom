@@ -97,7 +97,7 @@ describe("볼 영상 화면을 테스트한다.", () => {
     cy.get(`.${CLASSNAME.SAVE_VIDEO_BUTTON}`).first().click();
     cy.get(`.${CLASSNAME.MODAL_CLOSE}`).click();
 
-    cy.get(`.${CLASSNAME.WATCHED_ICON}`).first().click();
+    cy.get(`.${CLASSNAME.MOVE_TO_HISTORY_ICON}`).first().click();
     cy.get(`.${CLASSNAME.WATCH_LATER_VIDEO_WRAPPER}`)
       .children()
       .should("have.length", 0);
