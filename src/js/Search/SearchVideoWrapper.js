@@ -94,10 +94,7 @@ export default class SearchVideoWrapper {
 
     messenger.deliverMessage(MESSAGE.SAVE_VIDEO_BUTTON_CLICKED, {
       resolve: this.setButtonCancelMode.bind(this, $button),
-      reject: this.showModalSnackbar.bind(
-        this,
-        SNACKBAR_TEXT.REACHED_MAX_COUNT
-      ),
+      reject: showModalSnackbar.bind(null, SNACKBAR_TEXT.REACHED_MAX_COUNT),
       videoId,
       item,
     });
