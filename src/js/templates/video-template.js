@@ -65,8 +65,6 @@ export const videoTemplate = (info, save = null) => {
 export const recentKeywordsTemplate = keywords => {
   return `<span class="text-gray-700">최근 검색어: </span>
           ${keywords
-            .map(keyword => {
-              return `<a class="chip ml-2">${keyword}</a>`;
-            })
+            .map(keyword => `<a class="chip ml-2">${keyword}</a>`)
             .join('')}`;
 };
