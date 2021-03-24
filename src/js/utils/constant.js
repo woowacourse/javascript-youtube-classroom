@@ -4,6 +4,11 @@ export const YOUTUBE = {
   NUMBER_TO_LOAD: 10,
   MAXMIMUM_RECENT_KEYWORD_LENGTH: 3,
   MAXIMUM_SAVE_CLIPS: 100,
+  CURRENT_TAB: {
+    WATCHED: '볼 영상',
+    UNWATCHED: '본 영상',
+    LIKE_CLIP: '좋아하는 영상',
+  },
 };
 
 export const MESSAGE = {

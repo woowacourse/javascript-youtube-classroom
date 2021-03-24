@@ -11,7 +11,12 @@ import { showSnackbar } from '../../../utils/showSnackbar.js';
 import { renderSaveVideoCount } from '../../../view/modal.js';
 import $DOM from '../../../utils/DOM.js';
 
-export const onSaveClip = ({ target }) => {
+export const onSaveClip = ({
+  target,
+  target: {
+    dataset: { clipIndex, clipId },
+  },
+}) => {
   if (target.dataset.js !== 'save-button') {
     return;
   }

@@ -1,10 +1,12 @@
+import { YOUTUBE } from '../../utils/constant.js';
+
 export const isEmptyDisplayClipCountFromCurrentTab = {
-  '볼 영상': (savedClips) =>
+  [YOUTUBE.CURRENT_TAB.WATCHED]: (savedClips) =>
     Object.keys(savedClips).filter((id) => !savedClips[id].isWatched).length ===
     0,
-  '본 영상': (savedClips) =>
+  [YOUTUBE.CURRENT_TAB.UNWATCHED]: (savedClips) =>
     Object.keys(savedClips).filter((id) => savedClips[id].isWatched).length ===
     0,
-  '좋아하는 영상': (savedClips) =>
+  [YOUTUBE.CURRENT_TAB.LIKE_CLIP]: (savedClips) =>
     Object.keys(savedClips).filter((id) => savedClips[id].isLiked).length === 0,
 };

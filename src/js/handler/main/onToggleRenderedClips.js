@@ -3,14 +3,13 @@ import storage from '../../utils/localStorage.js';
 import {
   LOCAL_STORAGE_KEY,
   LOCAL_STORAGE_VALUE,
+  YOUTUBE,
 } from '../../utils/constant.js';
 import { hideElement, showElement } from '../../utils/setAttribute.js';
 import { isEmptyDisplayClipCountFromCurrentTab } from '../shared/isEmptyDisplayClipCountFromCurrentTab.js';
 
-const deActivateButton = () => {
-  $DOM.NAVIGATOR.WATCHED_BUTTON.classList.remove('active');
-  $DOM.NAVIGATOR.UNWATCHED_BUTTON.classList.remove('active');
-  $DOM.NAVIGATOR.LIKED_BUTTON.classList.remove('active');
+const deActivateButton = (target) => {
+  target.classList.remove('active');
 };
 
 const activateButton = (target) => {
@@ -18,24 +17,24 @@ const activateButton = (target) => {
 };
 
 const setSelected = (target) => {
-  deActivateButton();
+  [
+    $DOM.NAVIGATOR.WATCHED_BUTTON,
+    $DOM.NAVIGATOR.UNWATCHED_BUTTON,
+    $DOM.NAVIGATOR.LIKED_BUTTON,
+  ].forEach((button) => deActivateButton(button));
   activateButton(target);
 };
 
-const targetSectionClassName = [
-  'unwatched-section',
-  'watched-section',
-  'liked-section',
-];
-
-const deActivateTargetSection = () => {
-  targetSectionClassName.forEach((className) => {
-    $DOM.SAVE_PAGE.VIDEO_WRAPPER.classList.remove(className);
-  });
+const TARGET_SECTION_CLASSNAME = {
+  UNWATCHED_SECTION: 'unwatched-section',
+  WATCHED_SECTION: 'watched-section',
+  LIKED_SECTION: 'liked-section',
 };
 
-const activateTargetSection = (targetClassName) => {
-  $DOM.SAVE_PAGE.VIDEO_WRAPPER.classList.add(targetClassName);
+const deActivateTargetSection = () => {
+  $DOM.SAVE_PAGE.VIDEO_WRAPPER.classList.remove(
+    ...Object.values(TARGET_SECTION_CLASSNAME),
+  );
 };
 
 export const onToggleRenderedClips = ({ target }) => {
@@ -51,7 +50,6 @@ export const onToggleRenderedClips = ({ target }) => {
   const isLikedButton = target.dataset.js === 'navigator__liked-button';
 
   setSelected(target);
-
   storage.set(
     LOCAL_STORAGE_KEY.CURRENT_TAB,
     isWatchedButton
@@ -61,22 +59,31 @@ export const onToggleRenderedClips = ({ target }) => {
 
   const savedClips = storage.get(LOCAL_STORAGE_KEY.SAVED_CLIPS) ?? {};
 
-  let targetIndex = 0;
-  storage.set(LOCAL_STORAGE_KEY.CURRENT_TAB, '볼 영상');
+  deActivateTargetSection();
+
+  if (isUnwatchedButton) {
+    $DOM.SAVE_PAGE.VIDEO_WRAPPER.classList.add(
+      TARGET_SECTION_CLASSNAME.UNWATCHED_SECTION,
+    );
+    storage.set(LOCAL_STORAGE_KEY.CURRENT_TAB, YOUTUBE.CURRENT_TAB.WATCHED);
+  }
+
   if (isWatchedButton) {
-    targetIndex = 1;
-    storage.set(LOCAL_STORAGE_KEY.CURRENT_TAB, '본 영상');
+    $DOM.SAVE_PAGE.VIDEO_WRAPPER.classList.add(
+      TARGET_SECTION_CLASSNAME.WATCHED_SECTION,
+    );
+    storage.set(LOCAL_STORAGE_KEY.CURRENT_TAB, YOUTUBE.CURRENT_TAB.UNWATCHED);
   }
 
   if (isLikedButton) {
-    targetIndex = 2;
-    storage.set(LOCAL_STORAGE_KEY.CURRENT_TAB, '좋아하는 영상');
+    $DOM.SAVE_PAGE.VIDEO_WRAPPER.classList.add(
+      TARGET_SECTION_CLASSNAME.LIKED_SECTION,
+    );
+    storage.set(LOCAL_STORAGE_KEY.CURRENT_TAB, YOUTUBE.CURRENT_TAB.LIKE_CLIP);
   }
 
-  deActivateTargetSection();
-  activateTargetSection(targetSectionClassName[targetIndex]);
-
-  const currentTab = storage.get(LOCAL_STORAGE_KEY.CURRENT_TAB) || '볼 영상';
+  const currentTab =
+    storage.get(LOCAL_STORAGE_KEY.CURRENT_TAB) || YOUTUBE.CURRENT_TAB.WATCHED;
   if (isEmptyDisplayClipCountFromCurrentTab[currentTab](savedClips)) {
     showElement($DOM.SAVE_PAGE.NOT_FOUND);
     return;

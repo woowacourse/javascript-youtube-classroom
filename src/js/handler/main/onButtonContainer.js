@@ -84,7 +84,8 @@ export const onButtonContainer = ({ target }) => {
     likeClip(savedClips, target);
   }
 
-  const currentTab = storage.get(LOCAL_STORAGE_KEY.CURRENT_TAB) || '볼 영상';
+  const currentTab =
+    storage.get(LOCAL_STORAGE_KEY.CURRENT_TAB) || YOUTUBE.CURRENT_TAB.WATCHED;
   if (isEmptyDisplayClipCountFromCurrentTab[currentTab](savedClips)) {
     showElement($DOM.SAVE_PAGE.NOT_FOUND);
     return;

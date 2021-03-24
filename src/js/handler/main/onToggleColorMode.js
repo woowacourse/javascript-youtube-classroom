@@ -1,6 +1,7 @@
 import $DOM from '../../utils/DOM.js';
 
-const toggleColorModes = (mode) => {
+const toggleColorModes = () => {
+  const mode = $DOM.HTML.dataset.colorMode;
   if (mode === 'dark') {
     $DOM.HTML.dataset.colorMode = 'light';
     return;
