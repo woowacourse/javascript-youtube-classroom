@@ -42,18 +42,11 @@ class SavedView {
     }
   }
 
-  toggleNavButton(watched) {
-    toggleSelectorClass(
-      $(SELECTOR.TO_WATCH_VIDEOS_BUTTON),
-      CLASS.BG_CYAN,
-      !watched
+  toggleNavButton(target) {
+    [...target.parentNode.children].forEach(child =>
+      child.classList.remove(CLASS.BG_CYAN)
     );
-
-    toggleSelectorClass(
-      $(SELECTOR.WATCHED_VIDEOS_BUTTON),
-      CLASS.BG_CYAN,
-      watched
-    );
+    target.classList.add(CLASS.BG_CYAN);
   }
 }
 

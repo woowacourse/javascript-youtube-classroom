@@ -20,8 +20,10 @@ class SearchView {
   }
 
   renderVideoArticle = (info, save) => {
-    const videoArticle = parseDOMFromString(videoTemplate(info, save));
-    this.#$searchVideoWrapper.append(videoArticle);
+    this.#$searchVideoWrapper.append(
+      parseDOMFromString(videoTemplate(info, save))
+    );
+
   };
 
   toggleNotFoundSearchedVideo = length => {
@@ -35,13 +37,11 @@ class SearchView {
 
   renderSkeletonArticles = () => {
     this.#$searchVideoWrapper.innerHTML = videoSkeletonTemplate().repeat(
-
       SEARCH.FETCH_VIDEO_LENGTH
     );
   };
 
   renderRecentKeywordSection = keywords => {
-
     this.#$recentKeywordsSection.innerHTML = recentKeywordsTemplate(keywords);
   };
 

@@ -13,10 +13,13 @@ class StorageModel {
   #keywords;
   #showWatched;
 
+  #filterOption;
+
   constructor() {
     this.#savedVideo = [];
     this.#keywords = [];
     this.#showWatched = null;
+    this.#filterOption = 'all';
   }
 
   init() {
@@ -24,37 +27,65 @@ class StorageModel {
     this.#keywords = getJSONFromLocalStorage(STORAGE.KEY_KEYWORDS);
   }
 
-  filterVideos = showWatched => {
-    this.#showWatched = showWatched;
-    return this.#savedVideo.filter(video => video.watched === showWatched);
-  };
-
-  updateVideoWatched(target) {
+  updateVideoButtons(target) {
     const targetUrl = target.closest(SELECTOR.VIDEO_INFO_BUTTONS).dataset.url;
-    this.#savedVideo.forEach(info => {
-      if (info.url === targetUrl) {
-        info.watched = !info.watched;
-      }
-    });
 
-    setJSONToLocalStorage(STORAGE.KEY_MY_VIDEO, this.#savedVideo);
+    if (target.classList.contains('watched')) {
+      this.#savedVideo.forEach(info => {
+        if (info.url === targetUrl) {
+          info.watched = !info.watched;
+        }
+      });
+      setJSONToLocalStorage(STORAGE.KEY_MY_VIDEO, this.#savedVideo);
+    } else if (target.classList.contains('thumbs-up')) {
+      this.#savedVideo.forEach(info => {
+        if (info.url === targetUrl) {
+          info.liked = !info.liked;
+        }
+      });
+      setJSONToLocalStorage(STORAGE.KEY_MY_VIDEO, this.#savedVideo);
+    }
   }
 
-  deleteSelectedVideo(target) {
-    const targetUrl = target.closest(SELECTOR.VIDEO_INFO_BUTTONS).dataset.url;
-    this.#savedVideo = this.#savedVideo.filter(info => info.url !== targetUrl);
+  filterVideos = filterOption => {
+    switch (filterOption) {
+      case 'all':
+        return this.#savedVideo;
 
+      case 'liked':
+        return this.#savedVideo.filter(video => video.liked);
+
+      case 'watched':
+        return this.#savedVideo.filter(video => video.watched);
+
+      case 'willWatch':
+        return this.#savedVideo.filter(video => !video.watched);
+
+      default:
+        return this.#savedVideo;
+    }
+  };
+
+  deleteSelectedVideo(target) {
+    this.#savedVideo = this.#savedVideo.filter(
+      info =>
+        info.url !== target.closest(SELECTOR.VIDEO_INFO_BUTTONS).dataset.url
+    );
     setJSONToLocalStorage(STORAGE.KEY_MY_VIDEO, this.#savedVideo);
   }
 
   saveVideo = json => {
     this.#savedVideo = getJSONFromLocalStorage(STORAGE.KEY_MY_VIDEO);
+    if (this.#savedVideo.length === STORAGE.MAX_SAVED_VIDEO_LENGTH) {
+      alert(ERROR_MESSAGE.OVER_MAX_VIDEO_LENGTH);
+      return;
+    }
+
     this.#savedVideo.push(json);
     setJSONToLocalStorage(STORAGE.KEY_MY_VIDEO, this.#savedVideo);
   };
 
-  findVideoSaved = info => {
-    this.#savedVideo = getJSONFromLocalStorage(STORAGE.KEY_MY_VIDEO);
+  findVideoByInfo = info => {
     return (
       getJSONFromLocalStorage(STORAGE.KEY_MY_VIDEO).filter(
         savedVideo => info.url === savedVideo.url
@@ -77,8 +108,12 @@ class StorageModel {
     setJSONToLocalStorage(STORAGE.KEY_KEYWORDS, this.#keywords);
   };
 
-  get showWatched() {
-    return this.#showWatched;
+  get filterOption() {
+    return this.#filterOption;
+  }
+
+  set filterOption(newFilter) {
+    this.#filterOption = newFilter;
   }
 
   get savedVideos() {
