@@ -17,15 +17,15 @@ export const onSaveClip = ({ target }) => {
   }
 
   const clipIndex = target.dataset.clipIndex;
+  const clipId = target.dataset.clipId;
   const recentSearchResults =
     storage.get(LOCAL_STORAGE_KEY.RECENT_SEARCH_RESULTS) ?? [];
   const savedClip = recentSearchResults[clipIndex];
-  const currentTab =
-    storage.get(LOCAL_STORAGE_KEY.CURRENT_TAB) ?? LOCAL_STORAGE_VALUE.UNWATCHED;
-  const savedClips = storage.get(LOCAL_STORAGE_KEY.SAVED_CLIPS) ?? [];
-  const existClips = savedClips.filter((savedClip) => !savedClip.isDeleted);
+  savedClip.savedAt = Date.now();
 
-  if (existClips.length >= YOUTUBE.MAXIMUM_SAVE_CLIPS) {
+  const savedClips = storage.get(LOCAL_STORAGE_KEY.SAVED_CLIPS) ?? {};
+  const savedClipsLength = Object.keys(savedClips).length;
+  if (savedClipsLength >= YOUTUBE.MAXIMUM_SAVE_CLIPS) {
     showSnackbar(MESSAGE.ERROR.EXCEED_MAXIMUM_CLIP_COUNT);
     return;
   }
@@ -33,10 +33,10 @@ export const onSaveClip = ({ target }) => {
   hideElement(target);
   hideElement($DOM.SAVE_PAGE.NOT_FOUND);
 
-  savedClips.push(savedClip);
+  savedClips[clipId] = savedClip;
   storage.set(LOCAL_STORAGE_KEY.SAVED_CLIPS, savedClips);
 
   showSnackbar(MESSAGE.NOTIFY.SAVE_CLIP);
-  renderSavedClip(savedClip, savedClips.length - 1, currentTab);
+  renderSavedClip(savedClip);
   renderSaveVideoCount(savedClips);
 };

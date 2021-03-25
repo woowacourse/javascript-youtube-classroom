@@ -3,15 +3,20 @@ import { clipTemplate } from './clipTemplate.js';
 
 const $savedPageVideoWrapper = $('[data-js=saved-page__video-wrapper]');
 
-export const renderSavedClip = (savedClip, index, currentTab) => {
+export const renderSavedClip = (savedClip) => {
   $savedPageVideoWrapper.insertAdjacentHTML(
     'beforeend',
-    clipTemplate(savedClip, index, { currentTab }),
+    clipTemplate(savedClip, {}),
   );
 };
 
 export const renderSavedClips = (savedClips) => {
   $savedPageVideoWrapper.innerHTML = savedClips
-    .map((savedClip, index) => clipTemplate(savedClip, index, {}))
+    .map((savedClip) =>
+      clipTemplate(savedClip, {
+        isWatched: savedClip.isWatched,
+        isLiked: savedClip.isLiked,
+      }),
+    )
     .join('');
 };

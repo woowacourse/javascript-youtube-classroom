@@ -1,14 +1,15 @@
 import storage from '../../utils/localStorage.js';
 import { LOCAL_STORAGE_KEY, MESSAGE } from '../../utils/constant.js';
-import { showElement } from '../../utils/setAttribute.js';
+import { hideElement, showElement } from '../../utils/setAttribute.js';
 import { showSnackbar } from '../../utils/showSnackbar.js';
 import $DOM from '../../utils/DOM.js';
+import { $$ } from '../../utils/querySelector.js';
+import { isEmptyDisplayClipCountFromCurrentTab } from '../shared/isEmptyDisplayClipCountFromCurrentTab.js';
 
-const toggleIsWatched = (target) => {
+const toggleIsWatched = (savedClips, target) => {
   const targetClip = target.closest('[data-js="saved-page__clip"]');
-  const savedClips = storage.get(LOCAL_STORAGE_KEY.SAVED_CLIPS);
-  const targetClipIndex = targetClip.dataset.clipIndex;
-  const isWatched = savedClips[targetClipIndex].isWatched;
+  const targetClipId = targetClip.dataset.clipId;
+  const isWatched = savedClips[targetClipId].isWatched;
 
   const notifyMessage = isWatched
     ? MESSAGE.NOTIFY.CHECK_UNWACTHED_CLIP
@@ -16,47 +17,79 @@ const toggleIsWatched = (target) => {
 
   showSnackbar(notifyMessage);
 
-  savedClips[targetClipIndex].isWatched = !isWatched;
+  if ($$('.watched-clip').length === 0) {
+    showElement($DOM.SAVE_PAGE.NOT_FOUND);
+  }
+
+  savedClips[targetClipId].isWatched = !isWatched;
   storage.set(LOCAL_STORAGE_KEY.SAVED_CLIPS, savedClips);
 
-  if (isWatched) {
-    targetClip.classList.add('unwatched-clip');
-    targetClip.classList.remove('watched-clip');
-    return;
-  }
-  targetClip.classList.add('watched-clip');
-  targetClip.classList.remove('unwatched-clip');
+  targetClip.classList.toggle('watched-clip');
+  targetClip.classList.toggle('unwatched-clip');
+  target.classList.toggle('opacity-hover');
 };
 
-const deleteClip = (target) => {
+const deleteClip = (savedClips, target) => {
   const targetClip = target.closest('[data-js="saved-page__clip"]');
-  const savedClips = storage.get(LOCAL_STORAGE_KEY.SAVED_CLIPS);
-  const targetClipIndex = targetClip.dataset.clipIndex;
+  const targetClipId = targetClip.dataset.clipId;
 
   if (!confirm(MESSAGE.CONFIRM.DELETE_CLIP)) {
     return;
   }
 
   showSnackbar(MESSAGE.NOTIFY.DELETE_CLIP);
-  savedClips[targetClipIndex].isDeleted = true;
-  targetClip.classList.add('deleted-clip');
+  delete savedClips[targetClipId];
 
-  const existClips = savedClips.filter((savedClip) => !savedClip.isDeleted);
+  const savedClipsLength = Object.keys(savedClips).length;
 
-  if (existClips.length === 0) {
+  if (savedClipsLength === 0) {
     showElement($DOM.SAVE_PAGE.NOT_FOUND);
   }
+
+  targetClip.remove();
+  storage.set(LOCAL_STORAGE_KEY.SAVED_CLIPS, savedClips);
+};
+
+const likeClip = (savedClips, target) => {
+  const targetClip = target.closest('[data-js="saved-page__clip"]');
+  const targetClipId = targetClip.dataset.clipId;
+  const isLiked = savedClips[targetClipId].isLiked;
+
+  const notifyMessage = isLiked
+    ? MESSAGE.NOTIFY.UNLIKE_CLIP
+    : MESSAGE.NOTIFY.LIKE_CLIP;
+
+  showSnackbar(notifyMessage);
+
+  savedClips[targetClipId].isLiked = !isLiked;
+  targetClip.classList.toggle('liked-clip');
+  targetClip.classList.toggle('unliked-clip');
+  target.classList.toggle('opacity-hover');
 
   storage.set(LOCAL_STORAGE_KEY.SAVED_CLIPS, savedClips);
 };
 
 export const onButtonContainer = ({ target }) => {
+  const savedClips = storage.get(LOCAL_STORAGE_KEY.SAVED_CLIPS) || {};
+
   if (target.dataset.js === 'saved-clip-button-container__check') {
-    toggleIsWatched(target);
-    return;
+    toggleIsWatched(savedClips, target);
   }
 
   if (target.dataset.js === 'saved-clip-button-container__delete') {
-    deleteClip(target);
+    deleteClip(savedClips, target);
   }
+
+  if (target.dataset.js === 'saved-clip-button-container__like') {
+    likeClip(savedClips, target);
+  }
+
+  const currentTab =
+    storage.get(LOCAL_STORAGE_KEY.CURRENT_TAB) || YOUTUBE.CURRENT_TAB.WATCHED;
+  if (isEmptyDisplayClipCountFromCurrentTab[currentTab](savedClips)) {
+    showElement($DOM.SAVE_PAGE.NOT_FOUND);
+    return;
+  }
+
+  hideElement($DOM.SAVE_PAGE.NOT_FOUND);
 };

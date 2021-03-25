@@ -1,0 +1,67 @@
+[data-color-mode='dark'][data-dark-theme*='dark'] {
+  --color-primary-background: var(--color-scale-black);
+  --color-scroll-thumb-background: var(--color-scale-black);
+  --color-scroll-track-background: var(--color-scale-black);
+  --color-header-text: var(--color-scale-gray-2);
+  --color-nav-button-background: var(--color-scale-gray-2);
+  --color-nav-button-text: var(--color-scale-gray-2);
+  --color-nav-button-active-background: var(--color-scale-gray-5);
+  --color-clip-content-text: var(--color-scale-gray-2);
+  --color-nav-button-background: var(--color-scale-gray-9);
+  --color-nav-active-button-background: var(--color-scale-gray-9);
+  --color-modal-inner: var(--color-scale-gray-8);
+  --color-modal-search-button: var(--color-scale-gray-4);
+  --color-modal-search-button-background: var(--color-scale-gray-6);
+  --color-modal-search-input: var(--color-scale-gray-2);
+  --color-modal-search-input-background: var(--color-scale-gray-9);
+  --color-modal-search-input-border: var(--color-scale-gray-2);
+  --color-modal-search-input-border-focus: var(--color-scale-blue-4);
+  --color-modal-search-keyword: var(--color-scale-gray-2);
+  --color-modal-save-count: var(--color-scale-gray-2);
+  --color-modal-chip-background: var(--color-scale-gray-9);
+  --color-modal-chip: var(--color-scale-gray-2);
+  --color-chip-save-button: var(--color-scale-gray-2);
+  --color-chip-save-button-background: var(--color-scale-gray-9);
+  --color-modes-toggle-moon: var(--color-scale-yellow-1);
+  --color-modes-toggle-track-border: var(--color-scale-purple-8);
+  --color-modes-toggle-track-background: var(--color-scale-purple-9);
+  --color-modes-toggle-thumb-background: var(--color-scale-purple-6);
+  --color-modal-inner-text: var(--color-scale-black);
+  --color-modal-inner-hover-text: #666666ff;
+  --color-scrollbar-background: var(--color-scale-black);
+  --color-scrollbar-thumb-hover: var(--color-scale-gray-4);
+  --image-not-found: url('../images/status/dark_main_not_found.png');
+}
+
+[data-color-mode='light'][data-light-theme*='light'] {
+  --color-primary-background: var(--color-scale-white);
+  --color-scroll-thumb-background: var(--color-scale-black);
+  --color-scroll-track-background: var(--color-scale-black);
+  --color-header-text: var(--color-scale-black);
+  --color-nav-button-background: var(--color-scale-gray-2);
+  --color-nav-button-text: var(--color-scale-gray-9);
+  --color-nav-button-active-background: var(--color-scale-blue-3);
+  --color-clip-content-text: var(--color-scale-black);
+  --color-modal-inner: var(--color-scale-white);
+  --color-modal-search-button: var(--color-scale-gray-9);
+  --color-modal-search-button-background: var(--color-scale-blue-2);
+  --color-modal-search-input: var(--color-scale-white);
+  --color-modal-search-input-background: var(--color-scale-white);
+  --color-modal-search-input-border: var(--color-scale-gray-9);
+  --color-modal-search-input-border-focus: var(--color-scale-blue-4);
+  --color-modal-search-keyword: var(--color-scale-gray-9);
+  --color-modal-save-count: var(--color-scale-gray-9);
+  --color-modal-chip-background: var(--color-scale-blue-1);
+  --color-modal-chip: var(--color-scale-gray-9);
+  --color-chip-save-button: var(--color-scale-gray-9);
+  --color-chip-save-button-background: var(--color-scale-gray-2);
+  --color-modes-toggle-moon: var(--color-scale-yellow-1);
+  --color-modes-toggle-track-border: var(--color-scale-gray-4);
+  --color-modes-toggle-track-background: var(--color-scale-white);
+  --color-modes-toggle-thumb-background: var(--color-scale-gray-8);
+  --color-modal-inner-text: var(--color-scale-black);
+  --color-modal-inner-hover-text: #666666ff;
+  --color-scrollbar-background: var(--color-scale-black);
+  --color-scrollbar-thumb-hover: var(--color-scale-gray-4);
+  --image-not-found: url('../images/status/light_main_not_found.png');
+}

@@ -1,5 +1,10 @@
 <!DOCTYPE html>
-<html lang="kr">
+<html
+  lang="kr"
+  data-color-mode="light"
+  data-light-theme="light"
+  data-dark-theme="dark"
+>
   <head>
     <meta charset="UTF-8" />
     <title>👩🏻‍💻 유튜브 강의실</title>
@@ -12,30 +17,64 @@
         <div class="w-100">
           <header class="my-4">
             <h2 class="text-center font-bold">👩🏻‍💻 나만의 유튜브 강의실 👨🏻‍💻</h2>
-            <nav class="d-flex justify-center" data-js="navigator">
+            <nav class="navigator d-flex justify-center" data-js="navigator">
               <button
                 type="button"
-                class="btn bg-cyan-100 mx-1"
+                class="navigator__button btn mx-1 active"
                 data-js="navigator__unwatched-button"
               >
                 👁️ 볼 영상(F1)
               </button>
               <button
                 type="button"
-                class="btn mx-1"
+                class="navigator__button btn mx-1"
                 data-js="navigator__watched-button"
               >
                 ✅ 본 영상(F2)
               </button>
               <button
                 type="button"
+                class="navigator__button btn mx-1"
+                data-js="navigator__liked-button"
+              >
+                👍 좋아하는 영상(F3)
+              </button>
+              <button
+                type="button"
                 id="search-button"
-                class="btn mx-1"
+                class="navigator__button btn mx-1"
                 data-js="navigator__search-button"
               >
-                🔍 동영상 검색(F3)
+                🔍 동영상 검색(F4)
               </button>
             </nav>
+            <div class="color-modes-toggle-wrapper relative">
+              <span class="color-modes-toggle">
+                <div class="color-modes-toggle__track"></div>
+                <div
+                  class="color-modes-toggle__thumb"
+                  data-js="color-modes-toggle__thumb"
+                >
+                  <svg
+                    style="
+                      fill: var(--color-modes-toggle-moon);
+                      margin: 7px 0 0 7px;
+                    "
+                    aria-hidden="true"
+                    width="14"
+                    height="13"
+                    viewBox="0 0 14 13"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      fill-rule="evenodd"
+                      clip-rule="evenodd"
+                      d="M4.52208 7.71754C7.5782 7.71754 10.0557 5.24006 10.0557 2.18394C10.0557 1.93498 10.0392 1.68986 10.0074 1.44961C9.95801 1.07727 10.3495 0.771159 10.6474 0.99992C12.1153 2.12716 13.0615 3.89999 13.0615 5.89383C13.0615 9.29958 10.3006 12.0605 6.89485 12.0605C3.95334 12.0605 1.49286 10.001 0.876728 7.24527C0.794841 6.87902 1.23668 6.65289 1.55321 6.85451C2.41106 7.40095 3.4296 7.71754 4.52208 7.71754Z"
+                    ></path>
+                  </svg>
+                </div>
+              </span>
+            </div>
           </header>
           <main class="mt-10" data-js="saved-page">
             <section
@@ -46,11 +85,7 @@
               class="d-flex justify-center"
               data-js="saved-page__not-found"
             >
-              <img
-                class="w-300"
-                src="./src/images/status/main_not_found.png"
-                alt="저장된 동영상이 없습니다."
-              />
+              <div class="not_found w-50" title="검색결과가 없습니다."></div>
             </section>
           </main>
         </div>
@@ -73,7 +108,7 @@
           <form class="d-flex" data-js="youtube-search-modal__form">
             <input
               type="search"
-              class="w-100 mr-2 pl-2"
+              class="modal__input w-100 mr-2 pl-2"
               data-js="youtube-search-modal__input"
               name="youtube-search-modal__input"
               minlength="1"
@@ -83,7 +118,7 @@
               required
             />
             <button
-              class="btn bg-cyan-500"
+              class="modal__search-button btn"
               data-js="youtube-search-modal__submit"
             >
               검색
@@ -93,15 +128,15 @@
             class="mt-2 mb-5 d-flex justify-between"
             data-js="youtube-search-modal__recent-keywords"
           >
-            <div>
-              <span class="text-gray-700">최근 검색어: </span>
+            <div class="modal__keyword">
+              <span>최근 검색어: </span>
               <div
                 class="d-inline"
                 data-js="youtube-search-modal__chip-container"
               ></div>
             </div>
             <div
-              class="d-flex justify-center items-center text-gray-700"
+              class="d-flex justify-center items-center modal__save-count"
               data-js="youtube-search-modal__save-video-count"
             ></div>
           </section>
@@ -192,11 +227,7 @@
             class="d-none d-flex justify-center"
             data-js="youtube-search-modal__not-found"
           >
-            <img
-              class="w-50"
-              src="./src/images/status/not_found.png"
-              alt="검색결과가 없습니다."
-            />
+            <div class="not_found w-50" title="검색결과가 없습니다."></div>
           </section>
         </div>
       </div>

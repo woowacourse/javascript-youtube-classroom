@@ -1,0 +1,34 @@
+.color-modes-toggle-wrapper {
+  position: relative;
+  height: 42px;
+}
+
+.color-modes-toggle {
+  position: absolute;
+  top: 5px;
+  right: 10px;
+}
+
+.color-modes-toggle__track {
+  width: 42px;
+  height: 24px;
+  border-radius: 24px;
+  border: 3px solid var(--color-modes-toggle-track-border);
+  background-color: var(--color-modes-toggle-track-background);
+}
+
+.color-modes-toggle__thumb {
+  position: absolute;
+  top: -2px;
+  left: -2px;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background-color: var(--color-modes-toggle-thumb-background);
+  transition: transform 0.3s cubic-bezier(0.4, 0.03, 0, 1);
+  cursor: pointer;
+}
+
+[data-color-mode='dark'][data-dark-theme*='dark'] .color-modes-toggle__thumb {
+  transform: translateX(18px);
+}

@@ -1,7 +1,3 @@
-.skeleton {
-  width: 236px;
-}
-
 .skeleton .image,
 .skeleton .line {
   background-image: linear-gradient(

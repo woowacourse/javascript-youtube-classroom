@@ -42,8 +42,8 @@ const renderResult = (videoItems) => {
     return;
   }
 
-  const savedClips = storage.get(LOCAL_STORAGE_KEY.SAVED_CLIPS) ?? [];
-  const savedClipIds = savedClips.map((savedClip) => savedClip.id.videoId);
+  const savedClips = storage.get(LOCAL_STORAGE_KEY.SAVED_CLIPS) ?? {};
+  const savedClipIds = Object.keys(savedClips);
 
   hideElement($DOM.SEARCH_MODAL.NOT_FOUND);
   renderClips(videoItems, savedClipIds);
@@ -80,6 +80,7 @@ export const searchRequest = async (keyword) => {
     part: 'snippet',
     maxResults: YOUTUBE.NUMBER_TO_LOAD,
     q: keyword,
+    type: 'video',
   });
   const response = await request(BASE_URL + queryString);
 

@@ -6,6 +6,10 @@
   display: none;
 }
 
+.liked-section > .unliked-clip {
+  display: none;
+}
+
 .deleted-clip {
   display: none;
 }

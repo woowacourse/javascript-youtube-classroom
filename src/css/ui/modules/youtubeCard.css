@@ -1,9 +1,27 @@
 .video-wrapper {
   display: grid;
-  grid-template-columns: repeat(auto-fill, 236px);
+  grid-template-columns: repeat(4, 1fr);
   grid-row-gap: 35px;
   grid-column-gap: 4px;
   justify-content: center;
+}
+
+@media screen and (max-width: 960px) {
+  .video-wrapper {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media screen and (max-width: 600px) {
+  .video-wrapper {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media screen and (max-width: 400px) {
+  .video-wrapper {
+    grid-template-columns: 1fr;
+  }
 }
 
 .clip {
@@ -47,7 +65,7 @@
   height: 2rem;
   -webkit-line-clamp: 2;
   overflow: hidden;
-  color: #0a0a0a;
+  color: var(--color-clip-content-text);
 }
 
 .clip .content-container .channel-name {

@@ -5,6 +5,7 @@ export default {
     CONTAINER: $('[data-js="navigator"]'),
     WATCHED_BUTTON: $('[data-js="navigator__watched-button"]'),
     UNWATCHED_BUTTON: $('[data-js="navigator__unwatched-button"]'),
+    LIKED_BUTTON: $('[data-js="navigator__liked-button"]'),
     SEARCH_BUTTON: $('[data-js="navigator__search-button"]'),
   },
   SEARCH_MODAL: {
@@ -26,4 +27,6 @@ export default {
   SNACK_BAR: {
     CONTAINER: $('[data-js="snackbar-container"]'),
   },
+  TOGGLE_THUMB: $('[data-js="color-modes-toggle__thumb"]'),
+  HTML: document.documentElement,
 };

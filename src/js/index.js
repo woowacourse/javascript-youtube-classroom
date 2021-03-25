@@ -13,34 +13,31 @@ import { onWindowInput } from './handler/window/onWindowInput.js';
 import $DOM from './utils/DOM.js';
 import { onSearchClip } from './handler/modal/search/onSearchClip.js';
 import { onSearchByKeyword } from './handler/modal/search/onSearchBykeyword.js';
-
-const clearDeletedClip = () => {
-  const savedClips = storage.get(LOCAL_STORAGE_KEY.SAVED_CLIPS) ?? [];
-  const filterdSavedClips = savedClips.filter(
-    (savedClip) => !savedClip.isDeleted,
-  );
-
-  storage.set(LOCAL_STORAGE_KEY.SAVED_CLIPS, filterdSavedClips);
-};
+import { onToggleColorMode } from './handler/main/onToggleColorMode.js';
 
 const initDisplay = () => {
-  const savedClips = storage.get(LOCAL_STORAGE_KEY.SAVED_CLIPS) ?? [];
+  const savedClips = storage.get(LOCAL_STORAGE_KEY.SAVED_CLIPS) ?? {};
+  const sortedSavedClipsArray = Object.keys(savedClips)
+    .sort((a, b) => savedClips[b].savedAt - savedClips[a].savedAt)
+    .map((id) => savedClips[id]);
 
-  if (savedClips.length === 0) {
+  if (sortedSavedClipsArray.length === 0) {
     showElement($DOM.SAVE_PAGE.NOT_FOUND);
     return;
   }
 
   hideElement($DOM.SAVE_PAGE.NOT_FOUND);
-  renderSavedClips(savedClips);
+  renderSavedClips(sortedSavedClipsArray);
   onToggleRenderedClips({
     target: $DOM.NAVIGATOR.UNWATCHED_BUTTON,
   });
 };
 
-export const YoutubeClassRoom = () => {
+const YoutubeClassRoom = () => {
   $DOM.NAVIGATOR.CONTAINER.addEventListener('click', onToggleRenderedClips);
   $DOM.NAVIGATOR.SEARCH_BUTTON.addEventListener('click', onModalShow);
+
+  $DOM.TOGGLE_THUMB.addEventListener('click', onToggleColorMode);
 
   $DOM.SEARCH_MODAL.FORM.addEventListener('submit', onSearchClip);
   $DOM.SEARCH_MODAL.CHIP_CONTAINER.addEventListener('click', onSearchByKeyword);
@@ -57,6 +54,5 @@ export const YoutubeClassRoom = () => {
 
 window.onload = () => {
   YoutubeClassRoom();
-  clearDeletedClip();
   initDisplay();
 };
