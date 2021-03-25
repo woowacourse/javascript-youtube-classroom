@@ -7,19 +7,19 @@ export async function getVideosByKeyword(searchKeyword, pageToken) {
     type: 'video',
     maxResults: YOUTUBE.MAX_RESULT_COUNT,
     videoDefinition: 'high',
-    key: YOUTUBE_API_KEY,
   };
   let response;
 
   try {
     response = await (
       await fetch(
-        `https://www.googleapis.com/youtube/v3/search?${parseQuery(query)}${pageToken ? `&pageToken=${pageToken}` : ''
+        `https://stoic-poitras-9ccddb.netlify.app/.netlify/functions/youtube/search?${parseQuery(query)}${pageToken ? `&pageToken=${pageToken}` : ''
         }`
       )
     ).json();
   } catch (err) {
-    throw new Error(err);
+    alert(new Error(err));
+    return;
   }
 
   const { nextPageToken } = response;
@@ -28,8 +28,8 @@ export async function getVideosByKeyword(searchKeyword, pageToken) {
     title: snippet.title,
     channelTitle: snippet.channelTitle,
     publishedAt: snippet.publishedAt,
+    thumbnailUrl: snippet.thumbnails.medium.url,
   }));
-
   return {
     nextPageToken,
     videos,

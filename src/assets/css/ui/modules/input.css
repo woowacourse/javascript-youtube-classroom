@@ -1,0 +1,15 @@
+#search-form__input {
+  border-radius: 5px;
+}
+
+#search-form__input:focus {
+  outline: none;
+}
+
+#search-form__input:valid {
+  border-color: yellowgreen;
+}
+
+#search-form__input:invalid {
+  border-color: red;
+}

@@ -1,4 +1,9 @@
-import { SELECTOR_ID, SELECTOR_CLASS, SETTINGS } from '../../src/constants.js';
+import {
+  SELECTOR_ID,
+  SELECTOR_CLASS,
+  SETTINGS,
+  CONFIRM_MESSAGE,
+} from '../../src/constants.js';
 
 const waitTime = 2000;
 
@@ -8,7 +13,75 @@ context('유튜브 강의실 테스트', () => {
     cy.clearLocalStorage();
     cy.reload();
   });
-  describe('검색', () => {
+
+  describe('본 영상', () => {
+    it('본 영상 버튼을 눌러 본 영상만을 필터링 할 수 있다.', () => {
+      click(`#${SELECTOR_ID.SEARCH_BUTTON}`);
+      type(`#${SELECTOR_ID.SEARCH_FORM_INPUT}`, '우아한');
+      click(`#${SELECTOR_ID.SEARCH_FORM_SUBMIT}`);
+      cy.wait(waitTime);
+      cy.get(`.${SELECTOR_CLASS.SEARCHED_CLIP_SAVE_BUTTON}`).then(elements => {
+        click(elements[0]);
+      });
+      click(`#${SELECTOR_ID.MODAL_CLOSE_BUTTON}`);
+      click(`.${SELECTOR_CLASS.CLIP_CHECK_BUTTON}`);
+      click(`#${SELECTOR_ID.WATCHED_VIDEO_SWITCH_BUTTON}`);
+      cy.get(
+        `#${SELECTOR_ID.WATCHED_VIDEO_WRAPPER} .${SELECTOR_CLASS.CLIP}`
+      ).should('exist');
+    });
+  });
+
+  describe('볼 영상', () => {
+    it('클립 안의 버튼을 클릭시 동작 결과를 `snackbar`를 통해 보여준다.', () => {
+      click(`#${SELECTOR_ID.SEARCH_BUTTON}`);
+      type(`#${SELECTOR_ID.SEARCH_FORM_INPUT}`, '우아한');
+      click(`#${SELECTOR_ID.SEARCH_FORM_SUBMIT}`);
+      cy.wait(waitTime);
+      cy.get(`.${SELECTOR_CLASS.SEARCHED_CLIP_SAVE_BUTTON}`).then(elements => {
+        click(elements[0]);
+      });
+      click(`#${SELECTOR_ID.MODAL_CLOSE_BUTTON}`);
+      click(`.${SELECTOR_CLASS.CLIP_CHECK_BUTTON}`);
+      cy.get(`.${SELECTOR_CLASS.SNACKBAR}`).should('be.visible');
+    });
+
+    it('🗑️ 버튼으로 저장된 리스트에서 삭제할 수 있다.', () => {
+      click(`#${SELECTOR_ID.SEARCH_BUTTON}`);
+      type(`#${SELECTOR_ID.SEARCH_FORM_INPUT}`, '우아한');
+      click(`#${SELECTOR_ID.SEARCH_FORM_SUBMIT}`);
+      cy.wait(waitTime);
+      cy.get(`.${SELECTOR_CLASS.SEARCHED_CLIP_SAVE_BUTTON}`).then(elements => {
+        click(elements[0]);
+      });
+      click(`#${SELECTOR_ID.MODAL_CLOSE_BUTTON}`);
+      cy.on('window:confirm', str => {
+        expect(str).to.equal(CONFIRM_MESSAGE.WATCHING_VIDEO_DELETE);
+        return true;
+      });
+      click(`.${SELECTOR_CLASS.CLIP_DELETE_BUTTON}`);
+      cy.get(`.${SELECTOR_CLASS.CLIP}`).should('not.exist');
+    });
+
+    it('✅ 버튼을 누르면 본 영상으로 체크된다.', () => {
+      click(`#${SELECTOR_ID.SEARCH_BUTTON}`);
+      type(`#${SELECTOR_ID.SEARCH_FORM_INPUT}`, '우아한');
+      click(`#${SELECTOR_ID.SEARCH_FORM_SUBMIT}`);
+      cy.wait(waitTime);
+      cy.get(`.${SELECTOR_CLASS.SEARCHED_CLIP_SAVE_BUTTON}`).then(elements => {
+        click(elements[0]);
+      });
+      click(`#${SELECTOR_ID.MODAL_CLOSE_BUTTON}`);
+      click(`.${SELECTOR_CLASS.CLIP_CHECK_BUTTON}`);
+      cy.get(`.${SELECTOR_CLASS.CLIP}`).should('not.exist');
+    });
+
+    it('볼 영상에 저장된 영상이 없으면 이를 알려준다.', () => {
+      cy.get(`.${SELECTOR_CLASS.CLIP}`).should('not.exist');
+      cy.get(`#${SELECTOR_ID.EMPTY_WATCHING_VIDEO}`).should('be.visible');
+    });
+  });
+  describe('검색어', () => {
     it('최근 검색한 3가지 검색 키워드를 볼 수 있다.', () => {
       click(`#${SELECTOR_ID.SEARCH_BUTTON}`);
       type(`#${SELECTOR_ID.SEARCH_FORM_INPUT}`, '우아한1');
@@ -31,17 +104,23 @@ context('유튜브 강의실 테스트', () => {
         .its('length')
         .should('be.equal', SETTINGS.MAX_SAVED_SEARCH_QUERY_COUNT);
     });
+  });
+  describe('검색 모달', () => {
+    beforeEach(() => {
+      cy.clearLocalStorage();
+      cy.reload();
+    });
 
     it('검색한 영상들 중 특정 영상 데이터를 저장 버튼을 눌러 저장할 수 있다.', () => {
       click(`#${SELECTOR_ID.SEARCH_BUTTON}`);
       type(`#${SELECTOR_ID.SEARCH_FORM_INPUT}`, '우아한');
       click(`#${SELECTOR_ID.SEARCH_FORM_SUBMIT}`);
       cy.wait(waitTime);
-      cy.get(`.${SELECTOR_CLASS.CLIP_SAVE_BUTTON}`).then(elements => {
+      cy.get(`.${SELECTOR_CLASS.SEARCHED_CLIP_SAVE_BUTTON}`).then(elements => {
         click(elements[0]);
       });
       click(`#${SELECTOR_ID.MODAL_CLOSE_BUTTON}`);
-      cy.get(`#${SELECTOR_ID.VIDEO_WRAPPER} .${SELECTOR_CLASS.CLIP}`)
+      cy.get(`#${SELECTOR_ID.WATCHING_VIDEO_WRAPPER} .${SELECTOR_CLASS.CLIP}`)
         .its('length')
         .should('be.gt', 0);
     });
@@ -51,10 +130,10 @@ context('유튜브 강의실 테스트', () => {
       type(`#${SELECTOR_ID.SEARCH_FORM_INPUT}`, '우아한');
       click(`#${SELECTOR_ID.SEARCH_FORM_SUBMIT}`);
       cy.wait(waitTime);
-      cy.get(`.${SELECTOR_CLASS.CLIP}`).last().scrollIntoView();
+      cy.get(`.${SELECTOR_CLASS.SEARCHED_CLIP}`).last().scrollIntoView();
       cy.wait(waitTime);
       cy.get(
-        `#${SELECTOR_ID.SEARCH_RESULT_VIDEO_WRAPPER} .${SELECTOR_CLASS.CLIP}`
+        `#${SELECTOR_ID.SEARCH_RESULT_VIDEO_WRAPPER} .${SELECTOR_CLASS.SEARCHED_CLIP}`
       )
         .its('length')
         .should('be.gt', 10);
@@ -76,7 +155,7 @@ context('유튜브 강의실 테스트', () => {
       cy.reload();
       click(`#${SELECTOR_ID.SEARCH_BUTTON}`);
       cy.get(
-        `#${SELECTOR_ID.SEARCH_RESULT_VIDEO_WRAPPER} .${SELECTOR_CLASS.CLIP}`
+        `#${SELECTOR_ID.SEARCH_RESULT_VIDEO_WRAPPER} .${SELECTOR_CLASS.SEARCHED_CLIP}`
       )
         .its('length')
         .should('be.gt', 0);
@@ -89,7 +168,7 @@ context('유튜브 강의실 테스트', () => {
       click(`#${SELECTOR_ID.SEARCH_FORM_SUBMIT}`);
       cy.wait(waitTime);
       cy.get(
-        `#${SELECTOR_ID.SEARCH_RESULT_VIDEO_WRAPPER} .${SELECTOR_CLASS.CLIP}`
+        `#${SELECTOR_ID.SEARCH_RESULT_VIDEO_WRAPPER} .${SELECTOR_CLASS.SEARCHED_CLIP}`
       )
         .its('length')
         .should('be.gt', 0);

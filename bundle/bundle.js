@@ -12162,12 +12162,11 @@ function _getVideosByKeyword() {
               q: searchKeyword,
               type: 'video',
               maxResults: _constants_js__WEBPACK_IMPORTED_MODULE_0__.YOUTUBE.MAX_RESULT_COUNT,
-              videoDefinition: 'high',
-              key: "AIzaSyBmX5TEH7eS1rqcf33gV0CWUZaQFLoN6b4"
+              videoDefinition: 'high'
             };
             _context.prev = 1;
             _context.next = 4;
-            return fetch("https://www.googleapis.com/youtube/v3/search?".concat(parseQuery(query)).concat(pageToken ? "&pageToken=".concat(pageToken) : ''));
+            return fetch("https://stoic-poitras-9ccddb.netlify.app/.netlify/functions/youtube/search?".concat(parseQuery(query)).concat(pageToken ? "&pageToken=".concat(pageToken) : ''));
 
           case 4:
             _context.next = 6;
@@ -12175,15 +12174,16 @@ function _getVideosByKeyword() {
 
           case 6:
             response = _context.sent;
-            _context.next = 12;
+            _context.next = 13;
             break;
 
           case 9:
             _context.prev = 9;
             _context.t0 = _context["catch"](1);
-            throw new Error(_context.t0);
+            alert(new Error(_context.t0));
+            return _context.abrupt("return");
 
-          case 12:
+          case 13:
             _response = response, nextPageToken = _response.nextPageToken;
             videos = response.items.map(function (_ref) {
               var id = _ref.id,
@@ -12192,7 +12192,8 @@ function _getVideosByKeyword() {
                 videoId: id.videoId,
                 title: snippet.title,
                 channelTitle: snippet.channelTitle,
-                publishedAt: snippet.publishedAt
+                publishedAt: snippet.publishedAt,
+                thumbnailUrl: snippet.thumbnails.medium.url
               };
             });
             return _context.abrupt("return", {
@@ -12200,7 +12201,7 @@ function _getVideosByKeyword() {
               videos: videos
             });
 
-          case 15:
+          case 16:
           case "end":
             return _context.stop();
         }
@@ -12230,248 +12231,95 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "SELECTOR_ID": () => (/* binding */ SELECTOR_ID),
 /* harmony export */   "SELECTOR_CLASS": () => (/* binding */ SELECTOR_CLASS),
 /* harmony export */   "STYLE_CLASS": () => (/* binding */ STYLE_CLASS),
+/* harmony export */   "ANIMATION_CLASS": () => (/* binding */ ANIMATION_CLASS),
 /* harmony export */   "YOUTUBE": () => (/* binding */ YOUTUBE),
 /* harmony export */   "SETTINGS": () => (/* binding */ SETTINGS),
 /* harmony export */   "LOCAL_STORAGE_KEY": () => (/* binding */ LOCAL_STORAGE_KEY),
-/* harmony export */   "ALERT_MESSAGE": () => (/* binding */ ALERT_MESSAGE)
+/* harmony export */   "CONFIRM_MESSAGE": () => (/* binding */ CONFIRM_MESSAGE),
+/* harmony export */   "SNACKBAR_MESSAGE": () => (/* binding */ SNACKBAR_MESSAGE),
+/* harmony export */   "BROWSER_HASH": () => (/* binding */ BROWSER_HASH)
 /* harmony export */ });
 var SELECTOR_ID = Object.freeze({
-  SEARCH_FORM: 'search-form',
-  SEARCH_FORM_INPUT: 'search-form__input',
-  SEARCH_FORM_SUBMIT: 'search-form__submit',
+  //modal view
   MODAL: 'modal',
   MODAL_CLOSE_BUTTON: 'modal__close-button',
   SEARCH_RESULT_VIDEO_WRAPPER: 'search-result__video-wrapper',
-  VIDEO_WRAPPER: 'video-wrapper',
-  NOT_FOUND_CONTENT: 'not-found-content',
+  SEARCH_FORM: 'search-form',
+  SEARCH_FORM_INPUT: 'search-form__input',
+  SEARCH_FORM_SUBMIT: 'search-form__submit',
   SEARCH_RESULT_INTERSECTOR: 'search-result__intersector',
   SEARCH_QUERIES: 'search-queries',
   SAVED_VIDEO_COUNT: 'saved-video-count',
-  WATCHING_VIDEO_BUTTON: 'watching-video-button',
-  WATCHED_VIDEO_BUTTON: 'watched-video-button',
+  //index view
+  WATCHING_VIDEO_WRAPPER: 'watching-video-wrapper',
+  WATCHED_VIDEO_WRAPPER: 'watched-video-wrapper',
+  NOT_FOUND_CONTENT: 'not-found-content',
+  EMPTY_WATCHING_VIDEO: 'empty-watching-video',
+  EMPTY_WATCHED_VIDEO: 'empty-watched-video',
+  SNACKBAR_WRAPPER: 'snackbar-wrapper',
+  //navigation view
+  NAV: 'nav',
+  WATCHED_VIDEO_SWITCH_BUTTON: 'watched-video-switch-button',
+  WATCHING_VIDEO_SWITCH_BUTTON: 'watching-video-switch-button',
   SEARCH_BUTTON: 'search-button'
 });
 var SELECTOR_CLASS = Object.freeze({
-  CLIP: 'clip',
-  SKELETON: 'skeleton',
-  CLIP_SAVE_BUTTON: 'clip__save-button',
-  SEARCH_QUERIES_CHIP: 'search-queries__chip',
-  NAV_BUTTON: 'js-nav__button'
+  //modal view
+  SEARCHED_CLIP: 'js-searched-clip',
+  SEARCHED_CLIP_SAVE_BUTTON: 'js-searched-clip__save-button',
+  SEARCH_QUERIES_CHIP: 'js-search-queries__chip',
+  SKELETON: 'js-skeleton',
+  //index view
+  NAV_BUTTON: 'js-nav__button',
+  CLIP_CHECK_BUTTON: 'js-clip__check-button',
+  CLIP_DELETE_BUTTON: 'js-clip__delete-button',
+  //common
+  CLIP: 'js-clip',
+  SNACKBAR: 'js-snackbar'
 });
 var STYLE_CLASS = Object.freeze({
   OPEN: 'open',
   CLOSE: 'close',
-  CLICKED: 'clicked'
+  SUCCESS: 'success',
+  FAIL: 'fail',
+  SNACKBAR: 'snackbar',
+  NAV_CLICKED: 'clicked',
+  VIDEO_CHECKED: 'checked'
+});
+var ANIMATION_CLASS = Object.freeze({
+  FADE_IN_AND_OUT: 'fade-in-and-out'
 });
 var YOUTUBE = Object.freeze({
   MAX_RESULT_COUNT: 10
 });
 var SETTINGS = Object.freeze({
   MAX_SAVE_COUNT: 100,
-  MAX_SAVED_SEARCH_QUERY_COUNT: 3
+  MAX_SAVED_SEARCH_QUERY_COUNT: 3,
+  SNACKBAR_PERSISTENT_MILLISEC: 3000
 });
 var LOCAL_STORAGE_KEY = Object.freeze({
-  PREVIOUS_SEARCH_VIDEOS: 'previous_search_videos',
-  VIDEOS_TO_WATCH: 'videos_to_watch',
-  SEARCH_QUERIES: 'search_queries',
-  LAST_QUERY: 'last_query',
-  NEXT_PAGE_TOKEN: 'next_page_token'
+  PREV_SEARCH_RESULT: 'prev_search_result',
+  WATCHING_VIDEOS: 'watching_videos',
+  WATCHED_VIDEOS: 'watched_videos',
+  SEARCH_QUERIES: 'search_queries'
 });
-var ALERT_MESSAGE = {
+var CONFIRM_MESSAGE = Object.freeze({
+  WATCHING_VIDEO_DELETE: '볼 영상을 정말 삭제하시겠습니까?',
+  WATCHED_VIDEO_DELETE: '본 영상을 정말 삭제하시겠습니까?'
+});
+var SNACKBAR_MESSAGE = Object.freeze({
+  WATCHED_VIDEO_CHECK_SUCCESS: '본 영상으로 저장되었습니다.',
+  WATCHING_VIDEO_CHECK_SUCCESS: '볼 영상으로 이동되었습니다.',
+  WATCHING_VIDEO_SAVE_SUCCESS: '볼 영상으로 이동되었습니다.',
+  WATCHED_VIDEO_DELETE_SUCCESS: '본 영상에서 삭제되었습니다.',
+  WATCHING_VIDEO_DELETE_SUCCESS: '볼 영상에서 삭제되었습니다.',
   SAVE_LIMIT_EXCEEDED: "".concat(SETTINGS.MAX_SAVE_COUNT, "\uAC1C \uBCF4\uB2E4 \uB9CE\uC740 \uC601\uC0C1\uC744 \uC800\uC7A5\uD560 \uC218 \uC5C6\uC2B5\uB2C8\uB2E4.")
-};
-
-/***/ }),
-
-/***/ "./src/controller/controller.js":
-/*!**************************************!*\
-  !*** ./src/controller/controller.js ***!
-  \**************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
-/* harmony export */ });
-/* harmony import */ var _elements_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../elements.js */ "./src/elements.js");
-/* harmony import */ var _view_view_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../view/view.js */ "./src/view/view.js");
-/* harmony import */ var _apis_youtube_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../apis/youtube.js */ "./src/apis/youtube.js");
-/* harmony import */ var _storage_prevSearchResult_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../storage/prevSearchResult.js */ "./src/storage/prevSearchResult.js");
-/* harmony import */ var _storage_searchQuery_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../storage/searchQuery.js */ "./src/storage/searchQuery.js");
-/* harmony import */ var _storage_videoToWatch_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../storage/videoToWatch.js */ "./src/storage/videoToWatch.js");
-/* harmony import */ var _constants_js__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../constants.js */ "./src/constants.js");
-/* harmony import */ var _controllerUtil_js__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./controllerUtil.js */ "./src/controller/controllerUtil.js");
-function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
-
-function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
-
-
-
-
-
-
-
-
-
-
-function onAdditionalVideosLoad() {
-  return _onAdditionalVideosLoad.apply(this, arguments);
-}
-
-function _onAdditionalVideosLoad() {
-  _onAdditionalVideosLoad = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee() {
-    var _yield$getVideosByKey, videos, nextPageToken;
-
-    return regeneratorRuntime.wrap(function _callee$(_context) {
-      while (1) {
-        switch (_context.prev = _context.next) {
-          case 0:
-            _context.next = 2;
-            return (0,_apis_youtube_js__WEBPACK_IMPORTED_MODULE_2__.getVideosByKeyword)(_storage_prevSearchResult_js__WEBPACK_IMPORTED_MODULE_3__.default.getLastQuery(), _storage_prevSearchResult_js__WEBPACK_IMPORTED_MODULE_3__.default.getNextPageToken());
-
-          case 2:
-            _yield$getVideosByKey = _context.sent;
-            videos = _yield$getVideosByKey.videos;
-            nextPageToken = _yield$getVideosByKey.nextPageToken;
-            _controllerUtil_js__WEBPACK_IMPORTED_MODULE_7__.default.loadAdditionalVideos(videos);
-            _storage_prevSearchResult_js__WEBPACK_IMPORTED_MODULE_3__.default.setNextPageToken(nextPageToken);
-
-          case 7:
-          case "end":
-            return _context.stop();
-        }
-      }
-    }, _callee);
-  }));
-  return _onAdditionalVideosLoad.apply(this, arguments);
-}
-
-function onModalOpen() {
-  _controllerUtil_js__WEBPACK_IMPORTED_MODULE_7__.default.highlightNavButton(_elements_js__WEBPACK_IMPORTED_MODULE_0__.$searchButton);
-  var savedVideoCount = _storage_videoToWatch_js__WEBPACK_IMPORTED_MODULE_5__.default.getVideos().length;
-  var videos = _storage_prevSearchResult_js__WEBPACK_IMPORTED_MODULE_3__.default.getSearchedVideos();
-  _view_view_js__WEBPACK_IMPORTED_MODULE_1__.default.renderSavedVideoCount(savedVideoCount);
-  _view_view_js__WEBPACK_IMPORTED_MODULE_1__.default.openModal();
-
-  if (videos.length === 0) {
-    return;
-  }
-
-  _controllerUtil_js__WEBPACK_IMPORTED_MODULE_7__.default.loadPrevSearchedVideos(videos);
-  _controllerUtil_js__WEBPACK_IMPORTED_MODULE_7__.default.savePrevSearchInfo(_storage_prevSearchResult_js__WEBPACK_IMPORTED_MODULE_3__.default.getLastQuery(), _storage_prevSearchResult_js__WEBPACK_IMPORTED_MODULE_3__.default.getNextPageToken());
-}
-
-function onModalClose() {
-  _controllerUtil_js__WEBPACK_IMPORTED_MODULE_7__.default.highlightNavButton(_elements_js__WEBPACK_IMPORTED_MODULE_0__.$watchingVideoButton);
-  _view_view_js__WEBPACK_IMPORTED_MODULE_1__.default.closeModal();
-}
-
-function onVideoSearch(_x) {
-  return _onVideoSearch.apply(this, arguments);
-}
-
-function _onVideoSearch() {
-  _onVideoSearch = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee2(event) {
-    var input, _yield$getVideosByKey2, videos, nextPageToken;
-
-    return regeneratorRuntime.wrap(function _callee2$(_context2) {
-      while (1) {
-        switch (_context2.prev = _context2.next) {
-          case 0:
-            event.preventDefault();
-            input = event.target["".concat(_constants_js__WEBPACK_IMPORTED_MODULE_6__.SELECTOR_ID.SEARCH_FORM_INPUT)].value.trim();
-
-            if (!(input === _storage_prevSearchResult_js__WEBPACK_IMPORTED_MODULE_3__.default.getLastQuery())) {
-              _context2.next = 4;
-              break;
-            }
-
-            return _context2.abrupt("return");
-
-          case 4:
-            if (!(input === '')) {
-              _context2.next = 6;
-              break;
-            }
-
-            return _context2.abrupt("return");
-
-          case 6:
-            _view_view_js__WEBPACK_IMPORTED_MODULE_1__.default.initSearchResult();
-            _context2.next = 9;
-            return (0,_apis_youtube_js__WEBPACK_IMPORTED_MODULE_2__.getVideosByKeyword)(input);
-
-          case 9:
-            _yield$getVideosByKey2 = _context2.sent;
-            videos = _yield$getVideosByKey2.videos;
-            nextPageToken = _yield$getVideosByKey2.nextPageToken;
-
-            if (!(videos.length === 0)) {
-              _context2.next = 15;
-              break;
-            }
-
-            _view_view_js__WEBPACK_IMPORTED_MODULE_1__.default.showNotFoundContent();
-            return _context2.abrupt("return");
-
-          case 15:
-            _view_view_js__WEBPACK_IMPORTED_MODULE_1__.default.hideSkeletons();
-            _controllerUtil_js__WEBPACK_IMPORTED_MODULE_7__.default.pushSearchQuery(input);
-            _controllerUtil_js__WEBPACK_IMPORTED_MODULE_7__.default.loadSearchResult(videos);
-            _controllerUtil_js__WEBPACK_IMPORTED_MODULE_7__.default.savePrevSearchInfo(input, nextPageToken);
-            _storage_prevSearchResult_js__WEBPACK_IMPORTED_MODULE_3__.default.setVideos(videos);
-
-          case 20:
-          case "end":
-            return _context2.stop();
-        }
-      }
-    }, _callee2);
-  }));
-  return _onVideoSearch.apply(this, arguments);
-}
-
-function onSelectedVideoSave(_ref) {
-  var target = _ref.target;
-
-  if (!target.classList.contains(_constants_js__WEBPACK_IMPORTED_MODULE_6__.SELECTOR_CLASS.CLIP_SAVE_BUTTON)) {
-    return;
-  }
-
-  if (_storage_videoToWatch_js__WEBPACK_IMPORTED_MODULE_5__.default.getVideos().length === _constants_js__WEBPACK_IMPORTED_MODULE_6__.SETTINGS.MAX_SAVE_COUNT) {
-    _view_view_js__WEBPACK_IMPORTED_MODULE_1__.default.showMessage(_constants_js__WEBPACK_IMPORTED_MODULE_6__.ALERT_MESSAGE.SAVE_LIMIT_EXCEEDED);
-    return;
-  }
-
-  _view_view_js__WEBPACK_IMPORTED_MODULE_1__.default.hideVideoSaveButton(target);
-  _storage_videoToWatch_js__WEBPACK_IMPORTED_MODULE_5__.default.pushVideo(_controllerUtil_js__WEBPACK_IMPORTED_MODULE_7__.default.getNewVideo(target.dataset));
-  var videos = _storage_videoToWatch_js__WEBPACK_IMPORTED_MODULE_5__.default.getVideos();
-  _view_view_js__WEBPACK_IMPORTED_MODULE_1__.default.renderSelectedVideoItems(videos);
-  _view_view_js__WEBPACK_IMPORTED_MODULE_1__.default.renderSavedVideoCount(videos.length);
-}
-
-var controller = {
-  initEventListeners: function initEventListeners() {
-    _controllerUtil_js__WEBPACK_IMPORTED_MODULE_7__.default.setObserver(_elements_js__WEBPACK_IMPORTED_MODULE_0__.$searchResultIntersector, onAdditionalVideosLoad);
-    _elements_js__WEBPACK_IMPORTED_MODULE_0__.$searchResultVideoWrapper.addEventListener('click', onSelectedVideoSave);
-    _elements_js__WEBPACK_IMPORTED_MODULE_0__.$modalCloseButton.addEventListener('click', onModalClose);
-    _elements_js__WEBPACK_IMPORTED_MODULE_0__.$searchForm.addEventListener('submit', onVideoSearch);
-    _elements_js__WEBPACK_IMPORTED_MODULE_0__.$modal.addEventListener('click', function (event) {
-      if (event.target.id === _constants_js__WEBPACK_IMPORTED_MODULE_6__.SELECTOR_ID.MODAL) {
-        onModalClose();
-      }
-    });
-    _elements_js__WEBPACK_IMPORTED_MODULE_0__.$searchButton.addEventListener('click', onModalOpen);
-  },
-  initSearchQueries: function initSearchQueries() {
-    _view_view_js__WEBPACK_IMPORTED_MODULE_1__.default.renderSearchQueries(_storage_searchQuery_js__WEBPACK_IMPORTED_MODULE_4__.default.getQueries());
-  },
-  initVideos: function initVideos() {
-    _view_view_js__WEBPACK_IMPORTED_MODULE_1__.default.renderSelectedVideoItems(_storage_videoToWatch_js__WEBPACK_IMPORTED_MODULE_5__.default.getVideos());
-  }
-};
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (controller);
+});
+var BROWSER_HASH = Object.freeze({
+  WATCHING: 'watching',
+  WATCHED: 'watched',
+  SEARCH: 'search'
+});
 
 /***/ }),
 
@@ -12486,25 +12334,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-/* harmony import */ var _view_view_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../view/view.js */ "./src/view/view.js");
-/* harmony import */ var _storage_prevSearchResult_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../storage/prevSearchResult.js */ "./src/storage/prevSearchResult.js");
-/* harmony import */ var _storage_searchQuery_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../storage/searchQuery.js */ "./src/storage/searchQuery.js");
-/* harmony import */ var _storage_videoToWatch_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../storage/videoToWatch.js */ "./src/storage/videoToWatch.js");
-/* harmony import */ var _constants_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../constants.js */ "./src/constants.js");
-/* harmony import */ var _utils_querySelector_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../utils/querySelector.js */ "./src/utils/querySelector.js");
-/* harmony import */ var _view_viewUtil_js__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../view/viewUtil.js */ "./src/view/viewUtil.js");
-function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
-
-function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
-
-function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-
-
-
-
-
-
-
+/* harmony import */ var _constants__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../constants */ "./src/constants.js");
 
 var controllerUtil = {
   setObserver: function setObserver($element, callback) {
@@ -12517,68 +12347,443 @@ var controllerUtil = {
     });
     observer.observe($element);
   },
-  getProcessedVideos: function getProcessedVideos(videos) {
-    return videos.map(function (video) {
-      return _objectSpread(_objectSpread({}, video), {}, {
-        isSaved: controllerUtil.isVideoToWatch(video.videoId)
-      });
-    });
-  },
-  getNewVideo: function getNewVideo(dataset) {
-    return {
-      title: dataset.title,
-      channelTitle: dataset.channelTitle,
-      publishedAt: dataset.publishedAt,
-      videoId: dataset.videoId,
-      isSaved: true
-    };
-  },
-  savePrevSearchInfo: function savePrevSearchInfo(lastQuery, nextPageToken) {
-    _storage_prevSearchResult_js__WEBPACK_IMPORTED_MODULE_1__.default.setLastQuery(lastQuery);
-    _storage_prevSearchResult_js__WEBPACK_IMPORTED_MODULE_1__.default.setNextPageToken(nextPageToken);
-  },
-  pushSearchQuery: function pushSearchQuery(input) {
-    var filteredQueries = _storage_searchQuery_js__WEBPACK_IMPORTED_MODULE_2__.default.getQueries().filter(function (query) {
-      return input !== query;
-    });
-    filteredQueries.push(input);
-
-    if (filteredQueries.length > _constants_js__WEBPACK_IMPORTED_MODULE_4__.SETTINGS.MAX_SAVED_SEARCH_QUERY_COUNT) {
-      filteredQueries.shift();
+  parseHash: function parseHash(hash) {
+    if (hash === '') {
+      return _constants__WEBPACK_IMPORTED_MODULE_0__.BROWSER_HASH.WATCHING;
     }
 
-    _storage_searchQuery_js__WEBPACK_IMPORTED_MODULE_2__.default.setQueries(filteredQueries);
-  },
-  loadAdditionalVideos: function loadAdditionalVideos(videos) {
-    _view_view_js__WEBPACK_IMPORTED_MODULE_0__.default.insertVideoItems(videos);
-
-    if (videos.length === 0) {
-      _view_view_js__WEBPACK_IMPORTED_MODULE_0__.default.showNotFoundContent();
-      return;
-    }
-  },
-  loadSearchResult: function loadSearchResult(videos) {
-    _view_view_js__WEBPACK_IMPORTED_MODULE_0__.default.renderSearchQueries(_storage_searchQuery_js__WEBPACK_IMPORTED_MODULE_2__.default.getQueries());
-    _view_view_js__WEBPACK_IMPORTED_MODULE_0__.default.renderSearchedVideos(controllerUtil.getProcessedVideos(videos));
-  },
-  loadPrevSearchedVideos: function loadPrevSearchedVideos(videos) {
-    var processedVideos = controllerUtil.getProcessedVideos(videos);
-    _view_view_js__WEBPACK_IMPORTED_MODULE_0__.default.insertVideoItems(processedVideos);
-    _view_view_js__WEBPACK_IMPORTED_MODULE_0__.default.showSearchResultIntersector();
-  },
-  highlightNavButton: function highlightNavButton($target) {
-    (0,_utils_querySelector_js__WEBPACK_IMPORTED_MODULE_5__.$)(".".concat(_constants_js__WEBPACK_IMPORTED_MODULE_4__.SELECTOR_CLASS.NAV_BUTTON)).forEach(function ($button) {
-      _view_viewUtil_js__WEBPACK_IMPORTED_MODULE_6__.default.removeStyleClass($button, _constants_js__WEBPACK_IMPORTED_MODULE_4__.STYLE_CLASS.CLICKED);
-    });
-    _view_viewUtil_js__WEBPACK_IMPORTED_MODULE_6__.default.addStyleClass($target, _constants_js__WEBPACK_IMPORTED_MODULE_4__.STYLE_CLASS.CLICKED);
-  },
-  isVideoToWatch: function isVideoToWatch(videoId) {
-    return _storage_videoToWatch_js__WEBPACK_IMPORTED_MODULE_3__.default.getVideos().some(function (video) {
-      return video.videoId === videoId;
-    });
+    return hash.substr(1);
   }
 };
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (controllerUtil);
+
+/***/ }),
+
+/***/ "./src/controller/hashController.js":
+/*!******************************************!*\
+  !*** ./src/controller/hashController.js ***!
+  \******************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _constants_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../constants.js */ "./src/constants.js");
+/* harmony import */ var _store_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../store.js */ "./src/store.js");
+/* harmony import */ var _controllerUtil_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./controllerUtil.js */ "./src/controller/controllerUtil.js");
+/* harmony import */ var _view_index_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../view/index.js */ "./src/view/index.js");
+
+
+
+
+var hashController = {
+  initRouteEventListeners: function initRouteEventListeners() {
+    window.onhashchange = hashController.routeByHash;
+    window.onload = hashController.routeByHash;
+  },
+  routeByHash: function routeByHash() {
+    var hash = _controllerUtil_js__WEBPACK_IMPORTED_MODULE_2__.default.parseHash(location.hash);
+    _view_index_js__WEBPACK_IMPORTED_MODULE_3__.layoutView.highlightNavButton(hash);
+
+    if (hash === _constants_js__WEBPACK_IMPORTED_MODULE_0__.BROWSER_HASH.WATCHING) {
+      activeWatchingVideoShow();
+      return;
+    }
+
+    if (hash === _constants_js__WEBPACK_IMPORTED_MODULE_0__.BROWSER_HASH.WATCHED) {
+      activeWatchedVideoShow();
+      return;
+    }
+
+    activeWatchingVideoShow();
+  }
+};
+
+function activeWatchingVideoShow() {
+  var videos = _store_js__WEBPACK_IMPORTED_MODULE_1__.watchingVideoStorage.getItem();
+  _view_index_js__WEBPACK_IMPORTED_MODULE_3__.watchedVideoView.eraseVideos();
+  _view_index_js__WEBPACK_IMPORTED_MODULE_3__.watchedVideoView.hideEmptyVideoImage();
+
+  if (videos.length === 0) {
+    _view_index_js__WEBPACK_IMPORTED_MODULE_3__.watchingVideoView.showEmptyVideoImage();
+    return;
+  }
+
+  _view_index_js__WEBPACK_IMPORTED_MODULE_3__.watchingVideoView.renderVideos(videos);
+}
+
+function activeWatchedVideoShow() {
+  _view_index_js__WEBPACK_IMPORTED_MODULE_3__.watchingVideoView.eraseVideos();
+  _view_index_js__WEBPACK_IMPORTED_MODULE_3__.watchingVideoView.hideEmptyVideoImage();
+  var videos = _store_js__WEBPACK_IMPORTED_MODULE_1__.watchedVideoStorage.getItem();
+
+  if (videos.length === 0) {
+    _view_index_js__WEBPACK_IMPORTED_MODULE_3__.watchedVideoView.showEmptyVideoImage();
+    return;
+  }
+
+  _view_index_js__WEBPACK_IMPORTED_MODULE_3__.watchedVideoView.renderVideos(videos);
+}
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (hashController);
+
+/***/ }),
+
+/***/ "./src/controller/modalController.js":
+/*!*******************************************!*\
+  !*** ./src/controller/modalController.js ***!
+  \*******************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _elements_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../elements.js */ "./src/elements.js");
+/* harmony import */ var _apis_youtube_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../apis/youtube.js */ "./src/apis/youtube.js");
+/* harmony import */ var _controllerUtil_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./controllerUtil.js */ "./src/controller/controllerUtil.js");
+/* harmony import */ var _store_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../store.js */ "./src/store.js");
+/* harmony import */ var _service_modalService_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../service/modalService.js */ "./src/service/modalService.js");
+/* harmony import */ var _view_index_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../view/index.js */ "./src/view/index.js");
+/* harmony import */ var _constants_js__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../constants.js */ "./src/constants.js");
+/* harmony import */ var _service_watchingVideoService_js__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../service/watchingVideoService.js */ "./src/service/watchingVideoService.js");
+/* harmony import */ var _hashController_js__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./hashController.js */ "./src/controller/hashController.js");
+function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
+
+function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
+
+
+
+
+
+
+
+
+
+
+var modalController = {
+  initEventListeners: function initEventListeners() {
+    _controllerUtil_js__WEBPACK_IMPORTED_MODULE_2__.default.setObserver(_elements_js__WEBPACK_IMPORTED_MODULE_0__.$searchResultIntersector, onAdditionalVideosLoad);
+    _elements_js__WEBPACK_IMPORTED_MODULE_0__.$searchButton.addEventListener('click', onModalOpen);
+    _elements_js__WEBPACK_IMPORTED_MODULE_0__.$modalCloseButton.addEventListener('click', onModalClose);
+    _elements_js__WEBPACK_IMPORTED_MODULE_0__.$searchForm.addEventListener('submit', onVideoSearch);
+    _elements_js__WEBPACK_IMPORTED_MODULE_0__.$searchResultVideoWrapper.addEventListener('click', onSelectedVideoSave);
+    _elements_js__WEBPACK_IMPORTED_MODULE_0__.$modal.addEventListener('click', function (event) {
+      if (event.target.id === _constants_js__WEBPACK_IMPORTED_MODULE_6__.SELECTOR_ID.MODAL) {
+        onModalClose();
+      }
+    });
+  },
+  initSearchQueries: function initSearchQueries() {
+    _view_index_js__WEBPACK_IMPORTED_MODULE_5__.modalView.renderSearchQueries(_store_js__WEBPACK_IMPORTED_MODULE_3__.searchQueryStorage.getItem());
+  }
+};
+
+function onSelectedVideoSave(_ref) {
+  var target = _ref.target;
+
+  if (!target.classList.contains(_constants_js__WEBPACK_IMPORTED_MODULE_6__.SELECTOR_CLASS.SEARCHED_CLIP_SAVE_BUTTON)) {
+    return;
+  }
+
+  if (!_service_watchingVideoService_js__WEBPACK_IMPORTED_MODULE_7__.default.isVideoCountUnderLimit()) {
+    _view_index_js__WEBPACK_IMPORTED_MODULE_5__.layoutView.showSnackbar(_constants_js__WEBPACK_IMPORTED_MODULE_6__.SNACKBAR_MESSAGE.SAVE_LIMIT_EXCEEDED, false);
+    return;
+  }
+
+  if (_service_watchingVideoService_js__WEBPACK_IMPORTED_MODULE_7__.default.isVideosEmpty()) {
+    _view_index_js__WEBPACK_IMPORTED_MODULE_5__.watchingVideoView.hideEmptyVideoImage();
+    _view_index_js__WEBPACK_IMPORTED_MODULE_5__.watchedVideoView.hideEmptyVideoImage();
+  }
+
+  _service_watchingVideoService_js__WEBPACK_IMPORTED_MODULE_7__.default.pushNewVideo(target.dataset);
+
+  if (_controllerUtil_js__WEBPACK_IMPORTED_MODULE_2__.default.parseHash(location.hash) === _constants_js__WEBPACK_IMPORTED_MODULE_6__.BROWSER_HASH.WATCHING) {
+    _view_index_js__WEBPACK_IMPORTED_MODULE_5__.watchingVideoView.renderVideos(_store_js__WEBPACK_IMPORTED_MODULE_3__.watchingVideoStorage.getItem());
+  }
+
+  _view_index_js__WEBPACK_IMPORTED_MODULE_5__.modalView.hideVideoSaveButton(target);
+  _view_index_js__WEBPACK_IMPORTED_MODULE_5__.layoutView.showSnackbar(_constants_js__WEBPACK_IMPORTED_MODULE_6__.SNACKBAR_MESSAGE.WATCHING_VIDEO_SAVE_SUCCESS, true);
+}
+
+function onModalOpen() {
+  _view_index_js__WEBPACK_IMPORTED_MODULE_5__.layoutView.highlightNavButton(_constants_js__WEBPACK_IMPORTED_MODULE_6__.BROWSER_HASH.SEARCH);
+  var allVideoCount = _store_js__WEBPACK_IMPORTED_MODULE_3__.watchingVideoStorage.getItem().length + _store_js__WEBPACK_IMPORTED_MODULE_3__.watchedVideoStorage.getItem().length;
+  var videos = _store_js__WEBPACK_IMPORTED_MODULE_3__.prevSearchResultStorage.getItem().prevSearchedVideos;
+  var processedVideos = _service_modalService_js__WEBPACK_IMPORTED_MODULE_4__.default.getProcessedVideos(videos);
+  _view_index_js__WEBPACK_IMPORTED_MODULE_5__.modalView.openModal();
+  _view_index_js__WEBPACK_IMPORTED_MODULE_5__.modalView.renderSavedVideoCount(allVideoCount);
+  _view_index_js__WEBPACK_IMPORTED_MODULE_5__.modalView.focusElement(_elements_js__WEBPACK_IMPORTED_MODULE_0__.$searchFormInput);
+
+  if (videos.length === 0) {
+    return;
+  }
+
+  _view_index_js__WEBPACK_IMPORTED_MODULE_5__.modalView.renderSearchedVideos(processedVideos);
+  _view_index_js__WEBPACK_IMPORTED_MODULE_5__.modalView.showSearchResultIntersector();
+}
+
+function onModalClose() {
+  _hashController_js__WEBPACK_IMPORTED_MODULE_8__.default.routeByHash();
+  _view_index_js__WEBPACK_IMPORTED_MODULE_5__.modalView.closeModal();
+}
+
+function onVideoSearch(_x) {
+  return _onVideoSearch.apply(this, arguments);
+}
+
+function _onVideoSearch() {
+  _onVideoSearch = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee(event) {
+    var input, _yield$getVideosByKey, videos, nextPageToken;
+
+    return regeneratorRuntime.wrap(function _callee$(_context) {
+      while (1) {
+        switch (_context.prev = _context.next) {
+          case 0:
+            event.preventDefault();
+            input = event.target["".concat(_constants_js__WEBPACK_IMPORTED_MODULE_6__.SELECTOR_ID.SEARCH_FORM_INPUT)].value.trim();
+
+            if (!(input === _store_js__WEBPACK_IMPORTED_MODULE_3__.prevSearchResultStorage.getItem().lastQuery)) {
+              _context.next = 4;
+              break;
+            }
+
+            return _context.abrupt("return");
+
+          case 4:
+            if (!(input === '')) {
+              _context.next = 6;
+              break;
+            }
+
+            return _context.abrupt("return");
+
+          case 6:
+            _view_index_js__WEBPACK_IMPORTED_MODULE_5__.modalView.initSearchEnv();
+            _context.next = 9;
+            return (0,_apis_youtube_js__WEBPACK_IMPORTED_MODULE_1__.getVideosByKeyword)(input);
+
+          case 9:
+            _yield$getVideosByKey = _context.sent;
+            videos = _yield$getVideosByKey.videos;
+            nextPageToken = _yield$getVideosByKey.nextPageToken;
+
+            if (!(videos.length === 0)) {
+              _context.next = 15;
+              break;
+            }
+
+            _view_index_js__WEBPACK_IMPORTED_MODULE_5__.modalView.showNotFoundImage();
+            return _context.abrupt("return");
+
+          case 15:
+            _service_modalService_js__WEBPACK_IMPORTED_MODULE_4__.default.saveSearchQuery(input);
+            _service_modalService_js__WEBPACK_IMPORTED_MODULE_4__.default.savePrevSearchInfo({
+              lastQuery: input,
+              nextPageToken: nextPageToken
+            });
+            _service_modalService_js__WEBPACK_IMPORTED_MODULE_4__.default.savePrevSearchedVideos(videos);
+            _view_index_js__WEBPACK_IMPORTED_MODULE_5__.modalView.hideSkeletons();
+            _view_index_js__WEBPACK_IMPORTED_MODULE_5__.modalView.renderSearchQueries(_store_js__WEBPACK_IMPORTED_MODULE_3__.searchQueryStorage.getItem());
+            _view_index_js__WEBPACK_IMPORTED_MODULE_5__.modalView.renderSearchedVideos(_service_modalService_js__WEBPACK_IMPORTED_MODULE_4__.default.getProcessedVideos(videos));
+
+          case 21:
+          case "end":
+            return _context.stop();
+        }
+      }
+    }, _callee);
+  }));
+  return _onVideoSearch.apply(this, arguments);
+}
+
+function onAdditionalVideosLoad() {
+  return _onAdditionalVideosLoad.apply(this, arguments);
+}
+
+function _onAdditionalVideosLoad() {
+  _onAdditionalVideosLoad = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee2() {
+    var _modalService$getPrev, lastQuery, pageToken, _yield$getVideosByKey2, videos, nextPageToken;
+
+    return regeneratorRuntime.wrap(function _callee2$(_context2) {
+      while (1) {
+        switch (_context2.prev = _context2.next) {
+          case 0:
+            _modalService$getPrev = _service_modalService_js__WEBPACK_IMPORTED_MODULE_4__.default.getPrevSearchInfo(), lastQuery = _modalService$getPrev.lastQuery, pageToken = _modalService$getPrev.pageToken;
+            _context2.next = 3;
+            return (0,_apis_youtube_js__WEBPACK_IMPORTED_MODULE_1__.getVideosByKeyword)(lastQuery, pageToken);
+
+          case 3:
+            _yield$getVideosByKey2 = _context2.sent;
+            videos = _yield$getVideosByKey2.videos;
+            nextPageToken = _yield$getVideosByKey2.nextPageToken;
+            _view_index_js__WEBPACK_IMPORTED_MODULE_5__.modalView.insertSearchedVideos(videos);
+            _service_modalService_js__WEBPACK_IMPORTED_MODULE_4__.default.savePrevSearchInfo({
+              nextPageToken: nextPageToken
+            });
+
+          case 8:
+          case "end":
+            return _context2.stop();
+        }
+      }
+    }, _callee2);
+  }));
+  return _onAdditionalVideosLoad.apply(this, arguments);
+}
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (modalController);
+
+/***/ }),
+
+/***/ "./src/controller/watchedVideoController.js":
+/*!**************************************************!*\
+  !*** ./src/controller/watchedVideoController.js ***!
+  \**************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _constants__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../constants */ "./src/constants.js");
+/* harmony import */ var _elements__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../elements */ "./src/elements.js");
+/* harmony import */ var _service_watchedVideoService_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../service/watchedVideoService.js */ "./src/service/watchedVideoService.js");
+/* harmony import */ var _store__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../store */ "./src/store.js");
+/* harmony import */ var _view__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../view */ "./src/view/index.js");
+
+
+
+
+
+var watchedVideoController = {
+  initEventListeners: function initEventListeners() {
+    _elements__WEBPACK_IMPORTED_MODULE_1__.$watchedVideoWrapper.addEventListener('click', onWatchedVideoInteract);
+  }
+};
+
+function onWatchedVideoInteract(_ref) {
+  var target = _ref.target;
+
+  if (target.classList.contains(_constants__WEBPACK_IMPORTED_MODULE_0__.SELECTOR_CLASS.CLIP_CHECK_BUTTON)) {
+    onClipUnCheck(target);
+    return;
+  }
+
+  if (target.classList.contains(_constants__WEBPACK_IMPORTED_MODULE_0__.SELECTOR_CLASS.CLIP_DELETE_BUTTON)) {
+    onWatchedVideoDelete(target);
+    return;
+  }
+}
+
+function onClipUnCheck(button) {
+  var videoId = button.dataset.videoId;
+  _store__WEBPACK_IMPORTED_MODULE_3__.watchedVideoStorage.sendVideoTo(_store__WEBPACK_IMPORTED_MODULE_3__.watchingVideoStorage, videoId);
+  loadWatchedVideos();
+  _view__WEBPACK_IMPORTED_MODULE_4__.layoutView.showSnackbar(_constants__WEBPACK_IMPORTED_MODULE_0__.SNACKBAR_MESSAGE.WATCHING_VIDEO_CHECK_SUCCESS, true);
+}
+
+function onWatchedVideoDelete(button) {
+  if (!_view__WEBPACK_IMPORTED_MODULE_4__.layoutView.confirm(_constants__WEBPACK_IMPORTED_MODULE_0__.CONFIRM_MESSAGE.WATCHED_VIDEO_DELETE)) {
+    return;
+  }
+
+  var videoId = button.dataset.videoId;
+  _store__WEBPACK_IMPORTED_MODULE_3__.watchedVideoStorage.popVideoByVideoId(videoId);
+  loadWatchedVideos();
+  _view__WEBPACK_IMPORTED_MODULE_4__.layoutView.showSnackbar(_constants__WEBPACK_IMPORTED_MODULE_0__.SNACKBAR_MESSAGE.WATCHED_VIDEO_DELETE_SUCCESS, true);
+}
+
+function loadWatchedVideos() {
+  var watchedVideos = _store__WEBPACK_IMPORTED_MODULE_3__.watchedVideoStorage.getItem();
+
+  if (_service_watchedVideoService_js__WEBPACK_IMPORTED_MODULE_2__.default.isVideosEmpty()) {
+    _view__WEBPACK_IMPORTED_MODULE_4__.watchedVideoView.showEmptyVideoImage();
+    _view__WEBPACK_IMPORTED_MODULE_4__.watchingVideoView.hideEmptyVideoImage();
+  }
+
+  _view__WEBPACK_IMPORTED_MODULE_4__.watchedVideoView.renderVideos(watchedVideos);
+}
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (watchedVideoController);
+
+/***/ }),
+
+/***/ "./src/controller/watchingVideoController.js":
+/*!***************************************************!*\
+  !*** ./src/controller/watchingVideoController.js ***!
+  \***************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _elements__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../elements */ "./src/elements.js");
+/* harmony import */ var _store__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../store */ "./src/store.js");
+/* harmony import */ var _view__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../view */ "./src/view/index.js");
+/* harmony import */ var _service_watchingVideoService_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../service/watchingVideoService.js */ "./src/service/watchingVideoService.js");
+/* harmony import */ var _constants__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../constants */ "./src/constants.js");
+
+
+
+
+
+var watchingVideoController = {
+  initEventListeners: function initEventListeners() {
+    _elements__WEBPACK_IMPORTED_MODULE_0__.$watchingVideoWrapper.addEventListener('click', onWatchingVideoInteract);
+  }
+};
+
+function onWatchingVideoInteract(_ref) {
+  var target = _ref.target;
+
+  if (target.classList.contains(_constants__WEBPACK_IMPORTED_MODULE_4__.SELECTOR_CLASS.CLIP_CHECK_BUTTON)) {
+    onClipCheck(target);
+    return;
+  }
+
+  if (target.classList.contains(_constants__WEBPACK_IMPORTED_MODULE_4__.SELECTOR_CLASS.CLIP_DELETE_BUTTON)) {
+    onWatchingVideoDelete(target);
+    return;
+  }
+}
+
+function onClipCheck(button) {
+  var videoId = button.dataset.videoId;
+  _store__WEBPACK_IMPORTED_MODULE_1__.watchingVideoStorage.sendVideoTo(_store__WEBPACK_IMPORTED_MODULE_1__.watchedVideoStorage, videoId);
+  loadWatchingVideos();
+  _view__WEBPACK_IMPORTED_MODULE_2__.layoutView.showSnackbar(_constants__WEBPACK_IMPORTED_MODULE_4__.SNACKBAR_MESSAGE.WATCHED_VIDEO_CHECK_SUCCESS, true);
+}
+
+function onWatchingVideoDelete(button) {
+  if (!_view__WEBPACK_IMPORTED_MODULE_2__.layoutView.confirm(_constants__WEBPACK_IMPORTED_MODULE_4__.CONFIRM_MESSAGE.WATCHING_VIDEO_DELETE)) {
+    return;
+  }
+
+  var videoId = button.dataset.videoId;
+  _store__WEBPACK_IMPORTED_MODULE_1__.watchingVideoStorage.popVideoByVideoId(videoId);
+  loadWatchingVideos();
+  _view__WEBPACK_IMPORTED_MODULE_2__.layoutView.showSnackbar(_constants__WEBPACK_IMPORTED_MODULE_4__.SNACKBAR_MESSAGE.WATCHING_VIDEO_DELETE_SUCCESS, true);
+}
+
+function loadWatchingVideos() {
+  var watchingVideos = _store__WEBPACK_IMPORTED_MODULE_1__.watchingVideoStorage.getItem();
+
+  if (_service_watchingVideoService_js__WEBPACK_IMPORTED_MODULE_3__.default.isVideosEmpty()) {
+    _view__WEBPACK_IMPORTED_MODULE_2__.watchingVideoView.showEmptyVideoImage();
+    _view__WEBPACK_IMPORTED_MODULE_2__.watchedVideoView.hideEmptyVideoImage();
+  }
+
+  _view__WEBPACK_IMPORTED_MODULE_2__.watchingVideoView.renderVideos(watchingVideos);
+}
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (watchingVideoController);
 
 /***/ }),
 
@@ -12591,9 +12796,6 @@ var controllerUtil = {
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "$watchingVideoButton": () => (/* binding */ $watchingVideoButton),
-/* harmony export */   "$watchedVideoButton": () => (/* binding */ $watchedVideoButton),
-/* harmony export */   "$searchButton": () => (/* binding */ $searchButton),
 /* harmony export */   "$searchForm": () => (/* binding */ $searchForm),
 /* harmony export */   "$searchFormInput": () => (/* binding */ $searchFormInput),
 /* harmony export */   "$searchFormSubmit": () => (/* binding */ $searchFormSubmit),
@@ -12601,17 +12803,23 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "$modalCloseButton": () => (/* binding */ $modalCloseButton),
 /* harmony export */   "$searchResultVideoWrapper": () => (/* binding */ $searchResultVideoWrapper),
 /* harmony export */   "$searchResultIntersector": () => (/* binding */ $searchResultIntersector),
-/* harmony export */   "$videoWrapper": () => (/* binding */ $videoWrapper),
 /* harmony export */   "$searchQueries": () => (/* binding */ $searchQueries),
-/* harmony export */   "$savedVideoCount": () => (/* binding */ $savedVideoCount)
+/* harmony export */   "$savedVideoCount": () => (/* binding */ $savedVideoCount),
+/* harmony export */   "$nav": () => (/* binding */ $nav),
+/* harmony export */   "$watchingVideoButton": () => (/* binding */ $watchingVideoButton),
+/* harmony export */   "$watchedVideoButton": () => (/* binding */ $watchedVideoButton),
+/* harmony export */   "$searchButton": () => (/* binding */ $searchButton),
+/* harmony export */   "$watchedVideoWrapper": () => (/* binding */ $watchedVideoWrapper),
+/* harmony export */   "$watchingVideoWrapper": () => (/* binding */ $watchingVideoWrapper),
+/* harmony export */   "$emptyWatchingVideo": () => (/* binding */ $emptyWatchingVideo),
+/* harmony export */   "$emptyWatchedVideo": () => (/* binding */ $emptyWatchedVideo),
+/* harmony export */   "$snackbarWrapper": () => (/* binding */ $snackbarWrapper)
 /* harmony export */ });
 /* harmony import */ var _constants_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./constants.js */ "./src/constants.js");
 /* harmony import */ var _utils_querySelector_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./utils/querySelector.js */ "./src/utils/querySelector.js");
 
+ //modal view
 
-var $watchingVideoButton = (0,_utils_querySelector_js__WEBPACK_IMPORTED_MODULE_1__.$)("#".concat(_constants_js__WEBPACK_IMPORTED_MODULE_0__.SELECTOR_ID.WATCHING_VIDEO_BUTTON));
-var $watchedVideoButton = (0,_utils_querySelector_js__WEBPACK_IMPORTED_MODULE_1__.$)("#".concat(_constants_js__WEBPACK_IMPORTED_MODULE_0__.SELECTOR_ID.WATCHED_VIDEO_BUTTON));
-var $searchButton = (0,_utils_querySelector_js__WEBPACK_IMPORTED_MODULE_1__.$)("#".concat(_constants_js__WEBPACK_IMPORTED_MODULE_0__.SELECTOR_ID.SEARCH_BUTTON));
 var $searchForm = (0,_utils_querySelector_js__WEBPACK_IMPORTED_MODULE_1__.$)("#".concat(_constants_js__WEBPACK_IMPORTED_MODULE_0__.SELECTOR_ID.SEARCH_FORM));
 var $searchFormInput = (0,_utils_querySelector_js__WEBPACK_IMPORTED_MODULE_1__.$)("#".concat(_constants_js__WEBPACK_IMPORTED_MODULE_0__.SELECTOR_ID.SEARCH_FORM_INPUT));
 var $searchFormSubmit = (0,_utils_querySelector_js__WEBPACK_IMPORTED_MODULE_1__.$)("#".concat(_constants_js__WEBPACK_IMPORTED_MODULE_0__.SELECTOR_ID.SEARCH_FORM_SUBMIT));
@@ -12619,16 +12827,472 @@ var $modal = (0,_utils_querySelector_js__WEBPACK_IMPORTED_MODULE_1__.$)("#".conc
 var $modalCloseButton = (0,_utils_querySelector_js__WEBPACK_IMPORTED_MODULE_1__.$)("#".concat(_constants_js__WEBPACK_IMPORTED_MODULE_0__.SELECTOR_ID.MODAL_CLOSE_BUTTON));
 var $searchResultVideoWrapper = (0,_utils_querySelector_js__WEBPACK_IMPORTED_MODULE_1__.$)("#".concat(_constants_js__WEBPACK_IMPORTED_MODULE_0__.SELECTOR_ID.SEARCH_RESULT_VIDEO_WRAPPER));
 var $searchResultIntersector = (0,_utils_querySelector_js__WEBPACK_IMPORTED_MODULE_1__.$)("#".concat(_constants_js__WEBPACK_IMPORTED_MODULE_0__.SELECTOR_ID.SEARCH_RESULT_INTERSECTOR));
-var $videoWrapper = (0,_utils_querySelector_js__WEBPACK_IMPORTED_MODULE_1__.$)("#".concat(_constants_js__WEBPACK_IMPORTED_MODULE_0__.SELECTOR_ID.VIDEO_WRAPPER));
 var $searchQueries = (0,_utils_querySelector_js__WEBPACK_IMPORTED_MODULE_1__.$)("#".concat(_constants_js__WEBPACK_IMPORTED_MODULE_0__.SELECTOR_ID.SEARCH_QUERIES));
-var $savedVideoCount = (0,_utils_querySelector_js__WEBPACK_IMPORTED_MODULE_1__.$)("#".concat(_constants_js__WEBPACK_IMPORTED_MODULE_0__.SELECTOR_ID.SAVED_VIDEO_COUNT));
+var $savedVideoCount = (0,_utils_querySelector_js__WEBPACK_IMPORTED_MODULE_1__.$)("#".concat(_constants_js__WEBPACK_IMPORTED_MODULE_0__.SELECTOR_ID.SAVED_VIDEO_COUNT)); //main view
+
+var $nav = (0,_utils_querySelector_js__WEBPACK_IMPORTED_MODULE_1__.$)("#".concat(_constants_js__WEBPACK_IMPORTED_MODULE_0__.SELECTOR_ID.NAV));
+var $watchingVideoButton = (0,_utils_querySelector_js__WEBPACK_IMPORTED_MODULE_1__.$)("#".concat(_constants_js__WEBPACK_IMPORTED_MODULE_0__.SELECTOR_ID.WATCHING_VIDEO_BUTTON));
+var $watchedVideoButton = (0,_utils_querySelector_js__WEBPACK_IMPORTED_MODULE_1__.$)("#".concat(_constants_js__WEBPACK_IMPORTED_MODULE_0__.SELECTOR_ID.WATCHED_VIDEO_BUTTON));
+var $searchButton = (0,_utils_querySelector_js__WEBPACK_IMPORTED_MODULE_1__.$)("#".concat(_constants_js__WEBPACK_IMPORTED_MODULE_0__.SELECTOR_ID.SEARCH_BUTTON));
+var $watchedVideoWrapper = (0,_utils_querySelector_js__WEBPACK_IMPORTED_MODULE_1__.$)("#".concat(_constants_js__WEBPACK_IMPORTED_MODULE_0__.SELECTOR_ID.WATCHED_VIDEO_WRAPPER));
+var $watchingVideoWrapper = (0,_utils_querySelector_js__WEBPACK_IMPORTED_MODULE_1__.$)("#".concat(_constants_js__WEBPACK_IMPORTED_MODULE_0__.SELECTOR_ID.WATCHING_VIDEO_WRAPPER));
+var $emptyWatchingVideo = (0,_utils_querySelector_js__WEBPACK_IMPORTED_MODULE_1__.$)("#".concat(_constants_js__WEBPACK_IMPORTED_MODULE_0__.SELECTOR_ID.EMPTY_WATCHING_VIDEO));
+var $emptyWatchedVideo = (0,_utils_querySelector_js__WEBPACK_IMPORTED_MODULE_1__.$)("#".concat(_constants_js__WEBPACK_IMPORTED_MODULE_0__.SELECTOR_ID.EMPTY_WATCHED_VIDEO)); //common
+
+var $snackbarWrapper = (0,_utils_querySelector_js__WEBPACK_IMPORTED_MODULE_1__.$)("#".concat(_constants_js__WEBPACK_IMPORTED_MODULE_0__.SELECTOR_ID.SNACKBAR_WRAPPER));
 
 /***/ }),
 
-/***/ "./src/storage/localStorage.js":
+/***/ "./src/service/modalService.js":
 /*!*************************************!*\
-  !*** ./src/storage/localStorage.js ***!
+  !*** ./src/service/modalService.js ***!
   \*************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _constants__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../constants */ "./src/constants.js");
+/* harmony import */ var _store_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../store.js */ "./src/store.js");
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+
+
+var modalService = {
+  getPrevSearchInfo: function getPrevSearchInfo() {
+    return {
+      lastQuery: _store_js__WEBPACK_IMPORTED_MODULE_1__.prevSearchResultStorage.getItem().lastQuery,
+      pageToken: _store_js__WEBPACK_IMPORTED_MODULE_1__.prevSearchResultStorage.getItem().nextPageToken
+    };
+  },
+  getProcessedVideos: function getProcessedVideos(videos) {
+    return videos.map(function (video) {
+      return _objectSpread(_objectSpread({}, video), {}, {
+        isSaved: isVideoIdExist(_store_js__WEBPACK_IMPORTED_MODULE_1__.watchingVideoStorage.getItem(), video.videoId) || isVideoIdExist(_store_js__WEBPACK_IMPORTED_MODULE_1__.watchedVideoStorage.getItem(), video.videoId)
+      });
+    });
+  },
+  saveSearchQuery: function saveSearchQuery(searchQuery) {
+    var filteredQueries = _store_js__WEBPACK_IMPORTED_MODULE_1__.searchQueryStorage.getItem().filter(function (query) {
+      return searchQuery !== query;
+    });
+    filteredQueries.push(searchQuery);
+
+    if (filteredQueries.length > _constants__WEBPACK_IMPORTED_MODULE_0__.SETTINGS.MAX_SAVED_SEARCH_QUERY_COUNT) {
+      filteredQueries.shift();
+    }
+
+    _store_js__WEBPACK_IMPORTED_MODULE_1__.searchQueryStorage.setItem(filteredQueries);
+  },
+  savePrevSearchInfo: function savePrevSearchInfo(_ref) {
+    var lastQuery = _ref.lastQuery,
+        nextPageToken = _ref.nextPageToken;
+
+    if (lastQuery) {
+      _store_js__WEBPACK_IMPORTED_MODULE_1__.prevSearchResultStorage.setItem({
+        lastQuery: lastQuery
+      });
+    }
+
+    if (nextPageToken) {
+      _store_js__WEBPACK_IMPORTED_MODULE_1__.prevSearchResultStorage.setItem({
+        nextPageToken: nextPageToken
+      });
+    }
+  },
+  savePrevSearchedVideos: function savePrevSearchedVideos(videos) {
+    _store_js__WEBPACK_IMPORTED_MODULE_1__.prevSearchResultStorage.setItem({
+      prevSearchedVideos: videos
+    });
+  }
+};
+
+function isVideoIdExist(videos, videoId) {
+  return videos.some(function (video) {
+    return video.videoId === videoId;
+  });
+}
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (modalService);
+
+/***/ }),
+
+/***/ "./src/service/watchedVideoService.js":
+/*!********************************************!*\
+  !*** ./src/service/watchedVideoService.js ***!
+  \********************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _store__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../store */ "./src/store.js");
+
+var watchedVideoService = {
+  isVideosEmpty: function isVideosEmpty() {
+    return _store__WEBPACK_IMPORTED_MODULE_0__.watchedVideoStorage.getItem().length === 0;
+  }
+};
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (watchedVideoService);
+
+/***/ }),
+
+/***/ "./src/service/watchingVideoService.js":
+/*!*********************************************!*\
+  !*** ./src/service/watchingVideoService.js ***!
+  \*********************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _constants__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../constants */ "./src/constants.js");
+/* harmony import */ var _store_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../store.js */ "./src/store.js");
+
+
+var watchingVideoService = {
+  isVideoCountUnderLimit: function isVideoCountUnderLimit() {
+    var allVideoCount = _store_js__WEBPACK_IMPORTED_MODULE_1__.watchingVideoStorage.getItem().length + _store_js__WEBPACK_IMPORTED_MODULE_1__.watchedVideoStorage.getItem().length;
+    return allVideoCount < _constants__WEBPACK_IMPORTED_MODULE_0__.SETTINGS.MAX_SAVE_COUNT;
+  },
+  isVideosEmpty: function isVideosEmpty() {
+    return _store_js__WEBPACK_IMPORTED_MODULE_1__.watchingVideoStorage.getItem().length === 0;
+  },
+  pushNewVideo: function pushNewVideo(dataset) {
+    _store_js__WEBPACK_IMPORTED_MODULE_1__.watchingVideoStorage.pushItem(getNewVideo(dataset));
+  }
+};
+
+function getNewVideo(dataset) {
+  return {
+    title: dataset.title,
+    channelTitle: dataset.channelTitle,
+    publishedAt: dataset.publishedAt,
+    videoId: dataset.videoId,
+    thumbnailUrl: dataset.thumbnailUrl,
+    isSaved: true
+  };
+}
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (watchingVideoService);
+
+/***/ }),
+
+/***/ "./src/storage/ArrayStorage.js":
+/*!*************************************!*\
+  !*** ./src/storage/ArrayStorage.js ***!
+  \*************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ ArrayStorage)
+/* harmony export */ });
+/* harmony import */ var _BasicStorage_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./BasicStorage.js */ "./src/storage/BasicStorage.js");
+function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+function _get(target, property, receiver) { if (typeof Reflect !== "undefined" && Reflect.get) { _get = Reflect.get; } else { _get = function _get(target, property, receiver) { var base = _superPropBase(target, property); if (!base) return; var desc = Object.getOwnPropertyDescriptor(base, property); if (desc.get) { return desc.get.call(receiver); } return desc.value; }; } return _get(target, property, receiver || target); }
+
+function _superPropBase(object, property) { while (!Object.prototype.hasOwnProperty.call(object, property)) { object = _getPrototypeOf(object); if (object === null) break; } return object; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
+
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
+function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
+
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+
+
+
+var ArrayStorage = /*#__PURE__*/function (_BasicStorage) {
+  _inherits(ArrayStorage, _BasicStorage);
+
+  var _super = _createSuper(ArrayStorage);
+
+  function ArrayStorage(key) {
+    _classCallCheck(this, ArrayStorage);
+
+    return _super.call(this, key);
+  }
+
+  _createClass(ArrayStorage, [{
+    key: "getItem",
+    value: function getItem() {
+      return _get(_getPrototypeOf(ArrayStorage.prototype), "getItem", this).call(this, this._key) || [];
+    }
+  }, {
+    key: "setItem",
+    value: function setItem(items) {
+      if (!Array.isArray(items)) {
+        return;
+      }
+
+      _get(_getPrototypeOf(ArrayStorage.prototype), "setItem", this).call(this, items);
+    }
+  }, {
+    key: "pushItem",
+    value: function pushItem(newItem) {
+      var items = this.getItem();
+      items.push(newItem);
+      this.setItem(items);
+    }
+  }]);
+
+  return ArrayStorage;
+}(_BasicStorage_js__WEBPACK_IMPORTED_MODULE_0__.default);
+
+
+
+/***/ }),
+
+/***/ "./src/storage/BasicStorage.js":
+/*!*************************************!*\
+  !*** ./src/storage/BasicStorage.js ***!
+  \*************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ BasicStorage)
+/* harmony export */ });
+/* harmony import */ var _storage_localStorageUtil_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../storage/localStorageUtil.js */ "./src/storage/localStorageUtil.js");
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+
+
+var BasicStorage = /*#__PURE__*/function () {
+  function BasicStorage(key) {
+    _classCallCheck(this, BasicStorage);
+
+    _defineProperty(this, "_key", void 0);
+
+    this._key = key;
+  }
+
+  _createClass(BasicStorage, [{
+    key: "getItem",
+    value: function getItem() {
+      return (0,_storage_localStorageUtil_js__WEBPACK_IMPORTED_MODULE_0__.getLocalStorageItem)(this._key);
+    }
+  }, {
+    key: "setItem",
+    value: function setItem(item) {
+      (0,_storage_localStorageUtil_js__WEBPACK_IMPORTED_MODULE_0__.setLocalStorageItem)(this._key, item);
+    }
+  }]);
+
+  return BasicStorage;
+}();
+
+
+
+/***/ }),
+
+/***/ "./src/storage/PrevSearchResultStorage.js":
+/*!************************************************!*\
+  !*** ./src/storage/PrevSearchResultStorage.js ***!
+  \************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ PrevSearchResult)
+/* harmony export */ });
+/* harmony import */ var _BasicStorage_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./BasicStorage.js */ "./src/storage/BasicStorage.js");
+function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
+
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
+function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
+
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
+
+function _get(target, property, receiver) { if (typeof Reflect !== "undefined" && Reflect.get) { _get = Reflect.get; } else { _get = function _get(target, property, receiver) { var base = _superPropBase(target, property); if (!base) return; var desc = Object.getOwnPropertyDescriptor(base, property); if (desc.get) { return desc.get.call(receiver); } return desc.value; }; } return _get(target, property, receiver || target); }
+
+function _superPropBase(object, property) { while (!Object.prototype.hasOwnProperty.call(object, property)) { object = _getPrototypeOf(object); if (object === null) break; } return object; }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+
+
+
+var PrevSearchResult = /*#__PURE__*/function (_BasicStorage) {
+  _inherits(PrevSearchResult, _BasicStorage);
+
+  var _super = _createSuper(PrevSearchResult);
+
+  function PrevSearchResult(key) {
+    var _thisSuper, _this;
+
+    _classCallCheck(this, PrevSearchResult);
+
+    _this = _super.call(this, key);
+
+    if (!_this.getItem()) {
+      _get((_thisSuper = _assertThisInitialized(_this), _getPrototypeOf(PrevSearchResult.prototype)), "setItem", _thisSuper).call(_thisSuper, {
+        prevSearchedVideos: []
+      });
+    }
+
+    return _this;
+  }
+
+  _createClass(PrevSearchResult, [{
+    key: "setItem",
+    value: function setItem(_ref) {
+      var lastQuery = _ref.lastQuery,
+          nextPageToken = _ref.nextPageToken,
+          prevSearchedVideos = _ref.prevSearchedVideos;
+      //KEY: PREV_SEARCH_RESULT
+      var prevSearchResult = this.getItem();
+      var newItem = {
+        lastQuery: lastQuery ? lastQuery : prevSearchResult.lastQuery,
+        nextPageToken: nextPageToken ? nextPageToken : prevSearchResult.nextPageToken,
+        prevSearchedVideos: prevSearchedVideos ? prevSearchedVideos : prevSearchResult.prevSearchedVideos
+      };
+
+      _get(_getPrototypeOf(PrevSearchResult.prototype), "setItem", this).call(this, newItem);
+    }
+  }]);
+
+  return PrevSearchResult;
+}(_BasicStorage_js__WEBPACK_IMPORTED_MODULE_0__.default);
+
+
+
+/***/ }),
+
+/***/ "./src/storage/VideoStorage.js":
+/*!*************************************!*\
+  !*** ./src/storage/VideoStorage.js ***!
+  \*************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ VideoStorage)
+/* harmony export */ });
+/* harmony import */ var _ArrayStorage_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./ArrayStorage.js */ "./src/storage/ArrayStorage.js");
+function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
+
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
+function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
+
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+
+
+
+var VideoStorage = /*#__PURE__*/function (_ArrayStorage) {
+  _inherits(VideoStorage, _ArrayStorage);
+
+  var _super = _createSuper(VideoStorage);
+
+  function VideoStorage(key) {
+    _classCallCheck(this, VideoStorage);
+
+    return _super.call(this, key);
+  }
+
+  _createClass(VideoStorage, [{
+    key: "popVideoByVideoId",
+    value: function popVideoByVideoId(videoId) {
+      var videos = this.getItem();
+      var poppedVideo = videos.find(function (video) {
+        return video.videoId === videoId;
+      });
+
+      if (!poppedVideo) {
+        return;
+      }
+
+      this.setItem(videos.filter(function (video) {
+        return video.videoId !== videoId;
+      }));
+      return poppedVideo;
+    }
+  }, {
+    key: "sendVideoTo",
+    value: function sendVideoTo(videoStorage, videoId) {
+      var sendingVideo = this.popVideoByVideoId(videoId);
+
+      if (!sendingVideo) {
+        return;
+      }
+
+      videoStorage.pushItem(sendingVideo);
+    }
+  }]);
+
+  return VideoStorage;
+}(_ArrayStorage_js__WEBPACK_IMPORTED_MODULE_0__.default);
+
+
+
+/***/ }),
+
+/***/ "./src/storage/localStorageUtil.js":
+/*!*****************************************!*\
+  !*** ./src/storage/localStorageUtil.js ***!
+  \*****************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
@@ -12658,118 +13322,32 @@ function isKey(key) {
 
 /***/ }),
 
-/***/ "./src/storage/prevSearchResult.js":
-/*!*****************************************!*\
-  !*** ./src/storage/prevSearchResult.js ***!
-  \*****************************************/
+/***/ "./src/store.js":
+/*!**********************!*\
+  !*** ./src/store.js ***!
+  \**********************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */   "watchingVideoStorage": () => (/* binding */ watchingVideoStorage),
+/* harmony export */   "watchedVideoStorage": () => (/* binding */ watchedVideoStorage),
+/* harmony export */   "prevSearchResultStorage": () => (/* binding */ prevSearchResultStorage),
+/* harmony export */   "searchQueryStorage": () => (/* binding */ searchQueryStorage)
 /* harmony export */ });
-/* harmony import */ var _constants_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../constants.js */ "./src/constants.js");
-/* harmony import */ var _localStorage_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./localStorage.js */ "./src/storage/localStorage.js");
+/* harmony import */ var _constants_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./constants.js */ "./src/constants.js");
+/* harmony import */ var _storage_VideoStorage_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./storage/VideoStorage.js */ "./src/storage/VideoStorage.js");
+/* harmony import */ var _storage_PrevSearchResultStorage_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./storage/PrevSearchResultStorage.js */ "./src/storage/PrevSearchResultStorage.js");
+/* harmony import */ var _storage_ArrayStorage_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./storage/ArrayStorage.js */ "./src/storage/ArrayStorage.js");
 
 
-var prevSearchResult = {
-  getLastQuery: function getLastQuery() {
-    return (0,_localStorage_js__WEBPACK_IMPORTED_MODULE_1__.getLocalStorageItem)(_constants_js__WEBPACK_IMPORTED_MODULE_0__.LOCAL_STORAGE_KEY.LAST_QUERY);
-  },
-  getNextPageToken: function getNextPageToken() {
-    return (0,_localStorage_js__WEBPACK_IMPORTED_MODULE_1__.getLocalStorageItem)(_constants_js__WEBPACK_IMPORTED_MODULE_0__.LOCAL_STORAGE_KEY.NEXT_PAGE_TOKEN);
-  },
-  getSearchedVideos: function getSearchedVideos() {
-    return (0,_localStorage_js__WEBPACK_IMPORTED_MODULE_1__.getLocalStorageItem)(_constants_js__WEBPACK_IMPORTED_MODULE_0__.LOCAL_STORAGE_KEY.PREVIOUS_SEARCH_VIDEOS) || [];
-  },
-  setLastQuery: function setLastQuery(value) {
-    localStorage.setItem(_constants_js__WEBPACK_IMPORTED_MODULE_0__.LOCAL_STORAGE_KEY.LAST_QUERY, JSON.stringify(value));
-  },
-  setNextPageToken: function setNextPageToken(value) {
-    localStorage.setItem(_constants_js__WEBPACK_IMPORTED_MODULE_0__.LOCAL_STORAGE_KEY.NEXT_PAGE_TOKEN, JSON.stringify(value));
-  },
-  setVideos: function setVideos(videos) {
-    localStorage.setItem(_constants_js__WEBPACK_IMPORTED_MODULE_0__.LOCAL_STORAGE_KEY.PREVIOUS_SEARCH_VIDEOS, JSON.stringify(videos));
-  }
-};
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (prevSearchResult);
-
-/***/ }),
-
-/***/ "./src/storage/searchQuery.js":
-/*!************************************!*\
-  !*** ./src/storage/searchQuery.js ***!
-  \************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
-/* harmony export */ });
-/* harmony import */ var _constants_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../constants.js */ "./src/constants.js");
-/* harmony import */ var _localStorage_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./localStorage.js */ "./src/storage/localStorage.js");
 
 
-var searchQuery = {
-  getQueries: function getQueries() {
-    return (0,_localStorage_js__WEBPACK_IMPORTED_MODULE_1__.getLocalStorageItem)(_constants_js__WEBPACK_IMPORTED_MODULE_0__.LOCAL_STORAGE_KEY.SEARCH_QUERIES) || [];
-  },
-  setQueries: function setQueries(queries) {
-    if (!Array.isArray(queries)) {
-      return;
-    }
-
-    (0,_localStorage_js__WEBPACK_IMPORTED_MODULE_1__.setLocalStorageItem)(_constants_js__WEBPACK_IMPORTED_MODULE_0__.LOCAL_STORAGE_KEY.SEARCH_QUERIES, queries);
-  },
-  pushQuery: function pushQuery(query) {
-    if (typeof query !== 'string') {
-      return;
-    }
-
-    var queries = searchQuery.getQueries();
-    queries.push(query);
-    searchQuery.setQueries(queries);
-  }
-};
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (searchQuery);
-
-/***/ }),
-
-/***/ "./src/storage/videoToWatch.js":
-/*!*************************************!*\
-  !*** ./src/storage/videoToWatch.js ***!
-  \*************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
-/* harmony export */ });
-/* harmony import */ var _constants_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../constants.js */ "./src/constants.js");
-/* harmony import */ var _localStorage_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./localStorage.js */ "./src/storage/localStorage.js");
-
-
-var videoToWatch = {
-  getVideos: function getVideos() {
-    return (0,_localStorage_js__WEBPACK_IMPORTED_MODULE_1__.getLocalStorageItem)(_constants_js__WEBPACK_IMPORTED_MODULE_0__.LOCAL_STORAGE_KEY.VIDEOS_TO_WATCH) || [];
-  },
-  setVideos: function setVideos(videos) {
-    if (!Array.isArray(videos)) {
-      return;
-    }
-
-    (0,_localStorage_js__WEBPACK_IMPORTED_MODULE_1__.setLocalStorageItem)(_constants_js__WEBPACK_IMPORTED_MODULE_0__.LOCAL_STORAGE_KEY.VIDEOS_TO_WATCH, videos);
-  },
-  pushVideo: function pushVideo(newVideo) {
-    var videosToWatch = videoToWatch.getVideos();
-    videosToWatch.push(newVideo);
-    videoToWatch.setVideos(videosToWatch);
-  }
-};
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (videoToWatch);
+var watchingVideoStorage = new _storage_VideoStorage_js__WEBPACK_IMPORTED_MODULE_1__.default(_constants_js__WEBPACK_IMPORTED_MODULE_0__.LOCAL_STORAGE_KEY.WATCHING_VIDEOS);
+var watchedVideoStorage = new _storage_VideoStorage_js__WEBPACK_IMPORTED_MODULE_1__.default(_constants_js__WEBPACK_IMPORTED_MODULE_0__.LOCAL_STORAGE_KEY.WATCHED_VIDEOS);
+var prevSearchResultStorage = new _storage_PrevSearchResultStorage_js__WEBPACK_IMPORTED_MODULE_2__.default(_constants_js__WEBPACK_IMPORTED_MODULE_0__.LOCAL_STORAGE_KEY.PREV_SEARCH_RESULT);
+var searchQueryStorage = new _storage_ArrayStorage_js__WEBPACK_IMPORTED_MODULE_3__.default(_constants_js__WEBPACK_IMPORTED_MODULE_0__.LOCAL_STORAGE_KEY.SEARCH_QUERIES);
 
 /***/ }),
 
@@ -12811,162 +13389,642 @@ var $ = function $(selector) {
 
 /***/ }),
 
-/***/ "./src/view/templates.js":
+/***/ "./src/view/BasicView.js":
 /*!*******************************!*\
-  !*** ./src/view/templates.js ***!
+  !*** ./src/view/BasicView.js ***!
   \*******************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "getVideoListTemplate": () => (/* binding */ getVideoListTemplate),
-/* harmony export */   "getSelectedVideoListTemplate": () => (/* binding */ getSelectedVideoListTemplate),
-/* harmony export */   "getSearchQueriesTemplate": () => (/* binding */ getSearchQueriesTemplate),
-/* harmony export */   "getSearchQueryTemplate": () => (/* binding */ getSearchQueryTemplate),
-/* harmony export */   "getSkeletonListTemplate": () => (/* binding */ getSkeletonListTemplate)
-/* harmony export */ });
-/* harmony import */ var _constants_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../constants.js */ "./src/constants.js");
-
-function getVideoListTemplate(videos) {
-  return videos.map(getSearchedVideoTemplate).join('');
-}
-function getSelectedVideoListTemplate(videos) {
-  return videos.map(getSelectedVideoTemplate).join('');
-}
-function getSearchQueriesTemplate(queries) {
-  return queries.map(getSearchQueryTemplate).join('');
-}
-function getSearchQueryTemplate(query) {
-  return "\n    <a class=\"search-queries__chip mr-1\">".concat(query, "</a>\n  ");
-}
-
-function getSelectedVideoTemplate(videoItem) {
-  return "\n  <article class=\"clip\">\n    <div class=\"clip__preview\">\n      <iframe\n        width=\"100%\"\n        height=\"118\"\n        src=\"https://www.youtube.com/embed/".concat(videoItem.videoId, "\"\n        frameborder=\"0\"\n        allow=\"accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture\"\n        allowfullscreen\n      ></iframe>\n    </div>\n    <div class=\"clip__content pt-2 px-1\">\n      <h3>").concat(videoItem.title, "</h3>\n      <div>\n        <a\n          href=\"https://www.youtube.com/channel/UC-mOekGSesms0agFntnQang\"\n          target=\"_blank\"\n          class=\"channel-name mt-1\"\n        >\n          ").concat(videoItem.channelTitle, "\n        </a>\n        <div class=\"meta\">\n          <p>").concat(videoItem.publishedAt, "</p>\n        </div>\n        <div>\n          <span class=\"opacity-hover\">\u2705</span>\n          <span class=\"opacity-hover\">\uD83D\uDC4D</span>\n          <span class=\"opacity-hover\">\uD83D\uDCAC</span>\n          <span class=\"opacity-hover\">\uD83D\uDDD1\uFE0F</span>\n        </div>\n      </div>\n    </div>\n  </article>\n  ");
-}
-
-function getSearchedVideoTemplate(videoItem) {
-  return "\n  <article class=\"clip\">\n    <div class=\"clip__preview\">\n      <iframe\n        width=\"100%\"\n        height=\"118\"\n        src=\"https://www.youtube.com/embed/".concat(videoItem.videoId, "\"\n        frameborder=\"0\"\n        allow=\"accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture\"\n        allowfullscreen\n      ></iframe>\n    </div>\n    <div class=\"clip__content pt-2 px-1\">\n      <h3>").concat(videoItem.title, "</h3>\n      <div>\n        <a\n          href=\"https://www.youtube.com/channel/UC-mOekGSesms0agFntnQang\"\n          target=\"_blank\"\n          class=\"channel-name mt-1\"\n        >\n          ").concat(videoItem.channelTitle, "\n        </a>\n        <div class=\"meta\">\n          <p>").concat(videoItem.publishedAt, "</p>\n        </div>\n        <div class=\"d-flex justify-end ").concat(videoItem.isSaved ? 'removed' : '', "\">\n          <button class=\"btn clip__save-button\"\n            data-video-id=\"").concat(videoItem.videoId, "\"\n            data-title=\"").concat(videoItem.title, "\"\n            data-channel-title=\"").concat(videoItem.channelTitle, "\"\n            data-published-at=\"").concat(videoItem.publishedAt, "\"\n          >\u2B07\uFE0F \uC800\uC7A5</button>\n        </div>\n      </div>\n    </div>\n  </article>\n  ");
-}
-
-function getSkeletonListTemplate() {
-  return "\n    <div class=\"skeleton\">\n      <div class=\"image\"></div>\n      <p class=\"line\"></p>\n      <p class=\"line\"></p>\n    </div>\n  ".repeat(_constants_js__WEBPACK_IMPORTED_MODULE_0__.YOUTUBE.MAX_RESULT_COUNT);
-}
-
-/***/ }),
-
-/***/ "./src/view/view.js":
-/*!**************************!*\
-  !*** ./src/view/view.js ***!
-  \**************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
-/* harmony export */ });
-/* harmony import */ var _elements_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../elements.js */ "./src/elements.js");
-/* harmony import */ var _constants_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../constants.js */ "./src/constants.js");
-/* harmony import */ var _templates_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./templates.js */ "./src/view/templates.js");
-/* harmony import */ var _viewUtil_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./viewUtil.js */ "./src/view/viewUtil.js");
-
-
-
-
-var view = {
-  openModal: function openModal() {
-    _elements_js__WEBPACK_IMPORTED_MODULE_0__.$modal.classList.add(_constants_js__WEBPACK_IMPORTED_MODULE_1__.STYLE_CLASS.OPEN);
-  },
-  closeModal: function closeModal() {
-    _elements_js__WEBPACK_IMPORTED_MODULE_0__.$modal.classList.remove(_constants_js__WEBPACK_IMPORTED_MODULE_1__.STYLE_CLASS.OPEN);
-  },
-  initSearchResult: function initSearchResult() {
-    _viewUtil_js__WEBPACK_IMPORTED_MODULE_3__.default.hideElementBySelector("#".concat(_constants_js__WEBPACK_IMPORTED_MODULE_1__.SELECTOR_ID.NOT_FOUND_CONTENT));
-    view.renderSkeletonItems();
-  },
-  renderSelectedVideoItems: function renderSelectedVideoItems(videos) {
-    _elements_js__WEBPACK_IMPORTED_MODULE_0__.$videoWrapper.innerHTML = (0,_templates_js__WEBPACK_IMPORTED_MODULE_2__.getSelectedVideoListTemplate)(videos);
-  },
-  renderSkeletonItems: function renderSkeletonItems() {
-    _elements_js__WEBPACK_IMPORTED_MODULE_0__.$searchResultVideoWrapper.innerHTML = (0,_templates_js__WEBPACK_IMPORTED_MODULE_2__.getSkeletonListTemplate)();
-  },
-  renderSearchQueries: function renderSearchQueries(queries) {
-    _elements_js__WEBPACK_IMPORTED_MODULE_0__.$searchQueries.innerHTML = (0,_templates_js__WEBPACK_IMPORTED_MODULE_2__.getSearchQueriesTemplate)(queries);
-  },
-  renderSavedVideoCount: function renderSavedVideoCount(count) {
-    _elements_js__WEBPACK_IMPORTED_MODULE_0__.$savedVideoCount.innerHTML = count;
-  },
-  renderSearchedVideos: function renderSearchedVideos(processedVideos) {
-    view.insertVideoItems(processedVideos);
-    _viewUtil_js__WEBPACK_IMPORTED_MODULE_3__.default.showElementBySelector("#".concat(_constants_js__WEBPACK_IMPORTED_MODULE_1__.SELECTOR_ID.SEARCH_RESULT_INTERSECTOR));
-  },
-  insertVideoItems: function insertVideoItems(videos) {
-    _elements_js__WEBPACK_IMPORTED_MODULE_0__.$searchResultVideoWrapper.insertAdjacentHTML('beforeend', (0,_templates_js__WEBPACK_IMPORTED_MODULE_2__.getVideoListTemplate)(videos));
-  },
-  showNotFoundContent: function showNotFoundContent() {
-    _viewUtil_js__WEBPACK_IMPORTED_MODULE_3__.default.showElementBySelector("#".concat(_constants_js__WEBPACK_IMPORTED_MODULE_1__.SELECTOR_ID.NOT_FOUND_CONTENT));
-  },
-  showSearchResultIntersector: function showSearchResultIntersector() {
-    _viewUtil_js__WEBPACK_IMPORTED_MODULE_3__.default.showElementBySelector("#".concat(_constants_js__WEBPACK_IMPORTED_MODULE_1__.SELECTOR_ID.SEARCH_RESULT_INTERSECTOR));
-  },
-  showMessage: function showMessage(message) {
-    alert(message);
-  },
-  hideSkeletons: function hideSkeletons() {
-    _viewUtil_js__WEBPACK_IMPORTED_MODULE_3__.default.hideElementBySelector(".".concat(_constants_js__WEBPACK_IMPORTED_MODULE_1__.SELECTOR_CLASS.SKELETON));
-  },
-  hideVideoSaveButton: function hideVideoSaveButton(target) {
-    _viewUtil_js__WEBPACK_IMPORTED_MODULE_3__.default.hideElement(target);
-  }
-};
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (view);
-
-/***/ }),
-
-/***/ "./src/view/viewUtil.js":
-/*!******************************!*\
-  !*** ./src/view/viewUtil.js ***!
-  \******************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */   "default": () => (/* binding */ BasicView)
 /* harmony export */ });
 /* harmony import */ var _utils_querySelector_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../utils/querySelector.js */ "./src/utils/querySelector.js");
+function _extends() { _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends.apply(this, arguments); }
 
-var viewUtil = {
-  showElement: function showElement($element) {
-    $element.classList.remove('removed');
-  },
-  hideElement: function hideElement($element) {
-    $element.classList.add('removed');
-  },
-  showElementBySelector: function showElementBySelector(selector) {
-    (0,_utils_querySelector_js__WEBPACK_IMPORTED_MODULE_0__.$)(selector).classList.remove('removed');
-  },
-  hideElementBySelector: function hideElementBySelector(selector) {
-    var target = (0,_utils_querySelector_js__WEBPACK_IMPORTED_MODULE_0__.$)(selector);
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-    if (Array.isArray(target)) {
-      target.forEach(function (item) {
-        item.classList.add('removed');
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+
+
+var BasicView = /*#__PURE__*/function () {
+  function BasicView(_ref) {
+    var element = _extends({}, _ref);
+
+    _classCallCheck(this, BasicView);
+
+    _defineProperty(this, "_element", {});
+
+    this._element = element;
+  }
+
+  _createClass(BasicView, [{
+    key: "renderHTML",
+    value: function renderHTML($element, htmlString) {
+      $element.innerHTML = htmlString;
+    }
+  }, {
+    key: "insertElement",
+    value: function insertElement($target, $element) {
+      $target.insertAdjacentElement('beforeend', $element);
+    }
+  }, {
+    key: "insertHTML",
+    value: function insertHTML($target, htmlString) {
+      $target.insertAdjacentHTML('beforeend', htmlString);
+    }
+  }, {
+    key: "showElement",
+    value: function showElement($element) {
+      $element.classList.remove('removed');
+    }
+  }, {
+    key: "showElementBySelector",
+    value: function showElementBySelector(selector) {
+      (0,_utils_querySelector_js__WEBPACK_IMPORTED_MODULE_0__.$)(selector).classList.remove('removed');
+    }
+  }, {
+    key: "hideElement",
+    value: function hideElement($element) {
+      $element.classList.add('removed');
+    }
+  }, {
+    key: "deleteElement",
+    value: function deleteElement($target, $element) {
+      $target.removeChild($element);
+    }
+  }, {
+    key: "hideElementBySelector",
+    value: function hideElementBySelector(selector) {
+      var target = (0,_utils_querySelector_js__WEBPACK_IMPORTED_MODULE_0__.$)(selector);
+
+      if (Array.isArray(target)) {
+        target.forEach(function (item) {
+          item.classList.add('removed');
+        });
+        return;
+      }
+
+      target.classList.add('removed');
+    }
+  }, {
+    key: "focusElement",
+    value: function focusElement($target) {
+      $target.focus();
+    }
+  }]);
+
+  return BasicView;
+}();
+
+
+
+/***/ }),
+
+/***/ "./src/view/LayoutView.js":
+/*!********************************!*\
+  !*** ./src/view/LayoutView.js ***!
+  \********************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ LayoutView)
+/* harmony export */ });
+/* harmony import */ var _constants_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../constants.js */ "./src/constants.js");
+/* harmony import */ var _BasicView_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./BasicView.js */ "./src/view/BasicView.js");
+function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
+
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
+function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
+
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+
+function _classPrivateMethodGet(receiver, privateSet, fn) { if (!privateSet.has(receiver)) { throw new TypeError("attempted to get private field on non-instance"); } return fn; }
+
+
+
+
+var _createSnackbar = new WeakSet();
+
+var LayoutView = /*#__PURE__*/function (_BasicView) {
+  _inherits(LayoutView, _BasicView);
+
+  var _super = _createSuper(LayoutView);
+
+  function LayoutView(_ref) {
+    var _this;
+
+    var $nav = _ref.$nav,
+        $snackbarWrapper = _ref.$snackbarWrapper;
+
+    _classCallCheck(this, LayoutView);
+
+    _this = _super.call(this, {
+      $nav: $nav,
+      $snackbarWrapper: $snackbarWrapper
+    });
+
+    _createSnackbar.add(_assertThisInitialized(_this));
+
+    return _this;
+  }
+
+  _createClass(LayoutView, [{
+    key: "showSnackbar",
+    value: function showSnackbar(message, isSuccess) {
+      var _this2 = this;
+
+      var $snackbar = _classPrivateMethodGet(this, _createSnackbar, _createSnackbar2).call(this, message, isSuccess);
+
+      this.insertElement(this._element.$snackbarWrapper, $snackbar);
+      setTimeout(function () {
+        _this2.deleteElement(_this2._element.$snackbarWrapper, $snackbar);
+      }, _constants_js__WEBPACK_IMPORTED_MODULE_0__.SETTINGS.SNACKBAR_PERSISTENT_MILLISEC);
+    }
+  }, {
+    key: "highlightNavButton",
+    value: function highlightNavButton(hashId) {
+      this._element.$nav.querySelectorAll(".".concat(_constants_js__WEBPACK_IMPORTED_MODULE_0__.SELECTOR_CLASS.NAV_BUTTON)).forEach(function ($button) {
+        if ($button.dataset.hashId === hashId) {
+          $button.classList.add(_constants_js__WEBPACK_IMPORTED_MODULE_0__.STYLE_CLASS.NAV_CLICKED);
+          return;
+        }
+
+        $button.classList.remove(_constants_js__WEBPACK_IMPORTED_MODULE_0__.STYLE_CLASS.NAV_CLICKED);
       });
-      return;
+    }
+  }, {
+    key: "confirm",
+    value: function (_confirm) {
+      function confirm(_x) {
+        return _confirm.apply(this, arguments);
+      }
+
+      confirm.toString = function () {
+        return _confirm.toString();
+      };
+
+      return confirm;
+    }(function (message) {
+      return confirm(message);
+    })
+  }]);
+
+  return LayoutView;
+}(_BasicView_js__WEBPACK_IMPORTED_MODULE_1__.default);
+
+var _createSnackbar2 = function _createSnackbar2(message, isSuccess) {
+  var $snackbar = document.createElement('div');
+  $snackbar.className = "\n      ".concat(_constants_js__WEBPACK_IMPORTED_MODULE_0__.SELECTOR_CLASS.SNACKBAR, " \n      ").concat(_constants_js__WEBPACK_IMPORTED_MODULE_0__.STYLE_CLASS.SNACKBAR, " \n      ").concat(isSuccess ? _constants_js__WEBPACK_IMPORTED_MODULE_0__.STYLE_CLASS.SUCCESS : _constants_js__WEBPACK_IMPORTED_MODULE_0__.STYLE_CLASS.FAIL, "\n      ").concat(_constants_js__WEBPACK_IMPORTED_MODULE_0__.ANIMATION_CLASS.FADE_IN_AND_OUT, "\n    ");
+  $snackbar.innerText = message;
+  return $snackbar;
+};
+
+
+
+/***/ }),
+
+/***/ "./src/view/ModalView.js":
+/*!*******************************!*\
+  !*** ./src/view/ModalView.js ***!
+  \*******************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ ModalView)
+/* harmony export */ });
+/* harmony import */ var _constants_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../constants.js */ "./src/constants.js");
+/* harmony import */ var _BasicView_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./BasicView.js */ "./src/view/BasicView.js");
+/* harmony import */ var _mixin_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./mixin.js */ "./src/view/mixin.js");
+function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
+
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
+function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
+
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+
+function _classPrivateMethodGet(receiver, privateSet, fn) { if (!privateSet.has(receiver)) { throw new TypeError("attempted to get private field on non-instance"); } return fn; }
+
+
+
+
+
+var _renderSkeletonItems = new WeakSet();
+
+var _getSkeletonListTemplate = new WeakSet();
+
+var _getSearchQueriesTemplate = new WeakSet();
+
+var _getSearchQueryTemplate = new WeakSet();
+
+var _getSearchedVideoListTemplate = new WeakSet();
+
+var _getSearchedVideoTemplate = new WeakSet();
+
+var ModalView = /*#__PURE__*/function (_GetVideoIframeMixin) {
+  _inherits(ModalView, _GetVideoIframeMixin);
+
+  var _super = _createSuper(ModalView);
+
+  function ModalView(_ref) {
+    var _this;
+
+    var $modal = _ref.$modal,
+        $searchQueries = _ref.$searchQueries,
+        $searchResultVideoWrapper = _ref.$searchResultVideoWrapper,
+        $savedVideoCount = _ref.$savedVideoCount;
+
+    _classCallCheck(this, ModalView);
+
+    _this = _super.call(this, {
+      $modal: $modal,
+      $searchQueries: $searchQueries,
+      $searchResultVideoWrapper: $searchResultVideoWrapper,
+      $savedVideoCount: $savedVideoCount
+    });
+
+    _getSearchedVideoTemplate.add(_assertThisInitialized(_this));
+
+    _getSearchedVideoListTemplate.add(_assertThisInitialized(_this));
+
+    _getSearchQueryTemplate.add(_assertThisInitialized(_this));
+
+    _getSearchQueriesTemplate.add(_assertThisInitialized(_this));
+
+    _getSkeletonListTemplate.add(_assertThisInitialized(_this));
+
+    _renderSkeletonItems.add(_assertThisInitialized(_this));
+
+    return _this;
+  }
+
+  _createClass(ModalView, [{
+    key: "openModal",
+    value: function openModal() {
+      this._element.$modal.classList.add(_constants_js__WEBPACK_IMPORTED_MODULE_0__.STYLE_CLASS.OPEN);
+    }
+  }, {
+    key: "closeModal",
+    value: function closeModal() {
+      this._element.$modal.classList.remove(_constants_js__WEBPACK_IMPORTED_MODULE_0__.STYLE_CLASS.OPEN);
+    }
+  }, {
+    key: "initSearchEnv",
+    value: function initSearchEnv() {
+      this.hideElementBySelector("#".concat(_constants_js__WEBPACK_IMPORTED_MODULE_0__.SELECTOR_ID.NOT_FOUND_CONTENT));
+
+      _classPrivateMethodGet(this, _renderSkeletonItems, _renderSkeletonItems2).call(this);
+    }
+  }, {
+    key: "renderSearchQueries",
+    value: function renderSearchQueries(queries) {
+      this.renderHTML(this._element.$searchQueries, _classPrivateMethodGet(this, _getSearchQueriesTemplate, _getSearchQueriesTemplate2).call(this, queries));
+    }
+  }, {
+    key: "renderSavedVideoCount",
+    value: function renderSavedVideoCount(count) {
+      this.renderHTML(this._element.$savedVideoCount, count);
+    }
+  }, {
+    key: "renderSearchedVideos",
+    value: function renderSearchedVideos(processedVideos) {
+      this.renderHTML(this._element.$searchResultVideoWrapper, _classPrivateMethodGet(this, _getSearchedVideoListTemplate, _getSearchedVideoListTemplate2).call(this, processedVideos));
+      this.showElementBySelector("#".concat(_constants_js__WEBPACK_IMPORTED_MODULE_0__.SELECTOR_ID.SEARCH_RESULT_INTERSECTOR));
+    }
+  }, {
+    key: "insertSearchedVideos",
+    value: function insertSearchedVideos(processedVideos) {
+      this.insertHTML(this._element.$searchResultVideoWrapper, _classPrivateMethodGet(this, _getSearchedVideoListTemplate, _getSearchedVideoListTemplate2).call(this, processedVideos));
+    }
+  }, {
+    key: "showNotFoundImage",
+    value: function showNotFoundImage() {
+      this.showElementBySelector("#".concat(_constants_js__WEBPACK_IMPORTED_MODULE_0__.SELECTOR_ID.NOT_FOUND_CONTENT));
+    }
+  }, {
+    key: "showSearchResultIntersector",
+    value: function showSearchResultIntersector() {
+      this.showElementBySelector("#".concat(_constants_js__WEBPACK_IMPORTED_MODULE_0__.SELECTOR_ID.SEARCH_RESULT_INTERSECTOR));
+    }
+  }, {
+    key: "hideSkeletons",
+    value: function hideSkeletons() {
+      this.hideElementBySelector(".".concat(_constants_js__WEBPACK_IMPORTED_MODULE_0__.SELECTOR_CLASS.SKELETON));
+    }
+  }, {
+    key: "hideVideoSaveButton",
+    value: function hideVideoSaveButton($button) {
+      this.hideElement($button);
+    }
+  }]);
+
+  return ModalView;
+}((0,_mixin_js__WEBPACK_IMPORTED_MODULE_2__.GetVideoIframeMixin)(_BasicView_js__WEBPACK_IMPORTED_MODULE_1__.default));
+
+var _renderSkeletonItems2 = function _renderSkeletonItems2() {
+  this.renderHTML(this._element.$searchResultVideoWrapper, _classPrivateMethodGet(this, _getSkeletonListTemplate, _getSkeletonListTemplate2).call(this));
+};
+
+var _getSkeletonListTemplate2 = function _getSkeletonListTemplate2() {
+  return "\n      <div class=\"".concat(_constants_js__WEBPACK_IMPORTED_MODULE_0__.SELECTOR_CLASS.SKELETON, " skeleton\">\n        <div class=\"image\"></div>\n        <p class=\"line\"></p>\n        <p class=\"line\"></p>\n      </div>\n    ").repeat(_constants_js__WEBPACK_IMPORTED_MODULE_0__.YOUTUBE.MAX_RESULT_COUNT);
+};
+
+var _getSearchQueriesTemplate2 = function _getSearchQueriesTemplate2(queries) {
+  return queries.map(_classPrivateMethodGet(this, _getSearchQueryTemplate, _getSearchQueryTemplate2)).join('');
+};
+
+var _getSearchQueryTemplate2 = function _getSearchQueryTemplate2(query) {
+  return "\n      <a class=\"".concat(_constants_js__WEBPACK_IMPORTED_MODULE_0__.SELECTOR_CLASS.SEARCH_QUERIES_CHIP, " search-queries__chip mr-2\">").concat(query, "</a>\n    ");
+};
+
+var _getSearchedVideoListTemplate2 = function _getSearchedVideoListTemplate2(videos) {
+  var _this2 = this;
+
+  return videos.map(function (video) {
+    return _classPrivateMethodGet(_this2, _getSearchedVideoTemplate, _getSearchedVideoTemplate2).call(_this2, video);
+  }).join('');
+};
+
+var _getSearchedVideoTemplate2 = function _getSearchedVideoTemplate2(videoItem) {
+  return "\n    <article class=\"".concat(_constants_js__WEBPACK_IMPORTED_MODULE_0__.SELECTOR_CLASS.SEARCHED_CLIP, " clip\">\n      <div class=\"clip__preview\">\n        ").concat(this._getIframe(videoItem), "\n      </div>\n      <div class=\"clip__content pt-2 px-1\">\n        <h3>").concat(videoItem.title, "</h3>\n        <div>\n          <a\n            href=\"https://www.youtube.com/channel/UC-mOekGSesms0agFntnQang\"\n            target=\"_blank\"\n            class=\"channel-name mt-1\"\n          >\n            ").concat(videoItem.channelTitle, "\n          </a>\n          <div class=\"meta\">\n            <p>").concat(videoItem.publishedAt, "</p>\n          </div>\n          <div class=\"d-flex justify-end ").concat(videoItem.isSaved ? 'removed' : '', "\">\n            <button class=\"btn ").concat(_constants_js__WEBPACK_IMPORTED_MODULE_0__.SELECTOR_CLASS.SEARCHED_CLIP_SAVE_BUTTON, "\"\n              data-video-id=\"").concat(videoItem.videoId, "\"\n              data-title=\"").concat(videoItem.title, "\"\n              data-channel-title=\"").concat(videoItem.channelTitle, "\"\n              data-published-at=\"").concat(videoItem.publishedAt, "\"\n              data-thumbnail-url=\"").concat(videoItem.thumbnailUrl, "\"\n            aria-label=\"\uBCFC \uC601\uC0C1\uC73C\uB85C \uC800\uC7A5\">\u2B07\uFE0F \uC800\uC7A5</button>\n          </div>\n        </div>\n      </div>\n    </article>\n    ");
+};
+
+
+
+/***/ }),
+
+/***/ "./src/view/VideoView.js":
+/*!*******************************!*\
+  !*** ./src/view/VideoView.js ***!
+  \*******************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ VideoView)
+/* harmony export */ });
+/* harmony import */ var _constants__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../constants */ "./src/constants.js");
+/* harmony import */ var _BasicView__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./BasicView */ "./src/view/BasicView.js");
+/* harmony import */ var _mixin__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./mixin */ "./src/view/mixin.js");
+function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
+
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
+function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
+
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+
+function _classPrivateFieldGet(receiver, privateMap) { var descriptor = privateMap.get(receiver); if (!descriptor) { throw new TypeError("attempted to get private field on non-instance"); } if (descriptor.get) { return descriptor.get.call(receiver); } return descriptor.value; }
+
+function _classPrivateFieldSet(receiver, privateMap, value) { var descriptor = privateMap.get(receiver); if (!descriptor) { throw new TypeError("attempted to set private field on non-instance"); } if (descriptor.set) { descriptor.set.call(receiver, value); } else { if (!descriptor.writable) { throw new TypeError("attempted to set read only private field"); } descriptor.value = value; } return value; }
+
+
+
+
+
+var _isChecked = new WeakMap();
+
+var VideoView = /*#__PURE__*/function (_GetVideoIframeMixin) {
+  _inherits(VideoView, _GetVideoIframeMixin);
+
+  var _super = _createSuper(VideoView);
+
+  function VideoView(_ref, isChecked) {
+    var _this;
+
+    var $videoWrapper = _ref.$videoWrapper,
+        $emptyVideoImage = _ref.$emptyVideoImage;
+
+    _classCallCheck(this, VideoView);
+
+    _this = _super.call(this, {
+      $videoWrapper: $videoWrapper,
+      $emptyVideoImage: $emptyVideoImage
+    });
+
+    _isChecked.set(_assertThisInitialized(_this), {
+      writable: true,
+      value: void 0
+    });
+
+    _classPrivateFieldSet(_assertThisInitialized(_this), _isChecked, isChecked);
+
+    return _this;
+  }
+
+  _createClass(VideoView, [{
+    key: "renderVideos",
+    value: function renderVideos(videos) {
+      this.renderHTML(this._element.$videoWrapper, '');
+      this.renderHTML(this._element.$videoWrapper, this._getVideoListTemplate(videos, _classPrivateFieldGet(this, _isChecked)));
+    }
+  }, {
+    key: "eraseVideos",
+    value: function eraseVideos() {
+      this.renderHTML(this._element.$videoWrapper, '');
+    }
+  }, {
+    key: "showEmptyVideoImage",
+    value: function showEmptyVideoImage() {
+      this.showElement(this._element.$emptyVideoImage);
+    }
+  }, {
+    key: "hideEmptyVideoImage",
+    value: function hideEmptyVideoImage() {
+      this.hideElement(this._element.$emptyVideoImage);
+    }
+  }, {
+    key: "_getVideoListTemplate",
+    value: function _getVideoListTemplate(videos, isWatched) {
+      var _this2 = this;
+
+      return videos.map(function (video) {
+        return _this2._getVideoTemplate(video, isWatched);
+      }).join('');
+    }
+  }, {
+    key: "_getVideoTemplate",
+    value: function _getVideoTemplate(videoItem, isWatched) {
+      return "\n    <article class=\"".concat(_constants__WEBPACK_IMPORTED_MODULE_0__.SELECTOR_CLASS.CLIP, " clip\">\n      <div class=\"clip__preview\">\n        ").concat(this._getIframe(videoItem), "\n      </div>\n      <div class=\"clip__content pt-2 px-1\">\n        <h3>").concat(videoItem.title, "</h3>\n        <div>\n          <a\n            href=\"https://www.youtube.com/channel/UC-mOekGSesms0agFntnQang\"\n            target=\"_blank\"\n            class=\"channel-name mt-1\"\n          >\n            ").concat(videoItem.channelTitle, "\n          </a>\n          <div class=\"meta\">\n            <p>").concat(videoItem.publishedAt, "</p>\n          </div>\n          <div>\n            <button \n              class=\"\n                ").concat(_constants__WEBPACK_IMPORTED_MODULE_0__.SELECTOR_CLASS.CLIP_CHECK_BUTTON, "\n                clip__check-button\n                button-style-none\n                ").concat(isWatched ? _constants__WEBPACK_IMPORTED_MODULE_0__.STYLE_CLASS.VIDEO_CHECKED : '', " \n                opacity-hover\" \n              data-video-id=\"").concat(videoItem.videoId, "\"\n              aria-label=\"\uD574\uB2F9 \uBE44\uB514\uC624\uB97C ").concat(isWatched ? '볼 영상으로 저장' : '본 영상으로 저장', "\"\n            >\u2705</button>\n            <button class=\"opacity-hover button-style-none\">\uD83D\uDC4D</button>\n            <button class=\"opacity-hover button-style-none\">\uD83D\uDCAC</button>\n            <button \n              class=\"").concat(_constants__WEBPACK_IMPORTED_MODULE_0__.SELECTOR_CLASS.CLIP_DELETE_BUTTON, " opacity-hover button-style-none\" \n              data-video-id=\"").concat(videoItem.videoId, "\"\n              aria-label=\"\uD574\uB2F9 \uBE44\uB514\uC624\uB97C \uC0AD\uC81C\"\n            >\uD83D\uDDD1\uFE0F</button>\n          </div>\n        </div>\n      </div>\n    </article>\n    ");
+    }
+  }]);
+
+  return VideoView;
+}((0,_mixin__WEBPACK_IMPORTED_MODULE_2__.GetVideoIframeMixin)(_BasicView__WEBPACK_IMPORTED_MODULE_1__.default));
+
+
+
+/***/ }),
+
+/***/ "./src/view/index.js":
+/*!***************************!*\
+  !*** ./src/view/index.js ***!
+  \***************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "layoutView": () => (/* binding */ layoutView),
+/* harmony export */   "watchingVideoView": () => (/* binding */ watchingVideoView),
+/* harmony export */   "watchedVideoView": () => (/* binding */ watchedVideoView),
+/* harmony export */   "modalView": () => (/* binding */ modalView)
+/* harmony export */ });
+/* harmony import */ var _elements_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../elements.js */ "./src/elements.js");
+/* harmony import */ var _LayoutView_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./LayoutView.js */ "./src/view/LayoutView.js");
+/* harmony import */ var _ModalView_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./ModalView.js */ "./src/view/ModalView.js");
+/* harmony import */ var _VideoView_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./VideoView.js */ "./src/view/VideoView.js");
+
+
+
+
+var layoutView = new _LayoutView_js__WEBPACK_IMPORTED_MODULE_1__.default({
+  $nav: _elements_js__WEBPACK_IMPORTED_MODULE_0__.$nav,
+  $snackbarWrapper: _elements_js__WEBPACK_IMPORTED_MODULE_0__.$snackbarWrapper
+});
+var watchingVideoView = new _VideoView_js__WEBPACK_IMPORTED_MODULE_3__.default({
+  $videoWrapper: _elements_js__WEBPACK_IMPORTED_MODULE_0__.$watchingVideoWrapper,
+  $emptyVideoImage: _elements_js__WEBPACK_IMPORTED_MODULE_0__.$emptyWatchingVideo
+}, false);
+var watchedVideoView = new _VideoView_js__WEBPACK_IMPORTED_MODULE_3__.default({
+  $videoWrapper: _elements_js__WEBPACK_IMPORTED_MODULE_0__.$watchedVideoWrapper,
+  $emptyVideoImage: _elements_js__WEBPACK_IMPORTED_MODULE_0__.$emptyWatchedVideo
+}, true);
+var modalView = new _ModalView_js__WEBPACK_IMPORTED_MODULE_2__.default({
+  $modal: _elements_js__WEBPACK_IMPORTED_MODULE_0__.$modal,
+  $searchQueries: _elements_js__WEBPACK_IMPORTED_MODULE_0__.$searchQueries,
+  $searchResultVideoWrapper: _elements_js__WEBPACK_IMPORTED_MODULE_0__.$searchResultVideoWrapper,
+  $savedVideoCount: _elements_js__WEBPACK_IMPORTED_MODULE_0__.$savedVideoCount
+});
+
+/***/ }),
+
+/***/ "./src/view/mixin.js":
+/*!***************************!*\
+  !*** ./src/view/mixin.js ***!
+  \***************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "GetVideoIframeMixin": () => (/* binding */ GetVideoIframeMixin)
+/* harmony export */ });
+function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
+
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
+function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
+
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+
+function _classPrivateMethodGet(receiver, privateSet, fn) { if (!privateSet.has(receiver)) { throw new TypeError("attempted to get private field on non-instance"); } return fn; }
+
+var GetVideoIframeMixin = function GetVideoIframeMixin(superClass) {
+  var _getSrcDoc, _temp, _getSrcDoc2;
+
+  return _temp = (_getSrcDoc = new WeakSet(), /*#__PURE__*/function (_superClass) {
+    _inherits(_class2, _superClass);
+
+    var _super = _createSuper(_class2);
+
+    function _class2() {
+      var _this;
+
+      _classCallCheck(this, _class2);
+
+      for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
+        args[_key] = arguments[_key];
+      }
+
+      _this = _super.call.apply(_super, [this].concat(args));
+
+      _getSrcDoc.add(_assertThisInitialized(_this));
+
+      return _this;
     }
 
-    target.classList.add('removed');
-  },
-  removeStyleClass: function removeStyleClass($element, removingClass) {
-    $element.classList.remove(removingClass);
-  },
-  addStyleClass: function addStyleClass($element, removingClass) {
-    $element.classList.remove(removingClass);
-  }
+    _createClass(_class2, [{
+      key: "_getIframe",
+      value: function _getIframe(videoItem) {
+        return "\n      <iframe\n      width=\"100%\"\n      height=\"118\"\n      scrolling=\"no\"\n      src=\"https://www.youtube.com/embed/".concat(videoItem.videoId, "\"\n      srcdoc=\n      \"").concat(_classPrivateMethodGet(this, _getSrcDoc, _getSrcDoc2).call(this, videoItem), "\"\n      frameborder=\"0\"\n      allow=\"accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture\"\n      allowfullscreen\n      ></iframe>\n      ");
+      }
+    }]);
+
+    return _class2;
+  }(superClass)), _getSrcDoc2 = function _getSrcDoc2(videoItem) {
+    return "\n      <body style=''>\n        <header>\n          <link rel='stylesheet' href='./src/assets/css/index.css'>\n        </header>\n        <div class='thumbnail'>\n          <a href='https://www.youtube.com/embed/".concat(videoItem.videoId, "' \n          aria-label='\uC720\uD29C\uBE0C \uC7AC\uC0DD \uBC84\uD2BC\uC785\uB2C8\uB2E4. \uC81C\uBAA9\uC740 ").concat(videoItem.title, "\uC785\uB2C8\uB2E4.'>\n            <img \n            class='thumbnail__image' \n            src=").concat(videoItem.thumbnailUrl, " />\n            <div class='d-flex justify-center items-center  thumbnail__play-button'>\n              <span>\u25B6</span>\n            <div>\n          </a>\n        <div>\n      </body>\n      ");
+  }, _temp;
 };
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (viewUtil);
 
 /***/ })
 
@@ -13093,11 +14151,19 @@ define(String.prototype, "padRight", "".padEnd);
   !*** ./src/index.js ***!
   \**********************/
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _controller_controller_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./controller/controller.js */ "./src/controller/controller.js");
+/* harmony import */ var _controller_hashController_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./controller/hashController.js */ "./src/controller/hashController.js");
+/* harmony import */ var _controller_watchingVideoController_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./controller/watchingVideoController.js */ "./src/controller/watchingVideoController.js");
+/* harmony import */ var _controller_watchedVideoController_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./controller/watchedVideoController.js */ "./src/controller/watchedVideoController.js");
+/* harmony import */ var _controller_modalController_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./controller/modalController.js */ "./src/controller/modalController.js");
 
-_controller_controller_js__WEBPACK_IMPORTED_MODULE_0__.default.initEventListeners();
-_controller_controller_js__WEBPACK_IMPORTED_MODULE_0__.default.initVideos();
-_controller_controller_js__WEBPACK_IMPORTED_MODULE_0__.default.initSearchQueries();
+
+
+
+_controller_hashController_js__WEBPACK_IMPORTED_MODULE_0__.default.initRouteEventListeners();
+_controller_modalController_js__WEBPACK_IMPORTED_MODULE_3__.default.initEventListeners();
+_controller_modalController_js__WEBPACK_IMPORTED_MODULE_3__.default.initSearchQueries();
+_controller_watchingVideoController_js__WEBPACK_IMPORTED_MODULE_1__.default.initEventListeners();
+_controller_watchedVideoController_js__WEBPACK_IMPORTED_MODULE_2__.default.initEventListeners();
 })();
 
 /******/ })()

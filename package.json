@@ -19,8 +19,10 @@
   "devDependencies": {
     "@babel/cli": "^7.13.0",
     "@babel/core": "^7.13.8",
+    "@babel/eslint-parser": "^7.13.10",
     "@babel/plugin-proposal-class-properties": "^7.13.0",
-    "@babel/preset-env": "^7.13.9",
+    "@babel/plugin-proposal-private-methods": "^7.13.0",
+    "@babel/preset-env": "^7.13.10",
     "babel-eslint": "^10.1.0",
     "babel-loader": "^8.2.2",
     "babel-polyfill": "^6.26.0",
@@ -34,5 +36,8 @@
     "stylelint-config-standard": "^20.0.0",
     "webpack": "^5.24.2",
     "webpack-cli": "^4.5.0"
+  },
+  "dependencies": {
+    "case-sensitive-paths-webpack-plugin": "^2.4.0"
   }
 }
