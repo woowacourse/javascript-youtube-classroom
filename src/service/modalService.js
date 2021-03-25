@@ -1,16 +1,16 @@
 import { SETTINGS } from '../constants';
 import {
-  watchedVideoModel,
-  watchingVideoModel,
-  prevSearchResultModel,
-  searchQueryModel,
+  watchedVideoStorage,
+  watchingVideoStorage,
+  prevSearchResultStorage,
+  searchQueryStorage,
 } from '../store.js';
 
 const modalService = {
   getPrevSearchInfo() {
     return {
-      lastQuery: prevSearchResultModel.getItem().lastQuery,
-      pageToken: prevSearchResultModel.getItem().nextPageToken,
+      lastQuery: prevSearchResultStorage.getItem().lastQuery,
+      pageToken: prevSearchResultStorage.getItem().nextPageToken,
     };
   },
 
@@ -18,34 +18,33 @@ const modalService = {
     return videos.map(video => ({
       ...video,
       isSaved:
-        isVideoIdExist(watchingVideoModel.getItem(), video.videoId) ||
-        isVideoIdExist(watchedVideoModel.getItem(), video.videoId),
+        isVideoIdExist(watchingVideoStorage.getItem(), video.videoId) ||
+        isVideoIdExist(watchedVideoStorage.getItem(), video.videoId),
     }));
   },
 
   saveSearchQuery(searchQuery) {
-    const filteredQueries = searchQueryModel
+    const filteredQueries = searchQueryStorage
       .getItem()
       .filter(query => searchQuery !== query);
     filteredQueries.push(searchQuery);
     if (filteredQueries.length > SETTINGS.MAX_SAVED_SEARCH_QUERY_COUNT) {
       filteredQueries.shift();
     }
-    searchQueryModel.setItem(filteredQueries);
+    searchQueryStorage.setItem(filteredQueries);
   },
 
   savePrevSearchInfo({ lastQuery, nextPageToken }) {
     if (lastQuery) {
-      prevSearchResultModel.setItem({ lastQuery });
+      prevSearchResultStorage.setItem({ lastQuery });
     }
     if (nextPageToken) {
-      prevSearchResultModel.setItem({ nextPageToken });
+      prevSearchResultStorage.setItem({ nextPageToken });
     }
   },
   savePrevSearchedVideos(videos) {
-    prevSearchResultModel.setItem({ prevSearchedVideos: videos });
+    prevSearchResultStorage.setItem({ prevSearchedVideos: videos });
   },
-
 };
 
 function isVideoIdExist(videos, videoId) {

@@ -1,20 +1,20 @@
-import VideoStorage from './storageModel/VideoStorage.js';
 import { LOCAL_STORAGE_KEY } from './constants.js';
-import PrevSearchResult from './storageModel/PrevSearchResult.js';
-import ArrayStorage from './storageModel/ArrayStorage.js';
+import VideoStorage from './storage/VideoStorage.js';
+import PrevSearchResultStorage from './storage/PrevSearchResultStorage.js';
+import ArrayStorage from './storage/ArrayStorage.js';
 
-export const watchingVideoModel = new VideoStorage(
+export const watchingVideoStorage = new VideoStorage(
   LOCAL_STORAGE_KEY.WATCHING_VIDEOS
 );
 
-export const watchedVideoModel = new VideoStorage(
+export const watchedVideoStorage = new VideoStorage(
   LOCAL_STORAGE_KEY.WATCHED_VIDEOS
 );
 
-export const prevSearchResultModel = new PrevSearchResult(
+export const prevSearchResultStorage = new PrevSearchResultStorage(
   LOCAL_STORAGE_KEY.PREV_SEARCH_RESULT
 );
 
-export const searchQueryModel = new ArrayStorage(
+export const searchQueryStorage = new ArrayStorage(
   LOCAL_STORAGE_KEY.SEARCH_QUERIES
 );

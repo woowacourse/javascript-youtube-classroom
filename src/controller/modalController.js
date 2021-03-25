@@ -10,14 +10,24 @@ import {
 import { getVideosByKeyword } from '../apis/youtube.js';
 import controllerUtil from './controllerUtil.js';
 import {
-  prevSearchResultModel,
-  searchQueryModel,
-  watchedVideoModel,
-  watchingVideoModel,
+  prevSearchResultStorage,
+  searchQueryStorage,
+  watchedVideoStorage,
+  watchingVideoStorage,
 } from '../store.js';
 import modalService from '../service/modalService.js';
-import { layoutView, modalView, watchedVideoView, watchingVideoView } from '../view/index.js';
-import { BROWSER_HASH, SELECTOR_CLASS, SELECTOR_ID, SNACKBAR_MESSAGE } from '../constants.js';
+import {
+  layoutView,
+  modalView,
+  watchedVideoView,
+  watchingVideoView,
+} from '../view/index.js';
+import {
+  BROWSER_HASH,
+  SELECTOR_CLASS,
+  SELECTOR_ID,
+  SNACKBAR_MESSAGE,
+} from '../constants.js';
 import watchingVideoService from '../service/watchingVideoService.js';
 import hashController from './hashController.js';
 
@@ -31,7 +41,7 @@ const modalController = {
     $modalCloseButton.addEventListener('click', onModalClose);
     $searchForm.addEventListener('submit', onVideoSearch);
     $searchResultVideoWrapper.addEventListener('click', onSelectedVideoSave);
-    $modal.addEventListener('click', (event) => {
+    $modal.addEventListener('click', event => {
       if (event.target.id === SELECTOR_ID.MODAL) {
         onModalClose();
       }
@@ -39,9 +49,8 @@ const modalController = {
   },
 
   initSearchQueries() {
-    modalView.renderSearchQueries(searchQueryModel.getItem());
+    modalView.renderSearchQueries(searchQueryStorage.getItem());
   },
-
 };
 
 function onSelectedVideoSave({ target }) {
@@ -61,7 +70,7 @@ function onSelectedVideoSave({ target }) {
   watchingVideoService.pushNewVideo(target.dataset);
 
   if (controllerUtil.parseHash(location.hash) === BROWSER_HASH.WATCHING) {
-    watchingVideoView.renderVideos(watchingVideoModel.getItem());
+    watchingVideoView.renderVideos(watchingVideoStorage.getItem());
   }
 
   modalView.hideVideoSaveButton(target);
@@ -71,8 +80,9 @@ function onSelectedVideoSave({ target }) {
 function onModalOpen() {
   layoutView.highlightNavButton(BROWSER_HASH.SEARCH);
   const allVideoCount =
-    watchingVideoModel.getItem().length + watchedVideoModel.getItem().length;
-  const videos = prevSearchResultModel.getItem().prevSearchedVideos;
+    watchingVideoStorage.getItem().length +
+    watchedVideoStorage.getItem().length;
+  const videos = prevSearchResultStorage.getItem().prevSearchedVideos;
   const processedVideos = modalService.getProcessedVideos(videos);
 
   modalView.openModal();
@@ -96,7 +106,7 @@ async function onVideoSearch(event) {
   event.preventDefault();
   const input = event.target[`${SELECTOR_ID.SEARCH_FORM_INPUT}`].value.trim();
 
-  if (input === prevSearchResultModel.getItem().lastQuery) {
+  if (input === prevSearchResultStorage.getItem().lastQuery) {
     return;
   }
   if (input === '') {
@@ -115,7 +125,7 @@ async function onVideoSearch(event) {
   modalService.savePrevSearchInfo({ lastQuery: input, nextPageToken });
   modalService.savePrevSearchedVideos(videos);
   modalView.hideSkeletons();
-  modalView.renderSearchQueries(searchQueryModel.getItem());
+  modalView.renderSearchQueries(searchQueryStorage.getItem());
   modalView.renderSearchedVideos(modalService.getProcessedVideos(videos));
 }
 

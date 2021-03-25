@@ -1,8 +1,8 @@
-import { watchedVideoModel } from '../store';
+import { watchedVideoStorage } from '../store';
 
 const watchedVideoService = {
   isVideosEmpty() {
-    return watchedVideoModel.getItem().length === 0;
+    return watchedVideoStorage.getItem().length === 0;
   },
 };
 

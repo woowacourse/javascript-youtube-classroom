@@ -1,5 +1,5 @@
 import { BROWSER_HASH } from '../constants.js';
-import { watchingVideoModel, watchedVideoModel } from '../store.js';
+import { watchingVideoStorage, watchedVideoStorage } from '../store.js';
 import controllerUtil from './controllerUtil.js';
 
 import {
@@ -33,7 +33,7 @@ const hashController = {
 };
 
 function activeWatchingVideoShow() {
-  const videos = watchingVideoModel.getItem();
+  const videos = watchingVideoStorage.getItem();
   watchedVideoView.eraseVideos();
   watchedVideoView.hideEmptyVideoImage();
 
@@ -49,7 +49,7 @@ function activeWatchedVideoShow() {
   watchingVideoView.eraseVideos();
   watchingVideoView.hideEmptyVideoImage();
 
-  const videos = watchedVideoModel.getItem();
+  const videos = watchedVideoStorage.getItem();
 
   if (videos.length === 0) {
     watchedVideoView.showEmptyVideoImage();

@@ -1,22 +1,22 @@
 import { SETTINGS } from '../constants';
-import { watchedVideoModel, watchingVideoModel } from '../store.js';
+import { watchedVideoStorage, watchingVideoStorage } from '../store.js';
 
 const watchingVideoService = {
   isVideoCountUnderLimit() {
     const allVideoCount =
-      watchingVideoModel.getItem().length + watchedVideoModel.getItem().length;
+      watchingVideoStorage.getItem().length +
+      watchedVideoStorage.getItem().length;
 
     return allVideoCount < SETTINGS.MAX_SAVE_COUNT;
   },
 
   isVideosEmpty() {
-    return watchingVideoModel.getItem().length === 0;
+    return watchingVideoStorage.getItem().length === 0;
   },
 
   pushNewVideo(dataset) {
-    watchingVideoModel.pushItem(getNewVideo(dataset));
+    watchingVideoStorage.pushItem(getNewVideo(dataset));
   },
-
 };
 
 function getNewVideo(dataset) {

@@ -1,10 +1,6 @@
-import { $searchResultVideoWrapper, $watchingVideoWrapper } from '../elements';
-import { watchedVideoModel, watchingVideoModel } from '../store';
-import {
-  layoutView,
-  watchedVideoView,
-  watchingVideoView,
-} from '../view';
+import { $watchingVideoWrapper } from '../elements';
+import { watchedVideoStorage, watchingVideoStorage } from '../store';
+import { layoutView, watchedVideoView, watchingVideoView } from '../view';
 import watchingVideoService from '../service/watchingVideoService.js';
 import {
   CONFIRM_MESSAGE,
@@ -32,7 +28,7 @@ function onWatchingVideoInteract({ target }) {
 
 function onClipCheck(button) {
   const videoId = button.dataset.videoId;
-  watchingVideoModel.sendVideoTo(watchedVideoModel, videoId);
+  watchingVideoStorage.sendVideoTo(watchedVideoStorage, videoId);
 
   loadWatchingVideos();
   layoutView.showSnackbar(SNACKBAR_MESSAGE.WATCHED_VIDEO_CHECK_SUCCESS, true);
@@ -44,13 +40,13 @@ function onWatchingVideoDelete(button) {
   }
 
   const videoId = button.dataset.videoId;
-  watchingVideoModel.popVideoByVideoId(videoId);
+  watchingVideoStorage.popVideoByVideoId(videoId);
   loadWatchingVideos();
   layoutView.showSnackbar(SNACKBAR_MESSAGE.WATCHING_VIDEO_DELETE_SUCCESS, true);
 }
 
 function loadWatchingVideos() {
-  const watchingVideos = watchingVideoModel.getItem();
+  const watchingVideos = watchingVideoStorage.getItem();
 
   if (watchingVideoService.isVideosEmpty()) {
     watchingVideoView.showEmptyVideoImage();
