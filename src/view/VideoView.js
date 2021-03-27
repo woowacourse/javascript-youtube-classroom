@@ -1,20 +1,18 @@
-import { SELECTOR_CLASS, STYLE_CLASS } from '../constants';
+import { SELECTOR_CLASS, STYLE_CLASS, YOUTUBE } from '../constants';
 import BasicView from './BasicView';
 
 export default class VideoView extends BasicView {
-  #isChecked;
-
-  constructor({ $videoWrapper, $emptyVideoImage }, isChecked) {
+  constructor({ $videoWrapper, $emptyVideoImage }) {
     super({ $videoWrapper, $emptyVideoImage });
-    this.#isChecked = isChecked;
   }
 
   renderVideos(videos) {
     this.renderHTML(this._element.$videoWrapper, '');
-    this.renderHTML(
-      this._element.$videoWrapper,
-      this._getVideoListTemplate(videos, this.#isChecked)
-    );
+    this.renderHTML(this._element.$videoWrapper, this._getVideoListTemplate(videos));
+  }
+
+  renderSkeletonItems() {
+    this.renderHTML(this._element.$videoWrapper, this._getSkeletonListTemplate());
   }
 
   eraseVideos() {
@@ -29,53 +27,73 @@ export default class VideoView extends BasicView {
     this.hideElement(this._element.$emptyVideoImage);
   }
 
-  _getVideoListTemplate(videos, isWatched) {
-    return videos
-      .map(video => this._getVideoTemplate(video, isWatched))
-      .join('');
+  _getVideoListTemplate(videos) {
+    return videos.map(video => this._getVideoTemplate(video)).join('');
   }
 
-  _getVideoTemplate(videoItem, isWatched) {
+  _getSkeletonListTemplate() {
     return `
-    <article class="${SELECTOR_CLASS.CLIP} clip">
+      <div class="${SELECTOR_CLASS.SKELETON} skeleton">
+        <div class="image"></div>
+        <p class="line"></p>
+        <p class="line"></p>
+      </div>
+    `.repeat(YOUTUBE.MAX_RESULT_COUNT);
+  }
+
+  _getVideoTemplate(video) {
+    return `
+    <article class="${SELECTOR_CLASS.SAVED_CLIP} clip">
       <div class="clip__preview">
         <iframe
           width="100%"
           height="118"
-          src="https://www.youtube.com/embed/${videoItem.videoId}"
+          src="https://www.youtube.com/embed/${video.videoId}"
           frameborder="0"
           allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
           allowfullscreen
+          loading="lazy"
         ></iframe>
       </div>
       <div class="clip__content pt-2 px-1">
-        <h3>${videoItem.title}</h3>
+        <h3>${video.title}</h3>
         <div>
           <a
             href="https://www.youtube.com/channel/UC-mOekGSesms0agFntnQang"
             target="_blank"
             class="channel-name mt-1"
           >
-            ${videoItem.channelTitle}
+            ${video.channelTitle}
           </a>
           <div class="meta">
-            <p>${videoItem.publishedAt}</p>
+            <p>${video.publishedAt}</p>
           </div>
           <div>
             <span 
               class="
-                ${SELECTOR_CLASS.CLIP_CHECK_BUTTON}
+                ${video.isChecked ? SELECTOR_CLASS.SAVED_CLIP_UNCHECK_BUTTON : SELECTOR_CLASS.SAVED_CLIP_CHECK_BUTTON}
                 clip__check-button
-                ${isWatched ? STYLE_CLASS.CHECKED : ''} 
+                ${video.isChecked ? STYLE_CLASS.CHECKED : ''} 
                 opacity-hover
               " 
-              data-video-id="${videoItem.videoId}"
+              data-video-id="${video.videoId}"
             >✅</span>
-            <span class="opacity-hover">👍</span>
+            <span 
+              class="
+                ${SELECTOR_CLASS.SAVED_CLIP_LIKE_BUTTON}
+                clip__like-button
+                ${video.isLiked ? STYLE_CLASS.LIKED : ''} 
+                opacity-hover
+              "
+              data-video-id="${video.videoId}"
+            >👍</span>
             <span class="opacity-hover">💬</span>
             <span 
-              class="${SELECTOR_CLASS.CLIP_DELETE_BUTTON} opacity-hover" 
-              data-video-id="${videoItem.videoId}"
+              class="
+                ${SELECTOR_CLASS.SAVED_CLIP_DELETE_BUTTON} 
+                opacity-hover
+              " 
+              data-video-id="${video.videoId}"
             >🗑️</span>
           </div>
         </div>

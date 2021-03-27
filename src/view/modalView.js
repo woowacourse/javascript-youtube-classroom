@@ -1,22 +1,23 @@
 import { STYLE_CLASS, SELECTOR_CLASS, YOUTUBE } from '../constants.js';
 
 import BasicView from './BasicView.js';
+import { $ } from 'c:/users/leesongwon/desktop/javascript-youtube-classroom/src/utils/queryselector.js';
 export default class ModalView extends BasicView {
   constructor({
     $modal,
     $searchQueries,
-    $searchResultVideoWrapper,
-    $savedVideoCount,
-    $searchResultIntersector,
-    $searchedVideoNotFound,
+    $searchContentVideoWrapper,
+    $searchContentSavedVideoCount,
+    $searchContentIntersector,
+    $searchContentVideoNotFound,
   }) {
     super({
       $modal,
       $searchQueries,
-      $searchResultVideoWrapper,
-      $savedVideoCount,
-      $searchResultIntersector,
-      $searchedVideoNotFound,
+      $searchContentVideoWrapper,
+      $searchContentSavedVideoCount,
+      $searchContentIntersector,
+      $searchContentVideoNotFound,
     });
   }
 
@@ -28,7 +29,7 @@ export default class ModalView extends BasicView {
   }
 
   showSearchPrepartion() {
-    this.hideElement(this._element.$searchedVideoNotFound);
+    this.hideElement(this._element.$searchContentVideoNotFound);
     this.#renderSkeletonItems();
   }
 
@@ -37,27 +38,28 @@ export default class ModalView extends BasicView {
   }
 
   renderSavedVideoCount(count) {
-    this.renderHTML(this._element.$savedVideoCount, count);
+    this.renderHTML(this._element.$searchContentSavedVideoCount, count);
   }
 
-  renderSearchedVideos(processedVideos) {
-    this.renderHTML(this._element.$searchResultVideoWrapper, this.#getSearchedVideoListTemplate(processedVideos));
+  renderSearchedVideos(videos) {
+    $();
+    this.renderHTML(this._element.$searchContentVideoWrapper, this.#getSearchedVideoListTemplate(videos));
   }
 
-  insertSearchedVideos(processedVideos) {
-    this.insertHTML(this._element.$searchResultVideoWrapper, this.#getSearchedVideoListTemplate(processedVideos));
+  insertSearchedVideos(videos) {
+    this.insertHTML(this._element.$searchContentVideoWrapper, this.#getSearchedVideoListTemplate(videos));
   }
 
   showNotFountImage() {
-    this.showElement(this._element.$searchedVideoNotFound);
+    this.showElement(this._element.$searchContentVideoNotFound);
   }
 
-  showSearchResultIntersector() {
-    this.showElement(this._element.$searchResultIntersector);
+  showSearchContentIntersector() {
+    this.showElement(this._element.$searchContentIntersector);
   }
 
-  hideSearchResultIntersector() {
-    this.hideElement(this._element.$searchResultIntersector);
+  hideSearchContentIntersector() {
+    this.hideElement(this._element.$searchContentIntersector);
   }
 
   hideSkeletons() {
@@ -69,7 +71,7 @@ export default class ModalView extends BasicView {
   }
 
   #renderSkeletonItems() {
-    this.renderHTML(this._element.$searchResultVideoWrapper, this.#getSkeletonListTemplate());
+    this.renderHTML(this._element.$searchContentVideoWrapper, this.#getSkeletonListTemplate());
   }
 
   #getSkeletonListTemplate() {
@@ -96,38 +98,36 @@ export default class ModalView extends BasicView {
     return videos.map(this.#getSearchedVideoTemplate).join('');
   }
 
-  #getSearchedVideoTemplate(videoItem) {
+  #getSearchedVideoTemplate(video) {
     return `
     <article class="${SELECTOR_CLASS.SEARCHED_CLIP} clip">
       <div class="clip__preview">
         <iframe
           width="100%"
           height="118"
-          src="https://www.youtube.com/embed/${videoItem.videoId}"
+          src="https://www.youtube.com/embed/${video.videoId}"
           frameborder="0"
           allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
           allowfullscreen
+          loading="lazy"
         ></iframe>
       </div>
       <div class="clip__content pt-2 px-1">
-        <h3>${videoItem.title}</h3>
+        <h3>${video.title}</h3>
         <div>
           <a
             href="https://www.youtube.com/channel/UC-mOekGSesms0agFntnQang"
             target="_blank"
             class="channel-name mt-1"
           >
-            ${videoItem.channelTitle}
+            ${video.channelTitle}
           </a>
           <div class="meta">
-            <p>${videoItem.publishedAt}</p>
+            <p>${video.publishedAt}</p>
           </div>
-          <div class="d-flex justify-end ${videoItem.isSaved ? 'removed' : ''}">
+          <div class="d-flex justify-end ${video.isSaved ? 'removed' : ''}">
             <button class="btn ${SELECTOR_CLASS.SEARCHED_CLIP_SAVE_BUTTON}"
-              data-video-id="${videoItem.videoId}"
-              data-title="${videoItem.title}"
-              data-channel-title="${videoItem.channelTitle}"
-              data-published-at="${videoItem.publishedAt}"
+              data-video-id="${video.videoId}"
             >⬇️ 저장</button>
           </div>
         </div>

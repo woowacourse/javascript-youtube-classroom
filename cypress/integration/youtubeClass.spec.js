@@ -119,7 +119,7 @@ context('유튜브 강의실 테스트', () => {
         click(elements[0]);
       });
       click(`#${SELECTOR_ID.MODAL_CLOSE_BUTTON}`);
-      cy.get(`#${SELECTOR_ID.WATCHING_VIDEO_WRAPPER} .${SELECTOR_CLASS.CLIP}`)
+      cy.get(`#${SELECTOR_ID.SAVED_VIDEO_WRAPPER} .${SELECTOR_CLASS.CLIP}`)
         .its('length')
         .should('be.gt', 0);
     });
@@ -132,7 +132,7 @@ context('유튜브 강의실 테스트', () => {
       cy.get(`.${SELECTOR_CLASS.SEARCHED_CLIP}`).last().scrollIntoView();
       cy.wait(waitTime);
       cy.get(
-        `#${SELECTOR_ID.SEARCH_RESULT_VIDEO_WRAPPER} .${SELECTOR_CLASS.SEARCHED_CLIP}`
+        `#${SELECTOR_ID.SEARCHED_VIDEO_WRAPPER} .${SELECTOR_CLASS.SEARCHED_CLIP}`
       )
         .its('length')
         .should('be.gt', 10);
@@ -154,7 +154,7 @@ context('유튜브 강의실 테스트', () => {
       cy.reload();
       click(`#${SELECTOR_ID.SEARCH_BUTTON}`);
       cy.get(
-        `#${SELECTOR_ID.SEARCH_RESULT_VIDEO_WRAPPER} .${SELECTOR_CLASS.SEARCHED_CLIP}`
+        `#${SELECTOR_ID.SEARCHED_VIDEO_WRAPPER} .${SELECTOR_CLASS.SEARCHED_CLIP}`
       )
         .its('length')
         .should('be.gt', 0);
@@ -167,7 +167,7 @@ context('유튜브 강의실 테스트', () => {
       click(`#${SELECTOR_ID.SEARCH_FORM_SUBMIT}`);
       cy.wait(waitTime);
       cy.get(
-        `#${SELECTOR_ID.SEARCH_RESULT_VIDEO_WRAPPER} .${SELECTOR_CLASS.SEARCHED_CLIP}`
+        `#${SELECTOR_ID.SEARCHED_VIDEO_WRAPPER} .${SELECTOR_CLASS.SEARCHED_CLIP}`
       )
         .its('length')
         .should('be.gt', 0);

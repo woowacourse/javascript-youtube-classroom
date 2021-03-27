@@ -1,11 +1,8 @@
-import controller from './controller/controller.js';
-import watchingVideoController from './controller/watchingVideoController.js';
-import watchedVideoController from './controller/watchedVideoController.js';
-import modalController from './controller/modalController.js';
+import routeController from './controller/routeController.js';
+import savedVideoController from './controller/savedVideoController.js';
+import searchModalController from './controller/searchModalController.js';
 
-controller.initRouteEventListeners();
-modalController.initEventListeners();
-modalController.initSearchQueries();
-watchingVideoController.initEventListeners();
-watchedVideoController.initEventListeners();
-watchingVideoController.loadVideos();
+routeController.initRouteEventListeners();
+searchModalController.initEventListeners();
+searchModalController.initSearchQueries();
+savedVideoController.initEventListeners();
