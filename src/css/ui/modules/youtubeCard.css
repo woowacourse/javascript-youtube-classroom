@@ -83,7 +83,7 @@
     #ededed 30px,
     #e0e0e0 60px
   );
-  animation: refresh 2s infinite ease-out;
+  animation: skeleton-refresh 2s infinite ease-out;
 }
 
 .skeleton .image {
@@ -92,25 +92,15 @@
 
 .skeleton .line {
   height: 16px;
-}
-
-.skeleton .line.js-video-title{
-  width: 100%;
-}
-
-.skeleton .line.channel-name {
   width: 50%;
-}
-
-.skeleton .line {
-  width: 50%;
-}
-
-.skeleton .line {
   margin: 3px 0;
 }
 
-@keyframes refresh {
+.skeleton .line.js-video-title {
+  width: 100%;
+}
+
+@keyframes skeleton-refresh {
   0% {
     background-position: calc(-100px);
   }

@@ -1,25 +1,26 @@
-import {
-  CLASSNAME,
-  LOCAL_STORAGE_KEY,
-  MAX_KEYWORDS_COUNT,
-  MESSAGE,
-} from "../constants.js";
-import { $ } from "../utils/querySelector.js";
-import messenger from "../Messenger.js";
+import { CLASSNAME, LOCAL_STORAGE_KEY, NUMBER } from "../constants/index.js";
+import { $ } from "../utils/index.js";
+import { messenger, MESSAGE } from "../messenger/index.js";
 
 export default class KeywordHistory {
   constructor() {
+    this.initializeVariables();
+    this.addMessageListeners();
+    this.render();
+  }
+
+  initializeVariables() {
     this.keywordHistory =
       JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEY.KEYWORD_HISTORY)) || [];
 
     this.$keywordHistorySection = $(`.${CLASSNAME.KEYWORD_HISTORY_SECTION}`);
+  }
 
+  addMessageListeners() {
     messenger.addMessageListener(
       MESSAGE.KEYWORD_SUBMITTED,
       this.addKeyword.bind(this)
     );
-
-    this.render();
   }
 
   addKeyword({ query }) {
@@ -27,9 +28,9 @@ export default class KeywordHistory {
       (keyword) => keyword !== query
     );
 
-    this.keywordHistory.push(query);
-    if (this.keywordHistory.length > MAX_KEYWORDS_COUNT) {
-      this.keywordHistory.shift();
+    this.keywordHistory.unshift(query);
+    if (this.keywordHistory.length > NUMBER.MAX_KEYWORDS_COUNT) {
+      this.keywordHistory.pop();
     }
 
     localStorage.setItem(

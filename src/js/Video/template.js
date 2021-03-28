@@ -1,6 +1,6 @@
-import { CLASSNAME } from "../constants.js";
+import { CLASSNAME } from "../constants/index.js";
 
-const TEMPLATE = `
+const GENERATE_TEMPLATE = (buttonTemplate) => `
 <article class="clip ${CLASSNAME.SKELETON}">
   <div class="preview-container">
   <iframe
@@ -24,11 +24,43 @@ const TEMPLATE = `
         <p class="${CLASSNAME.PUBLISHED_AT}">
         </p>
       </div>
-      <div class="d-flex justify-end --hidden ${CLASSNAME.SAVE_VIDEO_BUTTON_WRAPPER}">
-        <button class="btn ${CLASSNAME.SAVE_VIDEO_BUTTON}">⬇️ 저장</button> 
-      </div>
+      ${buttonTemplate}
     </div>
   </div>
 </article>`;
 
-export default TEMPLATE;
+const SAVED_VIDEO_BUTTON_TEMPLATE = `
+<div class="d-flex justify-end ${CLASSNAME.SAVE_VIDEO_BUTTON_WRAPPER}">
+  <button class="btn ${CLASSNAME.SAVE_VIDEO_BUTTON}">저장</button>
+</div>
+`;
+
+const WATCH_LATER_ICON_BUTTONS_TEMPLATE = `
+<div class=${CLASSNAME.ICONS_WRAPPER}>
+  <span class="opacity-hover icon move-to-history-icon ${CLASSNAME.MOVE_TO_HISTORY_ICON}"></span>
+  <span class="opacity-hover ${CLASSNAME.LIKE_ICON}">👍</span>
+  <span class="opacity-hover ${CLASSNAME.COMMENT_ICON}">💬</span>
+  <span class="opacity-hover ${CLASSNAME.DELETE_ICON}">🗑️</span>
+</div>`;
+
+const HISTORY_ICON_BUTTONS_TEMPLATE = `
+<div class=${CLASSNAME.ICONS_WRAPPER}>
+  <span class="opacity-hover icon move-to-watch-later-icon ${CLASSNAME.MOVE_TO_WATCH_LATER_ICON}"></span>
+  <span class="opacity-hover ${CLASSNAME.LIKE_ICON}">👍</span>
+  <span class="opacity-hover ${CLASSNAME.COMMENT_ICON}">💬</span>
+  <span class="opacity-hover ${CLASSNAME.DELETE_ICON}">🗑️</span>
+</div>`;
+
+const SEARCH_VIDEO_TEMPLATE = GENERATE_TEMPLATE(SAVED_VIDEO_BUTTON_TEMPLATE);
+
+const WATCH_LATER_VIDEO_TEMPLATE = GENERATE_TEMPLATE(
+  WATCH_LATER_ICON_BUTTONS_TEMPLATE
+);
+
+const HISTORY_VIDEO_TEMPLATE = GENERATE_TEMPLATE(HISTORY_ICON_BUTTONS_TEMPLATE);
+
+export {
+  SEARCH_VIDEO_TEMPLATE,
+  WATCH_LATER_VIDEO_TEMPLATE,
+  HISTORY_VIDEO_TEMPLATE,
+};

@@ -1,0 +1,27 @@
+:root {
+  --orange: orange;
+  --green: mediumseagreen;
+}
+
+.icon {
+  border-radius: 100%;
+  display: inline-block;
+  width: 0.85rem;
+  height: 0.85rem;
+}
+
+.move-to-history-icon {
+  background-color: var(--orange);
+}
+
+.move-to-watch-later-icon {
+  background-color: var(--green);
+}
+
+.js-icons-wrapper .move-to-history-icon:hover {
+  background-color: var(--green);
+}
+
+.js-icons-wrapper .move-to-watch-later-icon:hover {
+  background-color: var(--orange);
+}
