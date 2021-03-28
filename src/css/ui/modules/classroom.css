@@ -14,6 +14,14 @@
   display: none;
 }
 
+.liked-section .liked {
+  display: block;
+}
+
+.liked-section article {
+  display: none;
+}
+
 .no-video-found {
   display: none;
   text-align: center;
@@ -21,7 +29,7 @@
   bottom: 0;
   left: 50%;
   transform: translate3d(-50%, 0, 0);
-  background-image: url('../../../images/status/no_video.png');
+  background-image: url('../../../images/status/Component.png');
   background-repeat: no-repeat;
   background-size: cover;
   width: 67vh;
@@ -34,5 +42,10 @@
 
 .no-video-found.no-watched {
   display: inline-block;
-  background-position-x: -67vh;
+  background-position-x: -67.5vh;
+}
+
+.no-video-found.no-liked {
+  display: inline-block;
+  background-position-x: -135vh;
 }

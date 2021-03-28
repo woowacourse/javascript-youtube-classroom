@@ -3,6 +3,7 @@ import { YOUTUBE_LINK_ENDPOINT } from '../../constants.js';
 export const getThumbnailTemplate = (videoId) => {
   return `
     <iframe
+      loading="lazy"
       width="100%"
       height="118"
       src=${YOUTUBE_LINK_ENDPOINT.VIDEO}${videoId}

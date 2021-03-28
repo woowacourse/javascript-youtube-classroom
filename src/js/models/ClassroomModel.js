@@ -14,6 +14,10 @@ export default class ClassroomModel {
     return this.videos.filter((video) => !video.isWatching).length;
   }
 
+  get likedVideoCount() {
+    return this.videos.filter((video) => video.isLiked).length;
+  }
+
   getTargetVideo(videoId) {
     return this.videos.find((video) => video.videoId === videoId);
   }
@@ -34,9 +38,19 @@ export default class ClassroomModel {
     return this.watchedVideoCount === 0;
   }
 
-  moveVideo(videoId) {
+  hasNoLikedVideoSaved() {
+    return this.likedVideoCount === 0;
+  }
+
+  toggleWatchingVideo(videoId) {
     const target = this.getTargetVideo(videoId);
     target.isWatching = !target.isWatching;
+    setListByKey(DB_KEY.VIDEOS, this.videos);
+  }
+
+  toggleLikedVideo(videoId) {
+    const target = this.getTargetVideo(videoId);
+    target.isLiked = !target.isLiked;
     setListByKey(DB_KEY.VIDEOS, this.videos);
   }
 

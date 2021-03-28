@@ -2,15 +2,3 @@ export const $ = (selector) => document.querySelector(selector);
 export const $$ = (selector) => document.querySelectorAll(selector);
 
 export const isEndOfScroll = ($element) => $element.scrollHeight - $element.scrollTop === $element.clientHeight;
-
-export const createSnackbar = ({ message, showtime }) => {
-  const $snackbar = document.createElement('div');
-  $snackbar.innerText = message;
-  $snackbar.classList.add('snackbar');
-  $snackbar.classList.add('show');
-  setTimeout(() => {
-    $snackbar.remove();
-  }, showtime);
-
-  return $snackbar;
-};

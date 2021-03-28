@@ -18,7 +18,7 @@ export default class SearchModel {
     this.nextPageToken = '';
     this.totalSearchResult = [];
     this.keyword = keyword;
-    this.saveKeyword();
+    this.updateKeyword();
   }
 
   get videoCount() {
@@ -32,10 +32,11 @@ export default class SearchModel {
   saveVideo(targetVideo) {
     targetVideo.isSaved = true;
     targetVideo.isWatching = true;
+    targetVideo.isLiked = false;
     insertItemByKey(DB_KEY.VIDEOS, targetVideo);
   }
 
-  saveKeyword() {
+  updateKeyword() {
     if (this.keyword === '') {
       return;
     }
@@ -43,9 +44,11 @@ export default class SearchModel {
     if (this.recentKeywords.includes(this.keyword)) {
       return;
     }
+
     if (this.recentKeywords.length === MAX_RECENT_KEYWORD_COUNT) {
       this.recentKeywords.pop();
     }
+
     this.recentKeywords.unshift(this.keyword);
     setListByKey(DB_KEY.RECENT_KEYWORDS, this.recentKeywords);
   }
