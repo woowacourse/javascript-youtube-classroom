@@ -15,11 +15,17 @@ export const getVideoPlayerTemplate = (id) => {
 
 export const getVideoTemplate = (data, options) => {
   const { id, title, channelId, channelTitle, dateString, thumbnailURL } = data;
-  const { isContainSaveButton = false, isContainMenu = false, isSaved = false, isWatched = false } = options;
+  const {
+    isContainSaveButton = false,
+    isContainMenu = false,
+    isSaved = false,
+    isWatched = false,
+    isLiked = false,
+  } = options;
 
   return `
     <article class="clip d-flex flex-col" data-video-id="${id}">
-      <div class="preview-container" style="background-image: url(${thumbnailURL})">
+      <div class="preview-container" data-src="${thumbnailURL}">
         <div class="dimmed"></div>
         <button class="play-button" />
       </div>
@@ -51,8 +57,7 @@ export const getVideoTemplate = (data, options) => {
             ? `
             <div class="menu-list" data-video-id="${id}"}>
               <span class="cursor-pointer ${generateCSSClass(!isWatched, 'opacity-hover')} watched">✅</span>
-              <span class="cursor-pointer opacity-hover like">👍</span>
-              <span class="cursor-pointer opacity-hover comment">💬</span>
+              <span class="cursor-pointer ${generateCSSClass(!isLiked, 'opacity-hover')} liked">👍</span>
               <span class="cursor-pointer opacity-hover delete">🗑️</span>
             </div>
           `
