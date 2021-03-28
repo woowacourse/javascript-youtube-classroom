@@ -7,6 +7,7 @@ export const getThumbnailTemplate = (videoId) => {
       height="118"
       src=${YOUTUBE_LINK_ENDPOINT.VIDEO}${videoId}
       frameborder="0"
+      loading="lazy"
       allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
       allowfullscreen>
     </iframe>
@@ -27,6 +28,6 @@ export const getChannelTitleTemplate = (channelId, channelTitle) => {
 
 export const resultNotFoundTemplate = `
   <p align="center">
-    <img src="src/images/status/not_found.png" alt="not found"/>
+    <img src="src/images/status/not_found.png" alt="not found" loading="eager" />
   </p>
 `;

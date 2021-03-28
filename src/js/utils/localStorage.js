@@ -6,7 +6,7 @@ const setListToLocalStorage = (key, list) => {
   localStorage.setItem(key, list);
 };
 
-export const getListByKey = (key) => {
+export const getListFromDB = (key) => {
   try {
     return JSON.parse(getListFromLocalStorage(key)) || [];
   } catch (e) {
@@ -14,34 +14,34 @@ export const getListByKey = (key) => {
   }
 };
 
-export const setListByKey = (key, list) => {
+export const setListToDB = (key, list) => {
   setListToLocalStorage(key, JSON.stringify(list));
 };
 
 export const insertItemByKey = (key, item) => {
-  const list = getListByKey(key);
+  const list = getListFromDB(key);
 
   list.push(item);
-  setListByKey(key, list);
+  setListToDB(key, list);
 };
 
 export const insertItemAtFirstByKey = (key, item) => {
-  const list = getListByKey(key);
+  const list = getListFromDB(key);
 
   list.unshift(item);
-  setListByKey(key, list);
+  setListToDB(key, list);
 };
 
 export const deleteLastItemByKey = (key) => {
-  const list = getListByKey(key);
+  const list = getListFromDB(key);
 
-  setListByKey(key, list.slice(0, list.length - 1));
+  setListToDB(key, list.slice(0, list.length - 1));
 };
 
 export const deleteTargetItemByKey = ({ key, secondKey }, value) => {
-  const list = getListByKey(key);
+  const list = getListFromDB(key);
   const filteredList = secondKey
     ? list.filter((item) => item[secondKey] !== value)
     : list.filter((item) => item !== value);
-  setListByKey(key, filteredList);
+  setListToDB(key, filteredList);
 };

@@ -1,10 +1,10 @@
-import { getListByKey, insertItemByKey, setListByKey } from '../utils/localStorage.js';
+import { getListFromDB, insertItemByKey, setListToDB } from '../utils/localStorage.js';
 import { MAX_RECENT_KEYWORD_COUNT, DB_KEY } from '../constants.js';
 
 /*
 로컬스토리지 데이터 저장구조
   {
-    videos: [ { videoId: 'TVUNi0zi1yw', ..., isWatching: true }, ... ],
+    videos: [ { videoId: 'TVUNi0zi1yw', ..., isWatched: false }, ... ],
     recentKeywords: [ 'keyword1', 'keyword2', 'keyword3' ],
   }
 */
@@ -12,7 +12,7 @@ import { MAX_RECENT_KEYWORD_COUNT, DB_KEY } from '../constants.js';
 export default class SearchModel {
   constructor() {
     this.initSearchResult();
-    this.recentKeywords = getListByKey(DB_KEY.RECENT_KEYWORDS);
+    this.recentKeywords = getListFromDB(DB_KEY.RECENT_KEYWORDS);
   }
 
   initSearchResult() {
@@ -42,12 +42,12 @@ export default class SearchModel {
       this.recentKeywords.pop();
     }
     this.recentKeywords.unshift(this.keyword);
-    setListByKey(DB_KEY.RECENT_KEYWORDS, this.recentKeywords);
+    setListToDB(DB_KEY.RECENT_KEYWORDS, this.recentKeywords);
   }
 
   getRecentKeywords() {
     try {
-      return getListByKey(DB_KEY.RECENT_KEYWORDS);
+      return getListFromDB(DB_KEY.RECENT_KEYWORDS);
     } catch (e) {
       return '';
     }
@@ -55,7 +55,7 @@ export default class SearchModel {
 
   removeRecentKeyword(target) {
     this.recentKeywords = this.recentKeywords.filter((keyword) => keyword !== target);
-    setListByKey(DB_KEY.RECENT_KEYWORDS, this.recentKeywords);
+    setListToDB(DB_KEY.RECENT_KEYWORDS, this.recentKeywords);
   }
 
   addNewSearchResult(newSearchResult) {
@@ -68,7 +68,8 @@ export default class SearchModel {
 
   saveVideo(targetVideo) {
     targetVideo.isSaved = true;
-    targetVideo.isWatching = true;
+    targetVideo.isWatched = false;
+    targetVideo.isLiked = false;
     insertItemByKey(DB_KEY.VIDEOS, targetVideo);
   }
 }

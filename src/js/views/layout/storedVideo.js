@@ -1,10 +1,12 @@
 import { YOUTUBE_LINK_ENDPOINT, CLASS_NAME } from '../../constants.js';
 
-export const getSavedVideoTemplate = ({ videoId, videoTitle, channelId, channelTitle, publishedAt }, className) => {
-  const { WATCHING, CHECKED } = CLASS_NAME;
+export const getSavedVideoTemplate = (video) => {
+  const { videoId, videoTitle, channelId, channelTitle, publishedAt, isWatched, isLiked } = video;
+  const { WATCHING, WATCHED, CHECKED, LIKED, NOT_LIKED } = CLASS_NAME;
+  const articleStyle = [`${isWatched ? WATCHED : WATCHING}`, `${isLiked ? LIKED : NOT_LIKED}`].join(' ');
 
   return `
-    <article id=${videoId} class="${className} clip">
+    <article id=${videoId} class="${articleStyle} clip">
       <div class="preview-container">
         <iframe
           width="100%"
@@ -26,8 +28,8 @@ export const getSavedVideoTemplate = ({ videoId, videoTitle, channelId, channelT
         </div>
         <div class="published-at">${publishedAt}</div>
         <div>
-          <span class="js-check-button video-manage-btn ${className === WATCHING ? '' : CHECKED}">✅</span>
-          <span class="js-like-button video-manage-btn">👍</span>
+          <span class="js-check-button video-manage-btn ${isWatched ? CHECKED : ''}">✅</span>
+          <span class="js-like-button video-manage-btn ${isLiked ? CHECKED : ''}">👍</span>
           <span class="js-comment-button video-manage-btn disabled">💬</span>
           <span class="js-remove-button video-manage-btn">🗑️</span>
         </div>

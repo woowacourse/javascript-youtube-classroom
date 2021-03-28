@@ -30,23 +30,23 @@
 
 /* Layout - Top / Right / Bottom / Left */
 .mt-2 {
-  margin-top: 8px;
+  margin-top: 0.5rem;
 }
 
 .mt-3 {
-  margin-top: 12px;
+  margin-top: 0.75rem;
 }
 
 .mt-4 {
-  margin-top: 16px;
+  margin-top: 1rem;
 }
 
 .mt-5 {
-  margin-top: 20px;
+  margin-top: 1.25rem;
 }
 
 .mr-2 {
-  margin-right: 8px;
+  margin-right: 0.5rem;
 }
 
 /* Box Alignment - Justify Content*/

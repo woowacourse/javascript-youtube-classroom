@@ -1,4 +1,4 @@
-import { getListByKey } from '../utils/localStorage.js';
+import { getListFromDB } from '../utils/localStorage.js';
 import { DB_KEY, CLASS_NAME } from '../constants.js';
 
 export const isModalOpen = ($target) => {
@@ -22,7 +22,7 @@ export const isRecentKeywordRemoveButton = ($target) => {
 };
 
 export const isSavedVideo = (targetId) => {
-  const videos = getListByKey(DB_KEY.VIDEOS);
+  const videos = getListFromDB(DB_KEY.VIDEOS);
 
   return videos.some((video) => video.videoId === targetId);
 };
@@ -31,12 +31,30 @@ export const isWatchingMenu = ($target) => {
   return $target.classList.contains(CLASS_NAME.WATCHING_SECTION);
 };
 
+export const isWatchedMenu = ($target) => {
+  return $target.classList.contains(CLASS_NAME.WATCHED_SECTION);
+};
+
+export const isLikedMenu = ($target) => {
+  return $target.classList.contains(CLASS_NAME.LIKED_SECTION);
+};
+
 export const isWatchingVideo = ($target) => {
   return $target.classList.contains(CLASS_NAME.WATCHING);
 };
+
+export const isWatchedVideo = ($target) => {
+  return $target.classList.contains(CLASS_NAME.WATCHED);
+};
+
+export const isLikedVideo = ($target) => {
+  return $target.classList.contains(CLASS_NAME.LIKED);
+};
+
 export const isConfirmCancelButton = ($target) => {
   return $target.classList.contains('js-confirm-cancel');
 };
+
 export const isConfirmApproveButton = ($target) => {
   return $target.classList.contains('js-confirm-approve');
 };
