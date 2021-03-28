@@ -12,6 +12,7 @@ export const getVideoTemplate = ({ videoData, buttonTemplate }) => {
             <iframe
               width="100%"
               height="118"
+              loading="lazy"
               src="https://www.youtube.com/embed/${kind === searchKind ? id.videoId : id}"
               frameborder="0"
               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
