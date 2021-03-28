@@ -22,6 +22,7 @@ class MenuSection {
     this.$target = $(`.${CLASS_NAME.MENU_SECTION}`);
     this.$watchLaterBtn = $(`.${CLASS_NAME.WATCH_LATER_BTN}`);
     this.$watchedBtn = $(`.${CLASS_NAME.WATCHED_BTN}`);
+    this.$likedBtn = $(`.${CLASS_NAME.LIKED_BTN}`);
     this.$videoSearchBtn = $(`.${CLASS_NAME.VIDEO_SEARCH_BTN}`);
   }
 
@@ -37,6 +38,7 @@ class MenuSection {
     const menuNames = [
       CLASS_NAME.WATCH_LATER_BTN,
       CLASS_NAME.WATCHED_BTN,
+      CLASS_NAME.LIKED_BTN,
       CLASS_NAME.VIDEO_SEARCH_BTN,
     ];
 
@@ -62,6 +64,9 @@ class MenuSection {
       [CLASS_NAME.WATCHED_BTN]: () => {
         this.props.changeMenu(MENU.WATCHED);
       },
+      [CLASS_NAME.LIKED_BTN]: () => {
+        this.props.changeMenu(MENU.LIKED);
+      },
       [CLASS_NAME.VIDEO_SEARCH_BTN]: () => {
         this.props.openModal();
       },
@@ -74,9 +79,11 @@ class MenuSection {
     const mappingMenu = {
       [MENU.WATCH_LATER]: this.$watchLaterBtn,
       [MENU.WATCHED]: this.$watchedBtn,
+      [MENU.LIKED]: this.$likedBtn,
     };
 
     [this.$watchLaterBtn, this.$watchedBtn].forEach($btn => $btn.classList.remove("bg-cyan-100"));
+    [this.$watchLaterBtn, this.$likedBtn].forEach($btn => $btn.classList.remove("bg-cyan-100"));
     mappingMenu[this.clickedMenu].classList.add("bg-cyan-100");
   }
 }

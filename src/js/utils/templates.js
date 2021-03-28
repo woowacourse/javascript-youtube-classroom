@@ -1,7 +1,7 @@
 import { changeDateFormat } from "./common.js";
 import { SECTION } from "./constants.js";
 
-export const createVideoTemplate = (video, wrapperName) => `
+export const createVideoTemplate = (video, wrapperName, liked) => `
 <article class="clip">
   <div class="preview-container">
     <iframe
@@ -10,7 +10,7 @@ export const createVideoTemplate = (video, wrapperName) => `
       srcdoc="${getSrcDocAttribute(video)}"
       src="https://www.youtube.com/embed/${video.videoId}"
       frameborder="0"
-      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+      allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
       allowfullscreen
     ></iframe>
   </div>
@@ -29,7 +29,7 @@ export const createVideoTemplate = (video, wrapperName) => `
         <p>${changeDateFormat(video.publishedAt)}</p>
       </div>
         ${wrapperName === SECTION.MODAL ? createSaveBtnTemplate(video) : ""}
-        ${wrapperName === SECTION.MAIN ? createActionBtnTemplate(video) : ""}
+        ${wrapperName === SECTION.MAIN && liked ? "" : createActionBtnTemplate(video)}
     </div>
   </div>
 </article>`;
@@ -45,8 +45,7 @@ const createSaveBtnTemplate = video => `
 const createActionBtnTemplate = video => `
 <div class="clip__actions" data-video-id="${video.videoId}">
   <span class="clip__watched-check ${video.isWatched ? "opacity-1" : "opacity-hover"}">✅</span>
-  <span class="clip__thumbs-up opacity-hover">👍</span>
-  <span class="clip__comment opacity-hover">💬</span>
+  <span class="clip__liked-check ${video.isLiked ? "opacity-1" : "opacity-hover"}">👍</span>
   <span class="clip__trash-can opacity-hover">🗑️</span>
 </div>
 `;

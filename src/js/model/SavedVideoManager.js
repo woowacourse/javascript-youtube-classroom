@@ -5,6 +5,7 @@ class SavedVideoManager {
   constructor() {
     this.subscribers = [];
     this.savedVideos = getDataFromLocalStorage(STORAGE.SAVED_VIDEOS, []);
+    this.likedVideos = getDataFromLocalStorage(STORAGE.LIKED_VIDEOS, []);
   }
 
   subscribe(subscriber) {
@@ -17,15 +18,21 @@ class SavedVideoManager {
     });
   }
 
-  _setState({ savedVideos }) {
+  _setState({ savedVideos, likedVideos }) {
     this.savedVideos = savedVideos ?? this.savedVideos;
+    this.likedVideos = likedVideos ?? this.likedVideos;
 
     setDataToLocalStorage(STORAGE.SAVED_VIDEOS, this.savedVideos);
+    setDataToLocalStorage(STORAGE.LIKED_VIDEOS, this.likedVideos);
     this._publish();
   }
 
   getSavedVideos() {
     return this.savedVideos;
+  }
+
+  getLikedVideos() {
+    return this.likedVideos;
   }
 }
 

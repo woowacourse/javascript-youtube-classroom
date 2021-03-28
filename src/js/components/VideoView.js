@@ -19,6 +19,7 @@ class VideoView {
 
   _initState() {
     this.savedVideos = savedVideoManager.getSavedVideos();
+    this.likedVideos = savedVideoManager.getLikedVideos();
     this.clickedMenu = MENU.WATCH_LATER;
 
     this._render();
@@ -47,6 +48,10 @@ class VideoView {
         this._handleCheckWatched(e);
       }
 
+      if (e.target.classList.contains(`${CLASS_NAME.LIKED_CHECK}`)) {
+        this._handleCheckLiked(e);
+      }
+
       if (e.target.classList.contains(`${CLASS_NAME.TRASH_CAN}`)) {
         this._handleRemoveSaved(e);
       }
@@ -69,6 +74,23 @@ class VideoView {
     popMessage(this.$snackbar, message);
   }
 
+  _handleCheckLiked(e) {
+    const likedVideoId = e.target.closest(`.${CLASS_NAME.CLIP_ACTIONS}`).dataset.videoId;
+    const likedVideos = this.savedVideos.map(video => {
+      if (video.videoId === likedVideoId) {
+        video.isLiked = !video.isLiked;
+      }
+
+      return video;
+    });
+    savedVideoManager._setState({ likedVideos });
+
+    const isLiked = e.target
+      .closest(`.${CLASS_NAME.LIKED_CHECK}`)
+      .classList.contains("opacity-hover");
+    popMessage(this.$snackbar, isLiked ? SNACKBAR_MESSAGE.LIKE : SNACKBAR_MESSAGE.UNLIKE);
+  }
+
   _handleRemoveSaved(e) {
     if (confirm(CONFIRM_MESSAGE.DELETE)) {
       const removeVideoId = e.target.closest(`.${CLASS_NAME.CLIP_ACTIONS}`).dataset.videoId;
@@ -87,7 +109,9 @@ class VideoView {
             .map(video => createVideoTemplate(video, SECTION.MAIN))
             .join("")
         : createNoWatchLaterTemplate();
-    } else {
+    }
+
+    if (this.clickedMenu === MENU.WATCHED) {
       this.$videoViewVideoWrapper.innerHTML = this.savedVideos.length
         ? this.savedVideos
             .filter(video => video.isWatched)
@@ -95,12 +119,28 @@ class VideoView {
             .join("")
         : createNoWatchLaterTemplate();
     }
+
+    if (this.clickedMenu === MENU.LIKED) {
+      this.$videoViewVideoWrapper.innerHTML = this.savedVideos.length
+        ? this.savedVideos
+            .filter(video => video.isLiked)
+            .map(video => createVideoTemplate(video, SECTION.MAIN, "liked"))
+            .join("")
+        : createNoLikedVideoTemplate();
+    }
   }
 }
 
 const createNoWatchLaterTemplate = () =>
   `<div class='d-flex flex-col justify-center items-center no-search-result'>
     <img class='d-block no-saved-video-image' src='src/images/status/no_watch_later_video.png' alt='결과 없음'>
+    <p>저장한 영상이 없어요 🥲</p>
+  </div>`;
+
+const createNoLikedVideoTemplate = () =>
+  `<div class='d-flex flex-col justify-center items-center no-search-result'>
+    <img class='d-block no-liked-video-image' src='src/images/status/no_watch_later_video.png' alt='결과 없음'>
+    <p>좋아요 누른 영상이 없어요 🥲</p>
   </div>`;
 
 export default VideoView;
