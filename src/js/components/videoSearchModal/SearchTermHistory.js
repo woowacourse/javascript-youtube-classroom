@@ -1,7 +1,8 @@
 import Component from '../../core/Component.js';
 import { store } from '../../index.js';
-import { $, createElement, localStorageGetItem, localStorageSetItem } from '../../utils/utils.js';
-import { LOCALSTORAGE_KEYS } from '../../constants/constants.js';
+import { $, createElement, localStorageGetItem } from '../../utils/utils.js';
+import { LOCALSTORAGE_KEYS, SELECTORS } from '../../constants/constants.js';
+import { saveHistoryToLocalStorage } from '../../utils/youtubeClassRoomUtils.js';
 
 export default class SearchTermHistory extends Component {
   setup() {
@@ -16,12 +17,10 @@ export default class SearchTermHistory extends Component {
       textContent: '최근 검색어: ',
     });
 
-    const chips = createElement({ tag: 'div', classes: ['chips'] });
+    const chips = createElement({ tag: 'div', classes: ['chips', 'd-inline'] });
 
     chips.appendChild(
-      this.chipsTemplate(
-        localStorageGetItem(LOCALSTORAGE_KEYS.SEARCH_HISTORY)
-      )
+      this.chipsTemplate(localStorageGetItem(LOCALSTORAGE_KEYS.SEARCH_HISTORY))
     );
 
     fragment.appendChild(searchHistory);
@@ -31,7 +30,10 @@ export default class SearchTermHistory extends Component {
   }
 
   selectDOM() {
-    this.$chips = $('.chips', this.$target);
+    this.$chips = $(
+      SELECTORS.SEARCH_MODAL.SEARCH_TERM_HISTORY.CHIPS_CLASS,
+      this.$target
+    );
   }
 
   render(preStates, states) {
@@ -47,9 +49,11 @@ export default class SearchTermHistory extends Component {
     searchHistory.forEach((history) => {
       const button = createElement({
         tag: 'button',
-        classes: ['chip'],
+        classes: ['chip', 'mr-2'],
         textContent: history,
       });
+
+      button.title = history;
 
       button.addEventListener('click', this.onRequestVideo.bind(this));
       fragment.appendChild(button);
@@ -58,21 +62,10 @@ export default class SearchTermHistory extends Component {
     return fragment;
   }
 
-  // TODO: 중복되는 로직 추출
   onRequestVideo(event) {
     const searchTerm = event.target.textContent;
-    const history = localStorageGetItem(
-      LOCALSTORAGE_KEYS.SEARCH_HISTORY
-    );
-    const indexOfSearchTerm = history.indexOf(searchTerm);
 
-    history.splice(indexOfSearchTerm, 1);
-    history.unshift(searchTerm);
-    localStorageSetItem(
-      LOCALSTORAGE_KEYS.SEARCH_HISTORY,
-      history.slice(0, 3)
-    );
-
+    saveHistoryToLocalStorage(searchTerm);
     this.$props.requestVideos(searchTerm);
   }
 }

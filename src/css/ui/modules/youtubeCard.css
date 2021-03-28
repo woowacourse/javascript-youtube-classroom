@@ -1,17 +1,41 @@
 .video-wrapper {
   display: grid;
-  grid-template-columns: repeat(auto-fill, 236px);
-  grid-row-gap: 2px;
-  grid-column-gap: 4px;
-  justify-content: center;
-  overflow: scroll;
-  height: 500px;
+  grid-template-columns: repeat(4, 1fr);
+  grid-row-gap: 32px;
+  grid-column-gap: 8px;
+  justify-content: space-between;
+}
+
+@media (max-width: 960px) {
+  .video-wrapper {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (max-width: 600px) {
+  .video-wrapper {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 400px) {
+  .video-wrapper {
+    grid-template-columns: repeat(1, 1fr);
+  }
+}
+
+#searched-video-list {
+  grid-template-columns: repeat(4, 1fr);
+  grid-column-gap: 6px;
+  height: 60vh;
+  overflow-y: auto;
 }
 
 .clip {
-  height: 236px;
+  height: auto;
   cursor: pointer;
   text-decoration: none;
+  box-sizing: border-box;
 }
 
 .clip .preview-container {
@@ -48,6 +72,7 @@
   -webkit-line-clamp: 2;
   overflow: hidden;
   color: #0a0a0a;
+  line-height: 1.5;
 }
 
 .clip .content-container .channel-name {
@@ -64,7 +89,7 @@
   color: #606060;
 }
 
-.video-wrapper img {
+.not-found-image {
   width: 50%;
   height: 50%;
   top: 50%;

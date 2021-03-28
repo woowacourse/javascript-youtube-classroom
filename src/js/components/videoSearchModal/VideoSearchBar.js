@@ -1,27 +1,35 @@
 import Component from '../../core/Component.js';
 import { store } from '../../index.js';
-import { $, isEmptyString, localStorageGetItem, localStorageSetItem } from '../../utils/utils.js';
-import { LOCALSTORAGE_KEYS } from '../../constants/constants.js';
+import { $, isEmptyString } from '../../utils/utils.js';
+import { SELECTORS, ERROR_MESSAGES } from '../../constants/constants.js';
+import {
+  saveHistoryToLocalStorage,
+  showSnackBar,
+} from '../../utils/youtubeClassRoomUtils.js';
 
 export default class VideoSearchBar extends Component {
   setup() {
     store.subscribe(this.render.bind(this));
   }
 
-  // TODO : '               ' string error 처리
   initRender() {
     this.$target.innerHTML = `
       <form id="youtube-search-form" class="d-flex">
-        <input id="youtube-search-input" name="youtube-search-input" type="text" class="w-100 mr-2 pl-2" placeholder="검색" required/>
+        <input id="youtube-search-input" name="youtube-search-input" type="search" class="w-100 mr-2 pl-2" placeholder="검색" required/>
         <button id="youtube-search-button" type="submit" class="btn bg-cyan-500">검색</button>
       </form>
     `;
   }
 
   selectDOM() {
-    this.$videoSearchForm = $('#youtube-search-form');
-    this.$videoSearchInput = $('#youtube-search-input');
-    this.$videoSearchButton = $('#youtube-search-button');
+    this.$videoSearchForm = $(SELECTORS.SEARCH_MODAL.VIDEO_SEARCH_BAR.FORM_ID);
+    this.$videoSearchInput = $(
+      SELECTORS.SEARCH_MODAL.VIDEO_SEARCH_BAR.INPUT_ID
+    );
+    this.$videoSearchButton = $(
+      SELECTORS.SEARCH_MODAL.VIDEO_SEARCH_BAR.SUBMIT_BUTTON_ID
+    );
+    this.$snackbar = $(SELECTORS.VIDEO_LIST.SNACKBAR);
   }
 
   bindEvent() {
@@ -40,33 +48,21 @@ export default class VideoSearchBar extends Component {
     }
   }
 
-  saveHistoryToLocalStorage(searchTerm) {
-    const history = localStorageGetItem(
-      LOCALSTORAGE_KEYS.SEARCH_HISTORY
-    );
-
-    if (history.includes(searchTerm)) {
-      const indexOfSearchTerm = history.indexOf(searchTerm);
-
-      history.splice(indexOfSearchTerm, 1);
-    }
-
-    history.unshift(searchTerm);
-    localStorageSetItem(
-      LOCALSTORAGE_KEYS.SEARCH_HISTORY,
-      history.slice(0, 3)
-    );
-  }
-
   onRequestVideo(event) {
     event.preventDefault();
-    const searchTerm = event.target.elements['youtube-search-input'].value.trim();
+
+    const searchTerm = event.target.elements[
+      'youtube-search-input'
+    ].value.trim();
 
     if (isEmptyString(searchTerm)) {
+      this.$videoSearchInput.focus();
+      this.$videoSearchInput.value = '';
+      showSnackBar(this.$snackbar, ERROR_MESSAGES.EMPTY_SEARCH_TERM);
       return;
     }
 
-    this.saveHistoryToLocalStorage(searchTerm);
+    saveHistoryToLocalStorage(searchTerm);
 
     this.$props.requestVideos(searchTerm);
   }
