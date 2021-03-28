@@ -19,7 +19,8 @@
 
 .modal-inner {
   transition: top 0.25s ease;
-  width: 1080px;
+  width: 90%;
+  max-width: 1080px;
   height: 70%;
   margin: auto;
   background: #fff;
@@ -42,6 +43,7 @@
 .video-result-container {
   position: relative;
   margin-top: 10px;
+  padding: 0 3%;
   height: calc(100% - 220px);
   overflow-y: auto;
 }
@@ -59,7 +61,6 @@ svg {
 
 @media screen and (max-width: 768px) {
   .modal-inner {
-    width: 90%;
     height: 90%;
     box-sizing: border-box;
   }
