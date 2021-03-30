@@ -70,3 +70,27 @@
   right: 0;
   top: 100%;
 }
+
+@media (min-width: 300px) {
+  .video-wrapper {
+    grid-template-columns: repeat(1, 236px);
+  }
+}
+
+@media (min-width: 500px) {
+  .video-wrapper {
+    grid-template-columns: repeat(2, 236px);
+  }
+}
+
+@media (min-width: 768px) {
+  .video-wrapper {
+    grid-template-columns: repeat(3, 236px);
+  }
+}
+
+@media (min-width: 992px) {
+  .video-wrapper {
+    grid-template-columns: repeat(4, 236px);
+  }
+}
