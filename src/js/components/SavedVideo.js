@@ -99,7 +99,6 @@ export class SavedVideo {
           </button>
         </li>
         <li class="mr-2"><button type="button" class="js-like-button emoji-btn bg-transparent scale-hover opacity-hover">👍</button></li>
-        <li class="mr-2"><button type="button" class="js-comment-button emoji-btn bg-transparent scale-hover opacity-hover">💬</button></li>
         <li class="mr-2"><button type="button" class="js-delete-button emoji-btn bg-transparent scale-hover opacity-hover">🗑️</button></li>
       </ul>
     `;
