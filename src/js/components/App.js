@@ -5,7 +5,6 @@ export class App {
   constructor() {
     this.savedVideoManager = new SavedVideoManager();
     this.navigation = new Navigation({
-      handleIsChecked: this.handleIsChecked.bind(this),
       handleOpenModal: this.handleOpenModal.bind(this),
     });
     this.router = new Router({ onChangePage: this.handleIsChecked.bind(this) });
