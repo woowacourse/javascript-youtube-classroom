@@ -1,21 +1,21 @@
 import { SETTINGS } from '../constants';
-import { watchedVideoStorage, watchingVideoStorage } from '../store.js';
+import storage from '../storage.js';
 
 const watchingVideoService = {
   isVideoCountUnderLimit() {
     const allVideoCount =
-      watchingVideoStorage.getItem().length +
-      watchedVideoStorage.getItem().length;
+      storage.watchingVideo.getItem().length +
+      storage.watchedVideo.getItem().length;
 
     return allVideoCount < SETTINGS.MAX_SAVE_COUNT;
   },
 
   isVideosEmpty() {
-    return watchingVideoStorage.getItem().length === 0;
+    return storage.watchingVideo.getItem().length === 0;
   },
 
   pushNewVideo(dataset) {
-    watchingVideoStorage.pushItem(getNewVideo(dataset));
+    storage.watchingVideo.pushItem(getNewVideo(dataset));
   },
 };
 

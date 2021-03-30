@@ -1,8 +1,8 @@
-import { watchedVideoStorage } from '../store';
+import storage from '../storage.js';
 
 const watchedVideoService = {
   isVideosEmpty() {
-    return watchedVideoStorage.getItem().length === 0;
+    return storage.watchedVideo.getItem().length === 0;
   },
 };
 

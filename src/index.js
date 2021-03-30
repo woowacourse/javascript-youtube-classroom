@@ -1,10 +1,11 @@
-import hashController from './controller/hashController.js';
-import watchingVideoController from './controller/watchingVideoController.js';
-import watchedVideoController from './controller/watchedVideoController.js';
-import modalController from './controller/modalController.js';
+import {
+  hashController,
+  modalController,
+  watchedVideoController,
+  watchingVideoController,
+} from './controller';
 
-hashController.initRouteEventListeners();
-modalController.initEventListeners();
-modalController.initSearchQueries();
-watchingVideoController.initEventListeners();
-watchedVideoController.initEventListeners();
+watchingVideoController.initEvent();
+watchedVideoController.initEvent();
+modalController.initEvent();
+hashController.initEvent();

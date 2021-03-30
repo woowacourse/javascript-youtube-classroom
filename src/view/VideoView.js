@@ -65,12 +65,19 @@ export default class VideoView extends GetVideoIframeMixin(BasicView) {
                 ${isWatched ? STYLE_CLASS.VIDEO_CHECKED : ''} 
                 opacity-hover" 
               data-video-id="${videoItem.videoId}"
-              aria-label="해당 비디오를 ${isWatched ? '볼 영상으로 저장' : '본 영상으로 저장'}"
+              data-storage-keyword-for-sending="${
+                isWatched ? 'watching' : 'watched'
+              }"
+              aria-label="해당 비디오를 ${
+                isWatched ? '볼 영상으로 저장' : '본 영상으로 저장'
+              }"
             >✅</button>
             <button class="opacity-hover button-style-none">👍</button>
             <button class="opacity-hover button-style-none">💬</button>
             <button 
-              class="${SELECTOR_CLASS.CLIP_DELETE_BUTTON} opacity-hover button-style-none" 
+              class="${
+                SELECTOR_CLASS.CLIP_DELETE_BUTTON
+              } opacity-hover button-style-none" 
               data-video-id="${videoItem.videoId}"
               aria-label="해당 비디오를 삭제"
             >🗑️</button>

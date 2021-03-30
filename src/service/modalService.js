@@ -1,16 +1,11 @@
 import { SETTINGS } from '../constants';
-import {
-  watchedVideoStorage,
-  watchingVideoStorage,
-  prevSearchResultStorage,
-  searchQueryStorage,
-} from '../store.js';
+import storage from '../storage.js';
 
 const modalService = {
   getPrevSearchInfo() {
     return {
-      lastQuery: prevSearchResultStorage.getItem().lastQuery,
-      pageToken: prevSearchResultStorage.getItem().nextPageToken,
+      lastQuery: storage.prevSearchResult.getItem().lastQuery,
+      pageToken: storage.prevSearchResult.getItem().nextPageToken,
     };
   },
 
@@ -18,32 +13,32 @@ const modalService = {
     return videos.map(video => ({
       ...video,
       isSaved:
-        isVideoIdExist(watchingVideoStorage.getItem(), video.videoId) ||
-        isVideoIdExist(watchedVideoStorage.getItem(), video.videoId),
+        isVideoIdExist(storage.watchingVideo.getItem(), video.videoId) ||
+        isVideoIdExist(storage.watchedVideo.getItem(), video.videoId),
     }));
   },
 
   saveSearchQuery(searchQuery) {
-    const filteredQueries = searchQueryStorage
+    const filteredQueries = storage.searchQuery
       .getItem()
       .filter(query => searchQuery !== query);
     filteredQueries.push(searchQuery);
     if (filteredQueries.length > SETTINGS.MAX_SAVED_SEARCH_QUERY_COUNT) {
       filteredQueries.shift();
     }
-    searchQueryStorage.setItem(filteredQueries);
+    storage.searchQuery.setItem(filteredQueries);
   },
 
   savePrevSearchInfo({ lastQuery, nextPageToken }) {
     if (lastQuery) {
-      prevSearchResultStorage.setItem({ lastQuery });
+      storage.prevSearchResult.setItem({ lastQuery });
     }
     if (nextPageToken) {
-      prevSearchResultStorage.setItem({ nextPageToken });
+      storage.prevSearchResult.setItem({ nextPageToken });
     }
   },
   savePrevSearchedVideos(videos) {
-    prevSearchResultStorage.setItem({ prevSearchedVideos: videos });
+    storage.prevSearchResult.setItem({ prevSearchedVideos: videos });
   },
 };
 

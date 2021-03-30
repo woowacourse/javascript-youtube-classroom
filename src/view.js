@@ -9,14 +9,14 @@ import {
   $nav,
   $snackbarWrapper,
   $savedVideoCount,
-} from '../elements.js';
-import LayoutView from './LayoutView.js';
-import ModalView from './ModalView.js';
-import VideoView from './VideoView.js';
+} from './elements.js';
+import LayoutView from './view/LayoutView.js';
+import ModalView from './view/ModalView.js';
+import VideoView from './view/VideoView.js';
 
-export const layoutView = new LayoutView({ $nav, $snackbarWrapper });
+const layout = new LayoutView({ $nav, $snackbarWrapper });
 
-export const watchingVideoView = new VideoView(
+const watchingVideo = new VideoView(
   {
     $videoWrapper: $watchingVideoWrapper,
     $emptyVideoImage: $emptyWatchingVideo,
@@ -24,7 +24,7 @@ export const watchingVideoView = new VideoView(
   false
 );
 
-export const watchedVideoView = new VideoView(
+const watchedVideo = new VideoView(
   {
     $videoWrapper: $watchedVideoWrapper,
     $emptyVideoImage: $emptyWatchedVideo,
@@ -32,9 +32,18 @@ export const watchedVideoView = new VideoView(
   true
 );
 
-export const modalView = new ModalView({
+const modal = new ModalView({
   $modal,
   $searchQueries,
   $searchResultVideoWrapper,
   $savedVideoCount,
 });
+
+const view = {
+  modal,
+  watchedVideo,
+  watchingVideo,
+  layout,
+};
+
+export default view;
