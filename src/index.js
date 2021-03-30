@@ -1,11 +1,6 @@
-import {
-  hashController,
-  modalController,
-  watchedVideoController,
-  watchingVideoController,
-} from './controller';
+import controller from './controller';
 
-watchingVideoController.initEvent();
-watchedVideoController.initEvent();
-modalController.initEvent();
-hashController.initEvent();
+controller.watchingVideo.initEvent();
+controller.watchedVideo.initEvent();
+controller.modal.initEvent();
+controller.hash.initEvent();

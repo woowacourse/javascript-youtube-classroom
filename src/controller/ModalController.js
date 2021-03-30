@@ -18,7 +18,7 @@ import {
   SELECTOR_ID,
   SNACKBAR_MESSAGE,
 } from '../constants.js';
-import { hashController } from '../controller.js';
+import controller from '../controller.js';
 import BasicController from './BasicController.js';
 
 export default class ModalController extends BasicController {
@@ -99,7 +99,7 @@ export default class ModalController extends BasicController {
   }
 
   onModalClose() {
-    hashController.routeByHash();
+    controller.hash.routeByHash();
     view.modal.closeModal();
   }
 
