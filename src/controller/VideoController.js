@@ -1,4 +1,4 @@
-import { SELECTOR_CLASS, SELECTOR_ID } from '../constants';
+import { CONTROLLER_KEYWORD, SELECTOR_CLASS, SELECTOR_ID } from '../constants';
 import service from '../service';
 import storage from '../storage';
 import { $ } from '../utils/querySelector';
@@ -13,7 +13,14 @@ export default class VideoController extends BasicController {
   constructor(lowercaseKeyword) {
     super();
 
-    //TODO: videoControllerKeyword 상수화, 예외처리
+    const hasKey = Object.values(CONTROLLER_KEYWORD).includes(lowercaseKeyword);
+
+    if (!hasKey) {
+      console.error(
+        `VideoController의 Keyword 인자가 올바르지 않습니다. (전달된 keyword 인자 : ${lowercaseKeyword})`
+      );
+      return;
+    }
 
     this.storage = storage;
     this.lowercaseKeyword = lowercaseKeyword;

@@ -98,3 +98,8 @@ export const BROWSER_HASH = Object.freeze({
   WATCHED: 'watched',
   SEARCH: 'search',
 });
+
+export const CONTROLLER_KEYWORD = {
+  WATCHING: 'watching',
+  WATCHED: 'watched',
+};

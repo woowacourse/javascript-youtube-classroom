@@ -1,4 +1,4 @@
-import { SELECTOR_CLASS, STYLE_CLASS } from '../constants';
+import { CONTROLLER_KEYWORD, SELECTOR_CLASS, STYLE_CLASS } from '../constants';
 import BasicView from './BasicView';
 import { GetVideoIframeMixin } from './mixin';
 
@@ -66,7 +66,9 @@ export default class VideoView extends GetVideoIframeMixin(BasicView) {
                 opacity-hover" 
               data-video-id="${videoItem.videoId}"
               data-storage-keyword-for-sending="${
-                isWatched ? 'watching' : 'watched'
+                isWatched
+                  ? CONTROLLER_KEYWORD.WATCHING
+                  : CONTROLLER_KEYWORD.WATCHED
               }"
               aria-label="해당 비디오를 ${
                 isWatched ? '볼 영상으로 저장' : '본 영상으로 저장'
