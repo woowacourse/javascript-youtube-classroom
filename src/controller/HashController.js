@@ -45,8 +45,12 @@ export default class HashController extends BasicController {
     });
   };
 
-  #activeVideoView(storageOption) {
-    //TODO: storageOption 유효성 검사
+  #activeVideoView(storageOption = {}) {
+    if (controllerUtil.isEmptyObject(storageOption)) {
+      console.error('activeVideoView의 인자 storageOption가 빈 객체입니다.');
+      return;
+    }
+
     controller.video.setStorageOption(storageOption);
 
     const videos = storage.video.getVideosBy(storageOption);

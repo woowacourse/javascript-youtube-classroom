@@ -77,6 +77,6 @@ export default class VideoController extends BasicController {
     });
     controller.hash.routeByHash();
 
-    view.layout.showCheckSnackbar(isFavoriteAfter);
+    view.layout.showFavoriteSnackbar(isFavoriteAfter);
   }
 }

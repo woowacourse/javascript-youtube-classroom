@@ -12307,11 +12307,10 @@ var CONFIRM_MESSAGE = Object.freeze({
   VIDEO_DELETE: '영상을 정말 삭제하시겠습니까?'
 });
 var SNACKBAR_MESSAGE = Object.freeze({
-  //TODO: CHECK를 SAVE로 바꾸기
-  WATCHED_VIDEO_CHECK_SUCCESS: '본 영상으로 저장되었습니다.',
-  WATCHING_VIDEO_CHECK_SUCCESS: '볼 영상으로 이동되었습니다.',
+  WATCHED_VIDEO_SAVE_SUCCESS: '본 영상으로 저장되었습니다.',
   WATCHING_VIDEO_SAVE_SUCCESS: '볼 영상으로 이동되었습니다.',
   FAVORITE_VIDEO_SAVE_SUCCESS: '좋아요 한 영상으로 저장되었습니다.',
+  FAVORITE_VIDEO_CANCEL_SUCCESS: '좋아요 한 영상에서 제외되었습니다',
   VIDEO_DELETE_SUCCESS: '영상에서 삭제되었습니다.',
   SAVE_LIMIT_EXCEEDED: "".concat(SETTINGS.MAX_SAVE_COUNT, "\uAC1C \uBCF4\uB2E4 \uB9CE\uC740 \uC601\uC0C1\uC744 \uC800\uC7A5\uD560 \uC218 \uC5C6\uC2B5\uB2C8\uB2E4.")
 });
@@ -12500,8 +12499,14 @@ var HashController = /*#__PURE__*/function (_BasicController) {
   return HashController;
 }(_BasicController_js__WEBPACK_IMPORTED_MODULE_4__.default);
 
-var _activeVideoView2 = function _activeVideoView2(storageOption) {
-  //TODO: storageOption 유효성 검사
+var _activeVideoView2 = function _activeVideoView2() {
+  var storageOption = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+
+  if (_controllerUtil_js__WEBPACK_IMPORTED_MODULE_2__.default.isEmptyObject(storageOption)) {
+    console.error('activeVideoView의 인자 storageOption가 빈 객체입니다.');
+    return;
+  }
+
   _controller_js__WEBPACK_IMPORTED_MODULE_5__.default.video.setStorageOption(storageOption);
   var videos = _storage_js__WEBPACK_IMPORTED_MODULE_1__.default.video.getVideosBy(storageOption);
   _view_js__WEBPACK_IMPORTED_MODULE_3__.default.video.eraseVideos();
@@ -12926,7 +12931,7 @@ var _moveVideoByFavoriteButton2 = function _moveVideoByFavoriteButton2(button) {
   var isFavoriteAfter = !isFavoriteBefore;
   _storage__WEBPACK_IMPORTED_MODULE_1__.default.video.setVideoProperty(videoId, _defineProperty({}, _constants__WEBPACK_IMPORTED_MODULE_0__.STORAGE_KEYWORD.IS_FAVORITE, isFavoriteAfter));
   _controller__WEBPACK_IMPORTED_MODULE_5__.default.hash.routeByHash();
-  _view__WEBPACK_IMPORTED_MODULE_2__.default.layout.showCheckSnackbar(isFavoriteAfter);
+  _view__WEBPACK_IMPORTED_MODULE_2__.default.layout.showFavoriteSnackbar(isFavoriteAfter);
 };
 
 
@@ -12963,6 +12968,9 @@ var controllerUtil = {
     }
 
     return hash.substr(1);
+  },
+  isEmptyObject: function isEmptyObject(object) {
+    return Object.keys(object).length === 0;
   }
 };
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (controllerUtil);
@@ -13146,8 +13154,14 @@ var videoService = {
     var allVideoCount = _storage_js__WEBPACK_IMPORTED_MODULE_1__.default.video.getItem().length;
     return allVideoCount < _constants__WEBPACK_IMPORTED_MODULE_0__.SETTINGS.MAX_SAVE_COUNT;
   },
-  isVideosEmpty: function isVideosEmpty(storageOption) {
-    //TODO: storageOption 유효성검사
+  isVideosEmpty: function isVideosEmpty() {
+    var storageOption = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+
+    if (controllerUtil.isEmptyObject(storageOption)) {
+      console.error('isVideosEmpty의 인자 storageOption가 빈 객체입니다.');
+      return;
+    }
+
     var videos = _storage_js__WEBPACK_IMPORTED_MODULE_1__.default.video.getVideosBy(storageOption);
     return videos.length === 0;
   },
@@ -13811,11 +13825,11 @@ var LayoutView = /*#__PURE__*/function (_BasicView) {
     key: "showCheckSnackbar",
     value: function showCheckSnackbar(isWatchedAfter) {
       if (isWatchedAfter) {
-        this.showSnackbar(_constants_js__WEBPACK_IMPORTED_MODULE_0__.SNACKBAR_MESSAGE.WATCHED_VIDEO_CHECK_SUCCESS, true);
+        this.showSnackbar(_constants_js__WEBPACK_IMPORTED_MODULE_0__.SNACKBAR_MESSAGE.WATCHED_VIDEO_SAVE_SUCCESS, true);
         return;
       }
 
-      this.showSnackbar(_constants_js__WEBPACK_IMPORTED_MODULE_0__.SNACKBAR_MESSAGE.WATCHING_VIDEO_CHECK_SUCCESS, true);
+      this.showSnackbar(_constants_js__WEBPACK_IMPORTED_MODULE_0__.SNACKBAR_MESSAGE.WATCHING_VIDEO_SAVE_SUCCESS, true);
     }
   }, {
     key: "showFavoriteSnackbar",
@@ -13823,10 +13837,9 @@ var LayoutView = /*#__PURE__*/function (_BasicView) {
       if (isFavoriteAfter) {
         this.showSnackbar(_constants_js__WEBPACK_IMPORTED_MODULE_0__.SNACKBAR_MESSAGE.FAVORITE_VIDEO_SAVE_SUCCESS, true);
         return;
-      } //TODO: 메세지 바꾸기
+      }
 
-
-      this.showSnackbar(_constants_js__WEBPACK_IMPORTED_MODULE_0__.SNACKBAR_MESSAGE.FAVORITE_VIDEO_SAVE_SUCCESS, true);
+      this.showSnackbar(_constants_js__WEBPACK_IMPORTED_MODULE_0__.SNACKBAR_MESSAGE.FAVORITE_VIDEO_CANCEL_SUCCESS, true);
     }
   }, {
     key: "showSnackbar",
@@ -14206,27 +14219,43 @@ function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Re
 
 function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
 
+function _classPrivateMethodGet(receiver, privateSet, fn) { if (!privateSet.has(receiver)) { throw new TypeError("attempted to get private field on non-instance"); } return fn; }
+
 var GetVideoIframeMixin = function GetVideoIframeMixin(superClass) {
-  return /*#__PURE__*/function (_superClass) {
-    _inherits(_class, _superClass);
+  var _getSrcDoc, _temp, _getSrcDoc2;
 
-    var _super = _createSuper(_class);
+  return _temp = (_getSrcDoc = new WeakSet(), /*#__PURE__*/function (_superClass) {
+    _inherits(_class2, _superClass);
 
-    function _class() {
-      _classCallCheck(this, _class);
+    var _super = _createSuper(_class2);
 
-      return _super.apply(this, arguments);
+    function _class2() {
+      var _this;
+
+      _classCallCheck(this, _class2);
+
+      for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
+        args[_key] = arguments[_key];
+      }
+
+      _this = _super.call.apply(_super, [this].concat(args));
+
+      _getSrcDoc.add(_assertThisInitialized(_this));
+
+      return _this;
     }
 
-    _createClass(_class, [{
+    _createClass(_class2, [{
       key: "_getIframe",
       value: function _getIframe(videoItem) {
-        return "\n      <iframe\n      width=\"100%\"\n      height=\"118\"\n      scrolling=\"no\"\n      src=\"https://www.youtube.com/embed/".concat(videoItem.videoId, "\"\n      loading=\"lazy\"\n      frameborder=\"0\"\n      allow=\"accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture\"\n      allowfullscreen\n      ></iframe>\n      ");
+        return "\n      <iframe\n      width=\"100%\"\n      height=\"118\"\n      scrolling=\"no\"\n      src=\"https://www.youtube.com/embed/".concat(videoItem.videoId, "\"\n      srcdoc=\n      \"").concat(_classPrivateMethodGet(this, _getSrcDoc, _getSrcDoc2).call(this, videoItem), "\"\n      frameborder=\"0\"\n      allow=\"accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture\"\n      allowfullscreen\n      ></iframe>\n      ");
       }
     }]);
 
-    return _class;
-  }(superClass);
+    return _class2;
+  }(superClass)), _getSrcDoc2 = function _getSrcDoc2(videoItem) {
+    return "\n      <body style=''>\n        <header>\n          <link rel='stylesheet' href='./src/assets/css/index.css'>\n        </header>\n        <div class='thumbnail'>\n          <a href='https://www.youtube.com/embed/".concat(videoItem.videoId, "' \n          aria-label='\uC720\uD29C\uBE0C \uC7AC\uC0DD \uBC84\uD2BC\uC785\uB2C8\uB2E4. \uC81C\uBAA9\uC740 ").concat(videoItem.title, "\uC785\uB2C8\uB2E4.'>\n            <img \n            class='thumbnail__image' \n            src=").concat(videoItem.thumbnailUrl, " />\n            <div class='d-flex justify-center items-center  thumbnail__play-button'>\n              <span>\u25B6</span>\n            <div>\n          </a>\n        <div>\n      </body>\n      ");
+  }, _temp;
 };
 
 /***/ })

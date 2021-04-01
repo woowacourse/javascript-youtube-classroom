@@ -18,6 +18,10 @@ const controllerUtil = {
     }
     return hash.substr(1);
   },
+
+  isEmptyObject(object) {
+    return Object.keys(object).length === 0;
+  },
 };
 
 export default controllerUtil;

@@ -8,8 +8,12 @@ const videoService = {
     return allVideoCount < SETTINGS.MAX_SAVE_COUNT;
   },
 
-  isVideosEmpty(storageOption) {
-    //TODO: storageOption 유효성검사
+  isVideosEmpty(storageOption = {}) {
+    if (controllerUtil.isEmptyObject(storageOption)) {
+      console.error('isVideosEmpty의 인자 storageOption가 빈 객체입니다.');
+      return;
+    }
+
     const videos = storage.video.getVideosBy(storageOption);
 
     return videos.length === 0;

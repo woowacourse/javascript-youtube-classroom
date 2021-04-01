@@ -15,11 +15,11 @@ export default class LayoutView extends BasicView {
 
   showCheckSnackbar(isWatchedAfter) {
     if (isWatchedAfter) {
-      this.showSnackbar(SNACKBAR_MESSAGE.WATCHED_VIDEO_CHECK_SUCCESS, true);
+      this.showSnackbar(SNACKBAR_MESSAGE.WATCHED_VIDEO_SAVE_SUCCESS, true);
       return;
     }
 
-    this.showSnackbar(SNACKBAR_MESSAGE.WATCHING_VIDEO_CHECK_SUCCESS, true);
+    this.showSnackbar(SNACKBAR_MESSAGE.WATCHING_VIDEO_SAVE_SUCCESS, true);
   }
 
   showFavoriteSnackbar(isFavoriteAfter) {
@@ -28,8 +28,7 @@ export default class LayoutView extends BasicView {
       return;
     }
 
-    //TODO: 메세지 바꾸기
-    this.showSnackbar(SNACKBAR_MESSAGE.FAVORITE_VIDEO_SAVE_SUCCESS, true);
+    this.showSnackbar(SNACKBAR_MESSAGE.FAVORITE_VIDEO_CANCEL_SUCCESS, true);
   }
 
   showSnackbar(message, isSuccess) {
