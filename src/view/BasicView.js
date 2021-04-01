@@ -1,10 +1,7 @@
 import { $ } from '../utils/querySelector.js';
 
 export default class BasicView {
-  _element = {};
-  constructor({ ...element }) {
-    this._element = element;
-  }
+  constructor() {}
 
   renderHTML($element, htmlString) {
     $element.innerHTML = htmlString;
@@ -18,20 +15,20 @@ export default class BasicView {
     $target.insertAdjacentHTML('beforeend', htmlString);
   }
 
-  showElement($element) {
-    $element.classList.remove('removed');
-  }
-
   showElementBySelector(selector) {
     $(selector).classList.remove('removed');
   }
 
-  hideElement($element) {
-    $element.classList.add('removed');
-  }
-
   deleteElement($target, $element) {
     $target.removeChild($element);
+  }
+
+  showElement($element) {
+    $element.classList.remove('removed');
+  }
+
+  hideElement($element) {
+    $element.classList.add('removed');
   }
 
   hideElementBySelector(selector) {

@@ -4,30 +4,26 @@ import {
   SELECTOR_CLASS,
   YOUTUBE,
 } from '../constants.js';
+import {
+  $modal,
+  $searchQueries,
+  $searchResultVideoWrapper,
+  $savedVideoCount,
+} from '../elements.js';
 
 import BasicView from './BasicView.js';
 import { GetVideoIframeMixin } from './mixin.js';
 export default class ModalView extends GetVideoIframeMixin(BasicView) {
-  constructor({
-    $modal,
-    $searchQueries,
-    $searchResultVideoWrapper,
-    $savedVideoCount,
-  }) {
-    super({
-      $modal,
-      $searchQueries,
-      $searchResultVideoWrapper,
-      $savedVideoCount,
-    });
+  constructor() {
+    super();
   }
 
   openModal() {
-    this._element.$modal.classList.add(STYLE_CLASS.OPEN);
+    $modal.classList.add(STYLE_CLASS.OPEN);
   }
 
   closeModal() {
-    this._element.$modal.classList.remove(STYLE_CLASS.OPEN);
+    $modal.classList.remove(STYLE_CLASS.OPEN);
   }
 
   initSearchEnv() {
@@ -36,19 +32,16 @@ export default class ModalView extends GetVideoIframeMixin(BasicView) {
   }
 
   renderSearchQueries(queries) {
-    this.renderHTML(
-      this._element.$searchQueries,
-      this.#getSearchQueriesTemplate(queries)
-    );
+    this.renderHTML($searchQueries, this.#getSearchQueriesTemplate(queries));
   }
 
   renderSavedVideoCount(count) {
-    this.renderHTML(this._element.$savedVideoCount, count);
+    this.renderHTML($savedVideoCount, count);
   }
 
   renderSearchedVideos(processedVideos) {
     this.renderHTML(
-      this._element.$searchResultVideoWrapper,
+      $searchResultVideoWrapper,
       this.#getSearchedVideoListTemplate(processedVideos)
     );
     this.showElementBySelector(`#${SELECTOR_ID.SEARCH_RESULT_INTERSECTOR}`);
@@ -56,7 +49,7 @@ export default class ModalView extends GetVideoIframeMixin(BasicView) {
 
   insertSearchedVideos(processedVideos) {
     this.insertHTML(
-      this._element.$searchResultVideoWrapper,
+      $searchResultVideoWrapper,
       this.#getSearchedVideoListTemplate(processedVideos)
     );
   }
@@ -78,10 +71,7 @@ export default class ModalView extends GetVideoIframeMixin(BasicView) {
   }
 
   #renderSkeletonItems() {
-    this.renderHTML(
-      this._element.$searchResultVideoWrapper,
-      this.#getSkeletonListTemplate()
-    );
+    this.renderHTML($searchResultVideoWrapper, this.#getSkeletonListTemplate());
   }
 
   #getSkeletonListTemplate() {
@@ -105,7 +95,7 @@ export default class ModalView extends GetVideoIframeMixin(BasicView) {
   }
 
   #getSearchedVideoListTemplate(videos) {
-    return videos.map((video) => this.#getSearchedVideoTemplate(video)).join('');
+    return videos.map(video => this.#getSearchedVideoTemplate(video)).join('');
   }
 
   #getSearchedVideoTemplate(videoItem) {

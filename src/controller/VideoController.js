@@ -1,44 +1,29 @@
-import { CONTROLLER_KEYWORD, SELECTOR_CLASS, SELECTOR_ID } from '../constants';
-import service from '../service';
+import { SELECTOR_CLASS, STORAGE_KEYWORD } from '../constants';
 import storage from '../storage';
-import { $ } from '../utils/querySelector';
 import view from '../view';
-import viewUtil from '../view/viewUtil';
 import BasicController from './BasicController.js';
 import { SNACKBAR_MESSAGE, CONFIRM_MESSAGE } from '../constants.js';
+import { $videoWrapper } from '../elements';
+import controller from '../controller';
 
 export default class VideoController extends BasicController {
-  lowercaseKeyword;
+  #videoStorage;
 
-  constructor(lowercaseKeyword) {
+  constructor() {
     super();
+  }
 
-    const hasKey = Object.values(CONTROLLER_KEYWORD).includes(lowercaseKeyword);
-
-    if (!hasKey) {
-      console.error(
-        `VideoController의 Keyword 인자가 올바르지 않습니다. (전달된 keyword 인자 : ${lowercaseKeyword})`
-      );
-      return;
-    }
-
-    this.storage = storage;
-    this.lowercaseKeyword = lowercaseKeyword;
-    this.uppercaseKeyword = lowercaseKeyword.toUpperCase();
-    this.storage = storage[`${this.lowercaseKeyword}Video`];
-    this.service = service[`${this.lowercaseKeyword}Video`];
-    this.view = view[`${this.lowercaseKeyword}Video`];
+  setStorageOption(storageOption) {
+    this.#videoStorage = storageOption;
   }
 
   initEvent() {
-    $(
-      '#' + SELECTOR_ID[`${this.uppercaseKeyword}_VIDEO_WRAPPER`]
-    ).addEventListener('click', this.onVideoInteract);
+    $videoWrapper.addEventListener('click', this.onVideoInteract);
   }
 
   onVideoInteract = ({ target }) => {
     if (target.classList.contains(SELECTOR_CLASS.CLIP_CHECK_BUTTON)) {
-      this.#moveVideoBy(target);
+      this.#moveVideoByCheckButton(target);
       return;
     }
 
@@ -49,47 +34,29 @@ export default class VideoController extends BasicController {
   };
 
   #deleteVideo(button) {
-    if (
-      !view.layout.confirm(
-        CONFIRM_MESSAGE[`${this.uppercaseKeyword}_VIDEO_DELETE`]
-      )
-    ) {
+    if (!view.layout.confirm(CONFIRM_MESSAGE.VIDEO_DELETE)) {
       return;
     }
 
     const videoId = button.dataset.videoId;
 
-    this.storage.popVideoByVideoId(videoId);
-    this.#loadVideos();
-    view.layout.showSnackbar(
-      SNACKBAR_MESSAGE[`${this.uppercaseKeyword}_VIDEO_DELETE_SUCCESS`],
-      true
-    );
+    storage.video.popVideoByVideoId(videoId);
+    controller.hash.routeByHash();
+    view.layout.showSnackbar(SNACKBAR_MESSAGE.VIDEO_DELETE_SUCCESS, true);
   }
 
-  #loadVideos() {
-    if (this.service.isVideosEmpty()) {
-      viewUtil.hideAllEmptyVideoImage();
-      this.view.showEmptyVideoImage();
-    }
-
-    const videos = this.storage.getItem();
-    this.view.renderVideos(videos);
-  }
-
-  #moveVideoBy(button) {
+  #moveVideoByCheckButton(button) {
     const videoId = button.dataset.videoId;
-    const storageKeywordForSending = button.dataset.storageKeywordForSending;
+    const isWatchedBefore = storage.video.getVideoById(videoId)[
+      STORAGE_KEYWORD.IS_WATCHED
+    ];
+    const isWatchedAfter = !isWatchedBefore;
 
-    this.storage.sendVideoTo(
-      storage[`${storageKeywordForSending}Video`],
-      videoId
-    );
+    storage.video.setVideoProperty(videoId, {
+      [STORAGE_KEYWORD.IS_WATCHED]: isWatchedAfter,
+    });
+    controller.hash.routeByHash();
 
-    this.#loadVideos();
-    view.layout.showSnackbar(
-      SNACKBAR_MESSAGE[`${this.uppercaseKeyword}_VIDEO_CHECK_SUCCESS`],
-      true
-    );
+    view.layout.showCheckSnackbar(isWatchedAfter);
   }
 }

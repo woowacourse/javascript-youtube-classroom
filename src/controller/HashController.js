@@ -1,8 +1,9 @@
-import { BROWSER_HASH } from '../constants.js';
+import { BROWSER_HASH, STORAGE_KEYWORD } from '../constants.js';
 import storage from '../storage.js';
 import controllerUtil from './controllerUtil.js';
 import view from '../view.js';
 import BasicController from './BasicController.js';
+import controller from '../controller.js';
 
 export default class HashController extends BasicController {
   constructor() {
@@ -19,42 +20,38 @@ export default class HashController extends BasicController {
     view.layout.highlightNavButton(hash);
 
     if (hash === BROWSER_HASH.WATCHING) {
-      this.#activeWatchingVideoShow();
+      this.#activeVideoView({
+        [STORAGE_KEYWORD.IS_WATCHED]: false,
+      });
       return;
     }
 
     if (hash === BROWSER_HASH.WATCHED) {
-      this.#activeWatchedVideoShow();
+      this.#activeVideoView({
+        [STORAGE_KEYWORD.IS_WATCHED]: true,
+      });
       return;
     }
 
-    this.#activeWatchingVideoShow();
+    this.#activeVideoView({
+      [STORAGE_KEYWORD.IS_WATCHED]: false,
+    });
   };
 
-  #activeWatchingVideoShow() {
-    const videos = storage.watchingVideo.getItem();
-    view.watchedVideo.eraseVideos();
-    view.watchedVideo.hideEmptyVideoImage();
+  #activeVideoView(storageOption) {
+    //TODO: storageOption 유효성 검사
+    controller.video.setStorageOption(storageOption);
+
+    const videos = storage.video.getVideosBy(storageOption);
+
+    view.video.eraseVideos();
+    view.video.hideEmptyVideoImage();
 
     if (videos.length === 0) {
-      view.watchingVideo.showEmptyVideoImage();
+      view.video.showEmptyVideoImage();
       return;
     }
 
-    view.watchingVideo.renderVideos(videos);
-  }
-
-  #activeWatchedVideoShow() {
-    view.watchingVideo.eraseVideos();
-    view.watchingVideo.hideEmptyVideoImage();
-
-    const videos = storage.watchedVideo.getItem();
-
-    if (videos.length === 0) {
-      view.watchedVideo.showEmptyVideoImage();
-      return;
-    }
-
-    view.watchedVideo.renderVideos(videos);
+    view.video.renderVideos(videos);
   }
 }

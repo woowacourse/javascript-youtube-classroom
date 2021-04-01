@@ -12,9 +12,7 @@ const modalService = {
   getProcessedVideos(videos) {
     return videos.map(video => ({
       ...video,
-      isSaved:
-        isVideoIdExist(storage.watchingVideo.getItem(), video.videoId) ||
-        isVideoIdExist(storage.watchedVideo.getItem(), video.videoId),
+      isSaved: isVideoIdExist(storage.video.getItem(), video.videoId),
     }));
   },
 

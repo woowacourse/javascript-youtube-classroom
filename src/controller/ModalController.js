@@ -17,6 +17,7 @@ import {
   SELECTOR_CLASS,
   SELECTOR_ID,
   SNACKBAR_MESSAGE,
+  STORAGE_KEYWORD,
 } from '../constants.js';
 import controller from '../controller.js';
 import BasicController from './BasicController.js';
@@ -56,19 +57,21 @@ export default class ModalController extends BasicController {
       return;
     }
 
-    if (!service.watchingVideo.isVideoCountUnderLimit()) {
+    if (!service.video.isVideoCountUnderLimit()) {
       view.layout.showSnackbar(SNACKBAR_MESSAGE.SAVE_LIMIT_EXCEEDED, false);
       return;
     }
 
-    if (service.watchingVideo.isVideosEmpty()) {
-      view.watchingVideo.hideEmptyVideoImage();
-      view.watchedVideo.hideEmptyVideoImage();
-    }
-    service.watchingVideo.pushNewVideo(target.dataset);
+    controller.hash.routeByHash();
+
+    service.video.pushNewVideo(target.dataset);
 
     if (controllerUtil.parseHash(location.hash) === BROWSER_HASH.WATCHING) {
-      view.watchingVideo.renderVideos(storage.watchingVideo.getItem());
+      const videos = storage.video.getVideosBy({
+        [STORAGE_KEYWORD.IS_WATCHED]: false,
+      });
+
+      view.video.renderVideos(videos);
     }
 
     view.modal.hideVideoSaveButton(target);
@@ -79,9 +82,7 @@ export default class ModalController extends BasicController {
   }
 
   onModalOpen() {
-    const allVideoCount =
-      storage.watchingVideo.getItem().length +
-      storage.watchedVideo.getItem().length;
+    const allVideoCount = storage.video.getItem().length;
     const videos = storage.prevSearchResult.getItem().prevSearchedVideos;
     const processedVideos = service.modal.getProcessedVideos(videos);
 

@@ -21,12 +21,8 @@ export const $nav = $(`#${SELECTOR_ID.NAV}`);
 export const $watchingVideoButton = $(`#${SELECTOR_ID.WATCHING_VIDEO_BUTTON}`);
 export const $watchedVideoButton = $(`#${SELECTOR_ID.WATCHED_VIDEO_BUTTON}`);
 export const $searchButton = $(`#${SELECTOR_ID.SEARCH_BUTTON}`);
-export const $watchedVideoWrapper = $(`#${SELECTOR_ID.WATCHED_VIDEO_WRAPPER}`);
-export const $watchingVideoWrapper = $(
-  `#${SELECTOR_ID.WATCHING_VIDEO_WRAPPER}`
-);
-export const $emptyWatchingVideo = $(`#${SELECTOR_ID.EMPTY_WATCHING_VIDEO}`);
-export const $emptyWatchedVideo = $(`#${SELECTOR_ID.EMPTY_WATCHED_VIDEO}`);
+export const $videoWrapper = $(`#${SELECTOR_ID.VIDEO_WRAPPER}`);
+export const $emptyVideo = $(`#${SELECTOR_ID.EMPTY_VIDEO}`);
 
 //common
 export const $snackbarWrapper = $(`#${SELECTOR_ID.SNACKBAR_WRAPPER}`);

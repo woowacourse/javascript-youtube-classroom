@@ -1,60 +1,64 @@
-import { CONTROLLER_KEYWORD, SELECTOR_CLASS, STYLE_CLASS } from '../constants';
+import {
+  CONTROLLER_KEYWORD,
+  SELECTOR_CLASS,
+  STORAGE_KEYWORD,
+  STYLE_CLASS,
+} from '../constants';
 import BasicView from './BasicView';
 import { GetVideoIframeMixin } from './mixin';
+import { $videoWrapper, $emptyVideo } from '../elements.js';
 
 export default class VideoView extends GetVideoIframeMixin(BasicView) {
   #isChecked;
 
-  constructor({ $videoWrapper, $emptyVideoImage }, isChecked) {
-    super({ $videoWrapper, $emptyVideoImage });
-
-    this.#isChecked = isChecked;
+  constructor() {
+    super();
   }
 
   renderVideos(videos) {
-    this.renderHTML(this._element.$videoWrapper, '');
+    this.renderHTML($videoWrapper, '');
     this.renderHTML(
-      this._element.$videoWrapper,
+      $videoWrapper,
       this._getVideoListTemplate(videos, this.#isChecked)
     );
   }
 
   eraseVideos() {
-    this.renderHTML(this._element.$videoWrapper, '');
+    this.renderHTML($videoWrapper, '');
   }
 
   showEmptyVideoImage() {
-    this.showElement(this._element.$emptyVideoImage);
+    this.showElement($emptyVideo);
   }
 
   hideEmptyVideoImage() {
-    this.hideElement(this._element.$emptyVideoImage);
+    this.hideElement($emptyVideo);
   }
 
-  _getVideoListTemplate(videos, isWatched) {
-    return videos
-      .map(video => this._getVideoTemplate(video, isWatched))
-      .join('');
+  _getVideoListTemplate(videos) {
+    return videos.map(video => this._getVideoTemplate(video)).join('');
   }
 
-  _getVideoTemplate(videoItem, isWatched) {
+  _getVideoTemplate(video) {
+    const isWatched = video[STORAGE_KEYWORD.IS_WATCHED];
+
     return `
     <article class="${SELECTOR_CLASS.CLIP} clip">
       <div class="clip__preview">
-        ${this._getIframe(videoItem)}
+        ${this._getIframe(video)}
       </div>
       <div class="clip__content pt-2 px-1">
-        <h3>${videoItem.title}</h3>
+        <h3>${video.title}</h3>
         <div>
           <a
             href="https://www.youtube.com/channel/UC-mOekGSesms0agFntnQang"
             target="_blank"
             class="channel-name mt-1"
           >
-            ${videoItem.channelTitle}
+            ${video.channelTitle}
           </a>
           <div class="meta">
-            <p>${videoItem.publishedAt}</p>
+            <p>${video.publishedAt}</p>
           </div>
           <div>
             <button 
@@ -64,12 +68,7 @@ export default class VideoView extends GetVideoIframeMixin(BasicView) {
                 button-style-none
                 ${isWatched ? STYLE_CLASS.VIDEO_CHECKED : ''} 
                 opacity-hover" 
-              data-video-id="${videoItem.videoId}"
-              data-storage-keyword-for-sending="${
-                isWatched
-                  ? CONTROLLER_KEYWORD.WATCHING
-                  : CONTROLLER_KEYWORD.WATCHED
-              }"
+              data-video-id="${video.videoId}"
               aria-label="해당 비디오를 ${
                 isWatched ? '볼 영상으로 저장' : '본 영상으로 저장'
               }"
@@ -80,7 +79,7 @@ export default class VideoView extends GetVideoIframeMixin(BasicView) {
               class="${
                 SELECTOR_CLASS.CLIP_DELETE_BUTTON
               } opacity-hover button-style-none" 
-              data-video-id="${videoItem.videoId}"
+              data-video-id="${video.videoId}"
               aria-label="해당 비디오를 삭제"
             >🗑️</button>
           </div>

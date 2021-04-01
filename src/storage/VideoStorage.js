@@ -18,13 +18,52 @@ export default class VideoStorage extends ArrayStorage {
     return poppedVideo;
   }
 
-  sendVideoTo(videoStorage, videoId) {
-    const sendingVideo = this.popVideoByVideoId(videoId);
-
-    if (!sendingVideo) {
+  setVideoProperty(targetVideoId, property = {}) {
+    if (Object.values(property).length === 0) {
+      console.error('setVideoProperty의 property 인자가 비어있습니다.');
       return;
     }
 
-    videoStorage.pushItem(sendingVideo);
+    const videos = this.getItem();
+    const targetIndex = videos.findIndex(
+      video => video.videoId === targetVideoId
+    );
+
+    Object.keys(property).forEach(key => {
+      const targetVideo = videos[targetIndex];
+      if (targetVideo[key] === undefined) return;
+
+      targetVideo[key] = property[key];
+    });
+
+    this.setItem(videos);
+  }
+
+  getVideoById(targetVideoId) {
+    const videos = this.getItem();
+    return videos.find(video => video.videoId === targetVideoId);
+  }
+
+  getVideosBy(storageOption = {}) {
+    if (Object.values(storageOption).length === 0) {
+      console.error('getVideosBy의 storageOption 인자가 비어있습니다.');
+      return;
+    }
+
+    const videos = this.getItem();
+    const isSatisfiedByOption = video => {
+      const keys = Object.keys(storageOption);
+      return keys.every(key => {
+        if (video[key] === undefined) {
+          console.error(
+            `getVideosBy의 인자가 유효하지 않은 key값입니다.(key: ${key})`
+          );
+        }
+
+        return video[key] === storageOption[key];
+      });
+    };
+
+    return videos.filter(isSatisfiedByOption);
   }
 }

@@ -1,11 +1,9 @@
 import modalService from './service/modalService';
-import watchedVideoService from './service/watchedVideoService';
-import watchingVideoService from './service/watchingVideoService';
+import videoService from './service/videoService';
 
 const service = {
   modal: modalService,
-  watchedVideo: watchedVideoService,
-  watchingVideo: watchingVideoService,
+  video: videoService,
 };
 
 export default service;

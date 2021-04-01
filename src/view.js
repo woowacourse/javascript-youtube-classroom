@@ -1,8 +1,4 @@
 import {
-  $emptyWatchedVideo,
-  $emptyWatchingVideo,
-  $watchedVideoWrapper,
-  $watchingVideoWrapper,
   $modal,
   $searchQueries,
   $searchResultVideoWrapper,
@@ -16,21 +12,7 @@ import VideoView from './view/VideoView.js';
 
 const layout = new LayoutView({ $nav, $snackbarWrapper });
 
-const watchingVideo = new VideoView(
-  {
-    $videoWrapper: $watchingVideoWrapper,
-    $emptyVideoImage: $emptyWatchingVideo,
-  },
-  false
-);
-
-const watchedVideo = new VideoView(
-  {
-    $videoWrapper: $watchedVideoWrapper,
-    $emptyVideoImage: $emptyWatchedVideo,
-  },
-  true
-);
+const video = new VideoView();
 
 const modal = new ModalView({
   $modal,
@@ -41,8 +23,7 @@ const modal = new ModalView({
 
 const view = {
   modal,
-  watchedVideo,
-  watchingVideo,
+  video,
   layout,
 };
 
