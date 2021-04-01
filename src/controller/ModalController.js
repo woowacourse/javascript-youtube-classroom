@@ -64,6 +64,7 @@ export default class ModalController extends BasicController {
 
     service.video.pushNewVideo(target.dataset);
     controller.hash.routeByHash();
+    view.layout.highlightNavButton(BROWSER_HASH.SEARCH);
 
     view.modal.hideVideoSaveButton(target);
     view.layout.showSnackbar(

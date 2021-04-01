@@ -12628,6 +12628,7 @@ var ModalController = /*#__PURE__*/function (_BasicController) {
 
       _service_js__WEBPACK_IMPORTED_MODULE_4__.default.video.pushNewVideo(target.dataset);
       _controller_js__WEBPACK_IMPORTED_MODULE_7__.default.hash.routeByHash();
+      _view_js__WEBPACK_IMPORTED_MODULE_5__.default.layout.highlightNavButton(_constants_js__WEBPACK_IMPORTED_MODULE_6__.BROWSER_HASH.SEARCH);
       _view_js__WEBPACK_IMPORTED_MODULE_5__.default.modal.hideVideoSaveButton(target);
       _view_js__WEBPACK_IMPORTED_MODULE_5__.default.layout.showSnackbar(_constants_js__WEBPACK_IMPORTED_MODULE_6__.SNACKBAR_MESSAGE.WATCHING_VIDEO_SAVE_SUCCESS, true);
     }
