@@ -1,17 +1,18 @@
-import WatchController from "./WatchController.js";
+import WatchController from './WatchController.js';
+import WatchView from './WatchView.js';
 
-import elements from "../../utils/elements.js";
-import { showSnackbar } from "../../utils/snackbar.js";
-import { ERROR_MESSAGE } from "../../utils/constants.js";
+import elements from '../../utils/elements.js';
+import { DOM_CONSTANTS } from '../../utils/constants.js';
 
-import videos from "../../state/videos.js";
+import videos from '../../state/videos.js';
 export default class WatchEventController {
   constructor() {
     this.watchController = new WatchController();
+    this.watchView = new WatchView();
   }
 
   bindEvents() {
-    window.addEventListener("load", this.onLoadApp.bind(this));
+    window.addEventListener('load', this.onLoadApp.bind(this));
 
     this.bindNavEvents();
     this.bindSaveVideoEvents();
@@ -20,46 +21,59 @@ export default class WatchEventController {
 
   bindNavEvents() {
     elements.$watchLaterViewButton.addEventListener(
-      "click",
+      'click',
       this.onClickWatchLaterViewButton.bind(this)
     );
     elements.$watchedViewButton.addEventListener(
-      "click",
+      'click',
       this.onClickWatchedViewButton.bind(this)
+    );
+    elements.$likedViewButton.addEventListener(
+      'click',
+      this.onClickLikedViewButton.bind(this)
     );
   }
 
   bindSaveVideoEvents() {
     elements.$searchResults.addEventListener(
-      "click",
+      'click',
       this.onClickSaveButton.bind(this)
     );
   }
 
   bindClipButtonEvents() {
-    elements.$watchLaterVideos.addEventListener("click", (e) => {
+    elements.$watchLaterVideos.addEventListener('click', (e) => {
       this.onClickWatchedButton(e);
       this.onClickLikedButton(e);
       this.onClickDeleteButton(e, false);
     });
-    elements.$watchedVideos.addEventListener("click", (e) => {
-      this.onClickClearWatchLogbutton(e);
+    elements.$watchedVideos.addEventListener('click', (e) => {
+      this.onClickClearWatchLogButton(e);
       this.onClickLikedButton(e);
       this.onClickDeleteButton(e, true);
+    });
+    elements.$likedVideos.addEventListener('click', (e) => {
+      this.onClickWatchButton(e);
+      this.onClickLikeButton(e);
+      this.onClickDeleteButton(e);
     });
   }
 
   onLoadApp() {
     videos.initSavedVideos();
-    this.watchController.updateWatchLaterView(videos.getSavedVideos());
+    this.watchController.updateWatchLaterView();
   }
 
   onClickWatchLaterViewButton() {
-    this.watchController.updateWatchLaterView(videos.getSavedVideos());
+    this.watchController.updateWatchLaterView();
   }
 
   onClickWatchedViewButton() {
-    this.watchController.updateWatchedView(videos.getSavedVideos());
+    this.watchController.updateWatchedView();
+  }
+
+  onClickLikedViewButton() {
+    this.watchController.updateLikedView();
   }
 
   onClickSaveButton(e) {
@@ -67,7 +81,7 @@ export default class WatchEventController {
       return;
     }
 
-    this.watchController.updateWatchLaterView(videos.getSavedVideos());
+    this.watchController.updateWatchLaterView();
   }
 
   onClickWatchedButton(e) {
@@ -77,25 +91,33 @@ export default class WatchEventController {
     }
 
     this.watchController.watchVideo(videoId);
-    this.watchController.updateWatchLaterView(videos.getSavedVideos());
+    this.watchController.updateWatchLaterView();
   }
 
-  onClickClearWatchLogbutton(e) {
+  onClickClearWatchLogButton(e) {
     const videoId = e.target.dataset.watchedButton;
     if (!videoId) {
       return;
     }
 
-    this.watchController.clearWatchedViedoLog(videoId);
-    this.watchController.updateWatchedView(videos.getSavedVideos());
+    this.watchController.clearWatchedVideoLog(videoId);
+    this.watchController.updateWatchedView();
   }
 
   onClickLikedButton(e) {
-    if (!e.target.dataset.likedButton) {
+    const videoId = e.target.dataset.likedButton;
+    if (!videoId) {
       return;
     }
 
-    showSnackbar(ERROR_MESSAGE.NOT_IMPLEMENTED);
+    const targetClassList = e.target.classList;
+    if (targetClassList.contains(DOM_CONSTANTS.CLASS_NAME.OPACITY_HOVER)) {
+      this.watchController.toggleLikedVideo(videoId, true);
+      targetClassList.remove(DOM_CONSTANTS.CLASS_NAME.OPACITY_HOVER);
+    } else {
+      this.watchController.toggleLikedVideo(videoId, false);
+      targetClassList.add(DOM_CONSTANTS.CLASS_NAME.OPACITY_HOVER);
+    }
   }
 
   onClickDeleteButton(e, isWatched) {
@@ -106,9 +128,41 @@ export default class WatchEventController {
 
     this.watchController.deleteVideo(videoId);
     if (isWatched) {
-      this.watchController.updateWatchedView(videos.getSavedVideos());
+      this.watchController.updateWatchedView();
+    } else if (isWatched) {
+      this.watchController.updateWatchLaterView();
+    }
+  }
+
+  onClickLikeButton(e) {
+    const videoId = e.target.dataset.likedButton;
+    if (!videoId) {
+      return;
+    }
+
+    const targetClassList = e.target.classList;
+    if (targetClassList.contains(DOM_CONSTANTS.CLASS_NAME.OPACITY_HOVER)) {
+      this.watchController.toggleLikedVideo(videoId, true);
     } else {
-      this.watchController.updateWatchLaterView(videos.getSavedVideos());
+      this.watchController.toggleLikedVideo(videoId, false);
+    }
+
+    this.watchController.showLikedVideos();
+  }
+
+  onClickWatchButton(e) {
+    const videoId = e.target.dataset.watchedButton;
+    if (!videoId) {
+      return;
+    }
+
+    const targetClassList = e.target.classList;
+    if (targetClassList.contains(DOM_CONSTANTS.CLASS_NAME.OPACITY_HOVER)) {
+      this.watchController.watchVideo(videoId);
+      targetClassList.remove(DOM_CONSTANTS.CLASS_NAME.OPACITY_HOVER);
+    } else {
+      this.watchController.clearWatchedVideoLog(videoId);
+      targetClassList.add(DOM_CONSTANTS.CLASS_NAME.OPACITY_HOVER);
     }
   }
 }

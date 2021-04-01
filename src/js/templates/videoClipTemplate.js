@@ -1,11 +1,11 @@
-import loadingSearchResults from "../state/loadingSearchResults.js";
-import { NULL_DATE, INVALID_DATE } from "../utils/constants.js";
+import loadingSearchResults from '../state/loadingSearchResults.js';
+import { NULL_DATE, INVALID_DATE } from '../utils/constants.js';
 
 function parseDate(dateString) {
-  const date = new Date(dateString).toLocaleDateString("ko-KR", {
-    year: "numeric",
-    month: "long",
-    day: "numeric",
+  const date = new Date(dateString).toLocaleDateString('ko-KR', {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
   });
 
   return date === INVALID_DATE ? NULL_DATE : date;
@@ -64,7 +64,7 @@ function getSaveButtons(item) {
         data-video-id=${item.videoId}
         data-video-saved=""
         class="btn btn-hover-cyan-700 bg-cyan-500 ${
-          item.saved ? "d-none-hard" : ""
+          item.saved ? 'd-none-hard' : ''
         }"
         type="button"
         >
@@ -73,7 +73,7 @@ function getSaveButtons(item) {
       <button 
         data-video-id=${item.videoId}
         data-video-saved="saved" 
-        class="btn btn-hover-gray-300 ${item.saved ? "" : "d-none-hard"}"
+        class="btn btn-hover-gray-300 ${item.saved ? '' : 'd-none-hard'}"
         type="button"
         >
         저장 취소
@@ -86,14 +86,14 @@ function getClipButtons(item) {
     <div class="clip-buttons">
       <button 
         data-watched-button=${item.videoId} 
-        class=${item.watched ? "" : "opacity-hover"}
-        type="button">
+        type="button"
+        class=${item.watched ? '' : 'opacity-hover'}>
         ✅
       </button>
       <button 
         data-liked-button=${item.videoId} 
-        class=${item.liked ? "" : "opacity-hover"}
-        type="button">
+        type="button"
+        class=${item.liked ? '' : 'opacity-hover'}>
         👍
       </button>
       <button 
@@ -138,11 +138,11 @@ function getVideoClipInnerElement(item, buttonsContainer) {
 }
 
 export function createSavedClipElement(item) {
-  const videoArticle = document.createElement("article");
-  videoArticle.classList.add("clip");
-  videoArticle.classList.add("mt-10");
+  const videoArticle = document.createElement('article');
+  videoArticle.classList.add('clip');
+  videoArticle.classList.add('mt-10');
   videoArticle.insertAdjacentHTML(
-    "beforeend",
+    'beforeend',
     getVideoClipInnerElement(item, getClipButtons(item))
   );
 
@@ -150,11 +150,11 @@ export function createSavedClipElement(item) {
 }
 
 export function createSearchedClipElement(item) {
-  const videoArticle = document.createElement("article");
-  videoArticle.classList.add("clip");
-  videoArticle.classList.add("mt-10");
+  const videoArticle = document.createElement('article');
+  videoArticle.classList.add('clip');
+  videoArticle.classList.add('mt-10');
   videoArticle.insertAdjacentHTML(
-    "beforeend",
+    'beforeend',
     getVideoClipInnerElement(item, getSaveButtons(item))
   );
 
