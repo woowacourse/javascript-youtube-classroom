@@ -16,11 +16,8 @@ const controllerUtil = {
     if (hash === '') {
       return BROWSER_HASH.WATCHING;
     }
-    return hash.substr(1);
-  },
 
-  isEmptyObject(object) {
-    return Object.keys(object).length === 0;
+    return hash.substr(1);
   },
 };
 

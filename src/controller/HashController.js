@@ -3,7 +3,7 @@ import storage from '../storage.js';
 import controllerUtil from './controllerUtil.js';
 import view from '../view.js';
 import BasicController from './BasicController.js';
-import controller from '../controller.js';
+import validation from '../utils/validation.js';
 
 export default class HashController extends BasicController {
   constructor() {
@@ -46,12 +46,10 @@ export default class HashController extends BasicController {
   };
 
   #activeVideoView(storageOption = {}) {
-    if (controllerUtil.isEmptyObject(storageOption)) {
+    if (validation.isEmptyObject(storageOption)) {
       console.error('activeVideoView의 인자 storageOption가 빈 객체입니다.');
       return;
     }
-
-    controller.video.setStorageOption(storageOption);
 
     const videos = storage.video.getVideosBy(storageOption);
 

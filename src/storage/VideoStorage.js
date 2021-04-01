@@ -1,3 +1,4 @@
+import validation from '../utils/validation.js';
 import ArrayStorage from './ArrayStorage.js';
 
 export default class VideoStorage extends ArrayStorage {
@@ -19,7 +20,7 @@ export default class VideoStorage extends ArrayStorage {
   }
 
   setVideoProperty(targetVideoId, property = {}) {
-    if (Object.values(property).length === 0) {
+    if (validation.isEmptyObject(property)) {
       console.error('setVideoProperty의 property 인자가 비어있습니다.');
       return;
     }
@@ -45,7 +46,7 @@ export default class VideoStorage extends ArrayStorage {
   }
 
   getVideosBy(storageOption = {}) {
-    if (Object.values(storageOption).length === 0) {
+    if (validation.isEmptyObject(storageOption)) {
       console.error('getVideosBy의 storageOption 인자가 비어있습니다.');
       return;
     }

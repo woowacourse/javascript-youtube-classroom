@@ -1,5 +1,6 @@
 import { SETTINGS, STORAGE_KEYWORD } from '../constants';
 import storage from '../storage.js';
+import validation from '../utils/validation';
 
 const videoService = {
   isVideoCountUnderLimit() {
@@ -9,7 +10,7 @@ const videoService = {
   },
 
   isVideosEmpty(storageOption = {}) {
-    if (controllerUtil.isEmptyObject(storageOption)) {
+    if (validation.isEmptyObject(storageOption)) {
       console.error('isVideosEmpty의 인자 storageOption가 빈 객체입니다.');
       return;
     }

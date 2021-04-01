@@ -7,14 +7,8 @@ import { $videoWrapper } from '../elements';
 import controller from '../controller';
 
 export default class VideoController extends BasicController {
-  #videoStorage;
-
   constructor() {
     super();
-  }
-
-  setStorageOption(storageOption) {
-    this.#videoStorage = storageOption;
   }
 
   initEvent() {

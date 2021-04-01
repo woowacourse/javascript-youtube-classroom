@@ -10,7 +10,6 @@ import {
   $searchResultVideoWrapper,
   $savedVideoCount,
 } from '../elements.js';
-
 import BasicView from './BasicView.js';
 import { GetVideoIframeMixin } from './mixin.js';
 export default class ModalView extends GetVideoIframeMixin(BasicView) {

@@ -35,6 +35,7 @@ const modalService = {
       storage.prevSearchResult.setItem({ nextPageToken });
     }
   },
+
   savePrevSearchedVideos(videos) {
     storage.prevSearchResult.setItem({ prevSearchedVideos: videos });
   },
