@@ -4,7 +4,7 @@ import $ from '../utils/DOM.js';
 const intersectionObserver = {
   value: {},
   options: {
-    root: $('.modal-inner'),
+    root: $('#modal-inner'),
     rootMargin: '0px',
     threshold: 0.85,
   },

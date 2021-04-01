@@ -12,17 +12,21 @@
         <div class="w-100">
           <header class="my-4">
             <h2 class="text-center font-bold">👩🏻‍💻 나만의 유튜브 강의실 👨🏻‍💻</h2>
-            <nav id="mode-wrapper" class="d-flex justify-center">
-              <button
-                id="to-watch-video-display-button"
-                class="btn mx-1 bg-cyan-100"
-              >
-                👁️ 볼 영상
+            <nav id="mode-wrapper" class="d-flex justify-between">
+              <div id="video-filter">
+                <button
+                  id="to-watch-video-display-button"
+                  class="btn mx-1 bg-cyan-100"
+                >
+                  👁️ 볼 영상
+                </button>
+                <button id="watched-video-display-button" class="btn mx-1">
+                  ✅ 본 영상
+                </button>
+              </div>
+              <button id="search-button" class="btn mx-1 rounded-full">
+                🔍
               </button>
-              <button id="watched-video-display-button" class="btn mx-1">
-                ✅ 본 영상
-              </button>
-              <button id="search-button" class="btn mx-1">🔍</button>
             </nav>
           </header>
           <main class="mt-10">
@@ -67,7 +71,7 @@
           </section>
         </div>
       </div>
-      <div id="snack-bar" class="snack-bar"></div>
+      <div id="snack-bar"></div>
     </div>
     <script type="module" src="./src/js/index.js"></script>
   </body>

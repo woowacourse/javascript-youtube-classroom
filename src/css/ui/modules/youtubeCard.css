@@ -7,7 +7,7 @@
 }
 
 .clip {
-  height: 219px;
+  height: 150px;
   min-height: 300px; /*TODO: 더 나은 방법있으면 대체*/
   cursor: pointer;
   text-decoration: none;

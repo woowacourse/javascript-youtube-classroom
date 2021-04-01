@@ -25,14 +25,23 @@ function renderSavedVideoList(videoInfos, videoListType) {
     : emptyVideoListTemplate;
 }
 
-function showSnackBar(contents) {
+function snackBar() {
   const $snackbar = $('#snack-bar');
+  let timerId = null;
 
-  $snackbar.innerText = contents;
-  $snackbar.classList.toggle('show');
-  setTimeout(() => {
+  function show(contents) {
+    if (timerId) {
+      clearTimeout(timerId);
+    }
+
+    $snackbar.innerText = contents;
     $snackbar.classList.toggle('show');
-  }, 3000);
+    timerId = setTimeout(() => {
+      $snackbar.classList.toggle('show');
+    }, 3000);
+  }
+
+  return show;
 }
 
 function toggleFocusedModeButton() {
@@ -44,6 +53,6 @@ export {
   openModal,
   closeModal,
   renderSavedVideoList,
-  showSnackBar,
+  snackBar,
   toggleFocusedModeButton,
 };

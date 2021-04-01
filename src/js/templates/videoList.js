@@ -1,7 +1,7 @@
 import formatDate from '../utils/date.js';
 
 function createVideoSnippetTemplate({ id, snippet }, buttonListTemplate) {
-  return `<article class="clip js-video"
+  return `<article class="clip js-video relative"
             data-video-id=${id.videoId}
             data-title=${encodeURIComponent(snippet.title)}
             data-channel-id=${snippet.channelId}
@@ -32,10 +32,10 @@ function createVideoSnippetTemplate({ id, snippet }, buttonListTemplate) {
                 <div class="meta">
                   <p>${formatDate(snippet.publishTime)}</p>
                 </div>
-                <div class="d-flex justify-end" >
-                  ${buttonListTemplate}
-                </div>
               </div>
+            </div>
+            <div class="button-list d-flex justify-end" >
+                  ${buttonListTemplate}
             </div>
           </article>`;
 }
@@ -71,7 +71,6 @@ function createControlButtonsTemplate(watchType) {
       isChecked: watchType === 'watched',
     },
     { content: '👍', className: 'js-like-button', isChecked: false },
-    { content: '💬', className: 'js-comment-button', isChecked: false },
     { content: '🗑️', className: 'js-delete-button', isChecked: false },
   ]
     .map(
