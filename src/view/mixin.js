@@ -1,5 +1,5 @@
-export const GetVideoIframeMixin = (superClass) =>
-  class extends (superClass) {
+export const GetVideoIframeMixin = superClass =>
+  class extends superClass {
     _getIframe(videoItem) {
       return `
       <iframe
@@ -13,7 +13,7 @@ export const GetVideoIframeMixin = (superClass) =>
       allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
       allowfullscreen
       ></iframe>
-      `
+      `;
     }
 
     #getSrcDoc(videoItem) {
@@ -34,7 +34,6 @@ export const GetVideoIframeMixin = (superClass) =>
           </a>
         <div>
       </body>
-      `
+      `;
     }
-  }
-
+  };
