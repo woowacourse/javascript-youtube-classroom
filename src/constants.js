@@ -79,16 +79,10 @@ export const CONFIRM_MESSAGE = Object.freeze({
 });
 
 export const SNACKBAR_MESSAGE = Object.freeze({
-  //TODO: CHECK를 SAVE로 바꾸기
-  WATCHED_VIDEO_CHECK_SUCCESS: '본 영상으로 저장되었습니다.',
-
-  WATCHING_VIDEO_CHECK_SUCCESS: '볼 영상으로 이동되었습니다.',
+  WATCHED_VIDEO_SAVE_SUCCESS: '본 영상으로 저장되었습니다.',
   WATCHING_VIDEO_SAVE_SUCCESS: '볼 영상으로 이동되었습니다.',
-
   FAVORITE_VIDEO_SAVE_SUCCESS: '좋아요 한 영상으로 저장되었습니다.',
-
   VIDEO_DELETE_SUCCESS: '영상에서 삭제되었습니다.',
-
   SAVE_LIMIT_EXCEEDED: `${SETTINGS.MAX_SAVE_COUNT}개 보다 많은 영상을 저장할 수 없습니다.`,
 });
 
