@@ -27,6 +27,11 @@ export default class VideoController extends BasicController {
       return;
     }
 
+    if (target.classList.contains(SELECTOR_CLASS.CLIP_FAVORITE_BUTTON)) {
+      this.#moveVideoByFavoriteButton(target);
+      return;
+    }
+
     if (target.classList.contains(SELECTOR_CLASS.CLIP_DELETE_BUTTON)) {
       this.#deleteVideo(target);
       return;
@@ -58,5 +63,20 @@ export default class VideoController extends BasicController {
     controller.hash.routeByHash();
 
     view.layout.showCheckSnackbar(isWatchedAfter);
+  }
+
+  #moveVideoByFavoriteButton(button) {
+    const videoId = button.dataset.videoId;
+    const isFavoriteBefore = storage.video.getVideoById(videoId)[
+      STORAGE_KEYWORD.IS_FAVORITE
+    ];
+    const isFavoriteAfter = !isFavoriteBefore;
+
+    storage.video.setVideoProperty(videoId, {
+      [STORAGE_KEYWORD.IS_FAVORITE]: isFavoriteAfter,
+    });
+    controller.hash.routeByHash();
+
+    view.layout.showCheckSnackbar(isFavoriteAfter);
   }
 }

@@ -33,6 +33,13 @@ export default class HashController extends BasicController {
       return;
     }
 
+    if (hash === BROWSER_HASH.FAVORITE) {
+      this.#activeVideoView({
+        [STORAGE_KEYWORD.IS_FAVORITE]: true,
+      });
+      return;
+    }
+
     this.#activeVideoView({
       [STORAGE_KEYWORD.IS_WATCHED]: false,
     });

@@ -41,6 +41,7 @@ export default class VideoView extends GetVideoIframeMixin(BasicView) {
 
   _getVideoTemplate(video) {
     const isWatched = video[STORAGE_KEYWORD.IS_WATCHED];
+    const isFavorite = video[STORAGE_KEYWORD.IS_FAVORITE];
 
     return `
     <article class="${SELECTOR_CLASS.CLIP} clip">
@@ -73,7 +74,17 @@ export default class VideoView extends GetVideoIframeMixin(BasicView) {
                 isWatched ? '볼 영상으로 저장' : '본 영상으로 저장'
               }"
             >✅</button>
-            <button class="opacity-hover button-style-none">👍</button>
+            <button class="
+              ${SELECTOR_CLASS.CLIP_FAVORITE_BUTTON}
+              clip__check-button
+              button-style-none
+              ${isFavorite ? STYLE_CLASS.VIDEO_CHECKED : ''} 
+              opacity-hover" 
+              data-video-id="${video.videoId}"
+              aria-label="해당 비디오를 ${
+                isFavorite ? '좋아요 영상 해제' : '좋아요 영상으로 저장'
+              }"
+            >👍</button>
             <button class="opacity-hover button-style-none">💬</button>
             <button 
               class="${

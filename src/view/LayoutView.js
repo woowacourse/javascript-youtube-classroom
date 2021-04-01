@@ -22,6 +22,16 @@ export default class LayoutView extends BasicView {
     this.showSnackbar(SNACKBAR_MESSAGE.WATCHING_VIDEO_CHECK_SUCCESS, true);
   }
 
+  showFavoriteSnackbar(isFavoriteAfter) {
+    if (isFavoriteAfter) {
+      this.showSnackbar(SNACKBAR_MESSAGE.FAVORITE_VIDEO_SAVE_SUCCESS, true);
+      return;
+    }
+
+    //TODO: 메세지 바꾸기
+    this.showSnackbar(SNACKBAR_MESSAGE.FAVORITE_VIDEO_SAVE_SUCCESS, true);
+  }
+
   showSnackbar(message, isSuccess) {
     const $snackbar = this.#createSnackbar(message, isSuccess);
 

@@ -12307,16 +12307,19 @@ var CONFIRM_MESSAGE = Object.freeze({
   VIDEO_DELETE: '영상을 정말 삭제하시겠습니까?'
 });
 var SNACKBAR_MESSAGE = Object.freeze({
+  //TODO: CHECK를 SAVE로 바꾸기
   WATCHED_VIDEO_CHECK_SUCCESS: '본 영상으로 저장되었습니다.',
   WATCHING_VIDEO_CHECK_SUCCESS: '볼 영상으로 이동되었습니다.',
   WATCHING_VIDEO_SAVE_SUCCESS: '볼 영상으로 이동되었습니다.',
+  FAVORITE_VIDEO_SAVE_SUCCESS: '좋아요 한 영상으로 저장되었습니다.',
   VIDEO_DELETE_SUCCESS: '영상에서 삭제되었습니다.',
   SAVE_LIMIT_EXCEEDED: "".concat(SETTINGS.MAX_SAVE_COUNT, "\uAC1C \uBCF4\uB2E4 \uB9CE\uC740 \uC601\uC0C1\uC744 \uC800\uC7A5\uD560 \uC218 \uC5C6\uC2B5\uB2C8\uB2E4.")
 });
 var BROWSER_HASH = Object.freeze({
   WATCHING: 'watching',
   WATCHED: 'watched',
-  SEARCH: 'search'
+  SEARCH: 'search',
+  FAVORITE: 'favorite'
 });
 var CONTROLLER_KEYWORD = {
   WATCHING: 'watching',
@@ -12470,6 +12473,12 @@ var HashController = /*#__PURE__*/function (_BasicController) {
 
       if (hash === _constants_js__WEBPACK_IMPORTED_MODULE_0__.BROWSER_HASH.WATCHED) {
         _classPrivateMethodGet(_assertThisInitialized(_this), _activeVideoView, _activeVideoView2).call(_assertThisInitialized(_this), _defineProperty({}, _constants_js__WEBPACK_IMPORTED_MODULE_0__.STORAGE_KEYWORD.IS_WATCHED, true));
+
+        return;
+      }
+
+      if (hash === _constants_js__WEBPACK_IMPORTED_MODULE_0__.BROWSER_HASH.FAVORITE) {
+        _classPrivateMethodGet(_assertThisInitialized(_this), _activeVideoView, _activeVideoView2).call(_assertThisInitialized(_this), _defineProperty({}, _constants_js__WEBPACK_IMPORTED_MODULE_0__.STORAGE_KEYWORD.IS_FAVORITE, true));
 
         return;
       }
@@ -12826,6 +12835,8 @@ var _deleteVideo = new WeakSet();
 
 var _moveVideoByCheckButton = new WeakSet();
 
+var _moveVideoByFavoriteButton = new WeakSet();
+
 var VideoController = /*#__PURE__*/function (_BasicController) {
   _inherits(VideoController, _BasicController);
 
@@ -12837,6 +12848,8 @@ var VideoController = /*#__PURE__*/function (_BasicController) {
     _classCallCheck(this, VideoController);
 
     _this = _super.call(this);
+
+    _moveVideoByFavoriteButton.add(_assertThisInitialized(_this));
 
     _moveVideoByCheckButton.add(_assertThisInitialized(_this));
 
@@ -12852,6 +12865,12 @@ var VideoController = /*#__PURE__*/function (_BasicController) {
 
       if (target.classList.contains(_constants__WEBPACK_IMPORTED_MODULE_0__.SELECTOR_CLASS.CLIP_CHECK_BUTTON)) {
         _classPrivateMethodGet(_assertThisInitialized(_this), _moveVideoByCheckButton, _moveVideoByCheckButton2).call(_assertThisInitialized(_this), target);
+
+        return;
+      }
+
+      if (target.classList.contains(_constants__WEBPACK_IMPORTED_MODULE_0__.SELECTOR_CLASS.CLIP_FAVORITE_BUTTON)) {
+        _classPrivateMethodGet(_assertThisInitialized(_this), _moveVideoByFavoriteButton, _moveVideoByFavoriteButton2).call(_assertThisInitialized(_this), target);
 
         return;
       }
@@ -12899,6 +12918,15 @@ var _moveVideoByCheckButton2 = function _moveVideoByCheckButton2(button) {
   _storage__WEBPACK_IMPORTED_MODULE_1__.default.video.setVideoProperty(videoId, _defineProperty({}, _constants__WEBPACK_IMPORTED_MODULE_0__.STORAGE_KEYWORD.IS_WATCHED, isWatchedAfter));
   _controller__WEBPACK_IMPORTED_MODULE_5__.default.hash.routeByHash();
   _view__WEBPACK_IMPORTED_MODULE_2__.default.layout.showCheckSnackbar(isWatchedAfter);
+};
+
+var _moveVideoByFavoriteButton2 = function _moveVideoByFavoriteButton2(button) {
+  var videoId = button.dataset.videoId;
+  var isFavoriteBefore = _storage__WEBPACK_IMPORTED_MODULE_1__.default.video.getVideoById(videoId)[_constants__WEBPACK_IMPORTED_MODULE_0__.STORAGE_KEYWORD.IS_FAVORITE];
+  var isFavoriteAfter = !isFavoriteBefore;
+  _storage__WEBPACK_IMPORTED_MODULE_1__.default.video.setVideoProperty(videoId, _defineProperty({}, _constants__WEBPACK_IMPORTED_MODULE_0__.STORAGE_KEYWORD.IS_FAVORITE, isFavoriteAfter));
+  _controller__WEBPACK_IMPORTED_MODULE_5__.default.hash.routeByHash();
+  _view__WEBPACK_IMPORTED_MODULE_2__.default.layout.showCheckSnackbar(isFavoriteAfter);
 };
 
 
@@ -13790,6 +13818,17 @@ var LayoutView = /*#__PURE__*/function (_BasicView) {
       this.showSnackbar(_constants_js__WEBPACK_IMPORTED_MODULE_0__.SNACKBAR_MESSAGE.WATCHING_VIDEO_CHECK_SUCCESS, true);
     }
   }, {
+    key: "showFavoriteSnackbar",
+    value: function showFavoriteSnackbar(isFavoriteAfter) {
+      if (isFavoriteAfter) {
+        this.showSnackbar(_constants_js__WEBPACK_IMPORTED_MODULE_0__.SNACKBAR_MESSAGE.FAVORITE_VIDEO_SAVE_SUCCESS, true);
+        return;
+      } //TODO: 메세지 바꾸기
+
+
+      this.showSnackbar(_constants_js__WEBPACK_IMPORTED_MODULE_0__.SNACKBAR_MESSAGE.FAVORITE_VIDEO_SAVE_SUCCESS, true);
+    }
+  }, {
     key: "showSnackbar",
     value: function showSnackbar(message, isSuccess) {
       var _this2 = this;
@@ -14122,7 +14161,8 @@ var VideoView = /*#__PURE__*/function (_GetVideoIframeMixin) {
     key: "_getVideoTemplate",
     value: function _getVideoTemplate(video) {
       var isWatched = video[_constants__WEBPACK_IMPORTED_MODULE_0__.STORAGE_KEYWORD.IS_WATCHED];
-      return "\n    <article class=\"".concat(_constants__WEBPACK_IMPORTED_MODULE_0__.SELECTOR_CLASS.CLIP, " clip\">\n      <div class=\"clip__preview\">\n        ").concat(this._getIframe(video), "\n      </div>\n      <div class=\"clip__content pt-2 px-1\">\n        <h3>").concat(video.title, "</h3>\n        <div>\n          <a\n            href=\"https://www.youtube.com/channel/UC-mOekGSesms0agFntnQang\"\n            target=\"_blank\"\n            class=\"channel-name mt-1\"\n          >\n            ").concat(video.channelTitle, "\n          </a>\n          <div class=\"meta\">\n            <p>").concat(video.publishedAt, "</p>\n          </div>\n          <div>\n            <button \n              class=\"\n                ").concat(_constants__WEBPACK_IMPORTED_MODULE_0__.SELECTOR_CLASS.CLIP_CHECK_BUTTON, "\n                clip__check-button\n                button-style-none\n                ").concat(isWatched ? _constants__WEBPACK_IMPORTED_MODULE_0__.STYLE_CLASS.VIDEO_CHECKED : '', " \n                opacity-hover\" \n              data-video-id=\"").concat(video.videoId, "\"\n              aria-label=\"\uD574\uB2F9 \uBE44\uB514\uC624\uB97C ").concat(isWatched ? '볼 영상으로 저장' : '본 영상으로 저장', "\"\n            >\u2705</button>\n            <button class=\"opacity-hover button-style-none\">\uD83D\uDC4D</button>\n            <button class=\"opacity-hover button-style-none\">\uD83D\uDCAC</button>\n            <button \n              class=\"").concat(_constants__WEBPACK_IMPORTED_MODULE_0__.SELECTOR_CLASS.CLIP_DELETE_BUTTON, " opacity-hover button-style-none\" \n              data-video-id=\"").concat(video.videoId, "\"\n              aria-label=\"\uD574\uB2F9 \uBE44\uB514\uC624\uB97C \uC0AD\uC81C\"\n            >\uD83D\uDDD1\uFE0F</button>\n          </div>\n        </div>\n      </div>\n    </article>\n    ");
+      var isFavorite = video[_constants__WEBPACK_IMPORTED_MODULE_0__.STORAGE_KEYWORD.IS_FAVORITE];
+      return "\n    <article class=\"".concat(_constants__WEBPACK_IMPORTED_MODULE_0__.SELECTOR_CLASS.CLIP, " clip\">\n      <div class=\"clip__preview\">\n        ").concat(this._getIframe(video), "\n      </div>\n      <div class=\"clip__content pt-2 px-1\">\n        <h3>").concat(video.title, "</h3>\n        <div>\n          <a\n            href=\"https://www.youtube.com/channel/UC-mOekGSesms0agFntnQang\"\n            target=\"_blank\"\n            class=\"channel-name mt-1\"\n          >\n            ").concat(video.channelTitle, "\n          </a>\n          <div class=\"meta\">\n            <p>").concat(video.publishedAt, "</p>\n          </div>\n          <div>\n            <button \n              class=\"\n                ").concat(_constants__WEBPACK_IMPORTED_MODULE_0__.SELECTOR_CLASS.CLIP_CHECK_BUTTON, "\n                clip__check-button\n                button-style-none\n                ").concat(isWatched ? _constants__WEBPACK_IMPORTED_MODULE_0__.STYLE_CLASS.VIDEO_CHECKED : '', " \n                opacity-hover\" \n              data-video-id=\"").concat(video.videoId, "\"\n              aria-label=\"\uD574\uB2F9 \uBE44\uB514\uC624\uB97C ").concat(isWatched ? '볼 영상으로 저장' : '본 영상으로 저장', "\"\n            >\u2705</button>\n            <button class=\"\n              ").concat(_constants__WEBPACK_IMPORTED_MODULE_0__.SELECTOR_CLASS.CLIP_FAVORITE_BUTTON, "\n              clip__check-button\n              button-style-none\n              ").concat(isFavorite ? _constants__WEBPACK_IMPORTED_MODULE_0__.STYLE_CLASS.VIDEO_CHECKED : '', " \n              opacity-hover\" \n              data-video-id=\"").concat(video.videoId, "\"\n              aria-label=\"\uD574\uB2F9 \uBE44\uB514\uC624\uB97C ").concat(isFavorite ? '좋아요 영상 해제' : '좋아요 영상으로 저장', "\"\n            >\uD83D\uDC4D</button>\n            <button class=\"opacity-hover button-style-none\">\uD83D\uDCAC</button>\n            <button \n              class=\"").concat(_constants__WEBPACK_IMPORTED_MODULE_0__.SELECTOR_CLASS.CLIP_DELETE_BUTTON, " opacity-hover button-style-none\" \n              data-video-id=\"").concat(video.videoId, "\"\n              aria-label=\"\uD574\uB2F9 \uBE44\uB514\uC624\uB97C \uC0AD\uC81C\"\n            >\uD83D\uDDD1\uFE0F</button>\n          </div>\n        </div>\n      </div>\n    </article>\n    ");
     }
   }]);
 
