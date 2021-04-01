@@ -14206,43 +14206,27 @@ function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Re
 
 function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
 
-function _classPrivateMethodGet(receiver, privateSet, fn) { if (!privateSet.has(receiver)) { throw new TypeError("attempted to get private field on non-instance"); } return fn; }
-
 var GetVideoIframeMixin = function GetVideoIframeMixin(superClass) {
-  var _getSrcDoc, _temp, _getSrcDoc2;
+  return /*#__PURE__*/function (_superClass) {
+    _inherits(_class, _superClass);
 
-  return _temp = (_getSrcDoc = new WeakSet(), /*#__PURE__*/function (_superClass) {
-    _inherits(_class2, _superClass);
+    var _super = _createSuper(_class);
 
-    var _super = _createSuper(_class2);
+    function _class() {
+      _classCallCheck(this, _class);
 
-    function _class2() {
-      var _this;
-
-      _classCallCheck(this, _class2);
-
-      for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
-        args[_key] = arguments[_key];
-      }
-
-      _this = _super.call.apply(_super, [this].concat(args));
-
-      _getSrcDoc.add(_assertThisInitialized(_this));
-
-      return _this;
+      return _super.apply(this, arguments);
     }
 
-    _createClass(_class2, [{
+    _createClass(_class, [{
       key: "_getIframe",
       value: function _getIframe(videoItem) {
-        return "\n      <iframe\n      width=\"100%\"\n      height=\"118\"\n      scrolling=\"no\"\n      src=\"https://www.youtube.com/embed/".concat(videoItem.videoId, "\"\n      srcdoc=\n      \"").concat(_classPrivateMethodGet(this, _getSrcDoc, _getSrcDoc2).call(this, videoItem), "\"\n      frameborder=\"0\"\n      allow=\"accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture\"\n      allowfullscreen\n      ></iframe>\n      ");
+        return "\n      <iframe\n      width=\"100%\"\n      height=\"118\"\n      scrolling=\"no\"\n      src=\"https://www.youtube.com/embed/".concat(videoItem.videoId, "\"\n      loading=\"lazy\"\n      frameborder=\"0\"\n      allow=\"accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture\"\n      allowfullscreen\n      ></iframe>\n      ");
       }
     }]);
 
-    return _class2;
-  }(superClass)), _getSrcDoc2 = function _getSrcDoc2(videoItem) {
-    return "\n      <body style=''>\n        <header>\n          <link rel='stylesheet' href='./src/assets/css/index.css'>\n        </header>\n        <div class='thumbnail'>\n          <a href='https://www.youtube.com/embed/".concat(videoItem.videoId, "' \n          aria-label='\uC720\uD29C\uBE0C \uC7AC\uC0DD \uBC84\uD2BC\uC785\uB2C8\uB2E4. \uC81C\uBAA9\uC740 ").concat(videoItem.title, "\uC785\uB2C8\uB2E4.'>\n            <img \n            class='thumbnail__image' \n            src=").concat(videoItem.thumbnailUrl, " />\n            <div class='d-flex justify-center items-center  thumbnail__play-button'>\n              <span>\u25B6</span>\n            <div>\n          </a>\n        <div>\n      </body>\n      ");
-  }, _temp;
+    return _class;
+  }(superClass);
 };
 
 /***/ })
