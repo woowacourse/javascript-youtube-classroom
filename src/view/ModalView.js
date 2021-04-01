@@ -3,15 +3,16 @@ import {
   SELECTOR_ID,
   SELECTOR_CLASS,
   YOUTUBE,
-} from '../constants.js';
+} from "../constants.js";
 import {
   $modal,
   $searchQueries,
   $searchResultVideoWrapper,
   $savedVideoCount,
-} from '../elements.js';
-import BasicView from './BasicView.js';
-import { GetVideoIframeMixin } from './mixin.js';
+} from "../elements.js";
+import BasicView from "./BasicView.js";
+import { GetVideoIframeMixin } from "./mixin.js";
+
 export default class ModalView extends GetVideoIframeMixin(BasicView) {
   constructor() {
     super();
@@ -84,7 +85,7 @@ export default class ModalView extends GetVideoIframeMixin(BasicView) {
   }
 
   #getSearchQueriesTemplate(queries) {
-    return queries.map(this.#getSearchQueryTemplate).join('');
+    return queries.map(this.#getSearchQueryTemplate).join("");
   }
 
   #getSearchQueryTemplate(query) {
@@ -94,7 +95,9 @@ export default class ModalView extends GetVideoIframeMixin(BasicView) {
   }
 
   #getSearchedVideoListTemplate(videos) {
-    return videos.map(video => this.#getSearchedVideoTemplate(video)).join('');
+    return videos
+      .map((video) => this.#getSearchedVideoTemplate(video))
+      .join("");
   }
 
   #getSearchedVideoTemplate(videoItem) {
@@ -116,7 +119,7 @@ export default class ModalView extends GetVideoIframeMixin(BasicView) {
           <div class="meta">
             <p>${videoItem.publishedAt}</p>
           </div>
-          <div class="d-flex justify-end ${videoItem.isSaved ? 'removed' : ''}">
+          <div class="d-flex justify-end ${videoItem.isSaved ? "removed" : ""}">
             <button class="btn ${SELECTOR_CLASS.SEARCHED_CLIP_SAVE_BUTTON}"
               data-video-id="${videoItem.videoId}"
               data-title="${videoItem.title}"
