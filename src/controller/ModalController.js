@@ -6,21 +6,21 @@ import {
   $searchResultIntersector,
   $modal,
   $searchResultVideoWrapper,
-} from '../elements.js';
-import { getVideosByKeyword } from '../apis/youtube.js';
-import controllerUtil from './controllerUtil.js';
-import storage from '../storage.js';
-import service from '../service.js';
-import view from '../view.js';
+} from "../elements.js";
+import { getVideosByKeyword } from "../apis/youtube.js";
+import controllerUtil from "./controllerUtil.js";
+import storage from "../storage.js";
+import service from "../service.js";
+import view from "../view.js";
 import {
   BROWSER_HASH,
   SELECTOR_CLASS,
   SELECTOR_ID,
   SNACKBAR_MESSAGE,
   STORAGE_KEYWORD,
-} from '../constants.js';
-import controller from '../controller.js';
-import BasicController from './BasicController.js';
+} from "../constants.js";
+import controller from "../controller.js";
+import BasicController from "./BasicController.js";
 
 export default class ModalController extends BasicController {
   constructor() {
@@ -32,14 +32,14 @@ export default class ModalController extends BasicController {
       $searchResultIntersector,
       this.onAdditionalVideosLoad
     );
-    $searchButton.addEventListener('click', this.onModalOpen);
-    $searchForm.addEventListener('submit', this.onVideoSearch);
+    $searchButton.addEventListener("click", this.onModalOpen);
+    $searchForm.addEventListener("submit", this.onVideoSearch);
     $searchResultVideoWrapper.addEventListener(
-      'click',
+      "click",
       this.onSelectedVideoSave
     );
-    $modalCloseButton.addEventListener('click', this.onModalClose);
-    $modal.addEventListener('click', event => {
+    $modalCloseButton.addEventListener("click", this.onModalClose);
+    $modal.addEventListener("click", (event) => {
       if (event.target.id === SELECTOR_ID.MODAL) {
         this.onModalClose();
       }
@@ -62,17 +62,8 @@ export default class ModalController extends BasicController {
       return;
     }
 
-    controller.hash.routeByHash();
-
     service.video.pushNewVideo(target.dataset);
-
-    if (controllerUtil.parseHash(location.hash) === BROWSER_HASH.WATCHING) {
-      const videos = storage.video.getVideosBy({
-        [STORAGE_KEYWORD.IS_WATCHED]: false,
-      });
-
-      view.video.renderVideos(videos);
-    }
+    controller.hash.routeByHash();
 
     view.modal.hideVideoSaveButton(target);
     view.layout.showSnackbar(
@@ -111,7 +102,7 @@ export default class ModalController extends BasicController {
     if (input === storage.prevSearchResult.getItem().lastQuery) {
       return;
     }
-    if (input === '') {
+    if (input === "") {
       return;
     }
 
