@@ -83,7 +83,7 @@ const getSrcDocAttribute = video => `
         cursor: pointer;
       }
 
-      .embeded-clip img{
+      .embeded-clip img {
         width: 100%;
         height: 100%;
         object-fit: cover;
