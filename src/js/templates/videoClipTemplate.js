@@ -111,6 +111,7 @@ function getVideoClipInnerElement(item, buttonsContainer) {
       <iframe
         width="100%"
         height="118"
+        title="${item.channelTitle}"
         onload="() => ${loadingSearchResults.load()}"
         srcdoc="${getSrcDocAttribute(item)}"
         src="https://www.youtube.com/embed/${item.videoId}"
@@ -120,7 +121,7 @@ function getVideoClipInnerElement(item, buttonsContainer) {
         </iframe>
     </div>
     <div class="content-container pt-2 px-1">
-      <h3>${item.title}</h3>
+      <h2>${item.title}</h2>
       <div>
         <a
           href="https://www.youtube.com/channel/${item.channelId}"
