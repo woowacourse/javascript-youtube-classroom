@@ -1,6 +1,6 @@
 import WatchView from './WatchView.js';
 
-import { CONFIRM_MESSAGE } from '../../utils/constants.js';
+import { CONFIRM_MESSAGE, DOM_CONSTANTS } from '../../utils/constants.js';
 
 import videos from '../../state/videos.js';
 export default class WatchController {
@@ -11,6 +11,16 @@ export default class WatchController {
   updateWatchLaterView() {
     this.watchView.markWatchLaterViewButton();
     this.showWatchLaterView();
+  }
+
+  updateWatchedView() {
+    this.watchView.markWatchedViewButton();
+    this.showWatchedView();
+  }
+
+  updateLikedView() {
+    this.watchView.markLikedViewButton();
+    this.showLikedVideos();
   }
 
   showWatchLaterView() {
@@ -25,11 +35,6 @@ export default class WatchController {
     }
   }
 
-  updateWatchedView() {
-    this.watchView.markWatchedViewButton();
-    this.showWatchedView();
-  }
-
   showWatchedView() {
     const watchedVideos = videos
       .getSavedVideos()
@@ -42,11 +47,6 @@ export default class WatchController {
     }
   }
 
-  updateLikedView() {
-    this.watchView.markLikedViewButton();
-    this.showLikedVideos();
-  }
-
   showLikedVideos() {
     const likedVideos = videos.getSavedVideos().filter((video) => video.liked);
 
@@ -57,12 +57,36 @@ export default class WatchController {
     }
   }
 
-  watchVideo(videoId) {
-    videos.setVideoWatched(videoId, true);
+  toggleWatchedButton(watchedButton) {
+    const videoId = watchedButton.dataset.watchedButton;
+    if (!videoId) return;
+
+    const videoClassList = watchedButton.classList;
+
+    if (videoClassList.contains(DOM_CONSTANTS.CLASS_NAME.OPACITY_HOVER)) {
+      videos.setVideoWatched(videoId, true);
+      videoClassList.remove(DOM_CONSTANTS.CLASS_NAME.OPACITY_HOVER);
+    } else {
+      videos.setVideoWatched(videoId, false);
+      videoClassList.add(DOM_CONSTANTS.CLASS_NAME.OPACITY_HOVER);
+    }
   }
 
-  clearWatchedVideoLog(videoId) {
-    videos.setVideoWatched(videoId, false);
+  toggleLikedButton(likedButton) {
+    const videoId = likedButton.dataset.likedButton;
+    if (!videoId) {
+      return;
+    }
+
+    const videoClassList = likedButton.classList;
+
+    if (videoClassList.contains(DOM_CONSTANTS.CLASS_NAME.OPACITY_HOVER)) {
+      this.toggleLikedVideo(videoId, true);
+      videoClassList.remove(DOM_CONSTANTS.CLASS_NAME.OPACITY_HOVER);
+    } else {
+      this.toggleLikedVideo(videoId, false);
+      videoClassList.add(DOM_CONSTANTS.CLASS_NAME.OPACITY_HOVER);
+    }
   }
 
   toggleLikedVideo(videoId, isLiked) {

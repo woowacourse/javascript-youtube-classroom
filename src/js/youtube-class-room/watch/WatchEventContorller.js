@@ -2,7 +2,6 @@ import WatchController from './WatchController.js';
 import WatchView from './WatchView.js';
 
 import elements from '../../utils/elements.js';
-import { DOM_CONSTANTS } from '../../utils/constants.js';
 
 import videos from '../../state/videos.js';
 export default class WatchEventController {
@@ -43,19 +42,19 @@ export default class WatchEventController {
 
   bindClipButtonEvents() {
     elements.$watchLaterVideos.addEventListener('click', (e) => {
-      this.onClickWatchedButton(e);
-      this.onClickLikedButton(e);
-      this.onClickDeleteButton(e, false);
+      if (e.target.tagName !== 'BUTTON') return;
+
+      this.onClickWatchLaterViewClipButton(e.target);
     });
     elements.$watchedVideos.addEventListener('click', (e) => {
-      this.onClickClearWatchLogButton(e);
-      this.onClickLikedButton(e);
-      this.onClickDeleteButton(e, true);
+      if (e.target.tagName !== 'BUTTON') return;
+
+      this.onClickWatchedViewClipButton(e.target);
     });
     elements.$likedVideos.addEventListener('click', (e) => {
-      this.onClickWatchButton(e);
-      this.onClickLikeButton(e);
-      this.onClickDeleteButton(e);
+      if (e.target.tagName !== 'BUTTON') return;
+
+      this.onClickLikedViewClipButton(e.target);
     });
   }
 
@@ -84,85 +83,51 @@ export default class WatchEventController {
     this.watchController.updateWatchLaterView();
   }
 
-  onClickWatchedButton(e) {
-    const videoId = e.target.dataset.watchedButton;
-    if (!videoId) {
-      return;
+  onClickWatchLaterViewClipButton(button) {
+    if (button.dataset.watchedButton) {
+      this.watchController.toggleWatchedButton(button);
+      this.watchController.showWatchLaterView();
     }
 
-    this.watchController.watchVideo(videoId);
-    this.watchController.updateWatchLaterView();
-  }
-
-  onClickClearWatchLogButton(e) {
-    const videoId = e.target.dataset.watchedButton;
-    if (!videoId) {
-      return;
+    if (button.dataset.likedButton) {
+      this.watchController.toggleLikedButton(button);
     }
 
-    this.watchController.clearWatchedVideoLog(videoId);
-    this.watchController.updateWatchedView();
-  }
-
-  onClickLikedButton(e) {
-    const videoId = e.target.dataset.likedButton;
-    if (!videoId) {
-      return;
-    }
-
-    const targetClassList = e.target.classList;
-    if (targetClassList.contains(DOM_CONSTANTS.CLASS_NAME.OPACITY_HOVER)) {
-      this.watchController.toggleLikedVideo(videoId, true);
-      targetClassList.remove(DOM_CONSTANTS.CLASS_NAME.OPACITY_HOVER);
-    } else {
-      this.watchController.toggleLikedVideo(videoId, false);
-      targetClassList.add(DOM_CONSTANTS.CLASS_NAME.OPACITY_HOVER);
+    if (button.dataset.deleteButton) {
+      this.watchController.deleteVideo(button.dataset.deleteButton);
+      this.watchController.showWatchLaterView();
     }
   }
 
-  onClickDeleteButton(e, isWatched) {
-    const videoId = e.target.dataset.deleteButton;
-    if (!videoId) {
-      return;
+  onClickWatchedViewClipButton(button) {
+    if (button.dataset.watchedButton) {
+      this.watchController.toggleWatchedButton(button);
+      this.watchController.showWatchedView();
     }
 
-    this.watchController.deleteVideo(videoId);
-    if (isWatched) {
-      this.watchController.updateWatchedView();
-    } else if (isWatched) {
-      this.watchController.updateWatchLaterView();
+    if (button.dataset.likedButton) {
+      this.watchController.toggleLikedButton(button);
+    }
+
+    if (button.dataset.deleteButton) {
+      this.watchController.deleteVideo(button.dataset.deleteButton);
+      this.watchController.showWatchedView();
     }
   }
 
-  onClickLikeButton(e) {
-    const videoId = e.target.dataset.likedButton;
-    if (!videoId) {
-      return;
+  onClickLikedViewClipButton(button) {
+    if (button.dataset.watchedButton) {
+      this.watchController.toggleWatchedButton(button);
     }
 
-    const targetClassList = e.target.classList;
-    if (targetClassList.contains(DOM_CONSTANTS.CLASS_NAME.OPACITY_HOVER)) {
-      this.watchController.toggleLikedVideo(videoId, true);
-    } else {
-      this.watchController.toggleLikedVideo(videoId, false);
+    if (button.dataset.likedButton) {
+      this.watchController.toggleLikedButton(button);
+      this.watchController.showLikedVideos();
     }
 
-    this.watchController.showLikedVideos();
-  }
-
-  onClickWatchButton(e) {
-    const videoId = e.target.dataset.watchedButton;
-    if (!videoId) {
-      return;
-    }
-
-    const targetClassList = e.target.classList;
-    if (targetClassList.contains(DOM_CONSTANTS.CLASS_NAME.OPACITY_HOVER)) {
-      this.watchController.watchVideo(videoId);
-      targetClassList.remove(DOM_CONSTANTS.CLASS_NAME.OPACITY_HOVER);
-    } else {
-      this.watchController.clearWatchedVideoLog(videoId);
-      targetClassList.add(DOM_CONSTANTS.CLASS_NAME.OPACITY_HOVER);
+    if (button.dataset.deleteButton) {
+      this.watchController.deleteVideo(button.dataset.deleteButton);
+      this.watchController.showLikedVideos();
     }
   }
 }
