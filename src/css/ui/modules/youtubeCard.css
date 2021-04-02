@@ -1,6 +1,6 @@
 .video-wrapper {
   display: grid;
-  grid-template-columns: repeat(auto-fill, 236px);
+  grid-template-columns: repeat(4, 236px);
   grid-row-gap: 0px;
   grid-column-gap: 4px;
   justify-content: center;
@@ -71,25 +71,25 @@
   top: 100%;
 }
 
-@media (min-width: 300px) {
+@media (min-width: 400px) {
   .video-wrapper {
     grid-template-columns: repeat(1, 236px);
   }
 }
 
-@media (min-width: 500px) {
+@media (min-width: 600px) {
   .video-wrapper {
     grid-template-columns: repeat(2, 236px);
   }
 }
 
-@media (min-width: 768px) {
+@media (min-width: 960px) {
   .video-wrapper {
     grid-template-columns: repeat(3, 236px);
   }
 }
 
-@media (min-width: 992px) {
+@media (min-width: 1280px) {
   .video-wrapper {
     grid-template-columns: repeat(4, 236px);
   }
