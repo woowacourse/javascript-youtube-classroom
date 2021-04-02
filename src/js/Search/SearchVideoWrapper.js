@@ -133,11 +133,9 @@ export default class SearchVideoWrapper {
   handlePageScroll() {
     if (this.throttle) return;
 
-    if (
-      this.$searchVideoWrapper.scrollTop +
-        this.$searchVideoWrapper.clientHeight <=
-      this.$searchVideoWrapper.scrollHeight * NUMBER.SCROLL_EVENT_THRESHOLD
-    ) {
+    const { scrollTop, clientHeight, scrollHeight } = this.$searchVideoWrapper;    
+
+    if (scrollTop + clientHeight <= scrollHeight * NUMBER.SCROLL_EVENT_THRESHOLD) {
       return;
     }
 
