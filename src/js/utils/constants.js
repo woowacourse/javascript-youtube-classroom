@@ -41,6 +41,7 @@ export const MENU = Object.freeze({
 export const CLASS_NAME = Object.freeze({
   MENU_SECTION: "menu-section",
   MENU_BTN: "menu-btn",
+  SEARCH_BTN: "search-btn",
   WATCH_LATER_BTN: "menu-section__watch-later-btn",
   WATCHED_BTN: "menu-section__watched-btn",
   LIKED_BTN: "menu-section__liked-btn",
