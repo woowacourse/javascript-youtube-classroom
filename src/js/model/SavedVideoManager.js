@@ -4,34 +4,34 @@ import { STORAGE } from "../utils/constants.js";
 class SavedVideoManager {
   constructor() {
     this.subscribers = [];
-    this.savedVideos = getDataFromLocalStorage(STORAGE.SAVED_VIDEOS, []);
-    this.likedVideos = getDataFromLocalStorage(STORAGE.LIKED_VIDEOS, []);
+    this._savedVideos = getDataFromLocalStorage(STORAGE.SAVED_VIDEOS, []);
+    this._likedVideos = getDataFromLocalStorage(STORAGE.LIKED_VIDEOS, []);
   }
 
   subscribe(subscriber) {
     this.subscribers.push(subscriber);
   }
 
-  getSavedVideos() {
-    return this.savedVideos;
+  get savedVideos() {
+    return this._savedVideos;
   }
 
-  getLikedVideos() {
-    return this.likedVideos;
+  get likedVideos() {
+    return this._likedVideos;
   }
 
   _publish() {
     this.subscribers.forEach(subscriber => {
-      subscriber({ savedVideos: this.getSavedVideos() });
+      subscriber({ savedVideos: this.savedVideos });
     });
   }
 
   _setState({ savedVideos, likedVideos }) {
-    this.savedVideos = savedVideos ?? this.savedVideos;
-    this.likedVideos = likedVideos ?? this.likedVideos;
+    this._savedVideos = savedVideos ?? this._savedVideos;
+    this._likedVideos = likedVideos ?? this._likedVideos;
 
-    setDataToLocalStorage(STORAGE.SAVED_VIDEOS, this.savedVideos);
-    setDataToLocalStorage(STORAGE.LIKED_VIDEOS, this.likedVideos);
+    setDataToLocalStorage(STORAGE.SAVED_VIDEOS, this._savedVideos);
+    setDataToLocalStorage(STORAGE.LIKED_VIDEOS, this._likedVideos);
     this._publish();
   }
 }

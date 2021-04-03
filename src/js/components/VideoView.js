@@ -25,8 +25,8 @@ class VideoView {
   }
 
   _initState() {
-    this.savedVideos = savedVideoManager.getSavedVideos();
-    this.likedVideos = savedVideoManager.getLikedVideos();
+    this.savedVideos = savedVideoManager.savedVideos;
+    this.likedVideos = savedVideoManager.likedVideos;
     this.clickedMenu = MENU.WATCH_LATER;
 
     this._render();

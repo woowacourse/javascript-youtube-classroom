@@ -31,7 +31,7 @@ class SearchModal {
     this.keyword = "";
     this.keywordHistory = [];
     this.videos = [];
-    this.savedVideos = savedVideoManager.getSavedVideos();
+    this.savedVideos = savedVideoManager.savedVideos;
     this.nextPageToken = "";
   }
 
