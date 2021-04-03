@@ -1,4 +1,4 @@
-import { $, $$, popMessage } from "../utils/dom.js";
+import { $, $$, showSnackbar } from "../utils/dom.js";
 import {
   MENU,
   STANDARD_NUMS,
@@ -245,7 +245,7 @@ class SearchModal {
     savedVideoManager._setState({ savedVideos });
     $saveBtn.classList.add("hidden");
 
-    popMessage(this.$snackBar, SNACKBAR_MESSAGE.SAVE);
+    showSnackbar(this.$snackBar, SNACKBAR_MESSAGE.SAVE);
   }
 
   _handleSearchClickedHistory(keyword) {

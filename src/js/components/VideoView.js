@@ -1,4 +1,4 @@
-import { $, popMessage } from "../utils/dom.js";
+import { $, showSnackbar } from "../utils/dom.js";
 import {
   MENU,
   SECTION,
@@ -71,7 +71,7 @@ class VideoView {
     savedVideoManager._setState({ savedVideos });
 
     const message = SNACKBAR_MESSAGE.MOVE(this.clickedMenu === MENU.WATCH_LATER ? "본" : "볼");
-    popMessage(this.$snackbar, message);
+    showSnackbar(this.$snackbar, message);
   }
 
   _handleCheckLiked(e) {
@@ -88,7 +88,7 @@ class VideoView {
     const isLiked = e.target
       .closest(`.${CLASS_NAME.LIKED_CHECK}`)
       .classList.contains("opacity-hover");
-    popMessage(this.$snackbar, isLiked ? SNACKBAR_MESSAGE.LIKE : SNACKBAR_MESSAGE.UNLIKE);
+    showSnackbar(this.$snackbar, isLiked ? SNACKBAR_MESSAGE.LIKE : SNACKBAR_MESSAGE.UNLIKE);
   }
 
   _handleRemoveSaved(e) {
@@ -97,7 +97,7 @@ class VideoView {
       const savedVideos = this.savedVideos.filter(video => video.videoId !== removeVideoId);
 
       savedVideoManager._setState({ savedVideos });
-      popMessage(this.$snackbar, SNACKBAR_MESSAGE.DELETE);
+      showSnackbar(this.$snackbar, SNACKBAR_MESSAGE.DELETE);
     }
   }
 
