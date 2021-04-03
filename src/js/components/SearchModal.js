@@ -11,8 +11,6 @@ import API from "../utils/api.js";
 import { createVideoTemplate } from "../utils/templates.js";
 import SavedVideoManager from "../model/SavedVideoManager.js";
 
-// dummy API Response 사용할 경우
-// import { dummySearchedData } from "../data/dummy.js";
 class SearchModal {
   constructor(props) {
     this.props = props;
@@ -164,8 +162,6 @@ class SearchModal {
       this.$scrollArea.scrollTo({ top: 0 });
       this._showLoadingAnimation();
 
-      // dummy API Response 사용할 경우
-      // const { items, nextPageToken } = dummySearchedData;
       const { items, nextPageToken } = await API.searchVideo(keyword);
 
       const videos = items.map(
