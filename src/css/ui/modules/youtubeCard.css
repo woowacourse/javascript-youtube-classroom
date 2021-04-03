@@ -109,3 +109,21 @@
     background-position: 320px;
   }
 }
+
+@media (max-width: 992px) {
+  .video-wrapper {
+    grid-template-columns: repeat(3, var(--clip-width));
+  }
+}
+
+@media (max-width: 768px) {
+  .video-wrapper {
+    grid-template-columns: repeat(2, var(--clip-width));
+  }
+}
+
+@media (max-width: 576px) {
+  .video-wrapper {
+    grid-template-columns: repeat(1, var(--clip-width));
+  }
+}
