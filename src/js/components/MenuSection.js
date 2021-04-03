@@ -29,7 +29,7 @@ class MenuSection {
   _bindEvent() {
     this.$target.addEventListener("click", e => {
       if (
-        !e.target.classList.contains(CLASS_NAME.MENU_BTN) &&
+        !e.target.classList.contains(CLASS_NAME.MENU_TOGGLE_BTN) &&
         !e.target.classList.contains(CLASS_NAME.SEARCH_BTN)
       )
         return;
