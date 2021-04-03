@@ -17,6 +17,13 @@ class VideoView {
     this._initSubscription();
   }
 
+  setState({ savedVideos, clickedMenu }) {
+    this.savedVideos = savedVideos ?? this.savedVideos;
+    this.clickedMenu = clickedMenu ?? this.clickedMenu;
+
+    this._render();
+  }
+
   _initState() {
     this.savedVideos = savedVideoManager.getSavedVideos();
     this.likedVideos = savedVideoManager.getLikedVideos();
@@ -27,13 +34,6 @@ class VideoView {
 
   _initSubscription() {
     savedVideoManager.subscribe(this.setState.bind(this));
-  }
-
-  setState({ savedVideos, clickedMenu }) {
-    this.savedVideos = savedVideos ?? this.savedVideos;
-    this.clickedMenu = clickedMenu ?? this.clickedMenu;
-
-    this._render();
   }
 
   _selectDOM() {

@@ -12,6 +12,14 @@ class SavedVideoManager {
     this.subscribers.push(subscriber);
   }
 
+  getSavedVideos() {
+    return this.savedVideos;
+  }
+
+  getLikedVideos() {
+    return this.likedVideos;
+  }
+
   _publish() {
     this.subscribers.forEach(subscriber => {
       subscriber({ savedVideos: this.getSavedVideos() });
@@ -25,14 +33,6 @@ class SavedVideoManager {
     setDataToLocalStorage(STORAGE.SAVED_VIDEOS, this.savedVideos);
     setDataToLocalStorage(STORAGE.LIKED_VIDEOS, this.likedVideos);
     this._publish();
-  }
-
-  getSavedVideos() {
-    return this.savedVideos;
-  }
-
-  getLikedVideos() {
-    return this.likedVideos;
   }
 }
 

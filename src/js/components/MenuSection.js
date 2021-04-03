@@ -8,14 +8,14 @@ class MenuSection {
     this._bindEvent();
   }
 
-  _initState() {
-    this.clickedMenu = MENU.WATCH_LATER;
-  }
-
   setState({ clickedMenu }) {
     this.clickedMenu = clickedMenu ?? this.clickedMenu;
 
     this._render();
+  }
+
+  _initState() {
+    this.clickedMenu = MENU.WATCH_LATER;
   }
 
   _selectDOM() {

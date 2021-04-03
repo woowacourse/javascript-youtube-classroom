@@ -23,6 +23,10 @@ class SearchModal {
     this._initSubscription();
   }
 
+  showModal() {
+    this.$target.classList.add("open");
+  }
+
   _initState() {
     this.keyword = "";
     this.keywordHistory = [];
@@ -276,10 +280,6 @@ class SearchModal {
 
   _renderSavedCount() {
     this.$savedVideoCount.textContent = `저장된 영상 갯수: ${this.savedVideos.length}/${STANDARD_NUMS.MAX_SAVE_VIDEO_COUNT}개`;
-  }
-
-  showModal() {
-    this.$target.classList.add("open");
   }
 
   _hideModal() {
