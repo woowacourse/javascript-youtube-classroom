@@ -7,10 +7,11 @@ import {
   CLASS_NAME,
 } from "../utils/constants.js";
 import { createVideoTemplate } from "../utils/templates.js";
-import savedVideoManager from "../model/SavedVideoManager.js";
+import SavedVideoManager from "../model/SavedVideoManager.js";
 
 class VideoView {
   constructor() {
+    this.savedVideoManager = new SavedVideoManager();
     this._selectDOM();
     this._initState();
     this._bindEvent();
@@ -25,15 +26,15 @@ class VideoView {
   }
 
   _initState() {
-    this.savedVideos = savedVideoManager.savedVideos;
-    this.likedVideos = savedVideoManager.likedVideos;
+    this.savedVideos = this.savedVideoManager.savedVideos;
+    this.likedVideos = this.savedVideoManager.likedVideos;
     this.clickedMenu = MENU.WATCH_LATER;
 
     this._render();
   }
 
   _initSubscription() {
-    savedVideoManager.subscribe(this.setState.bind(this));
+    this.savedVideoManager.subscribe(this.setState.bind(this));
   }
 
   _selectDOM() {
@@ -68,7 +69,7 @@ class VideoView {
       return video;
     });
 
-    savedVideoManager._setState({ savedVideos });
+    this.savedVideoManager._setState({ savedVideos });
 
     const message = SNACKBAR_MESSAGE.MOVE(this.clickedMenu === MENU.WATCH_LATER ? "본" : "볼");
     showSnackbar(this.$snackbar, message);
@@ -83,7 +84,7 @@ class VideoView {
 
       return video;
     });
-    savedVideoManager._setState({ likedVideos });
+    this.savedVideoManager._setState({ likedVideos });
 
     const isLiked = e.target
       .closest(`.${CLASS_NAME.LIKED_CHECK}`)
@@ -97,7 +98,7 @@ class VideoView {
       const removeVideoId = e.target.closest(`.${CLASS_NAME.CLIP_ACTIONS}`).dataset.videoId;
       const savedVideos = this.savedVideos.filter(video => video.videoId !== removeVideoId);
 
-      savedVideoManager._setState({ savedVideos });
+      this.savedVideoManager._setState({ savedVideos });
       showSnackbar(this.$snackbar, SNACKBAR_MESSAGE.DELETE);
     }
   }

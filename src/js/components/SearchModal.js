@@ -9,13 +9,14 @@ import {
 } from "../utils/constants.js";
 import API from "../utils/api.js";
 import { createVideoTemplate } from "../utils/templates.js";
-import savedVideoManager from "../model/SavedVideoManager.js";
+import SavedVideoManager from "../model/SavedVideoManager.js";
 
 // dummy API Response 사용할 경우
 // import { dummySearchedData } from "../data/dummy.js";
 class SearchModal {
   constructor(props) {
     this.props = props;
+    this.savedVideoManager = new SavedVideoManager();
     this._initState();
     this._selectDOM();
     this._bindEvent();
@@ -31,7 +32,7 @@ class SearchModal {
     this.keyword = "";
     this.keywordHistory = [];
     this.videos = [];
-    this.savedVideos = savedVideoManager.savedVideos;
+    this.savedVideos = this.savedVideoManager.savedVideos;
     this.nextPageToken = "";
   }
 
@@ -89,8 +90,8 @@ class SearchModal {
   }
 
   _initSubscription() {
-    savedVideoManager.subscribe(this._setSaveVideosState.bind(this));
-    savedVideoManager.subscribe(this._updateIsSavedOfVideos.bind(this));
+    this.savedVideoManager.subscribe(this._setSaveVideosState.bind(this));
+    this.savedVideoManager.subscribe(this._updateIsSavedOfVideos.bind(this));
   }
 
   _updateIsSavedOfVideos({ savedVideos }) {
@@ -242,7 +243,7 @@ class SearchModal {
       isLiked: false,
     };
     const savedVideos = [...this.savedVideos, newSavedVideo];
-    savedVideoManager._setState({ savedVideos });
+    this.savedVideoManager._setState({ savedVideos });
     $saveBtn.classList.add("hidden");
 
     showSnackbar(this.$snackBar, SNACKBAR_MESSAGE.SAVE);

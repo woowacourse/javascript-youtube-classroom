@@ -2,10 +2,16 @@ import { getDataFromLocalStorage, setDataToLocalStorage } from "../utils/localSt
 import { STORAGE } from "../utils/constants.js";
 
 class SavedVideoManager {
+  static instance;
+
   constructor() {
+    if (SavedVideoManager.instance) return SavedVideoManager.instance;
+
     this.subscribers = [];
     this._savedVideos = getDataFromLocalStorage(STORAGE.SAVED_VIDEOS, []);
     this._likedVideos = getDataFromLocalStorage(STORAGE.LIKED_VIDEOS, []);
+
+    SavedVideoManager.instance = this;
   }
 
   subscribe(subscriber) {
@@ -36,4 +42,4 @@ class SavedVideoManager {
   }
 }
 
-export default new SavedVideoManager();
+export default SavedVideoManager;
