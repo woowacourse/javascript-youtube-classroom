@@ -88,6 +88,7 @@ class VideoView {
     const isLiked = e.target
       .closest(`.${CLASS_NAME.LIKED_CHECK}`)
       .classList.contains("opacity-hover");
+
     showSnackbar(this.$snackbar, isLiked ? SNACKBAR_MESSAGE.LIKE : SNACKBAR_MESSAGE.UNLIKE);
   }
 
