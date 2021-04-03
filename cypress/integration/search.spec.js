@@ -1,8 +1,6 @@
-import {
-  CLASSNAME,
-  NUMBER,
-  REGULAR_EXPRESSION,
-} from "../../src/js/constants/index.js";
+import CLASSNAME from "../../src/js/constants/classname.js";
+import NUMBER from "../../src/js/constants/number.js";
+import REGULAR_EXPRESSION from "../../src/js/constants/regularExpression.js";
 import { REDIRECT_SERVER_HOST } from "../../src/js/utils/API.js";
 
 describe("유투브 검색 API를 이용하여 영상들을 검색할 수 있다.", () => {
