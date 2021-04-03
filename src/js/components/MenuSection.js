@@ -1,5 +1,5 @@
 import { $ } from "../utils/dom.js";
-import { CLASS_NAME, MENU } from "../utils/constants.js";
+import { CLASS_NAME, MENU, COLOR } from "../utils/constants.js";
 
 class MenuSection {
   constructor(props) {
@@ -53,10 +53,10 @@ class MenuSection {
   }
 
   _changeMenuBtnColor(target) {
-    [this.$watchLaterBtn, this.$watchedBtn].forEach($btn => $btn.classList.remove("bg-cyan-100"));
+    [this.$watchLaterBtn, this.$watchedBtn].forEach($btn => $btn.classList.remove(COLOR.CLICKED));
 
     if (!target.classList.contains(CLASS_NAME.VIDEO_SEARCH_BTN)) {
-      target.classList.add("bg-cyan-100");
+      target.classList.add(COLOR.CLICKED);
     }
   }
 
@@ -86,9 +86,9 @@ class MenuSection {
       [MENU.LIKED]: this.$likedBtn,
     };
 
-    [this.$watchLaterBtn, this.$watchedBtn].forEach($btn => $btn.classList.remove("bg-cyan-100"));
-    [this.$watchLaterBtn, this.$likedBtn].forEach($btn => $btn.classList.remove("bg-cyan-100"));
-    mappingMenu[this.clickedMenu].classList.add("bg-cyan-100");
+    [this.$watchLaterBtn, this.$watchedBtn].forEach($btn => $btn.classList.remove(COLOR.CLICKED));
+    [this.$watchLaterBtn, this.$likedBtn].forEach($btn => $btn.classList.remove(COLOR.CLICKED));
+    mappingMenu[this.clickedMenu].classList.add(COLOR.CLICKED);
   }
 }
 

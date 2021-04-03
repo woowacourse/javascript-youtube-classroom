@@ -38,6 +38,10 @@ export const MENU = Object.freeze({
   LIKED: "liked",
 });
 
+export const COLOR = Object.freeze({
+  CLICKED: "bg-cyan-100",
+});
+
 export const CLASS_NAME = Object.freeze({
   MENU_SECTION: "menu-section",
   MENU_TOGGLE_BTN: "menu-toggle-btn",

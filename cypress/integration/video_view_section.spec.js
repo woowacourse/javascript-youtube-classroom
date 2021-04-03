@@ -1,6 +1,6 @@
 /// <reference types="cypress" />
 import { setDataToLocalStorage } from "../../src/js/utils/localStorage.js";
-import { STORAGE, CLASS_NAME, STANDARD_NUMS } from "../../src/js/utils/constants.js";
+import { STORAGE, CLASS_NAME, STANDARD_NUMS, COLOR } from "../../src/js/utils/constants.js";
 
 context("저장된 비디오 관리", () => {
   beforeEach(() => {
@@ -74,7 +74,7 @@ context("저장된 비디오 관리", () => {
 
     cy.get(`.${CLASS_NAME.VIDEO_SEARCH_BTN}`).click();
     cy.get(`.${CLASS_NAME.MODAL_CLOSE}`).click();
-    cy.get(`.${CLASS_NAME.WATCH_LATER_BTN}`).should("have.class", "bg-cyan-100");
+    cy.get(`.${CLASS_NAME.WATCH_LATER_BTN}`).should("have.class", COLOR.CLICKED);
     cy.get(`.${CLASS_NAME.CLIP_ACTIONS}`)
       .eq(0)
       .find(`.${CLASS_NAME.WATCHED_CHECK}`)
