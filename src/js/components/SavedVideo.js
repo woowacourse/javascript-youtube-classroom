@@ -53,8 +53,11 @@ export class SavedVideo {
     }
 
     if (target.classList.contains('js-check-button')) {
-      target.closest('article').remove();
-      this.savedVideoManager.watchVideo(target.closest('ul').dataset.videoId);
+      if (this.filter === FILTER.WATCH) {
+        $(`[data-video-id=${target.dataset.videoId}]:not(button)`).remove();
+      }
+      target.classList.toggle('opacity-hover');
+      this.savedVideoManager.watchVideo(target.dataset.videoId);
       snackbar.show(
         this.filter === FILTER.WATCH ? SNACKBAR_MESSAGE.MAKE_WATCHED_VIDEO : SNACKBAR_MESSAGE.MAKE_WATCH_VIDEO
       );
@@ -64,10 +67,10 @@ export class SavedVideo {
 
     if (target.classList.contains('js-like-button')) {
       if (this.filter === FILTER.LIKED) {
-        target.closest('article').remove();
+        $(`[data-video-id=${target.dataset.videoId}]:not(button)`).remove();
       }
       target.classList.toggle('opacity-hover');
-      this.savedVideoManager.likeVideo(target.closest('ul').dataset.videoId);
+      this.savedVideoManager.likeVideo(target.dataset.videoId);
       snackbar.show(this.FILTER === FILTER.LIKED ? SNACKBAR_MESSAGE.UNLIKE_VIDEO : SNACKBAR_MESSAGE.LIKE_VIDEO);
 
       return;
@@ -75,8 +78,8 @@ export class SavedVideo {
 
     if (target.classList.contains('js-delete-button')) {
       customConfirm(CONFIRM_MESSAGE.DELETE_VIDEO, () => {
-        target.closest('article').remove();
-        this.savedVideoManager.deleteVideo(target.closest('ul').dataset.videoId);
+        $(`[data-video-id=${target.dataset.videoId}]:not(button)`).remove();
+        this.savedVideoManager.deleteVideo(target.dataset.videoId);
         snackbar.show(SNACKBAR_MESSAGE.DELETE_SUCCESS);
       });
     }
@@ -109,18 +112,22 @@ export class SavedVideo {
   getButtonTemplate(videoId, videoState) {
     console.log(videoState);
     return `
-      <ul class="list-style-none p-0 mt-3 mb-6 d-flex" data-video-id="${videoId}">
+      <ul class="list-style-none p-0 mt-3 mb-6 d-flex">
         <li class="mr-2">
-          <button type="button" class="js-check-button emoji-btn scale-hover ${
-            videoState.isWatched ? '' : 'opacity-hover'
-          }">
+          <button data-video-id="${videoId}" type="button" class="js-check-button emoji-btn scale-hover ${
+      videoState.isWatched ? '' : 'opacity-hover'
+    }">
             ✅
           </button>
         </li>
-        <li class="mr-2"><button type="button" class="js-like-button emoji-btn bg-transparent scale-hover ${
-          videoState.isLiked ? '' : 'opacity-hover'
-        }">👍</button></li>
-        <li class="mr-2"><button type="button" class="js-delete-button emoji-btn bg-transparent scale-hover opacity-hover">🗑️</button></li>
+        <li class="mr-2">
+          <button data-video-id="${videoId}" type="button" class="js-like-button emoji-btn bg-transparent scale-hover ${
+      videoState.isLiked ? '' : 'opacity-hover'
+    }">👍</button>
+        </li>
+        <li class="mr-2">
+          <button data-video-id="${videoId}" type="button" class="js-delete-button emoji-btn bg-transparent scale-hover opacity-hover">🗑️</button>
+        </li>
       </ul>
     `;
   }
