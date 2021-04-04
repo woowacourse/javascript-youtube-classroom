@@ -5,6 +5,7 @@ const CLASSNAME = Object.freeze({
   HISTORY_TAB: "js-history-tab",
   HISTORY_CONTAINER: "js-history-container",
   HISTORY_VIDEO_WRAPPER: "js-history-video-wrapper",
+  LIKE_TAB: "js-like-tab",
   SEARCH_TAB: "js-search-tab",
   SEARCH_CONTAINER: "js-search-container",
   SEARCH_VIDEO_WRAPPER: "js-search-video-wrapper",
@@ -40,6 +41,8 @@ const CLASSNAME = Object.freeze({
   SNACKBAR: "snackbar",
   MODAL_SNACKBAR: "js-modal-snackbar",
   SHOW: "show",
+  LIKE_MODE: "like-mode",
+  LIKE_VIDEO: "like-video",
 });
 
 export default CLASSNAME;

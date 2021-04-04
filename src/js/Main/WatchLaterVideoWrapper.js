@@ -66,6 +66,11 @@ export default class WatchLaterVideoWrapper {
       return;
     }
 
+    if ($videoWrapper.classList.contains(CLASSNAME.LIKE_ICON)) {
+      this.handleLikeIconClick(videoId);
+      return;
+    }
+
     if ($videoWrapper.classList.contains(CLASSNAME.DELETE_ICON)) {
       this.handleDeleteIconClick(videoId);
     }
@@ -74,6 +79,17 @@ export default class WatchLaterVideoWrapper {
   handleWatchedIconClick(videoId) {
     this.moveVideo({ videoId });
     showSnackbar(SNACKBAR_TEXT.MOVED_TO_HISTORY_VIDEO);
+  }
+
+  handleLikeIconClick(videoId) {
+    const $video = this.watchLaterVideosMap.get(videoId);
+
+    $.toggleClass($video, "like");
+    showSnackbar(
+      $.containsClass($video, "like")
+        ? SNACKBAR_TEXT.LIKE_VIDEO_ADDED
+        : SNACKBAR_TEXT.LIKE_VIDEO_REMOVED
+    );
   }
 
   handleDeleteIconClick(videoId) {

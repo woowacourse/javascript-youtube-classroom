@@ -10,6 +10,10 @@
   justify-content: center;
 }
 
+.video-wrapper.like-mode .clip:not(.like) {
+  display: none;
+}
+
 .modal-inner .video-wrapper {
   overflow-y: auto;
   height: 65vh;
@@ -69,6 +73,12 @@
   display: inline-block;
   margin: 0;
   color: #606060;
+}
+
+.clip.like .js-like-icon {
+  opacity: 1;
+  font-weight: 800;
+  color: darkblue;
 }
 
 .skeleton {

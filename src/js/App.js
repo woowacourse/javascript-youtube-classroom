@@ -15,12 +15,17 @@ export default class App {
     this.watchLaterContainer = new WatchLaterContainer();
     this.historyContainer = new HistoryContainer();
     this.searchContainer = new SearchContainer();
+
+    this.likeMode = false;
   }
 
   selectHTMLElements() {
     this.$watchLaterTabButton = $(`.${CLASSNAME.WATCH_LATER_TAB}`);
     this.$historyTabButton = $(`.${CLASSNAME.HISTORY_TAB}`);
     this.$searchTabButton = $(`.${CLASSNAME.SEARCH_TAB}`);
+    this.$likeTabButton = $(`.${CLASSNAME.LIKE_TAB}`);
+    this.$watchLaterVideoWrapper = $(`.${CLASSNAME.WATCH_LATER_VIDEO_WRAPPER}`);
+    this.$historyVideoWrapper = $(`.${CLASSNAME.HISTORY_VIDEO_WRAPPER}`);
   }
 
   addEventListeners() {
@@ -37,6 +42,31 @@ export default class App {
     this.$searchTabButton.addEventListener(
       "click",
       this.searchContainer.open.bind(this.searchContainer)
+    );
+
+    this.$likeTabButton.addEventListener(
+      "click",
+      this.toggleLikeMode.bind(this)
+    );
+  }
+
+  toggleLikeMode() {
+    this.likeMode = !this.likeMode;
+
+    this.$likeTabButton.innerText = this.likeMode
+      ? "전체\n 비디오 보기"
+      : "'👍 좋아요'\n 비디오만 보기";
+
+    $.toggleClass(
+      this.$watchLaterVideoWrapper,
+      CLASSNAME.LIKE_MODE,
+      this.likeMode
+    );
+
+    $.toggleClass(
+      this.$historyVideoWrapper,
+      CLASSNAME.LIKE_MODE,
+      this.likeMode
     );
   }
 
