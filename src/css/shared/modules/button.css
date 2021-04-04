@@ -18,7 +18,7 @@
   border-color: rgb(118, 118, 118);
 }
 
-.btn.absolute {
+.js-search-tab {
   top: 2.5rem;
   right: 0;
   min-width: 24px;
@@ -26,6 +26,14 @@
   font-weight: 600;
 }
 
-.btn.absolute:hover {
+.js-search-tab:hover {
   background-color: rgba(176, 224, 230, 1);
+}
+
+.js-like-tab {
+  top: 0;
+  right: 0;
+  width: 110px;
+  height: 50px;
+  font-weight: 600;
 }

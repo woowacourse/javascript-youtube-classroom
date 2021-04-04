@@ -12,7 +12,7 @@
         <div class="w-100">
           <header class="pt-5 pb-10 sticky">
             <h2 class="text-center font-bold">👩🏻‍💻 나만의 유튜브 강의실 👨🏻‍💻</h2>
-            <nav class="d-flex justify-center">
+            <nav class="d-flex justify-center relative">
               <button
                 class="js-watch-later-tab bg-cyan-100 btn d-flex items-center mx-1"
               >
@@ -23,8 +23,11 @@
                 <span class="icon move-to-watch-later-icon mr-1"></span>
                 본 영상
               </button>
-              <button class="js-like-tab btn d-flex items-center mx-1">
-                '👍 좋아요' 비디오만 보기
+              <button
+                class="js-like-tab btn d-flex justify-center items-center mx-1 absolute"
+              >
+                '👍 좋아요'<br />
+                비디오만 보기
               </button>
             </nav>
             <button class="js-search-tab btn mx-1 absolute">🔍</button>
