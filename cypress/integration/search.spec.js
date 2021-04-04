@@ -123,7 +123,8 @@ describe("유투브 검색 API를 이용하여 영상들을 검색할 수 있다
         .should("have.length", NUMBER.MAX_RESULTS_COUNT);
 
       cy.get(`.${CLASSNAME.SEARCH_VIDEO_WRAPPER}`)
-        .children("article.clip:last-child")
+        .children("article.clip")
+        .last()
         .as("lastVideo")
         .scrollIntoView();
       cy.wait("@searchFromScroll");
