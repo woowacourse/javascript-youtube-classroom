@@ -138,7 +138,9 @@ export default class WatchLaterVideoWrapper {
       return;
     }
 
-    this.watchLaterVideoItemsMap.forEach(this.renderSingleVideo.bind(this));
+    this.watchLaterVideoItemsMap.forEach((item, videoId) =>
+      this.renderSingleVideo({ videoId, item })
+    );
   }
 
   renderSingleVideo({ videoId, item }) {

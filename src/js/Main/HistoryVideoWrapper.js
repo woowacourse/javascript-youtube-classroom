@@ -135,7 +135,9 @@ export default class HistoryVideoWrapper {
       return;
     }
 
-    this.historyVideoItemsMap.forEach(this.renderSingleVideo.bind(this));
+    this.watchLaterVideoItemsMap.forEach((item, videoId) =>
+      this.renderSingleVideo({ videoId, item })
+    );
   }
 
   renderSingleVideo({ videoId, item }) {
