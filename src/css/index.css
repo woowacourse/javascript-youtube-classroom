@@ -21,6 +21,10 @@ a {
   text-decoration: none;
 }
 
+a:visited > h2 {
+  color: black;
+}
+
 header {
   top: 0;
   z-index: 1;
