@@ -102,7 +102,7 @@ export class SavedVideo {
     }
   }
 
-  makeTemplate(videoData, videoState) {
+  makeTemplate(videoData, videoState = { isWatched: false, isLiked: false }) {
     return getVideoTemplate({
       videoData,
       buttonTemplate: this.getButtonTemplate(videoData.id, videoState),
@@ -110,7 +110,6 @@ export class SavedVideo {
   }
 
   getButtonTemplate(videoId, videoState) {
-    console.log(videoState);
     return `
       <ul class="list-style-none p-0 mt-3 mb-6 d-flex">
         <li class="mr-2">
@@ -132,10 +131,7 @@ export class SavedVideo {
     `;
   }
 
-  async renderTotalVideo() {
-    this.$savedVideoWrapper.innerHTML = '';
-
-    const savedVideos = this.savedVideoManager.getSavedVideos();
+  getFilteredVideoIdList(savedVideos) {
     const filteredVideoIdList = this.savedVideoManager.getSortedSavedVideoIdList().filter(id => {
       if (this.filter === FILTER.LIKED) {
         return savedVideos[id].isLiked;
@@ -149,6 +145,15 @@ export class SavedVideo {
         return savedVideos[id].isWatched;
       }
     });
+
+    return filteredVideoIdList;
+  }
+
+  async renderTotalVideo() {
+    this.$savedVideoWrapper.innerHTML = '';
+
+    const savedVideos = this.savedVideoManager.getSavedVideos();
+    const filteredVideoIdList = this.getFilteredVideoIdList(savedVideos);
 
     if (filteredVideoIdList.length === 0) {
       showElement(this.$emptyImage);
@@ -167,7 +172,7 @@ export class SavedVideo {
   }
 
   async renderNewVideo(videoId) {
-    if (this.isChecked) {
+    if (this.filter !== FILTER.WATCH) {
       return;
     }
 
@@ -180,9 +185,7 @@ export class SavedVideo {
 
   renderEmptyImage() {
     const savedVideos = this.savedVideoManager.getSavedVideos();
-    const filteredVideoIdList = this.savedVideoManager
-      .getSavedVideoIdList()
-      .filter(id => savedVideos[id].isChecked === this.isChecked);
+    const filteredVideoIdList = this.getFilteredVideoIdList(savedVideos);
 
     if (filteredVideoIdList.length === 0) {
       showElement(this.$emptyImage);
