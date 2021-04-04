@@ -24,7 +24,7 @@ export class SearchVideoResult {
     this.searchResultData = {};
 
     this.initEvent();
-    this.initIntersectionObeserver();
+    this.initIntersectionObserver();
   }
 
   initSubscription() {
@@ -36,7 +36,7 @@ export class SearchVideoResult {
     this.$wrapper.addEventListener('click', this.handleSaveVideo.bind(this));
   }
 
-  initIntersectionObeserver() {
+  initIntersectionObserver() {
     this.observer = new IntersectionObserver((entries, observer) => {
       entries.forEach(entry => {
         if (entry.isIntersecting) {
@@ -109,11 +109,11 @@ export class SearchVideoResult {
   makeTemplate(videoData) {
     return getVideoTemplate({
       videoData,
-      buttonTemplate: this.makeSaveButtonTemplete(videoData.id.videoId),
+      buttonTemplate: this.makeSaveButtonTemplate(videoData.id.videoId),
     });
   }
 
-  makeSaveButtonTemplete(videoId) {
+  makeSaveButtonTemplate(videoId) {
     return `
       <div class="mb-6 d-flex justify-end">
         <button type="button" class="js-clip-save-button btn" data-video-id="${videoId}" ${

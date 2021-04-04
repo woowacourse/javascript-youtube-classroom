@@ -5,7 +5,9 @@ export const SNACKBAR_MESSAGE = {
   DELETE_SUCCESS: '동영상을 성공적으로 삭제하였습니다.',
   SAVE_SUCCESS: '동영상을 성공적으로 저장하였습니다.',
   SAVE_FAILURE: '동영상을 저장하는데 실패하였습니다.',
-  CHECK_VIDEO_SUCCESS: '해당 영상은 "본 영상" 탭에서 확인할 수 있습니다.',
-  UNCHECK_VIDEO_SUCCESS: '해당 영상은 "볼 영상" 탭에서 확인할 수 있습니다.',
+  MAKE_WATCH_VIDEO: '해당 영상은 "본 영상" 탭에서 확인할 수 있습니다.',
+  MAKE_WATCHED_VIDEO: '해당 영상은 "볼 영상" 탭에서 확인할 수 있습니다.',
+  LIKE_VIDEO: '해당 영상은 "좋아요 영상" 탭에서 확인할 수 있습니다.',
+  UNLIKE_VIDEO: '해당 영상의 "좋아요"를 해제했습니다.',
   API_REQUEST_FAILURE: '유튜브에서 정보를 불러오는데 실패하였습니다.',
 };

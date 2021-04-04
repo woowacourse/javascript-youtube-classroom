@@ -41,10 +41,20 @@ export class SavedVideoManager {
     this.setState({
       key: SAVED_VIDEO_SUBSCRIBER_KEY.SAVE,
       videoId,
-      savedVideos: { ...this.savedVideos, [videoId]: { isChecked: false, savedDate: Date.now() } },
+      savedVideos: { ...this.savedVideos, [videoId]: { isWatched: false, isLiked: false, savedDate: Date.now() } },
     });
 
     return true;
+  }
+
+  likeVideo(videoId) {
+    const temp = { ...this.savedVideos };
+    temp[videoId].isLiked = !temp[videoId].isLiked;
+
+    this.setState({
+      key: SAVED_VIDEO_SUBSCRIBER_KEY.CHECK,
+      savedVideos: temp,
+    });
   }
 
   deleteVideo(videoId) {
@@ -57,9 +67,9 @@ export class SavedVideoManager {
     });
   }
 
-  checkVideo(videoId) {
+  watchVideo(videoId) {
     const temp = { ...this.savedVideos };
-    temp[videoId].isChecked = !temp[videoId].isChecked;
+    temp[videoId].isWatched = !temp[videoId].isWatched;
 
     this.setState({
       key: SAVED_VIDEO_SUBSCRIBER_KEY.CHECK,

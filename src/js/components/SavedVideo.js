@@ -1,5 +1,5 @@
 import { SAVED_VIDEO_SUBSCRIBER_KEY } from '../model/index.js';
-import { getVideoTemplate, SNACKBAR_MESSAGE, CONFIRM_MESSAGE } from '../constants/index.js';
+import { getVideoTemplate, SNACKBAR_MESSAGE, CONFIRM_MESSAGE, FILTER } from '../constants/index.js';
 import {
   getVideoByIdList,
   $,
@@ -12,11 +12,11 @@ import {
 } from '../util/index.js';
 
 export class SavedVideo {
-  constructor({ savedVideoManager, isChecked }) {
+  constructor({ savedVideoManager, filter }) {
     this.$savedVideoWrapper = $('.js-saved-video-wrapper');
     this.$emptyImage = $('.js-empty-image');
 
-    this.isChecked = isChecked;
+    this.filter = filter;
     this.savedVideoManager = savedVideoManager;
     this.initSubscription();
 
@@ -54,8 +54,23 @@ export class SavedVideo {
 
     if (target.classList.contains('js-check-button')) {
       target.closest('article').remove();
-      this.savedVideoManager.checkVideo(target.closest('ul').dataset.videoId);
-      snackbar.show(this.isChecked ? SNACKBAR_MESSAGE.UNCHECK_VIDEO_SUCCESS : SNACKBAR_MESSAGE.CHECK_VIDEO_SUCCESS);
+      this.savedVideoManager.watchVideo(target.closest('ul').dataset.videoId);
+      snackbar.show(
+        this.filter === FILTER.WATCH ? SNACKBAR_MESSAGE.MAKE_WATCHED_VIDEO : SNACKBAR_MESSAGE.MAKE_WATCH_VIDEO
+      );
+
+      return;
+    }
+
+    if (target.classList.contains('js-like-button')) {
+      if (this.filter === FILTER.LIKED) {
+        target.closest('article').remove();
+      }
+      target.classList.toggle('opacity-hover');
+      this.savedVideoManager.likeVideo(target.closest('ul').dataset.videoId);
+      snackbar.show(this.FILTER === FILTER.LIKED ? SNACKBAR_MESSAGE.UNLIKE_VIDEO : SNACKBAR_MESSAGE.LIKE_VIDEO);
+
+      return;
     }
 
     if (target.classList.contains('js-delete-button')) {
@@ -77,28 +92,34 @@ export class SavedVideo {
     }
   }
 
-  setState({ isChecked }) {
-    this.isChecked = isChecked ?? this.isChecked;
-
-    this.renderTotalVideo();
+  setState({ filter }) {
+    if (filter && this.filter !== filter) {
+      this.filter = filter;
+      this.renderTotalVideo();
+    }
   }
 
-  makeTemplate(videoData) {
+  makeTemplate(videoData, videoState) {
     return getVideoTemplate({
       videoData,
-      buttonTemplate: this.getButtonTemplate(videoData.id),
+      buttonTemplate: this.getButtonTemplate(videoData.id, videoState),
     });
   }
 
-  getButtonTemplate(videoId) {
+  getButtonTemplate(videoId, videoState) {
+    console.log(videoState);
     return `
       <ul class="list-style-none p-0 mt-3 mb-6 d-flex" data-video-id="${videoId}">
         <li class="mr-2">
-          <button type="button" class="js-check-button emoji-btn scale-hover ${this.isChecked ? '' : 'opacity-hover'}">
+          <button type="button" class="js-check-button emoji-btn scale-hover ${
+            videoState.isWatched ? '' : 'opacity-hover'
+          }">
             ✅
           </button>
         </li>
-        <li class="mr-2"><button type="button" class="js-like-button emoji-btn bg-transparent scale-hover opacity-hover">👍</button></li>
+        <li class="mr-2"><button type="button" class="js-like-button emoji-btn bg-transparent scale-hover ${
+          videoState.isLiked ? '' : 'opacity-hover'
+        }">👍</button></li>
         <li class="mr-2"><button type="button" class="js-delete-button emoji-btn bg-transparent scale-hover opacity-hover">🗑️</button></li>
       </ul>
     `;
@@ -108,9 +129,19 @@ export class SavedVideo {
     this.$savedVideoWrapper.innerHTML = '';
 
     const savedVideos = this.savedVideoManager.getSavedVideos();
-    const filteredVideoIdList = this.savedVideoManager
-      .getSortedSavedVideoIdList()
-      .filter(id => savedVideos[id].isChecked === this.isChecked);
+    const filteredVideoIdList = this.savedVideoManager.getSortedSavedVideoIdList().filter(id => {
+      if (this.filter === FILTER.LIKED) {
+        return savedVideos[id].isLiked;
+      }
+
+      if (this.filter === FILTER.WATCH) {
+        return !savedVideos[id].isWatched;
+      }
+
+      if (this.filter === FILTER.WATCHED) {
+        return savedVideos[id].isWatched;
+      }
+    });
 
     if (filteredVideoIdList.length === 0) {
       showElement(this.$emptyImage);
@@ -123,7 +154,9 @@ export class SavedVideo {
     const savedVideoData = await this.fetchSavedVideoData(filteredVideoIdList);
     removeSkeleton(this.$savedVideoWrapper);
 
-    this.$savedVideoWrapper.innerHTML = savedVideoData.items.map(item => this.makeTemplate(item)).join('');
+    this.$savedVideoWrapper.innerHTML = savedVideoData.items
+      .map(item => this.makeTemplate(item, savedVideos[item.id]))
+      .join('');
   }
 
   async renderNewVideo(videoId) {
