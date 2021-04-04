@@ -55,6 +55,7 @@ export const CLASS_NAME = Object.freeze({
   SEARCH_MODAL_INPUT: "search-modal__input",
   SEARCH_MODAL_BTN: `search-modal__btn`,
   SEARCH_MODAL_VIDEO_WRAPPER: "search-modal__video-wrapper",
+  SEARCH_MODAL_NO_RESULT_WRAPPER: "search-modal__no-result-wrapper",
   SCROLL_AREA: "search-modal__scroll-area",
   MORE_AREA: "search-modal__more-area",
   MODAL_CLOSE: "modal-close",

@@ -38,6 +38,7 @@ class SearchModal {
     this.$target = $(`.${CLASS_NAME.SEARCH_MODAL}`);
     this.$searchInput = $(`.${CLASS_NAME.SEARCH_MODAL_INPUT}`);
     this.$videoWrapper = $(`.${CLASS_NAME.SEARCH_MODAL_VIDEO_WRAPPER}`);
+    this.$noResultWrapper = $(`.${CLASS_NAME.SEARCH_MODAL_NO_RESULT_WRAPPER}`);
     this.$scrollArea = $(`.${CLASS_NAME.SCROLL_AREA}`);
     this.$moreArea = $(`.${CLASS_NAME.MORE_AREA}`);
     this.$savedVideoCount = $(`.${CLASS_NAME.SAVED_VIDEO_COUNT}`);
@@ -116,6 +117,7 @@ class SearchModal {
     this.videos = videos ?? this.videos;
     this.nextPageToken = nextPageToken ?? this.nextPageToken;
 
+    if (videos.length === 0) return;
     this._render();
   }
 
@@ -139,11 +141,18 @@ class SearchModal {
       <p class="line"></p>
     </div>`;
 
-    this.$videoWrapper.innerHTML = "";
-    this.$videoWrapper.insertAdjacentHTML(
-      "beforeend",
-      skeletonCardTemplate.repeat(STANDARD_NUMS.LOAD_CLIP_COUNT),
-    );
+    this.$videoWrapper.innerHTML = skeletonCardTemplate.repeat(STANDARD_NUMS.LOAD_CLIP_COUNT);
+  }
+
+  _showAdditionalLoadingAnimation() {
+    const skeletonCardTemplate = `
+    <div class="skeleton">
+      <div class="image"></div>
+      <p class="line"></p>
+      <p class="line"></p>
+    </div>`;
+
+    this.$videoWrapper.innerHTML += skeletonCardTemplate.repeat(STANDARD_NUMS.LOAD_CLIP_COUNT);
   }
 
   _hideLoadingAnimation() {
@@ -163,7 +172,6 @@ class SearchModal {
       this._showLoadingAnimation();
 
       const { items, nextPageToken } = await API.searchVideo(keyword);
-
       const videos = items.map(
         ({
           id: { videoId },
@@ -179,6 +187,10 @@ class SearchModal {
         }),
       );
 
+      if (videos.length === 0) {
+        this.$videoWrapper.innerHTML = "";
+      }
+
       const keywordHistory = [
         keyword,
         ...this.keywordHistory.filter(history => history !== keyword),
@@ -191,13 +203,13 @@ class SearchModal {
   }
 
   async _handleLoadMore() {
+    if (this.videos.length === 0) return;
     if (!this.$target.classList.contains("open")) return;
 
     try {
-      this._showLoadingAnimation();
+      this._showAdditionalLoadingAnimation();
 
       const { items, nextPageToken } = await API.searchVideo(this.keyword, this.nextPageToken);
-
       const nextVideos = items.map(
         ({
           id: { videoId },
@@ -239,9 +251,9 @@ class SearchModal {
       isLiked: false,
     };
     const savedVideos = [...this.savedVideos, newSavedVideo];
+
     this.savedVideoManager._setState({ savedVideos });
     $saveBtn.classList.add("hidden");
-
     showSnackbar(this.$snackBar, SNACKBAR_MESSAGE.SAVE);
   }
 
@@ -251,15 +263,20 @@ class SearchModal {
   }
 
   _render() {
-    this.$videoWrapper.insertAdjacentHTML(
-      "beforeend",
-      this.videos.length
-        ? this.videos
-            .filter(video => video.videoId)
-            .map(video => createVideoTemplate(video, SECTION.MODAL))
-            .join("")
-        : createNoSearchResultTemplate(),
-    );
+    if (this.videos.length === 0) {
+      this.$noResultWrapper.classList.remove("d-none");
+      this.$noResultWrapper.innerHTML = createNoSearchResultTemplate();
+    }
+
+    if (this.videos.length !== 0) {
+      this.$videoWrapper.insertAdjacentHTML(
+        "beforeend",
+        this.videos
+          .filter(video => video.videoId)
+          .map(video => createVideoTemplate(video, SECTION.MODAL))
+          .join(""),
+      );
+    }
 
     this._renderSavedCount();
     this.$keywordHistory.innerHTML = createKeywordHistoryTemplate(this.keywordHistory);
@@ -284,11 +301,12 @@ class SearchModal {
   }
 }
 
-const createNoSearchResultTemplate = () =>
-  `<div class='d-flex flex-col justify-center items-center no-search-result'>
+const createNoSearchResultTemplate = () => {
+  return `<div class='d-flex flex-col justify-center items-center no-search-result'>
     <img class='d-block no-result-image' src='src/images/status/not_found.png' alt='결과 없음'>
     <p>검색 결과가 존재하지 않습니다.</p>
   </div>`;
+};
 
 const createKeywordHistoryTemplate = keywords => `
   <span class="text-gray-700">최근 검색어: </span>

@@ -136,13 +136,11 @@ class VideoView {
 const createNoWatchLaterTemplate = () =>
   `<div class='d-flex flex-col justify-center items-center no-search-result'>
     <img class='d-block no-saved-video-image' src='src/images/status/no_watch_later_video.png' alt='결과 없음'>
-    <p>저장한 영상이 없어요 🥲</p>
   </div>`;
 
 const createNoLikedVideoTemplate = () =>
   `<div class='d-flex flex-col justify-center items-center no-search-result'>
     <img class='d-block no-liked-video-image' src='src/images/status/no_watch_later_video.png' alt='결과 없음'>
-    <p>좋아요 누른 영상이 없어요 🥲</p>
   </div>`;
 
 export default VideoView;
