@@ -3,8 +3,8 @@ import {
   CLASSNAME,
   SNACKBAR_TEXT,
 } from "../constants/index.js";
-import { messenger, MESSAGE } from "../messenger/index.js";
 import { $, showSnackbar } from "../utils/index.js";
+import { messenger, MESSAGE } from "../messenger/index.js";
 import { WATCH_LATER_VIDEO_TEMPLATE, renderMainVideo } from "../Video/index.js";
 
 export default class WatchLaterVideoWrapper {
@@ -24,6 +24,24 @@ export default class WatchLaterVideoWrapper {
     );
 
     this.watchLaterVideosMap = new Map();
+
+    this.observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (!entry.isIntersecting) {
+          return;
+        }
+
+        this.attachData(entry.target);
+      });
+    });
+  }
+
+  attachData($video) {
+    const { videoId } = $video.dataset;
+    const item = this.watchLaterVideoItemsMap.get(videoId);
+    if ($video.classList.contains(CLASSNAME.SKELETON)) {
+      renderMainVideo($video, item);
+    }
   }
 
   selectHTMLElements() {
@@ -105,7 +123,7 @@ export default class WatchLaterVideoWrapper {
   saveVideo({ videoId, item }) {
     this.watchLaterVideoItemsMap.set(videoId, item);
     this.updateLocalStorage();
-    this.renderSingleVideo({ videoId, item });
+    this.mountTemplate({ videoId, item });
   }
 
   moveVideo({ videoId }) {
@@ -155,11 +173,11 @@ export default class WatchLaterVideoWrapper {
     }
 
     this.watchLaterVideoItemsMap.forEach((item, videoId) =>
-      this.renderSingleVideo({ videoId, item })
+      this.mountTemplate({ videoId, item })
     );
   }
 
-  renderSingleVideo({ videoId, item }) {
+  mountTemplate({ videoId }) {
     $.hide(this.$noSavedVideoImage);
 
     this.$watchLaterVideoWrapper.insertAdjacentHTML(
@@ -167,10 +185,9 @@ export default class WatchLaterVideoWrapper {
       WATCH_LATER_VIDEO_TEMPLATE
     );
 
-    const $video = this.$watchLaterVideoWrapper.children[0];
-
-    renderMainVideo($video, item);
-
+    const [$video] = this.$watchLaterVideoWrapper.children;
+    $video.dataset.videoId = videoId;
     this.watchLaterVideosMap.set(videoId, $video);
+    this.observer.observe($video);
   }
 }
