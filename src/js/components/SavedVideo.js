@@ -52,9 +52,11 @@ export class SavedVideo {
       return;
     }
 
+    const $targetVideoWrapper = $(`[data-video-id=${target.dataset.videoId}]:not(button)`, this.$savedVideoWrapper);
+
     if (target.classList.contains('js-check-button')) {
       if (this.filter === FILTER.WATCH) {
-        $(`[data-video-id=${target.dataset.videoId}]:not(button)`).remove();
+        $targetVideoWrapper.remove();
       }
       target.classList.toggle('opacity-hover');
       this.savedVideoManager.watchVideo(target.dataset.videoId);
@@ -67,7 +69,7 @@ export class SavedVideo {
 
     if (target.classList.contains('js-like-button')) {
       if (this.filter === FILTER.LIKED) {
-        $(`[data-video-id=${target.dataset.videoId}]:not(button)`).remove();
+        $targetVideoWrapper.remove();
       }
       target.classList.toggle('opacity-hover');
       this.savedVideoManager.likeVideo(target.dataset.videoId);
@@ -78,7 +80,7 @@ export class SavedVideo {
 
     if (target.classList.contains('js-delete-button')) {
       customConfirm(CONFIRM_MESSAGE.DELETE_VIDEO, () => {
-        $(`[data-video-id=${target.dataset.videoId}]:not(button)`).remove();
+        $targetVideoWrapper.remove();
         this.savedVideoManager.deleteVideo(target.dataset.videoId);
         snackbar.show(SNACKBAR_MESSAGE.DELETE_SUCCESS);
       });
