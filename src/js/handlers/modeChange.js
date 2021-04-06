@@ -1,17 +1,16 @@
 import { videoInfos } from '../states/videoInfos.js';
 import { videoListType } from '../states/videoListType.js';
 import { renderSavedVideoList } from '../viewControllers/app.js';
+import { $$ } from '../utils/DOM.js';
 
 export function handleModeChange({ target }) {
-  if (target.id === 'search-button') return;
-  const $$videoDisplayButtons = document.querySelectorAll(
-    '.video-display-button'
-  );
+  const $$videoDisplayButtons = $$('.video-display-button');
+  const type = target.id.replace('-video-display-button', '');
+
   $$videoDisplayButtons.forEach($button =>
     $button.classList.remove('bg-cyan-100')
   );
   target.classList.add('bg-cyan-100');
-  const type = target.id.replace('-video-display-button', '');
   videoListType.set(type);
   renderSavedVideoList([...videoInfos.get()]);
 }
