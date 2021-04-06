@@ -1,11 +1,11 @@
 import { fetchSearchResult } from '../API.js';
 import { appendVideos } from '../viewControllers/searchModal.js';
-import $ from '../utils/DOM.js';
-import latestKeywords from '../states/latestKeywords.js';
-import videoInfos from '../states/videoInfos.js';
-import pageToken from '../states/pageToken.js';
+import { $ } from '../utils/DOM.js';
+import { latestKeywords } from '../states/latestKeywords.js';
+import { videoInfos } from '../states/videoInfos.js';
+import { pageToken } from '../states/pageToken.js';
 
-async function handleMoreVideoLoading(entries) {
+export async function handleMoreVideoLoading(entries) {
   const [$lastVideo] = entries;
   const intersectionObserver = this;
 
@@ -25,5 +25,3 @@ async function handleMoreVideoLoading(entries) {
 
   intersectionObserver.observe($newLastVideo);
 }
-
-export default handleMoreVideoLoading;

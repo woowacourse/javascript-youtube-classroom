@@ -1,7 +1,7 @@
 import { initInfiniteScroll, searchVideo } from '../service.js';
-import latestKeywords from '../states/latestKeywords.js';
+import { latestKeywords } from '../states/latestKeywords.js';
 
-async function handleVideoSearch(e) {
+export async function handleVideoSearch(e) {
   e.preventDefault();
 
   const keyword = e.target.elements['video-search-input'].value;
@@ -12,5 +12,3 @@ async function handleVideoSearch(e) {
     initInfiniteScroll();
   }
 }
-
-export default handleVideoSearch;

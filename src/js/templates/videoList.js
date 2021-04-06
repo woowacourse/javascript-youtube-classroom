@@ -1,7 +1,7 @@
-import formatDate from '../utils/date.js';
+import { formatDate } from '../utils/date.js';
 
-function createVideoSnippetTemplate({ id, snippet }, isSaved = false) {
-  return `<article class="clip js-video"
+function createVideoSnippetTemplate({ id, snippet }, buttonListTemplate) {
+  return `<article class="clip js-video relative"
             data-video-id=${id.videoId}
             data-title=${encodeURIComponent(snippet.title)}
             data-channel-id=${snippet.channelId}
@@ -32,17 +32,18 @@ function createVideoSnippetTemplate({ id, snippet }, isSaved = false) {
                 <div class="meta">
                   <p>${formatDate(snippet.publishTime)}</p>
                 </div>
-                <div class="d-flex justify-end">
-                  <button 
-                    class="btn js-save-button" 
-                    ${isSaved ? 'hidden' : ''}
-                    >
-                      ⬇️ 저장
-                  </button>
-                </div>
               </div>
             </div>
+            <div class="button-list d-flex justify-end" >
+                  ${buttonListTemplate}
+            </div>
           </article>`;
+}
+
+function createSaveButtonTemplate(isSaved) {
+  return isSaved
+    ? `<button class="btn js-save-cancel-button"}>↪️ 저장 취소</button>`
+    : `<button class="btn js-save-button"}>⬇️ 저장</button>`;
 }
 
 function isSavedVideo(item, videoInfos) {
@@ -51,23 +52,45 @@ function isSavedVideo(item, videoInfos) {
   );
 }
 
-function createVideoListTemplate(resultItems = [], videoInfos) {
+export function createVideoListTemplate(resultItems = [], videoInfos) {
   return [...resultItems]
     .map(item =>
-      createVideoSnippetTemplate(item, isSavedVideo(item, videoInfos))
+      createVideoSnippetTemplate(
+        item,
+        createSaveButtonTemplate(isSavedVideo(item, videoInfos))
+      )
     )
     .join('');
 }
 
-function createSavedVideoListTemplate(savedVideoInfos = []) {
-  return [...savedVideoInfos]
-    .map(item => createVideoSnippetTemplate(item, true))
+function createControlButtonsTemplate(watchType) {
+  return [
+    {
+      content: '✅',
+      className: 'js-watched-button',
+      isChecked: watchType === 'watched',
+    },
+    { content: '👍', className: 'js-like-button', isChecked: false },
+    { content: '🗑️', className: 'js-delete-button', isChecked: false },
+  ]
+    .map(
+      ({ content, className, isChecked }) =>
+        `<span class="${isChecked ? '' : 'opacity-hover'} ml-2 ${className}">
+          ${content}
+        </span>`
+    )
     .join('');
 }
 
-/*
- * data-attirbue 로 다 할당
- * 이미 존재하는 속성들을 그대로 활용 (선택자 접근, 문자열 파싱)
- */
+export function createSavedVideoListTemplate(savedVideoInfos = []) {
+  return [...savedVideoInfos]
+    .map(item =>
+      createVideoSnippetTemplate(
+        item,
+        createControlButtonsTemplate(item.watchType)
+      )
+    )
+    .join('');
+}
 
-export { createVideoListTemplate, createSavedVideoListTemplate };
+export const emptyVideoListTemplate = `<span id="empty-video-list" class="stretch text-center">영상이 없습니다. 😥</span>`;

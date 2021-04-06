@@ -1,6 +1,7 @@
 describe('Youtube classroom test', () => {
   beforeEach(() => {
     cy.visit('http://127.0.0.1:5500');
+    cy.clearLocalStorage();
   });
 
   it('유튜브 검색 모달에서, 검색을 하면 동영상 리스트를 불러온다.', () => {
@@ -106,5 +107,29 @@ describe('Youtube classroom test', () => {
     cy.reload();
     cy.get('#search-button').click();
     cy.get('#video-search-result .video').should('have.length', 10);
+  });
+
+  it('저장된 영상이 없을 때, 사용자에게 빈 상태를 UI로 알려준다.', () => {
+    cy.get('#video-list #empty-video-list').should('exist');
+  });
+
+  it('영상 카드의 본 영상 추가 버튼을 눌렀을 때, 본 영상으로 분류한다.', () => {
+    cy.get('#search-button').click();
+    cy.get('#video-search-input').type('로이드1');
+    cy.get('#video-search-submit').click();
+    cy.get('.js-save-button').eq(0).click();
+    cy.reload();
+    cy.get('.js-video .js-watched-button').click();
+    cy.get('#video-list #empty-video-list').should('exist');
+  });
+
+  it('영상 카드의 `삭제 버튼`을 눌렀을 때, 저장 영상 목록에서 삭제한다.', () => {
+    cy.get('#search-button').click();
+    cy.get('#video-search-input').type('로이드1');
+    cy.get('#video-search-submit').click();
+    cy.get('.js-save-button').eq(0).click();
+    cy.reload();
+    cy.get('.js-video .js-delete-button').click();
+    cy.get('#video-list #empty-video-list').should('exist');
   });
 });

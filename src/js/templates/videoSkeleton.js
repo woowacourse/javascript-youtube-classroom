@@ -16,8 +16,6 @@ function createSkeletonClipTemplate() {
           </article>`;
 }
 
-function createVideoSkeletonTemplate() {
+export function createVideoSkeletonTemplate() {
   return createSkeletonClipTemplate().repeat(FETCH_VIDEO_COUNT);
 }
-
-export default createVideoSkeletonTemplate;

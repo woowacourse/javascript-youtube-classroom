@@ -1,20 +1,46 @@
-import { EXCEED_SAVED_VIDEO_COUNT_MSG } from '../constants/alertMessage.js';
+import {
+  EXCEED_SAVED_VIDEO_COUNT_MSG,
+  SAVE_SUCCESS_MSG,
+  SAVE_CANCEL_SUCCESS_MSG,
+} from '../constants/snackbarMessage.js';
 import { MAX_SAVED_VIDEO_COUNT } from '../constants/classroom.js';
-import { saveVideo } from '../service.js';
-import videoInfos from '../states/videoInfos.js';
+import { cancelVideoSave, saveVideo } from '../service.js';
+import { videoInfos } from '../states/videoInfos.js';
+import { showSnackBar } from '../viewControllers/app.js';
+import { toggleSaveButton } from '../viewControllers/searchModal.js';
+import { VIDEO_SAVE_CANCEL_CONFIRM_MSG } from '../constants/confirmMessage.js';
 
-function handleVideoSave({ target }) {
-  if (!target.classList.contains('js-save-button')) return;
+function handleVideoSave($saveButton) {
   if (videoInfos.size >= MAX_SAVED_VIDEO_COUNT) {
-    alert(EXCEED_SAVED_VIDEO_COUNT_MSG);
+    showSnackBar(EXCEED_SAVED_VIDEO_COUNT_MSG);
 
     return;
   }
 
-  const $saveButton = target;
-
   saveVideo($saveButton.closest('.js-video'));
-  $saveButton.hidden = true;
+  showSnackBar(SAVE_SUCCESS_MSG);
 }
 
-export default handleVideoSave;
+function handleVideoSaveCancel($saveCancelButton) {
+  if (!window.confirm(VIDEO_SAVE_CANCEL_CONFIRM_MSG)) return;
+
+  cancelVideoSave($saveCancelButton.closest('.js-video'));
+  showSnackBar(SAVE_CANCEL_SUCCESS_MSG);
+}
+
+export function videoSaveManager({ target }) {
+  if (
+    !target.classList.contains('js-save-button') &&
+    !target.classList.contains('js-save-cancel-button')
+  )
+    return;
+
+  if (target.classList.contains('js-save-button')) {
+    handleVideoSave(target);
+  }
+  if (target.classList.contains('js-save-cancel-button')) {
+    handleVideoSaveCancel(target);
+  }
+
+  toggleSaveButton(target);
+}

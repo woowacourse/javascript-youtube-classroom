@@ -12,18 +12,20 @@
         <div class="w-100">
           <header class="my-4">
             <h2 class="text-center font-bold">👩🏻‍💻 나만의 유튜브 강의실 👨🏻‍💻</h2>
-            <nav class="d-flex justify-center">
-              <button
-                id="to-watch-video-display-button"
-                class="btn bg-cyan-100 mx-1"
-              >
-                👁️ 볼 영상
-              </button>
-              <button id="watched-video-display-button" class="btn mx-1">
-                ✅ 본 영상
-              </button>
-              <button id="search-button" class="btn mx-1">
-                🔍 동영상 검색
+            <nav id="mode-wrapper" class="d-flex justify-between">
+              <div id="video-filter">
+                <button
+                  id="to-watch-video-display-button"
+                  class="btn mx-1 bg-cyan-100"
+                >
+                  👁️ 볼 영상
+                </button>
+                <button id="watched-video-display-button" class="btn mx-1">
+                  ✅ 본 영상
+                </button>
+              </div>
+              <button id="search-button" class="btn mx-1 rounded-full">
+                🔍
               </button>
             </nav>
           </header>
@@ -33,7 +35,7 @@
         </div>
       </div>
       <div id="video-search-modal" class="modal">
-        <div class="modal-inner p-8">
+        <div id="modal-inner" class="modal-inner p-8">
           <button id="modal-close-button" class="modal-close">
             <svg viewbox="0 0 40 40">
               <path class="close-x" d="M 10,10 L 30,30 M 30,10 L 10,30" />
@@ -66,10 +68,10 @@
               저장된 영상 개수:&nbsp;<span id="saved-video-count"></span>
             </div>
             <section id="video-search-result" class="video-wrapper"></section>
-            <!-- <section id="end-point"></section> -->
           </section>
         </div>
       </div>
+      <div id="snack-bar"></div>
     </div>
     <script type="module" src="./src/js/index.js"></script>
   </body>

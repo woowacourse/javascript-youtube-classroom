@@ -1,6 +1,6 @@
 import { NAN_CHARACTER } from '../constants/classroom.js';
 
-function formatDate(dateString) {
+export function formatDate(dateString) {
   const d = new Date(dateString);
   const year = d.getFullYear() || NAN_CHARACTER;
   const month = d.getMonth() || NAN_CHARACTER;
@@ -8,5 +8,3 @@ function formatDate(dateString) {
 
   return `${year}년 ${month}월 ${date}일`;
 }
-
-export default formatDate;
