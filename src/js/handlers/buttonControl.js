@@ -8,8 +8,37 @@ import { showSnackBar } from '../viewControllers/app.js';
 
 function handleWatchedButton($target) {
   const targetId = $target.closest('.js-video').dataset.videoId;
+  const newVideoInfos = [...videoInfos.get()].map(videoInfo =>
+    videoInfo.id.videoId === targetId
+      ? {
+          ...videoInfo,
+          type: {
+            isWatched: !videoInfo.type.isWatched,
+            isLiked: videoInfo.type.isLiked,
+          },
+        }
+      : videoInfo
+  );
 
-  videoInfos.toggleWatchType(targetId);
+  videoInfos.set(newVideoInfos);
+  showSnackBar(VIDEO_MOVE_SUCCESS_MSG);
+}
+
+function handleLikedButton($target) {
+  const targetId = $target.closest('.js-video').dataset.videoId;
+  const newVideoInfos = [...videoInfos.get()].map(videoInfo =>
+    videoInfo.id.videoId === targetId
+      ? {
+          ...videoInfo,
+          type: {
+            isWatched: videoInfo.type.isWatched,
+            isLiked: !videoInfo.type.isLiked,
+          },
+        }
+      : videoInfo
+  );
+
+  videoInfos.set(newVideoInfos);
   showSnackBar(VIDEO_MOVE_SUCCESS_MSG);
 }
 
@@ -25,6 +54,12 @@ function handleDeleteButton($target) {
 export function handleButtonsControl({ target }) {
   if (target.classList.contains('js-watched-button')) {
     handleWatchedButton(target);
+
+    return;
+  }
+  if (target.classList.contains('js-liked-button')) {
+    handleLikedButton(target);
+
     return;
   }
   if (target.classList.contains('js-delete-button')) {

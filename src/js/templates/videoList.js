@@ -63,31 +63,22 @@ export function createVideoListTemplate(resultItems = [], videoInfos) {
     .join('');
 }
 
-function createControlButtonsTemplate(watchType) {
-  return [
-    {
-      content: '✅',
-      className: 'js-watched-button',
-      isChecked: watchType === 'watched',
-    },
-    { content: '👍', className: 'js-like-button', isChecked: false },
-    { content: '🗑️', className: 'js-delete-button', isChecked: false },
-  ]
-    .map(
-      ({ content, className, isChecked }) =>
-        `<span class="${isChecked ? '' : 'opacity-hover'} ml-2 ${className}">
-          ${content}
-        </span>`
-    )
-    .join('');
+function createControlButtonsTemplate({ isWatched, isLiked }) {
+  return `
+  <span class="${
+    !isWatched && 'opacity-hover'
+  } ml-2 js-watched-button">✅</span>
+  <span class="${isLiked ? '' : 'opacity-hover'} ml-2 js-liked-button">👍🏻</span>
+  <span class="opacity-hover ml-2 js-delete-button">🗑</span>
+  `;
 }
 
 export function createSavedVideoListTemplate(savedVideoInfos = []) {
-  return [...savedVideoInfos]
-    .map(item =>
+  return savedVideoInfos
+    .map(videoInfo =>
       createVideoSnippetTemplate(
-        item,
-        createControlButtonsTemplate(item.watchType)
+        videoInfo,
+        createControlButtonsTemplate(videoInfo.type)
       )
     )
     .join('');

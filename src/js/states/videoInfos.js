@@ -2,7 +2,6 @@ import { renderSavedVideoList } from '../viewControllers/app.js';
 import { renderSavedVideoCount } from '../viewControllers/searchModal.js';
 import { VIDEO_INFOS } from '../constants/localStorage.js';
 import { getLocalStorage, setLocalStorage } from '../utils/localStorage.js';
-import { videoListType } from './videoListType.js';
 
 export const videoInfos = {
   value: new Set(),
@@ -18,7 +17,7 @@ export const videoInfos = {
     setLocalStorage(VIDEO_INFOS, [...this.value]);
 
     renderSavedVideoCount(this.value.size);
-    renderSavedVideoList(this.value, videoListType.get());
+    renderSavedVideoList([...this.value]);
   },
 
   remove(targetId) {
@@ -35,22 +34,7 @@ export const videoInfos = {
     setLocalStorage(VIDEO_INFOS, [...this.value]);
 
     renderSavedVideoCount(this.value.size);
-    renderSavedVideoList(this.value, videoListType.get());
-  },
-
-  toggleWatchType(targetId) {
-    const oldVideoInfos = [...this.value];
-    const newVideoInfos = oldVideoInfos.map(videoInfo =>
-      videoInfo.id.videoId === targetId
-        ? {
-            ...videoInfo,
-            watchType:
-              videoInfo.watchType === 'toWatch' ? 'watched' : 'toWatch',
-          }
-        : videoInfo
-    );
-
-    this.set(newVideoInfos);
+    renderSavedVideoList([...this.value]);
   },
 
   get() {
