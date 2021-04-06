@@ -7,7 +7,7 @@ import {
 } from "../constants/index.js";
 import { $ } from "../utils/DOM.js";
 import messenger from "../Messenger.js";
-import { renderSearchVideo } from "../Video/render.js";
+import { renderSearchTabVideo } from "../Video/render.js";
 import { SEARCH_VIDEO_TEMPLATE } from "../Video/template.js";
 import { fetchYoutubeData } from "../utils/API.js";
 import { showModalSnackbar } from "../utils/snackbar.js";
@@ -126,16 +126,19 @@ export default class SearchVideoWrapper {
         const { videoId } = item.id;
         this.videoItemsMap.set(videoId, item);
 
-        renderSearchVideo($video, item);
+        renderSearchTabVideo($video, item);
       });
   }
 
   handlePageScroll() {
     if (this.throttle) return;
 
-    const { scrollTop, clientHeight, scrollHeight } = this.$searchVideoWrapper;    
+    const { scrollTop, clientHeight, scrollHeight } = this.$searchVideoWrapper;
 
-    if (scrollTop + clientHeight <= scrollHeight * NUMBER.SCROLL_EVENT_THRESHOLD) {
+    if (
+      scrollTop + clientHeight <=
+      scrollHeight * NUMBER.SCROLL_EVENT_THRESHOLD
+    ) {
       return;
     }
 

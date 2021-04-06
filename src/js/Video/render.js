@@ -31,7 +31,7 @@ const renderVideo = ($video, item) => {
   $.removeClass($video, CLASSNAME.SKELETON);
 };
 
-const renderWatchLaterVideo = ($video, item) => {
+const renderTheOtherTabVideo = ($video, item) => {
   renderVideo($video, item);
 
   const { videoId } = item.id;
@@ -41,7 +41,7 @@ const renderWatchLaterVideo = ($video, item) => {
   $iconsWrapper.dataset.videoId = videoId;
 };
 
-const renderSearchVideo = ($video, item) => {
+const renderSearchTabVideo = ($video, item) => {
   renderVideo($video, item);
 
   const { videoId } = item.id;
@@ -70,4 +70,4 @@ const renderSearchVideo = ($video, item) => {
   $video.classList.remove(CLASSNAME.SKELETON);
 };
 
-export { renderWatchLaterVideo, renderSearchVideo };
+export { renderTheOtherTabVideo, renderSearchTabVideo };

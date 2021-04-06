@@ -7,7 +7,7 @@ import {
 import messenger from "../Messenger.js";
 import { $ } from "../utils/DOM.js";
 import { HISTORY_VIDEO_TEMPLATE } from "../Video/template.js";
-import { renderWatchLaterVideo } from "../Video/render.js";
+import { renderTheOtherTabVideo } from "../Video/render.js";
 import { showSnackbar } from "../utils/snackbar.js";
 
 export default class HistoryVideoWrapper {
@@ -44,6 +44,14 @@ export default class HistoryVideoWrapper {
       if (event.target.classList.contains(CLASSNAME.WATCH_LATER_ICON)) {
         this.moveVideo({ videoId });
         showSnackbar(SNACKBAR_TEXT.MOVED_TO_WATCH_LATER_VIDEO);
+      }
+
+      if (event.target.classList.contains(CLASSNAME.LIKE_ICON)) {
+        messenger.deliverMessage(MESSAGE.LIKE_ICON_CLICKED, {
+          videoId,
+          item: this.historyVideoItemsMap.get(videoId),
+        });
+        showSnackbar(SNACKBAR_TEXT.ADDED_TO_LIKE_VIDEO);
       }
 
       if (event.target.classList.contains(CLASSNAME.DELETE_ICON)) {
@@ -138,7 +146,7 @@ export default class HistoryVideoWrapper {
     );
 
     const $video = this.$historyVideoWrapper.children[0];
-    renderWatchLaterVideo($video, item);
+    renderTheOtherTabVideo($video, item);
 
     const { videoId } = item.id;
     this.historyVideosMap.set(videoId, $video);
