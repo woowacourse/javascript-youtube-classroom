@@ -1,4 +1,4 @@
-import formatDate from '../utils/date.js';
+import { formatDate } from '../utils/date.js';
 
 function createVideoSnippetTemplate({ id, snippet }, buttonListTemplate) {
   return `<article class="clip js-video relative"
@@ -52,7 +52,7 @@ function isSavedVideo(item, videoInfos) {
   );
 }
 
-function createVideoListTemplate(resultItems = [], videoInfos) {
+export function createVideoListTemplate(resultItems = [], videoInfos) {
   return [...resultItems]
     .map(item =>
       createVideoSnippetTemplate(
@@ -82,7 +82,7 @@ function createControlButtonsTemplate(watchType) {
     .join('');
 }
 
-function createSavedVideoListTemplate(savedVideoInfos = []) {
+export function createSavedVideoListTemplate(savedVideoInfos = []) {
   return [...savedVideoInfos]
     .map(item =>
       createVideoSnippetTemplate(
@@ -93,15 +93,4 @@ function createSavedVideoListTemplate(savedVideoInfos = []) {
     .join('');
 }
 
-const emptyVideoListTemplate = `<span id="empty-video-list" class="stretch text-center">영상이 없습니다. 😥</span>`;
-
-/*
- * data-attirbue 로 다 할당
- * 이미 존재하는 속성들을 그대로 활용 (선택자 접근, 문자열 파싱)
- */
-
-export {
-  createVideoListTemplate,
-  createSavedVideoListTemplate,
-  emptyVideoListTemplate,
-};
+export const emptyVideoListTemplate = `<span id="empty-video-list" class="stretch text-center">영상이 없습니다. 😥</span>`;

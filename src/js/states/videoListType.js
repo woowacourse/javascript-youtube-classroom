@@ -1,4 +1,4 @@
-const videoListType = {
+export const videoListType = {
   value: 'toWatch',
 
   set(mode) {
@@ -13,5 +13,3 @@ const videoListType = {
     this.value = this.value === 'toWatch' ? 'watched' : 'toWatch';
   },
 };
-
-export default videoListType;

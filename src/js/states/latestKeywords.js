@@ -3,7 +3,7 @@ import { MAX_LATEST_KEYWORD_COUNT } from '../constants/classroom.js';
 import { LATEST_KEYWORDS } from '../constants/localStorage.js';
 import { getLocalStorage, setLocalStorage } from '../utils/localStorage.js';
 
-const latestKeywords = {
+export const latestKeywords = {
   value: [],
 
   init() {
@@ -14,13 +14,13 @@ const latestKeywords = {
     return this.value;
   },
 
-  set(newKeywords) {
+  set(newKeywords = []) {
     this.value = newKeywords;
 
     renderLatestKeywordList(this.value);
   },
 
-  add(newKeyword) {
+  add(newKeyword = '') {
     const targetIdx = this.value.indexOf(newKeyword);
 
     if (targetIdx > -1) {
@@ -34,5 +34,3 @@ const latestKeywords = {
     renderLatestKeywordList(this.value);
   },
 };
-
-export default latestKeywords;

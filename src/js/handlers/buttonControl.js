@@ -3,12 +3,11 @@ import {
   DELETE_SUCCESS_MSG,
   VIDEO_MOVE_SUCCESS_MSG,
 } from '../constants/snackbarMessage.js';
-import videoInfos from '../states/videoInfos.js';
-import { snackBar } from '../viewControllers/app.js';
+import { videoInfos } from '../states/videoInfos.js';
+import { showSnackBar } from '../viewControllers/app.js';
 
 function handleWatchedButton($target) {
   const targetId = $target.closest('.js-video').dataset.videoId;
-  const showSnackBar = snackBar();
 
   videoInfos.toggleWatchType(targetId);
   showSnackBar(VIDEO_MOVE_SUCCESS_MSG);
@@ -18,13 +17,12 @@ function handleDeleteButton($target) {
   if (!window.confirm(DELETE_VIDEO_CONFIRM_MSG)) return;
 
   const targetId = $target.closest('.js-video').dataset.videoId;
-  const showSnackBar = snackBar();
 
   videoInfos.remove(targetId);
   showSnackBar(DELETE_SUCCESS_MSG);
 }
 
-function handleButtonsControl({ target }) {
+export function handleButtonsControl({ target }) {
   if (target.classList.contains('js-watched-button')) {
     handleWatchedButton(target);
     return;
@@ -33,5 +31,3 @@ function handleButtonsControl({ target }) {
     handleDeleteButton(target);
   }
 }
-
-export default handleButtonsControl;

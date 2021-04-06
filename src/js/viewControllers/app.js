@@ -1,4 +1,4 @@
-import $ from '../utils/DOM.js';
+import { $ } from '../utils/DOM.js';
 import {
   createSavedVideoListTemplate,
   emptyVideoListTemplate,
@@ -7,16 +7,17 @@ import {
 const $searchModal = $('#video-search-modal');
 const $videoList = $('#video-list');
 
-function openModal() {
+export function openModal() {
   $searchModal.classList.add('open');
 }
 
-function closeModal() {
+export function closeModal() {
   $searchModal.classList.remove('open');
 }
 
-function renderSavedVideoList(videoInfos, videoListType) {
-  const filteredVideoInfos = [...videoInfos].filter(
+export function renderSavedVideoList(videoInfos, videoListType) {
+  const oldVideoInfos = [...videoInfos];
+  const filteredVideoInfos = oldVideoInfos.filter(
     videoInfo => videoListType === videoInfo.watchType
   );
 
@@ -44,15 +45,9 @@ function snackBar() {
   return show;
 }
 
-function toggleFocusedModeButton() {
+export const showSnackBar = snackBar();
+
+export function toggleFocusedModeButton() {
   $('#watched-video-display-button').classList.toggle('bg-cyan-100');
   $('#to-watch-video-display-button').classList.toggle('bg-cyan-100');
 }
-
-export {
-  openModal,
-  closeModal,
-  renderSavedVideoList,
-  snackBar,
-  toggleFocusedModeButton,
-};

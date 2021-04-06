@@ -1,5 +1,5 @@
-import videoListType from '../states/videoListType.js';
-import videoInfos from '../states/videoInfos.js';
+import { videoListType } from '../states/videoListType.js';
+import { videoInfos } from '../states/videoInfos.js';
 import {
   renderSavedVideoList,
   toggleFocusedModeButton,
@@ -11,7 +11,7 @@ function toggleMode() {
   toggleFocusedModeButton();
 }
 
-function handleModeChange({ target }) {
+export function handleModeChange({ target }) {
   if (
     target.id === 'to-watch-video-display-button' &&
     videoListType.get() === 'watched'
@@ -26,5 +26,3 @@ function handleModeChange({ target }) {
     toggleMode();
   }
 }
-
-export default handleModeChange;

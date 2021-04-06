@@ -1,3 +1,1 @@
-const YOUTUBE_BASE_URL = 'https://youtube-classroom.netlify.app/youtube';
-
-export { YOUTUBE_BASE_URL };
+export const YOUTUBE_BASE_URL = 'https://youtube-classroom.netlify.app/youtube';

@@ -1,7 +1,7 @@
-import handleMoreVideoLoading from '../handlers/moreVideoLoading.js';
-import $ from '../utils/DOM.js';
+import { handleMoreVideoLoading } from '../handlers/moreVideoLoading.js';
+import { $ } from '../utils/DOM.js';
 
-const intersectionObserver = {
+export const intersectionObserver = {
   value: {},
   options: {
     root: $('#modal-inner'),
@@ -31,5 +31,3 @@ const intersectionObserver = {
     this.value.observe($target);
   },
 };
-
-export default intersectionObserver;
