@@ -194,9 +194,9 @@ export default class YoutubeSearchManager extends Observer {
       const $selectedButton = event.target;
       const selectedVideoId = $selectedButton.dataset.videoId;
 
-      const filteredList = watchList.filter((video) => video.videoId !== selectedVideoId);
+      const filteredVideoList = watchList.filter((video) => video.videoId !== selectedVideoId);
 
-      this.store.update(LOCAL_STORAGE_KEYS.WATCH_LIST, [...filteredList]);
+      this.store.update(LOCAL_STORAGE_KEYS.WATCH_LIST, [...filteredVideoList]);
 
       $selectedButton.innerText = '⬇️ 저장';
       $selectedButton.classList.add('btn-save');

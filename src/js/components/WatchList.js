@@ -113,33 +113,34 @@ export default class WatchList extends Observer {
         this.list = [...this.list, ...items];
       }
 
-      this.showWatchList(watchList);
+      this.showVideos(watchList);
     } catch (error) {
       console.error(error);
       showSnackbar(error.message);
     }
   }
 
-  showWatchList(watchList) {
-    const selectedList = watchList.filter((item) => {
+  showVideos(watchList) {
+    const selectedVideoList = watchList.filter((item) => {
       if (this.nowMenu === MENU.LIKED) {
         return item.liked;
-      } else if (this.nowMenu === MENU.WATCHED) {
+      }
+      if (this.nowMenu === MENU.WATCHED) {
         return item.watched;
       }
       return !item.watched;
     });
-    const selectedListIds = selectedList.map((item) => item.videoId);
+    const selectedVideoListIds = selectedVideoList.map((item) => item.videoId);
 
     clearElement(SELECTORS.CLASS.WATCH_LIST);
 
-    if (selectedList.length) {
+    if (selectedVideoList.length) {
       hideElement(SELECTORS.CLASS.NO_VIDEO);
     } else {
       showElement(SELECTORS.CLASS.NO_VIDEO);
     }
 
-    const renderingVideos = this.list.filter(({ id }) => selectedListIds.includes(id));
+    const renderingVideos = this.list.filter(({ id }) => selectedVideoListIds.includes(id));
     this.renderSavedVideos(renderingVideos);
   }
 
@@ -200,7 +201,7 @@ export default class WatchList extends Observer {
     uncolorizeButton(SELECTORS.CLASS.LIKED_LIST_BUTTON);
 
     const { watchList } = this.store.get();
-    this.showWatchList(watchList);
+    this.showVideos(watchList);
   }
 
   handleShowWatchedList() {
@@ -210,7 +211,7 @@ export default class WatchList extends Observer {
     uncolorizeButton(SELECTORS.CLASS.LIKED_LIST_BUTTON);
 
     const { watchList } = this.store.get();
-    this.showWatchList(watchList);
+    this.showVideos(watchList);
   }
 
   handleShowLikedList() {
@@ -220,7 +221,7 @@ export default class WatchList extends Observer {
     uncolorizeButton(SELECTORS.CLASS.TO_WATCH_LIST_BUTTON);
 
     const { watchList } = this.store.get();
-    this.showWatchList(watchList);
+    this.showVideos(watchList);
   }
 
   bindEvents() {
