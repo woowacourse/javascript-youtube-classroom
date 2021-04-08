@@ -21,7 +21,7 @@ export default class WatchList extends Observer {
     this.store = store;
     this.selector = SELECTORS.CLASS.WATCH_LIST;
     this.list = [];
-    this.nowMenu = MENU.TO_WATCH;
+    this.currentMenu = MENU.TO_WATCH;
 
     this.bindEvents();
     this.setScrollObservers();
@@ -113,19 +113,19 @@ export default class WatchList extends Observer {
         this.list = [...this.list, ...items];
       }
 
-      this.showVideos(watchList);
+      this.showVideos(watchList, this.currentMenu);
     } catch (error) {
       console.error(error);
       showSnackbar(error.message);
     }
   }
 
-  showVideos(watchList) {
+  showVideos(watchList, currentMenu) {
     const selectedVideoList = watchList.filter((item) => {
-      if (this.nowMenu === MENU.LIKED) {
+      if (currentMenu === MENU.LIKED) {
         return item.liked;
       }
-      if (this.nowMenu === MENU.WATCHED) {
+      if (currentMenu === MENU.WATCHED) {
         return item.watched;
       }
       return !item.watched;
@@ -195,33 +195,33 @@ export default class WatchList extends Observer {
   }
 
   handleShowToWatchList() {
-    this.nowMenu = MENU.TO_WATCH;
+    this.currentMenu = MENU.TO_WATCH;
     colorizeButton(SELECTORS.CLASS.TO_WATCH_LIST_BUTTON);
     uncolorizeButton(SELECTORS.CLASS.WATCHED_LIST_BUTTON);
     uncolorizeButton(SELECTORS.CLASS.LIKED_LIST_BUTTON);
 
     const { watchList } = this.store.get();
-    this.showVideos(watchList);
+    this.showVideos(watchList, this.currentMenu);
   }
 
   handleShowWatchedList() {
-    this.nowMenu = MENU.WATCHED;
+    this.currentMenu = MENU.WATCHED;
     colorizeButton(SELECTORS.CLASS.WATCHED_LIST_BUTTON);
     uncolorizeButton(SELECTORS.CLASS.TO_WATCH_LIST_BUTTON);
     uncolorizeButton(SELECTORS.CLASS.LIKED_LIST_BUTTON);
 
     const { watchList } = this.store.get();
-    this.showVideos(watchList);
+    this.showVideos(watchList, this.currentMenu);
   }
 
   handleShowLikedList() {
-    this.nowMenu = MENU.LIKED;
+    this.currentMenu = MENU.LIKED;
     colorizeButton(SELECTORS.CLASS.LIKED_LIST_BUTTON);
     uncolorizeButton(SELECTORS.CLASS.WATCHED_LIST_BUTTON);
     uncolorizeButton(SELECTORS.CLASS.TO_WATCH_LIST_BUTTON);
 
     const { watchList } = this.store.get();
-    this.showVideos(watchList);
+    this.showVideos(watchList, this.currentMenu);
   }
 
   bindEvents() {
