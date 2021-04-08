@@ -151,7 +151,7 @@ export default class WatchList extends Observer {
     if (target.classList.contains('delete')) {
       if (!window.confirm(ALERT_MESSAGE.CONFIRM_DELETE)) return;
 
-      const targetId = target.closest(SELECTORS.CLASS.MENU_LIST).dataset.videoId;
+      const targetId = target.dataset.videoId;
       const newWatchList = watchList.filter(({ videoId }) => videoId !== targetId);
       this.store.update(LOCAL_STORAGE_KEYS.WATCH_LIST, newWatchList);
 
@@ -164,7 +164,7 @@ export default class WatchList extends Observer {
     }
 
     if (target.classList.contains('watched')) {
-      const targetId = target.closest(SELECTORS.CLASS.MENU_LIST).dataset.videoId;
+      const targetId = target.dataset.videoId;
       const newWatchList = watchList.map((video) => {
         const nowVideo = { ...video };
         if (nowVideo.videoId === targetId) {
@@ -180,7 +180,7 @@ export default class WatchList extends Observer {
     }
 
     if (target.classList.contains('liked')) {
-      const targetId = target.closest(SELECTORS.CLASS.MENU_LIST).dataset.videoId;
+      const targetId = target.dataset.videoId;
       const newWatchList = watchList.map((video) => {
         const nowVideo = { ...video };
         if (nowVideo.videoId === targetId) {

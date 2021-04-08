@@ -60,11 +60,17 @@ export const getVideoTemplate = (data, options) => {
         ${
           isContainingMenu
             ? `
-            <div class="menu-list" data-video-id="${id}"}>
-              <span class="cursor-pointer ${generateCSSClass(!isWatched, 'opacity-hover')} watched">✅</span>
-              <span class="cursor-pointer ${generateCSSClass(!isLiked, 'opacity-hover')} liked">👍</span>
-              <span class="cursor-pointer opacity-hover comment">💬</span>
-              <span class="cursor-pointer opacity-hover delete">🗑️</span>
+            <div class="menu-list" data-video-id="${id}">
+              <span class="cursor-pointer ${generateCSSClass(
+                !isWatched,
+                'opacity-hover'
+              )} watched" data-video-id="${id}">✅</span>
+              <span class="cursor-pointer ${generateCSSClass(
+                !isLiked,
+                'opacity-hover'
+              )} liked" data-video-id="${id}">👍</span>
+              <span class="cursor-pointer opacity-hover comment" data-video-id="${id}">💬</span>
+              <span class="cursor-pointer opacity-hover delete" data-video-id="${id}">🗑️</span>
             </div>
           `
             : ''
