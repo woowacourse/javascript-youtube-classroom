@@ -27,7 +27,60 @@ describe("youtube classroom 기능 테스트", () => {
       });
   });
 
+  it("like 버튼을 누르면, 좋아요 영상 목록에 추가된다.", () => {
+    cy.get("#watch-later-videos button[data-liked-button]")
+      .eq(0)
+      .click()
+      .then(() => {
+        cy.get("#watch-later-videos button[data-liked-button]")
+          .eq(0)
+          .should("not.have.class", "opacity-hover");
+      })
+      .then(([$clickedButton]) => {
+        return $clickedButton.dataset.likedButton;
+      })
+      .then((likedVideoId) => {
+        cy.get("#liked-view-button").click();
+        cy.get("#watch-later-videos").should("not.be.visible");
+        cy.get("#watched-videos").should("not.be.visible");
+
+        cy.get("#liked-videos button[data-liked-button]")
+          .eq(0)
+          .then(([$clickedButton]) => {
+            $clickedButton.dataset.likedButton === likedVideoId;
+          });
+      });
+  });
+
+  it("like 버튼을 다시 누르면, 좋아요 영상 목록에서 삭제된다.", () => {
+    cy.get("#liked-videos button[data-liked-button]")
+      .eq(0)
+      .click()
+      .then(() => {
+        cy.get("#not-liked").should("be.visible");
+      })
+      .then(([$clickedButton]) => {
+        return $clickedButton.dataset.likedButton;
+      })
+      .then((likedVideoId) => {
+        cy.get("#watch-later-view-button").click();
+        cy.get("#liked-videos").should("not.be.visible");
+        cy.get("#watched-videos").should("not.be.visible");
+
+        cy.get("#watch-later-videos button[data-liked-button]")
+          .eq(0)
+          .then(([$clickedButton]) => {
+            $clickedButton.dataset.likedButton === likedVideoId;
+          });
+
+        cy.get("#watch-later-videos button[data-liked-button]")
+          .eq(0)
+          .should("have.class", "opacity-hover");
+      });
+  });
+
   it("watch 버튼을 누르면, 본 영상에 추가된다.", () => {
+    cy.get("#watch-later-view-button").click();
     cy.get("#watch-later-videos button[data-watched-button]")
       .eq(0)
       .click()
