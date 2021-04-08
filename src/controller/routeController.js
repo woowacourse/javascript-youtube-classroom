@@ -2,7 +2,6 @@ import { BROWSER_HASH, EMPTY } from '../constants.js';
 import { savedVideoFilter } from '../store.js';
 import savedVideoController from './savedVideoController.js';
 import controllerUtil from './controllerUtil.js';
-
 import { layoutView } from '../view/index.js';
 
 const routeController = {

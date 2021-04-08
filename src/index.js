@@ -1,3 +1,5 @@
+import './assets/scss/index.scss';
+
 import routeController from './controller/routeController.js';
 import savedVideoController from './controller/savedVideoController.js';
 import searchModalController from './controller/searchModalController.js';

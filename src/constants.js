@@ -15,6 +15,7 @@ export const SELECTOR_ID = Object.freeze({
   SEARCH_QUERIES: 'search-queries',
   WATCHED_VIDEO_SWITCH_BUTTON: 'watched-video-switch-button',
   WATCHING_VIDEO_SWITCH_BUTTON: 'watching-video-switch-button',
+  LIKE_VIDEO_FILTER_CHECKBOX: 'like-video-filter-checkbox',
   SNACKBAR_WRAPPER: 'snackbar-wrapper',
 });
 
@@ -29,6 +30,7 @@ export const SELECTOR_CLASS = Object.freeze({
   SAVED_CLIP_UNCHECK_BUTTON: 'js-saved-clip__uncheck-button',
   SAVED_CLIP_DELETE_BUTTON: 'js-saved-clip__delete-button',
   SAVED_CLIP_LIKE_BUTTON: 'js-saved-clip__like-button',
+  SAVED_CLIP_CANCEL_LIKE_BUTTON: 'js-saved-clip__cancel-like-button',
 
   SNACKBAR: 'js-snackbar',
   NAV_BUTTON: 'js-nav__button',
@@ -75,6 +77,8 @@ export const SNACKBAR_MESSAGE = Object.freeze({
   VIDEO_UNCHECK_SUCCESS: '볼 영상으로 저장되었습니다.',
   VIDEO_DELETE_SUCCESS: '영상이 삭제되었습니다.',
   VIDEO_SAVE_SUCCESS: '볼 영상으로 저장되었습니다.',
+  VIDEO_LIKE_SUCCESS: '좋아요 영상으로 저장되었습니다.',
+  VIDEO_LIKE_CANCEL_SUCCESS: '영상의 좋아요를 취소하였습니다.',
   SAVE_LIMIT_EXCEEDED: `${SETTINGS.MAX_SAVE_COUNT}개 보다 많은 영상을 저장할 수 없습니다.`,
 });
 

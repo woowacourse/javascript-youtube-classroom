@@ -8,6 +8,11 @@
   cursor: pointer;
 }
 
+.btn-hover:hover {
+  transition: all 0.5s;
+  opacity: 0.5;
+}
+
 .clicked {
   background-color: rgb(179, 234, 242);
 }

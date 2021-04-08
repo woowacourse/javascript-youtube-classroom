@@ -27,9 +27,19 @@ const savedVideoService = {
     savedVideoModel.setItem(videos);
   },
   deleteVideo(videoId) {
-    console.log(videoId);
     const videos = savedVideoModel.getItem().filter(video => video.videoId !== videoId);
-    console.log(videos);
+    savedVideoModel.setItem(videos);
+  },
+  likeVideo(videoId) {
+    const videos = savedVideoModel.getItem();
+    const targetVideo = videos.find(video => video.videoId === videoId);
+    targetVideo.isLiked = true;
+    savedVideoModel.setItem(videos);
+  },
+  cancelVideoLike(videoId) {
+    const videos = savedVideoModel.getItem();
+    const targetVideo = videos.find(video => video.videoId === videoId);
+    targetVideo.isLiked = false;
     savedVideoModel.setItem(videos);
   },
   getIsSavedMarkedVideos(videos) {
@@ -62,10 +72,10 @@ function getLikedFilteredVideo(videos) {
     return videos;
   }
   if (savedVideoFilter.liked === FILTER_TYPE.FULFILLED_ONLY) {
-    return videos.filter(video => video.Liked === true);
+    return videos.filter(video => video.isLiked === true);
   }
   if (savedVideoFilter.liked === FILTER_TYPE.NOT_FULFILLED_ONLY) {
-    return videos.filter(video => video.Liked === false);
+    return videos.filter(video => video.isLiked === false);
   }
 }
 

@@ -80,8 +80,8 @@ export default class VideoView extends BasicView {
             >✅</span>
             <span 
               class="
-                ${SELECTOR_CLASS.SAVED_CLIP_LIKE_BUTTON}
-                clip__like-button
+                ${video.isLiked ? SELECTOR_CLASS.SAVED_CLIP_CANCEL_LIKE_BUTTON : SELECTOR_CLASS.SAVED_CLIP_LIKE_BUTTON}
+                clip__check-button
                 ${video.isLiked ? STYLE_CLASS.LIKED : ''} 
                 opacity-hover
               "
