@@ -66,11 +66,15 @@ export const showElement = (selector) => {
 };
 
 export const colorizeButton = (selector) => {
-  $(selector).classList.add('bg-cyan-100');
+  [...$all(selector)].forEach(($button) => {
+    $button.classList.add('bg-cyan-100');
+  });
 };
 
 export const uncolorizeButton = (selector) => {
-  $(selector).classList.remove('bg-cyan-100');
+  [...$all(selector)].forEach(($button) => {
+    $button.classList.remove('bg-cyan-100');
+  });
 };
 
 export const getVideoSaveButton = (id) => {

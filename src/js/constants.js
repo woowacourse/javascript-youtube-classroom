@@ -42,11 +42,12 @@ export const SELECTORS = {
     LIKE: '.like',
     COMMENT: '.comment',
     DELETE: '.delete',
-    TO_WATCH_LIST_BUTTON: '.to-watch-list-button',
+    TO_WATCH_LIST_BUTTON: '.toWatch-list-button',
     WATCHED_LIST_BUTTON: '.watched-list-button',
     LIKED_LIST_BUTTON: '.liked-list-button',
     SENTINEL: '.sentinel',
     MENU_LIST: '.menu-list',
+    ACTIVE_BUTTONS: '.active-btn',
   },
   ID: {
     SEARCH_BUTTON: '#search-button',

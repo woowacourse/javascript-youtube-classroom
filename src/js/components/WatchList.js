@@ -196,9 +196,7 @@ export default class WatchList extends Observer {
 
   handleShowToWatchList() {
     this.currentMenu = MENU.TO_WATCH;
-    colorizeButton(SELECTORS.CLASS.TO_WATCH_LIST_BUTTON);
-    uncolorizeButton(SELECTORS.CLASS.WATCHED_LIST_BUTTON);
-    uncolorizeButton(SELECTORS.CLASS.LIKED_LIST_BUTTON);
+    this.changeActiveButton(this.currentMenu);
 
     const { watchList } = this.store.get();
     this.showVideos(watchList, this.currentMenu);
@@ -206,9 +204,7 @@ export default class WatchList extends Observer {
 
   handleShowWatchedList() {
     this.currentMenu = MENU.WATCHED;
-    colorizeButton(SELECTORS.CLASS.WATCHED_LIST_BUTTON);
-    uncolorizeButton(SELECTORS.CLASS.TO_WATCH_LIST_BUTTON);
-    uncolorizeButton(SELECTORS.CLASS.LIKED_LIST_BUTTON);
+    this.changeActiveButton(this.currentMenu);
 
     const { watchList } = this.store.get();
     this.showVideos(watchList, this.currentMenu);
@@ -216,12 +212,15 @@ export default class WatchList extends Observer {
 
   handleShowLikedList() {
     this.currentMenu = MENU.LIKED;
-    colorizeButton(SELECTORS.CLASS.LIKED_LIST_BUTTON);
-    uncolorizeButton(SELECTORS.CLASS.WATCHED_LIST_BUTTON);
-    uncolorizeButton(SELECTORS.CLASS.TO_WATCH_LIST_BUTTON);
+    this.changeActiveButton(this.currentMenu);
 
     const { watchList } = this.store.get();
     this.showVideos(watchList, this.currentMenu);
+  }
+
+  changeActiveButton(currentMenu) {
+    uncolorizeButton(SELECTORS.CLASS.ACTIVE_BUTTONS);
+    colorizeButton(`.${currentMenu}-list-button`);
   }
 
   bindEvents() {
