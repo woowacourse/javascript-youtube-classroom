@@ -46,10 +46,12 @@ const searchModalController = {
 };
 
 function onModalOpen() {
+  searchModalView.openModal();
   if (searchedVideoService.isSearchedVideosEmpty()) {
     searchModalController.initSearchedVideos();
+    return;
   }
-  searchModalView.openModal();
+  searchModalController.renderModalContents();
 }
 
 function onModalClose() {
