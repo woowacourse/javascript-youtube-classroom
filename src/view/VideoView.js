@@ -45,6 +45,7 @@ export default class VideoView extends BasicView {
     return `
     <article class="${SELECTOR_CLASS.SAVED_CLIP} clip">
       <div class="clip__preview">
+        <img class="clip__thumbnail" src="${video.thumbnail}" loading="lazy" />
         <iframe
           width="100%"
           height="118"

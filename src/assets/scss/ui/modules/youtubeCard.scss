@@ -69,6 +69,23 @@
   opacity: 1;
 }
 
+.clip__thumbnail {
+  position: absolute;
+  top: 0;
+  z-index: -1;
+}
+
+.clip__thumbnail--in-modal {
+  position: absolute;
+  top: 0;
+  z-index: 3;
+}
+
+.clip__iframe {
+  position: relative;
+  z-index: 4;
+}
+
 @mixin youtube-card--desktop {
   .video-wrapper {
     grid-template-columns: repeat(5, 1fr);

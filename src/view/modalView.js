@@ -102,6 +102,7 @@ export default class ModalView extends BasicView {
     return `
     <article class="${SELECTOR_CLASS.SEARCHED_CLIP} clip">
       <div class="clip__preview">
+        <img class="clip__thumbnail--in-modal" src="${video.thumbnail}" loading="lazy" />
         <iframe
           width="100%"
           height="118"
@@ -110,6 +111,7 @@ export default class ModalView extends BasicView {
           allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
           allowfullscreen
           loading="lazy"
+          class="clip__iframe"
         ></iframe>
       </div>
       <div class="clip__content pt-2 px-1">
