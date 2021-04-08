@@ -12,7 +12,7 @@ import {
 } from '../utils.js';
 import { SELECTORS, LOCAL_STORAGE_KEYS, ALERT_MESSAGE, MENU } from '../constants.js';
 import { searchYoutubeById } from '../api.js';
-import { getVideoTemplate } from '../templates.js';
+import { getWatchListVideoTemplate } from '../templates.js';
 import Observer from '../lib/Observer.js';
 
 export default class WatchList extends Observer {
@@ -55,12 +55,10 @@ export default class WatchList extends Observer {
 
         const video = { id, title, channelId, channelTitle, dateString, thumbnail };
         const options = {
-          isContainingSaveButton: false,
-          isContainingMenu: true,
           isWatched: currentVideo.watched,
           isLiked: currentVideo.liked,
         };
-        const videoTemplate = getVideoTemplate(video, options);
+        const videoTemplate = getWatchListVideoTemplate(video, options);
 
         return videoTemplate;
       })

@@ -2,7 +2,7 @@ import { searchYoutube } from '../api.js';
 import { $, $all, showSnackbar, renderSkeletonUI, closeModal } from '../utils.js';
 import { ALERT_MESSAGE, SELECTORS, LOCAL_STORAGE_KEYS, SERACH_RESULT, SETTINGS } from '../constants.js';
 import {
-  getVideoTemplate,
+  getSearchVideoTemplate,
   getFormTemplate,
   getNoResultTemplate,
   getEmptySearchResultTemplate,
@@ -77,9 +77,9 @@ export default class YoutubeSearchManager extends Observer {
         });
 
         const video = { id, title, channelId, channelTitle, dateString, thumbnail };
-        const options = { isContainingSaveButton: true, isContainingMenu: false, isSaved };
+        const options = { isSaved };
 
-        return getVideoTemplate(video, options);
+        return getSearchVideoTemplate(video, options);
       })
       .join('');
   }
