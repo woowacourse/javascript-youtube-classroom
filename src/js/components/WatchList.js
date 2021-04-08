@@ -111,14 +111,15 @@ export default class WatchList extends Observer {
         this.list = [...this.list, ...items];
       }
 
-      this.showVideos(watchList, this.currentMenu);
+      const selectedVideoListIds = this.getSelectedVideoIds(watchList, this.currentMenu);
+      this.showVideos(selectedVideoListIds);
     } catch (error) {
       console.error(error);
       showSnackbar(error.message);
     }
   }
 
-  showVideos(watchList, currentMenu) {
+  getSelectedVideoIds(watchList, currentMenu) {
     const selectedVideoList = watchList.filter((item) => {
       if (currentMenu === MENU.LIKED) {
         return item.liked;
@@ -128,11 +129,14 @@ export default class WatchList extends Observer {
       }
       return !item.watched;
     });
-    const selectedVideoListIds = selectedVideoList.map((item) => item.videoId);
 
+    return selectedVideoList.map((item) => item.videoId);
+  }
+
+  showVideos(selectedVideoListIds) {
     clearElement(SELECTORS.CLASS.WATCH_LIST);
 
-    if (selectedVideoList.length) {
+    if (selectedVideoListIds.length) {
       hideElement(SELECTORS.CLASS.NO_VIDEO);
     } else {
       showElement(SELECTORS.CLASS.NO_VIDEO);
@@ -197,7 +201,8 @@ export default class WatchList extends Observer {
     this.changeActiveButton(this.currentMenu);
 
     const { watchList } = this.store.get();
-    this.showVideos(watchList, this.currentMenu);
+    const selectedVideoListIds = this.getSelectedVideoIds(watchList, this.currentMenu);
+    this.showVideos(selectedVideoListIds);
   }
 
   handleShowWatchedList() {
@@ -205,7 +210,8 @@ export default class WatchList extends Observer {
     this.changeActiveButton(this.currentMenu);
 
     const { watchList } = this.store.get();
-    this.showVideos(watchList, this.currentMenu);
+    const selectedVideoListIds = this.getSelectedVideoIds(watchList, this.currentMenu);
+    this.showVideos(selectedVideoListIds);
   }
 
   handleShowLikedList() {
@@ -213,7 +219,8 @@ export default class WatchList extends Observer {
     this.changeActiveButton(this.currentMenu);
 
     const { watchList } = this.store.get();
-    this.showVideos(watchList, this.currentMenu);
+    const selectedVideoListIds = this.getSelectedVideoIds(watchList, this.currentMenu);
+    this.showVideos(selectedVideoListIds);
   }
 
   changeActiveButton(currentMenu) {
