@@ -56,7 +56,7 @@ export default class VideoView extends BasicView {
           loading="lazy"
         ></iframe>
       </div>
-      <div class="clip__content pt-2 px-1">
+      <div class="clip__content py-2 px-4">
         <h3>${video.title}</h3>
         <div>
           <a

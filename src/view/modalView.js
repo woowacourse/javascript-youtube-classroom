@@ -101,7 +101,7 @@ export default class ModalView extends BasicView {
   #getSearchedVideoTemplate(video) {
     return `
     <article class="${SELECTOR_CLASS.SEARCHED_CLIP} clip">
-      <div class="clip__preview">
+      <div class="clip__preview ">
         <img class="clip__thumbnail--in-modal" src="${video.thumbnail}" loading="lazy" />
         <iframe
           width="100%"
