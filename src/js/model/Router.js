@@ -1,8 +1,10 @@
 import { $$ } from '../util/index.js';
+import { FILTER } from '../constants/index.js';
 
 const ROUTE_KEY = {
-  ['#unchecked']: false,
-  ['#checked']: true,
+  ['#watch']: FILTER.WATCH,
+  ['#watched']: FILTER.WATCHED,
+  ['#liked']: FILTER.LIKED,
 };
 
 export class Router {

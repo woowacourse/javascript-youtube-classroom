@@ -16,10 +16,11 @@
           <nav class="d-flex justify-center">
             <ul class="list-style-none d-flex p-0">
               <li>
-                <a href="./#unchecked" class="js-unchecked-video js-route-btn a-btn bg-cyan-100 mx-1">👁️ 볼 영상</a>
+                <a href="./#watch" class="js-unchecked-video js-route-btn a-btn bg-cyan-100 mx-1">👁️ 볼 영상</a>
               </li>
-              <li><a href="./#checked" class="js-checked-video js-route-btn a-btn mx-1">✅ 본 영상</a></li>
-              <li><button type="button" class="js-search-button btn ml-7">🔍 동영상 검색</button></li>
+              <li><a href="./#watched" class="js-checked-video js-route-btn a-btn mx-1">✅ 본 영상</a></li>
+              <li><a href="./#liked" class="js-like-video js-route-btn a-btn mx-1">👍 좋아요 영상</a></li>
+              <li><button type="button" class="js-search-button btn ml-5">🔍 동영상 검색</button></li>
             </ul>
           </nav>
           <main class="mt-10">
@@ -31,7 +32,7 @@
         </div>
       </div>
       <div class="js-search-video-modal modal" role="dialog" aria-labelledby="search-modal-title">
-        <div class="modal-inner p-8">
+        <div class="modal-inner p-5">
           <button type="button" class="js-search-modal-close-button modal-close">
             <svg viewbox="0 0 40 40">
               <path class="close-x" d="M 10,10 L 30,30 M 30,10 L 10,30" />
@@ -41,7 +42,13 @@
             <h2 id="search-modal-title" class="text-center">🔎 유튜브 검색</h2>
           </header>
           <form class="js-search-video-form d-flex">
-            <input type="search" class="js-search-input w-100 mr-2 pl-2" placeholder="검색" name="searchInput" required />
+            <input
+              type="search"
+              class="js-search-input w-100 mr-2 pl-2"
+              placeholder="검색"
+              name="searchInput"
+              required
+            />
             <button type="submit" class="js-search-submit btn bg-cyan-500">검색</button>
           </form>
           <section class="d-flex justify-between items-center mt-2">

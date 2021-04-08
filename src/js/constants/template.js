@@ -6,12 +6,13 @@ export const getVideoTemplate = ({ videoData, buttonTemplate }) => {
   const { kind, id, snippet } = videoData;
 
   return `
-      <article class="clip d-flex flex-col justify-between">
+      <article data-video-id="${id}" class="clip d-flex flex-col justify-between">
         <div class="content-container">
           <div class="preview-container">
             <iframe
               width="100%"
               height="118"
+              loading="lazy"
               src="https://www.youtube.com/embed/${kind === searchKind ? id.videoId : id}"
               frameborder="0"
               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
