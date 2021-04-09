@@ -44,3 +44,20 @@ const SEARCH_VIDEO_TEMPLATE = GENERATE_TEMPLATE(SAVED_VIDEO_BUTTON_TEMPLATE);
 const MAIN_VIDEO_TEMPLATE = GENERATE_TEMPLATE(MAIN_ICONS_TEMPLATE);
 
 export { SEARCH_VIDEO_TEMPLATE, MAIN_VIDEO_TEMPLATE };
+
+const $mainVideoTemplateWrapper = document.createElement("div");
+$mainVideoTemplateWrapper.innerHTML = GENERATE_TEMPLATE(MAIN_ICONS_TEMPLATE);
+const $mainVideoTemplateElement = $mainVideoTemplateWrapper.firstElementChild;
+
+export const getMainVideoTemplateElement = () =>
+  $mainVideoTemplateElement.cloneNode(true);
+
+const $searchVideoTemplateWrapper = document.createElement("div");
+$searchVideoTemplateWrapper.innerHTML = GENERATE_TEMPLATE(
+  SAVED_VIDEO_BUTTON_TEMPLATE
+);
+const $searchVideoTemplateElement =
+  $searchVideoTemplateWrapper.firstElementChild;
+
+export const getSearchVideoTemplateElement = () =>
+  $searchVideoTemplateElement.cloneNode(true);
