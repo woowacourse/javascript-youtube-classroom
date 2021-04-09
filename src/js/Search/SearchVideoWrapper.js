@@ -16,8 +16,6 @@ export default class SearchVideoWrapper {
 
   #$searchVideoWrapper = $(`.${CLASSNAME.SEARCH_VIDEO_WRAPPER}`);
 
-  #$notFoundImg = $(`.${CLASSNAME.NOT_FOUND_IMAGE}`);
-
   constructor() {
     this.#addMessageListeners();
     this.#addEventListeners();
@@ -27,9 +25,7 @@ export default class SearchVideoWrapper {
     messenger.addMessageListener(MESSAGE.KEYWORD_SUBMITTED, ({ query }) => {
       this.#currentQuery = query;
 
-      $.hide(this.#$notFoundImg);
       $.clear(this.#$searchVideoWrapper);
-
       this.#mountTemplate();
       this.#$searchVideoWrapper.scrollTo({ top: 0 });
     });
@@ -37,13 +33,6 @@ export default class SearchVideoWrapper {
     messenger.addMessageListener(
       MESSAGE.DATA_LOADED,
       ({ nextPageToken, items }) => {
-        if (items.length === 0) {
-          $.clear(this.#$searchVideoWrapper);
-          $.show(this.#$notFoundImg);
-
-          return;
-        }
-
         this.#currentNextPageToken = nextPageToken;
 
         this.#attachData(items);

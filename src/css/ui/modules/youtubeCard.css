@@ -21,7 +21,16 @@
 
 .modal-inner .video-wrapper {
   overflow-y: auto;
+  width: 100%;
   height: 65vh;
+}
+
+.modal-inner .video-wrapper:empty {
+  display: none;
+}
+
+.modal-inner .video-wrapper:empty + img {
+  display: inline-block;
 }
 
 .clip {
