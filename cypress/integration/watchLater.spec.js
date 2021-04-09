@@ -52,7 +52,7 @@ describe("볼 영상 화면을 테스트한다.", () => {
     const keyword = "주주주";
     search(keyword);
 
-    let savedVideoId;
+    let savedVideoId = null;
 
     cy.get(`.${CLASSNAME.SAVE_VIDEO_BUTTON}`)
       .first()
