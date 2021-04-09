@@ -13,7 +13,11 @@
     }
   },
   "rules": {
-    "import/extensions": ["error", "always"]
+    "import/extensions": ["error", "always"],
+    "no-underscore-dangle": [
+      "error",
+      { "allowAfterThis": true, "allowAfterSuper": true }
+    ]
   },
   "plugins": ["cypress"],
   "ignorePatterns": [

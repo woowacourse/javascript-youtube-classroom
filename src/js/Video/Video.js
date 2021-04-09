@@ -1,7 +1,5 @@
 import { CLASSNAME } from "../constants/index.js";
 import { $ } from "../utils/index.js";
-import { messenger, MESSAGE } from "../messenger/index.js";
-import { getSearchVideoTemplateElement } from "./template.js";
 
 export default class Video {
   static #DOMAIN = "https://www.youtube.com";
@@ -14,44 +12,44 @@ export default class Video {
     });
   }
 
-  #$parent = null;
+  _$parent = null;
 
-  #$video = null;
+  _$video = null;
 
-  #item = [];
+  _item = [];
 
   constructor($parent) {
     if (!($parent instanceof HTMLElement)) {
       throw new Error("Invalid parent Element", $parent);
     }
-
-    this.#$parent = $parent;
-    this.#mountTemplate();
+    this._$parent = $parent;
+    this._mountTemplate();
   }
 
-  #mountTemplate(position = "beforeEnd") {
-    this.#$video = getSearchVideoTemplateElement();
-    this.#$parent.insertAdjacentElement(position, this.#$video);
+  // eslint-disable-next-line class-methods-use-this
+  _mountTemplate() {
+    throw new Error("mountTemplate은 각 하위 class에서 정의하여야 합니다.");
   }
 
   attachData(item) {
-    this.#item = item;
+    this._item = item;
 
     const {
       id: { videoId },
       snippet: { title, channelId, channelTitle, publishedAt },
     } = item;
 
-    const $iframe = this.#$video.querySelector(`.${CLASSNAME.VIDEO_ID}`);
-    const $videoTitle = this.#$video.querySelector(`.${CLASSNAME.VIDEO_TITLE}`);
-    const $channelTitle = this.#$video.querySelector(
+    const $iframe = this._$video.querySelector(`.${CLASSNAME.VIDEO_ID}`);
+    const $videoTitle = this._$video.querySelector(`.${CLASSNAME.VIDEO_TITLE}`);
+    const $channelTitle = this._$video.querySelector(
       `.${CLASSNAME.CHANNEL_TITLE}`
     );
-    const $publishedAt = this.#$video.querySelector(
+    const $publishedAt = this._$video.querySelector(
       `.${CLASSNAME.PUBLISHED_AT}`
     );
 
-    this.#$video.dataset.videoId = videoId;
+    this._videoId = videoId;
+    this._$video.dataset.videoId = videoId;
 
     $iframe.src = `${Video.#DOMAIN}/embed/${videoId}`;
 
@@ -61,33 +59,21 @@ export default class Video {
     $channelTitle.innerText = channelTitle;
 
     $publishedAt.innerText = Video.#getPublishedAtLocaleString(publishedAt);
+  }
 
-    // SearchVideo Only
-    const $saveVideoButton = this.#$video.querySelector(
-      `.${CLASSNAME.SAVE_VIDEO_BUTTON}`
-    );
-    const $cancelVideoButton = this.#$video.querySelector(
-      `.${CLASSNAME.CANCEL_VIDEO_BUTTON}`
-    );
-
-    $cancelVideoButton.dataset.videoId = videoId;
-    $saveVideoButton.dataset.videoId = videoId;
-
-    messenger.deliverMessage(MESSAGE.HIDE_IF_VIDEO_IS_SAVED, {
-      videoId,
-      hide: this.addSavedClass.bind(this),
-    });
-
-    // Remove Skeleton Effect
-
-    this.#$video.classList.remove(CLASSNAME.SKELETON);
+  removeSkeletonEffect() {
+    this._$video.classList.remove(CLASSNAME.SKELETON);
   }
 
   addSavedClass() {
-    $.addClass(this.#$video, CLASSNAME.SAVED);
+    $.addClass(this._$video, CLASSNAME.SAVED);
   }
 
   removeSavedClass() {
-    $.removeClass(this.#$video, CLASSNAME.SAVED);
+    $.removeClass(this._$video, CLASSNAME.SAVED);
+  }
+
+  remove() {
+    this._$video.remove();
   }
 }

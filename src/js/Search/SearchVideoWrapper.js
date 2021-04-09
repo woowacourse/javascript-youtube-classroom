@@ -6,7 +6,7 @@ import {
   showModalSnackbar,
   showSnackbar,
 } from "../utils/index.js";
-import { Video } from "../Video/index.js";
+import { SearchVideo } from "../Video/index.js";
 
 export default class SearchVideoWrapper {
   #currentQuery = "";
@@ -50,7 +50,7 @@ export default class SearchVideoWrapper {
     );
 
     this.#$searchVideoWrapper.addEventListener(
-      "click",
+      "mouseup",
       this.#handleSearchVideoWrapperClick.bind(this)
     );
   }
@@ -71,7 +71,7 @@ export default class SearchVideoWrapper {
 
   #handleSavedVideoDelete({ videoId }) {
     const video = this.#videosMap.get(videoId);
-    video.removeSavedClass();
+    video?.removeSavedClass();
   }
 
   #handlePageScroll() {
@@ -122,7 +122,6 @@ export default class SearchVideoWrapper {
         video.addSavedClass();
         showModalSnackbar(SNACKBAR_TEXT.VIDEO_SAVED);
       },
-
       reject: showModalSnackbar.bind(null, SNACKBAR_TEXT.REACHED_MAX_COUNT),
       videoId,
       item,
@@ -137,7 +136,7 @@ export default class SearchVideoWrapper {
       videoId,
       item,
     });
-    video.removeSavedMode();
+    video.removeSavedClass();
     showModalSnackbar(SNACKBAR_TEXT.CANCELED_VIDEO_SAVE);
   }
 
@@ -152,7 +151,7 @@ export default class SearchVideoWrapper {
   #mountTemplate() {
     this.skeletonVideos = Array.from(
       { length: NUMBER.MAX_RESULTS_COUNT },
-      () => new Video(this.#$searchVideoWrapper)
+      () => new SearchVideo(this.#$searchVideoWrapper)
     );
   }
 

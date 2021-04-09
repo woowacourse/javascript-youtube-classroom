@@ -1,7 +1,7 @@
-import { CLASSNAME } from "../constants/index.js";
+import { CLASSNAME, VIDEO_TYPE } from "../constants/index.js";
 
 const GENERATE_TEMPLATE = (buttonTemplate) => `
-<article class="clip ${CLASSNAME.SKELETON}">
+<article class="clip ${CLASSNAME.SKELETON} ${VIDEO_TYPE.WATCH_LATER}">
   <div class="preview-container">
   <iframe
     class="image ${CLASSNAME.VIDEO_ID}"
@@ -40,11 +40,6 @@ const MAIN_ICONS_TEMPLATE = `
   <span class="${CLASSNAME.COMMENT_ICON} icon opacity-hover">💬</span>
   <span class="${CLASSNAME.DELETE_ICON} icon opacity-hover">🗑️</span>
 </div>`;
-
-const SEARCH_VIDEO_TEMPLATE = GENERATE_TEMPLATE(SAVED_VIDEO_BUTTON_TEMPLATE);
-const MAIN_VIDEO_TEMPLATE = GENERATE_TEMPLATE(MAIN_ICONS_TEMPLATE);
-
-export { SEARCH_VIDEO_TEMPLATE, MAIN_VIDEO_TEMPLATE };
 
 const $mainVideoTemplateWrapper = document.createElement("div");
 $mainVideoTemplateWrapper.innerHTML = GENERATE_TEMPLATE(MAIN_ICONS_TEMPLATE);
