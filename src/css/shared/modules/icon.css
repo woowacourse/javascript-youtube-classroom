@@ -25,3 +25,11 @@
 .js-icons-wrapper .move-to-watch-later-icon:hover {
   background-color: var(--orange);
 }
+
+.opacity-hover {
+  opacity: 0.3;
+}
+
+.opacity-hover:hover {
+  opacity: 1;
+}

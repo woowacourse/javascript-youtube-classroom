@@ -29,7 +29,7 @@ const CLASSNAME = Object.freeze({
   SAVE_VIDEO_BUTTON: "js-save-video-button",
   SKELETON: "skeleton",
   OPEN: "open",
-  HIDDEN: "--hidden",
+  HIDDEN: "d-none",
   CANCEL: "cancel",
   BG_CYAN_100: "bg-cyan-100",
   ICONS_WRAPPER: "js-icons-wrapper",
