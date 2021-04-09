@@ -33,6 +33,7 @@ const CLASSNAME = Object.freeze({
   CANCEL: "cancel",
   BG_CYAN_100: "bg-cyan-100",
   ICONS_WRAPPER: "js-icons-wrapper",
+  ICON: "icon",
   MOVE_TO_HISTORY_ICON: "js-move-to-history-icon",
   MOVE_TO_WATCH_LATER_ICON: "js-move-to-move-to-watch-later-icon",
   LIKE_ICON: "js-like-icon",

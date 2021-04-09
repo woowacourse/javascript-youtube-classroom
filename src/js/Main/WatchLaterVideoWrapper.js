@@ -72,26 +72,30 @@ export default class WatchLaterVideoWrapper {
   }
 
   handleVideoWrapperClick(event) {
+    if (!$.containsClass(event.target, CLASSNAME.ICON)) {
+      return;
+    }
+
     const $icon = event.target;
     const $iconsWrapper = $icon.closest(`.${CLASSNAME.ICONS_WRAPPER}`);
     const { videoId } = $iconsWrapper.dataset;
 
-    if ($icon.classList.contains(CLASSNAME.MOVE_TO_HISTORY_ICON)) {
+    if ($.containsClass($icon, CLASSNAME.MOVE_TO_HISTORY_ICON)) {
       this.handleMoveToHistoryIconClick(videoId);
       return;
     }
 
-    if ($icon.classList.contains(CLASSNAME.MOVE_TO_WATCH_LATER_ICON)) {
+    if ($.containsClass($icon, CLASSNAME.MOVE_TO_WATCH_LATER_ICON)) {
       this.handleMoveToWatchLaterIconClick(videoId);
       return;
     }
 
-    if ($icon.classList.contains(CLASSNAME.LIKE_ICON)) {
+    if ($.containsClass($icon, CLASSNAME.LIKE_ICON)) {
       this.handleLikeIconClick(videoId);
       return;
     }
 
-    if ($icon.classList.contains(CLASSNAME.DELETE_ICON)) {
+    if ($.containsClass($icon, CLASSNAME.DELETE_ICON)) {
       this.handleDeleteIconClick(videoId);
     }
   }
@@ -149,12 +153,17 @@ export default class WatchLaterVideoWrapper {
   }
 
   saveVideo({ videoId, item }) {
-    this.watchLaterVideoItemsMap.set(videoId, {
+    const newItem = {
       ...item,
       videoType: VIDEO_TYPE.WATCH_LATER,
-    });
+    };
+    this.watchLaterVideoItemsMap.set(videoId, newItem);
     this.updateLocalStorage();
-    this.mountTemplate({ videoId, item });
+
+    this.mountTemplate({
+      videoId,
+      item: newItem,
+    });
   }
 
   moveVideo({ videoId }) {
