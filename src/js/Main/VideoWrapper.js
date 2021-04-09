@@ -9,69 +9,59 @@ import { messenger, MESSAGE } from "../messenger/index.js";
 import { MAIN_VIDEO_TEMPLATE, renderMainVideo } from "../Video/index.js";
 
 export default class VideoWrapper {
+  #videoItemsMap = new Map(
+    JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEY.WATCH_LATER_VIDEO_ITEMS))
+  );
+
+  #videosMap = new Map();
+
+  #observer = new IntersectionObserver(this.#observerCallback.bind(this));
+
+  #$noSavedVideoImage = $(`.${CLASSNAME.NO_WATCHING_VIDEO_IMAGE}`);
+
+  #$watchLaterVideoWrapper = $(`.${CLASSNAME.MAIN_VIDEO_WRAPPER}`);
+
   constructor() {
-    this.initializeVariables();
-    this.selectHTMLElements();
-    this.addMessageListeners();
-    this.addEventListeners();
-    this.render();
+    this.#addMessageListeners();
+    this.#addEventListeners();
+    this.#render();
   }
 
-  initializeVariables() {
-    this.videoItemsMap = new Map(
-      JSON.parse(
-        localStorage.getItem(LOCAL_STORAGE_KEY.WATCH_LATER_VIDEO_ITEMS)
-      )
-    );
+  #observerCallback(entries) {
+    entries.forEach((entry) => {
+      if (!entry.isIntersecting) {
+        return;
+      }
 
-    this.videosMap = new Map();
-
-    this.observer = new IntersectionObserver((entries) => {
-      entries.forEach((entry) => {
-        if (!entry.isIntersecting) {
-          return;
-        }
-
-        this.attachData(entry.target);
-      });
+      this.#attachData(entry.target);
     });
   }
 
-  attachData($video) {
-    const { videoId } = $video.dataset;
-    const item = this.videoItemsMap.get(videoId);
-    if ($video.classList.contains(CLASSNAME.SKELETON)) {
-      renderMainVideo($video, item);
-    }
-  }
-
-  selectHTMLElements() {
-    this.$noSavedVideoImage = $(`.${CLASSNAME.NO_WATCHING_VIDEO_IMAGE}`);
-    this.$watchLaterVideoWrapper = $(`.${CLASSNAME.MAIN_VIDEO_WRAPPER}`);
-  }
-
-  addMessageListeners() {
-    messenger.addMessageListener(MESSAGE.SAVE_VIDEO, this.saveVideo.bind(this));
+  #addMessageListeners() {
+    messenger.addMessageListener(
+      MESSAGE.SAVE_VIDEO,
+      this.#saveVideo.bind(this)
+    );
 
     messenger.addMessageListener(
       MESSAGE.CANCEL_VIDEO_BUTTON_CLICKED,
-      this.deleteVideo.bind(this)
+      this.#deleteVideo.bind(this)
     );
 
     messenger.addMessageListener(
       MESSAGE.HIDE_IF_VIDEO_IS_SAVED,
-      this.hideIfVideoIsSaved.bind(this)
+      this.#hideIfVideoIsSaved.bind(this)
     );
   }
 
-  addEventListeners() {
-    this.$watchLaterVideoWrapper.addEventListener(
+  #addEventListeners() {
+    this.#$watchLaterVideoWrapper.addEventListener(
       "click",
-      this.handleVideoWrapperClick.bind(this)
+      this.#handleVideoWrapperClick.bind(this)
     );
   }
 
-  handleVideoWrapperClick(event) {
+  #handleVideoWrapperClick(event) {
     if (!$.containsClass(event.target, CLASSNAME.ICON)) {
       return;
     }
@@ -81,35 +71,35 @@ export default class VideoWrapper {
     const { videoId } = $iconsWrapper.dataset;
 
     if ($.containsClass($icon, CLASSNAME.MOVE_TO_HISTORY_ICON)) {
-      this.handleMoveToHistoryIconClick(videoId);
+      this.#handleMoveToHistoryIconClick(videoId);
       return;
     }
 
     if ($.containsClass($icon, CLASSNAME.MOVE_TO_WATCH_LATER_ICON)) {
-      this.handleMoveToWatchLaterIconClick(videoId);
+      this.#handleMoveToWatchLaterIconClick(videoId);
       return;
     }
 
     if ($.containsClass($icon, CLASSNAME.LIKE_ICON)) {
-      this.handleLikeIconClick(videoId);
+      this.#handleLikeIconClick(videoId);
       return;
     }
 
     if ($.containsClass($icon, CLASSNAME.DELETE_ICON)) {
-      this.handleDeleteIconClick(videoId);
+      this.#handleDeleteIconClick(videoId);
     }
   }
 
-  handleMoveToHistoryIconClick(videoId) {
-    const item = this.videoItemsMap.get(videoId);
-    this.changeVideoType({ videoId, item, nextVideoType: VIDEO_TYPE.HISTORY });
+  #handleMoveToHistoryIconClick(videoId) {
+    const item = this.#videoItemsMap.get(videoId);
+    this.#changeVideoType({ videoId, item, nextVideoType: VIDEO_TYPE.HISTORY });
 
     showSnackbar(SNACKBAR_TEXT.MOVED_TO_HISTORY_VIDEO);
   }
 
-  handleMoveToWatchLaterIconClick(videoId) {
-    const item = this.videoItemsMap.get(videoId);
-    this.changeVideoType({
+  #handleMoveToWatchLaterIconClick(videoId) {
+    const item = this.#videoItemsMap.get(videoId);
+    this.#changeVideoType({
       videoId,
       item,
       nextVideoType: VIDEO_TYPE.WATCH_LATER,
@@ -118,8 +108,8 @@ export default class VideoWrapper {
     showSnackbar(SNACKBAR_TEXT.MOVED_TO_WATCH_LATER_VIDEO);
   }
 
-  handleLikeIconClick(videoId) {
-    const $video = this.videosMap.get(videoId);
+  #handleLikeIconClick(videoId) {
+    const $video = this.#videosMap.get(videoId);
 
     $.toggleClass($video, "like");
     showSnackbar(
@@ -129,109 +119,108 @@ export default class VideoWrapper {
     );
   }
 
-  handleDeleteIconClick(videoId) {
+  #handleDeleteIconClick(videoId) {
     // eslint-disable-next-line no-alert
     if (!window.confirm("정말 삭제하시겠습니까?")) {
       return;
     }
-    this.deleteVideo({ videoId });
+    this.#deleteVideo({ videoId });
     messenger.deliverMessage(MESSAGE.SAVED_VIDEO_DELETED, { videoId });
     showSnackbar(SNACKBAR_TEXT.VIDEO_DELETED);
   }
 
-  changeVideoType({ videoId, item, nextVideoType }) {
-    this.videoItemsMap.set(videoId, {
+  #changeVideoType({ videoId, item, nextVideoType }) {
+    this.#videoItemsMap.set(videoId, {
       ...item,
       videoType: nextVideoType,
     });
-    this.updateLocalStorage();
+    this.#updateLocalStorage();
 
-    const $video = this.videosMap.get(videoId);
+    const $video = this.#videosMap.get(videoId);
 
     Object.values(VIDEO_TYPE).forEach((type) => $.removeClass($video, type));
     $.addClass($video, nextVideoType);
   }
 
-  saveVideo({ videoId, item }) {
+  #saveVideo({ videoId, item }) {
     const newItem = {
       ...item,
       videoType: VIDEO_TYPE.WATCH_LATER,
     };
-    this.videoItemsMap.set(videoId, newItem);
-    this.updateLocalStorage();
+    this.#videoItemsMap.set(videoId, newItem);
+    this.#updateLocalStorage();
 
-    this.mountTemplate({
+    this.#mountTemplate({
       videoId,
       item: newItem,
     });
   }
 
-  moveVideo({ videoId }) {
-    messenger.deliverMessage(MESSAGE.MOVE_TO_HISTORY_ICON_CLICKED, {
-      videoId,
-      item: this.videoItemsMap.get(videoId),
-    });
-
-    this.removeVideo({ videoId });
-  }
-
-  deleteVideo({ videoId }) {
-    if (!this.videoItemsMap.has(videoId)) {
+  #deleteVideo({ videoId }) {
+    if (!this.#videoItemsMap.has(videoId)) {
       return;
     }
 
-    this.removeVideo({ videoId });
+    this.#removeVideo({ videoId });
   }
 
-  removeVideo({ videoId }) {
-    this.videoItemsMap.delete(videoId);
-    this.videosMap.get(videoId).remove();
-    this.videosMap.delete(videoId);
-    this.updateLocalStorage();
-    this.render();
+  #removeVideo({ videoId }) {
+    this.#videoItemsMap.delete(videoId);
+    this.#videosMap.get(videoId).remove();
+    this.#videosMap.delete(videoId);
+    this.#updateLocalStorage();
+    this.#render();
   }
 
-  updateLocalStorage() {
+  #updateLocalStorage() {
     localStorage.setItem(
       LOCAL_STORAGE_KEY.WATCH_LATER_VIDEO_ITEMS,
-      JSON.stringify(this.videoItemsMap, (key, value) =>
+      JSON.stringify(this.#videoItemsMap, (key, value) =>
         value instanceof Map ? Array.from(value) : value
       )
     );
   }
 
-  hideIfVideoIsSaved({ videoId, hide }) {
-    if (this.videoItemsMap.has(videoId)) {
-      hide();
-    }
-  }
-
-  render() {
-    if (this.videoItemsMap.size === 0) {
-      $.show(this.$noSavedVideoImage);
+  #render() {
+    if (this.#videoItemsMap.size === 0) {
+      $.show(this.#$noSavedVideoImage);
       return;
     }
 
-    this.videoItemsMap.forEach((item, videoId) =>
-      this.mountTemplate({ videoId, item })
+    this.#videoItemsMap.forEach((item, videoId) =>
+      this.#mountTemplate({ videoId, item })
     );
   }
 
-  mountTemplate({ videoId, item }) {
-    $.hide(this.$noSavedVideoImage);
+  #mountTemplate({ videoId, item }) {
+    $.hide(this.#$noSavedVideoImage);
 
-    this.$watchLaterVideoWrapper.insertAdjacentHTML(
+    this.#$watchLaterVideoWrapper.insertAdjacentHTML(
       "afterBegin",
       MAIN_VIDEO_TEMPLATE
     );
 
-    const [$video] = this.$watchLaterVideoWrapper.children;
+    const [$video] = this.#$watchLaterVideoWrapper.children;
     const { videoType } = item;
     $video.dataset.videoId = videoId;
 
     $.addClass($video, videoType);
 
-    this.videosMap.set(videoId, $video);
-    this.observer.observe($video);
+    this.#videosMap.set(videoId, $video);
+    this.#observer.observe($video);
+  }
+
+  #attachData($video) {
+    const { videoId } = $video.dataset;
+    const item = this.#videoItemsMap.get(videoId);
+    if ($video.classList.contains(CLASSNAME.SKELETON)) {
+      renderMainVideo($video, item);
+    }
+  }
+
+  #hideIfVideoIsSaved({ videoId, hide }) {
+    if (this.#videoItemsMap.has(videoId)) {
+      hide();
+    }
   }
 }
