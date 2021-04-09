@@ -1,7 +1,7 @@
 /* eslint-disable class-methods-use-this */
 import { CLASSNAME } from "./constants/index.js";
 import { $ } from "./utils/index.js";
-import { WatchLaterContainer, HistoryContainer } from "./Main/Container.js";
+import MainContainer from "./Main/Container.js";
 import SearchContainer from "./Search/SearchContainer.js";
 
 export default class App {
@@ -12,8 +12,7 @@ export default class App {
   }
 
   initializeVariables() {
-    this.watchLaterContainer = new WatchLaterContainer();
-    this.historyContainer = new HistoryContainer();
+    this.watchLaterContainer = new MainContainer();
     this.searchContainer = new SearchContainer();
   }
 
@@ -22,20 +21,26 @@ export default class App {
     this.$historyTabButton = $(`.${CLASSNAME.HISTORY_TAB}`);
     this.$searchTabButton = $(`.${CLASSNAME.SEARCH_TAB}`);
     this.$likeTabButton = $(`.${CLASSNAME.LIKE_TAB}`);
+    this.$watchLaterContainer = $(`.${CLASSNAME.WATCH_LATER_CONTAINER}`);
     this.$watchLaterVideoWrapper = $(`.${CLASSNAME.WATCH_LATER_VIDEO_WRAPPER}`);
-    this.$historyVideoWrapper = $(`.${CLASSNAME.HISTORY_VIDEO_WRAPPER}`);
   }
 
   addEventListeners() {
-    this.$watchLaterTabButton.addEventListener(
-      "click",
-      this.showWatchLaterOnly.bind(this)
-    );
+    this.$watchLaterTabButton.addEventListener("click", () => {
+      this.activateTabButton(this.$watchLaterTabButton);
+      this.deactivateTabButton(this.$historyTabButton);
 
-    this.$historyTabButton.addEventListener(
-      "click",
-      this.showHistoryOnly.bind(this)
-    );
+      $.addClass(this.$watchLaterContainer, "watch-later-container");
+      $.removeClass(this.$watchLaterContainer, "history-container");
+    });
+
+    this.$historyTabButton.addEventListener("click", () => {
+      this.activateTabButton(this.$historyTabButton);
+      this.deactivateTabButton(this.$watchLaterTabButton);
+
+      $.addClass(this.$watchLaterContainer, "history-container");
+      $.removeClass(this.$watchLaterContainer, "watch-later-container");
+    });
 
     this.$searchTabButton.addEventListener(
       "click",
@@ -51,23 +56,6 @@ export default class App {
   toggleLikeMode() {
     $.toggleClass(this.$likeTabButton, "active");
     $.toggleClass(this.$watchLaterVideoWrapper, CLASSNAME.LIKE_MODE);
-    $.toggleClass(this.$historyVideoWrapper, CLASSNAME.LIKE_MODE);
-  }
-
-  showWatchLaterOnly() {
-    this.watchLaterContainer.show();
-    this.activateTabButton(this.$watchLaterTabButton);
-
-    this.historyContainer.hide();
-    this.deactivateTabButton(this.$historyTabButton);
-  }
-
-  showHistoryOnly() {
-    this.watchLaterContainer.hide();
-    this.deactivateTabButton(this.$watchLaterTabButton);
-
-    this.historyContainer.show();
-    this.activateTabButton(this.$historyTabButton);
   }
 
   activateTabButton($tabButton) {
