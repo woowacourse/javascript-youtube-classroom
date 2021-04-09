@@ -1,8 +1,11 @@
-/* eslint-disable class-methods-use-this */
-/* eslint-disable no-param-reassign */
 import { CLASSNAME, NUMBER, SNACKBAR_TEXT } from "../constants/index.js";
 import { messenger, MESSAGE } from "../messenger/index.js";
-import { $, fetchYoutubeData, showModalSnackbar } from "../utils/index.js";
+import {
+  $,
+  fetchYoutubeData,
+  showModalSnackbar,
+  showSnackbar,
+} from "../utils/index.js";
 import { Video } from "../Video/index.js";
 
 export default class SearchVideoWrapper {
@@ -24,27 +27,20 @@ export default class SearchVideoWrapper {
   }
 
   #addMessageListeners() {
-    messenger.addMessageListener(MESSAGE.KEYWORD_SUBMITTED, ({ query }) => {
-      this.#currentQuery = query;
-
-      $.clear(this.#$searchVideoWrapper);
-      this.#mountTemplate();
-      this.#$searchVideoWrapper.scrollTo({ top: 0 });
-    });
+    messenger.addMessageListener(
+      MESSAGE.KEYWORD_SUBMITTED,
+      this.#handleKeywordSubmit.bind(this)
+    );
 
     messenger.addMessageListener(
       MESSAGE.DATA_LOADED,
-      ({ nextPageToken, items }) => {
-        this.#currentNextPageToken = nextPageToken;
-
-        this.#attachData(items);
-      }
+      this.#handleDataLoad.bind(this)
     );
 
-    messenger.addMessageListener(MESSAGE.SAVED_VIDEO_DELETED, ({ videoId }) => {
-      const video = this.#videosMap.get(videoId);
-      video.removeSavedClass();
-    });
+    messenger.addMessageListener(
+      MESSAGE.SAVED_VIDEO_DELETED,
+      this.#handleSavedVideoDelete.bind(this)
+    );
   }
 
   #addEventListeners() {
@@ -53,23 +49,68 @@ export default class SearchVideoWrapper {
       this.#handlePageScroll.bind(this)
     );
 
-    this.#$searchVideoWrapper.addEventListener("click", (event) => {
-      if (!event.target.classList.contains(CLASSNAME.BUTTON)) {
-        return;
-      }
+    this.#$searchVideoWrapper.addEventListener(
+      "click",
+      this.#handleSearchVideoWrapperClick.bind(this)
+    );
+  }
 
-      const $button = event.target;
-      const { videoId } = $button.dataset;
+  #handleKeywordSubmit({ query }) {
+    this.#currentQuery = query;
 
-      if ($.containsClass($button, CLASSNAME.SAVE_VIDEO_BUTTON)) {
-        this.#handleSaveVideoButtonClick(videoId);
-        return;
-      }
+    $.clear(this.#$searchVideoWrapper);
+    this.#mountTemplate();
+    this.#$searchVideoWrapper.scrollTo({ top: 0 });
+  }
 
-      if ($.containsClass($button, CLASSNAME.CANCEL_VIDEO_BUTTON)) {
-        this.#handleCancelVideoButtonClick(videoId);
+  #handleDataLoad({ nextPageToken, items }) {
+    this.#currentNextPageToken = nextPageToken;
+
+    this.#attachData(items);
+  }
+
+  #handleSavedVideoDelete({ videoId }) {
+    const video = this.#videosMap.get(videoId);
+    video.removeSavedClass();
+  }
+
+  #handlePageScroll() {
+    if (this.#throttle || this.#isOverScrollEventThreshold()) return;
+
+    this.#throttle = setTimeout(async () => {
+      try {
+        this.#mountTemplate();
+        const { nextPageToken, items } = await fetchYoutubeData(
+          this.#currentQuery,
+          this.#currentNextPageToken
+        );
+        this.#currentNextPageToken = nextPageToken;
+        this.#attachData(items);
+      } catch (error) {
+        showSnackbar(error.message);
+        this.#attachData([]);
+      } finally {
+        this.#throttle = null;
       }
-    });
+    }, 0);
+  }
+
+  #handleSearchVideoWrapperClick(event) {
+    if (!event.target.classList.contains(CLASSNAME.BUTTON)) {
+      return;
+    }
+
+    const $button = event.target;
+    const { videoId } = $button.dataset;
+
+    if ($.containsClass($button, CLASSNAME.SAVE_VIDEO_BUTTON)) {
+      this.#handleSaveVideoButtonClick(videoId);
+      return;
+    }
+
+    if ($.containsClass($button, CLASSNAME.CANCEL_VIDEO_BUTTON)) {
+      this.#handleCancelVideoButtonClick(videoId);
+    }
   }
 
   #handleSaveVideoButtonClick(videoId) {
@@ -100,29 +141,12 @@ export default class SearchVideoWrapper {
     showModalSnackbar(SNACKBAR_TEXT.CANCELED_VIDEO_SAVE);
   }
 
-  #handlePageScroll() {
-    if (this.#throttle) return;
-
+  #isOverScrollEventThreshold() {
     const { scrollTop, clientHeight, scrollHeight } = this.#$searchVideoWrapper;
 
-    if (
-      scrollTop + clientHeight <=
-      scrollHeight * NUMBER.SCROLL_EVENT_THRESHOLD
-    ) {
-      return;
-    }
-
-    this.#throttle = setTimeout(async () => {
-      this.#mountTemplate();
-      const { nextPageToken, items } = await fetchYoutubeData(
-        this.#currentQuery,
-        this.#currentNextPageToken
-      );
-      this.#currentNextPageToken = nextPageToken;
-      this.#attachData(items);
-
-      this.#throttle = null;
-    }, 0);
+    return (
+      scrollTop + clientHeight <= scrollHeight * NUMBER.SCROLL_EVENT_THRESHOLD
+    );
   }
 
   #mountTemplate() {
