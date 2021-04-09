@@ -10,6 +10,7 @@ const GENERATE_TEMPLATE = (buttonTemplate) => `
     frameborder="0"
     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
     allowfullscreen
+    loading="lazy"
   ></iframe>
   </div>
   <div class="content-container pt-2 px-1">
@@ -37,6 +38,7 @@ const SAVED_VIDEO_BUTTON_TEMPLATE = `
 
 const WATCH_LATER_ICON_BUTTONS_TEMPLATE = `
 <div class=${CLASSNAME.ICONS_WRAPPER}>
+  <span class="opacity-hover icon move-to-watch-later-icon ${CLASSNAME.MOVE_TO_WATCH_LATER_ICON}"></span>
   <span class="opacity-hover icon move-to-history-icon ${CLASSNAME.MOVE_TO_HISTORY_ICON}"></span>
   <span class="opacity-hover ${CLASSNAME.LIKE_ICON}">👍</span>
   <span class="opacity-hover ${CLASSNAME.COMMENT_ICON}">💬</span>
