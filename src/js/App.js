@@ -5,65 +5,64 @@ import MainContainer from "./Main/Container.js";
 import SearchContainer from "./Search/SearchContainer.js";
 
 export default class App {
+  #mainContainer = new MainContainer();
+
+  #searchContainer = new SearchContainer();
+
+  #$watchLaterTabButton = $(`.${CLASSNAME.WATCH_LATER_TAB}`);
+
+  #$historyTabButton = $(`.${CLASSNAME.HISTORY_TAB}`);
+
+  #$searchTabButton = $(`.${CLASSNAME.SEARCH_TAB}`);
+
+  #$likeTabButton = $(`.${CLASSNAME.LIKE_TAB}`);
+
+  #$mainContainer = $(`.${CLASSNAME.MAIN_CONTAINER}`);
+
+  #$MainVideoWrapper = $(`.${CLASSNAME.MAIN_VIDEO_WRAPPER}`);
+
   constructor() {
-    this.initializeVariables();
-    this.selectHTMLElements();
-    this.addEventListeners();
+    this.#addEventListeners();
   }
 
-  initializeVariables() {
-    this.MainContainer = new MainContainer();
-    this.searchContainer = new SearchContainer();
-  }
+  #addEventListeners() {
+    this.#$watchLaterTabButton.addEventListener("click", () => {
+      this.#activateTabButton(this.#$watchLaterTabButton);
+      this.#deactivateTabButton(this.#$historyTabButton);
 
-  selectHTMLElements() {
-    this.$watchLaterTabButton = $(`.${CLASSNAME.WATCH_LATER_TAB}`);
-    this.$historyTabButton = $(`.${CLASSNAME.HISTORY_TAB}`);
-    this.$searchTabButton = $(`.${CLASSNAME.SEARCH_TAB}`);
-    this.$likeTabButton = $(`.${CLASSNAME.LIKE_TAB}`);
-
-    this.$MainContainer = $(`.${CLASSNAME.MAIN_CONTAINER}`);
-    this.$MainVideoWrapper = $(`.${CLASSNAME.MAIN_VIDEO_WRAPPER}`);
-  }
-
-  addEventListeners() {
-    this.$watchLaterTabButton.addEventListener("click", () => {
-      this.activateTabButton(this.$watchLaterTabButton);
-      this.deactivateTabButton(this.$historyTabButton);
-
-      $.addClass(this.$MainContainer, "watch-later-container");
-      $.removeClass(this.$MainContainer, "history-container");
+      $.addClass(this.#$mainContainer, "watch-later-container");
+      $.removeClass(this.#$mainContainer, "history-container");
     });
 
-    this.$historyTabButton.addEventListener("click", () => {
-      this.activateTabButton(this.$historyTabButton);
-      this.deactivateTabButton(this.$watchLaterTabButton);
+    this.#$historyTabButton.addEventListener("click", () => {
+      this.#activateTabButton(this.#$historyTabButton);
+      this.#deactivateTabButton(this.#$watchLaterTabButton);
 
-      $.addClass(this.$MainContainer, "history-container");
-      $.removeClass(this.$MainContainer, "watch-later-container");
+      $.addClass(this.#$mainContainer, "history-container");
+      $.removeClass(this.#$mainContainer, "watch-later-container");
     });
 
-    this.$searchTabButton.addEventListener(
+    this.#$searchTabButton.addEventListener(
       "click",
-      this.searchContainer.open.bind(this.searchContainer)
+      this.#searchContainer.open.bind(this.#searchContainer)
     );
 
-    this.$likeTabButton.addEventListener(
+    this.#$likeTabButton.addEventListener(
       "click",
-      this.toggleLikeMode.bind(this)
+      this.#toggleLikeMode.bind(this)
     );
   }
 
-  toggleLikeMode() {
-    $.toggleClass(this.$likeTabButton, CLASSNAME.ACTIVE);
-    $.toggleClass(this.$MainVideoWrapper, CLASSNAME.LIKE_MODE);
+  #toggleLikeMode() {
+    $.toggleClass(this.#$likeTabButton, CLASSNAME.ACTIVE);
+    $.toggleClass(this.#$MainVideoWrapper, CLASSNAME.LIKE_MODE);
   }
 
-  activateTabButton($tabButton) {
+  #activateTabButton($tabButton) {
     $.addClass($tabButton, CLASSNAME.BG_CYAN_100);
   }
 
-  deactivateTabButton($tabButton) {
+  #deactivateTabButton($tabButton) {
     $.removeClass($tabButton, CLASSNAME.BG_CYAN_100);
   }
 }
