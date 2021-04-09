@@ -6,9 +6,9 @@ import {
 } from "../constants/index.js";
 import { $, showSnackbar } from "../utils/index.js";
 import { messenger, MESSAGE } from "../messenger/index.js";
-import { WATCH_LATER_VIDEO_TEMPLATE, renderMainVideo } from "../Video/index.js";
+import { MAIN_VIDEO_TEMPLATE, renderMainVideo } from "../Video/index.js";
 
-export default class WatchLaterVideoWrapper {
+export default class VideoWrapper {
   constructor() {
     this.initializeVariables();
     this.selectHTMLElements();
@@ -18,13 +18,13 @@ export default class WatchLaterVideoWrapper {
   }
 
   initializeVariables() {
-    this.watchLaterVideoItemsMap = new Map(
+    this.videoItemsMap = new Map(
       JSON.parse(
         localStorage.getItem(LOCAL_STORAGE_KEY.WATCH_LATER_VIDEO_ITEMS)
       )
     );
 
-    this.watchLaterVideosMap = new Map();
+    this.videosMap = new Map();
 
     this.observer = new IntersectionObserver((entries) => {
       entries.forEach((entry) => {
@@ -39,7 +39,7 @@ export default class WatchLaterVideoWrapper {
 
   attachData($video) {
     const { videoId } = $video.dataset;
-    const item = this.watchLaterVideoItemsMap.get(videoId);
+    const item = this.videoItemsMap.get(videoId);
     if ($video.classList.contains(CLASSNAME.SKELETON)) {
       renderMainVideo($video, item);
     }
@@ -47,7 +47,7 @@ export default class WatchLaterVideoWrapper {
 
   selectHTMLElements() {
     this.$noSavedVideoImage = $(`.${CLASSNAME.NO_WATCHING_VIDEO_IMAGE}`);
-    this.$watchLaterVideoWrapper = $(`.${CLASSNAME.WATCH_LATER_VIDEO_WRAPPER}`);
+    this.$watchLaterVideoWrapper = $(`.${CLASSNAME.MAIN_VIDEO_WRAPPER}`);
   }
 
   addMessageListeners() {
@@ -101,14 +101,14 @@ export default class WatchLaterVideoWrapper {
   }
 
   handleMoveToHistoryIconClick(videoId) {
-    const item = this.watchLaterVideoItemsMap.get(videoId);
+    const item = this.videoItemsMap.get(videoId);
     this.changeVideoType({ videoId, item, nextVideoType: VIDEO_TYPE.HISTORY });
 
     showSnackbar(SNACKBAR_TEXT.MOVED_TO_HISTORY_VIDEO);
   }
 
   handleMoveToWatchLaterIconClick(videoId) {
-    const item = this.watchLaterVideoItemsMap.get(videoId);
+    const item = this.videoItemsMap.get(videoId);
     this.changeVideoType({
       videoId,
       item,
@@ -119,7 +119,7 @@ export default class WatchLaterVideoWrapper {
   }
 
   handleLikeIconClick(videoId) {
-    const $video = this.watchLaterVideosMap.get(videoId);
+    const $video = this.videosMap.get(videoId);
 
     $.toggleClass($video, "like");
     showSnackbar(
@@ -140,13 +140,13 @@ export default class WatchLaterVideoWrapper {
   }
 
   changeVideoType({ videoId, item, nextVideoType }) {
-    this.watchLaterVideoItemsMap.set(videoId, {
+    this.videoItemsMap.set(videoId, {
       ...item,
       videoType: nextVideoType,
     });
     this.updateLocalStorage();
 
-    const $video = this.watchLaterVideosMap.get(videoId);
+    const $video = this.videosMap.get(videoId);
 
     Object.values(VIDEO_TYPE).forEach((type) => $.removeClass($video, type));
     $.addClass($video, nextVideoType);
@@ -157,7 +157,7 @@ export default class WatchLaterVideoWrapper {
       ...item,
       videoType: VIDEO_TYPE.WATCH_LATER,
     };
-    this.watchLaterVideoItemsMap.set(videoId, newItem);
+    this.videoItemsMap.set(videoId, newItem);
     this.updateLocalStorage();
 
     this.mountTemplate({
@@ -169,14 +169,14 @@ export default class WatchLaterVideoWrapper {
   moveVideo({ videoId }) {
     messenger.deliverMessage(MESSAGE.MOVE_TO_HISTORY_ICON_CLICKED, {
       videoId,
-      item: this.watchLaterVideoItemsMap.get(videoId),
+      item: this.videoItemsMap.get(videoId),
     });
 
     this.removeVideo({ videoId });
   }
 
   deleteVideo({ videoId }) {
-    if (!this.watchLaterVideoItemsMap.has(videoId)) {
+    if (!this.videoItemsMap.has(videoId)) {
       return;
     }
 
@@ -184,9 +184,9 @@ export default class WatchLaterVideoWrapper {
   }
 
   removeVideo({ videoId }) {
-    this.watchLaterVideoItemsMap.delete(videoId);
-    this.watchLaterVideosMap.get(videoId).remove();
-    this.watchLaterVideosMap.delete(videoId);
+    this.videoItemsMap.delete(videoId);
+    this.videosMap.get(videoId).remove();
+    this.videosMap.delete(videoId);
     this.updateLocalStorage();
     this.render();
   }
@@ -194,25 +194,25 @@ export default class WatchLaterVideoWrapper {
   updateLocalStorage() {
     localStorage.setItem(
       LOCAL_STORAGE_KEY.WATCH_LATER_VIDEO_ITEMS,
-      JSON.stringify(this.watchLaterVideoItemsMap, (key, value) =>
+      JSON.stringify(this.videoItemsMap, (key, value) =>
         value instanceof Map ? Array.from(value) : value
       )
     );
   }
 
   hideIfVideoIsSaved({ videoId, hide }) {
-    if (this.watchLaterVideoItemsMap.has(videoId)) {
+    if (this.videoItemsMap.has(videoId)) {
       hide();
     }
   }
 
   render() {
-    if (this.watchLaterVideoItemsMap.size === 0) {
+    if (this.videoItemsMap.size === 0) {
       $.show(this.$noSavedVideoImage);
       return;
     }
 
-    this.watchLaterVideoItemsMap.forEach((item, videoId) =>
+    this.videoItemsMap.forEach((item, videoId) =>
       this.mountTemplate({ videoId, item })
     );
   }
@@ -222,7 +222,7 @@ export default class WatchLaterVideoWrapper {
 
     this.$watchLaterVideoWrapper.insertAdjacentHTML(
       "afterBegin",
-      WATCH_LATER_VIDEO_TEMPLATE
+      MAIN_VIDEO_TEMPLATE
     );
 
     const [$video] = this.$watchLaterVideoWrapper.children;
@@ -231,7 +231,7 @@ export default class WatchLaterVideoWrapper {
 
     $.addClass($video, videoType);
 
-    this.watchLaterVideosMap.set(videoId, $video);
+    this.videosMap.set(videoId, $video);
     this.observer.observe($video);
   }
 }

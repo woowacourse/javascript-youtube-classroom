@@ -12,7 +12,7 @@ export default class App {
   }
 
   initializeVariables() {
-    this.watchLaterContainer = new MainContainer();
+    this.MainContainer = new MainContainer();
     this.searchContainer = new SearchContainer();
   }
 
@@ -21,8 +21,9 @@ export default class App {
     this.$historyTabButton = $(`.${CLASSNAME.HISTORY_TAB}`);
     this.$searchTabButton = $(`.${CLASSNAME.SEARCH_TAB}`);
     this.$likeTabButton = $(`.${CLASSNAME.LIKE_TAB}`);
-    this.$watchLaterContainer = $(`.${CLASSNAME.WATCH_LATER_CONTAINER}`);
-    this.$watchLaterVideoWrapper = $(`.${CLASSNAME.WATCH_LATER_VIDEO_WRAPPER}`);
+
+    this.$MainContainer = $(`.${CLASSNAME.MAIN_CONTAINER}`);
+    this.$MainVideoWrapper = $(`.${CLASSNAME.MAIN_VIDEO_WRAPPER}`);
   }
 
   addEventListeners() {
@@ -30,16 +31,16 @@ export default class App {
       this.activateTabButton(this.$watchLaterTabButton);
       this.deactivateTabButton(this.$historyTabButton);
 
-      $.addClass(this.$watchLaterContainer, "watch-later-container");
-      $.removeClass(this.$watchLaterContainer, "history-container");
+      $.addClass(this.$MainContainer, "watch-later-container");
+      $.removeClass(this.$MainContainer, "history-container");
     });
 
     this.$historyTabButton.addEventListener("click", () => {
       this.activateTabButton(this.$historyTabButton);
       this.deactivateTabButton(this.$watchLaterTabButton);
 
-      $.addClass(this.$watchLaterContainer, "history-container");
-      $.removeClass(this.$watchLaterContainer, "watch-later-container");
+      $.addClass(this.$MainContainer, "history-container");
+      $.removeClass(this.$MainContainer, "watch-later-container");
     });
 
     this.$searchTabButton.addEventListener(
@@ -54,8 +55,8 @@ export default class App {
   }
 
   toggleLikeMode() {
-    $.toggleClass(this.$likeTabButton, "active");
-    $.toggleClass(this.$watchLaterVideoWrapper, CLASSNAME.LIKE_MODE);
+    $.toggleClass(this.$likeTabButton, CLASSNAME.ACTIVE);
+    $.toggleClass(this.$MainVideoWrapper, CLASSNAME.LIKE_MODE);
   }
 
   activateTabButton($tabButton) {

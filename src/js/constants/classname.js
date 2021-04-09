@@ -1,10 +1,8 @@
 const CLASSNAME = Object.freeze({
   WATCH_LATER_TAB: "js-watch-later-tab",
-  WATCH_LATER_CONTAINER: "js-watch-later-container",
-  WATCH_LATER_VIDEO_WRAPPER: "js-watch-later-video-wrapper",
   HISTORY_TAB: "js-history-tab",
-  HISTORY_CONTAINER: "js-history-container",
-  HISTORY_VIDEO_WRAPPER: "js-history-video-wrapper",
+  MAIN_CONTAINER: "js-main-container",
+  MAIN_VIDEO_WRAPPER: "js-main-video-wrapper",
   LIKE_TAB: "js-like-tab",
   SEARCH_TAB: "js-search-tab",
   SEARCH_CONTAINER: "js-search-container",
@@ -44,6 +42,7 @@ const CLASSNAME = Object.freeze({
   SHOW: "show",
   LIKE_MODE: "like-mode",
   LIKE_VIDEO: "like-video",
+  ACTIVE: "active",
 });
 
 export default CLASSNAME;
