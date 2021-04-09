@@ -1,7 +1,7 @@
 import { CLASSNAME } from "../constants/index.js";
 import { $ } from "../utils/index.js";
-import { getSearchVideoTemplateElement } from "./template.js";
 import { messenger, MESSAGE } from "../messenger/index.js";
+import { getSearchVideoTemplateElement } from "./template.js";
 
 export default class Video {
   static #DOMAIN = "https://www.youtube.com";
@@ -66,24 +66,28 @@ export default class Video {
     const $saveVideoButton = this.#$video.querySelector(
       `.${CLASSNAME.SAVE_VIDEO_BUTTON}`
     );
-
-    const $saveVideoButtonWrapper = this.#$video.querySelector(
-      `.${CLASSNAME.SAVE_VIDEO_BUTTON_WRAPPER}`
+    const $cancelVideoButton = this.#$video.querySelector(
+      `.${CLASSNAME.CANCEL_VIDEO_BUTTON}`
     );
 
+    $cancelVideoButton.dataset.videoId = videoId;
     $saveVideoButton.dataset.videoId = videoId;
-    $saveVideoButton.disabled = false;
-
-    $.show($saveVideoButtonWrapper);
 
     messenger.deliverMessage(MESSAGE.HIDE_IF_VIDEO_IS_SAVED, {
       videoId,
-      hide: () => {
-        $.addClass($saveVideoButton, CLASSNAME.CANCEL);
-        $saveVideoButton.innerText = "취소";
-      },
+      hide: this.addSavedClass.bind(this),
     });
 
+    // Remove Skeleton Effect
+
     this.#$video.classList.remove(CLASSNAME.SKELETON);
+  }
+
+  addSavedClass() {
+    $.addClass(this.#$video, CLASSNAME.SAVED);
+  }
+
+  removeSavedClass() {
+    $.removeClass(this.#$video, CLASSNAME.SAVED);
   }
 }

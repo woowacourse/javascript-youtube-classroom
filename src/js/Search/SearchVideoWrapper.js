@@ -10,9 +10,11 @@ export default class SearchVideoWrapper {
 
   #currentNextPageToken = "";
 
+  #throttle = null;
+
   #videoItemsMap = new Map();
 
-  #throttle = null;
+  #videosMap = new Map();
 
   #$searchVideoWrapper = $(`.${CLASSNAME.SEARCH_VIDEO_WRAPPER}`);
 
@@ -40,11 +42,8 @@ export default class SearchVideoWrapper {
     );
 
     messenger.addMessageListener(MESSAGE.SAVED_VIDEO_DELETED, ({ videoId }) => {
-      const $button = $(
-        `.${CLASSNAME.SAVE_VIDEO_BUTTON}[data-video-id="${videoId}"]`
-      );
-
-      this.#setButtonSaveMode($button);
+      const video = this.#videosMap.get(videoId);
+      video.removeSavedClass();
     });
   }
 
@@ -55,46 +54,49 @@ export default class SearchVideoWrapper {
     );
 
     this.#$searchVideoWrapper.addEventListener("click", (event) => {
-      const $target = event.target;
-      if ($target.classList.contains(CLASSNAME.SAVE_VIDEO_BUTTON)) {
-        this.#handleSaveVideoButtonClick($target);
+      if (!event.target.classList.contains(CLASSNAME.BUTTON)) {
+        return;
+      }
+
+      const $button = event.target;
+      const { videoId } = $button.dataset;
+
+      if ($.containsClass($button, CLASSNAME.SAVE_VIDEO_BUTTON)) {
+        this.#handleSaveVideoButtonClick(videoId);
+        return;
+      }
+
+      if ($.containsClass($button, CLASSNAME.CANCEL_VIDEO_BUTTON)) {
+        this.#handleCancelVideoButtonClick(videoId);
       }
     });
   }
 
-  #handleSaveVideoButtonClick($button) {
-    const { videoId } = $button.dataset;
+  #handleSaveVideoButtonClick(videoId) {
     const item = this.#videoItemsMap.get(videoId);
+    const video = this.#videosMap.get(videoId);
 
-    if (this.#isButtonCancelMode($button)) {
-      messenger.deliverMessage(MESSAGE.CANCEL_VIDEO_BUTTON_CLICKED, {
-        videoId,
-        item,
-      });
-      this.#setButtonSaveMode($button);
-    } else {
-      messenger.deliverMessage(MESSAGE.SAVE_VIDEO_BUTTON_CLICKED, {
-        resolve: this.#setButtonCancelMode.bind(this, $button),
-        reject: showModalSnackbar.bind(null, SNACKBAR_TEXT.REACHED_MAX_COUNT),
-        videoId,
-        item,
-      });
-    }
+    messenger.deliverMessage(MESSAGE.SAVE_VIDEO_BUTTON_CLICKED, {
+      resolve: () => {
+        video.addSavedClass();
+        showModalSnackbar(SNACKBAR_TEXT.VIDEO_SAVED);
+      },
+
+      reject: showModalSnackbar.bind(null, SNACKBAR_TEXT.REACHED_MAX_COUNT),
+      videoId,
+      item,
+    });
   }
 
-  #isButtonCancelMode($button) {
-    return $button.classList.contains(CLASSNAME.CANCEL);
-  }
+  #handleCancelVideoButtonClick(videoId) {
+    const item = this.#videoItemsMap.get(videoId);
+    const video = this.#videosMap.get(videoId);
 
-  #setButtonCancelMode($button) {
-    $.addClass($button, CLASSNAME.CANCEL);
-    $button.innerText = "취소";
-    showModalSnackbar(SNACKBAR_TEXT.VIDEO_SAVED);
-  }
-
-  #setButtonSaveMode($button) {
-    $.removeClass($button, CLASSNAME.CANCEL);
-    $button.innerText = "저장";
+    messenger.deliverMessage(MESSAGE.CANCEL_VIDEO_BUTTON_CLICKED, {
+      videoId,
+      item,
+    });
+    video.removeSavedMode();
     showModalSnackbar(SNACKBAR_TEXT.CANCELED_VIDEO_SAVE);
   }
 
@@ -142,6 +144,7 @@ export default class SearchVideoWrapper {
 
         const { videoId } = item.id;
         this.#videoItemsMap.set(videoId, item);
+        this.#videosMap.set(videoId, video);
       });
   }
 }

@@ -3,10 +3,10 @@ const CLASSNAME = Object.freeze({
   HISTORY_TAB: "js-history-tab",
   MAIN_CONTAINER: "js-main-container",
   MAIN_VIDEO_WRAPPER: "js-main-video-wrapper",
-  LIKE_TAB: "js-like-tab",
-  SEARCH_TAB: "js-search-tab",
+  LIKE_TAB: "like-tab",
+  SEARCH_TAB: "search-tab",
   SEARCH_CONTAINER: "js-search-container",
-  SEARCH_VIDEO_WRAPPER: "js-search-video-wrapper",
+  SEARCH_VIDEO_WRAPPER: "search-video-wrapper",
   SEARCH_FORM: "js-search-form",
   SEARCH_FORM_INPUT: "js-search-form__input",
   SEARCH_FORM_BUTTON: "js-search-form__button",
@@ -23,8 +23,9 @@ const CLASSNAME = Object.freeze({
   VIDEO_TITLE: "js-video-title",
   CHANNEL_TITLE: "js-channel-title",
   PUBLISHED_AT: "js-published-at",
-  SAVE_VIDEO_BUTTON_WRAPPER: "js-save-video-button-wrapper",
-  SAVE_VIDEO_BUTTON: "js-save-video-button",
+  BUTTON: "btn",
+  SAVE_VIDEO_BUTTON: "save-video-button",
+  CANCEL_VIDEO_BUTTON: "cancel-video-button",
   SKELETON: "skeleton",
   OPEN: "open",
   HIDDEN: "d-none",
@@ -43,6 +44,7 @@ const CLASSNAME = Object.freeze({
   LIKE_MODE: "like-mode",
   LIKE_VIDEO: "like-video",
   ACTIVE: "active",
+  SAVED: "saved",
 });
 
 export default CLASSNAME;
