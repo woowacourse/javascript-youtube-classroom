@@ -12196,7 +12196,7 @@ function getQuery(searchKeyword, pageToken) {
     type: 'video',
     maxResults: _constants_js__WEBPACK_IMPORTED_MODULE_0__.YOUTUBE.MAX_RESULT_COUNT,
     videoDefinition: 'high',
-    key: "AIzaSyBmX5TEH7eS1rqcf33gV0CWUZaQFLoN6b4",
+    key: "AIzaSyD47VxXW1OO3UhbV33t1EfO1lP1XB2mMNc",
     pageToken: pageToken ? pageToken : ''
   };
 }

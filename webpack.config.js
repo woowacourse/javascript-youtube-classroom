@@ -14,7 +14,7 @@ module.exports = {
   devtool: 'source-map',
   plugins: [
     new webpack.DefinePlugin({
-      YOUTUBE_API_KEY: JSON.stringify(process.env.YOUTUBE_API_KEY_1),
+      YOUTUBE_API_KEY: JSON.stringify(process.env.YOUTUBE_API_KEY_2),
     }),
     new MiniCSSExtractPlugin(),
   ],
