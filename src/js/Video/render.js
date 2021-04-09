@@ -54,6 +54,7 @@ const renderSearchVideo = ($video, item) => {
   );
 
   $saveVideoButton.dataset.videoId = videoId;
+  $saveVideoButton.disabled = false;
 
   $.show($saveVideoButtonWrapper);
 

@@ -31,7 +31,7 @@ const GENERATE_TEMPLATE = (buttonTemplate) => `
 
 const SAVED_VIDEO_BUTTON_TEMPLATE = `
 <div class="d-flex justify-end ${CLASSNAME.SAVE_VIDEO_BUTTON_WRAPPER}">
-  <button class="btn ${CLASSNAME.SAVE_VIDEO_BUTTON}">저장</button>
+  <button class="btn ${CLASSNAME.SAVE_VIDEO_BUTTON}" disabled>저장</button>
 </div>
 `;
 
