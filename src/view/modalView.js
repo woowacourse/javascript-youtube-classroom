@@ -2,6 +2,7 @@ import { STYLE_CLASS, SELECTOR_CLASS, YOUTUBE } from '../constants.js';
 
 import BasicView from './BasicView.js';
 import { $ } from 'c:/users/leesongwon/desktop/javascript-youtube-classroom/src/utils/queryselector.js';
+
 export default class ModalView extends BasicView {
   constructor({
     $modal,
@@ -100,7 +101,7 @@ export default class ModalView extends BasicView {
 
   #getSearchedVideoTemplate(video) {
     return `
-    <article class="${SELECTOR_CLASS.SEARCHED_CLIP} clip">
+    <article class="${SELECTOR_CLASS.SEARCHED_CLIP} clip fade-in">
       <div class="clip__preview ">
         <img class="clip__thumbnail--in-modal" src="${video.thumbnail}" loading="lazy" />
         <iframe
@@ -114,7 +115,7 @@ export default class ModalView extends BasicView {
           class="clip__iframe"
         ></iframe>
       </div>
-      <div class="clip__content pt-2 px-1">
+      <div class="clip__content py-2 px-4">
         <h3>${video.title}</h3>
         <div>
           <a

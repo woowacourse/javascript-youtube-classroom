@@ -1,5 +1,5 @@
-import { FILTER_TYPE, SETTINGS } from '../constants';
-import { savedVideoModel, savedVideoFilter } from '../store.js';
+import { SETTINGS } from '../constants';
+import { savedVideoModel } from '../store.js';
 
 const savedVideoService = {
   isSavedVideoCountUnderLimit() {
@@ -11,7 +11,6 @@ const savedVideoService = {
   pushNewVideo(video) {
     const videos = [...savedVideoModel.getItem()];
     videos.push(getNewSavedVideo(video));
-    console.log('videos', videos);
     savedVideoModel.setItem(videos);
   },
   checkVideo(videoId) {
@@ -48,36 +47,7 @@ const savedVideoService = {
       isSaved: isVideoIdExist(savedVideoModel.getItem(), video.videoId),
     }));
   },
-  getFilteredVideos() {
-    const videos = savedVideoModel.getItem();
-    const filteredVideos = getLikedFilteredVideo(getCheckedFilteredVideo(videos));
-    return filteredVideos;
-  },
 };
-
-function getCheckedFilteredVideo(videos) {
-  if (savedVideoFilter.checked === FILTER_TYPE.ALL) {
-    return videos;
-  }
-  if (savedVideoFilter.checked === FILTER_TYPE.FULFILLED_ONLY) {
-    return videos.filter(video => video.isChecked === true);
-  }
-  if (savedVideoFilter.checked === FILTER_TYPE.NOT_FULFILLED_ONLY) {
-    return videos.filter(video => video.isChecked === false);
-  }
-}
-
-function getLikedFilteredVideo(videos) {
-  if (savedVideoFilter.liked === FILTER_TYPE.ALL) {
-    return videos;
-  }
-  if (savedVideoFilter.liked === FILTER_TYPE.FULFILLED_ONLY) {
-    return videos.filter(video => video.isLiked === true);
-  }
-  if (savedVideoFilter.liked === FILTER_TYPE.NOT_FULFILLED_ONLY) {
-    return videos.filter(video => video.isLiked === false);
-  }
-}
 
 function getNewSavedVideo(video) {
   return {

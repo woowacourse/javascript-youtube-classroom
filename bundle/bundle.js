@@ -12240,7 +12240,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "BROWSER_HASH": () => (/* binding */ BROWSER_HASH),
 /* harmony export */   "ERROR_LOG": () => (/* binding */ ERROR_LOG),
 /* harmony export */   "FILTER_TYPE": () => (/* binding */ FILTER_TYPE),
-/* harmony export */   "EMPTY": () => (/* binding */ EMPTY)
+/* harmony export */   "EMPTY": () => (/* binding */ EMPTY),
+/* harmony export */   "SLICER": () => (/* binding */ SLICER)
 /* harmony export */ });
 var SELECTOR_ID = Object.freeze({
   SEARCH_BUTTON: 'search-button',
@@ -12254,8 +12255,10 @@ var SELECTOR_ID = Object.freeze({
   SEARCH_CONTENT_SAVED_VIDEO_COUNT: 'search-content__saved-video-count',
   SERACH_CONTENT_INTERSECTOR: 'search-content__intersector',
   SERACH_CONTENT_VIDEO_NOT_FOUND: 'search-content__video-not-found',
-  SAVED_VIDEO_WRAPPER: 'saved-video-wrapper',
-  SAVED_VIDEO_NOT_FOUND: 'saved-video-not-found',
+  SAVED_VIDEO_WRAPPER: 'saved-video__wrapper',
+  SAVED_VIDEO_NOT_FOUND: 'saved-video__not-found',
+  SAVED_VIDEO_UP_INTERSECTOR: 'saved-video__up-intersector',
+  SAVED_VIDEO_DOWN_INTERSECTOR: 'saved-video__down-intersector',
   SEARCH_QUERIES: 'search-queries',
   WATCHED_VIDEO_SWITCH_BUTTON: 'watched-video-switch-button',
   WATCHING_VIDEO_SWITCH_BUTTON: 'watching-video-switch-button',
@@ -12328,6 +12331,11 @@ var FILTER_TYPE = Object.freeze({
   NOT_FULFILLED_ONLY: 'notFulfilledOnly'
 });
 var EMPTY = '';
+var SLICER = Object.freeze({
+  INITIAL_FIRST_INDEX: 0,
+  LOAD_VIDEO_AMOUNT: 20,
+  SLICE_RATIO: 0.5
+});
 
 /***/ }),
 
@@ -12383,6 +12391,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _savedVideoController_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./savedVideoController.js */ "./src/controller/savedVideoController.js");
 /* harmony import */ var _controllerUtil_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./controllerUtil.js */ "./src/controller/controllerUtil.js");
 /* harmony import */ var _view_index_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../view/index.js */ "./src/view/index.js");
+/* harmony import */ var _service_filteredVideoService_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../service/filteredVideoService.js */ "./src/service/filteredVideoService.js");
+
 
 
 
@@ -12407,6 +12417,7 @@ function routeByHash() {
     _store_js__WEBPACK_IMPORTED_MODULE_1__.savedVideoFilter.setCheckedOnly();
   }
 
+  _service_filteredVideoService_js__WEBPACK_IMPORTED_MODULE_5__.default.initVideoSliceIndex();
   _savedVideoController_js__WEBPACK_IMPORTED_MODULE_2__.default.renderFilteredVideos();
 }
 
@@ -12430,6 +12441,10 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _service_savedVideoService_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../service/savedVideoService.js */ "./src/service/savedVideoService.js");
 /* harmony import */ var _constants__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../constants */ "./src/constants.js");
 /* harmony import */ var _store_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../store.js */ "./src/store.js");
+/* harmony import */ var _controllerUtil_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./controllerUtil.js */ "./src/controller/controllerUtil.js");
+/* harmony import */ var _service_filteredVideoService__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../service/filteredVideoService */ "./src/service/filteredVideoService.js");
+
+
 
 
 
@@ -12439,9 +12454,11 @@ var savedVideoController = {
   initEventListeners: function initEventListeners() {
     _elements__WEBPACK_IMPORTED_MODULE_0__.$savedVideoWrapper.addEventListener('click', onClipInteract);
     _elements__WEBPACK_IMPORTED_MODULE_0__.$likeVideoFilterCheckbox.addEventListener('change', onFilterLikeClip);
+    _controllerUtil_js__WEBPACK_IMPORTED_MODULE_5__.default.setObserver(_elements__WEBPACK_IMPORTED_MODULE_0__.$savedVideoUpIntersector, onSavedVideoUpIntersect);
+    _controllerUtil_js__WEBPACK_IMPORTED_MODULE_5__.default.setObserver(_elements__WEBPACK_IMPORTED_MODULE_0__.$savedVideoDownIntersector, onSavedVideoDownIntersect);
   },
   renderFilteredVideos: function renderFilteredVideos() {
-    var filteredVideos = _service_savedVideoService_js__WEBPACK_IMPORTED_MODULE_2__.default.getFilteredVideos();
+    var filteredVideos = _service_filteredVideoService__WEBPACK_IMPORTED_MODULE_6__.default.getFilteredVideos();
 
     if (filteredVideos.length === 0) {
       _view__WEBPACK_IMPORTED_MODULE_1__.savedVideoView.showEmptyVideoImage();
@@ -12450,9 +12467,37 @@ var savedVideoController = {
     }
 
     _view__WEBPACK_IMPORTED_MODULE_1__.savedVideoView.hideEmptyVideoImage();
+    _view__WEBPACK_IMPORTED_MODULE_1__.savedVideoView.showUpVideoIntersector();
+    _view__WEBPACK_IMPORTED_MODULE_1__.savedVideoView.showDownVideoIntersector();
     _view__WEBPACK_IMPORTED_MODULE_1__.savedVideoView.renderVideos(filteredVideos);
   }
-};
+}; // 여기해야 함
+
+function onSavedVideoUpIntersect() {
+  var upSliceResult = _service_filteredVideoService__WEBPACK_IMPORTED_MODULE_6__.default.tryUpSliceVideos();
+
+  if (!upSliceResult) {
+    return;
+  }
+
+  window.scrollTo({
+    top: window.scrollY + 300
+  });
+  savedVideoController.renderFilteredVideos();
+}
+
+function onSavedVideoDownIntersect() {
+  var downSliceResult = _service_filteredVideoService__WEBPACK_IMPORTED_MODULE_6__.default.tryDownSliceVideos();
+
+  if (!downSliceResult) {
+    return;
+  }
+
+  window.scrollTo({
+    top: window.scrollY - 100
+  });
+  savedVideoController.renderFilteredVideos();
+}
 
 function onFilterLikeClip(_ref) {
   var target = _ref.target;
@@ -12530,11 +12575,13 @@ function cancelClipLike(videoId) {
 
 function filterLikeClips() {
   _store_js__WEBPACK_IMPORTED_MODULE_4__.savedVideoFilter.setLikedOnly();
+  _service_filteredVideoService__WEBPACK_IMPORTED_MODULE_6__.default.initVideoSliceIndex();
   savedVideoController.renderFilteredVideos();
 }
 
 function cancelLikeClipsFilter() {
   _store_js__WEBPACK_IMPORTED_MODULE_4__.savedVideoFilter.setLikedNoMatter();
+  _service_filteredVideoService__WEBPACK_IMPORTED_MODULE_6__.default.initVideoSliceIndex();
   savedVideoController.renderFilteredVideos();
 }
 
@@ -12715,7 +12762,6 @@ function onSearchedVideoSave(_ref) {
     return;
   }
 
-  console.log(target.dataset.videoId);
   saveSearchedVideo(target.dataset.videoId);
 }
 
@@ -12812,11 +12858,13 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "$modalCloseButton": () => (/* binding */ $modalCloseButton),
 /* harmony export */   "$searchContentVideoWrapper": () => (/* binding */ $searchContentVideoWrapper),
 /* harmony export */   "$searchContentIntersector": () => (/* binding */ $searchContentIntersector),
-/* harmony export */   "$savedVideoWrapper": () => (/* binding */ $savedVideoWrapper),
 /* harmony export */   "$searchQueries": () => (/* binding */ $searchQueries),
 /* harmony export */   "$searchContentVideoNotFound": () => (/* binding */ $searchContentVideoNotFound),
 /* harmony export */   "$searchContentSavedVideoCount": () => (/* binding */ $searchContentSavedVideoCount),
 /* harmony export */   "$savedVideoNotFound": () => (/* binding */ $savedVideoNotFound),
+/* harmony export */   "$savedVideoWrapper": () => (/* binding */ $savedVideoWrapper),
+/* harmony export */   "$savedVideoUpIntersector": () => (/* binding */ $savedVideoUpIntersector),
+/* harmony export */   "$savedVideoDownIntersector": () => (/* binding */ $savedVideoDownIntersector),
 /* harmony export */   "$snackbarWrapper": () => (/* binding */ $snackbarWrapper),
 /* harmony export */   "$nav": () => (/* binding */ $nav),
 /* harmony export */   "$likeVideoFilterCheckbox": () => (/* binding */ $likeVideoFilterCheckbox)
@@ -12833,11 +12881,13 @@ var $modal = (0,_utils_querySelector_js__WEBPACK_IMPORTED_MODULE_1__.$)("#".conc
 var $modalCloseButton = (0,_utils_querySelector_js__WEBPACK_IMPORTED_MODULE_1__.$)("#".concat(_constants_js__WEBPACK_IMPORTED_MODULE_0__.SELECTOR_ID.MODAL_CLOSE_BUTTON));
 var $searchContentVideoWrapper = (0,_utils_querySelector_js__WEBPACK_IMPORTED_MODULE_1__.$)("#".concat(_constants_js__WEBPACK_IMPORTED_MODULE_0__.SELECTOR_ID.SEARCH_CONTENT_VIDEO_WRAPPER));
 var $searchContentIntersector = (0,_utils_querySelector_js__WEBPACK_IMPORTED_MODULE_1__.$)("#".concat(_constants_js__WEBPACK_IMPORTED_MODULE_0__.SELECTOR_ID.SERACH_CONTENT_INTERSECTOR));
-var $savedVideoWrapper = (0,_utils_querySelector_js__WEBPACK_IMPORTED_MODULE_1__.$)("#".concat(_constants_js__WEBPACK_IMPORTED_MODULE_0__.SELECTOR_ID.SAVED_VIDEO_WRAPPER));
 var $searchQueries = (0,_utils_querySelector_js__WEBPACK_IMPORTED_MODULE_1__.$)("#".concat(_constants_js__WEBPACK_IMPORTED_MODULE_0__.SELECTOR_ID.SEARCH_QUERIES));
 var $searchContentVideoNotFound = (0,_utils_querySelector_js__WEBPACK_IMPORTED_MODULE_1__.$)("#".concat(_constants_js__WEBPACK_IMPORTED_MODULE_0__.SELECTOR_ID.SERACH_CONTENT_VIDEO_NOT_FOUND));
 var $searchContentSavedVideoCount = (0,_utils_querySelector_js__WEBPACK_IMPORTED_MODULE_1__.$)("#".concat(_constants_js__WEBPACK_IMPORTED_MODULE_0__.SELECTOR_ID.SEARCH_CONTENT_SAVED_VIDEO_COUNT));
 var $savedVideoNotFound = (0,_utils_querySelector_js__WEBPACK_IMPORTED_MODULE_1__.$)("#".concat(_constants_js__WEBPACK_IMPORTED_MODULE_0__.SELECTOR_ID.SAVED_VIDEO_NOT_FOUND));
+var $savedVideoWrapper = (0,_utils_querySelector_js__WEBPACK_IMPORTED_MODULE_1__.$)("#".concat(_constants_js__WEBPACK_IMPORTED_MODULE_0__.SELECTOR_ID.SAVED_VIDEO_WRAPPER));
+var $savedVideoUpIntersector = (0,_utils_querySelector_js__WEBPACK_IMPORTED_MODULE_1__.$)("#".concat(_constants_js__WEBPACK_IMPORTED_MODULE_0__.SELECTOR_ID.SAVED_VIDEO_UP_INTERSECTOR));
+var $savedVideoDownIntersector = (0,_utils_querySelector_js__WEBPACK_IMPORTED_MODULE_1__.$)("#".concat(_constants_js__WEBPACK_IMPORTED_MODULE_0__.SELECTOR_ID.SAVED_VIDEO_DOWN_INTERSECTOR));
 var $snackbarWrapper = (0,_utils_querySelector_js__WEBPACK_IMPORTED_MODULE_1__.$)("#".concat(_constants_js__WEBPACK_IMPORTED_MODULE_0__.SELECTOR_ID.SNACKBAR_WRAPPER));
 var $nav = (0,_utils_querySelector_js__WEBPACK_IMPORTED_MODULE_1__.$)("#".concat(_constants_js__WEBPACK_IMPORTED_MODULE_0__.SELECTOR_ID.NAV));
 var $likeVideoFilterCheckbox = (0,_utils_querySelector_js__WEBPACK_IMPORTED_MODULE_1__.$)("#".concat(_constants_js__WEBPACK_IMPORTED_MODULE_0__.SELECTOR_ID.LIKE_VIDEO_FILTER_CHECKBOX));
@@ -13024,6 +13074,181 @@ var VideoList = /*#__PURE__*/function () {
 
 /***/ }),
 
+/***/ "./src/model/VideoSlicer.js":
+/*!**********************************!*\
+  !*** ./src/model/VideoSlicer.js ***!
+  \**********************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ VideoSlicer)
+/* harmony export */ });
+/* harmony import */ var _constants__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../constants */ "./src/constants.js");
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+function _classPrivateFieldSet(receiver, privateMap, value) { var descriptor = privateMap.get(receiver); if (!descriptor) { throw new TypeError("attempted to set private field on non-instance"); } if (descriptor.set) { descriptor.set.call(receiver, value); } else { if (!descriptor.writable) { throw new TypeError("attempted to set read only private field"); } descriptor.value = value; } return value; }
+
+function _classPrivateFieldGet(receiver, privateMap) { var descriptor = privateMap.get(receiver); if (!descriptor) { throw new TypeError("attempted to get private field on non-instance"); } if (descriptor.get) { return descriptor.get.call(receiver); } return descriptor.value; }
+
+
+
+var _slicerIndex = new WeakMap();
+
+var _videoLoadAmount = new WeakMap();
+
+var _sliceRatio = new WeakMap();
+
+var VideoSlicer = /*#__PURE__*/function () {
+  function VideoSlicer() {
+    _classCallCheck(this, VideoSlicer);
+
+    _slicerIndex.set(this, {
+      writable: true,
+      value: _constants__WEBPACK_IMPORTED_MODULE_0__.SLICER.INITIAL_FIRST_INDEX
+    });
+
+    _videoLoadAmount.set(this, {
+      writable: true,
+      value: _constants__WEBPACK_IMPORTED_MODULE_0__.SLICER.LOAD_VIDEO_AMOUNT
+    });
+
+    _sliceRatio.set(this, {
+      writable: true,
+      value: _constants__WEBPACK_IMPORTED_MODULE_0__.SLICER.SLICE_RATIO
+    });
+  }
+
+  _createClass(VideoSlicer, [{
+    key: "getSlicedVideos",
+    value: function getSlicedVideos(videos) {
+      var startIndex = Math.round(_classPrivateFieldGet(this, _slicerIndex) * _classPrivateFieldGet(this, _videoLoadAmount) * _classPrivateFieldGet(this, _sliceRatio));
+      return videos.slice(startIndex, startIndex + _classPrivateFieldGet(this, _videoLoadAmount));
+    }
+  }, {
+    key: "increaseSlicerIndex",
+    value: function increaseSlicerIndex() {
+      _classPrivateFieldSet(this, _slicerIndex, _classPrivateFieldGet(this, _slicerIndex) + 1);
+    }
+  }, {
+    key: "decreaseSlicerIndex",
+    value: function decreaseSlicerIndex() {
+      _classPrivateFieldSet(this, _slicerIndex, _classPrivateFieldGet(this, _slicerIndex) - 1);
+    }
+  }, {
+    key: "initSlicerIndex",
+    value: function initSlicerIndex() {
+      _classPrivateFieldSet(this, _slicerIndex, 0);
+    }
+  }, {
+    key: "firstVideoIndex",
+    get: function get() {
+      return Math.round(_classPrivateFieldGet(this, _slicerIndex) * _classPrivateFieldGet(this, _videoLoadAmount) * _classPrivateFieldGet(this, _sliceRatio));
+    }
+  }, {
+    key: "lastVideoIndex",
+    get: function get() {
+      return Math.round(_classPrivateFieldGet(this, _slicerIndex) * _classPrivateFieldGet(this, _videoLoadAmount) * _classPrivateFieldGet(this, _sliceRatio) + _classPrivateFieldGet(this, _videoLoadAmount));
+    }
+  }]);
+
+  return VideoSlicer;
+}();
+
+
+
+/***/ }),
+
+/***/ "./src/service/filteredVideoService.js":
+/*!*********************************************!*\
+  !*** ./src/service/filteredVideoService.js ***!
+  \*********************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _constants_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../constants.js */ "./src/constants.js");
+/* harmony import */ var _store_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../store.js */ "./src/store.js");
+
+
+var filteredVideoService = {
+  getFilteredVideos: function getFilteredVideos() {
+    var videos = _store_js__WEBPACK_IMPORTED_MODULE_1__.savedVideoModel.getItem();
+    var filteredVideos = getLikedFilteredVideo(getCheckedFilteredVideo(videos));
+    return _store_js__WEBPACK_IMPORTED_MODULE_1__.videoSlicer.getSlicedVideos(filteredVideos);
+  },
+  tryUpSliceVideos: function tryUpSliceVideos() {
+    if (_store_js__WEBPACK_IMPORTED_MODULE_1__.videoSlicer.firstVideoIndex === 0) {
+      return false;
+    }
+
+    _store_js__WEBPACK_IMPORTED_MODULE_1__.videoSlicer.decreaseSlicerIndex();
+    return true;
+  },
+  initVideoSliceIndex: function initVideoSliceIndex() {
+    _store_js__WEBPACK_IMPORTED_MODULE_1__.videoSlicer.initSlicerIndex();
+  },
+  tryDownSliceVideos: function tryDownSliceVideos() {
+    var videos = _store_js__WEBPACK_IMPORTED_MODULE_1__.savedVideoModel.getItem();
+    var filteredVideos = getLikedFilteredVideo(getCheckedFilteredVideo(videos));
+
+    if (_store_js__WEBPACK_IMPORTED_MODULE_1__.videoSlicer.lastVideoIndex >= filteredVideos.length) {
+      return false;
+    }
+
+    _store_js__WEBPACK_IMPORTED_MODULE_1__.videoSlicer.increaseSlicerIndex();
+    return true;
+  }
+};
+
+function getCheckedFilteredVideo(videos) {
+  if (_store_js__WEBPACK_IMPORTED_MODULE_1__.savedVideoFilter.checked === _constants_js__WEBPACK_IMPORTED_MODULE_0__.FILTER_TYPE.ALL) {
+    return videos;
+  }
+
+  if (_store_js__WEBPACK_IMPORTED_MODULE_1__.savedVideoFilter.checked === _constants_js__WEBPACK_IMPORTED_MODULE_0__.FILTER_TYPE.FULFILLED_ONLY) {
+    return videos.filter(function (video) {
+      return video.isChecked === true;
+    });
+  }
+
+  if (_store_js__WEBPACK_IMPORTED_MODULE_1__.savedVideoFilter.checked === _constants_js__WEBPACK_IMPORTED_MODULE_0__.FILTER_TYPE.NOT_FULFILLED_ONLY) {
+    return videos.filter(function (video) {
+      return video.isChecked === false;
+    });
+  }
+}
+
+function getLikedFilteredVideo(videos) {
+  if (_store_js__WEBPACK_IMPORTED_MODULE_1__.savedVideoFilter.liked === _constants_js__WEBPACK_IMPORTED_MODULE_0__.FILTER_TYPE.ALL) {
+    return videos;
+  }
+
+  if (_store_js__WEBPACK_IMPORTED_MODULE_1__.savedVideoFilter.liked === _constants_js__WEBPACK_IMPORTED_MODULE_0__.FILTER_TYPE.FULFILLED_ONLY) {
+    return videos.filter(function (video) {
+      return video.isLiked === true;
+    });
+  }
+
+  if (_store_js__WEBPACK_IMPORTED_MODULE_1__.savedVideoFilter.liked === _constants_js__WEBPACK_IMPORTED_MODULE_0__.FILTER_TYPE.NOT_FULFILLED_ONLY) {
+    return videos.filter(function (video) {
+      return video.isLiked === false;
+    });
+  }
+}
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (filteredVideoService);
+
+/***/ }),
+
 /***/ "./src/service/prevSearchInfoService.js":
 /*!**********************************************!*\
   !*** ./src/service/prevSearchInfoService.js ***!
@@ -13122,7 +13347,6 @@ var savedVideoService = {
     var videos = _toConsumableArray(_store_js__WEBPACK_IMPORTED_MODULE_1__.savedVideoModel.getItem());
 
     videos.push(getNewSavedVideo(video));
-    console.log('videos', videos);
     _store_js__WEBPACK_IMPORTED_MODULE_1__.savedVideoModel.setItem(videos);
   },
   checkVideo: function checkVideo(videoId) {
@@ -13169,49 +13393,8 @@ var savedVideoService = {
         isSaved: isVideoIdExist(_store_js__WEBPACK_IMPORTED_MODULE_1__.savedVideoModel.getItem(), video.videoId)
       });
     });
-  },
-  getFilteredVideos: function getFilteredVideos() {
-    var videos = _store_js__WEBPACK_IMPORTED_MODULE_1__.savedVideoModel.getItem();
-    var filteredVideos = getLikedFilteredVideo(getCheckedFilteredVideo(videos));
-    return filteredVideos;
   }
 };
-
-function getCheckedFilteredVideo(videos) {
-  if (_store_js__WEBPACK_IMPORTED_MODULE_1__.savedVideoFilter.checked === _constants__WEBPACK_IMPORTED_MODULE_0__.FILTER_TYPE.ALL) {
-    return videos;
-  }
-
-  if (_store_js__WEBPACK_IMPORTED_MODULE_1__.savedVideoFilter.checked === _constants__WEBPACK_IMPORTED_MODULE_0__.FILTER_TYPE.FULFILLED_ONLY) {
-    return videos.filter(function (video) {
-      return video.isChecked === true;
-    });
-  }
-
-  if (_store_js__WEBPACK_IMPORTED_MODULE_1__.savedVideoFilter.checked === _constants__WEBPACK_IMPORTED_MODULE_0__.FILTER_TYPE.NOT_FULFILLED_ONLY) {
-    return videos.filter(function (video) {
-      return video.isChecked === false;
-    });
-  }
-}
-
-function getLikedFilteredVideo(videos) {
-  if (_store_js__WEBPACK_IMPORTED_MODULE_1__.savedVideoFilter.liked === _constants__WEBPACK_IMPORTED_MODULE_0__.FILTER_TYPE.ALL) {
-    return videos;
-  }
-
-  if (_store_js__WEBPACK_IMPORTED_MODULE_1__.savedVideoFilter.liked === _constants__WEBPACK_IMPORTED_MODULE_0__.FILTER_TYPE.FULFILLED_ONLY) {
-    return videos.filter(function (video) {
-      return video.isLiked === true;
-    });
-  }
-
-  if (_store_js__WEBPACK_IMPORTED_MODULE_1__.savedVideoFilter.liked === _constants__WEBPACK_IMPORTED_MODULE_0__.FILTER_TYPE.NOT_FULFILLED_ONLY) {
-    return videos.filter(function (video) {
-      return video.isLiked === false;
-    });
-  }
-}
 
 function getNewSavedVideo(video) {
   return _objectSpread(_objectSpread({}, video), {}, {
@@ -13631,9 +13814,10 @@ function isKey(key) {
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "savedVideoModel": () => (/* binding */ savedVideoModel),
-/* harmony export */   "prevSearchResultModel": () => (/* binding */ prevSearchResultModel),
 /* harmony export */   "searchQueryModel": () => (/* binding */ searchQueryModel),
+/* harmony export */   "prevSearchResultModel": () => (/* binding */ prevSearchResultModel),
 /* harmony export */   "searchedVideoModel": () => (/* binding */ searchedVideoModel),
+/* harmony export */   "videoSlicer": () => (/* binding */ videoSlicer),
 /* harmony export */   "savedVideoFilter": () => (/* binding */ savedVideoFilter)
 /* harmony export */ });
 /* harmony import */ var _storageModel_VideoStorage_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./storageModel/VideoStorage.js */ "./src/storageModel/VideoStorage.js");
@@ -13642,6 +13826,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _storageModel_ArrayStorage_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./storageModel/ArrayStorage.js */ "./src/storageModel/ArrayStorage.js");
 /* harmony import */ var _model_VideoList_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./model/VideoList.js */ "./src/model/VideoList.js");
 /* harmony import */ var _model_VideoFilter_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./model/VideoFilter.js */ "./src/model/VideoFilter.js");
+/* harmony import */ var _model_VideoSlicer_js__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./model/VideoSlicer.js */ "./src/model/VideoSlicer.js");
+
 
 
 
@@ -13649,9 +13835,10 @@ __webpack_require__.r(__webpack_exports__);
 
 
 var savedVideoModel = new _storageModel_VideoStorage_js__WEBPACK_IMPORTED_MODULE_0__.default(_constants_js__WEBPACK_IMPORTED_MODULE_1__.LOCAL_STORAGE_KEY.SAVED_VIDEOS);
-var prevSearchResultModel = new _storageModel_PrevSearchResult_js__WEBPACK_IMPORTED_MODULE_2__.default(_constants_js__WEBPACK_IMPORTED_MODULE_1__.LOCAL_STORAGE_KEY.PREV_SEARCH_INFO);
 var searchQueryModel = new _storageModel_ArrayStorage_js__WEBPACK_IMPORTED_MODULE_3__.default(_constants_js__WEBPACK_IMPORTED_MODULE_1__.LOCAL_STORAGE_KEY.SEARCH_QUERIES);
+var prevSearchResultModel = new _storageModel_PrevSearchResult_js__WEBPACK_IMPORTED_MODULE_2__.default(_constants_js__WEBPACK_IMPORTED_MODULE_1__.LOCAL_STORAGE_KEY.PREV_SEARCH_INFO);
 var searchedVideoModel = new _model_VideoList_js__WEBPACK_IMPORTED_MODULE_4__.default();
+var videoSlicer = new _model_VideoSlicer_js__WEBPACK_IMPORTED_MODULE_6__.default();
 var savedVideoFilter = new _model_VideoFilter_js__WEBPACK_IMPORTED_MODULE_5__.default();
 
 /***/ }),
@@ -14088,7 +14275,7 @@ var _getSearchedVideoListTemplate2 = function _getSearchedVideoListTemplate2(vid
 };
 
 var _getSearchedVideoTemplate2 = function _getSearchedVideoTemplate2(video) {
-  return "\n    <article class=\"".concat(_constants_js__WEBPACK_IMPORTED_MODULE_0__.SELECTOR_CLASS.SEARCHED_CLIP, " clip\">\n      <div class=\"clip__preview \">\n        <img class=\"clip__thumbnail--in-modal\" src=\"").concat(video.thumbnail, "\" loading=\"lazy\" />\n        <iframe\n          width=\"100%\"\n          height=\"118\"\n          src=\"https://www.youtube.com/embed/").concat(video.videoId, "\"\n          frameborder=\"0\"\n          allow=\"accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture\"\n          allowfullscreen\n          loading=\"lazy\"\n          class=\"clip__iframe\"\n        ></iframe>\n      </div>\n      <div class=\"clip__content pt-2 px-1\">\n        <h3>").concat(video.title, "</h3>\n        <div>\n          <a\n            href=\"https://www.youtube.com/channel/UC-mOekGSesms0agFntnQang\"\n            target=\"_blank\"\n            class=\"channel-name mt-1\"\n          >\n            ").concat(video.channelTitle, "\n          </a>\n          <div class=\"meta\">\n            <p>").concat(video.publishedAt, "</p>\n          </div>\n          <div class=\"d-flex justify-end ").concat(video.isSaved ? 'removed' : '', "\">\n            <button class=\"btn ").concat(_constants_js__WEBPACK_IMPORTED_MODULE_0__.SELECTOR_CLASS.SEARCHED_CLIP_SAVE_BUTTON, "\"\n              data-video-id=\"").concat(video.videoId, "\"\n            >\u2B07\uFE0F \uC800\uC7A5</button>\n          </div>\n        </div>\n      </div>\n    </article>\n    ");
+  return "\n    <article class=\"".concat(_constants_js__WEBPACK_IMPORTED_MODULE_0__.SELECTOR_CLASS.SEARCHED_CLIP, " clip\">\n      <div class=\"clip__preview \">\n        <img class=\"clip__thumbnail--in-modal\" src=\"").concat(video.thumbnail, "\" loading=\"lazy\" />\n        <iframe\n          width=\"100%\"\n          height=\"118\"\n          src=\"https://www.youtube.com/embed/").concat(video.videoId, "\"\n          frameborder=\"0\"\n          allow=\"accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture\"\n          allowfullscreen\n          loading=\"lazy\"\n          class=\"clip__iframe\"\n        ></iframe>\n      </div>\n      <div class=\"clip__content py-2 px-4\">\n        <h3>").concat(video.title, "</h3>\n        <div>\n          <a\n            href=\"https://www.youtube.com/channel/UC-mOekGSesms0agFntnQang\"\n            target=\"_blank\"\n            class=\"channel-name mt-1\"\n          >\n            ").concat(video.channelTitle, "\n          </a>\n          <div class=\"meta\">\n            <p>").concat(video.publishedAt, "</p>\n          </div>\n          <div class=\"d-flex justify-end ").concat(video.isSaved ? 'removed' : '', "\">\n            <button class=\"btn ").concat(_constants_js__WEBPACK_IMPORTED_MODULE_0__.SELECTOR_CLASS.SEARCHED_CLIP_SAVE_BUTTON, "\"\n              data-video-id=\"").concat(video.videoId, "\"\n            >\u2B07\uFE0F \uC800\uC7A5</button>\n          </div>\n        </div>\n      </div>\n    </article>\n    ");
 };
 
 
@@ -14140,13 +14327,17 @@ var VideoView = /*#__PURE__*/function (_BasicView) {
 
   function VideoView(_ref) {
     var $videoWrapper = _ref.$videoWrapper,
-        $emptyVideoImage = _ref.$emptyVideoImage;
+        $emptyVideoImage = _ref.$emptyVideoImage,
+        $upVideoIntersector = _ref.$upVideoIntersector,
+        $downVideoIntersector = _ref.$downVideoIntersector;
 
     _classCallCheck(this, VideoView);
 
     return _super.call(this, {
       $videoWrapper: $videoWrapper,
-      $emptyVideoImage: $emptyVideoImage
+      $emptyVideoImage: $emptyVideoImage,
+      $upVideoIntersector: $upVideoIntersector,
+      $downVideoIntersector: $downVideoIntersector
     });
   }
 
@@ -14177,6 +14368,26 @@ var VideoView = /*#__PURE__*/function (_BasicView) {
       this.hideElement(this._element.$emptyVideoImage);
     }
   }, {
+    key: "showUpVideoIntersector",
+    value: function showUpVideoIntersector() {
+      this.showElement(this._element.$upVideoIntersector);
+    }
+  }, {
+    key: "hideUpVideoIntersector",
+    value: function hideUpVideoIntersector() {
+      this.hideElement(this._element.$upVideoIntersector);
+    }
+  }, {
+    key: "showDownVideoIntersector",
+    value: function showDownVideoIntersector() {
+      this.showElement(this._element.$downVideoIntersector);
+    }
+  }, {
+    key: "hideDownVideoIntersector",
+    value: function hideDownVideoIntersector() {
+      this.hideElement(this._element.$downVideoIntersector);
+    }
+  }, {
     key: "_getVideoListTemplate",
     value: function _getVideoListTemplate(videos) {
       var _this = this;
@@ -14193,7 +14404,7 @@ var VideoView = /*#__PURE__*/function (_BasicView) {
   }, {
     key: "_getVideoTemplate",
     value: function _getVideoTemplate(video) {
-      return "\n    <article class=\"".concat(_constants__WEBPACK_IMPORTED_MODULE_0__.SELECTOR_CLASS.SAVED_CLIP, " clip\">\n      <div class=\"clip__preview\">\n        <img class=\"clip__thumbnail\" src=\"").concat(video.thumbnail, "\" loading=\"lazy\" />\n        <iframe\n          width=\"100%\"\n          height=\"118\"\n          src=\"https://www.youtube.com/embed/").concat(video.videoId, "\"\n          frameborder=\"0\"\n          allow=\"accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture\"\n          allowfullscreen\n          loading=\"lazy\"\n        ></iframe>\n      </div>\n      <div class=\"clip__content py-2 px-4\">\n        <h3>").concat(video.title, "</h3>\n        <div>\n          <a\n            href=\"https://www.youtube.com/channel/UC-mOekGSesms0agFntnQang\"\n            target=\"_blank\"\n            class=\"channel-name mt-1\"\n          >\n            ").concat(video.channelTitle, "\n          </a>\n          <div class=\"meta\">\n            <p>").concat(video.publishedAt, "</p>\n          </div>\n          <div>\n            <span \n              class=\"\n                ").concat(video.isChecked ? _constants__WEBPACK_IMPORTED_MODULE_0__.SELECTOR_CLASS.SAVED_CLIP_UNCHECK_BUTTON : _constants__WEBPACK_IMPORTED_MODULE_0__.SELECTOR_CLASS.SAVED_CLIP_CHECK_BUTTON, "\n                clip__check-button\n                ").concat(video.isChecked ? _constants__WEBPACK_IMPORTED_MODULE_0__.STYLE_CLASS.CHECKED : '', " \n                opacity-hover\n              \" \n              data-video-id=\"").concat(video.videoId, "\"\n            >\u2705</span>\n            <span \n              class=\"\n                ").concat(video.isLiked ? _constants__WEBPACK_IMPORTED_MODULE_0__.SELECTOR_CLASS.SAVED_CLIP_CANCEL_LIKE_BUTTON : _constants__WEBPACK_IMPORTED_MODULE_0__.SELECTOR_CLASS.SAVED_CLIP_LIKE_BUTTON, "\n                clip__check-button\n                ").concat(video.isLiked ? _constants__WEBPACK_IMPORTED_MODULE_0__.STYLE_CLASS.LIKED : '', " \n                opacity-hover\n              \"\n              data-video-id=\"").concat(video.videoId, "\"\n            >\uD83D\uDC4D</span>\n            <span class=\"opacity-hover\">\uD83D\uDCAC</span>\n            <span \n              class=\"\n                ").concat(_constants__WEBPACK_IMPORTED_MODULE_0__.SELECTOR_CLASS.SAVED_CLIP_DELETE_BUTTON, " \n                opacity-hover\n              \" \n              data-video-id=\"").concat(video.videoId, "\"\n            >\uD83D\uDDD1\uFE0F</span>\n          </div>\n        </div>\n      </div>\n    </article>\n    ");
+      return "\n    <article class=\"".concat(_constants__WEBPACK_IMPORTED_MODULE_0__.SELECTOR_CLASS.SAVED_CLIP, " clip fade-in\">\n      <div class=\"clip__preview\">\n        <img class=\"clip__thumbnail\" src=\"").concat(video.thumbnail, "\" loading=\"lazy\" />\n        <iframe\n          width=\"100%\"\n          height=\"118\"\n          src=\"https://www.youtube.com/embed/").concat(video.videoId, "\"\n          frameborder=\"0\"\n          allow=\"accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture\"\n          allowfullscreen\n          loading=\"lazy\"\n        ></iframe>\n      </div>\n      <div class=\"clip__content py-2 px-4\">\n        <h3>").concat(video.title, "</h3>\n        <div>\n          <a\n            href=\"https://www.youtube.com/channel/UC-mOekGSesms0agFntnQang\"\n            target=\"_blank\"\n            class=\"channel-name mt-1\"\n          >\n            ").concat(video.channelTitle, "\n          </a>\n          <div class=\"meta\">\n            <p>").concat(video.publishedAt, "</p>\n          </div>\n          <div>\n            <span \n              class=\"\n                ").concat(video.isChecked ? _constants__WEBPACK_IMPORTED_MODULE_0__.SELECTOR_CLASS.SAVED_CLIP_UNCHECK_BUTTON : _constants__WEBPACK_IMPORTED_MODULE_0__.SELECTOR_CLASS.SAVED_CLIP_CHECK_BUTTON, "\n                clip__check-button\n                ").concat(video.isChecked ? _constants__WEBPACK_IMPORTED_MODULE_0__.STYLE_CLASS.CHECKED : '', " \n                opacity-hover\n              \" \n              data-video-id=\"").concat(video.videoId, "\"\n            >\u2705</span>\n            <span \n              class=\"\n                ").concat(video.isLiked ? _constants__WEBPACK_IMPORTED_MODULE_0__.SELECTOR_CLASS.SAVED_CLIP_CANCEL_LIKE_BUTTON : _constants__WEBPACK_IMPORTED_MODULE_0__.SELECTOR_CLASS.SAVED_CLIP_LIKE_BUTTON, "\n                clip__check-button\n                ").concat(video.isLiked ? _constants__WEBPACK_IMPORTED_MODULE_0__.STYLE_CLASS.LIKED : '', " \n                opacity-hover\n              \"\n              data-video-id=\"").concat(video.videoId, "\"\n            >\uD83D\uDC4D</span>\n            <span class=\"opacity-hover\">\uD83D\uDCAC</span>\n            <span \n              class=\"\n                ").concat(_constants__WEBPACK_IMPORTED_MODULE_0__.SELECTOR_CLASS.SAVED_CLIP_DELETE_BUTTON, " \n                opacity-hover\n              \" \n              data-video-id=\"").concat(video.videoId, "\"\n            >\uD83D\uDDD1\uFE0F</span>\n          </div>\n        </div>\n      </div>\n    </article>\n    ");
     }
   }]);
 
@@ -14228,7 +14439,9 @@ __webpack_require__.r(__webpack_exports__);
 var layoutView = new _LayoutView_js__WEBPACK_IMPORTED_MODULE_1__.default(_elements__WEBPACK_IMPORTED_MODULE_0__.$nav, _elements__WEBPACK_IMPORTED_MODULE_0__.$snackbarWrapper);
 var savedVideoView = new _VideoView_js__WEBPACK_IMPORTED_MODULE_3__.default({
   $videoWrapper: _elements__WEBPACK_IMPORTED_MODULE_0__.$savedVideoWrapper,
-  $emptyVideoImage: _elements__WEBPACK_IMPORTED_MODULE_0__.$savedVideoNotFound
+  $emptyVideoImage: _elements__WEBPACK_IMPORTED_MODULE_0__.$savedVideoNotFound,
+  $upVideoIntersector: _elements__WEBPACK_IMPORTED_MODULE_0__.$savedVideoUpIntersector,
+  $downVideoIntersector: _elements__WEBPACK_IMPORTED_MODULE_0__.$savedVideoDownIntersector
 });
 var searchModalView = new _ModalView_js__WEBPACK_IMPORTED_MODULE_2__.default({
   $modal: _elements__WEBPACK_IMPORTED_MODULE_0__.$modal,

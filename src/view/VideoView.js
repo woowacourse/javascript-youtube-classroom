@@ -2,8 +2,8 @@ import { SELECTOR_CLASS, STYLE_CLASS, YOUTUBE } from '../constants';
 import BasicView from './BasicView';
 
 export default class VideoView extends BasicView {
-  constructor({ $videoWrapper, $emptyVideoImage }) {
-    super({ $videoWrapper, $emptyVideoImage });
+  constructor({ $videoWrapper, $emptyVideoImage, $upVideoIntersector, $downVideoIntersector }) {
+    super({ $videoWrapper, $emptyVideoImage, $upVideoIntersector, $downVideoIntersector });
   }
 
   renderVideos(videos) {
@@ -27,6 +27,22 @@ export default class VideoView extends BasicView {
     this.hideElement(this._element.$emptyVideoImage);
   }
 
+  showUpVideoIntersector() {
+    this.showElement(this._element.$upVideoIntersector);
+  }
+
+  hideUpVideoIntersector() {
+    this.hideElement(this._element.$upVideoIntersector);
+  }
+
+  showDownVideoIntersector() {
+    this.showElement(this._element.$downVideoIntersector);
+  }
+
+  hideDownVideoIntersector() {
+    this.hideElement(this._element.$downVideoIntersector);
+  }
+
   _getVideoListTemplate(videos) {
     return videos.map(video => this._getVideoTemplate(video)).join('');
   }
@@ -43,7 +59,7 @@ export default class VideoView extends BasicView {
 
   _getVideoTemplate(video) {
     return `
-    <article class="${SELECTOR_CLASS.SAVED_CLIP} clip">
+    <article class="${SELECTOR_CLASS.SAVED_CLIP} clip fade-in">
       <div class="clip__preview">
         <img class="clip__thumbnail" src="${video.thumbnail}" loading="lazy" />
         <iframe

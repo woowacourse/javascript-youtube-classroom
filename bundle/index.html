@@ -6,7 +6,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link rel="stylesheet" href="./main.css" />
   </head>
-
   <body>
     <div id="app">
       <div class="d-flex justify-center mt-5 w-100">
@@ -36,8 +35,8 @@
             </nav>
           </header>
           <main class="mt-10">
-            <section>
-              <div id="saved-video-not-found" class="d-flex flex-col items-center removed">
+            <div class="saved-video">
+              <div id="saved-video__not-found" class="d-flex flex-col items-center removed">
                 <img
                   src="./images/status/not_found.png"
                   alt="empty-video-image"
@@ -45,8 +44,10 @@
                 />
                 <p>영상이 담겨있지 않습니다.</p>
               </div>
-            </section>
-            <section id="saved-video-wrapper" class="video-wrapper"></section>
+              <div id="saved-video__up-intersector" class="removed"></div>
+              <section id="saved-video__wrapper" class="video-wrapper"></section>
+              <div id="saved-video__down-intersector" class="removed"></div>
+            </div>
           </main>
         </div>
       </div>
@@ -71,7 +72,7 @@
             </div>
           </section>
           <section id="search-content" class="mt-5">
-            <div class="d-flex justify-end text-gray-700">
+            <div class="d-flex justify-end text-gray-700 mr-4">
               저장된 영상 갯수 : <span id="search-content__saved-video-count" class="ml-2"></span> 개
             </div>
             <div id="search-content__video-not-found" class="d-flex flex-col items-center removed">

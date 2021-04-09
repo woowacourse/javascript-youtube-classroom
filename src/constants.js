@@ -10,8 +10,10 @@ export const SELECTOR_ID = Object.freeze({
   SEARCH_CONTENT_SAVED_VIDEO_COUNT: 'search-content__saved-video-count',
   SERACH_CONTENT_INTERSECTOR: 'search-content__intersector',
   SERACH_CONTENT_VIDEO_NOT_FOUND: 'search-content__video-not-found',
-  SAVED_VIDEO_WRAPPER: 'saved-video-wrapper',
-  SAVED_VIDEO_NOT_FOUND: 'saved-video-not-found',
+  SAVED_VIDEO_WRAPPER: 'saved-video__wrapper',
+  SAVED_VIDEO_NOT_FOUND: 'saved-video__not-found',
+  SAVED_VIDEO_UP_INTERSECTOR: 'saved-video__up-intersector',
+  SAVED_VIDEO_DOWN_INTERSECTOR: 'saved-video__down-intersector',
   SEARCH_QUERIES: 'search-queries',
   WATCHED_VIDEO_SWITCH_BUTTON: 'watched-video-switch-button',
   WATCHING_VIDEO_SWITCH_BUTTON: 'watching-video-switch-button',
@@ -98,3 +100,9 @@ export const FILTER_TYPE = Object.freeze({
 });
 
 export const EMPTY = '';
+
+export const SLICER = Object.freeze({
+  INITIAL_FIRST_INDEX: 0,
+  LOAD_VIDEO_AMOUNT: 20,
+  SLICE_RATIO: 0.5,
+});

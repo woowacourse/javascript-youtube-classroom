@@ -16,6 +16,10 @@
   }
 }
 
+.fade-in {
+  animation: fade-in 1s forwards;
+}
+
 .fade-in-and-out {
   animation: fade-in 1s forwards, fade-out 1s 2s forwards;
 }

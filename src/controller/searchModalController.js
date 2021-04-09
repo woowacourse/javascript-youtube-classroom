@@ -93,7 +93,6 @@ function onSearchedVideoSave({ target }) {
     layoutView.showSnackbar(SNACKBAR_MESSAGE.SAVE_LIMIT_EXCEEDED, false);
     return;
   }
-  console.log(target.dataset.videoId);
   saveSearchedVideo(target.dataset.videoId);
 }
 

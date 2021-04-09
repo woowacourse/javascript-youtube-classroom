@@ -3,6 +3,7 @@ import { savedVideoFilter } from '../store.js';
 import savedVideoController from './savedVideoController.js';
 import controllerUtil from './controllerUtil.js';
 import { layoutView } from '../view/index.js';
+import filteredVideoService from '../service/filteredVideoService.js';
 
 const routeController = {
   initRouteEventListeners() {
@@ -20,6 +21,7 @@ function routeByHash() {
   if (hash === BROWSER_HASH.WATCHED) {
     savedVideoFilter.setCheckedOnly();
   }
+  filteredVideoService.initVideoSliceIndex();
   savedVideoController.renderFilteredVideos();
 }
 

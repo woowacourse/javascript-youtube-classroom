@@ -7,13 +7,24 @@ const filteredVideoService = {
     const filteredVideos = getLikedFilteredVideo(getCheckedFilteredVideo(videos));
     return videoSlicer.getSlicedVideos(filteredVideos);
   },
-  getUpSlicedVideos() {
-    videoSlicer.increaseSlicerIndex();
-    return filteredVideoService.getFilteredVideos();
-  },
-  getDownSlicedVideos() {
+  tryUpSliceVideos() {
+    if (videoSlicer.firstVideoIndex === 0) {
+      return false;
+    }
     videoSlicer.decreaseSlicerIndex();
-    return filteredVideoService.getFilteredVideos();
+    return true;
+  },
+  initVideoSliceIndex() {
+    videoSlicer.initSlicerIndex();
+  },
+  tryDownSliceVideos() {
+    const videos = savedVideoModel.getItem();
+    const filteredVideos = getLikedFilteredVideo(getCheckedFilteredVideo(videos));
+    if (videoSlicer.lastVideoIndex >= filteredVideos.length) {
+      return false;
+    }
+    videoSlicer.increaseSlicerIndex();
+    return true;
   },
 };
 

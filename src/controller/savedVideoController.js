@@ -1,25 +1,55 @@
-import { $savedVideoWrapper, $likeVideoFilterCheckbox } from '../elements';
+import {
+  $savedVideoWrapper,
+  $likeVideoFilterCheckbox,
+  $savedVideoUpIntersector,
+  $savedVideoDownIntersector,
+} from '../elements';
 import { layoutView, savedVideoView } from '../view';
 import savedVideoService from '../service/savedVideoService.js';
 import { CONFIRM_MESSAGE, SELECTOR_CLASS, SNACKBAR_MESSAGE } from '../constants';
 import { savedVideoFilter } from '../store.js';
+import controllerUtil from './controllerUtil.js';
+import filteredVideoService from '../service/filteredVideoService';
 
 const savedVideoController = {
   initEventListeners() {
     $savedVideoWrapper.addEventListener('click', onClipInteract);
     $likeVideoFilterCheckbox.addEventListener('change', onFilterLikeClip);
+    controllerUtil.setObserver($savedVideoUpIntersector, onSavedVideoUpIntersect);
+    controllerUtil.setObserver($savedVideoDownIntersector, onSavedVideoDownIntersect);
   },
   renderFilteredVideos() {
-    const filteredVideos = savedVideoService.getFilteredVideos();
+    const filteredVideos = filteredVideoService.getFilteredVideos();
     if (filteredVideos.length === 0) {
       savedVideoView.showEmptyVideoImage();
       savedVideoView.eraseVideos();
       return;
     }
     savedVideoView.hideEmptyVideoImage();
+    savedVideoView.showUpVideoIntersector();
+    savedVideoView.showDownVideoIntersector();
     savedVideoView.renderVideos(filteredVideos);
   },
 };
+
+// 여기해야 함
+function onSavedVideoUpIntersect() {
+  const upSliceResult = filteredVideoService.tryUpSliceVideos();
+  if (!upSliceResult) {
+    return;
+  }
+  window.scrollTo({ top: window.scrollY + 300 });
+  savedVideoController.renderFilteredVideos();
+}
+
+function onSavedVideoDownIntersect() {
+  const downSliceResult = filteredVideoService.tryDownSliceVideos();
+  if (!downSliceResult) {
+    return;
+  }
+  window.scrollTo({ top: window.scrollY - 100 });
+  savedVideoController.renderFilteredVideos();
+}
 
 function onFilterLikeClip({ target }) {
   if (target.checked) {
@@ -87,11 +117,13 @@ function cancelClipLike(videoId) {
 
 function filterLikeClips() {
   savedVideoFilter.setLikedOnly();
+  filteredVideoService.initVideoSliceIndex();
   savedVideoController.renderFilteredVideos();
 }
 
 function cancelLikeClipsFilter() {
   savedVideoFilter.setLikedNoMatter();
+  filteredVideoService.initVideoSliceIndex();
   savedVideoController.renderFilteredVideos();
 }
 
