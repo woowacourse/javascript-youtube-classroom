@@ -11,12 +11,12 @@
 }
 
 .move-to-history-icon,
-.move-to-watch-later-icon:hover {
+.video-wrapper .move-to-watch-later-icon:hover {
   background-color: var(--orange);
 }
 
 .move-to-watch-later-icon,
-.move-to-history-icon:hover {
+.video-wrapper .move-to-history-icon:hover {
   background-color: var(--green);
 }
 

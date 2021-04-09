@@ -19,7 +19,7 @@ export default class VideoWrapper {
 
   #$noSavedVideoImage = $(`.${CLASSNAME.NO_WATCHING_VIDEO_IMAGE}`);
 
-  #$watchLaterVideoWrapper = $(`.${CLASSNAME.MAIN_VIDEO_WRAPPER}`);
+  #$videoWrapper = $(`.${CLASSNAME.MAIN_VIDEO_WRAPPER}`);
 
   constructor() {
     this.#addMessageListeners();
@@ -55,7 +55,7 @@ export default class VideoWrapper {
   }
 
   #addEventListeners() {
-    this.#$watchLaterVideoWrapper.addEventListener(
+    this.#$videoWrapper.addEventListener(
       "click",
       this.#handleVideoWrapperClick.bind(this)
     );
@@ -182,11 +182,6 @@ export default class VideoWrapper {
   }
 
   #render() {
-    if (this.#videoItemsMap.size === 0) {
-      $.show(this.#$noSavedVideoImage);
-      return;
-    }
-
     this.#videoItemsMap.forEach((item, videoId) =>
       this.#mountTemplate({ videoId, item })
     );
@@ -195,12 +190,9 @@ export default class VideoWrapper {
   #mountTemplate({ videoId, item }) {
     $.hide(this.#$noSavedVideoImage);
 
-    this.#$watchLaterVideoWrapper.insertAdjacentHTML(
-      "afterBegin",
-      MAIN_VIDEO_TEMPLATE
-    );
+    this.#$videoWrapper.insertAdjacentHTML("afterBegin", MAIN_VIDEO_TEMPLATE);
 
-    const [$video] = this.#$watchLaterVideoWrapper.children;
+    const [$video] = this.#$videoWrapper.children;
     const { videoType } = item;
     $video.dataset.videoId = videoId;
 

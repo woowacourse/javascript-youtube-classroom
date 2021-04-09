@@ -7,12 +7,22 @@
   display: none;
 }
 
+.watch-later-container .video-wrapper:empty ~ .no-watching-video-image,
+.history-container .video-wrapper:empty ~ .no-watched-video-image {
+  display: inline-block;
+}
+
 .video-wrapper {
   display: grid;
   grid-template-columns: repeat(auto-fill, var(--clip-width));
   grid-row-gap: 10px;
   grid-column-gap: 4px;
   justify-content: center;
+  width: 100%;
+}
+
+.video-wrapper:empty {
+  display: none;
 }
 
 .video-wrapper.like-mode .clip:not(.like) {
