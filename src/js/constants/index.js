@@ -3,6 +3,7 @@ import SNACKBAR_TEXT from "./snackbarText.js";
 import LOCAL_STORAGE_KEY from "./localStorageKey.js";
 import REGULAR_EXPRESSION from "./regularExpression.js";
 import NUMBER from "./number.js";
+import VIDEO_TYPE from "./videoType.js";
 
 export {
   CLASSNAME,
@@ -10,4 +11,5 @@ export {
   LOCAL_STORAGE_KEY,
   REGULAR_EXPRESSION,
   NUMBER,
+  VIDEO_TYPE,
 };
