@@ -12713,26 +12713,21 @@ function _searchVideo() {
             _yield$getVideosByKey = _context.sent;
             videos = _yield$getVideosByKey.videos;
             nextPageToken = _yield$getVideosByKey.nextPageToken;
-
-            if (!(videos.length === 0)) {
-              _context.next = 9;
-              break;
-            }
-
-            renderEmptySearchResult();
-            return _context.abrupt("return");
-
-          case 9:
             saveSearchInfo({
               inputQuery: inputQuery,
               nextPageToken: nextPageToken,
               videos: videos
             });
+
+            if (videos.length === 0) {
+              renderEmptySearchResult();
+            }
+
             _view_index_js__WEBPACK_IMPORTED_MODULE_5__.searchModalView.hideSkeletons();
             _service_searchedVideoService__WEBPACK_IMPORTED_MODULE_8__.default.setSearchedVideos(videos);
             searchModalController.renderModalContents();
 
-          case 13:
+          case 11:
           case "end":
             return _context.stop();
         }
@@ -12826,10 +12821,7 @@ function saveSearchedVideo(videoId) {
 
   if (!targetSearchedVideo) {
     return;
-  } // if (savedVideoService.isSavedVideosEmpty()) {
-  //   savedVideoView.hideEmptyVideoImage();
-  // }
-
+  }
 
   _service_savedVideoService_js__WEBPACK_IMPORTED_MODULE_7__.default.pushNewVideo(targetSearchedVideo);
   _savedVideoController_js__WEBPACK_IMPORTED_MODULE_9__.default.renderFilteredVideos();
@@ -14275,7 +14267,7 @@ var _getSearchedVideoListTemplate2 = function _getSearchedVideoListTemplate2(vid
 };
 
 var _getSearchedVideoTemplate2 = function _getSearchedVideoTemplate2(video) {
-  return "\n    <article class=\"".concat(_constants_js__WEBPACK_IMPORTED_MODULE_0__.SELECTOR_CLASS.SEARCHED_CLIP, " clip\">\n      <div class=\"clip__preview \">\n        <img class=\"clip__thumbnail--in-modal\" src=\"").concat(video.thumbnail, "\" loading=\"lazy\" />\n        <iframe\n          width=\"100%\"\n          height=\"118\"\n          src=\"https://www.youtube.com/embed/").concat(video.videoId, "\"\n          frameborder=\"0\"\n          allow=\"accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture\"\n          allowfullscreen\n          loading=\"lazy\"\n          class=\"clip__iframe\"\n        ></iframe>\n      </div>\n      <div class=\"clip__content py-2 px-4\">\n        <h3>").concat(video.title, "</h3>\n        <div>\n          <a\n            href=\"https://www.youtube.com/channel/UC-mOekGSesms0agFntnQang\"\n            target=\"_blank\"\n            class=\"channel-name mt-1\"\n          >\n            ").concat(video.channelTitle, "\n          </a>\n          <div class=\"meta\">\n            <p>").concat(video.publishedAt, "</p>\n          </div>\n          <div class=\"d-flex justify-end ").concat(video.isSaved ? 'removed' : '', "\">\n            <button class=\"btn ").concat(_constants_js__WEBPACK_IMPORTED_MODULE_0__.SELECTOR_CLASS.SEARCHED_CLIP_SAVE_BUTTON, "\"\n              data-video-id=\"").concat(video.videoId, "\"\n            >\u2B07\uFE0F \uC800\uC7A5</button>\n          </div>\n        </div>\n      </div>\n    </article>\n    ");
+  return "\n    <article class=\"".concat(_constants_js__WEBPACK_IMPORTED_MODULE_0__.SELECTOR_CLASS.SEARCHED_CLIP, " clip fade-in\">\n      <div class=\"clip__preview \">\n        <img class=\"clip__thumbnail--in-modal\" src=\"").concat(video.thumbnail, "\" loading=\"lazy\" />\n        <iframe\n          width=\"100%\"\n          height=\"118\"\n          src=\"https://www.youtube.com/embed/").concat(video.videoId, "\"\n          frameborder=\"0\"\n          allow=\"accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture\"\n          allowfullscreen\n          loading=\"lazy\"\n          class=\"clip__iframe\"\n        ></iframe>\n      </div>\n      <div class=\"clip__content py-2 px-4\">\n        <h3>").concat(video.title, "</h3>\n        <div>\n          <a\n            href=\"https://www.youtube.com/channel/UC-mOekGSesms0agFntnQang\"\n            target=\"_blank\"\n            class=\"channel-name mt-1\"\n          >\n            ").concat(video.channelTitle, "\n          </a>\n          <div class=\"meta\">\n            <p>").concat(video.publishedAt, "</p>\n          </div>\n          <div class=\"d-flex justify-end ").concat(video.isSaved ? 'removed' : '', "\">\n            <button class=\"btn ").concat(_constants_js__WEBPACK_IMPORTED_MODULE_0__.SELECTOR_CLASS.SEARCHED_CLIP_SAVE_BUTTON, "\"\n              data-video-id=\"").concat(video.videoId, "\"\n            >\u2B07\uFE0F \uC800\uC7A5</button>\n          </div>\n        </div>\n      </div>\n    </article>\n    ");
 };
 
 

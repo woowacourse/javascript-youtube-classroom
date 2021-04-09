@@ -70,11 +70,10 @@ function onVideoSearch(event) {
 async function searchVideo(inputQuery) {
   searchModalView.showSearchPrepartion();
   const { videos, nextPageToken } = await getVideosByKeyword(inputQuery);
+  saveSearchInfo({ inputQuery, nextPageToken, videos });
   if (videos.length === 0) {
     renderEmptySearchResult();
-    return;
   }
-  saveSearchInfo({ inputQuery, nextPageToken, videos });
   searchModalView.hideSkeletons();
   searchedVideoService.setSearchedVideos(videos);
   searchModalController.renderModalContents();
@@ -120,9 +119,6 @@ function saveSearchedVideo(videoId) {
   if (!targetSearchedVideo) {
     return;
   }
-  // if (savedVideoService.isSavedVideosEmpty()) {
-  //   savedVideoView.hideEmptyVideoImage();
-  // }
   savedVideoService.pushNewVideo(targetSearchedVideo);
   savedVideoController.renderFilteredVideos();
   searchModalController.renderModalContents();
