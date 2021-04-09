@@ -157,8 +157,6 @@ describe("유투브 검색 API를 이용하여 영상들을 검색할 수 있다
 
       cy.get(`.${CLASSNAME.SAVE_VIDEO_BUTTON}`).each(($btn, index) => {
         cy.wrap($btn).click();
-        cy.wrap($btn).should("have.class", CLASSNAME.CANCEL);
-        cy.wrap($btn).should("have.text", "취소");
         cy.get(`.${CLASSNAME.SAVED_VIDEOS_COUNT}`).should(
           "have.text",
           index + 1
