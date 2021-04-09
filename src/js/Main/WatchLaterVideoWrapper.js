@@ -2,6 +2,7 @@ import {
   LOCAL_STORAGE_KEY,
   CLASSNAME,
   SNACKBAR_TEXT,
+  VIDEO_TYPE,
 } from "../constants/index.js";
 import { $, showSnackbar } from "../utils/index.js";
 import { messenger, MESSAGE } from "../messenger/index.js";
@@ -58,11 +59,6 @@ export default class WatchLaterVideoWrapper {
     );
 
     messenger.addMessageListener(
-      MESSAGE.MOVE_TO_HISTORY_ICON_CLICKED,
-      this.toHistoryType.bind(this)
-    );
-
-    messenger.addMessageListener(
       MESSAGE.HIDE_IF_VIDEO_IS_SAVED,
       this.hideIfVideoIsSaved.bind(this)
     );
@@ -76,29 +72,46 @@ export default class WatchLaterVideoWrapper {
   }
 
   handleVideoWrapperClick(event) {
-    const { target: $videoWrapper } = event;
-    const { videoId } = $videoWrapper.parentElement.dataset;
+    const $icon = event.target;
+    const $iconsWrapper = $icon.closest(`.${CLASSNAME.ICONS_WRAPPER}`);
+    const { videoId } = $iconsWrapper.dataset;
 
-    if ($videoWrapper.classList.contains(CLASSNAME.MOVE_TO_HISTORY_ICON)) {
-      this.handleWatchedIconClick(videoId);
+    if ($icon.classList.contains(CLASSNAME.MOVE_TO_HISTORY_ICON)) {
+      this.handleMoveToHistoryIconClick(videoId);
       return;
     }
 
-    if ($videoWrapper.classList.contains(CLASSNAME.LIKE_ICON)) {
+    if ($icon.classList.contains(CLASSNAME.MOVE_TO_WATCH_LATER_ICON)) {
+      this.handleMoveToWatchLaterIconClick(videoId);
+      return;
+    }
+
+    if ($icon.classList.contains(CLASSNAME.LIKE_ICON)) {
       this.handleLikeIconClick(videoId);
       return;
     }
 
-    if ($videoWrapper.classList.contains(CLASSNAME.DELETE_ICON)) {
+    if ($icon.classList.contains(CLASSNAME.DELETE_ICON)) {
       this.handleDeleteIconClick(videoId);
     }
   }
 
-  handleWatchedIconClick(videoId) {
+  handleMoveToHistoryIconClick(videoId) {
     const item = this.watchLaterVideoItemsMap.get(videoId);
-    this.toHistoryType({ videoId, item });
+    this.changeVideoType({ videoId, item, nextVideoType: VIDEO_TYPE.HISTORY });
 
     showSnackbar(SNACKBAR_TEXT.MOVED_TO_HISTORY_VIDEO);
+  }
+
+  handleMoveToWatchLaterIconClick(videoId) {
+    const item = this.watchLaterVideoItemsMap.get(videoId);
+    this.changeVideoType({
+      videoId,
+      item,
+      nextVideoType: VIDEO_TYPE.WATCH_LATER,
+    });
+
+    showSnackbar(SNACKBAR_TEXT.MOVED_TO_WATCH_LATER_VIDEO);
   }
 
   handleLikeIconClick(videoId) {
@@ -122,22 +135,23 @@ export default class WatchLaterVideoWrapper {
     showSnackbar(SNACKBAR_TEXT.VIDEO_DELETED);
   }
 
-  toHistoryType({ videoId, item }) {
+  changeVideoType({ videoId, item, nextVideoType }) {
     this.watchLaterVideoItemsMap.set(videoId, {
       ...item,
-      videoType: "history-video",
+      videoType: nextVideoType,
     });
     this.updateLocalStorage();
 
     const $video = this.watchLaterVideosMap.get(videoId);
-    $.addClass($video, "history-video");
-    $.removeClass($video, "watch-later-video");
+
+    Object.values(VIDEO_TYPE).forEach((type) => $.removeClass($video, type));
+    $.addClass($video, nextVideoType);
   }
 
   saveVideo({ videoId, item }) {
     this.watchLaterVideoItemsMap.set(videoId, {
       ...item,
-      videoType: "watch-later-video",
+      videoType: VIDEO_TYPE.WATCH_LATER,
     });
     this.updateLocalStorage();
     this.mountTemplate({ videoId, item });
