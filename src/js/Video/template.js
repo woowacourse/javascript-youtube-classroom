@@ -41,19 +41,17 @@ const MAIN_ICONS_TEMPLATE = `
   <span class="${CLASSNAME.DELETE_ICON} icon opacity-hover">🗑️</span>
 </div>`;
 
-const $mainVideoTemplateWrapper = document.createElement("div");
-$mainVideoTemplateWrapper.innerHTML = GENERATE_TEMPLATE(MAIN_ICONS_TEMPLATE);
-const $mainVideoTemplateElement = $mainVideoTemplateWrapper.firstElementChild;
+const $videoTemplateWrapper = document.createElement("div");
+$videoTemplateWrapper.innerHTML =
+  GENERATE_TEMPLATE(MAIN_ICONS_TEMPLATE) +
+  GENERATE_TEMPLATE(SAVED_VIDEO_BUTTON_TEMPLATE);
+const [
+  $mainVideoTemplateElement,
+  $searchVideoTemplateElement,
+] = $videoTemplateWrapper.children;
 
 export const getMainVideoTemplateElement = () =>
   $mainVideoTemplateElement.cloneNode(true);
-
-const $searchVideoTemplateWrapper = document.createElement("div");
-$searchVideoTemplateWrapper.innerHTML = GENERATE_TEMPLATE(
-  SAVED_VIDEO_BUTTON_TEMPLATE
-);
-const $searchVideoTemplateElement =
-  $searchVideoTemplateWrapper.firstElementChild;
 
 export const getSearchVideoTemplateElement = () =>
   $searchVideoTemplateElement.cloneNode(true);
