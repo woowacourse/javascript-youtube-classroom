@@ -2,8 +2,8 @@
   "name": "javascript-youtube-classroom",
   "version": "0.1.0",
   "main": "src/js/index.js",
-  "repository": "https://github.com/jum0/javascript-youtube-classroom.git",
-  "author": "jum0 <wnsah052@naver.com>",
+  "repository": "https://github.com/bigsaigon333/javascript-youtube-classroom.git",
+  "author": "Danny Kim <likepeppermint@gmail.com>",
   "license": "MIT",
   "scripts": {
     "pre-commit": "yarn eslint . && yarn prettier --write .",
