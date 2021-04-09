@@ -2,6 +2,11 @@
   --clip-width: 230px;
 }
 
+.watch-later-container .clip:not(.watch-later-video),
+.history-container .clip:not(.history-video) {
+  display: none;
+}
+
 .video-wrapper {
   display: grid;
   grid-template-columns: repeat(auto-fill, var(--clip-width));

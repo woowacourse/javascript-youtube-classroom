@@ -58,8 +58,8 @@ export default class WatchLaterVideoWrapper {
     );
 
     messenger.addMessageListener(
-      MESSAGE.MOVE_TO_WATCH_LATER_ICON_CLICKED,
-      this.saveVideo.bind(this)
+      MESSAGE.MOVE_TO_HISTORY_ICON_CLICKED,
+      this.toHistoryType.bind(this)
     );
 
     messenger.addMessageListener(
@@ -95,7 +95,9 @@ export default class WatchLaterVideoWrapper {
   }
 
   handleWatchedIconClick(videoId) {
-    this.moveVideo({ videoId });
+    const item = this.watchLaterVideoItemsMap.get(videoId);
+    this.toHistoryType({ videoId, item });
+
     showSnackbar(SNACKBAR_TEXT.MOVED_TO_HISTORY_VIDEO);
   }
 
@@ -120,8 +122,23 @@ export default class WatchLaterVideoWrapper {
     showSnackbar(SNACKBAR_TEXT.VIDEO_DELETED);
   }
 
+  toHistoryType({ videoId, item }) {
+    this.watchLaterVideoItemsMap.set(videoId, {
+      ...item,
+      videoType: "history-video",
+    });
+    this.updateLocalStorage();
+
+    const $video = this.watchLaterVideosMap.get(videoId);
+    $.addClass($video, "history-video");
+    $.removeClass($video, "watch-later-video");
+  }
+
   saveVideo({ videoId, item }) {
-    this.watchLaterVideoItemsMap.set(videoId, item);
+    this.watchLaterVideoItemsMap.set(videoId, {
+      ...item,
+      videoType: "watch-later-video",
+    });
     this.updateLocalStorage();
     this.mountTemplate({ videoId, item });
   }
@@ -177,7 +194,7 @@ export default class WatchLaterVideoWrapper {
     );
   }
 
-  mountTemplate({ videoId }) {
+  mountTemplate({ videoId, item }) {
     $.hide(this.$noSavedVideoImage);
 
     this.$watchLaterVideoWrapper.insertAdjacentHTML(
@@ -186,7 +203,11 @@ export default class WatchLaterVideoWrapper {
     );
 
     const [$video] = this.$watchLaterVideoWrapper.children;
+    const { videoType } = item;
     $video.dataset.videoId = videoId;
+
+    $.addClass($video, videoType);
+
     this.watchLaterVideosMap.set(videoId, $video);
     this.observer.observe($video);
   }
