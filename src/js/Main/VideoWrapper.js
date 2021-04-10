@@ -109,7 +109,7 @@ export default class VideoWrapper {
   }
 
   #handleLikeIconClick(videoId) {
-    const $video = this.#videosMap.get(videoId);
+    const $video = this.#videosMap.get(videoId).getVideoElement();
 
     $.toggleClass($video, "like");
     showSnackbar(
