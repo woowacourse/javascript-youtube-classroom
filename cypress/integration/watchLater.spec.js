@@ -61,6 +61,7 @@ describe("볼 영상 화면을 테스트한다.", () => {
     cy.get(`.${CLASSNAME.SAVE_VIDEO_BUTTON}`)
       .first()
       .click()
+      .parents(`.${CLASSNAME.CLIP}`)
       .invoke("attr", "data-video-id")
       .then((videoId) => {
         savedVideoId = videoId;
