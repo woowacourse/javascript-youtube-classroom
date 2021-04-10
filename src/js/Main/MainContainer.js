@@ -1,7 +1,7 @@
 // eslint-disable-next-line max-classes-per-file
 import CLASSNAME from "../constants/classname.js";
 import { $ } from "../utils/index.js";
-import VideoWrapper from "./VideoWrapper.js";
+import VideoWrapper from "./MainVideoWrapper.js";
 
 export default class Container {
   #$container = $(`.${CLASSNAME.MAIN_CONTAINER}`);

@@ -16,7 +16,7 @@ export default class VideoWrapper {
 
   #videosMap = new Map(
     JSON.parse(
-      localStorage.getItem(LOCAL_STORAGE_KEY.WATCH_LATER_VIDEO_ITEMS),
+      localStorage.getItem(LOCAL_STORAGE_KEY.MAIN_VIDEO_ITEMS),
       (key, value) => {
         if (key !== "") return value;
         if (value === null) return null;
@@ -185,7 +185,7 @@ export default class VideoWrapper {
 
   #updateLocalStorage() {
     localStorage.setItem(
-      LOCAL_STORAGE_KEY.WATCH_LATER_VIDEO_ITEMS,
+      LOCAL_STORAGE_KEY.MAIN_VIDEO_ITEMS,
       JSON.stringify(this.#videosMap, (key, value) =>
         value instanceof Map
           ? Array.from(value).map(([, video]) => video.toJSON())

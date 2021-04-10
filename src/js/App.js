@@ -1,7 +1,7 @@
 /* eslint-disable class-methods-use-this */
 import { CLASSNAME } from "./constants/index.js";
 import { $ } from "./utils/index.js";
-import MainContainer from "./Main/Container.js";
+import MainContainer from "./Main/MainContainer.js";
 import SearchContainer from "./Search/SearchContainer.js";
 
 export default class App {
