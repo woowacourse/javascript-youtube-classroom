@@ -55,8 +55,7 @@ export default class SearchVideoWrapper {
 
   #handleKeywordSubmit({ query }) {
     this.#currentQuery = query;
-
-    $.clear(this.#$searchVideoWrapper);
+    this.#$searchVideoWrapper.innerHTML = "";
     this.#mountTemplate();
     this.#$searchVideoWrapper.scrollTo({ top: 0 });
   }

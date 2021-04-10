@@ -31,11 +31,6 @@ const close = ($element) => {
   removeClass($element, CLASSNAME.OPEN);
 };
 
-const clear = ($element) => {
-  // eslint-disable-next-line no-param-reassign
-  $element.innerHTML = "";
-};
-
 const customMethod = {
   addClass,
   removeClass,
@@ -45,7 +40,6 @@ const customMethod = {
   hide,
   open,
   close,
-  clear,
 };
 
 const $ = (selector) => document.querySelector(selector);
