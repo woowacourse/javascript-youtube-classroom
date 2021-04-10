@@ -3,14 +3,15 @@ import { CLASSNAME, VIDEO_TYPE } from "../constants/index.js";
 const GENERATE_TEMPLATE = (buttonTemplate) => `
 <article class="clip ${CLASSNAME.SKELETON} ${VIDEO_TYPE.WATCH_LATER}">
   <div class="preview-container">
+  <div class="image"></div>
+  <img class="thumbnail d-none" alt="thumbnail" >
   <iframe
-    class="image ${CLASSNAME.VIDEO_ID}"
+    class="image ${CLASSNAME.VIDEO_ID} d-none"
     width="100%"
     height="118"
     frameborder="0"
     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
     allowfullscreen
-    loading="lazy"
   ></iframe>
   </div>
   <div class="content-container pt-2 px-1">

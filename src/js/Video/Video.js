@@ -38,9 +38,18 @@ export default class Video {
 
     const {
       id: { videoId },
-      snippet: { title, channelId, channelTitle, publishedAt },
+      snippet: {
+        title,
+        channelId,
+        channelTitle,
+        publishedAt,
+        thumbnails: {
+          high: { url },
+        },
+      },
     } = item;
 
+    const $thumbnail = this._$video.querySelector(`.${CLASSNAME.THUMBNAIL}`);
     const $iframe = this._$video.querySelector(`.${CLASSNAME.VIDEO_ID}`);
     const $videoTitle = this._$video.querySelector(`.${CLASSNAME.VIDEO_TITLE}`);
     const $channelTitle = this._$video.querySelector(
@@ -53,7 +62,20 @@ export default class Video {
     this._videoId = videoId;
     this._$video.dataset.videoId = videoId;
 
-    $iframe.src = `${Video.#DOMAIN}/embed/${videoId}`;
+    $thumbnail.src = url;
+    $thumbnail.addEventListener("load", () => {
+      $.show($thumbnail);
+
+      $thumbnail.addEventListener(
+        "click",
+        () => {
+          $iframe.src = `${Video.#DOMAIN}/embed/${videoId}`;
+          $.hide($thumbnail);
+          $.show($iframe);
+        },
+        { once: true }
+      );
+    });
 
     $videoTitle.innerText = decodeHTML(title);
 
