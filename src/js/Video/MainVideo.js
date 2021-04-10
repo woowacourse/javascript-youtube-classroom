@@ -33,6 +33,10 @@ export default class MainVideo extends Video {
     $.toggleClass(this._$video, "like", this.#like);
   }
 
+  getVideoType() {
+    return this.#videoType;
+  }
+
   setVideoType(nextVideoType) {
     this.#videoType = nextVideoType;
     this.#updateVideoType();

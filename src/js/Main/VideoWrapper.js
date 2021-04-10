@@ -21,9 +21,11 @@ export default class VideoWrapper {
         if (key !== "") return value;
         if (value === null) return null;
 
-        return value.map(({ _videoId, item }) => {
+        return value.map(({ _videoId, item, like, videoType }) => {
           const video = new MainVideo(this.#$videoWrapper);
           video.setItem(item);
+          video.toggleLike(like);
+          video.setVideoType(videoType);
           video.setObserver(this.#observer);
           return [_videoId, video];
         });
@@ -31,12 +33,15 @@ export default class VideoWrapper {
     )
   );
 
-  #$noSavedVideoImage = $(`.${CLASSNAME.NO_WATCHING_VIDEO_IMAGE}`);
+  #$noWatchLaterVideoImage = $(`.${CLASSNAME.NO_WATCH_LATER_VIDEO_IMAGE}`);
+
+  #$noHistoryVideoImage = $(`.${CLASSNAME.NO_HISTORY_VIDEO_IMAGE}`);
 
   constructor() {
     this.#addMessageListeners();
     this.#addEventListeners();
     this.#updateSavedVideoCount();
+    this.#showNoVideoImageIfEmpty();
   }
 
   #observerCallback(entries) {
@@ -107,16 +112,18 @@ export default class VideoWrapper {
     }
   }
 
-  // eslint-disable-next-line class-methods-use-this
   #handleMoveToHistoryIconClick(video) {
     video.setVideoType(VIDEO_TYPE.HISTORY);
     showSnackbar(SNACKBAR_TEXT.MOVED_TO_HISTORY_VIDEO);
+    this.#updateLocalStorage();
+    this.#showNoVideoImageIfEmpty();
   }
 
-  // eslint-disable-next-line class-methods-use-this
   #handleMoveToWatchLaterIconClick(video) {
     video.setVideoType(VIDEO_TYPE.WATCH_LATER);
     showSnackbar(SNACKBAR_TEXT.MOVED_TO_WATCH_LATER_VIDEO);
+    this.#updateLocalStorage();
+    this.#showNoVideoImageIfEmpty();
   }
 
   // eslint-disable-next-line class-methods-use-this
@@ -127,6 +134,7 @@ export default class VideoWrapper {
         ? SNACKBAR_TEXT.LIKE_VIDEO_ADDED
         : SNACKBAR_TEXT.LIKE_VIDEO_REMOVED
     );
+    this.#updateLocalStorage();
   }
 
   #handleDeleteIconClick(video) {
@@ -154,6 +162,7 @@ export default class VideoWrapper {
       this.#videosMap.set(videoId, video);
       this.#updateLocalStorage();
       this.#updateSavedVideoCount();
+      this.#showNoVideoImageIfEmpty();
 
       callback();
       showModalSnackbar(SNACKBAR_TEXT.VIDEO_SAVED);
@@ -165,6 +174,7 @@ export default class VideoWrapper {
     this.#videosMap.delete(videoId);
     this.#updateLocalStorage();
     this.#updateSavedVideoCount();
+    this.#showNoVideoImageIfEmpty();
 
     messenger.deliverMessage(MESSAGE.SAVED_VIDEO_DELETED, { videoId });
   }
@@ -184,6 +194,24 @@ export default class VideoWrapper {
     messenger.deliverMessage(MESSAGE.SAVED_VIDEO_COUNT_CHANGED, {
       count: this.#videosMap.size,
     });
+  }
+
+  #showNoVideoImageIfEmpty() {
+    const videoTypesSet = new Set(
+      Array.from(this.#videosMap, ([, video]) => video.getVideoType())
+    );
+
+    $.toggleClass(
+      this.#$noWatchLaterVideoImage,
+      CLASSNAME.HIDDEN,
+      videoTypesSet.has(VIDEO_TYPE.WATCH_LATER)
+    );
+
+    $.toggleClass(
+      this.#$noHistoryVideoImage,
+      CLASSNAME.HIDDEN,
+      videoTypesSet.has(VIDEO_TYPE.HISTORY)
+    );
   }
 
   #hideIfVideoIsSaved({ videoId, hide }) {
