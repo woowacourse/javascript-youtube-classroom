@@ -118,11 +118,7 @@ export default class SearchVideoWrapper {
     const video = this.#videosMap.get(videoId);
 
     messenger.deliverMessage(MESSAGE.SAVE_VIDEO_BUTTON_CLICKED, {
-      resolve: () => {
-        video.addSavedClass();
-        showModalSnackbar(SNACKBAR_TEXT.VIDEO_SAVED);
-      },
-      reject: showModalSnackbar.bind(null, SNACKBAR_TEXT.REACHED_MAX_COUNT),
+      callback: video.addSavedClass.bind(video),
       videoId,
       item,
     });

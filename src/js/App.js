@@ -5,9 +5,9 @@ import MainContainer from "./Main/Container.js";
 import SearchContainer from "./Search/SearchContainer.js";
 
 export default class App {
-  #mainContainer = new MainContainer();
-
   #searchContainer = new SearchContainer();
+
+  #mainContainer = new MainContainer();
 
   #$watchLaterTabButton = $(`.${CLASSNAME.WATCH_LATER_TAB}`);
 

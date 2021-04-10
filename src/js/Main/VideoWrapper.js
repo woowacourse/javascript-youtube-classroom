@@ -3,8 +3,9 @@ import {
   CLASSNAME,
   SNACKBAR_TEXT,
   VIDEO_TYPE,
+  NUMBER,
 } from "../constants/index.js";
-import { $, showSnackbar } from "../utils/index.js";
+import { $, showModalSnackbar, showSnackbar } from "../utils/index.js";
 import { messenger, MESSAGE } from "../messenger/index.js";
 import { MainVideo } from "../Video/index.js";
 
@@ -25,6 +26,7 @@ export default class VideoWrapper {
     this.#addMessageListeners();
     this.#addEventListeners();
     this.#render();
+    this.#updateSavedVideoCount();
   }
 
   #observerCallback(entries) {
@@ -40,7 +42,7 @@ export default class VideoWrapper {
 
   #addMessageListeners() {
     messenger.addMessageListener(
-      MESSAGE.SAVE_VIDEO,
+      MESSAGE.SAVE_VIDEO_BUTTON_CLICKED,
       this.#saveVideo.bind(this)
     );
 
@@ -145,18 +147,26 @@ export default class VideoWrapper {
     $.addClass($video, nextVideoType);
   }
 
-  #saveVideo({ videoId, item }) {
+  #saveVideo({ videoId, item, callback }) {
     if (this.#videoItemsMap.has(videoId)) {
+      // TODO: Error 던지기로 수정
       return;
     }
 
-    const newItem = {
-      ...item,
-      videoType: VIDEO_TYPE.WATCH_LATER,
-    };
-    this.#videoItemsMap.set(videoId, newItem);
-    this.#updateLocalStorage();
-    this.#mountTemplate(videoId);
+    if (this.#videoItemsMap.size >= NUMBER.MAX_SAVED_VIDEOS_COUNT) {
+      showModalSnackbar(SNACKBAR_TEXT.REACHED_MAX_COUNT);
+    } else {
+      const newItem = {
+        ...item,
+        videoType: VIDEO_TYPE.WATCH_LATER,
+      };
+      this.#videoItemsMap.set(videoId, newItem);
+      this.#updateLocalStorage();
+      this.#updateSavedVideoCount();
+      this.#mountTemplate(videoId);
+      callback();
+      showModalSnackbar(SNACKBAR_TEXT.VIDEO_SAVED);
+    }
   }
 
   #removeVideo({ videoId }) {
@@ -164,8 +174,7 @@ export default class VideoWrapper {
     this.#videosMap.get(videoId).remove();
     this.#videosMap.delete(videoId);
     this.#updateLocalStorage();
-
-    messenger.deliverMessage(MESSAGE.SAVED_VIDEO_DELETED, { videoId });
+    this.#updateSavedVideoCount();
   }
 
   #updateLocalStorage() {
@@ -175,6 +184,12 @@ export default class VideoWrapper {
         value instanceof Map ? Array.from(value) : value
       )
     );
+  }
+
+  #updateSavedVideoCount() {
+    messenger.deliverMessage(MESSAGE.SAVED_VIDEO_COUNT_CHANGED, {
+      count: this.#videoItemsMap.size,
+    });
   }
 
   #render() {
