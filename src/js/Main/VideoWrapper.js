@@ -10,22 +10,32 @@ import { messenger, MESSAGE } from "../messenger/index.js";
 import { MainVideo } from "../Video/index.js";
 
 export default class VideoWrapper {
-  #videoItemsMap = new Map(
-    JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEY.WATCH_LATER_VIDEO_ITEMS))
-  );
-
-  #videosMap = new Map();
+  #$videoWrapper = $(`.${CLASSNAME.MAIN_VIDEO_WRAPPER}`);
 
   #observer = new IntersectionObserver(this.#observerCallback.bind(this));
 
-  #$noSavedVideoImage = $(`.${CLASSNAME.NO_WATCHING_VIDEO_IMAGE}`);
+  #videosMap = new Map(
+    JSON.parse(
+      localStorage.getItem(LOCAL_STORAGE_KEY.WATCH_LATER_VIDEO_ITEMS),
+      (key, value) => {
+        if (key !== "") return value;
+        if (value === null) return null;
 
-  #$videoWrapper = $(`.${CLASSNAME.MAIN_VIDEO_WRAPPER}`);
+        return value.map(({ _videoId, item }) => {
+          const video = new MainVideo(this.#$videoWrapper);
+          video.setItem(item);
+          video.setObserver(this.#observer);
+          return [_videoId, video];
+        });
+      }
+    )
+  );
+
+  #$noSavedVideoImage = $(`.${CLASSNAME.NO_WATCHING_VIDEO_IMAGE}`);
 
   constructor() {
     this.#addMessageListeners();
     this.#addEventListeners();
-    this.#render();
     this.#updateSavedVideoCount();
   }
 
@@ -36,7 +46,10 @@ export default class VideoWrapper {
       }
 
       const { videoId } = entry.target.dataset;
-      this.#attachData(videoId);
+      const video = this.#videosMap.get(videoId);
+      if (video.hasSkeletonEffect()) {
+        video.attachData();
+      }
     });
   }
 
@@ -124,22 +137,23 @@ export default class VideoWrapper {
     if (!window.confirm("정말 삭제하시겠습니까?")) {
       return;
     }
+
     this.#removeVideo({ videoId });
     showSnackbar(SNACKBAR_TEXT.VIDEO_DELETED);
   }
 
+  // FIXME
   #changeVideoType({ videoId, nextVideoType }) {
-    const item = this.#videoItemsMap.get(videoId);
-    const newItem = {
-      ...item,
-      videoType: nextVideoType,
-    };
-
-    this.#videoItemsMap.set(videoId, newItem);
+    // const item = this.#videosMap.get(videoId);
+    // const newItem = {
+    //   ...item,
+    //   videoType: nextVideoType,
+    // };
     this.#updateLocalStorage();
     this.#setNextVideoType(videoId, nextVideoType);
   }
 
+  // FIXME
   #setNextVideoType(videoId, nextVideoType) {
     const $video = this.#videosMap.get(videoId).getVideoElement();
 
@@ -148,29 +162,31 @@ export default class VideoWrapper {
   }
 
   #saveVideo({ videoId, item, callback }) {
-    if (this.#videoItemsMap.has(videoId)) {
-      // TODO: Error 던지기로 수정
-      return;
+    if (this.#videosMap.has(videoId)) {
+      throw new Error(`동일한 영상을 저장할 수 없습니다. videoId: ${videoId}`);
     }
 
-    if (this.#videoItemsMap.size >= NUMBER.MAX_SAVED_VIDEOS_COUNT) {
+    if (this.#videosMap.size >= NUMBER.MAX_SAVED_VIDEOS_COUNT) {
       showModalSnackbar(SNACKBAR_TEXT.REACHED_MAX_COUNT);
     } else {
       const newItem = {
         ...item,
         videoType: VIDEO_TYPE.WATCH_LATER,
       };
-      this.#videoItemsMap.set(videoId, newItem);
+      const video = new MainVideo(this.#$videoWrapper);
+      this.#videosMap.set(videoId, video);
+
+      video.setItem(newItem);
+      video.setObserver(this.#observer);
       this.#updateLocalStorage();
       this.#updateSavedVideoCount();
-      this.#mountTemplate(videoId);
+
       callback();
       showModalSnackbar(SNACKBAR_TEXT.VIDEO_SAVED);
     }
   }
 
   #removeVideo({ videoId }) {
-    this.#videoItemsMap.delete(videoId);
     this.#videosMap.get(videoId).remove();
     this.#videosMap.delete(videoId);
     this.#updateLocalStorage();
@@ -182,43 +198,22 @@ export default class VideoWrapper {
   #updateLocalStorage() {
     localStorage.setItem(
       LOCAL_STORAGE_KEY.WATCH_LATER_VIDEO_ITEMS,
-      JSON.stringify(this.#videoItemsMap, (key, value) =>
-        value instanceof Map ? Array.from(value) : value
+      JSON.stringify(this.#videosMap, (key, value) =>
+        value instanceof Map
+          ? Array.from(value).map(([, video]) => video.toJSON())
+          : value
       )
     );
   }
 
   #updateSavedVideoCount() {
     messenger.deliverMessage(MESSAGE.SAVED_VIDEO_COUNT_CHANGED, {
-      count: this.#videoItemsMap.size,
+      count: this.#videosMap.size,
     });
   }
 
-  #render() {
-    this.#videoItemsMap.forEach((_, videoId) => this.#mountTemplate(videoId));
-  }
-
-  #mountTemplate(videoId) {
-    const video = new MainVideo(this.#$videoWrapper);
-    const $video = video.getVideoElement();
-
-    $video.dataset.videoId = videoId;
-
-    this.#videosMap.set(videoId, video);
-    this.#observer.observe($video);
-  }
-
-  #attachData(videoId) {
-    const item = this.#videoItemsMap.get(videoId);
-    const video = this.#videosMap.get(videoId);
-
-    if (video.hasSkeletonEffect()) {
-      video.attachData(item);
-    }
-  }
-
   #hideIfVideoIsSaved({ videoId, hide }) {
-    if (this.#videoItemsMap.has(videoId)) {
+    if (this.#videosMap.has(videoId)) {
       hide();
     }
   }

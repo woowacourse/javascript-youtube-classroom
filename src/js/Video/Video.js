@@ -16,7 +16,9 @@ export default class Video {
 
   _$video = null;
 
-  _item = [];
+  _videoId = "";
+
+  _item = {};
 
   constructor($parent) {
     if (!($parent instanceof HTMLElement)) {
@@ -31,7 +33,7 @@ export default class Video {
     throw new Error("mountTemplate은 각 하위 class에서 정의하여야 합니다.");
   }
 
-  attachData(item) {
+  attachData(item = this._item) {
     this._item = item;
 
     const {
@@ -75,5 +77,23 @@ export default class Video {
 
   remove() {
     this._$video.remove();
+  }
+
+  setObserver(observer) {
+    observer.observe(this._$video);
+  }
+
+  setItem(item) {
+    this._item = item;
+    this._videoId = item.id.videoId;
+    this._$video.dataset.videoId = this._videoId;
+  }
+
+  getItem() {
+    return { ...this._item };
+  }
+
+  toJSON() {
+    return { _videoId: this._videoId, item: this._item };
   }
 }

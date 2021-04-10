@@ -15,8 +15,6 @@ export default class SearchVideoWrapper {
 
   #throttle = null;
 
-  #videoItemsMap = new Map();
-
   #videosMap = new Map();
 
   #$searchVideoWrapper = $(`.${CLASSNAME.SEARCH_VIDEO_WRAPPER}`);
@@ -114,23 +112,21 @@ export default class SearchVideoWrapper {
   }
 
   #handleSaveVideoButtonClick(videoId) {
-    const item = this.#videoItemsMap.get(videoId);
     const video = this.#videosMap.get(videoId);
 
     messenger.deliverMessage(MESSAGE.SAVE_VIDEO_BUTTON_CLICKED, {
       callback: video.addSavedClass.bind(video),
       videoId,
-      item,
+      item: video.getItem(),
     });
   }
 
   #handleCancelVideoButtonClick(videoId) {
-    const item = this.#videoItemsMap.get(videoId);
     const video = this.#videosMap.get(videoId);
 
     messenger.deliverMessage(MESSAGE.CANCEL_VIDEO_BUTTON_CLICKED, {
       videoId,
-      item,
+      item: video.getItem(),
     });
     video.removeSavedClass();
     showModalSnackbar(SNACKBAR_TEXT.CANCELED_VIDEO_SAVE);
@@ -162,7 +158,6 @@ export default class SearchVideoWrapper {
         video.attachData(item);
 
         const { videoId } = item.id;
-        this.#videoItemsMap.set(videoId, item);
         this.#videosMap.set(videoId, video);
       });
   }
