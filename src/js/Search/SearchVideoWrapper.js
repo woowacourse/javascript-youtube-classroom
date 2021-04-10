@@ -93,51 +93,52 @@ export default class SearchVideoWrapper {
     }, 0);
   }
 
-  #handleSearchVideoWrapperClick(event) {
-    if (!event.target.classList.contains(CLASSNAME.BUTTON)) {
-      return;
-    }
-
-    const $button = event.target;
-    const { videoId } = $button.dataset;
-
-    if ($.containsClass($button, CLASSNAME.SAVE_VIDEO_BUTTON)) {
-      this.#handleSaveVideoButtonClick(videoId);
-      return;
-    }
-
-    if ($.containsClass($button, CLASSNAME.CANCEL_VIDEO_BUTTON)) {
-      this.#handleCancelVideoButtonClick(videoId);
-    }
-  }
-
-  #handleSaveVideoButtonClick(videoId) {
-    const video = this.#videosMap.get(videoId);
-
-    messenger.deliverMessage(MESSAGE.SAVE_VIDEO_BUTTON_CLICKED, {
-      callback: video.addSavedClass.bind(video),
-      videoId,
-      item: video.getItem(),
-    });
-  }
-
-  #handleCancelVideoButtonClick(videoId) {
-    const video = this.#videosMap.get(videoId);
-
-    messenger.deliverMessage(MESSAGE.CANCEL_VIDEO_BUTTON_CLICKED, {
-      videoId,
-      item: video.getItem(),
-    });
-    video.removeSavedClass();
-    showModalSnackbar(SNACKBAR_TEXT.CANCELED_VIDEO_SAVE);
-  }
-
   #isOverScrollEventThreshold() {
     const { scrollTop, clientHeight, scrollHeight } = this.#$searchVideoWrapper;
 
     return (
       scrollTop + clientHeight <= scrollHeight * NUMBER.SCROLL_EVENT_THRESHOLD
     );
+  }
+
+  #handleSearchVideoWrapperClick(event) {
+    if (!$.containsClass(event.target, CLASSNAME.BUTTON)) {
+      return;
+    }
+
+    const $button = event.target;
+    const $video = $button.closest(`.${CLASSNAME.CLIP}`);
+    const { videoId } = $video.dataset;
+    const video = this.#videosMap.get(videoId);
+
+    if ($.containsClass($button, CLASSNAME.SAVE_VIDEO_BUTTON)) {
+      this.#handleSaveVideoButtonClick(video);
+      return;
+    }
+
+    if ($.containsClass($button, CLASSNAME.CANCEL_VIDEO_BUTTON)) {
+      this.#handleCancelVideoButtonClick(video);
+    }
+  }
+
+  // eslint-disable-next-line class-methods-use-this
+  #handleSaveVideoButtonClick(video) {
+    messenger.deliverMessage(MESSAGE.SAVE_VIDEO_BUTTON_CLICKED, {
+      callback: video.addSavedClass.bind(video),
+      videoId: video.getVideoId(),
+      item: video.getItem(),
+    });
+  }
+
+  // eslint-disable-next-line class-methods-use-this
+  #handleCancelVideoButtonClick(video) {
+    messenger.deliverMessage(MESSAGE.CANCEL_VIDEO_BUTTON_CLICKED, {
+      videoId: video.getVideoId(),
+      item: video.getItem(),
+    });
+
+    video.removeSavedClass();
+    showModalSnackbar(SNACKBAR_TEXT.CANCELED_VIDEO_SAVE);
   }
 
   #mountTemplate() {
@@ -156,9 +157,7 @@ export default class SearchVideoWrapper {
       .map((item, index) => [this.skeletonVideos[index], item])
       .forEach(([video, item]) => {
         video.attachData(item);
-
-        const { videoId } = item.id;
-        this.#videosMap.set(videoId, video);
+        this.#videosMap.set(video.getVideoId(), video);
       });
   }
 }

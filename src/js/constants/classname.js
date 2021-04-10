@@ -45,6 +45,7 @@ const CLASSNAME = Object.freeze({
   LIKE_VIDEO: "like-video",
   ACTIVE: "active",
   SAVED: "saved",
+  CLIP: "clip",
 });
 
 export default CLASSNAME;

@@ -61,6 +61,8 @@ export default class Video {
     $channelTitle.innerText = channelTitle;
 
     $publishedAt.innerText = Video.#getPublishedAtLocaleString(publishedAt);
+
+    this.removeSkeletonEffect();
   }
 
   removeSkeletonEffect() {
@@ -87,6 +89,10 @@ export default class Video {
     this._item = item;
     this._videoId = item.id.videoId;
     this._$video.dataset.videoId = this._videoId;
+  }
+
+  getVideoId() {
+    return this._videoId;
   }
 
   getItem() {

@@ -83,82 +83,60 @@ export default class VideoWrapper {
     }
 
     const $icon = event.target;
-    const $iconsWrapper = $icon.closest(`.${CLASSNAME.ICONS_WRAPPER}`);
-    const { videoId } = $iconsWrapper.dataset;
+    const $video = $icon.closest(`.${CLASSNAME.CLIP}`);
+    const { videoId } = $video.dataset;
+    const video = this.#videosMap.get(videoId);
 
     if ($.containsClass($icon, CLASSNAME.MOVE_TO_HISTORY_ICON)) {
-      this.#handleMoveToHistoryIconClick(videoId);
+      this.#handleMoveToHistoryIconClick(video);
       return;
     }
 
     if ($.containsClass($icon, CLASSNAME.MOVE_TO_WATCH_LATER_ICON)) {
-      this.#handleMoveToWatchLaterIconClick(videoId);
+      this.#handleMoveToWatchLaterIconClick(video);
       return;
     }
 
     if ($.containsClass($icon, CLASSNAME.LIKE_ICON)) {
-      this.#handleLikeIconClick(videoId);
+      this.#handleLikeIconClick(video);
       return;
     }
 
     if ($.containsClass($icon, CLASSNAME.DELETE_ICON)) {
-      this.#handleDeleteIconClick(videoId);
+      this.#handleDeleteIconClick(video);
     }
   }
 
-  #handleMoveToHistoryIconClick(videoId) {
-    this.#changeVideoType({ videoId, nextVideoType: VIDEO_TYPE.HISTORY });
-
+  // eslint-disable-next-line class-methods-use-this
+  #handleMoveToHistoryIconClick(video) {
+    video.setVideoType(VIDEO_TYPE.HISTORY);
     showSnackbar(SNACKBAR_TEXT.MOVED_TO_HISTORY_VIDEO);
   }
 
-  #handleMoveToWatchLaterIconClick(videoId) {
-    this.#changeVideoType({
-      videoId,
-      nextVideoType: VIDEO_TYPE.WATCH_LATER,
-    });
-
+  // eslint-disable-next-line class-methods-use-this
+  #handleMoveToWatchLaterIconClick(video) {
+    video.setVideoType(VIDEO_TYPE.WATCH_LATER);
     showSnackbar(SNACKBAR_TEXT.MOVED_TO_WATCH_LATER_VIDEO);
   }
 
-  #handleLikeIconClick(videoId) {
-    const $video = this.#videosMap.get(videoId).getVideoElement();
-
-    $.toggleClass($video, "like");
+  // eslint-disable-next-line class-methods-use-this
+  #handleLikeIconClick(video) {
+    const isLiked = video.toggleLike();
     showSnackbar(
-      $.containsClass($video, "like")
+      isLiked
         ? SNACKBAR_TEXT.LIKE_VIDEO_ADDED
         : SNACKBAR_TEXT.LIKE_VIDEO_REMOVED
     );
   }
 
-  #handleDeleteIconClick(videoId) {
+  #handleDeleteIconClick(video) {
     // eslint-disable-next-line no-alert
     if (!window.confirm("정말 삭제하시겠습니까?")) {
       return;
     }
 
-    this.#removeVideo({ videoId });
+    this.#removeVideo({ videoId: video.getVideoId() });
     showSnackbar(SNACKBAR_TEXT.VIDEO_DELETED);
-  }
-
-  // FIXME
-  #changeVideoType({ videoId, nextVideoType }) {
-    // const item = this.#videosMap.get(videoId);
-    // const newItem = {
-    //   ...item,
-    //   videoType: nextVideoType,
-    // };
-    this.#updateLocalStorage();
-    this.#setNextVideoType(videoId, nextVideoType);
-  }
-
-  // FIXME
-  #setNextVideoType(videoId, nextVideoType) {
-    const $video = this.#videosMap.get(videoId).getVideoElement();
-
-    Object.values(VIDEO_TYPE).forEach((type) => $.removeClass($video, type));
-    $.addClass($video, nextVideoType);
   }
 
   #saveVideo({ videoId, item, callback }) {
@@ -169,15 +147,11 @@ export default class VideoWrapper {
     if (this.#videosMap.size >= NUMBER.MAX_SAVED_VIDEOS_COUNT) {
       showModalSnackbar(SNACKBAR_TEXT.REACHED_MAX_COUNT);
     } else {
-      const newItem = {
-        ...item,
-        videoType: VIDEO_TYPE.WATCH_LATER,
-      };
       const video = new MainVideo(this.#$videoWrapper);
-      this.#videosMap.set(videoId, video);
-
-      video.setItem(newItem);
+      video.setItem(item);
       video.setObserver(this.#observer);
+
+      this.#videosMap.set(videoId, video);
       this.#updateLocalStorage();
       this.#updateSavedVideoCount();
 
