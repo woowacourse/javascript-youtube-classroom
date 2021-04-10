@@ -9,6 +9,8 @@ export default class App {
 
   #mainContainer = new MainContainer();
 
+  #$homeLink = $(`.${CLASSNAME.HOME_LINK}`);
+
   #$watchLaterTabButton = $(`.${CLASSNAME.WATCH_LATER_TAB}`);
 
   #$historyTabButton = $(`.${CLASSNAME.HISTORY_TAB}`);
@@ -22,6 +24,7 @@ export default class App {
   #$MainVideoWrapper = $(`.${CLASSNAME.MAIN_VIDEO_WRAPPER}`);
 
   constructor() {
+    this.#$homeLink.href = window.location.href;
     this.#addEventListeners();
   }
 

@@ -49,6 +49,7 @@ const CLASSNAME = Object.freeze({
   SAVED: "saved",
   CLIP: "clip",
   THUMBNAIL: "thumbnail",
+  HOME_LINK: "js-home-link",
 });
 
 export default CLASSNAME;
