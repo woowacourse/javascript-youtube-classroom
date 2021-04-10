@@ -175,6 +175,8 @@ export default class VideoWrapper {
     this.#videosMap.delete(videoId);
     this.#updateLocalStorage();
     this.#updateSavedVideoCount();
+
+    messenger.deliverMessage(MESSAGE.SAVED_VIDEO_DELETED, { videoId });
   }
 
   #updateLocalStorage() {
