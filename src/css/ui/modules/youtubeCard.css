@@ -112,7 +112,7 @@
   color: #606060;
 }
 
-.clip.like .js-like-icon {
+.clip.like .like-icon {
   opacity: 1;
   font-weight: 800;
   color: darkblue;
@@ -143,7 +143,7 @@
   margin: 3px 0;
 }
 
-.skeleton .line.js-video-title {
+.skeleton .line.video-title {
   width: 100%;
 }
 
