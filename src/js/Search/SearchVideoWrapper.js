@@ -1,11 +1,6 @@
 import { CLASSNAME, NUMBER, SNACKBAR_TEXT } from "../constants/index.js";
 import { messenger, MESSAGE } from "../messenger/index.js";
-import {
-  $,
-  fetchYoutubeData,
-  showModalSnackbar,
-  showSnackbar,
-} from "../utils/index.js";
+import { $, fetchYoutubeData, showSnackbar } from "../utils/index.js";
 import { SearchVideo } from "../Video/index.js";
 
 export default class SearchVideoWrapper {
@@ -141,7 +136,7 @@ export default class SearchVideoWrapper {
     });
 
     video.removeSavedClass();
-    showModalSnackbar(SNACKBAR_TEXT.CANCELED_VIDEO_SAVE);
+    showSnackbar(SNACKBAR_TEXT.CANCELED_VIDEO_SAVE);
   }
 
   #mountTemplate() {

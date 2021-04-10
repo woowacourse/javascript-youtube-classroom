@@ -5,7 +5,7 @@ import {
   VIDEO_TYPE,
   NUMBER,
 } from "../constants/index.js";
-import { $, showModalSnackbar, showSnackbar } from "../utils/index.js";
+import { $, showSnackbar } from "../utils/index.js";
 import { messenger, MESSAGE } from "../messenger/index.js";
 import { MainVideo } from "../Video/index.js";
 
@@ -157,7 +157,7 @@ export default class VideoWrapper {
     }
 
     if (this.#videosMap.size >= NUMBER.MAX_SAVED_VIDEOS_COUNT) {
-      showModalSnackbar(SNACKBAR_TEXT.REACHED_MAX_COUNT);
+      showSnackbar(SNACKBAR_TEXT.REACHED_MAX_COUNT);
     } else {
       const video = new MainVideo(this.#$videoWrapper);
       video.setItem(item);
@@ -169,7 +169,7 @@ export default class VideoWrapper {
       this.#showNoVideoImageIfEmpty();
 
       callback();
-      showModalSnackbar(SNACKBAR_TEXT.VIDEO_SAVED);
+      showSnackbar(SNACKBAR_TEXT.VIDEO_SAVED);
     }
   }
 

@@ -5,58 +5,54 @@
     <title>👩🏻‍💻 유튜브 강의실</title>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link rel="stylesheet" href="./src/css/index.css" />
+    <script type="module" src="./src/js/index.js"></script>
   </head>
   <body>
-    <div id="app">
-      <div class="d-flex justify-center w-100">
-        <div class="w-100">
-          <header class="pt-5 pb-10 sticky">
-            <h2 class="text-center font-bold">
-              <span>
-                <a href="/"> 👩🏻‍💻 나만의 유튜브 강의실 👨🏻‍💻 </a>
-              </span>
-            </h2>
-            <nav class="d-flex justify-center relative">
-              <button
-                class="js-watch-later-tab bg-cyan-100 btn d-flex items-center mx-1"
-              >
-                <span class="icon move-to-history-icon mr-1"></span>
-                볼 영상
-              </button>
-              <button class="js-history-tab btn d-flex items-center mx-1">
-                <span class="icon move-to-watch-later-icon mr-1"></span>
-                본 영상
-              </button>
-              <button
-                class="like-tab btn d-flex justify-center items-center mx-1 absolute"
-              >
-                '👍 좋아요'<br />
-                비디오만 보기
-              </button>
-            </nav>
-            <button class="search-tab btn mx-1 absolute">🔍</button>
-          </header>
-
-          <main>
-            <section class="main-container watch-later-container">
-              <section class="js-main-video-wrapper video-wrapper"></section>
-              <img
-                class="no-watch-later-video-image w-20rem d-none"
-                src="./src/images/status/no-watching-video.png"
-                width="20rem"
-                alt="저장된 볼 영상이 없습니다"
-              />
-              <img
-                class="no-history-video-image w-20rem d-none"
-                src="./src/images/status/no-watched-video.png"
-                alt="저장된 본 영상이 없습니다"
-              />
-            </section>
-          </main>
-        </div>
+    <div id="app" class="d-flex justify-center w-100">
+      <div class="w-100">
+        <header class="pt-5 pb-10 sticky">
+          <h2 class="text-center font-bold">
+            <span>
+              <a href="/"> 👩🏻‍💻 나만의 유튜브 강의실 👨🏻‍💻 </a>
+            </span>
+          </h2>
+          <nav class="d-flex justify-center relative">
+            <button
+              class="js-watch-later-tab bg-cyan-100 btn d-flex items-center mx-1"
+            >
+              <span class="icon move-to-history-icon mr-1"></span>
+              볼 영상
+            </button>
+            <button class="js-history-tab btn d-flex items-center mx-1">
+              <span class="icon move-to-watch-later-icon mr-1"></span>
+              본 영상
+            </button>
+            <button
+              class="like-tab btn d-flex justify-center items-center mx-1 absolute"
+            >
+              '👍 좋아요'<br />
+              비디오만 보기
+            </button>
+          </nav>
+          <button class="search-tab btn mx-1 absolute">🔍</button>
+        </header>
+        <main>
+          <section class="main-container watch-later-container">
+            <section class="js-main-video-wrapper video-wrapper"></section>
+            <img
+              class="no-watch-later-video-image w-20rem d-none"
+              src="./src/images/status/no-watching-video.png"
+              width="20rem"
+              alt="저장된 볼 영상이 없습니다"
+            />
+            <img
+              class="no-history-video-image w-20rem d-none"
+              src="./src/images/status/no-watched-video.png"
+              alt="저장된 본 영상이 없습니다"
+            />
+          </section>
+        </main>
       </div>
-      <div class="snackbar d-flex items-center justify-center"></div>
-
       <div class="modal">
         <div class="js-search-container modal-inner p-8">
           <button class="modal-close close-x">
@@ -102,12 +98,9 @@
               alt="검색 결과 없음"
             />
           </section>
-          <div
-            class="js-modal-snackbar snackbar d-flex items-center justify-center"
-          ></div>
         </div>
       </div>
+      <div class="snackbar-container"></div>
     </div>
-    <script type="module" src="./src/js/index.js"></script>
   </body>
 </html>

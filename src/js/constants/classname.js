@@ -40,6 +40,7 @@ const CLASSNAME = Object.freeze({
   COMMENT_ICON: "js-comment-icon",
   DELETE_ICON: "js-delete-icon",
   SNACKBAR: "snackbar",
+  SNACKBAR_CONTAINER: "snackbar-container",
   MODAL_SNACKBAR: "js-modal-snackbar",
   SHOW: "show",
   LIKE_MODE: "like-mode",

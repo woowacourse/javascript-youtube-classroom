@@ -1,5 +1,5 @@
 import { CLASSNAME, LOCAL_STORAGE_KEY, NUMBER } from "../constants/index.js";
-import { $, fetchYoutubeData, showModalSnackbar } from "../utils/index.js";
+import { $, fetchYoutubeData, showSnackbar } from "../utils/index.js";
 import { messenger, MESSAGE } from "../messenger/index.js";
 
 export default class KeywordHistory {
@@ -44,7 +44,7 @@ export default class KeywordHistory {
     } catch (error) {
       // eslint-disable-next-line no-console
       console.error(error);
-      showModalSnackbar(error.message);
+      showSnackbar(error.message);
       messenger.deliverMessage(MESSAGE.DATA_LOADED, { items: [] });
     }
   }
