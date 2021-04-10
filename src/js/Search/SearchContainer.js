@@ -16,17 +16,20 @@ export default class SearchContainer {
 
   #$modal = $(`.${CLASSNAME.MODAL}`);
 
-  #$modalClose = $(`.${CLASSNAME.MODAL_CLOSE}`);
-
-  #$modalInner = $(`.${CLASSNAME.MODAL_INNER}`);
-
   constructor() {
     this.#addEventListeners();
     this.#searchForm.searchKeyword();
   }
 
   #addEventListeners() {
-    this.#$modalClose.addEventListener("click", this.close.bind(this));
+    this.#$modal.addEventListener("click", ({ target }) => {
+      if (
+        $.containsClass(target, CLASSNAME.MODAL) ||
+        $.containsClass(target, CLASSNAME.MODAL_CLOSE_X)
+      ) {
+        this.close();
+      }
+    });
   }
 
   open() {

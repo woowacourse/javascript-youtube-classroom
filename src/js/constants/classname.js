@@ -16,6 +16,7 @@ const CLASSNAME = Object.freeze({
   MODAL: "modal",
   MODAL_INNER: "modal-inner",
   MODAL_CLOSE: "modal-close",
+  MODAL_CLOSE_X: "close-x",
   NOT_FOUND_IMAGE: "js-not-found-img",
   NO_HISTORY_VIDEO_IMAGE: "no-history-video-image",
   NO_WATCH_LATER_VIDEO_IMAGE: "no-watch-later-video-image",
