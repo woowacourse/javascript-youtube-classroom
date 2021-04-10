@@ -149,7 +149,11 @@ export default class VideoWrapper {
 
   #saveVideo({ videoId, item, callback }) {
     if (this.#videosMap.has(videoId)) {
-      throw new Error(`동일한 영상을 저장할 수 없습니다. videoId: ${videoId}`);
+      // eslint-disable-next-line no-console
+      console.error(
+        `동일한 영상을 저장할 수 없습니다. videoId: ${videoId} item: ${item}`
+      );
+      return;
     }
 
     if (this.#videosMap.size >= NUMBER.MAX_SAVED_VIDEOS_COUNT) {
