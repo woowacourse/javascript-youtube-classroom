@@ -110,6 +110,10 @@ export default class SearchVideoWrapper {
     const { videoId } = $video.dataset;
     const video = this.#videosMap.get(videoId);
 
+    if (!video) {
+      return;
+    }
+
     if ($.containsClass($button, CLASSNAME.SAVE_VIDEO_BUTTON)) {
       this.#handleSaveVideoButtonClick(video);
       return;

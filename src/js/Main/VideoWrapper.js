@@ -52,7 +52,7 @@ export default class VideoWrapper {
 
       const { videoId } = entry.target.dataset;
       const video = this.#videosMap.get(videoId);
-      if (video.hasSkeletonEffect()) {
+      if (video && video.hasSkeletonEffect()) {
         video.attachData();
       }
     });
