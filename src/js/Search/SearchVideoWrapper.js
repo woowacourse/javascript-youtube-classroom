@@ -8,6 +8,8 @@ export default class SearchVideoWrapper {
 
   #currentNextPageToken = "";
 
+  #isDataLoading = false;
+
   #throttle = null;
 
   #videosMap = new Map();
@@ -50,6 +52,7 @@ export default class SearchVideoWrapper {
 
   #handleKeywordSubmit({ query }) {
     this.#currentQuery = query;
+    this.#isDataLoading = true;
     this.#$searchVideoWrapper.innerHTML = "";
     this.#mountTemplate();
     this.#$searchVideoWrapper.scrollTo({ top: 0 });
@@ -59,6 +62,7 @@ export default class SearchVideoWrapper {
     this.#currentNextPageToken = nextPageToken;
 
     this.#attachData(items);
+    this.#isDataLoading = false;
   }
 
   #handleSavedVideoDelete({ videoId }) {
@@ -67,7 +71,12 @@ export default class SearchVideoWrapper {
   }
 
   #handlePageScroll() {
-    if (this.#throttle || this.#isOverScrollEventThreshold()) return;
+    if (
+      this.#isDataLoading ||
+      this.#throttle ||
+      this.#isOverScrollEventThreshold()
+    )
+      return;
 
     this.#throttle = setTimeout(async () => {
       try {
