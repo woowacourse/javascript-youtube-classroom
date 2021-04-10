@@ -1,5 +1,5 @@
 import { CLASSNAME } from "../constants/index.js";
-import { $ } from "../utils/index.js";
+import { $, decodeHTML } from "../utils/index.js";
 
 export default class Video {
   static #DOMAIN = "https://www.youtube.com";
@@ -55,10 +55,10 @@ export default class Video {
 
     $iframe.src = `${Video.#DOMAIN}/embed/${videoId}`;
 
-    $videoTitle.innerText = title;
+    $videoTitle.innerText = decodeHTML(title);
 
     $channelTitle.href = `${Video.#DOMAIN}/channel/${channelId}`;
-    $channelTitle.innerText = channelTitle;
+    $channelTitle.innerText = decodeHTML(channelTitle);
 
     $publishedAt.innerText = Video.#getPublishedAtLocaleString(publishedAt);
 
