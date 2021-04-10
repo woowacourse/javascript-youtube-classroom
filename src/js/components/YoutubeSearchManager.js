@@ -2,7 +2,7 @@ import { searchYoutube } from '../api.js';
 import { $, $all, showSnackbar, renderSkeletonUI, closeModal } from '../utils.js';
 import { ALERT_MESSAGE, SELECTORS, LOCAL_STORAGE_KEYS, SERACH_RESULT, SETTINGS } from '../constants.js';
 import {
-  getVideoTemplate,
+  getSearchVideoTemplate,
   getFormTemplate,
   getNoResultTemplate,
   getEmptySearchResultTemplate,
@@ -18,13 +18,13 @@ export default class YoutubeSearchManager extends Observer {
     this.keyword = '';
     this.selector = SELECTORS.CLASS.YOUTUBE_SEARCH_FORM_CONTAINER;
 
-    this.setScrollObserver();
+    this.setScrollObservers();
   }
 
-  setScrollObserver() {
+  setScrollObservers() {
     const options = {
       root: $(SELECTORS.CLASS.YOUTUBE_SEARCH_RESULT_CONTAINER),
-      threshold: 1,
+      threshold: SETTINGS.SCROLL_SENTINEL_THRESHOLD,
     };
 
     this.scrollObserver = new IntersectionObserver((entries) => {
@@ -34,6 +34,15 @@ export default class YoutubeSearchManager extends Observer {
         }
       });
     }, options);
+
+    this.lazyLoadingObserver = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          const targetElement = entry.target;
+          targetElement.src = targetElement.dataset.videoUrl;
+        }
+      });
+    });
   }
 
   async handleAdditionalSearch() {
@@ -43,8 +52,10 @@ export default class YoutubeSearchManager extends Observer {
 
       const template = this.getResultTemplate(response.items);
       this.renderResults(template);
+      $all('iframe').forEach(($iframe) => {
+        this.lazyLoadingObserver.observe($iframe);
+      });
     } catch (error) {
-      console.log(error.message);
       showSnackbar(error.message);
     }
   }
@@ -52,7 +63,8 @@ export default class YoutubeSearchManager extends Observer {
   getResultTemplate(result) {
     return result
       .map((item) => {
-        const { channelId, title, channelTitle, publishedAt } = item.snippet;
+        const { channelId, title, channelTitle, publishedAt, thumbnails } = item.snippet;
+        const thumbnail = thumbnails.medium.url;
         const id = item.id.videoId;
 
         const { watchList } = this.store.get();
@@ -64,10 +76,10 @@ export default class YoutubeSearchManager extends Observer {
           day: 'numeric',
         });
 
-        const video = { id, title, channelId, channelTitle, dateString };
-        const options = { containsSaveButton: !isSaved };
+        const video = { id, title, channelId, channelTitle, dateString, thumbnail };
+        const options = { isSaved };
 
-        return getVideoTemplate(video, options);
+        return getSearchVideoTemplate(video, options);
       })
       .join('');
   }
@@ -81,7 +93,7 @@ export default class YoutubeSearchManager extends Observer {
   }
 
   renderResults(template) {
-    $(SELECTORS.CLASS.SENTINEL).insertAdjacentHTML('beforebegin', template);
+    $(SELECTORS.CLASS.YOUTUBE_SEARCH_RESULT).insertAdjacentHTML('beforeend', template);
   }
 
   renderNoResult() {
@@ -107,7 +119,7 @@ export default class YoutubeSearchManager extends Observer {
     const { recentKeywordList } = this.store.get();
     const newKeywordList = recentKeywordList.filter((item) => item !== keyword);
 
-    if (newKeywordList.length >= 3) {
+    if (newKeywordList.length >= SETTINGS.MAX_KEYWORD_COUNT) {
       newKeywordList.pop();
     }
     newKeywordList.unshift(keyword);
@@ -139,6 +151,9 @@ export default class YoutubeSearchManager extends Observer {
       this.renderResults(template);
 
       this.scrollObserver.observe($(SELECTORS.CLASS.SENTINEL));
+      $all('iframe').forEach(($iframe) => {
+        this.lazyLoadingObserver.observe($iframe);
+      });
     } catch (error) {
       console.error(error);
       this.renderEmptySearchResult();
@@ -147,28 +162,48 @@ export default class YoutubeSearchManager extends Observer {
     }
   }
 
-  async handleSaveVideo(event) {
-    if (!event.target.classList.contains('btn-save')) return;
-
-    const watchList = this.store.get()[LOCAL_STORAGE_KEYS.WATCH_LIST];
-    if (watchList.length >= SETTINGS.MAX_VIDEO_COUNT) {
-      showSnackbar(ALERT_MESSAGE.MAX_VIDEO_COUNT_EXCEEDED);
-      return;
-    }
+  handleSaveVideo(event) {
+    if (!event.target.classList.contains('saving-btn')) return;
 
     const $selectedButton = event.target;
-    const selectedVideoId = $selectedButton.dataset.videoId;
 
-    const newVideo = {
-      videoId: selectedVideoId,
-      watched: false,
-    };
+    if ($selectedButton.classList.contains('btn-save')) {
+      const watchList = this.store.get()[LOCAL_STORAGE_KEYS.WATCH_LIST];
+      if (watchList.length >= SETTINGS.MAX_VIDEO_COUNT) {
+        showSnackbar(ALERT_MESSAGE.MAX_VIDEO_COUNT_EXCEEDED);
+        return;
+      }
 
-    this.store.update(LOCAL_STORAGE_KEYS.WATCH_LIST, [...watchList, newVideo]);
+      const selectedVideoId = $selectedButton.dataset.videoId;
 
-    $selectedButton.classList.add(SELECTORS.STATUS.HIDDEN);
+      const newVideo = {
+        videoId: selectedVideoId,
+        watched: false,
+        liked: false,
+      };
 
-    showSnackbar(ALERT_MESSAGE.VIDEO_SAVED);
+      this.store.update(LOCAL_STORAGE_KEYS.WATCH_LIST, [...watchList, newVideo]);
+
+      $selectedButton.innerText = '⬆️ 저장 취소';
+      $selectedButton.classList.add('btn-cancel-save');
+      $selectedButton.classList.remove('btn-save');
+
+      showSnackbar(ALERT_MESSAGE.VIDEO_SAVED);
+    } else {
+      const watchList = this.store.get()[LOCAL_STORAGE_KEYS.WATCH_LIST];
+      const $selectedButton = event.target;
+      const selectedVideoId = $selectedButton.dataset.videoId;
+
+      const filteredVideoList = watchList.filter((video) => video.videoId !== selectedVideoId);
+
+      this.store.update(LOCAL_STORAGE_KEYS.WATCH_LIST, [...filteredVideoList]);
+
+      $selectedButton.innerText = '⬇️ 저장';
+      $selectedButton.classList.add('btn-save');
+      $selectedButton.classList.remove('btn-cancel-save');
+
+      showSnackbar(ALERT_MESSAGE.VIDEO_SAVE_CANCELED);
+    }
   }
 
   handleClickRecentKeyword(event) {

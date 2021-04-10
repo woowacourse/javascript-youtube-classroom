@@ -1,15 +1,20 @@
 export const SETTINGS = {
   MAX_VIDEO_COUNT: 100,
+  MAX_KEYWORD_COUNT: 3,
+  SCROLL_SENTINEL_THRESHOLD: 0.5,
 };
 
 export const ALERT_MESSAGE = {
   EMPTY_SEARCH_KEYWORD: '검색어를 입력해주세요',
   VIDEO_SAVED: '선택한 동영상을 저장했습니다',
+  VIDEO_SAVE_CANCELED: '동영상의 저장이 취소되었습니다',
   CONFIRM_DELETE: '정말 삭제하시겠습니까?',
   VIDEO_MOVED_WATCHED_LIST: '영상을 [본 영상] 목록으로 옮겼습니다',
   VIDEO_MOVED_TO_WATCH_LIST: '영상을 [볼 영상] 목록으로 옮겼습니다',
   VIDEO_DELETED: '영상이 삭제되었습니다.',
   MAX_VIDEO_COUNT_EXCEEDED: `영상은 최대 ${SETTINGS.MAX_VIDEO_COUNT}개까지만 저장할 수 있습니다.`,
+  VIDEO_LIKED: '영상을 [좋아요 표시한 영상] 목록에 포함시켰습니다.',
+  VIDEO_LIKE_CANCELED: '영상을 [좋아요 표시한 영상] 목록에서 제외하였습니다.',
 };
 
 export const API_SETTINGS = {
@@ -27,6 +32,7 @@ export const SELECTORS = {
     YOUTUBE_SEARCH_RESULT_CONTAINER: '.youtube-search-result-container',
     YOUTUBE_SEARCH_RESULT: '.youtube-search-result',
     BTN_SAVE: '.btn-save',
+    BTN_CANCEL_SAVE: '.btn-cancel-save',
     VIDEO_TITLE: '.video-title',
     RECENT_KEYWORD_LIST: '.recent-keyword-list',
     SAVED_VIDEO_COUNT: '.saved-video-count',
@@ -36,9 +42,12 @@ export const SELECTORS = {
     LIKE: '.like',
     COMMENT: '.comment',
     DELETE: '.delete',
-    TO_WATCH_LIST_BUTTON: '.to-watch-list-button',
+    TO_WATCH_LIST_BUTTON: '.toWatch-list-button',
     WATCHED_LIST_BUTTON: '.watched-list-button',
+    LIKED_LIST_BUTTON: '.liked-list-button',
     SENTINEL: '.sentinel',
+    MENU_LIST: '.menu-list',
+    ACTIVE_BUTTONS: '.active-btn',
   },
   ID: {
     SEARCH_BUTTON: '#search-button',
@@ -65,4 +74,5 @@ export const SERACH_RESULT = {
 export const MENU = {
   WATCHED: 'watched',
   TO_WATCH: 'toWatch',
+  LIKED: 'liked',
 };

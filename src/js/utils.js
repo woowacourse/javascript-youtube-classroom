@@ -7,16 +7,16 @@ export const sleep = (ms) => {
   return new Promise((resolve) => setTimeout(resolve, ms));
 };
 
-let snackbarTimeout = null;
+let snackbarTimeoutID = null;
 export const showSnackbar = (message, second = 3) => {
-  if (snackbarTimeout) {
-    clearTimeout(snackbarTimeout);
+  if (snackbarTimeoutID) {
+    clearTimeout(snackbarTimeoutID);
   }
 
   $(SELECTORS.ID.SNACKBAR).textContent = message;
   $(SELECTORS.ID.SNACKBAR).classList.add(SELECTORS.STATUS.SNACKBAR_SHOW);
 
-  snackbarTimeout = setTimeout(() => {
+  snackbarTimeoutID = setTimeout(() => {
     $(SELECTORS.ID.SNACKBAR).classList.remove(SELECTORS.STATUS.SNACKBAR_SHOW);
   }, second * 1000);
 };
@@ -66,11 +66,15 @@ export const showElement = (selector) => {
 };
 
 export const colorizeButton = (selector) => {
-  $(selector).classList.add('bg-cyan-100');
+  [...$all(selector)].forEach(($button) => {
+    $button.classList.add('bg-cyan-100');
+  });
 };
 
 export const uncolorizeButton = (selector) => {
-  $(selector).classList.remove('bg-cyan-100');
+  [...$all(selector)].forEach(($button) => {
+    $button.classList.remove('bg-cyan-100');
+  });
 };
 
 export const getVideoSaveButton = (id) => {

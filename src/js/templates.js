@@ -1,8 +1,8 @@
 import { generateCSSClass } from './utils.js';
 
-export const getVideoTemplate = (data, options) => {
-  const { id, title, channelId, channelTitle, dateString } = data;
-  const { containsSaveButton = false, containsMenu = false, isSaved = false, isWatched = false } = options;
+export const getSearchVideoTemplate = (data, options) => {
+  const { id, title, channelId, channelTitle, dateString, thumbnail } = data;
+  const { isSaved = false } = options;
 
   return `
     <article class="clip d-flex flex-col" data-video-id="${id}">
@@ -10,10 +10,12 @@ export const getVideoTemplate = (data, options) => {
         <iframe
           width="100%"
           height="118"
-          src="https://www.youtube.com/embed/${id}"
           frameborder="0"
           allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-          allowfullscreen>
+          allowfullscreen
+          data-video-url="https://www.youtube.com/embed/${id}"
+          srcdoc="<style>*{padding:0;margin:0;overflow:hidden}html,body{height:100%}img,span{position:absolute;width:100%;top:0;bottom:0;margin:auto}span{height:1.5em;text-align:center;font:48px/1.5 sans-serif;color:white;text-shadow:0 0 0.5em black}</style><a href='https://www.youtube.com/embed/${id}?autoplay=1'><img src='${thumbnail}'><span>▶</span></a>"
+          >
         </iframe>
       </div>
       <div class="content-container pt-2 px-1 d-flex flex-col justify-between flex-1">
@@ -22,7 +24,6 @@ export const getVideoTemplate = (data, options) => {
           <a
             href="https://www.youtube.com/channel/${channelId}"
             target="_blank"
-            rel="noopener noreferrer"
             class="channel-name mt-1"
           >
             ${channelTitle}
@@ -32,28 +33,69 @@ export const getVideoTemplate = (data, options) => {
           </div>
         </div>
         ${
-          containsSaveButton
+          isSaved
             ? `
-              <div class="d-flex justify-end">
-                <button type="button" 
-                class="btn btn-save ${generateCSSClass(isSaved, 'hidden')}" 
-                data-video-id="${id}">⬇️ 저장</button>
-              </div>
-            `
-            : ''
-        }
-        ${
-          containsMenu
-            ? `
-            <div class="menu-list" data-video-id="${id}"}>
-              <span class="cursor-pointer ${generateCSSClass(!isWatched, 'opacity-hover')} watched">✅</span>
-              <span class="cursor-pointer opacity-hover like">👍</span>
-              <span class="cursor-pointer opacity-hover comment">💬</span>
-              <span class="cursor-pointer opacity-hover delete">🗑️</span>
+            <div class="d-flex justify-end">
+              <button class="btn saving-btn btn-cancel-save" data-video-id="${id}">⬆️ 저장 취소</button>
             </div>
           `
-            : ''
+            : `
+            <div class="d-flex justify-end">
+              <button class="btn saving-btn btn-save" data-video-id="${id}">⬇️ 저장</button>
+            </div>
+          `
         }
+      </div>
+    </article>
+  `;
+};
+
+export const getWatchListVideoTemplate = (data, options) => {
+  const { id, title, channelId, channelTitle, dateString, thumbnail } = data;
+  const { isWatched = false, isLiked = false } = options;
+
+  return `
+    <article class="clip d-flex flex-col" data-video-id="${id}">
+      <div class="preview-container">
+        <iframe
+          width="100%"
+          height="118"
+          frameborder="0"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+          allowfullscreen
+          data-video-url="https://www.youtube.com/embed/${id}"
+          srcdoc="<style>*{padding:0;margin:0;overflow:hidden}html,body{height:100%}img,span{position:absolute;width:100%;top:0;bottom:0;margin:auto}span{height:1.5em;text-align:center;font:48px/1.5 sans-serif;color:white;text-shadow:0 0 0.5em black}</style><a href='https://www.youtube.com/embed/${id}?autoplay=1'><img src='${thumbnail}'><span>▶</span></a>"
+          >
+        </iframe>
+      </div>
+      <div class="content-container pt-2 px-1 d-flex flex-col justify-between flex-1">
+        <div>
+          <h3 class="video-title">${title}</h3>
+          <a
+            href="https://www.youtube.com/channel/${channelId}"
+            target="_blank"
+            class="channel-name mt-1"
+          >
+            ${channelTitle}
+          </a>
+          <div class="meta">
+            <p>${dateString}</p>
+          </div>
+        </div>
+        ${`
+          <div class="menu-list" data-video-id="${id}">
+            <span class="cursor-pointer ${generateCSSClass(
+              !isWatched,
+              'opacity-hover'
+            )} watched" data-video-id="${id}">✅</span>
+            <span class="cursor-pointer ${generateCSSClass(
+              !isLiked,
+              'opacity-hover'
+            )} liked" data-video-id="${id}">👍</span>
+            <span class="cursor-pointer opacity-hover comment" data-video-id="${id}">💬</span>
+            <span class="cursor-pointer opacity-hover delete" data-video-id="${id}">🗑️</span>
+          </div>
+        `}
       </div>
     </article>
   `;
@@ -63,7 +105,7 @@ export const getFormTemplate = () => {
   return `
     <form id="youtube-search-form" class="d-flex">
       <input
-        type="search"
+        type="text"
         id="youtube-search-keyword-input"
         class="w-100 mr-2 pl-2"
         name="keyword"
@@ -87,8 +129,8 @@ export const getNoResultTemplate = () => {
 export const getEmptySearchResultTemplate = () => {
   return `
     <div class="youtube-search-result video-wrapper">
-      <div class="sentinel"></div>
     </div>
+    <div class="sentinel"></div>
   `;
 };
 

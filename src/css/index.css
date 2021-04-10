@@ -57,3 +57,10 @@ a {
 .overflow-hidden {
   overflow: hidden;
 }
+
+.sentinel {
+  width: 100%;
+  height: 10px;
+  left: 0;
+  bottom: 0;
+}
