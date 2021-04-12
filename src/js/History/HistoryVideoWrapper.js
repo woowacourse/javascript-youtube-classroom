@@ -46,6 +46,7 @@ export default class HistoryVideoWrapper {
         showSnackbar(SNACKBAR_TEXT.MOVED_TO_WATCH_LATER_VIDEO);
       }
 
+      // TODO: LIKE_ICON_CLICKED 수정 (메시지 변경함)
       if (event.target.classList.contains(CLASSNAME.LIKE_ICON)) {
         messenger.deliverMessage(MESSAGE.LIKE_ICON_CLICKED, {
           videoId,

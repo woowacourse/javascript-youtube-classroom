@@ -5,7 +5,7 @@ import {
   CLASSNAME,
 } from "../constants/index.js";
 import messenger from "../Messenger.js";
-import { $ } from "../utils/DOM.js";
+import { $, removeClass, addClass } from "../utils/DOM.js";
 import { WATCH_LATER_VIDEO_TEMPLATE } from "../Video/template.js";
 import { renderTheOtherTabVideo } from "../Video/render.js";
 import { showSnackbar } from "../utils/snackbar.js";
@@ -19,6 +19,9 @@ export default class WatchLaterVideoWrapper {
     );
 
     this.watchLaterVideosMap = new Map();
+
+    this.watchLaterLikeVideosArray =
+      JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEY.VIDEO_LIKE)) || [];
 
     this.$noSavedVideoImage = $(
       `.${CLASSNAME.WATCH_LATER_CONTAINER} .${CLASSNAME.NO_SAVED_VIDEO_IMAGE}`
@@ -54,11 +57,7 @@ export default class WatchLaterVideoWrapper {
       }
 
       if (event.target.classList.contains(CLASSNAME.LIKE_ICON)) {
-        messenger.deliverMessage(MESSAGE.LIKE_ICON_CLICKED, {
-          videoId,
-          item: this.watchLaterVideoItemsMap.get(videoId),
-        });
-        showSnackbar(SNACKBAR_TEXT.ADDED_TO_LIKE_VIDEO);
+        this.handleLikeIconClick({ videoId, event });
       }
 
       if (event.target.classList.contains(CLASSNAME.DELETE_ICON)) {
@@ -74,6 +73,36 @@ export default class WatchLaterVideoWrapper {
     this.render();
   }
 
+  // TODO: 좋아요 표시되는 거랑 좋아요 취소되는 것 분리하기
+  handleLikeIconClick({ videoId, event }) {
+    if (this.watchLaterLikeVideosArray.includes(videoId)) {
+      const idx = this.watchLaterLikeVideosArray.indexOf(videoId);
+      this.watchLaterLikeVideosArray.splice(idx, 1);
+
+      this.updateLikeVideosLocalStorage();
+
+      removeClass(event.target, "like");
+
+      messenger.deliverMessage(MESSAGE.LIKE_ICON_DEACTIVATED, {
+        videoId,
+        item: this.watchLaterVideoItemsMap.get(videoId),
+      });
+      showSnackbar(SNACKBAR_TEXT.DELETED_FROM_LIKE_VIDEO);
+    } else {
+      this.watchLaterLikeVideosArray.push(videoId);
+
+      this.updateLikeVideosLocalStorage();
+
+      addClass(event.target, "like");
+
+      messenger.deliverMessage(MESSAGE.LIKE_ICON_ACTIVATED, {
+        videoId,
+        item: this.watchLaterVideoItemsMap.get(videoId),
+      });
+      showSnackbar(SNACKBAR_TEXT.ADDED_TO_LIKE_VIDEO);
+    }
+  }
+
   moveVideo({ videoId }) {
     messenger.deliverMessage(MESSAGE.WATCHED_ICON_CLICKED, {
       videoId,
@@ -82,7 +111,7 @@ export default class WatchLaterVideoWrapper {
 
     this.watchLaterVideoItemsMap.delete(videoId);
 
-    this.updateLocalStorage();
+    this.updateVideoItemsLocalStorage();
 
     this.watchLaterVideosMap.get(videoId).remove();
     this.watchLaterVideosMap.delete(videoId);
@@ -99,7 +128,7 @@ export default class WatchLaterVideoWrapper {
 
     this.watchLaterVideoItemsMap.delete(videoId);
 
-    this.updateLocalStorage();
+    this.updateVideoItemsLocalStorage();
 
     messenger.deliverMessage(MESSAGE.SAVED_VIDEOS_COUNT_CHANGED, {
       change: -1,
@@ -116,7 +145,7 @@ export default class WatchLaterVideoWrapper {
   saveVideo({ videoId, item }) {
     this.watchLaterVideoItemsMap.set(videoId, item);
 
-    this.updateLocalStorage();
+    this.updateVideoItemsLocalStorage();
 
     messenger.deliverMessage(MESSAGE.SAVED_VIDEOS_COUNT_CHANGED, {
       change: +1,
@@ -125,12 +154,19 @@ export default class WatchLaterVideoWrapper {
     this.renderSingleVideo(item);
   }
 
-  updateLocalStorage() {
+  updateVideoItemsLocalStorage() {
     localStorage.setItem(
       LOCAL_STORAGE_KEY.WATCH_LATER_VIDEO_ITEMS,
       JSON.stringify(this.watchLaterVideoItemsMap, (key, value) =>
         value instanceof Map ? Array.from(value) : value
       )
+    );
+  }
+
+  updateLikeVideosLocalStorage() {
+    localStorage.setItem(
+      LOCAL_STORAGE_KEY.VIDEO_LIKE,
+      JSON.stringify(this.watchLaterLikeVideosArray)
     );
   }
 
@@ -162,5 +198,9 @@ export default class WatchLaterVideoWrapper {
 
     const { videoId } = item.id;
     this.watchLaterVideosMap.set(videoId, $video);
+
+    if (this.watchLaterLikeVideosArray.includes(videoId)) {
+      addClass($video.querySelector(`.${CLASSNAME.LIKE_ICON}`), "like");
+    }
   }
 }

@@ -19,8 +19,13 @@ export default class LikeVideoWrapper {
     this.$likeVideoWrapper = $(`.${CLASSNAME.LIKE_VIDEO_WRAPPER}`);
 
     messenger.addMessageListener(
-      MESSAGE.LIKE_ICON_CLICKED,
+      MESSAGE.LIKE_ICON_ACTIVATED,
       this.saveVideo.bind(this)
+    );
+
+    messenger.addMessageListener(
+      MESSAGE.LIKE_ICON_DEACTIVATED,
+      this.deleteVideo.bind(this)
     );
 
     messenger.addMessageListener(
