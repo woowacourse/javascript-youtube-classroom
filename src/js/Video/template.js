@@ -10,6 +10,7 @@ const GENERATE_TEMPLATE = (buttonTemplate) => `
     frameborder="0"
     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
     allowfullscreen
+    loading="lazy"
   ></iframe>
   </div>
   <div class="content-container pt-2 px-1">
@@ -54,7 +55,7 @@ const HISTORY_ICON_BUTTONS_TEMPLATE = `
 
 const LIKE_ICON_BUTTONS_TEMPLATE = `
 <div class=${CLASSNAME.ICONS_WRAPPER}>
-  <span class="opacity-hover like ${CLASSNAME.LIKE_ICON}">👍</span>
+  <span class="like ${CLASSNAME.LIKE_ICON}">👍</span>
 </div>`;
 
 const WATCH_LATER_VIDEO_TEMPLATE = GENERATE_TEMPLATE(

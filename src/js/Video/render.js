@@ -16,6 +16,7 @@ const renderVideo = ($video, item) => {
   const $publishedAt = $video.querySelector(`.${CLASSNAME.PUBLISHED_AT}`);
 
   $iframe.src = `${DOMAIN}/embed/${videoId}`;
+  $iframe.loading = "lazy";
 
   $videoTitle.innerText = title;
 
