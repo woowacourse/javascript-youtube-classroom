@@ -3,6 +3,8 @@ import { NUMBER } from "../constants/index.js";
 const REDIRECT_SERVER_HOST = "https://jum0.netlify.app";
 
 const fetchYoutubeData = async (query, nextPageToken = "") => {
+  // TEST DUMMY URL
+  // const url = new URL("youtube/dummy/search", REDIRECT_SERVER_HOST);
   const url = new URL("youtube/search", REDIRECT_SERVER_HOST);
   const parameters = new URLSearchParams({
     part: "snippet",
