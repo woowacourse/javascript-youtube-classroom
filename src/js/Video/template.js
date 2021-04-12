@@ -55,7 +55,6 @@ const HISTORY_ICON_BUTTONS_TEMPLATE = `
 const LIKE_ICON_BUTTONS_TEMPLATE = `
 <div class=${CLASSNAME.ICONS_WRAPPER}>
   <span class="opacity-hover like ${CLASSNAME.LIKE_ICON}">👍</span>
-  <span class="opacity-hover ${CLASSNAME.DELETE_ICON}">🗑️</span>
 </div>`;
 
 const WATCH_LATER_VIDEO_TEMPLATE = GENERATE_TEMPLATE(

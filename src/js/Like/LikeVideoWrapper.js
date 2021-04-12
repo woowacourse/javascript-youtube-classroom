@@ -34,6 +34,11 @@ export default class LikeVideoWrapper {
     );
 
     messenger.addMessageListener(
+      MESSAGE.SAVED_VIDEO_DELETED,
+      this.deleteVideo.bind(this)
+    );
+
+    messenger.addMessageListener(
       MESSAGE.HIDE_IF_VIDEO_IS_SAVED,
       this.hideIfVideoIsSaved.bind(this)
     );
