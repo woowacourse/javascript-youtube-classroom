@@ -1,25 +1,28 @@
 .snackbar {
   visibility: hidden;
-  min-width: 250px;
-  margin-left: -125px;
   background-color: #333;
   color: #fff;
   text-align: center;
-  border-radius: 2px;
-  padding: 16px;
   position: fixed;
   z-index: 100;
   left: 50%;
   bottom: 0;
 }
 
-.show {
-  visibility: visible !important; /* Show the snackbar */
-  -webkit-animation: fadein 0.5s, fadeout 0.5s 2.7s;
-  animation: fadein 0.5s, fadeout 0.5s 2.7s;
+.snackbar-shape {
+  min-width: 250px;
+  margin-left: -125px;
+  padding: 16px;
+  border-radius: 2px;
 }
 
-@-webkit-keyframes fadein {
+.show {
+  visibility: visible !important; /* Show the snackbar */
+  -webkit-animation: fade-in 0.5s, fade-out 0.5s 2.7s;
+  animation: fade-in 0.5s, fade-out 0.5s 2.7s;
+}
+
+@-webkit-keyframes fade-in {
   from {
     bottom: 0;
     opacity: 0;
@@ -30,7 +33,7 @@
   }
 }
 
-@keyframes fadein {
+@keyframes fade-in {
   from {
     bottom: 0;
     opacity: 0;
@@ -41,7 +44,7 @@
   }
 }
 
-@-webkit-keyframes fadeout {
+@-webkit-keyframes fade-out {
   from {
     bottom: 0;
     opacity: 1;

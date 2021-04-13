@@ -3,8 +3,6 @@ import SearchModal from "./SearchModal.js";
 import VideoView from "./VideoView.js";
 
 class App {
-  constructor() {}
-
   init() {
     this.videoView = new VideoView();
     this.searchModal = new SearchModal({ changeMenu: this.changeMenu.bind(this) });

@@ -1,5 +1,5 @@
 import { $ } from "../utils/dom.js";
-import { CLASS_NAME, MENU } from "../utils/constants.js";
+import { CLASS_NAME, MENU, COLOR } from "../utils/constants.js";
 
 class MenuSection {
   constructor(props) {
@@ -8,26 +8,31 @@ class MenuSection {
     this._bindEvent();
   }
 
-  _initState() {
-    this.clickedMenu = MENU.WATCH_LATER;
-  }
-
   setState({ clickedMenu }) {
     this.clickedMenu = clickedMenu ?? this.clickedMenu;
 
     this._render();
   }
 
+  _initState() {
+    this.clickedMenu = MENU.WATCH_LATER;
+  }
+
   _selectDOM() {
     this.$target = $(`.${CLASS_NAME.MENU_SECTION}`);
     this.$watchLaterBtn = $(`.${CLASS_NAME.WATCH_LATER_BTN}`);
     this.$watchedBtn = $(`.${CLASS_NAME.WATCHED_BTN}`);
+    this.$likedBtn = $(`.${CLASS_NAME.LIKED_BTN}`);
     this.$videoSearchBtn = $(`.${CLASS_NAME.VIDEO_SEARCH_BTN}`);
   }
 
   _bindEvent() {
     this.$target.addEventListener("click", e => {
-      if (!e.target.classList.contains(CLASS_NAME.MENU_BTN)) return;
+      if (
+        !e.target.classList.contains(CLASS_NAME.MENU_TOGGLE_BTN) &&
+        !e.target.classList.contains(CLASS_NAME.SEARCH_BTN)
+      )
+        return;
 
       this._handleSelectMenu(e.target);
     });
@@ -37,6 +42,7 @@ class MenuSection {
     const menuNames = [
       CLASS_NAME.WATCH_LATER_BTN,
       CLASS_NAME.WATCHED_BTN,
+      CLASS_NAME.LIKED_BTN,
       CLASS_NAME.VIDEO_SEARCH_BTN,
     ];
 
@@ -47,10 +53,10 @@ class MenuSection {
   }
 
   _changeMenuBtnColor(target) {
-    [this.$watchLaterBtn, this.$watchedBtn].forEach($btn => $btn.classList.remove("bg-cyan-100"));
+    [this.$watchLaterBtn, this.$watchedBtn].forEach($btn => $btn.classList.remove(COLOR.CLICKED));
 
     if (!target.classList.contains(CLASS_NAME.VIDEO_SEARCH_BTN)) {
-      target.classList.add("bg-cyan-100");
+      target.classList.add(COLOR.CLICKED);
     }
   }
 
@@ -61,6 +67,9 @@ class MenuSection {
       },
       [CLASS_NAME.WATCHED_BTN]: () => {
         this.props.changeMenu(MENU.WATCHED);
+      },
+      [CLASS_NAME.LIKED_BTN]: () => {
+        this.props.changeMenu(MENU.LIKED);
       },
       [CLASS_NAME.VIDEO_SEARCH_BTN]: () => {
         this.props.openModal();
@@ -74,10 +83,12 @@ class MenuSection {
     const mappingMenu = {
       [MENU.WATCH_LATER]: this.$watchLaterBtn,
       [MENU.WATCHED]: this.$watchedBtn,
+      [MENU.LIKED]: this.$likedBtn,
     };
 
-    [this.$watchLaterBtn, this.$watchedBtn].forEach($btn => $btn.classList.remove("bg-cyan-100"));
-    mappingMenu[this.clickedMenu].classList.add("bg-cyan-100");
+    [this.$watchLaterBtn, this.$watchedBtn].forEach($btn => $btn.classList.remove(COLOR.CLICKED));
+    [this.$watchLaterBtn, this.$likedBtn].forEach($btn => $btn.classList.remove(COLOR.CLICKED));
+    mappingMenu[this.clickedMenu].classList.add(COLOR.CLICKED);
   }
 }
 

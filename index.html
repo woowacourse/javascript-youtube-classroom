@@ -14,14 +14,17 @@
             <h2 class="text-center font-bold">👩🏻‍💻 나만의 유튜브 강의실 👨🏻‍💻</h2>
             <nav class="menu-section d-flex justify-between">
               <div>
-                <button class="menu-section__watch-later-btn menu-btn btn bg-cyan-100 mx-1">
+                <button class="menu-section__watch-later-btn menu-toggle-btn btn bg-cyan-100 mx-1">
                   👁️ 볼 영상
                 </button>
-                <button class="menu-section__watched-btn menu-btn btn mx-1">✅ 본 영상</button>
+                <button class="menu-section__watched-btn menu-toggle-btn btn mx-1">
+                  ✅ 본 영상
+                </button>
+                <button class="menu-section__liked-btn menu-toggle-btn btn mx-1">
+                  👍 좋아하는 영상
+                </button>
               </div>
-              <button class="menu-section__video-search-btn menu-btn btn mx-1 ml-10">
-                🔍 동영상 검색
-              </button>
+              <button class="menu-section__video-search-btn search-btn mx-1 ml-10">🔍</button>
             </nav>
           </header>
           <main class="video-view mt-10">
@@ -53,13 +56,14 @@
             <div class="search-modal__saved-video-count d-flex justify-end text-gray-700"></div>
             <div class="search-modal__scroll-area mh-300 overflow-y-auto">
               <section class="search-modal__video-wrapper video-wrapper"></section>
+              <section class="search-modal__no-result-wrapper d-none"></section>
               <div class="search-modal__more-area"></div>
             </div>
           </section>
         </div>
       </div>
     </div>
-    <div class="snackbar">이곳에 메시지를 입력해주세요.</div>
+    <div class="snackbar snackbar-shape">이곳에 메시지를 입력해주세요.</div>
     <script type="module" src="./src/js/index.js"></script>
   </body>
 </html>

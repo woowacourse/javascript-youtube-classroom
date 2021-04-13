@@ -1,4 +1,4 @@
-import { $, $$, popMessage } from "../utils/dom.js";
+import { $, $$, showSnackbar } from "../utils/dom.js";
 import {
   MENU,
   STANDARD_NUMS,
@@ -9,13 +9,12 @@ import {
 } from "../utils/constants.js";
 import API from "../utils/api.js";
 import { createVideoTemplate } from "../utils/templates.js";
-import savedVideoManager from "../model/SavedVideoManager.js";
+import SavedVideoManager from "../model/SavedVideoManager.js";
 
-// dummy API Response 사용할 경우
-// import { dummySearchedData } from "../data/dummy.js";
 class SearchModal {
   constructor(props) {
     this.props = props;
+    this.savedVideoManager = new SavedVideoManager();
     this._initState();
     this._selectDOM();
     this._bindEvent();
@@ -23,11 +22,15 @@ class SearchModal {
     this._initSubscription();
   }
 
+  showModal() {
+    this.$target.classList.add("open");
+  }
+
   _initState() {
     this.keyword = "";
     this.keywordHistory = [];
     this.videos = [];
-    this.savedVideos = savedVideoManager.getSavedVideos();
+    this.savedVideos = this.savedVideoManager.savedVideos;
     this.nextPageToken = "";
   }
 
@@ -35,6 +38,7 @@ class SearchModal {
     this.$target = $(`.${CLASS_NAME.SEARCH_MODAL}`);
     this.$searchInput = $(`.${CLASS_NAME.SEARCH_MODAL_INPUT}`);
     this.$videoWrapper = $(`.${CLASS_NAME.SEARCH_MODAL_VIDEO_WRAPPER}`);
+    this.$noResultWrapper = $(`.${CLASS_NAME.SEARCH_MODAL_NO_RESULT_WRAPPER}`);
     this.$scrollArea = $(`.${CLASS_NAME.SCROLL_AREA}`);
     this.$moreArea = $(`.${CLASS_NAME.MORE_AREA}`);
     this.$savedVideoCount = $(`.${CLASS_NAME.SAVED_VIDEO_COUNT}`);
@@ -85,8 +89,8 @@ class SearchModal {
   }
 
   _initSubscription() {
-    savedVideoManager.subscribe(this._setSaveVideosState.bind(this));
-    savedVideoManager.subscribe(this._updateIsSavedOfVideos.bind(this));
+    this.savedVideoManager.subscribe(this._setSaveVideosState.bind(this));
+    this.savedVideoManager.subscribe(this._updateIsSavedOfVideos.bind(this));
   }
 
   _updateIsSavedOfVideos({ savedVideos }) {
@@ -113,6 +117,7 @@ class SearchModal {
     this.videos = videos ?? this.videos;
     this.nextPageToken = nextPageToken ?? this.nextPageToken;
 
+    if (videos.length === 0) return;
     this._render();
   }
 
@@ -136,11 +141,18 @@ class SearchModal {
       <p class="line"></p>
     </div>`;
 
-    this.$videoWrapper.innerHTML = "";
-    this.$videoWrapper.insertAdjacentHTML(
-      "beforeend",
-      skeletonCardTemplate.repeat(STANDARD_NUMS.LOAD_CLIP_COUNT),
-    );
+    this.$videoWrapper.innerHTML = skeletonCardTemplate.repeat(STANDARD_NUMS.LOAD_CLIP_COUNT);
+  }
+
+  _showAdditionalLoadingAnimation() {
+    const skeletonCardTemplate = `
+    <div class="skeleton">
+      <div class="image"></div>
+      <p class="line"></p>
+      <p class="line"></p>
+    </div>`;
+
+    this.$videoWrapper.innerHTML += skeletonCardTemplate.repeat(STANDARD_NUMS.LOAD_CLIP_COUNT);
   }
 
   _hideLoadingAnimation() {
@@ -159,10 +171,7 @@ class SearchModal {
       this.$scrollArea.scrollTo({ top: 0 });
       this._showLoadingAnimation();
 
-      // dummy API Response 사용할 경우
-      // const { items, nextPageToken } = dummySearchedData;
       const { items, nextPageToken } = await API.searchVideo(keyword);
-
       const videos = items.map(
         ({
           id: { videoId },
@@ -178,6 +187,10 @@ class SearchModal {
         }),
       );
 
+      if (videos.length === 0) {
+        this.$videoWrapper.innerHTML = "";
+      }
+
       const keywordHistory = [
         keyword,
         ...this.keywordHistory.filter(history => history !== keyword),
@@ -190,13 +203,13 @@ class SearchModal {
   }
 
   async _handleLoadMore() {
+    if (this.videos.length === 0) return;
     if (!this.$target.classList.contains("open")) return;
 
     try {
-      this._showLoadingAnimation();
+      this._showAdditionalLoadingAnimation();
 
       const { items, nextPageToken } = await API.searchVideo(this.keyword, this.nextPageToken);
-
       const nextVideos = items.map(
         ({
           id: { videoId },
@@ -238,10 +251,10 @@ class SearchModal {
       isLiked: false,
     };
     const savedVideos = [...this.savedVideos, newSavedVideo];
-    savedVideoManager._setState({ savedVideos });
-    $saveBtn.classList.add("hidden");
 
-    popMessage(this.$snackBar, SNACKBAR_MESSAGE.SAVE);
+    this.savedVideoManager._setState({ savedVideos });
+    $saveBtn.classList.add("hidden");
+    showSnackbar(this.$snackBar, SNACKBAR_MESSAGE.SAVE);
   }
 
   _handleSearchClickedHistory(keyword) {
@@ -250,15 +263,20 @@ class SearchModal {
   }
 
   _render() {
-    this.$videoWrapper.insertAdjacentHTML(
-      "beforeend",
-      this.videos.length
-        ? this.videos
-            .filter(video => video.videoId)
-            .map(video => createVideoTemplate(video, SECTION.MODAL))
-            .join("")
-        : createNoSearchResultTemplate(),
-    );
+    if (this.videos.length === 0) {
+      this.$noResultWrapper.classList.remove("d-none");
+      this.$noResultWrapper.innerHTML = createNoSearchResultTemplate();
+    }
+
+    if (this.videos.length !== 0) {
+      this.$videoWrapper.insertAdjacentHTML(
+        "beforeend",
+        this.videos
+          .filter(video => video.videoId)
+          .map(video => createVideoTemplate(video, SECTION.MODAL))
+          .join(""),
+      );
+    }
 
     this._renderSavedCount();
     this.$keywordHistory.innerHTML = createKeywordHistoryTemplate(this.keywordHistory);
@@ -278,20 +296,17 @@ class SearchModal {
     this.$savedVideoCount.textContent = `저장된 영상 갯수: ${this.savedVideos.length}/${STANDARD_NUMS.MAX_SAVE_VIDEO_COUNT}개`;
   }
 
-  showModal() {
-    this.$target.classList.add("open");
-  }
-
   _hideModal() {
     this.$target.classList.remove("open");
   }
 }
 
-const createNoSearchResultTemplate = () =>
-  `<div class='d-flex flex-col justify-center items-center no-search-result'>
+const createNoSearchResultTemplate = () => {
+  return `<div class='d-flex flex-col justify-center items-center no-search-result'>
     <img class='d-block no-result-image' src='src/images/status/not_found.png' alt='결과 없음'>
     <p>검색 결과가 존재하지 않습니다.</p>
   </div>`;
+};
 
 const createKeywordHistoryTemplate = keywords => `
   <span class="text-gray-700">최근 검색어: </span>

@@ -18,10 +18,13 @@ export const SNACKBAR_MESSAGE = Object.freeze({
   DELETE: "성공적으로 삭제되었습니다.",
   SAVE: "성공적으로 저장되었습니다.",
   MOVE: section => `${section} 영상으로 이동되었습니다.`,
+  LIKE: "좋아하는 영상 리스트에 추가했습니다.",
+  UNLIKE: "좋아하는 영상 리스트에서 삭제했습니다.",
 });
 
 export const STORAGE = Object.freeze({
   SAVED_VIDEOS: "savedVideos",
+  LIKED_VIDEOS: "likedVideos",
 });
 
 export const SECTION = Object.freeze({
@@ -32,19 +35,27 @@ export const SECTION = Object.freeze({
 export const MENU = Object.freeze({
   WATCH_LATER: "watch-later",
   WATCHED: "watched",
+  LIKED: "liked",
+});
+
+export const COLOR = Object.freeze({
+  CLICKED: "bg-cyan-100",
 });
 
 export const CLASS_NAME = Object.freeze({
   MENU_SECTION: "menu-section",
-  MENU_BTN: "menu-btn",
+  MENU_TOGGLE_BTN: "menu-toggle-btn",
+  SEARCH_BTN: "search-btn",
   WATCH_LATER_BTN: "menu-section__watch-later-btn",
   WATCHED_BTN: "menu-section__watched-btn",
+  LIKED_BTN: "menu-section__liked-btn",
   VIDEO_SEARCH_BTN: "menu-section__video-search-btn",
 
   SEARCH_MODAL: "search-modal",
   SEARCH_MODAL_INPUT: "search-modal__input",
   SEARCH_MODAL_BTN: `search-modal__btn`,
   SEARCH_MODAL_VIDEO_WRAPPER: "search-modal__video-wrapper",
+  SEARCH_MODAL_NO_RESULT_WRAPPER: "search-modal__no-result-wrapper",
   SCROLL_AREA: "search-modal__scroll-area",
   MORE_AREA: "search-modal__more-area",
   MODAL_CLOSE: "modal-close",
@@ -58,6 +69,7 @@ export const CLASS_NAME = Object.freeze({
   VIDEO_VIEW_VIDEO_WRAPPER: "video-view__video-wrapper",
   CLIP_ACTIONS: "clip__actions",
   WATCHED_CHECK: "clip__watched-check",
+  LIKED_CHECK: "clip__liked-check",
   TRASH_CAN: "clip__trash-can",
 
   SKELETON: "skeleton",
