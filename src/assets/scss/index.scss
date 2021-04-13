@@ -1,5 +1,5 @@
-@import './shared/index.css';
-@import './ui/index.css';
+@import './shared/index.scss';
+@import './ui/index.scss';
 
 html,
 body {
@@ -25,11 +25,11 @@ a {
   opacity: 1;
 }
 
-#search-result {
+#search-content {
   height: 300px;
   overflow-y: scroll;
 }
 
-#search-result__intersector {
+#search-content__intersector {
   height: 30px;
 }

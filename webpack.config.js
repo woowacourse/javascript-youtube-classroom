@@ -1,3 +1,4 @@
+const MiniCSSExtractPlugin = require('mini-css-extract-plugin');
 const webpack = require('webpack');
 const dotenv = require('dotenv');
 const path = require('path');
@@ -13,8 +14,9 @@ module.exports = {
   devtool: 'source-map',
   plugins: [
     new webpack.DefinePlugin({
-      YOUTUBE_API_KEY: JSON.stringify(process.env.YOUTUBE_API_KEY_1),
+      YOUTUBE_API_KEY: JSON.stringify(process.env.YOUTUBE_API_KEY_2),
     }),
+    new MiniCSSExtractPlugin(),
   ],
   module: {
     rules: [
@@ -24,12 +26,13 @@ module.exports = {
           loader: 'babel-loader',
           options: {
             presets: ['@babel/preset-env'],
-            plugins: [
-              '@babel/plugin-proposal-class-properties',
-              '@babel/plugin-proposal-private-methods',
-            ],
+            plugins: ['@babel/plugin-proposal-class-properties', '@babel/plugin-proposal-private-methods'],
           },
         },
+      },
+      {
+        test: /\.(css|scss|sass)$/,
+        use: [MiniCSSExtractPlugin.loader, 'css-loader', 'sass-loader'],
       },
     ],
   },

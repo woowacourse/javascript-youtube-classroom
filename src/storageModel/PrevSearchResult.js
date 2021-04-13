@@ -7,17 +7,13 @@ export default class PrevSearchResult extends BasicStorage {
       super.setItem({ prevSearchedVideos: [] });
     }
   }
+
   setItem({ lastQuery, nextPageToken, prevSearchedVideos }) {
-    //KEY: PREV_SEARCH_RESULT
-    const prevSearchResult = this.getItem();
+    const prevSearchInfo = this.getItem();
     const newItem = {
-      lastQuery: lastQuery ? lastQuery : prevSearchResult.lastQuery,
-      nextPageToken: nextPageToken
-        ? nextPageToken
-        : prevSearchResult.nextPageToken,
-      prevSearchedVideos: prevSearchedVideos
-        ? prevSearchedVideos
-        : prevSearchResult.prevSearchedVideos,
+      lastQuery: lastQuery ? lastQuery : prevSearchInfo.lastQuery,
+      nextPageToken: nextPageToken ? nextPageToken : prevSearchInfo.nextPageToken,
+      prevSearchedVideos: prevSearchedVideos ? prevSearchedVideos : prevSearchInfo.prevSearchedVideos,
     };
     super.setItem(newItem);
   }

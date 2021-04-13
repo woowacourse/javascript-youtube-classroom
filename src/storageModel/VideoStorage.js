@@ -1,24 +1,24 @@
 import ArrayStorage from './ArrayStorage.js';
+import { ERROR_LOG } from '../constants.js';
 
 export default class VideoStorage extends ArrayStorage {
+  #videoKeys = ['videoId', 'title', 'channelTitle', 'publishedAt', 'thumbnail', 'isLiked', 'isChecked'];
   constructor(key) {
     super(key);
   }
-  popVideoByVideoId(videoId) {
-    const videos = this.getItem();
-    const poppedVideo = videos.find(video => video.videoId === videoId);
-    if (!poppedVideo) {
-      return;
-    }
-    this.setItem(videos.filter(video => video.videoId !== videoId));
 
-    return poppedVideo;
-  }
-  sendVideoTo(videoStorage, videoId) {
-    const sendingVideo = this.popVideoByVideoId(videoId);
-    if (!sendingVideo) {
-      return;
+  setItem(items) {
+    if (!this.isVideoList(items)) {
+      throw new Error(ERROR_LOG.NOT_VIDEO);
     }
-    videoStorage.pushItem(sendingVideo);
+    super.setItem(items);
+  }
+
+  isVideoList(items) {
+    return items.every(item => this.isRightVideoFormat(item));
+  }
+
+  isRightVideoFormat(item) {
+    return Object.keys(item).every(key => this.#videoKeys.includes(key));
   }
 }

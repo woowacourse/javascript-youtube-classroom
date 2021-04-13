@@ -1,43 +1,35 @@
 import {
-  $emptyWatchedVideo,
-  $emptyWatchingVideo,
-  $watchedVideoWrapper,
-  $watchingVideoWrapper,
-  $modal,
-  $searchQueries,
-  $searchResultVideoWrapper,
+  $savedVideoNotFound,
+  $savedVideoWrapper,
   $nav,
   $snackbarWrapper,
-  $savedVideoCount,
-  $searchResultIntersector,
-  $searchedVideoNotFound
+  $modal,
+  $searchQueries,
+  $searchContentVideoWrapper,
+  $searchContentSavedVideoCount,
+  $searchContentIntersector,
+  $searchContentVideoNotFound,
+  $savedVideoUpIntersector,
+  $savedVideoDownIntersector,
 } from '../elements';
-import LayoutView from './LayoutView';
-import ModalView from './ModalView';
-import VideoView from './VideoView';
+import LayoutView from './LayoutView.js';
+import ModalView from './ModalView.js';
+import VideoView from './VideoView.js';
 
 export const layoutView = new LayoutView($nav, $snackbarWrapper);
 
-export const watchingVideoView = new VideoView(
-  {
-    $videoWrapper: $watchingVideoWrapper,
-    $emptyVideoImage: $emptyWatchingVideo,
-  },
-  false
-);
-export const watchedVideoView = new VideoView(
-  {
-    $videoWrapper: $watchedVideoWrapper,
-    $emptyVideoImage: $emptyWatchedVideo,
-  },
-  true
-);
+export const savedVideoView = new VideoView({
+  $videoWrapper: $savedVideoWrapper,
+  $emptyVideoImage: $savedVideoNotFound,
+  $upVideoIntersector: $savedVideoUpIntersector,
+  $downVideoIntersector: $savedVideoDownIntersector,
+});
 
-export const modalView = new ModalView({
+export const searchModalView = new ModalView({
   $modal,
   $searchQueries,
-  $searchResultVideoWrapper,
-  $savedVideoCount,
-  $searchResultIntersector,
-  $searchedVideoNotFound
+  $searchContentVideoWrapper,
+  $searchContentSavedVideoCount,
+  $searchContentIntersector,
+  $searchContentVideoNotFound,
 });
