@@ -3,6 +3,7 @@ import {
   createSavedVideoListTemplate,
   emptyVideoListTemplate,
 } from '../templates/videoList.js';
+import { videoListType } from '../states/videoListType.js';
 
 const $searchModal = $('#video-search-modal');
 const $videoList = $('#video-list');
@@ -15,11 +16,8 @@ export function closeModal() {
   $searchModal.classList.remove('open');
 }
 
-export function renderSavedVideoList(videoInfos, videoListType) {
-  const oldVideoInfos = [...videoInfos];
-  const filteredVideoInfos = oldVideoInfos.filter(
-    videoInfo => videoListType === videoInfo.watchType
-  );
+export function renderSavedVideoList(videoInfos) {
+  const filteredVideoInfos = videoListType.getVideoInfos(videoInfos);
 
   $videoList.innerHTML = filteredVideoInfos.length
     ? createSavedVideoListTemplate(filteredVideoInfos)
@@ -46,8 +44,3 @@ function snackBar() {
 }
 
 export const showSnackBar = snackBar();
-
-export function toggleFocusedModeButton() {
-  $('#watched-video-display-button').classList.toggle('bg-cyan-100');
-  $('#to-watch-video-display-button').classList.toggle('bg-cyan-100');
-}

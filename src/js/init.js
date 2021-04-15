@@ -25,7 +25,7 @@ export function initEvent() {
     handleLatestKeywordSearch
   );
   $('#video-list').addEventListener('click', handleButtonsControl);
-  $('#mode-wrapper').addEventListener('click', handleModeChange);
+  $('#video-filter').addEventListener('click', handleModeChange);
   $('#video-search-modal').addEventListener('click', ({ target }) => {
     if (target.id === 'video-search-modal') {
       closeModal();

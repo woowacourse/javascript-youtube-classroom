@@ -18,6 +18,7 @@ function handleVideoSave($saveButton) {
   }
 
   saveVideo($saveButton.closest('.js-video'));
+  toggleSaveButton($saveButton);
   showSnackBar(SAVE_SUCCESS_MSG);
 }
 
@@ -25,22 +26,17 @@ function handleVideoSaveCancel($saveCancelButton) {
   if (!window.confirm(VIDEO_SAVE_CANCEL_CONFIRM_MSG)) return;
 
   cancelVideoSave($saveCancelButton.closest('.js-video'));
+  toggleSaveButton($saveCancelButton);
   showSnackBar(SAVE_CANCEL_SUCCESS_MSG);
 }
 
 export function videoSaveManager({ target }) {
-  if (
-    !target.classList.contains('js-save-button') &&
-    !target.classList.contains('js-save-cancel-button')
-  )
-    return;
-
   if (target.classList.contains('js-save-button')) {
     handleVideoSave(target);
+
+    return;
   }
   if (target.classList.contains('js-save-cancel-button')) {
     handleVideoSaveCancel(target);
   }
-
-  toggleSaveButton(target);
 }

@@ -1,28 +1,16 @@
-import { videoListType } from '../states/videoListType.js';
 import { videoInfos } from '../states/videoInfos.js';
-import {
-  renderSavedVideoList,
-  toggleFocusedModeButton,
-} from '../viewControllers/app.js';
-
-function toggleMode() {
-  videoListType.toggle();
-  renderSavedVideoList(videoInfos.get(), videoListType.get());
-  toggleFocusedModeButton();
-}
+import { videoListType } from '../states/videoListType.js';
+import { renderSavedVideoList } from '../viewControllers/app.js';
+import { $$ } from '../utils/DOM.js';
 
 export function handleModeChange({ target }) {
-  if (
-    target.id === 'to-watch-video-display-button' &&
-    videoListType.get() === 'watched'
-  ) {
-    toggleMode();
-    return;
-  }
-  if (
-    target.id === 'watched-video-display-button' &&
-    videoListType.get() === 'toWatch'
-  ) {
-    toggleMode();
-  }
+  const $$videoDisplayButtons = $$('.video-display-button');
+  const type = target.id.replace('-video-display-button', '');
+
+  $$videoDisplayButtons.forEach($button =>
+    $button.classList.remove('bg-cyan-100')
+  );
+  target.classList.add('bg-cyan-100');
+  videoListType.set(type);
+  renderSavedVideoList([...videoInfos.get()]);
 }

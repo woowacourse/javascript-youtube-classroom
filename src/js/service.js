@@ -14,7 +14,10 @@ export function createVideoInfo(videoDataset) {
   return {
     id: { videoId },
     snippet: { title, channelId, channelTitle, publishTime },
-    watchType: 'toWatch',
+    type: {
+      isWatched: false,
+      isLiked: false,
+    },
   };
 }
 
@@ -31,6 +34,7 @@ export async function searchVideo(keyword) {
 
 export function saveVideo($video) {
   const videoInfo = createVideoInfo($video.dataset);
+
   videoInfos.add(videoInfo);
 }
 

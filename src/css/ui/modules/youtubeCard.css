@@ -1,6 +1,6 @@
 .video-wrapper {
   display: grid;
-  grid-template-columns: repeat(auto-fill, 236px);
+  grid-template-columns: repeat(4, 1fr);
   grid-row-gap: 0px;
   grid-column-gap: 4px;
   justify-content: center;
@@ -90,12 +90,20 @@
   width: 80%;
 }
 
-@keyframes refresh {
-  0% {
-    background-position: calc(-100px);
+@media screen and (max-width: 960px) {
+  .video-wrapper {
+    grid-template-columns: repeat(3, 1fr);
   }
-  40%,
-  100% {
-    background-position: 320px;
+}
+
+@media screen and (max-width: 600px) {
+  .video-wrapper {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media screen and (max-width: 400px) {
+  .video-wrapper {
+    grid-template-columns: repeat(1, 1fr);
   }
 }
