@@ -39,4 +39,4 @@ const $$ = (selector) => document.querySelectorAll(selector);
 Object.setPrototypeOf(customMethod, Function.prototype);
 Object.setPrototypeOf($, customMethod);
 
-export { $, $$ };
+export { $, $$, addClass, removeClass };

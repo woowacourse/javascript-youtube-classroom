@@ -31,9 +31,19 @@ header {
   opacity: 0.3;
 }
 
+.opacity-hover.like {
+  opacity: 1;
+}
+
 .opacity-hover:hover {
   opacity: 1;
 }
+
+.opacity-hover.like:hover {
+  opacity: 0.3;
+}
+
+
 
 .--hidden {
   display: none;

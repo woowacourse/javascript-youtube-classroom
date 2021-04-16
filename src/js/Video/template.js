@@ -10,6 +10,7 @@ const GENERATE_TEMPLATE = (buttonTemplate) => `
     frameborder="0"
     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
     allowfullscreen
+    loading="lazy"
   ></iframe>
   </div>
   <div class="content-container pt-2 px-1">
@@ -35,11 +36,13 @@ const SAVED_VIDEO_BUTTON_TEMPLATE = `
 </div>
 `;
 
+// 추가 기능 구현용
+// <span class="opacity-hover ${CLASSNAME.COMMENT_ICON}">💬</span>
+
 const WATCH_LATER_ICON_BUTTONS_TEMPLATE = `
 <div class=${CLASSNAME.ICONS_WRAPPER}>
   <span class="opacity-hover icon watched-icon ${CLASSNAME.WATCHED_ICON}"></span>
   <span class="opacity-hover ${CLASSNAME.LIKE_ICON}">👍</span>
-  <span class="opacity-hover ${CLASSNAME.COMMENT_ICON}">💬</span>
   <span class="opacity-hover ${CLASSNAME.DELETE_ICON}">🗑️</span>
 </div>`;
 
@@ -47,20 +50,24 @@ const HISTORY_ICON_BUTTONS_TEMPLATE = `
 <div class=${CLASSNAME.ICONS_WRAPPER}>
   <span class="opacity-hover icon watch-later-icon ${CLASSNAME.WATCH_LATER_ICON}"></span>
   <span class="opacity-hover ${CLASSNAME.LIKE_ICON}">👍</span>
-  <span class="opacity-hover ${CLASSNAME.COMMENT_ICON}">💬</span>
   <span class="opacity-hover ${CLASSNAME.DELETE_ICON}">🗑️</span>
 </div>`;
 
-const SEARCH_VIDEO_TEMPLATE = GENERATE_TEMPLATE(SAVED_VIDEO_BUTTON_TEMPLATE);
+const LIKE_ICON_BUTTONS_TEMPLATE = `
+<div class=${CLASSNAME.ICONS_WRAPPER}>
+  <span class="like ${CLASSNAME.LIKE_ICON}">👍</span>
+</div>`;
 
 const WATCH_LATER_VIDEO_TEMPLATE = GENERATE_TEMPLATE(
   WATCH_LATER_ICON_BUTTONS_TEMPLATE
 );
-
 const HISTORY_VIDEO_TEMPLATE = GENERATE_TEMPLATE(HISTORY_ICON_BUTTONS_TEMPLATE);
+const LIKE_VIDEO_TEMPLATE = GENERATE_TEMPLATE(LIKE_ICON_BUTTONS_TEMPLATE);
+const SEARCH_VIDEO_TEMPLATE = GENERATE_TEMPLATE(SAVED_VIDEO_BUTTON_TEMPLATE);
 
 export {
-  SEARCH_VIDEO_TEMPLATE,
   WATCH_LATER_VIDEO_TEMPLATE,
   HISTORY_VIDEO_TEMPLATE,
+  LIKE_VIDEO_TEMPLATE,
+  SEARCH_VIDEO_TEMPLATE,
 };

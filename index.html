@@ -23,6 +23,9 @@
                 <span class="icon watch-later-icon mr-1"></span>
                 본 영상
               </button>
+              <button class="js-like-tab btn d-flex items-center mx-1">
+                👍 좋아요 표시한 영상
+              </button>
               <button class="js-search-tab btn mx-1">🔍 동영상 검색</button>
             </nav>
           </header>
@@ -34,6 +37,7 @@
                   class="js-no-saved-video-img --hidden"
                   src="./src/images/status/empty-box.png"
                   alt="저장된 비디오 없음"
+                  width="80%"
                 />
               </div>
               <section
@@ -47,9 +51,22 @@
                   class="js-no-saved-video-img --hidden"
                   src="./src/images/status/empty-box.png"
                   alt="저장된 비디오 없음"
+                  width="80%"
                 />
               </div>
               <section class="js-history-video-wrapper video-wrapper"></section>
+            </section>
+
+            <section class="js-like-container --hidden">
+              <div class="d-flex justify-center">
+                <img
+                  class="js-no-saved-video-img --hidden"
+                  src="./src/images/status/empty-box.png"
+                  alt="저장된 비디오 없음"
+                  width="80%"
+                />
+              </div>
+              <section class="js-like-video-wrapper video-wrapper"></section>
             </section>
           </main>
         </div>
