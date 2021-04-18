@@ -13480,17 +13480,16 @@ var VideoStorage = /*#__PURE__*/function (_ArrayStorage) {
       var property = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
 
       if (_utils_validation_js__WEBPACK_IMPORTED_MODULE_0__.default.isEmptyObject(property)) {
-        console.error('setVideoProperty의 property 인자가 비어있습니다.');
+        console.error("setVideoProperty의 property 인자가 비어있습니다.");
         return;
       }
 
       var videos = this.getItem();
-      var targetIndex = videos.findIndex(function (video) {
+      var targetVideo = videos.filter(function (video) {
         return video.videoId === targetVideoId;
       });
       Object.keys(property).forEach(function (key) {
-        var targetVideo = videos[targetIndex];
-        if (targetVideo[key] === undefined) return;
+        if (!targetVideo[key]) return;
         targetVideo[key] = property[key];
       });
       this.setItem(videos);
@@ -13509,7 +13508,7 @@ var VideoStorage = /*#__PURE__*/function (_ArrayStorage) {
       var storageOption = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
 
       if (_utils_validation_js__WEBPACK_IMPORTED_MODULE_0__.default.isEmptyObject(storageOption)) {
-        console.error('getVideosBy의 storageOption 인자가 비어있습니다.');
+        console.error("getVideosBy의 storageOption 인자가 비어있습니다.");
         return;
       }
 
@@ -13520,6 +13519,7 @@ var VideoStorage = /*#__PURE__*/function (_ArrayStorage) {
         return keys.every(function (key) {
           if (video[key] === undefined) {
             console.error("getVideosBy\uC758 \uC778\uC790\uAC00 \uC720\uD6A8\uD558\uC9C0 \uC54A\uC740 key\uAC12\uC785\uB2C8\uB2E4.(key: ".concat(key, ")"));
+            return false;
           }
 
           return video[key] === storageOption[key];

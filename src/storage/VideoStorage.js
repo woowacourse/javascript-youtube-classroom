@@ -51,11 +51,14 @@ export default class VideoStorage extends ArrayStorage {
     const videos = this.getItem();
     const isSatisfiedByOption = video => {
       const keys = Object.keys(storageOption);
+
       return keys.every(key => {
         if (video[key] === undefined) {
           console.error(
             `getVideosBy의 인자가 유효하지 않은 key값입니다.(key: ${key})`
           );
+
+          return false;
         }
 
         return video[key] === storageOption[key];
