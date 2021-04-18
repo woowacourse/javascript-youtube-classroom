@@ -1,10 +1,10 @@
 import { SETTINGS, STORAGE_KEYWORD } from "../constants";
-import storage from "../storage.js";
+import { videoStorage } from "../storage/";
 import validation from "../utils/validation";
 
 const videoService = {
   isVideoCountUnderLimit() {
-    const allVideoCount = storage.video.getItem().length;
+    const allVideoCount = videoStorage.getItem().length;
 
     return allVideoCount < SETTINGS.MAX_SAVE_COUNT;
   },
@@ -15,13 +15,13 @@ const videoService = {
       return;
     }
 
-    const videos = storage.video.getVideosBy(storageOption);
+    const videos = videoStorage.getVideosBy(storageOption);
 
     return videos.length === 0;
   },
 
   pushNewVideo(dataset) {
-    storage.video.pushItem(getNewVideo(dataset));
+    videoStorage.pushItem(getNewVideo(dataset));
   },
 };
 

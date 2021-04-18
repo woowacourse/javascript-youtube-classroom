@@ -9,24 +9,23 @@ import {
 } from "../elements.js";
 import { getVideosByKeyword } from "../apis/youtube.js";
 import controllerUtil from "./controllerUtil.js";
-import storage from "../storage.js";
-import service from "../service.js";
-import view from "../view.js";
 import {
   BROWSER_HASH,
   SELECTOR_CLASS,
   SELECTOR_ID,
   SNACKBAR_MESSAGE,
-  STORAGE_KEYWORD,
 } from "../constants.js";
 import controller from "../controller.js";
 import BasicController from "./BasicController.js";
+import { layoutView, modalView } from "../view/index.js";
+import { modalService, videoService } from "../service/index.js";
+import {
+  prevSearchResultStorage,
+  searchQueryStorage,
+  videoStorage,
+} from "../storage/index.js";
 
 export default class ModalController extends BasicController {
-  constructor() {
-    super();
-  }
-
   initEvent() {
     controllerUtil.setObserver(
       $searchResultIntersector,
@@ -39,7 +38,7 @@ export default class ModalController extends BasicController {
       this.onSelectedVideoSave
     );
     $modalCloseButton.addEventListener("click", this.onModalClose);
-    $modal.addEventListener("click", (event) => {
+    $modal.addEventListener("click", event => {
       if (event.target.id === SELECTOR_ID.MODAL) {
         this.onModalClose();
       }
@@ -49,7 +48,7 @@ export default class ModalController extends BasicController {
   }
 
   initSearchQueries() {
-    view.modal.renderSearchQueries(storage.searchQuery.getItem());
+    modalView.renderSearchQueries(searchQueryStorage.getItem());
   }
 
   onSelectedVideoSave({ target }) {
@@ -57,80 +56,77 @@ export default class ModalController extends BasicController {
       return;
     }
 
-    if (!service.video.isVideoCountUnderLimit()) {
-      view.layout.showSnackbar(SNACKBAR_MESSAGE.SAVE_LIMIT_EXCEEDED, false);
+    if (!videoService.isVideoCountUnderLimit()) {
+      layoutView.showSnackbar(SNACKBAR_MESSAGE.SAVE_LIMIT_EXCEEDED, false);
       return;
     }
 
-    service.video.pushNewVideo(target.dataset);
+    videoService.pushNewVideo(target.dataset);
     controller.hash.routeByHash();
-    view.layout.highlightNavButton(BROWSER_HASH.SEARCH);
+    layoutView.highlightNavButton(BROWSER_HASH.SEARCH);
 
-    view.modal.hideVideoSaveButton(target);
-    view.layout.showSnackbar(
-      SNACKBAR_MESSAGE.WATCHING_VIDEO_SAVE_SUCCESS,
-      true
-    );
+    modalView.hideVideoSaveButton(target);
+    layoutView.showSnackbar(SNACKBAR_MESSAGE.WATCHING_VIDEO_SAVE_SUCCESS, true);
   }
 
   onModalOpen() {
-    const allVideoCount = storage.video.getItem().length;
-    const videos = storage.prevSearchResult.getItem().prevSearchedVideos;
-    const processedVideos = service.modal.getProcessedVideos(videos);
+    const allVideoCount = videoStorage.getItem().length;
+    const videos = prevSearchResultStorage.getItem().prevSearchedVideos;
+    const processedVideos = modalService.getProcessedVideos(videos);
 
-    view.layout.highlightNavButton(BROWSER_HASH.SEARCH);
-    view.modal.openModal();
-    view.modal.renderSavedVideoCount(allVideoCount);
-    view.modal.focusElement($searchFormInput);
+    layoutView.highlightNavButton(BROWSER_HASH.SEARCH);
+    modalView.openModal();
+    modalView.renderSavedVideoCount(allVideoCount);
+    modalView.focusElement($searchFormInput);
 
     if (videos.length === 0) {
       return;
     }
 
-    view.modal.renderSearchedVideos(processedVideos);
-    view.modal.showSearchResultIntersector();
+    modalView.renderSearchedVideos(processedVideos);
+    modalView.showSearchResultIntersector();
   }
 
   onModalClose() {
     controller.hash.routeByHash();
-    view.modal.closeModal();
+    modalView.closeModal();
   }
 
   async onVideoSearch(event) {
     event.preventDefault();
     const input = event.target[`${SELECTOR_ID.SEARCH_FORM_INPUT}`].value.trim();
 
-    if (input === storage.prevSearchResult.getItem().lastQuery) {
+    if (input === prevSearchResultStorage.getItem().lastQuery) {
       return;
     }
     if (input === "") {
       return;
     }
 
-    view.modal.initSearchEnv();
+    modalView.initSearchEnv();
     const { videos, nextPageToken } = await getVideosByKeyword(input);
 
     if (videos.length === 0) {
-      view.modal.showNotFoundImage();
+      modalView.showNotFoundImage();
       return;
     }
 
-    service.modal.saveSearchQuery(input);
-    service.modal.savePrevSearchInfo({ lastQuery: input, nextPageToken });
-    service.modal.savePrevSearchedVideos(videos);
-    view.modal.hideSkeletons();
-    view.modal.renderSearchQueries(storage.searchQuery.getItem());
-    view.modal.renderSearchedVideos(service.modal.getProcessedVideos(videos));
+    modalService.saveSearchQuery(input);
+    modalService.savePrevSearchInfo({ lastQuery: input, nextPageToken });
+    modalService.savePrevSearchedVideos(videos);
+    modalView.hideSkeletons();
+    modalView.renderSearchQueries(searchQueryStorage.getItem());
+    modalView.renderSearchedVideos(modalService.getProcessedVideos(videos));
   }
 
   async onAdditionalVideosLoad() {
-    const { lastQuery, pageToken } = service.modal.getPrevSearchInfo();
+    const { lastQuery, pageToken } = modalService.getPrevSearchInfo();
     const { videos, nextPageToken } = await getVideosByKeyword(
       lastQuery,
       pageToken
     );
 
-    view.modal.insertSearchedVideos(videos);
-    service.modal.savePrevSearchInfo({ nextPageToken });
+    modalView.insertSearchedVideos(videos);
+    modalService.savePrevSearchInfo({ nextPageToken });
   }
 }

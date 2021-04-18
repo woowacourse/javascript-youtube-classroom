@@ -1,9 +1,9 @@
-import { BROWSER_HASH, STORAGE_KEYWORD } from '../constants.js';
-import storage from '../storage.js';
-import controllerUtil from './controllerUtil.js';
-import view from '../view.js';
-import BasicController from './BasicController.js';
-import validation from '../utils/validation.js';
+import { BROWSER_HASH, STORAGE_KEYWORD } from "../constants.js";
+import controllerUtil from "./controllerUtil.js";
+import BasicController from "./BasicController.js";
+import validation from "../utils/validation.js";
+import { layoutView, videoView } from "../view/index.js";
+import { videoStorage } from "../storage/index.js";
 
 export default class HashController extends BasicController {
   constructor() {
@@ -17,7 +17,7 @@ export default class HashController extends BasicController {
 
   routeByHash = () => {
     const hash = controllerUtil.parseHash(location.hash);
-    view.layout.highlightNavButton(hash);
+    layoutView.highlightNavButton(hash);
 
     if (hash === BROWSER_HASH.WATCHING) {
       this.#activeVideoView({
@@ -47,20 +47,20 @@ export default class HashController extends BasicController {
 
   #activeVideoView(storageOption = {}) {
     if (validation.isEmptyObject(storageOption)) {
-      console.error('activeVideoView의 인자 storageOption가 빈 객체입니다.');
+      console.error("activeVideoView의 인자 storageOption가 빈 객체입니다.");
       return;
     }
 
-    const videos = storage.video.getVideosBy(storageOption);
+    const videos = videoStorage.getVideosBy(storageOption);
 
-    view.video.eraseVideos();
-    view.video.hideEmptyVideoImage();
+    videoView.eraseVideos();
+    videoView.hideEmptyVideoImage();
 
     if (videos.length === 0) {
-      view.video.showEmptyVideoImage();
+      videoView.showEmptyVideoImage();
       return;
     }
 
-    view.video.renderVideos(videos);
+    videoView.renderVideos(videos);
   }
 }

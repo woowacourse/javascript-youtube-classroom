@@ -1,10 +1,10 @@
 import { SELECTOR_CLASS, STORAGE_KEYWORD } from "../constants";
-import storage from "../storage";
-import view from "../view";
+import { layoutView } from "../view";
 import BasicController from "./BasicController.js";
 import { SNACKBAR_MESSAGE, CONFIRM_MESSAGE } from "../constants.js";
 import { $videoWrapper } from "../elements";
 import controller from "../controller";
+import { videoStorage } from "../storage/";
 
 export default class VideoController extends BasicController {
   constructor() {
@@ -33,40 +33,40 @@ export default class VideoController extends BasicController {
   };
 
   #deleteVideo(button) {
-    if (!view.layout.confirm(CONFIRM_MESSAGE.VIDEO_DELETE)) {
+    if (!layoutView.confirm(CONFIRM_MESSAGE.VIDEO_DELETE)) {
       return;
     }
 
     const videoId = button.dataset.videoId;
 
-    storage.video.popVideoByVideoId(videoId);
+    videoStorage.popVideoByVideoId(videoId);
     controller.hash.routeByHash();
-    view.layout.showSnackbar(SNACKBAR_MESSAGE.VIDEO_DELETE_SUCCESS, true);
+    layoutView.showSnackbar(SNACKBAR_MESSAGE.VIDEO_DELETE_SUCCESS, true);
   }
 
   #moveVideoByCheckButton(button) {
     const videoId = button.dataset.videoId;
-    const isWatchedBefore = storage.video.getVideoById(videoId)[
+    const isWatchedBefore = videoStorage.getVideoById(videoId)[
       STORAGE_KEYWORD.IS_WATCHED
     ];
 
-    storage.video.setVideoProperty(videoId, {
+    videoStorage.setVideoProperty(videoId, {
       [STORAGE_KEYWORD.IS_WATCHED]: !isWatchedBefore,
     });
-    view.layout.showCheckSnackbar(!isWatchedBefore);
+    layoutView.showCheckSnackbar(!isWatchedBefore);
     controller.hash.routeByHash();
   }
 
   #moveVideoByFavoriteButton(button) {
     const videoId = button.dataset.videoId;
-    const isFavoriteBefore = storage.video.getVideoById(videoId)[
+    const isFavoriteBefore = videoStorage.getVideoById(videoId)[
       STORAGE_KEYWORD.IS_FAVORITE
     ];
 
-    storage.video.setVideoProperty(videoId, {
+    videoStorage.setVideoProperty(videoId, {
       [STORAGE_KEYWORD.IS_FAVORITE]: !isFavoriteBefore,
     });
-    view.layout.showFavoriteSnackbar(!isFavoriteBefore);
+    layoutView.showFavoriteSnackbar(!isFavoriteBefore);
     controller.hash.routeByHash();
   }
 }

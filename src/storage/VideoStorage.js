@@ -26,10 +26,12 @@ export default class VideoStorage extends ArrayStorage {
     }
 
     const videos = this.getItem();
-    const targetVideo = videos.filter(video => video.videoId === targetVideoId);
+    const targetVideo = videos.filter(
+      video => video.videoId === targetVideoId
+    )[0];
 
     Object.keys(property).forEach(key => {
-      if (!targetVideo[key]) return;
+      if (targetVideo[key] === undefined) return;
 
       targetVideo[key] = property[key];
     });
