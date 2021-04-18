@@ -4,7 +4,7 @@ import BasicController from "./BasicController.js";
 import { SNACKBAR_MESSAGE, CONFIRM_MESSAGE } from "../constants.js";
 import { $videoWrapper } from "../elements";
 import controller from "../controller";
-import { videoStorage } from "../storage/";
+import { videoService } from "../service/";
 
 export default class VideoController extends BasicController {
   constructor() {
@@ -39,18 +39,18 @@ export default class VideoController extends BasicController {
 
     const videoId = button.dataset.videoId;
 
-    videoStorage.popVideoByVideoId(videoId);
+    videoService.popVideoById(videoId);
     controller.hash.routeByHash();
     layoutView.showSnackbar(SNACKBAR_MESSAGE.VIDEO_DELETE_SUCCESS, true);
   }
 
   #moveVideoByCheckButton(button) {
     const videoId = button.dataset.videoId;
-    const isWatchedBefore = videoStorage.getVideoById(videoId)[
+    const isWatchedBefore = videoService.getVideoById(videoId)[
       STORAGE_KEYWORD.IS_WATCHED
     ];
 
-    videoStorage.setVideoProperty(videoId, {
+    videoService.setVideoProperty(videoId, {
       [STORAGE_KEYWORD.IS_WATCHED]: !isWatchedBefore,
     });
     layoutView.showCheckSnackbar(!isWatchedBefore);
@@ -59,11 +59,11 @@ export default class VideoController extends BasicController {
 
   #moveVideoByFavoriteButton(button) {
     const videoId = button.dataset.videoId;
-    const isFavoriteBefore = videoStorage.getVideoById(videoId)[
+    const isFavoriteBefore = videoService.getVideoById(videoId)[
       STORAGE_KEYWORD.IS_FAVORITE
     ];
 
-    videoStorage.setVideoProperty(videoId, {
+    videoService.setVideoProperty(videoId, {
       [STORAGE_KEYWORD.IS_FAVORITE]: !isFavoriteBefore,
     });
     layoutView.showFavoriteSnackbar(!isFavoriteBefore);

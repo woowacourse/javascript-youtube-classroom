@@ -18,12 +18,12 @@ import {
 import controller from "../controller.js";
 import BasicController from "./BasicController.js";
 import { layoutView, modalView } from "../view/index.js";
-import { modalService, videoService } from "../service/index.js";
 import {
-  prevSearchResultStorage,
-  searchQueryStorage,
-  videoStorage,
-} from "../storage/index.js";
+  modalService,
+  prevSearchResultService,
+  searchQueryService,
+  videoService,
+} from "../service/index.js";
 
 export default class ModalController extends BasicController {
   initEvent() {
@@ -48,7 +48,7 @@ export default class ModalController extends BasicController {
   }
 
   initSearchQueries() {
-    modalView.renderSearchQueries(searchQueryStorage.getItem());
+    modalView.renderSearchQueries(searchQueryService.getQueries());
   }
 
   onSelectedVideoSave({ target }) {
@@ -70,8 +70,8 @@ export default class ModalController extends BasicController {
   }
 
   onModalOpen() {
-    const allVideoCount = videoStorage.getItem().length;
-    const videos = prevSearchResultStorage.getItem().prevSearchedVideos;
+    const allVideoCount = videoService.getAllVideoCount();
+    const videos = prevSearchResultService.getVideos();
     const processedVideos = modalService.getProcessedVideos(videos);
 
     layoutView.highlightNavButton(BROWSER_HASH.SEARCH);
@@ -96,7 +96,7 @@ export default class ModalController extends BasicController {
     event.preventDefault();
     const input = event.target[`${SELECTOR_ID.SEARCH_FORM_INPUT}`].value.trim();
 
-    if (input === prevSearchResultStorage.getItem().lastQuery) {
+    if (input === prevSearchResultService.getLastQuery()) {
       return;
     }
     if (input === "") {
@@ -115,7 +115,7 @@ export default class ModalController extends BasicController {
     modalService.savePrevSearchInfo({ lastQuery: input, nextPageToken });
     modalService.savePrevSearchedVideos(videos);
     modalView.hideSkeletons();
-    modalView.renderSearchQueries(searchQueryStorage.getItem());
+    modalView.renderSearchQueries(searchQueryService.getQueries());
     modalView.renderSearchedVideos(modalService.getProcessedVideos(videos));
   }
 

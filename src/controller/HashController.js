@@ -3,7 +3,7 @@ import controllerUtil from "./controllerUtil.js";
 import BasicController from "./BasicController.js";
 import validation from "../utils/validation.js";
 import { layoutView, videoView } from "../view/index.js";
-import { videoStorage } from "../storage/index.js";
+import videoService from "../service/videoService.js";
 
 export default class HashController extends BasicController {
   constructor() {
@@ -51,7 +51,7 @@ export default class HashController extends BasicController {
       return;
     }
 
-    const videos = videoStorage.getVideosBy(storageOption);
+    const videos = videoService.getVideosBy(storageOption);
 
     videoView.eraseVideos();
     videoView.hideEmptyVideoImage();
