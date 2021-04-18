@@ -1,6 +1,6 @@
-import { SETTINGS, STORAGE_KEYWORD } from '../constants';
-import storage from '../storage.js';
-import validation from '../utils/validation';
+import { SETTINGS, STORAGE_KEYWORD } from "../constants";
+import storage from "../storage.js";
+import validation from "../utils/validation";
 
 const videoService = {
   isVideoCountUnderLimit() {
@@ -11,7 +11,7 @@ const videoService = {
 
   isVideosEmpty(storageOption = {}) {
     if (validation.isEmptyObject(storageOption)) {
-      console.error('isVideosEmpty의 인자 storageOption가 빈 객체입니다.');
+      console.error("isVideosEmpty의 인자 storageOption가 빈 객체입니다.");
       return;
     }
 
@@ -27,11 +27,7 @@ const videoService = {
 
 function getNewVideo(dataset) {
   return {
-    title: dataset.title,
-    channelTitle: dataset.channelTitle,
-    publishedAt: dataset.publishedAt,
-    videoId: dataset.videoId,
-    thumbnailUrl: dataset.thumbnailUrl,
+    ...dataset,
     isSaved: true,
     [STORAGE_KEYWORD.IS_WATCHED]: false,
     [STORAGE_KEYWORD.IS_FAVORITE]: false,

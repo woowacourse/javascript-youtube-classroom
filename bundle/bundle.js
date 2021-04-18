@@ -12876,7 +12876,7 @@ var VideoController = /*#__PURE__*/function (_BasicController) {
   _createClass(VideoController, [{
     key: "initEvent",
     value: function initEvent() {
-      _elements__WEBPACK_IMPORTED_MODULE_4__.$videoWrapper.addEventListener('click', this.onVideoInteract);
+      _elements__WEBPACK_IMPORTED_MODULE_4__.$videoWrapper.addEventListener("click", this.onVideoInteract);
     }
   }]);
 
@@ -12897,19 +12897,17 @@ var _deleteVideo2 = function _deleteVideo2(button) {
 var _moveVideoByCheckButton2 = function _moveVideoByCheckButton2(button) {
   var videoId = button.dataset.videoId;
   var isWatchedBefore = _storage__WEBPACK_IMPORTED_MODULE_1__.default.video.getVideoById(videoId)[_constants__WEBPACK_IMPORTED_MODULE_0__.STORAGE_KEYWORD.IS_WATCHED];
-  var isWatchedAfter = !isWatchedBefore;
-  _storage__WEBPACK_IMPORTED_MODULE_1__.default.video.setVideoProperty(videoId, _defineProperty({}, _constants__WEBPACK_IMPORTED_MODULE_0__.STORAGE_KEYWORD.IS_WATCHED, isWatchedAfter));
+  _storage__WEBPACK_IMPORTED_MODULE_1__.default.video.setVideoProperty(videoId, _defineProperty({}, _constants__WEBPACK_IMPORTED_MODULE_0__.STORAGE_KEYWORD.IS_WATCHED, !isWatchedBefore));
+  _view__WEBPACK_IMPORTED_MODULE_2__.default.layout.showCheckSnackbar(!isWatchedBefore);
   _controller__WEBPACK_IMPORTED_MODULE_5__.default.hash.routeByHash();
-  _view__WEBPACK_IMPORTED_MODULE_2__.default.layout.showCheckSnackbar(isWatchedAfter);
 };
 
 var _moveVideoByFavoriteButton2 = function _moveVideoByFavoriteButton2(button) {
   var videoId = button.dataset.videoId;
   var isFavoriteBefore = _storage__WEBPACK_IMPORTED_MODULE_1__.default.video.getVideoById(videoId)[_constants__WEBPACK_IMPORTED_MODULE_0__.STORAGE_KEYWORD.IS_FAVORITE];
-  var isFavoriteAfter = !isFavoriteBefore;
-  _storage__WEBPACK_IMPORTED_MODULE_1__.default.video.setVideoProperty(videoId, _defineProperty({}, _constants__WEBPACK_IMPORTED_MODULE_0__.STORAGE_KEYWORD.IS_FAVORITE, isFavoriteAfter));
+  _storage__WEBPACK_IMPORTED_MODULE_1__.default.video.setVideoProperty(videoId, _defineProperty({}, _constants__WEBPACK_IMPORTED_MODULE_0__.STORAGE_KEYWORD.IS_FAVORITE, !isFavoriteBefore));
+  _view__WEBPACK_IMPORTED_MODULE_2__.default.layout.showFavoriteSnackbar(!isFavoriteBefore);
   _controller__WEBPACK_IMPORTED_MODULE_5__.default.hash.routeByHash();
-  _view__WEBPACK_IMPORTED_MODULE_2__.default.layout.showFavoriteSnackbar(isFavoriteAfter);
 };
 
 
@@ -13121,6 +13119,10 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _constants__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../constants */ "./src/constants.js");
 /* harmony import */ var _storage_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../storage.js */ "./src/storage.js");
 /* harmony import */ var _utils_validation__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../utils/validation */ "./src/utils/validation.js");
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
 
@@ -13135,7 +13137,7 @@ var videoService = {
     var storageOption = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
 
     if (_utils_validation__WEBPACK_IMPORTED_MODULE_2__.default.isEmptyObject(storageOption)) {
-      console.error('isVideosEmpty의 인자 storageOption가 빈 객체입니다.');
+      console.error("isVideosEmpty의 인자 storageOption가 빈 객체입니다.");
       return;
     }
 
@@ -13148,16 +13150,11 @@ var videoService = {
 };
 
 function getNewVideo(dataset) {
-  var _ref;
+  var _objectSpread2;
 
-  return _ref = {
-    title: dataset.title,
-    channelTitle: dataset.channelTitle,
-    publishedAt: dataset.publishedAt,
-    videoId: dataset.videoId,
-    thumbnailUrl: dataset.thumbnailUrl,
+  return _objectSpread(_objectSpread({}, dataset), {}, (_objectSpread2 = {
     isSaved: true
-  }, _defineProperty(_ref, _constants__WEBPACK_IMPORTED_MODULE_0__.STORAGE_KEYWORD.IS_WATCHED, false), _defineProperty(_ref, _constants__WEBPACK_IMPORTED_MODULE_0__.STORAGE_KEYWORD.IS_FAVORITE, false), _ref;
+  }, _defineProperty(_objectSpread2, _constants__WEBPACK_IMPORTED_MODULE_0__.STORAGE_KEYWORD.IS_WATCHED, false), _defineProperty(_objectSpread2, _constants__WEBPACK_IMPORTED_MODULE_0__.STORAGE_KEYWORD.IS_FAVORITE, false), _objectSpread2));
 }
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (videoService);
