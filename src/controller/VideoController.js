@@ -1,10 +1,10 @@
-import { SELECTOR_CLASS, STORAGE_KEYWORD } from '../constants';
-import storage from '../storage';
-import view from '../view';
-import BasicController from './BasicController.js';
-import { SNACKBAR_MESSAGE, CONFIRM_MESSAGE } from '../constants.js';
-import { $videoWrapper } from '../elements';
-import controller from '../controller';
+import { SELECTOR_CLASS, STORAGE_KEYWORD } from "../constants";
+import storage from "../storage";
+import view from "../view";
+import BasicController from "./BasicController.js";
+import { SNACKBAR_MESSAGE, CONFIRM_MESSAGE } from "../constants.js";
+import { $videoWrapper } from "../elements";
+import controller from "../controller";
 
 export default class VideoController extends BasicController {
   constructor() {
@@ -12,7 +12,7 @@ export default class VideoController extends BasicController {
   }
 
   initEvent() {
-    $videoWrapper.addEventListener('click', this.onVideoInteract);
+    $videoWrapper.addEventListener("click", this.onVideoInteract);
   }
 
   onVideoInteract = ({ target }) => {
@@ -49,14 +49,12 @@ export default class VideoController extends BasicController {
     const isWatchedBefore = storage.video.getVideoById(videoId)[
       STORAGE_KEYWORD.IS_WATCHED
     ];
-    const isWatchedAfter = !isWatchedBefore;
 
     storage.video.setVideoProperty(videoId, {
-      [STORAGE_KEYWORD.IS_WATCHED]: isWatchedAfter,
+      [STORAGE_KEYWORD.IS_WATCHED]: !isWatchedBefore,
     });
+    view.layout.showCheckSnackbar(!isWatchedBefore);
     controller.hash.routeByHash();
-
-    view.layout.showCheckSnackbar(isWatchedAfter);
   }
 
   #moveVideoByFavoriteButton(button) {
@@ -64,13 +62,11 @@ export default class VideoController extends BasicController {
     const isFavoriteBefore = storage.video.getVideoById(videoId)[
       STORAGE_KEYWORD.IS_FAVORITE
     ];
-    const isFavoriteAfter = !isFavoriteBefore;
 
     storage.video.setVideoProperty(videoId, {
-      [STORAGE_KEYWORD.IS_FAVORITE]: isFavoriteAfter,
+      [STORAGE_KEYWORD.IS_FAVORITE]: !isFavoriteBefore,
     });
+    view.layout.showFavoriteSnackbar(!isFavoriteBefore);
     controller.hash.routeByHash();
-
-    view.layout.showFavoriteSnackbar(isFavoriteAfter);
   }
 }
