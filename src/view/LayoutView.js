@@ -4,9 +4,9 @@ import {
   SETTINGS,
   SNACKBAR_MESSAGE,
   STYLE_CLASS,
-} from '../constants.js';
-import BasicView from './BasicView.js';
-import { $nav, $snackbarWrapper } from '../elements.js';
+} from "../constants.js";
+import BasicView from "./BasicView.js";
+import { $nav, $snackbarWrapper } from "../elements.js";
 
 export default class LayoutView extends BasicView {
   constructor() {
@@ -14,21 +14,19 @@ export default class LayoutView extends BasicView {
   }
 
   showCheckSnackbar(isWatchedAfter) {
-    if (isWatchedAfter) {
-      this.showSnackbar(SNACKBAR_MESSAGE.WATCHED_VIDEO_SAVE_SUCCESS, true);
-      return;
-    }
+    const message = isWatchedAfter
+      ? SNACKBAR_MESSAGE.WATCHED_VIDEO_SAVE_SUCCESS
+      : SNACKBAR_MESSAGE.WATCHING_VIDEO_SAVE_SUCCESS;
 
-    this.showSnackbar(SNACKBAR_MESSAGE.WATCHING_VIDEO_SAVE_SUCCESS, true);
+    this.showSnackbar(message, true);
   }
 
   showFavoriteSnackbar(isFavoriteAfter) {
-    if (isFavoriteAfter) {
-      this.showSnackbar(SNACKBAR_MESSAGE.FAVORITE_VIDEO_SAVE_SUCCESS, true);
-      return;
-    }
+    const message = isFavoriteAfter
+      ? SNACKBAR_MESSAGE.FAVORITE_VIDEO_SAVE_SUCCESS
+      : SNACKBAR_MESSAGE.FAVORITE_VIDEO_CANCEL_SUCCESS;
 
-    this.showSnackbar(SNACKBAR_MESSAGE.FAVORITE_VIDEO_CANCEL_SUCCESS, true);
+    this.showSnackbar(message, true);
   }
 
   showSnackbar(message, isSuccess) {
@@ -56,7 +54,7 @@ export default class LayoutView extends BasicView {
   }
 
   #createSnackbar(message, isSuccess) {
-    const $snackbar = document.createElement('div');
+    const $snackbar = document.createElement("div");
 
     $snackbar.className = `
       ${SELECTOR_CLASS.SNACKBAR} 
