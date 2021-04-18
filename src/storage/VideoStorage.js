@@ -1,5 +1,5 @@
-import validation from '../utils/validation.js';
-import ArrayStorage from './ArrayStorage.js';
+import validation from "../utils/validation.js";
+import ArrayStorage from "./ArrayStorage.js";
 
 export default class VideoStorage extends ArrayStorage {
   constructor(key) {
@@ -21,18 +21,15 @@ export default class VideoStorage extends ArrayStorage {
 
   setVideoProperty(targetVideoId, property = {}) {
     if (validation.isEmptyObject(property)) {
-      console.error('setVideoProperty의 property 인자가 비어있습니다.');
+      console.error("setVideoProperty의 property 인자가 비어있습니다.");
       return;
     }
 
     const videos = this.getItem();
-    const targetIndex = videos.findIndex(
-      video => video.videoId === targetVideoId
-    );
+    const targetVideo = videos.filter(video => video.videoId === targetVideoId);
 
     Object.keys(property).forEach(key => {
-      const targetVideo = videos[targetIndex];
-      if (targetVideo[key] === undefined) return;
+      if (!targetVideo[key]) return;
 
       targetVideo[key] = property[key];
     });
@@ -47,7 +44,7 @@ export default class VideoStorage extends ArrayStorage {
 
   getVideosBy(storageOption = {}) {
     if (validation.isEmptyObject(storageOption)) {
-      console.error('getVideosBy의 storageOption 인자가 비어있습니다.');
+      console.error("getVideosBy의 storageOption 인자가 비어있습니다.");
       return;
     }
 
