@@ -1,10 +1,9 @@
-import { SETTINGS } from '../constants';
+import { SETTINGS } from "../constants";
 import {
-  watchedVideoStorage,
-  watchingVideoStorage,
-  prevSearchResultStorage,
+  videoStorage,
   searchQueryStorage,
-} from '../store.js';
+  prevSearchResultStorage,
+} from "../storage/";
 
 const modalService = {
   getPrevSearchInfo() {
@@ -17,9 +16,7 @@ const modalService = {
   getProcessedVideos(videos) {
     return videos.map(video => ({
       ...video,
-      isSaved:
-        isVideoIdExist(watchingVideoStorage.getItem(), video.videoId) ||
-        isVideoIdExist(watchedVideoStorage.getItem(), video.videoId),
+      isSaved: isVideoIdExist(videoStorage.getItem(), video.videoId),
     }));
   },
 
@@ -42,6 +39,7 @@ const modalService = {
       prevSearchResultStorage.setItem({ nextPageToken });
     }
   },
+
   savePrevSearchedVideos(videos) {
     prevSearchResultStorage.setItem({ prevSearchedVideos: videos });
   },

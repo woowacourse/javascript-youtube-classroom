@@ -11,11 +11,9 @@ export const SELECTOR_ID = Object.freeze({
   SAVED_VIDEO_COUNT: 'saved-video-count',
 
   //index view
-  WATCHING_VIDEO_WRAPPER: 'watching-video-wrapper',
-  WATCHED_VIDEO_WRAPPER: 'watched-video-wrapper',
+  VIDEO_WRAPPER: 'video-wrapper',
   NOT_FOUND_CONTENT: 'not-found-content',
-  EMPTY_WATCHING_VIDEO: 'empty-watching-video',
-  EMPTY_WATCHED_VIDEO: 'empty-watched-video',
+  EMPTY_VIDEO: 'empty-video',
   SNACKBAR_WRAPPER: 'snackbar-wrapper',
 
   //navigation view
@@ -36,6 +34,7 @@ export const SELECTOR_CLASS = Object.freeze({
   NAV_BUTTON: 'js-nav__button',
   CLIP_CHECK_BUTTON: 'js-clip__check-button',
   CLIP_DELETE_BUTTON: 'js-clip__delete-button',
+  CLIP_FAVORITE_BUTTON: 'js-clip__favorite-button',
 
   //common
   CLIP: 'js-clip',
@@ -71,25 +70,20 @@ export const SETTINGS = Object.freeze({
 
 export const LOCAL_STORAGE_KEY = Object.freeze({
   PREV_SEARCH_RESULT: 'prev_search_result',
-  WATCHING_VIDEOS: 'watching_videos',
-  WATCHED_VIDEOS: 'watched_videos',
+  VIDEOS: 'videos',
   SEARCH_QUERIES: 'search_queries',
 });
 
 export const CONFIRM_MESSAGE = Object.freeze({
-  WATCHING_VIDEO_DELETE: '볼 영상을 정말 삭제하시겠습니까?',
-  WATCHED_VIDEO_DELETE: '본 영상을 정말 삭제하시겠습니까?',
+  VIDEO_DELETE: '영상을 정말 삭제하시겠습니까?',
 });
 
 export const SNACKBAR_MESSAGE = Object.freeze({
-  WATCHED_VIDEO_CHECK_SUCCESS: '본 영상으로 저장되었습니다.',
-
-  WATCHING_VIDEO_CHECK_SUCCESS: '볼 영상으로 이동되었습니다.',
+  WATCHED_VIDEO_SAVE_SUCCESS: '본 영상으로 저장되었습니다.',
   WATCHING_VIDEO_SAVE_SUCCESS: '볼 영상으로 이동되었습니다.',
-
-  WATCHED_VIDEO_DELETE_SUCCESS: '본 영상에서 삭제되었습니다.',
-  WATCHING_VIDEO_DELETE_SUCCESS: '볼 영상에서 삭제되었습니다.',
-
+  FAVORITE_VIDEO_SAVE_SUCCESS: '좋아요 한 영상으로 저장되었습니다.',
+  FAVORITE_VIDEO_CANCEL_SUCCESS: '좋아요 한 영상에서 제외되었습니다',
+  VIDEO_DELETE_SUCCESS: '영상에서 삭제되었습니다.',
   SAVE_LIMIT_EXCEEDED: `${SETTINGS.MAX_SAVE_COUNT}개 보다 많은 영상을 저장할 수 없습니다.`,
 });
 
@@ -97,4 +91,15 @@ export const BROWSER_HASH = Object.freeze({
   WATCHING: 'watching',
   WATCHED: 'watched',
   SEARCH: 'search',
+  FAVORITE: 'favorite',
 });
+
+export const CONTROLLER_KEYWORD = {
+  WATCHING: 'watching',
+  WATCHED: 'watched',
+};
+
+export const STORAGE_KEYWORD = {
+  IS_WATCHED: 'isWatched',
+  IS_FAVORITE: 'isFavorite',
+};

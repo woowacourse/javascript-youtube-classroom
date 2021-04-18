@@ -53,19 +53,27 @@
   - 버튼을 클릭시, 클릭 표시로 버튼 색이 변한다.
 
 UI/UX
+
 - [x] 모달창 dimmed 영역을 누르면 모달창이 close
 - [x] 썸네일 이미지만 불러와 미리보기로 보여주기
 - [x] 검색 입력이 잘못되었을 시 input에 표시해주기
 - [x] 접근성을 위한 label 붙여주기
+
   - 동영상 검색 버튼 클릭시 검색 input에 자동 focus
-  
+
+### 🎯🎯 step3 강의실 관리 기능
+
+- [x] 좋아요 버튼을 누른 영상만 모아볼 수 있는 페이지를 만든다
+- [x] 스크롤 페이징 방식을 이용해서 Lazy loading을 개선한다
+- [x] 유저가 사용하는 디바이스의 가로 길이에 따라 영상의 column 갯수를 변경한다
+
 ### 프로젝트 컨벤션
 
 - 이 프로젝트는 MVC 패턴을 따른다.
 - prefix
   - view 에서 render 는 요소의 내부 요소를 조작함을 의미
   - view 에서 show 는 요소의 style.display 값을 조작함을 의미
-- 언더스코어(_)는 protected의 의미를 가진다.
+- 언더스코어(\_)는 protected의 의미를 가진다.
 - controller는 view, model과 종속된다.
 - service는 model, controller와 종속된다.
 

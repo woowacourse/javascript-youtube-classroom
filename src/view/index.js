@@ -1,40 +1,24 @@
 import {
-  $emptyWatchedVideo,
-  $emptyWatchingVideo,
-  $watchedVideoWrapper,
-  $watchingVideoWrapper,
   $modal,
   $searchQueries,
   $searchResultVideoWrapper,
   $nav,
   $snackbarWrapper,
   $savedVideoCount,
-} from '../elements.js';
-import LayoutView from './LayoutView.js';
-import ModalView from './ModalView.js';
-import VideoView from './VideoView.js';
+} from "../elements.js";
+import LayoutView from "./LayoutView.js";
+import ModalView from "./ModalView.js";
+import VideoView from "./VideoView.js";
 
-export const layoutView = new LayoutView({ $nav, $snackbarWrapper });
+const layoutView = new LayoutView({ $nav, $snackbarWrapper });
 
-export const watchingVideoView = new VideoView(
-  {
-    $videoWrapper: $watchingVideoWrapper,
-    $emptyVideoImage: $emptyWatchingVideo,
-  },
-  false
-);
+const videoView = new VideoView();
 
-export const watchedVideoView = new VideoView(
-  {
-    $videoWrapper: $watchedVideoWrapper,
-    $emptyVideoImage: $emptyWatchedVideo,
-  },
-  true
-);
-
-export const modalView = new ModalView({
+const modalView = new ModalView({
   $modal,
   $searchQueries,
   $searchResultVideoWrapper,
   $savedVideoCount,
 });
+
+export { layoutView, videoView, modalView };

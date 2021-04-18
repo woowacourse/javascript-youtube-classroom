@@ -2,35 +2,51 @@ import {
   ANIMATION_CLASS,
   SELECTOR_CLASS,
   SETTINGS,
+  SNACKBAR_MESSAGE,
   STYLE_CLASS,
-} from '../constants.js';
-import BasicView from './BasicView.js';
+} from "../constants.js";
+import BasicView from "./BasicView.js";
+import { $nav, $snackbarWrapper } from "../elements.js";
 
 export default class LayoutView extends BasicView {
-  constructor({ $nav, $snackbarWrapper }) {
-    super({ $nav, $snackbarWrapper });
+  constructor() {
+    super();
+  }
+
+  showCheckSnackbar(isWatchedAfter) {
+    const message = isWatchedAfter
+      ? SNACKBAR_MESSAGE.WATCHED_VIDEO_SAVE_SUCCESS
+      : SNACKBAR_MESSAGE.WATCHING_VIDEO_SAVE_SUCCESS;
+
+    this.showSnackbar(message, true);
+  }
+
+  showFavoriteSnackbar(isFavoriteAfter) {
+    const message = isFavoriteAfter
+      ? SNACKBAR_MESSAGE.FAVORITE_VIDEO_SAVE_SUCCESS
+      : SNACKBAR_MESSAGE.FAVORITE_VIDEO_CANCEL_SUCCESS;
+
+    this.showSnackbar(message, true);
   }
 
   showSnackbar(message, isSuccess) {
     const $snackbar = this.#createSnackbar(message, isSuccess);
 
-    this.insertElement(this._element.$snackbarWrapper, $snackbar);
+    this.insertElement($snackbarWrapper, $snackbar);
     setTimeout(() => {
-      this.deleteElement(this._element.$snackbarWrapper, $snackbar);
+      this.deleteElement($snackbarWrapper, $snackbar);
     }, SETTINGS.SNACKBAR_PERSISTENT_MILLISEC);
   }
 
   highlightNavButton(hashId) {
-    this._element.$nav
-      .querySelectorAll(`.${SELECTOR_CLASS.NAV_BUTTON}`)
-      .forEach($button => {
-        if ($button.dataset.hashId === hashId) {
-          $button.classList.add(STYLE_CLASS.NAV_CLICKED);
-          return;
-        }
+    $nav.querySelectorAll(`.${SELECTOR_CLASS.NAV_BUTTON}`).forEach($button => {
+      if ($button.dataset.hashId === hashId) {
+        $button.classList.add(STYLE_CLASS.NAV_CLICKED);
+        return;
+      }
 
-        $button.classList.remove(STYLE_CLASS.NAV_CLICKED);
-      });
+      $button.classList.remove(STYLE_CLASS.NAV_CLICKED);
+    });
   }
 
   confirm(message) {
@@ -38,7 +54,7 @@ export default class LayoutView extends BasicView {
   }
 
   #createSnackbar(message, isSuccess) {
-    const $snackbar = document.createElement('div');
+    const $snackbar = document.createElement("div");
 
     $snackbar.className = `
       ${SELECTOR_CLASS.SNACKBAR} 

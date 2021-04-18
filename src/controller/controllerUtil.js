@@ -16,6 +16,7 @@ const controllerUtil = {
     if (hash === '') {
       return BROWSER_HASH.WATCHING;
     }
+
     return hash.substr(1);
   },
 };
