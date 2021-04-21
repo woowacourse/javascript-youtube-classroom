@@ -1,7 +1,5 @@
 const LOCAL_STORAGE_KEY = Object.freeze({
-  WATCH_LATER_VIDEO_ITEMS: "watchLaterVideoItems",
-  HISTORY_VIDEO_ITEMS: "historyVideoItems",
-  SAVED_VIDEOS_COUNT: "savedVideosCount",
+  MAIN_VIDEO_ITEMS: "mainVideoItems",
   KEYWORD_HISTORY: "keywordHistory",
   QUERY: "query",
 });

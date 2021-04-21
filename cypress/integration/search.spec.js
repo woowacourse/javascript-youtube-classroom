@@ -1,8 +1,6 @@
-import {
-  CLASSNAME,
-  NUMBER,
-  REGULAR_EXPRESSION,
-} from "../../src/js/constants/index.js";
+import CLASSNAME from "../../src/js/constants/classname.js";
+import NUMBER from "../../src/js/constants/number.js";
+import REGULAR_EXPRESSION from "../../src/js/constants/regularExpression.js";
 import { REDIRECT_SERVER_HOST } from "../../src/js/utils/API.js";
 
 describe("유투브 검색 API를 이용하여 영상들을 검색할 수 있다.", () => {
@@ -125,7 +123,8 @@ describe("유투브 검색 API를 이용하여 영상들을 검색할 수 있다
         .should("have.length", NUMBER.MAX_RESULTS_COUNT);
 
       cy.get(`.${CLASSNAME.SEARCH_VIDEO_WRAPPER}`)
-        .children("article.clip:last-child")
+        .children("article.clip")
+        .last()
         .as("lastVideo")
         .scrollIntoView();
       cy.wait("@searchFromScroll");
@@ -158,8 +157,6 @@ describe("유투브 검색 API를 이용하여 영상들을 검색할 수 있다
 
       cy.get(`.${CLASSNAME.SAVE_VIDEO_BUTTON}`).each(($btn, index) => {
         cy.wrap($btn).click();
-        cy.wrap($btn).should("have.class", CLASSNAME.CANCEL);
-        cy.wrap($btn).should("have.text", "취소");
         cy.get(`.${CLASSNAME.SAVED_VIDEOS_COUNT}`).should(
           "have.text",
           index + 1

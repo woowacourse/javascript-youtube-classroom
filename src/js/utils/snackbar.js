@@ -1,25 +1,15 @@
-import { CLASSNAME, NUMBER } from "../constants/index.js";
+import { CLASSNAME } from "../constants/index.js";
 import { $ } from "./DOM.js";
 
-const $snackbar = $(`.${CLASSNAME.SNACKBAR}`);
-const $modalSnackbar = $(`.${CLASSNAME.MODAL_SNACKBAR}`);
+const $snackbarContainer = $(`.${CLASSNAME.SNACKBAR_CONTAINER}`);
 
-const showSnackbar = (message) => {
+const showSnackbar = (message = "") => {
+  const $snackbar = document.createElement("div");
+  $snackbar.classList.add(CLASSNAME.SNACKBAR);
+  $snackbar.addEventListener("animationend", ({ target }) => target.remove());
   $snackbar.innerText = message;
 
-  $snackbar.classList.toggle(CLASSNAME.SHOW);
-  setTimeout(() => {
-    $snackbar.classList.toggle(CLASSNAME.SHOW);
-  }, NUMBER.SNACKBAR_SHOW_TIME_IN_MS);
+  $snackbarContainer.append($snackbar);
 };
 
-const showModalSnackbar = (message) => {
-  $modalSnackbar.innerText = message;
-
-  $modalSnackbar.classList.toggle(CLASSNAME.SHOW);
-  setTimeout(() => {
-    $modalSnackbar.classList.toggle(CLASSNAME.SHOW);
-  }, NUMBER.SNACKBAR_SHOW_TIME_IN_MS);
-};
-
-export { showSnackbar, showModalSnackbar };
+export default showSnackbar;

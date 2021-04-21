@@ -1,66 +1,71 @@
 /* eslint-disable class-methods-use-this */
 import { CLASSNAME } from "./constants/index.js";
 import { $ } from "./utils/index.js";
-import { WatchLaterContainer, HistoryContainer } from "./Main/Container.js";
+import MainContainer from "./Main/MainContainer.js";
 import SearchContainer from "./Search/SearchContainer.js";
 
 export default class App {
+  #searchContainer = new SearchContainer();
+
+  #mainContainer = new MainContainer();
+
+  #$homeLink = $(`.${CLASSNAME.HOME_LINK}`);
+
+  #$watchLaterTabButton = $(`.${CLASSNAME.WATCH_LATER_TAB}`);
+
+  #$historyTabButton = $(`.${CLASSNAME.HISTORY_TAB}`);
+
+  #$searchTabButton = $(`.${CLASSNAME.SEARCH_TAB}`);
+
+  #$likeTabButton = $(`.${CLASSNAME.LIKE_TAB}`);
+
+  #$mainContainer = $(`.${CLASSNAME.MAIN_CONTAINER}`);
+
+  #$MainVideoWrapper = $(`.${CLASSNAME.MAIN_VIDEO_WRAPPER}`);
+
   constructor() {
-    this.initializeVariables();
-    this.selectHTMLElements();
-    this.addEventListeners();
+    this.#$homeLink.href = window.location.href;
+    this.#addEventListeners();
   }
 
-  initializeVariables() {
-    this.watchLaterContainer = new WatchLaterContainer();
-    this.historyContainer = new HistoryContainer();
-    this.searchContainer = new SearchContainer();
-  }
+  #addEventListeners() {
+    this.#$watchLaterTabButton.addEventListener("click", () => {
+      this.#activateTabButton(this.#$watchLaterTabButton);
+      this.#deactivateTabButton(this.#$historyTabButton);
 
-  selectHTMLElements() {
-    this.$watchLaterTabButton = $(`.${CLASSNAME.WATCH_LATER_TAB}`);
-    this.$historyTabButton = $(`.${CLASSNAME.HISTORY_TAB}`);
-    this.$searchTabButton = $(`.${CLASSNAME.SEARCH_TAB}`);
-  }
+      $.addClass(this.#$mainContainer, "watch-later-container");
+      $.removeClass(this.#$mainContainer, "history-container");
+    });
 
-  addEventListeners() {
-    this.$watchLaterTabButton.addEventListener(
+    this.#$historyTabButton.addEventListener("click", () => {
+      this.#activateTabButton(this.#$historyTabButton);
+      this.#deactivateTabButton(this.#$watchLaterTabButton);
+
+      $.addClass(this.#$mainContainer, "history-container");
+      $.removeClass(this.#$mainContainer, "watch-later-container");
+    });
+
+    this.#$searchTabButton.addEventListener(
       "click",
-      this.showWatchLaterOnly.bind(this)
+      this.#searchContainer.open.bind(this.#searchContainer)
     );
 
-    this.$historyTabButton.addEventListener(
+    this.#$likeTabButton.addEventListener(
       "click",
-      this.showHistoryOnly.bind(this)
-    );
-
-    this.$searchTabButton.addEventListener(
-      "click",
-      this.searchContainer.open.bind(this.searchContainer)
+      this.#toggleLikeMode.bind(this)
     );
   }
 
-  showWatchLaterOnly() {
-    this.watchLaterContainer.show();
-    this.activateTabButton(this.$watchLaterTabButton);
-
-    this.historyContainer.hide();
-    this.deactivateTabButton(this.$historyTabButton);
+  #toggleLikeMode() {
+    $.toggleClass(this.#$likeTabButton, CLASSNAME.ACTIVE);
+    $.toggleClass(this.#$MainVideoWrapper, CLASSNAME.LIKE_MODE);
   }
 
-  showHistoryOnly() {
-    this.watchLaterContainer.hide();
-    this.deactivateTabButton(this.$watchLaterTabButton);
-
-    this.historyContainer.show();
-    this.activateTabButton(this.$historyTabButton);
-  }
-
-  activateTabButton($tabButton) {
+  #activateTabButton($tabButton) {
     $.addClass($tabButton, CLASSNAME.BG_CYAN_100);
   }
 
-  deactivateTabButton($tabButton) {
+  #deactivateTabButton($tabButton) {
     $.removeClass($tabButton, CLASSNAME.BG_CYAN_100);
   }
 }

@@ -10,18 +10,25 @@
   height: 0.85rem;
 }
 
-.move-to-history-icon {
+.move-to-history-icon,
+.video-wrapper .move-to-watch-later-icon:hover {
   background-color: var(--orange);
 }
 
-.move-to-watch-later-icon {
+.move-to-watch-later-icon,
+.video-wrapper .move-to-history-icon:hover {
   background-color: var(--green);
 }
 
-.js-icons-wrapper .move-to-history-icon:hover {
-  background-color: var(--green);
+.watch-later-video .move-to-watch-later-icon,
+.history-video .move-to-history-icon {
+  display: none;
 }
 
-.js-icons-wrapper .move-to-watch-later-icon:hover {
-  background-color: var(--orange);
+.opacity-hover {
+  opacity: 0.3;
+}
+
+.opacity-hover:hover {
+  opacity: 1;
 }

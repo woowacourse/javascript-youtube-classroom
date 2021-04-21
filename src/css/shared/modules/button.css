@@ -8,24 +8,53 @@
   cursor: pointer;
 }
 
-.js-search-video-wrapper .btn{
-  background-color: rgb(129, 222, 234);
-}
-
-.btn.cancel {
-  color: rgb(68,68,68);
-  background-color: rgb(239,239,239);
-  border-color:rgb(118,118,118);
-}
-
-.btn.absolute {
+.search-tab {
   top: 2.5rem;
   right: 0;
   min-width: 24px;
-  background-color:rgba(176, 224, 230, 0.5);
+  background-color: rgba(176, 224, 230, 0.5);
   font-weight: 600;
 }
 
-.btn.absolute:hover {
-  background-color:rgba(176, 224, 230, 1);
+.search-tab:hover {
+  background-color: rgba(176, 224, 230, 1);
+}
+
+.like-tab {
+  top: 0;
+  right: 0;
+  width: 110px;
+  height: 50px;
+  font-weight: 600;
+  opacity: 0.7;
+}
+
+.like-tab.active {
+  opacity: 1;
+  background-color: rgb(179, 234, 242);
+}
+
+.search-video-wrapper .save-video-button {
+  background-color: rgb(129, 222, 234);
+}
+
+.search-video-wrapper .cancel-video-button {
+  background-color: rgb(255, 85, 85);
+}
+
+.search-video-wrapper .skeleton .btn {
+  color: rgb(68, 68, 68);
+  background-color: rgb(239, 239, 239);
+  border-color: rgb(118, 118, 118);
+  opacity: 0.3;
+}
+
+.search-video-wrapper .cancel-video-button,
+.search-video-wrapper .saved .save-video-button {
+  display: none;
+}
+
+.search-video-wrapper .saved-video-button,
+.search-video-wrapper .saved .cancel-video-button {
+  display: block;
 }

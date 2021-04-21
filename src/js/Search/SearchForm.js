@@ -3,58 +3,54 @@ import { $, fetchYoutubeData } from "../utils/index.js";
 import { messenger, MESSAGE } from "../messenger/index.js";
 
 export default class SearchForm {
+  #query = JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEY.QUERY)) || "";
+
+  #$youtubeSearchForm = $(`.${CLASSNAME.SEARCH_FORM}`);
+
+  #$youtubeSearchFormInput = $(`.${CLASSNAME.SEARCH_FORM_INPUT}`);
+
   constructor() {
-    this.initializeVariables();
-    this.selectHTMLElements();
-    this.addEventListeners();
+    this.#addEventListeners();
   }
 
-  initializeVariables() {
-    this.query =
-      JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEY.QUERY)) || "";
-  }
-
-  selectHTMLElements() {
-    this.$youtubeSearchForm = $(`.${CLASSNAME.SEARCH_FORM}`);
-    this.$youtubeSearchFormInput = $(`.${CLASSNAME.SEARCH_FORM_INPUT}`);
-  }
-
-  addEventListeners() {
-    this.$youtubeSearchForm.addEventListener(
+  #addEventListeners() {
+    this.#$youtubeSearchForm.addEventListener(
       "submit",
-      this.handleFormSubmit.bind(this)
+      this.#handleFormSubmit.bind(this)
     );
   }
 
-  handleFormSubmit(event) {
+  #handleFormSubmit(event) {
     event.preventDefault();
 
-    this.query = this.$youtubeSearchFormInput.value;
-
-    localStorage.setItem(LOCAL_STORAGE_KEY.QUERY, JSON.stringify(this.query));
-
+    this.#query = this.#$youtubeSearchFormInput.value;
+    this.#updateLocalStorage();
     this.searchKeyword();
   }
 
   async searchKeyword() {
-    if (this.query === "") return;
-
-    messenger.deliverMessage(MESSAGE.KEYWORD_SUBMITTED, {
-      query: this.query,
-    });
+    if (this.#query === "") {
+      return;
+    }
 
     try {
-      const { nextPageToken, items } = await fetchYoutubeData(this.query);
-
-      messenger.deliverMessage(MESSAGE.DATA_LOADED, {
-        nextPageToken,
-        items,
+      messenger.deliverMessage(MESSAGE.KEYWORD_SUBMITTED, {
+        query: this.#query,
       });
 
-      this.$youtubeSearchFormInput.value = "";
+      const { nextPageToken, items } = await fetchYoutubeData(this.#query);
+
+      messenger.deliverMessage(MESSAGE.DATA_LOADED, { nextPageToken, items });
+
+      this.#$youtubeSearchFormInput.value = "";
     } catch (error) {
+      messenger.deliverMessage(MESSAGE.DATA_LOADED, { items: [] });
       // eslint-disable-next-line no-console
       console.error(error);
     }
+  }
+
+  #updateLocalStorage() {
+    localStorage.setItem(LOCAL_STORAGE_KEY.QUERY, JSON.stringify(this.#query));
   }
 }

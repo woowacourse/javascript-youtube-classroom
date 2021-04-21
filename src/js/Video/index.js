@@ -1,14 +1,15 @@
 import {
-  SEARCH_VIDEO_TEMPLATE,
-  WATCH_LATER_VIDEO_TEMPLATE,
-  HISTORY_VIDEO_TEMPLATE,
+  getMainVideoTemplateElement,
+  getSearchVideoTemplateElement,
 } from "./template.js";
-import { renderMainVideo, renderSearchVideo } from "./render.js";
+import SearchVideo from "./SearchVideo.js";
+import MainVideo from "./MainVideo.js";
+import Video from "./Video.js";
 
 export {
-  SEARCH_VIDEO_TEMPLATE,
-  WATCH_LATER_VIDEO_TEMPLATE,
-  HISTORY_VIDEO_TEMPLATE,
-  renderMainVideo,
-  renderSearchVideo,
+  getMainVideoTemplateElement,
+  getSearchVideoTemplateElement,
+  SearchVideo,
+  MainVideo,
+  Video,
 };

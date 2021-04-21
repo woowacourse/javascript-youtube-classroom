@@ -17,3 +17,7 @@
   width: 20px;
   text-align: center;
 }
+
+.chip:hover {
+  background-color: rgb(129, 222, 234);
+}

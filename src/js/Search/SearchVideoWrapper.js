@@ -1,167 +1,170 @@
-/* eslint-disable class-methods-use-this */
-/* eslint-disable no-param-reassign */
 import { CLASSNAME, NUMBER, SNACKBAR_TEXT } from "../constants/index.js";
 import { messenger, MESSAGE } from "../messenger/index.js";
-import { renderSearchVideo, SEARCH_VIDEO_TEMPLATE } from "../Video/index.js";
-import { $, fetchYoutubeData, showModalSnackbar } from "../utils/index.js";
+import { $, fetchYoutubeData, showSnackbar } from "../utils/index.js";
+import { SearchVideo } from "../Video/index.js";
 
 export default class SearchVideoWrapper {
+  #currentQuery = "";
+
+  #currentNextPageToken = "";
+
+  #isDataLoading = false;
+
+  #throttle = null;
+
+  #videosMap = new Map();
+
+  #$searchVideoWrapper = $(`.${CLASSNAME.SEARCH_VIDEO_WRAPPER}`);
+
   constructor() {
-    this.initializeVariables();
-    this.selectHTMLElements();
-    this.addMessageListeners();
-    this.addEventListeners();
+    this.#addMessageListeners();
+    this.#addEventListeners();
   }
 
-  initializeVariables() {
-    this.currentQuery = "";
-    this.currentNextPageToken = "";
-    this.videoItemsMap = new Map();
-  }
-
-  selectHTMLElements() {
-    this.$searchVideoWrapper = $(`.${CLASSNAME.SEARCH_VIDEO_WRAPPER}`);
-    this.$notFoundImg = $(`.${CLASSNAME.NOT_FOUND_IMAGE}`);
-  }
-
-  addMessageListeners() {
-    messenger.addMessageListener(MESSAGE.KEYWORD_SUBMITTED, ({ query }) => {
-      this.currentQuery = query;
-
-      $.hide(this.$notFoundImg);
-      $.clear(this.$searchVideoWrapper);
-
-      this.mountTemplate();
-      this.$searchVideoWrapper.scrollTo({ top: 0 });
-    });
+  #addMessageListeners() {
+    messenger.addMessageListener(
+      MESSAGE.KEYWORD_SUBMITTED,
+      this.#handleKeywordSubmit.bind(this)
+    );
 
     messenger.addMessageListener(
       MESSAGE.DATA_LOADED,
-      ({ nextPageToken, items }) => {
-        if (items.length === 0) {
-          $.clear(this.$searchVideoWrapper);
-          $.show(this.$notFoundImg);
-
-          return;
-        }
-
-        this.currentNextPageToken = nextPageToken;
-
-        this.attachData(items);
-      }
+      this.#handleDataLoad.bind(this)
     );
 
-    messenger.addMessageListener(MESSAGE.SAVED_VIDEO_DELETED, ({ videoId }) => {
-      const $button = $(
-        `.${CLASSNAME.SAVE_VIDEO_BUTTON}[data-video-id="${videoId}"]`
-      );
-
-      this.setButtonSaveMode($button);
-    });
+    messenger.addMessageListener(
+      MESSAGE.SAVED_VIDEO_DELETED,
+      this.#handleSavedVideoDelete.bind(this)
+    );
   }
 
-  addEventListeners() {
-    this.$searchVideoWrapper.addEventListener(
+  #addEventListeners() {
+    this.#$searchVideoWrapper.addEventListener(
       "scroll",
-      this.handlePageScroll.bind(this)
+      this.#handlePageScroll.bind(this)
     );
 
-    this.$searchVideoWrapper.addEventListener(
-      "click",
-      ({ target: $target }) => {
-        if (!$target.classList.contains(CLASSNAME.SAVE_VIDEO_BUTTON)) {
-          return;
-        }
-
-        this.handleSaveVideoButtonClick($target);
-      }
+    this.#$searchVideoWrapper.addEventListener(
+      "mouseup",
+      this.#handleSearchVideoWrapperClick.bind(this)
     );
   }
 
-  handleSaveVideoButtonClick($button) {
-    const { videoId } = $button.dataset;
-    const item = this.videoItemsMap.get(videoId);
-
-    if (this.isButtonCancelMode($button)) {
-      messenger.deliverMessage(MESSAGE.CANCEL_VIDEO_BUTTON_CLICKED, {
-        videoId,
-        item,
-      });
-      this.setButtonSaveMode($button);
-
-      return;
-    }
-
-    messenger.deliverMessage(MESSAGE.SAVE_VIDEO_BUTTON_CLICKED, {
-      resolve: this.setButtonCancelMode.bind(this, $button),
-      reject: showModalSnackbar.bind(null, SNACKBAR_TEXT.REACHED_MAX_COUNT),
-      videoId,
-      item,
-    });
+  #handleKeywordSubmit({ query }) {
+    this.#currentQuery = query;
+    this.#isDataLoading = true;
+    this.#$searchVideoWrapper.innerHTML = "";
+    this.#mountTemplate();
+    this.#$searchVideoWrapper.scrollTo({ top: 0 });
   }
 
-  isButtonCancelMode($button) {
-    return $button.classList.contains(CLASSNAME.CANCEL);
+  #handleDataLoad({ nextPageToken, items }) {
+    this.#currentNextPageToken = nextPageToken;
+
+    this.#attachData(items);
+    this.#isDataLoading = false;
   }
 
-  setButtonCancelMode($button) {
-    $.addClass($button, CLASSNAME.CANCEL);
-    $button.innerText = "취소";
-    showModalSnackbar(SNACKBAR_TEXT.VIDEO_SAVED);
+  #handleSavedVideoDelete({ videoId }) {
+    const video = this.#videosMap.get(videoId);
+    video?.removeSavedClass();
   }
 
-  setButtonSaveMode($button) {
-    $.removeClass($button, CLASSNAME.CANCEL);
-    $button.innerText = "저장";
-    showModalSnackbar(SNACKBAR_TEXT.CANCELED_VIDEO_SAVE);
-  }
-
-  handlePageScroll() {
-    if (this.throttle) return;
-
-    const { scrollTop, clientHeight, scrollHeight } = this.$searchVideoWrapper;
-
+  #handlePageScroll() {
     if (
-      scrollTop + clientHeight <=
-      scrollHeight * NUMBER.SCROLL_EVENT_THRESHOLD
-    ) {
+      this.#isDataLoading ||
+      this.#throttle ||
+      this.#isOverScrollEventThreshold()
+    )
       return;
-    }
 
-    this.throttle = setTimeout(async () => {
-      this.mountTemplate();
-      const { nextPageToken, items } = await fetchYoutubeData(
-        this.currentQuery,
-        this.currentNextPageToken
-      );
-      this.currentNextPageToken = nextPageToken;
-      this.attachData(items);
-
-      this.throttle = null;
+    this.#throttle = setTimeout(async () => {
+      try {
+        this.#mountTemplate();
+        const { nextPageToken, items } = await fetchYoutubeData(
+          this.#currentQuery,
+          this.#currentNextPageToken
+        );
+        this.#currentNextPageToken = nextPageToken;
+        this.#attachData(items);
+      } catch (error) {
+        showSnackbar(error.message);
+        this.#attachData([]);
+      } finally {
+        this.#throttle = null;
+      }
     }, 0);
   }
 
-  mountTemplate() {
-    Array.from({ length: NUMBER.MAX_RESULTS_COUNT }).forEach(() => {
-      this.$searchVideoWrapper.insertAdjacentHTML(
-        "beforeEnd",
-        SEARCH_VIDEO_TEMPLATE
-      );
+  #isOverScrollEventThreshold() {
+    const { scrollTop, clientHeight, scrollHeight } = this.#$searchVideoWrapper;
+
+    return (
+      scrollTop + clientHeight <= scrollHeight * NUMBER.SCROLL_EVENT_THRESHOLD
+    );
+  }
+
+  #handleSearchVideoWrapperClick(event) {
+    if (!$.containsClass(event.target, CLASSNAME.BUTTON)) {
+      return;
+    }
+
+    const $button = event.target;
+    const $video = $button.closest(`.${CLASSNAME.CLIP}`);
+    const { videoId } = $video.dataset;
+    const video = this.#videosMap.get(videoId);
+
+    if (!video) {
+      return;
+    }
+
+    if ($.containsClass($button, CLASSNAME.SAVE_VIDEO_BUTTON)) {
+      this.#handleSaveVideoButtonClick(video);
+      return;
+    }
+
+    if ($.containsClass($button, CLASSNAME.CANCEL_VIDEO_BUTTON)) {
+      this.#handleCancelVideoButtonClick(video);
+    }
+  }
+
+  // eslint-disable-next-line class-methods-use-this
+  #handleSaveVideoButtonClick(video) {
+    messenger.deliverMessage(MESSAGE.SAVE_VIDEO_BUTTON_CLICKED, {
+      callback: video.addSavedClass.bind(video),
+      videoId: video.getVideoId(),
+      item: video.getItem(),
     });
   }
 
-  attachData(items) {
-    const $$videos = Array.from(this.$searchVideoWrapper.children).slice(
-      -NUMBER.MAX_RESULTS_COUNT
+  // eslint-disable-next-line class-methods-use-this
+  #handleCancelVideoButtonClick(video) {
+    messenger.deliverMessage(MESSAGE.CANCEL_VIDEO_BUTTON_CLICKED, {
+      videoId: video.getVideoId(),
+      item: video.getItem(),
+    });
+
+    video.removeSavedClass();
+    showSnackbar(SNACKBAR_TEXT.CANCELED_VIDEO_SAVE);
+  }
+
+  #mountTemplate() {
+    this.skeletonVideos = Array.from(
+      { length: NUMBER.MAX_RESULTS_COUNT },
+      () => new SearchVideo(this.#$searchVideoWrapper)
     );
+  }
 
-    Array.from({ length: NUMBER.MAX_RESULTS_COUNT })
-      .map((_, i) => [$$videos[i], items[i]])
-      .forEach(([$video, item]) => {
-        const { videoId } = item.id;
-        this.videoItemsMap.set(videoId, item);
+  #attachData(items) {
+    while (items.length < this.skeletonVideos.length) {
+      this.skeletonVideos.pop().remove();
+    }
 
-        renderSearchVideo($video, item);
+    items
+      .map((item, index) => [this.skeletonVideos[index], item])
+      .forEach(([video, item]) => {
+        video.attachData(item);
+        this.#videosMap.set(video.getVideoId(), video);
       });
   }
 }
