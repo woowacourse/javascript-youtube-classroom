@@ -1,6 +1,6 @@
 .video-wrapper {
   display: grid;
-  grid-template-columns: repeat(auto-fill, 236px);
+  grid-template-columns: repeat(4, 236px);
   grid-row-gap: 0px;
   grid-column-gap: 4px;
   justify-content: center;
@@ -36,7 +36,7 @@
   position: relative;
 }
 
-.clip .content-container h3 {
+.clip .content-container h2 {
   display: -webkit-box;
   margin: 0;
   height: 33px;
@@ -69,4 +69,28 @@
   position: absolute;
   right: 0;
   top: 100%;
+}
+
+@media (min-width: 400px) {
+  .video-wrapper {
+    grid-template-columns: repeat(1, 236px);
+  }
+}
+
+@media (min-width: 600px) {
+  .video-wrapper {
+    grid-template-columns: repeat(2, 236px);
+  }
+}
+
+@media (min-width: 960px) {
+  .video-wrapper {
+    grid-template-columns: repeat(3, 236px);
+  }
+}
+
+@media (min-width: 1280px) {
+  .video-wrapper {
+    grid-template-columns: repeat(4, 236px);
+  }
 }

@@ -2,8 +2,8 @@ import {
   ERROR_MESSAGE,
   STORAGE_NAME,
   SUCCESS_MESSAGE,
-} from "../utils/constants.js";
-import { showSnackbar } from "../utils/snackbar.js";
+} from '../utils/constants.js';
+import { showSnackbar } from '../utils/snackbar.js';
 
 const videos = {
   fetchedVideos: [],
@@ -76,6 +76,37 @@ const videos = {
           ? SUCCESS_MESSAGE.WATCH_VIDEO
           : SUCCESS_MESSAGE.CLEAR_WATCH_VIDEO_LOG
       );
+    } catch (e) {
+      console.error(e);
+      showSnackbar(ERROR_MESSAGE.INVALID_ACTION_ERROR);
+    }
+  },
+
+  setVideoLiked(videoId, isLiked) {
+    try {
+      const likedVideoIndex = this.savedVideos.findIndex(
+        (video) => video.videoId === videoId
+      );
+
+      if (likedVideoIndex === -1) {
+        throw new Error(ERROR_MESSAGE.CANNOT_FIND_INDEX_OF_VIDEO);
+      }
+
+      const likedVideo = this.savedVideos[likedVideoIndex];
+
+      this.savedVideos = [
+        ...this.savedVideos.slice(0, likedVideoIndex),
+        { ...likedVideo, liked: isLiked },
+        ...this.savedVideos.slice(likedVideoIndex + 1),
+      ];
+
+      this.storeSavedVideos();
+
+      if (isLiked) {
+        showSnackbar(SUCCESS_MESSAGE.LIKED_VIDEO);
+      } else {
+        showSnackbar(SUCCESS_MESSAGE.NOT_LIKED_VIDEO);
+      }
     } catch (e) {
       console.error(e);
       showSnackbar(ERROR_MESSAGE.INVALID_ACTION_ERROR);

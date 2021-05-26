@@ -24,6 +24,9 @@
                 <button id="watched-view-button" class="btn mx-1" type="button">
                   ✅ 본 영상
                 </button>
+                <button id="liked-view-button" class="btn mx-1" type="button">
+                  ❤️ 좋아요 영상
+                </button>
               </nav>
               <button
                 id="search-button"
@@ -59,12 +62,28 @@
               />
             </section>
 
+            <section
+            aria-label="좋아요 영상이 없음"
+            id="not-liked"
+            class="vh-70 d-flex justify-center items-center d-none-hard"
+          >
+            <img
+              width="300"
+              src="./src/images/status/not-liked.png"
+              alt="좋아요한 영상이 없습니다."
+            />
+          </section>
+
             <section id="watch-later-videos" class="video-wrapper d-none-hard">
               <!-- 볼영상 영상 clip -->
             </section>
 
             <section id="watched-videos" class="video-wrapper d-none-hard">
               <!-- 볼영상 영상 clip -->
+            </section>
+
+            <section id="liked-videos" class="video-wrapper d-none-hard">
+              <!-- 좋아요 영상 clip -->
             </section>
           </main>
         </div>
@@ -102,7 +121,7 @@
           </form>
 
           <section class="mt-2 d-flex items-center" aria-label="최근 검색어">
-            <h3 class="text-gray-700 text-sm">최근 검색어:</h3>
+            <p class="text-gray-700 text-sm">최근 검색어:</p>
             <ul id="keyword-history" class="d-flex"></ul>
           </section>
 

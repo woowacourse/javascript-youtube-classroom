@@ -1,5 +1,5 @@
-import { $ } from "./dom.js";
-import { DOM_CONSTANTS } from "./constants.js";
+import { $ } from './dom.js';
+import { DOM_CONSTANTS } from './constants.js';
 
 const elements = {
   $body: $(DOM_CONSTANTS.ELEMENT.BODY),
@@ -7,10 +7,13 @@ const elements = {
 
   $watchLaterViewButton: $(DOM_CONSTANTS.ID_SELECTOR.WATCHED_LATER_VIEW_BUTTON),
   $watchedViewButton: $(DOM_CONSTANTS.ID_SELECTOR.WATCHED_VIEW_BUTTON),
+  $likedViewButton: $(DOM_CONSTANTS.ID_SELECTOR.LIKED_VIEW_BUTTON),
   $notSaved: $(DOM_CONSTANTS.ID_SELECTOR.NOT_SAVED),
   $notWatched: $(DOM_CONSTANTS.ID_SELECTOR.NOT_WATCHED),
+  $notLiked: $(DOM_CONSTANTS.ID_SELECTOR.NOT_LIKED),
   $watchLaterVideos: $(DOM_CONSTANTS.ID_SELECTOR.WATCH_LATER_VIDEOS),
   $watchedVideos: $(DOM_CONSTANTS.ID_SELECTOR.WATCHED_VIDEOS),
+  $likedVideos: $(DOM_CONSTANTS.ID_SELECTOR.LIKED_VIDEOS),
 
   $searchButton: $(DOM_CONSTANTS.ID_SELECTOR.SEARCH_BUTTON),
   $searchModal: $(DOM_CONSTANTS.ID_SELECTOR.SEARCH_MODAL),

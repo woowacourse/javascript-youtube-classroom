@@ -1,25 +1,28 @@
-import { createSavedClipElement } from "../../templates/videoClipTemplate.js";
+import { createSavedClipElement } from '../../templates/videoClipTemplate.js';
 
-import { PALLET } from "../../utils/constants.js";
-import elements from "../../utils/elements.js";
+import { DOM_CONSTANTS, PALLET } from '../../utils/constants.js';
+import elements from '../../utils/elements.js';
 import {
   hideElement,
   showElement,
   removeBackgroundColor,
   addBackgroundColor,
-} from "../../utils/dom.js";
+} from '../../utils/dom.js';
 
 export default class WatchView {
   removeAllButtonColor() {
     removeBackgroundColor(elements.$watchLaterViewButton, PALLET.CYAN_100);
     removeBackgroundColor(elements.$watchedViewButton, PALLET.CYAN_100);
+    removeBackgroundColor(elements.$likedViewButton, PALLET.CYAN_100);
   }
 
   hideAllSection() {
     hideElement(elements.$notSaved);
     hideElement(elements.$notWatched);
+    hideElement(elements.$notLiked);
     hideElement(elements.$watchLaterVideos);
     hideElement(elements.$watchedVideos);
+    hideElement(elements.$likedVideos);
   }
 
   markWatchLaterViewButton() {
@@ -30,6 +33,11 @@ export default class WatchView {
   markWatchedViewButton() {
     this.removeAllButtonColor();
     addBackgroundColor(elements.$watchedViewButton, PALLET.CYAN_100);
+  }
+
+  markLikedViewButton() {
+    this.removeAllButtonColor();
+    addBackgroundColor(elements.$likedViewButton, PALLET.CYAN_100);
   }
 
   appendSavedVideoClips(items) {
@@ -50,11 +58,16 @@ export default class WatchView {
     showElement(elements.$notWatched);
   }
 
+  showNotLikedImg() {
+    this.hideAllSection();
+    showElement(elements.$notLiked);
+  }
+
   showWatchLaterVideos(watchLaterVideos) {
     this.hideAllSection();
     showElement(elements.$watchLaterVideos);
 
-    elements.$watchLaterVideos.innerHTML = "";
+    elements.$watchLaterVideos.innerHTML = '';
     elements.$watchLaterVideos.append(
       this.appendSavedVideoClips(watchLaterVideos)
     );
@@ -64,7 +77,15 @@ export default class WatchView {
     this.hideAllSection();
     showElement(elements.$watchedVideos);
 
-    elements.$watchedVideos.innerHTML = "";
+    elements.$watchedVideos.innerHTML = '';
     elements.$watchedVideos.append(this.appendSavedVideoClips(watchedVideos));
+  }
+
+  showLikedVideos(likedVideos) {
+    this.hideAllSection();
+    showElement(elements.$likedVideos);
+
+    elements.$likedVideos.innerHTML = '';
+    elements.$likedVideos.append(this.appendSavedVideoClips(likedVideos));
   }
 }

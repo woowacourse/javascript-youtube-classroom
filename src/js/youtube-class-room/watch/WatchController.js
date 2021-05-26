@@ -1,17 +1,32 @@
-import WatchView from "./WatchView.js";
+import WatchView from './WatchView.js';
 
-import { CONFIRM_MESSAGE } from "../../utils/constants.js";
+import { CONFIRM_MESSAGE, DOM_CONSTANTS } from '../../utils/constants.js';
 
-import videos from "../../state/videos.js";
+import videos from '../../state/videos.js';
 export default class WatchController {
   constructor() {
     this.watchView = new WatchView();
   }
 
-  updateWatchLaterView(savedVideos) {
-    const watchLaterVideos = savedVideos.filter((video) => !video.watched);
-
+  updateWatchLaterView() {
     this.watchView.markWatchLaterViewButton();
+    this.showWatchLaterView();
+  }
+
+  updateWatchedView() {
+    this.watchView.markWatchedViewButton();
+    this.showWatchedView();
+  }
+
+  updateLikedView() {
+    this.watchView.markLikedViewButton();
+    this.showLikedVideos();
+  }
+
+  showWatchLaterView() {
+    const watchLaterVideos = videos
+      .getSavedVideos()
+      .filter((video) => !video.watched);
 
     if (watchLaterVideos.length === 0) {
       this.watchView.showNotSavedImg();
@@ -20,10 +35,10 @@ export default class WatchController {
     }
   }
 
-  updateWatchedView(savedVideos) {
-    const watchedVideos = savedVideos.filter((video) => video.watched);
-
-    this.watchView.markWatchedViewButton();
+  showWatchedView() {
+    const watchedVideos = videos
+      .getSavedVideos()
+      .filter((video) => video.watched);
 
     if (watchedVideos.length === 0) {
       this.watchView.showNotWatchedImg();
@@ -32,12 +47,50 @@ export default class WatchController {
     }
   }
 
-  watchVideo(videoId) {
-    videos.setVideoWatched(videoId, true);
+  showLikedVideos() {
+    const likedVideos = videos.getSavedVideos().filter((video) => video.liked);
+
+    if (likedVideos.length === 0) {
+      this.watchView.showNotLikedImg();
+    } else {
+      this.watchView.showLikedVideos(likedVideos);
+    }
   }
 
-  clearWatchedViedoLog(videoId) {
-    videos.setVideoWatched(videoId, false);
+  toggleWatchedButton(watchedButton) {
+    const videoId = watchedButton.dataset.watchedButton;
+    if (!videoId) return;
+
+    const videoClassList = watchedButton.classList;
+
+    if (videoClassList.contains(DOM_CONSTANTS.CLASS_NAME.OPACITY_HOVER)) {
+      videos.setVideoWatched(videoId, true);
+      videoClassList.remove(DOM_CONSTANTS.CLASS_NAME.OPACITY_HOVER);
+    } else {
+      videos.setVideoWatched(videoId, false);
+      videoClassList.add(DOM_CONSTANTS.CLASS_NAME.OPACITY_HOVER);
+    }
+  }
+
+  toggleLikedButton(likedButton) {
+    const videoId = likedButton.dataset.likedButton;
+    if (!videoId) {
+      return;
+    }
+
+    const videoClassList = likedButton.classList;
+
+    if (videoClassList.contains(DOM_CONSTANTS.CLASS_NAME.OPACITY_HOVER)) {
+      this.toggleLikedVideo(videoId, true);
+      videoClassList.remove(DOM_CONSTANTS.CLASS_NAME.OPACITY_HOVER);
+    } else {
+      this.toggleLikedVideo(videoId, false);
+      videoClassList.add(DOM_CONSTANTS.CLASS_NAME.OPACITY_HOVER);
+    }
+  }
+
+  toggleLikedVideo(videoId, isLiked) {
+    videos.setVideoLiked(videoId, isLiked);
   }
 
   deleteVideo(videoId) {

@@ -1,17 +1,17 @@
-import WatchController from "./WatchController.js";
+import WatchController from './WatchController.js';
+import WatchView from './WatchView.js';
 
-import elements from "../../utils/elements.js";
-import { showSnackbar } from "../../utils/snackbar.js";
-import { ERROR_MESSAGE } from "../../utils/constants.js";
+import elements from '../../utils/elements.js';
 
-import videos from "../../state/videos.js";
+import videos from '../../state/videos.js';
 export default class WatchEventController {
   constructor() {
     this.watchController = new WatchController();
+    this.watchView = new WatchView();
   }
 
   bindEvents() {
-    window.addEventListener("load", this.onLoadApp.bind(this));
+    window.addEventListener('load', this.onLoadApp.bind(this));
 
     this.bindNavEvents();
     this.bindSaveVideoEvents();
@@ -20,46 +20,59 @@ export default class WatchEventController {
 
   bindNavEvents() {
     elements.$watchLaterViewButton.addEventListener(
-      "click",
+      'click',
       this.onClickWatchLaterViewButton.bind(this)
     );
     elements.$watchedViewButton.addEventListener(
-      "click",
+      'click',
       this.onClickWatchedViewButton.bind(this)
+    );
+    elements.$likedViewButton.addEventListener(
+      'click',
+      this.onClickLikedViewButton.bind(this)
     );
   }
 
   bindSaveVideoEvents() {
     elements.$searchResults.addEventListener(
-      "click",
+      'click',
       this.onClickSaveButton.bind(this)
     );
   }
 
   bindClipButtonEvents() {
-    elements.$watchLaterVideos.addEventListener("click", (e) => {
-      this.onClickWatchedButton(e);
-      this.onClickLikedButton(e);
-      this.onClickDeleteButton(e, false);
+    elements.$watchLaterVideos.addEventListener('click', (e) => {
+      if (e.target.tagName !== 'BUTTON') return;
+
+      this.onClickWatchLaterViewClipButton(e.target);
     });
-    elements.$watchedVideos.addEventListener("click", (e) => {
-      this.onClickClearWatchLogbutton(e);
-      this.onClickLikedButton(e);
-      this.onClickDeleteButton(e, true);
+    elements.$watchedVideos.addEventListener('click', (e) => {
+      if (e.target.tagName !== 'BUTTON') return;
+
+      this.onClickWatchedViewClipButton(e.target);
+    });
+    elements.$likedVideos.addEventListener('click', (e) => {
+      if (e.target.tagName !== 'BUTTON') return;
+
+      this.onClickLikedViewClipButton(e.target);
     });
   }
 
   onLoadApp() {
     videos.initSavedVideos();
-    this.watchController.updateWatchLaterView(videos.getSavedVideos());
+    this.watchController.updateWatchLaterView();
   }
 
   onClickWatchLaterViewButton() {
-    this.watchController.updateWatchLaterView(videos.getSavedVideos());
+    this.watchController.updateWatchLaterView();
   }
 
   onClickWatchedViewButton() {
-    this.watchController.updateWatchedView(videos.getSavedVideos());
+    this.watchController.updateWatchedView();
+  }
+
+  onClickLikedViewButton() {
+    this.watchController.updateLikedView();
   }
 
   onClickSaveButton(e) {
@@ -67,48 +80,54 @@ export default class WatchEventController {
       return;
     }
 
-    this.watchController.updateWatchLaterView(videos.getSavedVideos());
+    this.watchController.updateWatchLaterView();
   }
 
-  onClickWatchedButton(e) {
-    const videoId = e.target.dataset.watchedButton;
-    if (!videoId) {
-      return;
+  onClickWatchLaterViewClipButton(button) {
+    if (button.dataset.watchedButton) {
+      this.watchController.toggleWatchedButton(button);
+      this.watchController.showWatchLaterView();
     }
 
-    this.watchController.watchVideo(videoId);
-    this.watchController.updateWatchLaterView(videos.getSavedVideos());
+    if (button.dataset.likedButton) {
+      this.watchController.toggleLikedButton(button);
+    }
+
+    if (button.dataset.deleteButton) {
+      this.watchController.deleteVideo(button.dataset.deleteButton);
+      this.watchController.showWatchLaterView();
+    }
   }
 
-  onClickClearWatchLogbutton(e) {
-    const videoId = e.target.dataset.watchedButton;
-    if (!videoId) {
-      return;
+  onClickWatchedViewClipButton(button) {
+    if (button.dataset.watchedButton) {
+      this.watchController.toggleWatchedButton(button);
+      this.watchController.showWatchedView();
     }
 
-    this.watchController.clearWatchedViedoLog(videoId);
-    this.watchController.updateWatchedView(videos.getSavedVideos());
+    if (button.dataset.likedButton) {
+      this.watchController.toggleLikedButton(button);
+    }
+
+    if (button.dataset.deleteButton) {
+      this.watchController.deleteVideo(button.dataset.deleteButton);
+      this.watchController.showWatchedView();
+    }
   }
 
-  onClickLikedButton(e) {
-    if (!e.target.dataset.likedButton) {
-      return;
+  onClickLikedViewClipButton(button) {
+    if (button.dataset.watchedButton) {
+      this.watchController.toggleWatchedButton(button);
     }
 
-    showSnackbar(ERROR_MESSAGE.NOT_IMPLEMENTED);
-  }
-
-  onClickDeleteButton(e, isWatched) {
-    const videoId = e.target.dataset.deleteButton;
-    if (!videoId) {
-      return;
+    if (button.dataset.likedButton) {
+      this.watchController.toggleLikedButton(button);
+      this.watchController.showLikedVideos();
     }
 
-    this.watchController.deleteVideo(videoId);
-    if (isWatched) {
-      this.watchController.updateWatchedView(videos.getSavedVideos());
-    } else {
-      this.watchController.updateWatchLaterView(videos.getSavedVideos());
+    if (button.dataset.deleteButton) {
+      this.watchController.deleteVideo(button.dataset.deleteButton);
+      this.watchController.showLikedVideos();
     }
   }
 }
