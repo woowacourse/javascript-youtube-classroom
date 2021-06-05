@@ -96,7 +96,7 @@ export default class VideoList extends Component {
 
     if (this.filter === TYPES.FILTER.LIKED) {
       $$('.clip').forEach(($clip) => {
-        if ($clip.querySelector('.like-button').classList.contains('liked')) {
+        if ($clip.querySelector('.like-button')?.classList.contains('liked')) {
           $clip.classList.remove('d-none');
           hasLikedVideo = true;
         } else {
@@ -108,7 +108,7 @@ export default class VideoList extends Component {
     if (this.filter === TYPES.FILTER.WATCHED) {
       $$('.clip').forEach(($clip) => {
         if (
-          $clip.querySelector('.watched-button').classList.contains('checked')
+          $clip.querySelector('.watched-button')?.classList.contains('checked')
         ) {
           $clip.classList.remove('d-none');
           hasWatchedVideo = true;
@@ -121,7 +121,7 @@ export default class VideoList extends Component {
     if (this.filter === TYPES.FILTER.WATCH_LATER) {
       $$('.clip').forEach(($clip) => {
         if (
-          $clip.querySelector('.watched-button').classList.contains('checked')
+          $clip.querySelector('.watched-button')?.classList.contains('checked')
         ) {
           $clip.classList.add('d-none');
         } else {
@@ -136,21 +136,8 @@ export default class VideoList extends Component {
       (this.filter === TYPES.FILTER.WATCH_LATER && !hasWatchLaterVideo) ||
       (this.filter === TYPES.FILTER.LIKED && !hasLikedVideo)
     ) {
-      console.log(
-        this.filter,
-        hasWatchedVideo,
-        hasWatchLaterVideo,
-        hasLikedVideo
-      );
-      console.log('show');
       $(SELECTORS.VIDEO_LIST.NO_VIDEO_MESSAGE_CLASS).classList.remove('d-none');
     } else {
-      console.log(
-        this.filter,
-        hasWatchedVideo,
-        hasWatchLaterVideo,
-        hasLikedVideo
-      );
       $(SELECTORS.VIDEO_LIST.NO_VIDEO_MESSAGE_CLASS).classList.add('d-none');
     }
   }
@@ -193,9 +180,8 @@ export default class VideoList extends Component {
     const clip = event.target.closest(SELECTORS.VIDEO_LIST.CLIP_CLASS);
     const savedVideos = localStorageGetItem(LOCALSTORAGE_KEYS.VIDEOS);
 
-    savedVideos[clip.dataset.videoId].watched = !savedVideos[
-      clip.dataset.videoId
-    ].watched;
+    savedVideos[clip.dataset.videoId].watched =
+      !savedVideos[clip.dataset.videoId].watched;
 
     localStorageSetItem(LOCALSTORAGE_KEYS.VIDEOS, savedVideos);
     clip.classList.toggle('d-none');
@@ -207,8 +193,8 @@ export default class VideoList extends Component {
     const clip = event.target.closest(SELECTORS.VIDEO_LIST.CLIP_CLASS);
     const savedVideos = localStorageGetItem(LOCALSTORAGE_KEYS.VIDEOS);
 
-    savedVideos[clip.dataset.videoId].liked = !savedVideos[clip.dataset.videoId]
-      .liked;
+    savedVideos[clip.dataset.videoId].liked =
+      !savedVideos[clip.dataset.videoId].liked;
     localStorageSetItem(LOCALSTORAGE_KEYS.VIDEOS, savedVideos);
     $(SELECTORS.CLIP.LIKE_BUTTON, clip).classList.toggle('liked');
 
