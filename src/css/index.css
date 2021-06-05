@@ -62,10 +62,6 @@ label.menu-btn {
   opacity: 1;
 }
 
-.management-buttons button.liked {
-  opacity: 1;
-}
-
 .video-list {
   height: none;
 }

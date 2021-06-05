@@ -260,7 +260,7 @@ export default class Video {
     });
 
     this.watched && watchedButton.classList.add('checked');
-    this.liked && likeButton.classList.add('liked');
+    this.liked && likeButton.classList.add('checked');
 
     watchedButton.dataset.eventName = 'watched';
     likeButton.dataset.eventName = 'like';

@@ -24,6 +24,7 @@ export const ERROR_MESSAGES = {
   VIDEO_DELETE_ERROR: '비디오 삭제에 실패했습니다.',
   EMPTY_SEARCH_TERM: '검색어를 입력해주세요.',
   NOT_AVAILABLE_BUTTON: '현재 이용할 수 없는 버튼입니다.',
+  CANCEL_DELETE: '삭제를 취소했습니다.',
 };
 
 export const LOCALSTORAGE_KEYS = {

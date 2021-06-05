@@ -146,30 +146,16 @@ export default class VideoList extends Component {
     }
   }
 
-  onClickWatchedButton(event) {
+  onClickStatusButton(event, status) {
     const clip = event.target.closest(SELECTORS.VIDEO_LIST.CLIP_CLASS);
     const savedVideos = localStorageGetItem(LOCALSTORAGE_KEYS.VIDEOS);
 
-    savedVideos[clip.dataset.videoId].watched =
-      !savedVideos[clip.dataset.videoId].watched;
+    savedVideos[clip.dataset.videoId][status] =
+      !savedVideos[clip.dataset.videoId][status];
 
     localStorageSetItem(LOCALSTORAGE_KEYS.VIDEOS, savedVideos);
 
-    $(SELECTORS.CLIP.WATCHED_BUTTON, clip).classList.toggle('checked');
-
-    this.showByFilter();
-  }
-
-  onClickLikedButton(event) {
-    const clip = event.target.closest(SELECTORS.VIDEO_LIST.CLIP_CLASS);
-    const savedVideos = localStorageGetItem(LOCALSTORAGE_KEYS.VIDEOS);
-
-    savedVideos[clip.dataset.videoId].liked =
-      !savedVideos[clip.dataset.videoId].liked;
-
-    localStorageSetItem(LOCALSTORAGE_KEYS.VIDEOS, savedVideos);
-
-    $(SELECTORS.CLIP.LIKE_BUTTON, clip).classList.toggle('liked');
+    event.target.classList.toggle('checked');
 
     this.showByFilter();
   }
@@ -178,9 +164,11 @@ export default class VideoList extends Component {
     const clip = event.target.closest(SELECTORS.VIDEO_LIST.CLIP_CLASS);
     const savedVideos = localStorageGetItem(LOCALSTORAGE_KEYS.VIDEOS);
 
-    if (
-      !(confirm(MESSAGES.CONFIRM.DELETE) && savedVideos[clip.dataset.videoId])
-    ) {
+    if (!confirm(MESSAGES.CONFIRM.DELETE)) {
+      throw new Error(ERROR_MESSAGES.CANCEL_DELETE);
+    }
+
+    if (savedVideos[clip.dataset.videoId]) {
       throw new Error(ERROR_MESSAGES.VIDEO_DELETE_ERROR);
     }
     delete savedVideos[clip.dataset.videoId];
@@ -201,14 +189,12 @@ export default class VideoList extends Component {
 
     switch (eventName) {
       case 'watched':
-        this.onClickWatchedButton(event);
+        this.onClickStatusButton(event, 'watched');
         message = MESSAGES.ACTION_SUCCESS.WATCHED_STATE_SETTING;
         break;
       case 'like':
-        this.onClickLikedButton(event);
-        return;
-      case 'comment':
-        message = ERROR_MESSAGES.NOT_AVAILABLE_BUTTON;
+        this.onClickStatusButton(event, 'liked');
+        message = MESSAGES.ACTION_SUCCESS.WATCHED_STATE_SETTING;
         break;
       case 'delete':
         try {
