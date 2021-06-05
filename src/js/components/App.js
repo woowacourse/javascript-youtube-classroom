@@ -7,7 +7,12 @@ import {
   localStorageSetItem,
   localStorageGetItem,
 } from '../utils/utils.js';
-import { LOCALSTORAGE_KEYS, SELECTORS, TYPES } from '../constants/constants.js';
+import {
+  FILTERS,
+  LOCALSTORAGE_KEYS,
+  SELECTORS,
+  TYPES,
+} from '../constants/constants.js';
 
 export const youtubeAPIManager = new YoutubeAPIManager();
 export default class App {
@@ -95,15 +100,15 @@ export default class App {
 
   bindEvent() {
     this.$watchLaterButton.addEventListener('click', () => {
-      this.videoList.setFilter(TYPES.FILTER.WATCH_LATER);
+      this.videoList.setFilter(FILTERS.WATCH_LATER);
     });
 
     this.$watchedButton.addEventListener('click', () => {
-      this.videoList.setFilter(TYPES.FILTER.WATCHED);
+      this.videoList.setFilter(FILTERS.WATCHED);
     });
 
     this.$likedButton.addEventListener('click', () => {
-      this.videoList.setFilter(TYPES.FILTER.LIKED);
+      this.videoList.setFilter(FILTERS.LIKED);
     });
 
     this.$searchButton.addEventListener('click', () =>

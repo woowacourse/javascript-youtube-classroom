@@ -37,14 +37,21 @@ export const INTERSECTION_OBSERVER_OPTIONS = {
 };
 
 export const TYPES = {
-  FILTER: {
-    WATCH_LATER: 'watchLater',
-    WATCHED: 'watched',
-    LIKED: 'liked',
-  },
   PAGE: {
     MANAGEMENT: 'management',
     SEARCH: 'search',
+  },
+};
+
+export const FILTERS = {
+  WATCH_LATER: (value) => {
+    return value.watched === false;
+  },
+  WATCHED: (value) => {
+    return value.watched === true;
+  },
+  LIKED: (value) => {
+    return value.liked === true;
   },
 };
 

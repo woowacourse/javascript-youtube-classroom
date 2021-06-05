@@ -13,6 +13,7 @@ import {
   INTERSECTION_OBSERVER_OPTIONS,
   ERROR_MESSAGES,
   MESSAGES,
+  FILTERS,
 } from '../../constants/constants.js';
 import { store } from '../../index.js';
 import { decreaseSavedVideoCount } from '../../redux/action.js';
@@ -25,7 +26,7 @@ import {
 export default class VideoList extends Component {
   setup() {
     store.subscribe(this.render.bind(this));
-    this.filter = TYPES.FILTER.WATCH_LATER;
+    this.filter = FILTERS.WATCH_LATER;
 
     const options = {
       threshold: INTERSECTION_OBSERVER_OPTIONS.IFRAME_LOAD_THRESHOLD,
@@ -79,7 +80,7 @@ export default class VideoList extends Component {
     });
   }
 
-  setFilter(newFilter = TYPES.FILTER.WATCH_LATER) {
+  setFilter(newFilter = FILTERS.WATCH_LATER) {
     if (this.filter === newFilter) {
       return;
     }
@@ -90,56 +91,25 @@ export default class VideoList extends Component {
   }
 
   showByFilter() {
-    let hasLikedVideo = false;
-    let hasWatchedVideo = false;
-    let hasWatchLaterVideo = false;
+    const targetVideoIdList = Object.entries(
+      localStorageGetItem(LOCALSTORAGE_KEYS.VIDEOS)
+    )
+      .filter(([_, value]) => this.filter(value))
+      .map(([key]) => key);
 
-    if (this.filter === TYPES.FILTER.LIKED) {
-      $$('.clip').forEach(($clip) => {
-        if ($clip.querySelector('.like-button')?.classList.contains('liked')) {
-          $clip.classList.remove('d-none');
-          hasLikedVideo = true;
-        } else {
-          $clip.classList.add('d-none');
-        }
-      });
-    }
+    $$('.clip').forEach(($clip) => {
+      if (targetVideoIdList.includes($clip.dataset.videoId)) {
+        $clip.classList.remove('d-none');
+        return;
+      }
+      $clip.classList.add('d-none');
+    });
 
-    if (this.filter === TYPES.FILTER.WATCHED) {
-      $$('.clip').forEach(($clip) => {
-        if (
-          $clip.querySelector('.watched-button')?.classList.contains('checked')
-        ) {
-          $clip.classList.remove('d-none');
-          hasWatchedVideo = true;
-        } else {
-          $clip.classList.add('d-none');
-        }
-      });
-    }
-
-    if (this.filter === TYPES.FILTER.WATCH_LATER) {
-      $$('.clip').forEach(($clip) => {
-        if (
-          $clip.querySelector('.watched-button')?.classList.contains('checked')
-        ) {
-          $clip.classList.add('d-none');
-        } else {
-          $clip.classList.remove('d-none');
-          hasWatchLaterVideo = true;
-        }
-      });
-    }
-
-    if (
-      (this.filter === TYPES.FILTER.WATCHED && !hasWatchedVideo) ||
-      (this.filter === TYPES.FILTER.WATCH_LATER && !hasWatchLaterVideo) ||
-      (this.filter === TYPES.FILTER.LIKED && !hasLikedVideo)
-    ) {
-      $(SELECTORS.VIDEO_LIST.NO_VIDEO_MESSAGE_CLASS).classList.remove('d-none');
-    } else {
+    if (targetVideoIdList.length) {
       $(SELECTORS.VIDEO_LIST.NO_VIDEO_MESSAGE_CLASS).classList.add('d-none');
+      return;
     }
+    $(SELECTORS.VIDEO_LIST.NO_VIDEO_MESSAGE_CLASS).classList.remove('d-none');
   }
 
   render(preStates, states) {
@@ -164,7 +134,7 @@ export default class VideoList extends Component {
         ...savedVideos[latestVideoId],
       }).createTemplate(TYPES.PAGE.MANAGEMENT);
 
-      if (this.filter === TYPES.FILTER.WATCHED) {
+      if (this.filter === FILTERS.WATCHED) {
         newVideo.classList.add('d-none');
       }
 
@@ -184,8 +154,9 @@ export default class VideoList extends Component {
       !savedVideos[clip.dataset.videoId].watched;
 
     localStorageSetItem(LOCALSTORAGE_KEYS.VIDEOS, savedVideos);
-    clip.classList.toggle('d-none');
+
     $(SELECTORS.CLIP.WATCHED_BUTTON, clip).classList.toggle('checked');
+
     this.showByFilter();
   }
 
@@ -195,15 +166,12 @@ export default class VideoList extends Component {
 
     savedVideos[clip.dataset.videoId].liked =
       !savedVideos[clip.dataset.videoId].liked;
+
     localStorageSetItem(LOCALSTORAGE_KEYS.VIDEOS, savedVideos);
+
     $(SELECTORS.CLIP.LIKE_BUTTON, clip).classList.toggle('liked');
 
-    if (
-      this.filter === TYPES.FILTER.LIKED &&
-      !$(SELECTORS.CLIP.LIKE_BUTTON, clip).classList.contains('liked')
-    ) {
-      clip.classList.toggle('d-none');
-    }
+    this.showByFilter();
   }
 
   onClickDeleteButton(event) {
