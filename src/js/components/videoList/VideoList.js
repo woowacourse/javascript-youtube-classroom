@@ -5,7 +5,6 @@ import {
   $$,
   localStorageGetItem,
   localStorageSetItem,
-  createElement,
 } from '../../utils/utils.js';
 import {
   LOCALSTORAGE_KEYS,
@@ -86,23 +85,74 @@ export default class VideoList extends Component {
     }
 
     pauseAllIframeVideo();
-    this.toggleVideoList();
     this.filter = newFilter;
     this.showByFilter();
   }
 
   showByFilter() {
-    const savedVideos = localStorageGetItem(LOCALSTORAGE_KEYS.VIDEOS);
-    const isWatched = this.filter === TYPES.FILTER.WATCHED;
-    const watchedVideos = Object.keys(savedVideos).filter(
-      (videoId) => savedVideos[videoId].watched === isWatched
-    );
+    let hasLikedVideo = false;
+    let hasWatchedVideo = false;
+    let hasWatchLaterVideo = false;
 
-    watchedVideos.length === 0
-      ? $(SELECTORS.VIDEO_LIST.NO_VIDEO_MESSAGE_CLASS).classList.remove(
-          'd-none'
-        )
-      : $(SELECTORS.VIDEO_LIST.NO_VIDEO_MESSAGE_CLASS).classList.add('d-none');
+    if (this.filter === TYPES.FILTER.LIKED) {
+      $$('.clip').forEach(($clip) => {
+        if ($clip.querySelector('.like-button').classList.contains('liked')) {
+          $clip.classList.remove('d-none');
+          hasLikedVideo = true;
+        } else {
+          $clip.classList.add('d-none');
+        }
+      });
+    }
+
+    if (this.filter === TYPES.FILTER.WATCHED) {
+      $$('.clip').forEach(($clip) => {
+        if (
+          $clip.querySelector('.watched-button').classList.contains('checked')
+        ) {
+          $clip.classList.remove('d-none');
+          hasWatchedVideo = true;
+        } else {
+          $clip.classList.add('d-none');
+        }
+      });
+    }
+
+    if (this.filter === TYPES.FILTER.WATCH_LATER) {
+      $$('.clip').forEach(($clip) => {
+        if (
+          $clip.querySelector('.watched-button').classList.contains('checked')
+        ) {
+          $clip.classList.add('d-none');
+        } else {
+          $clip.classList.remove('d-none');
+          hasWatchLaterVideo = true;
+        }
+      });
+    }
+
+    if (
+      (this.filter === TYPES.FILTER.WATCHED && !hasWatchedVideo) ||
+      (this.filter === TYPES.FILTER.WATCH_LATER && !hasWatchLaterVideo) ||
+      (this.filter === TYPES.FILTER.LIKED && !hasLikedVideo)
+    ) {
+      console.log(
+        this.filter,
+        hasWatchedVideo,
+        hasWatchLaterVideo,
+        hasLikedVideo
+      );
+      console.log('show');
+      $(SELECTORS.VIDEO_LIST.NO_VIDEO_MESSAGE_CLASS).classList.remove('d-none');
+    } else {
+      console.log(
+        this.filter,
+        hasWatchedVideo,
+        hasWatchLaterVideo,
+        hasLikedVideo
+      );
+      $(SELECTORS.VIDEO_LIST.NO_VIDEO_MESSAGE_CLASS).classList.add('d-none');
+    }
   }
 
   render(preStates, states) {
@@ -153,6 +203,23 @@ export default class VideoList extends Component {
     this.showByFilter();
   }
 
+  onClickLikedButton(event) {
+    const clip = event.target.closest(SELECTORS.VIDEO_LIST.CLIP_CLASS);
+    const savedVideos = localStorageGetItem(LOCALSTORAGE_KEYS.VIDEOS);
+
+    savedVideos[clip.dataset.videoId].liked = !savedVideos[clip.dataset.videoId]
+      .liked;
+    localStorageSetItem(LOCALSTORAGE_KEYS.VIDEOS, savedVideos);
+    $(SELECTORS.CLIP.LIKE_BUTTON, clip).classList.toggle('liked');
+
+    if (
+      this.filter === TYPES.FILTER.LIKED &&
+      !$(SELECTORS.CLIP.LIKE_BUTTON, clip).classList.contains('liked')
+    ) {
+      clip.classList.toggle('d-none');
+    }
+  }
+
   onClickDeleteButton(event) {
     const clip = event.target.closest(SELECTORS.VIDEO_LIST.CLIP_CLASS);
     const savedVideos = localStorageGetItem(LOCALSTORAGE_KEYS.VIDEOS);
@@ -178,17 +245,14 @@ export default class VideoList extends Component {
 
     let message = '';
 
-    // TODO:
-    // event Name이 Manager Button에만 있는 경우.
-    // 다른 곳에 eventName이 있는 경우 showSnacbard의 위치를 바꾸어야 함.
     switch (eventName) {
       case 'watched':
         this.onClickWatchedButton(event);
         message = MESSAGES.ACTION_SUCCESS.WATCHED_STATE_SETTING;
         break;
       case 'like':
-        message = ERROR_MESSAGES.NOT_AVAILABLE_BUTTON;
-        break;
+        this.onClickLikedButton(event);
+        return;
       case 'comment':
         message = ERROR_MESSAGES.NOT_AVAILABLE_BUTTON;
         break;

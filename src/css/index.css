@@ -37,6 +37,10 @@ a {
   opacity: 1;
 }
 
+.liked {
+  opacity: 1;
+}
+
 .menu-btn:hover {
   background-color: #b3eaf2;
 }

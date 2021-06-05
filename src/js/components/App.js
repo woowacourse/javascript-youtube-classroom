@@ -58,6 +58,8 @@ export default class App {
               <label for="watch-later-button" class="d-inline-block btn menu-btn text-base">👁️ 볼 영상</label>
               <input type="radio" name="filter" id="watched-button" class="d-none" value="✅ 본 영상"/>
               <label for="watched-button" class="d-inline-block btn menu-btn mx-1 text-base">✅ 본 영상</label>
+              <input type="radio" name="filter" id="liked-button" class="d-none" value="👍 좋아요 한 영상"/>
+              <label for="liked-button" class="d-inline-block btn menu-btn mx-1 text-base">👍 좋아요 한 영상</label>
             </fieldset>
           </form>
           <div class="d-flex">
@@ -87,6 +89,7 @@ export default class App {
   selectDOM() {
     this.$watchLaterButton = $(SELECTORS.MENU_BUTTON.WATCH_LATER_ID);
     this.$watchedButton = $(SELECTORS.MENU_BUTTON.WATCHED_ID);
+    this.$likedButton = $(SELECTORS.MENU_BUTTON.LIKED_ID);
     this.$searchButton = $(SELECTORS.MENU_BUTTON.SEARCH_ID);
   }
 
@@ -97,6 +100,10 @@ export default class App {
 
     this.$watchedButton.addEventListener('click', () => {
       this.videoList.setFilter(TYPES.FILTER.WATCHED);
+    });
+
+    this.$likedButton.addEventListener('click', () => {
+      this.videoList.setFilter(TYPES.FILTER.LIKED);
     });
 
     this.$searchButton.addEventListener('click', () =>

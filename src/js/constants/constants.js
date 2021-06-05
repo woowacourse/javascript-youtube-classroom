@@ -40,6 +40,7 @@ export const TYPES = {
   FILTER: {
     WATCH_LATER: 'watchLater',
     WATCHED: 'watched',
+    LIKED: 'liked',
   },
   PAGE: {
     MANAGEMENT: 'management',
@@ -51,6 +52,7 @@ export const SELECTORS = {
   MENU_BUTTON: {
     WATCH_LATER_ID: '#watch-later-button',
     WATCHED_ID: '#watched-button',
+    LIKED_ID: '#liked-button',
     SEARCH_ID: '#search-button',
   },
 
