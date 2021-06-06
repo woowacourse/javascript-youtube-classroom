@@ -5,7 +5,6 @@ import {
   $$,
   localStorageGetItem,
   localStorageSetItem,
-  createElement,
 } from '../../utils/utils.js';
 import {
   LOCALSTORAGE_KEYS,
@@ -14,6 +13,7 @@ import {
   INTERSECTION_OBSERVER_OPTIONS,
   ERROR_MESSAGES,
   MESSAGES,
+  FILTERS,
 } from '../../constants/constants.js';
 import { store } from '../../index.js';
 import { decreaseSavedVideoCount } from '../../redux/action.js';
@@ -26,7 +26,7 @@ import {
 export default class VideoList extends Component {
   setup() {
     store.subscribe(this.render.bind(this));
-    this.filter = TYPES.FILTER.WATCH_LATER;
+    this.filter = FILTERS.WATCH_LATER;
 
     const options = {
       threshold: INTERSECTION_OBSERVER_OPTIONS.IFRAME_LOAD_THRESHOLD,
@@ -80,29 +80,36 @@ export default class VideoList extends Component {
     });
   }
 
-  setFilter(newFilter = TYPES.FILTER.WATCH_LATER) {
+  setFilter(newFilter = FILTERS.WATCH_LATER) {
     if (this.filter === newFilter) {
       return;
     }
 
     pauseAllIframeVideo();
-    this.toggleVideoList();
     this.filter = newFilter;
     this.showByFilter();
   }
 
   showByFilter() {
-    const savedVideos = localStorageGetItem(LOCALSTORAGE_KEYS.VIDEOS);
-    const isWatched = this.filter === TYPES.FILTER.WATCHED;
-    const watchedVideos = Object.keys(savedVideos).filter(
-      (videoId) => savedVideos[videoId].watched === isWatched
-    );
+    const targetVideoIdList = Object.entries(
+      localStorageGetItem(LOCALSTORAGE_KEYS.VIDEOS)
+    )
+      .filter(([_, value]) => this.filter(value))
+      .map(([key]) => key);
 
-    watchedVideos.length === 0
-      ? $(SELECTORS.VIDEO_LIST.NO_VIDEO_MESSAGE_CLASS).classList.remove(
-          'd-none'
-        )
-      : $(SELECTORS.VIDEO_LIST.NO_VIDEO_MESSAGE_CLASS).classList.add('d-none');
+    $$('.clip').forEach(($clip) => {
+      if (targetVideoIdList.includes($clip.dataset.videoId)) {
+        $clip.classList.remove('d-none');
+        return;
+      }
+      $clip.classList.add('d-none');
+    });
+
+    if (targetVideoIdList.length) {
+      $(SELECTORS.VIDEO_LIST.NO_VIDEO_MESSAGE_CLASS).classList.add('d-none');
+      return;
+    }
+    $(SELECTORS.VIDEO_LIST.NO_VIDEO_MESSAGE_CLASS).classList.remove('d-none');
   }
 
   render(preStates, states) {
@@ -127,7 +134,7 @@ export default class VideoList extends Component {
         ...savedVideos[latestVideoId],
       }).createTemplate(TYPES.PAGE.MANAGEMENT);
 
-      if (this.filter === TYPES.FILTER.WATCHED) {
+      if (this.filter === FILTERS.WATCHED) {
         newVideo.classList.add('d-none');
       }
 
@@ -139,17 +146,17 @@ export default class VideoList extends Component {
     }
   }
 
-  onClickWatchedButton(event) {
+  onClickStatusButton(event, status) {
     const clip = event.target.closest(SELECTORS.VIDEO_LIST.CLIP_CLASS);
     const savedVideos = localStorageGetItem(LOCALSTORAGE_KEYS.VIDEOS);
 
-    savedVideos[clip.dataset.videoId].watched = !savedVideos[
-      clip.dataset.videoId
-    ].watched;
+    savedVideos[clip.dataset.videoId][status] =
+      !savedVideos[clip.dataset.videoId][status];
 
     localStorageSetItem(LOCALSTORAGE_KEYS.VIDEOS, savedVideos);
-    clip.classList.toggle('d-none');
-    $(SELECTORS.CLIP.WATCHED_BUTTON, clip).classList.toggle('checked');
+
+    event.target.classList.toggle('checked');
+
     this.showByFilter();
   }
 
@@ -157,9 +164,11 @@ export default class VideoList extends Component {
     const clip = event.target.closest(SELECTORS.VIDEO_LIST.CLIP_CLASS);
     const savedVideos = localStorageGetItem(LOCALSTORAGE_KEYS.VIDEOS);
 
-    if (
-      !(confirm(MESSAGES.CONFIRM.DELETE) && savedVideos[clip.dataset.videoId])
-    ) {
+    if (!confirm(MESSAGES.CONFIRM.DELETE)) {
+      throw new Error(ERROR_MESSAGES.CANCEL_DELETE);
+    }
+
+    if (savedVideos[clip.dataset.videoId]) {
       throw new Error(ERROR_MESSAGES.VIDEO_DELETE_ERROR);
     }
     delete savedVideos[clip.dataset.videoId];
@@ -178,19 +187,14 @@ export default class VideoList extends Component {
 
     let message = '';
 
-    // TODO:
-    // event Name이 Manager Button에만 있는 경우.
-    // 다른 곳에 eventName이 있는 경우 showSnacbard의 위치를 바꾸어야 함.
     switch (eventName) {
       case 'watched':
-        this.onClickWatchedButton(event);
+        this.onClickStatusButton(event, 'watched');
         message = MESSAGES.ACTION_SUCCESS.WATCHED_STATE_SETTING;
         break;
       case 'like':
-        message = ERROR_MESSAGES.NOT_AVAILABLE_BUTTON;
-        break;
-      case 'comment':
-        message = ERROR_MESSAGES.NOT_AVAILABLE_BUTTON;
+        this.onClickStatusButton(event, 'liked');
+        message = MESSAGES.ACTION_SUCCESS.WATCHED_STATE_SETTING;
         break;
       case 'delete':
         try {

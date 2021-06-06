@@ -24,6 +24,7 @@ export const ERROR_MESSAGES = {
   VIDEO_DELETE_ERROR: '비디오 삭제에 실패했습니다.',
   EMPTY_SEARCH_TERM: '검색어를 입력해주세요.',
   NOT_AVAILABLE_BUTTON: '현재 이용할 수 없는 버튼입니다.',
+  CANCEL_DELETE: '삭제를 취소했습니다.',
 };
 
 export const LOCALSTORAGE_KEYS = {
@@ -37,13 +38,21 @@ export const INTERSECTION_OBSERVER_OPTIONS = {
 };
 
 export const TYPES = {
-  FILTER: {
-    WATCH_LATER: 'watchLater',
-    WATCHED: 'watched',
-  },
   PAGE: {
     MANAGEMENT: 'management',
     SEARCH: 'search',
+  },
+};
+
+export const FILTERS = {
+  WATCH_LATER: (value) => {
+    return value.watched === false;
+  },
+  WATCHED: (value) => {
+    return value.watched === true;
+  },
+  LIKED: (value) => {
+    return value.liked === true;
   },
 };
 
@@ -51,6 +60,7 @@ export const SELECTORS = {
   MENU_BUTTON: {
     WATCH_LATER_ID: '#watch-later-button',
     WATCHED_ID: '#watched-button',
+    LIKED_ID: '#liked-button',
     SEARCH_ID: '#search-button',
   },
 

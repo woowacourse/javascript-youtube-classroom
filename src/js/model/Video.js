@@ -20,6 +20,7 @@ export default class Video {
     publishedAt,
     thumbnailURL,
     watched = false,
+    liked = false,
   }) {
     this.videoId = videoId;
     this.videoTitle = unescapeString(videoTitle);
@@ -30,6 +31,7 @@ export default class Video {
     this.uploadTime = this.createVideoUploadDate(publishedAt);
     this.thumbnailURL = thumbnailURL;
     this.watched = watched;
+    this.liked = liked;
 
     if (Video.cache[this.videoId]) return;
     Video.cache[this.videoId] = this.toJSON();
@@ -63,6 +65,7 @@ export default class Video {
       uploadTime: this.uploadTime,
       thumbnailURL: this.thumbnailURL,
       watched: this.watched,
+      liked: this.liked,
     };
   }
 
@@ -242,35 +245,29 @@ export default class Video {
 
     const watchedButton = createElement({
       tag: 'button',
-      classes: [CLASS_NAMES.CLIP.WATCHED_BUTTON, 'opacity-hover'],
+      classes: [CLASS_NAMES.CLIP.WATCHED_BUTTON, 'scale-hover'],
       textContent: '✅',
     });
     const likeButton = createElement({
       tag: 'button',
-      classes: [CLASS_NAMES.CLIP.LIKE_BUTTON, 'opacity-hover'],
+      classes: [CLASS_NAMES.CLIP.LIKE_BUTTON, 'scale-hover'],
       textContent: '👍',
-    });
-    const commentButton = createElement({
-      tag: 'button',
-      classes: [CLASS_NAMES.CLIP.COMMENT_BUTTON, 'opacity-hover'],
-      textContent: '💬',
     });
     const deleteButton = createElement({
       tag: 'button',
-      classes: [CLASS_NAMES.CLIP.DELETE_BUTTON, 'opacity-hover'],
+      classes: [CLASS_NAMES.CLIP.DELETE_BUTTON, 'scale-hover'],
       textContent: '🗑️',
     });
 
     this.watched && watchedButton.classList.add('checked');
+    this.liked && likeButton.classList.add('checked');
 
     watchedButton.dataset.eventName = 'watched';
     likeButton.dataset.eventName = 'like';
-    commentButton.dataset.eventName = 'comment';
     deleteButton.dataset.eventName = 'delete';
 
     buttonContainer.appendChild(watchedButton);
     buttonContainer.appendChild(likeButton);
-    buttonContainer.appendChild(commentButton);
     buttonContainer.appendChild(deleteButton);
 
     return buttonContainer;

@@ -64,6 +64,6 @@ export default class YoutubeAPIManager {
     return res.items;
   }
   catch(error) {
-    console.log(error);
+    console.error(error);
   }
 }

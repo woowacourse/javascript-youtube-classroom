@@ -63,7 +63,7 @@ export const isEmptyObject = (object) => {
   try {
     if (Object.keys(object).length === 0) return true;
   } catch (error) {
-    console.log(error);
+    console.error(error);
     return false;
   }
 };
