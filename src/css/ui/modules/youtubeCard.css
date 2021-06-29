@@ -1,9 +1,27 @@
 .video-wrapper {
   display: grid;
-  grid-template-columns: repeat(auto-fit, 236px);
-  grid-row-gap: 0px;
-  grid-column-gap: 4px;
+  grid-template-columns: repeat(4, 1fr);
+  grid-row-gap: 12px;
+  grid-column-gap: 20px;
   justify-content: center;
+}
+
+@media screen and (max-width: 960px) {
+  .video-wrapper {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media screen and (max-width: 600px) {
+  .video-wrapper {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media screen and (max-width: 400px) {
+  .video-wrapper {
+    grid-template-columns: repeat(1, 1fr);
+  }
 }
 
 .clip {
