@@ -50,6 +50,10 @@ class VideoView {
       if (e.target.classList.contains(`${CLASS_NAME.TRASH_CAN}`)) {
         this._handleRemoveSaved(e);
       }
+
+      if (e.target.classList.contains(`${CLASS_NAME.LIKED_THUMB}`)) {
+        this._handleCheckLiked(e);
+      }
     });
   }
 
@@ -66,6 +70,24 @@ class VideoView {
     savedVideoManager._setState({ savedVideos });
 
     const message = SNACKBAR_MESSAGE.MOVE(this.clickedMenu === MENU.WATCH_LATER ? "본" : "볼");
+    popMessage(this.$snackbar, message);
+  }
+
+  _handleCheckLiked(e) {
+    const videoId = e.target.closest(`.${CLASS_NAME.CLIP_ACTIONS}`).dataset.videoId;
+    const isLiked = this.savedVideos.find(video => video.videoId === videoId).isLiked;
+
+    const savedVideos = this.savedVideos.map(video => {
+      if (video.videoId === videoId) {
+        video.isLiked = !video.isLiked;
+      }
+
+      return video;
+    });
+
+    savedVideoManager._setState({ savedVideos });
+
+    const message = isLiked ? SNACKBAR_MESSAGE.UNLIKE : SNACKBAR_MESSAGE.LIKE;
     popMessage(this.$snackbar, message);
   }
 
@@ -87,10 +109,21 @@ class VideoView {
             .map(video => createVideoTemplate(video, SECTION.MAIN))
             .join("")
         : createNoWatchLaterTemplate();
-    } else {
+    }
+
+    if (this.clickedMenu === MENU.WATCHED) {
       this.$videoViewVideoWrapper.innerHTML = this.savedVideos.length
         ? this.savedVideos
             .filter(video => video.isWatched)
+            .map(video => createVideoTemplate(video, SECTION.MAIN))
+            .join("")
+        : createNoWatchLaterTemplate();
+    }
+
+    if (this.clickedMenu === MENU.LIKED) {
+      this.$videoViewVideoWrapper.innerHTML = this.savedVideos.length
+        ? this.savedVideos
+            .filter(video => video.isLiked)
             .map(video => createVideoTemplate(video, SECTION.MAIN))
             .join("")
         : createNoWatchLaterTemplate();

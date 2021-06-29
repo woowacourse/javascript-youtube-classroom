@@ -18,6 +18,8 @@ export const SNACKBAR_MESSAGE = Object.freeze({
   DELETE: "성공적으로 삭제되었습니다.",
   SAVE: "성공적으로 저장되었습니다.",
   MOVE: section => `${section} 영상으로 이동되었습니다.`,
+  LIKE: "좋아요 영상에 추가되었습니다.",
+  UNLIKE: "좋아요 영상에서 삭제되었습니다.",
 });
 
 export const STORAGE = Object.freeze({
@@ -32,6 +34,7 @@ export const SECTION = Object.freeze({
 export const MENU = Object.freeze({
   WATCH_LATER: "watch-later",
   WATCHED: "watched",
+  LIKED: "liked",
 });
 
 export const CLASS_NAME = Object.freeze({
@@ -39,6 +42,7 @@ export const CLASS_NAME = Object.freeze({
   MENU_BTN: "menu-btn",
   WATCH_LATER_BTN: "menu-section__watch-later-btn",
   WATCHED_BTN: "menu-section__watched-btn",
+  LIKED_BTN: "menu-section__liked-btn",
   VIDEO_SEARCH_BTN: "menu-section__video-search-btn",
 
   SEARCH_MODAL: "search-modal",
@@ -58,6 +62,7 @@ export const CLASS_NAME = Object.freeze({
   VIDEO_VIEW_VIDEO_WRAPPER: "video-view__video-wrapper",
   CLIP_ACTIONS: "clip__actions",
   WATCHED_CHECK: "clip__watched-check",
+  LIKED_THUMB: "clip__thumbs-up",
   TRASH_CAN: "clip__trash-can",
 
   SKELETON: "skeleton",
