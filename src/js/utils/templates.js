@@ -36,7 +36,7 @@ export const createVideoTemplate = (video, wrapperName) => `
 
 const createSaveBtnTemplate = video => `
 <div class="d-flex justify-end">
-  <button class="clip__save-btn btn ${video.isSaved ? "hidden" : ""}" data-video-id="${
+  <button class="clip__save-btn btn  ${video.isSaved ? "hidden" : ""}" data-video-id="${
   video.videoId
 }">⬇️ 저장</button>
 </div>
@@ -46,7 +46,6 @@ const createActionBtnTemplate = video => `
 <div class="clip__actions" data-video-id="${video.videoId}">
   <span class="clip__watched-check ${video.isWatched ? "opacity-1" : "opacity-hover"}">✅</span>
   <span class="clip__thumbs-up opacity-hover">👍</span>
-  <span class="clip__comment opacity-hover">💬</span>
   <span class="clip__trash-can opacity-hover">🗑️</span>
 </div>
 `;
