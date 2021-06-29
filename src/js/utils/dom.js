@@ -8,13 +8,14 @@ export const popMessage = (() => {
 
   return ($target, message) => {
     $target.innerText = message;
+    $target.classList.add("show");
 
-    if (!timerId) {
-      $target.classList.toggle("show");
-      timerId = setTimeout(() => {
-        timerId = null;
-        $target.classList.toggle("show");
-      }, STANDARD_NUMS.SNACKBAR_DELAY);
+    if (timerId) {
+      clearTimeout(timerId);
     }
+
+    timerId = setTimeout(() => {
+      $target.classList.remove("show");
+    }, STANDARD_NUMS.SNACKBAR_DELAY);
   };
 })();
