@@ -5,6 +5,7 @@ export const createVideoTemplate = (video, wrapperName) => `
 <article class="clip">
   <div class="preview-container">
     <iframe
+      loading="lazy"
       width="100%"
       height="118"
       srcdoc="${getSrcDocAttribute(video)}"
