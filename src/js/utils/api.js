@@ -5,6 +5,7 @@ const BASE_URL = "https://shinsehantan-youtube.netlify.app/youtube/";
 const getParams = ({ part, q, maxResults, pageToken }) =>
   new URLSearchParams({ part, q, maxResults, pageToken }).toString();
 
+
 const request = async (url, option = {}) => {
   try {
     const res = await fetch(url, option);
@@ -27,6 +28,7 @@ const API = {
         part: "snippet",
         q: keyword,
         maxResults: STANDARD_NUMS.LOAD_CLIP_COUNT,
+
         pageToken: nextPageToken,
       })}`,
     );

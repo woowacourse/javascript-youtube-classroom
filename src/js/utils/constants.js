@@ -3,6 +3,7 @@ export const STANDARD_NUMS = Object.freeze({
   MAX_SAVE_KEYWORD_COUNT: 3,
   LOAD_CLIP_COUNT: 10,
   SNACKBAR_DELAY: 1000,
+
 });
 
 export const ALERT_MESSAGE = Object.freeze({
@@ -43,6 +44,7 @@ export const CLASS_NAME = Object.freeze({
   WATCH_LATER_BTN: "menu-section__watch-later-btn",
   WATCHED_BTN: "menu-section__watched-btn",
   LIKED_BTN: "menu-section__liked-btn",
+
   VIDEO_SEARCH_BTN: "menu-section__video-search-btn",
 
   SEARCH_MODAL: "search-modal",
@@ -69,4 +71,5 @@ export const CLASS_NAME = Object.freeze({
   NO_RESULT_IMAGE: "no-result-image",
   NO_SAVED_VIDEO_IMAGE: "no-saved-video-image",
   SNACKBAR: "snackbar",
+
 });

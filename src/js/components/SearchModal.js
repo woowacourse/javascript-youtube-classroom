@@ -11,6 +11,7 @@ import API from "../utils/api.js";
 import { createVideoTemplate } from "../utils/templates.js";
 import savedVideoManager from "../model/SavedVideoManager.js";
 
+
 // dummy API Response 사용할 경우
 // import { dummySearchedData } from "../data/dummy.js";
 class SearchModal {
@@ -32,6 +33,7 @@ class SearchModal {
   }
 
   _selectDOM() {
+
     this.$target = $(`.${CLASS_NAME.SEARCH_MODAL}`);
     this.$searchInput = $(`.${CLASS_NAME.SEARCH_MODAL_INPUT}`);
     this.$videoWrapper = $(`.${CLASS_NAME.SEARCH_MODAL_VIDEO_WRAPPER}`);
@@ -48,6 +50,7 @@ class SearchModal {
       e.preventDefault();
 
       this._handleSearchKeyword();
+
     });
 
     this.$target.addEventListener("click", e => {
@@ -58,10 +61,12 @@ class SearchModal {
 
     this.$modalCloseBtn.addEventListener("click", this._handleCloseModal.bind(this));
 
+
     this.$videoWrapper.addEventListener("click", e => {
       if (!e.target.classList.contains(`${CLASS_NAME.CLIP_SAVE_BTN}`)) return;
 
       this._handleSaveVideo(e.target);
+
     });
 
     this.$keywordHistory.addEventListener("click", e => {
@@ -76,6 +81,7 @@ class SearchModal {
       ([{ isIntersecting }]) => {
         if (isIntersecting) {
           this._handleLoadMore();
+
         }
       },
       { root: this.$scrollArea },
@@ -129,6 +135,7 @@ class SearchModal {
   }
 
   _showLoadingAnimation() {
+
     const skeletonCardTemplate = `
     <div class="skeleton">
       <div class="image"></div>
@@ -137,6 +144,7 @@ class SearchModal {
     </div>`;
 
     this.$videoWrapper.innerHTML = "";
+
     this.$videoWrapper.insertAdjacentHTML(
       "beforeend",
       skeletonCardTemplate.repeat(STANDARD_NUMS.LOAD_CLIP_COUNT),
@@ -148,6 +156,7 @@ class SearchModal {
   }
 
   async _handleSearchKeyword() {
+
     const keyword = this.$searchInput.value.trim();
 
     if (keyword.length === 0) {
@@ -159,6 +168,7 @@ class SearchModal {
       this.$scrollArea.scrollTo({ top: 0 });
       this._showLoadingAnimation();
 
+
       // dummy API Response 사용할 경우
       // const { items, nextPageToken } = dummySearchedData;
       const { items, nextPageToken } = await API.searchVideo(keyword);
@@ -168,12 +178,12 @@ class SearchModal {
           id: { videoId },
           snippet: { channelId, channelTitle, publishedAt, title, thumbnails },
         }) => ({
+
           videoId,
           channelId,
           channelTitle,
           publishedAt,
           title,
-          thumbnail: thumbnails.medium.url,
           isSaved: this.savedVideos.map(video => video.videoId).includes(videoId),
         }),
       );
@@ -184,6 +194,7 @@ class SearchModal {
       ];
       keywordHistory.splice(STANDARD_NUMS.MAX_SAVE_KEYWORD_COUNT, 1);
       this._setSearchKeywordState({ keyword, keywordHistory, videos, nextPageToken });
+
     } catch (err) {
       console.error(err);
     }
@@ -195,6 +206,7 @@ class SearchModal {
     try {
       this._showLoadingAnimation();
 
+
       const { items, nextPageToken } = await API.searchVideo(this.keyword, this.nextPageToken);
 
       const nextVideos = items.map(
@@ -202,17 +214,20 @@ class SearchModal {
           id: { videoId },
           snippet: { channelId, channelTitle, publishedAt, title, thumbnails },
         }) => ({
+
           videoId,
           channelId,
           channelTitle,
           publishedAt,
           title,
           thumbnail: thumbnails.medium.url,
+
           isSaved: this.savedVideos.map(video => video.videoId).includes(videoId),
         }),
       );
 
       this._setLoadMoreState({ videos: [...this.videos, ...nextVideos], nextPageToken });
+
     } catch (err) {
       console.error(err);
     }
@@ -224,6 +239,7 @@ class SearchModal {
   }
 
   _handleSaveVideo($saveBtn) {
+
     const savedVideoId = $saveBtn.dataset.videoId;
 
     if (this.savedVideos.length === STANDARD_NUMS.MAX_SAVE_VIDEO_COUNT) {
@@ -275,6 +291,7 @@ class SearchModal {
   }
 
   _renderSavedCount() {
+
     this.$savedVideoCount.textContent = `저장된 영상 갯수: ${this.savedVideos.length}/${STANDARD_NUMS.MAX_SAVE_VIDEO_COUNT}개`;
   }
 
@@ -283,6 +300,7 @@ class SearchModal {
   }
 
   _hideModal() {
+
     this.$target.classList.remove("open");
   }
 }

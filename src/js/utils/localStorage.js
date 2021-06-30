@@ -1,4 +1,5 @@
 export const setDataToLocalStorage = (key, value = []) => {
+
   try {
     localStorage.setItem(key, JSON.stringify(value));
   } catch (err) {
@@ -7,6 +8,7 @@ export const setDataToLocalStorage = (key, value = []) => {
 };
 
 export const getDataFromLocalStorage = (key, defaultValue = []) => {
+
   try {
     return JSON.parse(localStorage.getItem(key)) || defaultValue;
   } catch (err) {

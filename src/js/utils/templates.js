@@ -9,6 +9,7 @@ export const createVideoTemplate = (video, wrapperName) => `
       width="100%"
       height="118"
       srcdoc="${getSrcDocAttribute(video)}"
+
       src="https://www.youtube.com/embed/${video.videoId}"
       frameborder="0"
       allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
@@ -38,6 +39,7 @@ export const createVideoTemplate = (video, wrapperName) => `
 const createSaveBtnTemplate = video => `
 <div class="d-flex justify-end">
   <button class="clip__save-btn btn  ${video.isSaved ? "hidden" : ""}" data-video-id="${
+
   video.videoId
 }">⬇️ 저장</button>
 </div>

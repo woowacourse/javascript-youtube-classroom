@@ -39,6 +39,7 @@ class MenuSection {
       CLASS_NAME.WATCH_LATER_BTN,
       CLASS_NAME.WATCHED_BTN,
       CLASS_NAME.LIKED_BTN,
+
       CLASS_NAME.VIDEO_SEARCH_BTN,
     ];
 
