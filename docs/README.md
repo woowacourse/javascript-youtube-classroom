@@ -10,10 +10,10 @@
 
 ### TODO
 
-- [] 1. Web Store 모듈을 개발한다.
-  - [] 1-1. 데이터를 local storage에 저장할 수 있다.
-  - [] 1-2. 데이터를 local storage로 부터 받아올 수 있다.
-  - [] 1-3. ❌ 데이터는 100개 까지 저장할 수 있다.
+- [X] 1. Web Store 모듈을 개발한다.
+  - [X] 1-1. 데이터를 local storage에 저장할 수 있다.
+  - [X] 1-2. 데이터를 local storage로 부터 받아올 수 있다.
+  - [X] 1-3. ⛔️ 데이터는 100개 까지 저장할 수 있다.
 - [] 2. Fetcher 모듈을 개발한다.
 
 - [] 3. Video Domain을 작성한다.
