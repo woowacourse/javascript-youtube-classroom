@@ -5,6 +5,7 @@ export default class ModalView {
   constructor() {
     this.registerDOM();
     this.videoItemList = [];
+    this.throttle = null;
   }
 
   registerDOM() {
@@ -32,16 +33,22 @@ export default class ModalView {
     });
   }
 
+  bindVideoListScroll(callback) {
+    this.$videoList.addEventListener('scroll', callback);
+  }
+
   appendEmptyList() {
     this.$videoList.insertAdjacentHTML('beforeend', '<li></li>'.repeat(10));
   }
 
   appendVideoItem() {
-    this.$videoList.childNodes.forEach(li => this.videoItemList.push(new VideoItem(li)));
+    [...this.$videoList.childNodes].slice(-10).forEach(li => {
+      this.videoItemList.push(new VideoItem(li));
+    });
   }
 
   getSkeletonTemplate() {
-    this.videoItemList.forEach(videoItem => videoItem.getVideoItemTemplate());
+    this.videoItemList.slice(-10).forEach(videoItem => videoItem.getVideoItemTemplate());
   }
 
   getData() {
@@ -52,6 +59,24 @@ export default class ModalView {
   }
 
   updateVideoItems(data) {
-    this.videoItemList.forEach((videoItem, index) => videoItem.getVideoItemTemplate(data[index]));
+    this.videoItemList
+      .slice(-10)
+      .forEach((videoItem, index) => videoItem.getVideoItemTemplate(data[index]));
+  }
+
+  videoListScroll() {
+    if (!this.throttle) {
+      this.throttle = setTimeout(() => {
+        this.throttle = null;
+        if (
+          this.$videoList.scrollHeight - this.$videoList.scrollTop <=
+          this.$videoList.offsetHeight
+        ) {
+          this.appendEmptyList();
+          this.appendVideoItem();
+          this.getData();
+        }
+      }, 500);
+    }
   }
 }

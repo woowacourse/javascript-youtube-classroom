@@ -7,6 +7,7 @@ export default class EventHandler {
     this.modalView = new ModalView();
     this.setBindOnSearchButtons();
     this.setBindOnClickDimmer();
+    this.setBindVideoListScroll();
   }
 
   setBindOnSearchButtons() {
@@ -16,6 +17,10 @@ export default class EventHandler {
 
   setBindOnClickDimmer() {
     this.modalView.bindOnClickDimmer(this.clickDimmer.bind(this));
+  }
+
+  setBindVideoListScroll() {
+    this.modalView.bindVideoListScroll(this.videoListScroll.bind(this));
   }
 
   clickModalOpenButton() {
@@ -30,6 +35,10 @@ export default class EventHandler {
     this.modalView.appendEmptyList();
     this.modalView.appendVideoItem();
     this.modalView.getData();
+  }
+
+  videoListScroll() {
+    this.modalView.videoListScroll();
   }
 
   // 검색 버튼 누르면 제목으로 API 요청하기
