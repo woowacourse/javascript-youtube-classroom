@@ -1,4 +1,5 @@
 import youtubeSearchAPI from "../api/YoubeSearchapi.js";
+import { checkValidSearchInput } from "../util/validator.js";
 import template from "./templates.js";
 
 class SearchModal {
@@ -39,11 +40,17 @@ class SearchModal {
       (event.type === "keypress" && event.key === "Enter") ||
       event.type === "click"
     ) {
-      this.keyword = this.$searchInputKeyword.value;
-      this.$videoListContainer.replaceChildren();
-      this.pageToken = null;
-      this.$searchInputKeyword.blur();
-      this.callApi();
+      try {
+        this.keyword = this.$searchInputKeyword.value;
+        checkValidSearchInput(this.keyword);
+
+        this.$videoListContainer.replaceChildren();
+        this.pageToken = null;
+        this.$searchInputKeyword.blur();
+        this.callApi();
+      } catch (err) {
+        alert(err);
+      }
     }
   }
 
