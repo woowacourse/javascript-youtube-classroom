@@ -2,17 +2,23 @@ import { $ } from '../utils/dom';
 
 export default class Modal {
   constructor() {
-    this.modal = $('.modal-container');
     this.addSearchModalButtonClickEvent();
+    this.addModalOuterClickEvent();
   }
 
-  openSearchModal() {
-    this.modal.classList.toggle('hide');
+  toggleShowSearchModal() {
+    $('.modal-container').classList.toggle('hide');
   }
 
   addSearchModalButtonClickEvent() {
     $('#search-modal-button').addEventListener('click', () => {
-      this.openSearchModal();
+      this.toggleShowSearchModal();
+    });
+  }
+
+  addModalOuterClickEvent() {
+    window.addEventListener('click', e => {
+      e.target === $('.dimmer') ? this.toggleShowSearchModal() : false;
     });
   }
 }
