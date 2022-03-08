@@ -67,6 +67,14 @@ const template = (json) => {
     .join('');
 };
 
+const SKELETON_TEMPLATE = `
+<div class="skeleton">
+<div class="image"></div>
+<p class="line"></p>
+<p class="line"></p>
+</div>
+  `;
+
 export default class SearchModal {
   constructor(element) {
     this.element = element;
@@ -98,9 +106,9 @@ export default class SearchModal {
       const videoIDs = getStorageVideoIDs(KEY);
 
       if (videoIDs.length > 99) {
-        console.log(videoIDs.length);
         return;
       }
+
       window.localStorage.setItem(
         KEY,
         JSON.stringify(videoIDs.concat(videoID))
@@ -155,8 +163,13 @@ export default class SearchModal {
   }
 
   async fetchData(props) {
+    this.element
+      .querySelector('.video-list')
+      .insertAdjacentHTML('beforeend', SKELETON_TEMPLATE.repeat(10));
+
     const result = await fetch(stringQuery(props));
     const json = await result.json();
+    this.element.querySelectorAll('.skeleton').forEach((ele) => ele.remove());
     this.pageToken = json.nextPageToken;
 
     this.element
