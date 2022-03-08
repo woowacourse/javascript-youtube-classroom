@@ -27,9 +27,14 @@ const stringQuery = (props) => {
   }
   return `${query}pageToken=${pageToken}`;
 };
+const KEY = 'VIDEO_IDS';
 
-const template = (json) =>
-  json.items
+const getStorageVideoIDs = (key) =>
+  JSON.parse(window.localStorage.getItem(key)) || [];
+
+const template = (json) => {
+  const videoIds = getStorageVideoIDs(KEY);
+  return json.items
     .map((item) => {
       const {
         id: { videoId },
@@ -43,6 +48,10 @@ const template = (json) =>
         },
       } = item;
 
+      const storeButton = videoIds.includes(videoId)
+        ? ''
+        : '<button class="video-item__save-button button">⬇ 저장</button>';
+
       return `
         <li class="video-item" data-video-id="${videoId}">
           <img
@@ -51,11 +60,12 @@ const template = (json) =>
           <h4 class="video-item__title">${title}</h4>
           <p class="video-item__channel-name">${channelTitle}</p>
           <p class="video-item__published-date">${publishTime}</p>
-          <button class="video-item__save-button button">⬇ 저장</button>
+          ${storeButton}
         </li>
           `;
     })
     .join('');
+};
 
 export default class SearchModal {
   constructor(element) {
@@ -65,6 +75,8 @@ export default class SearchModal {
   }
 
   bindEvents() {
+    this.element.addEventListener('click', this.storeIDHandler.bind(this));
+
     const dimmer = this.element.querySelector('.dimmer');
     dimmer.addEventListener('click', this.closeModalHandler.bind(this));
 
@@ -77,6 +89,18 @@ export default class SearchModal {
 
   closeModalHandler() {
     this.element.classList.add('hide');
+  }
+
+  storeIDHandler(e) {
+    if (e.target.className.includes('video-item__save-button')) {
+      const videoID = e.target.closest('li').dataset.videoId;
+
+      const videoIDs = getStorageVideoIDs(KEY);
+      window.localStorage.setItem(
+        KEY,
+        JSON.stringify(videoIDs.concat(videoID))
+      );
+    }
   }
 
   scrollHandler(e) {
