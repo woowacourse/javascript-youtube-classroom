@@ -1,0 +1,26 @@
+{
+  "name": "javascript-youtube-classroom",
+  "version": "1.0.0",
+  "description": "나만의 유튜브 강의실",
+  "main": "index.js",
+  "directories": {
+    "doc": "docs"
+  },
+  "scripts": {
+    "test": "jest --watch --no-cache"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/woowacourse/javascript-youtube-classroom.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/woowacourse/javascript-youtube-classroom/issues"
+  },
+  "homepage": "https://github.com/woowacourse/javascript-youtube-classroom#readme",
+  "devDependencies": {
+    "jest": "^27.5.1"
+  }
+}
