@@ -21,7 +21,9 @@
   },
   "homepage": "https://github.com/airman5573/javascript-youtube-classroom#readme",
   "devDependencies": {
+    "@babel/cli": "^7.17.6",
     "@babel/core": "^7.17.5",
+    "@babel/plugin-transform-runtime": "^7.17.0",
     "@babel/preset-env": "^7.16.11",
     "@commitlint/cli": "^16.2.1",
     "babel-jest": "^27.5.1",
@@ -48,5 +50,8 @@
     "commitizen": {
       "path": "cz-customizable"
     }
+  },
+  "dependencies": {
+    "@babel/runtime": "^7.17.2"
   }
 }
