@@ -5,7 +5,7 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
 module.exports = {
   mode: 'development',
-  entry: './src/js/index.js',
+  entry: './src/js/App.js',
   resolve: {
     extensions: ['.js', '.css'],
   },
@@ -38,7 +38,6 @@ module.exports = {
             ? MiniCssExtractPlugin.loader // 프로덕션 환경
             : 'style-loader', // 개발 환경
           'css-loader',
-          'sass-loader',
         ],
         exclude: /node_modules/,
       },
