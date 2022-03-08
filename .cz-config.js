@@ -39,7 +39,7 @@ module.exports = {
     },
   ],
   scopes: [
-    { name: 'docs' },
+    { name: 'todo' },
     { name: 'ui' },
     { name: 'validation' },
     { name: 'util' },
