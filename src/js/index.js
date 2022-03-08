@@ -1,7 +1,9 @@
 import { $ } from './util/dom.js';
 import YoutubeMachine from './domain/YoutubeMachine.js';
+import { renderSkeletonUI, removeSkeletonUI } from './UI/renderVideoItems.js';
 
 export default function App() {
+  renderSkeletonUI();
   const youtubeMachine = new YoutubeMachine();
 
   $('#search-modal-button').addEventListener('click', () => {
