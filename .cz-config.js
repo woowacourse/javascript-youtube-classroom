@@ -42,6 +42,7 @@ module.exports = {
     { name: 'todo' },
     { name: 'ui' },
     { name: 'element' },
+    { name: 'domain' },
     { name: 'validation' },
     { name: 'util' },
     { name: 'test' },
