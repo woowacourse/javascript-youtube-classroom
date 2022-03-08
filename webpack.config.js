@@ -5,7 +5,7 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
 module.exports = {
   mode: 'development',
-  entry: './src/index.js',
+  entry: './src/js/index.js',
   resolve: {
     extensions: ['.js', '.css'],
   },
@@ -32,7 +32,7 @@ module.exports = {
         ],
       },
       {
-        test: /\.s[ac]ss$/i,
+        test: /\.css$/i,
         use: [
           process.env.NODE_ENV === 'production'
             ? MiniCssExtractPlugin.loader // 프로덕션 환경
