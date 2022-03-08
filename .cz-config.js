@@ -41,6 +41,7 @@ module.exports = {
   scopes: [
     { name: 'todo' },
     { name: 'ui' },
+    { name: 'element' },
     { name: 'validation' },
     { name: 'util' },
     { name: 'test' },
