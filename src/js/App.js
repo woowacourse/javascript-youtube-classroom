@@ -25,6 +25,7 @@ class App {
   closeModalHandler() {
     const modalContainer = document.querySelector('.modal-container');
     modalContainer.classList.add('hide');
+    console.log('close');
   }
 }
 
