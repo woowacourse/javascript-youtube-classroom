@@ -1,34 +1,9 @@
-import { API_KEY } from '../api.js';
 import { $ } from './util/dom.js';
-import dummyData from '../../dummyData.js';
-
-const getURL = (searchInput, nextPageToken) => {
-  const URL = `https://www.googleapis.com/youtube/v3/search?part=snippet&q=${searchInput}&maxResults=10&type=video&key=${API_KEY}`;
-  if (nextPageToken) {
-    return URL.concat(`&pageToken=${nextPageToken}`);
-  }
-  return URL;
-};
-
-const getSearchData = searchInput => {
-  const URL = getURL(searchInput);
-  fetch(URL)
-    .then(response => response.json())
-    .then(data => {
-      console.log(data.items);
-    })
-    .catch(error => console.log('error:', error));
-};
-
-const getNextSearchData = ({ nextPageToken }) => {
-  const nextURL = URL + `&pageToken=${nextPageToken}`;
-  fetch(nextURL)
-    .then(response => response.json())
-    .then(data => console.log(data.items))
-    .catch(error => console.log('error:', error));
-};
+import YoutubeMachine from './domain/YoutubeMachine.js';
 
 export default function App() {
+  const youtubeMachine = new YoutubeMachine();
+
   $('#search-modal-button').addEventListener('click', () => {
     $('.modal-container').classList.toggle('hide');
   });
@@ -39,14 +14,21 @@ export default function App() {
     }
   };
 
-  $('#search-button').addEventListener('click', () => {
+  const handleSearch = () => {
     try {
       const searchInput = $('#search-input-keyword').value.trim();
       validateInput(searchInput);
-      getSearchData(searchInput);
+      youtubeMachine.searchTarget = searchInput;
+      youtubeMachine.getSearchData();
     } catch (error) {
       alert(error.message);
     }
+  };
+
+  $('#search-button').addEventListener('click', handleSearch);
+
+  $('#search-input-keyword').addEventListener('keydown', e => {
+    if (e.key === 'Enter') handleSearch();
   });
 }
 
