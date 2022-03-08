@@ -2,6 +2,12 @@ import '../css/index.css';
 
 const isEmptyKeyword = (keyword) => keyword.trim().length === 0;
 
+const validateKeyword = (keyword) => {
+  if (isEmptyKeyword(keyword)) {
+    throw new Error('검색어를 입력해 주세요.');
+  }
+};
+
 class App {
   constructor() {
     this.bindEvents();
@@ -38,11 +44,12 @@ class App {
     const keyword = searchInputKeyword.value;
     const searchErrorMessage = document.querySelector('#search-error-message');
 
-    if (isEmptyKeyword(keyword)) {
+    try {
+      validateKeyword(keyword);
+      searchErrorMessage.textContent = '';
+    } catch (error) {
       searchErrorMessage.textContent = '검색어를 입력해 주세요.';
-      return;
     }
-    searchErrorMessage.textContent = '';
   }
 }
 
