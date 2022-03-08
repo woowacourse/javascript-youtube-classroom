@@ -1,4 +1,4 @@
-import EventHandler from './event/EventHandler';
+import EventHandler from './event/EventHandler.js';
 
 export default class App {
   init() {

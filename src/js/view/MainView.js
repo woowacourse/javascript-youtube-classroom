@@ -8,9 +8,6 @@ export default class MainView {
   }
 
   bindModalOpenButton(callback) {
-    this.$modalOpenButton.addEventListener('click', event => {
-      event.preventDefault();
-      callback();
-    });
+    this.$modalOpenButton.addEventListener('click', callback);
   }
 }

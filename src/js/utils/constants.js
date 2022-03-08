@@ -80,3 +80,5 @@ const mockData = [
     id: 9,
   },
 ];
+
+export default mockData;

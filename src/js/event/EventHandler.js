@@ -11,6 +11,7 @@ export default class EventHandler {
 
   setBindOnSearchButtons() {
     this.mainView.bindModalOpenButton(this.clickModalOpenButton.bind(this));
+    this.modalView.bindOnClickSearchButton(this.clickSearchButton.bind(this));
   }
 
   setBindOnClickDimmer() {
@@ -23,6 +24,12 @@ export default class EventHandler {
 
   clickDimmer() {
     this.modalView.hideModal();
+  }
+
+  clickSearchButton() {
+    this.modalView.appendEmptyList();
+    this.modalView.appendVideoItem();
+    this.modalView.getData();
   }
 
   // 검색 버튼 누르면 제목으로 API 요청하기
