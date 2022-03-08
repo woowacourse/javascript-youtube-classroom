@@ -18,7 +18,7 @@ class MainPage {
     );
     this.$dimmer.addEventListener(
       "click",
-      this.modalComponent.toggleModalContainerView.bind(this.modalComponent)
+      this.modalComponent.initModalState.bind(this.modalComponent)
     );
   }
 }

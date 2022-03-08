@@ -16,12 +16,22 @@ class SearchModal {
     this.$modalContainer.classList.toggle("hide");
   }
 
+  initModalState() {
+    this.toggleModalContainerView();
+    this.$videoListContainer.replaceChildren();
+    this.$searchInputKeyword.value = "";
+  }
+
   bindEvent() {
     this.$searchInputKeyword.addEventListener(
       "keypress",
       this.searchVideo.bind(this)
     );
     this.$searchButton.addEventListener("click", this.searchVideo.bind(this));
+    this.$videoListContainer.addEventListener(
+      "scroll",
+      this.requestAdditionalSearchResult.bind(this)
+    );
   }
 
   searchVideo(event) {
@@ -29,6 +39,7 @@ class SearchModal {
       (event.type === "keypress" && event.key === "Enter") ||
       event.type === "click"
     ) {
+      this.keyword = this.$searchInputKeyword.value;
       this.$videoListContainer.replaceChildren();
       this.pageToken = null;
       this.$searchInputKeyword.blur();
@@ -36,9 +47,19 @@ class SearchModal {
     }
   }
 
+  requestAdditionalSearchResult() {
+    const { offsetHeight, scrollHeight, scrollTop } = this.$videoListContainer;
+    if (scrollTop === 0) return;
+    if (offsetHeight + scrollTop >= scrollHeight) {
+      this.callApi();
+    }
+  }
+
   async callApi() {
-    const { value } = this.$searchInputKeyword;
-    const data = await youtubeSearchAPI.searchByPage(value, this.pageToken);
+    const data = await youtubeSearchAPI.searchByPage(
+      this.keyword,
+      this.pageToken
+    );
     this.pageToken = data.nextPageToken;
     data.items.forEach((item) => {
       const {
