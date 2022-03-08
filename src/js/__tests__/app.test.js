@@ -5,7 +5,6 @@
 // - [ ] 유튜브 검색 API를 사용해 내가 보고 싶은 영상들을 검색할 수 있다.
 
 // UserLibrary에 영상이 저장되는지 확인
-// UserLibrary 저장된 값이 잘 불러들여지는지 확인
 // UserLibrary 101개 이상의 동영상이 저장되면 alert을 띄운다.
 import UserLibrary from "../app";
 
@@ -15,4 +14,17 @@ test("UserLibrary에 영상이 저장되어야 한다.", () => {
 
   userLibrary.setData(testData);
   expect(userLibrary.getData().includes(testData)).toBe(true);
+});
+
+test("UserLibrary 101개 이상의 동영상이 저장되면 alert을 띄운다.", () => {
+  const userData = Array.from({ length: 101 }, (_, index) => ({
+    id: index + 1,
+  }));
+  const userLibrary = new UserLibrary();
+
+  expect(() => {
+    userData.forEach(() => {
+      userLibrary.setData(userData);
+    });
+  }).toThrowError();
 });
