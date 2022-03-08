@@ -4,9 +4,9 @@
   "description": "<p align=\"middle\" >   <img width=\"200px;\" src=\"./images/laptop_with_youtube_logo.png\"/> </p> <h2 align=\"middle\">level1 - 나만의 유튜브 강의실</h2> <p align=\"middle\">자바스크립트와 외부 API를 이용해 구현 하는 나만의 유튜브 강의실</p> <p align=\"middle\">   <img src=\"https://img.shields.io/badge/version-1.0.0-blue?style=flat-square\" alt=\"template version\"/>   <img src=\"https://img.shields.io/badge/language-html-red.svg?style=flat-square\"/>   <img src=\"https://img.shields.io/badge/language-css-blue.svg?style=flat-square\"/>   <img src=\"https://img.shields.io/badge/language-js-yellow.svg?style=flat-square\"/>   <img src=\"https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square\"/> </p>",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "jest --watch --no-cache",
     "build": "webpack",
-    "dev": "webpack serve --open" 
+    "dev": "webpack serve --open"
   },
   "repository": {
     "type": "git",
@@ -18,17 +18,31 @@
     "url": "https://github.com/yunjin-kim/javascript-youtube-classroom/issues"
   },
   "devDependencies": {
-    "webpack": "^5.69.1",
-    "webpack-cli": "^4.9.2",
+    "@babel/core": "^7.16.12",
+    "@babel/preset-env": "^7.16.11",
+    "babel-jest": "^27.4.6",
+    "babel-loader": "^8.2.3",
+    "clean-webpack-plugin": "^4.0.0",
+    "css-loader": "^6.6.0",
     "eslint": "^8.9.0",
-    "jest": "^27.4.7",
-    "prettier": "^2.5.1",
     "eslint-config-airbnb-base": "^15.0.0",
     "eslint-plugin-import": "^2.25.4",
-    "css-loader": "^6.6.0",
-    "style-loader": "^3.3.1",
     "html-webpack-plugin": "^5.5.0",
+    "jest": "^27.4.7",
+    "prettier": "^2.5.1",
+    "style-loader": "^3.3.1",
+    "webpack": "^5.69.1",
+    "webpack-cli": "^4.9.2",
     "webpack-dev-server": "^4.7.4"
   },
-  "homepage": "https://github.com/yunjin-kim/javascript-youtube-classroom#readme"
+  "jest": {
+    "transform": {
+      "^.+\\.js$": "babel-jest"
+    }
+  },
+  "homepage": "https://github.com/yunjin-kim/javascript-youtube-classroom#readme",
+  "dependencies": {
+    "axios": "^0.26.0",
+    "node-fetch": "^3.2.2"
+  }
 }
