@@ -1,9 +1,11 @@
-import { $ } from './utils/dom.js';
+import SearchModal from './searchModal';
+import $ from './utils/dom';
 
 export default class App {
   constructor() {
     this.$nav = $('.nav');
     this.addEvent();
+    this.searchModal = new SearchModal();
   }
 
   addEvent() {
