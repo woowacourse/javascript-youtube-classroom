@@ -7,6 +7,7 @@
 // UserLibrary에 영상이 저장되는지 확인
 // UserLibrary 저장된 값이 잘 불러들여지는지 확인
 // UserLibrary 101개 이상의 동영상이 저장되면 alert을 띄운다.
+import UserLibrary from "../app";
 
 test("UserLibrary에 영상이 저장되어야 한다.", () => {
   const userLibrary = new UserLibrary();
