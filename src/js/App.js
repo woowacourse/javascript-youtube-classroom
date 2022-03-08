@@ -1,5 +1,7 @@
 import '../css/index.css';
 
+const isEmptyKeyword = (keyword) => keyword.trim().length === 0;
+
 class App {
   constructor() {
     this.bindEvents();
@@ -16,14 +18,8 @@ class App {
     const dimmer = document.querySelector('.dimmer');
     dimmer.addEventListener('click', this.closeModalHandler.bind(this));
 
-    const searchButton = document.querySelector('#search-button');
-    searchButton.addEventListener('click', this.searchHandler.bind(this));
-
-    const searchInputKeyword = document.querySelector('#search-input-keyword');
-    searchInputKeyword.addEventListener(
-      'keypress',
-      this.enterKeyHandler.bind(this)
-    );
+    const searchForm = document.querySelector('#search-form');
+    searchForm.addEventListener('submit', this.searchHandler.bind(this));
   }
 
   openModalHandler() {
@@ -40,20 +36,13 @@ class App {
     e.preventDefault();
     const searchInputKeyword = document.querySelector('#search-input-keyword');
     const keyword = searchInputKeyword.value;
+    const searchErrorMessage = document.querySelector('#search-error-message');
 
-    if (keyword.trim().length === 0) {
-      console.log('empty search keyword');
+    if (isEmptyKeyword(keyword)) {
+      searchErrorMessage.textContent = '검색어를 입력해 주세요.';
       return;
     }
-    console.log('search keyword:', keyword);
-  }
-
-  enterKeyHandler(e) {
-    const keycode = e.keyCode;
-    const enterKeyCode = 13;
-    if (keycode === enterKeyCode) {
-      this.searchHandler(e);
-    }
+    searchErrorMessage.textContent = '';
   }
 }
 
