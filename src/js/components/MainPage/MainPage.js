@@ -11,4 +11,10 @@ export default class MainPage extends Component {
       </nav>
     `;
   }
+
+  setEvent() {
+    const { showSearchModal } = this.props;
+
+    this.addEvent('click', '#search-modal-button', showSearchModal);
+  }
 }

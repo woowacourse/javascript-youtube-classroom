@@ -27,4 +27,10 @@ export default class SearchModal extends Component {
     new NotFound(this.$('#not-found'));
     new SearchResult(this.$('#search-result'));
   }
+
+  setEvent() {
+    const { hideSearchModal } = this.props;
+
+    this.addEvent('click', '#modal-background', hideSearchModal);
+  }
 }
