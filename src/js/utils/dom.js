@@ -3,4 +3,14 @@ const $ = (selector, baseElement = document) =>
 const $$ = (selector, baseElement = document) =>
   baseElement.querySelectorAll(selector);
 
-export { $, $$ };
+const showExceptionSnackBar = message => {
+  const $snackBar = $('#snack-bar');
+  $snackBar.classList.add('show');
+  $snackBar.textContent = message;
+
+  setTimeout(() => {
+    $snackBar.classList.remove('show');
+  }, 2000);
+};
+
+export { $, $$, showExceptionSnackBar };

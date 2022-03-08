@@ -1,9 +1,11 @@
 import { $ } from '../utils/dom';
+import Search from './Search';
 
 export default class Modal {
   constructor() {
     this.addSearchModalButtonClickEvent();
     this.addModalOuterClickEvent();
+    new Search();
   }
 
   toggleShowSearchModal() {
