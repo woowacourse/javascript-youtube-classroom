@@ -24,6 +24,7 @@
     "implicit-arrow-linebreak": "off",
     "no-await-in-loop": "off",
     "import/prefer-default-export": "off",
-    "no-underscore-dangle": "off"
+    "no-underscore-dangle": "off",
+    "no-return-assign": "off"
   }
 }
