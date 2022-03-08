@@ -4,7 +4,13 @@ import SearchBar from './SearchBar.js';
 import SearchResult from './SearchResult.js';
 
 export default class SearchModal extends Component {
+  setup() {
+    this.state = { items: [], isNoResult: false }; // idle || success || fail
+  }
+
   template() {
+    const { isNoResult } = this.state;
+
     return `
     <div id="modal-background" class="dimmer"></div>
     <div
@@ -16,21 +22,33 @@ export default class SearchModal extends Component {
         🔍 보고싶은 영상 찾기 🔍
       </h2>
       <section id="search-input" class="search-input"></section>
-      <section id="not-found" class="search-result search-result--no-result"></section>
-      <section id="search-result" class="search-result"></section>'
+    ${
+      isNoResult
+        ? '<section id="not-found" class="search-result search-result--no-result"></section>'
+        : '<section id="search-result" class="search-result"></section>'
+    }
     </div>
     `;
   }
 
   afterMounted() {
-    new SearchBar(this.$('#search-input'));
-    new NotFound(this.$('#not-found'));
-    new SearchResult(this.$('#search-result'));
+    const { items, isNoResult } = this.state;
+
+    new SearchBar(this.$('#search-input'), {
+      showSearchResult: this.showSearchResult.bind(this),
+    });
+    isNoResult
+      ? new NotFound(this.$('#not-found'))
+      : new SearchResult(this.$('#search-result'), { items });
   }
 
   setEvent() {
     const { hideSearchModal } = this.props;
 
     this.addEvent('click', '#modal-background', hideSearchModal);
+  }
+
+  showSearchResult(items) {
+    this.setState({ items });
   }
 }

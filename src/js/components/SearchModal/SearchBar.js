@@ -1,4 +1,5 @@
 import Component from '../../core/Component.js';
+import request from '../../__mocks__/request.js';
 
 export default class SearchBar extends Component {
   template() {
@@ -20,5 +21,15 @@ export default class SearchBar extends Component {
         </button>
       </form>
     `;
+  }
+
+  setEvent() {
+    const { showSearchResult } = this.props;
+
+    this.addEvent('submit', '#search-form', async (e) => {
+      const data = await request();
+
+      showSearchResult(data.items);
+    });
   }
 }

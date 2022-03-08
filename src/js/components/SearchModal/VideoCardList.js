@@ -3,7 +3,7 @@ import VideoCard from './VideoCard.js';
 
 export default class VideoCardList extends Component {
   setup() {
-    this.state = { items: [] };
+    this.state = this.props;
   }
 
   template() {
