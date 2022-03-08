@@ -15,4 +15,5 @@ module.exports = {
     'no-alert': 'off',
     'import/extensions': 'off',
   },
+  ignorePatterns: ['*test.js'],
 };
