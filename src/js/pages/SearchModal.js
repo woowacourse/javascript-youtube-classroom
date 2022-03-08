@@ -96,6 +96,11 @@ export default class SearchModal {
       const videoID = e.target.closest('li').dataset.videoId;
 
       const videoIDs = getStorageVideoIDs(KEY);
+
+      if (videoIDs.length > 99) {
+        console.log(videoIDs.length);
+        return;
+      }
       window.localStorage.setItem(
         KEY,
         JSON.stringify(videoIDs.concat(videoID))
