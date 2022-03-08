@@ -6,15 +6,13 @@ const validateKeyword = (keyword) => {
   }
 };
 
-const URL = 'https://www.googleapis.com/youtube/v3/search?';
-
-const KEY = 'AIzaSyDw-RH8HlDQGae-opd0hT1-N2pnbIYejO0';
+const URL =
+  'https://622752939a5410d43ba3fbcd--modest-euler-778376.netlify.app/dummy/youtube/v3/search?';
 
 const OPTIONS = {
   part: 'snippet',
   maxResults: 10,
   order: 'date',
-  key: KEY,
 };
 
 const stringQuery = (props) => {
@@ -72,10 +70,33 @@ export default class SearchModal {
 
     const searchForm = this.element.querySelector('#search-form');
     searchForm.addEventListener('submit', this.searchHandler.bind(this));
+
+    const videoList = this.element.querySelector('.video-list');
+    videoList.addEventListener('scroll', this.scrollHandler.bind(this));
   }
 
   closeModalHandler() {
     this.element.classList.add('hide');
+  }
+
+  scrollHandler(e) {
+    const { scrollTop, offsetHeight, scrollHeight } = e.target;
+
+    const isNextScroll = scrollTop + offsetHeight >= scrollHeight;
+
+    const searchInputKeyword = this.element.querySelector(
+      '#search-input-keyword'
+    );
+    const keyword = searchInputKeyword.value;
+
+    if (isNextScroll) {
+      this.fetchData({
+        url: URL,
+        keyword,
+        options: OPTIONS,
+        pageToken: this.pageToken,
+      });
+    }
   }
 
   async searchHandler(e) {
