@@ -1,7 +1,9 @@
+import SearchModal from "./searchModal.js";
+
 class MainPage {
   constructor() {
     this.$searchModalButton = document.querySelector("#search-modal-button");
-    this.$modalContainer = document.querySelector(".modal-container");
+    this.modalComponent = new SearchModal();
     this.$dimmer = document.querySelector(".dimmer");
   }
 
@@ -12,16 +14,12 @@ class MainPage {
   bindEvent() {
     this.$searchModalButton.addEventListener(
       "click",
-      this.toggleModalContainerView.bind(this)
+      this.modalComponent.toggleModalContainerView.bind(this.modalComponent)
     );
     this.$dimmer.addEventListener(
       "click",
-      this.toggleModalContainerView.bind(this)
+      this.modalComponent.toggleModalContainerView.bind(this.modalComponent)
     );
-  }
-
-  toggleModalContainerView() {
-    this.$modalContainer.classList.toggle("hide");
   }
 }
 
