@@ -8,10 +8,10 @@ class MyClassroom extends CustomElement {
   }
 
   setEvent() {
-    addEvent(this, 'click', '#search-modal-button', this.showModal);
+    addEvent(this, 'click', '#search-modal-button', this.showSearchModal);
   }
 
-  showModal() {
+  showSearchModal() {
     $('.modal-container').classList.remove('hide');
   }
 }
