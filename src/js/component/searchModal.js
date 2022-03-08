@@ -7,6 +7,7 @@ class SearchModal {
     this.$dimmer = document.querySelector(".dimmer");
     this.$searchInputKeyword = document.querySelector("#search-input-keyword");
     this.$searchButton = document.querySelector("#search-button");
+    this.$videoListContainer = document.querySelector(".video-list");
     this.pageToken = null;
     this.bindEvent();
   }
@@ -28,6 +29,8 @@ class SearchModal {
       (event.type === "keypress" && event.key === "Enter") ||
       event.type === "click"
     ) {
+      this.$videoListContainer.replaceChildren();
+      this.pageToken = null;
       this.$searchInputKeyword.blur();
       this.callApi();
     }
@@ -36,7 +39,7 @@ class SearchModal {
   async callApi() {
     const { value } = this.$searchInputKeyword;
     const data = await youtubeSearchAPI.searchByPage(value, this.pageToken);
-
+    this.pageToken = data.nextPageToken;
     data.items.forEach((item) => {
       const {
         id,
@@ -48,7 +51,7 @@ class SearchModal {
         publishTime,
       } = item.snippet;
 
-      document.querySelector(".video-list").insertAdjacentHTML(
+      this.$videoListContainer.insertAdjacentHTML(
         "beforeend",
         template.videoItems({
           id,
