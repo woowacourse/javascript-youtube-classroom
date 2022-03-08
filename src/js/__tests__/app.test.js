@@ -17,14 +17,14 @@ test("UserLibrary에 영상이 저장되어야 한다.", () => {
 });
 
 test("UserLibrary 101개 이상의 동영상이 저장되면 alert을 띄운다.", () => {
+  const userLibrary = new UserLibrary();
   const userData = Array.from({ length: 101 }, (_, index) => ({
     id: index + 1,
   }));
-  const userLibrary = new UserLibrary();
 
-  expect(() => {
+  expect(() =>
     userData.forEach(() => {
       userLibrary.setData(userData);
-    });
-  }).toThrowError();
+    })
+  ).toThrowError("데이터는 101개 이상 저장하실 수 없습니다.");
 });
