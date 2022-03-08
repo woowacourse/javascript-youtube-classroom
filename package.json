@@ -1,0 +1,32 @@
+{
+  "name": "javascript-youtube-classroom",
+  "description": "level1 - 나만의 유튜브 강의실",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest --watch --no-cache"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/euijinkk/javascript-youtube-classroom.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/euijinkk/javascript-youtube-classroom/issues"
+  },
+  "homepage": "https://github.com/euijinkk/javascript-youtube-classroom#readme",
+  "devDependencies": {
+    "@babel/core": "^7.17.5",
+    "@babel/preset-env": "^7.16.11",
+    "babel-jest": "^27.5.1",
+    "eslint": "^8.10.0",
+    "eslint-config-airbnb-base": "^15.0.0",
+    "eslint-config-prettier": "^8.5.0",
+    "eslint-plugin-import": "^2.25.4",
+    "eslint-plugin-prettier": "^4.0.0",
+    "jest": "^27.5.1",
+    "prettier": "^2.5.1"
+  }
+}
