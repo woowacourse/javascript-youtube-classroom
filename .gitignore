@@ -105,3 +105,6 @@ dist
 
 # API_KEY
 src/api.js
+
+#dummyData
+dummyData.js
