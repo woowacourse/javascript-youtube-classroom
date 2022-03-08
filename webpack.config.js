@@ -25,7 +25,15 @@ module.exports = {
           {
             loader: 'babel-loader',
             options: {
-              presets: ['@babel/preset-env'],
+              presets: [
+                [
+                  '@babel/preset-env',
+                  {
+                    targets: { chrome: '55' } /* chrome 55 이상으로 지정 */,
+                    debug: true,
+                  },
+                ],
+              ],
             },
           },
         ],
