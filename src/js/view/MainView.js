@@ -4,11 +4,11 @@ export default class MainView {
   }
 
   registerDOM() {
-    this.modalOpenButton = document.getElementById('search-modal-button');
+    this.$modalOpenButton = document.getElementById('search-modal-button');
   }
 
   bindModalOpenButton(callback) {
-    this.modalOpenButton.addEventListener('click', event => {
+    this.$modalOpenButton.addEventListener('click', event => {
       event.preventDefault();
       callback();
     });
