@@ -14,12 +14,15 @@ export const addEvent = (component, eventType, selector, callback) => {
   });
 };
 
-export const emit = (target, eventName, detail) => {
+export const emit = (selector, eventName, detail, component = document) => {
   const event = new CustomEvent(eventName, { detail });
+  const target = component.querySelector(selector);
 
   target.dispatchEvent(event);
 };
 
-export const on = (target, eventName, handler) => {
+export const on = (selector, eventName, handler, component = document) => {
+  const target = component.querySelector(selector);
+
   target.addEventListener(eventName, handler);
 };
