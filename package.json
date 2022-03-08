@@ -6,6 +6,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "prepare": "husky install",
+    "start": "webpack serve --open",
+    "build": "webpack",
     "cm": "cz"
   },
   "repository": {
@@ -20,10 +22,21 @@
   "homepage": "https://github.com/airman5573/javascript-youtube-classroom#readme",
   "devDependencies": {
     "@commitlint/cli": "^16.2.1",
+    "clean-webpack-plugin": "^4.0.0",
     "commitizen": "^4.2.4",
     "commitlint-config-gitmoji": "^2.2.5",
     "cz-customizable": "^6.3.0",
-    "husky": "^7.0.0"
+    "eslint": "^8.10.0",
+    "eslint-config-airbnb-base": "^15.0.0",
+    "eslint-config-prettier": "^8.5.0",
+    "eslint-plugin-import": "^2.25.4",
+    "eslint-plugin-prettier": "^4.0.0",
+    "html-webpack-plugin": "^5.5.0",
+    "husky": "^7.0.0",
+    "prettier": "^2.5.1",
+    "webpack": "^5.70.0",
+    "webpack-cli": "^4.9.2",
+    "webpack-dev-server": "^4.7.4"
   },
   "config": {
     "commitizen": {
