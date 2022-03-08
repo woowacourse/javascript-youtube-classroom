@@ -51,7 +51,7 @@ const template = (json) => {
       const storeButton = videoIds.includes(videoId)
         ? ''
         : '<button class="video-item__save-button button">⬇ 저장</button>';
-
+      const timeFormatter = publishTime.split('T')[0];
       return `
         <li class="video-item" data-video-id="${videoId}">
           <img
@@ -59,7 +59,7 @@ const template = (json) => {
             alt="video-item-thumbnail" class="video-item__thumbnail">
           <h4 class="video-item__title">${title}</h4>
           <p class="video-item__channel-name">${channelTitle}</p>
-          <p class="video-item__published-date">${publishTime}</p>
+          <p class="video-item__published-date">${timeFormatter}</p>
           ${storeButton}
         </li>
           `;
@@ -138,6 +138,8 @@ export default class SearchModal {
 
   async searchHandler(e) {
     e.preventDefault();
+    this.element.querySelector('.video-list').replaceChildren();
+
     const searchInputKeyword = this.element.querySelector(
       '#search-input-keyword'
     );
