@@ -1,11 +1,9 @@
 export default class Component {
-  #target;
-
-  #props;
+  target;
 
   constructor(target, props) {
-    this.#target = target;
-    this.#props = props;
+    this.target = target;
+    this.props = props;
     this.setup();
     this.setEvent();
     this.render();
@@ -13,19 +11,22 @@ export default class Component {
 
   setup() {}
 
-  mounted() {}
+  beforeMounted() {}
+
+  afterMounted() {}
 
   template() {
     return '';
   }
 
   render() {
-    this.#target.innerHTML = this.template();
-    this.mounted();
+    this.beforeMounted();
+    this.target.innerHTML = this.template();
+    this.afterMounted();
   }
 
   setState(newState) {
-    this.$state = { ...this.$state, ...newState };
+    this.state = { ...this.state, ...newState };
     this.render();
   }
 
@@ -33,10 +34,16 @@ export default class Component {
 
   addEvent(eventType, selector, callback) {
     const isTarget = (target) => target.closest(selector);
-    this.$target.addEventListener(eventType, (event) => {
+
+    this.target.addEventListener(eventType, (event) => {
       if (!isTarget(event.target)) return;
 
+      event.preventDefault();
       callback(event);
     });
+  }
+
+  $(selector) {
+    return this.target.querySelector(selector);
   }
 }
