@@ -9,6 +9,8 @@ class SearchModal {
 
   nextPageToken = null;
 
+  maxResult = 10;
+
   constructor() {
     this.$modal = $('.search-modal');
     this.$input = $('#search-input-keyword', this.$modal);
@@ -57,12 +59,27 @@ class SearchModal {
     );
   }
 
+  renderSkeletonItems(videoCount) {
+    const $videoList = $('.video-list', this.$modal);
+
+    const skeletonListHtmlString = [...Array(videoCount).keys()].map(() => `
+      <div class="skeleton">
+        <div class="image"></div>
+        <p class="line"></p>
+        <p class="line"></p>
+      </div>
+    `).join('');
+
+    $videoList.insertAdjacentHTML('beforeend', skeletonListHtmlString);
+  }
+
   addEvent() {
     this.$button.addEventListener('click', this.handleClickButton.bind(this));
   }
 
   async handleClickButton() {
     const title = this.$input.value;
+    this.renderSkeletonItems(this.maxResult);
     const jsonResult = await this.request(title);
     if (jsonResult === null) {
       this.renderNotFound();
@@ -73,7 +90,7 @@ class SearchModal {
   }
 
   async request(title) {
-    const url = `${this.baseUrl}?part=snippet&maxResults=15&q=${title}&&key=${this.apikey}`;
+    const url = `${this.baseUrl}?part=snippet&maxResults=${this.maxResult}&q=${title}&&key=${this.apikey}`;
     try {
       const response = await fetch(url);
       const json = await response.json();
