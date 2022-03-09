@@ -1,16 +1,8 @@
-import { validateSearchKeyword } from '../src/js/validation';
-import { ERROR_MESSAGE } from '../src/js/constants';
-import SearchVideoManager from '../src/js/SearchVideoManager';
 import SaveVideoManager from '../src/js/SaveVideoManager';
 
-describe('test', () => {
+describe('localStorage에 영상 ID 저장 기능 테스트', () => {
   beforeEach(() => {
     jest.clearAllMocks();
-  });
-
-  it('검색 키워드는 2자 이상이어야 한다', () => {
-    const wrongCaseInput = 'a';
-    expect(() => validateSearchKeyword(wrongCaseInput)).toThrow(ERROR_MESSAGE.SEARCH_KEYWORD_MIN_LENGTH);
   });
 
   it('영상 ID를 저장한다.', () => {
