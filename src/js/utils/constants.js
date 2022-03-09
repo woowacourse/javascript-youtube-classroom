@@ -83,43 +83,14 @@ export const mockData = [
 
 export const fetchData = {
   kind: 'youtube#searchListResponse',
-  etag: 'pffJANQloZPzsx8SE7VkSi6F9ro',
+  etag: 'lQ-VEF9lgCYrZErL9nEFN1I1-_U',
   nextPageToken: 'CAoQAA',
   regionCode: 'KR',
   pageInfo: {
-    totalResults: 642,
+    totalResults: 604,
     resultsPerPage: 10,
   },
   items: [
-    {
-      kind: 'youtube#searchResult',
-      etag: '9lUYvaEvYAgblBEFoK1r1JdeG-4',
-      id: {
-        kind: 'youtube#channel',
-        channelId: 'UC-mOekGSesms0agFntnQang',
-      },
-      snippet: {
-        publishedAt: '2019-05-03T06:08:21Z',
-        channelId: 'UC-mOekGSesms0agFntnQang',
-        title: '우아한Tech',
-        description:
-          '우아한형제들의 기술조직 이야기를 전하는 우아한Tech입니다. 우아한형제들 https://www.woowahan.com/ 우아한Tech 페이스북 ...',
-        thumbnails: {
-          default: {
-            url: 'https://yt3.ggpht.com/ytc/AKedOLSFBQ4mJxBxEQ_k6UnQezOXbyNvZc9M8shG_GIm=s88-c-k-c0xffffffff-no-rj-mo',
-          },
-          medium: {
-            url: 'https://yt3.ggpht.com/ytc/AKedOLSFBQ4mJxBxEQ_k6UnQezOXbyNvZc9M8shG_GIm=s240-c-k-c0xffffffff-no-rj-mo',
-          },
-          high: {
-            url: 'https://yt3.ggpht.com/ytc/AKedOLSFBQ4mJxBxEQ_k6UnQezOXbyNvZc9M8shG_GIm=s800-c-k-c0xffffffff-no-rj-mo',
-          },
-        },
-        channelTitle: '우아한Tech',
-        liveBroadcastContent: 'none',
-        publishTime: '2019-05-03T06:08:21Z',
-      },
-    },
     {
       kind: 'youtube#searchResult',
       etag: 'utwze-P6EJ5x-0heE9punV2ZcGQ',
@@ -435,5 +406,138 @@ export const fetchData = {
         publishTime: '2021-07-14T06:28:33Z',
       },
     },
+    {
+      kind: 'youtube#searchResult',
+      etag: 'K67nj_5cOKajD_nSPwOpiDXjWYY',
+      id: {
+        kind: 'youtube#video',
+        videoId: 'eRffd42sd4I',
+      },
+      snippet: {
+        publishedAt: '2021-11-29T08:06:30Z',
+        channelId: 'UC-mOekGSesms0agFntnQang',
+        title: '[우테코 🎬vlog] Ep. 8 👾우아한테크코스 3기 데모데이🧑\u200d💻👩\u200d💻',
+        description:
+          '우테코로그 Ep. 8 우아한테크코스 데모데이   지난 10월 29일, 크루들이 밤낮으로 고생하며 완성한 프로젝트의 최종 데모데이를 진행 ...',
+        thumbnails: {
+          default: {
+            url: 'https://i.ytimg.com/vi/eRffd42sd4I/default.jpg',
+            width: 120,
+            height: 90,
+          },
+          medium: {
+            url: 'https://i.ytimg.com/vi/eRffd42sd4I/mqdefault.jpg',
+            width: 320,
+            height: 180,
+          },
+          high: {
+            url: 'https://i.ytimg.com/vi/eRffd42sd4I/hqdefault.jpg',
+            width: 480,
+            height: 360,
+          },
+        },
+        channelTitle: '우아한Tech',
+        liveBroadcastContent: 'none',
+        publishTime: '2021-11-29T08:06:30Z',
+      },
+    },
   ],
 };
+
+export const errorData = {
+  error: {
+    code: 400,
+    message: 'API key not valid. Please pass a valid API key.',
+    errors: [
+      {
+        message: 'API key not valid. Please pass a valid API key.',
+        domain: 'global',
+        reason: 'badRequest',
+      },
+    ],
+    status: 'INVALID_ARGUMENT',
+    details: [
+      {
+        '@type': 'type.googleapis.com/google.rpc.ErrorInfo',
+        reason: 'API_KEY_INVALID',
+        domain: 'googleapis.com',
+        metadata: {
+          service: 'youtube.googleapis.com',
+        },
+      },
+    ],
+  },
+};
+
+export const parseData = [
+  {
+    videoId: 'mQhgF7RoUCA',
+    publishedAt: '2021-10-14T19:06:42Z',
+    title: '우아한테크코스 4기 온라인 설명회',
+    url: 'https://i.ytimg.com/vi/mQhgF7RoUCA/mqdefault.jpg',
+    channelTitle: '박재성',
+  },
+  {
+    videoId: 'ytt37XkcHTU',
+    publishedAt: '2021-06-03T01:41:57Z',
+    title: '[우테코 🎬vlog] Ep.4 그루밍의 하루 ☀️',
+    url: 'https://i.ytimg.com/vi/ytt37XkcHTU/mqdefault.jpg',
+    channelTitle: '우아한Tech',
+  },
+  {
+    videoId: 'nhQRaRgV19o',
+    publishedAt: '2021-09-09T04:04:59Z',
+    title: '[우테코 인터뷰 챌린지] 🎙 코치에게 묻다! 코테뷰 #4 포비',
+    url: 'https://i.ytimg.com/vi/nhQRaRgV19o/mqdefault.jpg',
+    channelTitle: '우아한Tech',
+  },
+  {
+    videoId: 'HxzKg7V6r00',
+    publishedAt: '2019-10-05T01:19:06Z',
+    title: '우아한테크코스 1기 합격 노하우 전격 공개. 비전공자 크루가 직접 들려주는 이야기 2편',
+    url: 'https://i.ytimg.com/vi/HxzKg7V6r00/mqdefault.jpg',
+    channelTitle: '개발왕루피',
+  },
+  {
+    videoId: 'Xm0SmqBGaBA',
+    publishedAt: '2020-01-08T07:36:40Z',
+    title: '[우테코 🎬vlog] 우테코 1기가 2기에게 전하는 ✉️메세지',
+    url: 'https://i.ytimg.com/vi/Xm0SmqBGaBA/mqdefault.jpg',
+    channelTitle: '우아한Tech',
+  },
+  {
+    videoId: 'ZQklkmFlYQI',
+    publishedAt: '2021-07-28T05:20:22Z',
+    title: '[우테코 🎬vlog] Ep.5 우테코 프로젝트 비하인드 🎞',
+    url: 'https://i.ytimg.com/vi/ZQklkmFlYQI/mqdefault.jpg',
+    channelTitle: '우아한Tech',
+  },
+  {
+    videoId: 'r1AWm783YeY',
+    publishedAt: '2021-09-09T03:30:44Z',
+    title: '[우테코 인터뷰 챌린지] 🎙 코치에게 묻다! 코테뷰 #3 포코',
+    url: 'https://i.ytimg.com/vi/r1AWm783YeY/mqdefault.jpg',
+    channelTitle: '우아한Tech',
+  },
+  {
+    videoId: 'enINkqC7FAc',
+    publishedAt: '2021-07-14T05:16:07Z',
+    title: '[우테코 인터뷰 챌린지] 🧡 프론트엔드 백엔드 서로에게 묻다! #1',
+    url: 'https://i.ytimg.com/vi/enINkqC7FAc/mqdefault.jpg',
+    channelTitle: '우아한Tech',
+  },
+  {
+    videoId: 'UGsM1vSTAno',
+    publishedAt: '2021-07-14T06:28:33Z',
+    title: '[우테코 인터뷰 챌린지] 🧡 프론트엔드 백엔드 서로에게 묻다! #3',
+    url: 'https://i.ytimg.com/vi/UGsM1vSTAno/mqdefault.jpg',
+    channelTitle: '우아한Tech',
+  },
+  {
+    videoId: 'eRffd42sd4I',
+    publishedAt: '2021-11-29T08:06:30Z',
+    title: '[우테코 🎬vlog] Ep. 8 👾우아한테크코스 3기 데모데이🧑\u200d💻👩\u200d💻',
+    url: 'https://i.ytimg.com/vi/eRffd42sd4I/mqdefault.jpg',
+    channelTitle: '우아한Tech',
+  },
+];

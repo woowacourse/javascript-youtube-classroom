@@ -13,6 +13,7 @@
     "arrow-body-style": "off",
     "prefer-arrow-callback": "off",
 	  "no-unused-vars": "warn",
-    "import/extensions": "off"
+    "import/extensions": "off",
+    "object-shorthand": "off"
   }
 }
