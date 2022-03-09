@@ -14,7 +14,7 @@ class CustomElement extends HTMLElement {
 
   setEvent() {}
 
-  partialRender() {}
+  notify() {}
 }
 
 export default CustomElement;

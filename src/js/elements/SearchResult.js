@@ -1,5 +1,5 @@
 import CustomElement from '../abstract/CustomElement';
-import { $ } from '../utils';
+import { addEvent, emit, $ } from '../utils';
 import TEMPLATE from '../templates';
 
 class SearchResult extends CustomElement {
@@ -7,7 +7,33 @@ class SearchResult extends CustomElement {
     return TEMPLATE.SEARCH_RESULT;
   }
 
-  partialRender(videos) {
+  setEvent() {
+    addEvent($('.video-list'), 'scroll', '.video-list', this.emitEvent);
+  }
+
+  emitEvent(e) {
+    const { clientHeight } = $('.video-list');
+    const { scrollTop, scrollHeight } = e.target;
+
+    if (clientHeight + scrollTop >= scrollHeight && scrollTop !== 0) {
+      emit('.video-list', '@scroll', {}, this);
+    }
+  }
+
+  notify(type, data) {
+    if (type === 'search') {
+      this.resetResult();
+      $('.video-list').scrollTop = 0;
+    }
+
+    this.insertVideoItems(data);
+  }
+
+  resetResult() {
+    $('.video-list').textContent = '';
+  }
+
+  insertVideoItems(videos) {
     videos.forEach((video) => {
       $('.video-list').insertAdjacentHTML(
         'beforeend',

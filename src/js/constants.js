@@ -8,7 +8,6 @@ const SEARCH_API = {
     maxResults: 10,
     regionCode: 'kr',
     safeSearch: 'strict',
-    pageToken: '',
   },
 };
 
