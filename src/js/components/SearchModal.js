@@ -10,12 +10,11 @@ export class SearchModal {
 
     this.searchButton = document.getElementById('search-button');
     this.searchButton.addEventListener('click', this.handleSearchButton);
-
-    this.initState();
   }
 
   initState() {
     this.videos = [];
+    this.videoList.replaceChildren();
   }
 
   show = () => {
@@ -23,6 +22,7 @@ export class SearchModal {
   };
 
   handleSearchButton = () => {
+    this.initState();
     this.getDataMatchKeyword(this.searchInputKeyword.value);
   };
 
