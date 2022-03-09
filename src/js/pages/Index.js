@@ -1,15 +1,16 @@
 export default class Index {
   constructor(element) {
     this.element = element;
+    this.configureDOMs();
     this.bindEvents();
   }
 
-  bindEvents() {
-    const searchModalButton = this.element.querySelector(
-      '#search-modal-button'
-    );
+  configureDOMs() {
+    this.searchModalButton = this.element.querySelector('#search-modal-button');
+  }
 
-    searchModalButton.addEventListener(
+  bindEvents() {
+    this.searchModalButton.addEventListener(
       'click',
       this.openModalHandler.bind(this)
     );

@@ -50,7 +50,7 @@
   color: rgb(160, 158, 158);
   margin-top: 3px;
   margin-left: 3px;
-  min-height: 30px;
+  min-height: 12px;
 }
 
 .search-input__keyword {
@@ -75,8 +75,14 @@
 }
 
 .search-result.search-result--no-result {
+  display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
+}
+
+.search-result.hidden {
+  display: none;
 }
 
 .no-result__image {
@@ -98,8 +104,19 @@
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
-  gap: 32px 20px;
-  overflow-y: scroll;
+  gap: 32px 16px;
+  overflow-y: auto;
+}
+
+.video-list::-webkit-scrollbar {
+  width: 7px;
+}
+.video-list::-webkit-scrollbar-thumb {
+  border-radius: 10px;
+  background-color: #00bcd4;
+}
+.video-list::-webkit-scrollbar-track {
+  background-color: transparent;
 }
 
 .video-item {

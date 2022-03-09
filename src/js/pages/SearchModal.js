@@ -1,3 +1,7 @@
+import { URL, OPTIONS, KEY, fetchData } from '../api';
+import { RELOAD_HEIGHT, RULES } from '../constants';
+import { getStorageVideoIDs, setStorageVideoIDs } from '../utils/localStorage';
+
 const isEmptyKeyword = (keyword) => keyword.trim().length === 0;
 
 const validateKeyword = (keyword) => {
@@ -6,31 +10,7 @@ const validateKeyword = (keyword) => {
   }
 };
 
-const URL =
-  'https://622752939a5410d43ba3fbcd--modest-euler-778376.netlify.app/dummy/youtube/v3/search?';
-
-const OPTIONS = {
-  part: 'snippet',
-  maxResults: 10,
-  order: 'date',
-};
-
-const stringQuery = (props) => {
-  const { url, keyword, pageToken, options } = props;
-  const query = Object.entries(options).reduce(
-    (acc, [key, value]) => (acc += `${key}=${value}&`),
-    `${url}q=${keyword}&`
-  );
-
-  if (pageToken === '') {
-    return query;
-  }
-  return `${query}pageToken=${pageToken}`;
-};
-const KEY = 'VIDEO_IDS';
-
-const getStorageVideoIDs = (key) =>
-  JSON.parse(window.localStorage.getItem(key)) || [];
+const hasVideoList = (videoList) => videoList.length !== 0;
 
 const template = (json) => {
   const videoIds = getStorageVideoIDs(KEY);
@@ -68,31 +48,40 @@ const template = (json) => {
 };
 
 const SKELETON_TEMPLATE = `
-<div class="skeleton">
-<div class="image"></div>
-<p class="line"></p>
-<p class="line"></p>
-</div>
-  `;
+  <div class="skeleton">
+    <div class="image"></div>
+    <p class="line"></p>
+    <p class="line"></p>
+  </div>
+`;
 
 export default class SearchModal {
   constructor(element) {
     this.element = element;
+    this.configureDOMs();
     this.bindEvents();
     this.pageToken = '';
   }
 
+  configureDOMs() {
+    this.searchInputKeyword = this.element.querySelector(
+      '#search-input-keyword'
+    );
+    this.searchErrorMessage = this.element.querySelector(
+      '#search-error-message'
+    );
+    this.videoList = this.element.querySelector('.video-list');
+    this.dimmer = this.element.querySelector('.dimmer');
+    this.searchForm = this.element.querySelector('#search-form');
+    [this.resultContainer, this.noResultContainer] =
+      this.element.querySelectorAll('.search-result');
+  }
+
   bindEvents() {
     this.element.addEventListener('click', this.storeIDHandler.bind(this));
-
-    const dimmer = this.element.querySelector('.dimmer');
-    dimmer.addEventListener('click', this.closeModalHandler.bind(this));
-
-    const searchForm = this.element.querySelector('#search-form');
-    searchForm.addEventListener('submit', this.searchHandler.bind(this));
-
-    const videoList = this.element.querySelector('.video-list');
-    videoList.addEventListener('scroll', this.scrollHandler.bind(this));
+    this.dimmer.addEventListener('click', this.closeModalHandler.bind(this));
+    this.searchForm.addEventListener('submit', this.searchHandler.bind(this));
+    this.videoList.addEventListener('scroll', this.scrollHandler.bind(this));
   }
 
   closeModalHandler() {
@@ -105,14 +94,14 @@ export default class SearchModal {
 
       const videoIDs = getStorageVideoIDs(KEY);
 
-      if (videoIDs.length > 99) {
+      if (videoIDs.length >= RULES.MAX_STORED_IDS_AMOUNT) {
         return;
       }
 
-      window.localStorage.setItem(
-        KEY,
-        JSON.stringify(videoIDs.concat(videoID))
-      );
+      setStorageVideoIDs({
+        key: KEY,
+        value: videoIDs.concat(videoID),
+      });
 
       e.target.remove();
     }
@@ -121,17 +110,13 @@ export default class SearchModal {
   scrollHandler(e) {
     const { scrollTop, offsetHeight, scrollHeight } = e.target;
 
-    const isNextScroll = scrollTop + offsetHeight >= scrollHeight;
-
-    const searchInputKeyword = this.element.querySelector(
-      '#search-input-keyword'
-    );
-    const keyword = searchInputKeyword.value;
+    const isNextScroll =
+      scrollTop + offsetHeight >= scrollHeight - RELOAD_HEIGHT;
 
     if (isNextScroll) {
-      this.fetchData({
+      this.renderVideoList({
         url: URL,
-        keyword,
+        keyword: this.searchInputKeyword.value,
         options: OPTIONS,
         pageToken: this.pageToken,
       });
@@ -140,44 +125,65 @@ export default class SearchModal {
 
   async searchHandler(e) {
     e.preventDefault();
-    this.element.querySelector('.video-list').replaceChildren();
-
-    const searchInputKeyword = this.element.querySelector(
-      '#search-input-keyword'
-    );
-    const keyword = searchInputKeyword.value;
-    const searchErrorMessage = this.element.querySelector(
-      '#search-error-message'
-    );
+    this.videoList.replaceChildren();
+    this.pageToken = '';
 
     try {
-      validateKeyword(keyword);
+      validateKeyword(this.searchInputKeyword.value);
 
-      this.fetchData({
+      this.renderVideoList({
         url: URL,
-        keyword,
+        keyword: this.searchInputKeyword.value,
         options: OPTIONS,
         pageToken: this.pageToken,
       });
 
-      searchErrorMessage.textContent = '';
+      this.searchErrorMessage.textContent = '';
     } catch (error) {
-      searchErrorMessage.textContent = '검색어를 입력해 주세요.';
+      this.searchErrorMessage.textContent = '검색어를 입력해 주세요.';
     }
   }
 
-  async fetchData(props) {
-    this.element
-      .querySelector('.video-list')
-      .insertAdjacentHTML('beforeend', SKELETON_TEMPLATE.repeat(10));
+  renderSkeletonUI(element) {
+    element.insertAdjacentHTML(
+      'beforeend',
+      SKELETON_TEMPLATE.repeat(RULES.MAX_VIDEOS)
+    );
+  }
 
-    const result = await fetch(stringQuery(props));
-    const json = await result.json();
-    this.element.querySelectorAll('.skeleton').forEach((ele) => ele.remove());
-    this.pageToken = json.nextPageToken;
+  removeSkeletonUI(element) {
+    element.querySelectorAll('.skeleton').forEach((ele) => ele.remove());
+  }
 
-    this.element
-      .querySelector('.video-list')
-      .insertAdjacentHTML('beforeend', template(json));
+  showNoResultContainer() {
+    this.resultContainer.classList.add('hidden');
+    this.noResultContainer.classList.remove('hidden');
+  }
+
+  showResultContainer() {
+    this.resultContainer.classList.remove('hidden');
+    this.noResultContainer.classList.add('hidden');
+  }
+
+  showSearchResult(videoList) {
+    if (hasVideoList(videoList)) {
+      this.showResultContainer();
+      return;
+    }
+    this.showNoResultContainer();
+  }
+
+  async renderVideoList(props) {
+    this.renderSkeletonUI(this.videoList);
+
+    const videoList = await fetchData({
+      ...props,
+    });
+
+    this.showSearchResult(videoList.items);
+    this.removeSkeletonUI(this.videoList);
+
+    this.pageToken = videoList.nextPageToken || '';
+    this.videoList.insertAdjacentHTML('beforeend', template(videoList));
   }
 }
