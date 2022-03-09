@@ -6,10 +6,13 @@ function generateQueryString(query) {
 }
 
 async function searchYoutube(keyword, pageToken) {
-  const URL_BASE = 'https://boring-khorana-6a713d.netlify.app/youtube/v3/search?part=snippet';
+  const URL_BASE = 'https://pensive-fermat-630884.netlify.app/youtube/v3/search?part=snippet';
   const query = {
     q: keyword,
     maxResults: 10,
+    order: 'viewCount',
+    type: 'video',
+    regionCode: 'KR',
     pageToken,
   };
   const queryString = generateQueryString(query);
@@ -36,6 +39,5 @@ export const getVideoObjects = (items) =>
 
 export default async function handleSearchRequest(keyword, pageToken) {
   const { items, nextPageToken } = await searchYoutube(keyword, pageToken);
-
   return { searchResultArray: getVideoObjects(items), nextPageToken };
 }

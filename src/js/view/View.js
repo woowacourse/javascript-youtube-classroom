@@ -5,14 +5,17 @@ class View {
     this.searchInputKeyword = document.querySelector('#search-input-keyword');
     this.searchForm = document.querySelector('#search-form');
     this.videoList = document.querySelector('.video-list');
+    this.requestMoreResult = this.#getNewObserver();
 
     this.searchModalButton.addEventListener('click', this.#openModal);
     this.searchForm.addEventListener('submit', this.#handleSearch);
     this.sendSearchRequest = () => {};
+    this.sendLoadMoreRequest = () => {};
   }
 
-  attachHandler(searchHandler) {
+  attachHandler(searchHandler, loadMoreHandler) {
     this.sendSearchRequest = searchHandler;
+    this.sendLoadMoreRequest = loadMoreHandler;
   }
 
   #openModal = () => {
@@ -39,16 +42,38 @@ class View {
     return li;
   };
 
+  #getNewObserver() {
+    return new IntersectionObserver(
+      async (entries) => {
+        if (entries[0].isIntersecting) {
+          this.requestMoreResult.unobserve(this.videoList.lastChild);
+          this.#loadSkeleton();
+          const moreResult = await this.sendLoadMoreRequest();
+          this.#renderSearchResult(moreResult);
+        }
+      },
+      { threshold: 0.5 }
+    );
+  }
+
   #createElementFromObject(searchResultArray) {
     return searchResultArray.map((resultItem) => this.#createVideoElement(resultItem));
   }
 
+  #removeElements(nodeList) {
+    nodeList.forEach((skeleton) => skeleton.remove());
+  }
+
   #renderSearchResult = (searchResultArray) => {
-    const resultElementArray = this.#createElementFromObject(searchResultArray);
     const skeletonList = this.videoList.querySelectorAll('.skeleton');
-    skeletonList.forEach((skeleton, i) => {
-      this.videoList.replaceChild(resultElementArray[i], skeleton);
-    });
+    if (searchResultArray === null) {
+      this.#removeElements(skeletonList);
+      return;
+    }
+    const resultElementArray = this.#createElementFromObject(searchResultArray);
+    this.#removeElements(skeletonList);
+    this.videoList.append(...resultElementArray);
+    this.requestMoreResult.observe(this.videoList.lastChild);
   };
 
   #handleSearch = async (event) => {
