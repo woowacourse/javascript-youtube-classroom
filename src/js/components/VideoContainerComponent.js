@@ -2,9 +2,12 @@ import Component from './Component';
 import VideoComponent from './VideoComponent';
 
 class VideoContainerComponent extends Component {
+  $videoList = null;
+
   constructor(parentElement, state) {
     super(parentElement, state);
     this.mount();
+    this.$videoList = document.querySelector('.video-list');
   }
 
   setState(newState) {
@@ -24,9 +27,7 @@ class VideoContainerComponent extends Component {
   render() {
     const { videoList } = this.state;
 
-    const videoListElement = document.querySelector('.video-list');
-
-    videoList.forEach((video) => new VideoComponent(videoListElement, { video }));
+    videoList.forEach((video) => new VideoComponent(this.$videoList, { video }));
   }
 
   generateTemplate() {

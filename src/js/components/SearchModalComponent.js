@@ -1,22 +1,26 @@
 import Component from './Component';
 import SearchFormComponent from './SearchFormComponent';
 import VideoContainerComponent from './VideoContainerComponent';
-import Video from '../modules/video';
 class SearchModalComponent extends Component {
   searchFormComponent = null;
 
   videoContainerComponent = null;
 
-  target = null;
+  $searchModal = null;
+
+  $modalContainer = null;
 
   constructor(parentElement, state) {
     super(parentElement, state);
     this.mount();
+    this.$modalContainer = document.querySelector('.modal-container');
   }
 
   setState(newState) {
     this.state = newState;
     this.render();
+
+    // bindEvnets()
   }
 
   mount() {
@@ -24,54 +28,17 @@ class SearchModalComponent extends Component {
 
     this.parentElement.insertAdjacentHTML('beforeend', template);
 
-    this.target = document.querySelector('.search-modal');
+    this.$searchModal = document.querySelector('.search-modal');
 
-    this.searchFormComponent = new SearchFormComponent(this.target, {});
-    this.videoContainerComponent = new VideoContainerComponent(this.target, {
-      videoList: [
-        Video.create({
-          videoId: '1',
-          videoTitle: '빅터의 브이로그',
-          channelTitle: '무비비빅터',
-          publishTime: '2016-03-01',
-          thumbnail: '1.jpg',
-        }),
-        Video.create({
-          videoId: '1',
-          videoTitle: '빅터의 브이로그',
-          channelTitle: '무비비빅터',
-          publishTime: '2016-03-01',
-          thumbnail: '1.jpg',
-        }),
-        Video.create({
-          videoId: '1',
-          videoTitle: '빅터의 브이로그',
-          channelTitle: '무비비빅터',
-          publishTime: '2016-03-01',
-          thumbnail: '1.jpg',
-        }),
+    this.searchFormComponent = new SearchFormComponent(this.$searchModal, {});
 
-        Video.create({
-          videoId: '1',
-          videoTitle: '빅터의 브이로그',
-          channelTitle: '무비비빅터',
-          publishTime: '2016-03-01',
-          thumbnail: '1.jpg',
-        }),
-        Video.create({
-          videoId: '1',
-          videoTitle: '빅터의 브이로그',
-          channelTitle: '무비비빅터',
-          publishTime: '2016-03-01',
-          thumbnail: '1.jpg',
-        }),
-      ],
+    this.videoContainerComponent = new VideoContainerComponent(this.$searchModal, {
+      videoList: [],
     });
   }
 
   render() {
     const { isShow } = this.state;
-    const $modaContainer = document.querySelector('.modal-container');
 
     if (isShow) {
       $modalContainer.classList.remove('hide');
