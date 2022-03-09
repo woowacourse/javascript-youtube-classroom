@@ -1,5 +1,5 @@
 import VideoItem from './VideoItem.js';
-import mockData from '../utils/constants.js';
+import { mockData } from '../utils/constants.js';
 
 export default class ModalView {
   constructor() {
