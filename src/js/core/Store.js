@@ -20,8 +20,7 @@ export default class Store {
   }
 
   dispatch(type, data) {
-    const newState = this.reducer(type, data);
-    this.setState(newState);
+    this.reducer(type, data);
   }
 
   addSubscriber(subscriber) {

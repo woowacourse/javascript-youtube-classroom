@@ -10,11 +10,14 @@ export default class Display {
 
   init() {
     this.setContainer();
+    this.defaultElement();
     this.bindEvents();
     this.subscribeStores();
   }
 
   setContainer() {}
+
+  defaultElement() {}
 
   bindEvents() {}
 
