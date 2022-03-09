@@ -21,10 +21,15 @@ export default class Controller {
   }
 
   async #searchVideo(event) {
-    // const { keyword } = event.detail;
-    // await this.video.fetchYoutubeApi(keyword);
+    this.searchResultView.removeVideo();
+    const { keyword } = event.detail;
+    this.searchResultView.insertSkeleton();
+    this.searchResultView.showSkeleton();
+    await this.video.fetchYoutubeApi(keyword);
     this.video.setVideoInfo();
-    console.log(this.video.videoItems, this.video.nextPageToken);
+    this.searchResultView.hideSkeleton();
     this.searchResultView.renderVideo(this.video.videoItems);
+
+    // console.log(this.video.videoItems, this.video.nextPageToken);
   }
 }

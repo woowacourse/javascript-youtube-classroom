@@ -90,6 +90,10 @@
     flex-direction: row;
     flex-wrap: wrap;
     gap: 32px 20px;
+    overflow: hidden;
+}
+
+.video-list.scroll {
     overflow-y: scroll;
 }
 
