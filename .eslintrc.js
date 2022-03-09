@@ -27,5 +27,6 @@ module.exports = {
     'max-depth': ['error', 2],
     'no-alert': 'off',
     'consistent-return': 'off',
+    'max-classes-per-file': ['error', { ignoreExpressions: true, max: 2 }],
   },
 };

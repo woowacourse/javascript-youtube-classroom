@@ -1,6 +1,13 @@
 export default class Video {
   constructor(dummyObject) {
     this.fetchedVideos = dummyObject;
+    this.videoItems = null; // 길이가 10개인 array
+    this.nextPageToken = null; // 다음 토큰 string
+  }
+
+  setVideoInfo() {
+    this.videoItems = this.fetchedVideos.items;
+    this.nextPageToken = this.fetchedVideos.nextPageToken;
   }
 
   async fetchYoutubeApi(query, nextPageToken) {
@@ -32,6 +39,7 @@ export default class Video {
       if (!response.ok) {
         throw new Error(body.error.message);
       }
+
       this.fetchedVideos = body;
     } catch (error) {
       console.error(error);
