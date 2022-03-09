@@ -13,14 +13,11 @@ class SearchModalComponent extends Component {
   constructor(parentElement, state) {
     super(parentElement, state);
     this.mount();
-    this.$modalContainer = document.querySelector('.modal-container');
   }
 
   setState(newState) {
     this.state = newState;
     this.render();
-
-    // bindEvnets()
   }
 
   mount() {
@@ -28,6 +25,7 @@ class SearchModalComponent extends Component {
 
     this.parentElement.insertAdjacentHTML('beforeend', template);
 
+    this.$modalContainer = document.querySelector('.modal-container');
     this.$searchModal = document.querySelector('.search-modal');
 
     this.searchFormComponent = new SearchFormComponent(this.$searchModal, {});
@@ -39,14 +37,11 @@ class SearchModalComponent extends Component {
 
   render() {
     const { isShow } = this.state;
-
     if (isShow) {
-      $modalContainer.classList.remove('hide');
-
+      this.$modalContainer.classList.remove('hide');
       return;
     }
-
-    $modalContainer.classList.add('hide');
+    this.$modalContainer.classList.add('hide');
   }
 
   generateTemplate() {

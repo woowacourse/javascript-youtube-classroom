@@ -7,7 +7,6 @@ class VideoContainerComponent extends Component {
   constructor(parentElement, state) {
     super(parentElement, state);
     this.mount();
-    this.$videoList = document.querySelector('.video-list');
   }
 
   setState(newState) {
@@ -20,6 +19,7 @@ class VideoContainerComponent extends Component {
 
     this.parentElement.insertAdjacentHTML('beforeend', template);
 
+    this.$videoList = document.querySelector('.video-list');
     // 초기 상태를 그린다.
     this.render();
   }
