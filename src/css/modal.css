@@ -83,7 +83,7 @@
   letter-spacing: 0.5px;
 }
 
-.video-list {
+#video-list {
   width: 1040px;
   height: 493px;
   display: flex;
@@ -95,8 +95,10 @@
 
 .video-item {
   position: relative;
-  width: 240px;
-  height: 255px;
+  /*width: 240px;
+  height: 255px;*/
+  width: 1040px;
+  height: 400px;
 }
 
 .video-item__thumbnail {

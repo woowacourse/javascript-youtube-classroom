@@ -1,4 +1,4 @@
-import { fetchDataFromKeyword } from '../utils/apiFetch.js';
+import { fetchDataFromKeyword, getNextPageData } from '../utils/apiFetch.js';
 
 export class SearchModal {
   constructor() {
@@ -7,6 +7,7 @@ export class SearchModal {
     this.searchModalTitle = document.getElementsByClassName('search-modal-title');
     this.searchInputKeyword = document.getElementById('search-input-keyword');
     this.videoList = document.getElementById('video-list');
+    this.videoItem = document.querySelectorAll('.video-item');
 
     this.searchButton = document.getElementById('search-button');
     this.searchButton.addEventListener('click', this.handleSearchButton);
@@ -30,8 +31,10 @@ export class SearchModal {
     this.renderSkeleton();
     try {
       this.videos = await fetchDataFromKeyword(keyword);
+      this.keyword = keyword;
       this.removeSkeleton();
       this.renderIframe();
+      this.createObserver();
     } catch (error) {
       this.renderNoVideosImg();
       console.log('동영상이없어요.');
@@ -68,8 +71,6 @@ export class SearchModal {
       <iframe
           class = "video-item"
           type="text/html"
-          width="720"
-          height="405"
           src="https://www.youtube.com/embed/${keyword}"
           frameborder="0"
           allowfullscreen="allowfullscreen"
@@ -85,5 +86,23 @@ export class SearchModal {
         <p class="line"></p>
     </div>
     `;
+  }
+
+  createObserver() {
+    this.videoItems = [...document.getElementsByClassName('video-item')];
+    const intersectionObserver = new IntersectionObserver((entries, observer) => {
+      const [entry] = entries;
+      if (entry.isIntersecting) {
+        this.renderNextPage();
+      }
+    });
+
+    intersectionObserver.observe(this.videoItems[this.videoItems.length - 1]);
+  }
+
+  async renderNextPage() {
+    this.videos = await getNextPageData(this.keyword, this.videos.nextPageToken);
+    this.renderIframe();
+    this.createObserver();
   }
 }
