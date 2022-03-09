@@ -1,8 +1,11 @@
+import { MESSAGE } from '../constants';
 import { $ } from '../utils/dom';
 import NoResultImage from '../../assets/images/not_found.png';
 
 export default class Result {
   constructor() {}
+
+  // 저장관련 이벤트 바인딩
 
   skeletonTemplate() {
     return `
@@ -59,8 +62,8 @@ export default class Result {
           alt="no-result-image"
         >
         <div class="no-result__description">
-          <p>검색 결과가 없습니다</p>
-          <p>다른 키워드로 검색해보세요</p>
+          <p>${MESSAGE.NOT_FOUND}</p>
+          <p>${MESSAGE.OTHER_KEYWORD}</p>
         </div>
       </div>
     `;

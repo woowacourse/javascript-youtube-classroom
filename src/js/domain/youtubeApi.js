@@ -1,5 +1,5 @@
 import 'regenerator-runtime';
-import { ERROR_MESSAGE } from '../constants';
+import { MESSAGE } from '../constants';
 
 const request = async (searchText, key) => {
   // const response = await fetch(
@@ -15,7 +15,7 @@ const request = async (searchText, key) => {
     const searchResult = await response.json();
     return searchResult;
   } else {
-    throw new Error(ERROR_MESSAGE.NOT_FOUND);
+    throw new Error(MESSAGE.ERROR_NOT_FOUND);
   }
 };
 

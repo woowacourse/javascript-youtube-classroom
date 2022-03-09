@@ -1,4 +1,4 @@
-import { ERROR_MESSAGE } from '../constants';
+import { MESSAGE } from '../constants';
 import { API_KEY } from '../domain/key';
 import { request } from '../domain/youtubeApi';
 import { $, showExceptionSnackBar } from '../utils/dom';
@@ -14,7 +14,7 @@ export default class Search {
     $('#search-form').addEventListener('submit', e => {
       e.preventDefault();
       if ($('#search-input-keyword').value === '') {
-        showExceptionSnackBar(ERROR_MESSAGE.BLANK_SEARCH_INPUT);
+        showExceptionSnackBar(MESSAGE.ERROR_BLANK_SEARCH_INPUT);
         return;
       }
 
