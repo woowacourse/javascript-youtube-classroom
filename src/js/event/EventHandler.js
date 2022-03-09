@@ -32,6 +32,7 @@ export default class EventHandler {
   }
 
   clickSearchButton() {
+    this.modalView.resetVideoList();
     this.modalView.appendEmptyList();
     this.modalView.appendVideoItem();
     this.modalView.getData();

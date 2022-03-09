@@ -37,6 +37,11 @@ export default class ModalView {
     this.$videoList.addEventListener('scroll', callback);
   }
 
+  resetVideoList() {
+    this.$videoList.textContent = '';
+    this.videoItemList = [];
+  }
+
   appendEmptyList() {
     this.$videoList.insertAdjacentHTML('beforeend', '<li></li>'.repeat(10));
   }
