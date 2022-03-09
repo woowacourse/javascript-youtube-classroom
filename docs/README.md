@@ -36,9 +36,9 @@
 
 ### UI + Domain
 
-- [ ] 저장 버튼을 누르면 영상의 id를 id를 Web Storage에 저장한다.
-- [ ] Web Storage에 저장할 수 있는 최대 크기는 100개이다.
-  - [ ] Web Storage가 가득 차 있는 경우, 에러 메시지를 띄운다. (snack bar ui)
+- [x] 저장 버튼을 누르면 영상의 id를 id를 Web Storage에 저장한다.
+- [x] Web Storage에 저장할 수 있는 최대 크기는 100개이다.
+  - [x] Web Storage가 가득 차 있는 경우, 에러 메시지를 띄운다. (snack bar ui)
 
 <br>
 

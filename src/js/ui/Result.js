@@ -1,11 +1,10 @@
-import { MESSAGE } from '../constants';
-import { $ } from '../utils/dom';
+import { MAX_SAVE_COUNT, MESSAGE } from '../constants';
+import { $, $$, showExceptionSnackBar } from '../utils/dom';
 import NoResultImage from '../../assets/images/not_found.png';
+import { store } from '../domain/store';
 
 export default class Result {
   constructor() {}
-
-  // 저장관련 이벤트 바인딩
 
   skeletonTemplate() {
     return `
@@ -78,5 +77,22 @@ export default class Result {
         ? this.foundResultTemplate(json.items)
         : this.notFoundTemplate(),
     );
+    this.addSaveButtonClickEvent();
+  }
+
+  addSaveButtonClickEvent() {
+    const saveButtons = $$('.video-item__save-button');
+    saveButtons.forEach(saveButton => {
+      saveButton.addEventListener('click', e => {
+        const videoId = e.target.closest('li').dataset.videoId;
+        const saveDatas = store.getLocalStorage() ?? [];
+        if (saveDatas.length >= MAX_SAVE_COUNT) {
+          showExceptionSnackBar(MESSAGE.ERROR_EXCESS_SAVE_COUNT);
+          return;
+        }
+        saveDatas.push(videoId);
+        store.setLocalStorage(saveDatas);
+      });
+    });
   }
 }
