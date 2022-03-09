@@ -125,11 +125,12 @@ export default class SearchModal {
 
   async searchHandler(e) {
     e.preventDefault();
-    this.videoList.replaceChildren();
-    this.pageToken = '';
 
     try {
       validateKeyword(this.searchInputKeyword.value);
+
+      this.videoList.replaceChildren();
+      this.pageToken = '';
 
       this.renderVideoList({
         url: YOUTUBE_URL,

@@ -43,14 +43,14 @@
   flex-direction: column;
   width: fit-content;
   margin: 0 auto;
-  margin-bottom: 40px;
+  margin-bottom: 45px;
 }
 
 #search-error-message {
   color: rgb(160, 158, 158);
   margin-top: 3px;
   margin-left: 3px;
-  min-height: 12px;
+  min-height: 22px;
 }
 
 .search-input__keyword {
