@@ -1,5 +1,6 @@
 import UserLibrary from "../UserLibrary";
 import { isDuplicate } from "../utils/utils";
+import "jest-localstorage-mock";
 
 test("동영상의 Id값이 같은지 확인한다.", () => {
   const mockData = { id: "abc" };

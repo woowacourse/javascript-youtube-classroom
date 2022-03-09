@@ -77,5 +77,5 @@ it("내가 검색한 영상들 중 저장 버튼을 누르면 저장 버튼이 �
   cy.get("#search-button").click();
 
   cy.get(".video-item__save-button").eq(0).click();
-  cy.get(".video-item__save-button").should("be.not.visible");
+  cy.get(".video-item__save-button").eq(0).should("be.not.visible");
 });
