@@ -1,9 +1,15 @@
-// options.body : params들이 들어있다.
-export const fetcher = async (url, options) => {
-  const response = await fetch(`${url}`, options);
+import { API_URL } from '../constants';
+
+const generateQueryString = (params) =>
+  Object.entries(params).reduce((prev, [key, value]) => `${prev}&${key}=${value}`, '');
+
+export const youtubeAPIFetcher = async ({ path, params }) => {
+  const response = await fetch(
+    `${API_URL}${path}?key=${API_KEY}${generateQueryString(params)}`,
+    {}
+  );
 
   if (response.ok) {
-    // 성공적으로 데이터 받아냄
     const data = await response.json();
 
     return data;

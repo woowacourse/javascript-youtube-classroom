@@ -1,7 +1,7 @@
 import { isEmptyKeyword } from '../utils/validation';
 import Component from './Component';
 import SearchModalComponent from './SearchModalComponent';
-import { fetcher } from '../modules/fetcher';
+import { youtubeAPIFetcher } from '../modules/fetcher';
 import webStore from '../modules/webStore';
 import { API_PATHS, API_URL } from '../constants';
 import { setState, getState } from '../modules/stateStore';
@@ -48,11 +48,11 @@ class AppComponent extends Component {
       return;
     }
     try {
-      const searchResult = await fetcher(
-        `${API_URL}${API_PATHS.SEARCH}?key=${API_KEY}&q=${keyword}&part=snippet&maxResults=10&type="video"`
-      );
+      const searchResult = await youtubeAPIFetcher({
+        path: API_PATHS.SEARCH,
+        params: { q: keyword, part: 'snippet', maxResults: 10, type: 'video' },
+      });
       const { items: videoInfos, nextPageToken } = parserVideos(searchResult);
-
       const videoList = videoInfos.map((videoInfo) => Video.create(videoInfo));
       setState('videoList', videoList);
     } catch ({ message }) {
