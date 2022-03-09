@@ -6,6 +6,7 @@ export class SearchModal {
     this.searchModalDialog = document.getElementsByClassName('search-modal');
     this.searchModalTitle = document.getElementsByClassName('search-modal-title');
     this.searchInputKeyword = document.getElementById('search-input-keyword');
+    this.videoList = document.getElementById('video-list');
 
     this.searchButton = document.getElementById('search-button');
     this.searchButton.addEventListener('click', this.handleSearchButton);
@@ -26,7 +27,30 @@ export class SearchModal {
   };
 
   async getDataMatchKeyword(keyword) {
-    const data = await fetchDataFromKeyword(keyword);
-    console.log(data);
+    this.videos = await fetchDataFromKeyword(keyword);
+    this.renderIframe();
+  }
+
+  renderIframe() {
+    this.resultLabel = document.getElementById('resultLabel');
+    this.resultLabel.removeAttribute('hidden');
+    this.videoList.insertAdjacentHTML(
+      'beforeend',
+      this.videos.items
+        .map(
+          (video) => `<li>
+    <iframe
+        class = "video-item"
+        type="text/html"
+        width="720"
+        height="405"
+        src="https://www.youtube.com/embed/${video.id.videoId}"
+        frameborder="0"
+        allowfullscreen="allowfullscreen"
+    ></iframe>
+</li>`,
+        )
+        .join(''),
+    );
   }
 }
