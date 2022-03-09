@@ -1,3 +1,4 @@
+import dummyObject from './dummy/dummyObject.js';
 import Video from './models/Video.js';
 import { $ } from './utils/dom.js';
 import { on } from './utils/event.js';
@@ -8,7 +9,7 @@ import SearchResultView from './views/SearchResultView.js';
 
 export default class Controller {
   constructor() {
-    this.video = new Video();
+    this.video = new Video(dummyObject);
     this.appView = new AppView();
     this.searchInputView = new SearchInputView();
     this.searchResultView = new SearchResultView();
@@ -19,7 +20,9 @@ export default class Controller {
     on(this.searchInputView.$searchButton, '@search', this.#searchVideo.bind(this));
   }
 
-  #searchVideo(event) {
-    console.log(event.detail.keyword);
+  async #searchVideo(event) {
+    const { keyword } = event.detail;
+    console.log(this.video.fetchedVideos);
+    await this.video.fetchYoutubeApi(keyword);
   }
 }
