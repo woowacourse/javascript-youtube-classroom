@@ -1,11 +1,15 @@
 import { $ } from './util/dom.js';
 import YoutubeMachine from './domain/YoutubeMachine.js';
-import { renderSkeletonUI, removeSkeletonUI, renderVideoItems } from './UI/renderVideoItems.js';
+import {
+  renderSkeletonUI,
+  removeSkeletonUI,
+  renderVideoItems,
+  renderNoResult,
+} from './UI/renderVideoItems.js';
 import '../css/index.css';
+import '../assets/images/not_found.png';
 
 export default function App() {
-  renderSkeletonUI();
-
   const youtubeMachine = new YoutubeMachine();
 
   const validateInput = input => {
@@ -19,8 +23,19 @@ export default function App() {
       const searchInput = $('#search-input-keyword').value.trim();
       validateInput(searchInput);
       youtubeMachine.searchTarget = searchInput;
-      youtubeMachine.data = youtubeMachine.getSearchData();
-      renderVideoItems(youtubeMachine.data);
+      const responseJSON = youtubeMachine.getSearchData();
+      responseJSON
+        .then(data => {
+          // 비디오 렌더링s
+          renderSkeletonUI();
+          renderVideoItems(data);
+          console.log(data.items);
+        })
+        .catch(error => {
+          // 검색결과없음
+          renderNoResult();
+          // console.log('error:', error);
+        });
     } catch (error) {
       alert(error.message);
     }

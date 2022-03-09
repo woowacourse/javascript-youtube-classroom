@@ -29,17 +29,25 @@ export default class YoutubeMachine {
     return URL;
   }
 
-  getSearchData() {
-    console.log(dummyData);
-    return dummyData;
-    // const URL = this.getURL();
+  getSearchData = () => {
+    // console.log(dummyData);
+
+    const URL = this.getURL();
+
+    return fetch(URL).then(response => response.json());
+
+    // const response = fetch(URL);
+    // console.log(response);
+
     // fetch(URL)
     //   .then(response => response.json())
     //   .then(data => {
     //     console.log(data.items);
     //   })
     //   .catch(error => console.log('error:', error));
-  }
+
+    // return dummyData;
+  };
 
   getNextSearchData({ nextPageToken }) {
     const nextURL = this.getURL(nextPageToken);
