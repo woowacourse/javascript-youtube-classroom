@@ -1,4 +1,5 @@
 import { $, $$ } from '../util/dom.js';
+import store from '../store/store.js';
 
 const template = {
   skeletonUI: `<li class="skeleton">
@@ -32,8 +33,16 @@ export const resetVideoList = () => {
 };
 
 export const renderVideoItems = ({ items }) => {
+  const savedStore = store.getLocalStorage();
   items.forEach(item => {
     $('.video-list').insertAdjacentHTML('beforeEnd', template.videoItem(item));
+    if (savedStore) {
+      savedStore.forEach(video => {
+        if ($('.video-list').lastElementChild.dataset.videoId === video.id) {
+          $('.video-list').lastElementChild.lastElementChild.hidden = true;
+        }
+      });
+    }
   });
 };
 
