@@ -15,5 +15,11 @@ export default class Controller {
     this.#subscribeViewEvents();
   }
 
-  #subscribeViewEvents() {}
+  #subscribeViewEvents() {
+    on(this.searchInputView.$searchButton, '@search', this.#searchVideo.bind(this));
+  }
+
+  #searchVideo(event) {
+    console.log(event.detail.keyword);
+  }
 }
