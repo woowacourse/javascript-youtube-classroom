@@ -96,7 +96,7 @@ export default function App() {
     };
     const savedStore = store.getLocalStorage();
     if (savedStore) {
-      store.setLocalStorage([...savedStore, video]);
+      store.updateLocalStorage(video);
       return;
     }
     store.setLocalStorage([video]);
