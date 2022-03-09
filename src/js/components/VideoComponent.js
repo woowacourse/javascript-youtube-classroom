@@ -1,8 +1,12 @@
 import Component from './Component';
 
 class VideoComponent extends Component {
+  state = null;
+
   constructor(parentElement, state) {
-    super(parentElement, state);
+    super(parentElement);
+
+    this.state = state;
     this.render();
   }
 

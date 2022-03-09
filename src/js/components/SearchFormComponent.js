@@ -1,15 +1,37 @@
 import Component from './Component';
 
 class SearchFormComponent extends Component {
-  constructor(parentElement, state) {
-    super(parentElement, state);
+  $searchButton = null;
+
+  $searchInput = null;
+
+  constructor({ parentElement, handlers }) {
+    super(parentElement);
     this.mount();
+    this.bindEventHandler(handlers);
   }
 
   mount() {
     const template = this.generateTemplate();
 
     this.parentElement.insertAdjacentHTML('beforeend', template);
+
+    this.$searchButton = this.parentElement.querySelector('#search-button');
+    this.$searchInput = this.parentElement.querySelector('#search-input-keyword');
+  }
+
+  bindEventHandler({ onSubmitSearchKeyword }) {
+    this.$searchButton.addEventListener('click', async () => {
+      const { value } = this.$searchInput;
+      await onSubmitSearchKeyword(value);
+    });
+
+    this.$searchInput.addEventListener('keypress', async (e) => {
+      const { value } = this.$searchInput;
+      if (e.key === 'Enter') {
+        await onSubmitSearchKeyword(value);
+      }
+    });
   }
 
   generateTemplate() {

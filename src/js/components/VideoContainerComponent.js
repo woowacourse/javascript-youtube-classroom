@@ -1,17 +1,19 @@
+import { subscribe } from '../modules/stateStore';
 import Component from './Component';
 import VideoComponent from './VideoComponent';
 
 class VideoContainerComponent extends Component {
   $videoList = null;
 
-  constructor(parentElement, state) {
-    super(parentElement, state);
-    this.mount();
+  constructor({ parentElement, handlers }) {
+    super(parentElement);
+    this.mount(handlers);
+    this.bindEventHandler(handlers);
+    subscribe('videoList', this);
   }
 
-  setState(newState) {
-    this.state = newState;
-    this.render();
+  wakeUp(stateKey, stateValue) {
+    this.render(stateValue);
   }
 
   mount() {
@@ -21,13 +23,26 @@ class VideoContainerComponent extends Component {
 
     this.$videoList = document.querySelector('.video-list');
     // 초기 상태를 그린다.
-    this.render();
   }
 
-  render() {
-    const { videoList } = this.state;
-
+  render(videoList) {
     videoList.forEach((video) => new VideoComponent(this.$videoList, { video }));
+  }
+
+  bindEventHandler({ onClickSaveButton }) {
+    this.$videoList.addEventListener('click', (e) => {
+      const {
+        target: { className },
+      } = e;
+
+      if (className.includes('video-item__save-button')) {
+        const {
+          dataset: { videoId },
+        } = e.target.closest('.video-item');
+
+        onClickSaveButton(videoId);
+      }
+    });
   }
 
   generateTemplate() {
