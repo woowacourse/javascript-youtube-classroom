@@ -1,10 +1,11 @@
 import { $ } from './util/dom.js';
 import YoutubeMachine from './domain/YoutubeMachine.js';
-import { renderSkeletonUI, removeSkeletonUI } from './UI/renderVideoItems.js';
+import { renderSkeletonUI, removeSkeletonUI, renderVideoItems } from './UI/renderVideoItems.js';
 import '../css/index.css';
 
 export default function App() {
   renderSkeletonUI();
+
   const youtubeMachine = new YoutubeMachine();
 
   const validateInput = input => {
@@ -18,7 +19,8 @@ export default function App() {
       const searchInput = $('#search-input-keyword').value.trim();
       validateInput(searchInput);
       youtubeMachine.searchTarget = searchInput;
-      youtubeMachine.getSearchData();
+      youtubeMachine.data = youtubeMachine.getSearchData();
+      renderVideoItems(youtubeMachine.data);
     } catch (error) {
       alert(error.message);
     }
