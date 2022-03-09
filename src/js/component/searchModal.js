@@ -54,17 +54,21 @@ class SearchModal {
       try {
         this.keyword = this.$searchInputKeyword.value;
         checkValidSearchInput(this.keyword);
-        this.removeNoResult();
-        this.$videoListContainer.replaceChildren();
-        this.pageToken = null;
-        this.$searchInputKeyword.blur();
-        this.$videoListContainer.classList.remove('hide');
+        this.initVideoState();
         this.callApi();
       } catch (err) {
         console.dir(err);
         // alert(err);
       }
     }
+  }
+
+  initVideoState() {
+    this.removeNoResult();
+    this.$videoListContainer.replaceChildren();
+    this.$searchInputKeyword.blur();
+    this.$videoListContainer.classList.remove('hide');
+    this.pageToken = null;
   }
 
   checkSavedVideo(id) {
@@ -77,14 +81,18 @@ class SearchModal {
     }
     try {
       checkMaxStorageVolume();
-      setLocalStorage(
-        'save',
-        getLocalStorage('save').concat(e.target.closest('li').dataset.videoId),
-      );
+      this.saveVideoToLocalStorage(e);
       e.target.classList.add('hide');
     } catch (err) {
       alert(err.message);
     }
+  }
+
+  saveVideoToLocalStorage({ target }) {
+    const savedVideos = getLocalStorage('save');
+    const newVideo = target.closest('li').dataset.videoId;
+
+    setLocalStorage('save', savedVideos.concat(newVideo));
   }
 
   requestAdditionalSearchResult() {
@@ -103,7 +111,6 @@ class SearchModal {
         this.renderResult(data);
       })
       .catch((err) => {
-        console.log(err);
         this.renderNetworkError(err);
       });
   }
