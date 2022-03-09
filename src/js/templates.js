@@ -12,6 +12,17 @@ const generatorTemplate = {
     </li>
   `.repeat(10);
   },
+  noResult() {
+    return `
+    <div class="no-result">
+      <img src="./src/assets/images/not_found.png" alt="no result image" class="no-result__image">
+      <p class="no-result__description">
+        검색 결과가 없습니다<br />
+        다른 키워드로 검색해보세요
+      </p>
+    </div>
+  `;
+  },
 };
 
 export default generatorTemplate;
