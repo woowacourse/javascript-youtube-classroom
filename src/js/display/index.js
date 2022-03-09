@@ -1,5 +1,7 @@
 import Navigation from './YoutubeClassRoom/Navigation';
 import Modal from './Share/Modal';
+import SearchForm from './YoutubeClassRoom/SearchForm';
+import SearchResult from './YoutubeClassRoom/SearchResult';
 
 export default class IndexDisplay {
   constructor() {
@@ -9,5 +11,7 @@ export default class IndexDisplay {
 
   youtubeClassRoomPage() {
     new Navigation();
+    new SearchForm();
+    new SearchResult();
   }
 }
