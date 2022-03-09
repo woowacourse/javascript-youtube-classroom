@@ -19,15 +19,48 @@ class View {
     this.modalContainer.classList.remove('hide');
   };
 
+  #formatDateString(dateTimeString) {
+    const date = new Date(dateTimeString);
+    return `${date.getFullYear()}년 ${date.getMonth() + 1}월 ${date.getDate()}일`;
+  }
+
+  #createVideoElement = ({ thumbnail, title, channelTitle, publishedAt, videoId }) => {
+    const li = document.createElement('li');
+    li.className = 'video-item';
+    li.dataset.videoId = videoId;
+    li.insertAdjacentHTML(
+      'beforeend',
+      `<img src="${thumbnail}" alt="video-item-thumbnail" class="video-item__thumbnail">
+      <h4 class="video-item__title">${title}</h4>
+      <p class="video-item__channel-name">${channelTitle}</p>
+      <p class="video-item__published-date">${this.#formatDateString(publishedAt)}</p>
+      <button class="video-item__save-button button">⬇ 저장</button>`
+    );
+    return li;
+  };
+
+  #createElementFromObject(searchResultArray) {
+    return searchResultArray.map((resultItem) => this.#createVideoElement(resultItem));
+  }
+
+  #renderSearchResult = (searchResultArray) => {
+    const resultElementArray = this.#createElementFromObject(searchResultArray);
+    const skeletonList = this.videoList.querySelectorAll('.skeleton');
+    skeletonList.forEach((skeleton, i) => {
+      this.videoList.replaceChild(resultElementArray[i], skeleton);
+    });
+  };
+
   #handleSearch = async (event) => {
     event.preventDefault();
     const { value: keyword } = this.searchInputKeyword;
     if (this.#isBlankInput(keyword)) {
       return;
     }
+    this.videoList.innerHTML = '';
     this.#loadSkeleton();
     const searchResultArray = await this.sendSearchRequest(keyword);
-    // video view render (searchResultArray)
+    this.#renderSearchResult(searchResultArray);
   };
 
   #isBlankInput = (input) => input.trim() === '';
