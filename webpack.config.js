@@ -41,6 +41,14 @@ module.exports = {
         ],
         exclude: /node_modules/,
       },
+      {
+        test: /\.png$/,
+        loader: 'file-loader',
+        options: {
+          publicPath: './',
+          name: '[path][name].[ext]',
+        },
+      },
     ],
   },
   plugins: [
