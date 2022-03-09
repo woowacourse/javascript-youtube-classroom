@@ -1,9 +1,10 @@
+import { searchVideos } from '../../api/api.js';
 import Component from '../../core/Component.js';
 import VideoCard from './VideoCard.js';
 
 export default class VideoCardList extends Component {
   setup() {
-    const { items } = this.props;
+    const { items, nextPageOption } = this.props;
     const savedVideos = Component.webStore.load();
     const videos = items.map((item) => {
       return {
@@ -26,7 +27,7 @@ export default class VideoCardList extends Component {
       }
     );
 
-    this.state = { videos, isLoading: false };
+    this.state = { videos, isLoading: false, nextPageOption };
   }
 
   template() {
@@ -107,11 +108,13 @@ export default class VideoCardList extends Component {
   }
 
   async loadNextVideos() {
-    return new Promise((resolve) => {
-      setTimeout(() => {
-        resolve(this.props.items);
-      }, 1000);
-    });
+    const { nextPageOption } = this.state;
+    const { query, nextPageToken } = nextPageOption;
+    const data = await searchVideos(query, nextPageToken);
+
+    this.setState({ query, nextPageToken: data.nextPageToken });
+
+    return data.items;
   }
 
   isScrollBelowLastCard(eventTarget) {

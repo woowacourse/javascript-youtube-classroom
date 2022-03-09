@@ -68,6 +68,10 @@
   color: #ffffff;
 }
 
+.search-result {
+  width: 100%;
+}
+
 .search-result.search-result--no-result {
   display: flex;
   flex-direction: column;
@@ -96,10 +100,6 @@
   grid-gap: 16px;
   overflow-y: scroll;
 }
-
-/* .video-item {
-  position: relative;
-} */
 
 .video-item__thumbnail {
   display: block;

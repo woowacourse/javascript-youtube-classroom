@@ -5,7 +5,7 @@ import SearchResult from './SearchResult.js';
 
 export default class SearchModal extends Component {
   setup() {
-    this.state = { items: [], isNoResult: false };
+    this.state = { items: [], isNoResult: false, nextPageToken: null };
   }
 
   template() {
@@ -32,14 +32,18 @@ export default class SearchModal extends Component {
   }
 
   afterMounted() {
-    const { items, isNoResult } = this.state;
+    const { items, isNoResult, nextPageOption } = this.state;
 
     new SearchBar(this.$('#search-input'), {
       showSearchResult: this.showSearchResult.bind(this),
+      setNextPageOption: this.setNextPageOption.bind(this),
     });
     isNoResult
       ? new NotFound(this.$('#not-found'))
-      : new SearchResult(this.$('#search-result'), { items });
+      : new SearchResult(this.$('#search-result'), {
+          items,
+          nextPageOption,
+        });
   }
 
   setEvent() {
@@ -50,5 +54,9 @@ export default class SearchModal extends Component {
 
   showSearchResult(items) {
     this.setState({ items, isNoResult: !items.length });
+  }
+
+  setNextPageOption(nextPageOption) {
+    this.setState({ nextPageOption });
   }
 }

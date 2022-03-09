@@ -1,5 +1,5 @@
+import { searchVideos } from '../../api/api.js';
 import Component from '../../core/Component.js';
-import request from '../../__mocks__/request.js';
 
 export default class SearchBar extends Component {
   template() {
@@ -11,6 +11,7 @@ export default class SearchBar extends Component {
           type="text"
           placeholder="검색"
           class="search-input__keyword"
+          name="searchInput"
         />
         <button
           type="submit"
@@ -24,12 +25,15 @@ export default class SearchBar extends Component {
   }
 
   setEvent() {
-    const { showSearchResult } = this.props;
-
+    const { showSearchResult, setNextPageOption } = this.props;
     this.addEvent('submit', '#search-form', async (e) => {
-      const data = await request();
+      const data = await searchVideos(e.target.elements.searchInput.value);
 
       showSearchResult(data.items);
+      setNextPageOption({
+        query: e.target.elements.searchInput.value,
+        nextPageToken: data.nextPageToken,
+      });
     });
   }
 }
