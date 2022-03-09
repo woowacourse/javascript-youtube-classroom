@@ -1,16 +1,15 @@
 class Component {
   parentElement;
 
-  state;
-
-  constructor(parentElement, state) {
+  constructor(parentElement) {
     this.parentElement = parentElement;
-    this.state = state;
   }
+
+  wakeUp() {}
 
   mount() {}
 
-  setState() {}
+  bindEventHandler() {}
 
   render() {}
 
