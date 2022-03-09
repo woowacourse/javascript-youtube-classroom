@@ -1,4 +1,5 @@
 import youtubeSearchAPI from "../api/YoubeSearchapi.js";
+import { getLocalStorage, setLocalStorage } from "../storage/localStorage.js";
 import { checkValidSearchInput } from "../util/validator.js";
 import template from "./templates.js";
 
@@ -9,6 +10,7 @@ class SearchModal {
     this.$searchInputKeyword = document.querySelector("#search-input-keyword");
     this.$searchButton = document.querySelector("#search-button");
     this.$videoListContainer = document.querySelector(".video-list");
+    this.$searchResult = document.querySelector(".search-result");
     this.pageToken = null;
     this.bindEvent();
   }
@@ -21,6 +23,15 @@ class SearchModal {
     this.toggleModalContainerView();
     this.$videoListContainer.replaceChildren();
     this.$searchInputKeyword.value = "";
+    this.removeNoResult();
+  }
+
+  removeNoResult() {
+    const $noResultContainer = document.querySelector(".no-result");
+    if ($noResultContainer) {
+      $noResultContainer.remove();
+      this.$searchResult.classList.remove("search-result--no-result");
+    }
   }
 
   bindEvent() {
@@ -33,6 +44,10 @@ class SearchModal {
       "scroll",
       this.requestAdditionalSearchResult.bind(this)
     );
+    this.$videoListContainer.addEventListener(
+      "click",
+      this.saveVideo.bind(this)
+    );
   }
 
   searchVideo(event) {
@@ -43,22 +58,46 @@ class SearchModal {
       try {
         this.keyword = this.$searchInputKeyword.value;
         checkValidSearchInput(this.keyword);
-
+        this.removeNoResult();
         this.$videoListContainer.replaceChildren();
+
         this.pageToken = null;
         this.$searchInputKeyword.blur();
+        this.$videoListContainer.style.display = "flex";
         this.callApi();
       } catch (err) {
-        alert(err);
+        console.dir(err);
+        // alert(err);
       }
     }
+  }
+
+  checkSavedVideo(id) {
+    return getLocalStorage("save").includes(id);
+  }
+
+  saveVideo(e) {
+    if (!e.target.classList.contains("video-item__save-button")) {
+      return;
+    }
+
+    setLocalStorage(
+      "save",
+      getLocalStorage("save").concat(e.target.closest("li").dataset.videoId)
+    );
+
+    e.target.style.display = "none";
   }
 
   requestAdditionalSearchResult() {
     const { offsetHeight, scrollHeight, scrollTop } = this.$videoListContainer;
     if (scrollTop === 0) return;
     if (offsetHeight + scrollTop >= scrollHeight) {
-      this.callApi();
+      try {
+        this.callApi();
+      } catch (e) {
+        alert(e);
+      }
     }
   }
 
@@ -67,10 +106,30 @@ class SearchModal {
       this.keyword,
       this.pageToken
     );
+
+    if (data.items.length === 0) {
+      this.renderNoResultImage();
+      return;
+    }
     this.pageToken = data.nextPageToken;
+    this.renderVideo(data);
+  }
+
+  renderNoResultImage() {
+    this.$videoListContainer.style.display = "none";
+    this.$searchResult.insertAdjacentHTML(
+      "beforeend",
+      template.noSearchResult()
+    );
+    this.$searchResult.classList.add("search-result--no-result");
+  }
+
+  renderVideo(data) {
     data.items.forEach((item) => {
       const {
-        id,
+        id: { videoId },
+      } = item;
+      const {
         thumbnails: {
           default: { url },
         },
@@ -82,11 +141,12 @@ class SearchModal {
       this.$videoListContainer.insertAdjacentHTML(
         "beforeend",
         template.videoItems({
-          id,
+          videoId,
           publishTime: new Date(publishTime),
           title,
           channelTitle,
           url,
+          isSaved: this.checkSavedVideo(videoId),
         })
       );
     });
