@@ -87,7 +87,6 @@ class SearchModal {
     if (!e.target.classList.contains("video-item__save-button")) {
       return;
     }
-
     try {
       checkMaxStorageVolume();
       setLocalStorage(
@@ -104,20 +103,33 @@ class SearchModal {
     const { offsetHeight, scrollHeight, scrollTop } = this.$videoListContainer;
     if (scrollTop === 0) return;
     if (offsetHeight + scrollTop >= scrollHeight) {
-      try {
-        this.callApi();
-      } catch (e) {
-        alert(e);
-      }
+      this.callApi();
     }
   }
 
-  async callApi() {
+  callApi() {
     this.renderSkeletonImage();
-    const data = await youtubeSearchAPI.searchByPage(
-      this.keyword,
-      this.pageToken
-    );
+    youtubeSearchAPI
+      .searchByPage(this.keyword, this.pageToken)
+      .then((data) => {
+        this.renderResult(data);
+      })
+      .catch((err) => {
+        this.renderNetworkError(err);
+      });
+  }
+
+  renderNetworkError(e) {
+    this.removeSkeleton();
+    if (e.name === "403 Error") {
+      this.$videoListContainer.insertAdjacentHTML(
+        "beforeend",
+        template.exceedCapacityErrorImage()
+      );
+    }
+  }
+
+  renderResult(data) {
     this.removeSkeleton();
     if (data.items.length === 0) {
       this.renderNoResultImage();

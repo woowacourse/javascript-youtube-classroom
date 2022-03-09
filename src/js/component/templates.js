@@ -1,4 +1,5 @@
 import img from "../../assets/images/not_found.png";
+import errorImage from "../../assets/images/eror-403-noBackground.png";
 
 const template = {
   videoItems: ({ videoId, url, channelTitle, title, publishTime, isSaved }) => `
@@ -34,6 +35,16 @@ const template = {
       <div class="skeleton text"></div>
       <div class="skeleton date"></div>
     </li>
+  `,
+
+  exceedCapacityErrorImage: () => `
+  <div class="no-result">
+    <img src= ${errorImage}/>
+    <p class="no-result__description">
+      할당량 초과!!<br />
+      다음날 5시에 다시 시도하세요
+    </p>
+  </div>
   `,
 };
 export default template;
