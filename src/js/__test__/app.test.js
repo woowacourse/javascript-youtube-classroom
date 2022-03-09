@@ -24,3 +24,9 @@ test('유튜브 검색 결과를 webstorage에 저장할 수 있다', async () =
 
   expect(storageEngine.getData()).not.toBe(null);
 });
+
+test('유튜브 검색 결과를 webstorage에 100개까지 저장할 수 있다.', () => {
+  const storageEngine = new StorageEngine();
+
+  expect(storageEngine.getData()).toHaveLength(100);
+});
