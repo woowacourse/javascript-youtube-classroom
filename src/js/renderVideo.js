@@ -1,3 +1,4 @@
+import { MAX_VIDEO_COUNT } from './constants/contants.js';
 import SearchVideo from './searchVideo.js';
 import {
   videoTemplate,
@@ -79,7 +80,7 @@ class RenderVideo {
 
   renderVideoSkeleton() {
     this.videoListContainer.insertAdjacentHTML('beforeend', Array.from(
-      { length: 10 },
+      { length: MAX_VIDEO_COUNT },
       () => videoSkeletonTemplate
     ).join(' '));
   }
