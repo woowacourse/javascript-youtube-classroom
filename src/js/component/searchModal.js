@@ -5,6 +5,7 @@ import {
   checkMaxStorageVolume,
 } from "../util/validator.js";
 import template from "./templates.js";
+import throttle from "../util/throttle.js";
 
 class SearchModal {
   constructor() {
@@ -15,6 +16,10 @@ class SearchModal {
     this.$videoListContainer = document.querySelector(".video-list");
     this.$searchResult = document.querySelector(".search-result");
     this.pageToken = null;
+    this.requestAdditionalSearchResult = throttle(
+      this.requestAdditionalSearchResult.bind(this),
+      1000
+    );
     this.bindEvent();
   }
 
