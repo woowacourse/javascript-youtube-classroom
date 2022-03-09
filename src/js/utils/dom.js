@@ -1,3 +1,7 @@
-const $ = (selector, parentNode = document) => parentNode.querySelector(selector);
+export const $ = (selector, parentNode = document) => parentNode.querySelector(selector);
 
-export default $;
+export const removeChildren = (parentNode) => {
+  while (parentNode.firstChild) {
+    parentNode.removeChild(parentNode.firstChild);
+  }
+};

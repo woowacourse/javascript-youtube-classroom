@@ -65,6 +65,10 @@
     color: #FFFFFF;
 }
 
+.search-result .no-result {
+  text-align: center;
+}
+
 .search-result.search-result--no-result {
     justify-content: center;
     align-items: center;
