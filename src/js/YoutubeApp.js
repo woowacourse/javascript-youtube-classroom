@@ -2,24 +2,32 @@ import getSearchResult from "./api/getSearchResult";
 import generatorTemplate from "./templates";
 import notFountImage from "../assets/images/not_found.png";
 
-const mockObject = {
-  id: {
-    videoId: 1,
-  },
-  snippet: {
-    channelTitle: "essential;",
-    thumbnails: {
-      high: {
-        url: "https://i.ytimg.com/vi/ECfuKi5-Cfs/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLDvmIcX-TgdcH2g_Bd4AUxw6hjmvQ",
+const mockObject = () => {
+  const array = [];
+
+  for (let index = 0; index < 10; index++) {
+    array.push({
+      id: {
+        videoId: index,
       },
-    },
-    publishTime: "2022년 3월 2일",
-    title: "[Playlist] 너무 좋은데 괜찮으시겠어요?",
-  },
+      snippet: {
+        channelTitle: "essential;",
+        thumbnails: {
+          high: {
+            url: "https://i.ytimg.com/vi/ECfuKi5-Cfs/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLDvmIcX-TgdcH2g_Bd4AUxw6hjmvQ",
+          },
+        },
+        publishTime: "2022-03-02T11:39:31Z",
+        title: "[Playlist] 너무 좋은데 괜찮으시겠어요?",
+      },
+    });
+  }
+
+  return array;
 };
 
 export default class YoutubeApp {
-  constructor() {
+  constructor(userLibrary) {
     this.searchModalButton = document.querySelector("#search-modal-button");
     this.modalContainer = document.querySelector(".modal-container");
     this.searchButton = document.querySelector("#search-button");
@@ -29,6 +37,7 @@ export default class YoutubeApp {
     this.searchInputKeyword = document.querySelector("#search-input-keyword");
 
     this.bind();
+    this.userLibrary = userLibrary;
   }
 
   bind() {
@@ -41,7 +50,16 @@ export default class YoutubeApp {
       "scroll",
       this.throttle(this.onScrollVideoList, 300)
     );
+    this.videoList.addEventListener("click", this.onClickSaveButton);
   }
+
+  onClickSaveButton = ({ target }) => {
+    if (!target.matches(".video-item__save-button")) return;
+
+    const videoId = target.closest(".video-item").dataset.videoId;
+    this.userLibrary.setData(videoId);
+    target.classList.add("hide");
+  };
 
   onSubmitSearchModalButton = (e) => {
     e.preventDefault();
@@ -87,7 +105,7 @@ export default class YoutubeApp {
         .forEach((element) => this.videoList.removeChild(element));
 
       const responseData = {
-        items: Array.from({ length: 10 }, () => mockObject),
+        items: mockObject(),
       };
       // const responseData = await getSearchResult(
       //   this.keyword,
@@ -117,7 +135,7 @@ export default class YoutubeApp {
     // const responseData = await getSearchResult(this.keyword);
     // this.nextPageToken = responseData.nextPageToken;
     const responseData = {
-      items: Array.from({ length: 10 }, () => mockObject),
+      items: mockObject(),
     };
     // console.log(resultArray);
 

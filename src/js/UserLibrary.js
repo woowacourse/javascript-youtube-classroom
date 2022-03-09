@@ -1,15 +1,6 @@
 export default class UserLibrary {
   constructor() {
-    this.store = [];
-    this.init();
-  }
-
-  init() {
-    try {
-      this.store = JSON.parse(localStorage.getItem("videos"));
-    } catch (error) {
-      console.log(error);
-    }
+    this.store = JSON.parse(localStorage.getItem("videos")) || [];
   }
 
   setData(data) {
@@ -18,6 +9,7 @@ export default class UserLibrary {
     }
 
     this.store = [...this.store, data];
+    this.setLocalStorage();
   }
 
   getData() {
@@ -25,6 +17,6 @@ export default class UserLibrary {
   }
 
   setLocalStorage() {
-    localStorage.setItem("videos", this.store);
+    localStorage.setItem("videos", JSON.stringify(this.store));
   }
 }
