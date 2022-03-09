@@ -13,8 +13,12 @@ export default class Search {
         return;
       }
 
-      // this.renderVideoList();
-      // TODO: 스켈레톤 UI를 보여준다
+      const $videoList = $('.video-list');
+      $videoList.replaceChildren();
+      $videoList.insertAdjacentHTML(
+        'beforeend',
+        this.skeletonTemplate().repeat(8),
+      );
 
       try {
         request($('#search-input-keyword').value, API_KEY).then(json => {
@@ -24,6 +28,17 @@ export default class Search {
         console.log(message);
       }
     });
+  }
+
+  skeletonTemplate() {
+    return `
+      <div class="skeleton">
+        <div class="skeleton__image"></div>
+        <p class="skeleton__line"></p>
+        <p class="skeleton__line"></p>
+        <p class="skeleton__line"></p>
+      </div>
+    `;
   }
 
   searchResultTemplate(items) {

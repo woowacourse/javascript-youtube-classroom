@@ -1,9 +1,9 @@
 .skeleton {
-  width: 236px;
+  width: 240px;
 }
 
-.skeleton .image,
-.skeleton .line {
+.skeleton__image,
+.skeleton__line {
   background-image: linear-gradient(
     90deg,
     #e0e0e0 0px,
@@ -11,22 +11,28 @@
     #e0e0e0 60px
   );
   animation: refresh 2s infinite ease-out;
+  margin-bottom: 11px;
 }
 
-.skeleton .image {
-  height: 150px;
+.skeleton__image {
+  height: 135px;
+  margin-bottom: 11px;
 }
 
-.skeleton .line {
+.skeleton__line {
   height: 16px;
 }
 
-.skeleton .line:first-child {
+.skeleton__line:first-child {
   width: 50%;
 }
 
-.skeleton .line:last-child {
-  width: 80%;
+.skeleton__line:nth-child(3) {
+  width: 70%;
+}
+
+.skeleton__line:last-child {
+  width: 45%;
 }
 
 @keyframes refresh {
