@@ -1,5 +1,5 @@
 import { $ } from '@Utils/Dom';
-import { onEnableButton } from '@Utils/Element-control';
+import { onEnableButton } from '@Utils/ElementControl';
 import Display from '@Core/Display';
 import SearchStore from '@Domain/YoutubeSearchResult';
 
@@ -22,6 +22,13 @@ export default class SearchForm extends Display {
 
   handleSubmitForm() {
     const keyword = $('#search-input-keyword', this.container).value;
+    const { isLoading } = SearchStore.getState();
+
+    if (isLoading) {
+      return;
+    }
+
     SearchStore.dispatch('UPDATE_SEARCH_KEYWORD', keyword);
+    SearchStore.dispatch('UPDATE_SEARCH_RESULT');
   }
 }
