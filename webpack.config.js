@@ -3,7 +3,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
 module.exports = {
-  entry: './src/js/index.js',
+  entry: ['@babel/polyfill', './src/js/index.js'],
   output: {
     path: path.resolve(__dirname, 'dist'),
     filename: 'youtube-classroom.bundle.js',

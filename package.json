@@ -20,6 +20,7 @@
   "homepage": "https://github.com/al-bur/javascript-youtube-classroom#readme",
   "devDependencies": {
     "@babel/core": "^7.17.5",
+    "@babel/polyfill": "^7.12.1",
     "@babel/preset-env": "^7.16.11",
     "babel-loader": "^8.2.3",
     "commitizen": "^4.2.4",
@@ -44,5 +45,9 @@
     "commitizen": {
       "path": "cz-customizable"
     }
+  },
+  "dependencies": {
+    "dotenv": "^16.0.0",
+    "node-fetch": "^2.6.7"
   }
 }
