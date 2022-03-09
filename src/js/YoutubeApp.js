@@ -1,5 +1,6 @@
 import getSearchResult from "./api/getSearchResult";
 import generatorTemplate from "./templates";
+import notFountImage from "../assets/images/not_found.png";
 
 export default class YoutubeApp {
   constructor() {
@@ -36,7 +37,8 @@ export default class YoutubeApp {
   };
 
   async search(keyword) {
-    const resultArray = await getSearchResult(keyword);
+    // const resultArray = await getSearchResult(keyword);
+    const resultArray = [];
 
     if (resultArray.length === 0) {
       this.searchResult.removeChild(this.videoList);
@@ -45,6 +47,8 @@ export default class YoutubeApp {
         "beforeend",
         generatorTemplate.noResult()
       );
+
+      document.querySelector(".no-result__image").src = notFountImage;
     }
 
     return resultArray;
