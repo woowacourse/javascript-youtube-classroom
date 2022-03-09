@@ -26,6 +26,7 @@ export default class VideoCard extends Component {
         <img
           src="${thumbnailUrl}"
           alt="video-item-thumbnail" class="video-item__thumbnail"
+          loading="lazy"
         >
         <h4 class="video-item__title line">${title}</h4>
         <p class="video-item__channel-name line">${channelTitle}</p>
@@ -48,6 +49,7 @@ export default class VideoCard extends Component {
 
     this.addEvent('click', '.video-item__save-button', () => {
       const prevSavedVideos = Component.webStore.load();
+
       Component.webStore.save([...prevSavedVideos, videoId]);
 
       this.setState({ saved: true });
