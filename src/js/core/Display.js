@@ -11,11 +11,14 @@ export default class Display {
   init() {
     this.setContainer();
     this.bindEvents();
+    this.subscribeStores();
   }
 
   setContainer() {}
 
   bindEvents() {}
+
+  subscribeStores() {}
 
   addEvent(eventType, selector, handler) {
     const children = [...this.container.querySelectorAll(selector)];
