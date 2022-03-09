@@ -2,12 +2,11 @@ import YoutubeClassRoomView from './YoutubeClassroomView';
 import SearchVideoManager from './SearchVideoManager';
 import { $ } from './util';
 import SaveVideoManager from './SaveVideoManager';
+import { validateSearchKeyword } from './validation';
 
 const youtubeClassRoomView = new YoutubeClassRoomView();
 const searchVideoManager = new SearchVideoManager();
 const saveVideoManager = new SaveVideoManager();
-
-let keyword = '';
 
 $('#search-modal-button').addEventListener('click', () => {
   $('#modal-container').classList.remove('hide');
@@ -17,14 +16,7 @@ $('.dimmer').addEventListener('click', (e) => {
   $('#modal-container').classList.add('hide');
 });
 
-$('#search-form').addEventListener('submit', (e) => {
-  e.preventDefault();
-  keyword = $('#search-input-keyword').value;
-
-  youtubeClassRoomView.initializeSearchResultVideoList();
-  if (searchVideoManager.isKeywordChanged(keyword)) {
-    searchVideoManager.resetNextPageToken();
-  }
+const searchKeyword = (keyword) => {
   searchVideoManager.fetchYoutubeData(keyword).then((videos) => {
     const checkedVideos = videos.map((video) => ({
       ...video,
@@ -32,6 +24,22 @@ $('#search-form').addEventListener('submit', (e) => {
     }));
     youtubeClassRoomView.updateOnSearchDataReceived(checkedVideos);
   });
+};
+
+$('#search-form').addEventListener('submit', (e) => {
+  e.preventDefault();
+  const keyword = $('#search-input-keyword').value;
+  try {
+    validateSearchKeyword(keyword);
+  } catch ({ message }) {
+    alert(message);
+    return;
+  }
+  youtubeClassRoomView.initializeSearchResultVideoList();
+  if (searchVideoManager.isKeywordChanged(keyword)) {
+    searchVideoManager.resetNextPageToken();
+  }
+  searchKeyword(keyword);
 });
 
 let debounce;
@@ -43,13 +51,7 @@ function detectScroll() {
 
   if (scrollTop + clientHeight + 20 >= scrollHeight) {
     debounce = setTimeout(() => {
-      searchVideoManager.fetchYoutubeData(keyword).then((videos) => {
-        const checkedVideos = videos.map((video) => ({
-          ...video,
-          saved: saveVideoManager.findVideoById(video.id),
-        }));
-        youtubeClassRoomView.updateOnSearchDataReceived(checkedVideos);
-      });
+      searchKeyword($('#search-input-keyword').value);
     }, 1000);
   }
 }
