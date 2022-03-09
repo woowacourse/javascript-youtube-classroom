@@ -50,5 +50,8 @@
   "dependencies": {
     "dotenv": "^16.0.0",
     "node-fetch": "^2.6.7"
+  },
+  "jest": {
+    "testEnvironment": "jsdom"
   }
 }

@@ -1,4 +1,5 @@
 import SearchEngine from '../searchEngine.js';
+import StorageEngine from '../storageEngine.js';
 
 import { isNull } from '../util/common.js';
 
@@ -11,10 +12,15 @@ test('유튜브 검색 기능 정상 작동', async () => {
   expect(isNull(response)).toBe(false);
 });
 
-test('유튜브 검색 결과를 webstorage에 저장할 수 있다', () => {
-  const storeEngine = new StoreEngine();
+test('유튜브 검색 결과를 webstorage에 저장할 수 있다', async () => {
+  const searchEngine = new SearchEngine();
+  const storageEngine = new StorageEngine();
+  storageEngine.clearData();
 
-  storeEngine.saveData();
+  const keyword = '지피티 구독자 일반인';
+  const data = await searchEngine.searchKeyword(keyword);
 
-  expect(storeEngine.getData()).not.toBe(null);
+  storageEngine.saveData(data);
+
+  expect(storageEngine.getData()).not.toBe(null);
 });
