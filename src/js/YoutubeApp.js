@@ -2,6 +2,21 @@ import getSearchResult from "./api/getSearchResult";
 import generatorTemplate from "./templates";
 import notFountImage from "../assets/images/not_found.png";
 
+const mockObject = {
+  id: {
+    videoId: 1,
+  },
+  snippet: {
+    channelTitle: "essential;",
+    thumbnails: {
+      default:
+        "https://i.ytimg.com/vi/ECfuKi5-Cfs/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLDvmIcX-TgdcH2g_Bd4AUxw6hjmvQ",
+    },
+    publishTime: "2022년 3월 2일",
+    title: "[Playlist] 너무 좋은데 괜찮으시겠어요?",
+  },
+};
+
 export default class YoutubeApp {
   constructor() {
     this.searchModalButton = document.querySelector("#search-modal-button");
@@ -38,7 +53,8 @@ export default class YoutubeApp {
 
   async search(keyword) {
     // const resultArray = await getSearchResult(keyword);
-    const resultArray = [];
+    const resultArray = Array.from({ length: 10 }, () => mockObject);
+    console.log(resultArray);
 
     if (resultArray.length === 0) {
       this.searchResult.removeChild(this.videoList);
@@ -49,7 +65,30 @@ export default class YoutubeApp {
       );
 
       document.querySelector(".no-result__image").src = notFountImage;
+
+      return;
     }
+
+    // console.log(resultArray);
+
+    const skeletons = document.querySelectorAll(".skeleton");
+    skeletons.forEach((skeleton) => {
+      this.videoList.removeChild(skeleton);
+    });
+
+    const result = resultArray
+      .map((item) =>
+        generatorTemplate.videoItem({
+          id: item.id.videoId,
+          channel: item.snippet.channelTitle,
+          defaultThumbnail: item.snippet.thumbnails.default,
+          title: item.snippet.title,
+          date: item.snippet.publishTime,
+        })
+      )
+      .join("");
+
+    this.videoList.insertAdjacentHTML("beforeend", result);
 
     return resultArray;
   }
