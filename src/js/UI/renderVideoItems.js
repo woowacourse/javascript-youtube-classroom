@@ -27,6 +27,10 @@ const resetSearchInput = () => {
   $('#search-input-keyword').value = '';
 };
 
+export const resetVideoList = () => {
+  $('.video-list').replaceChildren();
+};
+
 export const renderVideoItems = ({ items }) => {
   items.forEach(item => {
     $('.video-list').insertAdjacentHTML('beforeEnd', template.videoItem(item));

@@ -1,7 +1,7 @@
 const dummyData = {
   kind: 'youtube#searchListResponse',
   etag: '_OfNA0LaufepG8rEmnOdpIN_YbE',
-  nextPageToken: 'CAoQAA',
+  nextPageToken: 'ㅋ',
   regionCode: 'KR',
   pageInfo: {
     totalResults: 686,
