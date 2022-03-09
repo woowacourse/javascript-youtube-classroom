@@ -1,5 +1,5 @@
 import SearchVideo from './searchVideo.js';
-import { videoTemplate } from './template/videoTemplate.js';
+import { videoTemplate, videoSkeletonTemplate } from './template/videoTemplate.js';
 import { selectDom, addEvent } from './utils/selectDom.js';
 
 class RenderVideo {
@@ -25,8 +25,11 @@ class RenderVideo {
   onSearchButtonClick = async () => {
     const searchKeyword = this.searchInput.value;
     try {
-      await this.searchVideo.handleSearchVideo(searchKeyword);
-      this.renderSearchVideo(this.searchVideo.searchResults);
+      this.renderVideoSkeleton();
+      setTimeout(async () => {
+        await this.searchVideo.handleSearchVideo(searchKeyword);
+        this.renderSearchVideo(this.searchVideo.searchResults);
+      }, 500);
     } catch (error) {
       return alert(error);
     }
@@ -34,7 +37,11 @@ class RenderVideo {
 
   renderSearchVideo(searchVideo) {
     this.videoListContainer.innerHTML = searchVideo
-      .map((video) => videoTemplate(video).trim()).join(' ');
+      .map((video) => videoTemplate(video)).join(' ');
+  }
+
+  renderVideoSkeleton() {
+    this.videoListContainer.innerHTML = Array.from({ length: 10 }, () => videoSkeletonTemplate).join(' ');
   }
 }
 
