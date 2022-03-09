@@ -1,7 +1,3 @@
-// - [ ] 유튜브 검색 API를 사용해 내가 보고 싶은 영상들을 검색할 수 있다.
-//   - 엔터키를 눌러 검색할 수 있다.
-//   - 검색 버튼을 클릭해 검색할 수 있다.
-//   - 디바운스를 사용하여 API호출을 최소화한다.
 // - [ ] 최초 검색 결과는 10개까지만 보여준다.
 //   - 브라우저 스크롤 바를 끝까지 내려 그 다음 10개 아이템을 추가로 불러온다.
 //   - 스로틀를 사용하여 이벤트 콜백함수 호출을 최소화한다.
@@ -54,4 +50,18 @@ it("내가 보고 싶은 영상들을 검색할 수 있다.", () => {
     .then(() => {
       cy.get(".video-item").should("be.visible");
     });
+});
+
+it("브라우저 스크롤 바를 끝까지 내려 그 다음 10개 아이템을 추가로 불러온다.", () => {
+  const searchKeyword = "xooos";
+
+  cy.visit("./index.html");
+
+  cy.get("#search-modal-button").click();
+  cy.get("#search-input-keyword").type(searchKeyword);
+  cy.get("#search-button").click();
+  cy.get(".video-item").should("be.visible");
+  cy.get(".video-list").scrollTo("bottom");
+
+  cy.get(".skeleton").should("be.visible");
 });
