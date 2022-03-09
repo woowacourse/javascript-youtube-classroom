@@ -31,10 +31,6 @@ class SearchModal {
     const $searchResult = $('.search-result');
     if ($searchResult.classList.contains('search-result--no-result')) {
       removeChildren($searchResult);
-      $searchResult.insertAdjacentHTML(
-        'beforeend',
-        `<h3>검색 결과</h3><ul class="video-list"></ul>`
-      );
     }
     $searchResult.classList.remove('search-result--no-result');
 
@@ -107,6 +103,13 @@ class SearchModal {
       this.renderNotFound();
       return;
     }
+
+    removeChildren($('.search-result'));
+    $('.search-result').insertAdjacentHTML(
+      'beforeend',
+      `<h3>검색 결과</h3><ul class="video-list"></ul>`
+    );
+
     this.nextPageToken = jsonResult.nextPageToken;
     let videos = jsonResult.items.map(item => new VideoItem(item));
     this.renderVideoItems(videos);
@@ -173,7 +176,6 @@ class SearchModal {
       console.log('json : ', json);
       return json; // *** 응답결과
     } catch (e) {
-      console.error(e);
       return null;
     }
   }
