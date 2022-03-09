@@ -27,6 +27,7 @@ export default class Result {
   }
 
   foundResultTemplate(items) {
+    const saveDatas = store.getLocalStorage() ?? [];
     const resultTemplate = items
       .map(item => {
         const { publishedAt, channelId, title, thumbnails, channelTitle } =
@@ -46,7 +47,9 @@ export default class Result {
               publishedAt,
             ).toLocaleString('ko-KR')}
             </p>
-            <button class="video-item__save-button button">⬇ 저장</button>
+            <button class="video-item__save-button button" ${
+              saveDatas.includes(item.id.videoId) ? 'hidden' : ''
+            }>⬇ 저장</button>
           </li>`;
       })
       .join('');
