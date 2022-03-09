@@ -1,5 +1,5 @@
 import CustomElement from '../abstract/CustomElement';
-import { addEvent, emit, $ } from '../utils';
+import { addEvent, emit, $, $$ } from '../utils';
 import TEMPLATE from '../templates';
 
 class SearchResult extends CustomElement {
@@ -26,11 +26,20 @@ class SearchResult extends CustomElement {
       $('.video-list').scrollTop = 0;
     }
 
+    this.removeSkeleton();
     this.insertVideoItems(data);
   }
 
   resetResult() {
     $('.video-list').textContent = '';
+  }
+
+  insertSkeleton() {
+    $('.video-list').insertAdjacentHTML('beforeend', TEMPLATE.SKELETON.repeat(10));
+  }
+
+  removeSkeleton() {
+    $$('.skeleton').forEach((e) => e.remove());
   }
 
   insertVideoItems(videos) {

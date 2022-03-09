@@ -15,6 +15,7 @@ class Search {
 
   // eslint-disable-next-line max-lines-per-function
   async search(type, keyword = this.keyword) {
+    $('search-result').insertSkeleton();
     const videos = await this.fetchVideo(keyword);
 
     this.keyword = keyword;
