@@ -1,5 +1,5 @@
 import SearchVideo from './searchVideo.js';
-import { videoTemplate, videoSkeletonTemplate } from './template/videoTemplate.js';
+import { videoTemplate, videoSkeletonTemplate, videoNotFoundTemplate } from './template/videoTemplate.js';
 import { selectDom, addEvent } from './utils/selectDom.js';
 
 class RenderVideo {
@@ -36,6 +36,10 @@ class RenderVideo {
   };
 
   renderSearchVideo(searchVideo) {
+    if (!searchVideo.length) {
+      this.videoListContainer.innerHTML = videoNotFoundTemplate;
+      return;
+    }
     this.videoListContainer.innerHTML = searchVideo
       .map((video) => videoTemplate(video)).join(' ');
   }
