@@ -1,5 +1,3 @@
-// - [ ] 이미 저장된 영상이라면 저장 할 수 없다.
-
 import UserLibrary from "../UserLibrary";
 import { isDuplicate } from "../utils/utils";
 
