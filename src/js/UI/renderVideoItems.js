@@ -30,9 +30,18 @@ export const renderVideoItems = ({ items }) => {
 };
 
 export const renderSkeletonUI = () => {
+  $('.search-result').classList.remove('search-result--no-result');
+  $('.no-result').hidden = true;
+  $('.video-list').classList.remove('hide');
   $('.video-list').insertAdjacentHTML('beforeEnd', template.skeletonUI.repeat(10));
 };
 
 export const removeSkeletonUI = () => {
   $$('.skeleton').forEach(element => element.remove());
+};
+
+export const renderNoResult = () => {
+  $('.search-result').classList.add('search-result--no-result');
+  $('.no-result').hidden = false;
+  $('.video-list').classList.add('hide');
 };
