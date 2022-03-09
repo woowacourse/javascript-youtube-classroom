@@ -1,4 +1,5 @@
 import SearchVideo from './searchVideo.js';
+import { videoTemplate } from './template/videoTemplate.js';
 import { selectDom, addEvent } from './utils/selectDom.js';
 
 class RenderVideo {
@@ -8,7 +9,7 @@ class RenderVideo {
     this.modalContainer = selectDom('.modal-container');
     this.searchInput = selectDom('#search-input-keyword');
     this.searchButton = selectDom('#search-button');
-
+    this.videoListContainer = selectDom('.video-list');
     this.addEvents();
   }
 
@@ -25,11 +26,16 @@ class RenderVideo {
     const searchKeyword = this.searchInput.value;
     try {
       await this.searchVideo.handleSearchVideo(searchKeyword);
-      console.log(this.searchVideo.searchResults);
+      this.renderSearchVideo(this.searchVideo.searchResults);
     } catch (error) {
       return alert(error);
     }
   };
+
+  renderSearchVideo(searchVideo) {
+    this.videoListContainer.innerHTML = searchVideo
+      .map((video) => videoTemplate(video).trim()).join(' ');
+  }
 }
 
 export default RenderVideo;
