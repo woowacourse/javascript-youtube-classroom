@@ -25,13 +25,13 @@ class RenderVideo {
   }
 
   onScrollVideoList = () => {
-    // scrollHeight - offsetHeight === scrollTop
     const { scrollHeight, offsetHeight, scrollTop } = this.videoListContainer;
     if (scrollHeight - offsetHeight === scrollTop) {
+      const searchKeyword = this.searchInput.value;
       this.renderVideoSkeleton();
       setTimeout(async () => {
         try {
-          // await this.searchVideo.handleSearchVideo(searchKeyword.trim());
+          await this.searchVideo.handleSearchVideo(searchKeyword.trim());
           this.renderSearchVideo(this.searchVideo.searchResults);
         } catch (error) {
           this.searchInput.value = '';

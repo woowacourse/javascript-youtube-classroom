@@ -5,6 +5,7 @@ import { ERROR_MESSAGE, MAX_VIDEO_COUNT } from './constants/contants.js';
 class SearchVideo {
   constructor() {
     this.searchResults = [];
+    this.nextPageToken = '';
   }
 
   async handleSearchVideo(searchKeyword) {
@@ -19,17 +20,18 @@ class SearchVideo {
       type: 'video',
       maxResults: MAX_VIDEO_COUNT,
       regionCode: 'kr',
+      pageToken: this.nextPageToken,
       q: searchKeyword,
       key: YOUTUBE_DATA_API_KEY,
     });
     url.search = params.toString();
-    // const response = await fetch(url);
-    // if (!response.ok) {
-    //   throw new Error(ERROR_MESSAGE.CANNOT_GET_YOUTUBE_VIDEO);
-    // }
-    // const { items } = await response.json();
-    // return items;
-
+    const response = await fetch(url);
+    if (!response.ok) {
+      throw new Error(ERROR_MESSAGE.CANNOT_GET_YOUTUBE_VIDEO);
+    }
+    const { items, nextPageToken } = await response.json();
+    this.nextPageToken = nextPageToken;
+    return items;
     // const items = mockDatas;
     // return new Promise((resolve, reject) => {
     //   resolve(items);
