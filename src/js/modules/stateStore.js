@@ -26,11 +26,3 @@ export const { subscribe, setState, getState } = (function () {
     },
   };
 })();
-
-// state 변경을 하고
-// component.setState(); 호출해야된다?
-
-// 구독
-// state 변경되면 구독된 컴포넌트에게 알려준다.
-// 구독 신청 메서드
-//
