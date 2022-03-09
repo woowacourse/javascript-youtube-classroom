@@ -28,8 +28,8 @@
 
 ### Domain
 
-- [ ] Youtube Search API를 이용하여 검색한다.
-- [ ] Youtube API를 이용하여 데이터를 불러온다.
+- [x] Youtube Search API를 이용하여 검색한다.
+- [x] Youtube API를 이용하여 데이터를 불러온다.
 - [ ] 테스트용 더미 데이터를 만든다.
 
 <br>
