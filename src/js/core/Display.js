@@ -22,6 +22,7 @@ export default class Display {
     const isTarget = target => children.includes(target) || target.closest(selector);
 
     this.container.addEventListener(eventType, event => {
+      if (eventType === 'submit') event.preventDefault();
       if (!isTarget(event.target)) return false;
       handler(event);
     });
