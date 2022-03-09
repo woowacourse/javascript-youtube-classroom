@@ -1,4 +1,5 @@
 import handleSearchRequest from './domain/handleSearchRequest';
+import { setSavedVideos } from './util/storage';
 
 class Handler {
   constructor() {
@@ -21,6 +22,10 @@ class Handler {
     );
     this.nextPageToken = nextPageToken;
     return searchResultArray;
+  };
+
+  saveHandler = (id) => {
+    setSavedVideos(id);
   };
 }
 

@@ -5,4 +5,4 @@ const view = new View();
 
 const handler = new Handler();
 
-view.attachHandler(handler.searchHandler, handler.loadMoreHandler);
+view.attachHandler(handler.searchHandler, handler.loadMoreHandler, handler.saveHandler);

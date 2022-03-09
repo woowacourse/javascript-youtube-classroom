@@ -1,3 +1,5 @@
+import { getSavedVideos } from '../util/storage';
+
 class View {
   constructor() {
     this.searchModalButton = document.querySelector('#search-modal-button');
@@ -11,11 +13,13 @@ class View {
     this.searchForm.addEventListener('submit', this.#handleSearch);
     this.sendSearchRequest = () => {};
     this.sendLoadMoreRequest = () => {};
+    this.sendSaveRequest = () => {};
   }
 
-  attachHandler(searchHandler, loadMoreHandler) {
+  attachHandler(searchHandler, loadMoreHandler, saveHandler) {
     this.sendSearchRequest = searchHandler;
     this.sendLoadMoreRequest = loadMoreHandler;
+    this.sendSaveRequest = saveHandler;
   }
 
   #openModal = () => {
@@ -27,19 +31,37 @@ class View {
     return `${date.getFullYear()}년 ${date.getMonth() + 1}월 ${date.getDate()}일`;
   }
 
-  #createVideoElement = ({ thumbnail, title, channelTitle, publishedAt, videoId }) => {
-    const li = document.createElement('li');
-    li.className = 'video-item';
-    li.dataset.videoId = videoId;
-    li.insertAdjacentHTML(
-      'beforeend',
-      `<img src="${thumbnail}" alt="video-item-thumbnail" class="video-item__thumbnail">
-      <h4 class="video-item__title">${title}</h4>
-      <p class="video-item__channel-name">${channelTitle}</p>
-      <p class="video-item__published-date">${this.#formatDateString(publishedAt)}</p>
-      <button class="video-item__save-button button">⬇ 저장</button>`
-    );
-    return li;
+  #isStored(videoId) {
+    return getSavedVideos()[videoId];
+  }
+
+  #videoElementTemplate({ thumbnail, title, channelTitle, publishedAt, videoId }) {
+    return `<img src="${thumbnail}" alt="video-item-thumbnail" class="video-item__thumbnail">
+    <h4 class="video-item__title">${title}</h4>
+    <p class="video-item__channel-name">${channelTitle}</p>
+    <p class="video-item__published-date">${this.#formatDateString(publishedAt)}</p>
+    <button 
+      ${this.#isStored(videoId) && 'disabled'}
+      class="video-item__save-button button"
+      data-video-id="${videoId}"
+    >
+      ⬇ 저장
+    </button>`;
+  }
+
+  #createVideoElement = (resultItem) => {
+    const videoElement = document.createElement('li');
+    videoElement.className = 'video-item';
+    videoElement.insertAdjacentHTML('beforeend', this.#videoElementTemplate(resultItem));
+    videoElement
+      .querySelector('.video-item__save-button')
+      .addEventListener('click', this.#handleVideoSaveClick);
+    return videoElement;
+  };
+
+  #handleVideoSaveClick = (event) => {
+    this.sendSaveRequest(event.target.dataset.videoId);
+    event.target.disabled = true;
   };
 
   #getNewObserver() {
