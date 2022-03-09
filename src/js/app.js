@@ -1,3 +1,8 @@
 import View from './view/View';
+import Handler from './Handler';
 
-new View();
+const view = new View();
+
+const handler = new Handler();
+
+view.attachHandler(handler.searchHandler);
