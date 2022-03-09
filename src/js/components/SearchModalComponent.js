@@ -2,6 +2,7 @@ import Component from './Component';
 import SearchFormComponent from './SearchFormComponent';
 import VideoContainerComponent from './VideoContainerComponent';
 import { subscribe } from '../modules/stateStore';
+import { STATE_STORE_KEY } from '../constants/stateStore';
 
 class SearchModalComponent extends Component {
   searchFormComponent = null;
@@ -18,7 +19,7 @@ class SearchModalComponent extends Component {
     super(parentElement);
     this.mount(restHandlers);
     this.bindEventHandler({ onClickOutsideModal });
-    subscribe('isModalShow', this);
+    subscribe(STATE_STORE_KEY.IS_MODAL_SHOW, this);
   }
 
   wakeUp(stateKey, stateValue) {

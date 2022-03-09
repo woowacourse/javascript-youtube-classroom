@@ -1,3 +1,4 @@
+import { STATE_STORE_KEY } from '../constants/stateStore';
 import { subscribe } from '../modules/stateStore';
 import Component from './Component';
 import VideoComponent from './VideoComponent';
@@ -9,7 +10,7 @@ class VideoContainerComponent extends Component {
     super(parentElement);
     this.mount(handlers);
     this.bindEventHandler(handlers);
-    subscribe('videoList', this);
+    subscribe(STATE_STORE_KEY.VIDEO_LIST, this);
   }
 
   wakeUp(stateKey, stateValue) {

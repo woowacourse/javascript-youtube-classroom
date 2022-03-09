@@ -3,10 +3,11 @@ import Component from './Component';
 import SearchModalComponent from './SearchModalComponent';
 import { youtubeAPIFetcher } from '../modules/fetcher';
 import webStore from '../modules/webStore';
-import { API_PATHS, API_URL } from '../constants';
 import { setState, getState } from '../modules/stateStore';
 import Video from '../modules/video';
 import { findVideoInVideoList, parserVideos } from '../utils/util';
+import { STATE_STORE_KEY } from '../constants/stateStore';
+import { API_PATHS } from '../constants/fetcher';
 class AppComponent extends Component {
   searchModalComponent = null;
 
@@ -35,11 +36,11 @@ class AppComponent extends Component {
   }
 
   onClickSearchModalButton = () => {
-    setState('isModalShow', true);
+    setState(STATE_STORE_KEY.IS_MODAL_SHOW, true);
   };
 
   onClickOutsideModal = () => {
-    setState('isModalShow', false);
+    setState(STATE_STORE_KEY.IS_MODAL_SHOW, false);
   };
 
   async onSubmitSearchKeyword(keyword) {
@@ -54,7 +55,7 @@ class AppComponent extends Component {
       });
       const { items: videoInfos, nextPageToken } = parserVideos(searchResult);
       const videoList = videoInfos.map((videoInfo) => Video.create(videoInfo));
-      setState('videoList', videoList);
+      setState(STATE_STORE_KEY.VIDEO_LIST, videoList);
     } catch ({ message }) {
       alert(message);
     }
@@ -63,7 +64,7 @@ class AppComponent extends Component {
   onScrollVideoContainer() {}
 
   onClickSaveButton(saveVideoId) {
-    const videoList = getState('videoList');
+    const videoList = getState(STATE_STORE_KEY.VIDEO_LIST);
 
     const saveVideo = findVideoInVideoList(videoList, saveVideoId);
 

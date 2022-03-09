@@ -1,4 +1,4 @@
-import { API_URL } from '../constants';
+import { API_URL } from '../constants/fetcher';
 
 const generateQueryString = (params) =>
   Object.entries(params).reduce((prev, [key, value]) => `${prev}&${key}=${value}`, '');

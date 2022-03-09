@@ -1,5 +1,6 @@
+import { ERROR_MESSAGE } from '../constants/index.js';
+import { VIDEO_PROPERTY } from '../constants/video.js';
 import { isMissingProperty } from '../utils/validation.js';
-import { VIDEO_PROPERTY } from '../constants/index';
 
 class Video {
   #videoId = null;
@@ -36,7 +37,7 @@ class Video {
 
   static create(videoInfo) {
     if (isMissingProperty(VIDEO_PROPERTY, videoInfo)) {
-      throw new Error('누락된 데이터가 있습니다.');
+      throw new Error(ERROR_MESSAGE.VIDEO_MISSING_PROPERTY);
     }
     return new Video(videoInfo);
   }
