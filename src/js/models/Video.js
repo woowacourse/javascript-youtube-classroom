@@ -1,25 +1,47 @@
 export default class Video {
+  #keyword;
+
+  #videoItems; // 길이가 10개인 array
+
+  #fetchedVideos;
+
+  #nextPageToken; // 다음 토큰 string
+
   constructor(dummyObject) {
-    this.fetchedVideos = dummyObject;
-    this.videoItems = null; // 길이가 10개인 array
-    this.nextPageToken = null; // 다음 토큰 string
+    this.#fetchedVideos = dummyObject;
+  }
+
+  set keyword(value) {
+    this.#keyword = value;
+  }
+
+  get keyword() {
+    return this.#keyword;
+  }
+
+  get nextPageToken() {
+    return this.#nextPageToken;
+  }
+
+  get videoItems() {
+    return this.#videoItems;
   }
 
   setVideoInfo() {
-    this.videoItems = this.fetchedVideos.items;
-    this.nextPageToken = this.fetchedVideos.nextPageToken;
+    this.#videoItems = this.#fetchedVideos.items;
+    this.#nextPageToken = this.#fetchedVideos.nextPageToken;
   }
 
   async fetchYoutubeApi(query, nextPageToken) {
     // const nextPageToken = 'CAoQAA';
     // const query = '우아한테크코스';
-    // 마르코 API 서버 주소: https://priceless-euclid-bf53ed.netlify.app
+    // 마르코 API 서버 주소: https://priceless-euclid-bf53ed.netlify.app/
     // 마르코 API 서버2 주소: https://zealous-swartz-f699df.netlify.app/
-    // 위니 API 서버 주소: https://thirsty-ritchie-0c8419.netlify.app
+    // 위니 API 서버 주소: https://thirsty-ritchie-0c8419.netlify.app/
 
     try {
       // const ORIGINAL_HOST = "https://www.googleapis.com"; // 기존 유튜브 API 호스트
-      const REDIRECT_SERVER_HOST = 'https://zealous-swartz-f699df.netlify.app/'; // my own redirect server hostname
+      const REDIRECT_SERVER_HOST = 'https://thirsty-ritchie-0c8419.netlify.app/'; // my own redirect server hostname
 
       const url = new URL('youtube/v3/search', REDIRECT_SERVER_HOST);
       const parameters = new URLSearchParams({
@@ -40,7 +62,7 @@ export default class Video {
         throw new Error(body.error.message);
       }
 
-      this.fetchedVideos = body;
+      this.#fetchedVideos = body;
     } catch (error) {
       console.error(error);
     }

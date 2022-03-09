@@ -93,7 +93,7 @@
     overflow: hidden;
 }
 
-.video-list.scroll {
+.scroll {
     overflow-y: scroll;
 }
 

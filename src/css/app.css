@@ -40,3 +40,9 @@ body {
 .nav__button:hover {
     background: #ebebeb;
 }
+
+.bottom-target {
+    /* visibility: hidden; */
+    margin-top: 100px;
+    height: 100px;       
+}

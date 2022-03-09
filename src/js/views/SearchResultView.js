@@ -5,22 +5,9 @@ export default class SearchResultView {
     this.$videoList = $('.video-list');
     this.template = new Template();
     this.$skeletonWrapper = $('.skeleton-wrapper');
+    this.$searchTarget = $('#search-target');
   }
 
-  insertSkeleton() {
-    this.$skeletonWrapper.insertAdjacentHTML('beforeend', this.template.getSkeleton(10));
-  }
-
-  showSkeleton() {
-    this.$skeletonWrapper.classList.remove('hide');
-    this.$videoList.classList.remove('scroll');
-  }
-  
-  hideSkeleton() {
-    this.$skeletonWrapper.classList.add('hide');
-    this.$videoList.classList.add('scroll');
-  }
-  
   renderVideo(videoItems) {
     const videosTemplate = videoItems.map((item) => this.template.getVideo(item)).join('');
     this.$videoList.insertAdjacentHTML('beforeend', videosTemplate);
