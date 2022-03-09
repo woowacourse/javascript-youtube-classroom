@@ -9,3 +9,4 @@ index.html
 webpack.config.js
 /dist/**
 commitlint.config.js
+/src/js/dummy/**
