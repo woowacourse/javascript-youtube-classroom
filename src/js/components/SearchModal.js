@@ -28,11 +28,20 @@ export class SearchModal {
 
   async getDataMatchKeyword(keyword) {
     this.renderSkeleton();
-    this.videos = await fetchDataFromKeyword(keyword);
-    this.removeSkeleton();
-    this.renderIframe();
+    try {
+      this.videos = await fetchDataFromKeyword(keyword);
+      this.removeSkeleton();
+      this.renderIframe();
+    } catch (error) {
+      this.renderNoVideosImg();
+      console.log('동영상이없어요.');
+    }
   }
 
+  renderNoVideosImg() {
+    this.imgSrcAddress = `src/assets/images/not_found.png`;
+    this.videoList.insertAdjacentHTML('beforeend', `<img src=${this.imgSrcAddress} alt="없음" />`);
+  }
   renderIframe() {
     this.resultLabel = document.getElementById('resultLabel');
     this.resultLabel.removeAttribute('hidden');
