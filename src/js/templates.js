@@ -37,7 +37,7 @@ const TEMPLATE = {
     return `
       <li class="video-item" data-video-id="${video.id}">
         <img
-          src="${video.thumbnail}"
+          src="${decodeURI(video.thumbnail)}"
           alt="video-item-thumbnail" class="video-item__thumbnail">
         <h4 class="video-item__title">${decodeURI(video.title)}</h4>
         <p class="video-item__channel-name">${decodeURI(video.channelTitle)}</p>
