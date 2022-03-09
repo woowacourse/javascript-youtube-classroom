@@ -25,22 +25,22 @@ export default function App() {
       resetVideoList();
       const searchInput = $('#search-input-keyword').value.trim();
       validateInput(searchInput);
-      youtubeMachine.searchTarget = searchInput;
-      renderSkeletonUI();
-      const responseJSON = youtubeMachine.getSearchData();
-      responseJSON
-        .then(data => {
-          // 비디오 렌더링
-          youtubeMachine.data = data;
-          removeSkeletonUI();
-          renderVideoItems(data);
-        })
-        .catch(error => {
-          // 검색결과없음
-          removeSkeletonUI();
-          renderNoResult();
-        });
-      // renderVideoItems(dummyData);
+      // youtubeMachine.searchTarget = searchInput;
+      // renderSkeletonUI();
+      // const responseJSON = youtubeMachine.getSearchData();
+      // responseJSON
+      //   .then(data => {
+      //     // 비디오 렌더링
+      //     youtubeMachine.data = data;
+      //     removeSkeletonUI();
+      //     renderVideoItems(data);
+      //   })
+      //   .catch(error => {
+      //     // 검색결과없음
+      //     removeSkeletonUI();
+      //     renderNoResult();
+      //   });
+      renderVideoItems(dummyData);
     } catch (error) {
       alert(error.message);
     }
@@ -53,15 +53,16 @@ export default function App() {
   const handleScroll = e => {
     if (isEndOfScroll(e.target)) {
       if (!throttle) {
-        renderSkeletonUI();
-        const responseJSON = youtubeMachine.getNextSearchData(youtubeMachine.data);
-        responseJSON.then(data => {
-          // 비디오 렌더링
-          youtubeMachine.data = data;
-          removeSkeletonUI();
-          renderVideoItems(data);
-          console.log(data.items);
-        });
+        // renderSkeletonUI();
+        // const responseJSON = youtubeMachine.getNextSearchData(youtubeMachine.data);
+        // responseJSON.then(data => {
+        //   // 비디오 렌더링
+        //   youtubeMachine.data = data;
+        //   removeSkeletonUI();
+        //   renderVideoItems(data);
+        //   console.log(data.items);
+        // });
+        renderVideoItems(dummyData);
         throttle = setTimeout(() => {
           throttle = null;
         }, 1000);
@@ -87,6 +88,8 @@ export default function App() {
     if (!e.target.classList.contains('video-item__save-button')) {
       return;
     }
+    e.target.closest('button').hidden = true;
+
     const { videoId } = e.target.parentElement.dataset;
     const video = {
       id: videoId,
