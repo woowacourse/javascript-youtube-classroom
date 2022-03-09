@@ -113,6 +113,8 @@ export default class SearchModal {
         KEY,
         JSON.stringify(videoIDs.concat(videoID))
       );
+
+      e.target.remove();
     }
   }
 
