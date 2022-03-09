@@ -58,7 +58,7 @@ class SearchModal {
         this.$videoListContainer.replaceChildren();
         this.pageToken = null;
         this.$searchInputKeyword.blur();
-        this.$videoListContainer.style.display = 'flex';
+        this.$videoListContainer.classList.remove('hide');
         this.callApi();
       } catch (err) {
         console.dir(err);
@@ -81,9 +81,9 @@ class SearchModal {
         'save',
         getLocalStorage('save').concat(e.target.closest('li').dataset.videoId),
       );
-      e.target.style.display = 'none';
-    } catch (e) {
-      alert(e.message);
+      e.target.classList.add('hide');
+    } catch (err) {
+      alert(err.message);
     }
   }
 
@@ -142,7 +142,7 @@ class SearchModal {
   }
 
   renderNoResultImage() {
-    this.$videoListContainer.style.display = 'none';
+    this.$videoListContainer.classList.add('hide');
     this.$searchResult.insertAdjacentHTML('beforeend', template.noSearchResult());
     this.$searchResult.classList.add('search-result--no-result');
   }
