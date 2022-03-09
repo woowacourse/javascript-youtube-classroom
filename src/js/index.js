@@ -18,8 +18,9 @@ $('.dimmer').addEventListener('click', (e) => {
 $('#search-form').addEventListener('submit', (e) => {
   e.preventDefault();
   keyword = $('#search-input-keyword').value;
+
+  youtubeClassRoomView.initializeSearchResultVideoList();
   if (searchVideoManager.isKeywordChanged(keyword)) {
-    youtubeClassRoomView.initializeSearchResultVideoList();
     searchVideoManager.resetNextPageToken();
   }
   searchVideoManager.fetchYoutubeData(keyword).then((videos) => {

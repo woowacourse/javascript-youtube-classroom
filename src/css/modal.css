@@ -9,10 +9,6 @@
     left: 0;
 }
 
-.modal-container.hide {
-    display: none;
-}
-
 .dimmer {
     position: absolute;
     width: 100%;
@@ -66,6 +62,8 @@
 }
 
 .search-result.search-result--no-result {
+    height: 493px;
+    display: flex;
     justify-content: center;
     align-items: center;
 }
@@ -183,4 +181,8 @@
     100% {
       background-position: 320px;
     }
+}
+
+.hide {
+    display: none;
 }

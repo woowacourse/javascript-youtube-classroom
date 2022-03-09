@@ -10,10 +10,33 @@ const videoListItemTemplate = ({ id, thumbnail, title, channelName, publishedDat
   </li>`;
 
 export default class YoutubeClassRoomView {
-  constructor() {}
+  constructor() {
+    this.isShownNoResult = false;
+  }
+
+  showSearchResultVideoList() {
+    $('#no-result').classList.add('hide');
+    $('#search-result-video-list').classList.remove('hide');
+    $('#search-result').classList.remove('search-result--no-result');
+    this.isShownNoResult = false;
+  }
+
+  showNoResult() {
+    $('#no-result').classList.remove('hide');
+    $('#search-result-video-list').classList.add('hide');
+    $('#search-result').classList.add('search-result--no-result');
+    this.isShownNoResult = true;
+  }
 
   updateOnSearchDataReceived(videos) {
-    // if (videos.length === 0) 검색 결과가 없을 때!
+    if (videos.length === 0) {
+      this.showNoResult();
+      return;
+    }
+    if (this.isShownNoResult) {
+      this.showSearchResultVideoList();
+    }
+
     const listItems = videos.map((video) => videoListItemTemplate(video)).join('');
     $('#search-result-video-list').insertAdjacentHTML('beforeend', listItems);
   }
