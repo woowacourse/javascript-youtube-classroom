@@ -1,4 +1,2 @@
-import SearchModalComponent from './components/SearchModalComponent';
-const app = document.querySelector('body');
-
-const searchModalComponenet = new SearchModalComponent(app, { isShow: true });
+import AppComponent from './components';
+export default new AppComponent(document.querySelector('body'));
