@@ -55,7 +55,6 @@ module.exports = {
   plugins: [
     new CleanWebpackPlugin(),
     new webpack.DefinePlugin({
-      TWO: '1+1',
       YOUTUBE_URL: JSON.stringify(
         'https://622752939a5410d43ba3fbcd--modest-euler-778376.netlify.app/dummy/youtube/v3/search?'
       ),
