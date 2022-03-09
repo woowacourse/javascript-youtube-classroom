@@ -8,6 +8,8 @@ class Component {
     this.state = state;
   }
 
+  mount() {}
+
   setState() {}
 
   render() {}

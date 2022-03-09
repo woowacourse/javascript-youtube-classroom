@@ -4,7 +4,7 @@ import VideoComponent from './VideoComponent';
 class VideoContainerComponent extends Component {
   constructor(parentElement, state) {
     super(parentElement, state);
-    this.render();
+    this.mount();
   }
 
   setState(newState) {
@@ -12,12 +12,17 @@ class VideoContainerComponent extends Component {
     this.render();
   }
 
-  render() {
-    const { videoList } = this.state;
-
+  mount() {
     const template = this.generateTemplate();
 
-    this.parentElement.innerHTML = template;
+    this.parentElement.insertAdjacentHTML('beforeend', template);
+
+    // 초기 상태를 그린다.
+    this.render();
+  }
+
+  render() {
+    const { videoList } = this.state;
 
     const videoListElement = document.querySelector('.video-list');
 
