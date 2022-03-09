@@ -36,6 +36,7 @@
     line-height: 36px;
     text-align: center;
     margin-bottom: 40px;
+    
 }
 
 .search-input {
@@ -68,6 +69,45 @@
 .search-result.search-result--no-result {
     justify-content: center;
     align-items: center;
+}
+
+.skeleton {
+    width: 236px;
+}
+
+.skeleton .image,
+.skeleton .line {
+    background-image: linear-gradient(
+    90deg,
+    #e0e0e0 0px,
+    #ededed 30px,
+    #e0e0e0 60px
+    );
+    animation: refresh 2s infinite ease-out;
+    margin-bottom: 10px;
+}
+  
+.skeleton .image {
+    height: 150px;
+}
+  
+.skeleton .line {
+    height: 16px;
+}
+  
+.skeleton .line:last-child {
+   width: 80%;
+}
+  
+@keyframes refresh {
+  0% {
+    background-position: calc(-100px);
+  }
+    
+   40%,
+   100% {
+    background-position: 320px;
+  }
 }
 
 .no-result__image {
