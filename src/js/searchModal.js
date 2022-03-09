@@ -43,14 +43,14 @@ class SearchModal {
         return `<li class="video-item" data-video-id="${video.id}">
           <img
             src="${video.thumbnailUrl}"
-            alt="video-item-thumbnail" class="video-item__thumbnail">
+            alt="video-item-thumbnail" class="video-item__thumbnail" />
           <h4 class="video-item__title">${video.title}</h4>
           <p class="video-item__channel-name">${video.channelTitle}</p>
           <p class="video-item__published-date">${video.publishedAt}</p>
           <button class="video-item__save-button button">⬇ 저장</button>
         </li>`;
       })
-      .join('');
+      .join('\n'); // new line해주지 않으면 insertAdjacentHTML을 사용할때 element가 5개만 생성된다.
 
     const template = document.createElement('template');
     template.insertAdjacentHTML('beforeend', videoListTemplate);
@@ -170,6 +170,7 @@ class SearchModal {
       if (!response.ok) {
         throw Error(response.statusText);
       }
+      console.log('json : ', json);
       return json; // *** 응답결과
     } catch (e) {
       console.error(e);
