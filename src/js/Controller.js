@@ -21,8 +21,8 @@ export default class Controller {
   }
 
   async #searchVideo(event) {
-    const { keyword } = event.detail;
-    await this.video.fetchYoutubeApi(keyword);
+    // const { keyword } = event.detail;
+    // await this.video.fetchYoutubeApi(keyword);
     this.video.setVideoInfo();
     console.log(this.video.videoItems, this.video.nextPageToken);
     this.searchResultView.renderVideo(this.video.videoItems);
