@@ -23,6 +23,10 @@ const template = {
   },
 };
 
+const resetSearchInput = () => {
+  $('#search-input-keyword').value = '';
+};
+
 export const renderVideoItems = ({ items }) => {
   items.forEach(item => {
     $('.video-list').insertAdjacentHTML('beforeEnd', template.videoItem(item));
@@ -34,6 +38,7 @@ export const renderSkeletonUI = () => {
   $('.no-result').hidden = true;
   $('.video-list').classList.remove('hide');
   $('.video-list').insertAdjacentHTML('beforeEnd', template.skeletonUI.repeat(10));
+  resetSearchInput();
 };
 
 export const removeSkeletonUI = () => {
