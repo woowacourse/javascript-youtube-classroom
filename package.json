@@ -6,7 +6,7 @@
   "scripts": {
     "build": "webpack --mode=production",
     "start": "webpack serve --open --mode=development",
-    "test": "jest"
+    "test": "jest --setupFiles dotenv/config"
   },
   "repository": {
     "type": "git",
@@ -26,6 +26,7 @@
     "commitizen": "^4.2.4",
     "css-loader": "^6.7.0",
     "cz-customizable": "^6.3.0",
+    "dotenv-webpack": "^7.1.0",
     "eslint": "^8.10.0",
     "eslint-config-airbnb-base": "^15.0.0",
     "eslint-config-prettier": "^8.5.0",

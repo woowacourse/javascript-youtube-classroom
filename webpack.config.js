@@ -1,6 +1,7 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const Dotenv = require('dotenv-webpack');
 
 module.exports = {
   entry: ['@babel/polyfill', './src/js/index.js'],
@@ -52,5 +53,9 @@ module.exports = {
     },
     port: 8080,
   },
-  plugins: [new HtmlWebpackPlugin({ template: './index.html' }), new MiniCssExtractPlugin()],
+  plugins: [
+    new HtmlWebpackPlugin({ template: './index.html' }),
+    new MiniCssExtractPlugin(),
+    new Dotenv(),
+  ],
 };
