@@ -1,5 +1,10 @@
+/**
+ * @jest-environment jsdom
+ */
+
 import UserLibrary from "../UserLibrary";
 import { isDuplicate } from "../utils/utils";
+import getSearchResult from "../api/getSearchResult";
 import "jest-localstorage-mock";
 
 test("동영상의 Id값이 같은지 확인한다.", () => {
@@ -30,13 +35,26 @@ test("UserLibrary 101개 이상의 동영상이 저장되면 alert을 띄운다.
   ).toThrowError("데이터는 101개 이상 저장하실 수 없습니다.");
 });
 
-// - [ ] 최초 검색 결과는 10개까지만 보여준다.
-
-// 코치에게 질문하기 : 통신을 포함한 비동기 테스트
-// test("최초 검색 결과는 10개까지만 보여준다.", () => {
-//   const youtubeApp = new YoutubeApp();
-//   const keyword = "xooos";
-//   const searchResult = youtubeApp.search(keyword);
-
-//   expect(searchResult.length).toBe(10);
+// test("최초 검색 결과는 10개까지만 보여준다.", async () => {
+//   fetch.mockResponseOnce(
+//     JSON.stringify([
+//       {
+//         id: {
+//           videoId: 1,
+//         },
+//         snippet: {
+//           channelTitle: "essential;",
+//           thumbnails: {
+//             high: {
+//               url: "https://i.ytimg.com/vi/ECfuKi5-Cfs/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLDvmIcX-TgdcH2g_Bd4AUxw6hjmvQ",
+//             },
+//           },
+//           publishTime: "2022-03-02T11:39:31Z",
+//           title: "[Playlist] 너무 좋은데 괜찮으시겠어요?",
+//         },
+//       },
+//     ])
+//   );
+//   const result = await getSearchResult("xooos");
+//   expect(result.length).toBe(1);
 // });
