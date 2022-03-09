@@ -1,3 +1,5 @@
+import img from "../../assets/images/not_found.png";
+
 const template = {
   videoItems: ({ videoId, url, channelTitle, title, publishTime, isSaved }) => `
   <li class="video-item" data-video-id=${videoId}>
@@ -17,7 +19,7 @@ const template = {
 
   noSearchResult: () => `
     <div class="no-result">
-      <img src='../../assets/images/not_found.png' alt="no result image" class="no-result__image">
+      <img src=${img} alt="no result image" class="no-result__image">
       <p class="no-result__description">
         검색 결과가 없습니다<br />
         다른 키워드로 검색해보세요

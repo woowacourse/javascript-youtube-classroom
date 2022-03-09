@@ -154,7 +154,7 @@ class SearchModal {
       } = item;
       const {
         thumbnails: {
-          default: { url },
+          high: { url },
         },
         channelTitle,
         title,
