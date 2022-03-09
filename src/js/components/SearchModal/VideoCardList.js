@@ -3,22 +3,11 @@ import VideoCard from './VideoCard.js';
 
 export default class VideoCardList extends Component {
   setup() {
-    this.state = { ...this.props, isLoading: false };
-  }
-
-  template() {
-    const { items } = this.state;
-
-    return `
-      ${items.map(() => `<div class="video-card"></div>`).join('')}
-    `;
-  }
-
-  afterMounted() {
-    const { items } = this.state;
+    const { items } = this.props;
     const savedVideos = Component.webStore.load();
-    const videoCardProps = items.map((item) => {
+    const videos = items.map((item) => {
       return {
+        loading: false,
         videoId: item.id.videoId,
         thumbnailUrl: item.snippet.thumbnails.default.url,
         title: item.snippet.title,
@@ -28,11 +17,24 @@ export default class VideoCardList extends Component {
       };
     });
 
+    this.state = { videos, isLoading: false };
+  }
+
+  template() {
+    const { videos } = this.state;
+
+    return `
+      ${videos.map(() => `<div class="video-card"></div>`).join('')}
+    `;
+  }
+
+  afterMounted() {
+    const { videos } = this.state;
+
     document
       .querySelectorAll('.video-card')
       .forEach(
-        (videoCard, index) =>
-          new VideoCard(videoCard, { video: videoCardProps[index] })
+        (videoCard, index) => new VideoCard(videoCard, { video: videos[index] })
       );
   }
 
@@ -42,13 +44,46 @@ export default class VideoCardList extends Component {
         this.isScrollBelowLastCard(this.target, e.target) &&
         !this.state.isLoading
       ) {
-        this.setState({ isLoading: true });
+        // 스크롤이 마지막 요소에 닿으면 로딩 시작
 
+        // 로딩 전 요소들 캐싱
+        const prev = this.state.videos;
+
+        // 로딩 될 요소들의 스켈레톤 생성해 state에 추가
+        this.setState({
+          isLoading: true,
+          videos: [
+            ...prev,
+            ...Array(10).fill({
+              loading: true,
+              videoId: null,
+              thumbnailUrl: null,
+              title: null,
+              channelTitle: null,
+              publishTime: null,
+              saved: false,
+            }),
+          ],
+        });
         const newVideos = await this.loadNextVideos();
 
+        // 로딩이 끝난 후 로딩 된 요소들을 원하는 프로퍼티를 가진 객체로 매핑
+        const savedVideos = Component.webStore.load();
+        const newVideoProps = newVideos.map((item) => {
+          return {
+            loading: false,
+            videoId: item.id.videoId,
+            thumbnailUrl: item.snippet.thumbnails.default.url,
+            title: item.snippet.title,
+            channelTitle: item.snippet.channelTitle,
+            publishTime: item.snippet.publishTime,
+            saved: savedVideos.includes(item.id.videoId),
+          };
+        });
+
         this.setState({
-          items: [...this.state.items, ...newVideos],
           isLoading: false,
+          videos: [...prev, ...newVideoProps],
         });
       }
     });

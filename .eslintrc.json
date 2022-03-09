@@ -11,10 +11,10 @@
   "rules": {
     // project requirement
     "max-depth": ["error", 2],
-    "max-lines-per-function": [
-      "warn",
-      { "max": 15, "skipBlankLines": false, "skipComments": false }
-    ],
+    // "max-lines-per-function": [
+    //   "warn",
+    //   { "max": 15, "skipBlankLines": false, "skipComments": false }
+    // ],
     "no-alert": "off",
     // custom rules
     "import/extensions": ["off"],

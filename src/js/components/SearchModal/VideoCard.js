@@ -7,19 +7,31 @@ export default class VideoCard extends Component {
   }
 
   template() {
-    const {
-      video: { videoId, thumbnailUrl, title, channelTitle, publishTime },
-    } = this.props;
+    const { loading, videoId, thumbnailUrl, title, channelTitle, publishTime } =
+      this.props.video;
     const { saved } = this.state;
 
-    return `
+    return loading
+      ? `
+        <li class="video-item skeleton">
+          <div class="video-item__thumbnail"></div>
+          <h4 class="video-item__title line"></h4>
+          <p class="video-item__channel-name line"></p>
+          <p class="video-item__published-date line"></p>
+          <button class="video-item__save-button button"></button>
+        </li>
+      `
+      : `
       <li class="video-item" data-video-id="${videoId}">
         <img
           src="${thumbnailUrl}"
-          alt="video-item-thumbnail" class="video-item__thumbnail">
-        <h4 class="video-item__title">${title}</h4>
-        <p class="video-item__channel-name">${channelTitle}</p>
-        <p class="video-item__published-date">${convertTime(publishTime)}</p>
+          alt="video-item-thumbnail" class="video-item__thumbnail"
+        >
+        <h4 class="video-item__title line">${title}</h4>
+        <p class="video-item__channel-name line">${channelTitle}</p>
+        <p class="video-item__published-date line">${convertTime(
+          publishTime
+        )}</p>
         ${
           saved
             ? ''

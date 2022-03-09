@@ -1,144 +1,144 @@
 .modal-container {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 100vw;
-    height: 100vh;
-    position: fixed;
-    top: 0;
-    left: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100vw;
+  height: 100vh;
+  position: fixed;
+  top: 0;
+  left: 0;
 }
 
 .modal-container.hide {
-    display: none;
+  display: none;
 }
 
 .dimmer {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.5);
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
 }
 
 .search-modal {
-    position: relative;
-    width: 1080px;
-    height: 727px;
-    background: #FFFFFF;
-    border: 1px solid rgba(0, 0, 0, 0.12);
-    border-radius: 4px;
-    padding: 50px 30px 32px 30px;
+  position: relative;
+  width: 1080px;
+  height: 727px;
+  background: #ffffff;
+  border: 1px solid rgba(0, 0, 0, 0.12);
+  border-radius: 4px;
+  padding: 50px 30px 32px 30px;
 }
 
 .search-modal__title {
-    font-weight: bold;
-    font-size: 34px;
-    line-height: 36px;
-    text-align: center;
-    margin-bottom: 40px;
+  font-weight: bold;
+  font-size: 34px;
+  line-height: 36px;
+  text-align: center;
+  margin-bottom: 40px;
 }
 
 .search-input {
-    display: flex;
-    justify-content: center;
-    margin-bottom: 40px;
+  display: flex;
+  justify-content: center;
+  margin-bottom: 40px;
 }
 
 .search-input__keyword {
-    width: 400px;
-    height: 36px;
-    margin-right: 20px;
-    padding: 4px 8px;
-    border: 1px solid #B4B4B4;
-    border-radius: 4px;
+  width: 400px;
+  height: 36px;
+  margin-right: 20px;
+  padding: 4px 8px;
+  border: 1px solid #b4b4b4;
+  border-radius: 4px;
 }
 
 .search-input__keyword::placeholder {
-    color: #8B8B8B;
-    font-size: 16px;
+  color: #8b8b8b;
+  font-size: 16px;
 }
 
 .search-input__search-button {
-    width: 72px;
-    height: 36px;
-    background: #00BCD4;
-    color: #FFFFFF;
+  width: 72px;
+  height: 36px;
+  background: #00bcd4;
+  color: #ffffff;
 }
 
 .search-result.search-result--no-result {
-    justify-content: center;
-    align-items: center;
+  justify-content: center;
+  align-items: center;
 }
 
 .no-result__image {
-    width: 190px;
-    height: 140px;
-    margin-bottom: 32px;
+  width: 190px;
+  height: 140px;
+  margin-bottom: 32px;
 }
 
 .no-result__description {
-    font-size: 16px;
-    line-height: 150%;
-    text-align: center;
-    letter-spacing: 0.5px;
+  font-size: 16px;
+  line-height: 150%;
+  text-align: center;
+  letter-spacing: 0.5px;
 }
 
 .video-list {
-    width: 1040px;
-    height: 493px;
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-    gap: 32px 20px;
-    overflow-y: scroll;
+  width: 1040px;
+  height: 493px;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 32px 20px;
+  overflow-y: scroll;
 }
 
 .video-item {
-    position: relative;
-    width: 240px;
-    height: 255px;
+  position: relative;
+  width: 240px;
+  height: 255px;
 }
 
 .video-item__thumbnail {
-    width: 100%;
-    height: 135px;
+  width: 100%;
+  height: 135px;
 }
 
 .video-item__title {
-    font-weight: bold;
-    font-size: 16px;
-    line-height: 24px;
-    letter-spacing: 0.5px;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    margin: 4px 0;
+  font-weight: bold;
+  font-size: 16px;
+  line-height: 24px;
+  letter-spacing: 0.5px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin: 4px 0;
 }
 
 .video-item__channel-name {
-    font-size: 16px;
-    line-height: 24px;
-    letter-spacing: 0.5px;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
+  font-size: 16px;
+  line-height: 24px;
+  letter-spacing: 0.5px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .video-item__published-date {
-    font-size: 12px;
-    line-height: 24px;
-    letter-spacing: 0.5px;
+  font-size: 12px;
+  line-height: 24px;
+  letter-spacing: 0.5px;
 }
 
 .video-item__save-button {
-    position: absolute;
-    right: 0;
-    width: 80px;
-    height: 36px;
-    background: #F9F9F9;
-    margin-top: 4px;
+  position: absolute;
+  right: 0;
+  width: 80px;
+  height: 36px;
+  background: #f9f9f9;
+  margin-top: 4px;
 }
 
 .video-item__save-button:hover {
-    background: #efefef;
+  background: #efefef;
 }
