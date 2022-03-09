@@ -1,4 +1,4 @@
-import { $ } from './util';
+import { $, $$ } from './util';
 
 const videoListItemTemplate = ({ id, thumbnail, title, channelName, publishedDate, saved }) =>
   `<li class="video-item" data-video-id="${id}">
@@ -7,7 +7,15 @@ const videoListItemTemplate = ({ id, thumbnail, title, channelName, publishedDat
     <p class="video-item__channel-name">${channelName}</p>
     <p class="video-item__published-date">${publishedDate}</p>
     ${saved ? '' : '<button class="video-item__save-button button">⬇ 저장</button>'}
-    </li>`;
+    </li>
+  `;
+
+const skeletonListItemTemplate = () =>
+  `<li class="skeleton">
+    <div class="image"></div>
+    <p class="line"></p>
+    <p class="line"></p>
+  </li>`.repeat(10);
 
 export default class YoutubeClassRoomView {
   constructor() {
@@ -28,6 +36,16 @@ export default class YoutubeClassRoomView {
     this.isShownNoResult = true;
   }
 
+  updateOnLoading() {
+    $('#search-result-video-list').insertAdjacentHTML('beforeend', skeletonListItemTemplate());
+  }
+
+  removeSkeletonListItem() {
+    $$('.skeleton', $('#search-result-video-list')).forEach((listItem) => {
+      listItem.remove();
+    });
+  }
+
   updateOnSearchDataReceived(videos) {
     if (videos.length === 0) {
       this.showNoResult();
@@ -38,6 +56,8 @@ export default class YoutubeClassRoomView {
     }
 
     const listItems = videos.map((video) => videoListItemTemplate(video)).join('');
+
+    this.removeSkeletonListItem();
     $('#search-result-video-list').insertAdjacentHTML('beforeend', listItems);
   }
 

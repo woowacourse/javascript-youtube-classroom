@@ -17,6 +17,7 @@ $('.dimmer').addEventListener('click', (e) => {
 });
 
 const searchKeyword = (keyword) => {
+  youtubeClassRoomView.updateOnLoading();
   searchVideoManager.fetchYoutubeData(keyword).then((videos) => {
     const checkedVideos = videos.map((video) => ({
       ...video,
