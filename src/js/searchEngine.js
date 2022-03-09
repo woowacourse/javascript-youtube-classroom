@@ -1,7 +1,4 @@
 import fetch from 'node-fetch';
-import dotenv from 'dotenv';
-
-dotenv.config();
 
 export default class SearchEngine {
   async searchKeyword(keyword) {
@@ -14,6 +11,6 @@ export default class SearchEngine {
       return json.items;
     }
 
-    return null;
+    throw Error('유튜브 검색 기능이 정상 작동되지 않았습니다.');
   }
 }

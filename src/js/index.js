@@ -1,4 +1,4 @@
 import '../css/index.css';
-import dotenv from 'dotenv';
+import SearchEngine from './searchEngine.js';
 
-dotenv.config();
+new SearchEngine().searchKeyword('지피티');
