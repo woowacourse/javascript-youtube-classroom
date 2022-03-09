@@ -15,5 +15,19 @@ describe('비디오 모듈 테스트', () => {
     expect(videoInfo).toEqual(givenVideoInput);
   });
 
-  test('비디오 생성할 수 없다.', () => {});
+  test('누락된 데이터가 있다면, 비디오 생성할 수 없다.', () => {
+    const givenVideoInput = {
+      videoId: '1',
+      videoTitle: '빅터의 브이로그',
+      publishTime: '12:30',
+      thumbnail: '1.jpg',
+    };
+
+    try {
+      Video.create(givenVideoInput);
+      expect(true).toBe(false);
+    } catch ({ message }) {
+      expect(message).toBe('누락된 데이터가 있습니다.');
+    }
+  });
 });
