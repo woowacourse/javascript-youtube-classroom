@@ -1,6 +1,9 @@
 import youtubeSearchAPI from "../api/YoubeSearchapi.js";
 import { getLocalStorage, setLocalStorage } from "../storage/localStorage.js";
-import { checkValidSearchInput } from "../util/validator.js";
+import {
+  checkValidSearchInput,
+  checkMaxStorageVolume,
+} from "../util/validator.js";
 import template from "./templates.js";
 
 class SearchModal {
@@ -60,7 +63,6 @@ class SearchModal {
         checkValidSearchInput(this.keyword);
         this.removeNoResult();
         this.$videoListContainer.replaceChildren();
-
         this.pageToken = null;
         this.$searchInputKeyword.blur();
         this.$videoListContainer.style.display = "flex";
@@ -80,13 +82,16 @@ class SearchModal {
     if (!e.target.classList.contains("video-item__save-button")) {
       return;
     }
-
-    setLocalStorage(
-      "save",
-      getLocalStorage("save").concat(e.target.closest("li").dataset.videoId)
-    );
-
-    e.target.style.display = "none";
+    try {
+      checkMaxStorageVolume();
+      setLocalStorage(
+        "save",
+        getLocalStorage("save").concat(e.target.closest("li").dataset.videoId)
+      );
+      e.target.style.display = "none";
+    } catch (e) {
+      alert(e.message);
+    }
   }
 
   requestAdditionalSearchResult() {
