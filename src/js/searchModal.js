@@ -1,6 +1,8 @@
+/* eslint-disable max-lines-per-function */
 import { $, removeChildren } from './utils/dom';
 import VideoItem from './videoItem';
 import NotFoundImage from '../assets/images/not_found.png';
+import YoutubeJSON from '../youtube-api.json';
 
 class SearchModal {
   apikey = 'AIzaSyCr0ODcPGNBRByd4pZGQucF31LpqN1zGD0';
@@ -11,19 +13,23 @@ class SearchModal {
 
   maxResult = 10;
 
+  testMode = false;
+
   constructor() {
     this.$modal = $('.search-modal');
     this.$input = $('#search-input-keyword', this.$modal);
     this.$button = $('#search-button', this.$modal);
+    this.$searchResult = $('.search-result');
     this.addEvent();
   }
 
-  // eslint-disable-next-line max-lines-per-function
   renderVideoItems(videos) {
     const $searchResult = $('.search-result');
+    if($searchResult.classList.contains('search-result--no-result')) {
+      removeChildren($searchResult);
+      $searchResult.insertAdjacentHTML('beforeend', `<h3>검색 결과</h3><ul class="video-list"></ul>`);
+    }
     $searchResult.classList.remove('search-result--no-result');
-    removeChildren($searchResult);
-    $searchResult.insertAdjacentHTML('beforeend', `<h3>검색 결과</h3><ul class="video-list"></ul>`);
 
     const videoListTemplate = videos
       .map(video => {
@@ -40,9 +46,9 @@ class SearchModal {
       .join('');
 
     $('.video-list', this.$modal).insertAdjacentHTML('beforeend', videoListTemplate);
+    $('.video-list').addEventListener('scroll', this.handleScroll.bind(this));
   }
 
-  // eslint-disable-next-line max-lines-per-function
   renderNotFound() {
     const $searchResult = $('.search-result');
     $searchResult.classList.add('search-result--no-result');
@@ -61,7 +67,6 @@ class SearchModal {
 
   renderSkeletonItems(videoCount) {
     const $videoList = $('.video-list', this.$modal);
-
     const skeletonListHtmlString = [...Array(videoCount).keys()].map(() => `
       <div class="skeleton">
         <div class="image"></div>
@@ -80,21 +85,61 @@ class SearchModal {
   async handleClickButton() {
     const title = this.$input.value;
     this.renderSkeletonItems(this.maxResult);
-    const jsonResult = await this.request(title);
+    let jsonResult = this.testMode
+      ? await this.testRequest(this.maxResult, 0)
+      : await this.request(title);
+    this.removeSkeleton();
     if (jsonResult === null) {
       this.renderNotFound();
       return;
     }
-    const videos = jsonResult.items.map(item => new VideoItem(item));
+    this.nextPageToken = jsonResult.nextPageToken;
+    let videos = jsonResult.items.map(item => new VideoItem(item));
     this.renderVideoItems(videos);
   }
 
+  async handleScroll() {
+    const title = $('#search-input-keyword').value;
+    if ($('.video-list').scrollHeight - $('.video-list').scrollTop === $('.video-list').clientHeight) {
+      this.renderSkeletonItems(this.maxResult);
+      const jsonResult = this.testMode
+      ? await this.testRequest(this.maxResult, this.nextPageToken)
+      : await this.request(title);
+      this.nextPageToken = jsonResult.nextPageToken;
+      const videos = jsonResult.items.map(item => new VideoItem(item));
+      this.removeSkeleton();
+      this.renderVideoItems(videos);
+    }
+  }
+
+  removeSkeleton() {
+    const $skeletons = document.querySelectorAll('.skeleton');
+    for (let i = 0; i < $skeletons.length; i += 1) {
+      $skeletons[i].remove();
+    }
+  }
+
+  async testRequest(count, nextPageToken) {
+    const page = parseInt(nextPageToken, 10);
+    try {
+      const json = { ...YoutubeJSON };
+      json.items = json.items.slice(page * count, (page + 1) * count);
+      json.nextPageToken = `${page + 1}`;
+      return json;
+    } catch (e) {
+      console.error(e);
+      return null;
+    }
+  }
+
   async request(title) {
-    const url = `${this.baseUrl}?part=snippet&maxResults=${this.maxResult}&q=${title}&&key=${this.apikey}`;
+    let url = `${this.baseUrl}?part=snippet&maxResults=${this.maxResult}&q=${title}&pageToken=${this.nextPageToken}&key=${this.apikey}`;
+    if (this.nextPageToken === null) {
+      url = `${this.baseUrl}?part=snippet&maxResults=${this.maxResult}&q=${title}&key=${this.apikey}`;
+    }
     try {
       const response = await fetch(url);
       const json = await response.json();
-
       if (!response.ok) {
         throw Error(response.statusText);
       }
