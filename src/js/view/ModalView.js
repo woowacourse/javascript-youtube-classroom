@@ -76,7 +76,7 @@ export default class ModalView {
           this.appendVideoItem();
           this.getData();
         }
-      }, 500);
+      }, 1000);
     }
   }
 }

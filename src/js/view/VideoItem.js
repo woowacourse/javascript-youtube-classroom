@@ -8,7 +8,8 @@ export default class VideoItem {
     <li class="video-item" data-video-id="">
       <img
         src=${data ? data.url : ''}
-        alt="video-item-thumbnail" class="video-item__thumbnail ${data ? '' : 'skeleton'}">
+        alt="video-item-thumbnail" class="video-item__thumbnail ${data ? '' : 'skeleton'}"
+        loading="lazy">
       <h4 class="video-item__title ${data ? '' : 'skeleton'}">${data ? data.title : ''}</h4>
       <p class="video-item__channel-nagetVideoItemTemplateme ${data ? '' : 'skeleton'}">${
       data ? data.channelName : ''
