@@ -10,5 +10,13 @@
         "sourceType": "module"
     },
     "rules": {
+        "import/prefer-default-export": "off",
+        "class-methods-use-this": "off",
+        "import/no-unresolved": "off",
+        "no-new":"off",
+        "arrow-parens":"off",
+        "no-unused-vars":"off",
+        "consistent-return":"off",
+        "no-param-reassign":"off"
     }
 }
