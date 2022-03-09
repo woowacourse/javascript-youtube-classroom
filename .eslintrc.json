@@ -14,7 +14,8 @@
     "max-depth": ["error", 2],
     "max-lines-per-function": ["error", 15],
     "no-unused-expressions": ["error", { "allowShortCircuit": true }],
-    "class-methods-use-this": "off"
+    "class-methods-use-this": "off",
+    "no-underscore-dangle": "off"
   },
   "ignorePatterns": ["**/*.test.*"]
 }
