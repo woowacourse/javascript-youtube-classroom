@@ -8,10 +8,7 @@ class Component {
     this.state = state;
   }
 
-  setState(newState) {
-    this.state = newState;
-    this.render();
-  }
+  setState() {}
 
   render() {}
 
