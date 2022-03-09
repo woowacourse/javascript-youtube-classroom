@@ -6,12 +6,30 @@ class RenderVideo {
     this.searchVideo = new SearchVideo();
     this.searchModalButton = selectDom('#search-modal-button');
     this.modalContainer = selectDom('.modal-container');
-    addEvent(this.searchModalButton, 'click', this.onSearchModalButtonClick.bind(this));
+    this.searchInput = selectDom('#search-input-keyword');
+    this.searchButton = selectDom('#search-button');
+
+    this.addEvents();
   }
 
-  onSearchModalButtonClick() {
-    this.modalContainer.classList.remove('hide');
+  addEvents() {
+    addEvent(this.searchModalButton, 'click', this.onSearchModalButtonClick);
+    addEvent(this.searchButton, 'click', this.onSearchButtonClick);
   }
+
+  onSearchModalButtonClick = () => {
+    this.modalContainer.classList.remove('hide');
+  };
+
+  onSearchButtonClick = async () => {
+    const searchKeyword = this.searchInput.value;
+    try {
+      await this.searchVideo.handleSearchVideo(searchKeyword);
+      console.log(this.searchVideo.searchResults);
+    } catch (error) {
+      return alert(error);
+    }
+  };
 }
 
 export default RenderVideo;
