@@ -1,9 +1,11 @@
 import YoutubeClassRoomView from './YoutubeClassroomView';
 import SearchVideoManager from './SearchVideoManager';
 import { $ } from './util';
+import SaveVideoManager from './SaveVideoManager';
 
 const youtubeClassRoomView = new YoutubeClassRoomView();
 const searchVideoManager = new SearchVideoManager();
+const saveVideoManager = new SaveVideoManager();
 
 let keyword = '';
 
@@ -24,7 +26,11 @@ $('#search-form').addEventListener('submit', (e) => {
     searchVideoManager.resetNextPageToken();
   }
   searchVideoManager.fetchYoutubeData(keyword).then((videos) => {
-    youtubeClassRoomView.updateOnSearchDataReceived(videos);
+    const checkedVideos = videos.map((video) => ({
+      ...video,
+      saved: saveVideoManager.findVideoById(video.id),
+    }));
+    youtubeClassRoomView.updateOnSearchDataReceived(checkedVideos);
   });
 });
 
@@ -32,18 +38,28 @@ let debounce;
 function detectScroll() {
   const { scrollTop, clientHeight, scrollHeight } = $('#search-result-video-list');
   if (debounce) {
-    console.log('요청 해제');
     clearTimeout(debounce);
   }
 
   if (scrollTop + clientHeight + 20 >= scrollHeight) {
-    console.log('요청 보내기');
     debounce = setTimeout(() => {
       searchVideoManager.fetchYoutubeData(keyword).then((videos) => {
-        youtubeClassRoomView.updateOnSearchDataReceived(videos);
+        const checkedVideos = videos.map((video) => ({
+          ...video,
+          saved: saveVideoManager.findVideoById(video.id),
+        }));
+        youtubeClassRoomView.updateOnSearchDataReceived(checkedVideos);
       });
     }, 1000);
   }
 }
 
 $('#search-result-video-list').addEventListener('scroll', detectScroll);
+
+$('#search-result-video-list').addEventListener('click', ({ target }) => {
+  if (target.tagName === 'BUTTON') {
+    const { videoId } = target.parentNode.dataset;
+    saveVideoManager.saveVideoById(videoId);
+    target.remove();
+  }
+});

@@ -23,7 +23,6 @@ export default class SearchVideoManager {
     )
       .then((data) => data.json())
       .then((result) => {
-        console.log(result);
         this.keyword = keyword;
         this.nextPageToken = result.nextPageToken;
         return result.items.map((item) => ({
