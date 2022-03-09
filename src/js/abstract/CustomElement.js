@@ -13,6 +13,8 @@ class CustomElement extends HTMLElement {
   }
 
   setEvent() {}
+
+  partialRender() {}
 }
 
 export default CustomElement;

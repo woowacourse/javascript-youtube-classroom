@@ -65,7 +65,7 @@ search-form {
   color: #ffffff;
 }
 
-.search-result.search-result--no-result {
+search-result.search-result--no-result {
   justify-content: center;
   align-items: center;
 }

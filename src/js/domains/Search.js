@@ -1,3 +1,4 @@
+import VideoStore from '../VideoStore';
 import { on, $ } from '../utils';
 import SEARCH_API from '../constants';
 
@@ -10,10 +11,20 @@ class Search {
     on('form', '@search', (e) => this.search(e.detail.keyword), $('search-form'));
   }
 
-  search(keyword) {
-    this.fetchVideo(keyword).then((body) => {
-      console.log(body);
-    });
+  async search(keyword) {
+    const videos = await this.fetchVideo(keyword);
+
+    VideoStore.instance.dispatch(
+      videos.items.map((item) => {
+        return {
+          id: item.id.videoId,
+          thumbnail: item.snippet.thumbnails.default.url,
+          title: encodeURI(item.snippet.title),
+          channelTitle: encodeURI(item.snippet.channelTitle),
+          publishedAt: item.snippet.publishedAt,
+        };
+      })
+    );
   }
 
   async fetchVideo(keyword) {
