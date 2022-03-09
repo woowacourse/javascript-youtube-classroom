@@ -15,6 +15,10 @@ class SearchModal {
 
   testMode = false;
 
+  localStorageVideoListKey = 'local-storage-video-list-key';
+
+  maxSavableVideoCount = 5;
+
   constructor() {
     this.$modal = $('.search-modal');
     this.$input = $('#search-input-keyword', this.$modal);
@@ -25,15 +29,18 @@ class SearchModal {
 
   renderVideoItems(videos) {
     const $searchResult = $('.search-result');
-    if($searchResult.classList.contains('search-result--no-result')) {
+    if ($searchResult.classList.contains('search-result--no-result')) {
       removeChildren($searchResult);
-      $searchResult.insertAdjacentHTML('beforeend', `<h3>검색 결과</h3><ul class="video-list"></ul>`);
+      $searchResult.insertAdjacentHTML(
+        'beforeend',
+        `<h3>검색 결과</h3><ul class="video-list"></ul>`
+      );
     }
     $searchResult.classList.remove('search-result--no-result');
 
     const videoListTemplate = videos
       .map(video => {
-        return `<li class="video-item" data-video-id="${video.videoId}">
+        return `<li class="video-item" data-video-id="${video.id}">
           <img
             src="${video.thumbnailUrl}"
             alt="video-item-thumbnail" class="video-item__thumbnail">
@@ -45,8 +52,15 @@ class SearchModal {
       })
       .join('');
 
-    $('.video-list', this.$modal).insertAdjacentHTML('beforeend', videoListTemplate);
-    $('.video-list').addEventListener('scroll', this.handleScroll.bind(this));
+    const template = document.createElement('template');
+    template.insertAdjacentHTML('beforeend', videoListTemplate);
+
+    const $videoList = $('.video-list', this.$modal);
+    template.childNodes.forEach($el => {
+      $el.addEventListener('click', this.handleClickSaveButton.bind(this));
+      $videoList.insertAdjacentElement('beforeend', $el);
+    });
+    $videoList.addEventListener('scroll', this.handleScroll.bind(this));
   }
 
   renderNotFound() {
@@ -103,13 +117,26 @@ class SearchModal {
     if ($('.video-list').scrollHeight - $('.video-list').scrollTop === $('.video-list').clientHeight) {
       this.renderSkeletonItems(this.maxResult);
       const jsonResult = this.testMode
-      ? await this.testRequest(this.maxResult, this.nextPageToken)
-      : await this.request(title);
+        ? await this.testRequest(this.maxResult, this.nextPageToken)
+        : await this.request(title);
       this.nextPageToken = jsonResult.nextPageToken;
       const videos = jsonResult.items.map(item => new VideoItem(item));
       this.removeSkeleton();
       this.renderVideoItems(videos);
     }
+  }
+
+  handleClickSaveButton(event) {
+    const { target } = event;
+    const $videoItem = target.closest('.video-item');
+    const videoId = $videoItem.getAttribute('data-video-id');
+    const videoList = JSON.parse(localStorage.getItem(this.localStorageVideoListKey)) ?? [];
+    if (videoList.length >= this.maxSavableVideoCount) {
+      alert(`비디오는 ${this.maxSavableVideoCount}개 이상 저장할 수 없습니다`);
+      return;
+    }
+    localStorage.setItem(this.localStorageVideoListKey, JSON.stringify([...videoList, videoId]));
+    target.setAttribute('hidden', true);
   }
 
   removeSkeleton() {
@@ -133,7 +160,7 @@ class SearchModal {
   }
 
   async request(title) {
-    let url = `${this.baseUrl}?part=snippet&maxResults=${this.maxResult}&q=${title}&pageToken=${this.nextPageToken}&key=${this.apikey}`;
+    let url = `${this.baseUrl}?part=snippet&type=video&maxResults=${this.maxResult}&q=${title}&pageToken=${this.nextPageToken}&key=${this.apikey}`;
     if (this.nextPageToken === null) {
       url = `${this.baseUrl}?part=snippet&maxResults=${this.maxResult}&q=${title}&key=${this.apikey}`;
     }
