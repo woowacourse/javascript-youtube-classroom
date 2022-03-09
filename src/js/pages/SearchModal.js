@@ -1,4 +1,4 @@
-import { URL, OPTIONS, KEY, fetchData } from '../api';
+import { OPTIONS, KEY, fetchData } from '../api';
 import { RELOAD_HEIGHT, RULES } from '../constants';
 import { getStorageVideoIDs, setStorageVideoIDs } from '../utils/localStorage';
 
@@ -115,7 +115,7 @@ export default class SearchModal {
 
     if (isNextScroll) {
       this.renderVideoList({
-        url: URL,
+        url: YOUTUBE_URL,
         keyword: this.searchInputKeyword.value,
         options: OPTIONS,
         pageToken: this.pageToken,
@@ -132,7 +132,7 @@ export default class SearchModal {
       validateKeyword(this.searchInputKeyword.value);
 
       this.renderVideoList({
-        url: URL,
+        url: YOUTUBE_URL,
         keyword: this.searchInputKeyword.value,
         options: OPTIONS,
         pageToken: this.pageToken,

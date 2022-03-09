@@ -1,8 +1,5 @@
 import { RULES } from './constants';
 
-const URL =
-  'https://622752939a5410d43ba3fbcd--modest-euler-778376.netlify.app/dummy/youtube/v3/search?';
-
 const OPTIONS = {
   part: 'snippet',
   maxResults: RULES.MAX_VIDEOS,
@@ -31,4 +28,4 @@ const fetchData = async (props) => {
   return json;
 };
 
-export { URL, OPTIONS, KEY, fetchData };
+export { OPTIONS, KEY, fetchData };
