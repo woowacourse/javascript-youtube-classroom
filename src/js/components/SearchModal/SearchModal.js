@@ -5,7 +5,7 @@ import SearchResult from './SearchResult.js';
 
 export default class SearchModal extends Component {
   setup() {
-    this.state = { items: [], isNoResult: false }; // idle || success || fail
+    this.state = { items: [], isNoResult: false };
   }
 
   template() {

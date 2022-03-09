@@ -16,11 +16,23 @@ export default class VideoCardList extends Component {
 
   afterMounted() {
     const { items } = this.state;
+    const savedVideos = Component.webStore.load();
+    const videoCardProps = items.map((item) => {
+      return {
+        videoId: item.id.videoId,
+        thumbnailUrl: item.snippet.thumbnails.default.url,
+        title: item.snippet.title,
+        channelTitle: item.snippet.channelTitle,
+        publishTime: item.snippet.publishTime,
+        saved: savedVideos.includes(item.id.videoId),
+      };
+    });
 
     document
       .querySelectorAll('.video-card')
       .forEach(
-        (videoCard, index) => new VideoCard(videoCard, { item: items[index] })
+        (videoCard, index) =>
+          new VideoCard(videoCard, { video: videoCardProps[index] })
       );
   }
 
