@@ -21,5 +21,11 @@ it("메인 화면에서 검색 버튼을 누르면 검색 모달창이 나타난
 });
 
 it("데이터를 불러오는 동안 skeleton UI로 보여준다.", () => {
+  cy.get("#search-button").click();
   cy.get(".skeleton").should("be.visible");
 });
+
+// it('검색 결과가 없는 경우 결과 없음 이미지를 보여준다.', () => {
+// cy.get('#search-button').click();
+
+// })

@@ -1,6 +1,5 @@
 @import "./app.css";
 @import "./modal.css";
-@import "https://cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.min.css";
 
 * {
   margin: 0;

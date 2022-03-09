@@ -82,6 +82,10 @@ body {
   width: 80%;
 }
 
+.skeleton .button {
+  cursor: default;
+}
+
 @keyframes refresh {
   0% {
     background-position: calc(-100px);
