@@ -59,7 +59,12 @@ $('#search-result-video-list').addEventListener('scroll', detectScroll);
 $('#search-result-video-list').addEventListener('click', ({ target }) => {
   if (target.tagName === 'BUTTON') {
     const { videoId } = target.parentNode.dataset;
-    saveVideoManager.saveVideoById(videoId);
+    try {
+      saveVideoManager.saveVideoById(videoId);
+    } catch (e) {
+      alert(e.message);
+      return;
+    }
     target.remove();
   }
 });
