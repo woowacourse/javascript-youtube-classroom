@@ -82,6 +82,7 @@ class SearchModal {
     if (!e.target.classList.contains("video-item__save-button")) {
       return;
     }
+
     try {
       checkMaxStorageVolume();
       setLocalStorage(
@@ -107,17 +108,34 @@ class SearchModal {
   }
 
   async callApi() {
+    this.renderSkeletonImage();
     const data = await youtubeSearchAPI.searchByPage(
       this.keyword,
       this.pageToken
     );
-
+    this.removeSkeleton();
     if (data.items.length === 0) {
       this.renderNoResultImage();
       return;
     }
     this.pageToken = data.nextPageToken;
     this.renderVideo(data);
+  }
+
+  renderSkeletonImage() {
+    this.$videoListContainer.insertAdjacentHTML(
+      "beforeend",
+      Array(10)
+        .fill()
+        .map((_) => template.skeletonItem())
+        .join(" ")
+    );
+  }
+
+  removeSkeleton() {
+    document.querySelectorAll(".skeleton-container").forEach((element) => {
+      element.remove();
+    });
   }
 
   renderNoResultImage() {
@@ -142,7 +160,6 @@ class SearchModal {
         title,
         publishTime,
       } = item.snippet;
-
       this.$videoListContainer.insertAdjacentHTML(
         "beforeend",
         template.videoItems({

@@ -24,5 +24,14 @@ const template = {
       </p>
     </div>
   `,
+
+  skeletonItem: () => `
+    <li class="video-item skeleton-container">
+      <div class="skeleton thumbnail"></div>
+      <div class="skeleton title"></div>
+      <div class="skeleton text"></div>
+      <div class="skeleton date"></div>
+    </li>
+  `,
 };
 export default template;
