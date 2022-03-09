@@ -17,6 +17,7 @@
         "arrow-parens":"off",
         "no-unused-vars":"off",
         "consistent-return":"off",
-        "no-param-reassign":"off"
+        "no-param-reassign":"off",
+        "no-unused-expressions":"off"
     }
 }
