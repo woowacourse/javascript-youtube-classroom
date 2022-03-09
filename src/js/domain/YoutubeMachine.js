@@ -51,9 +51,10 @@ export default class YoutubeMachine {
 
   getNextSearchData({ nextPageToken }) {
     const nextURL = this.getURL(nextPageToken);
-    fetch(nextURL)
-      .then(response => response.json())
-      .then(data => console.log(data.items))
-      .catch(error => console.log('error:', error));
+    return fetch(nextURL).then(response => response.json());
+    // fetch(nextURL)
+    //   .then(response => response.json())
+    //   .then(data => console.log(data.items))
+    //   .catch(error => console.log('error:', error));
   }
 }

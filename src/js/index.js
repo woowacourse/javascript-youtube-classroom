@@ -12,7 +12,6 @@ import dummyData from '../../dummyData.js';
 
 export default function App() {
   const youtubeMachine = new YoutubeMachine();
-
   const validateInput = input => {
     if (input === '') {
       throw new Error('빈값을 입력할 수 없습니다. 다시 입력해 주세요.');
@@ -24,23 +23,52 @@ export default function App() {
       const searchInput = $('#search-input-keyword').value.trim();
       validateInput(searchInput);
       youtubeMachine.searchTarget = searchInput;
-      // const responseJSON = youtubeMachine.getSearchData();
-      // responseJSON
-      //   .then(data => {
-      //     // 비디오 렌더링s
-      //     renderSkeletonUI();
-      //     renderVideoItems(data);
-      //     console.log(data.items);
-      //   })
-      //   .catch(error => {
-      //     // 검색결과없음
-      //     renderNoResult();
-      //     // console.log('error:', error);
-      //   });
       renderSkeletonUI();
-      renderVideoItems(dummyData);
+      const responseJSON = youtubeMachine.getSearchData();
+      responseJSON
+        .then(data => {
+          // 비디오 렌더링
+          youtubeMachine.data = data;
+          removeSkeletonUI();
+          renderVideoItems(data);
+        })
+        .catch(error => {
+          // 검색결과없음
+          removeSkeletonUI();
+          renderNoResult();
+        });
+      // renderVideoItems(dummyData);
     } catch (error) {
       alert(error.message);
+    }
+  };
+
+  let throttle;
+  const isEndOfScroll = $element =>
+    $element.scrollHeight - $element.scrollTop === $element.clientHeight;
+
+  const handleScroll = e => {
+    if (isEndOfScroll(e.target)) {
+      if (!throttle) {
+        renderSkeletonUI();
+        const responseJSON = youtubeMachine.getNextSearchData(youtubeMachine.data);
+        responseJSON
+          .then(data => {
+            // 비디오 렌더링
+            youtubeMachine.data = data;
+            removeSkeletonUI();
+            renderVideoItems(data);
+            console.log(data.items);
+          })
+          .catch(error => {
+            // 검색결과없음
+            renderNoResult();
+            console.log('error:', error);
+          });
+        throttle = setTimeout(() => {
+          throttle = null;
+        }, 1000);
+      }
     }
   };
 
@@ -54,18 +82,8 @@ export default function App() {
     if (e.key === 'Enter') handleSearch();
   });
 
-  let throttle;
-  let maxScrollTop = 0;
   $('.video-list').addEventListener('scroll', e => {
-    if (e.target.scrollTop > maxScrollTop) {
-      maxScrollTop = e.target.scrollTop - 50;
-      if (!throttle) {
-        renderSkeletonUI();
-        throttle = setTimeout(() => {
-          throttle = null;
-        }, 2000);
-      }
-    }
+    handleScroll(e);
   });
 }
 
