@@ -9,8 +9,9 @@ const mockObject = {
   snippet: {
     channelTitle: "essential;",
     thumbnails: {
-      default:
-        "https://i.ytimg.com/vi/ECfuKi5-Cfs/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLDvmIcX-TgdcH2g_Bd4AUxw6hjmvQ",
+      high: {
+        url: "https://i.ytimg.com/vi/ECfuKi5-Cfs/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLDvmIcX-TgdcH2g_Bd4AUxw6hjmvQ",
+      },
     },
     publishTime: "2022년 3월 2일",
     title: "[Playlist] 너무 좋은데 괜찮으시겠어요?",
@@ -31,32 +32,96 @@ export default class YoutubeApp {
   }
 
   bind() {
-    this.searchModalButton.addEventListener("click", this.displayModal);
-    this.searchButton.addEventListener("click", this.searchMovie);
+    this.searchModalButton.addEventListener(
+      "click",
+      this.onSubmitSearchModalButton
+    );
+    this.searchButton.addEventListener("click", this.onSubmitSearchButton);
+    this.videoList.addEventListener(
+      "scroll",
+      this.throttle(this.onScrollVideoList, 300)
+    );
   }
 
-  // onSubmitSearchModalButton
-  displayModal = (e) => {
+  onSubmitSearchModalButton = (e) => {
     e.preventDefault();
     this.modalContainer.classList.remove("hide");
   };
 
-  // onSubmitSearchButton
-  searchMovie = (e) => {
+  onSubmitSearchButton = (e) => {
     e.preventDefault();
     this.videoList.insertAdjacentHTML(
       "beforeend",
       generatorTemplate.skeleton()
     );
+
     this.search(this.searchInputKeyword.value);
   };
 
-  async search(keyword) {
-    // const resultArray = await getSearchResult(keyword);
-    const resultArray = Array.from({ length: 10 }, () => mockObject);
-    console.log(resultArray);
+  throttle = (callback, delayTime) => {
+    let timerId;
 
-    if (resultArray.length === 0) {
+    return () => {
+      if (timerId) return;
+
+      timerId = setTimeout(() => {
+        timerId = null;
+        callback();
+      }, delayTime);
+    };
+  };
+
+  onScrollVideoList = async () => {
+    // scrollHeight = clientHeight + scrollTop
+    if (
+      this.videoList.scrollHeight - 40 <=
+      this.videoList.clientHeight + this.videoList.scrollTop
+    ) {
+      this.videoList.insertAdjacentHTML(
+        "beforeend",
+        generatorTemplate.skeleton()
+      );
+
+      document
+        .querySelectorAll(".skeleton")
+        .forEach((element) => this.videoList.removeChild(element));
+
+      const responseData = {
+        items: Array.from({ length: 10 }, () => mockObject),
+      };
+      // const responseData = await getSearchResult(
+      //   this.keyword,
+      //   this.nextPageToken
+      // );
+
+      // this.nextPageToken = responseData.nextPageToken;
+
+      const result = responseData.items
+        .map((item) =>
+          generatorTemplate.videoItem({
+            id: item.id.videoId,
+            channel: item.snippet.channelTitle,
+            defaultThumbnail: item.snippet.thumbnails.high.url,
+            title: item.snippet.title,
+            date: item.snippet.publishTime,
+          })
+        )
+        .join("");
+
+      this.videoList.insertAdjacentHTML("beforeend", result);
+    }
+  };
+
+  async search(keyword) {
+    // this.keyword = keyword;
+    // const responseData = await getSearchResult(this.keyword);
+    // this.nextPageToken = responseData.nextPageToken;
+    const responseData = {
+      items: Array.from({ length: 10 }, () => mockObject),
+    };
+    // console.log(resultArray);
+
+    if (responseData.items.length === 0) {
       this.searchResult.removeChild(this.videoList);
       this.searchResult.classList.add("search-result--no-result");
       this.searchResult.insertAdjacentHTML(
@@ -69,19 +134,19 @@ export default class YoutubeApp {
       return;
     }
 
-    // console.log(resultArray);
+    console.log(responseData);
 
     const skeletons = document.querySelectorAll(".skeleton");
     skeletons.forEach((skeleton) => {
       this.videoList.removeChild(skeleton);
     });
 
-    const result = resultArray
+    const result = responseData.items
       .map((item) =>
         generatorTemplate.videoItem({
           id: item.id.videoId,
           channel: item.snippet.channelTitle,
-          defaultThumbnail: item.snippet.thumbnails.default,
+          defaultThumbnail: item.snippet.thumbnails.high.url,
           title: item.snippet.title,
           date: item.snippet.publishTime,
         })
@@ -90,6 +155,6 @@ export default class YoutubeApp {
 
     this.videoList.insertAdjacentHTML("beforeend", result);
 
-    return resultArray;
+    return responseData.items;
   }
 }

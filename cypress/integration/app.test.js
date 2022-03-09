@@ -63,5 +63,5 @@ it("브라우저 스크롤 바를 끝까지 내려 그 다음 10개 아이템을
   cy.get(".video-item").should("be.visible");
   cy.get(".video-list").scrollTo("bottom");
 
-  cy.get(".skeleton").should("be.visible");
+  cy.get(".video-list").children().should("have.length", 20);
 });
