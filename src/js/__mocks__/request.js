@@ -364,8 +364,19 @@ const searchResult = {
   ],
 };
 
+const noResult = {
+  kind: 'youtube#searchListResponse',
+  etag: 'FhjHp5Q9J4k4pwr-MgNr77Ao6XI',
+  regionCode: 'KR',
+  pageInfo: {
+    totalResults: 1,
+    resultsPerPage: 0,
+  },
+  items: [],
+};
+
 export default function request(url) {
   return new Promise((resolve) => {
-    resolve(searchResult);
+    resolve(noResult);
   });
 }

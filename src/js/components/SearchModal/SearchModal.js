@@ -49,6 +49,6 @@ export default class SearchModal extends Component {
   }
 
   showSearchResult(items) {
-    this.setState({ items });
+    this.setState({ items, isNoResult: !items.length });
   }
 }

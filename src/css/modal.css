@@ -21,6 +21,9 @@
 }
 
 .search-modal {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   position: relative;
   width: 1080px;
   height: 727px;
@@ -66,8 +69,11 @@
 }
 
 .search-result.search-result--no-result {
+  display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
+  height: 100%;
 }
 
 .no-result__image {
