@@ -12,21 +12,12 @@ test('유튜브 검색 기능 정상 작동', async () => {
   expect(isNull(response)).toBe(false);
 });
 
-test('유튜브 검색 결과를 webstorage에 저장할 수 있다', async () => {
-  const searchEngine = new SearchEngine();
+test('유튜브 검색 결과를 webstorage에 저장할 수 있다', () => {
   const storageEngine = new StorageEngine();
-  storageEngine.clearData();
+  const videoId = 'eMf0jojpdJQ';
 
-  const keyword = '지피티 구독자 일반인';
-  const data = await searchEngine.searchKeyword(keyword);
-
-  storageEngine.saveData(data);
+  storageEngine.saveData(videoId);
+  console.log(storageEngine.getData());
 
   expect(storageEngine.getData()).not.toBe(null);
-});
-
-test('유튜브 검색 결과를 webstorage에 100개까지 저장할 수 있다.', () => {
-  const storageEngine = new StorageEngine();
-
-  expect(storageEngine.getData()).toHaveLength(100);
 });
