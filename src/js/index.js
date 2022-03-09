@@ -1,14 +1,11 @@
 import { $ } from './util/dom.js';
 import YoutubeMachine from './domain/YoutubeMachine.js';
 import { renderSkeletonUI, removeSkeletonUI } from './UI/renderVideoItems.js';
+import '../css/index.css';
 
 export default function App() {
   renderSkeletonUI();
   const youtubeMachine = new YoutubeMachine();
-
-  $('#search-modal-button').addEventListener('click', () => {
-    $('.modal-container').classList.toggle('hide');
-  });
 
   const validateInput = input => {
     if (input === '') {
@@ -26,6 +23,10 @@ export default function App() {
       alert(error.message);
     }
   };
+
+  $('#search-modal-button').addEventListener('click', () => {
+    $('.modal-container').classList.toggle('hide');
+  });
 
   $('#search-button').addEventListener('click', handleSearch);
 
