@@ -18,10 +18,9 @@
             "error",
             2
         ],
-        // 함수라인은 15라인 이하로
         "max-lines-per-function": [
             "error",
-            20
+            30
         ],
         // console.log는 제거
         "no-console": "warn",
@@ -41,5 +40,6 @@
         "object-curly-newline": "off",
         "class-methods-use-this": "off",
         "implicit-arrow-linebreak": "off",
+        "consistent-return": "off"
     }
 }
