@@ -1,14 +1,19 @@
 export default class Video {
   #keyword;
 
-  #videoItems; // 길이가 10개인 array
-
   #fetchedVideos;
+
+  #videoItems; // 길이가 10개인 array
 
   #nextPageToken; // 다음 토큰 string
 
   constructor(dummyObject) {
     this.#fetchedVideos = dummyObject;
+    this.savedIdList = [];
+  }
+
+  addSavedId(savedId) {
+    this.savedIdList.push(savedId);
   }
 
   set keyword(value) {

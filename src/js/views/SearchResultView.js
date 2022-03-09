@@ -1,4 +1,5 @@
-import { $ } from '../utils/dom.js';
+import { $, $$ } from '../utils/dom.js';
+import { on, emit } from '../utils/event.js';
 
 export default class SearchResultView {
   constructor() {
@@ -11,6 +12,17 @@ export default class SearchResultView {
   renderVideo(videoItems) {
     const videosTemplate = videoItems.map((item) => this.template.getVideo(item)).join('');
     this.$videoList.insertAdjacentHTML('beforeend', videosTemplate);
+    //     export const on = (target, eventName, handler) => {
+    //   target.addEventListener(eventName, handler);
+    $$('.video-item__save-button').forEach((button) => {
+      on(button, 'click', this.saveVideo);
+    });
+  }
+
+  saveVideo() {
+    console.log(this.dataset.id);
+    const { id } = this.dataset;
+    emit(this, '@save-video', { id });
   }
 
   removeVideo() {
@@ -100,7 +112,7 @@ class Template {
     `;
   }
 
-  getVideo({ snippet, id }) {
+  getVideo({ snippet, id }, isSaved = false) {
     return `
     <li class="video-item" data-video-id="">
       <iframe 
@@ -113,7 +125,7 @@ class Template {
       <h4 class="video-item__title">${snippet.title}</h4>
       <p class="video-item__channel-name">${snippet.channelTitle}</p>
       <p class="video-item__published-date">${snippet.publishTime}</p>
-      <button class="video-item__save-button button">⬇ 저장</button>
+      <button data-id="${id.videoId}" class="video-item__save-button button">${isSaved ? '저장됨' : '⬇ 저장'}</button>
     </li>
     `;
   }

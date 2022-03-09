@@ -68,3 +68,9 @@
 - [ ] Video(dummyObject) 지우기
 - [ ] .play top, left
 - [ ] SearchResultView 함수 분리 
+
+
+
+
+## 저장버튼
+- this.searchResultView.renderVideo(videoItems)
