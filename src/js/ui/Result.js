@@ -86,16 +86,20 @@ export default class Result {
   addSaveButtonClickEvent() {
     const saveButtons = $$('.video-item__save-button');
     saveButtons.forEach(saveButton => {
-      saveButton.addEventListener('click', e => {
-        const videoId = e.target.closest('li').dataset.videoId;
-        const saveDatas = store.getLocalStorage() ?? [];
-        if (saveDatas.length >= MAX_SAVE_COUNT) {
-          showExceptionSnackBar(MESSAGE.ERROR_EXCESS_SAVE_COUNT);
-          return;
-        }
-        saveDatas.push(videoId);
-        store.setLocalStorage(saveDatas);
-      });
+      saveButton.addEventListener('click', this.handleSaveVideo);
     });
+  }
+
+  handleSaveVideo(e) {
+    const videoId = e.target.closest('li').dataset.videoId;
+    const saveDatas = store.getLocalStorage() ?? [];
+    if (saveDatas.length >= MAX_SAVE_COUNT) {
+      showExceptionSnackBar(MESSAGE.ERROR_EXCESS_SAVE_COUNT);
+      return;
+    }
+    saveDatas.push(videoId);
+    store.setLocalStorage(saveDatas);
+    showExceptionSnackBar(MESSAGE.SAVE_COMPLETE);
+    e.target.setAttribute('hidden', true);
   }
 }
