@@ -8,35 +8,28 @@ const WRONG_API_ENDPOINT = (keyword) =>
   `https://elastic-goldstine-10f16a.netlify.app/search?part=snippettt&q=${keyword}&maxResults=10`;
 
 export default class SearchVideoManager {
+  #isLastPage;
+
   constructor() {
     this.keyword = '';
     this.nextPageToken = '';
-    this.totalResultCount = 0;
-    this.currentSearch = {
-      fetchedResultCount: 0,
-      totalResultCount: 0,
-    };
+    this.#isLastPage = false;
+  }
+
+  get isLastPage() {
+    return this.#isLastPage;
   }
 
   resetNextPageToken() {
     this.nextPageToken = '';
-    this.currentSearch.fetchedResultCount = 0;
-    this.currentSearch.totalResultCount = 0;
-  }
-
-  isLastPage() {
-    return (
-      this.currentSearch.fetchedResultCount !== 0 &&
-      this.currentSearch.totalResultCount !== 0 &&
-      this.currentSearch.totalResultCount === this.currentSearch.fetchedResultCount
-    );
+    this.#isLastPage = false;
   }
 
   fetchYoutubeData(keyword) {
     return fetch(
       this.nextPageToken
-        ? `${DUMMY_YOUTUBE_API_ENDPOINT(keyword)}&pageToken=${this.nextPageToken}`
-        : DUMMY_YOUTUBE_API_ENDPOINT(keyword)
+        ? `${YOUTUBE_API_ENDPOINT(keyword)}&pageToken=${this.nextPageToken}`
+        : YOUTUBE_API_ENDPOINT(keyword)
     )
       .then((response) => {
         if (!response.ok) {
@@ -47,8 +40,7 @@ export default class SearchVideoManager {
       .then((result) => {
         console.log(result);
         this.keyword = keyword;
-        this.currentSearch.totalResultCount = result.pageInfo.totalResults;
-        this.currentSearch.fetchedResultCount += result.pageInfo.resultsPerPage;
+        if (!result.nextPageToken) this.#isLastPage = true;
         this.nextPageToken = result.nextPageToken;
         return result.items.map((item) => ({
           id: item.id.videoId,

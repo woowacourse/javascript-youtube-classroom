@@ -72,7 +72,7 @@ export default class YoutubeClassRoom {
   }
 
   searchOnScroll() {
-    if (this.searchVideoManager.isLastPage()) {
+    if (this.searchVideoManager.isLastPage) {
       return alert('마지막 검색결과까지 모두 출력되었습니다.');
     }
     this.searchModalView.updateOnScrollLoading();
