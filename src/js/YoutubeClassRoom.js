@@ -4,8 +4,7 @@ import SearchVideoManager from './SearchVideoManager';
 import SaveVideoManager from './SaveVideoManager';
 import { validateSearchKeyword } from './validation';
 import { ALERT_MESSAGE } from './constants';
-
-let timerId;
+import { debounce } from './util';
 
 export default class YoutubeClassRoom {
   constructor() {
@@ -19,7 +18,7 @@ export default class YoutubeClassRoom {
 
   bindEvents() {
     window.addEventListener('searchKeyword', this.onSubmitSearchKeyword.bind(this));
-    window.addEventListener('searchOnScroll', this.onScrollSearchResultList.bind(this));
+    window.addEventListener('searchOnScroll', debounce(this.searchOnScroll.bind(this), 1000));
     window.addEventListener('saveVideo', this.onClickVideoSaveButton.bind(this));
   }
 
@@ -32,16 +31,6 @@ export default class YoutubeClassRoom {
       return;
     }
     this.searchOnSubmitKeyword(keyword);
-  }
-
-  onScrollSearchResultList(e) {
-    const { scrollTop, clientHeight, scrollHeight } = e.detail;
-    if (timerId) {
-      clearTimeout(timerId);
-    }
-    if (scrollTop + clientHeight + 20 >= scrollHeight) {
-      timerId = setTimeout(this.searchOnScroll.bind(this), 1000);
-    }
   }
 
   onClickVideoSaveButton(e) {
@@ -68,10 +57,8 @@ export default class YoutubeClassRoom {
       });
   }
 
-  searchOnScroll() {
-    if (this.searchVideoManager.isLastPage) {
-      return alert(ALERT_MESSAGE.NO_MORE_SEARCH_RESULT);
-    }
+  searchOnScroll(e) {
+    if (this.impossibleToLoadMore(e)) return;
     this.searchModalView.updateOnScrollLoading();
     this.searchVideoManager
       .search()
@@ -89,5 +76,15 @@ export default class YoutubeClassRoom {
       ...video,
       saved: this.saveVideoManager.findVideoById(video.id),
     }));
+  }
+
+  impossibleToLoadMore(e) {
+    const { scrollTop, clientHeight, scrollHeight } = e.detail;
+    if (scrollTop + clientHeight + 20 < scrollHeight) return true;
+    if (this.searchVideoManager.isLastPage) {
+      alert(ALERT_MESSAGE.NO_MORE_SEARCH_RESULT);
+      return true;
+    }
+    return false;
   }
 }
