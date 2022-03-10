@@ -1,3 +1,5 @@
+import { CUSTOM_EVENT_KEY } from '../constants/events';
+import { dispatch } from '../modules/eventFactory';
 import Component from './Component';
 
 class SearchFormComponent extends Component {
@@ -5,11 +7,11 @@ class SearchFormComponent extends Component {
 
   $searchInput = null;
 
-  constructor({ parentElement, handlers }) {
+  constructor(parentElement) {
     super(parentElement);
     this.mount();
     this.initDOM();
-    this.bindEventHandler(handlers);
+    this.bindEventHandler();
   }
 
   mount() {
@@ -23,16 +25,24 @@ class SearchFormComponent extends Component {
     this.$searchInput = this.parentElement.querySelector('#search-input-keyword');
   }
 
-  bindEventHandler({ onSubmitSearchKeyword }) {
-    this.$searchButton.addEventListener('click', async () => {
+  bindEventHandler() {
+    this.$searchButton.addEventListener('click', () => {
       const { value } = this.$searchInput;
-      await onSubmitSearchKeyword(value);
+      dispatch(CUSTOM_EVENT_KEY.SUBMIT_SEARCH_KEWORD, {
+        detail: {
+          keyword: value,
+        },
+      });
     });
 
-    this.$searchInput.addEventListener('keypress', async (e) => {
+    this.$searchInput.addEventListener('keypress', (e) => {
       const { value } = this.$searchInput;
       if (e.key === 'Enter') {
-        await onSubmitSearchKeyword(value);
+        dispatch(CUSTOM_EVENT_KEY.SUBMIT_SEARCH_KEWORD, {
+          detail: {
+            keyword: value,
+          },
+        });
       }
     });
   }

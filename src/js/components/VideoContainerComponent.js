@@ -1,4 +1,6 @@
+import { CUSTOM_EVENT_KEY } from '../constants/events';
 import { STATE_STORE_KEY } from '../constants/stateStore';
+import { dispatch } from '../modules/eventFactory';
 import { subscribe } from '../modules/stateStore';
 import Component from './Component';
 import VideoComponent from './VideoComponent';
@@ -6,11 +8,11 @@ import VideoComponent from './VideoComponent';
 class VideoContainerComponent extends Component {
   $videoList = null;
 
-  constructor({ parentElement, handlers }) {
+  constructor(parentElement) {
     super(parentElement);
-    this.mount(handlers);
+    this.mount();
     this.initDOM();
-    this.bindEventHandler(handlers);
+    this.bindEventHandler();
     subscribe(STATE_STORE_KEY.VIDEO_LIST, this);
   }
 
@@ -24,7 +26,7 @@ class VideoContainerComponent extends Component {
     this.$videoList = document.querySelector('.video-list');
   }
 
-  bindEventHandler({ onClickSaveButton }) {
+  bindEventHandler() {
     this.$videoList.addEventListener('click', (e) => {
       const {
         target: { className },
@@ -35,7 +37,11 @@ class VideoContainerComponent extends Component {
           dataset: { videoId },
         } = e.target.closest('.video-item');
 
-        onClickSaveButton(videoId);
+        dispatch(CUSTOM_EVENT_KEY.CLICK_SAVE_BUTTON, {
+          detail: {
+            saveVideoId: videoId,
+          },
+        });
       }
     });
   }

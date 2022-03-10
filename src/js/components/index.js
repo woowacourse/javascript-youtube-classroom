@@ -1,13 +1,7 @@
-import { isEmptyKeyword } from '../utils/validation';
 import Component from './Component';
 import SearchModalComponent from './SearchModalComponent';
-import { youtubeAPIFetcher } from '../modules/fetcher';
-import webStore from '../modules/webStore';
-import { setState, getState } from '../modules/stateStore';
-import Video from '../modules/video';
-import { findVideoInVideoList, parserVideos } from '../utils/util';
-import { STATE_STORE_KEY } from '../constants/stateStore';
-import { API_PATHS } from '../constants/fetcher';
+import { dispatch, bind } from '../modules/eventFactory';
+import { CUSTOM_EVENT_KEY } from '../constants/events';
 class AppComponent extends Component {
   searchModalComponent = null;
 
@@ -31,18 +25,13 @@ class AppComponent extends Component {
   }
 
   initChildrenComponent() {
-    this.searchModalComponent = new SearchModalComponent({
-      parentElement: this.parentElement,
-      handlers: {
-        onClickOutsideModal: this.onClickOutsideModal,
-        onSubmitSearchKeyword: this.onSubmitSearchKeyword,
-        onClickSaveButton: this.onClickSaveButton,
-      },
-    });
+    this.searchModalComponent = new SearchModalComponent(this.parentElement);
   }
 
   bindEventHandler() {
-    this.$searchModalButton.addEventListener('click', this.onClickSearchModalButton);
+    this.$searchModalButton.addEventListener('click', () => {
+      dispatch(CUSTOM_EVENT_KEY.CLICK_SEARCH_MODAL_BUTTON);
+    });
   }
 
   generateTemplate() {
@@ -52,46 +41,6 @@ class AppComponent extends Component {
       <button id="search-modal-button" class="button nav__button">🔍 검색</button>
     </nav>
   </main>`;
-  }
-
-  onClickSearchModalButton = () => {
-    setState(STATE_STORE_KEY.IS_MODAL_SHOW, true);
-  };
-
-  onClickOutsideModal = () => {
-    setState(STATE_STORE_KEY.IS_MODAL_SHOW, false);
-  };
-
-  async onSubmitSearchKeyword(keyword) {
-    if (isEmptyKeyword(keyword)) {
-      alert('키워드를 입력해주세요');
-      return;
-    }
-    try {
-      const searchResult = await youtubeAPIFetcher({
-        path: API_PATHS.SEARCH,
-        params: { q: keyword, part: 'snippet', maxResults: 10, type: 'video' },
-      });
-      const { items: videoInfos, nextPageToken } = parserVideos(searchResult);
-      const videoList = videoInfos.map((videoInfo) => Video.create(videoInfo));
-      setState(STATE_STORE_KEY.VIDEO_LIST, videoList);
-    } catch ({ message }) {
-      alert(message);
-    }
-  }
-
-  onScrollVideoContainer() {}
-
-  onClickSaveButton(saveVideoId) {
-    const videoList = getState(STATE_STORE_KEY.VIDEO_LIST);
-
-    const saveVideo = findVideoInVideoList(videoList, saveVideoId);
-
-    try {
-      webStore.setSavedVideoList(saveVideo.getVideoInfo());
-    } catch ({ message }) {
-      alert(message);
-    }
   }
 }
 export default AppComponent;

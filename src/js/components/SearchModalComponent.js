@@ -3,6 +3,8 @@ import SearchFormComponent from './SearchFormComponent';
 import VideoContainerComponent from './VideoContainerComponent';
 import { subscribe } from '../modules/stateStore';
 import { STATE_STORE_KEY } from '../constants/stateStore';
+import { CUSTOM_EVENT_KEY } from '../constants/events';
+import { dispatch } from '../modules/eventFactory';
 
 class SearchModalComponent extends Component {
   searchFormComponent = null;
@@ -15,12 +17,12 @@ class SearchModalComponent extends Component {
 
   $dimmer = null;
 
-  constructor({ parentElement, handlers: { onClickOutsideModal, ...restHandlers } }) {
+  constructor(parentElement) {
     super(parentElement);
-    this.mount(restHandlers);
+    this.mount();
     this.initDOM();
-    this.initChidrenComponent(restHandlers);
-    this.bindEventHandler({ onClickOutsideModal });
+    this.initChidrenComponent();
+    this.bindEventHandler();
     subscribe(STATE_STORE_KEY.IS_MODAL_SHOW, this);
   }
 
@@ -35,22 +37,16 @@ class SearchModalComponent extends Component {
     this.$dimmer = this.parentElement.querySelector('.dimmer');
   }
 
-  initChidrenComponent({ onSubmitSearchKeyword, onClickSaveButton }) {
-    this.searchFormComponent = new SearchFormComponent({
-      parentElement: this.$searchModal,
-      handlers: { onSubmitSearchKeyword },
-    });
+  initChidrenComponent() {
+    this.searchFormComponent = new SearchFormComponent(this.$searchModal);
 
-    this.videoContainerComponent = new VideoContainerComponent({
-      parentElement: this.$searchModal,
-      handlers: {
-        onClickSaveButton,
-      },
-    });
+    this.videoContainerComponent = new VideoContainerComponent(this.$searchModal);
   }
 
-  bindEventHandler({ onClickOutsideModal }) {
-    this.$dimmer.addEventListener('click', onClickOutsideModal);
+  bindEventHandler() {
+    this.$dimmer.addEventListener('click', () => {
+      dispatch(CUSTOM_EVENT_KEY.CLICK_OUTSIDE_MODAL);
+    });
   }
 
   wakeUp(stateKey, stateValue) {
