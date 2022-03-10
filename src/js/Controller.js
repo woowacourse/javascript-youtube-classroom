@@ -14,22 +14,23 @@ export default class Controller {
     this.searchResultView = new SearchResultView();
     this.#subscribeViewEvents();
 
-    this.observer = new IntersectionObserver(
-      (entries) => {
-        if (entries[0].isIntersecting) {
-          this.#scrollNextVideos();
-          console.log('무한스크롤중');
-        } else console.log('Not on the bottom');
-      },
-      {
-        root: this.searchResultView.$videoList,
-        threshold: 1.0,
-      },
-    );
+    // this.observer = new IntersectionObserver(
+    //   (entries) => {
+    //     if (entries[0].isIntersecting) {
+    //       this.#scrollNextVideos();
+    //       console.log('무한스크롤중');
+    //     } else console.log('Not on the bottom');
+    //   },
+    //   {
+    //     root: this.searchResultView.$videoList,
+    //     threshold: 1.0,
+    //   },
+    // );
   }
 
   #subscribeViewEvents() {
     on(this.searchInputView.$searchButton, '@search', this.#searchVideo.bind(this));
+    on(this.searchResultView.$searchTarget, '@scroll-bottom', this.#scrollNextVideos.bind(this));
   }
 
   // 검색 버튼을 눌렀을 때
@@ -41,20 +42,16 @@ export default class Controller {
     await this.video.fetchYoutubeApi(keyword);
     this.video.setVideoInfo();
     this.searchResultView.renderVideo(this.video.newVideoItems);
-    this.startObserve();
+    this.searchResultView.startObserve();
   }
 
   // (이미 검색버튼을 눌러진 상태) 스크롤 내림으로써 발생하는 추가 fetch, render
   async #scrollNextVideos() {
-    this.observer.unobserve(this.searchResultView.$videoList.lastElementChild);
+    this.searchResultView.stopObserve();
     this.searchResultView.showSkeleton();
     await this.video.fetchYoutubeApi(this.video.keyword, this.video.nextPageToken);
     this.video.setVideoInfo();
     this.searchResultView.renderVideo(this.video.newVideoItems);
-    this.startObserve();
-  }
-
-  startObserve() {
-    this.observer.observe(this.searchResultView.$videoList.lastElementChild);
+    this.searchResultView.startObserve();
   }
 }

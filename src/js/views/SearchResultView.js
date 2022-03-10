@@ -7,6 +7,22 @@ export default class SearchResultView {
     this.template = new Template();
     this.$skeletonWrapper = $('.skeleton-wrapper');
     this.$searchTarget = $('#search-target');
+    this.savedNewIdList = [];
+
+    this.observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting) {
+          // this.#scrollNextVideos();
+          console.log('무한스크롤중');
+          const { savedNewIdList } = this;
+          emit(this.$searchTarget, '@scroll-bottom', { savedNewIdList });
+        } else console.log('Not on the bottom');
+      },
+      {
+        root: this.$videoList,
+        threshold: 1.0,
+      },
+    );
   }
 
   renderVideo(newVideoItems) {
@@ -36,6 +52,14 @@ export default class SearchResultView {
 
   showSkeleton() {
     this.$videoList.insertAdjacentHTML('beforeend', this.template.getSkeleton());
+  }
+
+  startObserve() {
+    this.observer.observe(this.$videoList.lastElementChild);
+  }
+
+  stopObserve() {
+    this.observer.unobserve(this.$videoList.lastElementChild);
   }
 }
 class Template {
