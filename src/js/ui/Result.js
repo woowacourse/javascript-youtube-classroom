@@ -2,6 +2,8 @@ import { MAX_SAVE_COUNT, MESSAGE } from '../constants';
 import { $, $$, showExceptionSnackBar } from '../utils/dom';
 import NoResultImage from '../../assets/images/not_found.png';
 import { store } from '../domain/store';
+import { API_KEY } from '../domain/key';
+import { request } from '../domain/youtubeApi';
 
 export default class Result {
   constructor() {}
@@ -22,7 +24,7 @@ export default class Result {
     $videoList.replaceChildren();
     $videoList.insertAdjacentHTML(
       'beforeend',
-      this.skeletonTemplate().repeat(8),
+      this.skeletonTemplate().repeat(10),
     );
   }
 
@@ -71,7 +73,7 @@ export default class Result {
     `;
   }
 
-  renderVideoList(json) {
+  renderInitialVideoList(json) {
     const $videoList = $('.video-list');
     $videoList.replaceChildren();
     $videoList.insertAdjacentHTML(
@@ -80,12 +82,34 @@ export default class Result {
         ? this.foundResultTemplate(json.items)
         : this.notFoundTemplate(),
     );
-    this.addSaveButtonClickEvent();
+    this.addSaveButtonClickEvent(json.items.length);
+    if (json && json.nextPageToken) {
+      this.scrollObserver(json.nextPageToken);
+    }
   }
 
-  addSaveButtonClickEvent() {
+  renderNextVideoList(nextPageToken) {
+    try {
+      request($('#search-input-keyword').value, API_KEY, nextPageToken).then(
+        json => {
+          $('.video-list').insertAdjacentHTML(
+            'beforeend',
+            this.foundResultTemplate(json.items),
+          );
+          this.addSaveButtonClickEvent(json.items.length);
+          if (json && json.nextPageToken) {
+            this.scrollObserver(json.nextPageToken);
+          }
+        },
+      );
+    } catch ({ message }) {
+      console.log(message);
+    }
+  }
+
+  addSaveButtonClickEvent(length) {
     const saveButtons = $$('.video-item__save-button');
-    saveButtons.forEach(saveButton => {
+    [...saveButtons].slice(-length).forEach(saveButton => {
       saveButton.addEventListener('click', this.handleSaveVideo);
     });
   }
@@ -101,5 +125,23 @@ export default class Result {
     store.setLocalStorage(saveDatas);
     showExceptionSnackBar(MESSAGE.SAVE_COMPLETE);
     e.target.setAttribute('hidden', true);
+  }
+
+  scrollObserver(nextPageToken) {
+    let $li = $('li:last-child');
+
+    const io = new IntersectionObserver(
+      entry => {
+        if (entry[0].isIntersecting) {
+          io.unobserve($li);
+          this.renderNextVideoList(nextPageToken);
+        }
+      },
+      {
+        threshold: 0.5,
+      },
+    );
+
+    io.observe($li);
   }
 }

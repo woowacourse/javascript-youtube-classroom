@@ -22,7 +22,7 @@ export default class Search {
 
       try {
         request($('#search-input-keyword').value, API_KEY).then(json => {
-          this.result.renderVideoList(json);
+          this.result.renderInitialVideoList(json);
         });
       } catch ({ message }) {
         console.log(message);
