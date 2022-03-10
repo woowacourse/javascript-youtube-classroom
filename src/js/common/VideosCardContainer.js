@@ -1,6 +1,5 @@
-import { KEY } from '../api';
+import { LOCALSTORAGE_KEY, getStorageVideoIDs, setStorageVideoIDs } from '../utils/localStorage';
 import { RULES } from '../constants';
-import { getStorageVideoIDs, setStorageVideoIDs } from '../utils/localStorage';
 import VideoCard from './VideoCard';
 
 export default class VideoCardContainer {
@@ -23,14 +22,14 @@ export default class VideoCardContainer {
     if (e.target.className.includes('video-item__save-button')) {
       const videoID = e.target.closest('li').dataset.videoId;
 
-      const videoIDs = getStorageVideoIDs(KEY);
+      const videoIDs = getStorageVideoIDs(LOCALSTORAGE_KEY);
 
       if (videoIDs.length >= RULES.MAX_STORED_IDS_AMOUNT) {
         return;
       }
 
       setStorageVideoIDs({
-        key: KEY,
+        key: LOCALSTORAGE_KEY,
         value: videoIDs.concat(videoID),
       });
 
@@ -39,11 +38,10 @@ export default class VideoCardContainer {
   }
 
   template() {
-    const videoIds = getStorageVideoIDs(KEY);
+    const videoIds = getStorageVideoIDs(LOCALSTORAGE_KEY);
     return this.#state.items
       ?.map((item) =>
-        new VideoCard(this.parentElement, { item, videoIds }).template()
-      )
+        new VideoCard(this.parentElement, { item, videoIds }).template())
       .join('');
   }
 

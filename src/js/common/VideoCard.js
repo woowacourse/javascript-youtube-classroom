@@ -21,7 +21,7 @@ export default class VideoCard {
     const storeButton = videoIds.includes(videoId)
       ? ''
       : '<button class="video-item__save-button button">⬇ 저장</button>';
-
+    console.log(publishTime);
     const timeFormatter = publishTime.split('T')[0];
 
     return `

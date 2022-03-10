@@ -5,4 +5,6 @@ const setStorageVideoIDs = ({ key, value }) => {
   window.localStorage.setItem(key, JSON.stringify(value));
 };
 
-export { getStorageVideoIDs, setStorageVideoIDs };
+const LOCALSTORAGE_KEY = 'VIDEO_IDS';
+
+export { getStorageVideoIDs, setStorageVideoIDs, LOCALSTORAGE_KEY };

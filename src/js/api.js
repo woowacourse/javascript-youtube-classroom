@@ -2,12 +2,10 @@ import { RULES } from './constants';
 
 const OPTIONS = {
   part: 'snippet',
-  maxResults: RULES.MAX_VIDEOS,
+  maxResults: RULES.VIDEO_AMOUNT_PER_REQUEST,
   order: 'date',
   type: 'video'
 };
-
-const KEY = 'VIDEO_IDS';
 
 const stringQuery = (props) => {
   const { url, keyword, pageToken, options } = props;
@@ -29,4 +27,4 @@ const fetchData = async (props) => {
   return json;
 };
 
-export { OPTIONS, KEY, fetchData };
+export { OPTIONS, fetchData };
