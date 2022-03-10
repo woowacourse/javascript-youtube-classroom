@@ -1,13 +1,10 @@
-import key from '../utils/APIkey.js';
-
 const APIManager = {
-  baseURL: 'https://www.googleapis.com/youtube/v3/search?',
+  baseURL: 'https://keen-lamport-feb29e.netlify.app/youtube/v3/search?',
   pageToken: '',
-
   fetchData: async function (inputValue) {
     try {
       const response = await fetch(
-        `${this.baseURL}part=snippet&q=${inputValue}&pageToken=${this.pageToken}&maxResults=10&type=video&key=${key}`
+        `${this.baseURL}part=snippet&q=${inputValue}&pageToken=${this.pageToken}&maxResults=10&type=video&regionCode=KR`
       );
       if (!response.ok) {
         throw new Error('400, 500');
