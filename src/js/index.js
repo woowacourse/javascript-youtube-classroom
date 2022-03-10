@@ -58,19 +58,24 @@ function clearSearchList() {
   searchResult.removeChild(searchResult.lastElementChild);
 }
 
+let throttle;
+
 async function handleScroll(e) {
   const { scrollHeight, scrollTop, clientHeight } = e.target;
 
-  if (scrollHeight === scrollTop + clientHeight) {
-    const keyword = searchInputKeyword.value;
+  if (!throttle && scrollHeight === scrollTop + clientHeight) {
+    throttle = setTimeout(async () => {
+      throttle = null;
+      const keyword = searchInputKeyword.value;
 
-    const data = await searchEngine.searchKeyword(keyword);
-    const videoList = $('.video-list');
+      const data = await searchEngine.searchKeyword(keyword);
+      const videoList = $('.video-list');
 
-    if (data === null) return;
+      if (data === null) return;
 
-    const preprocessedData = preprocessData(data);
-    videoList.insertAdjacentHTML('beforeend', videoItemsTemplate(preprocessedData));
+      const preprocessedData = preprocessData(data);
+      videoList.insertAdjacentHTML('beforeend', videoItemsTemplate(preprocessedData));
+    }, 100);
   }
 }
 
