@@ -2,13 +2,11 @@ import { RULES } from './constants';
 
 const OPTIONS = {
   part: 'snippet',
-  maxResults: RULES.MAX_VIDEOS,
+  maxResults: RULES.MAX_VIDEO_AMOUNT_PER_REQUEST,
   order: 'date',
 };
 
-const KEY = 'VIDEO_IDS';
-
-const stringQuery = (props) => {
+const makeURLQuery = (props) => {
   const { url, keyword, pageToken, options } = props;
   const query = Object.entries(options).reduce(
     (acc, [key, value]) => (acc += `${key}=${value}&`),
@@ -21,11 +19,11 @@ const stringQuery = (props) => {
   return `${query}pageToken=${pageToken}`;
 };
 
-const fetchData = async (props) => {
-  const result = await fetch(stringQuery(props));
+const fetchData = async (query) => {
+  const result = await fetch(query);
   const json = await result.json();
 
   return json;
 };
 
-export { OPTIONS, KEY, fetchData };
+export { OPTIONS, makeURLQuery, fetchData };
