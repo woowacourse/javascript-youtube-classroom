@@ -1,4 +1,5 @@
 import { getLocalStorage } from '../domain/localStorage';
+import { ERROR_MESSAGE, LOCALSTORAGE_KEY_SAVE, MAX_STOARGE_CAPACITY } from '../constant';
 
 const validator = {
   isEmptyInput: (value) => value === '',
@@ -6,14 +7,14 @@ const validator = {
 
 export const checkValidSearchInput = (value) => {
   if (validator.isEmptyInput(value)) {
-    throw new Error('검색어를 입력해주세요');
+    throw new Error(ERROR_MESSAGE.NO_INPUT);
   }
 };
 
 export const checkMaxStorageVolume = () => {
-  if (getLocalStorage('save').length >= 100) {
-    throw new Error('최대 저장 개수는 100개입니다.');
+  if (getLocalStorage(LOCALSTORAGE_KEY_SAVE).length >= MAX_STOARGE_CAPACITY) {
+    throw new Error(ERROR_MESSAGE.EXCEED_STORAGE_CAPACITY_ERROR);
   }
 };
 
-export const checkSavedVideo = (id) => getLocalStorage('save').includes(id);
+export const checkSavedVideo = (id) => getLocalStorage(LOCALSTORAGE_KEY_SAVE).includes(id);

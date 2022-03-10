@@ -1,9 +1,9 @@
 import {
   ERROR_403,
-  EXCEED_CAPACITY_ERROR,
   REQUEST_VIDEO_QUANTITY,
   REQUEST_PATH,
   HOST_URL,
+  ERROR_MESSAGE,
 } from '../constant';
 
 const youtubeSearchAPI = {
@@ -32,7 +32,7 @@ const youtubeSearchAPI = {
 
   checkExceedCapacity(response) {
     if (response.status === 403) {
-      const error = new Error(EXCEED_CAPACITY_ERROR);
+      const error = new Error(ERROR_MESSAGE.EXCEED_REQUEST_CAPACITY_ERROR);
       error.name = ERROR_403;
       throw error;
     }
