@@ -1,10 +1,12 @@
 import { API_KEY } from '../../api.js';
+import { validateInput } from '../util/general.js';
 
 export default class YoutubeMachine {
   #data = {};
   #searchTarget = '';
 
   set searchTarget(searchInput) {
+    validateInput(searchInput);
     this.#searchTarget = searchInput;
   }
 
