@@ -1,4 +1,4 @@
-import { MAX_SAVE_COUNT, MESSAGE } from '../constants';
+import { MESSAGE, STORAGE_KEY } from '../constants';
 import { $, $$, showExceptionSnackBar } from '../utils/dom';
 import NoResultImage from '../../assets/images/not_found.png';
 import { store } from '../domain/store';
@@ -29,7 +29,7 @@ export default class Result {
   }
 
   foundResultTemplate(items) {
-    const saveDatas = store.getLocalStorage() ?? [];
+    const saveDatas = store.getLocalStorage(STORAGE_KEY) ?? [];
     const resultTemplate = items
       .map(item => {
         const { publishedAt, channelId, title, thumbnails, channelTitle } =
@@ -116,15 +116,13 @@ export default class Result {
 
   handleSaveVideo(e) {
     const videoId = e.target.closest('li').dataset.videoId;
-    const saveDatas = store.getLocalStorage() ?? [];
-    if (saveDatas.length >= MAX_SAVE_COUNT) {
-      showExceptionSnackBar(MESSAGE.ERROR_EXCESS_SAVE_COUNT);
-      return;
+    try {
+      store.setLocalStorage(STORAGE_KEY, videoId);
+      showExceptionSnackBar(MESSAGE.SAVE_COMPLETE);
+      e.target.setAttribute('hidden', true);
+    } catch ({ message }) {
+      showExceptionSnackBar(message);
     }
-    saveDatas.push(videoId);
-    store.setLocalStorage(saveDatas);
-    showExceptionSnackBar(MESSAGE.SAVE_COMPLETE);
-    e.target.setAttribute('hidden', true);
   }
 
   scrollObserver(nextPageToken) {

@@ -5,10 +5,7 @@
   ],
   "scripts": {
     "test": "jest --watch --no-cache",
-    "start": "webpack serve --open",
-    "build": "webpack --mode=production",
-    "predeploy": "npm run build",
-    "deploy": "gh-pages -d dist"
+    "start": "webpack serve --open"
   },
   "devDependencies": {
     "@babel/core": "^7.16.12",
@@ -35,5 +32,10 @@
     "webpack": "^5.69.1",
     "webpack-cli": "^4.9.2",
     "webpack-dev-server": "^4.7.4"
+  },
+  "jest": {
+    "transform": {
+      "^.+\\.js$": "babel-jest"
+    }
   }
 }

@@ -1,8 +1,17 @@
+import { MAX_SAVE_COUNT, MESSAGE } from '../constants';
+
 export const store = {
-  setLocalStorage(videoId) {
-    localStorage.setItem('videoId', JSON.stringify(videoId));
+  setLocalStorage(key, value) {
+    const saveDatas = store.getLocalStorage(key) ?? [];
+
+    if (saveDatas.length >= MAX_SAVE_COUNT) {
+      throw Error(MESSAGE.ERROR_EXCESS_SAVE_COUNT);
+    }
+
+    saveDatas.push(value);
+    localStorage.setItem(key, JSON.stringify(saveDatas));
   },
-  getLocalStorage() {
-    return JSON.parse(localStorage.getItem('videoId'));
+  getLocalStorage(key) {
+    return JSON.parse(localStorage.getItem(key));
   },
 };
