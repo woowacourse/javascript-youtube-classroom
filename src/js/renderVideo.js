@@ -1,4 +1,9 @@
-import { MAX_VIDEO_COUNT, MAX_VIDEO_LIST_LENGTH } from './constants/contants.js';
+import {
+  ERROR_MESSAGE,
+  MAX_SAVE_VIDEO_COUNT,
+  MAX_VIDEO_COUNT,
+  MAX_VIDEO_LIST_LENGTH,
+} from './constants/contants.js';
 import SaveVideo from './saveVideo.js';
 import SearchVideo from './searchVideo.js';
 import {
@@ -30,7 +35,10 @@ class RenderVideo {
 
   onScrollVideoList = () => {
     const { scrollHeight, offsetHeight, scrollTop } = this.videoListContainer;
-    if (scrollHeight - offsetHeight === scrollTop && Array.from(selectDom('.video-list').children).length < MAX_VIDEO_LIST_LENGTH) {
+    if (
+      scrollHeight - offsetHeight === scrollTop &&
+      Array.from(selectDom('.video-list').children).length < MAX_VIDEO_LIST_LENGTH
+    ) {
       this.loadVideo();
     }
   };
@@ -47,12 +55,16 @@ class RenderVideo {
   };
 
   onSaveButtonClick = ({ target }) => {
-    if (target.classList.contains('video-item__save-button') && this.saveVideo.saveVideoList.length < 100) {
+    if (
+      target.classList.contains('video-item__save-button') &&
+      this.saveVideo.saveVideoList.length < MAX_SAVE_VIDEO_COUNT
+    ) {
       this.saveVideo.setStorageVideoList(target.closest('li').dataset.videoId);
       target.textContent = '저장됨';
       target.disabled = true;
       return;
     }
+    alert(ERROR_MESSAGE.CANNOT_SAVE_VIDEO_ANYMORE);
   };
 
   renderSearchVideo(searchVideo) {
@@ -69,7 +81,11 @@ class RenderVideo {
 
     this.videoListContainer.insertAdjacentHTML(
       'beforeend',
-      searchVideo.map((video) => videoTemplate(video, this.saveVideo.saveVideoList.includes(video.id.videoId))).join(' ')
+      searchVideo
+        .map((video) =>
+          videoTemplate(video, this.saveVideo.saveVideoList.includes(video.id.videoId))
+        )
+        .join(' ')
     );
   }
 
@@ -80,11 +96,16 @@ class RenderVideo {
     );
   }
 
-  loadVideo() {
+  async loadVideo() {
     const searchKeyword = this.searchInput.value;
     this.renderVideoSkeleton();
-
-    setTimeout(async () => {
+    const skeletonAnimationStartTime = new Date().getSeconds();
+    const skeletonAnimation = async () => {
+      const skeletonAnimationCurrentTime = new Date().getSeconds();
+      if (skeletonAnimationCurrentTime < skeletonAnimationStartTime + 1) {
+        requestAnimationFrame(skeletonAnimation);
+        return;
+      }
       try {
         await this.searchVideo.handleSearchVideo(searchKeyword.trim());
         this.renderSearchVideo(this.searchVideo.searchResults);
@@ -94,7 +115,9 @@ class RenderVideo {
         this.videoListContainer.innerHTML = '';
         return alert(error);
       }
-    }, 500);
+    };
+    requestAnimationFrame(skeletonAnimation);
+    // // mock data를 사용할 때 skeleton UI를 보여주기 위한 지연 애니메이션입니다
   }
 }
 
