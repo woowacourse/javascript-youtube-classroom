@@ -52,7 +52,14 @@ export default class YoutubeApp {
       this.throttle(this.onScrollVideoList, 300)
     );
     this.videoList.addEventListener("click", this.onClickSaveButton);
+    document
+      .querySelector(".dimmer")
+      .addEventListener("click", this.onClickDimmer);
   }
+
+  onClickDimmer = () => {
+    this.modalContainer.classList.add("hide");
+  };
 
   onClickSaveButton = ({ target }) => {
     if (!target.matches(".video-item__save-button")) return;
@@ -69,6 +76,7 @@ export default class YoutubeApp {
 
   onSubmitSearchButton = (e) => {
     e.preventDefault();
+
     this.videoList.insertAdjacentHTML(
       "beforeend",
       generatorTemplate.skeleton()
