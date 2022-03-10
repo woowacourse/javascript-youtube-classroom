@@ -98,6 +98,11 @@ class VideoContainerComponent {
     if (isFirstSearchByKeyword(prevVideoListLength)) {
       this.$videoList.innerHTML = '';
     }
+    if (videoList === null) {
+      this.$searchResult.classList.add('search-result--no-result');
+      this.$searchResult.innerHTML = this.generateNoneResultTemplate();
+      return;
+    }
 
     this.#showVideoList();
 
