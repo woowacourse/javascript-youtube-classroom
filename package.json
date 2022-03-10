@@ -10,6 +10,15 @@
     "predeploy": "npm run build",
     "deploy": "gh-pages -d dist"
   },
+  "jest": {
+    "moduleNameMapper": {
+      "^@Core(.*)$": "<rootDir>/src/js/core$1",
+      "^@Constants(.*)$": "<rootDir>/src/js/constants$1",
+      "^@Domain(.*)$": "<rootDir>/src/js/domain$1",
+      "^@Utils(.*)$": "<rootDir>/src/js/utils$1",
+      "^@Images(.*)$": "<rootDir>/src/assets/image$1"
+    }
+  },
   "devDependencies": {
     "@babel/core": "^7.17.5",
     "@babel/eslint-parser": "^7.17.0",
