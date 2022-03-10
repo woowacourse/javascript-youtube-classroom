@@ -1,5 +1,5 @@
 import { OPTIONS, fetchData } from '../api';
-import { RULES } from '../constants';
+import { RULES, THROTTLE_PENDING_MILLISECOND } from '../constants';
 import VideoCardContainer from '../common/VideosCardContainer';
 
 const isEmptyKeyword = (keyword) => keyword.trim().length === 0;
@@ -72,7 +72,7 @@ export default class SearchModal {
             pageToken: this.pageToken,
           });
         }
-      }, 300);
+      }, THROTTLE_PENDING_MILLISECOND);
     }
   }
 

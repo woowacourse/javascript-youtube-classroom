@@ -36,6 +36,4 @@ export default class VideoCard {
       </li>
       `;
   }
-
-  bindEvents() {}
 }
