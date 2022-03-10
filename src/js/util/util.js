@@ -14,3 +14,7 @@ export function removeElementList(nodeList) {
 export function selectDom(selector, baseElement = document) {
   return baseElement.querySelector(selector);
 }
+
+export function scrollToTop(element) {
+  element.scrollTop = 0;
+}

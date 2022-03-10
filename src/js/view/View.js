@@ -1,4 +1,10 @@
-import { formatDateString, isBlankValue, removeElementList, selectDom } from '../util/util';
+import {
+  formatDateString,
+  isBlankValue,
+  removeElementList,
+  selectDom,
+  scrollToTop,
+} from '../util/util';
 import { MAX_SEARCH_RESULT } from '../constants/constants';
 
 class View {
@@ -29,6 +35,7 @@ class View {
 
   #handleSearch = async (event) => {
     event.preventDefault();
+    scrollToTop(this.videoList);
     const { value: keyword } = this.searchInputKeyword;
     if (isBlankValue(keyword)) {
       return;
