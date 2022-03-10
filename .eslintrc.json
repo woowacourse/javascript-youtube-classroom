@@ -15,12 +15,12 @@
   "rules": {
     "no-var": "error",
     "max-depth": ["error", 2],
-    "max-lines-per-function": ["error", 20],
     "no-console": "warn",
     "no-param-reassign": "error",
     "no-undefined": 0,
     "no-constant-condition": 0,
     "no-unused-private-class-members": 0,
-    "lines-between-class-members": 0
+    "lines-between-class-members": 0,
+    "no-useless-escape": 0
   }
 }
