@@ -11,10 +11,11 @@ export default {
     if (currentData.length === 100) {
       throw new Error(ERROR_MESSAGE.SAVE_VIDEO_COUNT_OVER);
     }
-    if (findVideoInVideoInfoList(currentData, saveVideo.videoId)) {
-      throw new Error(ERROR_MESSAGE.ALREADY_SAVED_VIDEO);
-    }
-    localStorage.setItem(SAVED_VIDEO_LIST_KEY, JSON.stringify([...currentData, saveVideo]));
+
+    localStorage.setItem(
+      WEB_STORE_KEY.SAVED_VIDEO_LIST_KEY,
+      JSON.stringify([...currentData, videoId])
+    );
   },
 
     localStorage.setItem(
