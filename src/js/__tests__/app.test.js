@@ -3,7 +3,7 @@
  */
 
 import UserLibrary from "../UserLibrary";
-import { isDuplicate } from "../utils/utils";
+import { parsedDate, isDuplicate } from "../utils/utils";
 import getSearchResult from "../api/getSearchResult";
 import "jest-localstorage-mock";
 
@@ -33,6 +33,13 @@ test("UserLibrary 101개 이상의 동영상이 저장되면 alert을 띄운다.
       userLibrary.setData(userData);
     })
   ).toThrowError("데이터는 101개 이상 저장하실 수 없습니다.");
+});
+
+test("응답받은 날짜 데이터를 정해진 형식(YYYY년 M월 D일)으로 변경한다.", () => {
+  const rawDate = "2022-03-02T11:39:31Z";
+  const result = "2022년 3월 2일";
+
+  expect(parsedDate(rawDate)).toBe(result);
 });
 
 // test("최초 검색 결과는 10개까지만 보여준다.", async () => {
