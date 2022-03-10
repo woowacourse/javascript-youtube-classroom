@@ -49,7 +49,7 @@ class SearchModalComponent extends Component {
     });
   }
 
-  wakeUp(stateKey, stateValue) {
+  wakeUp(stateValue, notifykey) {
     this.render(stateValue);
   }
 

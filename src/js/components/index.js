@@ -1,6 +1,6 @@
 import Component from './Component';
 import SearchModalComponent from './SearchModalComponent';
-import { dispatch, bind } from '../modules/eventFactory';
+import { dispatch } from '../modules/eventFactory';
 import { CUSTOM_EVENT_KEY } from '../constants/events';
 class AppComponent extends Component {
   searchModalComponent = null;
