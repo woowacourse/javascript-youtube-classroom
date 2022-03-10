@@ -11,7 +11,7 @@ class Search {
     const { items, nextPageToken } = await this.#getSearchResult(keyword, pageToken);
     this.keyword = keyword;
     this.nextPageToken = nextPageToken;
-    const savedVideos = storage.getSavedVideos();
+    const savedVideos = storage.getSavedVideos() || {};
     return { searchResultArray: this.#getVideoObjectArray(items, savedVideos), nextPageToken };
   }
 
@@ -56,7 +56,7 @@ class Search {
         title: snippet.title,
         channelTitle: snippet.channelTitle,
         publishedAt: snippet.publishedAt,
-        isSaved: savedVideos[id.videoId],
+        isSaved: !!savedVideos[id.videoId],
       };
     });
   }
