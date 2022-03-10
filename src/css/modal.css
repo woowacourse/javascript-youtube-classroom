@@ -143,19 +143,8 @@
   background: #efefef;
 }
 
-.not-found-container {
+.search-result {
   margin: auto;
-}
-
-.not-found-image {
-  margin: 15px auto;
-  width: 190px;
-  height: 135px;
-}
-
-.not-found-text {
-  margin: 5px auto;
-  text-align: center;
 }
 
 .video-item__save-button:disabled {

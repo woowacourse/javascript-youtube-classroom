@@ -1,4 +1,5 @@
 import '../css/index.css';
-import RenderVideo from './renderVideo';
+import RenderVideo from './renderVideo.js';
 
-const renderVideo = new RenderVideo();
+// eslint-disable-next-line no-new
+new RenderVideo();
