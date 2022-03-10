@@ -1,11 +1,13 @@
+import { MAX_DATA_FETCH_AT_ONCE } from './constants';
+
 const DUMMY_YOUTUBE_API_ENDPOINT = (keyword) =>
-  `https://brave-lichterman-77e301.netlify.app/dummy/youtube/v3/search?part=snippet&q=${keyword}&maxResults=10`;
+  `https://brave-lichterman-77e301.netlify.app/dummy/youtube/v3/search?part=snippet&q=${keyword}&maxResults=${MAX_DATA_FETCH_AT_ONCE}`;
 const YOUTUBE_API_ENDPOINT = (keyword) =>
-  `https://brave-lichterman-77e301.netlify.app/youtube/v3/search?part=snippet&q=${keyword}&maxResults=10`;
+  `https://brave-lichterman-77e301.netlify.app/youtube/v3/search?part=snippet&q=${keyword}&maxResults=${MAX_DATA_FETCH_AT_ONCE}`;
 const YOUTUBE_API_ENDPOINT2 = (keyword) =>
-  `https://elastic-goldstine-10f16a.netlify.app/youtube/v3/search?part=snippet&q=${keyword}&maxResults=10`;
+  `https://elastic-goldstine-10f16a.netlify.app/youtube/v3/search?part=snippet&q=${keyword}&maxResults=${MAX_DATA_FETCH_AT_ONCE}`;
 const WRONG_API_ENDPOINT = (keyword) =>
-  `https://elastic-goldstine-10f16a.netlify.app/search?part=snippettt&q=${keyword}&maxResults=10`;
+  `https://elastic-goldstine-10f16a.netlify.app/search?part=snippettt&q=${keyword}&maxResults=${MAX_DATA_FETCH_AT_ONCE}`;
 
 export default class SearchVideoManager {
   #isLastPage;

@@ -1,4 +1,4 @@
-const template = {
+export const template = {
   videoListItem: ({ id, thumbnail, title, channelName, publishedDate, saved }) =>
     `<li class="video-item" data-video-id="${id}">
       <img src=${thumbnail} alt="video-item-thumbnail" class="video-item__thumbnail">
@@ -16,4 +16,7 @@ const template = {
     </li>`.repeat(10),
 };
 
-export default template;
+export const MESSAGE = {
+  NO_RESULT: '검색 결과가 없습니다<br />다른 키워드로 검색해보세요',
+  ERROR_RESULT: '검색 결과를 가져오는데 실패했습니다.<br />관리자에게 문의하세요.',
+};

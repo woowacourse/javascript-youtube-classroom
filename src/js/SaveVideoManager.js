@@ -1,7 +1,8 @@
+import { ERROR_MESSAGE, MAX_VIDEO_SAVE } from './constants';
+
 const setData = (key, data) => localStorage.setItem(key, JSON.stringify(data));
 const getData = (key) => JSON.parse(localStorage.getItem(key));
 
-const SAVED_VIDEO_MAX = 100;
 export default class SaveVideoManager {
   constructor() {
     this.videoIds = this.getVideoIds();
@@ -16,8 +17,8 @@ export default class SaveVideoManager {
   }
 
   saveVideoById(id) {
-    if (this.videoIds.length >= SAVED_VIDEO_MAX) {
-      throw new Error('저장 에러! 영상은 최대 100개만 저장할 수 있습니다.');
+    if (this.videoIds.length >= MAX_VIDEO_SAVE) {
+      throw new Error(ERROR_MESSAGE.MAX_VIDEO_SAVE);
     }
     this.videoIds.push(id);
     setData('id', this.videoIds);

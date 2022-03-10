@@ -1,23 +1,30 @@
 import { $, $$ } from '../util';
-import template from './template';
+import { template, MESSAGE } from './template';
 
 export default class SearchResultView {
   constructor() {
     this.isShownNoResult = false;
+
+    this.searchModal = $('#search-modal');
+    this.searchResultSection = $('#search-result-section', this.searchModal);
+    this.searchResultVideoList = $('#search-result-video-list', this.searchResultSection);
+    this.noResultContainer = $('#no-result-container', this.searchResultSection);
+    this.noResultDescription = $('#no-result-description', this.noResultContainer);
+
     this.bindEvents();
   }
 
   bindEvents() {
-    $('#search-result-video-list').addEventListener('click', this.onClickVideoSaveButton.bind(this));
-    $('#search-result-video-list').addEventListener('scroll', this.onScrollVideoList.bind(this));
+    this.searchResultVideoList.addEventListener('click', this.onClickVideoSaveButton.bind(this));
+    this.searchResultVideoList.addEventListener('scroll', this.onScrollVideoList.bind(this));
   }
 
   onScrollVideoList() {
-    const { scrollTop, clientHeight, scrollHeight } = $('#search-result-video-list');
+    const { scrollTop, clientHeight, scrollHeight } = this.searchResultVideoList;
     const searchOnScrollEvent = new CustomEvent('searchOnScroll', {
       detail: { scrollTop, clientHeight, scrollHeight },
     });
-    $('#search-modal').dispatchEvent(searchOnScrollEvent);
+    this.searchModal.dispatchEvent(searchOnScrollEvent);
   }
 
   onClickVideoSaveButton({ target }) {
@@ -25,45 +32,45 @@ export default class SearchResultView {
       const saveVideoEvent = new CustomEvent('saveVideo', {
         detail: { target },
       });
-      $('#search-modal').dispatchEvent(saveVideoEvent);
+      this.searchModal.dispatchEvent(saveVideoEvent);
     }
   }
 
   resetSearchResultVideoList() {
-    $('#search-result-video-list').scrollTo(0, 0);
-    $('#search-result-video-list').innerHTML = '';
+    this.searchResultVideoList.scrollTo(0, 0);
+    this.searchResultVideoList.innerHTML = '';
   }
 
   updateOnLoading() {
-    $('#search-result-video-list').insertAdjacentHTML('beforeend', template.skeletonListItem());
+    this.searchResultVideoList.insertAdjacentHTML('beforeend', template.skeletonListItem());
   }
 
   removeSkeletonListItem() {
-    $$('.skeleton', $('#search-result-video-list')).forEach((listItem) => {
+    $$('.skeleton', this.searchResultVideoList).forEach((listItem) => {
       listItem.remove();
     });
   }
 
   showSearchResultVideoList() {
-    $('#no-result').classList.add('hide');
-    $('#search-result-video-list').classList.remove('hide');
-    $('#search-result').classList.remove('search-result--no-result');
+    this.noResultContainer.classList.add('hide');
+    this.searchResultVideoList.classList.remove('hide');
+    this.searchResultSection.classList.remove('search-result--no-result');
     this.isShownNoResult = false;
   }
 
   showNoResult() {
-    $('#no-result').classList.remove('hide');
-    $('#search-result-video-list').classList.add('hide');
-    $('#search-result').classList.add('search-result--no-result');
-    $('#no-result-description').innerHTML = '검색 결과가 없습니다<br />다른 키워드로 검색해보세요';
+    this.noResultContainer.classList.remove('hide');
+    this.searchResultVideoList.classList.add('hide');
+    this.searchResultSection.classList.add('search-result--no-result');
+    this.noResultDescription.innerHTML = MESSAGE.NO_RESULT;
     this.isShownNoResult = true;
   }
 
   showErrorResult() {
-    $('#no-result').classList.remove('hide');
-    $('#search-result-video-list').classList.add('hide');
-    $('#search-result').classList.add('search-result--no-result');
-    $('#no-result-description').innerHTML = '검색 결과를 가져오는데 실패했습니다.<br />관리자에게 문의하세요.';
+    this.noResultContainer.classList.remove('hide');
+    this.searchResultVideoList.classList.add('hide');
+    this.searchResultSection.classList.add('search-result--no-result');
+    this.noResultDescription.innerHTML = MESSAGE.ERROR_RESULT;
     this.isShownNoResult = true;
   }
 
@@ -78,6 +85,6 @@ export default class SearchResultView {
     const listItems = videos.map((video) => template.videoListItem(video)).join('');
 
     this.removeSkeletonListItem();
-    $('#search-result-video-list').insertAdjacentHTML('beforeend', listItems);
+    this.searchResultVideoList.insertAdjacentHTML('beforeend', listItems);
   }
 }
