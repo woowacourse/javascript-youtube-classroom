@@ -104,4 +104,4 @@ dist
 .tern-port
 
 # ignore API key
-./src/js/utils/APIkey.js
+APIkey.js
