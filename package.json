@@ -5,8 +5,10 @@
   "main": "index.js",
   "scripts": {
     "test": "jest --watch --no-cache",
-    "build": "webpack",
-    "dev": "webpack serve --open"
+    "build": "webpack --mode=production",
+    "dev": "webpack serve --open",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d dist"
   },
   "repository": {
     "type": "git",
@@ -43,5 +45,8 @@
       "^.+\\.js$": "babel-jest"
     }
   },
-  "homepage": "https://github.com/yunjin-kim/javascript-youtube-classroom#readme"
+  "homepage": "https://yunjin-kim.github.io/javascript-youtube-classroom/",
+  "dependencies": {
+    "gh-pages": "^3.2.3"
+  }
 }
