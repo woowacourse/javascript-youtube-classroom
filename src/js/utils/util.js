@@ -14,11 +14,11 @@ export const parserVideos = (data) => {
   return {
     nextPageToken,
     items: items.map((item) => ({
-      videoId: item.id.videoId,
-      thumbnail: item.snippet.thumbnails['default'].url,
-      publishTime: item.snippet.publishTime,
-      channelTitle: item.snippet.channelTitle,
-      videoTitle: item.snippet.title,
+      videoId: item.id?.videoId,
+      thumbnail: item.snippet?.thumbnails['default'].url,
+      publishTime: item.snippet?.publishTime,
+      channelTitle: item.snippet?.channelTitle,
+      videoTitle: item.snippet?.title,
     })),
   };
 };
