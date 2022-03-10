@@ -1,7 +1,7 @@
 import { STATE_STORE_KEY } from '../constants/stateStore';
 import { getState, setState } from '../modules/stateStore';
 import { youtubeAPIFetcher } from '../modules/fetcher';
-import { isEmptyKeyword } from '../utils/validation';
+import { isEmptyKeyword, isNoneSearchResult } from '../utils/validation';
 import { findVideoInVideoList, parserVideos } from '../utils/util';
 import Video from '../modules/video';
 import { API_PATHS } from '../constants/fetcher';
@@ -40,7 +40,18 @@ class AppBusiness {
 
       setState(STATE_STORE_KEY.IS_WAITING_RESPONSE, false);
 
+      if (isNoneSearchResult(searchResult)) {
+        setState(STATE_STORE_KEY.SEARCH_RESULT, {
+          keyword: null,
+          nextPageToken: null,
+          videoList: null,
+          prevVideoListLength: 0,
+        });
+        return;
+      }
+
       const { items: videoInfos, nextPageToken } = parserVideos(searchResult);
+
       const videoList = videoInfos.map((videoInfo) => Video.create(videoInfo));
 
       setState(STATE_STORE_KEY.SEARCH_RESULT, {

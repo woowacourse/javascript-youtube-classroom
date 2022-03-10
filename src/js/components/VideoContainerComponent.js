@@ -9,6 +9,8 @@ import VideoComponent from './VideoComponent';
 class VideoContainerComponent extends Component {
   $videoList = null;
 
+  $searchResult = null;
+
   constructor(parentElement) {
     super(parentElement);
     this.mount();
@@ -25,11 +27,12 @@ class VideoContainerComponent extends Component {
   }
 
   initDOM() {
-    this.$videoList = document.querySelector('.video-list');
+    this.$videoList = this.parentElement.querySelector('.video-list');
+    this.$searchResult = this.parentElement.querySelector('.search-result');
   }
 
   bindEventHandler() {
-    this.$videoList.addEventListener('click', (e) => {
+    this.$searchResult.addEventListener('click', (e) => {
       const {
         target: { className },
       } = e;
@@ -60,16 +63,23 @@ class VideoContainerComponent extends Component {
   renderSkeletonUI(isWaitingResponse) {
     if (isWaitingResponse) {
       this.skeletonListComponent = new SkeletonListComponent(this.$videoList);
-    } else {
-      this.skeletonListComponent.unmount();
+      return;
     }
+    this.skeletonListComponent.unmount();
   }
 
   renderSearchResult(searchResult) {
     const { videoList, prevVideoListLength } = searchResult;
 
     if (prevVideoListLength === 0) {
-      this.$videoList.innerHTML = '';
+      this.$searchResult.classList.remove('search-result--no-result');
+      this.$searchResult.innerHTML = this.generateHasResultTemplate();
+      this.$videoList = this.parentElement.querySelector('.video-list');
+    }
+    if (videoList === null) {
+      this.$searchResult.classList.add('search-result--no-result');
+      this.$searchResult.innerHTML = this.generateNoneResultTemplate();
+      return;
     }
 
     videoList
@@ -83,10 +93,26 @@ class VideoContainerComponent extends Component {
   generateTemplate() {
     return `
     <section class="search-result">
-        <h3 hidden>검색 결과</h3>
-        <ul class="video-list"></ul>
+    <h3 hidden>검색 결과</h3>
+    <ul class="video-list"></ul>
     </section>
     `;
+  }
+
+  generateHasResultTemplate() {
+    return `<h3 hidden>검색 결과</h3>
+    <ul class="video-list"></ul>`;
+  }
+
+  generateNoneResultTemplate() {
+    return `<h3 hidden>검색 결과</h3>
+    <div class="no-result">
+      <img src="./not_found.png" alt="no result image" class="no-result__image">
+      <p class="no-result__description">
+        검색 결과가 없습니다<br />
+        다른 키워드로 검색해보세요
+      </p>
+    </div>`;
   }
 }
 export default VideoContainerComponent;
