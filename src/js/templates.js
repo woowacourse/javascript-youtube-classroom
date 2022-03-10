@@ -61,8 +61,10 @@ const TEMPLATE = {
   SKELETON: `
     <div class="skeleton">
       <div class="image"></div>
+      <h4 class="line"></h4>
       <p class="line"></p>
       <p class="line"></p>
+      <button></button>
     </div>
   `,
 };

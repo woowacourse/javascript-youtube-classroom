@@ -1,27 +1,34 @@
 .skeleton {
-  width: 236px;
+  display: grid;
+  width: 240px;
+  height: 255px;
 }
 
 .skeleton .image,
-.skeleton .line {
+.skeleton .line,
+.skeleton button {
   background-image: linear-gradient(90deg, #e0e0e0 0px, #ededed 30px, #e0e0e0 60px);
   animation: refresh 2s infinite ease-out;
 }
 
 .skeleton .image {
-  height: 150px;
+  width: 100%;
+  height: 135px;
 }
 
 .skeleton .line {
   height: 16px;
 }
 
-.skeleton .line:first-child {
-  width: 50%;
-}
-
 .skeleton .line:last-child {
   width: 80%;
+}
+
+.skeleton button {
+  width: 80px;
+  height: 36px;
+  justify-self: end;
+  border: 0;
 }
 
 @keyframes refresh {
