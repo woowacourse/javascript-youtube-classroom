@@ -1,4 +1,4 @@
-import youtubeSearchAPI from '../api/YoubeSearchapi.js';
+import youtubeSearchAPI from '../api/youtubeSearchapi.js';
 import { checkValidSearchInput, checkMaxStorageVolume } from '../util/validator.js';
 import { getLocalStorage, setLocalStorage } from './localStorage.js';
 

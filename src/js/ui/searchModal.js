@@ -11,8 +11,9 @@ class SearchModal {
     this.$searchButton = document.querySelector('#search-button');
     this.$videoListContainer = document.querySelector('.video-list');
     this.$searchResult = document.querySelector('.search-result');
+    this.scrollHandler = this.scrollVideoContainerHandler();
     this.requestAdditionalSearchResult = throttle(
-      this.requestAdditionalSearchResult.bind(this),
+      this.scrollHandler.requestAdditionalSearchResult,
       1000,
     ).bind(this);
     this.machine = new SearchMachine();
@@ -42,12 +43,16 @@ class SearchModal {
     this.$searchInputKeyword.addEventListener('keypress', this.submitKeywordHandler.bind(this));
     this.$searchButton.addEventListener('click', this.submitKeywordHandler.bind(this));
     this.$videoListContainer.addEventListener('click', this.saveVideo.bind(this));
+    this.$videoListContainer.addEventListener(
+      'scroll',
+      this.requestAdditionalSearchResult.bind(this),
+    );
   }
 
   submitKeywordHandler(event) {
     if ((event.type === 'keypress' && event.key === 'Enter') || event.type === 'click') {
       try {
-        this.$videoListContainer.addEventListener('scroll', this.requestAdditionalSearchResult);
+        this.scrollHandler.setError(false);
         this.machine.keyword = this.$searchInputKeyword.value;
         this.initVideoState();
         this.searchVideo();
@@ -69,6 +74,7 @@ class SearchModal {
     if (!target.classList.contains('video-item__save-button')) {
       return;
     }
+
     try {
       const newVideo = target.closest('li').dataset.videoId;
       this.machine.saveVideoToLocalStorage(newVideo);
@@ -78,12 +84,22 @@ class SearchModal {
     }
   }
 
-  requestAdditionalSearchResult() {
-    const { offsetHeight, scrollHeight, scrollTop } = this.$videoListContainer;
-    if (scrollTop === 0) return;
-    if (offsetHeight + scrollTop >= scrollHeight) {
-      this.searchVideo();
-    }
+  scrollVideoContainerHandler() {
+    let errored = false;
+
+    return {
+      requestAdditionalSearchResult: () => {
+        const { offsetHeight, scrollHeight, scrollTop } = this.$videoListContainer;
+        if (scrollTop === 0 || errored) return;
+        if (offsetHeight + scrollTop >= scrollHeight) {
+          this.searchVideo();
+        }
+      },
+
+      setError: (isErrored) => {
+        errored = isErrored;
+      },
+    };
   }
 
   searchVideo() {
@@ -97,7 +113,7 @@ class SearchModal {
 
   renderNetworkError(err) {
     if (err.name === '403 Error') {
-      this.$videoListContainer.removeEventListener('scroll', this.requestAdditionalSearchResult);
+      this.scrollHandler.setError(true);
       this.$videoListContainer.insertAdjacentHTML('beforeend', template.exceedCapacityErrorImage());
     }
   }
