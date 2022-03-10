@@ -1,4 +1,4 @@
-import { $, isEndOfScroll, validateInput } from './util/general.js';
+import { $, isEndOfScroll } from './util/general.js';
 import YoutubeMachine from './domain/YoutubeMachine.js';
 import userInterface from './UI/userInterface.js';
 import '../css/index.css';
@@ -15,7 +15,6 @@ export default function App() {
       youtubeMachine.resetData();
       userInterface.resetVideoList();
       const searchInput = $('#search-input-keyword').value.trim();
-      validateInput(searchInput);
       youtubeMachine.searchTarget = searchInput;
       userInterface.renderSkeletonUI();
       const response = youtubeMachine.callSearchAPI();
