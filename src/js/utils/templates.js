@@ -1,12 +1,11 @@
-import { changeDateFormat } from './common.js';
+import { changeDateFormat } from "./common.js";
 
 export const noSearchResultTemplate = (imgSrcAddress) => {
-  return `<div class="no-result">
-    <img src=${imgSrcAddress} class = 'no-result__image' alt="없음" />
-    <p class="no-result__description">
-            검색 결과가 없습니다<br/>
-            다른 키워드로 검색해보세요
-          </p></div>`;
+  return `
+    <div class="no-result">
+      <img src=${imgSrcAddress} class = 'no-result__image' alt="없음" />
+      <p class="no-result__description">검색 결과가 없습니다<br/>다른 키워드로 검색해보세요</p>
+    </div>`;
 };
 
 export const makeIframeTemplate = (video) => {
@@ -29,9 +28,9 @@ export const makeIframeTemplate = (video) => {
 export const makeSkeletonTemplate = () => {
   return `
     <div class="skeleton">
-        <div class="image"></div>
-        <p class="line"></p>
-        <p class="line"></p>
+      <div class="image"></div>
+      <p class="line"></p>
+      <p class="line"></p>
     </div>
-    `;
+  `;
 };
