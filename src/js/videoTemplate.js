@@ -1,15 +1,3 @@
-function convertYYYYMMDD(publishTime) {
-  const videoTime = new Date(publishTime);
-  return (
-    videoTime.getFullYear().toString() +
-    '년 ' +
-    videoTime.getMonth().toString().padStart(2, '0') +
-    '월 ' +
-    videoTime.getDate().toString().padStart(2, '0') +
-    '일'
-  );
-}
-
 const videoTemplate = (id, snippet) =>
   `<li class="video-item" data-video-id="${id.videoId}">
     <img
