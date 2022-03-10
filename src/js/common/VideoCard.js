@@ -7,18 +7,16 @@ export default class VideoCard {
   }
 
   template() {
-    const { item } = this.props;
+    const { id, snippet } = this.props;
+    const { videoId } = id;
     const {
-      id: { videoId },
-      snippet: {
-        thumbnails: {
-          medium: { url },
-        },
-        publishTime,
-        channelTitle,
-        title,
+      publishTime,
+      channelTitle,
+      title,
+      thumbnails: {
+        medium: { url },
       },
-    } = item;
+    } = snippet;
 
     const videoIds = getStorageVideoIDs(LOCALSTORAGE_KEY);
     const storeButton = videoIds.includes(videoId)

@@ -53,7 +53,7 @@ module.exports = {
     new CleanWebpackPlugin(),
     new webpack.DefinePlugin({
       YOUTUBE_URL: JSON.stringify(
-        'https://622752939a5410d43ba3fbcd--modest-euler-778376.netlify.app/dummy/youtube/v3/search?'
+        'https://622752939a5410d43ba3fbcd--modest-euler-778376.netlify.app/youtube/v3/search?'
       ),
     }),
     new HtmlWebpackPlugin({

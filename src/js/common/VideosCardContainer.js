@@ -26,16 +26,13 @@ export default class VideoCardContainer {
     if (e.target.className.includes('video-item__save-button')) {
       const videoID = e.target.closest('li').dataset.videoId;
 
-      const videoIDs = getStorageVideoIDs(LOCALSTORAGE_KEY);
+      const storedVideoIDs = getStorageVideoIDs(LOCALSTORAGE_KEY);
 
-      if (videoIDs.length >= RULES.MAX_STORED_IDS_AMOUNT) {
+      if (storedVideoIDs.length >= RULES.MAX_STORED_IDS_AMOUNT) {
         return;
       }
 
-      setStorageVideoIDs({
-        key: LOCALSTORAGE_KEY,
-        value: videoIDs.concat(videoID),
-      });
+      setStorageVideoIDs(LOCALSTORAGE_KEY, storedVideoIDs.concat(videoID));
 
       e.target.remove();
     }
