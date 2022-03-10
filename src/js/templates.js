@@ -1,4 +1,5 @@
 import NotFoundImage from '../assets/images/not_found.png';
+import { formatDate } from './utils';
 
 const TEMPLATE = {
   MY_CLASSROOM: `
@@ -53,7 +54,7 @@ const TEMPLATE = {
           alt="video-item-thumbnail" class="video-item__thumbnail">
         <h4 class="video-item__title">${decodeURI(video.title)}</h4>
         <p class="video-item__channel-name">${decodeURI(video.channelTitle)}</p>
-        <p class="video-item__published-date">${video.publishedAt}</p>
+        <p class="video-item__published-date">${formatDate(video.publishedAt)}</p>
         <button class="video-item__save-button button">⬇ 저장</button>
       </li>
     `;
