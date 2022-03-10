@@ -3,7 +3,8 @@ import { $, removeChildren } from './utils/dom';
 import VideoItem from './videoItem';
 
 class SearchModal {
-  apikey = 'AIzaSyCr0ODcPGNBRByd4pZGQucF31LpqN1zGD0';
+  //apikey = 'AIzaSyCr0ODcPGNBRByd4pZGQucF31LpqN1zGD0'; 병민
+  apikey = 'AIzaSyBLDIRVSDZ25pHWp8hldwGmLMY2r1bH-Vc'; // 해리
 
   baseUrl = 'https://www.googleapis.com/youtube/v3/search';
 
@@ -90,11 +91,12 @@ class SearchModal {
     this.renderResult(searchResult);
   }
 
-  async handleScroll() {
+  async handleScroll(e) {
     const title = this.$searchKeyWordInput.value;
     const isScrollEnd =
       this.$videoList.scrollHeight - this.$videoList.scrollTop === this.$videoList.clientHeight;
-    if (isScrollEnd) {
+
+    if (isScrollEnd && this.$videoList.scrollTop !== 0 ) {
       this.renderSkeletonItems(this.maxResultCount);
       const jsonResult = await this.request(title);
       this.removeSkeleton();

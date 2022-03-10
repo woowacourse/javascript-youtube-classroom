@@ -1,5 +1,5 @@
 import SearchModal from './searchModal';
-import { $ } from './utils/dom';
+import { $, removeChildren } from './utils/dom';
 import NotFoundImage from '../assets/images/not_found.png';
 
 export default class App {
@@ -28,6 +28,14 @@ export default class App {
 
   addEvent() {
     $('#search-modal-button', this.$nav).addEventListener('click', this.openModal);
+    $('.dimmer').addEventListener('click', this.closeModal.bind(this));
+  }
+
+  closeModal(e) {
+    $('#search-input-keyword').value = '';
+    $('.search-result').classList.remove('search-result--no-result');
+    removeChildren($('.video-list'));
+    $('.modal-container').classList.add('hide');
   }
 
   openModal() {
