@@ -19,15 +19,15 @@
       <div id="modal-background" class="dimmer"></div>
       <div class="search-modal" role="dialog" aria-labelledby="search-modal-title">
         <h2 id="search-modal-title" class="search-modal__title">🔍 보고싶은 영상 찾기 🔍</h2>
-        <section class="search-input">
+        <form id="search-form" class="search-input">
           <h3 hidden>검색어 입력</h3>
           <input id="search-input-keyword" type="text" placeholder="검색" class="search-input__keyword" />
           <button id="search-button" class="search-input__search-button button">검색</button>
-        </section>
+        </form>
         <!-- 2-1 검색 결과가 있을 경우, 아래와 같은 검색 결과 목록을 보여줍니다.-->
         <section class="search-result">
           <h3 hidden>검색 결과</h3>
-          <ul class="video-list">
+          <ul id="videos" class="video-list">
             <!-- <li class="video-item" data-video-id="">
             <img
               src="https://i.ytimg.com/vi/ECfuKi5-Cfs/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLDvmIcX-TgdcH2g_Bd4AUxw6hjmvQ"
