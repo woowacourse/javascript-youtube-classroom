@@ -1,6 +1,7 @@
 import dummyObject from './dummy/dummyObject.js';
 import Video from './models/Video.js';
 import { on } from './utils/event.js';
+import isZeroLength from './utils/validator.js';
 
 import AppView from './views/AppView.js';
 import SearchInputView from './views/SearchInputView.js';
@@ -25,13 +26,17 @@ export default class Controller {
   async #searchVideo(event) {
     this.searchResultView.removeVideo();
     const { keyword } = event.detail;
+    if (isZeroLength(keyword)) {
+      alert('입력된 검색어가 없습니다. 검색어를 입력해주세요.');
+      return;
+    }
     this.video.keyword = keyword;
     this.searchResultView.showSkeleton();
     await this.video.fetchYoutubeApi(keyword);
     this.video.setVideoInfo();
     this.video.accumulateVideoItems();
     this.video.updateNewVideoItems();
-    if (this.video.newVideoItems.length === 0) {
+    if (isZeroLength(this.video.newVideoItems)) {
       this.searchResultView.removeVideo();
       this.searchResultView.showNotFound();
 
