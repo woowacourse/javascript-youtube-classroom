@@ -1,5 +1,5 @@
 import { $, $$ } from '../utils/dom.js';
-import {  emit } from '../utils/event.js';
+import { emit } from '../utils/event.js';
 
 export default class SearchResultView {
   constructor() {
@@ -9,17 +9,17 @@ export default class SearchResultView {
     this.$searchTarget = $('#search-target');
   }
 
-  renderVideo(videoItems) {
+  renderVideo(newVideoItems) {
     this.$videoItems = $$('.skeleton');
     this.$videoItems.forEach((item, idx) => {
       item.classList.remove('skeleton');
       $('.video-item__thumbnail', item).setAttribute(
         'srcdoc',
-        this.template.getThumbnail(videoItems[idx].snippet.thumbnails.high.url, videoItems[idx].id.videoId),
+        this.template.getThumbnail(newVideoItems[idx].thumbnailUrl, newVideoItems[idx].videoId),
       );
-      $('.video-item__title', item).innerText = videoItems[idx].snippet.title;
-      $('.video-item__channel-name', item).innerText = videoItems[idx].snippet.channelTitle;
-      $('.video-item__published-date', item).innerText = videoItems[idx].snippet.publishTime;
+      $('.video-item__title', item).innerText = newVideoItems[idx].title;
+      $('.video-item__channel-name', item).innerText = newVideoItems[idx].channelTitle;
+      $('.video-item__published-date', item).innerText = newVideoItems[idx].publishTime;
       $('.video-item__save-button', item).innerText = '⬇ 저장'; // 고쳐야함 (저장 유무에 따라 달라짐)
     });
   }
@@ -107,24 +107,6 @@ class Template {
       <img src=${imgUrl}>
         <div class='play'></div>
       </a>
-    `;
-  }
-
-  getVideo({ snippet, id }, isSaved = false) {
-    return `
-    <li class="video-item" data-video-id="">
-      <iframe 
-        class="video-item__thumbnail" 
-        srcdoc="${this.getThumbnail(snippet.thumbnails.high.url, id.videoId)}" 
-        frameborder="0"
-        allow="autoplay"
-        allowfullscreen>
-      </iframe>
-      <h4 class="video-item__title">${snippet.title}</h4>
-      <p class="video-item__channel-name">${snippet.channelTitle}</p>
-      <p class="video-item__published-date">${snippet.publishTime}</p>
-      <button data-id="${id.videoId}" class="video-item__save-button button">${isSaved ? '저장됨' : '⬇ 저장'}</button>
-    </li>
     `;
   }
 

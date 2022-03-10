@@ -3,7 +3,7 @@ export default class Video {
 
   #fetchedVideos;
 
-  #videoItems; // 길이가 10개인 array
+  #newVideoItems; // 길이가 10개인 array
 
   #nextPageToken; // 다음 토큰 string
 
@@ -28,12 +28,20 @@ export default class Video {
     return this.#nextPageToken;
   }
 
-  get videoItems() {
-    return this.#videoItems;
+  get newVideoItems() {
+    return this.#newVideoItems;
   }
 
   setVideoInfo() {
-    this.#videoItems = this.#fetchedVideos.items;
+    this.#newVideoItems = this.#fetchedVideos.items.map((item) => ({
+      videoId: item.id.videoId,
+      channelId: item.snippet.channelId,
+      title: item.snippet.title,
+      channelTitle: item.snippet.channelTitle,
+      publishTime: item.snippet.publishTime,
+      thumbnailUrl: item.snippet.thumbnails.high.url,
+      saved: false,
+    }));
     this.#nextPageToken = this.#fetchedVideos.nextPageToken;
   }
 

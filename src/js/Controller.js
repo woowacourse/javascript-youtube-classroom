@@ -40,7 +40,7 @@ export default class Controller {
     this.searchResultView.showSkeleton();
     await this.video.fetchYoutubeApi(keyword);
     this.video.setVideoInfo();
-    this.searchResultView.renderVideo(this.video.videoItems);
+    this.searchResultView.renderVideo(this.video.newVideoItems);
     this.startObserve();
   }
 
@@ -50,7 +50,7 @@ export default class Controller {
     this.searchResultView.showSkeleton();
     await this.video.fetchYoutubeApi(this.video.keyword, this.video.nextPageToken);
     this.video.setVideoInfo();
-    this.searchResultView.renderVideo(this.video.videoItems);
+    this.searchResultView.renderVideo(this.video.newVideoItems);
     this.startObserve();
   }
 
