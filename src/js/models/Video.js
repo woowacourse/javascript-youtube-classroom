@@ -1,19 +1,19 @@
 export default class Video {
   #keyword;
 
-  #fetchedVideos;
+  #fetchedVideos; // 10개 거칠딘~ 가공되지 않은
 
   #newVideoItems; // 길이가 10개인 array
 
+  #allVideoItems = [];
+
   #nextPageToken; // 다음 토큰 string
+
+  #newSavedIdList;
 
   constructor(dummyObject) {
     this.#fetchedVideos = dummyObject;
     this.savedIdList = [];
-  }
-
-  addSavedId(savedId) {
-    this.savedIdList.push(savedId);
   }
 
   set keyword(value) {
@@ -30,6 +30,29 @@ export default class Video {
 
   get newVideoItems() {
     return this.#newVideoItems;
+  }
+
+  set newSavedIdList(newSavedIdList) {
+    this.#newSavedIdList = newSavedIdList;
+  }
+
+  accumulateVideoItems() {
+    this.#allVideoItems = [...this.#allVideoItems, ...this.#newVideoItems];
+    console.log(this.#allVideoItems);
+  }
+
+  setItemsLocalStorage(newSavedIdList) {
+    this.video.newSavedIdList(newSavedIdList);
+    // id의 배열 -> fethcAllData -> [{videoId: , title: },]
+    // local 저장
+  }
+
+  getItemsLocalStorage() {}
+
+  // id 배열 newSavedIdList, -> newVideoItems
+  updateVideoItems() {
+    this.#newSavedIdList; // ['id','']
+    this.#newVideoItems; // [{videoId: , title: },{}]
   }
 
   setVideoInfo() {

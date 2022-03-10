@@ -13,25 +13,12 @@ export default class Controller {
     this.searchInputView = new SearchInputView();
     this.searchResultView = new SearchResultView();
     this.#subscribeViewEvents();
-
-    // this.observer = new IntersectionObserver(
-    //   (entries) => {
-    //     if (entries[0].isIntersecting) {
-    //       this.#scrollNextVideos();
-    //       console.log('무한스크롤중');
-    //     } else console.log('Not on the bottom');
-    //   },
-    //   {
-    //     root: this.searchResultView.$videoList,
-    //     threshold: 1.0,
-    //   },
-    // );
   }
 
   #subscribeViewEvents() {
     on(this.searchInputView.$searchButton, '@search', this.#searchVideo.bind(this));
     on(this.searchResultView.$searchTarget, '@scroll-bottom', this.#scrollNextVideos.bind(this));
-    on(this.searchResultView.$searchTarget, '@save-video', this.saveVideo.bind(this));
+    on(this.searchResultView.$searchTarget, '@save-video', this.#saveVideo.bind(this));
   }
 
   // 검색 버튼을 눌렀을 때
@@ -41,7 +28,8 @@ export default class Controller {
     this.video.keyword = keyword;
     this.searchResultView.showSkeleton();
     await this.video.fetchYoutubeApi(keyword);
-    this.video.setVideoInfo();
+    this.video.setVideoInfo(); // 신병 10개
+    // update -> newVideoItems (localItem{videoId} , item{},)
     this.searchResultView.renderVideo(this.video.newVideoItems);
     this.searchResultView.startObserve();
   }
@@ -51,13 +39,20 @@ export default class Controller {
     this.searchResultView.stopObserve();
     this.searchResultView.showSkeleton();
     await this.video.fetchYoutubeApi(this.video.keyword, this.video.nextPageToken);
+    this.video.accumulateVideoItems();
     this.video.setVideoInfo();
+    // update -> newVideoItems (localItem{videoId} , item{},)
+
     this.searchResultView.renderVideo(this.video.newVideoItems);
     this.searchResultView.startObserve();
   }
 
-  saveVideo(event) {
+  #saveVideo(event) {
     const { newSavedIdList } = event.detail;
     console.log(newSavedIdList);
+    // ['id','id','id'] {id , ch, saved: true, like: , } <-save됐다, 좋아요
+    // id => new 10개 => render
+    //
+    // this.video.setItemLocalStorage(newSavedIdList);
   }
 }
