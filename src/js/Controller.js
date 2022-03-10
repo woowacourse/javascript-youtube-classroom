@@ -1,6 +1,5 @@
 import dummyObject from './dummy/dummyObject.js';
 import Video from './models/Video.js';
-import { $ } from './utils/dom.js';
 import { on } from './utils/event.js';
 
 import AppView from './views/AppView.js';
@@ -38,6 +37,7 @@ export default class Controller {
     this.searchResultView.removeVideo();
     const { keyword } = event.detail;
     this.video.keyword = keyword;
+    this.searchResultView.showSkeleton();
     await this.video.fetchYoutubeApi(keyword);
     this.video.setVideoInfo();
     this.searchResultView.renderVideo(this.video.videoItems);
@@ -47,6 +47,7 @@ export default class Controller {
   // (이미 검색버튼을 눌러진 상태) 스크롤 내림으로써 발생하는 추가 fetch, render
   async #scrollNextVideos() {
     this.observer.unobserve(this.searchResultView.$videoList.lastElementChild);
+    this.searchResultView.showSkeleton();
     await this.video.fetchYoutubeApi(this.video.keyword, this.video.nextPageToken);
     this.video.setVideoInfo();
     this.searchResultView.renderVideo(this.video.videoItems);

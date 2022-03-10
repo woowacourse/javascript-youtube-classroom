@@ -1,5 +1,5 @@
 import { $, $$ } from '../utils/dom.js';
-import { on, emit } from '../utils/event.js';
+import {  emit } from '../utils/event.js';
 
 export default class SearchResultView {
   constructor() {
@@ -10,12 +10,17 @@ export default class SearchResultView {
   }
 
   renderVideo(videoItems) {
-    const videosTemplate = videoItems.map((item) => this.template.getVideo(item)).join('');
-    this.$videoList.insertAdjacentHTML('beforeend', videosTemplate);
-    //     export const on = (target, eventName, handler) => {
-    //   target.addEventListener(eventName, handler);
-    $$('.video-item__save-button').forEach((button) => {
-      on(button, 'click', this.saveVideo);
+    this.$videoItems = $$('.skeleton');
+    this.$videoItems.forEach((item, idx) => {
+      item.classList.remove('skeleton');
+      $('.video-item__thumbnail', item).setAttribute(
+        'srcdoc',
+        this.template.getThumbnail(videoItems[idx].snippet.thumbnails.high.url, videoItems[idx].id.videoId),
+      );
+      $('.video-item__title', item).innerText = videoItems[idx].snippet.title;
+      $('.video-item__channel-name', item).innerText = videoItems[idx].snippet.channelTitle;
+      $('.video-item__published-date', item).innerText = videoItems[idx].snippet.publishTime;
+      $('.video-item__save-button', item).innerText = '⬇ 저장'; // 고쳐야함 (저장 유무에 따라 달라짐)
     });
   }
 
@@ -28,19 +33,12 @@ export default class SearchResultView {
   removeVideo() {
     this.$videoList.replaceChildren();
   }
+
+  showSkeleton() {
+    this.$videoList.insertAdjacentHTML('beforeend', this.template.getSkeleton());
+  }
 }
 class Template {
-  getSkeleton(count) {
-    return `
-      <div class="skeleton">
-        <div class="image"></div>
-        <p class="line"></p>
-        <p class="line"></p>
-        <p class="line"></p>
-      </div>
-      `.repeat(count);
-  }
-
   getThumbnail(imgUrl, videoId) {
     return `
       <style>
@@ -128,5 +126,23 @@ class Template {
       <button data-id="${id.videoId}" class="video-item__save-button button">${isSaved ? '저장됨' : '⬇ 저장'}</button>
     </li>
     `;
+  }
+
+  getSkeleton() {
+    return `
+      <li class="video-item skeleton" data-video-id="">
+        <iframe 
+          class="video-item__thumbnail" 
+          srcdoc="" 
+          frameborder="0"
+          allow="autoplay"
+          allowfullscreen>
+        </iframe>
+        <h4 class="video-item__title"></h4>
+        <p class="video-item__channel-name"></p>
+        <p class="video-item__published-date"></p>
+        <button data-id="" class="video-item__save-button button"></button>
+      </li>
+    `.repeat(10);
   }
 }
