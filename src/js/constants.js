@@ -1,3 +1,8 @@
+export const VIDEO = {
+  MAX_RESULT_PER_SEARCH: 10,
+  MAX_SAVABLE_COUNT: 100,
+};
+
 const REDIRECT_SERVER_HOST = 'https://trusting-yonath-35b2a1.netlify.app';
 
 export const SEARCH_API = {
@@ -5,14 +10,10 @@ export const SEARCH_API = {
   PARAMS: {
     part: 'snippet',
     type: 'video',
-    maxResults: 10,
+    maxResults: VIDEO.MAX_RESULT_PER_SEARCH,
     regionCode: 'kr',
     safeSearch: 'strict',
   },
-};
-
-export const VIDEO = {
-  MAX_SAVABLE_COUNT: 10,
 };
 
 export const ERROR_MESSAGE = {
