@@ -12,7 +12,7 @@ export default class YoutubeAPI {
       maxResults: YOUTUBE_API_REQUEST_COUNT,
       regionCode: 'kr',
       safeSearch: 'strict',
-      pageToken: this.#nextPageToken,
+      pageToken: this.#nextPageToken || '',
       q: this.#keyword,
     });
     url.search = parameters.toString();
