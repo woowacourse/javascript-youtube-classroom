@@ -10,6 +10,14 @@ it("메인 화면에서 검색 버튼을 누르면 검색 모달창이 나타난
   cy.get(".modal-container").should("be.visible");
 });
 
+it("모달창이 열린 상태에서 모달창 뒤의 음영 된 부분을 누르면 모달창이 사라진다.", () => {
+  cy.visit("./index.html");
+
+  cy.get("#search-modal-button").click();
+  cy.get(".dimmer").click({ force: true });
+  cy.get(".modal-container").should("be.not.visible");
+});
+
 it("데이터를 불러오는 동안 skeleton UI로 보여준다.", () => {
   cy.visit("./index.html");
 
