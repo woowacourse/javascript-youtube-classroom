@@ -35,7 +35,11 @@ export default class SearchVideoManager {
       });
   }
 
-  isKeywordChanged(newKeyword) {
-    return newKeyword !== this.keyword;
+  search(newKeyword = this.keyword) {
+    if (newKeyword !== this.keyword) {
+      this.resetNextPageToken();
+    }
+
+    return this.fetchYoutubeData(newKeyword);
   }
 }

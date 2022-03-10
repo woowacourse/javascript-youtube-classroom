@@ -1,2 +1,4 @@
 import './css/index';
-import './js/index';
+import YoutubeClassRoom from './js/YoutubeClassRoom';
+
+new YoutubeClassRoom();
