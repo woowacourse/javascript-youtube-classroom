@@ -1,18 +1,16 @@
 import { changeDateFormat } from "./common.js";
+import noImage from "../../assets/images/not_found.png";
 
-export const noSearchResultTemplate = (imgSrcAddress) => {
-  return `
-    <div class="no-result">
-      <img src=${imgSrcAddress} class = 'no-result__image' alt="없음" />
-      <p class="no-result__description">검색 결과가 없습니다<br/>다른 키워드로 검색해보세요</p>
-    </div>`;
-};
+export const noSearchResultTemplate = `
+  <img src=${noImage} class="no-result__image" alt="검색결과 없음" />
+  <p class="no-result__description">검색 결과가 없습니다<br/>다른 키워드로 검색해보세요</p>
+`;
 
 export const makeIframeTemplate = (video) => {
   return `
     <li class='video-item-container'>
       <iframe
-          class = "video-item"
+          class="video-item"
           type="text/html"
           src="https://www.youtube.com/embed/${video.id.videoId}"
           frameborder="0"
@@ -25,12 +23,10 @@ export const makeIframeTemplate = (video) => {
   </li>`;
 };
 
-export const makeSkeletonTemplate = () => {
-  return `
-    <div class="skeleton">
-      <div class="image"></div>
-      <p class="line"></p>
-      <p class="line"></p>
-    </div>
-  `;
-};
+export const makeSkeletonTemplate = `
+  <div class="skeleton">
+    <div class="image"></div>
+    <p class="line"></p>
+    <p class="line"></p>
+  </div>
+`;

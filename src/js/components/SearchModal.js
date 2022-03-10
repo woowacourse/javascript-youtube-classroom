@@ -1,10 +1,6 @@
 import { fetchDataFromKeyword, getNextPageData } from "../utils/apiFetch.js";
 import { saveLocalStorage, getLocalStorage } from "../utils/localStorage.js";
-import {
-  noSearchResultTemplate,
-  makeIframeTemplate,
-  makeSkeletonTemplate,
-} from "../utils/templates.js";
+import { noSearchResultTemplate, makeIframeTemplate, makeSkeletonTemplate } from "../utils/templates.js";
 import { NUM, IMAGE_SRC_ADDRESS } from "../utils/contants.js";
 
 export class SearchModal {
@@ -51,26 +47,21 @@ export class SearchModal {
   }
 
   renderNoVideosImg() {
-    this.noResultContainer.insertAdjacentHTML(
-      "afterbegin",
-      noSearchResultTemplate(IMAGE_SRC_ADDRESS.NO_IMAGE)
-    );
+    this.noResultContainer.insertAdjacentHTML("afterbegin", noSearchResultTemplate);
   }
 
   renderIframe() {
     this.resultLabel.removeAttribute("hidden");
     this.videoList.insertAdjacentHTML(
       "beforeend",
-      this.videos.items.map((video) => makeIframeTemplate(video)).join("")
+      this.videos.items.map((video) => makeIframeTemplate(video)).join(""),
     );
   }
 
   renderSkeleton() {
     this.videoList.insertAdjacentHTML(
       "beforeend",
-      Array.from({ length: NUM.VIDEO_ITEMS_FOR_UNIT }, () =>
-        makeSkeletonTemplate()
-      ).join("")
+      Array.from({ length: NUM.VIDEO_ITEMS_FOR_UNIT }, () => makeSkeletonTemplate).join(""),
     );
   }
 
@@ -88,17 +79,12 @@ export class SearchModal {
       }
     });
 
-    this.intersectionObserver.observe(
-      this.videoItems[this.videoItems.length - 1]
-    );
+    this.intersectionObserver.observe(this.videoItems[this.videoItems.length - 1]);
   }
 
   async renderNextPage() {
     this.removePreviousObserver();
-    this.videos = await getNextPageData(
-      this.keyword,
-      this.videos.nextPageToken
-    );
+    this.videos = await getNextPageData(this.keyword, this.videos.nextPageToken);
     this.renderIframe();
     this.createObserver();
   }
@@ -121,9 +107,6 @@ export class SearchModal {
   };
 
   canSaveVideoItems(localStorage, target) {
-    return (
-      !localStorage.includes(target.id) ||
-      localStorage.length <= NUM.MAX_STORAGE_LENGTH
-    );
+    return !localStorage.includes(target.id) && localStorage.length < NUM.MAX_STORAGE_LENGTH;
   }
 }
