@@ -7,12 +7,7 @@ class YoutubeSaveStorage {
   }
 
   add(videoId) {
-    const items = this.get();
-    if (items.length === 100) {
-      return;
-    }
-
-    localStorage.setItem(this.#STORAGE_NAME, JSON.stringify([...items, videoId]));
+    localStorage.setItem(this.#STORAGE_NAME, JSON.stringify([...this.get(), videoId]));
   }
 
   has(videoId) {

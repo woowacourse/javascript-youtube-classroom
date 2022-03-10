@@ -1,5 +1,8 @@
 import { $, createElement } from '@Utils/Dom';
 import { getParsedTime } from '@Utils/ManageData';
+import { onObserveElement } from '@Utils/ElementControl';
+import { CLASS_ROOM_SETTING } from '@Constants/Setting';
+import { ERROR_MESSAGE, ACTION_TYPE } from '@Constants/String';
 import Display from '@Core/Display';
 import YoutubeSearchStore from '@Domain/YoutubeSearchStore';
 import YoutubeSaveStorage from '@Domain/YoutubeSaveStorage';
@@ -13,10 +16,10 @@ export default class SearchResult extends Display {
   defaultElement() {
     this.$videoList = $('#video-list', this.container);
     this.$tempFragment = document.createDocumentFragment();
-    this.$observer = createElement('DIV', {
+    this.$scrollObserver = createElement('DIV', {
       id: 'search-result-scroll-observer',
     });
-    this.$skeleton = Array.from({ length: 10 }).map(() =>
+    this.$skeleton = Array.from({ length: CLASS_ROOM_SETTING.MAX_VIDEO_NUMBER }).map(() =>
       createElement('DIV', {
         className: 'skeleton',
         innerHTML: `
@@ -29,18 +32,9 @@ export default class SearchResult extends Display {
   }
 
   bindEvents() {
-    const scrollObserver = new IntersectionObserver(
-      entry => {
-        if (entry[0].isIntersecting) {
-          YoutubeSearchStore.dispatch('UPDATE_SEARCH_RESULT');
-        }
-      },
-      {
-        threshold: 1.0,
-      },
-    );
-    scrollObserver.observe(this.$observer);
-
+    onObserveElement(this.$scrollObserver, () => {
+      YoutubeSearchStore.dispatch(ACTION_TYPE.UPDATE_SEARCH_RESULT);
+    });
     this.addEvent('click', '.video-item__save-button', this.handleToggleSaveButton.bind(this));
   }
 
@@ -53,6 +47,12 @@ export default class SearchResult extends Display {
     if (YoutubeSaveStorage.has(videoId)) {
       YoutubeSaveStorage.remove(videoId);
       $target.textContent = '⬇ 저장';
+      return;
+    }
+
+    const saveItemsCount = YoutubeSaveStorage.get().length;
+    if (saveItemsCount === CLASS_ROOM_SETTING.MAX_SAVE_NUMBER) {
+      alert(ERROR_MESSAGE.MAX_SAVE_VIDEO);
       return;
     }
 
@@ -69,14 +69,13 @@ export default class SearchResult extends Display {
     }
 
     const $fragment = document.createDocumentFragment();
-
     if (isLoading === true) {
       $fragment.append(...this.$skeleton);
     }
 
     if (items.length !== 0 && isLoaded === true) {
       $fragment.append(...this.drawVideoList(items));
-      $fragment.append(this.$observer);
+      $fragment.append(this.$scrollObserver);
     }
 
     if (items.length === 0 && isLoaded === true) {

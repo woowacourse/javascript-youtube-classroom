@@ -1,4 +1,5 @@
 import { $ } from '@Utils/Dom';
+import { ERROR_MESSAGE, ACTION_TYPE } from '@Constants/String';
 import { onEnableButton } from '@Utils/ElementControl';
 import Display from '@Core/Display';
 import YoutubeSearchStore from '@Domain/YoutubeSearchStore';
@@ -26,7 +27,7 @@ export default class SearchForm extends Display {
     const { isLoading, keyword: beforeKeyword } = YoutubeSearchStore.getState();
 
     if (isEmptyString(newKeyword)) {
-      alert('검색어를 입력해주세요.');
+      alert(ERROR_MESSAGE.EMPTY_SEARCH_KEYWORD);
       return;
     }
 
@@ -38,7 +39,7 @@ export default class SearchForm extends Display {
       return;
     }
 
-    YoutubeSearchStore.dispatch('UPDATE_SEARCH_KEYWORD', newKeyword);
-    YoutubeSearchStore.dispatch('UPDATE_SEARCH_RESULT');
+    YoutubeSearchStore.dispatch(ACTION_TYPE.UPDATE_SEARCH_KEYWORD, newKeyword);
+    YoutubeSearchStore.dispatch(ACTION_TYPE.UPDATE_SEARCH_RESULT);
   }
 }

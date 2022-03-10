@@ -18,6 +18,7 @@ module.exports = () => {
         '@Domain': path.resolve(__dirname, 'src/js/domain/'),
         '@Utils': path.resolve(__dirname, 'src/js/utils/'),
         '@Core': path.resolve(__dirname, 'src/js/core/'),
+        '@Constants': path.resolve(__dirname, 'src/js/constants/'),
         '@Images': path.resolve(__dirname, 'src/assets/images'),
       },
     },

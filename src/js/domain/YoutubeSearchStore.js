@@ -1,4 +1,5 @@
 import Store from '@Core/Store';
+import { ACTION_TYPE } from '@Constants/String';
 import { requestYoutubeSearch } from '../api';
 
 class YoutubeSearchStore extends Store {
@@ -13,7 +14,7 @@ class YoutubeSearchStore extends Store {
 
   dispatch(type, data) {
     const stateByType = {
-      UPDATE_SEARCH_KEYWORD: () => {
+      [ACTION_TYPE.UPDATE_SEARCH_KEYWORD]: () => {
         this.setState({
           ...this.state,
           searchKeyword: data,
@@ -24,7 +25,7 @@ class YoutubeSearchStore extends Store {
           error: false,
         });
       },
-      UPDATE_SEARCH_RESULT: async () => {
+      [ACTION_TYPE.UPDATE_SEARCH_RESULT]: async () => {
         if (this.state.nextPageToken === undefined) return; // 분리하기
 
         const {

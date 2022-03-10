@@ -12,3 +12,17 @@ export const onEnableButton = ($eventTarget, condition) => {
 
   $eventTarget.disabled = false;
 };
+
+export const onObserveElement = ($element, handler) => {
+  const scrollObserver = new IntersectionObserver(
+    entry => {
+      if (entry[0].isIntersecting) {
+        handler();
+      }
+    },
+    {
+      threshold: 1.0,
+    },
+  );
+  scrollObserver.observe($element);
+};
