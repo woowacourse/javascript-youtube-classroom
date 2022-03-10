@@ -2,4 +2,6 @@ const convertToKoreaLocaleDate = date => {
   return new Date(date).toLocaleString('ko-KR');
 };
 
-export { convertToKoreaLocaleDate };
+const delay = ms => new Promise(resolve => setTimeout(resolve, ms));
+
+export { convertToKoreaLocaleDate, delay };

@@ -1,11 +1,13 @@
 import { MESSAGE } from '../constants';
 import { API_KEY } from '../domain/key';
 import { request } from '../domain/youtubeApi';
+import { delay } from '../utils/common';
 import { $, showExceptionSnackBar } from '../utils/dom';
 import Result from './Result';
 
 export default class Search {
   constructor() {
+    this.input = $('#search-input-keyword');
     this.result = new Result();
     this.addSubmitEvent();
   }
@@ -13,20 +15,22 @@ export default class Search {
   addSubmitEvent() {
     $('#search-form').addEventListener('submit', e => {
       e.preventDefault();
-      if ($('#search-input-keyword').value === '') {
+      if (this.input.value === '') {
         showExceptionSnackBar(MESSAGE.ERROR_BLANK_SEARCH_INPUT);
         return;
       }
 
       this.result.renderSkeletonUI();
 
-      try {
-        request($('#search-input-keyword').value, API_KEY).then(json => {
+      request(this.input.value, API_KEY)
+        .then(json => {
           this.result.renderInitialVideoList(json);
+        })
+        .catch(async ({ message }) => {
+          await delay(700);
+          showExceptionSnackBar(message);
+          this.result.removeSkeletonUI();
         });
-      } catch ({ message }) {
-        console.log(message);
-      }
     });
   }
 }

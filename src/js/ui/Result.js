@@ -4,7 +4,7 @@ import NoResultImage from '../../assets/images/not_found.png';
 import { store } from '../domain/store';
 import { API_KEY } from '../domain/key';
 import { request } from '../domain/youtubeApi';
-import { convertToKoreaLocaleDate } from '../utils/common';
+import { convertToKoreaLocaleDate, delay } from '../utils/common';
 
 export default class Result {
   constructor() {}
@@ -27,6 +27,10 @@ export default class Result {
       'beforeend',
       this.skeletonTemplate().repeat(10),
     );
+  }
+
+  removeSkeletonUI() {
+    $$('.skeleton').forEach(skeleton => skeleton.replaceChildren());
   }
 
   foundResultTemplate(items) {
@@ -89,22 +93,22 @@ export default class Result {
   }
 
   renderNextVideoList(nextPageToken) {
-    try {
-      request($('#search-input-keyword').value, API_KEY, nextPageToken).then(
-        json => {
-          $('.video-list').insertAdjacentHTML(
-            'beforeend',
-            this.foundResultTemplate(json.items),
-          );
-          this.addSaveButtonClickEvent(json.items.length);
-          if (json && json.nextPageToken) {
-            this.scrollObserver(json.nextPageToken);
-          }
-        },
-      );
-    } catch ({ message }) {
-      console.log(message);
-    }
+    request($('#search-input-keyword').value, API_KEY, nextPageToken)
+      .then(json => {
+        $('.video-list').insertAdjacentHTML(
+          'beforeend',
+          this.foundResultTemplate(json.items),
+        );
+        this.addSaveButtonClickEvent(json.items.length);
+        if (json && json.nextPageToken) {
+          this.scrollObserver(json.nextPageToken);
+        }
+      })
+      .catch(async ({ message }) => {
+        await delay(700);
+        this.skeletonTemplate();
+        showExceptionSnackBar(message);
+      });
   }
 
   addSaveButtonClickEvent(length) {
@@ -141,5 +145,9 @@ export default class Result {
     );
 
     io.observe($li);
+  }
+
+  resetVideoList() {
+    $('.video-list').replaceChildren();
   }
 }
