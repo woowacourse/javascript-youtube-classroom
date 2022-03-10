@@ -1,23 +1,10 @@
-import { searchVideos } from '../../api/api.js';
 import Component from '../../core/Component.js';
 import VideoCard from './VideoCard.js';
+import { rootStore } from '../../store/rootStore.js';
+import { searchVideos } from '../../api/api.js';
 
 export default class VideoCardList extends Component {
   setup() {
-    const { items, nextPageOption } = this.props;
-    const savedVideos = Component.webStore.load();
-    const videos = items.map((item) => {
-      return {
-        loading: false,
-        videoId: item.id.videoId,
-        thumbnailUrl: item.snippet.thumbnails.default.url,
-        title: item.snippet.title,
-        channelTitle: item.snippet.channelTitle,
-        publishTime: item.snippet.publishTime,
-        saved: savedVideos.includes(item.id.videoId),
-      };
-    });
-
     this.observer = new IntersectionObserver(
       this.onLastChildVisible.bind(this),
       {
@@ -27,11 +14,13 @@ export default class VideoCardList extends Component {
       }
     );
 
-    this.state = { videos, isLoading: false, nextPageOption };
+    this.state = { isLoading: false, skeletons: [] };
   }
 
   template() {
-    const { videos } = this.state;
+    const { searchResult } = rootStore.state;
+    const { skeletons } = this.state;
+    const videos = [...searchResult, ...skeletons];
 
     return `
       ${videos.map(() => `<div class="video-card"></div>`).join('')}
@@ -39,13 +28,14 @@ export default class VideoCardList extends Component {
   }
 
   afterMounted() {
-    const { videos } = this.state;
+    const { searchResult } = rootStore.state;
+    const { skeletons } = this.state;
+    const videos = [...searchResult, ...skeletons];
+    const videoCards = document.querySelectorAll('.video-card');
 
-    document
-      .querySelectorAll('.video-card')
-      .forEach(
-        (videoCard, index) => new VideoCard(videoCard, { video: videos[index] })
-      );
+    videoCards.forEach((videoCard, index) => {
+      videos[index] && new VideoCard(videoCard, { video: videos[index] });
+    });
 
     this.observeLastChild();
   }
@@ -64,63 +54,54 @@ export default class VideoCardList extends Component {
       observer.disconnect();
 
       // 스크롤이 마지막 요소에 닿으면 로딩 시작
-      // 로딩 전 요소들 캐싱
-      const prev = this.state.videos;
-
       // 로딩 될 요소들의 스켈레톤 생성해 state에 추가
       this.setState({
         isLoading: true,
-        videos: [
-          ...prev,
-          ...Array(10).fill({
-            loading: true,
-            videoId: null,
-            thumbnailUrl: null,
-            title: null,
-            channelTitle: null,
-            publishTime: null,
-            saved: false,
-          }),
-        ],
+        skeletons: Array(10).fill({
+          loading: true,
+          videoId: null,
+          thumbnailUrl: null,
+          title: null,
+          channelTitle: null,
+          publishTime: null,
+          saved: false,
+        }),
       });
 
       const newVideos = await this.loadNextVideos();
 
-      // 로딩이 끝난 후 로딩 된 요소들을 원하는 프로퍼티를 가진 객체로 매핑
-      const savedVideos = Component.webStore.load();
-      const newVideoProps = newVideos.map((item) => {
-        return {
-          loading: false,
-          videoId: item.id.videoId,
-          thumbnailUrl: item.snippet.thumbnails.default.url,
-          title: item.snippet.title,
-          channelTitle: item.snippet.channelTitle,
-          publishTime: item.snippet.publishTime,
-          saved: savedVideos.includes(item.id.videoId),
-        };
-      });
-
-      this.setState({
-        isLoading: false,
-        videos: [...prev, ...newVideoProps],
+      this.setState({ isLoading: false, skeletons: [] });
+      rootStore.setState({
+        searchResult: [...rootStore.state.searchResult, ...newVideos],
       });
     });
   }
 
   async loadNextVideos() {
-    const { nextPageOption } = this.state;
-    const { query, nextPageToken } = nextPageOption;
+    const { query, nextPageToken } = rootStore.state.searchOption;
     const data = await searchVideos(query, nextPageToken);
 
-    this.setState({ query, nextPageToken: data.nextPageToken });
+    // searchOption 업데이트
+    rootStore.setState({
+      searchOption: {
+        query,
+        nextPageToken: data.nextPageToken,
+      },
+    });
 
-    return data.items;
-  }
+    // 로딩이 끝난 후 로딩 된 요소들을 원하는 프로퍼티를 가진 객체로 매핑
+    const savedVideos = Component.webStore.load();
 
-  isScrollBelowLastCard(eventTarget) {
-    const { scrollHeight, scrollTop, clientHeight } = eventTarget;
-    const cardHeight = this.target.lastElementChild?.offsetHeight;
-
-    return scrollHeight - scrollTop - cardHeight <= clientHeight;
+    return data.items.map((item) => {
+      return {
+        loading: false,
+        videoId: item.id.videoId,
+        thumbnailUrl: item.snippet.thumbnails.default.url,
+        title: item.snippet.title,
+        channelTitle: item.snippet.channelTitle,
+        publishTime: item.snippet.publishTime,
+        saved: savedVideos.includes(item.id.videoId),
+      };
+    });
   }
 }

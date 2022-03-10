@@ -1,5 +1,6 @@
-import { searchVideos } from '../../api/api.js';
 import Component from '../../core/Component.js';
+import { rootStore } from '../../store/rootStore.js';
+import { searchVideos } from '../../api/api.js';
 
 export default class SearchBar extends Component {
   template() {
@@ -25,15 +26,32 @@ export default class SearchBar extends Component {
   }
 
   setEvent() {
-    const { showSearchResult, setNextPageOption } = this.props;
     this.addEvent('submit', '#search-form', async (e) => {
-      const data = await searchVideos(e.target.elements.searchInput.value);
-
-      showSearchResult(data.items);
-      setNextPageOption({
-        query: e.target.elements.searchInput.value,
-        nextPageToken: data.nextPageToken,
+      const savedVideos = Component.webStore.load();
+      const { items, nextPageToken } = await searchVideos(
+        e.target.elements.searchInput.value
+      );
+      const videos = items.map((item) => {
+        return {
+          loading: false,
+          videoId: item.id.videoId,
+          thumbnailUrl: item.snippet.thumbnails.default.url,
+          title: item.snippet.title,
+          channelTitle: item.snippet.channelTitle,
+          publishTime: item.snippet.publishTime,
+          saved: savedVideos.includes(item.id.videoId),
+        };
       });
+
+      const payload = {
+        searchResult: videos,
+        searchOption: {
+          query: e.target.elements.searchInput.value,
+          nextPageToken,
+        },
+      };
+
+      rootStore.setState(payload);
     });
   }
 }

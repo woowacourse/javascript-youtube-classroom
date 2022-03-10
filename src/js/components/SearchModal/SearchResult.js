@@ -10,11 +10,6 @@ export default class SearchResult extends Component {
   }
 
   afterMounted() {
-    const { items, nextPageOption } = this.props;
-
-    new VideoCardList(this.$('#video-list'), {
-      items,
-      nextPageOption,
-    });
+    new VideoCardList(this.$('#video-list'));
   }
 }
