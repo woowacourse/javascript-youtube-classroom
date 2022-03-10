@@ -1,5 +1,7 @@
+import { ERROR_MESSAGE } from '../constants/errorMessage';
 import { CUSTOM_EVENT_KEY } from '../constants/events';
 import { dispatch } from '../modules/eventFactory';
+import { isEmptyKeyword } from '../utils/validation';
 import Component from './Component';
 
 class SearchFormComponent extends Component {
@@ -27,23 +29,27 @@ class SearchFormComponent extends Component {
 
   bindEventHandler() {
     this.$searchButton.addEventListener('click', () => {
-      const { value } = this.$searchInput;
-      dispatch(CUSTOM_EVENT_KEY.SUBMIT_SEARCH_KEWORD, {
-        detail: {
-          keyword: value,
-        },
-      });
+      this.#dispatchSubmitSearchKeyword();
     });
 
     this.$searchInput.addEventListener('keypress', (e) => {
-      const { value } = this.$searchInput;
-      if (e.key === 'Enter') {
-        dispatch(CUSTOM_EVENT_KEY.SUBMIT_SEARCH_KEWORD, {
-          detail: {
-            keyword: value,
-          },
-        });
+      if (e.key !== 'enter') {
+        return;
       }
+      this.#dispatchSubmitSearchKeyword();
+    });
+  }
+
+  #dispatchSubmitSearchKeyword() {
+    const { value } = this.$searchInput;
+    if (isEmptyKeyword(value)) {
+      alert(ERROR_MESSAGE.EMPTY_KEYWORD);
+      return;
+    }
+    dispatch(CUSTOM_EVENT_KEY.SUBMIT_SEARCH_KEWORD, {
+      detail: {
+        keyword: value,
+      },
     });
   }
 
