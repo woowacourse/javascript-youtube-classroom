@@ -54,8 +54,8 @@ export default class Controller {
       return;
     }
     this.searchResultView.changeSaveButtonStyle(event.detail.buttonElement);
-    const { newSavedIdList } = event.detail;
-    console.log('newSavedIdList', newSavedIdList);
-    this.video.setItemsLocalStorage(newSavedIdList);
+    const { savedId } = event.detail;
+    console.log('newSavedIdList', savedId);
+    this.video.setItemsLocalStorage(savedId);
   }
 }

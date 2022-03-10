@@ -1,4 +1,3 @@
-/* eslint-disable no-restricted-syntax */
 export default class Video {
   #keyword;
 
@@ -18,6 +17,7 @@ export default class Video {
     this.#fetchedVideos = dummyObject;
     this.savedIdList = [];
     this.#savedVideoItems = JSON.parse(localStorage.getItem('saved-video')) ?? [];
+    console.log(this.#savedVideoItems);
   }
 
   set keyword(value) {
@@ -49,25 +49,16 @@ export default class Video {
     console.log(this.#allVideoItems);
   }
 
-  setItemsLocalStorage(newSavedIdList) {
-    const savedVideoItems = [];
+  setItemsLocalStorage(savedId) {
     for (const item of this.#allVideoItems) {
-      for (const id of newSavedIdList) {
-        // eslint-disable-next-line max-depth
-        if (item.videoId === id) {
-          item.saved = true;
-          savedVideoItems.push(item);
-        }
+      if (item.videoId === savedId) {
+        item.saved = true;
+        const allSavedVideoItems = [...this.#savedVideoItems, item];
+        this.#savedVideoItems = allSavedVideoItems;
+        localStorage.setItem('saved-video', JSON.stringify(allSavedVideoItems));
+        return;
       }
     }
-
-    this.#savedVideoItems = savedVideoItems;
-    localStorage.setItem('saved-video', JSON.stringify(savedVideoItems));
-    // this.video.newSavedIdList(newSavedIdList);
-    // id의 배열 -> fethcAllData -> [{videoId: , title: },]
-    // id 10, allvideoItems 20
-    // A, B, C .....
-    // local 저장
   }
 
   getItemsLocalStorage() {}

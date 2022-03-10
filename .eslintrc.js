@@ -28,5 +28,6 @@ module.exports = {
     'no-alert': 'off',
     'consistent-return': 'off',
     'max-classes-per-file': ['error', { ignoreExpressions: true, max: 2 }],
+    'no-restricted-syntax': ['error', 'ForInStatement', 'LabeledStatement', 'WithStatement'],
   },
 };
