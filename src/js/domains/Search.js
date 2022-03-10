@@ -1,6 +1,6 @@
 import VideoStore from '../VideoStore';
 import { on, $ } from '../utils';
-import { SEARCH_API } from '../constants';
+import { ERROR_MESSAGE, SEARCH_API } from '../constants';
 
 class Search {
   constructor() {
@@ -37,10 +37,11 @@ class Search {
       const response = await fetch(SEARCH_API.URL, { method: 'GET' });
       const body = await response.json();
 
-      if (!response.ok) throw new Error(body.error.message);
+      if (!response.ok) throw new Error(ERROR_MESSAGE.FAIL_TO_REQUEST_API);
 
       return body;
     } catch (error) {
+      alert(error.message);
       return error;
     }
   }
