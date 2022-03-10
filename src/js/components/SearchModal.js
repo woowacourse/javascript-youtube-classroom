@@ -67,7 +67,9 @@ export class SearchModal {
   }
 
   makeIframeTemplate(keyword) {
-    return `<li>
+    return `
+    <li>
+    <div>
       <iframe
           class = "video-item"
           type="text/html"
@@ -75,6 +77,8 @@ export class SearchModal {
           frameborder="0"
           allowfullscreen="allowfullscreen"
       ></iframe>
+      </div>
+      <button class="video-item__save-button button">⬇ 저장</button>
   </li>`;
   }
 
@@ -90,19 +94,25 @@ export class SearchModal {
 
   createObserver() {
     this.videoItems = [...document.getElementsByClassName('video-item')];
-    const intersectionObserver = new IntersectionObserver((entries, observer) => {
+    this.intersectionObserver = new IntersectionObserver((entries, observer) => {
       const [entry] = entries;
       if (entry.isIntersecting) {
         this.renderNextPage();
       }
     });
 
-    intersectionObserver.observe(this.videoItems[this.videoItems.length - 1]);
+    this.intersectionObserver.observe(this.videoItems[this.videoItems.length - 1]);
   }
 
   async renderNextPage() {
+    this.removePreviousObserver();
+    //TODO:skeleton if needed
     this.videos = await getNextPageData(this.keyword, this.videos.nextPageToken);
     this.renderIframe();
     this.createObserver();
+  }
+
+  removePreviousObserver() {
+    this.intersectionObserver.disconnect();
   }
 }
