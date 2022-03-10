@@ -1,67 +1,42 @@
-import { $ } from './util/dom.js';
+import { $, isEndOfScroll, validateInput } from './util/general.js';
 import YoutubeMachine from './domain/YoutubeMachine.js';
-import {
-  renderSkeletonUI,
-  resetVideoList,
-  renderSearchResult,
-  renderNextSearchResult,
-} from './UI/renderVideoItems.js';
+import userInterface from './UI/userInterface.js';
 import '../css/index.css';
 import '../assets/images/not_found.png';
-import store from './store/store.js';
-import { ERROR, THROTTLE_DELAY } from '../constants/constants.js';
+import storage from './storage/storage.js';
+import { THROTTLE_DELAY } from './constants/constants.js';
 
 export default function App() {
   const youtubeMachine = new YoutubeMachine();
-  const validateInput = input => {
-    if (input === '') {
-      throw new Error(ERROR.MESSAGE.EMPTY_INPUT);
-    }
-  };
 
+  // 핸들러
   const handleSearch = () => {
     try {
       youtubeMachine.resetData();
-      resetVideoList();
+      userInterface.resetVideoList();
       const searchInput = $('#search-input-keyword').value.trim();
       validateInput(searchInput);
       youtubeMachine.searchTarget = searchInput;
-      renderSkeletonUI();
+      userInterface.renderSkeletonUI();
       const response = youtubeMachine.callSearchAPI();
       youtubeMachine.updateData(response);
-      renderSearchResult(response);
+      userInterface.renderSearchResult(response);
     } catch (error) {
       alert(error.message);
     }
   };
 
-  const isEndOfScroll = $element =>
-    $element.scrollHeight - $element.scrollTop === $element.clientHeight;
-
   const handleScroll = e => {
     let throttle;
     if (isEndOfScroll(e.target) && !throttle) {
-      renderSkeletonUI();
+      userInterface.renderSkeletonUI();
       const response = youtubeMachine.callSearchAPI();
       youtubeMachine.updateData(response);
-      renderNextSearchResult(response);
+      userInterface.renderNextSearchResult(response);
       throttle = setTimeout(() => {
         throttle = null;
       }, THROTTLE_DELAY);
     }
-  };
-
-  const saveVideo = videoId => {
-    const video = {
-      id: videoId,
-    };
-    const savedStore = store.getLocalStorage();
-
-    if (savedStore) {
-      store.updateLocalStorage(video);
-      return;
-    }
-    store.setLocalStorage([video]);
   };
 
   const handleSaveButtonClick = e => {
@@ -70,9 +45,10 @@ export default function App() {
     }
     e.target.closest('button').hidden = true;
     const { videoId } = e.target.parentElement.dataset;
-    saveVideo(videoId);
+    storage.saveVideo(videoId);
   };
 
+  // 이벤트 등록
   $('#search-modal-button').addEventListener('click', () => {
     $('.modal-container').classList.toggle('hide');
   });
