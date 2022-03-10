@@ -4,7 +4,7 @@ const videoTemplate = ({ id: { videoId }, snippet: { title, channelTitle, publis
     <h4 class="video-item__title">${title}</h4>
     <p class="video-item__channel-name">${channelTitle}</p>
     <p class="video-item__published-date">${publishTime}</p>
-    <button class="video-item__save-button button">⬇ 저장</button>
+    <button type="button" class="video-item__save-button button">⬇ 저장</button>
   </li>
 `;
 
@@ -23,5 +23,17 @@ const videoNotFoundTemplate = `
     <p class="not-found-text">다른 키워드로 검색해보세요<p/>
   <li/>
 `;
+// const videoNotFoundTemplate = `
+//   <section class="search-result search-result--no-result">
+//     <h3 hidden>검색 결과</h3>
+//     <div class="no-result">
+//       <img src="src/assets/images/not_found.png" alt="no result image" class="no-result__image">
+//       <p class="no-result__description">
+//         검색 결과가 없습니다<br />
+//         다른 키워드로 검색해보세요
+//       </p>
+//     </div>
+//   </section>
+// `;
 
 export { videoTemplate, videoSkeletonTemplate, videoNotFoundTemplate };

@@ -1,4 +1,5 @@
 import { MAX_VIDEO_COUNT, MAX_VIDEO_LIST_LENGTH } from './constants/contants.js';
+import SaveVideo from './saveVideo.js';
 import SearchVideo from './searchVideo.js';
 import {
   videoTemplate,
@@ -9,8 +10,9 @@ import { selectDom, addEvent } from './utils/selectDom.js';
 
 class RenderVideo {
   constructor() {
-    this.onLoad = true;
     this.searchVideo = new SearchVideo();
+    this.saveVideo = new SaveVideo();
+
     this.searchModalButton = selectDom('#search-modal-button');
     this.modalContainer = selectDom('.modal-container');
     this.searchForm = selectDom('#search-form');
@@ -23,6 +25,7 @@ class RenderVideo {
     addEvent(this.searchModalButton, 'click', this.onSearchModalButtonClick);
     addEvent(this.searchForm, 'submit', this.onSearchFormSubmit);
     addEvent(this.videoListContainer, 'scroll', this.onScrollVideoList);
+    addEvent(this.videoListContainer, 'click', this.onSaveButtonClick);
   }
 
   onScrollVideoList = () => {
@@ -38,8 +41,15 @@ class RenderVideo {
 
   onSearchFormSubmit = async (e) => {
     e.preventDefault();
+    this.videoListContainer.scrollTop = 0;
     this.videoListContainer.innerHTML = '';
     this.loadVideo();
+  };
+
+  onSaveButtonClick = ({ target }) => {
+    if (target.classList.contains('video-item__save-button')) {
+      this.saveVideo.setStorageVideoList(target.closest('li').dataset.videoId);
+    }
   };
 
   renderSearchVideo(searchVideo) {
