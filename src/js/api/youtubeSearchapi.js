@@ -10,7 +10,7 @@ const youtubeSearchAPI = {
   },
 
   createURL(value, pageToken) {
-    const url = new URL('dummy/youtube/v3/search', this.REDIRECT_SERVER_HOST);
+    const url = new URL('youtube/v3/search', this.REDIRECT_SERVER_HOST);
     const parameter = new URLSearchParams({
       part: 'snippet',
       maxResults: 10,

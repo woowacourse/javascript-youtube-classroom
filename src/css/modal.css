@@ -9,10 +9,6 @@
   left: 0;
 }
 
-.hide {
-  display: none;
-}
-
 .dimmer {
   position: absolute;
   width: 100%;
@@ -150,4 +146,8 @@
 
 .video-item__save-button:hover {
   background: #efefef;
+}
+
+.hide {
+  display: none;
 }

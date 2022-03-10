@@ -1,8 +1,7 @@
-import youtubeSearchAPI from '../api/YoubeSearchapi.js';
-import { getLocalStorage, setLocalStorage } from '../storage/localStorage.js';
-import { checkValidSearchInput, checkMaxStorageVolume } from '../util/validator.js';
 import template from './templates.js';
 import throttle from '../util/throttle.js';
+import SearchMachine from '../domain/SearchMachine.js';
+import { checkSavedVideo } from '../util/validator.js';
 
 class SearchModal {
   constructor() {
@@ -12,11 +11,11 @@ class SearchModal {
     this.$searchButton = document.querySelector('#search-button');
     this.$videoListContainer = document.querySelector('.video-list');
     this.$searchResult = document.querySelector('.search-result');
-    this.pageToken = null;
     this.requestAdditionalSearchResult = throttle(
       this.requestAdditionalSearchResult.bind(this),
       1000,
-    );
+    ).bind(this);
+    this.machine = new SearchMachine();
     this.bindEvent();
   }
 
@@ -40,22 +39,18 @@ class SearchModal {
   }
 
   bindEvent() {
-    this.$searchInputKeyword.addEventListener('keypress', this.searchVideo.bind(this));
-    this.$searchButton.addEventListener('click', this.searchVideo.bind(this));
-    this.$videoListContainer.addEventListener(
-      'scroll',
-      this.requestAdditionalSearchResult.bind(this),
-    );
+    this.$searchInputKeyword.addEventListener('keypress', this.submitKeywordHandler.bind(this));
+    this.$searchButton.addEventListener('click', this.submitKeywordHandler.bind(this));
     this.$videoListContainer.addEventListener('click', this.saveVideo.bind(this));
   }
 
-  searchVideo(event) {
+  submitKeywordHandler(event) {
     if ((event.type === 'keypress' && event.key === 'Enter') || event.type === 'click') {
       try {
-        this.keyword = this.$searchInputKeyword.value;
-        checkValidSearchInput(this.keyword);
+        this.$videoListContainer.addEventListener('scroll', this.requestAdditionalSearchResult);
+        this.machine.keyword = this.$searchInputKeyword.value;
         this.initVideoState();
-        this.callApi();
+        this.searchVideo();
       } catch (err) {
         alert(err);
       }
@@ -67,68 +62,52 @@ class SearchModal {
     this.$videoListContainer.replaceChildren();
     this.$searchInputKeyword.blur();
     this.$videoListContainer.classList.remove('hide');
-    this.pageToken = null;
+    this.machine.initPageToken();
   }
 
-  checkSavedVideo(id) {
-    return getLocalStorage('save').includes(id);
-  }
-
-  saveVideo(e) {
-    if (!e.target.classList.contains('video-item__save-button')) {
+  saveVideo({ target }) {
+    if (!target.classList.contains('video-item__save-button')) {
       return;
     }
     try {
-      checkMaxStorageVolume();
-      this.saveVideoToLocalStorage(e);
-      e.target.classList.add('hide');
+      const newVideo = target.closest('li').dataset.videoId;
+      this.machine.saveVideoToLocalStorage(newVideo);
+      target.classList.add('hide');
     } catch (err) {
       alert(err.message);
     }
-  }
-
-  saveVideoToLocalStorage({ target }) {
-    const savedVideos = getLocalStorage('save');
-    const newVideo = target.closest('li').dataset.videoId;
-
-    setLocalStorage('save', savedVideos.concat(newVideo));
   }
 
   requestAdditionalSearchResult() {
     const { offsetHeight, scrollHeight, scrollTop } = this.$videoListContainer;
     if (scrollTop === 0) return;
     if (offsetHeight + scrollTop >= scrollHeight) {
-      this.callApi();
+      this.searchVideo();
     }
   }
 
-  callApi() {
+  searchVideo() {
     this.renderSkeletonImage();
-    youtubeSearchAPI
-      .searchByPage(this.keyword, this.pageToken)
-      .then((data) => {
-        this.renderResult(data);
-      })
-      .catch((err) => {
-        this.renderNetworkError(err);
-      });
+    this.machine
+      .search()
+      .then((item) => this.renderResult(item))
+      .catch((err) => this.renderNetworkError(err))
+      .finally(this.removeSkeleton);
   }
 
-  renderNetworkError(e) {
-    this.removeSkeleton();
-    if (e.name === '403 Error') {
+  renderNetworkError(err) {
+    if (err.name === '403 Error') {
+      this.$videoListContainer.removeEventListener('scroll', this.requestAdditionalSearchResult);
       this.$videoListContainer.insertAdjacentHTML('beforeend', template.exceedCapacityErrorImage());
     }
   }
 
-  renderResult(data) {
-    this.removeSkeleton();
-    if (data.items.length === 0) {
+  renderResult(items) {
+    if (items.length === 0) {
       this.renderNoResultImage();
       return;
     }
-    this.pageToken = data.nextPageToken;
-    this.renderVideo(data);
+    this.renderVideo(items);
   }
 
   renderSkeletonImage() {
@@ -153,14 +132,14 @@ class SearchModal {
     this.$searchResult.classList.add('search-result--no-result');
   }
 
-  renderVideo(data) {
-    data.items.forEach((item) => {
+  renderVideo(items) {
+    items.forEach((item) => {
       const { videoId } = item.id;
       this.$videoListContainer.insertAdjacentHTML(
         'beforeend',
         template.videoItems({
           videoId,
-          isSaved: this.checkSavedVideo(videoId),
+          isSaved: checkSavedVideo(videoId),
           ...item.snippet,
         }),
       );
