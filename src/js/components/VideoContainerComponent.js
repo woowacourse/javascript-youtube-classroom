@@ -12,14 +12,21 @@ class VideoContainerComponent {
 
   #parentElement = null;
 
+  #videoContainerObserver;
+
   constructor(parentElement) {
     this.#parentElement = parentElement;
 
     this.#mount();
     this.#initDOM();
     this.#bindEventHandler();
-    /** 초기 상태 값에 따른 렌더링 수행 */
     this.#subscribeStore();
+
+    this.#videoContainerObserver = new IntersectionObserver(this.#observeEntries, {
+      root: null,
+      rootMargin: '0px',
+      threshold: 0.3,
+    });
   }
 
   wakeUp(stateValue, stateKey) {
@@ -93,12 +100,13 @@ class VideoContainerComponent {
       return;
     }
 
-    videoList
-      .slice(prevVideoListLength)
-      .forEach(
-        (video, idx, arr) =>
-          new VideoComponent(this.$videoList, { video, isLastVideo: idx === arr.length - 1 })
-      );
+    videoList.slice(prevVideoListLength).forEach(
+      (video, idx, arr) =>
+        new VideoComponent(this.$videoList, {
+          video,
+          observer: idx === arr.length - 1 ? this.#videoContainerObserver : null,
+        })
+    );
   }
 
   #generateTemplate() {
@@ -122,6 +130,15 @@ class VideoContainerComponent {
         다른 키워드로 검색해보세요
       </p>
     </div>`;
+  }
+
+  #observeEntries(entries, observer) {
+    entries.forEach((entry) => {
+      if (entry.isIntersecting) {
+        observer.unobserve(entry.target);
+        dispatch(CUSTOM_EVENT_KEY.SCROLL_VIDEO_CONTAINER);
+      }
+    });
   }
 }
 export default VideoContainerComponent;
