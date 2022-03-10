@@ -6,6 +6,7 @@ import {
   scrollToTop,
 } from '../util/util';
 import { MAX_SEARCH_RESULT } from '../constants/constants';
+import '../../assets/images/not_found.png';
 
 class View {
   constructor() {
@@ -13,6 +14,7 @@ class View {
     this.modalContainer = selectDom('.modal-container');
     this.searchInputKeyword = selectDom('#search-input-keyword');
     this.searchForm = selectDom('#search-form');
+    this.searchResult = selectDom('.search-result');
     this.videoList = selectDom('.video-list');
     this.requestMoreResult = this.#handleScrollToLastItem();
 
@@ -35,6 +37,7 @@ class View {
 
   #handleSearch = async (event) => {
     event.preventDefault();
+    this.#clearNoResult();
     scrollToTop(this.videoList);
     const { value: keyword } = this.searchInputKeyword;
     if (isBlankValue(keyword)) {
@@ -71,14 +74,25 @@ class View {
 
   #renderSearchResult(searchResultArray) {
     const skeletonList = this.videoList.querySelectorAll('.skeleton');
-    if (searchResultArray === null) {
-      removeElementList(skeletonList);
+    removeElementList(skeletonList);
+
+    if (this.#isEndOfResult(searchResultArray)) return;
+    if (this.#isNoResult(searchResultArray)) {
+      this.#renderNoResult();
       return;
     }
+
     const resultElementArray = this.#createElementFromObject(searchResultArray);
-    removeElementList(skeletonList);
     this.videoList.append(...resultElementArray);
     this.requestMoreResult.observe(this.videoList.lastChild);
+  }
+
+  #isEndOfResult(searchResultArray) {
+    return searchResultArray === null;
+  }
+
+  #isNoResult(searchResultArray) {
+    return searchResultArray.length === 0;
   }
 
   #createElementFromObject(searchResultArray) {
@@ -120,6 +134,30 @@ class View {
       <p class="line"></p>
       <p class="line"></p>
     </div>`.repeat(MAX_SEARCH_RESULT);
+  }
+
+  #renderNoResult() {
+    this.videoList.classList.add('hide');
+    this.searchResult.classList.add('search-result--no-result');
+    this.searchResult.insertAdjacentHTML(
+      'beforeend',
+      `<div class="no-result">
+        <img src="./not_found.png" alt="no result image" class="no-result__image">
+        <p class= "no-result__description">
+          검색 결과가 없습니다<br />
+          다른 키워드로 검색해보세요
+        </p>
+      </div>`
+    );
+  }
+
+  #clearNoResult() {
+    const noResult = selectDom('.no-result');
+    if (noResult) {
+      this.videoList.classList.remove('hide');
+      this.searchResult.classList.remove('search-result--no-result');
+      noResult.remove();
+    }
   }
 }
 
