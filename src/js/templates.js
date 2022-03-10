@@ -24,9 +24,9 @@ const TEMPLATE = {
       <h3 hidden>검색어 입력</h3>
       <input
         id="search-input-keyword"
-        type="text"
         placeholder="검색"
         class="search-input__keyword"
+        required
       />
       <button id="search-button" class="search-input__search-button button">검색</button>
     </form>
