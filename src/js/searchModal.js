@@ -1,8 +1,6 @@
 /* eslint-disable max-lines-per-function */
 import { $, removeChildren } from './utils/dom';
 import VideoItem from './videoItem';
-import NotFoundImage from '../assets/images/not_found.png';
-import YoutubeJSON from '../youtube-api.json';
 
 class SearchModal {
   apikey = 'AIzaSyCr0ODcPGNBRByd4pZGQucF31LpqN1zGD0';
@@ -11,9 +9,7 @@ class SearchModal {
 
   nextPageToken = null;
 
-  maxResult = 10;
-
-  testMode = false;
+  maxResultCount = 10;
 
   localStorageVideoListKey = 'local-storage-video-list-key';
 
@@ -21,19 +17,14 @@ class SearchModal {
 
   constructor() {
     this.$modal = $('.search-modal');
-    this.$input = $('#search-input-keyword', this.$modal);
+    this.$searchKeyWordInput = $('#search-input-keyword', this.$modal);
     this.$button = $('#search-button', this.$modal);
     this.$searchResult = $('.search-result');
+    this.$videoList = $('.video-list', this.$searchResult);
     this.addEvent();
   }
 
   renderVideoItems(videos) {
-    const $searchResult = $('.search-result');
-    if ($searchResult.classList.contains('search-result--no-result')) {
-      removeChildren($searchResult);
-    }
-    $searchResult.classList.remove('search-result--no-result');
-
     const videoListTemplate = videos
       .map(video => {
         return `<li class="video-item" data-video-id="${video.id}">
@@ -51,80 +42,67 @@ class SearchModal {
     const template = document.createElement('template');
     template.insertAdjacentHTML('beforeend', videoListTemplate);
 
-    const $videoList = $('.video-list', this.$modal);
     template.childNodes.forEach($el => {
       $el.addEventListener('click', this.handleClickSaveButton.bind(this));
-      $videoList.insertAdjacentElement('beforeend', $el);
+      this.$videoList.insertAdjacentElement('beforeend', $el);
     });
-    $videoList.addEventListener('scroll', this.handleScroll.bind(this));
-  }
-
-  renderNotFound() {
-    const $searchResult = $('.search-result');
-    $searchResult.classList.add('search-result--no-result');
-    removeChildren($searchResult);
-    $searchResult.insertAdjacentHTML(
-      'beforeend',
-      `<div class="no-result">
-        <img src="${NotFoundImage}" alt="no result image" class="no-result__image">
-        <p class="no-result__description">
-          검색 결과가 없습니다<br />
-          다른 키워드로 검색해보세요
-        </p>
-      </div>`
-    );
   }
 
   renderSkeletonItems(videoCount) {
-    const $videoList = $('.video-list', this.$modal);
-    const skeletonListHtmlString = [...Array(videoCount).keys()].map(() => `
-      <div class="skeleton">
-        <div class="image"></div>
-        <p class="line"></p>
-        <p class="line"></p>
-      </div>
-    `).join('');
+    const skeletonListHtmlString = [...Array(videoCount).keys()]
+      .map(
+        () => `
+          <div class="skeleton">
+            <div class="image"></div>
+            <p class="line"></p>
+            <p class="line"></p>
+          </div>
+        `
+      )
+      .join('');
 
-    $videoList.insertAdjacentHTML('beforeend', skeletonListHtmlString);
+    this.$videoList.insertAdjacentHTML('beforeend', skeletonListHtmlString);
   }
 
   addEvent() {
     this.$button.addEventListener('click', this.handleClickButton.bind(this));
+    this.$videoList.addEventListener('scroll', this.handleScroll.bind(this));
   }
 
-  async handleClickButton() {
-    const title = this.$input.value;
-    this.renderSkeletonItems(this.maxResult);
-    let jsonResult = this.testMode
-      ? await this.testRequest(this.maxResult, 0)
-      : await this.request(title);
-    this.removeSkeleton();
-    if (jsonResult === null) {
-      this.renderNotFound();
+  renderResult(searchResult) {
+    if (searchResult === null) {
+      this.$searchResult.classList.add('search-result--no-result');
       return;
     }
 
-    removeChildren($('.search-result'));
-    $('.search-result').insertAdjacentHTML(
-      'beforeend',
-      `<h3>검색 결과</h3><ul class="video-list"></ul>`
-    );
-
-    this.nextPageToken = jsonResult.nextPageToken;
-    let videos = jsonResult.items.map(item => new VideoItem(item));
+    this.$searchResult.classList.remove('search-result--no-result');
+    this.nextPageToken = searchResult.nextPageToken;
+    const videos = searchResult.items.map(item => new VideoItem(item));
     this.renderVideoItems(videos);
   }
 
+  async handleClickButton() {
+    removeChildren(this.$videoList);
+    const searchKeyWord = this.$searchKeyWordInput.value;
+    this.renderSkeletonItems(this.maxResultCount);
+    const searchResult = await this.request(searchKeyWord);
+    this.removeSkeleton();
+    this.renderResult(searchResult);
+  }
+
   async handleScroll() {
-    const title = $('#search-input-keyword').value;
-    if ($('.video-list').scrollHeight - $('.video-list').scrollTop === $('.video-list').clientHeight) {
-      this.renderSkeletonItems(this.maxResult);
-      const jsonResult = this.testMode
-        ? await this.testRequest(this.maxResult, this.nextPageToken)
-        : await this.request(title);
+    const title = this.$searchKeyWordInput.value;
+    const isScrollEnd =
+      this.$videoList.scrollHeight - this.$videoList.scrollTop === this.$videoList.clientHeight;
+    if (isScrollEnd) {
+      this.renderSkeletonItems(this.maxResultCount);
+      const jsonResult = await this.request(title);
+      this.removeSkeleton();
+      if (jsonResult === null) {
+        return;
+      }
       this.nextPageToken = jsonResult.nextPageToken;
       const videos = jsonResult.items.map(item => new VideoItem(item));
-      this.removeSkeleton();
       this.renderVideoItems(videos);
     }
   }
@@ -143,29 +121,13 @@ class SearchModal {
   }
 
   removeSkeleton() {
-    const $skeletons = document.querySelectorAll('.skeleton');
-    for (let i = 0; i < $skeletons.length; i += 1) {
-      $skeletons[i].remove();
-    }
-  }
-
-  async testRequest(count, nextPageToken) {
-    const page = parseInt(nextPageToken, 10);
-    try {
-      const json = { ...YoutubeJSON };
-      json.items = json.items.slice(page * count, (page + 1) * count);
-      json.nextPageToken = `${page + 1}`;
-      return json;
-    } catch (e) {
-      console.error(e);
-      return null;
-    }
+    [...this.$videoList.querySelectorAll('.skeleton')].forEach($el => $el.remove());
   }
 
   async request(title) {
-    let url = `${this.baseUrl}?part=snippet&type=video&maxResults=${this.maxResult}&q=${title}&pageToken=${this.nextPageToken}&key=${this.apikey}`;
+    let url = `${this.baseUrl}?part=snippet&type=video&maxResults=${this.maxResultCount}&q=${title}&pageToken=${this.nextPageToken}&key=${this.apikey}`;
     if (this.nextPageToken === null) {
-      url = `${this.baseUrl}?part=snippet&maxResults=${this.maxResult}&q=${title}&key=${this.apikey}`;
+      url = `${this.baseUrl}?part=snippet&maxResults=${this.maxResultCount}&q=${title}&key=${this.apikey}`;
     }
     try {
       const response = await fetch(url);
@@ -173,8 +135,7 @@ class SearchModal {
       if (!response.ok) {
         throw Error(response.statusText);
       }
-      console.log('json : ', json);
-      return json; // *** 응답결과
+      return json;
     } catch (e) {
       return null;
     }
