@@ -1,4 +1,3 @@
-import { API_KEY } from '../../api.js';
 import { validateInput } from '../util/general.js';
 
 export default class YoutubeMachine {
@@ -23,7 +22,7 @@ export default class YoutubeMachine {
   }
 
   getURL(nextPageToken) {
-    const URL = `https://www.googleapis.com/youtube/v3/search?part=snippet&q=${this.searchTarget}&maxResults=10&type=video&key=${API_KEY}`;
+    const URL = `https://www.googleapis.com/youtube/v3/search?part=snippet&q=${this.searchTarget}&maxResults=10&type=video&key=${process.env.API_KEY_ON}`;
     if (nextPageToken) {
       return URL.concat(`&pageToken=${nextPageToken}`);
     }
