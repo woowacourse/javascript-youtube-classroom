@@ -1,66 +1,12 @@
+// import getSearchResult from "../api/getSearchResult";
+// 테스트 케이스 오류를 막기 위해 작성해놓은 코드 입니다.
+test("", () => {});
+
 /**
- * @jest-environment jsdom
+ * 실제 API를 호출하지 않고 Mock Data를 이용하여 테스트하는 케이스는 불필요하다고 생각되는데...
+ * 리뷰어님 생각은 어떠신지 궁금하네용 😥
+ * 실제 API 통신을 테스트 할 때는 어떻게 하는지 알 수 있을까요?
  */
-
-import UserLibrary from "../UserLibrary";
-import { parsedDate, isDuplicate } from "../utils/utils";
-import getSearchResult from "../api/getSearchResult";
-import "jest-localstorage-mock";
-
-test("동영상의 Id값이 같은지 확인한다.", () => {
-  const mockData = { id: "abc" };
-  const storeData = [{ id: "abc" }];
-
-  expect(isDuplicate(mockData, storeData)).toBe(true);
-});
-
-test("UserLibrary에 영상이 저장되어야 한다.", () => {
-  const userLibrary = new UserLibrary();
-  const testData = { id: 123, title: "테스트" };
-
-  userLibrary.setData(testData);
-  expect(userLibrary.getData().includes(testData)).toBe(true);
-});
-
-test("UserLibrary 101개 이상의 동영상이 저장되면 alert을 띄운다.", () => {
-  const userLibrary = new UserLibrary();
-  const userData = Array.from({ length: 101 }, (_, index) => ({
-    id: index + 1,
-  }));
-
-  expect(() =>
-    userData.forEach(() => {
-      userLibrary.setData(userData);
-    })
-  ).toThrowError("데이터는 101개 이상 저장하실 수 없습니다.");
-});
-
-test("응답받은 날짜 데이터를 정해진 형식(YYYY년 M월 D일)으로 변경한다.", () => {
-  const rawDate = "2022-03-02T11:39:31Z";
-  const result = "2022년 3월 2일";
-
-  expect(parsedDate(rawDate)).toBe(result);
-});
-
-test("이미 저장한 비디오 아이디인지 확인한다.", () => {
-  const responseId = "kkojaeId";
-  localStorage.clear();
-
-  const userLibrary = new UserLibrary();
-  userLibrary.setData("kkojaeId");
-
-  expect(userLibrary.isSavedVideoId(responseId)).toBe(true);
-});
-
-test("이미 저장한 비디오 아이디인지 확인한다.", () => {
-  const responseId = "kkojaeId";
-  localStorage.clear();
-
-  const userLibrary = new UserLibrary();
-  userLibrary.setData("usageId");
-
-  expect(userLibrary.isSavedVideoId(responseId)).toBe(false);
-});
 
 // test("최초 검색 결과는 10개까지만 보여준다.", async () => {
 //   fetch.mockResponseOnce(

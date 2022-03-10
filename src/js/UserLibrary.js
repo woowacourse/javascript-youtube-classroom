@@ -1,3 +1,5 @@
+import ERROR_MESSAGE from "./constants/ERROR_MESSAGE";
+
 export default class UserLibrary {
   constructor() {
     this.store = JSON.parse(localStorage.getItem("videos")) || [];
@@ -9,7 +11,7 @@ export default class UserLibrary {
 
   setData(data) {
     if (this.store.length >= 100) {
-      throw new Error("데이터는 101개 이상 저장하실 수 없습니다.");
+      throw new Error(ERROR_MESSAGE.USER_STORAGE_OVERFLOW);
     }
 
     this.store = [...this.store, data];
