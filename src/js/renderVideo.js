@@ -55,16 +55,15 @@ class RenderVideo {
   };
 
   onSaveButtonClick = ({ target }) => {
-    if (
-      target.classList.contains('video-item__save-button') &&
-      this.saveVideo.saveVideoList.length < MAX_SAVE_VIDEO_COUNT
-    ) {
+    if (target.classList.contains('video-item__save-button') && this.saveVideo.saveVideoList.length < MAX_SAVE_VIDEO_COUNT) {
       this.saveVideo.setStorageVideoList(target.closest('li').dataset.videoId);
       target.textContent = '저장됨';
       target.disabled = true;
       return;
     }
-    alert(ERROR_MESSAGE.CANNOT_SAVE_VIDEO_ANYMORE);
+    if (target.classList.contains('video-item__save-button')) {
+      alert(ERROR_MESSAGE.CANNOT_SAVE_VIDEO_ANYMORE);
+    }
   };
 
   renderSearchVideo(searchVideo) {
@@ -83,8 +82,7 @@ class RenderVideo {
       'beforeend',
       searchVideo
         .map((video) =>
-          videoTemplate(video, this.saveVideo.saveVideoList.includes(video.id.videoId))
-        )
+          videoTemplate(video, this.saveVideo.saveVideoList.includes(video.id.videoId)))
         .join(' ')
     );
   }
