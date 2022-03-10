@@ -1,5 +1,6 @@
 import { STATE_STORE_KEY } from '../constants/stateStore';
 import { subscribe } from '../modules/stateStore';
+import { parseTimeStamp } from '../utils/util';
 
 class VideoComponent {
   $videoItem = null;
@@ -64,7 +65,7 @@ class VideoComponent {
       src="${thumbnail}" class="video-item__thumbnail">
     <h4 class="video-item__title">${videoTitle}</h4>
     <p class="video-item__channel-name">${channelTitle}</p>
-    <p class="video-item__published-date">${publishTime}</p>
+    <p class="video-item__published-date">${parseTimeStamp(publishTime)}</p>
     <button class="video-item__save-button button">⬇ 저장</button>
   </li>
       `;
