@@ -42,10 +42,6 @@ export const { subscribe, setState, getState } = (function () {
         notify(key);
       }
     },
-    setStateInArray(key, value) {
-      state[key] = [...state[key], ...value];
-      notify(key, NOTIFY_KEY.ADD_STATE);
-    },
     getState(key) {
       return state[key];
     },
