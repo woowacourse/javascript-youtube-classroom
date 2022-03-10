@@ -1,4 +1,4 @@
-import { ERROR_MESSAGE } from '../constants';
+import { ERROR_MESSAGE } from '../constants/errorMessage';
 import { WEB_STORE_KEY } from '../constants/webStore';
 
 export default {

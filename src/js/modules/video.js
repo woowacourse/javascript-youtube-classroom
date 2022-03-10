@@ -1,4 +1,4 @@
-import { ERROR_MESSAGE } from '../constants/index.js';
+import { ERROR_MESSAGE } from '../constants/errorMessage.js';
 import { VIDEO_PROPERTY } from '../constants/video.js';
 import { isMissingProperty } from '../utils/validation.js';
 
