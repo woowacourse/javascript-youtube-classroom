@@ -1,7 +1,6 @@
 export default class UserLibrary {
   constructor() {
     this.store = JSON.parse(localStorage.getItem("videos")) || [];
-    console.log(this.store);
   }
 
   isSavedVideoId(responseId) {

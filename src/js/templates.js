@@ -23,7 +23,7 @@ const generatorTemplate = {
     </div>
   `;
   },
-  videoItem({ id, channel, defaultThumbnail, title, date }) {
+  videoItem({ id, channel, defaultThumbnail, title, date }, userStore) {
     return `<li class="video-item" data-video-id="${id}">
     <img
     src="${defaultThumbnail}"
@@ -35,7 +35,9 @@ const generatorTemplate = {
     </h4>
     <p class="video-item__channel-name ">${channel}</p>
     <p class="video-item__published-date ">${date}</p>
-    <button class="video-item__save-button button ">
+    <button class="video-item__save-button button ${
+      userStore.includes(String(id)) ? "hide" : ""
+    } ">
       ⬇ 저장
     </button>
   </li>`;

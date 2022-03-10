@@ -101,26 +101,29 @@ export default class YoutubeApp {
         generatorTemplate.skeleton()
       );
 
-      // const responseData = {
-      //   items: mockObject(),
-      // };
+      const responseData = {
+        items: mockObject(),
+      };
 
-      const responseData = await getSearchResult(
-        this.keyword,
-        this.nextPageToken
-      );
+      // const responseData = await getSearchResult(
+      //   this.keyword,
+      //   this.nextPageToken
+      // );
 
-      this.nextPageToken = responseData.nextPageToken;
+      // this.nextPageToken = responseData.nextPageToken;
 
       const result = responseData.items
         .map((item) =>
-          generatorTemplate.videoItem({
-            id: item.id.videoId,
-            channel: item.snippet.channelTitle,
-            defaultThumbnail: item.snippet.thumbnails.high.url,
-            title: item.snippet.title,
-            date: parsedDate(item.snippet.publishTime),
-          })
+          generatorTemplate.videoItem(
+            {
+              id: item.id.videoId,
+              channel: item.snippet.channelTitle,
+              defaultThumbnail: item.snippet.thumbnails.high.url,
+              title: item.snippet.title,
+              date: parsedDate(item.snippet.publishTime),
+            },
+            this.userLibrary.getData()
+          )
         )
         .join("");
 
@@ -133,12 +136,12 @@ export default class YoutubeApp {
   };
 
   async search(keyword) {
-    this.keyword = keyword;
-    const responseData = await getSearchResult(this.keyword);
-    this.nextPageToken = responseData.nextPageToken;
-    // const responseData = {
-    //   items: mockObject(),
-    // };
+    // this.keyword = keyword;
+    // const responseData = await getSearchResult(this.keyword);
+    // this.nextPageToken = responseData.nextPageToken;
+    const responseData = {
+      items: mockObject(),
+    };
     console.log(responseData);
 
     // 검색 없음 일 경우
@@ -162,13 +165,16 @@ export default class YoutubeApp {
 
     const result = responseData.items
       .map((item) =>
-        generatorTemplate.videoItem({
-          id: item.id.videoId,
-          channel: item.snippet.channelTitle,
-          defaultThumbnail: item.snippet.thumbnails.high.url,
-          title: item.snippet.title,
-          date: parsedDate(item.snippet.publishTime),
-        })
+        generatorTemplate.videoItem(
+          {
+            id: item.id.videoId,
+            channel: item.snippet.channelTitle,
+            defaultThumbnail: item.snippet.thumbnails.high.url,
+            title: item.snippet.title,
+            date: parsedDate(item.snippet.publishTime),
+          },
+          this.userLibrary.getData()
+        )
       )
       .join("");
 
