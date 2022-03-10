@@ -23,7 +23,7 @@ class SearchModalComponent extends Component {
     this.initDOM();
     this.initChidrenComponent();
     this.bindEventHandler();
-    subscribe(STATE_STORE_KEY.IS_MODAL_SHOW, this);
+    this.subscribeStore();
   }
 
   mount() {
@@ -49,6 +49,11 @@ class SearchModalComponent extends Component {
     });
   }
 
+  subscribeStore() {
+    const initalIsModalShow = subscribe(STATE_STORE_KEY.IS_MODAL_SHOW, this);
+    this.render(initalIsModalShow);
+  }
+
   wakeUp(stateValue, stateKey) {
     this.render(stateValue);
   }
@@ -63,7 +68,7 @@ class SearchModalComponent extends Component {
 
   generateTemplate() {
     return `
-    <div class="modal-container hide">
+    <div class="modal-container">
     <div class="dimmer"></div>
     <div class="search-modal" role="dialog" aria-labelledby="search-modal-title">
       <h2 id="search-modal-title" class="search-modal__title">🔍 보고싶은 영상 찾기 🔍</h2>

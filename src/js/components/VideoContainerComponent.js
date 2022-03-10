@@ -16,8 +16,8 @@ class VideoContainerComponent extends Component {
     this.mount();
     this.initDOM();
     this.bindEventHandler();
-    subscribe(STATE_STORE_KEY.SEARCH_RESULT, this);
-    subscribe(STATE_STORE_KEY.IS_WAITING_RESPONSE, this);
+    /** 초기 상태 값에 따른 렌더링 수행 */
+    this.subscribeStore();
   }
 
   mount() {
@@ -51,6 +51,14 @@ class VideoContainerComponent extends Component {
     });
   }
 
+  subscribeStore() {
+    const initialSearchResult = subscribe(STATE_STORE_KEY.SEARCH_RESULT, this);
+    this.renderSearchResult(initialSearchResult);
+
+    const initialIsWaitingResponse = subscribe(STATE_STORE_KEY.IS_WAITING_RESPONSE, this);
+    this.renderSkeletonUI(initialIsWaitingResponse);
+  }
+
   wakeUp(stateValue, stateKey) {
     if (stateKey === STATE_STORE_KEY.IS_WAITING_RESPONSE) {
       this.renderSkeletonUI(stateValue);
@@ -65,7 +73,8 @@ class VideoContainerComponent extends Component {
       this.skeletonListComponent = new SkeletonListComponent(this.$videoList);
       return;
     }
-    this.skeletonListComponent.unmount();
+
+    this.skeletonListComponent?.unmount();
   }
 
   renderSearchResult(searchResult) {
@@ -93,8 +102,6 @@ class VideoContainerComponent extends Component {
   generateTemplate() {
     return `
     <section class="search-result">
-    <h3 hidden>검색 결과</h3>
-    <ul class="video-list"></ul>
     </section>
     `;
   }
