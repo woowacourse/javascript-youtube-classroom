@@ -13,8 +13,6 @@ class CustomElement extends HTMLElement {
   }
 
   setEvent() {}
-
-  notify() {}
 }
 
 export default CustomElement;
