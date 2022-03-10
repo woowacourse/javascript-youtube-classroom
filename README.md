@@ -11,6 +11,11 @@
   <img src="https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square"/>
 </p>
 
+## 데모 페이지
+
+[나만의유튜브]('https://yunjin-kim.github.io/javascript-youtube-classroom/')
+
+
 ## ⚙️ Before Started
 
 #### <img alt="Tip" src="https://img.shields.io/static/v1.svg?label=&message=Tip&style=flat-square&color=673ab8"> 로컬에서 서버 띄워서 손쉽게 static resources 변경 및 확인하는 방법
@@ -44,3 +49,5 @@ live-server 폴더명
 ## 📝 License
 
 This project is [MIT](https://github.com/woowacourse/javascript-youtube-classroom/blob/main/LICENSE) licensed.
+
+
