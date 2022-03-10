@@ -29,6 +29,7 @@ export default class Controller {
     this.searchResultView.showSkeleton();
     await this.video.fetchYoutubeApi(keyword);
     this.video.setVideoInfo(); // 신병 10개
+    this.video.accumulateVideoItems();
     // update -> newVideoItems (localItem{videoId} , item{},)
     this.searchResultView.renderVideo(this.video.newVideoItems);
     this.searchResultView.startObserve();
@@ -39,8 +40,8 @@ export default class Controller {
     this.searchResultView.stopObserve();
     this.searchResultView.showSkeleton();
     await this.video.fetchYoutubeApi(this.video.keyword, this.video.nextPageToken);
-    this.video.accumulateVideoItems();
     this.video.setVideoInfo();
+    this.video.accumulateVideoItems();
     // update -> newVideoItems (localItem{videoId} , item{},)
 
     this.searchResultView.renderVideo(this.video.newVideoItems);
@@ -48,11 +49,13 @@ export default class Controller {
   }
 
   #saveVideo(event) {
+    if (this.video.savedVideoItems.length >= 100) {
+      alert('저장된 영상의 개수가 100개를 초과하여 저장되지 않았습니다. 100개 이하의 영상만 저장해주세요.');
+      return;
+    }
+    this.searchResultView.changeSaveButtonStyle(event.detail.buttonElement);
     const { newSavedIdList } = event.detail;
-    console.log(newSavedIdList);
-    // ['id','id','id'] {id , ch, saved: true, like: , } <-save됐다, 좋아요
-    // id => new 10개 => render
-    //
-    // this.video.setItemLocalStorage(newSavedIdList);
+    console.log('newSavedIdList', newSavedIdList);
+    this.video.setItemsLocalStorage(newSavedIdList);
   }
 }

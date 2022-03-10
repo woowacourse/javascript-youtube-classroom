@@ -43,14 +43,11 @@ export default class SearchResultView {
   }
 
   handleSaveButton(event) {
-    console.log('event', event.target.dataset.id);
     this.newSavedIdList.push(event.target.dataset.id);
     const { newSavedIdList } = this;
+    const buttonElement = event.target;
     // 저장
-    emit(this.$searchTarget, '@save-video', { newSavedIdList });
-    console.log('this', this);
-
-    this.changeSaveButtonStyle(event.target);
+    emit(this.$searchTarget, '@save-video', { newSavedIdList, buttonElement });
   }
 
   changeSaveButtonStyle($savedButton) {
