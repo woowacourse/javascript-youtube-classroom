@@ -39,9 +39,9 @@ export default class VideoCardContainer {
 
   template() {
     const videoIds = getStorageVideoIDs(LOCALSTORAGE_KEY);
+
     return this.#state.items
-      ?.map((item) =>
-        new VideoCard(this.parentElement, { item, videoIds }).template())
+      ?.map((item) => new VideoCard(this.parentElement, { item, videoIds }).template())
       .join('');
   }
 
