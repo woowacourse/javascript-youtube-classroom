@@ -1,57 +1,37 @@
 <!DOCTYPE html>
 <html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <title>나만의 유튜브 강의실</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+  </head>
 
-<head>
-  <meta charset="UTF-8" />
-  <title>나만의 유튜브 강의실</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-</head>
-
-<body>
-  <main id="app" class="classroom-container">
-    <h1 class="classroom-container__title">👩🏻‍💻 나만의 유튜브 강의실 👨🏻‍💻</h1>
-    <nav class="nav">
-      <button id="search-modal-button" class="button nav__button">🔍 검색</button>
-    </nav>
-  </main>
-  <!-- 1 검색 버튼을 누르면 아래와 같은 검색 모달을 보여줍니다.-->
-  <div class="modal-container hide">
-    <div class="dimmer"></div>
-    <div class="search-modal" role="dialog" aria-labelledby="search-modal-title">
-      <h2 id="search-modal-title" class="search-modal__title">🔍 보고싶은 영상 찾기 🔍</h2>
-      <section class="search-input">
-        <h3 hidden>검색어 입력</h3>
-        <input id="search-input-keyword" type="text" placeholder="검색" class="search-input__keyword">
-        <button id="search-button" class="search-input__search-button button">검색</button>
-      </section>
-      <!-- 2-1 검색 결과가 있을 경우, 아래와 같은 검색 결과 목록을 보여줍니다.-->
-      <section class="search-result">
-        <h3 hidden>검색 결과</h3>
-        <ul class="video-list">
-          <!-- <li class="video-item" data-video-id="">
-            <img
-              src="https://i.ytimg.com/vi/ECfuKi5-Cfs/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLDvmIcX-TgdcH2g_Bd4AUxw6hjmvQ"
-              alt="video-item-thumbnail" class="video-item__thumbnail">
-            <h4 class="video-item__title">[Playlist] 너무 좋은데 괜찮으시겠어요?</h4>
-            <p class="video-item__channel-name">essential;</p>
-            <p class="video-item__published-date">2022년 3월 2일</p>
-            <button class="video-item__save-button button">⬇ 저장</button>
-          </li> -->
-        </ul>
-      </section>
-      <!-- 2-2 검색 결과가 없을 경우, `search-result--no-result` class를 붙이고 아래와 같은 no-result를 보여줍니다.-->
-      <!-- <section class="search-result search-result--no-result">
-        <h3 hidden>검색 결과</h3>
-        <div class="no-result">
-          <img src="./src/assets/images/not_found.png" alt="no result image" class="no-result__image">
-          <p class="no-result__description">
-            검색 결과가 없습니다<br />
-            다른 키워드로 검색해보세요
-          </p>
-        </div>
-      </section> -->
+  <body>
+    <main id="app" class="classroom-container">
+      <h1 class="classroom-container__title">👩🏻‍💻 나만의 유튜브 강의실 👨🏻‍💻</h1>
+      <nav class="nav">
+        <button id="search-modal-button" class="button nav__button">🔍 검색</button>
+      </nav>
+    </main>
+    <!-- 테스트를 위해 hide 제거 -->
+    <div class="modal-container">
+      <div class="dimmer"></div>
+      <div class="search-modal" role="dialog" aria-labelledby="search-modal-title">
+        <h2 id="search-modal-title" class="search-modal__title">🔍 보고싶은 영상 찾기 🔍</h2>
+        <section class="search-input">
+          <h3 hidden>검색어 입력</h3>
+          <input
+            id="search-input-keyword"
+            type="text"
+            placeholder="검색"
+            class="search-input__keyword"
+          />
+          <button id="search-button" class="search-input__search-button button">검색</button>
+        </section>
+        <section class="search-result">
+          <h3 hidden>검색 결과</h3>
+        </section>
+      </div>
     </div>
-  </div>
-</body>
-
+  </body>
 </html>

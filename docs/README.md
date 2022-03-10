@@ -11,8 +11,8 @@
   
 - 유튜브 검색 렌더링 기능  
   - 검색 결과가 없는 경우
-    - [ ] 결과 없음 이미지를 보여준다. (UI)
-    - [ ] 해당 이미지는 `src/images/status/not_found.png` 경로에 있다. (UI)
+    - [x] 결과 없음 이미지를 보여준다. (UI)
+    - [x] 해당 이미지는 `src/images/status/not_found.png` 경로에 있다. (UI)
 
   - 검색 결과가 있는 경우
     - [ ] 데이터를 불러오는 동안 현재 데이터를 불러오는 중임을 skeleton UI로 보여준다. (UI)

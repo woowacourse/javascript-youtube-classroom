@@ -1,7 +1,7 @@
 /* eslint-disable max-lines-per-function */
 import '../css/index.css';
 import { $ } from './util/domHelper.js';
-import { videoItemTemplate } from './util/template.js';
+import { videoListTemplate, NO_RESULT_TEMPLATE } from './util/template.js';
 
 import SearchEngine from './searchEngine.js';
 
@@ -51,11 +51,9 @@ function preprocessData(data) {
   });
 }
 
-function clearVideoList() {
-  const videoList = $('.video-list');
-  while (videoList.firstChild) {
-    videoList.removeChild(videoList.firstChild);
-  }
+function clearSearchList() {
+  const searchResult = $('.search-result');
+  searchResult.removeChild(searchResult.lastElementChild);
 }
 
 async function handleSearchVideos(e) {
@@ -65,14 +63,20 @@ async function handleSearchVideos(e) {
 
     try {
       const data = await searchEngine.searchKeyword(keyword);
+      const searchResult = $('.search-result');
+
+      clearSearchList();
+      searchResult.classList.remove('search-result--no-result');
+
+      if (data === null) {
+        searchResult.insertAdjacentHTML('beforeend', NO_RESULT_TEMPLATE);
+        searchResult.classList.add('search-result--no-result');
+
+        return;
+      }
+
       const preprocessedData = preprocessData(data);
-
-      const videoList = $('.video-list');
-
-      clearVideoList();
-      preprocessedData.forEach((datum) => {
-        videoList.insertAdjacentHTML('beforeEnd', videoItemTemplate(datum));
-      });
+      searchResult.insertAdjacentHTML('beforeend', videoListTemplate(preprocessedData));
     } catch (error) {
       alert(error);
     }

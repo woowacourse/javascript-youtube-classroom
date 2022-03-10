@@ -10,7 +10,7 @@ module.exports = {
   },
   rules: {
     'max-depth': ['error', 2],
-    'max-lines-per-function': ['error', 15],
+    'max-lines-per-function': ['error', 25],
     'no-new': 'off',
     'no-alert': 'off',
     'import/extensions': 'off',
