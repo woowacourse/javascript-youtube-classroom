@@ -1,4 +1,5 @@
 {
+  "homepage": "https://uk960214.github.io/javascript-youtube-classroom",
   "name": "my-webpack-project",
   "version": "1.0.0",
   "description": "My webpack project",
@@ -6,7 +7,9 @@
   "scripts": {
     "test": "jest --watch --no-cache",
     "build": "webpack --mode=production --node-env=production",
-    "start": "webpack serve --open"
+    "start": "webpack serve --open",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d dist"
   },
   "repository": {
     "type": "git",
@@ -18,7 +21,6 @@
   "bugs": {
     "url": "https://github.com/DomMorello/javascript-youtube-classroom/issues"
   },
-  "homepage": "https://github.com/DomMorello/javascript-youtube-classroom#readme",
   "devDependencies": {
     "@babel/core": "^7.17.5",
     "@babel/plugin-transform-modules-commonjs": "^7.16.8",
@@ -34,6 +36,7 @@
     "eslint-config-prettier": "^8.5.0",
     "eslint-plugin-import": "^2.25.4",
     "file-loader": "^6.2.0",
+    "gh-pages": "^3.2.3",
     "html-webpack-plugin": "^5.5.0",
     "jest": "^27.5.1",
     "prettier": "2.5.1",
