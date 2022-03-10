@@ -5,7 +5,7 @@ export default class StorageEngine {
 
   saveData(videoId) {
     const myVideosData = this.getData() ?? [];
-    const newVideoData = { id: videoId, isSaved: false };
+    const newVideoData = { videoId };
 
     if (myVideosData.length >= 100) return;
 

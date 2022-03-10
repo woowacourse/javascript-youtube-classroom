@@ -4,6 +4,7 @@ import { $ } from './util/domHelper.js';
 import { videoListTemplate, NO_RESULT_TEMPLATE } from './util/template.js';
 
 import SearchEngine from './searchEngine.js';
+import StorageEngine from './storageEngine.js';
 
 const searchModalButton = $('#search-modal-button');
 const modalContainer = $('.modal-container');
@@ -85,3 +86,17 @@ async function handleSearchVideos(e) {
 
 searchButton.addEventListener('click', handleSearchVideos);
 searchInputKeyword.addEventListener('keydown', handleSearchVideos);
+
+const searchResult = $('.search-result');
+
+function handleSaveVideo(e) {
+  if (e.target.classList.contains('video-item__save-button')) {
+    const storageEngine = new StorageEngine();
+    const { videoId } = e.target.closest('.video-item').dataset;
+
+    storageEngine.saveData(videoId);
+    e.target.classList.add('hide');
+  }
+}
+
+searchResult.addEventListener('click', handleSaveVideo);
