@@ -1,5 +1,4 @@
 import { MESSAGE } from '../constants';
-import { API_KEY } from '../domain/key';
 import { request } from '../domain/youtubeApi';
 import { delay } from '../utils/common';
 import { $, showExceptionSnackBar } from '../utils/dom';
@@ -22,7 +21,7 @@ export default class Search {
 
       this.result.renderSkeletonUI();
 
-      request(this.input.value, API_KEY)
+      request(this.input.value)
         .then(json => {
           this.result.renderInitialVideoList(json);
         })
