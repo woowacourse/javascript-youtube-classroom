@@ -9,3 +9,8 @@ export const NOTIFY_KEY = {
   ADD_STATE: '데이터추가',
   REPLACE_STATE: '데이터변경',
 };
+
+export const NOTIFY_KEY = {
+  ADD_STATE: '데이터추가',
+  REPLACE_STATE: '데이터변경',
+};

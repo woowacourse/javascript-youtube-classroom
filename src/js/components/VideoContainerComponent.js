@@ -1,5 +1,5 @@
 import { CUSTOM_EVENT_KEY } from '../constants/events';
-import { STATE_STORE_KEY } from '../constants/stateStore';
+import { NOTIFY_KEY, STATE_STORE_KEY } from '../constants/stateStore';
 import { dispatch } from '../modules/eventFactory';
 import { subscribe } from '../modules/stateStore';
 import { isFirstSearchByKeyword, isNullVideoList } from '../utils/validation';
