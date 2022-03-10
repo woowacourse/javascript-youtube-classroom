@@ -1,6 +1,7 @@
 import template from './templates.js';
 import throttle from '../util/throttle.js';
 import SearchMachine from '../domain/SearchMachine.js';
+import { ERROR_403, REQUEST_VIDEO_QUANTITY } from '../constant';
 
 class SearchModal {
   constructor() {
@@ -111,8 +112,7 @@ class SearchModal {
   }
 
   renderNetworkError(err) {
-    console.log(err);
-    if (err.name === '403 Error') {
+    if (err.name === ERROR_403) {
       this.scrollHandler.setError(true);
       this.$videoListContainer.insertAdjacentHTML('beforeend', template.exceedCapacityErrorImage());
     }
@@ -129,7 +129,7 @@ class SearchModal {
   renderSkeletonImage() {
     this.$videoListContainer.insertAdjacentHTML(
       'beforeend',
-      Array(10)
+      Array(REQUEST_VIDEO_QUANTITY)
         .fill()
         .map((_) => template.skeletonItem())
         .join(' '),

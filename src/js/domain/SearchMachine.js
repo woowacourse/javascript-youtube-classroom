@@ -1,4 +1,5 @@
 import youtubeSearchAPI from '../api/youtubeSearchapi.js';
+import { LOCALSTORAGE_KEY_SAVE } from '../constant/index.js';
 import { checkValidSearchInput, checkMaxStorageVolume } from '../util/validator.js';
 import { getLocalStorage, setLocalStorage } from './localStorage.js';
 import VideoFactory from './VideoFactory.js';
@@ -30,8 +31,8 @@ export default class SearchMachine {
 
   saveVideoToLocalStorage(newVideo) {
     checkMaxStorageVolume();
-    const savedVideos = getLocalStorage('save');
+    const savedVideos = getLocalStorage(LOCALSTORAGE_KEY_SAVE);
 
-    setLocalStorage('save', savedVideos.concat(newVideo));
+    setLocalStorage(LOCALSTORAGE_KEY_SAVE, savedVideos.concat(newVideo));
   }
 }
