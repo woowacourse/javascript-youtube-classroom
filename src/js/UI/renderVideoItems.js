@@ -32,20 +32,6 @@ export const resetVideoList = () => {
   $('.video-list').replaceChildren();
 };
 
-export const renderVideoItems = ({ items }) => {
-  const savedStore = store.getLocalStorage();
-  items.forEach(item => {
-    $('.video-list').insertAdjacentHTML('beforeEnd', template.videoItem(item));
-    if (savedStore) {
-      savedStore.forEach(video => {
-        if ($('.video-list').lastElementChild.dataset.videoId === video.id) {
-          $('.video-list').lastElementChild.lastElementChild.hidden = true;
-        }
-      });
-    }
-  });
-};
-
 export const renderSkeletonUI = () => {
   $('.search-result').classList.remove('search-result--no-result');
   $('.no-result').hidden = true;
@@ -58,8 +44,46 @@ export const removeSkeletonUI = () => {
   $$('.skeleton').forEach(element => element.remove());
 };
 
+const removeSavedVideoButton = () => {
+  const savedStore = store.getLocalStorage();
+  if (savedStore) {
+    savedStore.forEach(video => {
+      if ($('.video-list').lastElementChild.dataset.videoId === video.id) {
+        $('.video-list').lastElementChild.lastElementChild.hidden = true;
+      }
+    });
+  }
+};
+
+export const renderVideoItems = ({ items }) => {
+  removeSkeletonUI();
+
+  items.forEach(item => {
+    $('.video-list').insertAdjacentHTML('beforeEnd', template.videoItem(item));
+
+    removeSavedVideoButton();
+  });
+};
+
 export const renderNoResult = () => {
+  removeSkeletonUI();
   $('.search-result').classList.add('search-result--no-result');
   $('.no-result').hidden = false;
   $('.video-list').classList.add('hide');
+};
+
+export const renderSearchResult = response => {
+  response
+    .then(data => {
+      renderVideoItems(data);
+    })
+    .catch(() => {
+      renderNoResult();
+    });
+};
+
+export const renderNextSearchResult = response => {
+  response.then(data => {
+    renderVideoItems(data);
+  });
 };
