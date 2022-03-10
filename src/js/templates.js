@@ -1,4 +1,6 @@
-const generatorTemplate = {
+import { parsedDate } from "./utils/utils";
+
+const generateTemplate = {
   skeleton() {
     return `
     <li class="video-item skeleton" data-video-id="">
@@ -42,6 +44,22 @@ const generatorTemplate = {
     </button>
   </li>`;
   },
+  videoItems(responseData, userLibrary) {
+    return responseData
+      .map((item) =>
+        this.videoItem(
+          {
+            id: item.id.videoId,
+            channel: item.snippet.channelTitle,
+            defaultThumbnail: item.snippet.thumbnails.high.url,
+            title: item.snippet.title,
+            date: parsedDate(item.snippet.publishTime),
+          },
+          userLibrary.getData()
+        )
+      )
+      .join("");
+  },
 };
 
-export default generatorTemplate;
+export default generateTemplate;

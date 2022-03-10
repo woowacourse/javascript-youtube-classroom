@@ -1,153 +1,127 @@
 import getSearchResult from "./api/getSearchResult";
-import generatorTemplate from "./templates";
+import generateTemplate from "./templates";
 import notFountImage from "../assets/images/not_found.png";
-import { parsedDate } from "./utils/utils";
+import { throttle } from "./utils/utils";
+import mockObject from "./mockObject";
+import {
+  addClassList,
+  removeClassList,
+  bindEventListener,
+  findTargetDataset,
+  scrollToTop,
+  removeAllChildElements,
+  removeChildElements,
+  render,
+  totalScrollHeight,
+  currentScrollHeight,
+  removeChildElement,
+  insertImageSrc,
+} from "./utils/dom";
 
-const mockObject = () => {
-  const array = [];
-
-  for (let index = 0; index < 10; index++) {
-    array.push({
-      id: {
-        videoId: index,
-      },
-      snippet: {
-        channelTitle: "essential;",
-        thumbnails: {
-          high: {
-            url: "https://i.ytimg.com/vi/ECfuKi5-Cfs/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLDvmIcX-TgdcH2g_Bd4AUxw6hjmvQ",
-          },
-        },
-        publishTime: "2022-03-02T11:39:31Z",
-        title: "[Playlist] 너무 좋은데 괜찮으시겠어요?",
-      },
-    });
-  }
-
-  return array;
-};
+const DELAY_TIME = 300;
 
 export default class YoutubeApp {
   constructor(userLibrary) {
-    this.searchModalButton = document.querySelector("#search-modal-button");
     this.modalContainer = document.querySelector(".modal-container");
-    this.searchButton = document.querySelector("#search-button");
     this.searchResult = document.querySelector(".search-result");
     this.videoList = document.querySelector(".video-list");
-    this.searchForm = document.querySelector("#search-form");
-    this.searchInputKeyword = document.querySelector("#search-input-keyword");
 
-    this.bind();
+    this.bindEvents();
     this.userLibrary = userLibrary;
   }
 
-  bind() {
-    this.searchModalButton.addEventListener(
+  bindEvents() {
+    bindEventListener(
+      document.querySelector("#search-modal-button"),
       "click",
       this.onSubmitSearchModalButton
     );
-    this.searchButton.addEventListener("click", this.onSubmitSearchButton);
-    this.videoList.addEventListener(
-      "scroll",
-      this.throttle(this.onScrollVideoList, 300)
+    bindEventListener(
+      document.querySelector("#search-button"),
+      "click",
+      this.onSubmitSearchButton
     );
-    this.videoList.addEventListener("click", this.onClickSaveButton);
-    document
-      .querySelector(".dimmer")
-      .addEventListener("click", this.onClickDimmer);
+    bindEventListener(
+      this.videoList,
+      "scroll",
+      throttle(this.onScrollVideoList, DELAY_TIME)
+    );
+    bindEventListener(this.videoList, "click", this.onClickSaveButton);
+    bindEventListener(
+      document.querySelector(".dimmer"),
+      "click",
+      this.onClickDimmer
+    );
   }
 
   onClickDimmer = () => {
-    this.modalContainer.classList.add("hide");
+    addClassList(this.modalContainer, "hide");
   };
 
   onClickSaveButton = ({ target }) => {
     if (!target.matches(".video-item__save-button")) return;
 
-    const videoId = target.closest(".video-item").dataset.videoId;
+    const { videoId } = findTargetDataset(target, ".video-item");
     this.userLibrary.setData(videoId);
-    target.classList.add("hide");
+    addClassList(target, "hide");
   };
 
   onSubmitSearchModalButton = (e) => {
     e.preventDefault();
-    this.modalContainer.classList.remove("hide");
+    removeClassList(this.modalContainer, "hide");
   };
 
   onSubmitSearchButton = (e) => {
     e.preventDefault();
 
-    this.videoList.scrollTo({
-      top: 0,
-      behavior: "smooth",
+    scrollToTop(this.videoList);
+    removeAllChildElements(this.videoList);
+
+    render({
+      element: this.videoList,
+      position: "beforeend",
+      template: generateTemplate.skeleton(),
     });
 
-    this.videoList.innerHTML = "";
-
-    this.videoList.insertAdjacentHTML(
-      "beforeend",
-      generatorTemplate.skeleton()
-    );
-
-    this.search(this.searchInputKeyword.value);
-  };
-
-  throttle = (callback, delayTime) => {
-    let timerId;
-
-    return () => {
-      if (timerId) return;
-
-      timerId = setTimeout(() => {
-        timerId = null;
-        callback();
-      }, delayTime);
-    };
+    this.search(document.querySelector("#search-input-keyword").value);
   };
 
   onScrollVideoList = async () => {
-    // scrollHeight = clientHeight + scrollTop
     if (
-      this.videoList.scrollHeight - 40 <=
-      this.videoList.clientHeight + this.videoList.scrollTop
+      totalScrollHeight(this.videoList) > currentScrollHeight(this.videoList)
     ) {
-      this.videoList.insertAdjacentHTML(
-        "beforeend",
-        generatorTemplate.skeleton()
-      );
-
-      const responseData = {
-        items: mockObject(),
-      };
-
-      // const responseData = await getSearchResult(
-      //   this.keyword,
-      //   this.nextPageToken
-      // );
-
-      // this.nextPageToken = responseData.nextPageToken;
-
-      const result = responseData.items
-        .map((item) =>
-          generatorTemplate.videoItem(
-            {
-              id: item.id.videoId,
-              channel: item.snippet.channelTitle,
-              defaultThumbnail: item.snippet.thumbnails.high.url,
-              title: item.snippet.title,
-              date: parsedDate(item.snippet.publishTime),
-            },
-            this.userLibrary.getData()
-          )
-        )
-        .join("");
-
-      document
-        .querySelectorAll(".skeleton")
-        .forEach((element) => this.videoList.removeChild(element));
-
-      this.videoList.insertAdjacentHTML("beforeend", result);
+      return;
     }
+
+    render({
+      element: this.videoList,
+      position: "beforeend",
+      template: generateTemplate.skeleton(),
+    });
+
+    const responseData = {
+      items: mockObject(),
+    };
+
+    // const responseData = await getSearchResult(
+    //   this.keyword,
+    //   this.nextPageToken
+    // );
+
+    // this.nextPageToken = responseData.nextPageToken;
+
+    const videoItemTemplate = generateTemplate.videoItems(
+      responseData.items,
+      this.userLibrary
+    );
+
+    removeChildElements(this.videoList, document.querySelectorAll(".skeleton"));
+
+    render({
+      element: this.videoList,
+      position: "beforeend",
+      template: videoItemTemplate,
+    });
   };
 
   async search(keyword) {
@@ -157,42 +131,36 @@ export default class YoutubeApp {
     const responseData = {
       items: mockObject(),
     };
-    console.log(responseData);
 
-    // 검색 없음 일 경우
+    // 검색 결과가 없을 경우
     if (responseData.items.length === 0) {
-      this.searchResult.removeChild(this.videoList);
-      this.searchResult.classList.add("search-result--no-result");
-      this.searchResult.insertAdjacentHTML(
-        "beforeend",
-        generatorTemplate.noResult()
-      );
+      removeChildElement(this.searchResult, this.videoList);
+      addClassList(this.searchResult, "search-result--no-result");
+      render({
+        element: this.searchResult,
+        position: "beforeend",
+        template: generateTemplate.noResult(),
+      });
 
-      document.querySelector(".no-result__image").src = notFountImage;
+      insertImageSrc(
+        document.querySelector(".no-result__image"),
+        notFountImage
+      );
 
       return;
     }
 
-    const skeletons = document.querySelectorAll(".skeleton");
-    skeletons.forEach((skeleton) => {
-      this.videoList.removeChild(skeleton);
+    removeChildElements(this.videoList, document.querySelectorAll(".skeleton"));
+
+    const videoItemTemplate = generateTemplate.videoItems(
+      responseData.items,
+      this.userLibrary
+    );
+
+    render({
+      element: this.videoList,
+      position: "beforeend",
+      template: videoItemTemplate,
     });
-
-    const result = responseData.items
-      .map((item) =>
-        generatorTemplate.videoItem(
-          {
-            id: item.id.videoId,
-            channel: item.snippet.channelTitle,
-            defaultThumbnail: item.snippet.thumbnails.high.url,
-            title: item.snippet.title,
-            date: parsedDate(item.snippet.publishTime),
-          },
-          this.userLibrary.getData()
-        )
-      )
-      .join("");
-
-    this.videoList.insertAdjacentHTML("beforeend", result);
   }
 }

@@ -12,3 +12,16 @@ export const parsedDate = (rawDate) => {
     .join(" ")
     .trim();
 };
+
+export const throttle = (callback, delayTime) => {
+  let timerId;
+
+  return () => {
+    if (timerId) return;
+
+    timerId = setTimeout(() => {
+      timerId = null;
+      callback();
+    }, delayTime);
+  };
+};
