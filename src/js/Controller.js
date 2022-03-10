@@ -31,7 +31,16 @@ export default class Controller {
     this.video.setVideoInfo();
     this.video.accumulateVideoItems();
     this.video.updateNewVideoItems();
+    if (this.video.newVideoItems.length === 0) {
+      this.searchResultView.removeVideo();
+      this.searchResultView.showNotFound();
+
+      return;
+    }
+    this.searchResultView.hideNotFound();
+
     this.searchResultView.renderVideo(this.video.newVideoItems);
+
     this.searchResultView.startObserve();
   }
 
@@ -43,6 +52,9 @@ export default class Controller {
     this.video.setVideoInfo();
     this.video.accumulateVideoItems();
     this.video.updateNewVideoItems();
+    if (this.video.newVideoItems.length < 10) {
+      return;
+    }
     this.searchResultView.renderVideo(this.video.newVideoItems);
     this.searchResultView.startObserve();
   }

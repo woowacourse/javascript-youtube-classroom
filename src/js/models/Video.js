@@ -105,7 +105,7 @@ export default class Video {
 
     try {
       // const ORIGINAL_HOST = "https://www.googleapis.com"; // 기존 유튜브 API 호스트
-      const REDIRECT_SERVER_HOST = 'https://priceless-euclid-bf53ed.netlify.app/'; // my own redirect server hostname
+      const REDIRECT_SERVER_HOST = 'https://zealous-swartz-f699df.netlify.app/'; // my own redirect server hostname
 
       const url = new URL('youtube/v3/search', REDIRECT_SERVER_HOST);
       const parameters = new URLSearchParams({

@@ -5,8 +5,8 @@ export default class SearchResultView {
   constructor() {
     this.$videoList = $('.video-list');
     this.template = new Template();
-    this.$skeletonWrapper = $('.skeleton-wrapper');
     this.$searchTarget = $('#search-target');
+    this.$searchNoResult = $('#search-no-result');
 
     this.observer = new IntersectionObserver(
       (entries) => {
@@ -59,6 +59,7 @@ export default class SearchResultView {
 
   showSkeleton() {
     this.$videoList.insertAdjacentHTML('beforeend', this.template.getSkeleton());
+    console.log('show skeleton');
   }
 
   startObserve() {
@@ -67,6 +68,16 @@ export default class SearchResultView {
 
   stopObserve() {
     this.observer.unobserve(this.$videoList.lastElementChild);
+  }
+
+  showNotFound() {
+    this.$searchTarget.classList.add('hide');
+    this.$searchNoResult.classList.remove('hide');
+  }
+
+  hideNotFound() {
+    this.$searchTarget.classList.remove('hide');
+    this.$searchNoResult.classList.add('hide');
   }
 }
 class Template {
@@ -157,5 +168,20 @@ class Template {
         <button data-id="" class="video-item__save-button button"></button>
       </li>
     `.repeat(10);
+  }
+
+  getNotFound() {
+    return `
+    <section class="search-result search-result--no-result">
+        <h3 hidden>검색 결과 없음</h3>
+        <div class="no-result">
+          <img src="./src/assets/images/not_found.png" alt="no result image" class="no-result__image">
+          <p class="no-result__description">
+            검색 결과가 없습니다<br />
+            다른 키워드로 검색해보세요
+          </p>
+        </div>
+      </section>
+    `;
   }
 }

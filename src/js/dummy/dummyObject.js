@@ -348,6 +348,74 @@ const dummyObject = {
                 "liveBroadcastContent": "none",
                 "publishTime": "2021-06-02T07:46:52Z"
             }
+        },
+            {
+            "kind": "youtube#searchResult",
+            "etag": "h0gGPC9Dzr-wX2AuuFjcXOVVMvg",
+            "id": {
+                "kind": "youtube#video",
+                "videoId": "sJ14cWjrNis"
+            },
+            "snippet": {
+                "publishedAt": "2021-06-02T07:46:52Z",
+                "channelId": "UC-mOekGSesms0agFntnQang",
+                "title": "[10분 테코톡] ☕️ 체프의 브라우저 렌더링",
+                "description": "우아한테크코스의 크루들이 진행하는 10분 테크토크입니다. ‍♂️ '10분 테코톡'이란 우아한테크코스 과정을 진행하며 크루(수강생) ...",
+                "thumbnails": {
+                    "default": {
+                        "url": "https://i.ytimg.com/vi/sJ14cWjrNis/default.jpg",
+                        "width": 120,
+                        "height": 90
+                    },
+                    "medium": {
+                        "url": "https://i.ytimg.com/vi/sJ14cWjrNis/mqdefault.jpg",
+                        "width": 320,
+                        "height": 180
+                    },
+                    "high": {
+                        "url": "https://i.ytimg.com/vi/sJ14cWjrNis/hqdefault.jpg",
+                        "width": 480,
+                        "height": 360
+                    }
+                },
+                "channelTitle": "우아한Tech",
+                "liveBroadcastContent": "none",
+                "publishTime": "2021-06-02T07:46:52Z"
+            }
+        },
+                {
+            "kind": "youtube#searchResult",
+            "etag": "h0gGPC9Dzr-wX2AuuFjcXOVVMvg",
+            "id": {
+                "kind": "youtube#video",
+                "videoId": "sJ14cWjrNis"
+            },
+            "snippet": {
+                "publishedAt": "2021-06-02T07:46:52Z",
+                "channelId": "UC-mOekGSesms0agFntnQang",
+                "title": "[10분 테코톡] ☕️ 체프의 브라우저 렌더링",
+                "description": "우아한테크코스의 크루들이 진행하는 10분 테크토크입니다. ‍♂️ '10분 테코톡'이란 우아한테크코스 과정을 진행하며 크루(수강생) ...",
+                "thumbnails": {
+                    "default": {
+                        "url": "https://i.ytimg.com/vi/sJ14cWjrNis/default.jpg",
+                        "width": 120,
+                        "height": 90
+                    },
+                    "medium": {
+                        "url": "https://i.ytimg.com/vi/sJ14cWjrNis/mqdefault.jpg",
+                        "width": 320,
+                        "height": 180
+                    },
+                    "high": {
+                        "url": "https://i.ytimg.com/vi/sJ14cWjrNis/hqdefault.jpg",
+                        "width": 480,
+                        "height": 360
+                    }
+                },
+                "channelTitle": "우아한Tech",
+                "liveBroadcastContent": "none",
+                "publishTime": "2021-06-02T07:46:52Z"
+            }
         }
     ]
 }
