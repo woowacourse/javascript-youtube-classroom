@@ -15,17 +15,16 @@ class VideoItem extends CustomElement {
   }
 
   setEvent() {
-    addEvent(this, 'click', '.video-item__save-button', (e) => {
-      this.emitEvent(e, this);
-      e.target.hidden = true;
-    });
+    addEvent(this, 'click', '.video-item__save-button', (e) => this.emitEvent(e));
   }
 
-  emitEvent(e, _this) {
+  emitEvent(e) {
     e.preventDefault();
-    const videoId = JSON.parse(_this.dataset.video).id;
+    e.target.hidden = true;
 
-    emit('.video-item__save-button', '@store', { videoId, videoItem: _this }, _this);
+    const videoId = JSON.parse(this.dataset.video).id;
+
+    emit('.video-item__save-button', '@store', { videoId }, this);
   }
 
   hideSaveButton() {

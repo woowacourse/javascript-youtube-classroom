@@ -8,7 +8,7 @@ class SearchResult extends CustomElement {
   }
 
   setEvent() {
-    addEvent($('.video-list'), 'scroll', '.video-list', this.emitEvent);
+    addEvent($('.video-list'), 'scroll', '.video-list', (e) => this.emitEvent(e));
   }
 
   emitEvent(e) {
