@@ -1,3 +1,4 @@
+import storageManager from '../managers/storageManager';
 export default class VideoItem {
   constructor($element) {
     this.$element = $element;
@@ -19,9 +20,12 @@ export default class VideoItem {
       <p class="video-item__published-date ${parseData ? '' : 'skeleton'}">${
       parseData ? parseData.publishedAt : ''
     }</p>
-      <button class="video-item__save-button button ${parseData ? '' : 'skeleton'}">${
-      parseData ? '⬇ 저장' : ''
-    }</button>
+      <button data-videoid=${
+        parseData ? parseData.videoId : ''
+      } class="video-item__save-button button ${parseData ? '' : 'skeleton'} ${
+      parseData && storageManager.hasVideoID(parseData.videoId) ? 'hide' : ''
+    }"
+      >${parseData ? '⬇ 저장' : ''}</button>
     </li>
     `;
   }

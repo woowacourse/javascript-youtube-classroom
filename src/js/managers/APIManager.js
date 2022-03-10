@@ -29,7 +29,6 @@ const APIManager = {
   parsingVideoData: function (responseData) {
     try {
       this.checkResponseError(responseData);
-      console.log(responseData);
       this.pageToken = responseData.nextPageToken;
       return responseData.items.map(item => {
         return {

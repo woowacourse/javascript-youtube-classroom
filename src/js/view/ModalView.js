@@ -1,5 +1,5 @@
 import VideoItem from './VideoItem.js';
-
+import storageManager from '../managers/storageManager.js';
 export default class ModalView {
   constructor() {
     this.registerDOM();
@@ -42,6 +42,20 @@ export default class ModalView {
     });
   }
 
+  bindVideoListClickStoreButton(callback) {
+    this.$videoList.addEventListener('click', event => {
+      try {
+        if (event.target.tagName === 'BUTTON') {
+          storageManager.checkBelowMaxLength();
+          event.target.classList.add('hide');
+          callback(event.target.dataset.videoid);
+        }
+      } catch (error) {
+        alert(error.message);
+      }
+    });
+  }
+
   resetVideoList() {
     this.$searchNoResult.classList.add('hide');
     this.$videoList.classList.remove('hide');
@@ -64,7 +78,6 @@ export default class ModalView {
   }
 
   getData(parsedData) {
-    console.log(parsedData);
     this.getSkeletonTemplate();
     this.updateVideoItems(parsedData);
   }

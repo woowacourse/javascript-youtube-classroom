@@ -3,7 +3,7 @@ import MainView from '../view/MainView.js';
 import ModalView from '../view/ModalView.js';
 import APIManager from '../managers/APIManager.js';
 import validator from '../utils/validator.js';
-
+import storageManager from '../managers/storageManager.js';
 export default class EventHandler {
   constructor() {
     this.mainView = new MainView();
@@ -11,6 +11,7 @@ export default class EventHandler {
     this.setBindOnSearchButtons();
     this.setBindOnClickDimmer();
     this.setBindVideoListScroll();
+    this.setBindOnClickStoreButton();
     this.throttle = null;
   }
 
@@ -25,6 +26,10 @@ export default class EventHandler {
 
   setBindVideoListScroll() {
     this.modalView.bindVideoListScroll(this.videoListScroll.bind(this));
+  }
+
+  setBindOnClickStoreButton() {
+    this.modalView.bindVideoListClickStoreButton(this.clickStoreButton.bind(this));
   }
 
   clickModalOpenButton() {
@@ -76,5 +81,9 @@ export default class EventHandler {
       alert(err.message);
       throw new Error();
     }
+  }
+
+  clickStoreButton(videoId) {
+    storageManager.storeVideoId(videoId);
   }
 }
