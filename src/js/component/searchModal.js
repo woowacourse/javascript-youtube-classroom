@@ -57,8 +57,7 @@ class SearchModal {
         this.initVideoState();
         this.callApi();
       } catch (err) {
-        console.dir(err);
-        // alert(err);
+        alert(err);
       }
     }
   }
