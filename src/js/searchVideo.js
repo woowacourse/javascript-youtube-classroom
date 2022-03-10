@@ -4,6 +4,7 @@ import { ERROR_MESSAGE, MAX_VIDEO_COUNT } from './constants/contants.js';
 
 class SearchVideo {
   constructor() {
+    this.prevSearchKeyword = '';
     this.searchResults = [];
     this.nextPageToken = '';
   }
@@ -11,6 +12,7 @@ class SearchVideo {
   async handleSearchVideo(searchKeyword) {
     this.#validateSearchInput(searchKeyword);
     this.searchResults = [...(await this.#getYoutubeVideos(searchKeyword))];
+    this.prevSearchKeyword = searchKeyword;
   }
 
   #getYoutubeVideos = async (searchKeyword) => {
@@ -25,18 +27,19 @@ class SearchVideo {
       key: YOUTUBE_DATA_API_KEY,
     });
     url.search = params.toString();
-    const response = await fetch(url);
-    if (!response.ok) {
-      throw new Error(ERROR_MESSAGE.CANNOT_GET_YOUTUBE_VIDEO);
-    }
-    const { items, nextPageToken } = await response.json();
-    this.nextPageToken = nextPageToken;
-    return items;
-    // const items = mockDatas;
-    // return new Promise((resolve, reject) => {
-    //   resolve(items);
-    //   reject(ERROR_MESSAGE.CANNOT_GET_YOUTUBE_VIDEO);
-    // });
+    // const response = await fetch(url);
+    // if (!response.ok) {
+    //   throw new Error(ERROR_MESSAGE.CANNOT_GET_YOUTUBE_VIDEO);
+    // }
+    // const { items, nextPageToken } = await response.json();
+    // this.nextPageToken = nextPageToken;
+    // return items;
+
+    const items = mockDatas;
+    return new Promise((resolve, reject) => {
+      resolve(items);
+      reject(ERROR_MESSAGE.CANNOT_GET_YOUTUBE_VIDEO);
+    });
   };
 
   #validateSearchInput = (searchKeyword) => {

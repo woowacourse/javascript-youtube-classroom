@@ -47,9 +47,13 @@ class RenderVideo {
     this.modalContainer.classList.remove('hide');
   };
 
-  onSearchFormSubmit = async (e) => {
+  onSearchFormSubmit = (e) => {
     e.preventDefault();
     this.videoListContainer.scrollTop = 0;
+
+    if (this.searchVideo.prevSearchKeyword === this.searchInput.value.trim()) {
+      return;
+    }
     this.videoListContainer.innerHTML = '';
     this.loadVideo();
   };
@@ -95,7 +99,6 @@ class RenderVideo {
   }
 
   async loadVideo() {
-    const searchKeyword = this.searchInput.value;
     this.renderVideoSkeleton();
     const skeletonAnimationStartTime = new Date().getSeconds();
     const skeletonAnimation = async () => {
@@ -105,7 +108,7 @@ class RenderVideo {
         return;
       }
       try {
-        await this.searchVideo.handleSearchVideo(searchKeyword.trim());
+        await this.searchVideo.handleSearchVideo(this.searchInput.value.trim());
         this.renderSearchVideo(this.searchVideo.searchResults);
       } catch (error) {
         this.searchInput.value = '';
