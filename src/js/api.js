@@ -4,6 +4,7 @@ const OPTIONS = {
   part: 'snippet',
   maxResults: RULES.MAX_VIDEOS,
   order: 'date',
+  type: 'video'
 };
 
 const KEY = 'VIDEO_IDS';
