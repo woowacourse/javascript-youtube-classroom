@@ -3,19 +3,10 @@ import errorImage from '../../assets/images/eror-403-noBackground.png';
 import { convertDataToDateString } from '../util/converter.js';
 
 const template = {
-  videoItems: ({
-    videoId,
-    thumbnails: {
-      high: { url },
-    },
-    channelTitle,
-    title,
-    publishTime,
-    isSaved,
-  }) => `
-  <li class="video-item" data-video-id=${videoId}>
+  videoItems: ({ id, thumbnails, channelTitle, title, publishTime, isSaved }) => `
+  <li class="video-item" data-video-id=${id}>
     <img
-      src=${url}
+      src=${thumbnails}
       alt="video-item-thumbnail" class="video-item__thumbnail" />
     <h4 class="video-item__title">${title}</h4>
     <p class="video-item__channel-name">${channelTitle}</p>

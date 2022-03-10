@@ -1,7 +1,6 @@
 import template from './templates.js';
 import throttle from '../util/throttle.js';
 import SearchMachine from '../domain/SearchMachine.js';
-import { checkSavedVideo } from '../util/validator.js';
 
 class SearchModal {
   constructor() {
@@ -106,12 +105,13 @@ class SearchModal {
     this.renderSkeletonImage();
     this.machine
       .search()
-      .then((item) => this.renderResult(item))
+      .then((items) => this.renderResult(items))
       .catch((err) => this.renderNetworkError(err))
       .finally(this.removeSkeleton);
   }
 
   renderNetworkError(err) {
+    console.log(err);
     if (err.name === '403 Error') {
       this.scrollHandler.setError(true);
       this.$videoListContainer.insertAdjacentHTML('beforeend', template.exceedCapacityErrorImage());
@@ -150,15 +150,7 @@ class SearchModal {
 
   renderVideo(items) {
     items.forEach((item) => {
-      const { videoId } = item.id;
-      this.$videoListContainer.insertAdjacentHTML(
-        'beforeend',
-        template.videoItems({
-          videoId,
-          isSaved: checkSavedVideo(videoId),
-          ...item.snippet,
-        }),
-      );
+      this.$videoListContainer.insertAdjacentHTML('beforeend', template.videoItems(item));
     });
   }
 }
