@@ -78,6 +78,12 @@ it("이미 저장된 영상이라면 저장 버튼이 보이지 않도록 한다
   cy.get("#search-modal-button").click();
   cy.get("#search-input-keyword").type(searchKeyword);
   cy.get("#search-button").click();
+  cy.get(".video-item__save-button").eq(0).click();
 
+  cy.visit("./index.html");
+
+  cy.get("#search-modal-button").click();
+  cy.get("#search-input-keyword").type(searchKeyword);
+  cy.get("#search-button").click();
   cy.get(".video-item__save-button").eq(0).should("be.not.visible");
 });
