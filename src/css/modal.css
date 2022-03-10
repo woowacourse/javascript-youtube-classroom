@@ -139,20 +139,21 @@
     right: 0;
     width: 80px;
     height: 36px;
-    background: #F9F9F9;
+    background-color: var(--secondary-lighten);
     margin-top: 4px;
 }
 
 .video-item__save-button:hover {
-    background: #efefef;
+    background-color: var(--secondary);
 }
 
 .saved-button {
     color: white;
-    background-color: #00BCD4;
+    cursor: default;
+    background-color: var(--primary);
 }
 
 .saved-button:hover {
     color: white;
-    background-color: #00a1b6;
+    background-color: var(--primary);
 }

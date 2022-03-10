@@ -28,9 +28,8 @@ export default class Controller {
     this.video.keyword = keyword;
     this.searchResultView.showSkeleton();
     await this.video.fetchYoutubeApi(keyword);
-    this.video.setVideoInfo(); // 신병 10개
+    this.video.setVideoInfo();
     this.video.accumulateVideoItems();
-    // update -> newVideoItems (localItem{videoId} , item{},)
     this.video.updateNewVideoItems();
     this.searchResultView.renderVideo(this.video.newVideoItems);
     this.searchResultView.startObserve();
@@ -43,7 +42,6 @@ export default class Controller {
     await this.video.fetchYoutubeApi(this.video.keyword, this.video.nextPageToken);
     this.video.setVideoInfo();
     this.video.accumulateVideoItems();
-    // update -> newVideoItems (localItem{videoId} , item{},)
     this.video.updateNewVideoItems();
     this.searchResultView.renderVideo(this.video.newVideoItems);
     this.searchResultView.startObserve();

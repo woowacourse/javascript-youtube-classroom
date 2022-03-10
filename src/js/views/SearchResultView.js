@@ -35,6 +35,7 @@ export default class SearchResultView {
       $('.video-item__published-date', $item).innerText = newVideoItems[idx].publishTime;
       $('.video-item__save-button', $item).innerText = newVideoItems[idx].saved ? '저장됨' : '⬇ 저장';
       $('.video-item__save-button', $item).classList.add(newVideoItems[idx].saved ? 'saved-button' : 'button');
+      $('.video-item__save-button', $item).disabled = newVideoItems[idx].saved;
       $('.video-item__save-button', $item).addEventListener('click', this.handleSaveButton.bind(this));
       $('.video-item__save-button', $item).dataset.id = newVideoItems[idx].videoId;
     });
@@ -47,6 +48,7 @@ export default class SearchResultView {
   }
 
   changeSaveButtonStyle($savedButton) {
+    $savedButton.disabled = true;
     $savedButton.textContent = '저장됨';
     $savedButton.classList.add('saved-button');
   }
