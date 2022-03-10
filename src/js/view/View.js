@@ -1,5 +1,3 @@
-import { getSavedVideos } from '../domain/handleStorage';
-
 class View {
   constructor() {
     this.searchModalButton = document.querySelector('#search-modal-button');
@@ -16,10 +14,10 @@ class View {
     this.sendSaveRequest = () => {};
   }
 
-  attachHandler(searchHandler, loadMoreHandler, saveHandler) {
-    this.sendSearchRequest = searchHandler;
-    this.sendLoadMoreRequest = loadMoreHandler;
-    this.sendSaveRequest = saveHandler;
+  attachHandler(sendSearchRequest, sendLoadMoreRequest, sendSaveRequest) {
+    this.sendSearchRequest = sendSearchRequest;
+    this.sendLoadMoreRequest = sendLoadMoreRequest;
+    this.sendSaveRequest = sendSaveRequest;
   }
 
   #openModal = () => {
@@ -31,17 +29,13 @@ class View {
     return `${date.getFullYear()}년 ${date.getMonth() + 1}월 ${date.getDate()}일`;
   }
 
-  #isStored(videoId) {
-    return getSavedVideos()[videoId];
-  }
-
-  #videoElementTemplate({ thumbnail, title, channelTitle, publishedAt, videoId }) {
+  #videoElementTemplate({ thumbnail, title, channelTitle, publishedAt, videoId, isSaved }) {
     return `<img src="${thumbnail}" alt="video-item-thumbnail" class="video-item__thumbnail">
     <h4 class="video-item__title">${title}</h4>
     <p class="video-item__channel-name">${channelTitle}</p>
     <p class="video-item__published-date">${this.#formatDateString(publishedAt)}</p>
     <button 
-      ${this.#isStored(videoId) && 'disabled'}
+      ${isSaved && 'disabled'}
       class="video-item__save-button button"
       data-video-id="${videoId}"
     >

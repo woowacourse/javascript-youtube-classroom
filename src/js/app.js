@@ -1,8 +1,14 @@
 import View from './view/View';
-import Handler from './Handler';
+import RequestSender from './RequestSender';
+import Search from './domain/Search';
 
 const view = new View();
+const search = new Search();
 
-const handler = new Handler();
+const requestSender = new RequestSender(search);
 
-view.attachHandler(handler.searchHandler, handler.loadMoreHandler, handler.saveHandler);
+view.attachHandler(
+  requestSender.sendSearchRequest,
+  requestSender.sendLoadMoreRequest,
+  requestSender.sendSaveRequest
+);
