@@ -22,7 +22,20 @@ export const emit = (selector, eventName, detail, component = document) => {
 };
 
 export const on = (selector, eventName, handler, component = document) => {
-  const target = component.querySelector(selector);
+  const targets = component.querySelectorAll(selector);
 
-  target.addEventListener(eventName, handler);
+  targets.forEach((target) => target.addEventListener(eventName, handler));
+};
+
+export const fetchData = async (url) => {
+  try {
+    const response = await fetch(url, { method: 'GET' });
+    const body = await response.json();
+
+    if (!response.ok) throw new Error(body.error.message);
+
+    return body;
+  } catch (error) {
+    return error;
+  }
 };
