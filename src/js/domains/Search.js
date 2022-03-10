@@ -1,6 +1,6 @@
 import VideoStore from '../VideoStore';
 import { on, $ } from '../utils';
-import SEARCH_API from '../constants';
+import { SEARCH_API } from '../constants';
 
 class Search {
   constructor() {

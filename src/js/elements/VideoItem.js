@@ -1,8 +1,9 @@
-import CustomElement from '../abstract/CustomElement';
-import { addEvent, emit } from '../utils';
-import { subscribeEvents, loadVideos } from '../domains/Save';
-import TEMPLATE from '../templates';
 import VideoStore from '../VideoStore';
+import CustomElement from '../abstract/CustomElement';
+import { subscribeEvents, loadVideos } from '../domains/Save';
+import { addEvent, emit } from '../utils';
+import TEMPLATE from '../templates';
+import { VIDEO } from '../constants';
 
 class VideoItem extends CustomElement {
   render() {
@@ -10,7 +11,7 @@ class VideoItem extends CustomElement {
 
     this.innerHTML = this.template(video);
     subscribeEvents(this);
-    this.hideSaveButton();
+    this.hideSaveButtonAll();
   }
 
   template(video) {
@@ -23,14 +24,22 @@ class VideoItem extends CustomElement {
 
   emitEvent(e) {
     e.preventDefault();
-    e.target.hidden = true;
+    this.hideSaveButton(e);
 
     const videoId = this.dataset.id;
 
     emit('.video-item__save-button', '@save', { videoId }, this);
   }
 
-  hideSaveButton() {
+  hideSaveButton(e) {
+    const videos = loadVideos();
+
+    if (videos.length >= VIDEO.MAX_SAVABLE_COUNT) return;
+
+    e.target.hidden = true;
+  }
+
+  hideSaveButtonAll() {
     const videos = loadVideos();
 
     if (videos.some((video) => video.videoId === this.dataset.id)) {
