@@ -1,3 +1,4 @@
+import VideoStore from '../VideoStore';
 import { on, $ } from '../utils';
 import SEARCH_API from '../constants';
 
@@ -20,18 +21,8 @@ class Search {
 
     this.keyword = keyword;
     this.nextPageToken = videos.nextPageToken;
-    $('search-result').notify(
-      type,
-      videos.items.map((item) => {
-        return {
-          id: item.id.videoId,
-          thumbnail: encodeURI(item.snippet.thumbnails.default.url),
-          title: encodeURI(item.snippet.title),
-          channelTitle: encodeURI(item.snippet.channelTitle),
-          publishedAt: item.snippet.publishedAt,
-        };
-      })
-    );
+
+    VideoStore.instance.dispatch(type, this.preprocessor(videos));
   }
 
   // eslint-disable-next-line max-lines-per-function
@@ -52,6 +43,18 @@ class Search {
     } catch (error) {
       return error;
     }
+  }
+
+  preprocessor(videos) {
+    return videos.items.map((item) => {
+      return {
+        id: item.id.videoId,
+        thumbnail: encodeURI(item.snippet.thumbnails.default.url),
+        title: encodeURI(item.snippet.title),
+        channelTitle: encodeURI(item.snippet.channelTitle),
+        publishedAt: item.snippet.publishedAt,
+      };
+    });
   }
 }
 

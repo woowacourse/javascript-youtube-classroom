@@ -1,5 +1,3 @@
-import { $ } from './utils';
-
 class VideoStore {
   static _instance = null;
 
@@ -10,21 +8,34 @@ class VideoStore {
     return VideoStore._instance;
   }
 
-  #state = [];
+  #videos = [];
 
-  dispatch(videos) {
-    const newState = [...videos];
+  #subscribers = [];
 
-    this.#setState(newState);
-    $('search-result').partialRender(videos);
+  subscribe(element) {
+    this.#subscribers.push(element);
   }
 
-  getState() {
-    return this.#state;
+  dispatch(action, data) {
+    const newVideos = [...this.getVideos(), ...data];
+
+    this.#setVideos(newVideos);
+
+    this.#subscribers.forEach((subscriber) => {
+      subscriber.notify(action, data);
+    });
   }
 
-  #setState(newState) {
-    this.#state = newState;
+  findVideo(videoId) {
+    return this.getVideos().find((video) => video.id === videoId);
+  }
+
+  getVideos() {
+    return this.#videos;
+  }
+
+  #setVideos(newVideos) {
+    this.#videos = newVideos;
   }
 }
 

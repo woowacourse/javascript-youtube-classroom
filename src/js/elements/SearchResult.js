@@ -1,8 +1,14 @@
 import CustomElement from '../abstract/CustomElement';
 import { addEvent, emit, $, $$ } from '../utils';
 import TEMPLATE from '../templates';
+import VideoStore from '../VideoStore';
 
 class SearchResult extends CustomElement {
+  connectedCallback() {
+    super.connectedCallback();
+    this.subscribe();
+  }
+
   template() {
     return TEMPLATE.SEARCH_RESULT;
   }
@@ -18,6 +24,10 @@ class SearchResult extends CustomElement {
     if (clientHeight + scrollTop >= scrollHeight && scrollTop !== 0) {
       emit('.video-list', '@scroll', {}, this);
     }
+  }
+
+  subscribe() {
+    VideoStore.instance.subscribe(this);
   }
 
   notify(type, data) {
@@ -46,7 +56,7 @@ class SearchResult extends CustomElement {
     videos.forEach((video) => {
       $('.video-list').insertAdjacentHTML(
         'beforeend',
-        `<video-item data-video=${JSON.stringify(video)}></video-item>`
+        `<video-item data-id=${video.id}></video-item>`
       );
     });
   }
