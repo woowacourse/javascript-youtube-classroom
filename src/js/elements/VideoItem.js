@@ -1,6 +1,6 @@
 import CustomElement from '../abstract/CustomElement';
 import { addEvent, emit } from '../utils';
-import { subscribeEvents, getVideos } from '../domains/Store';
+import { subscribeEvents, loadVideos } from '../domains/Save';
 import TEMPLATE from '../templates';
 
 class VideoItem extends CustomElement {
@@ -24,11 +24,11 @@ class VideoItem extends CustomElement {
 
     const videoId = JSON.parse(this.dataset.video).id;
 
-    emit('.video-item__save-button', '@store', { videoId }, this);
+    emit('.video-item__save-button', '@save', { videoId }, this);
   }
 
   hideSaveButton() {
-    const videos = getVideos();
+    const videos = loadVideos();
 
     if (videos.some((video) => video.videoId === JSON.parse(this.dataset.video).id)) {
       this.querySelector('.video-item__save-button').hidden = true;
