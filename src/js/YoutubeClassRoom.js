@@ -17,9 +17,9 @@ export default class YoutubeClassRoom {
   }
 
   bindEvents() {
-    window.addEventListener('searchKeyword', this.onSubmitSearchKeyword.bind(this));
-    window.addEventListener('searchOnScroll', debounce(this.searchOnScroll.bind(this), 1000));
-    window.addEventListener('saveVideo', this.onClickVideoSaveButton.bind(this));
+    this.searchModalView.modal.addEventListener('searchKeyword', this.onSubmitSearchKeyword.bind(this));
+    this.searchModalView.modal.addEventListener('searchOnScroll', debounce(this.searchOnScroll.bind(this), 1000));
+    this.searchModalView.modal.addEventListener('saveVideo', this.onClickVideoSaveButton.bind(this));
   }
 
   onSubmitSearchKeyword(e) {

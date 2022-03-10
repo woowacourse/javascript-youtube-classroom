@@ -20,6 +20,13 @@ export default class SearchVideoManager {
     return this.#isLastPage;
   }
 
+  search(newKeyword = this.keyword) {
+    if (newKeyword !== this.keyword) {
+      this.resetNextPageToken();
+    }
+    return this.fetchYoutubeData(newKeyword).then((data) => this.processVideoData(data));
+  }
+
   resetNextPageToken() {
     this.nextPageToken = '';
     this.#isLastPage = false;
@@ -30,32 +37,24 @@ export default class SearchVideoManager {
       this.nextPageToken
         ? `${DUMMY_YOUTUBE_API_ENDPOINT(keyword)}&pageToken=${this.nextPageToken}`
         : DUMMY_YOUTUBE_API_ENDPOINT(keyword)
-    )
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error(response.status);
-        }
-        return response.json();
-      })
-      .then((result) => {
-        console.log(result);
-        this.keyword = keyword;
-        if (!result.nextPageToken) this.#isLastPage = true;
-        this.nextPageToken = result.nextPageToken;
-        return result.items.map((item) => ({
-          id: item.id.videoId,
-          thumbnail: item.snippet.thumbnails.medium.url,
-          title: item.snippet.title,
-          channelName: item.snippet.channelTitle,
-          publishedDate: item.snippet.publishedAt,
-        }));
-      });
+    ).then((response) => {
+      if (!response.ok) {
+        throw new Error(response.status);
+      }
+      this.keyword = keyword;
+      return response.json();
+    });
   }
 
-  search(newKeyword = this.keyword) {
-    if (newKeyword !== this.keyword) {
-      this.resetNextPageToken();
-    }
-    return this.fetchYoutubeData(newKeyword);
+  processVideoData(result) {
+    if (!result.nextPageToken) this.#isLastPage = true;
+    this.nextPageToken = result.nextPageToken;
+    return result.items.map((item) => ({
+      id: item.id.videoId,
+      thumbnail: item.snippet.thumbnails.medium.url,
+      title: item.snippet.title,
+      channelName: item.snippet.channelTitle,
+      publishedDate: item.snippet.publishedAt,
+    }));
   }
 }

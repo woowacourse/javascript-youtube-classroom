@@ -17,7 +17,7 @@ export default class SearchResultView {
     const searchOnScrollEvent = new CustomEvent('searchOnScroll', {
       detail: { scrollTop, clientHeight, scrollHeight },
     });
-    window.dispatchEvent(searchOnScrollEvent);
+    $('#search-modal').dispatchEvent(searchOnScrollEvent);
   }
 
   onClickVideoSaveButton({ target }) {
@@ -25,7 +25,7 @@ export default class SearchResultView {
       const saveVideoEvent = new CustomEvent('saveVideo', {
         detail: { target },
       });
-      window.dispatchEvent(saveVideoEvent);
+      $('#search-modal').dispatchEvent(saveVideoEvent);
     }
   }
 

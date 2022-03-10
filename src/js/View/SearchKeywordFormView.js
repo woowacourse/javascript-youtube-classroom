@@ -12,10 +12,9 @@ export default class SearchKeywordFormView {
   onSubmitSearchForm(e) {
     e.preventDefault();
     const keyword = $('#search-input-keyword').value;
-
     const searchKeywordEvent = new CustomEvent('searchKeyword', {
       detail: { keyword },
     });
-    window.dispatchEvent(searchKeywordEvent);
+    $('#search-modal').dispatchEvent(searchKeywordEvent);
   }
 }
