@@ -5,6 +5,15 @@
     "eslint-config-prettier": "^8.5.0",
     "eslint-plugin-html": "^6.2.0",
     "eslint-plugin-import": "^2.25.4",
+    "jest": "^27.5.1",
     "prettier": "2.5.1"
+  },
+  "dependencies": {
+    "@babel/core": "^7.17.5",
+    "@babel/preset-env": "^7.16.11",
+    "babel-jest": "^27.5.1"
+  },
+  "scripts": {
+    "test": "jest --watch --no-cache"
   }
 }
