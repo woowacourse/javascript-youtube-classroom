@@ -6,8 +6,6 @@ export default class SearchEngine {
 
     const response = await fetch(BASE_URL);
 
-    console.log('response', response);
-
     if (response.ok) {
       const json = await response.json();
       return json.items;

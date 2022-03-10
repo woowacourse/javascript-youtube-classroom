@@ -9,7 +9,7 @@ module.exports = {
     sourceType: 'module',
   },
   rules: {
-    'max-depth': ['error', 1],
+    'max-depth': ['error', 2],
     'max-lines-per-function': ['error', 15],
     'no-new': 'off',
     'no-alert': 'off',
