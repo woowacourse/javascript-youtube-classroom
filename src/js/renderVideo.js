@@ -20,9 +20,10 @@ class RenderVideo {
 
     this.searchModalButton = selectDom('#search-modal-button');
     this.modalContainer = selectDom('.modal-container');
-    this.searchForm = selectDom('#search-form');
+    this.searchForm = selectDom('#search-form', this.modalContainer);
     this.searchInput = selectDom('#search-input-keyword', this.searchForm);
-    this.videoListContainer = selectDom('.video-list');
+    this.videoListContainer = selectDom('.video-list', this.modalContainer);
+    this.searchResultSection = selectDom('.search-result', this.modalContainer);
     this.addEvents();
   }
 
@@ -59,7 +60,10 @@ class RenderVideo {
   };
 
   onSaveButtonClick = ({ target }) => {
-    if (target.classList.contains('video-item__save-button') && this.saveVideo.saveVideoList.length < MAX_SAVE_VIDEO_COUNT) {
+    if (
+      target.classList.contains('video-item__save-button') &&
+      this.saveVideo.saveVideoList.length < MAX_SAVE_VIDEO_COUNT
+    ) {
       this.saveVideo.setStorageVideoList(target.closest('li').dataset.videoId);
       target.textContent = '저장됨';
       target.disabled = true;

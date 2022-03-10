@@ -1,3 +1,5 @@
+import notFoundImage from '../../assets/images/not_found.png';
+
 const videoTemplate = ({ id: { videoId }, snippet: { title, channelTitle, publishTime, thumbnails: { default: { url } } } }, isSaved) => `
   <li class="video-item" data-video-id="${videoId}"> 
     <img src="${url}" alt="video-item-thumbnail" class="video-item__thumbnail" />
@@ -17,23 +19,16 @@ const videoSkeletonTemplate = `
 `;
 
 const videoNotFoundTemplate = `
-  <li class="not-found-container">
-    <img src="src/assets/images/not_found.png" class="not-found-image"/>
-    <p class="not-found-text">검색 결과가 없습니다<p/>
-    <p class="not-found-text">다른 키워드로 검색해보세요<p/>
-  <li/>
+  <section class="search-result search-result--no-result">
+    <h3 hidden>검색 결과</h3>
+    <div class="no-result">
+      <img src="${notFoundImage}" alt="no result image" class="no-result__image">
+      <p class="no-result__description">
+        검색 결과가 없습니다<br />
+        다른 키워드로 검색해보세요
+      </p>
+    </div>
+  </section>
 `;
-// const videoNotFoundTemplate = `
-//   <section class="search-result search-result--no-result">
-//     <h3 hidden>검색 결과</h3>
-//     <div class="no-result">
-//       <img src="src/assets/images/not_found.png" alt="no result image" class="no-result__image">
-//       <p class="no-result__description">
-//         검색 결과가 없습니다<br />
-//         다른 키워드로 검색해보세요
-//       </p>
-//     </div>
-//   </section>
-// `;
 
 export { videoTemplate, videoSkeletonTemplate, videoNotFoundTemplate };
