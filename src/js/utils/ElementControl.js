@@ -21,7 +21,7 @@ export const onObserveElement = ($element, handler) => {
       }
     },
     {
-      threshold: 1.0,
+      threshold: 0.5,
     },
   );
   scrollObserver.observe($element);

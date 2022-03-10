@@ -25,6 +25,9 @@ class YoutubeSearchStore extends Store {
           error: false,
         });
       },
+      [ACTION_TYPE.UPDATE_SEARCH_LOADING_STATUS]: () => {
+        this.setState({ ...this.state, isLoading: true });
+      },
       [ACTION_TYPE.UPDATE_SEARCH_RESULT]: async () => {
         if (this.state.nextPageToken === undefined) return; // 분리하기
 

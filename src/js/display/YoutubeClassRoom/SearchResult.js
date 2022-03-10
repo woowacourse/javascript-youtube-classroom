@@ -33,6 +33,7 @@ export default class SearchResult extends Display {
 
   bindEvents() {
     onObserveElement(this.$scrollObserver, () => {
+      YoutubeSearchStore.dispatch(ACTION_TYPE.UPDATE_SEARCH_LOADING_STATUS);
       YoutubeSearchStore.dispatch(ACTION_TYPE.UPDATE_SEARCH_RESULT);
     });
     this.addEvent('click', '.video-item__save-button', this.handleToggleSaveButton.bind(this));
@@ -68,20 +69,21 @@ export default class SearchResult extends Display {
       return;
     }
 
+    if (items.length === 0 && isLoaded === true) {
+      this.$videoList.append(this.drawResultNotFound());
+      return;
+    }
+
     const $fragment = document.createDocumentFragment();
+    if (items.length !== 0 && isLoaded === true) {
+      $fragment.append(...this.drawVideoList(items));
+    }
+
     if (isLoading === true) {
       $fragment.append(...this.$skeleton);
     }
 
-    if (items.length !== 0 && isLoaded === true) {
-      $fragment.append(...this.drawVideoList(items));
-      $fragment.append(this.$scrollObserver);
-    }
-
-    if (items.length === 0 && isLoaded === true) {
-      $fragment.append(this.drawResultNotFound());
-    }
-
+    $fragment.append(this.$scrollObserver);
     this.$videoList.append($fragment);
   }
 
