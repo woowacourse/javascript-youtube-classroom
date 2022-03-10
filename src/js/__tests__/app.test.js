@@ -42,6 +42,26 @@ test("응답받은 날짜 데이터를 정해진 형식(YYYY년 M월 D일)으로
   expect(parsedDate(rawDate)).toBe(result);
 });
 
+test("이미 저장한 비디오 아이디인지 확인한다.", () => {
+  const responseId = "kkojaeId";
+  localStorage.clear();
+
+  const userLibrary = new UserLibrary();
+  userLibrary.setData("kkojaeId");
+
+  expect(userLibrary.isSavedVideoId(responseId)).toBe(true);
+});
+
+test("이미 저장한 비디오 아이디인지 확인한다.", () => {
+  const responseId = "kkojaeId";
+  localStorage.clear();
+
+  const userLibrary = new UserLibrary();
+  userLibrary.setData("usageId");
+
+  expect(userLibrary.isSavedVideoId(responseId)).toBe(false);
+});
+
 // test("최초 검색 결과는 10개까지만 보여준다.", async () => {
 //   fetch.mockResponseOnce(
 //     JSON.stringify([
