@@ -2,6 +2,7 @@ import { $ } from '@Utils/Dom';
 import { onEnableButton } from '@Utils/ElementControl';
 import Display from '@Core/Display';
 import YoutubeSearchStore from '@Domain/YoutubeSearchStore';
+import { isEmptyString, isSameKeyword } from '@Utils/Validator';
 
 export default class SearchForm extends Display {
   setContainer() {
@@ -21,14 +22,23 @@ export default class SearchForm extends Display {
   }
 
   handleSubmitForm() {
-    const keyword = $('#search-input-keyword', this.container).value;
-    const { isLoading } = YoutubeSearchStore.getState();
+    const newKeyword = $('#search-input-keyword', this.container).value;
+    const { isLoading, keyword: beforeKeyword } = YoutubeSearchStore.getState();
+
+    if (isEmptyString(newKeyword)) {
+      alert('검색어를 입력해주세요.');
+      return;
+    }
+
+    if (isSameKeyword(beforeKeyword, newKeyword)) {
+      return;
+    }
 
     if (isLoading) {
       return;
     }
 
-    YoutubeSearchStore.dispatch('UPDATE_SEARCH_KEYWORD', keyword);
+    YoutubeSearchStore.dispatch('UPDATE_SEARCH_KEYWORD', newKeyword);
     YoutubeSearchStore.dispatch('UPDATE_SEARCH_RESULT');
   }
 }

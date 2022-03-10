@@ -11,7 +11,7 @@ class YoutubeSearchStore extends Store {
     error: '',
   };
 
-  reducer(type, data) {
+  dispatch(type, data) {
     const stateByType = {
       UPDATE_SEARCH_KEYWORD: () => {
         this.setState({

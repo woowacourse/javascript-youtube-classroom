@@ -19,13 +19,9 @@ export default class Store {
     this.subscribers.forEach(subscriber => subscriber(this.state));
   }
 
-  dispatch(type, data) {
-    this.reducer(type, data);
-  }
+  dispatch(type, data) {}
 
   addSubscriber(subscriber) {
     this.subscribers.push(subscriber);
   }
-
-  reducer(type, data) {}
 }
