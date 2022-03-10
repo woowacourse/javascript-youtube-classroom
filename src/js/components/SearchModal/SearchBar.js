@@ -1,6 +1,7 @@
 import Component from '../../core/Component.js';
 import { rootStore } from '../../store/rootStore.js';
 import { searchVideos } from '../../api/api.js';
+import { webStore } from '../../store/WebStore.js';
 
 export default class SearchBar extends Component {
   template() {
@@ -27,7 +28,7 @@ export default class SearchBar extends Component {
 
   setEvent() {
     this.addEvent('submit', '#search-form', async (e) => {
-      const savedVideos = Component.webStore.load();
+      const savedVideos = webStore.load();
       const { items, nextPageToken } = await searchVideos(
         e.target.elements.searchInput.value
       );

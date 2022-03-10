@@ -2,6 +2,7 @@ import Component from '../../core/Component.js';
 import VideoCard from './VideoCard.js';
 import { rootStore } from '../../store/rootStore.js';
 import { searchVideos } from '../../api/api.js';
+import { webStore } from '../../store/WebStore.js';
 
 export default class VideoCardList extends Component {
   setup() {
@@ -90,7 +91,7 @@ export default class VideoCardList extends Component {
     });
 
     // 로딩이 끝난 후 로딩 된 요소들을 원하는 프로퍼티를 가진 객체로 매핑
-    const savedVideos = Component.webStore.load();
+    const savedVideos = webStore.load();
 
     return data.items.map((item) => {
       return {
