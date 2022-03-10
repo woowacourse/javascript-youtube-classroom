@@ -77,6 +77,13 @@ export default class YoutubeApp {
   onSubmitSearchButton = (e) => {
     e.preventDefault();
 
+    this.videoList.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
+
+    this.videoList.innerHTML = "";
+
     this.videoList.insertAdjacentHTML(
       "beforeend",
       generatorTemplate.skeleton()
