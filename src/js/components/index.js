@@ -27,14 +27,12 @@ class AppComponent extends Component {
   }
 
   initDOM() {
-    // 2. 엘리먼트를 멤버화한다.
     this.$searchModalButton = document.querySelector('#search-modal-button');
   }
 
   initChildrenComponent() {
     this.searchModalComponent = new SearchModalComponent({
       parentElement: this.parentElement,
-      state: {},
       handlers: {
         onClickOutsideModal: this.onClickOutsideModal,
         onSubmitSearchKeyword: this.onSubmitSearchKeyword,

@@ -22,7 +22,6 @@ class VideoContainerComponent extends Component {
 
   initDOM() {
     this.$videoList = document.querySelector('.video-list');
-    // 초기 상태를 그린다.
   }
 
   bindEventHandler({ onClickSaveButton }) {
