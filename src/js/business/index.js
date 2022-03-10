@@ -2,12 +2,13 @@ import { STATE_STORE_KEY } from '../constants/stateStore';
 import { getState, setState } from '../modules/stateStore';
 import { youtubeAPIFetcher } from '../modules/fetcher';
 import { isEmptyKeyword, isNoneSearchResult } from '../utils/validation';
-import { findVideoInVideoList, parserVideos } from '../utils/util';
+import { parserVideos } from '../utils/util';
 import Video from '../modules/video';
 import { API_PATHS } from '../constants/fetcher';
 import webStore from '../modules/webStore';
 import { bind } from '../modules/eventFactory';
 import { CUSTOM_EVENT_KEY } from '../constants/events';
+import { WEB_STORE_KEY } from '../constants/webStore';
 class AppBusiness {
   constructor() {
     bind(CUSTOM_EVENT_KEY.CLICK_SEARCH_MODAL_BUTTON, this.onClickSearchModalButton);
@@ -97,12 +98,9 @@ class AppBusiness {
   };
 
   onClickSaveButton = ({ detail: { saveVideoId } }) => {
-    const { videoList } = getState(STATE_STORE_KEY.SEARCH_RESULT);
-
-    const saveVideo = findVideoInVideoList(videoList, saveVideoId);
-
     try {
-      webStore.setSavedVideoList(saveVideo.getVideoInfo());
+      webStore.setSavedVideoList(saveVideoId);
+      setState(STATE_STORE_KEY.SAVED_VIDEO, webStore.getData(WEB_STORE_KEY.SAVED_VIDEO_LIST_KEY));
     } catch ({ message }) {
       alert(message);
     }

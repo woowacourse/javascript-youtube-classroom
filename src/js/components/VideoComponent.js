@@ -1,5 +1,7 @@
 import { CUSTOM_EVENT_KEY } from '../constants/events';
+import { STATE_STORE_KEY } from '../constants/stateStore';
 import { dispatch } from '../modules/eventFactory';
+import { subscribe } from '../modules/stateStore';
 import Component from './Component';
 const observeOpt = {
   root: null,
@@ -22,30 +24,58 @@ const io = new IntersectionObserver(callback, observeOpt);
 class VideoComponent extends Component {
   $videoItem = null;
 
+  $saveButton;
+
   constructor(parentElement, props) {
     super(parentElement);
-    const { isLastVideo } = props;
+    this.props = props;
+    this.mount();
+    this.initDOM();
+    this.subscribeStore();
 
-    this.mount(props);
-    this.initDOM(props);
-
-    if (isLastVideo) {
+    if (this.props.isLastVideo) {
       io.observe(this.$videoItem);
     }
   }
 
-  mount({ video }) {
+  mount() {
+    const { video } = this.props;
     const template = this.generateTemplate(video);
     this.parentElement.insertAdjacentHTML('beforeend', template);
   }
 
-  initDOM({ video }) {
+  initDOM() {
+    const { video } = this.props;
+
     const { videoId } = video.getVideoInfo();
 
     this.$videoItem = this.parentElement.querySelector(`[data-video-id="${videoId}"]`);
+    this.$saveButton = this.$videoItem.querySelector('.video-item__save-button.button');
   }
 
-  generateTemplate(video) {
+  subscribeStore() {
+    const initialSavedVideo = subscribe(STATE_STORE_KEY.SAVED_VIDEO, this);
+
+    this.render(initialSavedVideo);
+  }
+
+  wakeUp(stateValue, stateKey) {
+    this.render(stateValue);
+  }
+
+  render(savedVideo) {
+    const { video } = this.props;
+
+    const { videoId } = video.getVideoInfo();
+
+    if (savedVideo.includes(videoId)) {
+      this.$saveButton.setAttribute('hidden', true);
+    }
+  }
+
+  generateTemplate() {
+    const { video } = this.props;
+
     const { videoId, videoTitle, channelTitle, publishTime, thumbnail } = video.getVideoInfo();
 
     return `
