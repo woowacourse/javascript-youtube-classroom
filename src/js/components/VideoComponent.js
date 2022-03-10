@@ -20,37 +20,32 @@ const callback = (en, obs) => {
 const io = new IntersectionObserver(callback, observeOpt);
 
 class VideoComponent extends Component {
-  // props
-  state = null;
-
   $videoItem = null;
 
-  constructor(parentElement, state) {
+  constructor(parentElement, props) {
     super(parentElement);
+    const { isLastVideo } = props;
 
-    this.state = state;
-    this.mount();
-    this.initDOM();
+    this.mount(props);
+    this.initDOM(props);
 
-    if (this.state.isLastVideo) {
+    if (isLastVideo) {
       io.observe(this.$videoItem);
     }
   }
 
-  mount() {
-    const template = this.generateTemplate();
+  mount({ video }) {
+    const template = this.generateTemplate(video);
     this.parentElement.insertAdjacentHTML('beforeend', template);
   }
 
-  initDOM() {
-    const { video } = this.state;
+  initDOM({ video }) {
     const { videoId } = video.getVideoInfo();
 
     this.$videoItem = this.parentElement.querySelector(`[data-video-id="${videoId}"]`);
   }
 
-  generateTemplate() {
-    const { video } = this.state;
+  generateTemplate(video) {
     const { videoId, videoTitle, channelTitle, publishTime, thumbnail } = video.getVideoInfo();
 
     return `
