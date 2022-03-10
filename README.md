@@ -13,7 +13,7 @@
 
 ## 데모 페이지
 
-[나만의유튜브]('https://yunjin-kim.github.io/javascript-youtube-classroom/')
+(나만의유튜브)['https://yunjin-kim.github.io/javascript-youtube-classroom/']
 
 
 ## ⚙️ Before Started
