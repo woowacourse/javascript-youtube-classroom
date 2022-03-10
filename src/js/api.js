@@ -1,6 +1,6 @@
 const request = async (url, option) => {
   const response = await fetch(url, option);
-  if (response.ok === false) throw new Error('Server Error');
+  if (response.ok === false) throw new Error('서버 오류');
   const data = await response.json();
 
   return data;
@@ -18,9 +18,8 @@ export const requestYoutubeSearch = async (keyword = '', nextPageToken = '') => 
         method: 'GET',
       },
     );
-    console.log(response);
     return response;
   } catch (error) {
-    console.log(error.message);
+    return { error: true };
   }
 };

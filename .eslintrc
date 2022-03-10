@@ -22,6 +22,7 @@
         "no-unused-expressions":"off",
         "implicit-arrow-linebreak":"off",
         "function-paren-newline":"off",
-        "no-return-assign":"off"
+        "no-return-assign":"off",
+        "object-curly-newline":"off"
     }
 }

@@ -21,21 +21,24 @@ class YoutubeSearchStore extends Store {
           isLoaded: false,
           items: [],
           nextPageToken: '',
+          error: false,
         });
       },
       UPDATE_SEARCH_RESULT: async () => {
         if (this.state.nextPageToken === undefined) return; // 분리하기
 
-        const { items, nextPageToken } = await requestYoutubeSearch(
-          this.state.searchKeyword,
-          this.state.nextPageToken,
-        );
+        const {
+          items = [],
+          nextPageToken = '',
+          error = false,
+        } = await requestYoutubeSearch(this.state.searchKeyword, this.state.nextPageToken);
 
         this.setState({
           ...this.state,
           isLoading: false,
           isLoaded: true,
           items: [...this.state.items, ...items],
+          error,
           nextPageToken,
         });
       },

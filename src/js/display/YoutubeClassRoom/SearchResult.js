@@ -60,10 +60,16 @@ export default class SearchResult extends Display {
     $target.textContent = '🗑 저장 취소';
   }
 
-  render({ isLoading, isLoaded, items }) {
+  render({ isLoading, isLoaded, items, error }) {
+    this.$videoList.innerHTML = '';
+
+    if (error === true) {
+      this.$videoList.append(this.drawResultServerError());
+      return;
+    }
+
     const $fragment = document.createDocumentFragment();
 
-    this.$videoList.innerHTML = '';
     if (isLoading === true) {
       $fragment.append(...this.$skeleton);
     }
@@ -89,6 +95,20 @@ export default class SearchResult extends Display {
         <p class="no-result__description">
           검색 결과가 없습니다<br />
           다른 키워드로 검색해보세요
+        </p>
+      `,
+    });
+  }
+
+  drawResultServerError() {
+    return createElement('DIV', {
+      className: 'no-result',
+      src: notFoundImage,
+      innerHTML: `
+        <img src="${notFoundImage}" alt="no result image" class="no-result__image">
+        <p class="no-result__description">
+          서버에서 오류가 발생하였습니다.<br />
+          잠시 후 다시 시도해주세요.
         </p>
       `,
     });
