@@ -1,45 +1,22 @@
-import videoTemplate from './videoTemplate.js';
 import YoutubeAPI from './YoutubeAPI/index.js';
 import ValidationError from './ValidationError/index.js';
-import { SELECTOR } from './constants/index.js';
-import { $ } from './utils/index.js';
 import { checkKeyword } from './Validator/index.js';
-
-$(SELECTOR.SEARCH_MODAL_BUTTON).addEventListener('click', () => {
-  $(SELECTOR.SEARCH_MODAL).classList.remove('hide');
-});
-
-const closeModal = () => $(SELECTOR.SEARCH_MODAL).classList.add('hide');
-
-$(SELECTOR.MODAL_BACKGROUND).addEventListener('click', closeModal);
-
-document.addEventListener('keyup', (e) => {
-  if (e.key === 'Escape') {
-    closeModal();
-  }
-});
+import searchModalView from './views/searchModal.js';
+import classRoomView from './views/classRoomView.js';
 
 const youtubeAPI = new YoutubeAPI();
 
-$(SELECTOR.SEARCH_FORM).addEventListener('submit', async (e) => {
-  e.preventDefault();
-
+const handleKeywordInputSubmit = async (keyword) => {
   try {
-    const keyword = $(SELECTOR.SEARCH_INPUT_KEYWORD).value;
-
     checkKeyword(keyword);
-
     const videos = await youtubeAPI.search(keyword);
-    $(SELECTOR.VIDEOS).insertAdjacentHTML(
-      'beforeend',
-      videos.map(({ id, snippet }) => videoTemplate(id, snippet)).join('')
-    );
+    searchModalView.appendVideos(videos);
   } catch (error) {
-    if (error instanceof ValidationError) {
-      alert(error.message);
-      return;
-    }
-
+    if (error instanceof ValidationError) return alert(error.message);
     throw error;
   }
-});
+};
+
+classRoomView.launchOpenModal();
+searchModalView.launchCloseModal();
+searchModalView.bindKeywordInputSubmit(handleKeywordInputSubmit);
