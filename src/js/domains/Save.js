@@ -5,7 +5,7 @@ export function loadVideos() {
   return localStorage.getItem('videos') ? JSON.parse(localStorage.getItem('videos')) : [];
 }
 
-function saveVideo(videoId) {
+export function saveVideo(videoId) {
   try {
     const videos = loadVideos();
 
