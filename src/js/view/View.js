@@ -1,4 +1,4 @@
-import { getSavedVideos } from '../util/storage';
+import { getSavedVideos } from '../domain/handleStorage';
 
 class View {
   constructor() {
@@ -60,8 +60,12 @@ class View {
   };
 
   #handleVideoSaveClick = (event) => {
-    this.sendSaveRequest(event.target.dataset.videoId);
-    event.target.disabled = true;
+    try {
+      this.sendSaveRequest(event.target.dataset.videoId);
+      event.target.disabled = true;
+    } catch (error) {
+      alert(error.message);
+    }
   };
 
   #getNewObserver() {

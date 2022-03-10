@@ -1,5 +1,5 @@
 import handleSearchRequest from './domain/handleSearchRequest';
-import { setSavedVideos } from './util/storage';
+import { getSavedVideos, setSavedVideos } from './domain/handleStorage';
 
 class Handler {
   constructor() {
@@ -25,6 +25,9 @@ class Handler {
   };
 
   saveHandler = (id) => {
+    if (Object.keys(getSavedVideos(id)).length >= 6) {
+      throw new Error('저장된 비디오의 개수가 100개를 초과했습니다.');
+    }
     setSavedVideos(id);
   };
 }
