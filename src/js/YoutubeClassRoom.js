@@ -57,17 +57,36 @@ export default class YoutubeClassRoom {
 
   searchOnSubmitKeyword(keyword) {
     this.searchModalView.updateOnKeywordSearchLoading();
-    this.searchVideoManager.search(keyword).then((videos) => {
-      const checkedVideos = videos.map((video) => ({ ...video, saved: this.saveVideoManager.findVideoById(video.id) }));
-      this.searchModalView.updateOnSearchDataReceived(checkedVideos);
-    });
+    this.searchVideoManager
+      .search(keyword)
+      .then((videos) => {
+        const checkedVideos = videos.map((video) => ({
+          ...video,
+          saved: this.saveVideoManager.findVideoById(video.id),
+        }));
+        this.searchModalView.updateOnSearchDataReceived(checkedVideos);
+      })
+      .catch((e) => {
+        this.searchModalView.updateSearchErrorResult();
+      });
   }
 
   searchOnScroll() {
+    if (this.searchVideoManager.isLastPage()) {
+      return alert('마지막 검색결과까지 모두 출력되었습니다.');
+    }
     this.searchModalView.updateOnScrollLoading();
-    this.searchVideoManager.search().then((videos) => {
-      const checkedVideos = videos.map((video) => ({ ...video, saved: this.saveVideoManager.findVideoById(video.id) }));
-      this.searchModalView.updateOnSearchDataReceived(checkedVideos);
-    });
+    this.searchVideoManager
+      .search()
+      .then((videos) => {
+        const checkedVideos = videos.map((video) => ({
+          ...video,
+          saved: this.saveVideoManager.findVideoById(video.id),
+        }));
+        this.searchModalView.updateOnSearchDataReceived(checkedVideos);
+      })
+      .catch((e) => {
+        this.searchModalView.updateSearchErrorResult();
+      });
   }
 }

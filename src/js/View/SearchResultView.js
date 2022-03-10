@@ -55,6 +55,15 @@ export default class SearchResultView {
     $('#no-result').classList.remove('hide');
     $('#search-result-video-list').classList.add('hide');
     $('#search-result').classList.add('search-result--no-result');
+    $('#no-result-description').innerHTML = '검색 결과가 없습니다<br />다른 키워드로 검색해보세요';
+    this.isShownNoResult = true;
+  }
+
+  showErrorResult() {
+    $('#no-result').classList.remove('hide');
+    $('#search-result-video-list').classList.add('hide');
+    $('#search-result').classList.add('search-result--no-result');
+    $('#no-result-description').innerHTML = '검색 결과를 가져오는데 실패했습니다.<br />관리자에게 문의하세요.';
     this.isShownNoResult = true;
   }
 

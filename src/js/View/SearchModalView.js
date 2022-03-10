@@ -30,4 +30,8 @@ export default class SearchModalView {
   updateOnSearchDataReceived(videos) {
     this.searchResultView.updateOnSearchDataReceived(videos);
   }
+
+  updateSearchErrorResult() {
+    this.searchResultView.showErrorResult();
+  }
 }
