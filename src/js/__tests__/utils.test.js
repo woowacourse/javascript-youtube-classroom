@@ -1,4 +1,4 @@
-import { isDuplicate } from "../utils/utils";
+import { isDuplicate, parsedDate } from "../utils/utils";
 
 describe("저장하려는 동영상의 Id값이 기존에 저장된 동영상의 Id값들과 중복되는지 확인한다.", () => {
   const storeData = [{ id: "abc" }];
@@ -14,4 +14,10 @@ describe("저장하려는 동영상의 Id값이 기존에 저장된 동영상의
 
     expect(isDuplicate(selectedData, storeData)).toBe(false);
   });
+});
+
+test("응답받은 날짜 데이터를 정해진 형식(YYYY년 M월 D일)으로 변경한다.", () => {
+  const rawDate = "2022-03-02T11:39:31Z";
+
+  expect(parsedDate(rawDate)).toBe("2022년 3월 2일");
 });
