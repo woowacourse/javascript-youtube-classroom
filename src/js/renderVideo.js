@@ -47,10 +47,11 @@ class RenderVideo {
   };
 
   onSaveButtonClick = ({ target }) => {
-    if (target.classList.contains('video-item__save-button')) {
+    if (target.classList.contains('video-item__save-button') && this.saveVideo.saveVideoList.length < 100) {
       this.saveVideo.setStorageVideoList(target.closest('li').dataset.videoId);
       target.textContent = '저장됨';
       target.disabled = true;
+      return;
     }
   };
 
