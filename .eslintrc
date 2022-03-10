@@ -18,6 +18,9 @@
         "no-unused-vars":"off",
         "consistent-return":"off",
         "no-param-reassign":"off",
-        "no-unused-expressions":"off"
+        "no-unused-expressions":"off",
+        "implicit-arrow-linebreak":"off",
+        "function-paren-newline":"off",
+        "no-return-assign":"off"
     }
 }

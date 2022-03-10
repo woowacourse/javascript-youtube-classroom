@@ -133,6 +133,12 @@
     overflow-y: scroll;
 }
 
+#search-result-scroll-observer {
+    position: relative;
+    width: 240px;
+    height: 255px;
+}
+
 .video-item {
     position: relative;
     width: 240px;

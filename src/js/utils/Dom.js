@@ -1,7 +1,11 @@
 export const createElement = (tagName, property = {}) => {
   const $create = document.createElement(tagName);
   Object.entries(property).forEach(([key, value]) => {
-    // 예외 처리
+    if (key === 'dataset') {
+      Object.entries(value).forEach(([datasetId, datasetValue]) =>
+        $create.setAttribute(`data-${datasetId}`, datasetValue),
+      );
+    }
     if (typeof $create[key] === 'string') {
       $create[key] = value;
     }
