@@ -3,22 +3,24 @@ export default class VideoItem {
     this.$element = $element;
   }
 
-  getVideoItemTemplate(data) {
+  getVideoItemTemplate(parseData) {
     this.$element.innerHTML = `
     <li class="video-item" data-video-id="">
       <img
-        src=${data ? data.url : ''}
-        alt="video-item-thumbnail" class="video-item__thumbnail ${data ? '' : 'skeleton'}"
+        src=${parseData ? parseData.url : ''}
+        alt="video-item-thumbnail" class="video-item__thumbnail ${parseData ? '' : 'skeleton'}"
         loading="lazy">
-      <h4 class="video-item__title ${data ? '' : 'skeleton'}">${data ? data.title : ''}</h4>
-      <p class="video-item__channel-nagetVideoItemTemplateme ${data ? '' : 'skeleton'}">${
-      data ? data.channelName : ''
+      <h4 class="video-item__title ${parseData ? '' : 'skeleton'}">${
+      parseData ? parseData.title : ''
+    }</h4>
+      <p class="video-item__channel-nagetVideoItemTemplateme ${parseData ? '' : 'skeleton'}">${
+      parseData ? parseData.channelTitle : ''
     }</p>
-      <p class="video-item__published-date ${data ? '' : 'skeleton'}">${
-      data ? data.publishedDate : ''
+      <p class="video-item__published-date ${parseData ? '' : 'skeleton'}">${
+      parseData ? parseData.publishedAt : ''
     }</p>
-      <button class="video-item__save-button button ${data ? '' : 'skeleton'}">${
-      data ? data.saveButton : ''
+      <button class="video-item__save-button button ${parseData ? '' : 'skeleton'}">${
+      parseData ? '⬇ 저장' : ''
     }</button>
     </li>
     `;

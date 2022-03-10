@@ -1,5 +1,8 @@
+import { parseData } from '../utils/constants.js';
 import MainView from '../view/MainView.js';
 import ModalView from '../view/ModalView.js';
+import APIManager from '../managers/APIManager.js';
+import validator from '../utils/validator.js';
 
 export default class EventHandler {
   constructor() {
@@ -8,6 +11,7 @@ export default class EventHandler {
     this.setBindOnSearchButtons();
     this.setBindOnClickDimmer();
     this.setBindVideoListScroll();
+    this.throttle = null;
   }
 
   setBindOnSearchButtons() {
@@ -31,18 +35,44 @@ export default class EventHandler {
     this.modalView.hideModal();
   }
 
-  clickSearchButton() {
-    this.modalView.resetVideoList();
-    this.modalView.appendEmptyList();
-    this.modalView.appendVideoItem();
-    this.modalView.getData();
+  async clickSearchButton(searchInput) {
+    try {
+      validator.isValidSearchInput(searchInput);
+      this.modalView.resetVideoList();
+      this.modalView.appendEmptyList();
+      this.modalView.appendVideoItem();
+      const videoListData = await this.getVideoListData(searchInput);
+      this.modalView.getData(videoListData);
+    } catch (error) {
+      alert(error.message);
+    }
   }
 
-  videoListScroll() {
-    this.modalView.videoListScroll();
+  videoListScroll(searchInput) {
+    this.$videoList = document.querySelector('.video-list');
+    if (!this.throttle) {
+      this.throttle = setTimeout(async () => {
+        this.throttle = null;
+        if (
+          this.$videoList.scrollHeight - this.$videoList.scrollTop <=
+          this.$videoList.offsetHeight
+        ) {
+          this.modalView.appendEmptyList();
+          this.modalView.appendVideoItem();
+          const videoListData = await this.getVideoListData(searchInput);
+          this.modalView.getData(videoListData);
+        }
+      }, 1000);
+    }
   }
 
-  // 검색 버튼 누르면 제목으로 API 요청하기
-
-  // 저장 버튼 누르면 저장하기
+  // 유튜브 request하는 메소드
+  async getVideoListData(searchInput) {
+    try {
+      const rawData = await APIManager.fetchData(searchInput);
+      return APIManager.parsingVideoData(rawData);
+    } catch (err) {
+      alert(err.message);
+    }
+  }
 }

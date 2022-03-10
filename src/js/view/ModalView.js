@@ -1,11 +1,9 @@
 import VideoItem from './VideoItem.js';
-import { mockData } from '../utils/constants.js';
 
 export default class ModalView {
   constructor() {
     this.registerDOM();
     this.videoItemList = [];
-    this.throttle = null;
   }
 
   registerDOM() {
@@ -13,6 +11,7 @@ export default class ModalView {
     this.$dimmer = document.querySelector('.dimmer');
     this.$videoList = document.querySelector('.video-list');
     this.$searchButton = document.querySelector('.search-input__search-button');
+    this.$searchInput = document.querySelector('.search-input__keyword');
   }
 
   showModal() {
@@ -29,12 +28,14 @@ export default class ModalView {
 
   bindOnClickSearchButton(callback) {
     this.$searchButton.addEventListener('click', () => {
-      callback();
+      callback(this.$searchInput.value);
     });
   }
 
   bindVideoListScroll(callback) {
-    this.$videoList.addEventListener('scroll', callback);
+    this.$videoList.addEventListener('scroll', () => {
+      callback(this.$searchInput.value);
+    });
   }
 
   resetVideoList() {
@@ -56,32 +57,15 @@ export default class ModalView {
     this.videoItemList.slice(-10).forEach(videoItem => videoItem.getVideoItemTemplate());
   }
 
-  getData() {
+  getData(parsedData) {
+    console.log(parsedData);
     this.getSkeletonTemplate();
-    setTimeout(() => {
-      this.updateVideoItems(mockData);
-    }, 2000);
+    this.updateVideoItems(parsedData);
   }
 
   updateVideoItems(data) {
     this.videoItemList
       .slice(-10)
       .forEach((videoItem, index) => videoItem.getVideoItemTemplate(data[index]));
-  }
-
-  videoListScroll() {
-    if (!this.throttle) {
-      this.throttle = setTimeout(() => {
-        this.throttle = null;
-        if (
-          this.$videoList.scrollHeight - this.$videoList.scrollTop <=
-          this.$videoList.offsetHeight
-        ) {
-          this.appendEmptyList();
-          this.appendVideoItem();
-          this.getData();
-        }
-      }, 1000);
-    }
   }
 }
