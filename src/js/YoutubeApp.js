@@ -1,6 +1,7 @@
 import getSearchResult from "./api/getSearchResult";
 import generatorTemplate from "./templates";
 import notFountImage from "../assets/images/not_found.png";
+import { parsedDate } from "./utils/utils";
 
 const mockObject = () => {
   const array = [];
@@ -121,7 +122,7 @@ export default class YoutubeApp {
             channel: item.snippet.channelTitle,
             defaultThumbnail: item.snippet.thumbnails.high.url,
             title: item.snippet.title,
-            date: item.snippet.publishTime,
+            date: parsedDate(item.snippet.publishTime),
           })
         )
         .join("");
@@ -137,7 +138,7 @@ export default class YoutubeApp {
     const responseData = {
       items: mockObject(),
     };
-    // console.log(resultArray);
+    // console.log(responseData);
 
     if (responseData.items.length === 0) {
       this.searchResult.removeChild(this.videoList);
@@ -166,7 +167,7 @@ export default class YoutubeApp {
           channel: item.snippet.channelTitle,
           defaultThumbnail: item.snippet.thumbnails.high.url,
           title: item.snippet.title,
-          date: item.snippet.publishTime,
+          date: parsedDate(item.snippet.publishTime),
         })
       )
       .join("");
