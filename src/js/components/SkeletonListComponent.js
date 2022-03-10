@@ -1,30 +1,30 @@
-import Component from './Component.js';
-
-class SkeletonListComponent extends Component {
+class SkeletonListComponent {
   $skeletonList;
 
+  #parentElement = null;
+
   constructor(parentElement) {
-    super(parentElement);
-    this.mount();
-    this.initDOM();
-  }
-
-  mount() {
-    const template = this.generateTemplate();
-    this.parentElement.insertAdjacentHTML('beforeend', template);
-  }
-
-  initDOM() {
-    this.$skeletonList = this.parentElement.querySelectorAll('.skeleton-item');
+    this.#parentElement = parentElement;
+    this.#mount();
+    this.#initDOM();
   }
 
   unmount() {
     this.$skeletonList.forEach(($skeletonItem) => {
-      this.parentElement.removeChild($skeletonItem);
+      this.#parentElement.removeChild($skeletonItem);
     });
   }
 
-  generateTemplate() {
+  #mount() {
+    const template = this.#generateTemplate();
+    this.#parentElement.insertAdjacentHTML('beforeend', template);
+  }
+
+  #initDOM() {
+    this.$skeletonList = this.#parentElement.querySelectorAll('.skeleton-item');
+  }
+
+  #generateTemplate() {
     return `
         <li class="skeleton-item">
             <div class="image"></div>

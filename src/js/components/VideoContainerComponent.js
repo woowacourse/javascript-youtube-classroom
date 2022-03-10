@@ -2,36 +2,47 @@ import { CUSTOM_EVENT_KEY } from '../constants/events';
 import { STATE_STORE_KEY } from '../constants/stateStore';
 import { dispatch } from '../modules/eventFactory';
 import { subscribe } from '../modules/stateStore';
-import Component from './Component';
 import SkeletonListComponent from './SkeletonListComponent';
 import VideoComponent from './VideoComponent';
 
-class VideoContainerComponent extends Component {
+class VideoContainerComponent {
   $videoList = null;
 
   $searchResult = null;
 
+  #parentElement = null;
+
   constructor(parentElement) {
-    super(parentElement);
-    this.mount();
-    this.initDOM();
-    this.bindEventHandler();
+    this.#parentElement = parentElement;
+
+    this.#mount();
+    this.#initDOM();
+    this.#bindEventHandler();
     /** 초기 상태 값에 따른 렌더링 수행 */
-    this.subscribeStore();
+    this.#subscribeStore();
   }
 
-  mount() {
-    const template = this.generateTemplate();
-
-    this.parentElement.insertAdjacentHTML('beforeend', template);
+  wakeUp(stateValue, stateKey) {
+    if (stateKey === STATE_STORE_KEY.IS_WAITING_RESPONSE) {
+      this.#renderSkeletonUI(stateValue);
+    }
+    if (stateKey === STATE_STORE_KEY.SEARCH_RESULT) {
+      this.#renderSearchResult(stateValue);
+    }
   }
 
-  initDOM() {
-    this.$videoList = this.parentElement.querySelector('.video-list');
-    this.$searchResult = this.parentElement.querySelector('.search-result');
+  #mount() {
+    const template = this.#generateTemplate();
+
+    this.#parentElement.insertAdjacentHTML('beforeend', template);
   }
 
-  bindEventHandler() {
+  #initDOM() {
+    this.$videoList = this.#parentElement.querySelector('.video-list');
+    this.$searchResult = this.#parentElement.querySelector('.search-result');
+  }
+
+  #bindEventHandler() {
     this.$searchResult.addEventListener('click', (e) => {
       const {
         target: { className },
@@ -51,24 +62,15 @@ class VideoContainerComponent extends Component {
     });
   }
 
-  subscribeStore() {
+  #subscribeStore() {
     const initialSearchResult = subscribe(STATE_STORE_KEY.SEARCH_RESULT, this);
-    this.renderSearchResult(initialSearchResult);
+    this.#renderSearchResult(initialSearchResult);
 
     const initialIsWaitingResponse = subscribe(STATE_STORE_KEY.IS_WAITING_RESPONSE, this);
-    this.renderSkeletonUI(initialIsWaitingResponse);
+    this.#renderSkeletonUI(initialIsWaitingResponse);
   }
 
-  wakeUp(stateValue, stateKey) {
-    if (stateKey === STATE_STORE_KEY.IS_WAITING_RESPONSE) {
-      this.renderSkeletonUI(stateValue);
-    }
-    if (stateKey === STATE_STORE_KEY.SEARCH_RESULT) {
-      this.renderSearchResult(stateValue);
-    }
-  }
-
-  renderSkeletonUI(isWaitingResponse) {
+  #renderSkeletonUI(isWaitingResponse) {
     if (isWaitingResponse) {
       this.skeletonListComponent = new SkeletonListComponent(this.$videoList);
       return;
@@ -77,17 +79,17 @@ class VideoContainerComponent extends Component {
     this.skeletonListComponent?.unmount();
   }
 
-  renderSearchResult(searchResult) {
+  #renderSearchResult(searchResult) {
     const { videoList, prevVideoListLength } = searchResult;
 
     if (prevVideoListLength === 0) {
       this.$searchResult.classList.remove('search-result--no-result');
-      this.$searchResult.innerHTML = this.generateHasResultTemplate();
-      this.$videoList = this.parentElement.querySelector('.video-list');
+      this.$searchResult.innerHTML = this.#generateHasResultTemplate();
+      this.$videoList = this.#parentElement.querySelector('.video-list');
     }
     if (videoList === null) {
       this.$searchResult.classList.add('search-result--no-result');
-      this.$searchResult.innerHTML = this.generateNoneResultTemplate();
+      this.$searchResult.innerHTML = this.#generateNoneResultTemplate();
       return;
     }
 
@@ -99,19 +101,19 @@ class VideoContainerComponent extends Component {
       );
   }
 
-  generateTemplate() {
+  #generateTemplate() {
     return `
     <section class="search-result">
     </section>
     `;
   }
 
-  generateHasResultTemplate() {
+  #generateHasResultTemplate() {
     return `<h3 hidden>검색 결과</h3>
     <ul class="video-list"></ul>`;
   }
 
-  generateNoneResultTemplate() {
+  #generateNoneResultTemplate() {
     return `<h3 hidden>검색 결과</h3>
     <div class="no-result">
       <img src="./not_found.png" alt="no result image" class="no-result__image">

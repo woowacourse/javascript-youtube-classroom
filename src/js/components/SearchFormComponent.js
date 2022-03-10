@@ -2,38 +2,37 @@ import { ERROR_MESSAGE } from '../constants/errorMessage';
 import { CUSTOM_EVENT_KEY } from '../constants/events';
 import { dispatch } from '../modules/eventFactory';
 import { isEmptyKeyword } from '../utils/validation';
-import Component from './Component';
 
-class SearchFormComponent extends Component {
+class SearchFormComponent {
   $searchButton = null;
 
   $searchInput = null;
 
+  #parentElement;
+
   constructor(parentElement) {
-    super(parentElement);
-    this.mount();
-    this.initDOM();
-    this.bindEventHandler();
+    this.#parentElement = parentElement;
+    this.#mount();
+    this.#initDOM();
+    this.#bindEventHandler();
   }
 
-  mount() {
-    const template = this.generateTemplate();
-
-    this.parentElement.insertAdjacentHTML('beforeend', template);
+  #mount() {
+    const template = this.#generateTemplate();
+    this.#parentElement.insertAdjacentHTML('beforeend', template);
   }
 
-  initDOM() {
-    this.$searchButton = this.parentElement.querySelector('#search-button');
-    this.$searchInput = this.parentElement.querySelector('#search-input-keyword');
+  #initDOM() {
+    this.$searchButton = this.#parentElement.querySelector('#search-button');
+    this.$searchInput = this.#parentElement.querySelector('#search-input-keyword');
   }
 
-  bindEventHandler() {
+  #bindEventHandler() {
     this.$searchButton.addEventListener('click', () => {
       this.#dispatchSubmitSearchKeyword();
     });
-
     this.$searchInput.addEventListener('keypress', (e) => {
-      if (e.key !== 'enter') {
+      if (e.key !== 'Enter') {
         return;
       }
       this.#dispatchSubmitSearchKeyword();
@@ -46,14 +45,14 @@ class SearchFormComponent extends Component {
       alert(ERROR_MESSAGE.EMPTY_KEYWORD);
       return;
     }
-    dispatch(CUSTOM_EVENT_KEY.SUBMIT_SEARCH_KEWORD, {
+    dispatch(CUSTOM_EVENT_KEY.SUBMIT_SEARCH_KEYWORD, {
       detail: {
         keyword: value,
       },
     });
   }
 
-  generateTemplate() {
+  #generateTemplate() {
     return `
         <section class="search-input">
             <h3 hidden>검색어 입력</h3>

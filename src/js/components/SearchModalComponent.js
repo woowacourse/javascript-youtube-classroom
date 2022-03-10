@@ -1,4 +1,3 @@
-import Component from './Component';
 import SearchFormComponent from './SearchFormComponent';
 import VideoContainerComponent from './VideoContainerComponent';
 import { subscribe } from '../modules/stateStore';
@@ -6,7 +5,7 @@ import { STATE_STORE_KEY } from '../constants/stateStore';
 import { CUSTOM_EVENT_KEY } from '../constants/events';
 import { dispatch } from '../modules/eventFactory';
 
-class SearchModalComponent extends Component {
+class SearchModalComponent {
   searchFormComponent = null;
 
   videoContainerComponent = null;
@@ -17,48 +16,49 @@ class SearchModalComponent extends Component {
 
   $dimmer = null;
 
+  #parentElement = null;
+
   constructor(parentElement) {
-    super(parentElement);
-    this.mount();
-    this.initDOM();
-    this.initChidrenComponent();
-    this.bindEventHandler();
-    this.subscribeStore();
+    this.#parentElement = parentElement;
+    this.#mount();
+    this.#initDOM();
+    this.#initChidrenComponent();
+    this.#bindEventHandler();
+    this.#subscribeStore();
   }
 
-  mount() {
-    const template = this.generateTemplate();
-    this.parentElement.insertAdjacentHTML('beforeend', template);
+  wakeUp(stateValue, stateKey) {
+    this.#render(stateValue);
   }
 
-  initDOM() {
-    this.$modalContainer = this.parentElement.querySelector('.modal-container');
-    this.$searchModal = this.parentElement.querySelector('.search-modal');
-    this.$dimmer = this.parentElement.querySelector('.dimmer');
+  #mount() {
+    const template = this.#generateTemplate();
+    this.#parentElement.insertAdjacentHTML('beforeend', template);
   }
 
-  initChidrenComponent() {
+  #initDOM() {
+    this.$modalContainer = this.#parentElement.querySelector('.modal-container');
+    this.$searchModal = this.#parentElement.querySelector('.search-modal');
+    this.$dimmer = this.#parentElement.querySelector('.dimmer');
+  }
+
+  #initChidrenComponent() {
     this.searchFormComponent = new SearchFormComponent(this.$searchModal);
-
     this.videoContainerComponent = new VideoContainerComponent(this.$searchModal);
   }
 
-  bindEventHandler() {
+  #bindEventHandler() {
     this.$dimmer.addEventListener('click', () => {
       dispatch(CUSTOM_EVENT_KEY.CLICK_OUTSIDE_MODAL);
     });
   }
 
-  subscribeStore() {
+  #subscribeStore() {
     const initalIsModalShow = subscribe(STATE_STORE_KEY.IS_MODAL_SHOW, this);
-    this.render(initalIsModalShow);
+    this.#render(initalIsModalShow);
   }
 
-  wakeUp(stateValue, stateKey) {
-    this.render(stateValue);
-  }
-
-  render(isModalShow) {
+  #render(isModalShow) {
     if (isModalShow) {
       this.$modalContainer.classList.remove('hide');
       return;
@@ -66,7 +66,7 @@ class SearchModalComponent extends Component {
     this.$modalContainer.classList.add('hide');
   }
 
-  generateTemplate() {
+  #generateTemplate() {
     return `
     <div class="modal-container">
     <div class="dimmer"></div>

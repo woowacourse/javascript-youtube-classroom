@@ -2,7 +2,6 @@ import { CUSTOM_EVENT_KEY } from '../constants/events';
 import { STATE_STORE_KEY } from '../constants/stateStore';
 import { dispatch } from '../modules/eventFactory';
 import { subscribe } from '../modules/stateStore';
-import Component from './Component';
 const observeOpt = {
   root: null,
   rootMargin: '0px',
@@ -21,49 +20,51 @@ const callback = (en, obs) => {
 
 const io = new IntersectionObserver(callback, observeOpt);
 
-class VideoComponent extends Component {
+class VideoComponent {
   $videoItem = null;
 
-  $saveButton;
+  $saveButton = null;
+
+  #parentElement = null;
 
   constructor(parentElement, props) {
-    super(parentElement);
+    this.#parentElement = parentElement;
     this.props = props;
-    this.mount();
-    this.initDOM();
-    this.subscribeStore();
+    this.#mount();
+    this.#initDOM();
+    this.#subscribeStore();
 
     if (this.props.isLastVideo) {
       io.observe(this.$videoItem);
     }
   }
 
-  mount() {
-    const { video } = this.props;
-    const template = this.generateTemplate(video);
-    this.parentElement.insertAdjacentHTML('beforeend', template);
+  wakeUp(stateValue, stateKey) {
+    this.#render(stateValue);
   }
 
-  initDOM() {
+  #mount() {
+    const { video } = this.props;
+    const template = this.#generateTemplate(video);
+    this.#parentElement.insertAdjacentHTML('beforeend', template);
+  }
+
+  #initDOM() {
     const { video } = this.props;
 
     const { videoId } = video.getVideoInfo();
 
-    this.$videoItem = this.parentElement.querySelector(`[data-video-id="${videoId}"]`);
+    this.$videoItem = this.#parentElement.querySelector(`[data-video-id="${videoId}"]`);
     this.$saveButton = this.$videoItem.querySelector('.video-item__save-button.button');
   }
 
-  subscribeStore() {
+  #subscribeStore() {
     const initialSavedVideo = subscribe(STATE_STORE_KEY.SAVED_VIDEO, this);
 
-    this.render(initialSavedVideo);
+    this.#render(initialSavedVideo);
   }
 
-  wakeUp(stateValue, stateKey) {
-    this.render(stateValue);
-  }
-
-  render(savedVideo) {
+  #render(savedVideo) {
     const { video } = this.props;
 
     const { videoId } = video.getVideoInfo();
@@ -73,7 +74,7 @@ class VideoComponent extends Component {
     }
   }
 
-  generateTemplate() {
+  #generateTemplate() {
     const { video } = this.props;
 
     const { videoId, videoTitle, channelTitle, publishTime, thumbnail } = video.getVideoInfo();
