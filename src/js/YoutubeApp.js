@@ -1,8 +1,9 @@
-import getSearchResult from "./api/getSearchResult";
 import generateTemplate from "./templates";
-import notFountImage from "../assets/images/not_found.png";
-import { throttle } from "./utils/utils";
 import mockObject from "./mockObject";
+import getSearchResult from "./api/getSearchResult";
+import notFountImage from "../assets/images/not_found.png";
+import { DELAY_TIME } from "./constants/constants";
+import { throttle } from "./utils/utils";
 import {
   addClassList,
   removeClassList,
@@ -18,16 +19,14 @@ import {
   insertImageSrc,
 } from "./utils/dom";
 
-const DELAY_TIME = 300;
-
 export default class YoutubeApp {
-  constructor(userLibrary) {
+  constructor(userStorage) {
     this.modalContainer = document.querySelector(".modal-container");
     this.searchResult = document.querySelector(".search-result");
     this.videoList = document.querySelector(".video-list");
 
     this.bindEvents();
-    this.userLibrary = userLibrary;
+    this.userStorage = userStorage;
   }
 
   bindEvents() {
@@ -62,7 +61,7 @@ export default class YoutubeApp {
     if (!target.matches(".video-item__save-button")) return;
 
     const { videoId } = findTargetDataset(target, ".video-item");
-    this.userLibrary.setData(videoId);
+    this.userStorage.addStorage(videoId);
     addClassList(target, "hide");
   };
 
@@ -112,7 +111,7 @@ export default class YoutubeApp {
 
     const videoItemTemplate = generateTemplate.videoItems(
       responseData.items,
-      this.userLibrary
+      this.userStorage
     );
 
     removeChildElements(this.videoList, document.querySelectorAll(".skeleton"));
@@ -154,7 +153,7 @@ export default class YoutubeApp {
 
     const videoItemTemplate = generateTemplate.videoItems(
       responseData.items,
-      this.userLibrary
+      this.userStorage
     );
 
     render({

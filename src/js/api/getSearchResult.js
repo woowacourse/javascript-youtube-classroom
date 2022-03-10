@@ -1,3 +1,5 @@
+import { ITEMS_PER_REQUEST } from "../constants/constants";
+
 export default async function getSearchResult(
   searchKeyword,
   nextPageToken = ""
@@ -10,7 +12,7 @@ export default async function getSearchResult(
   const parameters = new URLSearchParams({
     part: "snippet",
     type: "video",
-    maxResults: 10,
+    maxResults: ITEMS_PER_REQUEST,
     regionCode: "kr",
     safeSearch: "strict",
     pageToken: nextPageToken || "",

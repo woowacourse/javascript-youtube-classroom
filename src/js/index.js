@@ -1,5 +1,5 @@
 import "../css/index";
-import UserLibrary from "./UserLibrary";
+import UserStorage from "./UserStorage";
 import YoutubeApp from "./YoutubeApp";
 
-new YoutubeApp(new UserLibrary());
+new YoutubeApp(new UserStorage());

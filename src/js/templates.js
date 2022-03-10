@@ -25,7 +25,7 @@ const generateTemplate = {
     </div>
   `;
   },
-  videoItem({ id, channel, defaultThumbnail, title, date }, userStore) {
+  videoItem({ id, channel, defaultThumbnail, title, date }, storage) {
     return `<li class="video-item" data-video-id="${id}">
     <img
     src="${defaultThumbnail}"
@@ -38,13 +38,13 @@ const generateTemplate = {
     <p class="video-item__channel-name ">${channel}</p>
     <p class="video-item__published-date ">${date}</p>
     <button class="video-item__save-button button ${
-      userStore.includes(String(id)) ? "hide" : ""
+      storage.includes(String(id)) ? "hide" : ""
     } ">
       ⬇ 저장
     </button>
   </li>`;
   },
-  videoItems(responseData, userLibrary) {
+  videoItems(responseData, userStorage) {
     return responseData
       .map((item) =>
         this.videoItem(
@@ -55,7 +55,7 @@ const generateTemplate = {
             title: item.snippet.title,
             date: parsedDate(item.snippet.publishTime),
           },
-          userLibrary.getData()
+          userStorage.getStorage()
         )
       )
       .join("");
