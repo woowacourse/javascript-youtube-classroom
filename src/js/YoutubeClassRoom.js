@@ -3,6 +3,7 @@ import SearchModalView from './View/SearchModalView';
 import SearchVideoManager from './SearchVideoManager';
 import SaveVideoManager from './SaveVideoManager';
 import { validateSearchKeyword } from './validation';
+import { ALERT_MESSAGE } from './constants';
 
 let timerId;
 
@@ -49,8 +50,7 @@ export default class YoutubeClassRoom {
     try {
       this.saveVideoManager.saveVideoById(videoId);
     } catch ({ message }) {
-      alert(message);
-      return;
+      return alert(message);
     }
     target.remove();
   }
@@ -60,33 +60,34 @@ export default class YoutubeClassRoom {
     this.searchVideoManager
       .search(keyword)
       .then((videos) => {
-        const checkedVideos = videos.map((video) => ({
-          ...video,
-          saved: this.saveVideoManager.findVideoById(video.id),
-        }));
+        const checkedVideos = this.addSavedInfoToVideos(videos);
         this.searchModalView.updateOnSearchDataReceived(checkedVideos);
       })
-      .catch((e) => {
+      .catch(() => {
         this.searchModalView.updateSearchErrorResult();
       });
   }
 
   searchOnScroll() {
     if (this.searchVideoManager.isLastPage) {
-      return alert('마지막 검색결과까지 모두 출력되었습니다.');
+      return alert(ALERT_MESSAGE.NO_MORE_SEARCH_RESULT);
     }
     this.searchModalView.updateOnScrollLoading();
     this.searchVideoManager
       .search()
       .then((videos) => {
-        const checkedVideos = videos.map((video) => ({
-          ...video,
-          saved: this.saveVideoManager.findVideoById(video.id),
-        }));
+        const checkedVideos = this.addSavedInfoToVideos(videos);
         this.searchModalView.updateOnSearchDataReceived(checkedVideos);
       })
-      .catch((e) => {
+      .catch(() => {
         this.searchModalView.updateSearchErrorResult();
       });
+  }
+
+  addSavedInfoToVideos(videos) {
+    return videos.map((video) => ({
+      ...video,
+      saved: this.saveVideoManager.findVideoById(video.id),
+    }));
   }
 }
