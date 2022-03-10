@@ -16,7 +16,7 @@ export const intersectionObserver = (lastItemOnInterSect, option = {}) => {
   let isFree = true;
   const ioCallback = (entries, io) => {
     entries.forEach(async (entry) => {
-      if (entry.isIntersecting || isFree) {
+      if (entry.isIntersecting && isFree) {
         isFree = false;
         io.observe(await lastItemOnInterSect());
         io.unobserve(entry.target);
