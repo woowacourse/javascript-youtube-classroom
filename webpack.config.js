@@ -18,6 +18,7 @@ module.exports = () => {
         '@Domain': path.resolve(__dirname, 'src/js/domain/'),
         '@Utils': path.resolve(__dirname, 'src/js/utils/'),
         '@Core': path.resolve(__dirname, 'src/js/core/'),
+        '@Images': path.resolve(__dirname, 'src/assets/images'),
       },
     },
     devServer: {
@@ -46,6 +47,14 @@ module.exports = () => {
           test: /\.s[ac]ss$/i,
           use: [MiniCssExtractPlugin.loader, 'css-loader', 'sass-loader'],
           exclude: /node_modules/,
+        },
+        {
+          test: /\.(png|jpe?g|svg)$/i,
+          use: [
+            {
+              loader: 'file-loader',
+            },
+          ],
         },
       ],
     },

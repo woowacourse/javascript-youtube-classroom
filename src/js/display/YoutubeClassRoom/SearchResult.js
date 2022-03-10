@@ -2,6 +2,7 @@ import { $, $$, createElement } from '@Utils/Dom';
 import { getParsedTime } from '@Utils/ManageData';
 import Display from '@Core/Display';
 import SearchStore from '@Domain/YoutubeSearchResult';
+import notFoundImage from '@Images/not_found.png';
 
 export default class SearchResult extends Display {
   setContainer() {
@@ -30,13 +31,13 @@ export default class SearchResult extends Display {
     const options = {
       threshold: 1.0,
     };
-    const observer = new IntersectionObserver(entry => {
+    const scrollObserver = new IntersectionObserver(entry => {
       if (entry[0].isIntersecting) {
         SearchStore.dispatch('UPDATE_SEARCH_RESULT');
       }
     }, options);
 
-    observer.observe(this.$observer);
+    scrollObserver.observe(this.$observer);
   }
 
   subscribeStores() {
@@ -45,19 +46,36 @@ export default class SearchResult extends Display {
 
   render({ isLoading, isLoaded, items }) {
     const $fragment = document.createDocumentFragment();
-    const latestItems = items.splice(-10);
 
+    this.$videoList.innerHTML = '';
     if (isLoading === true) {
       $fragment.append(...this.$skeleton);
     }
 
-    if (isLoaded === true) {
-      $$('.skeleton', this.container).forEach($child => $child.remove());
-      $fragment.append(...this.drawVideoList(latestItems));
+    if (items.length !== 0 && isLoaded === true) {
+      $fragment.append(...this.drawVideoList(items));
       $fragment.append(this.$observer);
     }
 
+    if (items.length === 0 && isLoaded === true) {
+      $fragment.append(this.drawResultNotFound());
+    }
+
     this.$videoList.append($fragment);
+  }
+
+  drawResultNotFound() {
+    return createElement('DIV', {
+      className: 'no-result',
+      src: notFoundImage,
+      innerHTML: `
+        <img src="${notFoundImage}" alt="no result image" class="no-result__image">
+        <p class="no-result__description">
+          검색 결과가 없습니다<br />
+          다른 키워드로 검색해보세요
+        </p>
+      `,
+    });
   }
 
   drawVideoList(items) {

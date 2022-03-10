@@ -19,13 +19,18 @@ class SearchStore extends Store {
           searchKeyword: data,
           isLoading: true,
           isLoaded: false,
+          items: [],
+          nextPageToken: '',
         });
       },
       UPDATE_SEARCH_RESULT: async () => {
+        if (this.state.nextPageToken === undefined) return; // 분리하기
+
         const { items, nextPageToken } = await requestYoutubeSearch(
           this.state.searchKeyword,
           this.state.nextPageToken,
         );
+
         this.setState({
           ...this.state,
           isLoading: false,
