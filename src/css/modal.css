@@ -157,3 +157,7 @@
   margin: 5px auto;
   text-align: center;
 }
+
+.video-item__save-button:disabled {
+  background-color: #f9f9f9;
+}
