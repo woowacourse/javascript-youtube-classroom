@@ -1,7 +1,7 @@
 import { STATE_STORE_KEY } from '../constants/stateStore';
 import { getState, setState } from '../modules/stateStore';
 import { youtubeAPIFetcher } from '../modules/fetcher';
-import { isEmptyKeyword, isNoneSearchResult } from '../utils/validation';
+import { isNoneSearchResult } from '../utils/validation';
 import { parserVideos } from '../utils/util';
 import Video from '../modules/video';
 import { API_PATHS } from '../constants/fetcher';
@@ -27,20 +27,8 @@ class AppBusiness {
   };
 
   onSubmitSearchKeyword = async ({ detail: { keyword } }) => {
-    if (isEmptyKeyword(keyword)) {
-      alert('키워드를 입력해주세요');
-      return;
-    }
     try {
-      setState(STATE_STORE_KEY.IS_WAITING_RESPONSE, true);
-
-      const searchResult = await youtubeAPIFetcher({
-        path: API_PATHS.SEARCH,
-        params: { q: keyword, part: 'snippet', maxResults: 10, type: 'video' },
-      });
-
-      setState(STATE_STORE_KEY.IS_WAITING_RESPONSE, false);
-
+      const searchResult = await this.requestVideo(keyword);
       if (isNoneSearchResult(searchResult)) {
         setState(STATE_STORE_KEY.SEARCH_RESULT, {
           keyword: null,
@@ -51,9 +39,7 @@ class AppBusiness {
         return;
       }
 
-      const { items: videoInfos, nextPageToken } = parserVideos(searchResult);
-
-      const videoList = videoInfos.map((videoInfo) => Video.create(videoInfo));
+      const { nextPageToken, videoList } = this.extractSearchResult(searchResult);
 
       setState(STATE_STORE_KEY.SEARCH_RESULT, {
         keyword,
@@ -69,21 +55,9 @@ class AppBusiness {
   onSatisfyLastVideo = async () => {
     const { keyword, nextPageToken: currentPageToken } = getState(STATE_STORE_KEY.SEARCH_RESULT);
     try {
-      setState(STATE_STORE_KEY.IS_WAITING_RESPONSE, true);
-      const searchResult = await youtubeAPIFetcher({
-        path: API_PATHS.SEARCH,
-        params: {
-          q: keyword,
-          part: 'snippet',
-          maxResults: 10,
-          type: 'video',
-          pageToken: currentPageToken,
-        },
-      });
+      const searchResult = await this.requestVideo(keyword, currentPageToken);
 
-      setState(STATE_STORE_KEY.IS_WAITING_RESPONSE, false);
-      const { items: videoInfos, nextPageToken } = parserVideos(searchResult);
-      const videoList = videoInfos.map((videoInfo) => Video.create(videoInfo));
+      const { nextPageToken, videoList } = this.extractSearchResult(searchResult);
 
       setState(STATE_STORE_KEY.SEARCH_RESULT, (prevState) => ({
         ...prevState,
@@ -105,6 +79,34 @@ class AppBusiness {
       alert(message);
     }
   };
+
+  async requestVideo(keyword, pageToken) {
+    setState(STATE_STORE_KEY.IS_WAITING_RESPONSE, true);
+
+    const searchResult = await youtubeAPIFetcher({
+      path: API_PATHS.SEARCH,
+      params: {
+        q: keyword,
+        part: 'snippet',
+        maxResults: 10,
+        type: 'video',
+        pageToken,
+      },
+    });
+
+    setState(STATE_STORE_KEY.IS_WAITING_RESPONSE, false);
+
+    return searchResult;
+  }
+
+  /** 검색 API 결과로 부터, videoList - nextPageToken 값을 추출한다. */
+
+  extractSearchResult(searchResult) {
+    const { items: videoInfos, nextPageToken } = parserVideos(searchResult);
+    const videoList = videoInfos.map((videoInfo) => Video.create(videoInfo));
+
+    return { nextPageToken, videoList };
+  }
 }
 
 export default AppBusiness;
