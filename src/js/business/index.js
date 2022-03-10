@@ -13,7 +13,7 @@ class AppBusiness {
     bind(CUSTOM_EVENT_KEY.CLICK_SEARCH_MODAL_BUTTON, this.onClickSearchModalButton);
     bind(CUSTOM_EVENT_KEY.CLICK_OUTSIDE_MODAL, this.onClickOutsideModal);
     bind(CUSTOM_EVENT_KEY.SUBMIT_SEARCH_KEWORD, this.onSubmitSearchKeyword);
-    bind(CUSTOM_EVENT_KEY.SCROLL_VIDEO_CONTAINER, this.onScrollVideoContainer);
+    bind(CUSTOM_EVENT_KEY.SCROLL_VIDEO_CONTAINER, this.onSatisfyLastVideo);
     bind(CUSTOM_EVENT_KEY.CLICK_SAVE_BUTTON, this.onClickSaveButton);
   }
 
@@ -31,22 +31,59 @@ class AppBusiness {
       return;
     }
     try {
+      // 스켈레톤 ui 보여주는 상태로
       const searchResult = await youtubeAPIFetcher({
         path: API_PATHS.SEARCH,
         params: { q: keyword, part: 'snippet', maxResults: 10, type: 'video' },
       });
+
+      // 스켈레톤 ui 안보여주는 상태로
       const { items: videoInfos, nextPageToken } = parserVideos(searchResult);
       const videoList = videoInfos.map((videoInfo) => Video.create(videoInfo));
-      setState(STATE_STORE_KEY.VIDEO_LIST, videoList);
+
+      setState(STATE_STORE_KEY.SEARCH_RESULT, {
+        keyword,
+        nextPageToken,
+        videoList,
+        prevVideoListLength: 0,
+      });
     } catch ({ message }) {
       alert(message);
     }
   };
 
-  onScrollVideoContainer = () => {};
+  onSatisfyLastVideo = async () => {
+    // 가시성 로직을 추가
+    const { keyword, nextPageToken: currentPageToken } = getState(STATE_STORE_KEY.SEARCH_RESULT);
+
+    try {
+      const searchResult = await youtubeAPIFetcher({
+        path: API_PATHS.SEARCH,
+        params: {
+          q: keyword,
+          part: 'snippet',
+          maxResults: 10,
+          type: 'video',
+          pageToken: currentPageToken,
+        },
+      });
+      const { items: videoInfos, nextPageToken } = parserVideos(searchResult);
+      const videoList = videoInfos.map((videoInfo) => Video.create(videoInfo));
+
+      setState(STATE_STORE_KEY.SEARCH_RESULT, (prevState) => ({
+        ...prevState,
+        keyword,
+        nextPageToken,
+        videoList: [...prevState.videoList, ...videoList],
+        prevVideoListLength: prevState.videoList.length,
+      }));
+    } catch ({ message }) {
+      alert(message);
+    }
+  };
 
   onClickSaveButton = ({ detail: { saveVideoId } }) => {
-    const videoList = getState(STATE_STORE_KEY.VIDEO_LIST);
+    const { videoList } = getState(STATE_STORE_KEY.SEARCH_RESULT);
 
     const saveVideo = findVideoInVideoList(videoList, saveVideoId);
 

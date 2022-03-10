@@ -1,5 +1,5 @@
 import { CUSTOM_EVENT_KEY } from '../constants/events';
-import { NOTIFY_KEY, STATE_STORE_KEY } from '../constants/stateStore';
+import { STATE_STORE_KEY } from '../constants/stateStore';
 import { dispatch } from '../modules/eventFactory';
 import { subscribe } from '../modules/stateStore';
 import Component from './Component';
@@ -13,7 +13,7 @@ class VideoContainerComponent extends Component {
     this.mount();
     this.initDOM();
     this.bindEventHandler();
-    subscribe(STATE_STORE_KEY.VIDEO_LIST, this);
+    subscribe(STATE_STORE_KEY.SEARCH_RESULT, this);
   }
 
   mount() {
@@ -50,11 +50,19 @@ class VideoContainerComponent extends Component {
     this.render(stateValue, notifyKey);
   }
 
-  render(videoList, notifyKey) {
-    if (notifyKey === NOTIFY_KEY.REPLACE_STATE) {
+  render(searchResult, notifyKey) {
+    const { videoList, prevVideoListLength } = searchResult;
+
+    if (prevVideoListLength === 0) {
       this.$videoList.innerHTML = '';
     }
-    videoList.forEach((video) => new VideoComponent(this.$videoList, { video }));
+
+    videoList
+      .slice(prevVideoListLength)
+      .forEach(
+        (video, idx, arr) =>
+          new VideoComponent(this.$videoList, { video, isLastVideo: idx === arr.length - 1 })
+      );
   }
 
   generateTemplate() {

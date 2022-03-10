@@ -1,18 +1,51 @@
+import { CUSTOM_EVENT_KEY } from '../constants/events';
+import { dispatch } from '../modules/eventFactory';
 import Component from './Component';
+const observeOpt = {
+  root: null,
+  rootMargin: '0px',
+  threshold: 0.3,
+};
+
+const callback = (en, obs) => {
+  // 관찰 요소가 변화가 생기면 -> 수행된다.
+  en.forEach((entry) => {
+    if (entry.isIntersecting) {
+      obs.unobserve(entry.target);
+      dispatch(CUSTOM_EVENT_KEY.SCROLL_VIDEO_CONTAINER);
+    }
+  });
+};
+
+const io = new IntersectionObserver(callback, observeOpt);
 
 class VideoComponent extends Component {
   state = null;
+
+  $videoItem = null;
 
   constructor(parentElement, state) {
     super(parentElement);
 
     this.state = state;
     this.mount();
+    this.initDOM();
+
+    if (this.state.isLastVideo) {
+      io.observe(this.$videoItem);
+    }
   }
 
   mount() {
     const template = this.generateTemplate();
     this.parentElement.insertAdjacentHTML('beforeend', template);
+  }
+
+  initDOM() {
+    const { video } = this.state;
+    const { videoId } = video.getVideoInfo();
+
+    this.$videoItem = this.parentElement.querySelector(`[data-video-id="${videoId}"]`);
   }
 
   generateTemplate() {
