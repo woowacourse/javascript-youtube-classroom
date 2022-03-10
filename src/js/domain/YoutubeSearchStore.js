@@ -1,7 +1,7 @@
 import Store from '@Core/Store';
 import { requestYoutubeSearch } from '../api';
 
-class SearchStore extends Store {
+class YoutubeSearchStore extends Store {
   state = {
     searchKeyword: '',
     isLoading: false,
@@ -44,4 +44,4 @@ class SearchStore extends Store {
   }
 }
 
-export default new SearchStore();
+export default new YoutubeSearchStore();

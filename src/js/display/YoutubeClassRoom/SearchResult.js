@@ -1,7 +1,8 @@
-import { $, $$, createElement } from '@Utils/Dom';
+import { $, createElement } from '@Utils/Dom';
 import { getParsedTime } from '@Utils/ManageData';
 import Display from '@Core/Display';
-import SearchStore from '@Domain/YoutubeSearchResult';
+import YoutubeSearchStore from '@Domain/YoutubeSearchStore';
+import YoutubeSaveStorage from '@Domain/YoutubeSaveStorage';
 import notFoundImage from '@Images/not_found.png';
 
 export default class SearchResult extends Display {
@@ -28,20 +29,35 @@ export default class SearchResult extends Display {
   }
 
   bindEvents() {
-    const options = {
-      threshold: 1.0,
-    };
-    const scrollObserver = new IntersectionObserver(entry => {
-      if (entry[0].isIntersecting) {
-        SearchStore.dispatch('UPDATE_SEARCH_RESULT');
-      }
-    }, options);
-
+    const scrollObserver = new IntersectionObserver(
+      entry => {
+        if (entry[0].isIntersecting) {
+          YoutubeSearchStore.dispatch('UPDATE_SEARCH_RESULT');
+        }
+      },
+      {
+        threshold: 1.0,
+      },
+    );
     scrollObserver.observe(this.$observer);
+
+    this.addEvent('click', '.video-item__save-button', this.handleToggleSaveButton.bind(this));
   }
 
   subscribeStores() {
-    SearchStore.addSubscriber(this.render.bind(this));
+    YoutubeSearchStore.addSubscriber(this.render.bind(this));
+  }
+
+  handleToggleSaveButton({ target: $target }) {
+    const { videoId } = $target.closest('.video-item').dataset;
+    if (YoutubeSaveStorage.has(videoId)) {
+      YoutubeSaveStorage.remove(videoId);
+      $target.textContent = '⬇ 저장';
+      return;
+    }
+
+    YoutubeSaveStorage.add(videoId);
+    $target.textContent = '🗑 저장 취소';
   }
 
   render({ isLoading, isLoaded, items }) {
@@ -79,8 +95,9 @@ export default class SearchResult extends Display {
   }
 
   drawVideoList(items) {
-    return items.map(video =>
-      createElement('LI', {
+    return items.map(video => {
+      const buttonText = YoutubeSaveStorage.has(video.id.videoId) ? '🗑 저장 취소' : '⬇ 저장';
+      return createElement('LI', {
         dataset: { 'video-id': video.id.videoId },
         className: 'video-item',
         innerHTML: `<img
@@ -89,8 +106,8 @@ export default class SearchResult extends Display {
         <h4 class="video-item__title">${video.snippet.title}</h4>
         <p class="video-item__channel-name">${video.snippet.channelTitle}</p>
         <p class="video-item__published-date">${getParsedTime(video.snippet.publishTime)}</p>
-        <button class="video-item__save-button button">⬇ 저장</button>`,
-      }),
-    );
+        <button class="video-item__save-button button">${buttonText}</button>`,
+      });
+    });
   }
 }
