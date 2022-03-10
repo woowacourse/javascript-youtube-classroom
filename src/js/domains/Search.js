@@ -11,12 +11,12 @@ class Search {
 
   subscribeEvents() {
     on('form', '@search', (e) => this.search('search', e.detail.keyword), $('search-form'));
-    on('.video-list', '@scroll', () => this.search('scroll'), $('search-result'));
+    on('ul', '@scroll', () => this.search('scroll'), $('search-result'));
   }
 
-  // eslint-disable-next-line max-lines-per-function
   async search(type, keyword = this.keyword) {
-    $('search-result').insertSkeleton();
+    $('ul', $('search-result')).insertSkeleton();
+
     const videos = await this.fetchVideo(keyword);
 
     this.keyword = keyword;

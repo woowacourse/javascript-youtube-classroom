@@ -83,7 +83,7 @@ search-result.search-result--no-result {
   letter-spacing: 0.5px;
 }
 
-.video-list {
+search-result ul {
   width: 1040px;
   height: 493px;
   display: flex;

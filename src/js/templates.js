@@ -31,17 +31,7 @@ const TEMPLATE = {
   `,
   SEARCH_RESULT: `
     <h3 hidden>검색 결과</h3>
-    <ul class="video-list"></ul>
-    <section class="search-result search-result--no-result hidden">
-      <h3 hidden>검색 결과</h3>
-      <div class="no-result">
-        <img id="no-result-image" alt="no result image" class="no-result__image">
-        <p class="no-result__description">
-          검색 결과가 없습니다<br />
-          다른 키워드로 검색해보세요
-        </p>
-      </div>
-    </section>
+    <ul is="video-list"></ul>
   `,
   generateVideoItem(video) {
     return `
