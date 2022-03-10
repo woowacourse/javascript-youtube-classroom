@@ -31,13 +31,15 @@ class AppBusiness {
       return;
     }
     try {
-      // 스켈레톤 ui 보여주는 상태로
+      setState(STATE_STORE_KEY.IS_WAITING_RESPONSE, true);
+
       const searchResult = await youtubeAPIFetcher({
         path: API_PATHS.SEARCH,
         params: { q: keyword, part: 'snippet', maxResults: 10, type: 'video' },
       });
 
-      // 스켈레톤 ui 안보여주는 상태로
+      setState(STATE_STORE_KEY.IS_WAITING_RESPONSE, false);
+
       const { items: videoInfos, nextPageToken } = parserVideos(searchResult);
       const videoList = videoInfos.map((videoInfo) => Video.create(videoInfo));
 
@@ -53,10 +55,9 @@ class AppBusiness {
   };
 
   onSatisfyLastVideo = async () => {
-    // 가시성 로직을 추가
     const { keyword, nextPageToken: currentPageToken } = getState(STATE_STORE_KEY.SEARCH_RESULT);
-
     try {
+      setState(STATE_STORE_KEY.IS_WAITING_RESPONSE, true);
       const searchResult = await youtubeAPIFetcher({
         path: API_PATHS.SEARCH,
         params: {
@@ -67,6 +68,8 @@ class AppBusiness {
           pageToken: currentPageToken,
         },
       });
+
+      setState(STATE_STORE_KEY.IS_WAITING_RESPONSE, false);
       const { items: videoInfos, nextPageToken } = parserVideos(searchResult);
       const videoList = videoInfos.map((videoInfo) => Video.create(videoInfo));
 

@@ -16,9 +16,9 @@ export const { subscribe, setState, setStateInArray, getState } = (function () {
     [STATE_STORE_KEY.SEARCH_RESULT]: new Set(),
     [STATE_STORE_KEY.IS_WAITING_RESPONSE]: new Set(),
   };
-  function notify(stateKey, nofifyKey) {
+  function notify(stateKey) {
     const subscribedComponents = components[stateKey];
-    subscribedComponents.forEach((component) => component.wakeUp(state[stateKey], nofifyKey));
+    subscribedComponents.forEach((component) => component.wakeUp(state[stateKey], stateKey));
   }
   return {
     subscribe: (key, component) => {

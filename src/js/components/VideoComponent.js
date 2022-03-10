@@ -20,6 +20,7 @@ const callback = (en, obs) => {
 const io = new IntersectionObserver(callback, observeOpt);
 
 class VideoComponent extends Component {
+  // props
   state = null;
 
   $videoItem = null;

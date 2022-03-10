@@ -3,6 +3,7 @@ import { STATE_STORE_KEY } from '../constants/stateStore';
 import { dispatch } from '../modules/eventFactory';
 import { subscribe } from '../modules/stateStore';
 import Component from './Component';
+import SkeletonListComponent from './SkeletonListComponent';
 import VideoComponent from './VideoComponent';
 
 class VideoContainerComponent extends Component {
@@ -14,6 +15,7 @@ class VideoContainerComponent extends Component {
     this.initDOM();
     this.bindEventHandler();
     subscribe(STATE_STORE_KEY.SEARCH_RESULT, this);
+    subscribe(STATE_STORE_KEY.IS_WAITING_RESPONSE, this);
   }
 
   mount() {
@@ -46,11 +48,24 @@ class VideoContainerComponent extends Component {
     });
   }
 
-  wakeUp(stateValue, notifyKey) {
-    this.render(stateValue, notifyKey);
+  wakeUp(stateValue, stateKey) {
+    if (stateKey === STATE_STORE_KEY.IS_WAITING_RESPONSE) {
+      this.renderSkeletonUI(stateValue);
+    }
+    if (stateKey === STATE_STORE_KEY.SEARCH_RESULT) {
+      this.renderSearchResult(stateValue);
+    }
   }
 
-  render(searchResult, notifyKey) {
+  renderSkeletonUI(isWaitingResponse) {
+    if (isWaitingResponse) {
+      this.skeletonListComponent = new SkeletonListComponent(this.$videoList);
+    } else {
+      this.skeletonListComponent.unmount();
+    }
+  }
+
+  renderSearchResult(searchResult) {
     const { videoList, prevVideoListLength } = searchResult;
 
     if (prevVideoListLength === 0) {
