@@ -1,4 +1,5 @@
 import storage from './storage';
+import { SEARCH_URL_BASE, MAX_SEARCH_RESULT } from '../constants/constants';
 
 class Search {
   constructor() {
@@ -25,17 +26,16 @@ class Search {
   }
 
   async #getSearchResult(keyword, pageToken) {
-    const URL_BASE = 'https://pensive-fermat-630884.netlify.app/youtube/v3/search?part=snippet';
     const query = {
       q: keyword,
-      maxResults: 10,
+      maxResults: MAX_SEARCH_RESULT,
       order: 'viewCount',
       type: 'video',
       regionCode: 'KR',
       pageToken,
     };
     const queryString = this.#generateQueryString(query);
-    const response = await fetch(`${URL_BASE}${queryString}`);
+    const response = await fetch(`${SEARCH_URL_BASE}${queryString}`);
     const { items, nextPageToken } = await response.json();
     return { items, nextPageToken };
   }
@@ -47,8 +47,8 @@ class Search {
     );
   }
 
-  #getVideoObjectArray = (items, savedVideos) =>
-    items.map((item) => {
+  #getVideoObjectArray(items, savedVideos) {
+    return items.map((item) => {
       const { snippet, id } = item;
       return {
         videoId: id.videoId,
@@ -59,6 +59,7 @@ class Search {
         isSaved: savedVideos[id.videoId],
       };
     });
+  }
 }
 
 export default Search;

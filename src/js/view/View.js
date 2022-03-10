@@ -1,4 +1,5 @@
 import { formatDateString, isBlankValue, removeElementList, selectDom } from '../util/util';
+import { MAX_SEARCH_RESULT } from '../constants/constants';
 
 class View {
   constructor() {
@@ -32,7 +33,7 @@ class View {
     if (isBlankValue(keyword)) {
       return;
     }
-    this.videoList.innerHTML = '';
+    removeElementList([...this.videoList.childNodes]);
     this.#loadSkeleton();
     const searchResultArray = await this.sendSearchRequest(keyword);
     this.#renderSearchResult(searchResultArray);
@@ -61,7 +62,7 @@ class View {
     }
   };
 
-  #renderSearchResult = (searchResultArray) => {
+  #renderSearchResult(searchResultArray) {
     const skeletonList = this.videoList.querySelectorAll('.skeleton');
     if (searchResultArray === null) {
       removeElementList(skeletonList);
@@ -71,13 +72,13 @@ class View {
     removeElementList(skeletonList);
     this.videoList.append(...resultElementArray);
     this.requestMoreResult.observe(this.videoList.lastChild);
-  };
+  }
 
   #createElementFromObject(searchResultArray) {
     return searchResultArray.map((resultItem) => this.#createVideoElement(resultItem));
   }
 
-  #createVideoElement = (resultItem) => {
+  #createVideoElement(resultItem) {
     const videoElement = document.createElement('li');
     videoElement.className = 'video-item';
     videoElement.insertAdjacentHTML('beforeend', this.#videoElementTemplate(resultItem));
@@ -86,7 +87,7 @@ class View {
       this.#handleVideoSaveClick
     );
     return videoElement;
-  };
+  }
 
   #videoElementTemplate({ thumbnail, title, channelTitle, publishedAt, videoId, isSaved }) {
     return `<img src="${thumbnail}" alt="video-item-thumbnail" class="video-item__thumbnail">
@@ -102,16 +103,17 @@ class View {
     </button>`;
   }
 
-  #loadSkeleton = () => {
+  #loadSkeleton() {
     this.videoList.insertAdjacentHTML('beforeend', this.#skeletonTemplate());
-  };
+  }
 
-  #skeletonTemplate = () =>
-    `<div class="skeleton">
+  #skeletonTemplate() {
+    return `<div class="skeleton">
       <div class="image"></div>
       <p class="line"></p>
       <p class="line"></p>
-    </div>`.repeat(10);
+    </div>`.repeat(MAX_SEARCH_RESULT);
+  }
 }
 
 export default View;

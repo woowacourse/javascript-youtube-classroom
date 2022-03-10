@@ -1,4 +1,4 @@
-const STORAGE_KEY = 'idObj';
+import { MAX_SAVE_AMOUNT, STORAGE_KEY, ERROR_MESSAGES } from '../constants/constants';
 
 function getSavedVideos() {
   return JSON.parse(localStorage.getItem(STORAGE_KEY));
@@ -6,8 +6,8 @@ function getSavedVideos() {
 
 function setSavedVideos(videoId) {
   const idObj = getSavedVideos() || {};
-  if (Object.keys(idObj).length >= 100) {
-    throw new Error('저장된 비디오의 개수가 100개를 초과했습니다.');
+  if (Object.keys(idObj).length >= MAX_SAVE_AMOUNT) {
+    throw new Error(ERROR_MESSAGES.EXCEED_MAX_SAVE_AMOUNT);
   }
   localStorage.setItem(STORAGE_KEY, JSON.stringify({ ...idObj, [videoId]: true }));
 }
