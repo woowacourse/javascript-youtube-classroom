@@ -146,3 +146,13 @@
 .video-item__save-button:hover {
     background: #efefef;
 }
+
+.saved-button {
+    color: white;
+    background-color: #00BCD4;
+}
+
+.saved-button:hover {
+    color: white;
+    background-color: #00a1b6;
+}

@@ -7,15 +7,15 @@ export default class SearchResultView {
     this.template = new Template();
     this.$skeletonWrapper = $('.skeleton-wrapper');
     this.$searchTarget = $('#search-target');
-    this.savedNewIdList = [];
+    this.newSavedIdList = [];
 
     this.observer = new IntersectionObserver(
       (entries) => {
         if (entries[0].isIntersecting) {
           // this.#scrollNextVideos();
           console.log('무한스크롤중');
-          const { savedNewIdList } = this;
-          emit(this.$searchTarget, '@scroll-bottom', { savedNewIdList });
+          const { newSavedIdList } = this;
+          emit(this.$searchTarget, '@scroll-bottom', { newSavedIdList });
         } else console.log('Not on the bottom');
       },
       {
@@ -37,13 +37,25 @@ export default class SearchResultView {
       $('.video-item__channel-name', item).innerText = newVideoItems[idx].channelTitle;
       $('.video-item__published-date', item).innerText = newVideoItems[idx].publishTime;
       $('.video-item__save-button', item).innerText = '⬇ 저장'; // 고쳐야함 (저장 유무에 따라 달라짐)
+      $('.video-item__save-button', item).addEventListener('click', this.handleSaveButton.bind(this));
+      $('.video-item__save-button', item).dataset.id = newVideoItems[idx].videoId;
     });
   }
 
-  saveVideo() {
-    console.log(this.dataset.id);
-    const { id } = this.dataset;
-    emit(this, '@save-video', { id });
+  handleSaveButton(event) {
+    console.log('event', event.target.dataset.id);
+    this.newSavedIdList.push(event.target.dataset.id);
+    const { newSavedIdList } = this;
+    // 저장
+    emit(this.$searchTarget, '@save-video', { newSavedIdList });
+    console.log('this', this);
+
+    this.changeSaveButtonStyle(event.target);
+  }
+
+  changeSaveButtonStyle($savedButton) {
+    $savedButton.textContent = '저장됨';
+    $savedButton.classList.add('saved-button');
   }
 
   removeVideo() {

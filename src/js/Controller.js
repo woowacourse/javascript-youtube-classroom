@@ -31,6 +31,7 @@ export default class Controller {
   #subscribeViewEvents() {
     on(this.searchInputView.$searchButton, '@search', this.#searchVideo.bind(this));
     on(this.searchResultView.$searchTarget, '@scroll-bottom', this.#scrollNextVideos.bind(this));
+    on(this.searchResultView.$searchTarget, '@save-video', this.saveVideo.bind(this));
   }
 
   // 검색 버튼을 눌렀을 때
@@ -53,5 +54,10 @@ export default class Controller {
     this.video.setVideoInfo();
     this.searchResultView.renderVideo(this.video.newVideoItems);
     this.searchResultView.startObserve();
+  }
+
+  saveVideo(event) {
+    const { newSavedIdList } = event.detail;
+    console.log(newSavedIdList);
   }
 }
