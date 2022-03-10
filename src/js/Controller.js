@@ -31,6 +31,7 @@ export default class Controller {
     this.video.setVideoInfo(); // 신병 10개
     this.video.accumulateVideoItems();
     // update -> newVideoItems (localItem{videoId} , item{},)
+    this.video.updateNewVideoItems();
     this.searchResultView.renderVideo(this.video.newVideoItems);
     this.searchResultView.startObserve();
   }
@@ -43,7 +44,7 @@ export default class Controller {
     this.video.setVideoInfo();
     this.video.accumulateVideoItems();
     // update -> newVideoItems (localItem{videoId} , item{},)
-
+    this.video.updateNewVideoItems();
     this.searchResultView.renderVideo(this.video.newVideoItems);
     this.searchResultView.startObserve();
   }
@@ -55,7 +56,6 @@ export default class Controller {
     }
     this.searchResultView.changeSaveButtonStyle(event.detail.buttonElement);
     const { savedId } = event.detail;
-    console.log('newSavedIdList', savedId);
     this.video.setItemsLocalStorage(savedId);
   }
 }

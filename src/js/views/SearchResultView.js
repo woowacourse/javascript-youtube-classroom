@@ -7,15 +7,12 @@ export default class SearchResultView {
     this.template = new Template();
     this.$skeletonWrapper = $('.skeleton-wrapper');
     this.$searchTarget = $('#search-target');
-    this.newSavedIdList = [];
 
     this.observer = new IntersectionObserver(
       (entries) => {
         if (entries[0].isIntersecting) {
-          // this.#scrollNextVideos();
           console.log('무한스크롤중');
-          const { newSavedIdList } = this;
-          emit(this.$searchTarget, '@scroll-bottom', { newSavedIdList });
+          emit(this.$searchTarget, '@scroll-bottom');
         } else console.log('Not on the bottom');
       },
       {
@@ -27,27 +24,25 @@ export default class SearchResultView {
 
   renderVideo(newVideoItems) {
     this.$videoItems = $$('.skeleton');
-    this.$videoItems.forEach((item, idx) => {
-      item.classList.remove('skeleton');
-      $('.video-item__thumbnail', item).setAttribute(
+    this.$videoItems.forEach(($item, idx) => {
+      $item.classList.remove('skeleton');
+      $('.video-item__thumbnail', $item).setAttribute(
         'srcdoc',
         this.template.getThumbnail(newVideoItems[idx].thumbnailUrl, newVideoItems[idx].videoId),
       );
-      $('.video-item__title', item).innerText = newVideoItems[idx].title;
-      $('.video-item__channel-name', item).innerText = newVideoItems[idx].channelTitle;
-      $('.video-item__published-date', item).innerText = newVideoItems[idx].publishTime;
-      $('.video-item__save-button', item).innerText = '⬇ 저장'; // 고쳐야함 (저장 유무에 따라 달라짐)
-      $('.video-item__save-button', item).addEventListener('click', this.handleSaveButton.bind(this));
-      $('.video-item__save-button', item).dataset.id = newVideoItems[idx].videoId;
+      $('.video-item__title', $item).innerText = newVideoItems[idx].title;
+      $('.video-item__channel-name', $item).innerText = newVideoItems[idx].channelTitle;
+      $('.video-item__published-date', $item).innerText = newVideoItems[idx].publishTime;
+      $('.video-item__save-button', $item).innerText = newVideoItems[idx].saved ? '저장됨' : '⬇ 저장';
+      $('.video-item__save-button', $item).classList.add(newVideoItems[idx].saved ? 'saved-button' : 'button');
+      $('.video-item__save-button', $item).addEventListener('click', this.handleSaveButton.bind(this));
+      $('.video-item__save-button', $item).dataset.id = newVideoItems[idx].videoId;
     });
   }
 
   handleSaveButton(event) {
-    // this.newSavedIdList.push(event.target.dataset.id);
-    // const { newSavedIdList } = this;
     const savedId = event.target.dataset.id;
     const buttonElement = event.target;
-    // 저장
     emit(this.$searchTarget, '@save-video', { savedId, buttonElement });
   }
 
