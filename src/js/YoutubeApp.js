@@ -98,16 +98,19 @@ export default class YoutubeApp {
       template: generateTemplate.skeleton(),
     });
 
-    const responseData = {
-      items: mockObject(),
-    };
+    /**
+     * 목 데이터로 검색 결과 대체
+     */
+    // const responseData = {
+    //   items: mockObject(),
+    // };
 
-    // const responseData = await getSearchResult(
-    //   this.keyword,
-    //   this.nextPageToken
-    // );
+    const responseData = await getSearchResult(
+      this.keyword,
+      this.nextPageToken
+    );
 
-    // this.nextPageToken = responseData.nextPageToken;
+    this.nextPageToken = responseData.nextPageToken;
 
     const videoItemTemplate = generateTemplate.videoItems(
       responseData.items,
@@ -124,12 +127,16 @@ export default class YoutubeApp {
   };
 
   async search(keyword) {
-    // this.keyword = keyword;
-    // const responseData = await getSearchResult(this.keyword);
-    // this.nextPageToken = responseData.nextPageToken;
-    const responseData = {
-      items: mockObject(),
-    };
+    this.keyword = keyword;
+    const responseData = await getSearchResult(this.keyword);
+    this.nextPageToken = responseData.nextPageToken;
+
+    /**
+     * 목 데이터로 검색 결과 대체
+     */
+    // const responseData = {
+    //   items: mockObject(),
+    // };
 
     // 검색 결과가 없을 경우
     if (responseData.items.length === 0) {

@@ -9,7 +9,9 @@
     "build": "webpack",
     "cypress:open": "cypress open",
     "cypress:run": "cypress run —brower chrome",
-    "cypress:test": "npm run cypress:run"
+    "cypress:test": "npm run cypress:run",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d dist"
   },
   "repository": {
     "type": "git",
@@ -60,5 +62,8 @@
     ],
     "automock": false,
     "resetMocks": false
+  },
+  "dependencies": {
+    "gh-pages": "^3.2.3"
   }
 }
