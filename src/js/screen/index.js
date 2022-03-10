@@ -4,6 +4,7 @@ import StorageEngine from '../domain/storageEngine.js';
 import { $ } from '../util/domHelper.js';
 import { NO_RESULT_TEMPLATE, videoItemsTemplate, videoListTemplate } from '../util/template.js';
 import { preprocessDate } from '../util/common.js';
+import { DELAY_MILISECOND_TIME } from '../util/constants.js';
 
 export default class ScreenManager {
   #throttle;
@@ -87,7 +88,7 @@ export default class ScreenManager {
         const data = await this.searchEngine.searchKeyword(keyword);
 
         this.renderAdditionalVideos(data);
-      }, 100);
+      }, DELAY_MILISECOND_TIME);
     }
   }
 

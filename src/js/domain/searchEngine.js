@@ -1,4 +1,5 @@
 import fetch from 'node-fetch';
+import { SEARCH_NOT_WORKING_ERROR_MESSAGE } from '../util/constants.js';
 
 export default class SearchEngine {
   #pageToken = null;
@@ -26,7 +27,7 @@ export default class SearchEngine {
       return this.#isDataExist(json) ? json.items : null;
     }
 
-    throw Error('유튜브 검색 기능이 정상 작동되지 않았습니다.');
+    throw Error(SEARCH_NOT_WORKING_ERROR_MESSAGE);
   }
 
   #isDataExist(data) {

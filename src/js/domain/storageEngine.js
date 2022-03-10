@@ -1,15 +1,17 @@
+import { MAX_SAVED_VIDEOS_LENGTH } from '../util/constants.js';
+
 export default class StorageEngine {
   getSavedVideos() {
     return JSON.parse(localStorage.getItem('savedVideos'));
   }
 
   saveVideo(videoId) {
-    const savedVidoes = this.getSavedVideos() ?? [];
+    const savedVideos = this.getSavedVideos() ?? [];
     const newVideo = { videoId };
 
-    if (savedVidoes.length >= 100) return;
+    if (savedVideos.length >= MAX_SAVED_VIDEOS_LENGTH) return;
 
-    savedVidoes.push(newVideo);
-    localStorage.setItem('savedVideos', JSON.stringify(savedVidoes));
+    savedVideos.push(newVideo);
+    localStorage.setItem('savedVideos', JSON.stringify(savedVideos));
   }
 }
