@@ -96,7 +96,7 @@ export default class SearchModal {
   renderSkeletonUI(element) {
     element.insertAdjacentHTML(
       'beforeend',
-      SKELETON_TEMPLATE.repeat(RULES.VIDEO_AMOUNT_PER_REQUEST)
+      SKELETON_TEMPLATE.repeat(RULES.MAX_VIDEO_AMOUNT_PER_REQUEST)
     );
   }
 
