@@ -10,6 +10,13 @@ export default class SearchInputView {
 
   #bindEvents() {
     on(this.$searchButton, 'click', this.#handleClick.bind(this));
+    on(this.$searchInputKeyword, 'keypress', this.#handleKeypress.bind(this));
+  }
+
+  #handleKeypress() {
+    if (window.event.keyCode === 13) {
+      this.#handleClick();
+    }
   }
 
   #handleClick() {
