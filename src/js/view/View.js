@@ -1,11 +1,13 @@
+import { formatDateString, isBlankValue, removeElementList, selectDom } from '../util/util';
+
 class View {
   constructor() {
-    this.searchModalButton = document.querySelector('#search-modal-button');
-    this.modalContainer = document.querySelector('.modal-container');
-    this.searchInputKeyword = document.querySelector('#search-input-keyword');
-    this.searchForm = document.querySelector('#search-form');
-    this.videoList = document.querySelector('.video-list');
-    this.requestMoreResult = this.#getNewObserver();
+    this.searchModalButton = selectDom('#search-modal-button');
+    this.modalContainer = selectDom('.modal-container');
+    this.searchInputKeyword = selectDom('#search-input-keyword');
+    this.searchForm = selectDom('#search-form');
+    this.videoList = selectDom('.video-list');
+    this.requestMoreResult = this.#handleScrollToLastItem();
 
     this.searchModalButton.addEventListener('click', this.#openModal);
     this.searchForm.addEventListener('submit', this.#handleSearch);
@@ -14,7 +16,7 @@ class View {
     this.sendSaveRequest = () => {};
   }
 
-  attachHandler(sendSearchRequest, sendLoadMoreRequest, sendSaveRequest) {
+  attachRequestSender(sendSearchRequest, sendLoadMoreRequest, sendSaveRequest) {
     this.sendSearchRequest = sendSearchRequest;
     this.sendLoadMoreRequest = sendLoadMoreRequest;
     this.sendSaveRequest = sendSaveRequest;
@@ -24,45 +26,19 @@ class View {
     this.modalContainer.classList.remove('hide');
   };
 
-  #formatDateString(dateTimeString) {
-    const date = new Date(dateTimeString);
-    return `${date.getFullYear()}년 ${date.getMonth() + 1}월 ${date.getDate()}일`;
-  }
-
-  #videoElementTemplate({ thumbnail, title, channelTitle, publishedAt, videoId, isSaved }) {
-    return `<img src="${thumbnail}" alt="video-item-thumbnail" class="video-item__thumbnail">
-    <h4 class="video-item__title">${title}</h4>
-    <p class="video-item__channel-name">${channelTitle}</p>
-    <p class="video-item__published-date">${this.#formatDateString(publishedAt)}</p>
-    <button 
-      ${isSaved && 'disabled'}
-      class="video-item__save-button button"
-      data-video-id="${videoId}"
-    >
-      ⬇ 저장
-    </button>`;
-  }
-
-  #createVideoElement = (resultItem) => {
-    const videoElement = document.createElement('li');
-    videoElement.className = 'video-item';
-    videoElement.insertAdjacentHTML('beforeend', this.#videoElementTemplate(resultItem));
-    videoElement
-      .querySelector('.video-item__save-button')
-      .addEventListener('click', this.#handleVideoSaveClick);
-    return videoElement;
-  };
-
-  #handleVideoSaveClick = (event) => {
-    try {
-      this.sendSaveRequest(event.target.dataset.videoId);
-      event.target.disabled = true;
-    } catch (error) {
-      alert(error.message);
+  #handleSearch = async (event) => {
+    event.preventDefault();
+    const { value: keyword } = this.searchInputKeyword;
+    if (isBlankValue(keyword)) {
+      return;
     }
+    this.videoList.innerHTML = '';
+    this.#loadSkeleton();
+    const searchResultArray = await this.sendSearchRequest(keyword);
+    this.#renderSearchResult(searchResultArray);
   };
 
-  #getNewObserver() {
+  #handleScrollToLastItem() {
     return new IntersectionObserver(
       async (entries) => {
         if (entries[0].isIntersecting) {
@@ -76,39 +52,59 @@ class View {
     );
   }
 
-  #createElementFromObject(searchResultArray) {
-    return searchResultArray.map((resultItem) => this.#createVideoElement(resultItem));
-  }
-
-  #removeElements(nodeList) {
-    nodeList.forEach((skeleton) => skeleton.remove());
-  }
+  #handleVideoSaveClick = (event) => {
+    try {
+      this.sendSaveRequest(event.target.dataset.videoId);
+      event.target.disabled = true;
+    } catch (error) {
+      alert(error.message);
+    }
+  };
 
   #renderSearchResult = (searchResultArray) => {
     const skeletonList = this.videoList.querySelectorAll('.skeleton');
     if (searchResultArray === null) {
-      this.#removeElements(skeletonList);
+      removeElementList(skeletonList);
       return;
     }
     const resultElementArray = this.#createElementFromObject(searchResultArray);
-    this.#removeElements(skeletonList);
+    removeElementList(skeletonList);
     this.videoList.append(...resultElementArray);
     this.requestMoreResult.observe(this.videoList.lastChild);
   };
 
-  #handleSearch = async (event) => {
-    event.preventDefault();
-    const { value: keyword } = this.searchInputKeyword;
-    if (this.#isBlankInput(keyword)) {
-      return;
-    }
-    this.videoList.innerHTML = '';
-    this.#loadSkeleton();
-    const searchResultArray = await this.sendSearchRequest(keyword);
-    this.#renderSearchResult(searchResultArray);
+  #createElementFromObject(searchResultArray) {
+    return searchResultArray.map((resultItem) => this.#createVideoElement(resultItem));
+  }
+
+  #createVideoElement = (resultItem) => {
+    const videoElement = document.createElement('li');
+    videoElement.className = 'video-item';
+    videoElement.insertAdjacentHTML('beforeend', this.#videoElementTemplate(resultItem));
+    selectDom('.video-item__save-button', videoElement).addEventListener(
+      'click',
+      this.#handleVideoSaveClick
+    );
+    return videoElement;
   };
 
-  #isBlankInput = (input) => input.trim() === '';
+  #videoElementTemplate({ thumbnail, title, channelTitle, publishedAt, videoId, isSaved }) {
+    return `<img src="${thumbnail}" alt="video-item-thumbnail" class="video-item__thumbnail">
+    <h4 class="video-item__title">${title}</h4>
+    <p class="video-item__channel-name">${channelTitle}</p>
+    <p class="video-item__published-date">${formatDateString(publishedAt)}</p>
+    <button 
+      ${isSaved && 'disabled'}
+      class="video-item__save-button button"
+      data-video-id="${videoId}"
+    >
+      ⬇ 저장
+    </button>`;
+  }
+
+  #loadSkeleton = () => {
+    this.videoList.insertAdjacentHTML('beforeend', this.#skeletonTemplate());
+  };
 
   #skeletonTemplate = () =>
     `<div class="skeleton">
@@ -116,10 +112,6 @@ class View {
       <p class="line"></p>
       <p class="line"></p>
     </div>`.repeat(10);
-
-  #loadSkeleton = () => {
-    this.videoList.insertAdjacentHTML('beforeend', this.#skeletonTemplate());
-  };
 }
 
 export default View;
