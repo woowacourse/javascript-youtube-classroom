@@ -1,9 +1,8 @@
 import { API_KEY } from '../../api.js';
-import dummyData from '../../../dummyData.js';
 
 export default class YoutubeMachine {
-  #data;
-  #searchTarget;
+  #data = {};
+  #searchTarget = '';
 
   set searchTarget(searchInput) {
     this.#searchTarget = searchInput;
@@ -29,32 +28,18 @@ export default class YoutubeMachine {
     return URL;
   }
 
-  getSearchData = () => {
-    // console.log(dummyData);
+  updateData(response) {
+    response.then(data => {
+      this.data = data;
+    });
+  }
 
-    const URL = this.getURL();
-
+  callSearchAPI() {
+    const URL = this.#data ? this.getURL(this.#data.nextPageToken) : this.getURL();
     return fetch(URL).then(response => response.json());
+  }
 
-    // const response = fetch(URL);
-    // console.log(response);
-
-    // fetch(URL)
-    //   .then(response => response.json())
-    //   .then(data => {
-    //     console.log(data.items);
-    //   })
-    //   .catch(error => console.log('error:', error));
-
-    // return dummyData;
-  };
-
-  getNextSearchData({ nextPageToken }) {
-    const nextURL = this.getURL(nextPageToken);
-    return fetch(nextURL).then(response => response.json());
-    // fetch(nextURL)
-    //   .then(response => response.json())
-    //   .then(data => console.log(data.items))
-    //   .catch(error => console.log('error:', error));
+  resetData() {
+    this.#data = {};
   }
 }
