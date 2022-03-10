@@ -11,22 +11,25 @@ export default class SearchEngine {
     this.#pageToken = pageToken;
   }
 
+  resetPageToken() {
+    this.#pageToken = null;
+  }
+
   async searchKeyword(keyword) {
     const YOUTUBE_API_URL = this.#getYoutubeApiUrl(keyword);
-
     const response = await fetch(YOUTUBE_API_URL);
 
     if (response.ok) {
       const json = await response.json();
       this.#pageToken = json.nextPageToken;
 
-      return this.isDataExist(json) ? json.items : null;
+      return this.#isDataExist(json) ? json.items : null;
     }
 
     throw Error('유튜브 검색 기능이 정상 작동되지 않았습니다.');
   }
 
-  isDataExist(data) {
+  #isDataExist(data) {
     return Object.keys(data.items[0]).includes('snippet');
   }
 

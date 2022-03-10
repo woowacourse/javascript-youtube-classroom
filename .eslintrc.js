@@ -10,9 +10,10 @@ module.exports = {
   },
   rules: {
     'max-depth': ['error', 2],
-    'max-lines-per-function': ['error', 25],
+    'max-lines-per-function': ['error', 20],
     'no-new': 'off',
     'no-alert': 'off',
+    'class-methods-use-this': 'off',
     'import/extensions': 'off',
   },
   ignorePatterns: ['*test.js'],

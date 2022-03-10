@@ -4,7 +4,6 @@ export const videoItemsTemplate = (preprocessedData) =>
   preprocessedData
     .map(
       ({ videoId, channelTitle, thumbnails, title, publishTime }) => `
-      
         <li class="video-item" data-video-id=${videoId}>
           <img
             src=${thumbnails}

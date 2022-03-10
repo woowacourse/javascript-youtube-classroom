@@ -30,6 +30,5 @@ module.exports = {
   ],
   allowCustomScopes: true,
   allowBreakingChanges: ['feat', 'fix'],
-  // skip any questions you want
   subjectLimit: 100,
 };
