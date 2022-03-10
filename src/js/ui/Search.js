@@ -33,4 +33,9 @@ export default class Search {
         });
     });
   }
+
+  reset() {
+    this.result.resetVideoList();
+    this.input.value = '';
+  }
 }

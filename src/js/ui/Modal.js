@@ -5,7 +5,12 @@ export default class Modal {
   constructor() {
     this.addSearchModalButtonClickEvent();
     this.addModalOuterClickEvent();
-    new Search();
+    this.search = new Search();
+  }
+
+  reset() {
+    this.toggleShowSearchModal();
+    this.search.reset();
   }
 
   toggleShowSearchModal() {
@@ -15,12 +20,13 @@ export default class Modal {
   addSearchModalButtonClickEvent() {
     $('#search-modal-button').addEventListener('click', () => {
       this.toggleShowSearchModal();
+      this.search.input.focus();
     });
   }
 
   addModalOuterClickEvent() {
     window.addEventListener('click', e => {
-      e.target === $('.dimmer') ? this.toggleShowSearchModal() : false;
+      e.target === $('.dimmer') ? this.reset() : false;
     });
   }
 }
