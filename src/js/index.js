@@ -1,13 +1,14 @@
 /* eslint-disable max-lines-per-function */
 import '../css/index.css';
 import { $ } from './util/domHelper.js';
-import { videoListTemplate, NO_RESULT_TEMPLATE } from './util/template.js';
+import { videoListTemplate, NO_RESULT_TEMPLATE, videoItemsTemplate } from './util/template.js';
 
 import SearchEngine from './searchEngine.js';
 import StorageEngine from './storageEngine.js';
 
 const searchModalButton = $('#search-modal-button');
 const modalContainer = $('.modal-container');
+const searchEngine = new SearchEngine();
 
 function handleOpenModal() {
   modalContainer.classList.remove('hide');
@@ -57,10 +58,25 @@ function clearSearchList() {
   searchResult.removeChild(searchResult.lastElementChild);
 }
 
+async function handleScroll(e) {
+  const { scrollHeight, scrollTop, clientHeight } = e.target;
+
+  if (scrollHeight === scrollTop + clientHeight) {
+    const keyword = searchInputKeyword.value;
+
+    const data = await searchEngine.searchKeyword(keyword);
+    const videoList = $('.video-list');
+
+    if (data === null) return;
+
+    const preprocessedData = preprocessData(data);
+    videoList.insertAdjacentHTML('beforeend', videoItemsTemplate(preprocessedData));
+  }
+}
+
 async function handleSearchVideos(e) {
   if (e.key === 'Enter' || e.type === 'click') {
     const keyword = searchInputKeyword.value;
-    const searchEngine = new SearchEngine();
 
     try {
       const data = await searchEngine.searchKeyword(keyword);
@@ -78,6 +94,9 @@ async function handleSearchVideos(e) {
 
       const preprocessedData = preprocessData(data);
       searchResult.insertAdjacentHTML('beforeend', videoListTemplate(preprocessedData));
+
+      const videoList = $('.video-list');
+      videoList.addEventListener('scroll', handleScroll);
     } catch (error) {
       alert(error);
     }
