@@ -3,6 +3,4 @@ const RULES = {
   MAX_STORED_IDS_AMOUNT: 100,
 };
 
-const RELOAD_HEIGHT = 60;
-
-export { RULES, RELOAD_HEIGHT };
+export { RULES };
