@@ -4,6 +4,7 @@ import NoResultImage from '../../assets/images/not_found.png';
 import { store } from '../domain/store';
 import { API_KEY } from '../domain/key';
 import { request } from '../domain/youtubeApi';
+import { convertToKoreaLocaleDate } from '../utils/common';
 
 export default class Result {
   constructor() {}
@@ -45,9 +46,8 @@ export default class Result {
               <h4 class="video-item__title">${title}</h4>
             </a>
             <a href="https://www.youtube.com/channel/${channelId}"><p class="video-item__channel-name">${channelTitle}</p></a>
-            <p class="video-item__published-date">${new Date(
-              publishedAt,
-            ).toLocaleString('ko-KR')}
+            <p class="video-item__published-date">
+              ${convertToKoreaLocaleDate(publishedAt)}
             </p>
             <button class="video-item__save-button button" ${
               saveDatas.includes(item.id.videoId) ? 'hidden' : ''
