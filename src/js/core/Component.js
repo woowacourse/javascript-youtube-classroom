@@ -1,3 +1,4 @@
+import { observe } from '../store/rootStore.js';
 import WebStore from '../store/WebStore.js';
 
 export default class Component {
@@ -10,7 +11,9 @@ export default class Component {
     this.props = props;
     this.setup();
     this.setEvent();
-    this.render();
+    observe(() => {
+      this.render();
+    });
   }
 
   setup() {}
