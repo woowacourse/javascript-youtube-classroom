@@ -10,7 +10,7 @@ const handleKeywordInputSubmit = async (keyword) => {
   try {
     checkKeyword(keyword);
     const videos = await youtubeAPI.search(keyword);
-    searchModalView.appendVideos(videos);
+    searchModalView.renderScreenByVideos(videos);
   } catch (error) {
     if (error instanceof ValidationError) return alert(error.message);
     throw error;

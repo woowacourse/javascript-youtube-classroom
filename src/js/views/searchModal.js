@@ -28,6 +28,32 @@ const searchModalView = {
       }
     });
   },
+
+  renderScreenByVideos(videos) {
+    if (videos.length > 0) {
+      this.refreshVideoScreen();
+      this.appendVideos(videos);
+      this.renderVideoScreen();
+    } else {
+      this.renderEmptyScreen();
+    }
+  },
+
+  refreshVideoScreen() {
+    $(SELECTOR.VIDEOS).innerHTML = '';
+  },
+
+  setScreen(order) {
+    $(SELECTOR.SEARCH_MODAL).classList[order]('empty');
+  },
+
+  renderVideoScreen() {
+    this.setScreen('remove');
+  },
+
+  renderEmptyScreen() {
+    this.setScreen('add');
+  },
 };
 
 export default searchModalView;
