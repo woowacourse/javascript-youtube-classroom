@@ -6,7 +6,7 @@ export const REQUEST_VIDEO_QUANTITY = 10;
 
 export const MAX_STOARGE_CAPACITY = 100;
 
-export const HOST_URL = 'https://jsminyoutube.netlify.app';
+export const HOST_URL = 'https://donkeykong.netlify.app/';
 
 export const REQUEST_PATH = 'youtube/v3/search';
 
