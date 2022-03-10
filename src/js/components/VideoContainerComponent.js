@@ -9,25 +9,20 @@ class VideoContainerComponent extends Component {
   constructor({ parentElement, handlers }) {
     super(parentElement);
     this.mount(handlers);
+    this.initDOM();
     this.bindEventHandler(handlers);
     subscribe(STATE_STORE_KEY.VIDEO_LIST, this);
-  }
-
-  wakeUp(stateKey, stateValue) {
-    this.render(stateValue);
   }
 
   mount() {
     const template = this.generateTemplate();
 
     this.parentElement.insertAdjacentHTML('beforeend', template);
-
-    this.$videoList = document.querySelector('.video-list');
-    // 초기 상태를 그린다.
   }
 
-  render(videoList) {
-    videoList.forEach((video) => new VideoComponent(this.$videoList, { video }));
+  initDOM() {
+    this.$videoList = document.querySelector('.video-list');
+    // 초기 상태를 그린다.
   }
 
   bindEventHandler({ onClickSaveButton }) {
@@ -44,6 +39,14 @@ class VideoContainerComponent extends Component {
         onClickSaveButton(videoId);
       }
     });
+  }
+
+  wakeUp(stateKey, stateValue) {
+    this.render(stateValue);
+  }
+
+  render(videoList) {
+    videoList.forEach((video) => new VideoComponent(this.$videoList, { video }));
   }
 
   generateTemplate() {

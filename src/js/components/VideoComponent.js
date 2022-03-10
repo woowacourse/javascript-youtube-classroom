@@ -7,10 +7,10 @@ class VideoComponent extends Component {
     super(parentElement);
 
     this.state = state;
-    this.render();
+    this.mount();
   }
 
-  render() {
+  mount() {
     const template = this.generateTemplate();
     this.parentElement.insertAdjacentHTML('beforeend', template);
   }

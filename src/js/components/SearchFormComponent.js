@@ -8,6 +8,7 @@ class SearchFormComponent extends Component {
   constructor({ parentElement, handlers }) {
     super(parentElement);
     this.mount();
+    this.initDOM();
     this.bindEventHandler(handlers);
   }
 
@@ -15,7 +16,9 @@ class SearchFormComponent extends Component {
     const template = this.generateTemplate();
 
     this.parentElement.insertAdjacentHTML('beforeend', template);
+  }
 
+  initDOM() {
     this.$searchButton = this.parentElement.querySelector('#search-button');
     this.$searchInput = this.parentElement.querySelector('#search-input-keyword');
   }

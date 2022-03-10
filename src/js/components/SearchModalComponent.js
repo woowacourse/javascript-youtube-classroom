@@ -18,21 +18,24 @@ class SearchModalComponent extends Component {
   constructor({ parentElement, handlers: { onClickOutsideModal, ...restHandlers } }) {
     super(parentElement);
     this.mount(restHandlers);
+    this.initDOM();
+    this.initChidrenComponent(restHandlers);
     this.bindEventHandler({ onClickOutsideModal });
     subscribe(STATE_STORE_KEY.IS_MODAL_SHOW, this);
   }
 
-  wakeUp(stateKey, stateValue) {
-    this.render(stateValue);
-  }
-
-  mount({ onSubmitSearchKeyword, onClickSaveButton }) {
+  mount() {
     const template = this.generateTemplate();
     this.parentElement.insertAdjacentHTML('beforeend', template);
+  }
+
+  initDOM() {
     this.$modalContainer = this.parentElement.querySelector('.modal-container');
     this.$searchModal = this.parentElement.querySelector('.search-modal');
     this.$dimmer = this.parentElement.querySelector('.dimmer');
+  }
 
+  initChidrenComponent({ onSubmitSearchKeyword, onClickSaveButton }) {
     this.searchFormComponent = new SearchFormComponent({
       parentElement: this.$searchModal,
       handlers: { onSubmitSearchKeyword },
@@ -46,16 +49,20 @@ class SearchModalComponent extends Component {
     });
   }
 
+  bindEventHandler({ onClickOutsideModal }) {
+    this.$dimmer.addEventListener('click', onClickOutsideModal);
+  }
+
+  wakeUp(stateKey, stateValue) {
+    this.render(stateValue);
+  }
+
   render(isModalShow) {
     if (isModalShow) {
       this.$modalContainer.classList.remove('hide');
       return;
     }
     this.$modalContainer.classList.add('hide');
-  }
-
-  bindEventHandler({ onClickOutsideModal }) {
-    this.$dimmer.addEventListener('click', onClickOutsideModal);
   }
 
   generateTemplate() {

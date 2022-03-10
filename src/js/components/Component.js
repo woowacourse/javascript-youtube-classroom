@@ -5,11 +5,15 @@ class Component {
     this.parentElement = parentElement;
   }
 
-  wakeUp() {}
-
   mount() {}
 
+  initDOM() {}
+
+  initChildrenComponent() {}
+
   bindEventHandler() {}
+
+  wakeUp() {}
 
   render() {}
 
