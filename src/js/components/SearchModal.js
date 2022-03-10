@@ -1,23 +1,27 @@
-import { fetchDataFromKeyword, getNextPageData } from '../utils/apiFetch.js';
-import { saveLocalStorage, getLocalStorage } from '../utils/localStorage.js';
-import { noSearchResultTemplate, makeIframeTemplate, makeSkeletonTemplate } from '../utils/templates.js';
-import { NUM, IMG_SRC_ADDRESS } from '../../const/consts.js';
+import { fetchDataFromKeyword, getNextPageData } from "../utils/apiFetch.js";
+import { saveLocalStorage, getLocalStorage } from "../utils/localStorage.js";
+import {
+  noSearchResultTemplate,
+  makeIframeTemplate,
+  makeSkeletonTemplate,
+} from "../utils/templates.js";
+import { NUM, IMAGE_SRC_ADDRESS } from "../utils/contants.js";
 
 export class SearchModal {
   constructor() {
-    this.modalContainer = document.getElementById('modal-container');
-    this.searchInputKeyword = document.getElementById('search-input-keyword');
-    this.videoList = document.getElementById('video-list');
-    this.resultLabel = document.getElementById('result-label');
-    this.noResultContainer = document.getElementById('no-result');
-    this.searchButton = document.getElementById('search-button');
+    this.modalContainer = document.getElementById("modal-container");
+    this.searchInputKeyword = document.getElementById("search-input-keyword");
+    this.videoList = document.getElementById("video-list");
+    this.resultLabel = document.getElementById("result-label");
+    this.noResultContainer = document.getElementById("no-result");
+    this.searchButton = document.getElementById("search-button");
 
-    this.searchButton.addEventListener('click', this.handleSearchButton);
-    this.videoList.addEventListener('click', this.handleVideoItemSave);
+    this.searchButton.addEventListener("click", this.handleSearchButton);
+    this.videoList.addEventListener("click", this.handleVideoItemSave);
   }
 
   show() {
-    this.modalContainer.classList.remove('hide');
+    this.modalContainer.classList.remove("hide");
   }
 
   handleSearchButton = () => {
@@ -47,31 +51,36 @@ export class SearchModal {
   }
 
   renderNoVideosImg() {
-    this.noResultContainer.insertAdjacentHTML('afterbegin', noSearchResultTemplate(IMG_SRC_ADDRESS.NO_IMG));
+    this.noResultContainer.insertAdjacentHTML(
+      "afterbegin",
+      noSearchResultTemplate(IMAGE_SRC_ADDRESS.NO_IMAGE)
+    );
   }
 
   renderIframe() {
-    this.resultLabel.removeAttribute('hidden');
+    this.resultLabel.removeAttribute("hidden");
     this.videoList.insertAdjacentHTML(
-      'beforeend',
-      this.videos.items.map((video) => makeIframeTemplate(video)).join(''),
+      "beforeend",
+      this.videos.items.map((video) => makeIframeTemplate(video)).join("")
     );
   }
 
   renderSkeleton() {
     this.videoList.insertAdjacentHTML(
-      'beforeend',
-      Array.from({ length: NUM.VIDEO_ITEMS_FOR_UNIT }, () => makeSkeletonTemplate()).join(''),
+      "beforeend",
+      Array.from({ length: NUM.VIDEO_ITEMS_FOR_UNIT }, () =>
+        makeSkeletonTemplate()
+      ).join("")
     );
   }
 
   removeSkeleton() {
-    this.skeletonCards = [...document.getElementsByClassName('skeleton')];
+    this.skeletonCards = [...document.getElementsByClassName("skeleton")];
     this.skeletonCards.forEach((card) => this.videoList.removeChild(card));
   }
 
   createObserver() {
-    this.videoItems = [...document.getElementsByClassName('video-item')];
+    this.videoItems = [...document.getElementsByClassName("video-item")];
     this.intersectionObserver = new IntersectionObserver((entries) => {
       const [entry] = entries;
       if (entry.isIntersecting) {
@@ -79,12 +88,17 @@ export class SearchModal {
       }
     });
 
-    this.intersectionObserver.observe(this.videoItems[this.videoItems.length - 1]);
+    this.intersectionObserver.observe(
+      this.videoItems[this.videoItems.length - 1]
+    );
   }
 
   async renderNextPage() {
     this.removePreviousObserver();
-    this.videos = await getNextPageData(this.keyword, this.videos.nextPageToken);
+    this.videos = await getNextPageData(
+      this.keyword,
+      this.videos.nextPageToken
+    );
     this.renderIframe();
     this.createObserver();
   }
@@ -94,19 +108,22 @@ export class SearchModal {
   }
 
   handleVideoItemSave = (e) => {
-    if (!e.target.classList.contains('video-item__save-button')) {
+    if (!e.target.classList.contains("video-item__save-button")) {
       return;
     }
 
-    const proviousLocalStorage = getLocalStorage('videoId');
+    const proviousLocalStorage = getLocalStorage("videoId");
     if (this.canSaveVideoItems(proviousLocalStorage, e.target)) {
       proviousLocalStorage.push(e.target.id);
       e.target.remove();
     }
-    saveLocalStorage('videoId', proviousLocalStorage);
+    saveLocalStorage("videoId", proviousLocalStorage);
   };
 
   canSaveVideoItems(localStorage, target) {
-    return !localStorage.includes(target.id) || localStorage.length <= NUM.MAX_STORAGE_LENGTH;
+    return (
+      !localStorage.includes(target.id) ||
+      localStorage.length <= NUM.MAX_STORAGE_LENGTH
+    );
   }
 }

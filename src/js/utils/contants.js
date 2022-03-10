@@ -3,6 +3,6 @@ export const NUM = {
   MAX_STORAGE_LENGTH: 100,
 };
 
-export const IMG_SRC_ADDRESS = {
-  NO_IMG: `src/assets/images/not_found.png`,
+export const IMAGE_SRC_ADDRESS = {
+  NO_IMAGE: "src/assets/images/not_found.png",
 };

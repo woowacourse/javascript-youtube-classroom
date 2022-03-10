@@ -1,5 +1,5 @@
-import { Classroom } from './Classroom.js';
-import { SearchModal } from './SearchModal.js';
+import { Classroom } from "./Classroom.js";
+import { SearchModal } from "./SearchModal.js";
 
 export class App {
   constructor() {

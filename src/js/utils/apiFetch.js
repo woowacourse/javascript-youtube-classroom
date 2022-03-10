@@ -1,7 +1,9 @@
+import { NUM } from "./contants.js";
+
 export const fetchDataFromKeyword = async (keyword) => {
   try {
     const res = await fetch(
-      `https://www.googleapis.com/youtube/v3/search?part=snippet&maxResults=2&q=${keyword}&type=video&key=${key5}`,
+      `https://www.googleapis.com/youtube/v3/search?part=snippet&maxResults=${NUM.VIDEO_ITEMS_FOR_UNIT}&q=${keyword}&type=video&key=${key1}`
     );
     const data = res.json();
     if (!res.ok) {
@@ -9,15 +11,15 @@ export const fetchDataFromKeyword = async (keyword) => {
     }
     return data;
   } catch (e) {
-    return;
+    console.error(e);
   }
 };
 
 export const getNextPageData = async (keyword, pageToken) => {
   try {
     const res =
-      await fetch(`https://www.googleapis.com/youtube/v3/search?part=snippet&maxResults=2&q=${keyword}&type=video&key=
-      ${key5}&pageToken=${pageToken}
+      await fetch(`https://www.googleapis.com/youtube/v3/search?part=snippet&maxResults=${NUM.VIDEO_ITEMS_FOR_UNIT}&q=${keyword}&type=video&key=
+      ${key1}&pageToken=${pageToken}
       `);
     const data = res.json();
     if (!res.ok) {
@@ -25,6 +27,6 @@ export const getNextPageData = async (keyword, pageToken) => {
     }
     return data;
   } catch (e) {
-    return;
+    console.error(e);
   }
 };
