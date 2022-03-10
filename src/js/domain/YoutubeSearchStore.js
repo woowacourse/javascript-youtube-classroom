@@ -9,7 +9,7 @@ class YoutubeSearchStore extends Store {
     isLoaded: false,
     items: [],
     nextPageToken: '',
-    error: '',
+    error: false,
   };
 
   dispatch(type, data) {
