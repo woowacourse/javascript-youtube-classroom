@@ -45,6 +45,7 @@ export default class EventHandler {
       this.modalView.getData(videoListData);
     } catch (error) {
       alert(error.message);
+      this.modalView.showNoResult();
     }
   }
 
@@ -57,9 +58,9 @@ export default class EventHandler {
           this.$videoList.scrollHeight - this.$videoList.scrollTop <=
           this.$videoList.offsetHeight
         ) {
+          const videoListData = await this.getVideoListData(searchInput);
           this.modalView.appendEmptyList();
           this.modalView.appendVideoItem();
-          const videoListData = await this.getVideoListData(searchInput);
           this.modalView.getData(videoListData);
         }
       }, 1000);
@@ -73,6 +74,7 @@ export default class EventHandler {
       return APIManager.parsingVideoData(rawData);
     } catch (err) {
       alert(err.message);
+      throw new Error();
     }
   }
 }

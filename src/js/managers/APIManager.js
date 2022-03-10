@@ -10,18 +10,18 @@ const APIManager = {
         `${this.baseURL}part=snippet&q=${inputValue}&pageToken=${this.pageToken}&maxResults=10&type=video&key=${key}`
       );
       if (!response.ok) {
-        throw new Error('입력하신 검색어로 데이터를 가지오지 못했습니다.');
+        throw new Error('400, 500');
       }
       const json = await response.json();
       return json;
-    } catch (e) {
-      throw new Error('입력하신 검색어로 데이터를 가지오지 못했습니다.');
+    } catch (error) {
+      throw new Error('검색 결과가 없는 경우');
     }
   },
 
   checkResponseError: function (responseData) {
     if (responseData.error) {
-      throw new Error('입력하신 검색어로 데이터를 가지오지 못했습니다.');
+      throw new Error('에러 3');
     }
     return false;
   },
@@ -29,6 +29,7 @@ const APIManager = {
   parsingVideoData: function (responseData) {
     try {
       this.checkResponseError(responseData);
+      console.log(responseData);
       this.pageToken = responseData.nextPageToken;
       return responseData.items.map(item => {
         return {

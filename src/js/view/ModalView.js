@@ -12,10 +12,14 @@ export default class ModalView {
     this.$videoList = document.querySelector('.video-list');
     this.$searchButton = document.querySelector('.search-input__search-button');
     this.$searchInput = document.querySelector('.search-input__keyword');
+    this.$searchNoResult = document.querySelector('.search-result.search-result--no-result');
   }
 
   showModal() {
     this.$modalContainer.classList.remove('hide');
+    this.$searchNoResult.classList.add('hide');
+    this.$searchInput.value = '';
+    this.$searchInput.focus();
   }
 
   hideModal() {
@@ -39,6 +43,8 @@ export default class ModalView {
   }
 
   resetVideoList() {
+    this.$searchNoResult.classList.add('hide');
+    this.$videoList.classList.remove('hide');
     this.$videoList.textContent = '';
     this.videoItemList = [];
   }
@@ -67,5 +73,10 @@ export default class ModalView {
     this.videoItemList
       .slice(-10)
       .forEach((videoItem, index) => videoItem.getVideoItemTemplate(data[index]));
+  }
+
+  showNoResult() {
+    this.$searchNoResult.classList.remove('hide');
+    this.$videoList.classList.add('hide');
   }
 }
