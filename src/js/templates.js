@@ -1,3 +1,5 @@
+import NotFoundImage from '../assets/images/not_found.png';
+
 const TEMPLATE = {
   MY_CLASSROOM: `
     <main id="app" class="classroom-container">
@@ -31,7 +33,17 @@ const TEMPLATE = {
   `,
   SEARCH_RESULT: `
     <h3 hidden>검색 결과</h3>
-    <ul is="video-list"></ul>
+    <ul is="video-list" class="hidden"></ul>
+    <section class="search-result search-result--no-result hidden">
+      <h3 hidden>검색 결과</h3>
+      <div class="no-result">
+        <img src=${NotFoundImage} alt="no result image" class="no-result__image">
+        <p class="no-result__description">
+          검색 결과가 없습니다<br />
+          다른 키워드로 검색해보세요
+        </p>
+      </div>
+    </section>
   `,
   generateVideoItem(video) {
     return `
@@ -46,18 +58,6 @@ const TEMPLATE = {
       </li>
     `;
   },
-  NO_RESULT: `
-    <section class="search-result search-result--no-result">
-      <h3 hidden>검색 결과</h3>
-      <div class="no-result">
-        <img src="./src/assets/images/not_found.png" alt="no result image" class="no-result__image">
-        <p class="no-result__description">
-          검색 결과가 없습니다<br />
-          다른 키워드로 검색해보세요
-        </p>
-      </div>
-    </section>
-    `,
   SKELETON: `
     <div class="skeleton">
       <div class="image"></div>

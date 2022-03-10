@@ -29,7 +29,3 @@ select {
 .hidden {
   display: none;
 }
-
-#no-result-image {
-  content: url('/src/assets/images/not_found.png');
-}

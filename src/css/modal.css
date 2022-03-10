@@ -70,6 +70,14 @@ search-result.search-result--no-result {
   align-items: center;
 }
 
+.no-result {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  height: 450px;
+}
+
 .no-result__image {
   width: 190px;
   height: 140px;
