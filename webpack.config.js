@@ -29,6 +29,18 @@ module.exports = {
             loader: 'babel-loader',
             options: {
               presets: ['@babel/preset-env'],
+              plugins: [
+                [
+                  '@babel/plugin-transform-runtime',
+                  {
+                    absoluteRuntime: false,
+                    corejs: 3,
+                    helpers: true,
+                    regenerator: true,
+                    version: '7.0.0-beta.0',
+                  },
+                ],
+              ],
             },
           },
         ],
@@ -51,11 +63,6 @@ module.exports = {
   },
   plugins: [
     new CleanWebpackPlugin(),
-    new webpack.DefinePlugin({
-      YOUTUBE_URL: JSON.stringify(
-        'https://622752939a5410d43ba3fbcd--modest-euler-778376.netlify.app/youtube/v3/search?'
-      ),
-    }),
     new HtmlWebpackPlugin({
       template: './index.html',
     }),

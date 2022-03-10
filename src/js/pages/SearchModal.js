@@ -1,4 +1,4 @@
-import { OPTIONS, fetchData, makeURLQuery } from '../api';
+import { OPTIONS, fetchData, makeURLQuery, YOUTUBE_URL } from '../api';
 import { RULES, THROTTLE_PENDING_MILLISECOND } from '../constants';
 import VideoCardContainer from '../common/VideosCardContainer';
 import throttle from '../utils/throttle';
@@ -77,11 +77,10 @@ export default class SearchModal {
   async searchHandler(e) {
     e.preventDefault();
 
-    this.videoList.scrollTo({ top: 0 });
-
     try {
       validateKeyword(this.searchInputKeyword.value);
 
+      this.videoList.scrollTo({ top: 0 });
       this.videoList.replaceChildren();
       this.pageToken = '';
 
@@ -135,13 +134,19 @@ export default class SearchModal {
     const URLquery = makeURLQuery({
       ...options,
     });
-    const videoList = await fetchData(URLquery);
 
-    this.VideoCardContainer.setState({ items: videoList.items });
+    try {
+      const videoList = await fetchData(URLquery);
 
-    this.showSearchResult(videoList.items);
+      this.VideoCardContainer.setState({ items: videoList.items });
+
+      this.showSearchResult(videoList.items);
+
+      this.pageToken = videoList.nextPageToken || '';
+    } catch (error) {
+      this.showNoResultContainer();
+    }
+
     this.removeSkeletonUI(this.videoList);
-
-    this.pageToken = videoList.nextPageToken || '';
   }
 }

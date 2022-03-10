@@ -1,5 +1,8 @@
 import { RULES } from './constants';
 
+const YOUTUBE_URL =
+  'https://622752939a5410d43ba3fbcd--modest-euler-778376.netlify.app/dummy/youtube/v3/search?';
+
 const OPTIONS = {
   part: 'snippet',
   maxResults: RULES.MAX_VIDEO_AMOUNT_PER_REQUEST,
@@ -26,4 +29,4 @@ const fetchData = async (query) => {
   return json;
 };
 
-export { OPTIONS, makeURLQuery, fetchData };
+export { OPTIONS, makeURLQuery, fetchData, YOUTUBE_URL };
