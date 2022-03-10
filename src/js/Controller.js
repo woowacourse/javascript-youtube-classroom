@@ -1,4 +1,5 @@
 import dummyObject from './dummy/dummyObject.js';
+import emptyDummy from './dummy/emptyDummy.js';
 import Video from './models/Video.js';
 import { on } from './utils/event.js';
 import isZeroLength from './utils/validator.js';

@@ -10,7 +10,7 @@
 }
 
 .hide {
-    display: none;
+    display: none !important;
 }
 
 .dimmer {
@@ -99,6 +99,7 @@
     flex-wrap: wrap;
     gap: 32px 20px;
     overflow: hidden;
+    /* overflow-y: auto; */
 }
 
 .scroll {

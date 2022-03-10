@@ -66,34 +66,32 @@ describe('검색어를 입력한 경우, 유튜브에 해당 API가 정상적으
 
 describe('스크롤을 끝까지 내릴 경우(가정), 아직 보여주지 않은 다음 영상 아이템 10개를 model에서 가져와야 한다.', () => {
   test('영상 아이템의 개수가 100개 미만일 경우(99), 해당 영상 아이템의 데이터가 로컬스토리지에 저장되어야 한다.', () => {
-global.localStorage = new LocalStorageMock;
+    global.localStorage = new LocalStorageMock;
 
-  const mockSetItem = jest.spyOn(Storage.prototype, 'setItem');
-  const mockGetItem = jest.spyOn(Storage.prototype, 'getItem');
-  const mockRemoveItem = jest.spyOn(Storage.prototype, 'removeItem');
+    const mockSetItem = jest.spyOn(Storage.prototype, 'setItem');
+    const mockGetItem = jest.spyOn(Storage.prototype, 'getItem');
+    const mockRemoveItem = jest.spyOn(Storage.prototype, 'removeItem');
 
-  beforeEach(() => {
-    jest.clearAllMocks();
+    beforeEach(() => {
+      jest.clearAllMocks();
+    });
+
+      it('set item', () => {
+        setItem('accessToken', '1234');
+
+        expect(mockSetItem).toHaveBeenCalledWith('accessToken', '1234');
+      });
+
+      it('get item', () => {
+        getItem('accessToken');
+
+        expect(mockGetItem).toHaveBeenCalledWith('accessToken');
+      });  
+  });
+    
+    test('영상 아이템의 w개수가 100개 이상일 경우(100), 해당 영상 아이템의 데이터가 로컬스토리지에 저장되어서는 안 된다.', () => { });
   });
 
-  it('set item', () => {
-    setItem('accessToken', '1234');
-
-    expect(mockSetItem).toHaveBeenCalledWith('accessToken', '1234');
-  });
-
-  it('get item', () => {
-    getItem('accessToken');
-
-    expect(mockGetItem).toHaveBeenCalledWith('accessToken');
-  });
-
-});
-
-    expect(exportItem('myID')).not.toBe('')
-  });
-  test('영상 아이템의 w개수가 100개 이상일 경우(100), 해당 영상 아이템의 데이터가 로컬스토리지에 저장되어서는 안 된다.', () => {});
-});
 
 // const bodyM`ap = body.items.map((item) => item.snippet);
 // 채널명 channelTitle: "우아한Tech"  채널명
