@@ -101,19 +101,16 @@ export default class YoutubeApp {
         generatorTemplate.skeleton()
       );
 
-      document
-        .querySelectorAll(".skeleton")
-        .forEach((element) => this.videoList.removeChild(element));
+      // const responseData = {
+      //   items: mockObject(),
+      // };
 
-      const responseData = {
-        items: mockObject(),
-      };
-      // const responseData = await getSearchResult(
-      //   this.keyword,
-      //   this.nextPageToken
-      // );
+      const responseData = await getSearchResult(
+        this.keyword,
+        this.nextPageToken
+      );
 
-      // this.nextPageToken = responseData.nextPageToken;
+      this.nextPageToken = responseData.nextPageToken;
 
       const result = responseData.items
         .map((item) =>
@@ -127,19 +124,24 @@ export default class YoutubeApp {
         )
         .join("");
 
+      document
+        .querySelectorAll(".skeleton")
+        .forEach((element) => this.videoList.removeChild(element));
+
       this.videoList.insertAdjacentHTML("beforeend", result);
     }
   };
 
   async search(keyword) {
-    // this.keyword = keyword;
-    // const responseData = await getSearchResult(this.keyword);
-    // this.nextPageToken = responseData.nextPageToken;
-    const responseData = {
-      items: mockObject(),
-    };
-    // console.log(responseData);
+    this.keyword = keyword;
+    const responseData = await getSearchResult(this.keyword);
+    this.nextPageToken = responseData.nextPageToken;
+    // const responseData = {
+    //   items: mockObject(),
+    // };
+    console.log(responseData);
 
+    // 검색 없음 일 경우
     if (responseData.items.length === 0) {
       this.searchResult.removeChild(this.videoList);
       this.searchResult.classList.add("search-result--no-result");
@@ -152,8 +154,6 @@ export default class YoutubeApp {
 
       return;
     }
-
-    console.log(responseData);
 
     const skeletons = document.querySelectorAll(".skeleton");
     skeletons.forEach((skeleton) => {
@@ -173,7 +173,5 @@ export default class YoutubeApp {
       .join("");
 
     this.videoList.insertAdjacentHTML("beforeend", result);
-
-    return responseData.items;
   }
 }
