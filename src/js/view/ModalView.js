@@ -34,6 +34,11 @@ export default class ModalView {
     this.$searchButton.addEventListener('click', () => {
       callback(this.$searchInput.value);
     });
+    this.$searchInput.addEventListener('keyup', e => {
+      if (e.keyCode === 13) {
+        callback(this.$searchInput.value);
+      }
+    });
   }
 
   bindVideoListScroll(callback) {
