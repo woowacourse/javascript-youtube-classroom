@@ -95,10 +95,8 @@
 
 .video-item {
   position: relative;
-  /*width: 240px;
-  height: 255px;*/
-  width: 1040px;
-  height: 400px;
+  width: 240px;
+  height: 255px;
 }
 
 .video-item__thumbnail {
@@ -133,12 +131,12 @@
 }
 
 .video-item__save-button {
-  position: absolute;
-  right: 0;
+  position: relative;
   width: 80px;
   height: 36px;
   background: #f9f9f9;
   margin-top: 4px;
+  float: right;
 }
 
 .video-item__save-button:hover {

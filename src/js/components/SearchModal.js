@@ -1,4 +1,5 @@
 import { fetchDataFromKeyword, getNextPageData } from '../utils/apiFetch.js';
+import { saveLocalStorage, getLocalStorage } from '../utils/localStorage.js';
 
 export class SearchModal {
   constructor() {
@@ -11,6 +12,8 @@ export class SearchModal {
 
     this.searchButton = document.getElementById('search-button');
     this.searchButton.addEventListener('click', this.handleSearchButton);
+
+    this.videoList.addEventListener('click', this.handleVideoItemSave);
   }
 
   initState() {
@@ -45,6 +48,7 @@ export class SearchModal {
     this.imgSrcAddress = `src/assets/images/not_found.png`;
     this.videoList.insertAdjacentHTML('beforeend', `<img src=${this.imgSrcAddress} alt="없음" />`);
   }
+
   renderIframe() {
     this.resultLabel = document.getElementById('resultLabel');
     this.resultLabel.removeAttribute('hidden');
@@ -66,19 +70,19 @@ export class SearchModal {
     this.skeletonCards.forEach((x) => this.videoList.removeChild(x));
   }
 
-  makeIframeTemplate(keyword) {
+  makeIframeTemplate(videoId) {
     return `
     <li>
     <div>
       <iframe
           class = "video-item"
           type="text/html"
-          src="https://www.youtube.com/embed/${keyword}"
+          src="https://www.youtube.com/embed/${videoId}"
           frameborder="0"
           allowfullscreen="allowfullscreen"
       ></iframe>
       </div>
-      <button class="video-item__save-button button">⬇ 저장</button>
+      <button id="${videoId}" class="video-item__save-button button">⬇ 저장</button>
   </li>`;
   }
 
@@ -114,5 +118,22 @@ export class SearchModal {
 
   removePreviousObserver() {
     this.intersectionObserver.disconnect();
+  }
+
+  handleVideoItemSave = (e) => {
+    if (!e.target.classList.contains('video-item__save-button')) {
+      return;
+    }
+
+    const proviousLocalStorage = getLocalStorage('videoId');
+    if (this.canSaveVideoItems(proviousLocalStorage, e.target)) {
+      proviousLocalStorage.push(e.target.id);
+      e.target.remove();
+    }
+    saveLocalStorage('videoId', proviousLocalStorage);
+  };
+
+  canSaveVideoItems(localStorage, target) {
+    return !localStorage.includes(target.id) || localStorage.length <= 100;
   }
 }
