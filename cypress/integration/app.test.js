@@ -1,7 +1,3 @@
-// - [ ] 내가 검색한 영상들의 JSON 데이터를 localStorage에 저장한다.
-//   - 이미 저장된 영상이라면 저장 버튼이 보이지 않도록 한다.
-// - [ ] 저장 가능한 최대 동영상의 갯수는 100개이다.
-
 // before(() => {
 //   cy.visit("./index.html");
 // });
@@ -63,13 +59,8 @@ it("브라우저 스크롤 바를 끝까지 내려 그 다음 10개 아이템을
   cy.get(".video-list").children().should("have.length", 20);
 });
 
-// - [ ] 내가 검색한 영상들의 JSON 데이터를 localStorage에 저장한다.
-//   - 이미 저장된 영상이라면 저장 버튼이 보이지 않도록 한다.
-// - [ ] 저장 가능한 최대 동영상의 갯수는 100개이다.
-
 it("내가 검색한 영상들 중 저장 버튼을 누르면 저장 버튼이 사라진다.", () => {
   const searchKeyword = "xooos";
-
   cy.visit("./index.html");
 
   cy.get("#search-modal-button").click();
@@ -77,5 +68,16 @@ it("내가 검색한 영상들 중 저장 버튼을 누르면 저장 버튼이 �
   cy.get("#search-button").click();
 
   cy.get(".video-item__save-button").eq(0).click();
+  cy.get(".video-item__save-button").eq(0).should("be.not.visible");
+});
+
+it("이미 저장된 영상이라면 저장 버튼이 보이지 않도록 한다.", () => {
+  const searchKeyword = "xooos";
+  cy.visit("./index.html");
+
+  cy.get("#search-modal-button").click();
+  cy.get("#search-input-keyword").type(searchKeyword);
+  cy.get("#search-button").click();
+
   cy.get(".video-item__save-button").eq(0).should("be.not.visible");
 });
