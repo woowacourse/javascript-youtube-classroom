@@ -1,104 +1,78 @@
 import { fetchDataFromKeyword, getNextPageData } from '../utils/apiFetch.js';
 import { saveLocalStorage, getLocalStorage } from '../utils/localStorage.js';
+import { noSearchResultTemplate, makeIframeTemplate, makeSkeletonTemplate } from '../utils/templates.js';
+import { NUM, IMG_SRC_ADDRESS } from '../../const/consts.js';
 
 export class SearchModal {
   constructor() {
     this.modalContainer = document.getElementById('modal-container');
-    this.searchModalDialog = document.getElementsByClassName('search-modal');
-    this.searchModalTitle = document.getElementsByClassName('search-modal-title');
     this.searchInputKeyword = document.getElementById('search-input-keyword');
     this.videoList = document.getElementById('video-list');
-    this.videoItem = document.querySelectorAll('.video-item');
-
+    this.resultLabel = document.getElementById('result-label');
+    this.noResultContainer = document.getElementById('no-result');
     this.searchButton = document.getElementById('search-button');
-    this.searchButton.addEventListener('click', this.handleSearchButton);
 
+    this.searchButton.addEventListener('click', this.handleSearchButton);
     this.videoList.addEventListener('click', this.handleVideoItemSave);
   }
 
-  initState() {
-    this.videos = [];
-    this.videoList.replaceChildren();
+  show() {
+    this.modalContainer.classList.remove('hide');
   }
 
-  show = () => {
-    this.modalContainer.classList.remove('hide');
+  handleSearchButton = () => {
+    this.initVideoList();
+    this.keyword = this.searchInputKeyword.value;
+    this.getDataMatchKeyword(this.keyword);
   };
 
-  handleSearchButton = () => {
-    this.initState();
-    this.getDataMatchKeyword(this.searchInputKeyword.value);
-  };
+  initVideoList() {
+    this.videos = {};
+    this.videoList.replaceChildren();
+    this.noResultContainer.replaceChildren();
+  }
 
   async getDataMatchKeyword(keyword) {
     this.renderSkeleton();
-    try {
-      this.videos = await fetchDataFromKeyword(keyword);
-      this.keyword = keyword;
-      this.removeSkeleton();
-      this.renderIframe();
-      this.createObserver();
-    } catch (error) {
+    this.videos = await fetchDataFromKeyword(keyword);
+    this.removeSkeleton();
+
+    if (this.videos === undefined) {
       this.renderNoVideosImg();
-      console.log('동영상이없어요.');
+      return;
     }
+
+    this.renderIframe();
+    this.createObserver();
   }
 
   renderNoVideosImg() {
-    this.imgSrcAddress = `src/assets/images/not_found.png`;
-    this.videoList.insertAdjacentHTML('beforeend', `<img src=${this.imgSrcAddress} alt="없음" />`);
+    this.noResultContainer.insertAdjacentHTML('afterbegin', noSearchResultTemplate(IMG_SRC_ADDRESS.NO_IMG));
   }
 
   renderIframe() {
-    this.resultLabel = document.getElementById('resultLabel');
     this.resultLabel.removeAttribute('hidden');
     this.videoList.insertAdjacentHTML(
       'beforeend',
-      this.videos.items.map((video) => this.makeIframeTemplate(video.id.videoId)).join(''),
+      this.videos.items.map((video) => makeIframeTemplate(video)).join(''),
     );
   }
 
   renderSkeleton() {
     this.videoList.insertAdjacentHTML(
       'beforeend',
-      Array.from({ length: 10 }, () => this.makeSkeletonTemplate()).join(''),
+      Array.from({ length: NUM.VIDEO_ITEMS_FOR_UNIT }, () => makeSkeletonTemplate()).join(''),
     );
   }
 
   removeSkeleton() {
     this.skeletonCards = [...document.getElementsByClassName('skeleton')];
-    this.skeletonCards.forEach((x) => this.videoList.removeChild(x));
-  }
-
-  makeIframeTemplate(videoId) {
-    return `
-    <li>
-    <div>
-      <iframe
-          class = "video-item"
-          type="text/html"
-          src="https://www.youtube.com/embed/${videoId}"
-          frameborder="0"
-          allowfullscreen="allowfullscreen"
-      ></iframe>
-      </div>
-      <button id="${videoId}" class="video-item__save-button button">⬇ 저장</button>
-  </li>`;
-  }
-
-  makeSkeletonTemplate() {
-    return `
-    <div class="skeleton">
-        <div class="image"></div>
-        <p class="line"></p>
-        <p class="line"></p>
-    </div>
-    `;
+    this.skeletonCards.forEach((card) => this.videoList.removeChild(card));
   }
 
   createObserver() {
     this.videoItems = [...document.getElementsByClassName('video-item')];
-    this.intersectionObserver = new IntersectionObserver((entries, observer) => {
+    this.intersectionObserver = new IntersectionObserver((entries) => {
       const [entry] = entries;
       if (entry.isIntersecting) {
         this.renderNextPage();
@@ -110,7 +84,6 @@ export class SearchModal {
 
   async renderNextPage() {
     this.removePreviousObserver();
-    //TODO:skeleton if needed
     this.videos = await getNextPageData(this.keyword, this.videos.nextPageToken);
     this.renderIframe();
     this.createObserver();
@@ -134,6 +107,6 @@ export class SearchModal {
   };
 
   canSaveVideoItems(localStorage, target) {
-    return !localStorage.includes(target.id) || localStorage.length <= 100;
+    return !localStorage.includes(target.id) || localStorage.length <= NUM.MAX_STORAGE_LENGTH;
   }
 }
