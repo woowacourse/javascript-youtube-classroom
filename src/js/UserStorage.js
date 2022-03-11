@@ -1,7 +1,4 @@
-import {
-  ERROR_MESSAGE_USER_STORAGE_OVERFLOW,
-  STORAGE_MAX_COUNT,
-} from "./constants/constants";
+import { ERROR_MESSAGE, STORAGE_MAX_COUNT } from "./constants/constants";
 
 export default class UserStorage {
   constructor() {
@@ -14,7 +11,7 @@ export default class UserStorage {
 
   addStorage(data) {
     if (this.storage.length >= STORAGE_MAX_COUNT) {
-      throw new Error(ERROR_MESSAGE_USER_STORAGE_OVERFLOW);
+      throw new Error(ERROR_MESSAGE.USER_STORAGE_OVERFLOW);
     }
 
     this.storage = [...this.storage, data];

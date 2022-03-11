@@ -1,4 +1,4 @@
-import { ERROR_MESSAGE_USER_STORAGE_OVERFLOW } from "../constants/constants";
+import { ERROR_MESSAGE } from "../constants/constants";
 import UserStorage from "../UserStorage";
 
 describe("userStorage에 동영상의 데이터가 적절히 저장되어야 한다.", () => {
@@ -20,7 +20,7 @@ describe("userStorage에 동영상의 데이터가 적절히 저장되어야 한
       userData.forEach(() => {
         userStorage.addStorage(userData);
       })
-    ).toThrowError(ERROR_MESSAGE_USER_STORAGE_OVERFLOW);
+    ).toThrowError(ERROR_MESSAGE.USER_STORAGE_OVERFLOW);
   });
 });
 

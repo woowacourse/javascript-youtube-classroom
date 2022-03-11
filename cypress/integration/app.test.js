@@ -1,3 +1,5 @@
+import { ERROR_MESSAGE } from "../../src/js/constants/constants";
+
 describe("보고싶은 영상 찾기 모달창 전체 로직 테스트", () => {
   before(() => {
     cy.visit("./index.html");
@@ -28,6 +30,18 @@ describe("보고싶은 영상 찾기 모달창 전체 로직 테스트", () => {
   //   cy.get("#search-button").click();
   //   cy.get(".skeleton").should("be.visible");
   // });
+
+  it("보고싶은 영상 찾기 모달창 안에서 검색창에 검색어를 입력하지 않으면 에러 메시지를 보여준다.", () => {
+    const alertStub = cy.stub();
+
+    cy.on("window:alert", alertStub);
+    cy.get("#search-input-keyword").clear().type(" ");
+    cy.get("#search-button")
+      .click()
+      .then(() => {
+        expect(alertStub).to.be.calledWith(ERROR_MESSAGE.SEARCH_INPUT_IS_EMPTY);
+      });
+  });
 
   it("보고싶은 영상 찾기 모달창 안에서 원하는 영상을 검색할 수 있다.", () => {
     cy.get("#search-input-keyword").clear().type(searchKeyword);
