@@ -8,11 +8,15 @@ const WRONG_API_URL= (keyword) =>
   `https://elastic-goldstine-10f16a.netlify.app/search?part=snippettt&q=${keyword}&maxResults=${MAX_DATA_FETCH_AT_ONCE}`;
 
 export default class SearchVideoManager {
+  #keyword;
+
+  #nextPageToken;
+
   #isLastPage;
 
   constructor() {
-    this.keyword = '';
-    this.nextPageToken = '';
+    this.#keyword = '';
+    this.#nextPageToken = '';
     this.#isLastPage = false;
   }
 
@@ -20,35 +24,32 @@ export default class SearchVideoManager {
     return this.#isLastPage;
   }
 
-  search(newKeyword = this.keyword) {
-    if (newKeyword !== this.keyword) {
+  search(newKeyword = this.#keyword) {
+    if (newKeyword !== this.#keyword) {
       this.resetNextPageToken();
     }
     return this.fetchYoutubeData(newKeyword).then((data) => this.processVideoData(data));
   }
 
   resetNextPageToken() {
-    this.nextPageToken = '';
+    this.#nextPageToken = '';
     this.#isLastPage = false;
   }
 
   fetchYoutubeData(keyword) {
-    return fetch(
-      this.nextPageToken
-        ? `${YOUTUBE_API_URL(keyword)}&pageToken=${this.nextPageToken}`
-        : YOUTUBE_API_URL(keyword)
-    ).then((response) => {
-      if (!response.ok) {
-        throw new Error(response.status);
-      }
-      this.keyword = keyword;
-      return response.json();
-    });
+    return fetch(this.#nextPageToken ? `${YOUTUBE_API_URL(keyword)}&pageToken=${this.#nextPageToken}`: YOUTUBE_API_URL(keyword))
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error(response.status);
+        }
+        this.#keyword = keyword;
+        return response.json();
+      });
   }
 
   processVideoData(result) {
     if (!result.nextPageToken) this.#isLastPage = true;
-    this.nextPageToken = result.nextPageToken;
+    this.#nextPageToken = result.nextPageToken;
     return result.items.map((item) => ({
       id: item.id.videoId,
       thumbnail: item.snippet.thumbnails.medium.url,

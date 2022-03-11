@@ -6,13 +6,9 @@ export const throttle = (callback, delay) => {
 
   return (event) => {
     if (timerId) return;
-    timerId = setTimeout(
-      () => {
-        callback(event);
-        timerId = null;
-      },
-      delay,
-      event
-    );
+    timerId = setTimeout(() => { 
+      callback(event);
+      timerId = null;
+    }, delay, event);
   };
 };

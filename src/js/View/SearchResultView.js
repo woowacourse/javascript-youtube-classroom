@@ -5,26 +5,26 @@ export default class SearchResultView {
   constructor() {
     this.isShownNoResult = false;
 
-    this.searchModal = $('#search-modal');
-    this.searchResultSection = $('#search-result-section', this.searchModal);
-    this.searchResultVideoList = $('#search-result-video-list', this.searchResultSection);
-    this.noResultContainer = $('#no-result-container', this.searchResultSection);
-    this.noResultDescription = $('#no-result-description', this.noResultContainer);
+    this.$searchModal = $('#search-modal');
+    this.$searchResultSection = $('#search-result-section', this.$searchModal);
+    this.$searchResultVideoList = $('#search-result-video-list', this.$searchResultSection);
+    this.$noResultContainer = $('#no-result-container', this.$searchResultSection);
+    this.$noResultDescription = $('#no-result-description', this.$noResultContainer);
 
     this.bindEvents();
   }
 
   bindEvents() {
-    this.searchResultVideoList.addEventListener('click', this.onClickVideoSaveButton.bind(this));
-    this.searchResultVideoList.addEventListener('scroll', this.onScrollVideoList.bind(this));
+    this.$searchResultVideoList.addEventListener('click', this.onClickVideoSaveButton.bind(this));
+    this.$searchResultVideoList.addEventListener('scroll', this.onScrollVideoList.bind(this));
   }
 
   onScrollVideoList() {
-    const { scrollTop, clientHeight, scrollHeight } = this.searchResultVideoList;
+    const { scrollTop, clientHeight, scrollHeight } = this.$searchResultVideoList;
     const searchOnScrollEvent = new CustomEvent('searchOnScroll', {
       detail: { scrollTop, clientHeight, scrollHeight },
     });
-    this.searchModal.dispatchEvent(searchOnScrollEvent);
+    this.$searchModal.dispatchEvent(searchOnScrollEvent);
   }
 
   onClickVideoSaveButton({ target }) {
@@ -32,45 +32,45 @@ export default class SearchResultView {
       const saveVideoEvent = new CustomEvent('saveVideo', {
         detail: { target },
       });
-      this.searchModal.dispatchEvent(saveVideoEvent);
+      this.$searchModal.dispatchEvent(saveVideoEvent);
     }
   }
 
   resetSearchResultVideoList() {
-    this.searchResultVideoList.scrollTo(0, 0);
-    this.searchResultVideoList.innerHTML = '';
+    this.$searchResultVideoList.scrollTo(0, 0);
+    this.$searchResultVideoList.innerHTML = '';
   }
 
   updateOnLoading() {
-    this.searchResultVideoList.insertAdjacentHTML('beforeend', template.skeletonListItem());
+    this.$searchResultVideoList.insertAdjacentHTML('beforeend', template.skeletonListItem());
   }
 
   removeSkeletonListItem() {
-    $$('.skeleton', this.searchResultVideoList).forEach((listItem) => {
+    $$('.skeleton', this.$searchResultVideoList).forEach((listItem) => {
       listItem.remove();
     });
   }
 
   showSearchResultVideoList() {
-    this.noResultContainer.classList.add('hide');
-    this.searchResultVideoList.classList.remove('hide');
-    this.searchResultSection.classList.remove('search-result--no-result');
+    this.$noResultContainer.classList.add('hide');
+    this.$searchResultVideoList.classList.remove('hide');
+    this.$searchResultSection.classList.remove('search-result--no-result');
     this.isShownNoResult = false;
   }
 
   showNoResult() {
-    this.noResultContainer.classList.remove('hide');
-    this.searchResultVideoList.classList.add('hide');
-    this.searchResultSection.classList.add('search-result--no-result');
-    this.noResultDescription.innerHTML = MESSAGE.NO_RESULT;
+    this.$noResultContainer.classList.remove('hide');
+    this.$searchResultVideoList.classList.add('hide');
+    this.$searchResultSection.classList.add('search-result--no-result');
+    this.$noResultDescription.innerHTML = MESSAGE.NO_RESULT;
     this.isShownNoResult = true;
   }
 
   showErrorResult() {
-    this.noResultContainer.classList.remove('hide');
-    this.searchResultVideoList.classList.add('hide');
-    this.searchResultSection.classList.add('search-result--no-result');
-    this.noResultDescription.innerHTML = MESSAGE.ERROR_RESULT;
+    this.$noResultContainer.classList.remove('hide');
+    this.$searchResultVideoList.classList.add('hide');
+    this.$searchResultSection.classList.add('search-result--no-result');
+    this.$noResultDescription.innerHTML = MESSAGE.ERROR_RESULT;
     this.isShownNoResult = true;
   }
 
@@ -85,6 +85,6 @@ export default class SearchResultView {
     const listItems = videos.map((video) => template.videoListItem(video)).join('');
 
     this.removeSkeletonListItem();
-    this.searchResultVideoList.insertAdjacentHTML('beforeend', listItems);
+    this.$searchResultVideoList.insertAdjacentHTML('beforeend', listItems);
   }
 }
