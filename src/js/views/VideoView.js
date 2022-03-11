@@ -17,7 +17,7 @@ export default class VideoView {
       },
       { root: this.#$container }
     );
-    this.#$emptyScreen = $('#empty-screen');
+    this.#$emptyScreen = $(SELECTOR.EMPTY_SCREEN);
   }
 
   renderScreenByVideos(videos) {

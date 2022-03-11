@@ -5,4 +5,5 @@ export const SELECTOR = {
   SEARCH_FORM: '#search-form',
   SEARCH_INPUT_KEYWORD: '#search-input-keyword',
   VIDEOS: '#videos',
+  EMPTY_SCREEN: '#empty-screen',
 };
