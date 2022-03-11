@@ -56,15 +56,16 @@ export default class VideoCardList extends Component {
 
       this.addSkeletons();
 
-      const { items, newNextPageToken } = await searchVideos(
-        query,
-        nextPageToken
-      ).catch((err) => {
+      const data = await searchVideos(query, nextPageToken).catch((err) => {
         alert(err);
       });
 
       this.removeSkeletons();
-      if (items) this.updateSearchResult(items, { query, newNextPageToken });
+      if (data.items)
+        this.updateSearchResult(data.items, {
+          query,
+          nextPageToken: data.nextPageToken,
+        });
     });
   }
 

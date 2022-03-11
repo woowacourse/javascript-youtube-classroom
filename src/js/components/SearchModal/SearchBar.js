@@ -28,13 +28,15 @@ export default class SearchBar extends Component {
   setEvent() {
     this.addEvent('submit', '#search-form', async (e) => {
       const query = e.target.elements.searchInput.value;
-      const { items, nextPageToken } = await searchVideos(query).catch(
-        (err) => {
-          alert(err);
-        }
-      );
+      const data = await searchVideos(query).catch((err) => {
+        alert(err);
+      });
 
-      if (items) this.updateSearchResult(items, { query, nextPageToken });
+      if (data.items)
+        this.updateSearchResult(data.items, {
+          query,
+          nextPageToken: data.nextPageToken,
+        });
     });
   }
 
