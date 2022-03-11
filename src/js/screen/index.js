@@ -1,8 +1,8 @@
 import SearchEngine from '../domain/searchEngine.js';
 import StorageEngine from '../domain/storageEngine.js';
 
-import { $ } from '../util/domHelper.js';
-import { NO_RESULT_TEMPLATE, videoItemsTemplate, videoListTemplate } from '../util/template.js';
+import { $, $$ } from '../util/domHelper.js';
+import { NO_RESULT_TEMPLATE, SKELETON_TEMPLATE, VIDEO_LIST_TEMPLATE } from '../util/template.js';
 import { preprocessDate } from '../util/common.js';
 import { DELAY_MILISECOND_TIME } from '../util/constants.js';
 
@@ -44,6 +44,7 @@ export default class ScreenManager {
   async handleSearchVideos(e) {
     if (e.key === 'Enter' || e.type === 'click') {
       this.initSearchEnvironment();
+      this.renderSkeleton();
       const keyword = this.searchInputKeyword.value;
 
       try {
@@ -59,18 +60,40 @@ export default class ScreenManager {
     this.searchEngine.resetPageToken();
     this.searchResult.removeChild(this.searchResult.lastElementChild);
     this.searchResult.classList.remove('search-result--no-result');
+    this.searchResult.insertAdjacentHTML('beforeend', VIDEO_LIST_TEMPLATE);
+  }
+
+  renderSkeleton() {
+    const videoList = $('.video-list');
+    videoList.insertAdjacentHTML('beforeend', SKELETON_TEMPLATE);
   }
 
   renderSearchResult(data) {
     if (data === null) {
+      this.searchResult.removeChild(this.searchResult.lastElementChild);
       this.searchResult.insertAdjacentHTML('beforeend', NO_RESULT_TEMPLATE);
       this.searchResult.classList.add('search-result--no-result');
       return;
     }
-
     const preprocessedData = ScreenManager.preprocessData(data);
-    this.searchResult.insertAdjacentHTML('beforeend', videoListTemplate(preprocessedData));
+    this.allocatePreprocessedData(preprocessedData);
     this.bindScrollEvent();
+  }
+
+  allocatePreprocessedData(preprocessedData) {
+    const skeletonList = $$('.skeleton');
+
+    skeletonList.forEach((element, index) => {
+      const { videoId, channelTitle, thumbnails, title, publishTime } = preprocessedData[index];
+
+      element.dataset.videoId = videoId;
+      $('.video-item__thumbnail', element).src = thumbnails;
+      $('.video-item__title', element).textContent = title;
+      $('.video-item__channel-name', element).textContent = channelTitle;
+      $('.video-item__published-date', element).textContent = publishTime;
+
+      element.classList.remove('skeleton');
+    });
   }
 
   bindScrollEvent() {
@@ -84,6 +107,8 @@ export default class ScreenManager {
     if (!this.#throttle && scrollHeight === scrollTop + clientHeight) {
       this.#throttle = setTimeout(async () => {
         this.#throttle = null;
+        this.renderSkeleton();
+
         const keyword = this.searchInputKeyword.value;
         const data = await this.searchEngine.searchKeyword(keyword);
 
@@ -93,10 +118,12 @@ export default class ScreenManager {
   }
 
   renderAdditionalVideos(data) {
-    if (data === null) return;
-
+    if (data === null) {
+      this.searchResult.removeChild(this.searchResult.lastElementChild);
+      return;
+    }
     const preprocessedData = ScreenManager.preprocessData(data);
-    this.videoList.insertAdjacentHTML('beforeend', videoItemsTemplate(preprocessedData));
+    this.allocatePreprocessedData(preprocessedData);
   }
 
   static preprocessData(data) {

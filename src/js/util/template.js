@@ -1,30 +1,21 @@
 import notFoundImage from '../../assets/images/not_found.jpg';
 
-export const videoItemsTemplate = (preprocessedData) =>
-  preprocessedData
-    .map(
-      ({ videoId, channelTitle, thumbnails, title, publishTime }) => `
-        <li class="video-item" data-video-id=${videoId}>
-          <img
-            src=${thumbnails}
-            alt="video-item-thumbnail" class="video-item__thumbnail">
-          <h4 class="video-item__title">${title}</h4>
-          <p class="video-item__channel-name">${channelTitle}</p>
-          <p class="video-item__published-date">${publishTime}</p>
-          <button class="video-item__save-button button">⬇ 저장</button>
-        </li>
-  `
-    )
-    .join('');
-
-export const videoListTemplate = (preprocessedData) => `
-  <ul class="video-list">
-    ${videoItemsTemplate(preprocessedData)}
-  </ul>
-  `;
-
 export const NO_RESULT_TEMPLATE = `
   <div class="no-result">
     <img src=${notFoundImage} alt="no result image" class="no-result__image">
   </div>
 `;
+
+export const SKELETON_TEMPLATE = `
+<li class="video-item skeleton" data-video-id="">
+<img
+  src=${notFoundImage}
+  alt="video-item-thumbnail" class="video-item__thumbnail">
+<h4 class="video-item__title">1231232311</h4>
+<p class="video-item__channel-name">2123123</p>
+<p class="video-item__published-date">1231231233</p>
+<button class="video-item__save-button button">⬇ 저장</button>
+</li>
+`.repeat(10);
+
+export const VIDEO_LIST_TEMPLATE = '<ul class="video-list"></ul>';
