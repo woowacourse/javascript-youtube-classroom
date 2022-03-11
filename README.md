@@ -51,7 +51,13 @@
 
 <br />
 
-## ⚙️ Before Started
+## 개요도
+
+### Step 1
+
+<img alt="Tip" src="./images/step1_summary.png">
+
+<br />
 
 #### <img alt="Tip" src="https://img.shields.io/static/v1.svg?label=&message=Tip&style=flat-square&color=673ab8"> 로컬에서 서버 띄워서 손쉽게 static resources 변경 및 확인하는 방법
 
