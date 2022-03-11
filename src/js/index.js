@@ -15,7 +15,10 @@ const videoView = new VideoView(async () => await youtubeAPI.videos());
 const handleKeywordInputSubmit = async (keyword) => {
   try {
     checkKeyword(keyword);
+    videoView.refreshVideoScreen();
+    videoView.onSkeleton();
     const videos = await youtubeAPI.search(keyword);
+    videoView.offSkeleton();
     videoView.renderScreenByVideos(videos);
   } catch (error) {
     if (error instanceof ValidationError) return alert(error.message);

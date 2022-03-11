@@ -1,4 +1,5 @@
-import { REDIRECT_SERVER_HOST, YOUTUBE_API_REQUEST_COUNT } from './constants.js';
+import { REDIRECT_SERVER_HOST } from './constants.js';
+import { YOUTUBE_API_REQUEST_COUNT } from '../constants/index.js';
 
 export default class YoutubeAPI {
   #nextPageToken;
@@ -24,7 +25,13 @@ export default class YoutubeAPI {
     this.#keyword = keyword;
   }
 
+  #checkEndPage() {
+    return this.#nextPageToken === undefined;
+  }
+
   async videos() {
+    if (this.#checkEndPage()) return [];
+
     const response = await fetch(this.#makeURL(), { method: 'GET' });
     const body = await response.json();
 

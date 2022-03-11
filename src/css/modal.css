@@ -9,13 +9,13 @@
   left: 0;
 }
 
-.modal-container .search-result.search-result--no-result,
-.modal-container.empty .search-result,
+.search-result.search-result--no-result,
+.search-result.search-result--no-result.empty + .search-result,
 .modal-container.hide {
   display: none;
 }
 
-.modal-container.empty .search-result.search-result--no-result {
+.search-result.search-result--no-result.empty {
   display: flex;
 }
 
