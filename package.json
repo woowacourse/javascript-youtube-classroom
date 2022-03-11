@@ -37,5 +37,8 @@
     "transform": {
       "^.+\\.js$": "babel-jest"
     }
+  },
+  "dependencies": {
+    "regenerator-runtime": "^0.13.9"
   }
 }

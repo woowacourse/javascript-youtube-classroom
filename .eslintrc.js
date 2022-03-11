@@ -18,5 +18,6 @@ module.exports = {
     'no-alert': 'off',
     'no-console': 'off',
     'no-plusplus': 'off',
+    "class-methods-use-this": 'on',
   },
 };
