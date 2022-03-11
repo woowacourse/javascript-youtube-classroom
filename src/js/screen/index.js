@@ -45,6 +45,7 @@ export default class ScreenManager {
     if (e.key === 'Enter' || e.type === 'click') {
       this.initSearchEnvironment();
       this.renderSkeleton();
+
       const keyword = this.searchInputKeyword.value;
 
       try {
@@ -87,6 +88,7 @@ export default class ScreenManager {
       const { videoId, channelTitle, thumbnails, title, publishTime } = preprocessedData[index];
 
       element.dataset.videoId = videoId;
+
       $('.video-item__thumbnail', element).src = thumbnails;
       $('.video-item__title', element).textContent = title;
       $('.video-item__channel-name', element).textContent = channelTitle;

@@ -20,13 +20,6 @@ module.exports = {
       {
         test: /\.(jpg)$/i,
         use: [
-          // {
-          //   loader: 'url-loader',
-          //   options: {
-          //     name: '[name].[ext]?[hash]',
-          //     limit: 100000,
-          //   },
-          // },
           {
             loader: 'file-loader',
           },
