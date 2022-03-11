@@ -2,6 +2,10 @@ import Component from '../../core/Component.js';
 import VideoCard from './VideoCard.js';
 import { rootStore } from '../../store/rootStore.js';
 import { getSavedVideos, searchVideos } from '../../api/api.js';
+import {
+  INTERSECTION_OBSERVER,
+  QUERY_OPTIONS,
+} from '../../config/constants.js';
 
 export default class VideoCardList extends Component {
   setup() {
@@ -9,8 +13,8 @@ export default class VideoCardList extends Component {
       this.onLastChildVisible.bind(this),
       {
         root: this.target,
-        rootMargin: '0px',
-        threshold: 0,
+        rootMargin: INTERSECTION_OBSERVER.ROOT_MARGIN.NO_MARGIN,
+        threshold: INTERSECTION_OBSERVER.THRESHOLD.IMMEDIATELY,
       }
     );
 
@@ -72,7 +76,7 @@ export default class VideoCardList extends Component {
   addSkeletons() {
     this.setState({
       isLoading: true,
-      skeletons: Array(10).fill({
+      skeletons: Array(QUERY_OPTIONS.SEARCH.maxResults).fill({
         loading: true,
         videoId: null,
         thumbnailUrl: null,

@@ -1,17 +1,14 @@
 import { YOUTUBE_API_KEY } from '../../../api_key.js';
 import { searchVideosMock } from '../__mocks__/api.js';
 import WebStore from '../store/WebStore.js';
+import { API_SERVER } from '../config/config.js';
+import {
+  QUERY_OPTIONS,
+  ERROR_MESSAGES,
+  SAVED_VIDEO,
+} from '../config/constants.js';
 
-const webStore = new WebStore('savedVideos');
-
-const API_SERVER = 'https://www.googleapis.com/youtube/v3';
-const QUERY_OPTIONS = {
-  SEARCH: {
-    part: 'snippet',
-    type: 'video',
-    maxResults: 10,
-  },
-};
+const webStore = new WebStore(SAVED_VIDEO.KEY);
 
 const searchVideosWithAPI = (query, nextPageToken = null) => {
   const options = QUERY_OPTIONS.SEARCH;
@@ -27,14 +24,16 @@ const searchVideosWithAPI = (query, nextPageToken = null) => {
       return res.json();
     }
 
-    throw new Error('API 요청에 실패했습니다.');
+    throw new Error(ERROR_MESSAGES.REQUEST_FAIL);
   });
 };
 
-export const searchVideos =
-  process.env.NODE_ENV === 'development'
-    ? searchVideosMock
-    : searchVideosWithAPI;
+// export const searchVideos =
+//   process.env.NODE_ENV === 'development'
+//     ? searchVideosMock
+//     : searchVideosWithAPI;
+
+export const searchVideos = searchVideosWithAPI;
 
 export const getSavedVideos = () => {
   return webStore.load();
@@ -43,8 +42,8 @@ export const getSavedVideos = () => {
 export const saveVideo = (videoId) => {
   const prevSavedVideos = webStore.load();
 
-  if (prevSavedVideos.length >= 100)
-    throw new Error('영상은 100개까지 저장할 수 있습니다.');
+  if (prevSavedVideos.length >= SAVED_VIDEO.SAVE_LIMIT)
+    throw new Error(ERROR_MESSAGES.SAVED_VIDEOS_OUT_OF_LIMIT);
 
   const duplicatedRemoved = Array.from(new Set([...prevSavedVideos, videoId]));
 
