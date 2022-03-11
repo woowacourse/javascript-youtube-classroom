@@ -1,5 +1,5 @@
-import storageManager from '../managers/storageManager';
-import { DOM_STRING } from '../utils/constants';
+import storageManager from '../managers/storageManager.js';
+import { DOM_STRING } from '../utils/constants.js';
 
 export default class VideoItemView {
   constructor($element) {

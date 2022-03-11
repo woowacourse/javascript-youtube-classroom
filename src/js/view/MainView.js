@@ -1,4 +1,5 @@
-import { DOM_STRING } from '../utils/constants';
+import { DOM_STRING } from '../utils/constants.js';
+import { $ } from '../utils/common.js';
 
 export default class MainView {
   constructor() {
@@ -6,7 +7,7 @@ export default class MainView {
   }
 
   registerDOM() {
-    this.$modalOpenButton = document.querySelector(DOM_STRING.MODAL_OPEN_BUTTON);
+    this.$modalOpenButton = $(DOM_STRING.MODAL_OPEN_BUTTON);
   }
 
   bindModalOpenButton(callback) {

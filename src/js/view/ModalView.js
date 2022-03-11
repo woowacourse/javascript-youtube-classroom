@@ -1,6 +1,7 @@
 import VideoItemView from './VideoItemView.js';
 import storageManager from '../managers/storageManager.js';
 import { DOM_STRING } from '../utils/constants.js';
+import { $ } from '../utils/common.js';
 
 export default class ModalView {
   constructor() {
@@ -10,12 +11,12 @@ export default class ModalView {
   }
 
   registerDOM() {
-    this.$modalContainer = document.querySelector(DOM_STRING.MODAL_CONTAINER);
-    this.$dimmer = document.querySelector(DOM_STRING.DIMMER);
-    this.$videoList = document.querySelector(DOM_STRING.VIDEO_LIST);
-    this.$searchButton = document.querySelector(DOM_STRING.SEARCH_BUTTOM);
-    this.$searchInput = document.querySelector(DOM_STRING.SEARCH_INPUT);
-    this.$searchNoResult = document.querySelector(DOM_STRING.SEARCH_NO_RESULT);
+    this.$modalContainer = $(DOM_STRING.MODAL_CONTAINER);
+    this.$dimmer = $(DOM_STRING.DIMMER);
+    this.$videoList = $(DOM_STRING.VIDEO_LIST);
+    this.$searchButton = $(DOM_STRING.SEARCH_BUTTOM);
+    this.$searchInput = $(DOM_STRING.SEARCH_INPUT);
+    this.$searchNoResult = $(DOM_STRING.SEARCH_NO_RESULT);
   }
 
   showModal() {

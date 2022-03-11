@@ -1,4 +1,4 @@
-import { ERROR_MESSAGE, STORE } from '../utils/constants';
+import { ERROR_MESSAGE, STORE } from '../utils/constants.js';
 
 const storageManager = {
   keys: {

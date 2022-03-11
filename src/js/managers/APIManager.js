@@ -1,4 +1,4 @@
-import { ERROR_MESSAGE } from '../utils/constants';
+import { ERROR_MESSAGE } from '../utils/constants.js';
 
 const APIManager = {
   baseURL: 'https://keen-lamport-feb29e.netlify.app/youtube/v3/search',
