@@ -67,6 +67,10 @@
   align-items: center;
 }
 
+.search-result-title {
+  margin-bottom: 20px;
+}
+
 .no-result {
   height: 493px;
   display: flex;

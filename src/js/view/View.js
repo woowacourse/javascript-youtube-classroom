@@ -15,9 +15,9 @@ class View {
     this.searchInputKeyword = selectDom('#search-input-keyword');
     this.searchForm = selectDom('#search-form');
     this.searchResult = selectDom('.search-result');
+    this.searchResultTitle = selectDom('.search-result-title');
     this.videoList = selectDom('.video-list');
     this.requestMoreResult = this.#handleScrollToLastItem();
-
     this.searchModalButton.addEventListener('click', this.#openModal);
     this.searchForm.addEventListener('submit', this.#handleSearch);
     this.sendSearchRequest = () => {};
@@ -45,7 +45,7 @@ class View {
     this.#loadSkeleton();
     try {
       const searchResultArray = await this.sendSearchRequest(keyword);
-      this.#renderSearchResult(searchResultArray);
+      this.#renderSearchResult(searchResultArray, keyword);
     } catch (error) {
       this.#renderError(error.message);
     }
@@ -80,11 +80,15 @@ class View {
     removeElementList([...this.videoList.childNodes]);
   }
 
-  #renderSearchResult(searchResultArray) {
+  #renderSearchResult(searchResultArray, keyword) {
     const skeletonList = this.videoList.querySelectorAll('.skeleton');
     removeElementList(skeletonList);
 
     if (this.#isEndOfResult(searchResultArray)) return;
+
+    if (keyword) {
+      this.searchResultTitle.textContent = `'${keyword}' 검색 결과입니다`;
+    }
 
     const resultElementArray = this.#createElementFromObject(searchResultArray);
     this.videoList.append(...resultElementArray);
