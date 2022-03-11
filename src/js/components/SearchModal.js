@@ -1,7 +1,7 @@
-import { fetchDataFromKeyword, getNextPageData } from '../utils/apiFetch.js';
+import { fetchDataFromKeyword } from '../utils/apiFetch.js';
 import { saveLocalStorage, getLocalStorage } from '../utils/localStorage.js';
 import { noSearchResultTemplate, makeIframeTemplate, makeSkeletonTemplate } from '../utils/templates.js';
-import { NUM, IMG_SRC_ADDRESS } from '../../const/consts.js';
+import { NUM } from '../../const/consts.js';
 
 export class SearchModal {
   constructor() {
@@ -37,7 +37,7 @@ export class SearchModal {
     this.videos = await fetchDataFromKeyword(keyword);
     this.removeSkeleton();
 
-    if (this.videos === undefined) {
+    if (this.videos.items.length === 0) {
       this.renderNoVideosImg();
       return;
     }
@@ -47,7 +47,7 @@ export class SearchModal {
   }
 
   renderNoVideosImg() {
-    this.noResultContainer.insertAdjacentHTML('afterbegin', noSearchResultTemplate(IMG_SRC_ADDRESS.NO_IMG));
+    this.noResultContainer.insertAdjacentHTML('afterbegin', noSearchResultTemplate());
   }
 
   renderIframe() {

@@ -1,8 +1,9 @@
 import { changeDateFormat } from './common.js';
+import noImage from '../../assets/images/not_found.png';
 
-export const noSearchResultTemplate = (imgSrcAddress) => {
+export const noSearchResultTemplate = () => {
   return `<div class="no-result">
-    <img src=${imgSrcAddress} class = 'no-result__image' alt="없음" />
+    <img src=${noImage} class = 'no-result__image' alt="없음" />
     <p class="no-result__description">
             검색 결과가 없습니다<br/>
             다른 키워드로 검색해보세요
