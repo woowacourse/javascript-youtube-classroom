@@ -13,7 +13,7 @@ export default class SearchResultView {
       (entries) => {
         if (entries[0].isIntersecting) {
           emit(this.$searchTarget, '@scroll-bottom');
-        } 
+        }
       },
       {
         root: this.$videoList,
