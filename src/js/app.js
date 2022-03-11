@@ -7,7 +7,8 @@ export default class App {
     this.$nav = $('.nav');
     this.render();
     this.addEvent();
-    new SearchModal();
+    const searchModal = new SearchModal();
+    searchModal.init();
   }
 
   render() {

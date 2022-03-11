@@ -1,22 +1,18 @@
 /* eslint-disable max-lines-per-function */
 import { $, removeChildren } from './utils/dom';
+import {
+  MAX_SAVABLE_VIDEOS_COUNT,
+  MAX_RENDER_VIDEOS_COUNT,
+  LOCAL_STORAGE_VIDEO_LIST_KEY,
+} from './constants/constant';
 import VideoItem from './videoItem';
 
 class SearchModal {
-  //apikey = 'AIzaSyCr0ODcPGNBRByd4pZGQucF31LpqN1zGD0'; 병민
-  apikey = 'AIzaSyBLDIRVSDZ25pHWp8hldwGmLMY2r1bH-Vc'; // 해리
-
-  baseUrl = 'https://www.googleapis.com/youtube/v3/search';
+  serverUrl = 'https://silly-volhard-192918.netlify.app/.netlify/functions/youtube';
 
   nextPageToken = null;
 
-  maxResultCount = 10;
-
-  localStorageVideoListKey = 'local-storage-video-list-key';
-
-  maxSavableVideoCount = 5;
-
-  constructor() {
+  init() {
     this.$modal = $('.search-modal');
     this.$searchKeyWordInput = $('#search-input-keyword', this.$modal);
     this.$button = $('#search-button', this.$modal);
@@ -70,34 +66,37 @@ class SearchModal {
     this.$videoList.addEventListener('scroll', this.handleScroll.bind(this));
   }
 
-  renderResult(searchResult) {
+  checkSearchResult(searchResult) {
     if (searchResult === null) {
-      this.$searchResult.classList.add('search-result--no-result');
-      return;
+      return [];
     }
-
-    this.$searchResult.classList.remove('search-result--no-result');
-    this.nextPageToken = searchResult.nextPageToken;
     const videos = searchResult.items.map(item => new VideoItem(item));
-    this.renderVideoItems(videos);
+    return videos;
   }
 
   async handleClickButton() {
     removeChildren(this.$videoList);
     const searchKeyWord = this.$searchKeyWordInput.value;
-    this.renderSkeletonItems(this.maxResultCount);
+    this.renderSkeletonItems(MAX_RENDER_VIDEOS_COUNT);
     const searchResult = await this.request(searchKeyWord);
     this.removeSkeleton();
-    this.renderResult(searchResult);
+    const videos = this.checkSearchResult(searchResult);
+    if (!videos) {
+      this.$searchResult.classList.add('search-result--no-result');
+      return;
+    }
+    this.$searchResult.classList.remove('search-result--no-result');
+    this.renderVideoItems(videos);
+    this.nextPageToken = searchResult.nextPageToken;
   }
 
-  async handleScroll(e) {
+  async handleScroll() {
     const title = this.$searchKeyWordInput.value;
     const isScrollEnd =
       this.$videoList.scrollHeight - this.$videoList.scrollTop === this.$videoList.clientHeight;
 
-    if (isScrollEnd && this.$videoList.scrollTop !== 0 ) {
-      this.renderSkeletonItems(this.maxResultCount);
+    if (isScrollEnd && this.$videoList.scrollTop !== 0) {
+      this.renderSkeletonItems(MAX_RENDER_VIDEOS_COUNT);
       const jsonResult = await this.request(title);
       this.removeSkeleton();
       if (jsonResult === null) {
@@ -113,32 +112,48 @@ class SearchModal {
     const { target } = event;
     const $videoItem = target.closest('.video-item');
     const videoId = $videoItem.getAttribute('data-video-id');
-    const videoList = JSON.parse(localStorage.getItem(this.localStorageVideoListKey)) ?? [];
-    if (videoList.length >= this.maxSavableVideoCount) {
-      alert(`비디오는 ${this.maxSavableVideoCount}개 이상 저장할 수 없습니다`);
-      return;
+    const videoList = JSON.parse(localStorage.getItem(LOCAL_STORAGE_VIDEO_LIST_KEY)) ?? [];
+    if (this.saveVideo(videoId, videoList)) {
+      target.setAttribute('hidden', true);
     }
-    localStorage.setItem(this.localStorageVideoListKey, JSON.stringify([...videoList, videoId]));
-    target.setAttribute('hidden', true);
+  }
+
+  saveVideo(videoId, videoList) {
+    if (videoList.length >= MAX_SAVABLE_VIDEOS_COUNT) {
+      alert(`비디오는 ${MAX_SAVABLE_VIDEOS_COUNT}개 이상 저장할 수 없습니다`);
+      return false;
+    }
+    localStorage.setItem(LOCAL_STORAGE_VIDEO_LIST_KEY, JSON.stringify([...videoList, videoId]));
+    return true;
   }
 
   removeSkeleton() {
     [...this.$videoList.querySelectorAll('.skeleton')].forEach($el => $el.remove());
   }
 
-  async request(title) {
-    let url = `${this.baseUrl}?part=snippet&type=video&maxResults=${this.maxResultCount}&q=${title}&pageToken=${this.nextPageToken}&key=${this.apikey}`;
-    if (this.nextPageToken === null) {
-      url = `${this.baseUrl}?part=snippet&maxResults=${this.maxResultCount}&q=${title}&key=${this.apikey}`;
-    }
+  async request(query) {
     try {
+      const url = new URL(this.serverUrl);
+      const parameters = new URLSearchParams({
+        part: 'snippet',
+        type: 'video',
+        maxResults: MAX_RENDER_VIDEOS_COUNT,
+        regionCode: 'kr',
+        safeSearch: 'strict',
+        pageToken: this.nextPageToken || '',
+        q: query,
+      });
+      url.search = parameters.toString();
+
       const response = await fetch(url);
-      const json = await response.json();
+      const body = await response.json();
+
       if (!response.ok) {
-        throw Error(response.statusText);
+        throw new Error(body.error.message);
       }
-      return json;
-    } catch (e) {
+      return body;
+    } catch (error) {
+      console.error(error);
       return null;
     }
   }
