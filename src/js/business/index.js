@@ -14,7 +14,7 @@ class AppBusiness {
     bind(CUSTOM_EVENT_KEY.CLICK_SEARCH_MODAL_BUTTON, this.onClickSearchModalButton);
     bind(CUSTOM_EVENT_KEY.CLICK_OUTSIDE_MODAL, this.onClickOutsideModal);
     bind(CUSTOM_EVENT_KEY.SUBMIT_SEARCH_KEYWORD, this.onSubmitSearchKeyword);
-    bind(CUSTOM_EVENT_KEY.SCROLL_VIDEO_CONTAINER, this.onSatisfyLastVideo);
+    bind(CUSTOM_EVENT_KEY.LOAD_NEW_VIDEO_LIST, this.onLoadNewVideoList);
     bind(CUSTOM_EVENT_KEY.CLICK_SAVE_BUTTON, this.onClickSaveButton);
   }
 
@@ -53,7 +53,7 @@ class AppBusiness {
     }
   };
 
-  onSatisfyLastVideo = async () => {
+  onLoadNewVideoList = async () => {
     const { keyword, nextPageToken: currentPageToken } = getState(STATE_STORE_KEY.SEARCH_RESULT);
     try {
       const searchResult = await this.requestVideo(keyword, currentPageToken);

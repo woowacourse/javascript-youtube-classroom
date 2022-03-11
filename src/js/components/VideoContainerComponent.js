@@ -143,7 +143,7 @@ class VideoContainerComponent {
     entries.forEach((entry) => {
       if (entry.isIntersecting) {
         observer.unobserve(entry.target);
-        dispatch(CUSTOM_EVENT_KEY.SCROLL_VIDEO_CONTAINER);
+        dispatch(CUSTOM_EVENT_KEY.LOAD_NEW_VIDEO_LIST);
       }
     });
   }
