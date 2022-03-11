@@ -8,21 +8,11 @@ export default class VideoCard extends Component {
   }
 
   template() {
-    const { loading, videoId, thumbnailUrl, title, channelTitle, publishTime } =
+    const { videoId, thumbnailUrl, title, channelTitle, publishTime } =
       this.props.video;
     const { saved } = this.state;
 
-    return loading
-      ? `
-        <li class="video-item skeleton">
-          <div class="video-item__thumbnail"></div>
-          <h4 class="video-item__title line"></h4>
-          <p class="video-item__channel-name line"></p>
-          <p class="video-item__published-date line"></p>
-          <button class="video-item__save-button button"></button>
-        </li>
-      `
-      : `
+    return `
       <li class="video-item" data-video-id="${videoId}">
         <img
           src="${thumbnailUrl}"
@@ -44,9 +34,7 @@ export default class VideoCard extends Component {
   }
 
   setEvent() {
-    const {
-      video: { videoId },
-    } = this.props;
+    const { videoId } = this.props.video;
 
     this.addEvent('click', '.video-item__save-button', () => {
       const prevSavedVideos = webStore.load();

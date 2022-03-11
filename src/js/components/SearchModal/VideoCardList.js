@@ -1,14 +1,15 @@
 import Component from '../../core/Component.js';
 import VideoCard from './VideoCard.js';
 import { rootStore } from '../../store/rootStore.js';
-import { webStore } from '../../store/WebStore.js';
 import { getSearchAPI } from '../../api/api.js';
 import { addSavedToVideos } from './SearchBar.js';
+import SkeletonCard from './SkeletonCard.js';
+import request from '../../__mocks__/request.js';
 
 export default class VideoCardList extends Component {
   setup() {
     this.observer = new IntersectionObserver(
-      this.onLastChildVisible.bind(this),
+      this.handleLastVideoVisible.bind(this),
       {
         root: this.target,
         rootMargin: '0px',
@@ -16,28 +17,43 @@ export default class VideoCardList extends Component {
       }
     );
 
-    this.state = { isLoading: false, skeletons: [] };
+    this.state = { isLoading: false };
   }
 
   template() {
     const { searchResult } = rootStore.state;
-    const { skeletons } = this.state;
-    const videos = [...searchResult, ...skeletons];
+    const { isLoading } = this.state;
 
     return `
-      ${videos.map(() => `<div class="video-card"></div>`).join('')}
+      ${searchResult.map(() => `<div class="video-card real"></div>`).join('')}
+      ${
+        isLoading
+          ? Array(10)
+              .fill()
+              .map(() => `<div class="video-card skeleton"></div>`)
+              .join('')
+          : ''
+      }
     `;
   }
 
   afterMounted() {
     const { searchResult } = rootStore.state;
-    const { skeletons } = this.state;
-    const videos = [...searchResult, ...skeletons];
-    const videoCards = document.querySelectorAll('.video-card');
+    const { isLoading } = this.state;
+    const videoCards = document.querySelectorAll('.video-card.real');
 
     videoCards.forEach((videoCard, index) => {
-      videos[index] && new VideoCard(videoCard, { video: videos[index] });
+      new VideoCard(videoCard, { video: searchResult[index] });
     });
+
+    if (isLoading) {
+      const skeletonCards = document.querySelectorAll('.video-card.skeleton');
+      skeletonCards.forEach((skeletonCard) => {
+        new SkeletonCard(skeletonCard);
+      });
+
+      return;
+    }
 
     this.observeLastChild();
   }
@@ -48,31 +64,17 @@ export default class VideoCardList extends Component {
     }
   }
 
-  onLastChildVisible(entries, observer) {
-    // 화면에 들어온 이미지를 잡아서, data-src에 있는 url를 src로 넣어준다.
+  handleLastVideoVisible(entries, observer) {
     entries.forEach(async (entry) => {
       if (!entry.isIntersecting || this.state.isLoading) return;
 
       observer.disconnect();
 
-      // 스크롤이 마지막 요소에 닿으면 로딩 시작
-      // 로딩 될 요소들의 스켈레톤 생성해 state에 추가
-      this.setState({
-        isLoading: true,
-        skeletons: Array(10).fill({
-          loading: true,
-          videoId: null,
-          thumbnailUrl: null,
-          title: null,
-          channelTitle: null,
-          publishTime: null,
-          saved: false,
-        }),
-      });
+      this.setState({ isLoading: true });
 
       const newVideos = await this.loadNextVideos();
 
-      this.setState({ isLoading: false, skeletons: [] });
+      this.setState({ isLoading: false });
       rootStore.setState({
         searchResult: [...rootStore.state.searchResult, ...newVideos],
       });
@@ -82,20 +84,20 @@ export default class VideoCardList extends Component {
   async loadNextVideos() {
     const { query, nextPageToken: prevNextPageToken } =
       rootStore.state.searchOption;
-    const { items, nextPageToken } = await getSearchAPI(
-      query,
-      prevNextPageToken
-    );
+    // const { items, nextPageToken } = await getSearchAPI(
+    //   query,
+    //   prevNextPageToken
+    // );
+    const { items, nextPageToken } = await request();
 
-    // searchOption 업데이트
     rootStore.setState({
       searchOption: {
         query,
         nextPageToken,
       },
     });
+    // return addSavedToVideos(items);
 
-    // 로딩이 끝난 후 로딩 된 요소들을 원하는 프로퍼티를 가진 객체로 매핑
     return addSavedToVideos(items);
   }
 }

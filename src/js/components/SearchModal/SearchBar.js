@@ -2,6 +2,7 @@ import { getSearchAPI } from '../../api/api.js';
 import Component from '../../core/Component.js';
 import { rootStore } from '../../store/rootStore.js';
 import { webStore } from '../../store/WebStore.js';
+import request from '../../__mocks__/request.js';
 
 export default class SearchBar extends Component {
   template() {
@@ -28,9 +29,10 @@ export default class SearchBar extends Component {
 
   setEvent() {
     this.addEvent('submit', '#search-form', async (e) => {
-      const { items, nextPageToken } = await getSearchAPI(
-        e.target.elements.searchInput.value
-      );
+      // const { items, nextPageToken } = await getSearchAPI(
+      //   e.target.elements.searchInput.value
+      // );
+      const { items, nextPageToken } = await request();
 
       const payload = {
         searchResult: addSavedToVideos(items),
@@ -49,7 +51,6 @@ export function addSavedToVideos(videos) {
   const savedVideos = webStore.load();
 
   return videos.map((item) => ({
-    loading: false,
     videoId: item.id.videoId,
     thumbnailUrl: item.snippet.thumbnails.default.url,
     title: item.snippet.title,

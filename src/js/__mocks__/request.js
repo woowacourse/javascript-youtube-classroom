@@ -377,6 +377,8 @@ const noResult = {
 
 export default function request(url) {
   return new Promise((resolve) => {
-    resolve(noResult);
+    setTimeout(() => {
+      resolve(searchResult);
+    }, 1000);
   });
 }
