@@ -1,0 +1,30 @@
+name: Build and GH-Page Deploy
+
+on:
+  push:
+    branches:
+      - lokba-step1
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    env:
+      YOUTUBE_API_KEY: ${{ secrets.YOUTUBE_API_KEY }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          persist-credentials: false
+
+      - name: Install
+        run: npm install
+
+      - name: Build
+        run: |
+          npm run build
+      - name: Deploy to GH Page
+        uses: JamesIves/github-pages-deploy-action@4.1.1
+        with:
+          branch: deploy
+          folder: dist
