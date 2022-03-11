@@ -7,7 +7,7 @@ export default class VideoItemView {
   }
 
   getVideoItemTemplate(parseData) {
-    this.$element.innerHTML = `
+    const template = `
     <li class="video-item" data-video-id="">
       <img
         src=${parseData ? parseData.url : ''}
@@ -32,5 +32,8 @@ export default class VideoItemView {
       >${parseData ? '⬇ 저장' : ''}</button>
     </li>
     `;
+
+    this.$element.textContent = '';
+    this.$element.insertAdjacentHTML('afterbegin', template);
   }
 }
