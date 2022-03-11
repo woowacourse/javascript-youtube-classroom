@@ -1,11 +1,9 @@
-import { YOUTUBE_API_KEY } from '../../../api_key.js';
-
-const BASE_URL = 'https://www.googleapis.com/youtube/v3/search';
+const BASE_URL =
+  'https://trusting-bardeen-f1fc38.netlify.app/youtube/v3/search';
 const OPTIONS = {
   part: 'snippet',
   type: 'video',
   maxResults: 10,
-  key: YOUTUBE_API_KEY,
 };
 
 export const getSearchAPI = (query, nextPageToken = null) => {
