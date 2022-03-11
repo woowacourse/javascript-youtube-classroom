@@ -90,6 +90,7 @@ export default class YoutubeApp {
       validateInput(this.searchInputKeyword.value);
     } catch ({ message }) {
       alertMessage(message);
+      return;
     }
 
     scrollToTop(this.videoList);
