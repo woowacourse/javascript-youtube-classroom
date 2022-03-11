@@ -33,6 +33,7 @@ export default class SearchBar extends Component {
   setEvent() {
     this.addEvent('submit', '#search-form', async (e) => {
       try {
+        rootStore.setState({ isLoading: true });
         const { items, nextPageToken } = await getSearchAPI(
           e.target.elements.searchInput.value
         );
@@ -49,6 +50,7 @@ export default class SearchBar extends Component {
           },
           searchResult: addSavedToVideos(items),
           notFound: false,
+          isLoading: false,
         });
       } catch ({ message }) {
         console.log('message', message);

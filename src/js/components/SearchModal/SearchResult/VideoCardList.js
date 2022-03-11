@@ -16,13 +16,10 @@ export default class VideoCardList extends Component {
         threshold: 0,
       }
     );
-
-    this.state = { isLoading: false };
   }
 
   template() {
-    const { searchResult } = rootStore.state;
-    const { isLoading } = this.state;
+    const { searchResult, isLoading } = rootStore.state;
 
     return `
       ${searchResult.map(() => `<div class="video-card real"></div>`).join('')}
@@ -38,8 +35,7 @@ export default class VideoCardList extends Component {
   }
 
   afterMounted() {
-    const { searchResult } = rootStore.state;
-    const { isLoading } = this.state;
+    const { searchResult, isLoading } = rootStore.state;
     const videoCards = document.querySelectorAll('.video-card.real');
 
     videoCards.forEach((videoCard, index) => {
@@ -66,17 +62,17 @@ export default class VideoCardList extends Component {
 
   handleLastVideoVisible(entries, observer) {
     entries.forEach(async (entry) => {
-      if (!entry.isIntersecting || this.state.isLoading) return;
+      if (!entry.isIntersecting || rootStore.state.isLoading) return;
 
       observer.disconnect();
 
-      this.setState({ isLoading: true });
+      rootStore.setState({ isLoading: true });
 
       const newVideos = await this.loadNextVideos();
 
-      this.setState({ isLoading: false });
       rootStore.setState({
         searchResult: [...rootStore.state.searchResult, ...newVideos],
+        isLoading: false,
       });
     });
   }

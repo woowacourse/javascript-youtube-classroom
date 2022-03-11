@@ -29,6 +29,7 @@ const observable = (target) => {
 
 export const rootStore = {
   state: observable({
+    isLoading: false,
     searchOption: {
       query: '',
       pageToken: null,
