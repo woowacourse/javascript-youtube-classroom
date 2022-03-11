@@ -1,29 +1,24 @@
-import { key1 } from "./@@@key.js";
 import { NUM } from "./contants.js";
 
-export const fetchDataFromKeyword = async (keyword) => {
-  try {
-    const res = await fetch(
-      `https://www.googleapis.com/youtube/v3/search?part=snippet&maxResults=${NUM.VIDEO_ITEMS_FOR_UNIT}&q=${keyword}&type=video&key=${key1}`,
-    );
-    const data = res.json();
-    if (!res.ok) {
-      throw new Error(`에러코드: ${res.status}`);
-    }
-    return data;
-  } catch (e) {
-    console.error(e);
-  }
-};
+const BASE_URL = "https://serverless-youtube-api.netlify.app/youtube/v3/";
 
-export const getNextPageData = async (keyword, pageToken) => {
+const getParams = (keyword, pageToken) =>
+  new URLSearchParams({
+    part: "snippet",
+    type: "video",
+    maxResults: NUM.VIDEO_ITEMS_FOR_UNIT,
+    regionCode: "kr",
+    q: keyword,
+    pageToken: pageToken || "",
+  }).toString();
+
+export const fetchDataFromKeyword = async (keyword, pageToken = "") => {
   try {
-    const res = await fetch(
-      `https://www.googleapis.com/youtube/v3/search?part=snippet&maxResults=${NUM.VIDEO_ITEMS_FOR_UNIT}&q=${keyword}&type=video&key=${key1}&pageToken=${pageToken}`,
-    );
-    const data = res.json();
+    const res = await fetch(`${BASE_URL}search?${getParams(keyword, pageToken)}`);
+    const data = await res.json();
     if (!res.ok) {
-      throw new Error(`에러코드: ${res.status}`);
+      console.log(data, data.error.message);
+      throw new Error(`에러코드: ${res.status}, ${data.error.message}`);
     }
     return data;
   } catch (e) {

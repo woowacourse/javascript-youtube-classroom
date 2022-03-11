@@ -1,7 +1,7 @@
-import { fetchDataFromKeyword, getNextPageData } from "../utils/apiFetch.js";
+import { fetchDataFromKeyword } from "../utils/apiFetch.js";
 import { saveLocalStorage, getLocalStorage } from "../utils/localStorage.js";
 import { noSearchResultTemplate, makeIframeTemplate, makeSkeletonTemplate } from "../utils/templates.js";
-import { NUM, IMAGE_SRC_ADDRESS } from "../utils/contants.js";
+import { NUM } from "../utils/contants.js";
 
 export class SearchModal {
   constructor() {
@@ -27,7 +27,7 @@ export class SearchModal {
   };
 
   initVideoList() {
-    this.videos = {};
+    this.videos = [];
     this.videoList.replaceChildren();
     this.noResultContainer.replaceChildren();
   }
@@ -37,7 +37,7 @@ export class SearchModal {
     this.videos = await fetchDataFromKeyword(keyword);
     this.removeSkeleton();
 
-    if (this.videos === undefined) {
+    if (this.videos.items.length === 0) {
       this.renderNoVideosImg();
       return;
     }
@@ -84,7 +84,7 @@ export class SearchModal {
 
   async renderNextPage() {
     this.removePreviousObserver();
-    this.videos = await getNextPageData(this.keyword, this.videos.nextPageToken);
+    this.videos = await fetchDataFromKeyword(this.keyword, this.videos.nextPageToken);
     this.renderIframe();
     this.createObserver();
   }
@@ -99,14 +99,10 @@ export class SearchModal {
     }
 
     const proviousLocalStorage = getLocalStorage("videoId");
-    if (this.canSaveVideoItems(proviousLocalStorage, e.target)) {
+    if (!localStorage.includes(e.target.id) && proviousLocalStorage.length < NUM.MAX_STORAGE_LENGTH) {
       proviousLocalStorage.push(e.target.id);
       e.target.remove();
     }
     saveLocalStorage("videoId", proviousLocalStorage);
   };
-
-  canSaveVideoItems(localStorage, target) {
-    return !localStorage.includes(target.id) && localStorage.length < NUM.MAX_STORAGE_LENGTH;
-  }
 }
