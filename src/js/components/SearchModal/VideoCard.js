@@ -39,9 +39,12 @@ export default class VideoCard extends Component {
     this.addEvent('click', '.video-item__save-button', () => {
       const prevSavedVideos = webStore.load();
 
-      webStore.save([...prevSavedVideos, videoId]);
-
-      this.setState({ saved: true });
+      try {
+        webStore.save([...prevSavedVideos, videoId]);
+        this.setState({ saved: true });
+      } catch ({ message }) {
+        alert(message);
+      }
     });
   }
 }

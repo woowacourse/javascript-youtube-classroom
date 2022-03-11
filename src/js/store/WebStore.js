@@ -1,3 +1,5 @@
+import { ALERT_MESSAGE } from '../constant.js';
+
 export default class WebStore {
   #key;
 
@@ -17,6 +19,9 @@ export default class WebStore {
   }
 
   save(data) {
+    if (this.#cached.length > 100) {
+      throw Error(ALERT_MESSAGE.EXCEED_MAX_SAVE);
+    }
     this.#cache(data);
     localStorage.setItem(this.#key, JSON.stringify(data));
   }
