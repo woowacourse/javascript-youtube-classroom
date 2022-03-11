@@ -25,31 +25,31 @@ class RenderVideo {
     this.searchInput = selectDom('#search-input-keyword', this.searchForm);
     this.videoListContainer = selectDom('.video-list', this.modalContainer);
     this.searchResultSection = selectDom('.search-result', this.modalContainer);
-    this.addEvents();
+    this.#addEvents();
   }
 
-  addEvents() {
-    addEvent(this.searchModalButton, 'click', this.onSearchModalButtonClick);
-    addEvent(this.searchForm, 'submit', this.onSearchFormSubmit);
-    addEvent(this.videoListContainer, 'scroll', this.onScrollVideoList);
-    addEvent(this.videoListContainer, 'click', this.onSaveButtonClick);
+  #addEvents() {
+    addEvent(this.searchModalButton, 'click', this.#onSearchModalButtonClick);
+    addEvent(this.searchForm, 'submit', this.#onSearchFormSubmit);
+    addEvent(this.videoListContainer, 'scroll', this.#onScrollVideoList);
+    addEvent(this.videoListContainer, 'click', this.#onSaveButtonClick);
   }
 
-  onScrollVideoList = () => {
+  #onScrollVideoList = () => {
     const { scrollHeight, offsetHeight, scrollTop } = this.videoListContainer;
     if (
       scrollHeight - offsetHeight === scrollTop &&
       Array.from(selectDom('.video-list').children).length < MAX_VIDEO_LIST_LENGTH
     ) {
-      this.loadVideo();
+      this.#loadVideo();
     }
   };
 
-  onSearchModalButtonClick = () => {
+  #onSearchModalButtonClick = () => {
     this.modalContainer.classList.remove('hide');
   };
 
-  onSearchFormSubmit = (e) => {
+  #onSearchFormSubmit = (e) => {
     e.preventDefault();
     this.videoListContainer.scrollTop = 0;
 
@@ -57,10 +57,10 @@ class RenderVideo {
       return;
     }
     this.videoListContainer.innerHTML = '';
-    this.loadVideo();
+    this.#loadVideo();
   };
 
-  onSaveButtonClick = ({ target }) => {
+  #onSaveButtonClick = ({ target }) => {
     const isSaveButton = target.classList.contains('video-item__save-button');
     if (isSaveButton && this.saveVideo.saveVideoList.length < MAX_SAVE_VIDEO_COUNT) {
       this.saveVideo.setStorageVideoList(target.closest('li').dataset.videoId);
@@ -73,7 +73,7 @@ class RenderVideo {
     }
   };
 
-  renderSearchVideo(searchVideo) {
+  #renderSearchVideo(searchVideo) {
     if (!searchVideo.length) {
       this.videoListContainer.innerHTML = videoNotFoundTemplate;
       return;
@@ -95,18 +95,18 @@ class RenderVideo {
     );
   }
 
-  renderVideoSkeleton() {
+  #renderVideoSkeleton() {
     this.videoListContainer.insertAdjacentHTML(
       'beforeend',
       Array.from({ length: MAX_VIDEO_COUNT }, () => videoSkeletonTemplate).join(' ')
     );
   }
 
-  async loadVideo() {
-    this.renderVideoSkeleton();
+  async #loadVideo() {
+    this.#renderVideoSkeleton();
     try {
       await this.searchVideo.handleSearchVideo(this.searchInput.value.trim());
-      this.renderSearchVideo(this.searchVideo.searchResults);
+      this.#renderSearchVideo(this.searchVideo.searchResults);
     } catch (error) {
       this.searchInput.value = '';
       this.searchInput.focus();
