@@ -17,7 +17,7 @@ const rootStore = {
   },
 };
 
-// Object.freeze(rootStore);
+Object.seal(rootStore);
 
 const observe = (observer) => {
   Subject.currentObserver = observer;

@@ -1,6 +1,9 @@
 import { YOUTUBE_API_KEY } from '../../../api_key.js';
 import { searchVideosMock } from '../__mocks__/api.js';
-import { webStore } from '../store/WebStore.js';
+import WebStore from '../store/WebStore.js';
+import LocalStorageMock from '../__mocks__/LocalStorageMock.js';
+
+const webStore = new WebStore('savedVideos');
 
 const API_SERVER = 'https://www.googleapis.com/youtube/v3';
 const QUERY_OPTIONS = {
