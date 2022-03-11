@@ -1,6 +1,6 @@
 {
   "name": "javascript-youtube-classroom",
-  "homepage": "",
+  "homepage": "https://rladpwl0512.github.io/javascript-youtube-classroom/",
   "version": "1.0.0",
   "main": "index.js",
   "license": "MIT",
@@ -15,7 +15,6 @@
   },
   "devDependencies": {
     "@babel/core": "^7.16.12",
-    "@babel/polyfill": "^7.10.1",
     "@babel/preset-env": "^7.16.11",
     "@commitlint/cli": "^16.1.0",
     "babel-jest": "^27.4.6",
@@ -42,7 +41,9 @@
     "style-loader": "^3.3.1",
     "webpack": "^5.69.1",
     "webpack-cli": "^4.9.2",
-    "webpack-dev-server": "^4.7.4"
+    "webpack-dev-server": "^4.7.4",
+    "@babel/plugin-transform-runtime": "^7.17.0",
+    "regenerator-runtime": "^0.13.9"
   },
   "config": {
     "commitizen": {
@@ -53,9 +54,5 @@
     "transform": {
       "^.+\\.js$": "babel-jest"
     }
-  },
-  "dependencies": {
-    "@babel/plugin-transform-runtime": "^7.17.0",
-    "regenerator-runtime": "^0.13.9"
   }
 }

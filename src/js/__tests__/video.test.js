@@ -9,7 +9,7 @@ describe('검색어를 정상적으로 입력해야 한다.', () => {
     
     // when
     const input = '';
-    
+
     // then
     expect(()=>{ video.keyword = input }).toThrowError(EXCEPTION.EMPTY_ERROR_MESSAGE);
   })

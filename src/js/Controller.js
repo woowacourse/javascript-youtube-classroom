@@ -12,7 +12,7 @@ import { checkExceedLimit } from './utils/validator.js';
 export default class Controller {
   constructor() {
     this.video = new Video(dummyObject);
-    this.video.getItemsLocalStorage();
+    this.video.savedVideoItems = this.video.getItemsLocalStorage();
     this.appView = new AppView();
     this.searchInputView = new SearchInputView();
     this.searchResultView = new SearchResultView();
