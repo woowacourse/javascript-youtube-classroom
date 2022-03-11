@@ -12,9 +12,9 @@ class View {
   constructor() {
     this.searchModalButton = selectDom('#search-modal-button');
     this.modalContainer = selectDom('.modal-container');
+    this.dimmer = selectDom('.dimmer', this.modalContainer);
     this.searchForm = selectDom('#search-form', this.modalContainer);
     this.searchInputKeyword = selectDom('#search-input-keyword', this.searchForm);
-
     this.searchResult = selectDom('.search-result', this.modalContainer);
     this.searchResultTitle = selectDom('.search-result-title', this.searchResult);
     this.videoList = selectDom('.video-list', this.searchResult);
@@ -33,12 +33,18 @@ class View {
 
   #attachEventListeners() {
     this.requestMoreResult = this.#handleScrollToLastItem();
-    this.searchModalButton.addEventListener('click', this.#openModal);
+    this.searchModalButton.addEventListener('click', this.#toggleModal);
     this.searchForm.addEventListener('submit', this.#handleSearch);
+    this.dimmer.addEventListener('click', this.#toggleModal);
   }
 
-  #openModal = () => {
-    this.modalContainer.classList.remove('hide');
+  #toggleModal = () => {
+    const { classList: modalClassList } = this.modalContainer;
+    if (modalClassList.contains('hide')) {
+      modalClassList.remove('hide');
+      return;
+    }
+    modalClassList.add('hide');
   };
 
   #handleSearch = async (event) => {
