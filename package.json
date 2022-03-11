@@ -1,7 +1,7 @@
 {
   "name": "javascript-youtube-classroom",
   "version": "1.0.0",
-  "homepage": "https://jhy979.github.io/javascript-youtube-classroom",
+  "homepage": "https://kamwoo.github.io/javascript-youtube-classroom",
   "description": "<p align=\"middle\" >   <img width=\"200px;\" src=\"./images/laptop_with_youtube_logo.png\"/> </p> <h2 align=\"middle\">level1 - 나만의 유튜브 강의실</h2> <p align=\"middle\">자바스크립트와 외부 API를 이용해 구현 하는 나만의 유튜브 강의실</p> <p align=\"middle\">   <img src=\"https://img.shields.io/badge/version-1.0.0-blue?style=flat-square\" alt=\"template version\"/>   <img src=\"https://img.shields.io/badge/language-html-red.svg?style=flat-square\"/>   <img src=\"https://img.shields.io/badge/language-css-blue.svg?style=flat-square\"/>   <img src=\"https://img.shields.io/badge/language-js-yellow.svg?style=flat-square\"/>   <img src=\"https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square\"/> </p>",
   "main": "index.js",
   "directories": {
@@ -15,12 +15,12 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/jhy979/javascript-youtube-classroom.git"
+    "url": "git+https://github.com/kamwoo/javascript-youtube-classroom.git"
   },
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/jhy979/javascript-youtube-classroom/issues"
+    "url": "https://github.com/kamwoo/javascript-youtube-classroom/issues"
   },
   "devDependencies": {
     "@babel/core": "^7.17.5",

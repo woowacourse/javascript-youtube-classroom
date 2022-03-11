@@ -1,7 +1,7 @@
 import { ERROR_MESSAGE, VIDEO_LIST } from '../utils/constants.js';
 
 const APIManager = {
-  baseURL: 'https://keen-lamport-feb29e.netlify.app/youtube/v3/search',
+  baseURL: 'https://vigorous-boyd-74648a.netlify.app/youtube/v3/search',
   pageToken: '',
   part: 'snippet',
   maxResults: VIDEO_LIST.RENDER_SIZE,
