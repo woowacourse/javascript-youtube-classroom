@@ -1,30 +1,25 @@
-export const fetchDataFromKeyword = async (keyword) => {
-  try {
-    const res = await fetch(
-      `https://www.googleapis.com/youtube/v3/search?part=snippet&maxResults=2&q=${keyword}&type=video&key=${key5}`,
-    );
-    const data = res.json();
-    if (!res.ok) {
-      throw new Error(`에러코드:${res.status}`);
-    }
-    return data;
-  } catch (e) {
-    return;
-  }
-};
+import { NUM } from '../../const/consts.js';
 
-export const getNextPageData = async (keyword, pageToken) => {
+const getParams = (keyword, pageToken) =>
+  new URLSearchParams({
+    part: 'snippet',
+    type: 'video',
+    maxResults: NUM.VIDEO_ITEMS_FOR_UNIT,
+    regionCode: 'kr',
+    q: keyword,
+    pageToken: pageToken || '',
+  }).toString();
+
+export const fetchDataFromKeyword = async (keyword, pageToken = '') => {
+  const BASE_URL = 'https://unruffled-lichterman-7ed5f9.netlify.app/youtube/v3/';
   try {
-    const res =
-      await fetch(`https://www.googleapis.com/youtube/v3/search?part=snippet&maxResults=2&q=${keyword}&type=video&key=
-      ${key5}&pageToken=${pageToken}
-      `);
-    const data = res.json();
+    const res = await fetch(`${BASE_URL}search?${getParams(keyword, pageToken)}`);
+    const data = await res.json();
     if (!res.ok) {
-      throw new Error(`에러코드:${res.status}`);
+      throw new Error(`에러코드: ${res.status}`);
     }
     return data;
   } catch (e) {
-    return;
+    console.error(e);
   }
 };

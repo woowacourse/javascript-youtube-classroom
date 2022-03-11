@@ -84,7 +84,7 @@ export class SearchModal {
 
   async renderNextPage() {
     this.removePreviousObserver();
-    this.videos = await getNextPageData(this.keyword, this.videos.nextPageToken);
+    this.videos = await fetchDataFromKeyword(this.keyword, this.videos.nextPageToken);
     this.renderIframe();
     this.createObserver();
   }
