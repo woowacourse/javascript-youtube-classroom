@@ -1,5 +1,5 @@
 import { $, convertYYYYMMDD, intersectionObserver } from './utils.js';
-import { SELECTOR } from '../constants/index.js';
+import { YOUTUBE_API_REQUEST_COUNT, SELECTOR } from '../constants/index.js';
 
 export default class VideoView {
   #io;
@@ -10,19 +10,23 @@ export default class VideoView {
     this.#$container = $(SELECTOR.VIDEOS);
     this.#io = intersectionObserver(
       async () => {
+        this.onSkeleton();
         const videos = await videoAPI();
+        this.offSkeleton();
         this.#appendVideos(videos);
-
         return videos.length ? this.#lastVideoItem() : null;
       },
       { root: this.#$container }
     );
     this.#$emptyScreen = $(SELECTOR.EMPTY_SCREEN);
   }
+  
+  refreshVideoScreen() {
+    this.#$container.innerHTML = '';
+  }
 
   renderScreenByVideos(videos) {
     if (videos.length > 0) {
-      this.#refreshVideoScreen();
       this.#appendVideos(videos);
       this.#io.observe(this.#lastVideoItem());
       this.#controllScreen('remove');
@@ -51,11 +55,21 @@ export default class VideoView {
     this.#$emptyScreen.classList[order]('empty');
   }
 
-  #refreshVideoScreen() {
-    this.#$container.innerHTML = '';
-  }
-
   #lastVideoItem() {
     return this.#$container.lastChild;
+  }
+
+  onSkeleton() {
+    const html = (
+      `<div class="skeleton">
+        <div class="image"></div>
+        <p class="line"></p>
+        <p class="line"></p>
+      </div>`).repeat(YOUTUBE_API_REQUEST_COUNT);
+    this.#$container.insertAdjacentHTML('beforeend', html);
+  }
+
+  offSkeleton() {
+    this.#$container.querySelectorAll('.skeleton').forEach((node) => node.remove());
   }
 }

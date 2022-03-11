@@ -1,3 +1,5 @@
+export const YOUTUBE_API_REQUEST_COUNT = 10;
+
 export const SELECTOR = {
   SEARCH_MODAL_BUTTON: '#search-modal-button',
   SEARCH_MODAL: '#search-modal',
