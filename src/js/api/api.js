@@ -1,7 +1,6 @@
 import { YOUTUBE_API_KEY } from '../../../api_key.js';
 import { searchVideosMock } from '../__mocks__/api.js';
 import WebStore from '../store/WebStore.js';
-import LocalStorageMock from '../__mocks__/LocalStorageMock.js';
 
 const webStore = new WebStore('savedVideos');
 
@@ -14,7 +13,7 @@ const QUERY_OPTIONS = {
   },
 };
 
-export const searchVideos = (query, nextPageToken = null) => {
+const searchVideosWithAPI = (query, nextPageToken = null) => {
   const options = QUERY_OPTIONS.SEARCH;
   const spreadQuery = `part=${
     options.part
@@ -31,6 +30,11 @@ export const searchVideos = (query, nextPageToken = null) => {
     throw new Error('API 요청에 실패했습니다.');
   });
 };
+
+export const searchVideos =
+  process.env.NODE_ENV === 'development'
+    ? searchVideosMock
+    : searchVideosWithAPI;
 
 export const getSavedVideos = () => {
   return webStore.load();
