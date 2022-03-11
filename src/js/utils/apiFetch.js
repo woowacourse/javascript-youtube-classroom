@@ -17,7 +17,6 @@ export const fetchDataFromKeyword = async (keyword, pageToken = "") => {
     const res = await fetch(`${BASE_URL}search?${getParams(keyword, pageToken)}`);
     const data = await res.json();
     if (!res.ok) {
-      console.log(data, data.error.message);
       throw new Error(`에러코드: ${res.status}, ${data.error.message}`);
     }
     return data;
