@@ -6,19 +6,19 @@ const OPTIONS = {
   maxResults: 10,
 };
 
-export const getSearchAPI = async (query, nextPageToken = null) => {
+export const getSearchAPI = async (query, pageToken = null) => {
   const url = `${BASE_URL}?${spreadOptions({
     ...OPTIONS,
     q: encodeQuery(query),
-    nextPageToken,
+    pageToken,
   })}`;
-
   const response = await fetch(url);
   if (!response.ok) {
     throw Error(response.statusText);
   }
+  const data = response.json();
 
-  return response.json();
+  return data;
 };
 
 function spreadOptions(options) {

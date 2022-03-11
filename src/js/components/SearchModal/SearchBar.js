@@ -33,18 +33,16 @@ export default class SearchBar extends Component {
         const { items, nextPageToken } = await getSearchAPI(
           e.target.elements.searchInput.value
         );
-        // const { items, nextPageToken } = await request();
-
+        // const { items, pageToken } = await request();
         if (!items.length) {
           rootStore.setState({ notFound: true });
 
           return;
         }
-
         rootStore.setState({
           searchOption: {
             query: e.target.elements.searchInput.value,
-            nextPageToken,
+            pageToken: nextPageToken,
           },
           searchResult: addSavedToVideos(items),
           notFound: false,

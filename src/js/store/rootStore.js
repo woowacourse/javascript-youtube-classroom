@@ -31,7 +31,7 @@ export const rootStore = {
   state: observable({
     searchOption: {
       query: '',
-      nextPageToken: null,
+      pageToken: null,
     },
     searchResult: [],
     notFound: false,

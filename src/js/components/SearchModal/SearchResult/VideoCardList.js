@@ -83,18 +83,14 @@ export default class VideoCardList extends Component {
   }
 
   async loadNextVideos() {
-    const { query, nextPageToken: prevNextPageToken } =
-      rootStore.state.searchOption;
-    const { items, nextPageToken } = await getSearchAPI(
-      query,
-      prevNextPageToken
-    );
-    // const { items, nextPageToken } = await request();
+    const { query, pageToken: prevPageToken } = rootStore.state.searchOption;
+    const { items, nextPageToken } = await getSearchAPI(query, prevPageToken);
+    // const { items, pageToken } = await request();
 
     rootStore.setState({
       searchOption: {
         query,
-        nextPageToken,
+        pageToken: nextPageToken,
       },
     });
 
