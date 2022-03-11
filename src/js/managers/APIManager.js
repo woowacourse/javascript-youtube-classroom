@@ -1,10 +1,10 @@
-import { ERROR_MESSAGE } from '../utils/constants.js';
+import { ERROR_MESSAGE, VIDEO_LIST } from '../utils/constants.js';
 
 const APIManager = {
   baseURL: 'https://keen-lamport-feb29e.netlify.app/youtube/v3/search',
   pageToken: '',
   part: 'snippet',
-  maxResults: '10',
+  maxResults: VIDEO_LIST.RENDER_SIZE,
   type: 'video',
   regionCode: 'KR',
 
