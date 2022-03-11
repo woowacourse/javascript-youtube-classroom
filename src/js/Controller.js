@@ -61,7 +61,15 @@ export default class Controller {
     this.searchResultView.showSkeleton();
 
     const fetchedVideos = await fetchYoutubeApi(this.video.keyword, this.video.nextPageToken);
-    this.video.setVideoInfo(fetchedVideos);
+
+    try {
+      this.video.setVideoInfo(fetchedVideos);
+    } catch (error) {
+      this.searchResultView.removeVideo();
+      alert('더 이상 검색된 영상이 없습니다.');
+      return;
+    }
+
     this.video.accumulateVideoItems();
     this.video.updateNewVideoItems();
 
