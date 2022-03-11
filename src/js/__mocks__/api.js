@@ -379,6 +379,6 @@ export function searchVideosMock(url) {
   return new Promise((resolve) => {
     setTimeout(() => {
       resolve(url === '!@#!@$#$!#@!#' ? noResult : searchResult);
-    }, 100);
+    }, 500);
   });
 }

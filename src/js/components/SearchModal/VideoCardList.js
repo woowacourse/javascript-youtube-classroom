@@ -1,7 +1,7 @@
 import Component from '../../core/Component.js';
 import VideoCard from './VideoCard.js';
 import { rootStore } from '../../store/rootStore.js';
-import { searchVideos } from '../../api/api.js';
+import { getSavedVideos, searchVideos } from '../../api/api.js';
 
 export default class VideoCardList extends Component {
   setup() {
@@ -88,7 +88,7 @@ export default class VideoCardList extends Component {
   }
 
   updateSearchResult(items, searchOption) {
-    const savedVideos = Component.webStore.load();
+    const savedVideos = getSavedVideos();
     const newVideos = items.map((item) => {
       return {
         loading: false,

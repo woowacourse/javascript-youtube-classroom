@@ -1,9 +1,6 @@
 import { observe } from '../store/rootStore.js';
-import WebStore from '../store/WebStore.js';
 
 export default class Component {
-  static webStore = new WebStore('savedVideos');
-
   target;
 
   constructor(target, props) {

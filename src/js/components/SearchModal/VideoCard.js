@@ -1,4 +1,5 @@
 import Component from '../../core/Component.js';
+import { saveVideo } from '../../api/api.js';
 import { convertTime } from '../../utils/customDate.js';
 
 export default class VideoCard extends Component {
@@ -48,11 +49,13 @@ export default class VideoCard extends Component {
     } = this.props;
 
     this.addEvent('click', '.video-item__save-button', () => {
-      const prevSavedVideos = Component.webStore.load();
+      try {
+        saveVideo(videoId);
 
-      Component.webStore.save([...prevSavedVideos, videoId]);
-
-      this.setState({ saved: true });
+        this.setState({ saved: true });
+      } catch (err) {
+        alert(err);
+      }
     });
   }
 }

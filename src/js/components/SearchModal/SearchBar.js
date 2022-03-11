@@ -1,6 +1,6 @@
 import Component from '../../core/Component.js';
 import { rootStore } from '../../store/rootStore.js';
-import { searchVideos } from '../../api/api.js';
+import { getSavedVideos, searchVideos } from '../../api/api.js';
 
 export default class SearchBar extends Component {
   template() {
@@ -39,7 +39,7 @@ export default class SearchBar extends Component {
   }
 
   updateSearchResult(items, searchOption) {
-    const savedVideos = Component.webStore.load();
+    const savedVideos = getSavedVideos();
     const videos = items.map((item) => {
       return {
         loading: false,

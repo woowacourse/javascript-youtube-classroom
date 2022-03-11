@@ -1,5 +1,6 @@
 import { YOUTUBE_API_KEY } from '../../../api_key.js';
 import { searchVideosMock } from '../__mocks__/api.js';
+import { webStore } from '../store/WebStore.js';
 
 const API_SERVER = 'https://www.googleapis.com/youtube/v3';
 const QUERY_OPTIONS = {
@@ -29,3 +30,18 @@ const QUERY_OPTIONS = {
 // };
 
 export const searchVideos = searchVideosMock;
+
+export const getSavedVideos = () => {
+  return webStore.load();
+};
+
+export const saveVideo = (videoId) => {
+  const prevSavedVideos = webStore.load();
+
+  if (prevSavedVideos.length >= 100)
+    throw new Error('영상은 100개까지 저장할 수 있습니다.');
+
+  const duplicatedRemoved = Array.from(new Set([...prevSavedVideos, videoId]));
+
+  webStore.save(duplicatedRemoved);
+};

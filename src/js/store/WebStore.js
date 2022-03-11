@@ -21,3 +21,5 @@ export default class WebStore {
     localStorage.setItem(this.#key, JSON.stringify(data));
   }
 }
+
+export const webStore = new WebStore('savedVideos');
