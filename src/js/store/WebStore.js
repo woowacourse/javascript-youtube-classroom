@@ -19,8 +19,8 @@ export default class WebStore {
   }
 
   save(data) {
-    if (this.#cached.length > 100) {
-      throw Error(ALERT_MESSAGE.EXCEED_MAX_SAVE);
+    if (this.#cached.length >= 100) {
+      throw new Error(ALERT_MESSAGE.EXCEED_MAX_SAVE_VOLUME);
     }
     this.#cache(data);
     localStorage.setItem(this.#key, JSON.stringify(data));

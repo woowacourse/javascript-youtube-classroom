@@ -28,6 +28,7 @@
     "no-unused-expressions": "off",
     "no-new": "off",
     "no-use-before-define": "off",
-    "consistent-return": "off"
+    "consistent-return": "off",
+    "no-plusplus": "off"
   }
 }
