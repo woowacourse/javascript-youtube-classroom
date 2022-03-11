@@ -1,29 +1,32 @@
-import VideoItem from './VideoItem.js';
+import VideoItemView from './VideoItemView.js';
 import storageManager from '../managers/storageManager.js';
+import { DOM_STRING } from '../utils/constants.js';
+
 export default class ModalView {
   constructor() {
     this.registerDOM();
     this.videoItemList = [];
+    this.throttle = null;
   }
 
   registerDOM() {
-    this.$modalContainer = document.querySelector('.modal-container');
-    this.$dimmer = document.querySelector('.dimmer');
-    this.$videoList = document.querySelector('.video-list');
-    this.$searchButton = document.querySelector('.search-input__search-button');
-    this.$searchInput = document.querySelector('.search-input__keyword');
-    this.$searchNoResult = document.querySelector('.search-result.search-result--no-result');
+    this.$modalContainer = document.querySelector(DOM_STRING.MODAL_CONTAINER);
+    this.$dimmer = document.querySelector(DOM_STRING.DIMMER);
+    this.$videoList = document.querySelector(DOM_STRING.VIDEO_LIST);
+    this.$searchButton = document.querySelector(DOM_STRING.SEARCH_BUTTOM);
+    this.$searchInput = document.querySelector(DOM_STRING.SEARCH_INPUT);
+    this.$searchNoResult = document.querySelector(DOM_STRING.SEARCH_NO_RESULT);
   }
 
   showModal() {
-    this.$modalContainer.classList.remove('hide');
-    this.$searchNoResult.classList.add('hide');
+    this.$modalContainer.classList.remove(DOM_STRING.HIDE);
+    this.$searchNoResult.classList.add(DOM_STRING.HIDE);
     this.$searchInput.value = '';
     this.$searchInput.focus();
   }
 
   hideModal() {
-    this.$modalContainer.classList.add('hide');
+    this.$modalContainer.classList.add(DOM_STRING.HIDE);
   }
 
   bindOnClickDimmer(callback) {
@@ -43,7 +46,17 @@ export default class ModalView {
 
   bindVideoListScroll(callback) {
     this.$videoList.addEventListener('scroll', () => {
-      callback(this.$searchInput.value);
+      if (!this.throttle) {
+        this.throttle = setTimeout(async () => {
+          this.throttle = null;
+          if (
+            this.$videoList.scrollHeight - this.$videoList.scrollTop <=
+            this.$videoList.offsetHeight
+          ) {
+            callback(this.$searchInput.value);
+          }
+        }, 1000);
+      }
     });
   }
 
@@ -52,7 +65,7 @@ export default class ModalView {
       try {
         if (event.target.tagName === 'BUTTON') {
           storageManager.checkBelowMaxLength();
-          event.target.classList.add('hide');
+          event.target.classList.add(DOM_STRING.HIDE);
           callback(event.target.dataset.videoid);
         }
       } catch (error) {
@@ -62,8 +75,8 @@ export default class ModalView {
   }
 
   resetVideoList() {
-    this.$searchNoResult.classList.add('hide');
-    this.$videoList.classList.remove('hide');
+    this.$searchNoResult.classList.add(DOM_STRING.HIDE);
+    this.$videoList.classList.remove(DOM_STRING.HIDE);
     this.$videoList.textContent = '';
     this.videoItemList = [];
   }
@@ -74,7 +87,7 @@ export default class ModalView {
 
   appendVideoItem() {
     [...this.$videoList.childNodes].slice(-10).forEach(li => {
-      this.videoItemList.push(new VideoItem(li));
+      this.videoItemList.push(new VideoItemView(li));
     });
   }
 
@@ -94,7 +107,7 @@ export default class ModalView {
   }
 
   showNoResult() {
-    this.$searchNoResult.classList.remove('hide');
-    this.$videoList.classList.add('hide');
+    this.$searchNoResult.classList.remove(DOM_STRING.HIDE);
+    this.$videoList.classList.add(DOM_STRING.HIDE);
   }
 }

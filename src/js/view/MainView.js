@@ -1,10 +1,12 @@
+import { DOM_STRING } from '../utils/constants';
+
 export default class MainView {
   constructor() {
     this.registerDOM();
   }
 
   registerDOM() {
-    this.$modalOpenButton = document.getElementById('search-modal-button');
+    this.$modalOpenButton = document.querySelector(DOM_STRING.MODAL_OPEN_BUTTON);
   }
 
   bindModalOpenButton(callback) {

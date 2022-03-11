@@ -1,4 +1,4 @@
-import { parseData } from '../utils/constants.js';
+import { parseData } from '../utils/mockData';
 import MainView from '../view/MainView.js';
 import ModalView from '../view/ModalView.js';
 import APIManager from '../managers/APIManager.js';
@@ -9,27 +9,14 @@ export default class EventHandler {
   constructor() {
     this.mainView = new MainView();
     this.modalView = new ModalView();
-    this.setBindOnSearchButtons();
-    this.setBindOnClickDimmer();
-    this.setBindVideoListScroll();
-    this.setBindOnClickStoreButton();
-    this.throttle = null;
+    this.setBindEvents();
   }
 
-  setBindOnSearchButtons() {
+  setBindEvents() {
     this.mainView.bindModalOpenButton(this.clickModalOpenButton.bind(this));
     this.modalView.bindOnClickSearchButton(this.clickSearchButton.bind(this));
-  }
-
-  setBindOnClickDimmer() {
     this.modalView.bindOnClickDimmer(this.clickDimmer.bind(this));
-  }
-
-  setBindVideoListScroll() {
     this.modalView.bindVideoListScroll(this.videoListScroll.bind(this));
-  }
-
-  setBindOnClickStoreButton() {
     this.modalView.bindVideoListClickStoreButton(this.clickStoreButton.bind(this));
   }
 
@@ -55,22 +42,11 @@ export default class EventHandler {
     }
   }
 
-  videoListScroll(searchInput) {
-    this.$videoList = document.querySelector('.video-list');
-    if (!this.throttle) {
-      this.throttle = setTimeout(async () => {
-        this.throttle = null;
-        if (
-          this.$videoList.scrollHeight - this.$videoList.scrollTop <=
-          this.$videoList.offsetHeight
-        ) {
-          const videoListData = await this.getVideoListData(searchInput);
-          this.modalView.appendEmptyList();
-          this.modalView.appendVideoItem();
-          this.modalView.getData(videoListData);
-        }
-      }, 1000);
-    }
+  async videoListScroll(searchInput) {
+    const videoListData = await this.getVideoListData(searchInput);
+    this.modalView.appendEmptyList();
+    this.modalView.appendVideoItem();
+    this.modalView.getData(videoListData);
   }
 
   // 유튜브 request하는 메소드
