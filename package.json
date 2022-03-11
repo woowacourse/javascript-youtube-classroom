@@ -1,7 +1,7 @@
 {
   "name": "javascript-youtube-classroom",
   "version": "1.0.0",
-  "description": "",
+  "description": "<우아한테크코스 4기 프론트엔드> level 1 - 나만의 유튜브 강의실",
   "main": "index.js",
   "scripts": {
     "test": "jest --watch --no-cache",
@@ -10,14 +10,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/prefer2/javascript-youtube-classroom.git"
+    "url": "git+https://github.com/soyi47/javascript-youtube-classroom.git"
   },
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/prefer2/javascript-youtube-classroom/issues"
+    "url": "https://github.com/soyi47/javascript-youtube-classroom/issues"
   },
-  "homepage": "https://github.com/prefer2/javascript-youtube-classroom#readme",
+  "homepage": "https://github.com/soyi47/javascript-youtube-classroom#readme",
   "devDependencies": {
     "@babel/core": "^7.17.5",
     "@babel/preset-env": "^7.16.11",
