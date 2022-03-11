@@ -1,5 +1,5 @@
 import fetch from 'node-fetch';
-import { SEARCH_NOT_WORKING_ERROR_MESSAGE } from '../util/constants.js';
+import { SEARCH_NOT_WORKING_ERROR_MESSAGE, VIDEO_COUNT } from '../util/constants.js';
 
 export default class SearchEngine {
   #pageToken = null;
@@ -35,7 +35,7 @@ export default class SearchEngine {
   }
 
   #getYoutubeApiUrl(keyword) {
-    let YOUTUBE_API_URL = `https://www.googleapis.com/youtube/v3/search?type=video&key=${process.env.YOUTUBE_API_KEY}&q=${keyword}&part=snippet&maxResults=10`;
+    let YOUTUBE_API_URL = `https://www.googleapis.com/youtube/v3/search?type=video&key=${process.env.YOUTUBE_API_KEY}&q=${keyword}&part=snippet&maxResults=${VIDEO_COUNT}`;
 
     if (this.#pageToken) {
       YOUTUBE_API_URL += `&pageToken=${this.#pageToken}`;

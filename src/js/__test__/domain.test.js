@@ -3,10 +3,10 @@ import StorageEngine from '../domain/storageEngine.js';
 
 import { MAX_SAVED_VIDEOS_LENGTH } from '../util/constants.js';
 
-const generate100Videos = () => {
+const generateMaxSavedVideos = () => {
   const sample = { videoId: 'eMf0jojpdJQ' };
 
-  return Array.from({ length: 100 }, () => sample);
+  return Array.from({ length: MAX_SAVED_VIDEOS_LENGTH }, () => sample);
 };
 
 test('유튜브 검색 기능 정상 작동', () => {
@@ -29,7 +29,7 @@ test('유튜브 검색 결과를 webstorage에 저장할 수 있다', () => {
 
 test('유튜브 검색 결과를 webstorage에 100개까지 저장할 수 있다.', () => {
   const storageEngine = new StorageEngine();
-  const mockVideos = generate100Videos();
+  const mockVideos = generateMaxSavedVideos();
 
   localStorage.setItem('savedVideos', JSON.stringify(mockVideos));
   expect(storageEngine.getSavedVideos()).toHaveLength(MAX_SAVED_VIDEOS_LENGTH);
