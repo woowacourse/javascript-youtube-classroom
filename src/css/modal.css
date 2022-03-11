@@ -67,6 +67,15 @@
   align-items: center;
 }
 
+.no-result {
+  height: 493px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+}
+
 .no-result__image {
   width: 190px;
   height: 140px;

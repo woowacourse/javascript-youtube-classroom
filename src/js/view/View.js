@@ -37,16 +37,18 @@ class View {
 
   #handleSearch = async (event) => {
     event.preventDefault();
-    this.#clearNoResult();
-    scrollToTop(this.videoList);
     const { value: keyword } = this.searchInputKeyword;
-    if (isBlankValue(keyword)) {
-      return;
-    }
-    removeElementList([...this.videoList.childNodes]);
+    if (isBlankValue(keyword)) return;
+
+    this.#clearPreviousRender();
+
     this.#loadSkeleton();
-    const searchResultArray = await this.sendSearchRequest(keyword);
-    this.#renderSearchResult(searchResultArray);
+    try {
+      const searchResultArray = await this.sendSearchRequest(keyword);
+      this.#renderSearchResult(searchResultArray);
+    } catch (error) {
+      this.#renderError(error.message);
+    }
   };
 
   #handleScrollToLastItem() {
@@ -72,15 +74,17 @@ class View {
     }
   };
 
+  #clearPreviousRender() {
+    this.#clearNoResult();
+    scrollToTop(this.videoList);
+    removeElementList([...this.videoList.childNodes]);
+  }
+
   #renderSearchResult(searchResultArray) {
     const skeletonList = this.videoList.querySelectorAll('.skeleton');
     removeElementList(skeletonList);
 
     if (this.#isEndOfResult(searchResultArray)) return;
-    if (this.#isNoResult(searchResultArray)) {
-      this.#renderNoResult();
-      return;
-    }
 
     const resultElementArray = this.#createElementFromObject(searchResultArray);
     this.videoList.append(...resultElementArray);
@@ -89,10 +93,6 @@ class View {
 
   #isEndOfResult(searchResultArray) {
     return searchResultArray === null;
-  }
-
-  #isNoResult(searchResultArray) {
-    return searchResultArray.length === 0;
   }
 
   #createElementFromObject(searchResultArray) {
@@ -136,7 +136,7 @@ class View {
     </div>`.repeat(MAX_SEARCH_RESULT);
   }
 
-  #renderNoResult() {
+  #renderError(errorMessage) {
     this.videoList.classList.add('hide');
     this.searchResult.classList.add('search-result--no-result');
     this.searchResult.insertAdjacentHTML(
@@ -144,8 +144,7 @@ class View {
       `<div class="no-result">
         <img src="./not_found.png" alt="no result image" class="no-result__image">
         <p class= "no-result__description">
-          검색 결과가 없습니다<br />
-          다른 키워드로 검색해보세요
+          ${errorMessage}
         </p>
       </div>`
     );
