@@ -6,16 +6,19 @@ const OPTIONS = {
   maxResults: 10,
 };
 
-export const getSearchAPI = (query, nextPageToken = null) => {
+export const getSearchAPI = async (query, nextPageToken = null) => {
   const url = `${BASE_URL}?${spreadOptions({
     ...OPTIONS,
-    q: makeQueryFormal(query),
+    q: encodeQuery(query),
     nextPageToken,
   })}`;
 
-  return fetch(url)
-    .then((res) => res.json())
-    .catch((err) => err);
+  const response = await fetch(url);
+  if (!response.ok) {
+    throw Error(response.statusText);
+  }
+
+  return response.json();
 };
 
 function spreadOptions(options) {
@@ -25,6 +28,9 @@ function spreadOptions(options) {
     .slice(1);
 }
 
-function makeQueryFormal(query) {
-  return query.trim().replace(/\s/g, ' ').replace(/\s/g, '+');
+function encodeQuery(query) {
+  return query
+    .trim()
+    .replace(/\s/g, '+') // 공백은 +로 바꿔준다.
+    .replace(/[^ㄱ-ㅎ|가-힣]/g, (match) => encodeURIComponent(match)); // 한글은 제외하고, encode
 }
