@@ -23,9 +23,8 @@ export const getSearchAPI = async (query, pageToken = null) => {
 
 function spreadOptions(options) {
   return Object.keys(options)
-    .map((key) => options[key] && `&${key}=${options[key]}`)
-    .join('')
-    .slice(1);
+    .map((key) => options[key] && `${key}=${options[key]}`)
+    .join('&');
 }
 
 function encodeQuery(query) {
