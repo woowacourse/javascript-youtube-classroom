@@ -1,5 +1,5 @@
-/* eslint-disable max-depth */
-/* eslint-disable no-unreachable-loop */
+import { checkLengthExist, checkEmpty } from '../utils/validator';
+
 export default class Video {
   #keyword; // 검색어
 
@@ -13,14 +13,15 @@ export default class Video {
 
   #savedVideoItems; // length:미상(최대100), type:array,저장된 비디오 items, localStorage 상호작용
 
-  constructor(dummyObject) {
+  constructor(dummyObject = {}) {
     this.#fetchedVideos = dummyObject;
     this.savedIdList = [];
-    this.#savedVideoItems = this.getItemsLocalStorage();
+    this.#savedVideoItems = [];
     console.log(this.#savedVideoItems);
   }
 
   set keyword(value) {
+    checkEmpty(value);
     this.#keyword = value;
   }
 
@@ -33,6 +34,7 @@ export default class Video {
   }
 
   get newVideoItems() {
+    checkLengthExist(this.#newVideoItems);
     return this.#newVideoItems;
   }
 
@@ -92,21 +94,14 @@ export default class Video {
       thumbnailUrl: item.snippet.thumbnails.high.url,
       saved: false,
     }));
+    checkLengthExist(this.#newVideoItems);
+
     this.#nextPageToken = this.#fetchedVideos.nextPageToken;
   }
 
   async fetchYoutubeApi(query, nextPageToken) {
-    // const nextPageToken = 'CAoQAA';
-    // const query = '우아한테크코스';
-    // 마르코 API 서버 주소: https://priceless-euclid-bf53ed.netlify.app/
-    // 마르코 API 서버2 주소: https://zealous-swartz-f699df.netlify.app/
-    // 마르코 API 서버 3 주소: https://stupefied-turing-eea71d.netlify.app/
-    // 마르코 API 서버4 주소 : https://festive-pare-09e68a.netlify.app/
-    // 위니 API 서버 주소: https://thirsty-ritchie-0c8419.netlify.app/
-
     try {
-      // const ORIGINAL_HOST = "https://www.googleapis.com"; // 기존 유튜브 API 호스트
-      const REDIRECT_SERVER_HOST = 'https://festive-pare-09e68a.netlify.app/'; // my own redirect server hostname
+      const REDIRECT_SERVER_HOST = 'https://thirsty-ritchie-0c8419.netlify.app/';
 
       const url = new URL('youtube/v3/search', REDIRECT_SERVER_HOST);
       const parameters = new URLSearchParams({
