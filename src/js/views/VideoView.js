@@ -4,6 +4,7 @@ import { SELECTOR } from '../constants/index.js';
 export default class VideoView {
   #io;
   #$container;
+  #$emptyScreen;
 
   constructor(videoAPI) {
     this.#$container = $(SELECTOR.VIDEOS);
@@ -16,6 +17,7 @@ export default class VideoView {
       },
       { root: this.#$container }
     );
+    this.#$emptyScreen = $('#empty-screen');
   }
 
   renderScreenByVideos(videos) {
@@ -41,12 +43,12 @@ export default class VideoView {
           <p class="video-item__published-date">${convertYYYYMMDD(snippet.publishTime)}</p>
           <button class="video-item__save-button button">⬇ 저장</button>
         </li>`
-    );
+    ).join('');
     this.#$container.insertAdjacentHTML('beforeend', html);
   }
 
   #controllScreen(order) {
-    this.#$container.classList[order]('empty');
+    this.#$emptyScreen.classList[order]('empty');
   }
 
   #refreshVideoScreen() {
