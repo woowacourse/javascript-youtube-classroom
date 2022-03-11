@@ -1,7 +1,7 @@
 import { ERROR_MESSAGE } from '../utils/constants';
 
 const APIManager = {
-  baseURL: 'https://keen-lamport-feb29e.netlify.app/youtube/v3/search?',
+  baseURL: 'https://keen-lamport-feb29e.netlify.app/youtube/v3/search',
   pageToken: '',
   part: 'snippet',
   maxResults: '10',
@@ -11,7 +11,7 @@ const APIManager = {
   fetchData: async function (inputValue) {
     try {
       const response = await fetch(
-        `${this.baseURL}part=${this.snippet}&q=${inputValue}&pageToken=${this.pageToken}&maxResults=${this.maxResults}&type=${this.type}&regionCode=${this.regionCode}`
+        `${this.baseURL}?part=${this.part}&q=${inputValue}&pageToken=${this.pageToken}&maxResults=${this.maxResults}&type=${this.type}&regionCode=${this.regionCode}`
       );
       if (!response.ok) {
         throw new Error();
