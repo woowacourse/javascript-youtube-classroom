@@ -80,7 +80,7 @@ export default class YoutubeClassRoom {
 
   impossibleToLoadMore(e) {
     const { scrollTop, clientHeight, scrollHeight } = e.detail;
-    if (scrollTop + clientHeight + 200 < scrollHeight) return true;
+    if (scrollTop + clientHeight + 20 < scrollHeight) return true;
     if (this.searchVideoManager.isLastPage) {
       alert(ALERT_MESSAGE.NO_MORE_SEARCH_RESULT);
       return true;
