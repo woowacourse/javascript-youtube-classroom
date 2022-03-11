@@ -1,4 +1,5 @@
-import { ALLOCATE_FOR_RENDER_PX } from "../constants/constants";
+import { ALLOCATE_FOR_RENDER_PX, ERROR_MESSAGE } from "../constants/constants";
+import { isEmpty } from "./utils";
 
 export const bindEventListener = (element, type, callback) => {
   element.addEventListener(type, callback);
@@ -59,4 +60,10 @@ export const inputClear = (element) => {
 
 export const alertMessage = (message) => {
   alert(message);
+};
+
+export const validateInput = (inputValue) => {
+  if (isEmpty(inputValue)) {
+    throw new Error(ERROR_MESSAGE.SEARCH_INPUT_IS_EMPTY);
+  }
 };

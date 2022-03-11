@@ -19,6 +19,7 @@ import {
   insertImageSrc,
   inputClear,
   alertMessage,
+  validateInput,
 } from "./utils/dom";
 
 export default class YoutubeApp {
@@ -84,6 +85,12 @@ export default class YoutubeApp {
 
   onSubmitSearchButton = (e) => {
     e.preventDefault();
+
+    try {
+      validateInput(this.searchInputKeyword.value);
+    } catch ({ message }) {
+      alertMessage(message);
+    }
 
     scrollToTop(this.videoList);
     removeAllChildElements(this.videoList);
