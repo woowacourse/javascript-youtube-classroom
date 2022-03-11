@@ -99,7 +99,6 @@ export default class ModalView {
   }
 
   getData(parsedData) {
-    this.getSkeletonTemplate();
     this.updateVideoItems(parsedData);
   }
 

@@ -37,6 +37,7 @@ export default class EventHandler {
       this.modalView.resetVideoList();
       this.modalView.appendEmptyList();
       this.modalView.appendVideoItem();
+      this.modalView.getSkeletonTemplate();
       const videoListData = await this.getVideoListData(searchInput);
       this.modalView.getData(videoListData);
     } catch (error) {
@@ -47,9 +48,10 @@ export default class EventHandler {
 
   async videoListScroll(searchInput) {
     try {
-      const videoListData = await this.getVideoListData(searchInput);
       this.modalView.appendEmptyList();
       this.modalView.appendVideoItem();
+      this.modalView.getSkeletonTemplate();
+      const videoListData = await this.getVideoListData(searchInput);
       this.modalView.getData(videoListData);
     } catch (error) {
       alert(error.message);
