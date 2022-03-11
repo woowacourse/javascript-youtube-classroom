@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+  <meta charset="UTF-8" />
+  <title>나만의 유튜브 강의실</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="./src/css/index.css">
+<script defer src="bundle.js"></script></head>
+
+<body>
+  <main id="app" class="classroom-container">
+    <h1 class="classroom-container__title">👩🏻‍💻 나만의 유튜브 강의실 👨🏻‍💻</h1>
+    <nav class="nav">
+      <button id="search-modal-button" class="button nav__button">🔍 검색</button>
+    </nav>
+  </main>
+  <!-- 1 검색 버튼을 누르면 아래와 같은 검색 모달을 보여줍니다.-->
+  <div class="modal-container hide">
+    <div class="dimmer"></div>
+    <div class="search-modal" role="dialog" aria-labelledby="search-modal-title">
+      <h2 id="search-modal-title" class="search-modal__title">🔍 보고싶은 영상 찾기 🔍</h2>
+      <section class="search-input">
+        <h3 hidden>검색어 입력</h3>
+        <input id="search-input-keyword" type="text" placeholder="검색" class="search-input__keyword">
+        <button id="search-button" class="search-input__search-button button">검색</button>
+      </section>
+    </div>
+  </div>
+</body>
+
+</html>
