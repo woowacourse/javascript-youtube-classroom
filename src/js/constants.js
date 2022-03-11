@@ -6,7 +6,7 @@ export const VIDEO = {
 const REDIRECT_SERVER_HOST = 'https://trusting-yonath-35b2a1.netlify.app';
 
 export const SEARCH_API = {
-  URL: new URL('/dummy/youtube/v3/search', REDIRECT_SERVER_HOST),
+  URL: new URL('/youtube/v3/search', REDIRECT_SERVER_HOST),
   PARAMS: {
     part: 'snippet',
     type: 'video',
