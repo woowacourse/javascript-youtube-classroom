@@ -1,24 +1,50 @@
 import { on } from '../utils';
 import { ERROR_MESSAGE, VIDEO } from '../constants';
 
-export function loadVideos() {
-  return localStorage.getItem('videos') ? JSON.parse(localStorage.getItem('videos')) : [];
-}
+class Save {
+  static _instance = null;
 
-export function saveVideo(videoId) {
-  try {
-    const videos = loadVideos();
-
-    if (videos.length >= VIDEO.MAX_SAVABLE_COUNT) {
-      throw new Error(ERROR_MESSAGE.EXCEED_MAX_SAVABLE_COUNT);
+  static get instance() {
+    if (!Save._instance) {
+      Save._instance = new Save();
     }
+    return Save._instance;
+  }
 
-    localStorage.setItem('videos', JSON.stringify([...videos, { videoId }]));
-  } catch (error) {
-    alert(error.message);
+  #videos;
+
+  constructor() {
+    this.#videos = this.loadVideos();
+  }
+
+  subscribeEvents(videoItem) {
+    on('.video-item__save-button', '@save', (e) => this.saveVideo(e.detail.videoId), videoItem);
+  }
+
+  saveVideo(videoId) {
+    try {
+      if (this.#videos.length >= VIDEO.MAX_SAVABLE_COUNT) {
+        throw new Error(ERROR_MESSAGE.EXCEED_MAX_SAVABLE_COUNT);
+      }
+
+      localStorage.setItem('videos', JSON.stringify([...this.#videos, { videoId }]));
+      this.#setVideos();
+    } catch (error) {
+      alert(error.message);
+    }
+  }
+
+  getVideos() {
+    return this.#videos;
+  }
+
+  #setVideos() {
+    this.#videos = this.loadVideos();
+  }
+
+  loadVideos() {
+    return localStorage.getItem('videos') ? JSON.parse(localStorage.getItem('videos')) : [];
   }
 }
 
-export function subscribeEvents(videoItem) {
-  on('.video-item__save-button', '@save', (e) => saveVideo(e.detail.videoId), videoItem);
-}
+export default Save;
