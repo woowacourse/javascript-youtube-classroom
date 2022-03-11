@@ -1,24 +1,31 @@
+import { ERROR_MESSAGE } from '../utils/constants';
+
 const APIManager = {
   baseURL: 'https://keen-lamport-feb29e.netlify.app/youtube/v3/search?',
   pageToken: '',
+  part: 'snippet',
+  maxResults: '10',
+  type: 'video',
+  regionCode: 'KR',
+
   fetchData: async function (inputValue) {
     try {
       const response = await fetch(
-        `${this.baseURL}part=snippet&q=${inputValue}&pageToken=${this.pageToken}&maxResults=10&type=video&regionCode=KR`
+        `${this.baseURL}part=${this.snippet}&q=${inputValue}&pageToken=${this.pageToken}&maxResults=${this.maxResults}&type=${this.type}&regionCode=${this.regionCode}`
       );
       if (!response.ok) {
-        throw new Error('400, 500');
+        throw new Error();
       }
-      const json = await response.json();
-      return json;
+      const responseData = await response.json();
+      return responseData;
     } catch (error) {
-      throw new Error('검색 결과가 없는 경우');
+      throw new Error(ERROR_MESSAGE.SEARCH_ERROR);
     }
   },
 
   checkResponseError: function (responseData) {
     if (responseData.error) {
-      throw new Error('에러 3');
+      throw new Error(ERROR_MESSAGE.CANNOT_LOAD);
     }
     return false;
   },
@@ -37,7 +44,7 @@ const APIManager = {
         };
       });
     } catch (error) {
-      console.log(error.message);
+      throw new Error(error);
     }
   },
 };

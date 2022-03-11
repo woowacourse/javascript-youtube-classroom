@@ -1,4 +1,3 @@
-import { parseData } from '../utils/mockData';
 import MainView from '../view/MainView.js';
 import ModalView from '../view/ModalView.js';
 import APIManager from '../managers/APIManager.js';
@@ -28,6 +27,10 @@ export default class EventHandler {
     this.modalView.hideModal();
   }
 
+  clickStoreButton(videoId) {
+    storageManager.storeVideoId(videoId);
+  }
+
   async clickSearchButton(searchInput) {
     try {
       validator.isValidSearchInput(searchInput);
@@ -43,24 +46,22 @@ export default class EventHandler {
   }
 
   async videoListScroll(searchInput) {
-    const videoListData = await this.getVideoListData(searchInput);
-    this.modalView.appendEmptyList();
-    this.modalView.appendVideoItem();
-    this.modalView.getData(videoListData);
+    try {
+      const videoListData = await this.getVideoListData(searchInput);
+      this.modalView.appendEmptyList();
+      this.modalView.appendVideoItem();
+      this.modalView.getData(videoListData);
+    } catch (error) {
+      alert(error.message);
+    }
   }
 
-  // 유튜브 request하는 메소드
   async getVideoListData(searchInput) {
     try {
       const rawData = await APIManager.fetchData(searchInput);
       return APIManager.parsingVideoData(rawData);
     } catch (err) {
-      alert(err.message);
-      throw new Error();
+      throw new Error(err);
     }
-  }
-
-  clickStoreButton(videoId) {
-    storageManager.storeVideoId(videoId);
   }
 }

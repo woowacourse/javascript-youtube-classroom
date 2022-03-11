@@ -9,3 +9,8 @@ export const DOM_STRING = {
   MODAL_OPEN_BUTTON: '#search-modal-button',
   SKELETON: 'skeleton',
 };
+
+export const ERROR_MESSAGE = {
+  CANNOT_LOAD: '링크를 불러오지 못했습니다.',
+  SEARCH_ERROR: '검색 중 오류가 발생했습니다.',
+};
