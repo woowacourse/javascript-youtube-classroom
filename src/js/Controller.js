@@ -66,7 +66,7 @@ export default class Controller {
       this.video.setVideoInfo(fetchedVideos);
     } catch (error) {
       this.searchResultView.removeVideo();
-      alert('더 이상 검색된 영상이 없습니다.');
+      alert(error.message);
       return;
     }
 

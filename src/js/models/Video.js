@@ -1,3 +1,4 @@
+import EXCEPTION from '../../constants/exception';
 import { checkLengthExist, checkEmpty } from '../utils/validator';
 
 export default class Video {
@@ -87,6 +88,8 @@ export default class Video {
   }
 
   setVideoInfo(fetchedVideos) {
+    checkLengthExist(fetchedVideos.items);
+
     this.#newVideoItems = fetchedVideos.items.map((item) => ({
       videoId: item.id.videoId,
       description: item.snippet.description,
@@ -97,8 +100,6 @@ export default class Video {
       thumbnailUrl: item.snippet.thumbnails.high.url,
       saved: false,
     }));
-
-    checkLengthExist(this.#newVideoItems);
 
     this.#nextPageToken = fetchedVideos.nextPageToken;
   }
