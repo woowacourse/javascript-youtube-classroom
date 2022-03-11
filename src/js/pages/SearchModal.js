@@ -125,9 +125,15 @@ export default class SearchModal {
   async renderVideoList(options) {
     this.renderSkeletonUI(this.videoList);
 
-    const videoList = await fetchData({
+    let videoList = await fetchData({
       ...options,
     });
+
+    if (videoList.error) {
+      videoList = await fetchData({
+        ...options, url: YOUTUBE_URL_DUMMY
+      });
+    }
 
     this.VideoCardContainer.setState({ items: videoList.items });
 

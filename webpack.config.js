@@ -55,6 +55,9 @@ module.exports = {
       YOUTUBE_URL: JSON.stringify(
         'https://competent-haibt-c82cf4.netlify.app/youtube/v3/search?'
       ),
+      YOUTUBE_URL_DUMMY: JSON.stringify(
+        'https://competent-haibt-c82cf4.netlify.app/dummy/youtube/v3/search?'
+      ),
     }),
     new HtmlWebpackPlugin({
       template: './index.html',
