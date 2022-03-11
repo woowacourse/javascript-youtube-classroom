@@ -26,6 +26,10 @@ export default class SearchBar extends Component {
     `;
   }
 
+  afterMounted() {
+    this.$('#search-input-keyword').focus();
+  }
+
   setEvent() {
     this.addEvent('submit', '#search-form', async (e) => {
       try {
