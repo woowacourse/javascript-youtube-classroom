@@ -3,6 +3,7 @@ import { getParsedTime } from '@Utils/ManageData';
 import { onObserveElement } from '@Utils/ElementControl';
 import { CLASS_ROOM_SETTING } from '@Constants/Setting';
 import { ERROR_MESSAGE, ACTION_TYPE } from '@Constants/String';
+import { SELECTOR, DOM_NAME } from '@Constants/Selector';
 import Display from '@Core/Display';
 import YoutubeSearchStore from '@Domain/YoutubeSearchStore';
 import YoutubeSaveStorage from '@Domain/YoutubeSaveStorage';
@@ -10,18 +11,18 @@ import notFoundImage from '@Images/not_found.png';
 
 export default class SearchResult extends Display {
   setContainer() {
-    this.container = $('#search-result');
+    this.container = $(SELECTOR.ID.SEARCH_RESULT_CONTAINER);
   }
 
   defaultElement() {
-    this.$videoList = $('#video-list', this.container);
+    this.$videoList = $(SELECTOR.ID.VIDEO_LIST, this.container);
     this.$tempFragment = document.createDocumentFragment();
     this.$scrollObserver = createElement('DIV', {
-      id: 'search-result-scroll-observer',
+      id: DOM_NAME.ID.SEARCH_RESULT_SCROLL_OBSERVER,
     });
     this.$skeleton = Array.from({ length: CLASS_ROOM_SETTING.MAX_VIDEO_NUMBER }).map(() =>
       createElement('DIV', {
-        className: 'skeleton',
+        className: DOM_NAME.CLASS.VIDEO_LIST_SKELETON,
         innerHTML: `
         <div class="image"></div>
         <p class="line"></p>
@@ -36,7 +37,11 @@ export default class SearchResult extends Display {
       YoutubeSearchStore.dispatch(ACTION_TYPE.UPDATE_SEARCH_LOADING_STATUS);
       YoutubeSearchStore.dispatch(ACTION_TYPE.UPDATE_SEARCH_RESULT);
     });
-    this.addEvent('click', '.video-item__save-button', this.handleToggleSaveButton.bind(this));
+    this.addEvent(
+      'click',
+      SELECTOR.CLASS.VIDEO_ITEM_SAVE_BUTTON,
+      this.handleToggleSaveButton.bind(this),
+    );
   }
 
   subscribeStores() {
@@ -44,7 +49,7 @@ export default class SearchResult extends Display {
   }
 
   handleToggleSaveButton({ target: $target }) {
-    const { videoId } = $target.closest('.video-item').dataset;
+    const { videoId } = $target.closest(SELECTOR.CLASS.VIDEO_ITEM).dataset;
     if (YoutubeSaveStorage.has(videoId)) {
       YoutubeSaveStorage.remove(videoId);
       $target.textContent = '⬇ 저장';
@@ -89,7 +94,7 @@ export default class SearchResult extends Display {
 
   drawResultNotFound() {
     return createElement('DIV', {
-      className: 'no-result',
+      className: DOM_NAME.CLASS.SEARCH_RESULT_NOT_FOUND,
       src: notFoundImage,
       innerHTML: `
         <img src="${notFoundImage}" alt="no result image" class="no-result__image">
@@ -103,7 +108,7 @@ export default class SearchResult extends Display {
 
   drawResultServerError() {
     return createElement('DIV', {
-      className: 'no-result',
+      className: DOM_NAME.CLASS.SEARCH_RESULT_NOT_FOUND,
       src: notFoundImage,
       innerHTML: `
         <img src="${notFoundImage}" alt="no result image" class="no-result__image">
@@ -120,7 +125,7 @@ export default class SearchResult extends Display {
       const buttonText = YoutubeSaveStorage.has(video.id.videoId) ? '🗑 저장 취소' : '⬇ 저장';
       return createElement('LI', {
         dataset: { 'video-id': video.id.videoId },
-        className: 'video-item',
+        className: DOM_NAME.CLASS.VIDEO_ITEM,
         innerHTML: `<img
           src="${video.snippet.thumbnails.medium.url}"
           alt="video-item-thumbnail" class="video-item__thumbnail">
