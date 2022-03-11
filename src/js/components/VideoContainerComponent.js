@@ -2,6 +2,7 @@ import { CUSTOM_EVENT_KEY } from '../constants/events';
 import { STATE_STORE_KEY } from '../constants/stateStore';
 import { dispatch } from '../modules/eventFactory';
 import { subscribe } from '../modules/stateStore';
+import { isFirstSearchByKeyword, isNullVideoList } from '../utils/validation';
 import SkeletonListComponent from './SkeletonListComponent';
 import VideoComponent from './VideoComponent';
 
@@ -9,6 +10,8 @@ class VideoContainerComponent {
   $videoList = null;
 
   $searchResult = null;
+
+  $noResult = null;
 
   #parentElement = null;
 
@@ -47,6 +50,7 @@ class VideoContainerComponent {
   #initDOM() {
     this.$videoList = this.#parentElement.querySelector('.video-list');
     this.$searchResult = this.#parentElement.querySelector('.search-result');
+    this.$noResult = this.#parentElement.querySelector('.no-result');
   }
 
   #bindEventHandler() {
@@ -88,18 +92,15 @@ class VideoContainerComponent {
 
   #renderSearchResult(searchResult) {
     const { videoList, prevVideoListLength } = searchResult;
-
-    /** innerHTML의 사용 없이 hide나 show 클래스로 제어해볼까? */
-    if (prevVideoListLength === 0) {
-      this.$searchResult.classList.remove('search-result--no-result');
-      this.$searchResult.innerHTML = this.#generateHasResultTemplate();
-      this.$videoList = this.#parentElement.querySelector('.video-list');
-    }
-    if (videoList === null) {
-      this.$searchResult.classList.add('search-result--no-result');
-      this.$searchResult.innerHTML = this.#generateNoneResultTemplate();
+    if (isNullVideoList(videoList)) {
+      this.#showNoResult();
       return;
     }
+    if (isFirstSearchByKeyword(prevVideoListLength)) {
+      this.$videoList.innerHTML = '';
+    }
+
+    this.#showVideoList();
 
     videoList.slice(prevVideoListLength).forEach(
       (video, idx, arr) =>
@@ -110,27 +111,32 @@ class VideoContainerComponent {
     );
   }
 
+  #showVideoList() {
+    this.$videoList.classList.remove('hide');
+    this.$noResult.classList.add('hide');
+  }
+
+  #showNoResult() {
+    this.$videoList.classList.add('hide');
+    this.$noResult.classList.remove('hide');
+  }
+
   #generateTemplate() {
     return `
     <section class="search-result">
-    </section>
-    `;
-  }
+    <h3 hidden>검색 결과</h3>
 
-  #generateHasResultTemplate() {
-    return `<h3 hidden>검색 결과</h3>
-    <ul class="video-list"></ul>`;
-  }
+    <ul class="video-list"></ul>
 
-  #generateNoneResultTemplate() {
-    return `<h3 hidden>검색 결과</h3>
     <div class="no-result">
       <img src="./not_found.png" alt="no result image" class="no-result__image">
       <p class="no-result__description">
         검색 결과가 없습니다<br />
         다른 키워드로 검색해보세요
       </p>
-    </div>`;
+    </div>
+    </section>
+    `;
   }
 
   #observeEntries(entries, observer) {

@@ -70,6 +70,14 @@
   align-items: center;
 }
 
+.no-result.hide {
+  display: none;
+}
+
+.video-list.hide {
+  display: none;
+}
+
 .no-result {
   display: flex;
   justify-content: center;
