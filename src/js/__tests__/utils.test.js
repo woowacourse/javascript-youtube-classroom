@@ -16,6 +16,20 @@ describe("저장하려는 동영상의 Id값이 기존에 저장된 동영상의
   });
 });
 
+describe("검색하려는 입력값이 유효한 값인지 검증한다.", () => {
+  test("입력값이 비어있는 경우 true를 반환한다.", () => {
+    const inputValue = "     ";
+
+    expect(isEmpty(inputValue)).toBe(true);
+  });
+
+  test("입력값이 비어있지 않을 경우 false를 반환한다.", () => {
+    const inputValue = "xooos";
+
+    expect(isEmpty(inputValue)).toBe(false);
+  });
+});
+
 test("응답받은 날짜 데이터를 정해진 형식(YYYY년 M월 D일)으로 변경한다.", () => {
   const rawDate = "2022-03-02T11:39:31Z";
 
