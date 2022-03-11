@@ -12,14 +12,14 @@ class View {
   constructor() {
     this.searchModalButton = selectDom('#search-modal-button');
     this.modalContainer = selectDom('.modal-container');
-    this.searchInputKeyword = selectDom('#search-input-keyword');
-    this.searchForm = selectDom('#search-form');
-    this.searchResult = selectDom('.search-result');
-    this.searchResultTitle = selectDom('.search-result-title');
-    this.videoList = selectDom('.video-list');
-    this.requestMoreResult = this.#handleScrollToLastItem();
-    this.searchModalButton.addEventListener('click', this.#openModal);
-    this.searchForm.addEventListener('submit', this.#handleSearch);
+    this.searchForm = selectDom('#search-form', this.modalContainer);
+    this.searchInputKeyword = selectDom('#search-input-keyword', this.searchForm);
+
+    this.searchResult = selectDom('.search-result', this.modalContainer);
+    this.searchResultTitle = selectDom('.search-result-title', this.searchResult);
+    this.videoList = selectDom('.video-list', this.searchResult);
+
+    this.#attachEventListeners();
     this.sendSearchRequest = () => {};
     this.sendLoadMoreRequest = () => {};
     this.sendSaveRequest = () => {};
@@ -29,6 +29,12 @@ class View {
     this.sendSearchRequest = sendSearchRequest;
     this.sendLoadMoreRequest = sendLoadMoreRequest;
     this.sendSaveRequest = sendSaveRequest;
+  }
+
+  #attachEventListeners() {
+    this.requestMoreResult = this.#handleScrollToLastItem();
+    this.searchModalButton.addEventListener('click', this.#openModal);
+    this.searchForm.addEventListener('submit', this.#handleSearch);
   }
 
   #openModal = () => {

@@ -72,7 +72,7 @@
 }
 
 .no-result {
-  height: 493px;
+  height: 448px;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -95,7 +95,7 @@
 
 .video-list {
   width: 1040px;
-  height: 493px;
+  height: 448px;
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
