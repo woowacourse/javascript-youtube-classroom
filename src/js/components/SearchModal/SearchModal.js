@@ -1,6 +1,6 @@
 import Component from '../../core/Component.js';
 import SearchBar from './SearchBar.js';
-import SearchResult from './SearchResult.js';
+import SearchResult from './SearchResult/SearchResult.js';
 import NotFound from './NotFound.js';
 import { rootStore } from '../../store/rootStore.js';
 

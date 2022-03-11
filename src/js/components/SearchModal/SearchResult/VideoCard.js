@@ -1,6 +1,6 @@
-import Component from '../../core/Component.js';
-import { webStore } from '../../store/WebStore.js';
-import { convertTime } from '../../utils/customDate.js';
+import Component from '../../../core/Component.js';
+import { webStore } from '../../../store/WebStore.js';
+import { convertTime } from '../../../utils/customDate.js';
 
 export default class VideoCard extends Component {
   setup() {

@@ -1,10 +1,10 @@
-import Component from '../../core/Component.js';
+import Component from '../../../core/Component.js';
 import VideoCard from './VideoCard.js';
-import { rootStore } from '../../store/rootStore.js';
-import { getSearchAPI } from '../../api/api.js';
-import { addSavedToVideos } from './SearchBar.js';
+import { rootStore } from '../../../store/rootStore.js';
+import { getSearchAPI } from '../../../api/api.js';
+import { addSavedToVideos } from '../SearchBar.js';
 import SkeletonCard from './SkeletonCard.js';
-import request from '../../__mocks__/request.js';
+import request from '../../../__mocks__/request.js';
 
 export default class VideoCardList extends Component {
   setup() {

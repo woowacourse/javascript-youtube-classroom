@@ -1,4 +1,4 @@
-import Component from '../../core/Component.js';
+import Component from '../../../core/Component.js';
 import VideoCardList from './VideoCardList.js';
 
 export default class SearchResult extends Component {
