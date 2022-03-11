@@ -87,6 +87,7 @@ export default class Video {
   setVideoInfo() {
     this.#newVideoItems = this.#fetchedVideos.items.map((item) => ({
       videoId: item.id.videoId,
+      description: item.snippet.description,
       channelId: item.snippet.channelId,
       title: item.snippet.title,
       channelTitle: item.snippet.channelTitle,
