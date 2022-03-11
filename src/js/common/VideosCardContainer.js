@@ -1,9 +1,5 @@
 import { RULES } from '../constants';
-import {
-  getStorageVideoIDs,
-  LOCALSTORAGE_KEY,
-  setStorageVideoIDs,
-} from '../utils/localStorage';
+import { getStorageVideoIDs, LOCALSTORAGE_KEY, setStorageVideoIDs } from '../utils/localStorage';
 import VideoCard from './VideoCard';
 
 export default class VideoCardContainer {
@@ -16,10 +12,7 @@ export default class VideoCardContainer {
   }
 
   bindEvents() {
-    this.parentElement.addEventListener(
-      'click',
-      this.storeIDHandler.bind(this)
-    );
+    this.parentElement.addEventListener('click', this.storeIDHandler.bind(this));
   }
 
   storeIDHandler(e) {
@@ -39,9 +32,7 @@ export default class VideoCardContainer {
   }
 
   template() {
-    return this.#state.items
-      ?.map((item) => new VideoCard(item).template())
-      .join('');
+    return this.#state.items?.map((item) => new VideoCard(item).template()).join('');
   }
 
   render() {

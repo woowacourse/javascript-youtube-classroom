@@ -17,7 +17,6 @@
     "class-methods-use-this": "off",
     "comma-dangle": "off",
     "lines-between-class-members": "off",
-    "linebreak-style": "off",
     "no-param-reassign": "off",
     "no-new": "off",
     "object-curly-newline": "off",
@@ -25,6 +24,7 @@
     "no-await-in-loop": "off",
     "import/prefer-default-export": "off",
     "no-underscore-dangle": "off",
-    "no-return-assign": "off"
+    "no-return-assign": "off",
+    "linebreak-style": 0
   }
 }

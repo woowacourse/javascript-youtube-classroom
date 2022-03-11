@@ -10,10 +10,7 @@ export default class Index {
   }
 
   bindEvents() {
-    this.searchModalButton.addEventListener(
-      'click',
-      this.openModalHandler.bind(this)
-    );
+    this.searchModalButton.addEventListener('click', this.openModalHandler.bind(this));
   }
 
   openModalHandler() {

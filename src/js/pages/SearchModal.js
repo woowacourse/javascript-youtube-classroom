@@ -33,12 +33,8 @@ export default class SearchModal {
   }
 
   configureDOMs() {
-    this.searchInputKeyword = this.element.querySelector(
-      '#search-input-keyword'
-    );
-    this.searchErrorMessage = this.element.querySelector(
-      '#search-error-message'
-    );
+    this.searchInputKeyword = this.element.querySelector('#search-input-keyword');
+    this.searchErrorMessage = this.element.querySelector('#search-error-message');
     this.videoList = this.element.querySelector('.video-list');
     this.dimmer = this.element.querySelector('.dimmer');
     this.searchForm = this.element.querySelector('#search-form');
@@ -51,7 +47,7 @@ export default class SearchModal {
     this.searchForm.addEventListener('submit', this.searchHandler.bind(this));
     this.videoList.addEventListener(
       'scroll',
-      throttle(this.scrollHandler.bind(this), THROTTLE_PENDING_MILLISECOND)
+      throttle(this.scrollHandler.bind(this), THROTTLE_PENDING_MILLISECOND),
     );
   }
 
@@ -100,14 +96,12 @@ export default class SearchModal {
   renderSkeletonUI(element) {
     element.insertAdjacentHTML(
       'beforeend',
-      SKELETON_TEMPLATE.repeat(RULES.MAX_VIDEO_AMOUNT_PER_REQUEST)
+      SKELETON_TEMPLATE.repeat(RULES.MAX_VIDEO_AMOUNT_PER_REQUEST),
     );
   }
 
   removeSkeletonUI(element) {
-    element
-      .querySelectorAll('.skeleton')
-      .forEach((skeleton) => skeleton.remove());
+    element.querySelectorAll('.skeleton').forEach((skeleton) => skeleton.remove());
   }
 
   showNoResultContainer() {

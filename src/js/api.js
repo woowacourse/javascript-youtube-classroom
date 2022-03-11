@@ -13,7 +13,7 @@ const makeURLQuery = (props) => {
   const { url, keyword, pageToken, options } = props;
   const query = Object.entries(options).reduce(
     (acc, [key, value]) => (acc += `${key}=${value}&`),
-    `${url}q=${keyword}&`
+    `${url}q=${keyword}&`,
   );
 
   if (pageToken === '') {
