@@ -1,7 +1,7 @@
 import { RULES } from './constants';
 
 const YOUTUBE_URL =
-  'https://622752939a5410d43ba3fbcd--modest-euler-778376.netlify.app/dummy/youtube/v3/search?';
+  'https://622752939a5410d43ba3fbcd--modest-euler-778376.netlify.app/youtube/v3/search?';
 
 const OPTIONS = {
   part: 'snippet',
@@ -16,10 +16,7 @@ const makeURLQuery = (props) => {
     `${url}q=${keyword}&`,
   );
 
-  if (pageToken === '') {
-    return query;
-  }
-  return `${query}pageToken=${pageToken}`;
+  return pageToken ? `${query}pageToken=${pageToken}` : query;
 };
 
 const fetchData = async (query) => {
