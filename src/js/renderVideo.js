@@ -89,7 +89,8 @@ class RenderVideo {
       'beforeend',
       searchVideo
         .map((video) =>
-          videoTemplate(video, this.saveVideo.saveVideoList.includes(video.id.videoId)))
+          videoTemplate(video, this.saveVideo.saveVideoList.includes(video.id.videoId))
+        )
         .join(' ')
     );
   }

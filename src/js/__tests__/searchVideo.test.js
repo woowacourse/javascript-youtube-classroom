@@ -13,20 +13,18 @@ describe('동영샹 검색 테스트', () => {
   test('입력한 검색값이 공백인 경우를 체크한다.', async () => {
     const searchInput = '      ';
     try {
-      await searchVideo.handleSearchVideo(searchInput.trim())
+      await searchVideo.handleSearchVideo(searchInput.trim());
     } catch (error) {
       expect(error.message).toEqual(ERROR_MESSAGE.CANNOT_SEARCH_EMPTY);
     }
   });
-  
+
   test('검색하면 검색한 데이터(10개)가 오는지 확인한다.', async () => {
     try {
       await searchVideo.handleSearchVideo('playlist');
       expect(searchVideo.searchResults.length).toEqual(MAX_VIDEO_COUNT);
     } catch (error) {
       expect(error.message).toEqual(ERROR_MESSAGE.CANNOT_GET_YOUTUBE_VIDEO);
-    };
+    }
   });
 });
-
-
