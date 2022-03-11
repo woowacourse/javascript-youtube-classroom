@@ -6,7 +6,7 @@ export default async function getSearchResult(
 ) {
   const usageRedirect = "https://unruffled-turing-aacdf7.netlify.app";
   const kkojaeRedirect = "https://clever-aryabhata-ff1fc1.netlify.app";
-  const REDIRECT_SERVER_HOST = kkojaeRedirect;
+  const REDIRECT_SERVER_HOST = usageRedirect;
 
   const url = new URL("youtube/v3/search", REDIRECT_SERVER_HOST);
   const parameters = new URLSearchParams({
