@@ -13,7 +13,7 @@ export default class VideoView {
         const videos = await videoAPI();
         this.#appendVideos(videos);
 
-        return this.#lastVideoItem();
+        return videos.length ? this.#lastVideoItem() : null;
       },
       { root: this.#$container }
     );

@@ -13,14 +13,12 @@ export const convertYYYYMMDD = (publishTime) => {
 };
 
 export const intersectionObserver = (lastItemOnInterSect, option = {}) => {
-  let isFree = true;
   const ioCallback = (entries, io) => {
     entries.forEach(async (entry) => {
-      if (entry.isIntersecting && isFree) {
-        isFree = false;
-        io.observe(await lastItemOnInterSect());
+      if (entry.isIntersecting) {
+        const lastItem = await lastItemOnInterSect();
+        lastItem && io.observe(lastItem);
         io.unobserve(entry.target);
-        isFree = true;
       }
     });
   };

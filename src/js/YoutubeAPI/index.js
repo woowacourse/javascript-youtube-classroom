@@ -25,6 +25,8 @@ export default class YoutubeAPI {
   }
 
   async videos() {
+    if (this.#nextPageToken === undefined) return [];
+
     const response = await fetch(this.#makeURL(), { method: 'GET' });
     const body = await response.json();
 
