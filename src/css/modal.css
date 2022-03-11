@@ -70,11 +70,6 @@
   grid-template-columns: repeat(4, 1fr);
 }
 
-/* .search-result.search-result--no-result {
-  justify-content: center;
-  align-items: center;
-} */
-
 .no-result {
   position: relative;
   width: 100%;

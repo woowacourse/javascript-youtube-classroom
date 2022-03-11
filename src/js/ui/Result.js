@@ -1,4 +1,4 @@
-import { MESSAGE, STORAGE_KEY } from '../constants';
+import { GET_VIDEO_UNIT, MESSAGE, STORAGE_KEY } from '../constants';
 import { $, $$, showExceptionSnackBar } from '../utils/dom';
 import NoResultImage from '../../assets/images/not_found.png';
 import { store } from '../domain/store';
@@ -6,8 +6,6 @@ import { request } from '../domain/youtubeApi';
 import { convertToKoreaLocaleDate, delay } from '../utils/common';
 
 export default class Result {
-  constructor() {}
-
   skeletonTemplate() {
     return `
       <div class="skeleton">
@@ -24,12 +22,12 @@ export default class Result {
     $videoList.replaceChildren();
     $videoList.insertAdjacentHTML(
       'beforeend',
-      this.skeletonTemplate().repeat(10),
+      this.skeletonTemplate().repeat(GET_VIDEO_UNIT),
     );
   }
 
   removeSkeletonUI() {
-    $$('.skeleton').forEach(skeleton => skeleton.replaceChildren());
+    $$('.skeleton').forEach(skeleton => $('.video-list').removeChild(skeleton));
   }
 
   foundResultTemplate(items) {
@@ -94,6 +92,7 @@ export default class Result {
   renderNextVideoList(nextPageToken) {
     request($('#search-input-keyword').value, nextPageToken)
       .then(json => {
+        this.removeSkeletonUI();
         $('.video-list').insertAdjacentHTML(
           'beforeend',
           this.foundResultTemplate(json.items),

@@ -104,3 +104,4 @@ dist
 .tern-port
 
 src/js/domain/key.js
+src/js/domain/api.json

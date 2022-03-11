@@ -1,9 +1,9 @@
 import 'regenerator-runtime';
-import { MESSAGE } from '../constants';
+import { GET_VIDEO_UNIT, MESSAGE } from '../constants';
 
 const request = async (searchText, nextPageToken = '') => {
   const response = await fetch(
-    `https://halee-youtube-api.netlify.app/youtube/v3/search?part=snippet&q=${searchText}&maxResults=10&type=video&pageToken=${nextPageToken}`,
+    `https://halee-youtube-api.netlify.app/youtube/v3/search?part=snippet&q=${searchText}&maxResults=${GET_VIDEO_UNIT}&type=video&pageToken=${nextPageToken}`,
   );
 
   if (response.status === 200) {

@@ -1,4 +1,5 @@
 const MAX_SAVE_COUNT = 100;
+const GET_VIDEO_UNIT = 10;
 
 const MESSAGE = {
   ERROR_BLANK_SEARCH_INPUT: '검색어를 입력해주세요.',
@@ -11,4 +12,4 @@ const MESSAGE = {
 
 const STORAGE_KEY = 'videoId';
 
-export { MAX_SAVE_COUNT, MESSAGE, STORAGE_KEY };
+export { MAX_SAVE_COUNT, GET_VIDEO_UNIT, MESSAGE, STORAGE_KEY };
