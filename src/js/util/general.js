@@ -12,3 +12,15 @@ export const validateInput = input => {
     throw new Error(ERROR.MESSAGE.EMPTY_INPUT);
   }
 };
+
+export function throttle(fn, delay) {
+  let timer;
+  return function () {
+    if (!timer) {
+      timer = setTimeout(() => {
+        timer = null;
+        fn.apply(this, arguments);
+      }, delay);
+    }
+  };
+}
