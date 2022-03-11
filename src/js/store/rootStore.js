@@ -7,6 +7,7 @@ const rootStore = {
       nextPageToken: null,
     },
     searchResult: [],
+    isNoResult: null,
   }),
   setState(newState) {
     Object.entries(newState).forEach(([key, value]) => {

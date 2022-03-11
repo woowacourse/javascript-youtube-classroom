@@ -53,6 +53,7 @@ export default class SearchBar extends Component {
     });
 
     rootStore.setState({
+      isNoResult: !items.length,
       searchResult: videos,
       searchOption,
     });
