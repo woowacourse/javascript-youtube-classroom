@@ -22,6 +22,7 @@ export default class VideoCardContainer {
       const storedVideoIDs = getStorageVideoIDs(LOCALSTORAGE_KEY);
 
       if (storedVideoIDs.length >= RULES.MAX_STORED_IDS_AMOUNT) {
+        alert('저장할 수 있는 영상 한도를 초과했습니다.');
         return;
       }
 
