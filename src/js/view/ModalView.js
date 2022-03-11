@@ -64,7 +64,7 @@ export default class ModalView {
     this.$videoList.addEventListener('click', event => {
       try {
         if (event.target.tagName === 'BUTTON') {
-          storageManager.checkBelowMaxLength();
+          storageManager.checkOverMaxLength();
           event.target.classList.add(DOM_STRING.HIDE);
           callback(event.target.dataset.videoid);
         }

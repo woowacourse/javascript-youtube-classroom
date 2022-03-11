@@ -1,3 +1,5 @@
+import { ERROR_MESSAGE, STORE } from '../utils/constants';
+
 const storageManager = {
   keys: {
     videoId: 'videoId',
@@ -21,9 +23,9 @@ const storageManager = {
     return videoList ? videoList.includes(videoId) : false;
   },
 
-  checkBelowMaxLength: function () {
-    if (this.getVideoIdList().length >= 100) {
-      throw new Error('최대 100개');
+  checkOverMaxLength: function () {
+    if (this.getVideoIdList().length >= STORE.MAX_LENGTH) {
+      throw new Error(ERROR_MESSAGE.OVER_MAX_STORE_LENGTH);
     }
   },
 };
