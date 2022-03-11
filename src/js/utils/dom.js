@@ -52,3 +52,7 @@ export const currentScrollHeight = (element) => {
 export const insertImageSrc = (element, resource) => {
   element.src = resource;
 };
+
+export const inputClear = (element) => {
+  element.value = "";
+};

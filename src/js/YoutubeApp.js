@@ -17,11 +17,13 @@ import {
   currentScrollHeight,
   removeChildElement,
   insertImageSrc,
+  inputClear,
 } from "./utils/dom";
 
 export default class YoutubeApp {
   constructor(userStorage) {
     this.modalContainer = document.querySelector(".modal-container");
+    this.searchInputKeyword = document.querySelector("#search-input-keyword");
     this.searchResult = document.querySelector(".search-result");
     this.videoList = document.querySelector(".video-list");
 
@@ -54,6 +56,9 @@ export default class YoutubeApp {
   }
 
   onClickDimmer = () => {
+    inputClear(this.searchInputKeyword);
+    scrollToTop(this.videoList);
+    removeAllChildElements(this.videoList);
     addClassList(this.modalContainer, "hide");
   };
 
@@ -82,7 +87,8 @@ export default class YoutubeApp {
       template: generateTemplate.skeleton(),
     });
 
-    this.search(document.querySelector("#search-input-keyword").value);
+    this.searchInputKeyword = document.querySelector("#search-input-keyword");
+    this.search(this.searchInputKeyword.value);
   };
 
   onScrollVideoList = async () => {
