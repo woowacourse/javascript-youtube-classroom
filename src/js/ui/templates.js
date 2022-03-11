@@ -1,5 +1,5 @@
-import img from '../../assets/images/not_found.png';
-import errorImage from '../../assets/images/eror-403-noBackground.png';
+import '../../assets/images/not_found.png';
+import '../../assets/images/eror-403-noBackground.png';
 import { convertDataToDateString } from '../util/converter.js';
 
 const template = {
@@ -17,7 +17,7 @@ const template = {
 
   noSearchResult: () => `
     <div class="no-result">
-      <img src=${img} alt="no result image" class="no-result__image">
+      <img src="https://hwangstar156.github.io/javascript-youtube-classroom/not_found.png" alt="no result image" class="no-result__image">
       <p class="no-result__description">
         검색 결과가 없습니다<br />
         다른 키워드로 검색해보세요
@@ -36,7 +36,7 @@ const template = {
 
   exceedCapacityErrorImage: () => `
   <div class="no-result">
-    <img src= ${errorImage}/>
+    <img src= "https://hwangstar156.github.io/javascript-youtube-classroom/eror-403-noBackground.png"/>
     <p class="no-result__description">
       할당량 초과!!<br />
       다음날 5시에 다시 시도하세요

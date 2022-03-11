@@ -22,7 +22,7 @@
   "bugs": {
     "url": "https://github.com/woowacourse/javascript-youtube-classroom/issues"
   },
-  "homepage": "https://github.com/hwangstar156/javascript-youtube-classroom/",
+  "homepage": "https://hwangstar156.github.io/javascript-youtube-classroom/",
   "devDependencies": {
     "@babel/core": "^7.17.5",
     "@babel/plugin-transform-runtime": "^7.17.0",
