@@ -5,7 +5,11 @@
   <meta charset="UTF-8" />
   <title>나만의 유튜브 강의실</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
+<<<<<<< HEAD
   <link rel="stylesheet" href="./src/css/index.css">
+=======
+  <!-- <link rel="stylesheet" href="./src/css/index.css"> -->
+>>>>>>> c87ae531d873361302fadd4bbfd46888e3a52908
 </head>
 
 <body>
@@ -26,6 +30,7 @@
         <button id="search-button" class="search-input__search-button button">검색</button>
       </section>
       <!-- 2-1 검색 결과가 있을 경우, 아래와 같은 검색 결과 목록을 보여줍니다.-->
+<<<<<<< HEAD
       <section class="search-result">
         <h3 hidden>검색 결과</h3>
         <ul class="video-list">
@@ -45,15 +50,34 @@
         <h3 hidden>검색 결과</h3>
         <div class="no-result">
           <img src="./src/assets/images/not_found.png" alt="no result image" class="no-result__image">
+=======
+      <section id="search-target" class="search-result">
+        <h3 hidden>검색 결과</h3>
+        <ul class="video-list scroll">
+        </ul>
+      </section>
+      <!-- 2-2 검색 결과가 없을 경우, `search-result--no-result` class를 붙이고 아래와 같은 no-result를 보여줍니다.-->
+      <section id="search-no-result" class="search-result search-result--no-result hide">
+        <h3 hidden>검색 결과 없음</h3>
+        <div class="no-result">
+          <img src="./not_found.png" alt="no result image" class="no-result__image">
+>>>>>>> c87ae531d873361302fadd4bbfd46888e3a52908
           <p class="no-result__description">
             검색 결과가 없습니다<br />
             다른 키워드로 검색해보세요
           </p>
         </div>
+<<<<<<< HEAD
       </section> -->
     </div>
   </div>
   <script type="module" src="./src/js/index.js"></script>
+=======
+      </section>
+    </div>
+  </div>
+  <!-- <script type="module" src="./src/js/index.js"></script> -->
+>>>>>>> c87ae531d873361302fadd4bbfd46888e3a52908
 </body>
 
 </html>
