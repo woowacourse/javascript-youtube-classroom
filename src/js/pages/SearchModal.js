@@ -1,13 +1,14 @@
 import { OPTIONS, fetchData } from '../api';
-import { RULES, THROTTLE_PENDING_MILLISECOND } from '../constants';
+import { ERROR_MESSAGE, RULES, THROTTLE_PENDING_MILLISECOND } from '../constants';
 import VideoCardContainer from '../common/VideosCardContainer';
 import { throttle } from '../utils/throttle';
+import toast from '../common/toast';
 
 const isEmptyKeyword = (keyword) => keyword.trim().length === 0;
 
 const validateKeyword = (keyword) => {
   if (isEmptyKeyword(keyword)) {
-    throw new Error('검색어를 입력해 주세요.');
+    throw new Error(ERROR_MESSAGE.EMPTY_KEYWORD);
   }
 };
 
@@ -133,6 +134,7 @@ export default class SearchModal {
       videoList = await fetchData({
         ...options, url: YOUTUBE_URL_DUMMY
       });
+      toast(ERROR_MESSAGE.API_CALLS_QUOTA_EXCEEDED);
     }
 
     this.VideoCardContainer.setState({ items: videoList.items });
