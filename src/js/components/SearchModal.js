@@ -107,6 +107,6 @@ export class SearchModal {
   };
 
   canSaveVideoItems(localStorage, target) {
-    return !localStorage.includes(target.id) || localStorage.length <= NUM.MAX_STORAGE_LENGTH;
+    return !localStorage.includes(target.id) && localStorage.length <= NUM.MAX_STORAGE_LENGTH;
   }
 }
