@@ -82,13 +82,14 @@ class VideoContainerComponent {
       this.skeletonListComponent = new SkeletonListComponent(this.$videoList);
       return;
     }
-
+    /** 하위컴포넌트의 메소드를 직접 수행하고 싶지 않습니다.. unmount 되도록 하는게 좋겟져 ?! */
     this.skeletonListComponent?.unmount();
   }
 
   #renderSearchResult(searchResult) {
     const { videoList, prevVideoListLength } = searchResult;
 
+    /** innerHTML의 사용 없이 hide나 show 클래스로 제어해볼까? */
     if (prevVideoListLength === 0) {
       this.$searchResult.classList.remove('search-result--no-result');
       this.$searchResult.innerHTML = this.#generateHasResultTemplate();

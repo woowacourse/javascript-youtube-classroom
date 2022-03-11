@@ -48,6 +48,7 @@ module.exports = {
   plugins: [
     new webpack.DefinePlugin({
       API_KEY: JSON.stringify(process.env.API_KEY),
+      API_URL: JSON.stringify(process.env.API_URL),
     }),
     new CleanWebpackPlugin(),
     new HtmlWebpackPlugin({

@@ -1,16 +1,12 @@
-import { API_URL } from '../constants/fetcher';
-
-const generateQueryString = (params) =>
-  Object.entries(params).reduce(
-    (prev, [key, value]) => (value ? `${prev}&${key}=${value}` : prev),
-    ''
-  );
+import { createURL } from '../utils/util';
 
 export const youtubeAPIFetcher = async ({ path, params }) => {
-  const response = await fetch(
-    `${API_URL}${path}?key=${API_KEY}${generateQueryString(params)}`,
-    {}
-  );
+  /** url 만드는 함수로 ? */
+
+  const url = createURL(path, params);
+
+  const response = await fetch(url, { method: 'GET' });
+  /** 빠른 실패 */
   if (response.ok) {
     const data = await response.json();
     return data;

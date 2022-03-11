@@ -29,6 +29,7 @@ class AppBusiness {
   onSubmitSearchKeyword = async ({ detail: { keyword } }) => {
     try {
       const searchResult = await this.requestVideo(keyword);
+
       if (isNoneSearchResult(searchResult)) {
         setState(STATE_STORE_KEY.SEARCH_RESULT, {
           keyword: null,
