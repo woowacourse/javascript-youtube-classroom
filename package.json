@@ -45,7 +45,7 @@
       "^.+\\.js$": "babel-jest"
     }
   },
-  "homepage": "https://yunjin-kim.github.io/javascript-youtube-classroom/",
+  "homepage": "https://nan-noo.github.io/javascript-youtube-classroom/",
   "dependencies": {
     "gh-pages": "^3.2.3"
   }
