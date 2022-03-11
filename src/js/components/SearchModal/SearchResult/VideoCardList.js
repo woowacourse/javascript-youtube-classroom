@@ -5,6 +5,7 @@ import { getSearchAPI } from '../../../api/api.js';
 import { addSavedToVideos } from '../SearchBar.js';
 import SkeletonCard from './SkeletonCard.js';
 import request from '../../../__mocks__/request.js';
+import { LOAD_VIDEOS_COUNT } from '../../../constant.js';
 
 export default class VideoCardList extends Component {
   setup() {
@@ -28,7 +29,7 @@ export default class VideoCardList extends Component {
       ${searchResult.map(() => `<div class="video-card real"></div>`).join('')}
       ${
         isLoading
-          ? Array(10)
+          ? Array(LOAD_VIDEOS_COUNT)
               .fill()
               .map(() => `<div class="video-card skeleton"></div>`)
               .join('')

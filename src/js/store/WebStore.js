@@ -1,4 +1,4 @@
-import { ALERT_MESSAGE } from '../constant.js';
+import { ALERT_MESSAGE, MAX_SAVE_COUNT } from '../constant.js';
 
 export default class WebStore {
   #key;
@@ -19,7 +19,7 @@ export default class WebStore {
   }
 
   save(data) {
-    if (this.#cached.length >= 100) {
+    if (this.#cached.length >= MAX_SAVE_COUNT) {
       throw new Error(ALERT_MESSAGE.EXCEED_MAX_SAVE_VOLUME);
     }
     this.#cache(data);

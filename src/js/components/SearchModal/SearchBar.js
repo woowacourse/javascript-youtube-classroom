@@ -30,10 +30,10 @@ export default class SearchBar extends Component {
   setEvent() {
     this.addEvent('submit', '#search-form', async (e) => {
       try {
-        // const { items, nextPageToken } = await getSearchAPI(
-        //   e.target.elements.searchInput.value
-        // );
-        const { items, nextPageToken } = await request();
+        const { items, nextPageToken } = await getSearchAPI(
+          e.target.elements.searchInput.value
+        );
+        // const { items, nextPageToken } = await request();
 
         if (!items.length) {
           rootStore.setState({ notFound: true });
