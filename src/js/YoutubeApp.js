@@ -18,6 +18,7 @@ import {
   removeChildElement,
   insertImageSrc,
   inputClear,
+  alertMessage,
 } from "./utils/dom";
 
 export default class YoutubeApp {
@@ -66,7 +67,13 @@ export default class YoutubeApp {
     if (!target.matches(".video-item__save-button")) return;
 
     const { videoId } = findTargetDataset(target, ".video-item");
-    this.userStorage.addStorage(videoId);
+
+    try {
+      this.userStorage.addStorage(videoId);
+    } catch ({ message }) {
+      alertMessage(message);
+    }
+
     addClassList(target, "hide");
   };
 

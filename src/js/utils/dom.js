@@ -56,3 +56,7 @@ export const insertImageSrc = (element, resource) => {
 export const inputClear = (element) => {
   element.value = "";
 };
+
+export const alertMessage = (message) => {
+  alert(message);
+};
