@@ -4,7 +4,6 @@ import { rootStore } from '../../../store/rootStore.js';
 import { getSearchAPI } from '../../../api/api.js';
 import { addSavedToVideos } from '../SearchBar.js';
 import SkeletonCard from './SkeletonCard.js';
-import request from '../../../__mocks__/request.js';
 import { LOAD_VIDEOS_COUNT } from '../../../constant.js';
 
 export default class VideoCardList extends Component {
