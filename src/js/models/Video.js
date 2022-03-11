@@ -86,8 +86,8 @@ export default class Video {
     }
   }
 
-  setVideoInfo() {
-    this.#newVideoItems = this.#fetchedVideos.items.map((item) => ({
+  setVideoInfo(fetchedVideos) {
+    this.#newVideoItems = fetchedVideos.items.map((item) => ({
       videoId: item.id.videoId,
       description: item.snippet.description,
       channelId: item.snippet.channelId,
@@ -97,37 +97,9 @@ export default class Video {
       thumbnailUrl: item.snippet.thumbnails.high.url,
       saved: false,
     }));
+
     checkLengthExist(this.#newVideoItems);
 
-    this.#nextPageToken = this.#fetchedVideos.nextPageToken;
-  }
-
-  async fetchYoutubeApi(query, nextPageToken) {
-    try {
-      const REDIRECT_SERVER_HOST = 'https://thirsty-ritchie-0c8419.netlify.app/';
-
-      const url = new URL('youtube/v3/search', REDIRECT_SERVER_HOST);
-      const parameters = new URLSearchParams({
-        part: 'snippet',
-        type: 'video',
-        maxResults: 10,
-        regionCode: 'kr',
-        safeSearch: 'strict',
-        pageToken: nextPageToken || '',
-        q: query,
-      });
-      url.search = parameters.toString();
-
-      const response = await fetch(url, { method: 'GET' });
-      const body = await response.json();
-
-      if (!response.ok) {
-        throw new Error(body.error.message);
-      }
-
-      this.#fetchedVideos = body;
-    } catch (error) {
-      console.error(error);
-    }
+    this.#nextPageToken = fetchedVideos.nextPageToken;
   }
 }

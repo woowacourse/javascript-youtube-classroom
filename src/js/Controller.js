@@ -7,6 +7,7 @@ import Video from './models/Video.js';
 import { on } from './utils/event.js';
 import VIDEO from '../constants/video.js';
 import { checkExceedLimit } from './utils/validator.js';
+import { fetchYoutubeApi } from './utils/fetch.js';
 
 export default class Controller {
   constructor() {
@@ -37,10 +38,10 @@ export default class Controller {
     }
 
     this.searchResultView.showSkeleton();
-    await this.video.fetchYoutubeApi(keyword);
+    const fetchedVideos = await fetchYoutubeApi(keyword);
 
     try {
-      this.video.setVideoInfo();
+      this.video.setVideoInfo(fetchedVideos);
     } catch (error) {
       this.searchResultView.removeVideo();
       this.searchResultView.showNotFound();
@@ -58,13 +59,16 @@ export default class Controller {
   async #scrollNextVideos() {
     this.searchResultView.stopObserve();
     this.searchResultView.showSkeleton();
-    await this.video.fetchYoutubeApi(this.video.keyword, this.video.nextPageToken);
-    this.video.setVideoInfo();
+
+    const fetchedVideos = await fetchYoutubeApi(this.video.keyword, this.video.nextPageToken);
+    this.video.setVideoInfo(fetchedVideos);
     this.video.accumulateVideoItems();
     this.video.updateNewVideoItems();
+
     if (this.video.newVideoItems.length < VIDEO.MINIMUM_FETCHED_VIDEO_COUNT) {
       return;
     }
+
     this.searchResultView.renderVideo(this.video.newVideoItems);
     this.searchResultView.startObserve();
   }
