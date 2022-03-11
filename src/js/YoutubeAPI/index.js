@@ -24,8 +24,12 @@ export default class YoutubeAPI {
     this.#keyword = keyword;
   }
 
+  #checkEndPage() {
+    return this.#nextPageToken === undefined;
+  }
+
   async videos() {
-    if (this.#nextPageToken === undefined) return [];
+    if (this.#checkEndPage()) return [];
 
     const response = await fetch(this.#makeURL(), { method: 'GET' });
     const body = await response.json();
