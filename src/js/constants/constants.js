@@ -1,5 +1,5 @@
 export const SEARCH_URL_BASE =
-  'https://pensive-fermat-630884.netlify.app/youtube/v3/search?part=snippet';
+  'https://boring-khorana-6a713d.netlify.app/youtube/v3/search?part=snippet';
 export const MAX_SEARCH_RESULT = 10;
 
 export const MAX_SAVE_AMOUNT = 100;
