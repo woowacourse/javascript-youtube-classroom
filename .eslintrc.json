@@ -27,6 +27,7 @@
     "no-unused-vars": "off",
     "no-unused-expressions": "off",
     "no-new": "off",
-    "no-use-before-define": "off"
+    "no-use-before-define": "off",
+    "consistent-return": "off"
   }
 }

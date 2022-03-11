@@ -34,6 +34,7 @@ export const rootStore = {
       nextPageToken: null,
     },
     searchResult: [],
+    notFound: false,
   }),
   setState(newState) {
     Object.entries(newState).forEach(([key, value]) => {

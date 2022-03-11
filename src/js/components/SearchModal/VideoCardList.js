@@ -84,11 +84,11 @@ export default class VideoCardList extends Component {
   async loadNextVideos() {
     const { query, nextPageToken: prevNextPageToken } =
       rootStore.state.searchOption;
-    // const { items, nextPageToken } = await getSearchAPI(
-    //   query,
-    //   prevNextPageToken
-    // );
-    const { items, nextPageToken } = await request();
+    const { items, nextPageToken } = await getSearchAPI(
+      query,
+      prevNextPageToken
+    );
+    // const { items, nextPageToken } = await request();
 
     rootStore.setState({
       searchOption: {
@@ -96,7 +96,6 @@ export default class VideoCardList extends Component {
         nextPageToken,
       },
     });
-    // return addSavedToVideos(items);
 
     return addSavedToVideos(items);
   }
