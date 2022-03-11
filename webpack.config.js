@@ -1,20 +1,20 @@
-const path = require("path");
-const HtmlWebpackPlugin = require("html-webpack-plugin");
-const { CleanWebpackPlugin } = require("clean-webpack-plugin");
+const path = require('path');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 
 module.exports = {
-  mode: "production",
-  entry: "./src/app.js",
+  mode: 'production',
+  entry: './src/app.js',
   resolve: {
-    extensions: [".js", ".css"],
+    extensions: ['.js', '.css'],
   },
   devServer: {
     port: 9001,
   },
-  devtool: "source-map",
+  devtool: 'source-map',
   output: {
-    filename: "bundle.js",
-    path: path.resolve(__dirname, "dist"),
+    filename: 'bundle.js',
+    path: path.resolve(__dirname, 'dist'),
   },
   module: {
     rules: [
@@ -23,24 +23,23 @@ module.exports = {
         exclude: /node_modules/,
         use: [
           {
-            loader: "babel-loader",
+            loader: 'babel-loader',
             options: {
-              presets: ["@babel/preset-env"],
-              plugins: ["@babel/plugin-transform-runtime"],
+              presets: ['@babel/preset-env'],
+              plugins: ['@babel/plugin-transform-runtime'],
             },
           },
         ],
       },
       {
         test: /\.css$/,
-        use: ["style-loader", "css-loader"],
+        use: ['style-loader', 'css-loader'],
       },
       {
         test: /\.(png|jpg)$/,
-        loader: "file-loader",
+        loader: 'file-loader',
         options: {
-          publicPath: "./",
-          name: "[name].[ext]",
+          name: '[name].[ext]',
         },
       },
     ],
@@ -48,7 +47,7 @@ module.exports = {
   plugins: [
     new CleanWebpackPlugin(),
     new HtmlWebpackPlugin({
-      template: "./index.html",
+      template: './index.html',
     }),
   ],
 };
