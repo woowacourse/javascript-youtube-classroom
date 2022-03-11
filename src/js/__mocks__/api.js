@@ -375,8 +375,10 @@ const noResult = {
   items: [],
 };
 
-export default function request(url) {
+export function searchVideosMock(url) {
   return new Promise((resolve) => {
-    resolve(noResult);
+    setTimeout(() => {
+      resolve(url === '!@#!@$#$!#@!#' ? noResult : searchResult);
+    }, 100);
   });
 }
