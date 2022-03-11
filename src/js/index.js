@@ -25,8 +25,8 @@ export default function App() {
     }
   };
 
+  let throttle;
   const handleScroll = e => {
-    let throttle;
     if (isEndOfScroll(e.target) && !throttle) {
       userInterface.renderSkeletonUI();
       const response = youtubeMachine.callSearchAPI();
