@@ -27,31 +27,34 @@ export default class SearchBar extends Component {
 
   setEvent() {
     this.addEvent('submit', '#search-form', async (e) => {
-      const savedVideos = Component.webStore.load();
-      const { items, nextPageToken } = await searchVideos(
-        e.target.elements.searchInput.value
+      const query = e.target.elements.searchInput.value;
+      const { items, nextPageToken } = await searchVideos(query).catch(
+        (err) => {
+          alert(err);
+        }
       );
-      const videos = items.map((item) => {
-        return {
-          loading: false,
-          videoId: item.id.videoId,
-          thumbnailUrl: item.snippet.thumbnails.default.url,
-          title: item.snippet.title,
-          channelTitle: item.snippet.channelTitle,
-          publishTime: item.snippet.publishTime,
-          saved: savedVideos.includes(item.id.videoId),
-        };
-      });
 
-      const payload = {
-        searchResult: videos,
-        searchOption: {
-          query: e.target.elements.searchInput.value,
-          nextPageToken,
-        },
+      if (items) this.updateSearchResult(items, { query, nextPageToken });
+    });
+  }
+
+  updateSearchResult(items, searchOption) {
+    const savedVideos = Component.webStore.load();
+    const videos = items.map((item) => {
+      return {
+        loading: false,
+        videoId: item.id.videoId,
+        thumbnailUrl: item.snippet.thumbnails.default.url,
+        title: item.snippet.title,
+        channelTitle: item.snippet.channelTitle,
+        publishTime: item.snippet.publishTime,
+        saved: savedVideos.includes(item.id.videoId),
       };
+    });
 
-      rootStore.setState(payload);
+    rootStore.setState({
+      searchResult: videos,
+      searchOption,
     });
   }
 }

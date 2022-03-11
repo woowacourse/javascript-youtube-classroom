@@ -19,9 +19,13 @@ const QUERY_OPTIONS = {
 //   }${nextPageToken ? `&pageToken=${nextPageToken}` : ''}`;
 //   const url = `${API_SERVER}/search?${spreadQuery}`;
 
-//   return fetch(url)
-//     .then((res) => res.json())
-//     .catch((err) => err);
+//   return fetch(url).then((res) => {
+//     if (res.ok) {
+//       return res.json();
+//     }
+
+//     throw new Error('API 요청에 실패했습니다.');
+//   });
 // };
 
 export const searchVideos = searchVideosMock;

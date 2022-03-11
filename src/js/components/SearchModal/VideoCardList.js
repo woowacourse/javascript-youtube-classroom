@@ -47,52 +47,49 @@ export default class VideoCardList extends Component {
   }
 
   onLastChildVisible(entries, observer) {
-    // 화면에 들어온 이미지를 잡아서, data-src에 있는 url를 src로 넣어준다.
     entries.forEach(async (entry) => {
       if (!entry.isIntersecting || this.state.isLoading) return;
 
       observer.disconnect();
 
-      // 스크롤이 마지막 요소에 닿으면 로딩 시작
-      // 로딩 될 요소들의 스켈레톤 생성해 state에 추가
-      this.setState({
-        isLoading: true,
-        skeletons: Array(10).fill({
-          loading: true,
-          videoId: null,
-          thumbnailUrl: null,
-          title: null,
-          channelTitle: null,
-          publishTime: null,
-          saved: false,
-        }),
+      const { query, nextPageToken } = rootStore.state.searchOption;
+
+      this.addSkeletons();
+
+      const { items, newNextPageToken } = await searchVideos(
+        query,
+        nextPageToken
+      ).catch((err) => {
+        alert(err);
       });
 
-      const newVideos = await this.loadNextVideos();
-
-      this.setState({ isLoading: false, skeletons: [] });
-      rootStore.setState({
-        searchResult: [...rootStore.state.searchResult, ...newVideos],
-      });
+      this.removeSkeletons();
+      if (items) this.updateSearchResult(items, { query, newNextPageToken });
     });
   }
 
-  async loadNextVideos() {
-    const { query, nextPageToken } = rootStore.state.searchOption;
-    const data = await searchVideos(query, nextPageToken);
-
-    // searchOption 업데이트
-    rootStore.setState({
-      searchOption: {
-        query,
-        nextPageToken: data.nextPageToken,
-      },
+  addSkeletons() {
+    this.setState({
+      isLoading: true,
+      skeletons: Array(10).fill({
+        loading: true,
+        videoId: null,
+        thumbnailUrl: null,
+        title: null,
+        channelTitle: null,
+        publishTime: null,
+        saved: false,
+      }),
     });
+  }
 
-    // 로딩이 끝난 후 로딩 된 요소들을 원하는 프로퍼티를 가진 객체로 매핑
+  removeSkeletons() {
+    this.setState({ isLoading: false, skeletons: [] });
+  }
+
+  updateSearchResult(items, searchOption) {
     const savedVideos = Component.webStore.load();
-
-    return data.items.map((item) => {
+    const newVideos = items.map((item) => {
       return {
         loading: false,
         videoId: item.id.videoId,
@@ -102,6 +99,11 @@ export default class VideoCardList extends Component {
         publishTime: item.snippet.publishTime,
         saved: savedVideos.includes(item.id.videoId),
       };
+    });
+
+    rootStore.setState({
+      searchResult: [...rootStore.state.searchResult, ...newVideos],
+      searchOption,
     });
   }
 }
