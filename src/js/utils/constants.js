@@ -8,6 +8,7 @@ export const DOM_STRING = {
   HIDE: 'hide',
   MODAL_OPEN_BUTTON: '#search-modal-button',
   SKELETON: 'skeleton',
+  VIDEO_ITEM_SAVE_BUTTON: 'video-item__save-button',
 };
 
 export const ERROR_MESSAGE = {
@@ -19,4 +20,8 @@ export const ERROR_MESSAGE = {
 
 export const STORE = {
   MAX_LENGTH: 100,
+};
+
+export const VIDEO_LIST = {
+  RENDER_SIZE: 10,
 };

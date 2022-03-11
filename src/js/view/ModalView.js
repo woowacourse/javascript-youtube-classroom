@@ -1,6 +1,6 @@
 import VideoItemView from './VideoItemView.js';
 import storageManager from '../managers/storageManager.js';
-import { DOM_STRING } from '../utils/constants.js';
+import { DOM_STRING, VIDEO_LIST } from '../utils/constants.js';
 import { $ } from '../utils/common.js';
 
 export default class ModalView {
@@ -64,7 +64,7 @@ export default class ModalView {
   bindVideoListClickStoreButton(callback) {
     this.$videoList.addEventListener('click', event => {
       try {
-        if (event.target.tagName === 'BUTTON') {
+        if ([...event.target.classList].includes(DOM_STRING.VIDEO_ITEM_SAVE_BUTTON)) {
           storageManager.checkOverMaxLength();
           event.target.classList.add(DOM_STRING.HIDE);
           callback(event.target.dataset.videoid);
@@ -83,17 +83,19 @@ export default class ModalView {
   }
 
   appendEmptyList() {
-    this.$videoList.insertAdjacentHTML('beforeend', '<li></li>'.repeat(10));
+    this.$videoList.insertAdjacentHTML('beforeend', '<li></li>'.repeat(VIDEO_LIST.RENDER_SIZE));
   }
 
   appendVideoItem() {
-    [...this.$videoList.childNodes].slice(-10).forEach(li => {
+    [...this.$videoList.childNodes].slice(-VIDEO_LIST.RENDER_SIZE).forEach(li => {
       this.videoItemList.push(new VideoItemView(li));
     });
   }
 
   getSkeletonTemplate() {
-    this.videoItemList.slice(-10).forEach(videoItem => videoItem.getVideoItemTemplate());
+    this.videoItemList
+      .slice(-VIDEO_LIST.RENDER_SIZE)
+      .forEach(videoItem => videoItem.getVideoItemTemplate());
   }
 
   getData(parsedData) {
@@ -103,7 +105,7 @@ export default class ModalView {
 
   updateVideoItems(data) {
     this.videoItemList
-      .slice(-10)
+      .slice(-VIDEO_LIST.RENDER_SIZE)
       .forEach((videoItem, index) => videoItem.getVideoItemTemplate(data[index]));
   }
 
