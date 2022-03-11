@@ -4,7 +4,7 @@ import SearchVideoManager from './SearchVideoManager';
 import SaveVideoManager from './SaveVideoManager';
 import { validateSearchKeyword } from './validation';
 import { ALERT_MESSAGE } from './constants';
-import { throttle } from './util';
+import { debounce } from './util';
 
 export default class YoutubeClassRoom {
   constructor() {
@@ -18,7 +18,7 @@ export default class YoutubeClassRoom {
 
   bindEvents() {
     this.searchModalView.modal.addEventListener('searchKeyword', this.onSubmitSearchKeyword.bind(this));
-    this.searchModalView.modal.addEventListener('searchOnScroll', throttle(this.searchOnScroll.bind(this), 100));
+    this.searchModalView.modal.addEventListener('searchOnScroll', debounce(this.searchOnScroll.bind(this), 100));
     this.searchModalView.modal.addEventListener('saveVideo', this.onClickVideoSaveButton.bind(this));
   }
 
