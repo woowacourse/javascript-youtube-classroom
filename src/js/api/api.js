@@ -8,7 +8,7 @@ const OPTIONS = {
   key: YOUTUBE_API_KEY,
 };
 
-export const searchVideos = (query, nextPageToken = null) => {
+export const getSearchAPI = (query, nextPageToken = null) => {
   const url = `${BASE_URL}?${spreadOptions({
     ...OPTIONS,
     q: makeQueryFormal(query),

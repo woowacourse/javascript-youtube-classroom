@@ -1,6 +1,6 @@
+import { getSearchAPI } from '../../api/api.js';
 import Component from '../../core/Component.js';
 import { rootStore } from '../../store/rootStore.js';
-import { searchVideos } from '../../api/api.js';
 import { webStore } from '../../store/WebStore.js';
 
 export default class SearchBar extends Component {
@@ -28,24 +28,12 @@ export default class SearchBar extends Component {
 
   setEvent() {
     this.addEvent('submit', '#search-form', async (e) => {
-      const savedVideos = webStore.load();
-      const { items, nextPageToken } = await searchVideos(
+      const { items, nextPageToken } = await getSearchAPI(
         e.target.elements.searchInput.value
       );
-      const videos = items.map((item) => {
-        return {
-          loading: false,
-          videoId: item.id.videoId,
-          thumbnailUrl: item.snippet.thumbnails.default.url,
-          title: item.snippet.title,
-          channelTitle: item.snippet.channelTitle,
-          publishTime: item.snippet.publishTime,
-          saved: savedVideos.includes(item.id.videoId),
-        };
-      });
 
       const payload = {
-        searchResult: videos,
+        searchResult: addSavedToVideos(items),
         searchOption: {
           query: e.target.elements.searchInput.value,
           nextPageToken,
@@ -55,4 +43,18 @@ export default class SearchBar extends Component {
       rootStore.setState(payload);
     });
   }
+}
+
+export function addSavedToVideos(videos) {
+  const savedVideos = webStore.load();
+
+  return videos.map((item) => ({
+    loading: false,
+    videoId: item.id.videoId,
+    thumbnailUrl: item.snippet.thumbnails.default.url,
+    title: item.snippet.title,
+    channelTitle: item.snippet.channelTitle,
+    publishTime: item.snippet.publishTime,
+    saved: savedVideos.includes(item.id.videoId),
+  }));
 }

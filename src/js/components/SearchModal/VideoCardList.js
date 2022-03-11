@@ -1,8 +1,9 @@
 import Component from '../../core/Component.js';
 import VideoCard from './VideoCard.js';
 import { rootStore } from '../../store/rootStore.js';
-import { searchVideos } from '../../api/api.js';
 import { webStore } from '../../store/WebStore.js';
+import { getSearchAPI } from '../../api/api.js';
+import { addSavedToVideos } from './SearchBar.js';
 
 export default class VideoCardList extends Component {
   setup() {
@@ -79,30 +80,22 @@ export default class VideoCardList extends Component {
   }
 
   async loadNextVideos() {
-    const { query, nextPageToken } = rootStore.state.searchOption;
-    const data = await searchVideos(query, nextPageToken);
+    const { query, nextPageToken: prevNextPageToken } =
+      rootStore.state.searchOption;
+    const { items, nextPageToken } = await getSearchAPI(
+      query,
+      prevNextPageToken
+    );
 
     // searchOption 업데이트
     rootStore.setState({
       searchOption: {
         query,
-        nextPageToken: data.nextPageToken,
+        nextPageToken,
       },
     });
 
     // 로딩이 끝난 후 로딩 된 요소들을 원하는 프로퍼티를 가진 객체로 매핑
-    const savedVideos = webStore.load();
-
-    return data.items.map((item) => {
-      return {
-        loading: false,
-        videoId: item.id.videoId,
-        thumbnailUrl: item.snippet.thumbnails.default.url,
-        title: item.snippet.title,
-        channelTitle: item.snippet.channelTitle,
-        publishTime: item.snippet.publishTime,
-        saved: savedVideos.includes(item.id.videoId),
-      };
-    });
+    return addSavedToVideos(items);
   }
 }
