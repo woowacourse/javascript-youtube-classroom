@@ -5,7 +5,6 @@ import SearchResultView from './views/SearchResultView.js';
 import dummyObject from './dummy/dummyObject.js';
 import Video from './models/Video.js';
 import { on } from './utils/event.js';
-import EXCEPTION from '../constants/exception.js';
 import VIDEO from '../constants/video.js';
 import { checkExceedLimit } from './utils/validator.js';
 

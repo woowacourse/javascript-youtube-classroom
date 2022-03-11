@@ -5,11 +5,11 @@ export default class Video {
 
   #fetchedVideos; // length:10, type:array, fetch한 원본(items, nextPageToken)
 
-  #newVideoItems; //  length:10, type:array, search해서 첫 10개, 스크롤 때마다 10개 추가되는 items (orgin: #fetchedVideos), svaed 속성이 바뀌면 override가 된다.
+  #newVideoItems; //  length:10, type:array, search해서 첫 10개, 스크롤 때마다 10개 추가되는 items (origin: #fetchedVideos), saved 속성이 바뀌면 override가 된다.
 
   #allVideoItems = []; // length:미상, type:array, 스크롤할 때마다 해당 newVideoItems 10개씩 누적되는 items
 
-  #nextPageToken; // fetch하기 위한 다음 페이지 Token (orgin: #fetchedVideos)
+  #nextPageToken; // fetch하기 위한 다음 페이지 Token (origin: #fetchedVideos)
 
   #savedVideoItems; // length:미상(최대100), type:array,저장된 비디오 items, localStorage 상호작용
 
@@ -68,15 +68,15 @@ export default class Video {
   updateNewVideoItems() {
     const updatedNewVideoItems = [];
     for (const newItem of this.#newVideoItems) {
-      let isfindSavedItem = false;
+      let isFindSavedItem = false;
       for (const savedItem of this.#savedVideoItems) {
         if (newItem.videoId === savedItem.videoId) {
-          isfindSavedItem = true;
+          isFindSavedItem = true;
           updatedNewVideoItems.push(savedItem);
           break;
         }
       }
-      if (isfindSavedItem === false) {
+      if (isFindSavedItem === false) {
         updatedNewVideoItems.push(newItem);
       }
     }

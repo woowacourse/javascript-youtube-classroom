@@ -1,28 +1,28 @@
-<<<<<<< HEAD
-@import './app.css';
-@import './modal.css';
-=======
 @import './root.css';
 @import './app.css';
 @import './modal.css';
 @import './skeleton.css';
->>>>>>> c87ae531d873361302fadd4bbfd46888e3a52908
 
 * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
-ol,ul {
-    list-style: none;
+ol,
+ul {
+  list-style: none;
 }
 
-html, body {
-    height: 100%;
-    -webkit-font-smoothing: antialiased;
+html,
+body {
+  height: 100%;
+  -webkit-font-smoothing: antialiased;
 }
 
-input, button, textarea, select {
-    font: inherit;
+input,
+button,
+textarea,
+select {
+  font: inherit;
 }
