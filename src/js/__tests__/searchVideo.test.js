@@ -1,3 +1,4 @@
+import { ERROR_MESSAGE, MAX_VIDEO_COUNT } from '../constants/contants.js';
 import SearchVideo from '../searchVideo.js';
 import mockDatas from '../Utils/mock.js';
 
@@ -14,16 +15,16 @@ describe('동영샹 검색 테스트', () => {
     try {
       await searchVideo.handleSearchVideo(searchInput.trim())
     } catch (error) {
-      expect(error.message).toEqual('공백은 검색할 수 없습니다.');
+      expect(error.message).toEqual(ERROR_MESSAGE.CANNOT_SEARCH_EMPTY);
     }
   });
   
   test('검색하면 검색한 데이터(10개)가 오는지 확인한다.', async () => {
     try {
       await searchVideo.handleSearchVideo('playlist');
-      expect(searchVideo.searchResults.length).toEqual(10);
+      expect(searchVideo.searchResults.length).toEqual(MAX_VIDEO_COUNT);
     } catch (error) {
-      expect(error.message).toEqual('[404] 개발자에게 문의하세요');
+      expect(error.message).toEqual(ERROR_MESSAGE.CANNOT_GET_YOUTUBE_VIDEO);
     };
   });
 });

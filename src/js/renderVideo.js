@@ -1,4 +1,5 @@
 import {
+  BUTTON_DISABLED_TEXT,
   ERROR_MESSAGE,
   MAX_SAVE_VIDEO_COUNT,
   MAX_VIDEO_COUNT,
@@ -60,16 +61,14 @@ class RenderVideo {
   };
 
   onSaveButtonClick = ({ target }) => {
-    if (
-      target.classList.contains('video-item__save-button') &&
-      this.saveVideo.saveVideoList.length < MAX_SAVE_VIDEO_COUNT
-    ) {
+    const isSaveButton = target.classList.contains('video-item__save-button');
+    if (isSaveButton && this.saveVideo.saveVideoList.length < MAX_SAVE_VIDEO_COUNT) {
       this.saveVideo.setStorageVideoList(target.closest('li').dataset.videoId);
-      target.textContent = '저장됨';
+      target.textContent = BUTTON_DISABLED_TEXT;
       target.disabled = true;
       return;
     }
-    if (target.classList.contains('video-item__save-button')) {
+    if (isSaveButton) {
       alert(ERROR_MESSAGE.CANNOT_SAVE_VIDEO_ANYMORE);
     }
   };
@@ -80,9 +79,9 @@ class RenderVideo {
       return;
     }
 
-    Array.from(selectDom('.video-list').children).forEach((child) => {
-      if (child.className === 'skeleton') {
-        child.remove();
+    Array.from(selectDom('.video-list').children).forEach((videoLi) => {
+      if (videoLi.className === 'skeleton') {
+        videoLi.remove();
       }
     });
 
@@ -104,25 +103,15 @@ class RenderVideo {
 
   async loadVideo() {
     this.renderVideoSkeleton();
-    const skeletonAnimationStartTime = new Date().getSeconds();
-    const skeletonAnimation = async () => {
-      const skeletonAnimationCurrentTime = new Date().getSeconds();
-      if (skeletonAnimationCurrentTime < skeletonAnimationStartTime + 1) {
-        requestAnimationFrame(skeletonAnimation);
-        return;
-      }
-      try {
-        await this.searchVideo.handleSearchVideo(this.searchInput.value.trim());
-        this.renderSearchVideo(this.searchVideo.searchResults);
-      } catch (error) {
-        this.searchInput.value = '';
-        this.searchInput.focus();
-        this.videoListContainer.innerHTML = '';
-        return alert(error);
-      }
-    };
-    requestAnimationFrame(skeletonAnimation);
-    // // mock data를 사용할 때 skeleton UI를 보여주기 위한 지연 애니메이션입니다
+    try {
+      await this.searchVideo.handleSearchVideo(this.searchInput.value.trim());
+      this.renderSearchVideo(this.searchVideo.searchResults);
+    } catch (error) {
+      this.searchInput.value = '';
+      this.searchInput.focus();
+      this.videoListContainer.innerHTML = '';
+      return alert(error);
+    }
   }
 }
 
