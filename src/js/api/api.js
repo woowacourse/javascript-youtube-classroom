@@ -16,9 +16,8 @@ export const getSearchAPI = async (query, pageToken = null) => {
   if (!response.ok) {
     throw Error(response.statusText);
   }
-  const data = response.json();
 
-  return data;
+  return response.json();
 };
 
 function spreadOptions(options) {
