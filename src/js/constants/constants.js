@@ -4,4 +4,4 @@ export const ERROR = {
   },
 };
 
-export const THROTTLE_DELAY = 800;
+export const THROTTLE_DELAY = 500;
