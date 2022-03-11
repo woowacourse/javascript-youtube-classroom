@@ -91,7 +91,7 @@ class AppBusiness {
         part: 'snippet',
         maxResults: 10,
         type: 'video',
-        pageToken,
+        pageToken: pageToken ?? '',
       },
     });
 

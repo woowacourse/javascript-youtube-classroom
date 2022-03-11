@@ -1,3 +1,3 @@
 export const API_PATHS = {
-  SEARCH: 'youtube/search',
+  SEARCH: 'youtube/v3/search',
 };

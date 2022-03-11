@@ -39,7 +39,6 @@ export const generateQueryString = (params) =>
 
 export const createURL = (path, params) => {
   const url = new URL(path, API_URL);
-  url.search = generateQueryString(params);
-
+  url.search = new URLSearchParams(params).toString();
   return url;
 };
