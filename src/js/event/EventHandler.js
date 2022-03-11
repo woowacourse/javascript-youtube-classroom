@@ -4,6 +4,7 @@ import ModalView from '../view/ModalView.js';
 import APIManager from '../managers/APIManager.js';
 import validator from '../utils/validator.js';
 import storageManager from '../managers/storageManager.js';
+
 export default class EventHandler {
   constructor() {
     this.mainView = new MainView();

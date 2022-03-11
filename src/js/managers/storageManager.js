@@ -5,17 +5,15 @@ const storageManager = {
 
   storeVideoId: function (videoId) {
     if (!this.hasVideoID(videoId)) {
-      let videoList = this.getVideoIdList();
-      if (!videoList) {
-        videoList = [];
-      }
+      const videoList = this.getVideoIdList();
       videoList.push(videoId);
       localStorage.setItem(this.keys.videoId, JSON.stringify(videoList));
     }
   },
 
   getVideoIdList: function () {
-    return JSON.parse(localStorage.getItem(this.keys.videoId));
+    const videoList = JSON.parse(localStorage.getItem(this.keys.videoId));
+    return videoList || [];
   },
 
   hasVideoID: function (videoId) {
