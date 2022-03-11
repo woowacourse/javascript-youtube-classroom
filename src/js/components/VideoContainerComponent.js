@@ -103,6 +103,9 @@ class VideoContainerComponent {
       this.$searchResult.innerHTML = this.#generateNoneResultTemplate();
       return;
     }
+    if (isFirstSearchByKeyword(prevVideoListLength)) {
+      this.$videoList.innerHTML = '';
+    }
 
     this.#showVideoList();
 
