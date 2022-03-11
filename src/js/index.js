@@ -8,7 +8,7 @@ import { THROTTLE_DELAY } from './constants/constants.js';
 
 export default function App() {
   const youtubeMachine = new YoutubeMachine();
-
+  let throttle;
   // 핸들러
   const handleSearch = () => {
     try {
@@ -26,7 +26,6 @@ export default function App() {
   };
 
   const handleScroll = e => {
-    let throttle;
     if (isEndOfScroll(e.target) && !throttle) {
       userInterface.renderSkeletonUI();
       const response = youtubeMachine.callSearchAPI();
