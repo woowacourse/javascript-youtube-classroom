@@ -1,9 +1,9 @@
 import 'regenerator-runtime';
 import { MESSAGE } from '../constants';
 
-const request = async (searchText, key, nextPageToken = '') => {
+const request = async (searchText, nextPageToken = '') => {
   const response = await fetch(
-    `https://www.googleapis.com/youtube/v3/search?part=snippet&q=${searchText}&key=${key}&maxResults=10&type=video&pageToken=${nextPageToken}`,
+    `https://suspicious-shaw-d70614.netlify.app/youtube/v3/search?part=snippet&q=${searchText}&maxResults=10&type=video&pageToken=${nextPageToken}`,
   );
   if (response.status === 200) {
     const searchResult = await response.json();

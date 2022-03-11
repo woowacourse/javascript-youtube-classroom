@@ -2,7 +2,6 @@ import { MESSAGE, STORAGE_KEY } from '../constants';
 import { $, $$, showExceptionSnackBar } from '../utils/dom';
 import NoResultImage from '../../assets/images/not_found.png';
 import { store } from '../domain/store';
-import { API_KEY } from '../domain/key';
 import { request } from '../domain/youtubeApi';
 import { convertToKoreaLocaleDate, delay } from '../utils/common';
 
@@ -93,7 +92,7 @@ export default class Result {
   }
 
   renderNextVideoList(nextPageToken) {
-    request($('#search-input-keyword').value, API_KEY, nextPageToken)
+    request($('#search-input-keyword').value, nextPageToken)
       .then(json => {
         $('.video-list').insertAdjacentHTML(
           'beforeend',
