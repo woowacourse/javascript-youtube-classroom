@@ -2,6 +2,7 @@ const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const Dotenv = require('dotenv-webpack');
+const webpack = require('webpack');
 
 module.exports = {
   entry: ['@babel/polyfill', './src/js/index.js'],
@@ -17,21 +18,17 @@ module.exports = {
         use: [MiniCssExtractPlugin.loader, 'css-loader'],
       },
       {
-        test: /\.(png)$/i,
+        test: /\.(jpg)$/i,
         use: [
-          {
-            loader: 'url-loader',
-            options: {
-              publicPath: './dist/',
-              name: '[name].[ext]?[hash]',
-              limit: 100000,
-            },
-          },
+          // {
+          //   loader: 'url-loader',
+          //   options: {
+          //     name: '[name].[ext]?[hash]',
+          //     limit: 100000,
+          //   },
+          // },
           {
             loader: 'file-loader',
-            options: {
-              publicPath: './dist/',
-            },
           },
         ],
       },
@@ -52,10 +49,12 @@ module.exports = {
       directory: path.resolve(__dirname, 'dist'),
     },
     port: 8080,
+    hot: true,
   },
   plugins: [
     new HtmlWebpackPlugin({ template: './index.html' }),
     new MiniCssExtractPlugin(),
-    new Dotenv(),
+    new Dotenv({ systemvars: true }),
+    new webpack.HotModuleReplacementPlugin(),
   ],
 };
