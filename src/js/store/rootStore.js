@@ -1,34 +1,7 @@
-let currentObserver = null;
+import Subject from '../core/Subject.js';
 
-export const observe = (fn) => {
-  currentObserver = fn;
-  fn();
-  currentObserver = null;
-};
-
-const observable = (target) => {
-  Object.keys(target).forEach((key) => {
-    const observers = new Set();
-    let cache = target[key];
-
-    Object.defineProperty(target, key, {
-      get() {
-        if (currentObserver) observers.add(currentObserver);
-
-        return cache;
-      },
-      set(value) {
-        cache = value;
-        observers.forEach((fn) => fn());
-      },
-    });
-  });
-
-  return target;
-};
-
-export const rootStore = {
-  state: observable({
+const rootStore = {
+  state: Subject.observable({
     searchOption: {
       query: '',
       nextPageToken: null,
@@ -43,3 +16,13 @@ export const rootStore = {
     });
   },
 };
+
+// Object.freeze(rootStore);
+
+const observe = (observer) => {
+  Subject.currentObserver = observer;
+  observer.notify();
+  Subject.currentObserver = null;
+};
+
+export { rootStore, observe };

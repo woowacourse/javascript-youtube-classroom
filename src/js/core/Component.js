@@ -11,9 +11,8 @@ export default class Component {
     this.props = props;
     this.setup();
     this.setEvent();
-    observe(() => {
-      this.render();
-    });
+
+    observe(this);
   }
 
   setup() {}
@@ -48,6 +47,10 @@ export default class Component {
       event.preventDefault();
       callback(event);
     });
+  }
+
+  notify() {
+    this.render();
   }
 
   $(selector) {
