@@ -22,10 +22,7 @@ class RenderVideo {
     this.searchInput = selectDom('#search-input-keyword', this.searchForm);
     this.videoListContainer = selectDom('.video-list', this.modalContainer);
     this.searchResultSection = selectDom('.search-result', this.modalContainer);
-    this.addEvents();
-  }
 
-  addEvents() {
     addEvent(this.searchModalButton, 'click', this.onSearchModalButtonClick);
     addEvent(this.searchForm, 'submit', this.onSearchFormSubmit);
     addEvent(this.videoListContainer, 'scroll', this.onScrollVideoList);
