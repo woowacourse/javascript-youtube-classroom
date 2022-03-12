@@ -2,7 +2,7 @@
  * @jest-environment jsdom
  */
 
-import SaveVideoManager from '../src/js/SaveVideoManager';
+import SaveVideoManager from '../src/js/Manager/SaveVideoManager';
 import Storage from '../src/js/Storage';
 
 describe('Storage 영상 ID 저장 기능 테스트', () => {

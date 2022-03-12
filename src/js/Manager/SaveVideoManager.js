@@ -1,5 +1,5 @@
 import { ERROR_MESSAGE, MAX_VIDEO_SAVE } from './constants';
-import { event } from './util';
+import { event } from '../util';
 
 export default class SaveVideoManager {
   #videoIds;

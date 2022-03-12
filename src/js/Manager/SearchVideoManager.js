@@ -1,5 +1,5 @@
 import { ALERT_MESSAGE, MAX_DATA_FETCH_AT_ONCE } from './constants';
-import { event } from './util';
+import { event } from '../util';
 import { validateSearchKeyword, checkNoUndefinedProperty } from './validation';
 
 const DUMMY_YOUTUBE_API_URL = (keyword) =>

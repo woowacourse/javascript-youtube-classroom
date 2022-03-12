@@ -2,7 +2,7 @@
  * @jest-environment jsdom
  */
 
-import SearchVideoManager from '../src/js/SearchVideoManager';
+import SearchVideoManager from '../src/js/Manager/SearchVideoManager';
 import Storage from '../src/js/Storage';
  
 describe('검색 결과 관련 기능 테스트', () => {
