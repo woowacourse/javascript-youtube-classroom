@@ -51,7 +51,7 @@ export default class SearchVideoManager {
   }
 
   search() {
-    this.fetchYoutubeData(this.#keyword)
+    this.fetchYoutubeData()
       .then((data) => this.processFetchedResult(data))
       .then((fetchedData) => { 
         event.dispatch('updateFetchedData', { videos: fetchedData })
@@ -65,8 +65,8 @@ export default class SearchVideoManager {
     this.#isLastPage = false;
   }
 
-  fetchYoutubeData(keyword) {
-    return fetch(FETCH_URL(keyword, this.#nextPageToken))
+  fetchYoutubeData() {
+    return fetch(FETCH_URL(this.#keyword, this.#nextPageToken))
       .then((response) => {
         if (!response.ok) {
           throw new Error(response.status);
