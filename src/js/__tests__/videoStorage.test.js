@@ -38,7 +38,7 @@ describe("이미 저장된 videoId는 다시 저장될 수 없다.", () => {
     expect(videoStorage.isSavedVideoId(responseId)).toBe(true);
   });
 
-  test("이미 저장된 videoId이면 false를 반환한다.", () => {
+  test("저장된 videoId가 아니면 false를 반환한다.", () => {
     const videoStorage = new VideoStorage();
     videoStorage.addVideoData("usageId");
 
