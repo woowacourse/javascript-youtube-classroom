@@ -9,6 +9,9 @@ const YOUTUBE_API_URL = (keyword) =>
 const WRONG_API_URL= (keyword) =>
   `https://elastic-goldstine-10f16a.netlify.app/search?part=snippettt&q=${keyword}&maxResults=${MAX_DATA_FETCH_AT_ONCE}`;
 
+const FETCH_URL = (keyword, nextPageToken) =>
+  `${DUMMY_YOUTUBE_API_URL(keyword)}${nextPageToken ? `&pageToken=${  nextPageToken}` : ''}`;
+
 export default class SearchVideoManager {
   #keyword;
 
@@ -31,9 +34,8 @@ export default class SearchVideoManager {
     const { keyword } = e.detail;
     try {
       validateSearchKeyword(keyword);
-    } catch ({ message }) {
-      alert(message);
-      return;
+    } catch (err) {
+      return alert(err.message);
     }
     this.#keyword = keyword;
     event.dispatch('resetSearchResult');
@@ -43,8 +45,7 @@ export default class SearchVideoManager {
 
   searchOnScroll() {
     if (this.#isLastPage) {
-      alert(ALERT_MESSAGE.NO_MORE_SEARCH_RESULT);
-      return;
+      return alert(ALERT_MESSAGE.NO_MORE_SEARCH_RESULT);
     }
     this.search();
   }
@@ -65,9 +66,7 @@ export default class SearchVideoManager {
   }
 
   fetchYoutubeData(keyword) {
-    return fetch(this.#nextPageToken 
-      ? `${DUMMY_YOUTUBE_API_URL(keyword)}&pageToken=${this.#nextPageToken}`
-      : DUMMY_YOUTUBE_API_URL(keyword))
+    return fetch(FETCH_URL(keyword, this.#nextPageToken))
       .then((response) => {
         if (!response.ok) {
           throw new Error(response.status);
