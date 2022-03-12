@@ -68,37 +68,40 @@ class RenderVideo {
       target.disabled = true;
       return;
     }
+
     if (isSaveButton) {
       alert(ERROR_MESSAGE.CANNOT_SAVE_VIDEO_ANYMORE);
     }
   };
 
   renderSearchVideo(searchVideo) {
+    this.handleSketonUi(this.videoListContainer.children, 'add');
+
     if (!searchVideo.length) {
-      this.videoListContainer.innerHTML = videoNotFoundTemplate;
+      this.videoListContainer.insertAdjacentHTML('afterbegin', videoNotFoundTemplate);
       return;
     }
 
-    Array.from(this.videoListContainer.children).forEach((videoLi) => {
-      if (videoLi.className === 'skeleton') {
-        videoLi.remove();
-      }
-    });
-
-    this.videoListContainer.insertAdjacentHTML(
-      'beforeend',
-      searchVideo
-        .map((video) =>
-          videoTemplate(video, this.saveVideo.saveVideoList.includes(video.id.videoId)))
-        .join(' ')
-    );
+    Array.from(this.videoListContainer.children)
+      .find((videoLi) => videoLi.classList.contains('skeleton'))
+      .insertAdjacentHTML(
+        'beforebegin',
+        searchVideo
+          .map((video) =>
+            videoTemplate(video, this.saveVideo.saveVideoList.includes(video.id.videoId)))
+          .join(' ')
+      );
   }
 
   renderVideoSkeleton() {
-    this.videoListContainer.insertAdjacentHTML(
-      'beforeend',
-      Array.from({ length: GET_VIDEO_COUNT }, () => videoSkeletonTemplate).join(' ')
-    );
+    if (this.videoListContainer.children.length === 0) {
+      this.videoListContainer.insertAdjacentHTML(
+        'beforeend',
+        Array.from({ length: GET_VIDEO_COUNT }, () => videoSkeletonTemplate).join(' ')
+      );
+    }
+
+    this.handleSketonUi(this.videoListContainer.children, 'remove');
   }
 
   async loadVideo() {
@@ -112,6 +115,12 @@ class RenderVideo {
       this.videoListContainer.innerHTML = '';
       return alert(error);
     }
+  }
+
+  handleSketonUi(videoList, event) {
+    Array.from(videoList)
+      .filter((videoLi) => videoLi.classList.contains('skeleton'))
+      .map((skeletonUi) => (event === 'add' ? skeletonUi.classList.add('hide-skeleton') : skeletonUi.classList.remove('hide-skeleton')));
   }
 }
 

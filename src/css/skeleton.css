@@ -35,6 +35,10 @@
   width: 80%;
 }
 
+.hide-skeleton {
+  display: none;
+}
+
 @keyframes refresh {
   0% {
     background-position: calc(-100px);
