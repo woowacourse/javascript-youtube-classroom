@@ -1,4 +1,5 @@
 import { MAX_DATA_FETCH_AT_ONCE } from './constants';
+import { checkNoUndefinedProperty } from './validation';
 
 const DUMMY_YOUTUBE_API_URL = (keyword) =>
   `https://elastic-goldstine-10f16a.netlify.app/dummy/youtube/v3/search?part=snippet&q=${keyword}&maxResults=${MAX_DATA_FETCH_AT_ONCE}`;
@@ -59,6 +60,6 @@ export default class SearchVideoManager {
       channelName: item.snippet.channelTitle,
       publishedDate: item.snippet.publishedAt,
       saved: this.storage.findVideoById(item.id.videoId),
-    }));
+    })).filter((item) => checkNoUndefinedProperty(item));
   }
 }
