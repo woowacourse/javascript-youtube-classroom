@@ -5,8 +5,6 @@ import {
   GET_VIDEO_COUNT,
   GET_VIDEO_MAX_COUNT,
 } from './constants/contants.js';
-import SaveVideo from './saveVideo.js';
-import SearchVideo from './searchVideo.js';
 import {
   videoTemplate,
   videoSkeletonTemplate,
@@ -15,9 +13,9 @@ import {
 import { selectDom, addEvent } from './utils/selectDom.js';
 
 class RenderVideo {
-  constructor() {
-    this.searchVideo = new SearchVideo();
-    this.saveVideo = new SaveVideo();
+  constructor(searchVideo, saveVideo) {
+    this.searchVideo = searchVideo;
+    this.saveVideo = saveVideo;
 
     this.searchModalButton = selectDom('#search-modal-button');
     this.modalContainer = selectDom('.modal-container');
