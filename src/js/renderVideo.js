@@ -9,7 +9,7 @@ import {
   videoSkeletonTemplate,
   videoNotFoundTemplate,
 } from './template/videoTemplate.js';
-import { selectDom, addEvent } from './utils/selectDom.js';
+import { selectDom, addEvent, selectAllDom } from './utils/selectDom.js';
 
 class RenderVideo {
   constructor(searchVideo, saveVideo) {
@@ -22,6 +22,7 @@ class RenderVideo {
     this.searchInput = selectDom('#search-input-keyword', this.searchForm);
     this.videoListContainer = selectDom('.video-list', this.modalContainer);
     this.searchResultSection = selectDom('.search-result', this.modalContainer);
+    this.saveVideoButtons = selectAllDom('.video-item__save-button', this.modalContainer);
 
     addEvent(this.searchModalButton, 'click', this.onSearchModalButtonClick);
     addEvent(this.searchForm, 'submit', this.onSearchFormSubmit);
@@ -42,29 +43,28 @@ class RenderVideo {
 
   onSearchFormSubmit = (e) => {
     e.preventDefault();
-    this.videoListContainer.scrollTop = 0;
-
     if (this.searchVideo.prevSearchKeyword === this.searchInput.value.trim()) {
+      this.videoListContainer.scrollTop = 0;
       return;
     }
 
-    this.videoListContainer.replaceChildren('');
+    this.videoListContainer.replaceChildren();
     this.loadVideo();
   };
 
   onSaveButtonClick = ({ target }) => {
-    const isSaveButton = target.classList.contains('video-item__save-button');
-
-    if (isSaveButton && this.saveVideo.saveVideoList.length < MAX_SAVE_VIDEO_COUNT) {
-      this.saveVideo.setStorageVideoList(target.closest('li').dataset.videoId);
-      target.textContent = ALREADY_SAVED_VIDEO;
-      target.disabled = true;
+    if (!target.classList.contains('video-item__save-button')) {
       return;
     }
 
-    if (isSaveButton) {
+    if (this.saveVideo.saveVideoList.length > MAX_SAVE_VIDEO_COUNT) {
       alert(ERROR_MESSAGE.CANNOT_SAVE_VIDEO_ANYMORE);
+      return;
     }
+
+    this.saveVideo.setStorageVideoList(target.closest('li').dataset.videoId);
+    target.textContent = ALREADY_SAVED_VIDEO;
+    target.disabled = true;
   };
 
   renderSearchVideo(searchVideo) {
