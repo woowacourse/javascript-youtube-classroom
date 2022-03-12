@@ -23,11 +23,6 @@ describe('비디오 모듈 테스트', () => {
       thumbnail: '1.jpg',
     };
 
-    try {
-      Video.create(givenVideoInput);
-      expect(true).toBe(false);
-    } catch ({ message }) {
-      expect(message).toBe('누락된 데이터가 있습니다.');
-    }
+    expect(() => Video.create(givenVideoInput)).toThrow();
   });
 });
