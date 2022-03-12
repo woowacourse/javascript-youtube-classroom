@@ -2,11 +2,17 @@ import { $, $$ } from '../util/general.js';
 import storage from '../storage/storage.js';
 
 const template = {
-  skeletonUI: `<li class="skeleton">
-  <div class="image"></div>
-  <p class="line"></p>
-  <p class="line"></p>
-</li>`,
+  skeletonUI: `
+    <li class="skeleton">
+      <div class="image"></div>
+      <p class="line"></p>
+      <p class="line"></p>
+    </li>
+  `,
+  videoList: `
+    <h3 hidden>검색 결과</h3>
+    <ul class="video-list"></ul>
+  `,
   videoItem: item => {
     return `
       <li class="video-item" data-video-id='${item.id.videoId}'>
@@ -22,16 +28,23 @@ const template = {
       </li>
   `;
   },
+  noResult: `
+    <h3 hidden>검색 결과</h3>
+    <div class="no-result">
+      <img src="./assets/not_found.png" alt="no result image" class="no-result__image" />
+      <p class="no-result__description">
+        검색 결과가 없습니다<br />
+        다른 키워드로 검색해보세요
+      </p>
+    </div>
+  `,
 };
 
 const userInterface = {
   resetVideoList() {
-    $('.video-list').replaceChildren();
+    $('.search-result').innerHTML = template.videoList;
   },
   renderSkeletonUI() {
-    $('.search-result').classList.remove('search-result--no-result');
-    $('.no-result').hidden = true;
-    $('.video-list').classList.remove('hide');
     $('.video-list').insertAdjacentHTML('beforeEnd', template.skeletonUI.repeat(10));
   },
   removeSkeletonUI() {
@@ -56,19 +69,15 @@ const userInterface = {
   },
   renderNoResult() {
     this.removeSkeletonUI();
-    $('.search-result').classList.add('search-result--no-result');
-    $('.no-result').hidden = false;
-    $('.video-list').classList.add('hide');
+    $('.search-result').innerHTML = template.noResult;
   },
   renderSearchResult(response) {
     response.then(data => {
       if (data.items.length === 0) {
-        console.log('null');
         this.renderNoResult();
         return;
       }
       this.renderVideoItems(data);
-      console.log(data.items);
     });
   },
   renderNextSearchResult(response) {

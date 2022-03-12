@@ -9,6 +9,7 @@ import { THROTTLE_DELAY } from './constants/constants.js';
 export default function App() {
   const youtubeMachine = new YoutubeMachine();
   let throttle;
+
   // 핸들러
   const handleSearch = () => {
     try {
@@ -48,7 +49,7 @@ export default function App() {
 
   // 이벤트 등록
   $('#search-modal-button').addEventListener('click', () => {
-    $('.modal-container').classList.toggle('hide');
+    $('.modal-container').classList.remove('hide');
   });
 
   $('#search-button').addEventListener('click', handleSearch);
@@ -57,9 +58,9 @@ export default function App() {
     if (e.key === 'Enter') handleSearch();
   });
 
-  $('.video-list').addEventListener('scroll', handleScroll);
+  $('.search-result').addEventListener('scroll', handleScroll);
 
-  $('.video-list').addEventListener('click', handleSaveButtonClick);
+  $('.search-result').addEventListener('click', handleSaveButtonClick);
 }
 
 App();

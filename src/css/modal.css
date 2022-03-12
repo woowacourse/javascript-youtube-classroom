@@ -65,12 +65,13 @@
   color: #ffffff;
 }
 
-.search-result.search-result--no-result {
-  justify-content: center;
-  align-items: center;
+.search-result {
+  overflow-y: scroll;
 }
-.search-result--no-result {
+
+.no-result {
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
 }
@@ -95,17 +96,12 @@
   flex-direction: row;
   flex-wrap: wrap;
   gap: 32px 20px;
-  overflow-y: scroll;
 }
 
 .video-item {
   position: relative;
   width: 240px;
   height: 255px;
-}
-
-.video-list.hide {
-  display: none;
 }
 
 .video-item__thumbnail {
