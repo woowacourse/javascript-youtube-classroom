@@ -14,9 +14,9 @@ export const SKELETON_TEMPLATE = `
     src=${notFoundImage}
     alt="video-item-thumbnail" class="video-item__thumbnail">
 </div>
-<h4 class="video-item__title">1231232311</h4>
-<p class="video-item__channel-name">2123123</p>
-<p class="video-item__published-date">1231231233</p>
+<h4 class="video-item__title"></h4>
+<p class="video-item__channel-name"></p>
+<p class="video-item__published-date"></p>
 <button class="video-item__save-button button">⬇ 저장</button>
 </li>
 `.repeat(VIDEO_COUNT);
