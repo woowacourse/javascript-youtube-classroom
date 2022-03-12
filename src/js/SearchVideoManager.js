@@ -14,7 +14,9 @@ export default class SearchVideoManager {
 
   #isLastPage;
 
-  constructor() {
+  constructor(storage) {
+    this.storage = storage;
+
     this.#keyword = '';
     this.#nextPageToken = '';
     this.#isLastPage = false;
@@ -56,6 +58,7 @@ export default class SearchVideoManager {
       title: item.snippet.title,
       channelName: item.snippet.channelTitle,
       publishedDate: item.snippet.publishedAt,
+      saved: this.storage.findVideoById(item.id.videoId),
     }));
   }
 }

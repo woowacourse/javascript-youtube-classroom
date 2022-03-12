@@ -5,13 +5,16 @@ import SaveVideoManager from './SaveVideoManager';
 import { validateSearchKeyword } from './validation';
 import { ALERT_MESSAGE } from './constants';
 import { debounce } from './util';
+import Storage from './Storage';
 
 export default class YoutubeClassRoom {
   constructor() {
+    this.storage = new Storage();
+    this.searchVideoManager = new SearchVideoManager(this.storage);
+    this.saveVideoManager = new SaveVideoManager(this.storage);
     this.homeView = new HomeView();
     this.searchModalView = new SearchModalView();
-    this.searchVideoManager = new SearchVideoManager();
-    this.saveVideoManager = new SaveVideoManager();
+
 
     this.bindEvents();
   }
@@ -49,8 +52,7 @@ export default class YoutubeClassRoom {
     this.searchVideoManager
       .search(keyword)
       .then((videos) => {
-        const checkedVideos = this.addSavedInfoToVideos(videos);
-        this.searchModalView.updateOnSearchDataReceived(checkedVideos);
+        this.searchModalView.updateOnSearchDataReceived(videos);
       })
       .catch(() => {
         this.searchModalView.updateSearchErrorResult();
@@ -63,8 +65,7 @@ export default class YoutubeClassRoom {
     this.searchVideoManager
       .search()
       .then((videos) => {
-        const checkedVideos = this.addSavedInfoToVideos(videos);
-        this.searchModalView.updateOnSearchDataReceived(checkedVideos);
+        this.searchModalView.updateOnSearchDataReceived(videos);
       })
       .catch(() => {
         this.searchModalView.updateSearchErrorResult();
