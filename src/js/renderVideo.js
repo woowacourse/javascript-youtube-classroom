@@ -56,12 +56,14 @@ class RenderVideo {
     if (this.searchVideo.prevSearchKeyword === this.searchInput.value.trim()) {
       return;
     }
-    this.videoListContainer.innerHTML = '';
+
+    this.videoListContainer.replaceChildren('');
     this.loadVideo();
   };
 
   onSaveButtonClick = ({ target }) => {
     const isSaveButton = target.classList.contains('video-item__save-button');
+
     if (isSaveButton && this.saveVideo.saveVideoList.length < MAX_SAVE_VIDEO_COUNT) {
       this.saveVideo.setStorageVideoList(target.closest('li').dataset.videoId);
       target.textContent = ALREADY_SAVED_VIDEO;
@@ -112,7 +114,7 @@ class RenderVideo {
     } catch (error) {
       this.searchInput.value = '';
       this.searchInput.focus();
-      this.videoListContainer.innerHTML = '';
+      this.videoListContainer.replaceChildren('');
       return alert(error);
     }
   }
