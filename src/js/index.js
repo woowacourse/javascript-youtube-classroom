@@ -39,12 +39,12 @@ export default function App() {
   };
 
   const handleSaveButtonClick = e => {
-    if (!e.target.classList.contains('video-item__save-button')) {
-      return;
+    const isSaveButtonClick = e.target.classList.contains('video-item__save-button');
+    if (isSaveButtonClick) {
+      e.target.closest('button').hidden = true;
+      const selectedVideoId = e.target.closest('li').dataset.videoId;
+      storage.saveVideo(selectedVideoId);
     }
-    e.target.closest('button').hidden = true;
-    const { videoId } = e.target.parentElement.dataset;
-    storage.saveVideo(videoId);
   };
 
   // 이벤트 등록
