@@ -29,42 +29,42 @@ export default class YoutubeApp {
     this.searchResult = document.querySelector(".search-result");
     this.videoList = document.querySelector(".video-list");
 
-    this.bindEvents();
+    this.#bindEvents();
     this.userStorage = userStorage;
   }
 
-  bindEvents() {
+  #bindEvents() {
     bindEventListener(
       document.querySelector("#search-modal-button"),
       "click",
-      this.onSubmitSearchModalButton
+      this.#onSubmitSearchModalButton
     );
     bindEventListener(
       document.querySelector("#search-button"),
       "click",
-      this.onSubmitSearchButton
+      this.#onSubmitSearchButton
     );
     bindEventListener(
       this.videoList,
       "scroll",
-      throttle(this.onScrollVideoList, DELAY_TIME)
+      throttle(this.#onScrollVideoList, DELAY_TIME)
     );
-    bindEventListener(this.videoList, "click", this.onClickSaveButton);
+    bindEventListener(this.videoList, "click", this.#onClickSaveButton);
     bindEventListener(
       document.querySelector(".dimmer"),
       "click",
-      this.onClickDimmer
+      this.#onClickDimmer
     );
   }
 
-  onClickDimmer = () => {
+  #onClickDimmer = () => {
     inputClear(this.searchInputKeyword);
     scrollToTop(this.videoList);
     removeAllChildElements(this.videoList);
     addClassList(this.modalContainer, "hide");
   };
 
-  onClickSaveButton = ({ target }) => {
+  #onClickSaveButton = ({ target }) => {
     if (!target.matches(".video-item__save-button")) return;
 
     const { videoId } = findTargetDataset(target, ".video-item");
@@ -78,12 +78,12 @@ export default class YoutubeApp {
     addClassList(target, "hide");
   };
 
-  onSubmitSearchModalButton = (e) => {
+  #onSubmitSearchModalButton = (e) => {
     e.preventDefault();
     removeClassList(this.modalContainer, "hide");
   };
 
-  onSubmitSearchButton = (e) => {
+  #onSubmitSearchButton = (e) => {
     e.preventDefault();
 
     try {
@@ -106,7 +106,7 @@ export default class YoutubeApp {
     this.search(this.searchInputKeyword.value);
   };
 
-  onScrollVideoList = async () => {
+  #onScrollVideoList = async () => {
     if (
       totalScrollHeight(this.videoList) > currentScrollHeight(this.videoList)
     ) {
