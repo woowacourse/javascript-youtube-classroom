@@ -65,7 +65,6 @@ export default class YoutubeApp {
 
     const searchInputKeyword = document.querySelector("#search-input-keyword");
     try {
-      console.log(searchInputKeyword.value);
       validateInput(searchInputKeyword.value);
     } catch ({ message }) {
       alert(message);
