@@ -1,43 +1,24 @@
-import generateTemplate from "./templates";
-import mockObject from "./mockObject";
+import SearchModalView from "./view/SearchModalView";
+// import mockObject from "./mockObject";
 import getSearchResult from "./api/getSearchResult";
-import notFountImage from "../assets/images/not_found.png";
 import { DELAY_TIME } from "./constants/constants";
-import { throttle } from "./utils/utils";
-import {
-  addClassList,
-  removeClassList,
-  bindEventListener,
-  findTargetDataset,
-  scrollToTop,
-  removeAllChildElements,
-  removeChildElements,
-  render,
-  totalScrollHeight,
-  currentScrollHeight,
-  removeChildElement,
-  insertImageSrc,
-  inputClear,
-  alertMessage,
-  validateInput,
-} from "./utils/dom";
+import { throttle, validateInput, isScrollToBottom } from "./utils/utils";
+import { bindEventListener, findTargetDataset } from "./utils/dom";
 
 export default class YoutubeApp {
   constructor(videoStorage) {
-    this.modalContainer = document.querySelector(".modal-container");
-    this.searchInputKeyword = document.querySelector("#search-input-keyword");
-    this.searchResult = document.querySelector(".search-result");
     this.videoList = document.querySelector(".video-list");
 
     this.#bindEvents();
     this.videoStorage = videoStorage;
+    this.searchModalView = new SearchModalView();
   }
 
   #bindEvents() {
     bindEventListener(
       document.querySelector("#search-modal-button"),
       "click",
-      this.#onSubmitSearchModalButton
+      this.#onClickSearchModalButton
     );
     bindEventListener(
       document.querySelector("#search-button"),
@@ -57,11 +38,12 @@ export default class YoutubeApp {
     );
   }
 
+  #onClickSearchModalButton = () => {
+    this.searchModalView.openSearchModal();
+  };
+
   #onClickDimmer = () => {
-    inputClear(this.searchInputKeyword);
-    scrollToTop(this.videoList);
-    removeAllChildElements(this.videoList);
-    addClassList(this.modalContainer, "hide");
+    this.searchModalView.closeSearchModal();
   };
 
   #onClickSaveButton = ({ target }) => {
@@ -72,79 +54,34 @@ export default class YoutubeApp {
     try {
       this.videoStorage.addVideoData(videoId);
     } catch ({ message }) {
-      alertMessage(message);
+      alert(message);
     }
 
-    addClassList(target, "hide");
-  };
-
-  #onSubmitSearchModalButton = (e) => {
-    e.preventDefault();
-    removeClassList(this.modalContainer, "hide");
+    this.searchModalView.hideSaveButton(target);
   };
 
   #onSubmitSearchButton = (e) => {
     e.preventDefault();
 
+    const searchInputKeyword = document.querySelector("#search-input-keyword");
     try {
-      validateInput(this.searchInputKeyword.value);
+      console.log(searchInputKeyword.value);
+      validateInput(searchInputKeyword.value);
     } catch ({ message }) {
-      alertMessage(message);
+      alert(message);
       return;
     }
 
-    scrollToTop(this.videoList);
-    removeAllChildElements(this.videoList);
-
-    render({
-      element: this.videoList,
-      position: "beforeend",
-      template: generateTemplate.skeleton(),
-    });
-
-    this.searchInputKeyword = document.querySelector("#search-input-keyword");
-    this.search(this.searchInputKeyword.value);
+    this.searchModalView.renderSkeleton();
+    this.search(searchInputKeyword.value);
   };
 
   #onScrollVideoList = async () => {
-    if (
-      totalScrollHeight(this.videoList) > currentScrollHeight(this.videoList)
-    ) {
+    if (isScrollToBottom(this.videoList)) {
       return;
     }
 
-    render({
-      element: this.videoList,
-      position: "beforeend",
-      template: generateTemplate.skeleton(),
-    });
-
-    /**
-     * 목 데이터로 검색 결과 대체
-     */
-    // const responseData = {
-    //   items: mockObject(),
-    // };
-
-    const responseData = await getSearchResult(
-      this.keyword,
-      this.nextPageToken
-    );
-
-    this.nextPageToken = responseData.nextPageToken;
-
-    const videoItemTemplate = generateTemplate.videoItems(
-      responseData.items,
-      this.videoStorage
-    );
-
-    removeChildElements(this.videoList, document.querySelectorAll(".skeleton"));
-
-    render({
-      element: this.videoList,
-      position: "beforeend",
-      template: videoItemTemplate,
-    });
+    this.searchNextPage();
   };
 
   async search(keyword) {
@@ -161,33 +98,28 @@ export default class YoutubeApp {
 
     // 검색 결과가 없을 경우
     if (responseData.items.length === 0) {
-      removeChildElement(this.searchResult, this.videoList);
-      addClassList(this.searchResult, "search-result--no-result");
-      render({
-        element: this.searchResult,
-        position: "beforeend",
-        template: generateTemplate.noResult(),
-      });
-
-      insertImageSrc(
-        document.querySelector(".no-result__image"),
-        notFountImage
-      );
-
+      this.searchModalView.renderNoResultPage();
       return;
     }
 
-    removeChildElements(this.videoList, document.querySelectorAll(".skeleton"));
+    this.searchModalView.renderSearchResult(responseData);
+  }
 
-    const videoItemTemplate = generateTemplate.videoItems(
-      responseData.items,
-      this.videoStorage
+  async searchNextPage() {
+    this.searchModalView.renderSkeleton();
+
+    /**
+     * 목 데이터로 검색 결과 대체
+     */
+    // const responseData = {
+    //   items: mockObject(),
+    // };
+    const responseData = await getSearchResult(
+      this.keyword,
+      this.nextPageToken
     );
 
-    render({
-      element: this.videoList,
-      position: "beforeend",
-      template: videoItemTemplate,
-    });
+    this.nextPageToken = responseData.nextPageToken;
+    this.searchModalView.renderSearchResult(responseData);
   }
 }
