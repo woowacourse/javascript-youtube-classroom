@@ -25,6 +25,7 @@ export default class SearchResultView {
   onScrollVideoList() {
     const { scrollTop, clientHeight, scrollHeight } = this.$searchResultVideoList;
     if (scrollTop + clientHeight + 10 < scrollHeight) return;
+    this.changeSkeletonListItemVisibility();
     event.dispatch('searchOnScroll');
   }
 
@@ -37,7 +38,8 @@ export default class SearchResultView {
 
   resetSearchResult() {
     this.$searchResultVideoList.scrollTo(0, 0);
-    this.$searchResultVideoList.innerHTML = '';
+    this.$searchResultVideoList.innerHTML = template.skeletonListItem();
+    this.$firstSkeletonListItem = $('.skeleton', this.$searchResultVideoList);
   }
 
   updateOnNewDataReceived(e) {
@@ -50,9 +52,8 @@ export default class SearchResultView {
       this.showSearchResultVideoList();
     }
     const listItems = videos.map((video) => template.videoListItem(video)).join('');
-
-    this.removeSkeletonListItem();
-    this.$searchResultVideoList.insertAdjacentHTML('beforeend', listItems);
+    this.$firstSkeletonListItem.insertAdjacentHTML('beforebegin', listItems);
+    this.changeSkeletonListItemVisibility();
   }
 
   updateOnSaveVideoSuccess(e) {
@@ -60,36 +61,36 @@ export default class SearchResultView {
     saveButton.remove();
   }
 
-  updateOnLoading() {
-    this.$searchResultVideoList.insertAdjacentHTML('beforeend', template.skeletonListItem());
-  }
-
-  removeSkeletonListItem() {
-    $$('.skeleton', this.$searchResultVideoList).forEach((listItem) => {
-      listItem.remove();
+  changeSkeletonListItemVisibility() {
+    $$('.skeleton', this.$searchResultVideoList).forEach((item) => {
+      if (!item.classList.contains('hide')) {
+        item.classList.add('hide');
+      } else {
+        item.classList.remove('hide');
+      }
     });
   }
 
   showSearchResultVideoList() {
+    this.isShownNoResult = false;
     this.$noResultContainer.classList.add('hide');
     this.$searchResultVideoList.classList.remove('hide');
     this.$searchResultSection.classList.remove('search-result--no-result');
-    this.isShownNoResult = false;
   }
 
   showNoResult() {
+    this.isShownNoResult = true;
+    this.$noResultDescription.innerHTML = MESSAGE.NO_RESULT;
     this.$noResultContainer.classList.remove('hide');
     this.$searchResultVideoList.classList.add('hide');
     this.$searchResultSection.classList.add('search-result--no-result');
-    this.$noResultDescription.innerHTML = MESSAGE.NO_RESULT;
-    this.isShownNoResult = true;
   }
 
   showErrorResult() {
+    this.isShownNoResult = true;
+    this.$noResultDescription.innerHTML = MESSAGE.ERROR_RESULT;
     this.$noResultContainer.classList.remove('hide');
     this.$searchResultVideoList.classList.add('hide');
     this.$searchResultSection.classList.add('search-result--no-result');
-    this.$noResultDescription.innerHTML = MESSAGE.ERROR_RESULT;
-    this.isShownNoResult = true;
   }
 }
