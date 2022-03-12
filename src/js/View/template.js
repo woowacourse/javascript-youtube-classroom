@@ -11,7 +11,7 @@ export const template = {
       </li>
     `,
   skeletonListItem: () =>
-    `<li class="skeleton">
+    `<li class="skeleton hide">
       <div class="image"></div>
       <p class="line"></p>
       <p class="line"></p>

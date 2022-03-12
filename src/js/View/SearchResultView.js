@@ -14,9 +14,10 @@ export default class SearchResultView {
   }
 
   bindEvents() {
-    this.$searchResultVideoList.addEventListener('scroll', debounce(this.onScrollVideoList.bind(this), 100));
+    this.$searchResultVideoList.addEventListener('scroll', debounce(this.onScrollVideoList.bind(this), 500));
     this.$searchResultVideoList.addEventListener('click', this.onClickVideoSaveButton.bind(this));
     event.addListener('resetSearchResult', this.resetSearchResult.bind(this));
+    event.addListener('updateLoading', this.updateOnLoading.bind(this));
     event.addListener('updateFetchedData', this.updateOnNewDataReceived.bind(this));
     event.addListener('showSearchErrorResult', this.showErrorResult.bind(this));
     event.addListener('saveVideoSuccess', this.updateOnSaveVideoSuccess.bind(this));
@@ -24,8 +25,7 @@ export default class SearchResultView {
   
   onScrollVideoList() {
     const { scrollTop, clientHeight, scrollHeight } = this.$searchResultVideoList;
-    if (scrollTop + clientHeight + 10 < scrollHeight) return;
-    this.changeSkeletonListItemVisibility();
+    if (scrollTop + clientHeight + 50 < scrollHeight) return;
     event.dispatch('searchOnScroll');
   }
 
@@ -40,6 +40,10 @@ export default class SearchResultView {
     this.$searchResultVideoList.scrollTo(0, 0);
     this.$searchResultVideoList.innerHTML = template.skeletonListItem();
     this.$firstSkeletonListItem = $('.skeleton', this.$searchResultVideoList);
+  }
+  
+  updateOnLoading() {
+    this.changeSkeletonListItemVisibility();
   }
 
   updateOnNewDataReceived(e) {

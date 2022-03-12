@@ -35,7 +35,8 @@ export default class SearchVideoManager {
     try {
       validateSearchKeyword(keyword);
     } catch (err) {
-      return alert(err.message);
+      alert(err.message);
+      return 
     }
     this.#keyword = keyword;
     event.dispatch('resetSearchResult');
@@ -45,12 +46,14 @@ export default class SearchVideoManager {
 
   searchOnScroll() {
     if (this.#isLastPage) {
-      return alert(ALERT_MESSAGE.NO_MORE_SEARCH_RESULT);
+      alert(ALERT_MESSAGE.NO_MORE_SEARCH_RESULT);
+      return;
     }
     this.search();
   }
 
   search() {
+    event.dispatch('updateLoading');
     this.fetchYoutubeData()
       .then((data) => this.processFetchedResult(data))
       .then((fetchedData) => { 
