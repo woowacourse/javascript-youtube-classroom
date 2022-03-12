@@ -33,11 +33,12 @@ export default class SearchResultView {
       $('.video-item__title', $item).innerText = newVideoItems[idx].title;
       $('.video-item__channel-name', $item).innerText = newVideoItems[idx].channelTitle;
       $('.video-item__published-date', $item).innerText = newVideoItems[idx].publishTime;
-      $('.video-item__save-button', $item).innerText = newVideoItems[idx].saved ? '저장됨' : '⬇ 저장';
-      $('.video-item__save-button', $item).classList.add(newVideoItems[idx].saved ? 'saved-button' : 'button');
-      $('.video-item__save-button', $item).disabled = newVideoItems[idx].saved;
-      $('.video-item__save-button', $item).addEventListener('click', this.handleSaveButton.bind(this));
-      $('.video-item__save-button', $item).dataset.id = newVideoItems[idx].videoId;
+      const $savedButton = $('.video-item__save-button', $item);
+      $savedButton.innerText = newVideoItems[idx].saved ? '저장됨' : '⬇ 저장';
+      $savedButton.classList.add(newVideoItems[idx].saved ? 'saved-button' : 'button');
+      $savedButton.disabled = newVideoItems[idx].saved;
+      $savedButton.addEventListener('click', this.handleSaveButton.bind(this));
+      $savedButton.dataset.id = newVideoItems[idx].videoId;
     });
   }
 
