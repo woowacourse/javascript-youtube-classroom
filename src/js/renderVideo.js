@@ -3,7 +3,6 @@ import {
   ERROR_MESSAGE,
   MAX_SAVE_VIDEO_COUNT,
   GET_VIDEO_COUNT,
-  GET_VIDEO_MAX_COUNT,
 } from './constants/contants.js';
 import {
   videoTemplate,
@@ -35,10 +34,7 @@ class RenderVideo {
 
   onScrollVideoList = () => {
     const { scrollHeight, offsetHeight, scrollTop } = this.videoListContainer;
-    if (
-      scrollHeight - offsetHeight === scrollTop &&
-      this.videoListContainer.children.length < GET_VIDEO_MAX_COUNT
-    ) {
+    if (scrollHeight - offsetHeight === scrollTop) {
       this.loadVideo();
     }
   };
