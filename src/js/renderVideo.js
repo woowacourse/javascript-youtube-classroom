@@ -3,6 +3,7 @@ import {
   ERROR_MESSAGE,
   MAX_SAVE_VIDEO_COUNT,
   GET_VIDEO_COUNT,
+  GET_VIDEO_MAX_COUNT,
 } from './constants/contants.js';
 import SaveVideo from './saveVideo.js';
 import SearchVideo from './searchVideo.js';
@@ -36,7 +37,10 @@ class RenderVideo {
 
   onScrollVideoList = () => {
     const { scrollHeight, offsetHeight, scrollTop } = this.videoListContainer;
-    if (scrollHeight - offsetHeight === scrollTop) {
+    if (
+      scrollHeight - offsetHeight === scrollTop &&
+      this.videoListContainer.children.length < GET_VIDEO_MAX_COUNT
+    ) {
       this.loadVideo();
     }
   };
@@ -75,7 +79,7 @@ class RenderVideo {
       return;
     }
 
-    Array.from(selectDom('.video-list').children).forEach((videoLi) => {
+    Array.from(this.videoListContainer.children).forEach((videoLi) => {
       if (videoLi.className === 'skeleton') {
         videoLi.remove();
       }
