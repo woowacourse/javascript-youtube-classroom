@@ -25,9 +25,6 @@ const template = {
 };
 
 const userInterface = {
-  resetSearchInput() {
-    $('#search-input-keyword').value = '';
-  },
   resetVideoList() {
     $('.video-list').replaceChildren();
   },
@@ -36,7 +33,6 @@ const userInterface = {
     $('.no-result').hidden = true;
     $('.video-list').classList.remove('hide');
     $('.video-list').insertAdjacentHTML('beforeEnd', template.skeletonUI.repeat(10));
-    this.resetSearchInput();
   },
   removeSkeletonUI() {
     $$('.skeleton').forEach(element => element.remove());
@@ -65,13 +61,15 @@ const userInterface = {
     $('.video-list').classList.add('hide');
   },
   renderSearchResult(response) {
-    response
-      .then(data => {
-        this.renderVideoItems(data);
-      })
-      .catch(() => {
+    response.then(data => {
+      if (data.items.length === 0) {
+        console.log('null');
         this.renderNoResult();
-      });
+        return;
+      }
+      this.renderVideoItems(data);
+      console.log(data.items);
+    });
   },
   renderNextSearchResult(response) {
     response.then(data => {

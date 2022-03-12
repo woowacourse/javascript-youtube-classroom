@@ -1,4 +1,5 @@
 import { validateInput } from '../util/general.js';
+// import dummyData from '../../../dummyData.js';
 
 export default class YoutubeMachine {
   #data = {};
@@ -20,6 +21,7 @@ export default class YoutubeMachine {
   get data() {
     return this.#data;
   }
+
   getURL(nextPageToken) {
     const URL = `https://ahns.netlify.app/youtube/v3/search?part=snippet&q=${this.searchTarget}&maxResults=10&type=video`;
     if (nextPageToken) {

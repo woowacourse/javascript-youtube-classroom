@@ -1,6 +1,6 @@
 import { $, isEndOfScroll } from './util/general.js';
 import YoutubeMachine from './domain/YoutubeMachine.js';
-import userInterface from './UI/userInterface.js';
+import userInterface from './ui/userInterface.js';
 import '../css/index.css';
 import '../assets/images/not_found.png';
 import storage from './storage/storage.js';
