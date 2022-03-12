@@ -13,6 +13,10 @@
 
 <br />
 
+## [💻 나만의 유투브 강의실 데모 페이지](https://soyi47.github.io/javascript-youtube-classroom/)
+
+<br />
+
 ## 기능 구현 목록
 
 ### Step 1
@@ -55,7 +59,15 @@
 
 ### Step 1
 
+#### 초기 개요도
+
 <img alt="Tip" src="./images/step1_summary.png">
+
+<br />
+
+#### 1차 수정 - 주요 흐름도
+
+<img alt="Tip" src="./images/step1_review1_main_flow_chart.png">
 
 <br />
 

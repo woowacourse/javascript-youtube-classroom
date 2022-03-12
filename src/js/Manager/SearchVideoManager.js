@@ -10,7 +10,7 @@ const WRONG_API_URL= (keyword) =>
   `https://elastic-goldstine-10f16a.netlify.app/search?part=snippettt&q=${keyword}&maxResults=${MAX_DATA_FETCH_AT_ONCE}`;
 
 const FETCH_URL = (keyword, nextPageToken) =>
-  `${DUMMY_YOUTUBE_API_URL(keyword)}${nextPageToken ? `&pageToken=${nextPageToken}` : ''}`;
+  `${YOUTUBE_API_URL(keyword)}${nextPageToken ? `&pageToken=${nextPageToken}` : ''}`;
 
 export default class SearchVideoManager {
   #keyword;
