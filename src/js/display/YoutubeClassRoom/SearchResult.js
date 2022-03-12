@@ -57,7 +57,7 @@ export default class SearchResult extends Display {
     }
 
     const saveItemsCount = YoutubeSaveStorage.get().length;
-    if (saveItemsCount === CLASS_ROOM_SETTING.MAX_SAVE_NUMBER) {
+    if (saveItemsCount >= CLASS_ROOM_SETTING.MAX_SAVE_NUMBER) {
       alert(ERROR_MESSAGE.MAX_SAVE_VIDEO);
       return;
     }
