@@ -1,10 +1,9 @@
-import { $, $$ } from '../util';
+import { $, $$, debounce, event } from '../util';
 import { template, MESSAGE } from './template';
 
 export default class SearchResultView {
   constructor() {
     this.isShownNoResult = false;
-
     this.$searchModal = $('#search-modal');
     this.$searchResultSection = $('#search-result-section', this.$searchModal);
     this.$searchResultVideoList = $('#search-result-video-list', this.$searchResultSection);
@@ -15,30 +14,50 @@ export default class SearchResultView {
   }
 
   bindEvents() {
+    this.$searchResultVideoList.addEventListener('scroll', debounce(this.onScrollVideoList.bind(this), 100));
     this.$searchResultVideoList.addEventListener('click', this.onClickVideoSaveButton.bind(this));
-    this.$searchResultVideoList.addEventListener('scroll', this.onScrollVideoList.bind(this));
+    event.addListener('resetSearchResult', this.resetSearchResult.bind(this));
+    event.addListener('updateFetchedData', this.updateOnNewDataReceived.bind(this));
+    event.addListener('showSearchErrorResult', this.showErrorResult.bind(this));
+    event.addListener('saveVideoSuccess', this.updateOnSaveVideoSuccess.bind(this));
   }
-
+  
   onScrollVideoList() {
     const { scrollTop, clientHeight, scrollHeight } = this.$searchResultVideoList;
-    const searchOnScrollEvent = new CustomEvent('searchOnScroll', {
-      detail: { scrollTop, clientHeight, scrollHeight },
-    });
-    this.$searchModal.dispatchEvent(searchOnScrollEvent);
+    if (scrollTop + clientHeight + 10 < scrollHeight) return;
+    event.dispatch('searchOnScroll');
   }
 
   onClickVideoSaveButton({ target }) {
     if (target.tagName === 'BUTTON') {
-      const saveVideoEvent = new CustomEvent('saveVideo', {
-        detail: { target },
-      });
-      this.$searchModal.dispatchEvent(saveVideoEvent);
+      const { videoId } = target.parentNode.dataset;
+      event.dispatch('saveVideo', { videoId, target });
     }
   }
 
-  resetSearchResultVideoList() {
+  resetSearchResult() {
     this.$searchResultVideoList.scrollTo(0, 0);
     this.$searchResultVideoList.innerHTML = '';
+  }
+
+  updateOnNewDataReceived(e) {
+    const { videos } = e.detail;
+    if (videos.length === 0) {
+      this.showNoResult();
+      return;
+    }
+    if (this.isShownNoResult) {
+      this.showSearchResultVideoList();
+    }
+    const listItems = videos.map((video) => template.videoListItem(video)).join('');
+
+    this.removeSkeletonListItem();
+    this.$searchResultVideoList.insertAdjacentHTML('beforeend', listItems);
+  }
+
+  updateOnSaveVideoSuccess(e) {
+    const { target: saveButton } = e.detail
+    saveButton.remove();
   }
 
   updateOnLoading() {
@@ -72,19 +91,5 @@ export default class SearchResultView {
     this.$searchResultSection.classList.add('search-result--no-result');
     this.$noResultDescription.innerHTML = MESSAGE.ERROR_RESULT;
     this.isShownNoResult = true;
-  }
-
-  updateOnSearchDataReceived(videos) {
-    if (videos.length === 0) {
-      this.showNoResult();
-      return;
-    }
-    if (this.isShownNoResult) {
-      this.showSearchResultVideoList();
-    }
-    const listItems = videos.map((video) => template.videoListItem(video)).join('');
-
-    this.removeSkeletonListItem();
-    this.$searchResultVideoList.insertAdjacentHTML('beforeend', listItems);
   }
 }

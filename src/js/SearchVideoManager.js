@@ -1,5 +1,6 @@
-import { MAX_DATA_FETCH_AT_ONCE } from './constants';
-import { checkNoUndefinedProperty } from './validation';
+import { ALERT_MESSAGE, MAX_DATA_FETCH_AT_ONCE } from './constants';
+import { event } from './util';
+import { validateSearchKeyword, checkNoUndefinedProperty } from './validation';
 
 const DUMMY_YOUTUBE_API_URL = (keyword) =>
   `https://elastic-goldstine-10f16a.netlify.app/dummy/youtube/v3/search?part=snippet&q=${keyword}&maxResults=${MAX_DATA_FETCH_AT_ONCE}`;
@@ -21,17 +22,41 @@ export default class SearchVideoManager {
     this.#keyword = '';
     this.#nextPageToken = '';
     this.#isLastPage = false;
+
+    event.addListener('searchWithNewKeyword', this.searchWithNewKeyword.bind(this));
+    event.addListener('searchOnScroll', this.searchOnScroll.bind(this));
   }
 
-  get isLastPage() {
-    return this.#isLastPage;
-  }
-
-  search(newKeyword = this.#keyword) {
-    if (newKeyword !== this.#keyword) {
-      this.resetNextPageToken();
+  searchWithNewKeyword(e) {
+    const { keyword } = e.detail;
+    try {
+      validateSearchKeyword(keyword);
+    } catch ({ message }) {
+      alert(message);
+      return;
     }
-    return this.fetchYoutubeData(newKeyword).then((data) => this.processVideoData(data));
+    this.#keyword = keyword;
+    event.dispatch('resetSearchResult');
+    this.resetNextPageToken();
+    this.search();
+  }
+
+  searchOnScroll() {
+    if (this.#isLastPage) {
+      alert(ALERT_MESSAGE.NO_MORE_SEARCH_RESULT);
+      return;
+    }
+    this.search();
+  }
+
+  search() {
+    this.fetchYoutubeData(this.#keyword)
+      .then((data) => this.processFetchedResult(data))
+      .then((fetchedData) => { 
+        event.dispatch('updateFetchedData', { videos: fetchedData })
+      }).catch(() => {
+        event.dispatch('showSearchErrorResult');
+      });
   }
 
   resetNextPageToken() {
@@ -40,17 +65,18 @@ export default class SearchVideoManager {
   }
 
   fetchYoutubeData(keyword) {
-    return fetch(this.#nextPageToken ? `${YOUTUBE_API_URL(keyword)}&pageToken=${this.#nextPageToken}`: YOUTUBE_API_URL(keyword))
+    return fetch(this.#nextPageToken 
+      ? `${DUMMY_YOUTUBE_API_URL(keyword)}&pageToken=${this.#nextPageToken}`
+      : DUMMY_YOUTUBE_API_URL(keyword))
       .then((response) => {
         if (!response.ok) {
           throw new Error(response.status);
         }
-        this.#keyword = keyword;
         return response.json();
       });
   }
 
-  processVideoData(result) {
+  processFetchedResult(result) {
     if (!result.nextPageToken) this.#isLastPage = true;
     this.#nextPageToken = result.nextPageToken;
     return result.items.map((item) => ({

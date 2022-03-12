@@ -1,4 +1,4 @@
-import { $ } from '../util';
+import { $, event } from '../util';
 
 export default class SearchKeywordFormView {
   constructor() {
@@ -12,9 +12,6 @@ export default class SearchKeywordFormView {
   onSubmitSearchForm(e) {
     e.preventDefault();
     const keyword = $('#search-input-keyword').value;
-    const searchKeywordEvent = new CustomEvent('searchKeyword', {
-      detail: { keyword },
-    });
-    $('#search-modal').dispatchEvent(searchKeywordEvent);
+    event.dispatch('searchWithNewKeyword', { keyword });
   }
 }
