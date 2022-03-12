@@ -8,7 +8,7 @@ global.fetch = jest.fn(() =>
   })
 );
 
-describe('동영샹 검색 테스트', () => {
+describe('동영상 검색 테스트', () => {
   const searchVideo = new SearchVideo();
   test('입력한 검색값이 공백인 경우를 체크한다.', async () => {
     const searchInput = '      ';
