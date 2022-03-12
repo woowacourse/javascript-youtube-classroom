@@ -23,14 +23,14 @@ import {
 } from "./utils/dom";
 
 export default class YoutubeApp {
-  constructor(userStorage) {
+  constructor(videoStorage) {
     this.modalContainer = document.querySelector(".modal-container");
     this.searchInputKeyword = document.querySelector("#search-input-keyword");
     this.searchResult = document.querySelector(".search-result");
     this.videoList = document.querySelector(".video-list");
 
     this.#bindEvents();
-    this.userStorage = userStorage;
+    this.videoStorage = videoStorage;
   }
 
   #bindEvents() {
@@ -70,7 +70,7 @@ export default class YoutubeApp {
     const { videoId } = findTargetDataset(target, ".video-item");
 
     try {
-      this.userStorage.addStorage(videoId);
+      this.videoStorage.addVideoData(videoId);
     } catch ({ message }) {
       alertMessage(message);
     }
@@ -135,7 +135,7 @@ export default class YoutubeApp {
 
     const videoItemTemplate = generateTemplate.videoItems(
       responseData.items,
-      this.userStorage
+      this.videoStorage
     );
 
     removeChildElements(this.videoList, document.querySelectorAll(".skeleton"));
@@ -181,7 +181,7 @@ export default class YoutubeApp {
 
     const videoItemTemplate = generateTemplate.videoItems(
       responseData.items,
-      this.userStorage
+      this.videoStorage
     );
 
     render({
