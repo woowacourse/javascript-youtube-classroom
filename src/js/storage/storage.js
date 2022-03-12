@@ -5,27 +5,22 @@ const storage = {
   getLocalStorage() {
     return JSON.parse(localStorage.getItem('data'));
   },
-  updateLocalStorage(data) {
+  updateLocalStorage(videoId) {
     const savedStorage = this.getLocalStorage();
     if (savedStorage.length > 100) {
       return;
     }
-    if (savedStorage.some(video => video.id === data.id)) {
+    if (savedStorage.some(savedId => savedId === videoId)) {
       return;
     }
-    this.setLocalStorage([...savedStorage, data]);
+    this.setLocalStorage([...savedStorage, videoId]);
   },
   saveVideo(videoId) {
-    const video = {
-      id: videoId,
-    };
-    const savedStorage = this.getLocalStorage();
-
-    if (savedStorage) {
-      this.updateLocalStorage(video);
+    if (this.getLocalStorage()) {
+      this.updateLocalStorage(videoId);
       return;
     }
-    this.setLocalStorage([video]);
+    this.setLocalStorage([videoId]);
   },
 };
 
