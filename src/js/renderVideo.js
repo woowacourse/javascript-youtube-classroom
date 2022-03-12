@@ -1,9 +1,8 @@
 import {
-  BUTTON_DISABLED_TEXT,
+  ALREADY_SAVED_VIDEO,
   ERROR_MESSAGE,
   MAX_SAVE_VIDEO_COUNT,
-  MAX_VIDEO_COUNT,
-  MAX_VIDEO_LIST_LENGTH,
+  GET_VIDEO_COUNT,
 } from './constants/contants.js';
 import SaveVideo from './saveVideo.js';
 import SearchVideo from './searchVideo.js';
@@ -37,10 +36,7 @@ class RenderVideo {
 
   onScrollVideoList = () => {
     const { scrollHeight, offsetHeight, scrollTop } = this.videoListContainer;
-    if (
-      scrollHeight - offsetHeight === scrollTop &&
-      Array.from(selectDom('.video-list').children).length < MAX_VIDEO_LIST_LENGTH
-    ) {
+    if (scrollHeight - offsetHeight === scrollTop) {
       this.loadVideo();
     }
   };
@@ -64,7 +60,7 @@ class RenderVideo {
     const isSaveButton = target.classList.contains('video-item__save-button');
     if (isSaveButton && this.saveVideo.saveVideoList.length < MAX_SAVE_VIDEO_COUNT) {
       this.saveVideo.setStorageVideoList(target.closest('li').dataset.videoId);
-      target.textContent = BUTTON_DISABLED_TEXT;
+      target.textContent = ALREADY_SAVED_VIDEO;
       target.disabled = true;
       return;
     }
@@ -97,7 +93,7 @@ class RenderVideo {
   renderVideoSkeleton() {
     this.videoListContainer.insertAdjacentHTML(
       'beforeend',
-      Array.from({ length: MAX_VIDEO_COUNT }, () => videoSkeletonTemplate).join(' ')
+      Array.from({ length: GET_VIDEO_COUNT }, () => videoSkeletonTemplate).join(' ')
     );
   }
 
