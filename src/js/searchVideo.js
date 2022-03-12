@@ -1,16 +1,15 @@
-import { ERROR_MESSAGE, MAX_VIDEO_COUNT, REDIRECT_SERVER_HOST } from './constants/contants.js';
+import { ERROR_MESSAGE, GET_VIDEO_COUNT, REDIRECT_SERVER_HOST } from './constants/contants.js';
 
 class SearchVideo {
   constructor() {
     this.prevSearchKeyword = '';
-    this.searchResults = [];
     this.nextPageToken = '';
   }
 
   async handleSearchVideo(searchKeyword) {
     this.#validateSearchInput(searchKeyword);
-    this.searchResults = await this.#getYoutubeVideos(searchKeyword);
     this.prevSearchKeyword = searchKeyword;
+    return await this.#getYoutubeVideos(searchKeyword);
   }
 
   #getYoutubeVideos = async (searchKeyword) => {
@@ -18,7 +17,7 @@ class SearchVideo {
     const params = new URLSearchParams({
       part: 'snippet',
       type: 'video',
-      maxResults: MAX_VIDEO_COUNT,
+      maxResults: GET_VIDEO_COUNT,
       regionCode: 'kr',
       pageToken: this.nextPageToken || '',
       q: searchKeyword,

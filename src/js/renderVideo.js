@@ -109,8 +109,8 @@ class RenderVideo {
   async loadVideo() {
     this.renderVideoSkeleton();
     try {
-      await this.searchVideo.handleSearchVideo(this.searchInput.value.trim());
-      this.renderSearchVideo(this.searchVideo.searchResults);
+      const searchResults = await this.searchVideo.handleSearchVideo(this.searchInput.value.trim());
+      this.renderSearchVideo(searchResults);
     } catch (error) {
       this.searchInput.value = '';
       this.searchInput.focus();
