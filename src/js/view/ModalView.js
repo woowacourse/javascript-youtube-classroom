@@ -76,20 +76,9 @@ export default class ModalView {
     this.videoItemList = [];
   }
 
-  appendEmptyList() {
-    this.$videoList.insertAdjacentHTML('beforeend', '<li></li>'.repeat(VIDEO_LIST.RENDER_SIZE));
-  }
-
-  appendVideoItem() {
-    [...this.$videoList.childNodes].slice(-VIDEO_LIST.RENDER_SIZE).forEach(li => {
-      this.videoItemList.push(new VideoItemView(li));
-    });
-  }
-
-  getSkeletonTemplate() {
-    this.videoItemList
-      .slice(-VIDEO_LIST.RENDER_SIZE)
-      .forEach(videoItem => videoItem.getVideoItemTemplate());
+  showNoResult() {
+    this.$searchNoResult.classList.remove(DOM_STRING.HIDE);
+    this.$videoList.classList.add(DOM_STRING.HIDE);
   }
 
   updateVideoItems(data) {
@@ -98,8 +87,25 @@ export default class ModalView {
       .forEach((videoItem, index) => videoItem.getVideoItemTemplate(data[index]));
   }
 
-  showNoResult() {
-    this.$searchNoResult.classList.remove(DOM_STRING.HIDE);
-    this.$videoList.classList.add(DOM_STRING.HIDE);
+  showLoadingVideoItems() {
+    this.#appendEmptyList();
+    this.#appendVideoItem();
+    this.#showSkeletonTemplate();
+  }
+
+  #appendEmptyList() {
+    this.$videoList.insertAdjacentHTML('beforeend', '<li></li>'.repeat(VIDEO_LIST.RENDER_SIZE));
+  }
+
+  #appendVideoItem() {
+    [...this.$videoList.childNodes].slice(-VIDEO_LIST.RENDER_SIZE).forEach(li => {
+      this.videoItemList.push(new VideoItemView(li));
+    });
+  }
+
+  #showSkeletonTemplate() {
+    this.videoItemList
+      .slice(-VIDEO_LIST.RENDER_SIZE)
+      .forEach(videoItem => videoItem.getVideoItemTemplate());
   }
 }

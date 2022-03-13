@@ -39,9 +39,7 @@ export default class EventHandler {
     try {
       validator.isValidSearchInput(inputValue);
       this.modalView.resetVideoList();
-      this.modalView.appendEmptyList();
-      this.modalView.appendVideoItem();
-      this.modalView.getSkeletonTemplate();
+      this.modalView.showLoadingVideoItems();
       const videoListData = await videoAPICaller.getVideoListData(inputValue);
       this.modalView.updateVideoItems(videoListData);
     } catch (error) {
@@ -52,9 +50,7 @@ export default class EventHandler {
 
   async onvideoListScroll(inputValue) {
     try {
-      this.modalView.appendEmptyList();
-      this.modalView.appendVideoItem();
-      this.modalView.getSkeletonTemplate();
+      this.modalView.showLoadingVideoItems();
       const videoListData = await videoAPICaller.getVideoListData(inputValue);
       this.modalView.updateVideoItems(videoListData);
     } catch (error) {
