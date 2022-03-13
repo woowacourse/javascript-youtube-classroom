@@ -67,7 +67,7 @@ class View {
     return new IntersectionObserver(
       async (entries) => {
         if (entries[0].isIntersecting) {
-          this.requestMoreResult.unobserve(this.videoList.lastChild);
+          this.requestMoreResult.unobserve(entries[0].target);
           this.#loadSkeleton();
           const moreResult = await this.sendLoadMoreRequest();
           this.#renderSearchResult(moreResult);
