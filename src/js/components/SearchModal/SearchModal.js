@@ -42,8 +42,8 @@ export default class SearchModal extends Component {
   }
 
   setEvent() {
-    const { hideSearchModal } = this.props;
+    const { toggleSearchModal } = this.props;
 
-    this.addEvent('click', '#modal-background', hideSearchModal);
+    this.addEvent('click', '#modal-background', toggleSearchModal);
   }
 }

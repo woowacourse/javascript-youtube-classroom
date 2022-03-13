@@ -20,18 +20,14 @@ export default class App extends Component {
 
   afterMounted() {
     new MainPage(document.querySelector('#main-page'), {
-      showSearchModal: this.showSearchModal.bind(this),
+      toggleSearchModal: this.toggleSearchModal.bind(this),
     });
     new SearchModal(document.querySelector('#search-modal'), {
-      hideSearchModal: this.hideSearchModal.bind(this),
+      toggleSearchModal: this.toggleSearchModal.bind(this),
     });
   }
 
-  showSearchModal() {
-    this.setState({ isSearchModalOpened: true });
-  }
-
-  hideSearchModal() {
-    this.setState({ isSearchModalOpened: false });
+  toggleSearchModal() {
+    this.setState({ isSearchModalOpened: !this.state.isSearchModalOpened });
   }
 }

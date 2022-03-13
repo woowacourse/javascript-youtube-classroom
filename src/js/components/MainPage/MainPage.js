@@ -13,8 +13,8 @@ export default class MainPage extends Component {
   }
 
   setEvent() {
-    const { showSearchModal } = this.props;
+    const { toggleSearchModal } = this.props;
 
-    this.addEvent('click', '#search-modal-button', showSearchModal);
+    this.addEvent('click', '#search-modal-button', toggleSearchModal);
   }
 }
