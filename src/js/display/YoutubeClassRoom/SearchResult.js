@@ -108,6 +108,28 @@ export default class SearchResult extends Display {
     });
   }
 
+  #getVideoElementList(items) {
+    return items.reduce(($previous, video) => {
+      const buttonText = YoutubeSaveStorage.has(video.id.videoId) ? '🗑 저장 취소' : '⬇ 저장';
+      const $list = createElement('LI', {
+        dataset: { 'video-id': video.id.videoId },
+        className: DOM_NAME.CLASS.VIDEO_ITEM,
+        insertAdjacentHTML: [
+          'afterbegin',
+          ` <img src="${video.snippet.thumbnails.medium.url}"
+              alt="video-item-thumbnail" class="video-item__thumbnail">
+            <h4 class="video-item__title">${video.snippet.title}</h4>
+            <p class="video-item__channel-name">${video.snippet.channelTitle}</p>
+            <p class="video-item__published-date">${getParsedTime(video.snippet.publishTime)}</p>
+            <button class="video-item__save-button button">${buttonText}</button>`,
+        ],
+      });
+
+      $previous.append($list);
+      return $previous;
+    }, document.createDocumentFragment());
+  }
+
   drawVideoList({ items, isLoaded, error }) {
     if (items.length === 0 && isLoaded === false) {
       return;
@@ -127,25 +149,7 @@ export default class SearchResult extends Display {
       this.$videoResult.scrollTo({ top: 0 });
     }
 
-    const $videoList = combineElement(
-      items.map(video => {
-        const buttonText = YoutubeSaveStorage.has(video.id.videoId) ? '🗑 저장 취소' : '⬇ 저장';
-        return createElement('LI', {
-          dataset: { 'video-id': video.id.videoId },
-          className: DOM_NAME.CLASS.VIDEO_ITEM,
-          insertAdjacentHTML: [
-            'afterbegin',
-            ` <img src="${video.snippet.thumbnails.medium.url}"
-                alt="video-item-thumbnail" class="video-item__thumbnail">
-              <h4 class="video-item__title">${video.snippet.title}</h4>
-              <p class="video-item__channel-name">${video.snippet.channelTitle}</p>
-              <p class="video-item__published-date">${getParsedTime(video.snippet.publishTime)}</p>
-              <button class="video-item__save-button button">${buttonText}</button>`,
-          ],
-        });
-      }),
-    );
-
+    const $videoList = this.#getVideoElementList(items);
     this.$videoResult.replaceChildren($videoList);
   }
 
