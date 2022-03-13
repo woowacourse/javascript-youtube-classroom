@@ -18,13 +18,6 @@ export const createElement = (tagName, property = {}) => {
   return $create;
 };
 
-export const combineElement = elements => {
-  const $fragment = document.createDocumentFragment();
-  $fragment.append(...elements);
-
-  return $fragment;
-};
-
 export const $ = (selector, parentElement = document) => parentElement.querySelector(selector);
 
 export const $$ = (selector, parentElement = document) => parentElement.querySelectorAll(selector);
