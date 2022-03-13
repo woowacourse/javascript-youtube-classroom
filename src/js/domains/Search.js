@@ -24,7 +24,7 @@ class Search {
 
   async fetchVideo(keyword) {
     try {
-      SEARCH_API.URL.search = this.generateSearchParams(keyword);
+      SEARCH_API.URL.search = this.#generateSearchParams(keyword);
       const response = await fetchData(SEARCH_API.URL);
 
       if (response instanceof Error) {
@@ -38,7 +38,7 @@ class Search {
     }
   }
 
-  generateSearchParams(keyword) {
+  #generateSearchParams(keyword) {
     return new URLSearchParams({
       ...SEARCH_API.PARAMS,
       pageToken: this.nextPageToken,
