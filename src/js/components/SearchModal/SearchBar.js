@@ -42,7 +42,6 @@ export default class SearchBar extends Component {
 
           return;
         }
-        console.log('items', items);
         rootStore.setState({
           searchOption: {
             query: e.target.elements.searchInput.value,
@@ -61,7 +60,6 @@ export default class SearchBar extends Component {
 
 export function addSavedToVideos(rawVideos) {
   const savedVideos = webStore.load();
-  console.log('rawVideos', rawVideos);
 
   return rawVideos.map(
     ({
