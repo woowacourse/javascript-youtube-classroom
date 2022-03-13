@@ -94,6 +94,7 @@ class View {
     const skeletonList = this.videoList.querySelectorAll('.skeleton');
     removeElementList(skeletonList);
 
+    if (this.#isEndOfResult(searchResultArray)) return;
     if (keyword) {
       this.searchResultTitle.textContent = `'${keyword}' 검색 결과입니다`;
     }
@@ -103,6 +104,10 @@ class View {
     if (hasNextPage) {
       this.lastItemOfListObserver.observe(this.videoList.lastChild);
     }
+  }
+
+  #isEndOfResult(searchResultArray) {
+    return searchResultArray === null;
   }
 
   #createElementFromObject(searchResultArray) {
