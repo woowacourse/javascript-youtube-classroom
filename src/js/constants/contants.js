@@ -6,7 +6,7 @@ const BUTTON_SAVED_TEXT = '저장됨';
 
 const VIDEO_ID_LIST_KEY = 'VIDEO_ID_LIST';
 
-const REDIRECT_SERVER_HOST = 'https://www.googleapis.com'; //'https://youtube-classroom-project.netlify.app';
+const REDIRECT_SERVER_HOST = 'https://youtube-classroom-project.netlify.app';
 
 const ERROR_MESSAGE = {
   CANNOT_GET_YOUTUBE_VIDEO: '[404] 개발자에게 문의하세요.',
