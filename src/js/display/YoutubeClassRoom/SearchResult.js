@@ -16,7 +16,6 @@ export default class SearchResult extends Display {
 
   defaultElement() {
     this.$videoList = $(SELECTOR.ID.VIDEO_LIST, this.container);
-    this.$tempFragment = document.createDocumentFragment();
     this.$scrollObserver = createElement('DIV', {
       id: DOM_NAME.ID.SEARCH_RESULT_SCROLL_OBSERVER,
     });
