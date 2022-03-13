@@ -10,13 +10,10 @@ import '../../assets/images/not_found.png';
 
 class View {
   constructor(search, saveVideos) {
-    this.searchModalButton = selectDom('#search-modal-button');
     this.modalContainer = selectDom('.modal-container');
-    this.dimmer = selectDom('.dimmer', this.modalContainer);
     this.searchForm = selectDom('#search-form', this.modalContainer);
     this.searchInputKeyword = selectDom('#search-input-keyword', this.searchForm);
     this.searchResult = selectDom('.search-result', this.modalContainer);
-    this.searchResultTitle = selectDom('.search-result-title', this.searchResult);
     this.videoList = selectDom('.video-list', this.searchResult);
 
     this.#attachEventListeners();
@@ -26,9 +23,14 @@ class View {
 
   #attachEventListeners() {
     this.lastItemOfListObserver = this.#handleScrollToLastItem();
-    this.searchModalButton.addEventListener('click', this.#toggleModal);
+
+    const searchModalButton = selectDom('#search-modal-button');
+    searchModalButton.addEventListener('click', this.#toggleModal);
+
+    const dimmer = selectDom('.dimmer', this.modalContainer);
+    dimmer.addEventListener('click', this.#toggleModal);
+
     this.searchForm.addEventListener('submit', this.#handleSearch);
-    this.dimmer.addEventListener('click', this.#toggleModal);
   }
 
   #toggleModal = () => {
@@ -91,7 +93,8 @@ class View {
     const skeletonList = this.videoList.querySelectorAll('.skeleton');
     removeElementList(skeletonList);
     if (keyword) {
-      this.searchResultTitle.textContent = `'${keyword}' 검색 결과입니다`;
+      const searchResultTitle = selectDom('.search-result-title', this.searchResult);
+      searchResultTitle.textContent = `'${keyword}' 검색 결과입니다`;
     }
 
     const resultElementArray = searchResultArray.map((resultItem) =>
