@@ -1,7 +1,13 @@
 :root {
-  --primary: #00bcd4;
-  --primary-lighten: #80deea;
-  --secondary: #b4b4b4;
-  --secondary-lighten: #ededed;
-  --surface: #212121;
+  --button-color: #00bcd4;
+  --gray: #b4b4b4;
+  --gray-lighten: #ededed;
+  --nav: #F5F5F5;
+  --nav-hover: #ebebeb;
+  --dimmer: rgba(0, 0, 0, 0.5);
+  --white: #FFFFFF;
+  --search-modal-border: rgba(0, 0, 0, 0.12);
+  --search-input-placeholder: #8B8B8B;
+  --gradient-first: #e0e0e0;
+  --gradient-second: #ededed;
 }

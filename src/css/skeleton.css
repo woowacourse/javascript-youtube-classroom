@@ -10,9 +10,9 @@
 .skeleton .video-item__save-button {
   background-image: linear-gradient(
     90deg,
-    #e0e0e0 0px,
-    #ededed 30px,
-    #e0e0e0 60px
+    var(--gradient-first) 0px,
+    var(--gradient-second) 30px,
+    var(--gradient-first) 60px
   );
   animation: refresh 2s infinite ease-out;
 }
