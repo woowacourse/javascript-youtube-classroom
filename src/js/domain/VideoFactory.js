@@ -13,7 +13,7 @@ export default class VideoFactory {
       publishTime,
     } = item.snippet;
 
-    return new Video.Builder()
+    return Video.Builder()
       .setId(videoId)
       .setThumbnails(url)
       .setTitle(title)
