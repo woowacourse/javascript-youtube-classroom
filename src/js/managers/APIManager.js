@@ -1,4 +1,5 @@
 import { ERROR_MESSAGE, VIDEO_LIST } from '../utils/constants.js';
+import { videoData } from '../utils/mockData.js';
 
 const APIManager = {
   baseURL: 'https://vigorous-boyd-74648a.netlify.app/youtube/v3/search',
@@ -10,14 +11,14 @@ const APIManager = {
 
   fetchData: async function (inputValue) {
     try {
-      const response = await fetch(
-        `${this.baseURL}?part=${this.part}&q=${inputValue}&pageToken=${this.pageToken}&maxResults=${this.maxResults}&type=${this.type}&regionCode=${this.regionCode}`
-      );
-      if (!response.ok) {
-        throw new Error();
-      }
-      const responseData = await response.json();
-      return responseData;
+      // const response = await fetch(
+      //   `${this.baseURL}?part=${this.part}&q=${inputValue}&pageToken=${this.pageToken}&maxResults=${this.maxResults}&type=${this.type}&regionCode=${this.regionCode}`
+      // );
+      // if (!response.ok) {
+      //   throw new Error();
+      // }
+      // const responseData = await response.json();
+      return videoData;
     } catch (error) {
       throw new Error(ERROR_MESSAGE.SEARCH_ERROR);
     }

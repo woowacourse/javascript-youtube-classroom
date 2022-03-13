@@ -81,7 +81,7 @@ export const mockData = [
   },
 ];
 
-export const fetchData = {
+export const videoData = {
   kind: 'youtube#searchListResponse',
   etag: 'lQ-VEF9lgCYrZErL9nEFN1I1-_U',
   nextPageToken: 'CAoQAA',

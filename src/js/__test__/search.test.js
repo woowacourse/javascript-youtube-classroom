@@ -1,6 +1,6 @@
 import validator from '../utils/validator.js';
 import APIManager from '../managers/APIManager.js';
-import { fetchData, errorData, parseData } from '../utils/mockData.js';
+import { videoData, errorData, parseData } from '../utils/mockData.js';
 
 describe('보고 싶은 영상을 검색 했을 때', () => {
   test('입력 없이 버튼을 눌렀다면 error를 throw한다.', () => {
@@ -17,10 +17,10 @@ describe('API 요청이 끝나고', () => {
   });
 
   test('응답 데이터가 정상인지 확인할 수 있다.', () => {
-    expect(APIManager.checkResponseError(fetchData)).toBe(false);
+    expect(APIManager.checkResponseError(videoData)).toBe(false);
   });
 
   test('response 데이터를 썸네일 이미지 url, 제목, 작성자, 작성요일, id로 분리할 수 있다.', () => {
-    expect(APIManager.parsingVideoData(fetchData)).toEqual(parseData);
+    expect(APIManager.parsingVideoData(videoData)).toEqual(parseData);
   });
 });
