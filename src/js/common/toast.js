@@ -1,10 +1,9 @@
 const toast = () => {
+  const toastContainer = document.getElementById('toast');
   let removeToast;
 
   return (text) => {
     if (removeToast) return;
-
-    const toastContainer = document.getElementById('toast');
 
     toastContainer.classList.add('reveal');
     toastContainer.textContent = text;
