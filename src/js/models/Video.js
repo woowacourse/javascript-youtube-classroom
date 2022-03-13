@@ -1,17 +1,17 @@
 import { checkLengthExist, checkEmpty } from '../utils/validator';
 
 export default class Video {
-  #keyword; // 검색어
+  #keyword;
 
-  #fetchedVideos; // length:10, type:array, fetch한 원본(items, nextPageToken)
+  #fetchedVideos;
 
-  #newVideoItems; //  length:10, type:array, search해서 첫 10개, 스크롤 때마다 10개 추가되는 items (orgin: #fetchedVideos), svaed 속성이 바뀌면 override가 된다.
+  #newVideoItems;
 
-  #allVideoItems = []; // length:미상, type:array, 스크롤할 때마다 해당 newVideoItems 10개씩 누적되는 items
+  #allVideoItems = [];
 
-  #nextPageToken; // fetch하기 위한 다음 페이지 Token (orgin: #fetchedVideos)
+  #nextPageToken;
 
-  #savedVideoItems; // length:미상(최대100), type:array,저장된 비디오 items, localStorage 상호작용
+  #savedVideoItems;
 
   constructor(dummyObject = {}) {
     this.#fetchedVideos = dummyObject; // API 사용량 초과될 경우, 데모 확인을 위해 dummyObject가 기본으로 할당된다.

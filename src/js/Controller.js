@@ -24,7 +24,6 @@ export default class Controller {
     on(this.searchResultView.$searchTarget, '@save-video', this.#saveVideo.bind(this));
   }
 
-  // 검색 버튼을 눌렀을 때
   async #searchVideo(event) {
     this.searchResultView.removeVideo();
     const { keyword } = event.detail;
@@ -54,7 +53,6 @@ export default class Controller {
     this.searchResultView.startObserve();
   }
 
-  // (이미 검색버튼을 눌러진 상태) 스크롤 내림으로써 발생하는 추가 fetch, render
   async #scrollNextVideos() {
     this.searchResultView.stopObserve();
     try {
