@@ -27,6 +27,10 @@ export const makeSkeletonTemplate = `
   <div class="skeleton">
     <div class="image"></div>
     <p class="line"></p>
-    <p class="line"></p>
+    <p class="line half"></p>
+    <p class="line half"></p>
+    <div class="button-container">
+      <p class="button"></p>
+    </div>
   </div>
 `;

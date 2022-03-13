@@ -47,11 +47,11 @@ export class SearchModal {
   }
 
   renderNoVideosImg() {
+    this.resultLabel.setAttribute("hidden", true);
     this.noResultContainer.insertAdjacentHTML("afterbegin", noSearchResultTemplate);
   }
 
   renderIframe() {
-    this.resultLabel.removeAttribute("hidden");
     this.videoList.insertAdjacentHTML(
       "beforeend",
       this.videos.items.map((video) => makeIframeTemplate(video)).join(""),
@@ -59,6 +59,7 @@ export class SearchModal {
   }
 
   renderSkeleton() {
+    this.resultLabel.removeAttribute("hidden");
     this.videoList.insertAdjacentHTML(
       "beforeend",
       Array.from({ length: NUM.VIDEO_ITEMS_FOR_UNIT }, () => makeSkeletonTemplate).join(""),
