@@ -1,5 +1,3 @@
-import { MAX_SAVE_COUNT, MESSAGE } from './constants';
-
 export default class LocalStorageMock {
   constructor() {
     this.store = {};
@@ -14,13 +12,7 @@ export default class LocalStorageMock {
   }
 
   setItem(key, value) {
-    if (!this.store[key]) {
-      this.store[key] = [];
-    }
-    if (this.store[key].length >= MAX_SAVE_COUNT) {
-      throw Error(MESSAGE.ERROR_EXCESS_SAVE_COUNT);
-    }
-    this.store[key].push(value);
+    this.store[key] = value;
   }
 
   removeItem(key) {
