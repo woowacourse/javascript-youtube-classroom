@@ -14,6 +14,16 @@ export class SearchModal {
 
     this.searchButton.addEventListener("click", this.handleSearchButton);
     this.videoList.addEventListener("click", this.handleVideoItemSave);
+    this.createObserver();
+  }
+
+  createObserver() {
+    this.observer = new IntersectionObserver((entries) => {
+      const [entry] = entries;
+      if (entry.isIntersecting) {
+        this.renderNextPage();
+      }
+    });
   }
 
   show() {
@@ -43,7 +53,7 @@ export class SearchModal {
     }
 
     this.renderIframe();
-    this.createObserver();
+    this.observer.observe(this.videoList.lastElementChild);
   }
 
   renderNoVideosImg() {
@@ -71,27 +81,10 @@ export class SearchModal {
     this.skeletonCards.forEach((card) => this.videoList.removeChild(card));
   }
 
-  createObserver() {
-    this.videoItems = [...document.getElementsByClassName("video-item")];
-    this.intersectionObserver = new IntersectionObserver((entries) => {
-      const [entry] = entries;
-      if (entry.isIntersecting) {
-        this.renderNextPage();
-      }
-    });
-
-    this.intersectionObserver.observe(this.videoItems[this.videoItems.length - 1]);
-  }
-
   async renderNextPage() {
-    this.removePreviousObserver();
     this.videos = await fetchDataFromKeyword(this.keyword, this.videos.nextPageToken);
     this.renderIframe();
-    this.createObserver();
-  }
-
-  removePreviousObserver() {
-    this.intersectionObserver.disconnect();
+    this.observer.observe(this.videoList.lastElementChild);
   }
 
   handleVideoItemSave = (e) => {

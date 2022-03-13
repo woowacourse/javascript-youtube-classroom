@@ -91,13 +91,14 @@
 }
 
 #video-list {
-  width: 1080px;
   height: 493px;
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
   gap: 32px 20px;
   overflow-y: scroll;
+  padding-bottom: 50px;
+  background-color: red;
 }
 
 .video-item-container {
