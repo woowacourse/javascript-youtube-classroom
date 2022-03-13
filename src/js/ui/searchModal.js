@@ -2,15 +2,16 @@ import template from './templates.js';
 import throttle from '../util/throttle.js';
 import SearchMachine from '../domain/SearchMachine.js';
 import { ERROR_403, REQUEST_VIDEO_QUANTITY } from '../constant';
+import { $, $$ } from '../util/selector.js';
 
 class SearchModal {
   constructor() {
-    this.$modalContainer = document.querySelector('.modal-container');
-    this.$dimmer = document.querySelector('.dimmer');
-    this.$searchInputKeyword = document.querySelector('#search-input-keyword');
-    this.$searchButton = document.querySelector('#search-button');
-    this.$videoListContainer = document.querySelector('.video-list');
-    this.$searchResult = document.querySelector('.search-result');
+    this.$modalContainer = $('.modal-container');
+    this.$dimmer = $('.dimmer');
+    this.$searchInputKeyword = $('#search-input-keyword');
+    this.$searchButton = $('#search-button');
+    this.$videoListContainer = $('.video-list');
+    this.$searchResult = $('.search-result');
     this.scrollHandler = this.scrollVideoContainerHandler();
     this.requestAdditionalSearchResult = throttle(
       this.scrollHandler.requestAdditionalSearchResult,
@@ -32,7 +33,7 @@ class SearchModal {
   }
 
   removeNoResult() {
-    const $noResultContainer = document.querySelector('.no-result');
+    const $noResultContainer = $('.no-result');
     if ($noResultContainer) {
       $noResultContainer.remove();
       this.$searchResult.classList.remove('search-result--no-result');
@@ -106,7 +107,7 @@ class SearchModal {
     this.renderSkeletonImage();
     this.machine
       .search()
-      .then((items) => this.renderResult(items))
+      .then((items) => this.renderSearchResult(items))
       .catch((err) => this.renderNetworkError(err))
       .finally(this.removeSkeleton);
   }
@@ -115,10 +116,13 @@ class SearchModal {
     if (err.name === ERROR_403) {
       this.scrollHandler.setError(true);
       this.$videoListContainer.insertAdjacentHTML('beforeend', template.exceedCapacityErrorImage());
+      return;
     }
+    console.log(err);
+    this.$videoListContainer.insertAdjacentHTML('beforeend', template.responceFailedError());
   }
 
-  renderResult(items) {
+  renderSearchResult(items) {
     if (items.length === 0) {
       this.renderNoResultImage();
       return;
@@ -137,7 +141,7 @@ class SearchModal {
   }
 
   removeSkeleton() {
-    document.querySelectorAll('.skeleton-container').forEach((element) => {
+    $$('.skeleton-container').forEach((element) => {
       element.remove();
     });
   }

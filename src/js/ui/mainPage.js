@@ -3,23 +3,16 @@ import SearchModal from './searchModal.js';
 class MainPage {
   constructor() {
     this.$searchModalButton = document.querySelector('#search-modal-button');
-    this.modalComponent = new SearchModal();
+    this.searchModal = new SearchModal();
     this.$dimmer = document.querySelector('.dimmer');
   }
 
   init() {
-    this.bindEvent();
-  }
-
-  bindEvent() {
     this.$searchModalButton.addEventListener(
       'click',
-      this.modalComponent.toggleModalContainerView.bind(this.modalComponent),
+      this.searchModal.toggleModalContainerView.bind(this.searchModal),
     );
-    this.$dimmer.addEventListener(
-      'click',
-      this.modalComponent.initModalState.bind(this.modalComponent),
-    );
+    this.$dimmer.addEventListener('click', this.searchModal.initModalState.bind(this.searchModal));
   }
 }
 

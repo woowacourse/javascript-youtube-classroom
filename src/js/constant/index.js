@@ -16,4 +16,8 @@ export const ERROR_MESSAGE = {
   EXCEED_STORAGE_CAPACITY_ERROR: '최대 저장 개수는 100개입니다.',
 
   NO_INPUT: '검색어를 입력해주세요',
+
+  WRONG_INPUT: '잘못된 값이 입력되었습니다.',
+
+  NOT_RESPONCE_OK: '네트워크 요청이 실패하였습니다',
 };

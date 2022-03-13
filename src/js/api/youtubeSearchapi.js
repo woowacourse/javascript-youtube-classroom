@@ -12,8 +12,10 @@ const youtubeSearchAPI = {
     const url = this.createURL(value, pageToken);
     const response = await fetch(url, { method: 'GET' });
 
-    this.checkExceedCapacity(response);
-    return await response.json();
+    this.checkResponceOk(response);
+    const result = await response.json();
+
+    return result;
   },
 
   createURL(value, pageToken) {
@@ -30,12 +32,18 @@ const youtubeSearchAPI = {
     return url;
   },
 
-  checkExceedCapacity(response) {
+  checkResponceOk(response) {
+    if (response.ok) {
+      return;
+    }
+
     if (response.status === 403) {
       const error = new Error(ERROR_MESSAGE.EXCEED_REQUEST_CAPACITY_ERROR);
       error.name = ERROR_403;
       throw error;
     }
+
+    throw new Error(ERROR_MESSAGE.NOT_RESPONCE_OK);
   },
 };
 

@@ -22,7 +22,9 @@ export default class SearchMachine {
   async search() {
     const data = await youtubeSearchAPI.searchByPage(this.#keyword, this.#pageToken);
     this.#pageToken = data.nextPageToken;
-    return data.items.map((item) => VideoFactory.generate(item));
+    const videos = data.items.map((item) => VideoFactory.generate(item));
+
+    return videos;
   }
 
   initPageToken() {
