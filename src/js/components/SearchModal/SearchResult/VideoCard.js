@@ -4,14 +4,9 @@ import { webStore } from '../../../store/WebStore.js';
 import { convertTime } from '../../../utils/customDate.js';
 
 export default class VideoCard extends Component {
-  // setup() {
-  //   this.state = { saved: this.props.video.saved };
-  // }
-
   template() {
     const { videoId, thumbnailUrl, title, channelTitle, publishTime, saved } =
       this.props.video;
-    // const { saved } = this.state;
 
     return `
       <li class="video-item" data-video-id="${videoId}">
