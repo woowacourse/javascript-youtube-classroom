@@ -4,12 +4,9 @@ import { ERROR_MESSAGE, SEARCH_API } from '../constants';
 
 class Search {
   constructor() {
-    this.subscribeEvents();
     this.keyword = '';
     this.nextPageToken = '';
-  }
 
-  subscribeEvents() {
     on('form', '@search', (e) => this.search('search', e.detail.keyword), $('search-form'));
     on('ul', '@scroll', () => this.search('scroll'), $('search-result'));
   }
