@@ -24,7 +24,6 @@ export default class VideoCardContainer {
   storeIDHandler(e) {
     if (e.target.className.includes('video-item__save-button')) {
       const videoID = e.target.closest('li').dataset.videoId;
-
       const videoIDs = getStorageVideoIDs(LOCALSTORAGE_KEY);
 
       if (videoIDs.length >= RULES.MAX_STORED_IDS_AMOUNT) {
