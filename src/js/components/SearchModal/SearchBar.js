@@ -32,11 +32,12 @@ export default class SearchBar extends Component {
 
   setEvent() {
     this.addEvent('submit', '#search-form', async e => {
+      const query = e.target.elements.searchInput.value;
+      if (!query) return;
+
       rootStore.setState({ isLoading: true });
 
-      const [error, data] = await getSearchAPI(
-        e.target.elements.searchInput.value
-      );
+      const [error, data] = await getSearchAPI(query);
       if (error) {
         alert(`${error.message}, status: ${error.statusCode}`);
 
