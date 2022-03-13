@@ -1,5 +1,5 @@
 import { $, isEndOfScroll, throttle } from './util/general.js';
-import YoutubeMachine from './domain/YoutubeMachine.js';
+import YoutubeSearchClient from './domain/YoutubeSearchClient.js';
 import userInterface from './UI/userInterface.js';
 import '../css/index.css';
 import '../assets/images/not_found.png';
@@ -7,18 +7,18 @@ import storage from './storage/storage.js';
 import { THROTTLE_DELAY } from './constants/constants.js';
 
 export default function App() {
-  const youtubeMachine = new YoutubeMachine();
+  const youtubeSearchClient = new YoutubeSearchClient();
 
   // 핸들러
   const handleSearch = () => {
     try {
-      youtubeMachine.resetData();
+      youtubeSearchClient.resetSearchResults();
       userInterface.resetVideoList();
       const searchInput = $('#search-input-keyword').value.trim();
-      youtubeMachine.searchTarget = searchInput;
+      youtubeSearchClient.searchTarget = searchInput;
       userInterface.renderSkeletonUI();
-      const response = youtubeMachine.callSearchAPI();
-      youtubeMachine.updateData(response);
+      const response = youtubeSearchClient.callSearchAPI();
+      youtubeSearchClient.updateSearchResults(response);
       userInterface.renderSearchResult(response);
     } catch (error) {
       alert(error.message);
@@ -28,8 +28,8 @@ export default function App() {
   const handleScroll = e => {
     if (isEndOfScroll(e.target)) {
       userInterface.renderSkeletonUI();
-      const response = youtubeMachine.callSearchAPI();
-      youtubeMachine.updateData(response);
+      const response = youtubeSearchClient.callSearchAPI();
+      youtubeSearchClient.updateSearchResults(response);
       userInterface.renderNextSearchResult(response);
     }
   };

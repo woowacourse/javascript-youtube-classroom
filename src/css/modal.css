@@ -66,10 +66,6 @@
 }
 
 .search-result.search-result--no-result {
-  justify-content: center;
-  align-items: center;
-}
-.search-result--no-result {
   display: flex;
   justify-content: center;
   align-items: center;

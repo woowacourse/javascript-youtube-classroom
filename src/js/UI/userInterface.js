@@ -66,16 +66,16 @@ const userInterface = {
   },
   renderSearchResult(response) {
     response
-      .then(data => {
-        this.renderVideoItems(data);
+      .then(searchResults => {
+        this.renderVideoItems(searchResults);
       })
       .catch(() => {
         this.renderNoResult();
       });
   },
   renderNextSearchResult(response) {
-    response.then(data => {
-      this.renderVideoItems(data);
+    response.then(searchResults => {
+      this.renderVideoItems(searchResults);
     });
   },
 };

@@ -5,7 +5,7 @@ export const $ = selector => document.querySelector(selector);
 export const $$ = selector => document.querySelectorAll(selector);
 
 export const isEndOfScroll = element =>
-  element.scrollHeight - element.scrollTop === element.clientHeight;
+  element.scrollTop + element.clientHeight >= element.scrollHeight - 50;
 
 export const validateInput = input => {
   if (input === '') {
@@ -13,13 +13,13 @@ export const validateInput = input => {
   }
 };
 
-export function throttle(fn, delay) {
+export function throttle(callBack, delay) {
   let timer;
   return function () {
     if (!timer) {
       timer = setTimeout(() => {
         timer = null;
-        fn.apply(this, arguments);
+        callBack.apply(this, arguments);
       }, delay);
     }
   };

@@ -50,10 +50,4 @@ module.exports = {
       },
     ],
   },
-  plugins: [
-    new HtmlWebpackPlugin({
-      template: './index.html',
-    }),
-    new webpack.EnvironmentPlugin(Object.keys(dotenv.parsed || {})),
-  ],
 };
