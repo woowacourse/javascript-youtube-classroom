@@ -3,7 +3,7 @@ export const VIDEO = {
   MAX_SAVABLE_COUNT: 100,
 };
 
-const REDIRECT_SERVER_HOST = 'https://trusting-yonath-35b2a1.netlify.app';
+const REDIRECT_SERVER_HOST = 'https://zen-elion-c06022.netlify.app';
 
 export const SEARCH_API = {
   URL: new URL('/youtube/v3/search', REDIRECT_SERVER_HOST),
