@@ -13,7 +13,7 @@ export default class SearchResultView {
       (entries) => {
         if (entries[0].isIntersecting) {
           emit(this.$searchTarget, '@scroll-bottom');
-        } 
+        }
       },
       {
         root: this.$videoList,
@@ -23,6 +23,10 @@ export default class SearchResultView {
   }
 
   renderVideo(newVideoItems) {
+    if (newVideoItems.length < 10) {
+      const haveToDeleteSkeletonCount = 10 - newVideoItems.length;
+      this.deleteSkeleton(haveToDeleteSkeletonCount);
+    }
     this.$videoItems = $$('.skeleton');
     this.$videoItems.forEach(($item, idx) => {
       $item.classList.remove('skeleton');
@@ -59,6 +63,13 @@ export default class SearchResultView {
 
   showSkeleton() {
     this.$videoList.insertAdjacentHTML('beforeend', this.template.getSkeleton());
+  }
+
+  deleteSkeleton(haveToDeleteSkeletonCount) {
+    while (haveToDeleteSkeletonCount) {
+      this.$videoList.removeChild(this.$videoList.firstElementChild);
+      haveToDeleteSkeletonCount -= 1;
+    }
   }
 
   startObserve() {

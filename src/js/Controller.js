@@ -7,7 +7,7 @@ import Video from './models/Video.js';
 import { on } from './utils/event.js';
 import EXCEPTION from '../constants/exception.js';
 import VIDEO from '../constants/video.js';
-import { checkExceedLimit } from './utils/validator.js';
+import { checkExceedLimit, checkVideoIsNone } from './utils/validator.js';
 
 export default class Controller {
   constructor() {
@@ -58,6 +58,11 @@ export default class Controller {
   // (이미 검색버튼을 눌러진 상태) 스크롤 내림으로써 발생하는 추가 fetch, render
   async #scrollNextVideos() {
     this.searchResultView.stopObserve();
+    try {
+      checkVideoIsNone();
+    } catch (error) {
+      return;
+    }
     this.searchResultView.showSkeleton();
     await this.video.fetchYoutubeApi(this.video.keyword, this.video.nextPageToken);
     this.video.setVideoInfo();

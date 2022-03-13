@@ -1,5 +1,6 @@
 import EXCEPTION from '../../constants/exception';
 import VIDEO from '../../constants/video';
+import { $ } from './dom';
 
 const isEmpty = (target) => target === '';
 
@@ -20,5 +21,11 @@ export const checkLengthExist = (value) => {
 export const checkExceedLimit = (items) => {
   if (items.length >= VIDEO.LIMIT_SAVE_VIDEO_COUNT) {
     throw new Error(EXCEPTION.EXCEED_LIMIT_ERROR_MESSAGE);
+  }
+};
+
+export const checkVideoIsNone = () => {
+  if ($('.video-list').childElementCount < 10) {
+    throw new Error(EXCEPTION.VIDEO_IS_NONE_ERROR_MESSAGE);
   }
 };
