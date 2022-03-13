@@ -6,13 +6,12 @@ export default class App {
   constructor() {
     this.$nav = $('.nav');
     this.render();
-    this.addEvent();
     const searchModal = new SearchModal();
     searchModal.init();
   }
 
-  render() {
-    $('.search-modal').insertAdjacentHTML('beforeend', `
+  searchResultTemplate() {
+    return `
       <section class="search-result">
         <ul class="video-list">
         </ul>
@@ -23,11 +22,11 @@ export default class App {
             다른 키워드로 검색해보세요
           </p>
         </div>
-      </section>
-    `);
+      </section>`;
   }
 
-  addEvent() {
+  render() {
+    $('.search-modal').insertAdjacentHTML('beforeend', this.searchResultTemplate());
     $('#search-modal-button', this.$nav).addEventListener('click', this.openModal);
     $('.dimmer').addEventListener('click', this.closeModal.bind(this));
   }
