@@ -6,6 +6,7 @@ export default class ModalView {
   constructor() {
     this.registerDOM();
     this.videoItemList = [];
+    this.enabledScrollSearch = true;
   }
 
   registerDOM() {
@@ -28,6 +29,10 @@ export default class ModalView {
     this.$modalContainer.classList.add(DOM_STRING.HIDE);
   }
 
+  controlScrollSearch(value) {
+    this.enabledScrollSearch = value;
+  }
+
   bindOnClickDimmer(callback) {
     this.$dimmer.addEventListener('click', callback);
   }
@@ -48,7 +53,8 @@ export default class ModalView {
       throttle(() => {
         if (
           this.$videoList.scrollHeight - this.$videoList.scrollTop <=
-          this.$videoList.offsetHeight
+            this.$videoList.offsetHeight &&
+          this.enabledScrollSearch
         ) {
           callback(this.$searchInput.value);
         }

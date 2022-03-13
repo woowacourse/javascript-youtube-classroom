@@ -42,6 +42,7 @@ export default class EventHandler {
       this.modalView.showLoadingVideoItems();
       const videoListData = await videoAPICaller.getVideoListData(inputValue);
       this.modalView.updateVideoItems(videoListData);
+      this.modalView.controlScrollSearch(!videoListData[0].isLastPage);
     } catch (error) {
       this.modalView.showNoResult();
       alert(error.message);
@@ -53,6 +54,7 @@ export default class EventHandler {
       this.modalView.showLoadingVideoItems();
       const videoListData = await videoAPICaller.getVideoListData(inputValue);
       this.modalView.updateVideoItems(videoListData);
+      this.modalView.controlScrollSearch(!videoListData[0].isLastPage);
     } catch (error) {
       alert(error.message);
     }

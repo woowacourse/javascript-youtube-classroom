@@ -23,19 +23,25 @@ const videoAPICaller = {
     }
   },
 
-  parsingVideoData(responseData) {
+  parsingVideoData(rawData) {
     try {
-      this.queryItems.pageToken = responseData.nextPageToken;
-      return responseData.items.map(item => ({
+      const isLastPage = this.checkLastPage(rawData);
+      return rawData.items.map(item => ({
         videoId: item.id.videoId,
         publishedAt: item.snippet.publishedAt,
         title: item.snippet.title,
         url: item.snippet.thumbnails.medium.url,
         channelTitle: item.snippet.channelTitle,
+        isLastPage: isLastPage,
       }));
     } catch (error) {
       throw new Error(ERROR_MESSAGE.DATA_PROCESSING_ERROR);
     }
+  },
+
+  checkLastPage(responseData) {
+    this.queryItems.pageToken = responseData.nextPageToken || '';
+    return !responseData.nextPageToken;
   },
 };
 
