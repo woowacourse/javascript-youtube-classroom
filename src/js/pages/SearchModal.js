@@ -29,7 +29,7 @@ export default class SearchModal {
     this.element = element;
     this.configureDOMs();
     this.bindEvents();
-    this.VideoCardContainer = new VideoCardContainer(this.videoList, {
+    this.VideoCardContainer = new VideoCardContainer(this.videoListWrapper, {
       items: [],
     });
     this.pageToken = '';
@@ -42,7 +42,7 @@ export default class SearchModal {
     this.searchErrorMessage = this.element.querySelector(
       '#search-error-message'
     );
-    this.videoList = this.element.querySelector('.video-list');
+    this.videoListWrapper = this.element.querySelector('.video-list');
     this.dimmer = this.element.querySelector('.dimmer');
     this.searchForm = this.element.querySelector('#search-form');
     [this.resultContainer, this.noResultContainer] = this.element.querySelectorAll('.search-result');
@@ -51,7 +51,7 @@ export default class SearchModal {
   bindEvents() {
     this.dimmer.addEventListener('click', this.closeModalHandler.bind(this));
     this.searchForm.addEventListener('submit', this.searchHandler.bind(this));
-    this.videoList.addEventListener('scroll', throttle(this.scrollHandler.bind(this), THROTTLE_PENDING_MILLISECOND));
+    this.videoListWrapper.addEventListener('scroll', throttle(this.scrollHandler.bind(this), THROTTLE_PENDING_MILLISECOND));
   }
 
   closeModalHandler() {
@@ -75,12 +75,12 @@ export default class SearchModal {
   searchHandler(e) {
     e.preventDefault();
 
-    this.videoList.scrollTo({ top: 0 });
+    this.videoListWrapper.scrollTo({ top: 0 });
 
     try {
       validateKeyword(this.searchInputKeyword.value);
 
-      this.videoList.replaceChildren();
+      this.videoListWrapper.replaceChildren();
       this.pageToken = '';
 
       this.renderVideoList({
@@ -126,7 +126,7 @@ export default class SearchModal {
   }
 
   async renderVideoList(options) {
-    this.renderSkeletonUI(this.videoList);
+    this.renderSkeletonUI(this.videoListWrapper);
 
     let videoList = await fetchData({
       ...options,
@@ -142,7 +142,7 @@ export default class SearchModal {
     this.VideoCardContainer.setState({ items: videoList.items });
 
     this.showSearchResult(videoList.items);
-    this.removeSkeletonUI(this.videoList);
+    this.removeSkeletonUI(this.videoListWrapper);
 
     this.pageToken = videoList.nextPageToken || '';
   }
