@@ -90,7 +90,7 @@ export default class SearchModal {
 
       this.searchErrorMessage.textContent = '';
     } catch (error) {
-      this.searchErrorMessage.textContent = '검색어를 입력해 주세요.';
+      this.searchErrorMessage.textContent = ERROR_MESSAGE.EMPTY_KEYWORD;
     }
   }
 
