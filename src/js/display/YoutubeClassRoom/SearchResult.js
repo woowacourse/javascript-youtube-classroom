@@ -15,20 +15,11 @@ export default class SearchResult extends Display {
   }
 
   defaultElement() {
-    this.$videoList = $(SELECTOR.ID.VIDEO_LIST, this.container);
-    this.$scrollObserver = createElement('DIV', {
-      id: DOM_NAME.ID.SEARCH_RESULT_SCROLL_OBSERVER,
-    });
-    this.$skeleton = Array.from({ length: CLASS_ROOM_SETTING.MAX_VIDEO_NUMBER }).map(() =>
-      createElement('DIV', {
-        className: DOM_NAME.CLASS.VIDEO_LIST_SKELETON,
-        innerHTML: `
-        <div class="image"></div>
-        <p class="line"></p>
-        <p class="line"></p>
-      `,
-      }),
-    );
+    this.$videoResult = $(SELECTOR.ID.VIDEO_RESULT, this.container);
+    this.$scrollObserver = $(SELECTOR.ID.SEARCH_RESULT_SCROLL_OBSERVER, this.container);
+
+    this.$skeletonList = $('#skeleton-list', this.container);
+    this.drawSkeletonList();
   }
 
   bindEvents() {
@@ -66,20 +57,18 @@ export default class SearchResult extends Display {
   }
 
   render({ isLoading, isLoaded, items, error }) {
-    this.$videoList.innerHTML = '';
-
     if (error === true) {
-      this.$videoList.append(this.drawResultServerError());
+      this.$videoResult.replaceChildren(this.drawResultServerError());
       return;
     }
 
     if (items.length === 0 && isLoaded === true) {
-      this.$videoList.append(this.drawResultNotFound());
+      this.$videoResult.replaceChildren(this.drawResultNotFound());
       return;
     }
 
     if (items.length === 0) {
-      this.$videoList.scrollTo({ top: 0 });
+      this.$videoResult.scrollTo({ top: 0 });
     }
 
     const $fragment = document.createDocumentFragment();
@@ -87,12 +76,28 @@ export default class SearchResult extends Display {
       $fragment.append(...this.drawVideoList(items));
     }
 
-    if (isLoading === true) {
-      $fragment.append(...this.$skeleton);
-    }
+    isLoading
+      ? this.container.classList.add('loading')
+      : this.container.classList.remove('loading');
 
-    $fragment.append(this.$scrollObserver);
-    this.$videoList.append($fragment);
+    this.$videoResult.replaceChildren($fragment);
+  }
+
+  drawSkeletonList() {
+    const $fragment = document.createDocumentFragment();
+    Array.from({ length: CLASS_ROOM_SETTING.MAX_VIDEO_NUMBER }).map(() => {
+      const $skeleton = createElement('LI', {
+        className: DOM_NAME.CLASS.VIDEO_LIST_SKELETON,
+        innerHTML: `
+        <div class="image"></div>
+        <p class="line"></p>
+        <p class="line"></p>
+      `,
+      });
+
+      $fragment.append($skeleton);
+    });
+    this.$skeletonList.replaceChildren($fragment);
   }
 
   drawResultNotFound() {

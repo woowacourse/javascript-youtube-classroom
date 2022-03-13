@@ -3,7 +3,7 @@ export const SELECTOR = Object.freeze({
     CLASSROOM_NAVIGATION: '#classroom-navigation',
     SEARCH_MODAL_BUTTON: '#search-modal-button',
     MODAL_CONTAINER: '#modal',
-    VIDEO_LIST: '#video-list',
+    VIDEO_RESULT: '#video-result',
     SEARCH_FORM: '#search-form',
     SEARCH_INPUT_KEYWORD: '#search-input-keyword',
     SEARCH_BUTTON: '#search-button',

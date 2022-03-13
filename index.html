@@ -27,7 +27,16 @@
       <!-- 2-1 검색 결과가 있을 경우, 아래와 같은 검색 결과 목록을 보여줍니다.-->
       <section id="search-result" class="search-result">
         <h3 hidden>검색 결과</h3>
-        <ul id="video-list" class="video-list">
+        <div id="video-list" class="video-list">
+          <ul id="video-result">
+
+          </ul>
+
+          <ul id="skeleton-list">
+
+          </ul>
+
+          <div id="search-result-scroll-observer"></div>
           <!-- <li class="video-item" data-video-id="">
             <img
               src="https://i.ytimg.com/vi/ECfuKi5-Cfs/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLDvmIcX-TgdcH2g_Bd4AUxw6hjmvQ"
@@ -37,7 +46,7 @@
             <p class="video-item__published-date">2022년 3월 2일</p>
             <button class="video-item__save-button button">⬇ 저장</button>
           </li> -->
-        </ul>
+        </div>
       </section>
       <!-- 2-2 검색 결과가 없을 경우, `search-result--no-result` class를 붙이고 아래와 같은 no-result를 보여줍니다.-->
       <!-- <section class="search-result search-result--no-result">
