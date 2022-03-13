@@ -4,7 +4,7 @@ export const onEnableButton = ($eventTarget, condition) => {
   if (isNotHTMLElement($eventTarget)) {
     return;
   }
-  condition($eventTarget) ? ($eventTarget.disabled = true) : ($eventTarget.disabled = false);
+  $eventTarget.disabled = !condition($eventTarget);
 };
 
 export const onObserveElement = ($element, handler) => {
