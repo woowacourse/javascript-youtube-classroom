@@ -79,6 +79,10 @@ export default class SearchResult extends Display {
       return;
     }
 
+    if (items.length === 0) {
+      this.$videoList.scrollTo({ top: 0 });
+    }
+
     const $fragment = document.createDocumentFragment();
     if (items.length !== 0 && isLoaded === true) {
       $fragment.append(...this.drawVideoList(items));
