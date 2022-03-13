@@ -1,39 +1,34 @@
-import { YOUTUBE_API_KEY } from '../../../api_key.js';
-import { searchVideosMock } from '../__mocks__/api.js';
 import WebStore from '../store/WebStore.js';
-import { API_SERVER } from '../config/config.js';
-import {
-  QUERY_OPTIONS,
-  ERROR_MESSAGES,
-  SAVED_VIDEO,
-} from '../config/constants.js';
+import { REDIRECT_SERVER_HOST } from '../config/config.js';
+import { ERROR_MESSAGES, SAVED_VIDEO } from '../config/constants.js';
 
 const webStore = new WebStore(SAVED_VIDEO.KEY);
 
-const searchVideosWithAPI = (query, nextPageToken = null) => {
-  const options = QUERY_OPTIONS.SEARCH;
-  const spreadQuery = `part=${
-    options.part
-  }&q=${query}&key=${YOUTUBE_API_KEY}&type=${options.type}&maxResults=${
-    options.maxResults
-  }${nextPageToken ? `&pageToken=${nextPageToken}` : ''}`;
-  const url = `${API_SERVER}/search?${spreadQuery}`;
+export const searchVideos = async (query, nextPageToken = null) => {
+  const url = new URL(
+    `${process.env.NODE_ENV === 'development' && 'dummy/'}youtube/v3/search`,
+    REDIRECT_SERVER_HOST
+  );
 
-  return fetch(url).then((res) => {
-    if (res.ok) {
-      return res.json();
-    }
-
-    throw new Error(ERROR_MESSAGES.REQUEST_FAIL);
+  const parameters = new URLSearchParams({
+    part: 'snippet',
+    type: 'video',
+    maxResults: 10,
+    regionCode: 'kr',
+    safeSearch: 'strict',
+    pageToken: nextPageToken || '',
+    q: query,
   });
+
+  url.search = parameters.toString();
+
+  const res = await fetch(url);
+  const body = await res.json();
+
+  if (!res.ok) throw new Error(body.error.message);
+
+  return body;
 };
-
-// export const searchVideos =
-//   process.env.NODE_ENV === 'development'
-//     ? searchVideosMock
-//     : searchVideosWithAPI;
-
-export const searchVideos = searchVideosWithAPI;
 
 export const getSavedVideos = () => {
   return webStore.load();

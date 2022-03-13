@@ -1,1 +1,2 @@
-export const API_SERVER = 'https://www.googleapis.com/youtube/v3';
+export const REDIRECT_SERVER_HOST =
+  'https://trusting-mcnulty-63c936.netlify.app';
