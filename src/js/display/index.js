@@ -3,15 +3,11 @@ import Modal from './Share/Modal';
 import SearchForm from './YoutubeClassRoom/SearchForm';
 import SearchResult from './YoutubeClassRoom/SearchResult';
 
-export default class IndexDisplay {
-  constructor() {
-    new Modal();
-    this.youtubeClassRoomPage();
-  }
+const initDisplays = () => {
+  new Modal();
+  new Navigation();
+  new SearchForm();
+  new SearchResult();
+};
 
-  youtubeClassRoomPage() {
-    new Navigation();
-    new SearchForm();
-    new SearchResult();
-  }
-}
+export default initDisplays;
