@@ -5,10 +5,6 @@ export default class Display {
     if (this.constructor === Display) {
       throw new Error('추상 클래스는 인스턴스화 할 수 없습니다.');
     }
-    this.init();
-  }
-
-  init() {
     this.setContainer();
     this.defaultElement();
     this.bindEvents();
