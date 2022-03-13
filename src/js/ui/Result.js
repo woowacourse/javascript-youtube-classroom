@@ -18,9 +18,7 @@ export default class Result {
   }
 
   renderSkeletonUI() {
-    const $videoList = $('.video-list');
-    $videoList.replaceChildren();
-    $videoList.insertAdjacentHTML(
+    $('.video-list').insertAdjacentHTML(
       'beforeend',
       this.skeletonTemplate().repeat(GET_VIDEO_UNIT),
     );
@@ -74,10 +72,8 @@ export default class Result {
     `;
   }
 
-  renderInitialVideoList(json) {
-    const $videoList = $('.video-list');
-    $videoList.replaceChildren();
-    $videoList.insertAdjacentHTML(
+  renderVideoList(json) {
+    $('.video-list').insertAdjacentHTML(
       'beforeend',
       json.items.length
         ? this.foundResultTemplate(json.items)
@@ -89,22 +85,27 @@ export default class Result {
     }
   }
 
+  renderInitialVideoList(searchText) {
+    request(searchText)
+      .then(json => {
+        $('.video-list').replaceChildren();
+        this.renderVideoList(json);
+      })
+      .catch(async ({ message }) => {
+        await delay(700);
+        showExceptionSnackBar(message);
+        this.removeSkeletonUI();
+      });
+  }
+
   renderNextVideoList(nextPageToken) {
     request($('#search-input-keyword').value, nextPageToken)
       .then(json => {
         this.removeSkeletonUI();
-        $('.video-list').insertAdjacentHTML(
-          'beforeend',
-          this.foundResultTemplate(json.items),
-        );
-        this.addSaveButtonClickEvent(json.items.length);
-        if (json && json.nextPageToken) {
-          this.scrollObserver(json.nextPageToken);
-        }
+        this.renderVideoList(json);
       })
       .catch(async ({ message }) => {
         await delay(700);
-        this.skeletonTemplate();
         showExceptionSnackBar(message);
       });
   }
@@ -134,6 +135,7 @@ export default class Result {
       entry => {
         if (entry[0].isIntersecting) {
           io.unobserve($li);
+          this.renderSkeletonUI();
           this.renderNextVideoList(nextPageToken);
         }
       },

@@ -1,6 +1,4 @@
 import { MESSAGE } from '../constants';
-import { request } from '../domain/youtubeApi';
-import { delay } from '../utils/common';
 import { $, showExceptionSnackBar } from '../utils/dom';
 import Result from './Result';
 
@@ -19,17 +17,9 @@ export default class Search {
         return;
       }
 
+      $('.video-list').replaceChildren();
       this.result.renderSkeletonUI();
-
-      request(this.input.value)
-        .then(json => {
-          this.result.renderInitialVideoList(json);
-        })
-        .catch(async ({ message }) => {
-          await delay(700);
-          showExceptionSnackBar(message);
-          this.result.removeSkeletonUI();
-        });
+      this.result.renderInitialVideoList(this.input.value);
     });
   }
 
