@@ -1,28 +1,14 @@
 import { OPTIONS, fetchData } from '../api';
 import { ERROR_MESSAGE, RULES, THROTTLE_PENDING_MILLISECOND } from '../constants';
-import VideoCardContainer from '../common/VideosCardContainer';
-import { throttle } from '../utils/throttle';
+
+import { SKELETON_TEMPLATE } from '../common/template';
 import toast from '../common/toast';
+import VideoCardContainer from '../common/VideosCardContainer';
+
+import { throttle } from '../utils/throttle';
+import { validateKeyword } from '../utils/validator';
 
 const toastPopup = toast();
-
-const isEmptyKeyword = (keyword) => keyword.trim().length === 0;
-
-const validateKeyword = (keyword) => {
-  if (isEmptyKeyword(keyword)) {
-    throw new Error(ERROR_MESSAGE.EMPTY_KEYWORD);
-  }
-};
-
-const hasVideoList = (videoList) => videoList.length !== 0;
-
-const SKELETON_TEMPLATE = `
-  <div class="skeleton hidden">
-    <div class="image"></div>
-    <p class="line"></p>
-    <p class="line"></p>
-  </div>
-`;
 
 export default class SearchModal {
   constructor(element) {
@@ -109,6 +95,10 @@ export default class SearchModal {
     );
   }
 
+  hasVideoList(videoList) {
+    return videoList.length !== 0;
+  }
+
   showNoResultContainer() {
     this.resultContainer.classList.add('hidden');
     this.noResultContainer.classList.remove('hidden');
@@ -120,7 +110,7 @@ export default class SearchModal {
   }
 
   showSearchResult(videoList) {
-    if (hasVideoList(videoList)) {
+    if (this.hasVideoList(videoList)) {
       this.showResultContainer();
       return;
     }
@@ -130,6 +120,7 @@ export default class SearchModal {
   showSkeletons() {
     this.skeletons.forEach((skeleton) => skeleton.classList.remove('hidden'));
   }
+
   hideSkeletons() {
     this.skeletons.forEach((skeleton) => skeleton.classList.add('hidden'));
   }
