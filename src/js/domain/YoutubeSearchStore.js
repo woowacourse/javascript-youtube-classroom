@@ -12,12 +12,12 @@ class YoutubeSearchStore extends Store {
     error: false,
   };
 
-  dispatch(type, data) {
-    const stateByType = {
-      [YOUTUBE_SEARCH_ACTION.UPDATE_SEARCH_KEYWORD]: () => {
+  setReducer() {
+    this.reducer = {
+      [YOUTUBE_SEARCH_ACTION.UPDATE_SEARCH_KEYWORD]: searchKeyword => {
         this.setState({
           ...this.state,
-          searchKeyword: data,
+          searchKeyword,
           isLoading: true,
           isLoaded: false,
           items: [],
@@ -46,7 +46,6 @@ class YoutubeSearchStore extends Store {
         });
       },
     };
-    stateByType[type] && stateByType[type](data);
   }
 }
 
