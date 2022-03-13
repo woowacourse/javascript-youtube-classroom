@@ -1,5 +1,5 @@
 import { $ } from '@Utils/Dom';
-import { SELECTOR } from '@Constants/Selector';
+import { SELECTOR } from '@Constants/selector';
 import Display from '@Core/Display';
 
 export default class Navigation extends Display {

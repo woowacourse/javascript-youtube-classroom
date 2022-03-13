@@ -1,6 +1,7 @@
 import { $ } from '@Utils/Dom';
-import { SELECTOR } from '@Constants/Selector';
-import { ERROR_MESSAGE, ACTION_TYPE } from '@Constants/String';
+import { SELECTOR } from '@Constants/selector';
+import { YOUTUBE_SEARCH_ACTION } from '@Constants/action';
+import { ERROR_MESSAGE } from '@Constants/message';
 import { onEnableButton } from '@Utils/ElementControl';
 import Display from '@Core/Display';
 import YoutubeSearchStore from '@Domain/YoutubeSearchStore';
@@ -49,7 +50,7 @@ export default class SearchForm extends Display {
       return;
     }
 
-    YoutubeSearchStore.dispatch(ACTION_TYPE.UPDATE_SEARCH_KEYWORD, newKeyword);
-    YoutubeSearchStore.dispatch(ACTION_TYPE.UPDATE_SEARCH_RESULT);
+    YoutubeSearchStore.dispatch(YOUTUBE_SEARCH_ACTION.UPDATE_SEARCH_KEYWORD, newKeyword);
+    YoutubeSearchStore.dispatch(YOUTUBE_SEARCH_ACTION.UPDATE_SEARCH_RESULT);
   }
 }

@@ -1,4 +1,4 @@
-import { CLASS_ROOM_SETTING } from '@Constants/Setting';
+import { YOUTUBE_SETTING } from '@Constants/setting';
 
 const request = async (url, option) => {
   const response = await fetch(url, option);
@@ -13,7 +13,7 @@ export const requestYoutubeSearch = async (keyword = '', nextPageToken = '') => 
     const response = await request(
       `https://www.googleapis.com/youtube/v3/search?part=snippet&type=video&q=${encodeURIComponent(
         keyword,
-      )}&maxResults=${CLASS_ROOM_SETTING.MAX_VIDEO_NUMBER}&key=${
+      )}&maxResults=${YOUTUBE_SETTING.MAX_VIDEO_NUMBER}&key=${
         process.env.YOUTUBE_API_KEY
       }&pageToken=${nextPageToken}`,
       {

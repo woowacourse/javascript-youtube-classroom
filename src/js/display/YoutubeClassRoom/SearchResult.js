@@ -1,9 +1,10 @@
 import { $, createElement } from '@Utils/Dom';
 import { getParsedTime } from '@Utils/ManageData';
 import { onObserveElement } from '@Utils/ElementControl';
-import { CLASS_ROOM_SETTING } from '@Constants/Setting';
-import { ERROR_MESSAGE, ACTION_TYPE } from '@Constants/String';
-import { SELECTOR, DOM_NAME } from '@Constants/Selector';
+import { YOUTUBE_SETTING } from '@Constants/setting';
+import { YOUTUBE_SEARCH_ACTION } from '@Constants/action';
+import { ERROR_MESSAGE } from '@Constants/message';
+import { SELECTOR, DOM_NAME } from '@Constants/selector';
 import Display from '@Core/Display';
 import YoutubeSearchStore from '@Domain/YoutubeSearchStore';
 import YoutubeSaveStorage from '@Domain/YoutubeSaveStorage';
@@ -20,7 +21,7 @@ export default class SearchResult extends Display {
     this.$scrollObserver = createElement('DIV', {
       id: DOM_NAME.ID.SEARCH_RESULT_SCROLL_OBSERVER,
     });
-    this.$skeleton = Array.from({ length: CLASS_ROOM_SETTING.MAX_VIDEO_NUMBER }).map(() =>
+    this.$skeleton = Array.from({ length: YOUTUBE_SETTING.MAX_VIDEO_NUMBER }).map(() =>
       createElement('DIV', {
         className: DOM_NAME.CLASS.VIDEO_LIST_SKELETON,
         innerHTML: `
@@ -36,8 +37,8 @@ export default class SearchResult extends Display {
     onObserveElement(this.$scrollObserver, () => {
       const { isLoading } = YoutubeSearchStore.getState();
       if (isLoading) return;
-      YoutubeSearchStore.dispatch(ACTION_TYPE.UPDATE_SEARCH_LOADING_STATUS, true);
-      YoutubeSearchStore.dispatch(ACTION_TYPE.UPDATE_SEARCH_RESULT);
+      YoutubeSearchStore.dispatch(YOUTUBE_SEARCH_ACTION.UPDATE_SEARCH_LOADING_STATUS, true);
+      YoutubeSearchStore.dispatch(YOUTUBE_SEARCH_ACTION.UPDATE_SEARCH_RESULT);
     });
     this.addEvent({
       eventType: 'click',
@@ -59,7 +60,7 @@ export default class SearchResult extends Display {
     }
 
     const saveItemsCount = YoutubeSaveStorage.get().length;
-    if (saveItemsCount === CLASS_ROOM_SETTING.MAX_SAVE_NUMBER) {
+    if (saveItemsCount === YOUTUBE_SETTING.MAX_SAVE_NUMBER) {
       alert(ERROR_MESSAGE.MAX_SAVE_VIDEO);
       return;
     }
