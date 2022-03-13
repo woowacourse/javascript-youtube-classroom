@@ -13,11 +13,12 @@ export const getSearchAPI = async (query, pageToken = null) => {
     pageToken,
   })}`;
   const response = await fetch(url);
-  if (!response.ok) {
-    throw Error(response.statusText);
+  const data = await response.json();
+  if (response.ok) {
+    return [null, data];
   }
 
-  return response.json();
+  return [{ message: data.message, statusCode: response.status }, null];
 };
 
 function spreadOptions(options) {

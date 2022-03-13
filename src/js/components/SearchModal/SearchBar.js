@@ -32,28 +32,33 @@ export default class SearchBar extends Component {
 
   setEvent() {
     this.addEvent('submit', '#search-form', async e => {
-      try {
-        rootStore.setState({ isLoading: true });
-        const { items, nextPageToken } = await getSearchAPI(
-          e.target.elements.searchInput.value
-        );
-        if (!items.length) {
-          rootStore.setState({ notFound: true });
+      rootStore.setState({ isLoading: true });
 
-          return;
-        }
-        rootStore.setState({
-          searchOption: {
-            query: e.target.elements.searchInput.value,
-            pageToken: nextPageToken,
-          },
-          videos: addSavedToVideos(items),
-          notFound: false,
-          isLoading: false,
-        });
-      } catch ({ message }) {
-        console.log('message', message);
+      const [error, data] = await getSearchAPI(
+        e.target.elements.searchInput.value
+      );
+      if (error) {
+        alert(`${error.message}, status: ${error.statusCode}`);
+
+        return;
       }
+
+      const { items, nextPageToken } = data;
+      if (!items.length) {
+        rootStore.setState({ notFound: true });
+
+        return;
+      }
+
+      rootStore.setState({
+        searchOption: {
+          query: e.target.elements.searchInput.value,
+          pageToken: nextPageToken,
+        },
+        videos: addSavedToVideos(items),
+        notFound: false,
+        isLoading: false,
+      });
     });
   }
 }
