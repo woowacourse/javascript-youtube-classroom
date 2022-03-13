@@ -1,6 +1,6 @@
 import VideoItemView from './VideoItemView.js';
 import { DOM_STRING, VIDEO_LIST } from '../utils/constants.js';
-import { $ } from '../utils/common.js';
+import { $, throttle } from '../utils/common.js';
 
 export default class ModalView {
   constructor() {
@@ -46,17 +46,14 @@ export default class ModalView {
 
   bindVideoListScroll(callback) {
     this.$videoList.addEventListener('scroll', () => {
-      if (!this.throttle) {
-        this.throttle = setTimeout(async () => {
-          this.throttle = null;
-          if (
-            this.$videoList.scrollHeight - this.$videoList.scrollTop <=
-            this.$videoList.offsetHeight
-          ) {
-            callback(this.$searchInput.value);
-          }
-        }, 1000);
-      }
+      throttle(() => {
+        if (
+          this.$videoList.scrollHeight - this.$videoList.scrollTop <=
+          this.$videoList.offsetHeight
+        ) {
+          callback(this.$searchInput.value);
+        }
+      });
     });
   }
 
