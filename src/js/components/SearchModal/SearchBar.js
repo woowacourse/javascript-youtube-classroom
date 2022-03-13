@@ -48,7 +48,7 @@ export default class SearchBar extends Component {
             query: e.target.elements.searchInput.value,
             pageToken: nextPageToken,
           },
-          searchResult: addSavedToVideos(items),
+          videos: addSavedToVideos(items),
           notFound: false,
           isLoading: false,
         });
@@ -59,10 +59,10 @@ export default class SearchBar extends Component {
   }
 }
 
-export function addSavedToVideos(videos) {
+export function addSavedToVideos(rawVideos) {
   const savedVideos = webStore.load();
 
-  return videos.map(
+  return rawVideos.map(
     ({
       id: { videoId },
       snippet: {

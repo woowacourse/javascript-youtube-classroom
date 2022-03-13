@@ -34,7 +34,7 @@ export const rootStore = {
       query: '',
       pageToken: null,
     },
-    searchResult: [],
+    videos: [],
     notFound: false,
   }),
   setState(newState) {

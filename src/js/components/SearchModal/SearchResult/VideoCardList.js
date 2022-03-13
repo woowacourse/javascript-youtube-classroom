@@ -19,10 +19,10 @@ export default class VideoCardList extends Component {
   }
 
   template() {
-    const { searchResult, isLoading } = rootStore.state;
+    const { videos, isLoading } = rootStore.state;
 
     return `
-      ${searchResult.map(() => `<div class="video-card real"></div>`).join('')}
+      ${videos.map(() => `<div class="video-card real"></div>`).join('')}
       ${
         isLoading
           ? Array(LOAD_VIDEOS_COUNT)
@@ -35,11 +35,11 @@ export default class VideoCardList extends Component {
   }
 
   afterMounted() {
-    const { searchResult, isLoading } = rootStore.state;
+    const { videos, isLoading } = rootStore.state;
     const videoCards = document.querySelectorAll('.video-card.real');
 
     videoCards.forEach((videoCard, index) => {
-      new VideoCard(videoCard, { video: searchResult[index] });
+      new VideoCard(videoCard, { video: videos[index] });
     });
 
     if (isLoading) {
@@ -71,7 +71,7 @@ export default class VideoCardList extends Component {
       const newVideos = await this.loadNextVideos();
 
       rootStore.setState({
-        searchResult: [...rootStore.state.searchResult, ...newVideos],
+        videos: [...rootStore.state.videos, ...newVideos],
         isLoading: false,
       });
     });
