@@ -1,13 +1,13 @@
 let currentObserver = null;
 
-export const observe = (fn) => {
+export const observe = fn => {
   currentObserver = fn;
   fn();
   currentObserver = null;
 };
 
-const observable = (target) => {
-  Object.keys(target).forEach((key) => {
+const observable = target => {
+  Object.keys(target).forEach(key => {
     const observers = new Set();
     let cache = target[key];
 
@@ -19,7 +19,7 @@ const observable = (target) => {
       },
       set(value) {
         cache = value;
-        observers.forEach((fn) => fn());
+        observers.forEach(fn => fn());
       },
     });
   });

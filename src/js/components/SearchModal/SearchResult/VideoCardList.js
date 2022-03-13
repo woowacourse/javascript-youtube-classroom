@@ -44,7 +44,7 @@ export default class VideoCardList extends Component {
 
     if (isLoading) {
       const skeletonCards = document.querySelectorAll('.video-card.skeleton');
-      skeletonCards.forEach((skeletonCard) => {
+      skeletonCards.forEach(skeletonCard => {
         new SkeletonCard(skeletonCard);
       });
 
@@ -61,7 +61,7 @@ export default class VideoCardList extends Component {
   }
 
   handleLastVideoVisible(entries, observer) {
-    entries.forEach(async (entry) => {
+    entries.forEach(async entry => {
       if (!entry.isIntersecting || rootStore.state.isLoading) return;
 
       observer.disconnect();

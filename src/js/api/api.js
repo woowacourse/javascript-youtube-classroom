@@ -22,7 +22,7 @@ export const getSearchAPI = async (query, pageToken = null) => {
 
 function spreadOptions(options) {
   return Object.keys(options)
-    .map((key) => options[key] && `${key}=${options[key]}`)
+    .map(key => options[key] && `${key}=${options[key]}`)
     .join('&');
 }
 
@@ -30,5 +30,5 @@ function encodeQuery(query) {
   return query
     .trim()
     .replace(/\s/g, '+') // 공백은 +로 바꿔준다.
-    .replace(/[^ㄱ-ㅎ|가-힣]/g, (match) => encodeURIComponent(match)); // 한글은 제외하고, encode
+    .replace(/[^ㄱ-ㅎ|가-힣]/g, match => encodeURIComponent(match)); // 한글은 제외하고, encode
 }

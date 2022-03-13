@@ -43,7 +43,7 @@ export default class VideoCard extends Component {
         webStore.save([...prevSavedVideos, videoId]);
 
         const { videos } = rootStore.state;
-        const newVideos = [...videos].map((video) => {
+        const newVideos = [...videos].map(video => {
           if (video.videoId === videoId) {
             return { ...video, saved: true };
           }

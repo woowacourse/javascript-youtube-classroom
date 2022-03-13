@@ -31,7 +31,7 @@ export default class SearchBar extends Component {
   }
 
   setEvent() {
-    this.addEvent('submit', '#search-form', async (e) => {
+    this.addEvent('submit', '#search-form', async e => {
       try {
         rootStore.setState({ isLoading: true });
         const { items, nextPageToken } = await getSearchAPI(

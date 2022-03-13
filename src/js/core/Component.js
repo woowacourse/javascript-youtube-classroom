@@ -37,9 +37,9 @@ export default class Component {
   setEvent() {}
 
   addEvent(eventType, selector, callback) {
-    const isTarget = (target) => target.closest(selector);
+    const isTarget = target => target.closest(selector);
 
-    this.target.addEventListener(eventType, (event) => {
+    this.target.addEventListener(eventType, event => {
       if (!isTarget(event.target)) return;
 
       event.preventDefault();
