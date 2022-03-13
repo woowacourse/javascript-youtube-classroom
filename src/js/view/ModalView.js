@@ -6,7 +6,6 @@ export default class ModalView {
   constructor() {
     this.registerDOM();
     this.videoItemList = [];
-    this.throttle = null;
   }
 
   registerDOM() {
@@ -78,10 +77,14 @@ export default class ModalView {
     this.$videoList.classList.add(DOM_STRING.HIDE);
   }
 
-  updateVideoItems(data) {
-    this.videoItemList
-      .slice(-VIDEO_LIST.RENDER_SIZE)
-      .forEach((videoItem, index) => videoItem.renderVideoItemTemplate(data[index]));
+  updateVideoItems(videoListData) {
+    const willUpdateVideoItemList = this.videoItemList.slice(-VIDEO_LIST.RENDER_SIZE);
+    const willDeleteVideoItemList = willUpdateVideoItemList.splice(videoListData.length);
+
+    willUpdateVideoItemList.forEach((videoItem, index) =>
+      videoItem.renderVideoItemTemplate(videoListData[index])
+    );
+    willDeleteVideoItemList.forEach(videoItem => videoItem.deleteTemplate());
   }
 
   showLoadingVideoItems() {

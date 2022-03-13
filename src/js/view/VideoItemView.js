@@ -36,4 +36,8 @@ export default class VideoItemView {
     this.$element.textContent = '';
     this.$element.insertAdjacentHTML('afterbegin', template);
   }
+
+  deleteTemplate() {
+    this.$element.textContent = '';
+  }
 }
