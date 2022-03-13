@@ -9,7 +9,7 @@ import {
   videoSkeletonTemplate,
   videoNotFoundTemplate,
 } from './template/videoTemplate.js';
-import { selectDom, addEvent, selectAllDom } from './utils/selectDom.js';
+import { selectDom, addEvent } from './utils/selectDom.js';
 
 class RenderVideo {
   constructor(searchVideo, saveVideo) {
@@ -18,38 +18,36 @@ class RenderVideo {
 
     this.searchModalButton = selectDom('#search-modal-button');
     this.modalContainer = selectDom('.modal-container');
-    this.searchForm = selectDom('#search-form', this.modalContainer);
-    this.searchInput = selectDom('#search-input-keyword', this.searchForm);
-    this.videoListContainer = selectDom('.video-list', this.modalContainer);
-    this.searchResultSection = selectDom('.search-result', this.modalContainer);
-    this.saveVideoButtons = selectAllDom('.video-item__save-button', this.modalContainer);
+    this.searchVideoForm = selectDom('#search-form', this.modalContainer);
+    this.searchVideoInput = selectDom('#search-input-keyword', this.searchVideoForm);
+    this.renderVideoListWrap = selectDom('.video-list', this.modalContainer);
 
-    addEvent(this.searchModalButton, 'click', this.onSearchModalButtonClick);
-    addEvent(this.searchForm, 'submit', this.onSearchFormSubmit);
-    addEvent(this.videoListContainer, 'scroll', this.onScrollVideoList);
-    addEvent(this.videoListContainer, 'click', this.onSaveButtonClick);
+    addEvent(this.searchModalButton, 'click', this.onClickVideoSearchModal);
+    addEvent(this.searchVideoForm, 'submit', this.onSubmitVideoSearch);
+    addEvent(this.renderVideoListWrap, 'scroll', this.onScrollVideoList);
+    addEvent(this.renderVideoListWrap, 'click', this.onSaveButtonClick);
   }
 
   onScrollVideoList = () => {
-    const { scrollHeight, offsetHeight, scrollTop } = this.videoListContainer;
+    const { scrollHeight, offsetHeight, scrollTop } = this.renderVideoListWrap;
     if (scrollHeight - offsetHeight === scrollTop) {
-      this.loadVideo();
+      this.renderSearchScreen();
     }
   };
 
-  onSearchModalButtonClick = () => {
+  onClickVideoSearchModal = () => {
     this.modalContainer.classList.remove('hide');
   };
 
-  onSearchFormSubmit = (e) => {
+  onSubmitVideoSearch = (e) => {
     e.preventDefault();
-    if (this.searchVideo.prevSearchKeyword === this.searchInput.value.trim()) {
-      this.videoListContainer.scrollTop = 0;
+    if (this.searchVideo.prevSearchKeyword === this.searchVideoInput.value.trim()) {
+      this.renderVideoListWrap.scrollTop = 0;
       return;
     }
 
-    this.videoListContainer.replaceChildren();
-    this.loadVideo();
+    this.renderVideoListWrap.replaceChildren();
+    this.renderSearchScreen();
   };
 
   onSaveButtonClick = ({ target }) => {
@@ -68,14 +66,14 @@ class RenderVideo {
   };
 
   renderSearchVideo(searchVideo) {
-    this.handleSketonUi(this.videoListContainer.children, 'add');
+    this.handleSketonUi(this.renderVideoListWrap.children, 'hide');
 
     if (!searchVideo.length) {
-      this.videoListContainer.insertAdjacentHTML('afterbegin', videoNotFoundTemplate);
+      this.renderVideoListWrap.insertAdjacentHTML('afterbegin', videoNotFoundTemplate);
       return;
     }
 
-    Array.from(this.videoListContainer.children)
+    Array.from(this.renderVideoListWrap.children)
       .find((videoLi) => videoLi.classList.contains('skeleton'))
       .insertAdjacentHTML(
         'beforebegin',
@@ -87,25 +85,26 @@ class RenderVideo {
   }
 
   renderVideoSkeleton() {
-    if (this.videoListContainer.children.length === 0) {
-      this.videoListContainer.insertAdjacentHTML(
+    if (this.renderVideoListWrap.children.length === 0) {
+      this.renderVideoListWrap.insertAdjacentHTML(
         'beforeend',
         Array.from({ length: GET_VIDEO_COUNT }, () => videoSkeletonTemplate).join(' ')
       );
+      return;
     }
 
-    this.handleSketonUi(this.videoListContainer.children, 'remove');
+    this.handleSketonUi(this.renderVideoListWrap.children, 'show');
   }
 
-  async loadVideo() {
+  async renderSearchScreen() {
     this.renderVideoSkeleton();
     try {
       const searchResults = await this.searchVideo.handleSearchVideo(this.searchInput.value.trim());
       this.renderSearchVideo(searchResults);
     } catch (error) {
-      this.searchInput.value = '';
-      this.searchInput.focus();
-      this.videoListContainer.replaceChildren('');
+      this.searchVideoInput.value = '';
+      this.searchVideoInput.focus();
+      this.renderVideoListWrap.replaceChildren();
       return alert(error);
     }
   }
@@ -113,7 +112,7 @@ class RenderVideo {
   handleSketonUi(videoList, event) {
     Array.from(videoList)
       .filter((videoLi) => videoLi.classList.contains('skeleton'))
-      .map((skeletonUi) => (event === 'add' ? skeletonUi.classList.add('hide-skeleton') : skeletonUi.classList.remove('hide-skeleton')));
+      .map((skeletonUi) => (event === 'hide' ? skeletonUi.classList.add('hide-skeleton') : skeletonUi.classList.remove('hide-skeleton')));
   }
 }
 
