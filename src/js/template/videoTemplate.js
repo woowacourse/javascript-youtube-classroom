@@ -1,4 +1,5 @@
 import notFoundImage from '../../assets/images/not_found.png';
+import { MAX_VIDEO_REQUEST_COUNT } from '../constants/contants';
 
 const videoTemplate = (
   {
@@ -35,6 +36,11 @@ const videoSkeletonTemplate = `
   </div>
 `;
 
+const totalVideoSkeletonTemplate = Array.from(
+  { length: MAX_VIDEO_REQUEST_COUNT },
+  () => videoSkeletonTemplate
+).join(' ');
+
 const videoNotFoundTemplate = `
   <section class="search-result search-result--no-result">
     <h3 hidden>검색 결과</h3>
@@ -48,4 +54,4 @@ const videoNotFoundTemplate = `
   </section>
 `;
 
-export { videoTemplate, videoSkeletonTemplate, videoNotFoundTemplate };
+export { videoTemplate, totalVideoSkeletonTemplate, videoNotFoundTemplate };

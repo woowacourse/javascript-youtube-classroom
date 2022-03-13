@@ -9,7 +9,7 @@ import SaveVideo from './saveVideo.js';
 import SearchVideo from './searchVideo.js';
 import {
   videoTemplate,
-  videoSkeletonTemplate,
+  totalVideoSkeletonTemplate,
   videoNotFoundTemplate,
 } from './template/videoTemplate.js';
 import { selectDom, addEvent } from './utils/handleElement.js';
@@ -57,6 +57,7 @@ class RenderVideo {
 
     this.searchVideo.initNextPageToken();
     this.videoListContainer.replaceChildren();
+    this.videoListContainer.insertAdjacentHTML('afterbegin', totalVideoSkeletonTemplate);
     this.#loadVideo();
   };
 
@@ -81,13 +82,13 @@ class RenderVideo {
     }
 
     Array.from(this.videoListContainer.children).forEach((videoLi) => {
-      if (videoLi.className === 'skeleton') {
-        videoLi.remove();
+      if (videoLi.classList.contains('skeleton')) {
+        videoLi.classList.add('hide');
       }
     });
 
-    this.videoListContainer.insertAdjacentHTML(
-      'beforeend',
+    selectDom('.skeleton', this.videoListContainer).insertAdjacentHTML(
+      'beforebegin',
       searchVideo
         .map((video) =>
           videoTemplate(video, this.saveVideo.saveVideoList.includes(video.id.videoId))
@@ -97,10 +98,11 @@ class RenderVideo {
   }
 
   #renderVideoSkeleton() {
-    this.videoListContainer.insertAdjacentHTML(
-      'beforeend',
-      Array.from({ length: MAX_VIDEO_REQUEST_COUNT }, () => videoSkeletonTemplate).join(' ')
-    );
+    Array.from(this.videoListContainer.children).forEach((videoLi) => {
+      if (videoLi.classList.contains('skeleton')) {
+        videoLi.classList.remove('hide');
+      }
+    });
   }
 
   async #loadVideo() {
