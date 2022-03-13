@@ -118,7 +118,6 @@ class SearchModal {
       this.$videoListContainer.insertAdjacentHTML('beforeend', template.exceedCapacityErrorImage());
       return;
     }
-    console.log(err);
     this.$videoListContainer.insertAdjacentHTML('beforeend', template.responceFailedError());
   }
 
