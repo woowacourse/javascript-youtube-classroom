@@ -31,14 +31,14 @@ export default class EventHandler {
     storageManager.storeVideoId(videoId);
   }
 
-  async onSearchButtonClick(searchInput) {
+  async onSearchButtonClick(inputValue) {
     try {
-      validator.isValidSearchInput(searchInput);
+      validator.isValidSearchInput(inputValue);
       this.modalView.resetVideoList();
       this.modalView.appendEmptyList();
       this.modalView.appendVideoItem();
       this.modalView.getSkeletonTemplate();
-      const videoListData = await this.getVideoListData(searchInput);
+      const videoListData = await APIManager.getVideoListData(inputValue);
       this.modalView.getData(videoListData);
     } catch (error) {
       alert(error.message);
@@ -46,24 +46,15 @@ export default class EventHandler {
     }
   }
 
-  async onvideoListScroll(searchInput) {
+  async onvideoListScroll(inputValue) {
     try {
       this.modalView.appendEmptyList();
       this.modalView.appendVideoItem();
       this.modalView.getSkeletonTemplate();
-      const videoListData = await this.getVideoListData(searchInput);
+      const videoListData = await APIManager.getVideoListData(inputValue);
       this.modalView.getData(videoListData);
     } catch (error) {
       alert(error.message);
-    }
-  }
-
-  async getVideoListData(searchInput) {
-    try {
-      const rawData = await APIManager.fetchData(searchInput);
-      return APIManager.parsingVideoData(rawData);
-    } catch (err) {
-      throw new Error(err);
     }
   }
 }

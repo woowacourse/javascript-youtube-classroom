@@ -9,7 +9,7 @@ const APIManager = {
   type: 'video',
   regionCode: 'KR',
 
-  fetchData: async function (inputValue) {
+  async fetchData(inputValue) {
     try {
       // const response = await fetch(
       //   `${this.baseURL}?part=${this.part}&q=${inputValue}&pageToken=${this.pageToken}&maxResults=${this.maxResults}&type=${this.type}&regionCode=${this.regionCode}`
@@ -24,14 +24,14 @@ const APIManager = {
     }
   },
 
-  checkResponseError: function (responseData) {
+  checkResponseError(responseData) {
     if (responseData.error) {
       throw new Error(ERROR_MESSAGE.CANNOT_LOAD);
     }
     return false;
   },
 
-  parsingVideoData: function (responseData) {
+  parsingVideoData(responseData) {
     try {
       this.checkResponseError(responseData);
       this.pageToken = responseData.nextPageToken;
@@ -46,6 +46,15 @@ const APIManager = {
       });
     } catch (error) {
       throw new Error(error);
+    }
+  },
+
+  async getVideoListData(inputValue) {
+    try {
+      const rawData = await this.fetchData(inputValue);
+      return this.parsingVideoData(rawData);
+    } catch (err) {
+      throw new Error(err);
     }
   },
 };
