@@ -4,9 +4,10 @@ export default class Store {
   subscribers = [];
 
   constructor(initialState) {
-    if (this.constructor === Store) {
+    if (new.target.name === Store.name) {
       throw new Error('추상 클래스는 인스턴스화 할 수 없습니다.');
     }
+
     this.state = initialState;
   }
 

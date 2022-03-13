@@ -2,9 +2,10 @@ export default class Display {
   container;
 
   constructor() {
-    if (this.constructor === Display) {
+    if (new.target.name === Display.name) {
       throw new Error('추상 클래스는 인스턴스화 할 수 없습니다.');
     }
+
     this.init();
   }
 
