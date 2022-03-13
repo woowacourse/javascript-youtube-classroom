@@ -31,11 +31,10 @@ const youtubeSearchAPI = {
   },
 
   checkExceedCapacity(response) {
-    if (response.status === 403) {
-      const error = new Error(ERROR_MESSAGE.EXCEED_REQUEST_CAPACITY_ERROR);
-      error.name = ERROR_403;
-      throw error;
-    }
+    if (response.status !== 403) return;
+    const error = new Error(ERROR_MESSAGE.EXCEED_REQUEST_CAPACITY_ERROR);
+    error.name = ERROR_403;
+    throw error;
   },
 };
 
