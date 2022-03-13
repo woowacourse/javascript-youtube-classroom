@@ -1,0 +1,9 @@
+:root {
+  --primary: #00bcd4;
+  --primary-lighten: #80deea;
+  --secondary: #b4b4b4;
+  --secondary-lighten: #ededed;
+  --surface: #212121;
+  --dimmer: rgba(0, 0, 0, 0.5);
+  --white: #ffffff;
+}
