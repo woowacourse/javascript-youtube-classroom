@@ -72,22 +72,22 @@ export default class SearchResult extends Display {
   render({ isLoading, isLoaded, items, error }) {
     this.$videoList.innerHTML = '';
 
-    if (error === true) {
+    if (error) {
       this.$videoList.append(this.getResultServerError());
       return;
     }
 
-    if (items.length === 0 && isLoaded === true) {
+    if (items.length === 0 && isLoaded) {
       this.$videoList.append(this.getResultNotFound());
       return;
     }
 
     const $fragment = document.createDocumentFragment();
-    if (items.length !== 0 && isLoaded === true) {
+    if (items.length !== 0 && isLoaded) {
       $fragment.append(...this.getVideoList(items));
     }
 
-    if (isLoading === true) {
+    if (isLoading) {
       $fragment.append(...this.$skeleton);
     }
 
