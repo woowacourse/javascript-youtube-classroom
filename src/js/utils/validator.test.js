@@ -1,4 +1,4 @@
-import { isEmptyString, isSameKeyword } from '../utils/Validator';
+import { isEmptyString, isSameKeyword } from './Validator';
 
 describe('유튜브 검색어 validation 테스트', () => {
   test('검색어는 빈 칸일 수 없다.', () => {
