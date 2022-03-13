@@ -33,7 +33,7 @@ export const isEmpty = (inputValue) => {
   return !inputValue.trim().length;
 };
 
-export const validateInput = (inputValue) => {
+export const checkKeywordValid = (inputValue) => {
   if (isEmpty(inputValue)) {
     throw new Error(ERROR_MESSAGE.SEARCH_INPUT_IS_EMPTY);
   }

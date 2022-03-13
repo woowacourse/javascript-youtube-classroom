@@ -2,7 +2,7 @@ import SearchModalView from "./view/SearchModalView";
 import mockObject from "./mockObject";
 import getSearchResult from "./api/getSearchResult";
 import { DELAY_TIME } from "./constants/constants";
-import { throttle, validateInput, isScrollToBottom } from "./utils/utils";
+import { throttle, checkKeywordValid, isScrollToBottom } from "./utils/utils";
 import { bindEventListener, findTargetDataset } from "./utils/dom";
 
 export default class YoutubeApp {
@@ -65,7 +65,7 @@ export default class YoutubeApp {
 
     const searchInputKeyword = document.querySelector("#search-input-keyword");
     try {
-      validateInput(searchInputKeyword.value);
+      checkKeywordValid(searchInputKeyword.value);
     } catch ({ message }) {
       alert(message);
       return;
