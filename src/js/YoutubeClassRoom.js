@@ -29,8 +29,7 @@ export default class YoutubeClassRoom {
     try {
       validateSearchKeyword(keyword);
     } catch ({ message }) {
-      alert(message);
-      return;
+      return alert(message);
     }
     this.searchOnSubmitKeyword(keyword);
   }
@@ -49,22 +48,18 @@ export default class YoutubeClassRoom {
   searchOnSubmitKeyword(keyword) {
     this.searchResultView.resetSearchResultVideoList();
     this.searchResultView.updateOnLoading();
-    this.searchVideoManager
-      .search(keyword)
-      .then((videos) => {
-        const checkedVideos = this.addSavedInfoToVideos(videos);
-        this.searchResultView.updateOnSearchDataReceived(checkedVideos);
-      })
-      .catch(() => {
-        this.searchResultView.showErrorResult();
-      });
+    this.searchAndShowResult(keyword);
   }
 
   searchOnScroll(e) {
     if (this.impossibleToLoadMore(e)) return;
     this.searchResultView.updateOnLoading();
+    this.searchAndShowResult();
+  }
+
+  searchAndShowResult(keyword) {
     this.searchVideoManager
-      .search()
+      .search(keyword)
       .then((videos) => {
         const checkedVideos = this.addSavedInfoToVideos(videos);
         this.searchResultView.updateOnSearchDataReceived(checkedVideos);
