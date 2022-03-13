@@ -34,7 +34,7 @@ const videoAPICaller = {
         channelTitle: item.snippet.channelTitle,
       }));
     } catch (error) {
-      throw new Error('데이터 처리 중 오류가 발생했습니다.');
+      throw new Error(ERROR_MESSAGE.DATA_PROCESSING_ERROR);
     }
   },
 };
