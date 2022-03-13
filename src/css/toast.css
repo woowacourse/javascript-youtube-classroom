@@ -11,8 +11,8 @@
   opacity: 0;
   visibility: hidden;
   transition: opacity 0.5s, visibility 0.5s, transform 0.5s;
-  background: rgba(0, 188, 212);
-  color: #fff;
+  background: var(--toast-bg-color);
+  color: var(--toast-text-color);
   z-index: 10000;
   text-align: center;
   white-space: pre;
