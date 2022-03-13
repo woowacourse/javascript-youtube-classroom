@@ -1,6 +1,9 @@
 .skeleton {
   width: 236px;
 }
+.skeleton.hidden {
+  display: none;
+}
 
 .skeleton .image,
 .skeleton .line {

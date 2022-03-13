@@ -7,7 +7,10 @@ export default class VideoCardContainer {
 
   constructor(parentElement, props) {
     this.parentElement = parentElement;
-    this.#state = props;
+    this.#state = {
+      items: [],
+      ...props
+    };
     this.bindEvents();
   }
 
@@ -46,7 +49,7 @@ export default class VideoCardContainer {
   }
 
   render() {
-    this.parentElement.insertAdjacentHTML('beforeend', this.template());
+    this.#state.skeletonElement.insertAdjacentHTML('beforebegin', this.template());
   }
 
   setState(newState) {

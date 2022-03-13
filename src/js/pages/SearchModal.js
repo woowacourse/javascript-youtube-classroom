@@ -17,7 +17,7 @@ const validateKeyword = (keyword) => {
 const hasVideoList = (videoList) => videoList.length !== 0;
 
 const SKELETON_TEMPLATE = `
-  <div class="skeleton">
+  <div class="skeleton hidden">
     <div class="image"></div>
     <p class="line"></p>
     <p class="line"></p>
@@ -29,23 +29,23 @@ export default class SearchModal {
     this.element = element;
     this.configureDOMs();
     this.bindEvents();
-    this.VideoCardContainer = new VideoCardContainer(this.videoListWrapper, {
-      items: [],
-    });
+    this.VideoCardContainer = new VideoCardContainer(
+      this.videoListWrapper,
+      { skeletonElement: this.skeletons[0] }
+    );
     this.pageToken = '';
   }
 
   configureDOMs() {
-    this.searchInputKeyword = this.element.querySelector(
-      '#search-input-keyword'
-    );
-    this.searchErrorMessage = this.element.querySelector(
-      '#search-error-message'
-    );
+    this.searchInputKeyword = this.element.querySelector('#search-input-keyword');
+    this.searchErrorMessage = this.element.querySelector('#search-error-message');
     this.videoListWrapper = this.element.querySelector('.video-list');
     this.dimmer = this.element.querySelector('.dimmer');
     this.searchForm = this.element.querySelector('#search-form');
     [this.resultContainer, this.noResultContainer] = this.element.querySelectorAll('.search-result');
+
+    this.renderSkeletonUI(this.videoListWrapper);
+    this.skeletons = this.videoListWrapper.querySelectorAll('.skeleton');
   }
 
   bindEvents() {
@@ -72,16 +72,24 @@ export default class SearchModal {
     }
   }
 
+  reSearch() {
+    this.videoListWrapper.scrollTo({ top: 0 });
+    this.videoListWrapper.replaceChildren(...this.skeletons);
+    this.pageToken = '';
+    this.searchErrorMessage.textContent = '';
+  }
+
   searchHandler(e) {
     e.preventDefault();
-
-    this.videoListWrapper.scrollTo({ top: 0 });
 
     try {
       validateKeyword(this.searchInputKeyword.value);
 
-      this.videoListWrapper.replaceChildren();
-      this.pageToken = '';
+      const hasPrevVideoList = this.pageToken !== '';
+
+      if (hasPrevVideoList) {
+        this.reSearch();
+      }
 
       this.renderVideoList({
         url: YOUTUBE_URL,
@@ -89,8 +97,6 @@ export default class SearchModal {
         options: OPTIONS,
         pageToken: this.pageToken,
       });
-
-      this.searchErrorMessage.textContent = '';
     } catch (error) {
       this.searchErrorMessage.textContent = ERROR_MESSAGE.EMPTY_KEYWORD;
     }
@@ -101,10 +107,6 @@ export default class SearchModal {
       'beforeend',
       SKELETON_TEMPLATE.repeat(RULES.MAX_VIDEO_AMOUNT_PER_REQUEST)
     );
-  }
-
-  removeSkeletonUI(element) {
-    element.querySelectorAll('.skeleton').forEach((ele) => ele.remove());
   }
 
   showNoResultContainer() {
@@ -125,12 +127,17 @@ export default class SearchModal {
     this.showNoResultContainer();
   }
 
-  async renderVideoList(options) {
-    this.renderSkeletonUI(this.videoListWrapper);
+  showSkeletons() {
+    this.skeletons.forEach((skeleton) => skeleton.classList.remove('hidden'));
+  }
+  hideSkeletons() {
+    this.skeletons.forEach((skeleton) => skeleton.classList.add('hidden'));
+  }
 
-    let videoList = await fetchData({
-      ...options,
-    });
+  async renderVideoList(options) {
+    this.showSkeletons();
+
+    let videoList = await fetchData({ ...options });
 
     if (videoList.error) {
       videoList = await fetchData({
@@ -140,10 +147,8 @@ export default class SearchModal {
     }
 
     this.VideoCardContainer.setState({ items: videoList.items });
-
     this.showSearchResult(videoList.items);
-    this.removeSkeletonUI(this.videoListWrapper);
-
+    this.hideSkeletons();
     this.pageToken = videoList.nextPageToken || '';
   }
 }
