@@ -1,17 +1,20 @@
-let removeToast;
+const toast = () => {
+  let removeToast;
 
-const toast = (string) => {
-  const toast = document.getElementById('toast');
+  return (text) => {
+    if (removeToast) return;
 
-  toast.classList.contains('reveal')
-    ? (clearTimeout(removeToast), removeToast = setTimeout(() => {
-      document.getElementById('toast').classList.remove('reveal');
-    }, 1500))
-    : removeToast = setTimeout(() => {
-      document.getElementById('toast').classList.remove('reveal');
+    const toastContainer = document.getElementById('toast');
+
+    toastContainer.classList.add('reveal');
+    toastContainer.textContent = text;
+
+    removeToast = setTimeout(() => {
+      toastContainer.classList.remove('reveal');
+      clearTimeout(removeToast);
+      removeToast = undefined;
     }, 1500);
-  toast.classList.add('reveal'),
-  toast.textContent = string;
+  };
 };
 
 export default toast;

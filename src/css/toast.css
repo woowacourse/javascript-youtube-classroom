@@ -10,7 +10,6 @@
   font-weight: bold;
   opacity: 0;
   visibility: hidden;
-  transition: opacity 0.5s, visibility 0.5s, transform 0.5s;
   background: var(--toast-bg-color);
   color: var(--toast-text-color);
   z-index: 10000;
@@ -21,5 +20,6 @@
 #toast.reveal {
   opacity: 1;
   visibility: visible;
+  transition: opacity 0.5s, visibility 0.5s, transform 0.5s;
   transform: translate(-50%, 0);
 }

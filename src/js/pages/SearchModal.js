@@ -4,6 +4,8 @@ import VideoCardContainer from '../common/VideosCardContainer';
 import { throttle } from '../utils/throttle';
 import toast from '../common/toast';
 
+const toastPopup = toast();
+
 const isEmptyKeyword = (keyword) => keyword.trim().length === 0;
 
 const validateKeyword = (keyword) => {
@@ -134,7 +136,7 @@ export default class SearchModal {
       videoList = await fetchData({
         ...options, url: YOUTUBE_URL_DUMMY
       });
-      toast(ERROR_MESSAGE.API_CALLS_QUOTA_EXCEEDED);
+      toastPopup(ERROR_MESSAGE.API_CALLS_QUOTA_EXCEEDED);
     }
 
     this.VideoCardContainer.setState({ items: videoList.items });
