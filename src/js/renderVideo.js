@@ -55,7 +55,7 @@ class RenderVideo {
       return;
     }
 
-    this.searchVideo.initNextPageToken();
+    this.searchVideo.initSearchVideo();
     this.videoListContainer.replaceChildren();
     this.videoListContainer.insertAdjacentHTML('afterbegin', totalVideoSkeletonTemplate);
     this.#loadVideo();
@@ -114,7 +114,9 @@ class RenderVideo {
       this.searchInput.value = '';
       this.searchInput.focus();
       this.videoListContainer.replaceChildren();
-      return alert(error);
+
+      this.searchVideo.initSearchVideo();
+      alert(error);
     }
   }
 }

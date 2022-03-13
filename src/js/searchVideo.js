@@ -6,6 +6,10 @@ import {
 
 class SearchVideo {
   constructor() {
+    this.initSearchVideo();
+  }
+
+  initSearchVideo() {
     this.prevSearchKeyword = '';
     this.searchResults = [];
     this.nextPageToken = '';
@@ -43,10 +47,6 @@ class SearchVideo {
       throw new Error(ERROR_MESSAGE.CANNOT_SEARCH_EMPTY);
     }
   };
-
-  initNextPageToken() {
-    this.nextPageToken = '';
-  }
 }
 
 export default SearchVideo;
