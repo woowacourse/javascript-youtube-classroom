@@ -6,14 +6,14 @@ export default class Display {
       throw new Error('추상 클래스는 인스턴스화 할 수 없습니다.');
     }
     this.setContainer();
-    this.defaultElement();
+    this.setDefaultElement();
     this.bindEvents();
     this.subscribeStores();
   }
 
   setContainer() {}
 
-  defaultElement() {}
+  setDefaultElement() {}
 
   bindEvents() {}
 

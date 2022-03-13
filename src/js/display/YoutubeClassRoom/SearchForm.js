@@ -12,8 +12,6 @@ export default class SearchForm extends Display {
     this.container = $(SELECTOR.ID.SEARCH_FORM);
   }
 
-  defaultElement() {}
-
   bindEvents() {
     this.addEvent({
       eventType: 'keyup',
