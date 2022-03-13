@@ -21,10 +21,19 @@ export default class SearchModalView {
     this.modalContainer.classList.add("hide");
   }
 
-  renderSkeleton() {
+  clearVideoList() {
     scrollToTop(this.videoList);
     this.videoList.innerHTML = "";
+  }
+
+  renderSkeleton() {
     this.videoList.insertAdjacentHTML("beforeend", generateTemplate.skeleton());
+  }
+
+  unrenderSkeleton() {
+    document.querySelectorAll(".skeleton").forEach((element) => {
+      this.videoList.removeChild(element);
+    });
   }
 
   renderNoResultPage() {
@@ -38,14 +47,11 @@ export default class SearchModalView {
     insertImageSrc(document.querySelector(".no-result__image"), notFountImage);
   }
 
-  renderSearchResult(responseData) {
-    document.querySelectorAll(".skeleton").forEach((element) => {
-      this.videoList.removeChild(element);
-    });
-
+  renderSearchResult(responseData, videoStorage) {
+    this.unrenderSkeleton();
     const videoItemTemplate = generateTemplate.videoItems(
       responseData.items,
-      this.videoStorage
+      videoStorage
     );
 
     this.videoList.insertAdjacentHTML("beforeend", videoItemTemplate);

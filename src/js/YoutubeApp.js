@@ -1,5 +1,5 @@
 import SearchModalView from "./view/SearchModalView";
-// import mockObject from "./mockObject";
+import mockObject from "./mockObject";
 import getSearchResult from "./api/getSearchResult";
 import { DELAY_TIME } from "./constants/constants";
 import { throttle, validateInput, isScrollToBottom } from "./utils/utils";
@@ -71,7 +71,6 @@ export default class YoutubeApp {
       return;
     }
 
-    this.searchModalView.renderSkeleton();
     this.search(searchInputKeyword.value);
   };
 
@@ -84,16 +83,20 @@ export default class YoutubeApp {
   };
 
   async search(keyword) {
-    this.keyword = keyword;
-    const responseData = await getSearchResult(this.keyword);
-    this.nextPageToken = responseData.nextPageToken;
+    this.searchModalView.clearVideoList();
+    this.searchModalView.renderSkeleton();
 
+    this.keyword = keyword;
     /**
      * 목 데이터로 검색 결과 대체
      */
-    // const responseData = {
-    //   items: mockObject(),
-    // };
+    const responseData = {
+      items: mockObject(),
+      nextPageToken: "ABCDEF",
+    };
+
+    // const responseData = await getSearchResult(this.keyword);
+    this.nextPageToken = responseData.nextPageToken;
 
     // 검색 결과가 없을 경우
     if (responseData.items.length === 0) {
@@ -101,7 +104,7 @@ export default class YoutubeApp {
       return;
     }
 
-    this.searchModalView.renderSearchResult(responseData);
+    this.searchModalView.renderSearchResult(responseData, this.videoStorage);
   }
 
   async searchNextPage() {
@@ -110,15 +113,16 @@ export default class YoutubeApp {
     /**
      * 목 데이터로 검색 결과 대체
      */
-    // const responseData = {
-    //   items: mockObject(),
-    // };
-    const responseData = await getSearchResult(
-      this.keyword,
-      this.nextPageToken
-    );
+    const responseData = {
+      items: mockObject(),
+      nextPageToken: "ABCDEF",
+    };
+    // const responseData = await getSearchResult(
+    //   this.keyword,
+    //   this.nextPageToken
+    // );
 
     this.nextPageToken = responseData.nextPageToken;
-    this.searchModalView.renderSearchResult(responseData);
+    this.searchModalView.renderSearchResult(responseData, this.videoStorage);
   }
 }
