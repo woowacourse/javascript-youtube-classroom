@@ -23,12 +23,16 @@ class RenderVideo {
     this.renderVideoListWrap = selectDom('.video-list', this.modalContainer);
 
     addEvent(this.searchModalButton, 'click', this.onClickVideoSearchModal);
-    addEvent(this.searchVideoForm, 'submit', this.onSubmitVideoSearch);
     addEvent(this.renderVideoListWrap, 'scroll', this.onScrollVideoList);
+    addEvent(this.searchVideoForm, 'submit', this.onSubmitVideoSearch);
     addEvent(this.renderVideoListWrap, 'click', this.onSaveButtonClick);
   }
 
   onScrollVideoList = () => {
+    if (!Array.from(this.renderVideoListWrap.children).find((videoLi) => videoLi.classList.contains('video-item'))) {
+      return;
+    }
+
     const { scrollHeight, offsetHeight, scrollTop } = this.renderVideoListWrap;
     if (scrollHeight - offsetHeight === scrollTop) {
       this.renderSearchScreen();
@@ -66,8 +70,6 @@ class RenderVideo {
   };
 
   renderSearchVideo(searchVideo) {
-    this.handleSketonUi(this.renderVideoListWrap.children, 'hide');
-
     if (!searchVideo.length) {
       this.renderVideoListWrap.insertAdjacentHTML('afterbegin', videoNotFoundTemplate);
       return;
@@ -82,12 +84,14 @@ class RenderVideo {
             videoTemplate(video, this.saveVideo.saveVideoList.includes(video.id.videoId)))
           .join(' ')
       );
+    this.handleSketonUi(this.renderVideoListWrap.children, 'hide');
   }
 
   renderVideoSkeleton() {
     if (this.renderVideoListWrap.children.length === 0) {
+      this.renderVideoListWrap.scrollTop = 0;
       this.renderVideoListWrap.insertAdjacentHTML(
-        'beforeend',
+        'afterbegin',
         Array.from({ length: GET_VIDEO_COUNT }, () => videoSkeletonTemplate).join(' ')
       );
       return;
