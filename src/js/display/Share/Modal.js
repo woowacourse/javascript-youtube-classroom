@@ -1,4 +1,4 @@
-import { $ } from '@Utils/Dom';
+import { $ } from '@Utils/dom';
 import Display from '@Core/Display';
 
 export default class Modal extends Display {

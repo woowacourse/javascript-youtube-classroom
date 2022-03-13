@@ -1,4 +1,4 @@
-import { $ } from '@Utils/Dom';
+import { $ } from '@Utils/dom';
 import { SELECTOR } from '@Constants/selector';
 import Display from '@Core/Display';
 
