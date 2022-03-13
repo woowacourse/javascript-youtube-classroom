@@ -30,7 +30,7 @@ class View {
   }
 
   #attachEventListeners() {
-    this.requestMoreResult = this.#handleScrollToLastItem();
+    this.lastItemOfListObserver = this.#handleScrollToLastItem();
     this.searchModalButton.addEventListener('click', this.#toggleModal);
     this.searchForm.addEventListener('submit', this.#handleSearch);
     this.dimmer.addEventListener('click', this.#toggleModal);
@@ -65,7 +65,7 @@ class View {
     return new IntersectionObserver(
       async (entries) => {
         if (entries[0].isIntersecting) {
-          this.requestMoreResult.unobserve(entries[0].target);
+          this.lastItemOfListObserver.unobserve(entries[0].target);
           this.#loadSkeleton();
           const { searchResultArray, hasNextPage } = await this.sendSearchRequest();
           this.#renderSearchResult({ searchResultArray, hasNextPage });
@@ -102,7 +102,7 @@ class View {
     const resultElementArray = this.#createElementFromObject(searchResultArray);
     this.videoList.append(...resultElementArray);
     if (hasNextPage) {
-      this.requestMoreResult.observe(this.videoList.lastChild);
+      this.lastItemOfListObserver.observe(this.videoList.lastChild);
     }
   }
 
