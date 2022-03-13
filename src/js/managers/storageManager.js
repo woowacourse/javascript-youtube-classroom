@@ -1,32 +1,29 @@
-import { ERROR_MESSAGE, STORE } from '../utils/constants.js';
+import validator from '../utils/validator.js';
 
 const storageManager = {
   keys: {
     videoId: 'videoId',
   },
 
-  storeVideoId: function (videoId) {
-    if (!this.hasVideoID(videoId)) {
+  storeVideoId(videoId) {
+    try {
       const videoList = this.getVideoIdList();
-      videoList.push(videoId);
-      localStorage.setItem(this.keys.videoId, JSON.stringify(videoList));
+      validator.checkOverVideoIdListMaxLength(videoList);
+      const videoIdSet = new Set(videoList).add(videoId);
+      localStorage.setItem(this.keys.videoId, JSON.stringify([...videoIdSet]));
+    } catch (error) {
+      throw error;
     }
   },
 
-  getVideoIdList: function () {
+  getVideoIdList() {
     const videoList = JSON.parse(localStorage.getItem(this.keys.videoId));
     return videoList || [];
   },
 
-  hasVideoID: function (videoId) {
+  hasVideoID(videoId) {
     const videoList = this.getVideoIdList();
-    return videoList ? videoList.includes(videoId) : false;
-  },
-
-  checkOverMaxLength: function () {
-    if (this.getVideoIdList().length >= STORE.MAX_LENGTH) {
-      throw new Error(ERROR_MESSAGE.OVER_MAX_STORE_LENGTH);
-    }
+    return videoList && videoList.includes(videoId);
   },
 };
 

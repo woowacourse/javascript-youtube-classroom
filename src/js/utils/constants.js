@@ -19,7 +19,7 @@ export const ERROR_MESSAGE = {
 };
 
 export const STORE = {
-  MAX_LENGTH: 100,
+  VIDEO_ID_LIST_MAX_LENGTH: 100,
 };
 
 export const VIDEO_LIST = {

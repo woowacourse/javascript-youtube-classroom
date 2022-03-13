@@ -28,7 +28,11 @@ export default class EventHandler {
   }
 
   onStoreButtonClick(videoId) {
-    storageManager.storeVideoId(videoId);
+    try {
+      storageManager.storeVideoId(videoId);
+    } catch (error) {
+      alert(error.message);
+    }
   }
 
   async onSearchButtonClick(inputValue) {

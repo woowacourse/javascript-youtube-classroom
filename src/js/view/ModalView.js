@@ -63,14 +63,9 @@ export default class ModalView {
 
   bindVideoListClickStoreButton(callback) {
     this.$videoList.addEventListener('click', event => {
-      try {
-        if ([...event.target.classList].includes(DOM_STRING.VIDEO_ITEM_SAVE_BUTTON)) {
-          storageManager.checkOverMaxLength();
-          event.target.classList.add(DOM_STRING.HIDE);
-          callback(event.target.dataset.videoid);
-        }
-      } catch (error) {
-        alert(error.message);
+      if ([...event.target.classList].includes(DOM_STRING.VIDEO_ITEM_SAVE_BUTTON)) {
+        event.target.classList.add(DOM_STRING.HIDE);
+        callback(event.target.dataset.videoid);
       }
     });
   }
