@@ -3,7 +3,7 @@ import { RULES } from './constants';
 const OPTIONS = {
   part: 'snippet',
   maxResults: RULES.MAX_VIDEO_AMOUNT_PER_REQUEST,
-  order: 'date',
+  order: 'relevance',
   type: 'video'
 };
 
