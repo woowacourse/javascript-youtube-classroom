@@ -19,11 +19,13 @@ export const SELECTOR = Object.freeze({
 });
 
 const removeSelectorSymbol = origin => {
-  const output = {};
-  Object.entries(origin).forEach(([key, value]) => {
-    output[key] = value.substr(1);
-  });
-
+  const output = Object.entries(origin).reduce(
+    (acc, [key, value]) => ({
+      ...acc,
+      [key]: value.substr(1),
+    }),
+    {},
+  );
   return Object.freeze(output);
 };
 
