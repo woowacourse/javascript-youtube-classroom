@@ -73,18 +73,18 @@ export default class SearchResult extends Display {
     this.$videoList.innerHTML = '';
 
     if (error === true) {
-      this.$videoList.append(this.drawResultServerError());
+      this.$videoList.append(this.getResultServerError());
       return;
     }
 
     if (items.length === 0 && isLoaded === true) {
-      this.$videoList.append(this.drawResultNotFound());
+      this.$videoList.append(this.getResultNotFound());
       return;
     }
 
     const $fragment = document.createDocumentFragment();
     if (items.length !== 0 && isLoaded === true) {
-      $fragment.append(...this.drawVideoList(items));
+      $fragment.append(...this.getVideoList(items));
     }
 
     if (isLoading === true) {
@@ -95,7 +95,7 @@ export default class SearchResult extends Display {
     this.$videoList.append($fragment);
   }
 
-  drawResultNotFound() {
+  getResultNotFound() {
     return createElement('DIV', {
       className: DOM_NAME.CLASS.SEARCH_RESULT_NOT_FOUND,
       src: notFoundImage,
@@ -109,7 +109,7 @@ export default class SearchResult extends Display {
     });
   }
 
-  drawResultServerError() {
+  getResultServerError() {
     return createElement('DIV', {
       className: DOM_NAME.CLASS.SEARCH_RESULT_NOT_FOUND,
       src: notFoundImage,
@@ -123,7 +123,7 @@ export default class SearchResult extends Display {
     });
   }
 
-  drawVideoList(items) {
+  getVideoList(items) {
     return items.map(video => {
       const buttonText = YoutubeSaveStorage.has(video.id.videoId) ? '🗑 저장 취소' : '⬇ 저장';
       return createElement('LI', {
