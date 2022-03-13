@@ -1,5 +1,4 @@
 import VideoItemView from './VideoItemView.js';
-import storageManager from '../managers/storageManager.js';
 import { DOM_STRING, VIDEO_LIST } from '../utils/constants.js';
 import { $ } from '../utils/common.js';
 

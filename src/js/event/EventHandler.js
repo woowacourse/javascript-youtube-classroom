@@ -1,8 +1,8 @@
 import MainView from '../view/MainView.js';
 import ModalView from '../view/ModalView.js';
-import APIManager from '../managers/APIManager.js';
 import validator from '../utils/validator.js';
 import storageManager from '../managers/storageManager.js';
+import videoAPICaller from '../managers/videoAPICaller.js';
 
 export default class EventHandler {
   constructor() {
@@ -42,11 +42,11 @@ export default class EventHandler {
       this.modalView.appendEmptyList();
       this.modalView.appendVideoItem();
       this.modalView.getSkeletonTemplate();
-      const videoListData = await APIManager.getVideoListData(inputValue);
+      const videoListData = await videoAPICaller.getVideoListData(inputValue);
       this.modalView.updateVideoItems(videoListData);
     } catch (error) {
-      alert(error.message);
       this.modalView.showNoResult();
+      alert(error.message);
     }
   }
 
@@ -55,7 +55,7 @@ export default class EventHandler {
       this.modalView.appendEmptyList();
       this.modalView.appendVideoItem();
       this.modalView.getSkeletonTemplate();
-      const videoListData = await APIManager.getVideoListData(inputValue);
+      const videoListData = await videoAPICaller.getVideoListData(inputValue);
       this.modalView.updateVideoItems(videoListData);
     } catch (error) {
       alert(error.message);

@@ -1,5 +1,6 @@
 import validator from '../utils/validator.js';
 import APIManager from '../managers/APIManager.js';
+import videoAPICaller from '../managers/videoAPICaller.js';
 import { videoData, errorData, parseData } from '../utils/mockData.js';
 
 describe('보고 싶은 영상을 검색 했을 때', () => {
@@ -9,18 +10,22 @@ describe('보고 싶은 영상을 검색 했을 때', () => {
   });
 });
 
+describe('API 요청을 하기 전', () => {
+  test('endPoint와 params로 requestURL을 만들 수 있다.', () => {
+    const endPoint = videoAPICaller.endPoint;
+    const params = {
+      q: 'woowa',
+      type: 'video',
+    };
+
+    expect(APIManager.createQueryString(endPoint, params)).toEqual(
+      `${videoAPICaller.endPoint}?q=woowa&type=video`
+    );
+  });
+});
+
 describe('API 요청이 끝나고', () => {
-  test('응답 데이터에 에러가 있는지 확인할 수 있다.', () => {
-    expect(() => {
-      APIManager.checkResponseError(errorData);
-    }).toThrowError();
-  });
-
-  test('응답 데이터가 정상인지 확인할 수 있다.', () => {
-    expect(APIManager.checkResponseError(videoData)).toBe(false);
-  });
-
   test('response 데이터를 썸네일 이미지 url, 제목, 작성자, 작성요일, id로 분리할 수 있다.', () => {
-    expect(APIManager.parsingVideoData(videoData)).toEqual(parseData);
+    expect(videoAPICaller.parsingVideoData(videoData)).toEqual(parseData);
   });
 });
