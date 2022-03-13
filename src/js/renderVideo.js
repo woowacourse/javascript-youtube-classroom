@@ -8,6 +8,7 @@ import {
   videoTemplate,
   videoSkeletonTemplate,
   videoNotFoundTemplate,
+  videoNoMoreTemplate,
 } from './template/videoTemplate.js';
 import { selectDom, addEvent } from './utils/selectDom.js';
 
@@ -29,7 +30,11 @@ class RenderVideo {
   }
 
   onScrollVideoList = () => {
-    if (!Array.from(this.renderVideoListWrap.children).find((videoLi) => videoLi.classList.contains('video-item'))) {
+    if (!this.searchVideo.nextPageToken) {
+      return;
+    }
+
+    if (this.noSearchResult()) {
       return;
     }
 
@@ -70,8 +75,15 @@ class RenderVideo {
   };
 
   renderSearchVideo(searchVideo) {
-    if (!searchVideo.length) {
+    this.handleSketonUi(this.renderVideoListWrap.children, 'hide');
+
+    if (!searchVideo.length && this.noSearchResult()) {
       this.renderVideoListWrap.insertAdjacentHTML('afterbegin', videoNotFoundTemplate);
+      return;
+    }
+
+    if (!searchVideo.length && !this.searchVideo.nextPageToken) {
+      this.renderVideoListWrap.insertAdjacentHTML('beforeend', videoNoMoreTemplate);
       return;
     }
 
@@ -84,7 +96,6 @@ class RenderVideo {
             videoTemplate(video, this.saveVideo.saveVideoList.includes(video.id.videoId)))
           .join(' ')
       );
-    this.handleSketonUi(this.renderVideoListWrap.children, 'hide');
   }
 
   renderVideoSkeleton() {
@@ -118,6 +129,10 @@ class RenderVideo {
     Array.from(videoList)
       .filter((videoLi) => videoLi.classList.contains('skeleton'))
       .map((skeletonUi) => (event === 'hide' ? skeletonUi.classList.add('hide-skeleton') : skeletonUi.classList.remove('hide-skeleton')));
+  }
+
+  noSearchResult() {
+    return !Array.from(this.renderVideoListWrap.children).find((videoLi) => videoLi.classList.contains('video-item'));
   }
 }
 

@@ -31,4 +31,6 @@ const videoNotFoundTemplate = `
   </section>
 `;
 
-export { videoTemplate, videoSkeletonTemplate, videoNotFoundTemplate };
+const videoNoMoreTemplate = '<p class="video-no-more">결과가 더 이상 없습니다</p>';
+
+export { videoTemplate, videoSkeletonTemplate, videoNotFoundTemplate, videoNoMoreTemplate };

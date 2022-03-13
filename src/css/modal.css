@@ -150,3 +150,7 @@
 .video-item__save-button:disabled {
   background-color: #f9f9f9;
 }
+
+.video-no-more {
+  margin: auto;
+}
