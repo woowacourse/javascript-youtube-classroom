@@ -19,13 +19,11 @@ export const requestYoutubeSearch = async (keyword = '', pageToken = '') => {
       key: process.env.YOUTUBE_API_KEY,
       pageToken,
     });
-    console.log(uri);
     const response = await request(uri, {
       method: 'GET',
     });
     return response;
   } catch (error) {
-    console.log(error);
     return { error: true };
   }
 };
