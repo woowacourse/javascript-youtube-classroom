@@ -1,3 +1,5 @@
+import { ERROR_MESSAGE } from "../../src/js/constants/constants";
+
 Cypress.Commands.add("openSearchModal", () => {
   cy.get("#search-modal-button").click();
 });
@@ -7,7 +9,9 @@ Cypress.Commands.add("searchWithNoKeyword", () => {
 
   cy.on("window:alert", alertStub);
   cy.get("#search-input-keyword").clear().type(" ");
-  cy.get("#search-button").click();
+  cy.get("#search-button").click(() => {
+    expect(alertStub).to.be.calledWith(ERROR_MESSAGE.SEARCH_INPUT_IS_EMPTY);
+  });
 });
 
 Cypress.Commands.add("searchWithKeyword", (keyword) => {

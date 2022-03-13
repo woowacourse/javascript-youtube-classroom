@@ -1,4 +1,5 @@
 import { parsedDate } from "./utils/utils";
+import { ITEMS_PER_REQUEST } from "./constants/constants";
 
 const generateTemplate = {
   skeleton() {
@@ -12,7 +13,7 @@ const generateTemplate = {
       </div>
       <div class="video-item__save-button button"></div>
     </li>
-  `.repeat(10);
+  `.repeat(ITEMS_PER_REQUEST);
   },
   noResult() {
     return `
@@ -44,7 +45,7 @@ const generateTemplate = {
     </button>
   </li>`;
   },
-  videoItems(responseData, userStorage) {
+  videoItems(responseData, videoStorage) {
     return responseData
       .map((item) =>
         this.videoItem(
@@ -55,7 +56,7 @@ const generateTemplate = {
             title: item.snippet.title,
             date: parsedDate(item.snippet.publishTime),
           },
-          userStorage.getStorage()
+          videoStorage.getStorage()
         )
       )
       .join("");

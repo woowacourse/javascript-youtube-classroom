@@ -2,23 +2,23 @@ import { ERROR_MESSAGE, STORAGE_MAX_COUNT } from "./constants/constants";
 
 export default class VideoStorage {
   constructor() {
-    this.storage = JSON.parse(localStorage.getItem("videos")) || [];
+    this.videos = JSON.parse(localStorage.getItem("videos")) || [];
   }
 
   isSavedVideoId(responseId) {
-    return this.storage.includes(responseId);
+    return this.videos.includes(responseId);
   }
 
   addVideoData(data) {
-    if (this.storage.length >= STORAGE_MAX_COUNT) {
+    if (this.videos.length >= STORAGE_MAX_COUNT) {
       throw new Error(ERROR_MESSAGE.VIDEO_STORAGE_OVERFLOW);
     }
 
-    this.storage = [...this.storage, data];
-    localStorage.setItem("videos", JSON.stringify(this.storage));
+    this.videos = [...this.videos, data];
+    localStorage.setItem("videos", JSON.stringify(this.videos));
   }
 
   getStorage() {
-    return this.storage;
+    return this.videos;
   }
 }

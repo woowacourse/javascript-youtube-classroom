@@ -1,7 +1,4 @@
-import {
-  ERROR_MESSAGE,
-  ITEMS_PER_REQUEST,
-} from "../../src/js/constants/constants";
+import { ITEMS_PER_REQUEST } from "../../src/js/constants/constants";
 
 describe("보고싶은 영상 찾기 모달창 전체 로직 테스트", () => {
   before(() => {
@@ -35,9 +32,7 @@ describe("보고싶은 영상 찾기 모달창 전체 로직 테스트", () => {
   // });
 
   it("보고싶은 영상 찾기 모달창 안에서 검색창에 검색어를 입력하지 않으면 에러 메시지를 보여준다.", () => {
-    cy.searchWithNoKeyword().then(() =>
-      expect(alertStub).to.be.calledWith(ERROR_MESSAGE.SEARCH_INPUT_IS_EMPTY)
-    );
+    cy.searchWithNoKeyword();
   });
 
   it("보고싶은 영상 찾기 모달창 안에서 원하는 영상을 검색할 수 있다.", () => {
