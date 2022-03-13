@@ -6,7 +6,7 @@ const getParams = (keyword, pageToken) =>
   new URLSearchParams({
     part: "snippet",
     type: "video",
-    maxResults: NUM.VIDEO_ITEMS_FOR_UNIT,
+    maxResults: NUM.VIDEO_ITEMS_UNIT,
     regionCode: "kr",
     q: keyword,
     pageToken: pageToken || "",

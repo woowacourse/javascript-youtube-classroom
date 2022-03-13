@@ -1,9 +1,10 @@
 import { fetchDataFromKeyword } from "../utils/apiFetch.js";
 import { saveLocalStorage, getLocalStorage } from "../utils/localStorage.js";
 import { noSearchResultTemplate, makeIframeTemplate, makeSkeletonTemplate } from "../utils/templates.js";
-import { NUM } from "../utils/contants.js";
+import { LOCAL_DB, NUM } from "../utils/contants.js";
+import { verifySaveId } from "../utils/validation.js";
 
-export class SearchModal {
+export default class SearchModal {
   constructor() {
     this.modalContainer = document.getElementById("modal-container");
     this.searchInputKeyword = document.getElementById("search-input-keyword");
@@ -72,7 +73,7 @@ export class SearchModal {
     this.resultLabel.removeAttribute("hidden");
     this.videoList.insertAdjacentHTML(
       "beforeend",
-      Array.from({ length: NUM.VIDEO_ITEMS_FOR_UNIT }, () => makeSkeletonTemplate).join(""),
+      Array.from({ length: NUM.VIDEO_ITEMS_UNIT }, () => makeSkeletonTemplate).join(""),
     );
   }
 
@@ -87,16 +88,19 @@ export class SearchModal {
     this.observer.observe(this.videoList.lastElementChild);
   }
 
-  handleVideoItemSave = (e) => {
-    if (!e.target.classList.contains("video-item__save-button")) {
+  handleVideoItemSave = ({ target }) => {
+    if (!target.classList.contains("video-item__save-button")) {
       return;
     }
 
-    const proviousLocalStorage = getLocalStorage("videoId");
-    if (!localStorage.includes(e.target.id) && proviousLocalStorage.length < NUM.MAX_STORAGE_LENGTH) {
-      proviousLocalStorage.push(e.target.id);
-      e.target.remove();
+    try {
+      const videoIdsArray = getLocalStorage(LOCAL_DB.VIDEO_ID);
+      const newVideoId = target.id;
+      verifySaveId(videoIdsArray, newVideoId);
+      saveLocalStorage(LOCAL_DB.VIDEO_ID, [...videoIdsArray, newVideoId]);
+      target.remove();
+    } catch ({ message }) {
+      alert(message);
     }
-    saveLocalStorage("videoId", proviousLocalStorage);
   };
 }

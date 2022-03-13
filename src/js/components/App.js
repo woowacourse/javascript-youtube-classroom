@@ -1,7 +1,7 @@
-import { Classroom } from "./Classroom.js";
-import { SearchModal } from "./SearchModal.js";
+import Classroom from "./Classroom.js";
+import SearchModal from "./SearchModal.js";
 
-export class App {
+export default class App {
   constructor() {
     this.classroom = new Classroom({ openModal: this.openModal });
     this.searchModal = new SearchModal();
