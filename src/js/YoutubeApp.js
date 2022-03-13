@@ -1,3 +1,4 @@
+import VideoStorage from "./VideoStorage";
 import SearchModalView from "./view/SearchModalView";
 import mockObject from "./mockObject";
 import getSearchResult from "./api/getSearchResult";
@@ -6,12 +7,12 @@ import { throttle, checkKeywordValid, isScrollToBottom } from "./utils/utils";
 import { bindEventListener, findTargetDataset } from "./utils/dom";
 
 export default class YoutubeApp {
-  constructor(videoStorage) {
+  constructor() {
     this.videoList = document.querySelector(".video-list");
 
     this.#bindEvents();
-    this.videoStorage = videoStorage;
     this.searchModalView = new SearchModalView();
+    this.videoStorage = new VideoStorage();
   }
 
   #bindEvents() {
@@ -90,12 +91,12 @@ export default class YoutubeApp {
     /**
      * 목 데이터로 검색 결과 대체
      */
-    const responseData = {
-      items: mockObject(),
-      nextPageToken: "ABCDEF",
-    };
+    // const responseData = {
+    //   items: mockObject(),
+    //   nextPageToken: "ABCDEF",
+    // };
 
-    // const responseData = await getSearchResult(this.keyword);
+    const responseData = await getSearchResult(this.keyword);
     this.nextPageToken = responseData.nextPageToken;
 
     // 검색 결과가 없을 경우
@@ -113,14 +114,14 @@ export default class YoutubeApp {
     /**
      * 목 데이터로 검색 결과 대체
      */
-    const responseData = {
-      items: mockObject(),
-      nextPageToken: "ABCDEF",
-    };
-    // const responseData = await getSearchResult(
-    //   this.keyword,
-    //   this.nextPageToken
-    // );
+    // const responseData = {
+    //   items: mockObject(),
+    //   nextPageToken: "ABCDEF",
+    // };
+    const responseData = await getSearchResult(
+      this.keyword,
+      this.nextPageToken
+    );
 
     this.nextPageToken = responseData.nextPageToken;
     this.searchModalView.renderSearchResult(responseData, this.videoStorage);
