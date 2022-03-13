@@ -98,10 +98,6 @@ export default class ModalView {
       .forEach(videoItem => videoItem.getVideoItemTemplate());
   }
 
-  getData(parsedData) {
-    this.updateVideoItems(parsedData);
-  }
-
   updateVideoItems(data) {
     this.videoItemList
       .slice(-VIDEO_LIST.RENDER_SIZE)

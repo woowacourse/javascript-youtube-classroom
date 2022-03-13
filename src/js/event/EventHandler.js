@@ -39,7 +39,7 @@ export default class EventHandler {
       this.modalView.appendVideoItem();
       this.modalView.getSkeletonTemplate();
       const videoListData = await APIManager.getVideoListData(inputValue);
-      this.modalView.getData(videoListData);
+      this.modalView.updateVideoItems(videoListData);
     } catch (error) {
       alert(error.message);
       this.modalView.showNoResult();
@@ -52,7 +52,7 @@ export default class EventHandler {
       this.modalView.appendVideoItem();
       this.modalView.getSkeletonTemplate();
       const videoListData = await APIManager.getVideoListData(inputValue);
-      this.modalView.getData(videoListData);
+      this.modalView.updateVideoItems(videoListData);
     } catch (error) {
       alert(error.message);
     }
