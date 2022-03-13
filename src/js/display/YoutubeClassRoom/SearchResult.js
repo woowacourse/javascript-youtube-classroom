@@ -132,10 +132,6 @@ export default class SearchResult extends Display {
   }
 
   drawVideoList({ items, isLoaded, error }) {
-    if (items.length === 0 && isLoaded === false) {
-      return;
-    }
-
     if (error) {
       this.$videoResult.replaceChildren(this.#getResultServerError());
       return;
@@ -143,6 +139,11 @@ export default class SearchResult extends Display {
 
     if (items.length === 0 && isLoaded === true) {
       this.$videoResult.replaceChildren(this.#getResultNotFound());
+      return;
+    }
+
+    if (items.length === 0 && isLoaded === false) {
+      this.$videoResult.replaceChildren('');
       return;
     }
 
