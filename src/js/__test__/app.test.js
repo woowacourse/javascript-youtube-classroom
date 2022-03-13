@@ -10,8 +10,9 @@ describe('localStorage', () => {
     const webStore = new WebStore('saved');
     const videoId = 'F_sOWEje2mE';
 
+    expect(webStore.load()).toEqual([]);
     webStore.save([...webStore.load(), videoId]);
-    expect(webStore.load()).not.toBe(null);
+    expect(webStore.load()).toEqual(['F_sOWEje2mE']);
   });
 
   it(`localStorage에 저장된 영상이 ${MAX_SAVE_COUNT}개를 초과하면, 더 이상 저장되지 않는다.`, () => {
