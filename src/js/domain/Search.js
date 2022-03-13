@@ -11,11 +11,11 @@ class Search {
     this.#nextPageToken = null;
   }
 
-  async handleSearchRequest(keyword = this.keyword) {
+  async handleSearchRequest(keyword = this.#keyword) {
     try {
-      const { items, nextPageToken } = await this.#getSearchResult(keyword, this.nextPageToken);
-      this.keyword = keyword;
-      this.nextPageToken = nextPageToken;
+      const { items, nextPageToken } = await this.#getSearchResult(keyword, this.#nextPageToken);
+      this.#keyword = keyword;
+      this.#nextPageToken = nextPageToken;
       const savedVideos = storage.getSavedVideos();
       return {
         searchResultArray: this.#getVideoObjectArray(items, savedVideos),

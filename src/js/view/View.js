@@ -47,13 +47,7 @@ class View {
 
     this.#clearPreviousRender();
 
-    this.#loadSkeleton();
-    try {
-      const { searchResultArray, hasNextPage } = await this.search.handleSearchRequest(keyword);
-      this.#renderSearchResult({ searchResultArray, keyword, hasNextPage });
-    } catch (error) {
-      this.#renderError(error.message);
-    }
+    this.#sendSearchRequest(keyword);
   };
 
   #handleScrollToLastItem() {
@@ -61,13 +55,21 @@ class View {
       async (entries) => {
         if (entries[0].isIntersecting) {
           this.lastItemOfListObserver.unobserve(entries[0].target);
-          this.#loadSkeleton();
-          const { searchResultArray, hasNextPage } = await this.search.handleSearchRequest();
-          this.#renderSearchResult({ searchResultArray, hasNextPage });
+          this.#sendSearchRequest();
         }
       },
       { threshold: 0.5 }
     );
+  }
+
+  async #sendSearchRequest(keyword) {
+    try {
+      this.videoList.insertAdjacentHTML('beforeend', this.#skeletonTemplate());
+      const { searchResultArray, hasNextPage } = await this.search.handleSearchRequest(keyword);
+      this.#renderSearchResult({ searchResultArray, keyword, hasNextPage });
+    } catch (error) {
+      this.#renderError(error.message);
+    }
   }
 
   #handleVideoSaveClick = (event) => {
@@ -88,20 +90,16 @@ class View {
   #renderSearchResult({ searchResultArray, keyword, hasNextPage }) {
     const skeletonList = this.videoList.querySelectorAll('.skeleton');
     removeElementList(skeletonList);
-
     if (keyword) {
       this.searchResultTitle.textContent = `'${keyword}' 검색 결과입니다`;
     }
 
-    const resultElementArray = this.#createElementFromObject(searchResultArray);
-    this.videoList.append(...resultElementArray);
-    if (hasNextPage) {
-      this.lastItemOfListObserver.observe(this.videoList.lastChild);
-    }
-  }
+    const resultElementArray = searchResultArray.map((resultItem) =>
+      this.#createVideoElement(resultItem)
+    );
 
-  #createElementFromObject(searchResultArray) {
-    return searchResultArray.map((resultItem) => this.#createVideoElement(resultItem));
+    this.videoList.append(...resultElementArray);
+    if (hasNextPage) this.lastItemOfListObserver.observe(this.videoList.lastChild);
   }
 
   #createVideoElement(resultItem) {
@@ -127,10 +125,6 @@ class View {
     >
       ⬇ 저장
     </button>`;
-  }
-
-  #loadSkeleton() {
-    this.videoList.insertAdjacentHTML('beforeend', this.#skeletonTemplate());
   }
 
   #skeletonTemplate() {
