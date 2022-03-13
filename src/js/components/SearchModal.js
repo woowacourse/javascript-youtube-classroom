@@ -7,13 +7,13 @@ import { verifySaveId } from "../utils/validation.js";
 export default class SearchModal {
   constructor() {
     this.modalContainer = document.getElementById("modal-container");
+    this.searchForm = document.getElementById("search-form");
     this.searchInputKeyword = document.getElementById("search-input-keyword");
-    this.videoList = document.getElementById("video-list");
     this.resultLabel = document.getElementById("result-label");
     this.noResultContainer = document.getElementById("no-result");
-    this.searchButton = document.getElementById("search-button");
+    this.videoList = document.getElementById("video-list");
 
-    this.searchButton.addEventListener("click", this.handleSearchButton);
+    this.searchForm.addEventListener("submit", this.handleSearch);
     this.videoList.addEventListener("click", this.handleVideoItemSave);
 
     this.observer = new IntersectionObserver((entries) => {
@@ -30,12 +30,14 @@ export default class SearchModal {
     this.modalContainer.classList.remove("hide");
   }
 
-  handleSearchButton = () => {
-    this.initView();
+  handleSearch = (e) => {
+    e.preventDefault();
+
     this.keyword = this.searchInputKeyword.value;
     if (this.keyword.trim() === "") {
       return;
     }
+    this.initView();
     this.getDataMatchKeyword(this.keyword);
   };
 
