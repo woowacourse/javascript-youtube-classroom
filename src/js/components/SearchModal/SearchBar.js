@@ -53,7 +53,7 @@ export default class SearchBar extends Component {
 
       rootStore.setState({
         searchOption: {
-          query: e.target.elements.searchInput.value,
+          query,
           pageToken: nextPageToken,
         },
         videos: addSavedToVideos(items),
