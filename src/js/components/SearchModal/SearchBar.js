@@ -37,7 +37,6 @@ export default class SearchBar extends Component {
         const { items, nextPageToken } = await getSearchAPI(
           e.target.elements.searchInput.value
         );
-        // const { items, pageToken } = await request();
         if (!items.length) {
           rootStore.setState({ notFound: true });
 

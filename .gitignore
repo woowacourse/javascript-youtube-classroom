@@ -108,3 +108,5 @@ dist
 .DS_Store
 
 api_key.js
+
+src/js/__mocks__
