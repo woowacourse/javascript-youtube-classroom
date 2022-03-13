@@ -1,4 +1,5 @@
 import Result from './Result';
+import { skeletonUI } from './loading';
 import { MESSAGE } from '../constants';
 import { $ } from '../utils/dom';
 import { showExceptionSnackBar } from '../utils/snackBar';
@@ -19,7 +20,7 @@ export default class Search {
       }
 
       $('.video-list').replaceChildren();
-      this.result.renderSkeletonUI();
+      skeletonUI.render();
       this.result.renderInitialVideoList(this.input.value);
     });
   }

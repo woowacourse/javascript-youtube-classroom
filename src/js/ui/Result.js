@@ -1,84 +1,17 @@
+import { getFoundResultTemplate, notFoundTemplate } from './template';
+import { skeletonUI } from './loading';
 import { store } from '../domain/store';
 import { request } from '../domain/youtubeApi';
-import { GET_VIDEO_UNIT, MESSAGE, STORAGE_KEY } from '../constants';
+import { MESSAGE, STORAGE_KEY } from '../constants';
 import { $, $$ } from '../utils/dom';
-import { convertToKoreaLocaleDate, delay } from '../utils/common';
+import { delay } from '../utils/common';
 import { showExceptionSnackBar } from '../utils/snackBar';
-import NoResultImage from '../../assets/images/not_found.png';
 
 export default class Result {
-  skeletonTemplate() {
-    return `
-      <div class="skeleton">
-        <div class="skeleton__image"></div>
-        <p class="skeleton__line"></p>
-        <p class="skeleton__line"></p>
-        <p class="skeleton__line"></p>
-      </div>
-    `;
-  }
-
-  renderSkeletonUI() {
-    $('.video-list').insertAdjacentHTML(
-      'beforeend',
-      this.skeletonTemplate().repeat(GET_VIDEO_UNIT),
-    );
-  }
-
-  removeSkeletonUI() {
-    $$('.skeleton').forEach(skeleton => $('.video-list').removeChild(skeleton));
-  }
-
-  foundResultTemplate(items) {
-    const saveDatas = store.getLocalStorage(STORAGE_KEY) ?? [];
-    const resultTemplate = items
-      .map(item => {
-        const { publishedAt, channelId, title, thumbnails, channelTitle } =
-          item.snippet;
-        return `
-          <li class="video-item" data-video-id=${item.id.videoId}>
-            <a href="https://www.youtube.com/watch?v=${item.id.videoId}">
-              <img
-                src=${thumbnails.high.url}
-                alt="video-item-thumbnail" class="video-item__thumbnail">
-            </a>
-            <a href="https://www.youtube.com/watch?v=${item.id.videoId}">
-              <h4 class="video-item__title">${title}</h4>
-            </a>
-            <a href="https://www.youtube.com/channel/${channelId}"><p class="video-item__channel-name">${channelTitle}</p></a>
-            <p class="video-item__published-date">
-              ${convertToKoreaLocaleDate(publishedAt)}
-            </p>
-            <button class="video-item__save-button button" ${
-              saveDatas.includes(item.id.videoId) ? 'hidden' : ''
-            }>⬇ 저장</button>
-          </li>`;
-      })
-      .join('');
-    return resultTemplate;
-  }
-
-  notFoundTemplate() {
-    return `
-      <div class="no-result">
-        <img class="no-result__image"
-          src=${NoResultImage}
-          alt="no-result-image"
-        >
-        <div class="no-result__description">
-          <p>${MESSAGE.NOT_FOUND}</p>
-          <p>${MESSAGE.OTHER_KEYWORD}</p>
-        </div>
-      </div>
-    `;
-  }
-
   renderVideoList(json) {
     $('.video-list').insertAdjacentHTML(
       'beforeend',
-      json.items.length
-        ? this.foundResultTemplate(json.items)
-        : this.notFoundTemplate(),
+      json.items.length ? getFoundResultTemplate(json.items) : notFoundTemplate,
     );
     this.addSaveButtonClickEvent(json.items.length);
     if (json && json.nextPageToken) {
@@ -95,14 +28,14 @@ export default class Result {
       .catch(async ({ message }) => {
         await delay(700);
         showExceptionSnackBar(message);
-        this.removeSkeletonUI();
+        skeletonUI.remove();
       });
   }
 
   renderNextVideoList(nextPageToken) {
     request($('#search-input-keyword').value, nextPageToken)
       .then(json => {
-        this.removeSkeletonUI();
+        skeletonUI.remove();
         this.renderVideoList(json);
       })
       .catch(async ({ message }) => {
@@ -136,7 +69,7 @@ export default class Result {
       entry => {
         if (entry[0].isIntersecting) {
           io.unobserve($li);
-          this.renderSkeletonUI();
+          skeletonUI.render();
           this.renderNextVideoList(nextPageToken);
         }
       },
