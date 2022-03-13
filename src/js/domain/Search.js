@@ -7,9 +7,9 @@ class Search {
     this.nextPageToken = null;
   }
 
-  async handleSearchRequest(keyword = this.keyword, pageToken = undefined) {
+  async handleSearchRequest(keyword = this.keyword) {
     try {
-      const { items, nextPageToken } = await this.#getSearchResult(keyword, pageToken);
+      const { items, nextPageToken } = await this.#getSearchResult(keyword, this.nextPageToken);
       this.keyword = keyword;
       this.nextPageToken = nextPageToken;
       const savedVideos = storage.getSavedVideos();
