@@ -62,12 +62,24 @@ export default class SearchBar extends Component {
 export function addSavedToVideos(videos) {
   const savedVideos = webStore.load();
 
-  return videos.map((item) => ({
-    videoId: item.id.videoId,
-    thumbnailUrl: item.snippet.thumbnails.default.url,
-    title: item.snippet.title,
-    channelTitle: item.snippet.channelTitle,
-    publishTime: item.snippet.publishTime,
-    saved: savedVideos.includes(item.id.videoId),
-  }));
+  return videos.map(
+    ({
+      id: { videoId },
+      snippet: {
+        thumbnails: {
+          default: { url: thumbnailUrl },
+        },
+        title,
+        channelTitle,
+        publishTime,
+      },
+    }) => ({
+      videoId,
+      thumbnailUrl,
+      title,
+      channelTitle,
+      publishTime,
+      saved: savedVideos.includes(videoId),
+    })
+  );
 }
