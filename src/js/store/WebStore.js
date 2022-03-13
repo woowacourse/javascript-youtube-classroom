@@ -13,7 +13,7 @@ export default class WebStore {
   }
 
   load() {
-    return [...this.#cached] || JSON.parse(localStorage.getItem(this.#key));
+    return [...this.#cached]
   }
 
   save(data) {
