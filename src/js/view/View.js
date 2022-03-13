@@ -9,7 +9,7 @@ import { MAX_SEARCH_RESULT } from '../constants/constants';
 import '../../assets/images/not_found.png';
 
 class View {
-  constructor() {
+  constructor(search, saveVideos) {
     this.searchModalButton = selectDom('#search-modal-button');
     this.modalContainer = selectDom('.modal-container');
     this.dimmer = selectDom('.dimmer', this.modalContainer);
@@ -20,13 +20,8 @@ class View {
     this.videoList = selectDom('.video-list', this.searchResult);
 
     this.#attachEventListeners();
-    this.sendSearchRequest = () => {};
-    this.sendSaveRequest = () => {};
-  }
-
-  attachRequestSender(sendSearchRequest, sendSaveRequest) {
-    this.sendSearchRequest = sendSearchRequest;
-    this.sendSaveRequest = sendSaveRequest;
+    this.search = search;
+    this.sendSaveRequest = saveVideos;
   }
 
   #attachEventListeners() {
@@ -54,7 +49,7 @@ class View {
 
     this.#loadSkeleton();
     try {
-      const { searchResultArray, hasNextPage } = await this.sendSearchRequest(keyword);
+      const { searchResultArray, hasNextPage } = await this.search.handleSearchRequest(keyword);
       this.#renderSearchResult({ searchResultArray, keyword, hasNextPage });
     } catch (error) {
       this.#renderError(error.message);
@@ -67,7 +62,7 @@ class View {
         if (entries[0].isIntersecting) {
           this.lastItemOfListObserver.unobserve(entries[0].target);
           this.#loadSkeleton();
-          const { searchResultArray, hasNextPage } = await this.sendSearchRequest();
+          const { searchResultArray, hasNextPage } = await this.search.handleSearchRequest();
           this.#renderSearchResult({ searchResultArray, hasNextPage });
         }
       },

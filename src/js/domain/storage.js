@@ -4,7 +4,7 @@ function getSavedVideos() {
   return JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
 }
 
-function setSavedVideos(videoId) {
+function saveVideos(videoId) {
   const idObj = getSavedVideos();
   if (idObj.length >= MAX_SAVE_AMOUNT) {
     throw new Error(ERROR_MESSAGES.EXCEED_MAX_SAVE_AMOUNT);
@@ -14,7 +14,7 @@ function setSavedVideos(videoId) {
 
 const storage = {
   getSavedVideos,
-  setSavedVideos,
+  saveVideos,
 };
 
 export default storage;

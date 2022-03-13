@@ -2,9 +2,13 @@ import storage from './storage';
 import { SEARCH_URL_BASE, MAX_SEARCH_RESULT, ERROR_MESSAGES } from '../constants/constants';
 
 class Search {
+  #keyword;
+
+  #nextPageToken;
+
   constructor() {
-    this.keyword = null;
-    this.nextPageToken = null;
+    this.#keyword = null;
+    this.#nextPageToken = null;
   }
 
   async handleSearchRequest(keyword = this.keyword) {

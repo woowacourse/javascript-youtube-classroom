@@ -1,10 +1,8 @@
 import View from './view/View';
-import RequestSender from './RequestSender';
+
 import Search from './domain/Search';
+import storage from './domain/storage';
 
-const view = new View();
 const search = new Search();
-
-const requestSender = new RequestSender(search);
-
-view.attachRequestSender(requestSender.sendSearchRequest, requestSender.sendSaveRequest);
+// eslint-disable-next-line
+const view = new View(search, storage.saveVideos);
