@@ -13,6 +13,18 @@
   display: none;
 }
 
+.modal-close-container {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.modal-close-container .close-button {
+  border: none;
+  background-color: white;
+  font-size: 20px;
+  cursor: pointer;
+}
+
 .dimmer {
   position: absolute;
   width: 100%;
@@ -31,7 +43,7 @@
   background: #ffffff;
   border: 1px solid rgba(0, 0, 0, 0.12);
   border-radius: 4px;
-  padding: 50px 30px 32px 30px;
+  padding: 30px;
   overflow: hidden;
 }
 
@@ -91,6 +103,7 @@
 }
 
 #video-list {
+  width: 1040px;
   height: 493px;
   display: flex;
   flex-direction: row;
@@ -101,13 +114,14 @@
 }
 
 .video-item-container {
-  width: 236px;
+  position: relative;
+  width: 240px;
+  height: 255px;
 }
 
 .video-item {
-  position: relative;
   width: 100%;
-  height: 150px;
+  height: 135px;
 }
 
 .video-item__thumbnail {
@@ -138,11 +152,11 @@
 }
 
 .video-item__save-button {
-  position: relative;
+  position: absolute;
+  right: 0;
   width: 80px;
   height: 36px;
   background: #f9f9f9;
-  float: right;
 }
 
 .video-item__save-button:hover {
@@ -150,7 +164,8 @@
 }
 
 .skeleton {
-  width: 236px;
+  width: 240px;
+  height: 255px;
 }
 
 .skeleton .image,
@@ -161,7 +176,7 @@
 }
 
 .skeleton .image {
-  height: 150px;
+  height: 135px;
   margin-bottom: 8px;
 }
 
