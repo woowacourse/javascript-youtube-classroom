@@ -1,4 +1,4 @@
 import '../css/index.css';
-import Modal from './ui/Modal';
+import SearchModal from './ui/SearchModal';
 
-new Modal();
+new SearchModal();

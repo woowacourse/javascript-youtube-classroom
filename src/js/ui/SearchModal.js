@@ -1,10 +1,10 @@
 import { $ } from '../utils/dom';
 import Search from './Search';
 
-export default class Modal {
+export default class SearchModal {
   constructor() {
-    this.addSearchModalButtonClickEvent();
-    this.addModalOuterClickEvent();
+    this.addSearchButtonClickEvent();
+    this.addSearchModalOuterClickEvent();
     this.search = new Search();
   }
 
@@ -17,16 +17,16 @@ export default class Modal {
     $('.modal-container').classList.toggle('hide');
   }
 
-  addSearchModalButtonClickEvent() {
+  addSearchButtonClickEvent() {
     $('#search-modal-button').addEventListener('click', () => {
       this.toggleShowSearchModal();
       this.search.input.focus();
     });
   }
 
-  addModalOuterClickEvent() {
-    window.addEventListener('click', e => {
-      e.target === $('.dimmer') ? this.reset() : false;
+  addSearchModalOuterClickEvent() {
+    $('.dimmer').addEventListener('click', () => {
+      this.reset();
     });
   }
 }
