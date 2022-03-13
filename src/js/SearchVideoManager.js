@@ -35,8 +35,8 @@ export default class SearchVideoManager {
   fetchYoutubeData(keyword) {
     return fetch(
       this.nextPageToken
-        ? `${YOUTUBE_API_ENDPOINT(keyword)}&pageToken=${this.nextPageToken}`
-        : YOUTUBE_API_ENDPOINT(keyword)
+        ? `${DUMMY_YOUTUBE_API_ENDPOINT(keyword)}&pageToken=${this.nextPageToken}`
+        : DUMMY_YOUTUBE_API_ENDPOINT(keyword)
     ).then((response) => {
       if (!response.ok) {
         throw new Error(response.status);
@@ -54,7 +54,7 @@ export default class SearchVideoManager {
       thumbnail: item.snippet.thumbnails.medium.url,
       title: item.snippet.title,
       channelName: item.snippet.channelTitle,
-      publishedDate: item.snippet.publishedAt,
+      publishedDate: new Date(item.snippet.publishedAt),
     }));
   }
 }

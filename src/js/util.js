@@ -9,3 +9,6 @@ export const debounce = (callback, delay) => {
     timerId = setTimeout(callback, delay, event);
   };
 };
+
+export const yearMonthDate = (publishedDate) =>
+  `${publishedDate.getFullYear()}년 ${publishedDate.getMonth()}월 ${publishedDate.getDate()}일`;
