@@ -3,5 +3,10 @@ export const saveLocalStorage = (key, data) => {
 };
 
 export const getLocalStorage = (key) => {
-  return JSON.parse(localStorage.getItem(key)) || [];
+  try {
+    return JSON.parse(localStorage.getItem(key)) ?? [];
+  } catch (e) {
+    console.error(e);
+    return [];
+  }
 };
