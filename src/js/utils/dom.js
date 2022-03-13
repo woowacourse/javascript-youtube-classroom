@@ -22,7 +22,3 @@ export const totalScrollHeight = (element) => {
 export const currentScrollHeight = (element) => {
   return element.clientHeight + element.scrollTop;
 };
-
-export const insertImageSrc = (element, resource) => {
-  element.src = resource;
-};

@@ -1,4 +1,4 @@
-import { scrollToTop, insertImageSrc } from "../utils/dom";
+import { scrollToTop } from "../utils/dom";
 import generateTemplate from "../templates";
 import notFountImage from "../../assets/images/not_found.png";
 
@@ -44,7 +44,7 @@ export default class SearchModalView {
       generateTemplate.noResult()
     );
 
-    insertImageSrc(document.querySelector(".no-result__image"), notFountImage);
+    document.querySelector(".no-result__image").src = notFountImage;
   }
 
   renderSearchResult(responseData, videoStorage) {
