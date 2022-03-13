@@ -1,6 +1,7 @@
-import { MESSAGE } from '../constants';
-import { $, showExceptionSnackBar } from '../utils/dom';
 import Result from './Result';
+import { MESSAGE } from '../constants';
+import { $ } from '../utils/dom';
+import { showExceptionSnackBar } from '../utils/snackBar';
 
 export default class Search {
   constructor() {

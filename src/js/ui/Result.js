@@ -1,9 +1,10 @@
-import { GET_VIDEO_UNIT, MESSAGE, STORAGE_KEY } from '../constants';
-import { $, $$, showExceptionSnackBar } from '../utils/dom';
-import NoResultImage from '../../assets/images/not_found.png';
 import { store } from '../domain/store';
 import { request } from '../domain/youtubeApi';
+import { GET_VIDEO_UNIT, MESSAGE, STORAGE_KEY } from '../constants';
+import { $, $$ } from '../utils/dom';
 import { convertToKoreaLocaleDate, delay } from '../utils/common';
+import { showExceptionSnackBar } from '../utils/snackBar';
+import NoResultImage from '../../assets/images/not_found.png';
 
 export default class Result {
   skeletonTemplate() {
