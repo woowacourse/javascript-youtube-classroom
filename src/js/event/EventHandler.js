@@ -12,26 +12,26 @@ export default class EventHandler {
   }
 
   setBindEvents() {
-    this.mainView.bindModalOpenButton(this.clickModalOpenButton.bind(this));
-    this.modalView.bindOnClickSearchButton(this.clickSearchButton.bind(this));
-    this.modalView.bindOnClickDimmer(this.clickDimmer.bind(this));
-    this.modalView.bindVideoListScroll(this.videoListScroll.bind(this));
-    this.modalView.bindVideoListClickStoreButton(this.clickStoreButton.bind(this));
+    this.mainView.bindModalOpenButton(this.onModalOpenButtonClick.bind(this));
+    this.modalView.bindOnClickSearchButton(this.onSearchButtonClick.bind(this));
+    this.modalView.bindOnClickDimmer(this.onDimmerClick.bind(this));
+    this.modalView.bindVideoListScroll(this.onvideoListScroll.bind(this));
+    this.modalView.bindVideoListClickStoreButton(this.onStoreButtonClick.bind(this));
   }
 
-  clickModalOpenButton() {
+  onModalOpenButtonClick() {
     this.modalView.showModal();
   }
 
-  clickDimmer() {
+  onDimmerClick() {
     this.modalView.hideModal();
   }
 
-  clickStoreButton(videoId) {
+  onStoreButtonClick(videoId) {
     storageManager.storeVideoId(videoId);
   }
 
-  async clickSearchButton(searchInput) {
+  async onSearchButtonClick(searchInput) {
     try {
       validator.isValidSearchInput(searchInput);
       this.modalView.resetVideoList();
@@ -46,7 +46,7 @@ export default class EventHandler {
     }
   }
 
-  async videoListScroll(searchInput) {
+  async onvideoListScroll(searchInput) {
     try {
       this.modalView.appendEmptyList();
       this.modalView.appendVideoItem();
