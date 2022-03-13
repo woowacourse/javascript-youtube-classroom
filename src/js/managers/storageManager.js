@@ -2,28 +2,28 @@ import validator from '../utils/validator.js';
 
 const storageManager = {
   keys: {
-    videoId: 'videoId',
+    videoIdList: 'videoId',
   },
 
   storeVideoId(videoId) {
     try {
-      const videoList = this.getVideoIdList();
-      validator.checkOverVideoIdListMaxLength(videoList);
-      const videoIdSet = new Set(videoList).add(videoId);
-      localStorage.setItem(this.keys.videoId, JSON.stringify([...videoIdSet]));
+      const videoIdList = this.getVideoIdList();
+      validator.checkOverVideoIdListMaxLength(videoIdList);
+      const videoIdSet = new Set(videoIdList).add(videoId);
+      localStorage.setItem(this.keys.videoIdList, JSON.stringify([...videoIdSet]));
     } catch (error) {
       throw error;
     }
   },
 
   getVideoIdList() {
-    const videoList = JSON.parse(localStorage.getItem(this.keys.videoId));
-    return videoList || [];
+    const videoIdList = JSON.parse(localStorage.getItem(this.keys.videoIdList));
+    return videoIdList || [];
   },
 
   hasVideoID(videoId) {
-    const videoList = this.getVideoIdList();
-    return videoList && videoList.includes(videoId);
+    const videoIdList = this.getVideoIdList();
+    return videoIdList && videoIdList.includes(videoId);
   },
 };
 
