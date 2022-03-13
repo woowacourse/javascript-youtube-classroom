@@ -22,6 +22,8 @@ export default class SearchModal {
         this.renderNextPage();
       }
     });
+
+    this.videos = [];
   }
 
   show() {
@@ -29,13 +31,15 @@ export default class SearchModal {
   }
 
   handleSearchButton = () => {
-    this.initVideoList();
+    this.initView();
     this.keyword = this.searchInputKeyword.value;
+    if (this.keyword.trim() === "") {
+      return;
+    }
     this.getDataMatchKeyword(this.keyword);
   };
 
-  initVideoList() {
-    this.videos = [];
+  initView() {
     this.videoList.replaceChildren();
     this.noResultContainer.replaceChildren();
   }
