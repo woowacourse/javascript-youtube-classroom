@@ -1,14 +1,6 @@
-import validator from '../utils/validator.js';
 import APIManager from '../managers/APIManager.js';
 import videoAPICaller from '../managers/videoAPICaller.js';
-import { videoData, errorData, parseData } from '../utils/mockData.js';
-
-describe('보고 싶은 영상을 검색 했을 때', () => {
-  test('입력 없이 버튼을 눌렀다면 error를 throw한다.', () => {
-    const inputValue = '';
-    expect(() => validator.isValidSearchInput(inputValue)).toThrowError();
-  });
-});
+import { videoData, parseData } from '../utils/mockData.js';
 
 describe('API 요청을 하기 전', () => {
   test('endPoint와 params로 requestURL을 만들 수 있다.', () => {
