@@ -17,7 +17,7 @@ class Search {
     const videos = await this.fetchVideo(keyword);
 
     this.keyword = keyword;
-    this.nextPageToken = videos.nextPageToken ? videos.nextPageToken : '';
+    this.nextPageToken = videos.nextPageToken ?? '';
 
     VideoStore.instance.dispatch(type, this.preprocessor(videos));
   }
