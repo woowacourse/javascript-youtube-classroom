@@ -15,10 +15,7 @@ export default class SearchModal {
 
     this.searchButton.addEventListener("click", this.handleSearchButton);
     this.videoList.addEventListener("click", this.handleVideoItemSave);
-    this.createObserver();
-  }
 
-  createObserver() {
     this.observer = new IntersectionObserver((entries) => {
       const [entry] = entries;
       if (entry.isIntersecting) {
