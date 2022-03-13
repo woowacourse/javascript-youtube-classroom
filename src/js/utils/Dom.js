@@ -9,9 +9,20 @@ export const createElement = (tagName, property = {}) => {
     if (typeof $create[key] === 'string') {
       $create[key] = value;
     }
+
+    if (typeof $create[key] === 'function') {
+      $create[key](...value);
+    }
   });
 
   return $create;
+};
+
+export const combineElement = elements => {
+  const $fragment = document.createDocumentFragment();
+  $fragment.append(...elements);
+
+  return $fragment;
 };
 
 export const $ = (selector, parentElement = document) => parentElement.querySelector(selector);

@@ -1,4 +1,4 @@
-import { $, createElement } from '@Utils/Dom';
+import { $, createElement, combineElement } from '@Utils/Dom';
 import { getParsedTime } from '@Utils/ManageData';
 import { onObserveElement } from '@Utils/ElementControl';
 import { CLASS_ROOM_SETTING } from '@Constants/Setting';
@@ -56,31 +56,9 @@ export default class SearchResult extends Display {
     $target.textContent = '🗑 저장 취소';
   }
 
-  render({ isLoading, isLoaded, items, error }) {
-    if (error === true) {
-      this.$videoResult.replaceChildren(this.drawResultServerError());
-      return;
-    }
-
-    if (items.length === 0 && isLoaded === true) {
-      this.$videoResult.replaceChildren(this.drawResultNotFound());
-      return;
-    }
-
-    if (items.length === 0) {
-      this.$videoResult.scrollTo({ top: 0 });
-    }
-
-    const $fragment = document.createDocumentFragment();
-    if (items.length !== 0 && isLoaded === true) {
-      $fragment.append(...this.drawVideoList(items));
-    }
-
-    isLoading
-      ? this.container.classList.add('loading')
-      : this.container.classList.remove('loading');
-
-    this.$videoResult.replaceChildren($fragment);
+  setRenderList() {
+    this.addDrawList(this.drawVideoList.bind(this));
+    this.addDrawList(this.drawLoadingStatus.bind(this));
   }
 
   drawSkeletonList() {
@@ -88,11 +66,12 @@ export default class SearchResult extends Display {
     Array.from({ length: CLASS_ROOM_SETTING.MAX_VIDEO_NUMBER }).map(() => {
       const $skeleton = createElement('LI', {
         className: DOM_NAME.CLASS.VIDEO_LIST_SKELETON,
-        innerHTML: `
-        <div class="image"></div>
-        <p class="line"></p>
-        <p class="line"></p>
-      `,
+        insertAdjacentHTML: [
+          'afterbegin',
+          ` <div class="image"></div>
+            <p class="line"></p>
+            <p class="line"></p>`,
+        ],
       });
 
       $fragment.append($skeleton);
@@ -100,48 +79,83 @@ export default class SearchResult extends Display {
     this.$skeletonList.replaceChildren($fragment);
   }
 
-  drawResultNotFound() {
+  #getResultNotFound() {
     return createElement('DIV', {
       className: DOM_NAME.CLASS.SEARCH_RESULT_NOT_FOUND,
-      src: notFoundImage,
-      innerHTML: `
-        <img src="${notFoundImage}" alt="no result image" class="no-result__image">
-        <p class="no-result__description">
-          검색 결과가 없습니다<br />
-          다른 키워드로 검색해보세요
-        </p>
-      `,
+      insertAdjacentHTML: [
+        'afterbegin',
+        ` <img src="${notFoundImage}" alt="no result image" class="no-result__image">
+          <p class="no-result__description">
+            검색 결과가 없습니다<br />
+            다른 키워드로 검색해보세요
+          </p>`,
+      ],
     });
   }
 
-  drawResultServerError() {
+  #getResultServerError() {
     return createElement('DIV', {
       className: DOM_NAME.CLASS.SEARCH_RESULT_NOT_FOUND,
       src: notFoundImage,
-      innerHTML: `
-        <img src="${notFoundImage}" alt="no result image" class="no-result__image">
-        <p class="no-result__description">
-          서버에서 오류가 발생하였습니다.<br />
-          잠시 후 다시 시도해주세요.
-        </p>
-      `,
+      insertAdjacentHTML: [
+        'afterbegin',
+        ` <img src="${notFoundImage}" alt="no result image" class="no-result__image">
+          <p class="no-result__description">
+            서버에서 오류가 발생하였습니다.<br />
+            잠시 후 다시 시도해주세요.
+          </p>`,
+      ],
     });
   }
 
-  drawVideoList(items) {
-    return items.map(video => {
-      const buttonText = YoutubeSaveStorage.has(video.id.videoId) ? '🗑 저장 취소' : '⬇ 저장';
-      return createElement('LI', {
-        dataset: { 'video-id': video.id.videoId },
-        className: DOM_NAME.CLASS.VIDEO_ITEM,
-        innerHTML: `<img
-          src="${video.snippet.thumbnails.medium.url}"
-          alt="video-item-thumbnail" class="video-item__thumbnail">
-        <h4 class="video-item__title">${video.snippet.title}</h4>
-        <p class="video-item__channel-name">${video.snippet.channelTitle}</p>
-        <p class="video-item__published-date">${getParsedTime(video.snippet.publishTime)}</p>
-        <button class="video-item__save-button button">${buttonText}</button>`,
-      });
-    });
+  drawVideoList({ items, isLoaded, error }) {
+    if (items.length === 0 && isLoaded === false) {
+      return;
+    }
+
+    if (error) {
+      this.$videoResult.replaceChildren(this.#getResultServerError());
+      return;
+    }
+
+    if (items.length === 0 && isLoaded === true) {
+      this.$videoResult.replaceChildren(this.#getResultNotFound());
+      return;
+    }
+
+    if (items.length === 0) {
+      this.$videoResult.scrollTo({ top: 0 });
+    }
+
+    const $videoList = combineElement(
+      items.map(video => {
+        const buttonText = YoutubeSaveStorage.has(video.id.videoId) ? '🗑 저장 취소' : '⬇ 저장';
+        return createElement('LI', {
+          dataset: { 'video-id': video.id.videoId },
+          className: DOM_NAME.CLASS.VIDEO_ITEM,
+          insertAdjacentHTML: [
+            'afterbegin',
+            ` <img src="${video.snippet.thumbnails.medium.url}"
+                alt="video-item-thumbnail" class="video-item__thumbnail">
+              <h4 class="video-item__title">${video.snippet.title}</h4>
+              <p class="video-item__channel-name">${video.snippet.channelTitle}</p>
+              <p class="video-item__published-date">${getParsedTime(video.snippet.publishTime)}</p>
+              <button class="video-item__save-button button">${buttonText}</button>`,
+          ],
+        });
+      }),
+    );
+
+    this.$videoResult.replaceChildren($videoList);
+  }
+
+  drawLoadingStatus({ searchKeyword, isLoading }) {
+    searchKeyword
+      ? this.$scrollObserver.classList.add('enable')
+      : this.$scrollObserver.classList.remove('enable');
+
+    isLoading
+      ? this.container.classList.add('loading')
+      : this.container.classList.remove('loading');
   }
 }

@@ -24,6 +24,8 @@
         "function-paren-newline":"off",
         "no-return-assign":"off",
         "object-curly-newline":"off",
-        "operator-linebreak":"off"
+        "operator-linebreak":"off",
+        "lines-between-class-members":"off",
+        "array-callback-return":"off"
     }
 }
