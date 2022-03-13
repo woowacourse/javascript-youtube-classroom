@@ -21,7 +21,7 @@ export const SELECTOR = Object.freeze({
 const removeSelectorSymbol = origin => {
   const output = {};
   Object.entries(origin).forEach(([key, value]) => {
-    output[key] = value.substr(1);
+    output[key] = value.substring(1);
   });
 
   return Object.freeze(output);
