@@ -5,11 +5,13 @@ import SaveVideoManager from './SaveVideoManager';
 import { validateSearchKeyword } from './validation';
 import { ALERT_MESSAGE } from './constants';
 import { debounce } from './util';
+import SearchResultView from './View/SearchResultView';
 
 export default class YoutubeClassRoom {
   constructor() {
     this.homeView = new HomeView();
     this.searchModalView = new SearchModalView();
+    this.searchResultView = new SearchResultView();
     this.searchVideoManager = new SearchVideoManager();
     this.saveVideoManager = new SaveVideoManager();
 
@@ -45,29 +47,30 @@ export default class YoutubeClassRoom {
   }
 
   searchOnSubmitKeyword(keyword) {
-    this.searchModalView.updateOnKeywordSearchLoading();
+    this.searchResultView.resetSearchResultVideoList();
+    this.searchResultView.updateOnLoading();
     this.searchVideoManager
       .search(keyword)
       .then((videos) => {
         const checkedVideos = this.addSavedInfoToVideos(videos);
-        this.searchModalView.updateOnSearchDataReceived(checkedVideos);
+        this.searchResultView.updateOnSearchDataReceived(checkedVideos);
       })
       .catch(() => {
-        this.searchModalView.updateSearchErrorResult();
+        this.searchResultView.showErrorResult();
       });
   }
 
   searchOnScroll(e) {
     if (this.impossibleToLoadMore(e)) return;
-    this.searchModalView.updateOnScrollLoading();
+    this.searchResultView.updateOnLoading();
     this.searchVideoManager
       .search()
       .then((videos) => {
         const checkedVideos = this.addSavedInfoToVideos(videos);
-        this.searchModalView.updateOnSearchDataReceived(checkedVideos);
+        this.searchResultView.updateOnSearchDataReceived(checkedVideos);
       })
       .catch(() => {
-        this.searchModalView.updateSearchErrorResult();
+        this.searchResultView.showErrorResult();
       });
   }
 

@@ -24,21 +24,4 @@ export default class SearchModalView {
   closeModal() {
     $('#modal-container').classList.add('hide');
   }
-
-  updateOnKeywordSearchLoading() {
-    this.searchResultView.resetSearchResultVideoList();
-    this.searchResultView.updateOnLoading();
-  }
-
-  updateOnScrollLoading() {
-    this.searchResultView.updateOnLoading();
-  }
-
-  updateOnSearchDataReceived(videos) {
-    this.searchResultView.updateOnSearchDataReceived(videos);
-  }
-
-  updateSearchErrorResult() {
-    this.searchResultView.showErrorResult();
-  }
 }
