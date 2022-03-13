@@ -14,7 +14,6 @@
       <button id="search-modal-button" class="button nav__button">🔍 검색</button>
     </nav>
   </main>
-  <!-- 1 검색 버튼을 누르면 아래와 같은 검색 모달을 보여줍니다.-->
   <div class="modal-container hide">
     <div class="dimmer"></div>
     <div class="search-modal" role="dialog" aria-labelledby="search-modal-title">
@@ -27,13 +26,10 @@
         </form>
         <p id='search-error-message'></p>
       </section>
-      <!-- 2-1 검색 결과가 있을 경우, 아래와 같은 검색 결과 목록을 보여줍니다.-->
-
       <section class="search-result">
         <h3 hidden>검색 결과</h3>
         <ul class="video-list"></ul>
       </section>
-      <!-- 2-2 검색 결과가 없을 경우, `search-result--no-result` class를 붙이고 아래와 같은 no-result를 보여줍니다.-->
       <section class="search-result search-result--no-result hidden">
         <h3 hidden>검색 결과</h3>
         <div class="no-result">
