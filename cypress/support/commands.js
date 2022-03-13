@@ -1,25 +1,28 @@
-// ***********************************************
-// This example commands.js shows you how to
-// create various custom commands and overwrite
-// existing commands.
-//
-// For more comprehensive examples of custom
-// commands please read more here:
-// https://on.cypress.io/custom-commands
-// ***********************************************
-//
-//
-// -- This is a parent command --
-// Cypress.Commands.add('login', (email, password) => { ... })
-//
-//
-// -- This is a child command --
-// Cypress.Commands.add('drag', { prevSubject: 'element'}, (subject, options) => { ... })
-//
-//
-// -- This is a dual command --
-// Cypress.Commands.add('dismiss', { prevSubject: 'optional'}, (subject, options) => { ... })
-//
-//
-// -- This will overwrite an existing command --
-// Cypress.Commands.overwrite('visit', (originalFn, url, options) => { ... })
+Cypress.Commands.add("openSearchModal", () => {
+  cy.get("#search-modal-button").click();
+});
+
+Cypress.Commands.add("searchWithNoKeyword", () => {
+  const alertStub = cy.stub();
+
+  cy.on("window:alert", alertStub);
+  cy.get("#search-input-keyword").clear().type(" ");
+  cy.get("#search-button").click();
+});
+
+Cypress.Commands.add("searchWithKeyword", (keyword) => {
+  cy.get("#search-input-keyword").clear().type(keyword);
+  cy.get("#search-button").click();
+});
+
+Cypress.Commands.add("clickSaveVideoButton", () => {
+  cy.get(".video-item__save-button").eq(0).click();
+});
+
+Cypress.Commands.add("loadMoreVideos", () => {
+  cy.get(".video-list").scrollTo("bottom");
+});
+
+Cypress.Commands.add("closeSearchModal", () => {
+  cy.get(".dimmer").click({ force: true });
+});
