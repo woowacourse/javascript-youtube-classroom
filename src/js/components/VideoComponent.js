@@ -31,24 +31,19 @@ class VideoComponent {
 
   #initDOM() {
     const { video } = this.props;
-
     const { videoId } = video.getVideoInfo();
-
     this.$videoItem = this.#parentElement.querySelector(`[data-video-id="${videoId}"]`);
     this.$saveButton = this.$videoItem.querySelector('.video-item__save-button.button');
   }
 
   #subscribeStore() {
     const initialSavedVideo = subscribe(STATE_STORE_KEY.SAVED_VIDEO, this);
-
     this.#render(initialSavedVideo);
   }
 
   #render(savedVideo) {
     const { video } = this.props;
-
     const { videoId } = video.getVideoInfo();
-
     if (savedVideo.includes(videoId)) {
       this.$saveButton.setAttribute('hidden', true);
     }
@@ -56,9 +51,7 @@ class VideoComponent {
 
   #generateTemplate() {
     const { video } = this.props;
-
     const { videoId, videoTitle, channelTitle, publishTime, thumbnail } = video.getVideoInfo();
-
     return `
     <li class="video-item" data-video-id="${videoId}">
     <img

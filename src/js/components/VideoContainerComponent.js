@@ -43,7 +43,6 @@ class VideoContainerComponent {
 
   #mount() {
     const template = this.#generateTemplate();
-
     this.#parentElement.insertAdjacentHTML('beforeend', template);
   }
 
