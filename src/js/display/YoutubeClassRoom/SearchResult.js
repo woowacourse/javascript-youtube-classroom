@@ -36,7 +36,7 @@ export default class SearchResult extends Display {
     onObserveElement(this.$scrollObserver, () => {
       const { isLoading } = YoutubeSearchStore.getState();
       if (isLoading) return;
-      YoutubeSearchStore.dispatch(ACTION_TYPE.UPDATE_SEARCH_LOADING_STATUS);
+      YoutubeSearchStore.dispatch(ACTION_TYPE.UPDATE_SEARCH_LOADING_STATUS, true);
       YoutubeSearchStore.dispatch(ACTION_TYPE.UPDATE_SEARCH_RESULT);
     });
     this.addEvent({
