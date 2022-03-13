@@ -62,12 +62,14 @@ export default class Controller {
     }
     this.searchResultView.showSkeleton();
     await this.video.fetchYoutubeApi(this.video.keyword, this.video.nextPageToken);
-    this.video.setVideoInfo();
-    this.video.accumulateVideoItems();
-    this.video.updateNewVideoItems();
-    if (this.video.newVideoItems.length < VIDEO.MINIMUM_FETCHED_VIDEO_COUNT) {
+
+    try {
+      this.video.setVideoInfo();
+    } catch (error) {
       return;
     }
+    this.video.accumulateVideoItems();
+    this.video.updateNewVideoItems();
     this.searchResultView.renderVideo(this.video.newVideoItems);
     this.searchResultView.startObserve();
   }
