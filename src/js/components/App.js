@@ -5,11 +5,11 @@ import SearchModal from "./SearchModal.js";
 export default class App {
   constructor() {
     this.searchManager = new SearchManager();
-    this.menuBar = new MenuBar({ openModal: this.openModal });
+    this.menuBar = new MenuBar({ handleOpenModal: this.handleOpenModal });
     this.searchModal = new SearchModal({ searchManager: this.searchManager });
   }
 
-  openModal = () => {
-    this.searchModal.show();
+  handleOpenModal = () => {
+    this.searchModal.openModal();
   };
 }

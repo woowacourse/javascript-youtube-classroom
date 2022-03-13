@@ -5,17 +5,17 @@ export default class SearchModal {
   constructor({ searchManager }) {
     this.modalContainer = document.getElementById("modal-container");
     this.modalCloseButton = document.getElementById("modal-close-button");
-    this.modalCloseButton.addEventListener("click", this.close);
+    this.modalCloseButton.addEventListener("click", this.closeModal);
 
     new SearchInput({ searchManager });
     new SearchResult({ searchManager });
   }
 
-  show() {
+  openModal() {
     this.modalContainer.classList.remove("hide");
   }
 
-  close = () => {
+  closeModal = () => {
     this.modalContainer.classList.add("hide");
   };
 }

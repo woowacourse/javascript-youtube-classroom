@@ -1,7 +1,7 @@
 export default class MenuBar {
-  constructor({ openModal }) {
-    this.openModal = openModal;
+  constructor({ handleOpenModal }) {
+    this.handleOpenModal = handleOpenModal;
     this.searchModalButton = document.getElementById("search-modal-button");
-    this.searchModalButton.addEventListener("click", this.openModal);
+    this.searchModalButton.addEventListener("click", this.handleOpenModal);
   }
 }
