@@ -5,12 +5,7 @@ export const onEnableButton = ($eventTarget, condition) => {
     return;
   }
 
-  if (condition($eventTarget) === false) {
-    $eventTarget.disabled = true;
-    return;
-  }
-
-  $eventTarget.disabled = false;
+  $eventTarget.disabled = !condition($eventTarget);
 };
 
 export const onObserveElement = ($element, handler) => {
