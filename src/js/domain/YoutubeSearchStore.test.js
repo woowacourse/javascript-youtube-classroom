@@ -17,6 +17,14 @@ describe('유튜브 강의실 검색 시도 상태 테스트', () => {
     });
   });
 
+  test('검색 로딩 상태를 변경 할 수 있어야한다.', () => {
+    YoutubeSearchStore.dispatch(YOUTUBE_SEARCH_ACTION.UPDATE_SEARCH_LOADING_STATUS, true);
+    expect(YoutubeSearchStore.getState().isLoading).toBe(true);
+
+    YoutubeSearchStore.dispatch(YOUTUBE_SEARCH_ACTION.UPDATE_SEARCH_LOADING_STATUS, false);
+    expect(YoutubeSearchStore.getState().isLoading).toBe(false);
+  });
+
   test('검색 결과를 업데이트 할 때 상태가 정상적으로 저장되어야 한다.', async () => {
     YoutubeSearchStore.dispatch(YOUTUBE_SEARCH_ACTION.UPDATE_SEARCH_KEYWORD, '검색어');
     const spy = jest.spyOn(apiModules, 'requestYoutubeSearch');
