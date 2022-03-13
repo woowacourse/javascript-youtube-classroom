@@ -1,4 +1,3 @@
-import IndexDisplay from '@Display';
-import '../scss/index.scss';
+import App from '@Display/App';
 
-new IndexDisplay();
+new App();
