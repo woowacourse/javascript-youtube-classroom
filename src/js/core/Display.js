@@ -1,5 +1,6 @@
 export default class Display {
   container;
+  drawList = [];
 
   constructor() {
     if (new.target.name === Display.name) {
@@ -8,17 +9,30 @@ export default class Display {
 
     this.setContainer();
     this.defaultElement();
+    this.setRenderList();
     this.bindEvents();
     this.subscribeStores();
   }
 
   setContainer() {}
 
+  setRenderList() {}
+
   defaultElement() {}
 
   bindEvents() {}
 
   subscribeStores() {}
+
+  render(state) {
+    this.drawList.forEach(drawEvent => {
+      drawEvent(state);
+    });
+  }
+
+  addDrawList(drawEvent) {
+    this.drawList.push(drawEvent);
+  }
 
   addEvent(eventType, selector, handler, option = {}) {
     const children = [...this.container.querySelectorAll(selector)];
