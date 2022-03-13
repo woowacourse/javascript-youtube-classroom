@@ -9,6 +9,7 @@ export const DOM_STRING = {
   MODAL_OPEN_BUTTON: '#search-modal-button',
   SKELETON: 'skeleton',
   VIDEO_ITEM_SAVE_BUTTON: 'video-item__save-button',
+  VIDEO_ITEM: 'video-item',
 };
 
 export const ERROR_MESSAGE = {

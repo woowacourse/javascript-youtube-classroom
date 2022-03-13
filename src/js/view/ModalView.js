@@ -81,7 +81,7 @@ export default class ModalView {
   updateVideoItems(data) {
     this.videoItemList
       .slice(-VIDEO_LIST.RENDER_SIZE)
-      .forEach((videoItem, index) => videoItem.getVideoItemTemplate(data[index]));
+      .forEach((videoItem, index) => videoItem.renderVideoItemTemplate(data[index]));
   }
 
   showLoadingVideoItems() {
@@ -91,7 +91,10 @@ export default class ModalView {
   }
 
   #appendEmptyList() {
-    this.$videoList.insertAdjacentHTML('beforeend', '<li></li>'.repeat(VIDEO_LIST.RENDER_SIZE));
+    this.$videoList.insertAdjacentHTML(
+      'beforeend',
+      `<li class=${DOM_STRING.VIDEO_ITEM}></li>`.repeat(VIDEO_LIST.RENDER_SIZE)
+    );
   }
 
   #appendVideoItem() {
@@ -103,6 +106,6 @@ export default class ModalView {
   #showSkeletonTemplate() {
     this.videoItemList
       .slice(-VIDEO_LIST.RENDER_SIZE)
-      .forEach(videoItem => videoItem.getVideoItemTemplate());
+      .forEach(videoItem => videoItem.renderSkeletonTemplate());
   }
 }
