@@ -144,11 +144,8 @@ export default class SearchResult extends Display {
 
     if (items.length === 0 && isLoaded === false) {
       this.$videoResult.replaceChildren('');
+      this.$videoResult.closest(SELECTOR.ID.VIDEO_LIST).scrollTo({ top: 0 });
       return;
-    }
-
-    if (items.length === 0) {
-      this.$videoResult.scrollTo({ top: 0 });
     }
 
     const $videoList = this.#getVideoElementList(items);
