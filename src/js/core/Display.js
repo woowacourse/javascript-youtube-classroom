@@ -8,7 +8,7 @@ export default class Display {
     }
 
     this.setContainer();
-    this.defaultElement();
+    this.setDefaultElements();
     this.setRenderList();
     this.bindEvents();
     this.subscribeStores();
@@ -16,9 +16,9 @@ export default class Display {
 
   setContainer() {}
 
-  setRenderList() {}
+  setDefaultElements() {}
 
-  defaultElement() {}
+  setRenderList() {}
 
   bindEvents() {}
 

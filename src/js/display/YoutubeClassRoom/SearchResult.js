@@ -14,12 +14,17 @@ export default class SearchResult extends Display {
     this.container = $(SELECTOR.ID.SEARCH_RESULT_CONTAINER);
   }
 
-  defaultElement() {
+  setDefaultElements() {
     this.$videoResult = $(SELECTOR.ID.VIDEO_RESULT, this.container);
     this.$scrollObserver = $(SELECTOR.ID.SEARCH_RESULT_SCROLL_OBSERVER, this.container);
 
     this.$skeletonList = $('#skeleton-list', this.container);
     this.drawSkeletonList();
+  }
+
+  setRenderList() {
+    this.addDrawList(this.drawVideoList.bind(this));
+    this.addDrawList(this.drawLoadingStatus.bind(this));
   }
 
   bindEvents() {
@@ -54,11 +59,6 @@ export default class SearchResult extends Display {
 
     YoutubeSaveStorage.add(videoId);
     $target.textContent = '🗑 저장 취소';
-  }
-
-  setRenderList() {
-    this.addDrawList(this.drawVideoList.bind(this));
-    this.addDrawList(this.drawLoadingStatus.bind(this));
   }
 
   drawSkeletonList() {
