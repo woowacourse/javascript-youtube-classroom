@@ -70,7 +70,7 @@ export default class SearchModal {
     }
   }
 
-  async searchHandler(e) {
+  searchHandler(e) {
     e.preventDefault();
 
     this.videoList.scrollTo({ top: 0 });
