@@ -20,10 +20,10 @@
   position: relative;
   width: 1080px;
   height: 727px;
-  background: #ffffff;
+  background: var(--modal-background-color);
   border: 1px solid rgba(0, 0, 0, 0.12);
   border-radius: 4px;
-  padding: 50px 30px 32px 30px;
+  padding: 50px 30px 32px;
 }
 
 .search-modal__title {
@@ -57,7 +57,7 @@
 .search-input__search-button {
   width: 72px;
   height: 36px;
-  background: #00bcd4;
+  background: var(--primary-btn-color);
   color: #ffffff;
 }
 
@@ -140,12 +140,12 @@
   right: 0;
   width: 80px;
   height: 36px;
-  background: #f9f9f9;
+  background: var(--modal-video-btn-color);
   margin-top: 4px;
 }
 
 .video-item__save-button:hover {
-  background: #efefef;
+  background: var(--modal-video--hover-btn-color);
 }
 
 .hide {
