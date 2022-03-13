@@ -37,9 +37,9 @@ export default class VideoCardList extends Component {
   afterMounted() {
     const { videos, isLoading } = rootStore.state;
     const videoCards = document.querySelectorAll('.video-card.real');
-
     videoCards.forEach((videoCard, index) => {
-      new VideoCard(videoCard, { video: videos[index] });
+      index < videos.length &&
+        new VideoCard(videoCard, { video: videos[index] });
     });
 
     if (isLoading) {
