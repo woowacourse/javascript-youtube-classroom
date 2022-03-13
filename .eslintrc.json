@@ -14,6 +14,7 @@
     "prefer-arrow-callback": "off",
 	  "no-unused-vars": "warn",
     "import/extensions": "off",
-    "object-shorthand": "off"
+    "object-shorthand": "off",
+    "no-new": "off",
   }
 }
