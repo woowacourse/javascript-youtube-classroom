@@ -34,15 +34,9 @@ class SearchModal {
           <button class="video-item__save-button button">⬇ 저장</button>
         </li>`;
       })
-      .join('\n'); // new line해주지 않으면 insertAdjacentHTML을 사용할때 element가 5개만 생성된다.
+      .join('');
 
-    const template = document.createElement('template');
-    template.insertAdjacentHTML('beforeend', videoListTemplate);
-
-    template.childNodes.forEach($el => {
-      $el.addEventListener('click', this.handleClickSaveButton.bind(this));
-      this.$videoList.insertAdjacentElement('beforeend', $el);
-    });
+    this.$videoList.insertAdjacentHTML('beforeend', videoListTemplate);
   }
 
   renderSkeletonItems(videoCount) {
@@ -63,6 +57,9 @@ class SearchModal {
 
   addEvent() {
     this.$button.addEventListener('click', this.handleClickButton.bind(this));
+    this.$videoList.addEventListener('click', event => {
+      this.handleClickVideoList(event);
+    });
     this.$videoList.addEventListener('scroll', this.handleScroll.bind(this));
   }
 
@@ -115,6 +112,13 @@ class SearchModal {
     const videoList = JSON.parse(localStorage.getItem(LOCAL_STORAGE_VIDEO_LIST_KEY)) ?? [];
     if (this.saveVideo(videoId, videoList)) {
       target.setAttribute('hidden', true);
+    }
+  }
+
+  handleClickVideoList(event) {
+    const { target } = event;
+    if (target.classList.contains('video-item__save-button')) {
+      this.handleClickSaveButton(event);
     }
   }
 
