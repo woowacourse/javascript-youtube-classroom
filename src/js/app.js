@@ -7,8 +7,4 @@ const search = new Search();
 
 const requestSender = new RequestSender(search);
 
-view.attachRequestSender(
-  requestSender.sendSearchRequest,
-  requestSender.sendLoadMoreRequest,
-  requestSender.sendSaveRequest
-);
+view.attachRequestSender(requestSender.sendSearchRequest, requestSender.sendSaveRequest);

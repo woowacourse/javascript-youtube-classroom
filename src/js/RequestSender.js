@@ -6,16 +6,8 @@ class RequestSender {
   }
 
   sendSearchRequest = async (keyword) => {
-    const { searchResultArray } = await this.search.handleSearchRequest(keyword);
-    return searchResultArray;
-  };
-
-  sendLoadMoreRequest = async () => {
-    const searchResultArray = await this.search.handleLoadMoreRequest(
-      this.keyword,
-      this.nextPageToken
-    );
-    return searchResultArray;
+    const { searchResultArray, hasNextPage } = await this.search.handleSearchRequest(keyword);
+    return { searchResultArray, hasNextPage };
   };
 
   sendSaveRequest = (id) => {

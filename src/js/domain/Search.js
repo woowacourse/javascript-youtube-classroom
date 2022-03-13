@@ -7,26 +7,19 @@ class Search {
     this.nextPageToken = null;
   }
 
-  async handleSearchRequest(keyword, pageToken = undefined) {
+  async handleSearchRequest(keyword = this.keyword, pageToken = undefined) {
     try {
       const { items, nextPageToken } = await this.#getSearchResult(keyword, pageToken);
       this.keyword = keyword;
       this.nextPageToken = nextPageToken;
       const savedVideos = storage.getSavedVideos();
-      return { searchResultArray: this.#getVideoObjectArray(items, savedVideos), nextPageToken };
+      return {
+        searchResultArray: this.#getVideoObjectArray(items, savedVideos),
+        hasNextPage: !!nextPageToken,
+      };
     } catch (error) {
       throw new Error(error.message);
     }
-  }
-
-  async handleLoadMoreRequest() {
-    if (this.nextPageToken === undefined) return null;
-    const { searchResultArray, nextPageToken } = await this.handleSearchRequest(
-      this.keyword,
-      this.nextPageToken
-    );
-    this.nextPageToken = nextPageToken;
-    return searchResultArray;
   }
 
   async #getSearchResult(keyword, pageToken) {

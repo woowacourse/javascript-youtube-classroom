@@ -21,13 +21,11 @@ class View {
 
     this.#attachEventListeners();
     this.sendSearchRequest = () => {};
-    this.sendLoadMoreRequest = () => {};
     this.sendSaveRequest = () => {};
   }
 
   attachRequestSender(sendSearchRequest, sendLoadMoreRequest, sendSaveRequest) {
     this.sendSearchRequest = sendSearchRequest;
-    this.sendLoadMoreRequest = sendLoadMoreRequest;
     this.sendSaveRequest = sendSaveRequest;
   }
 
@@ -56,8 +54,8 @@ class View {
 
     this.#loadSkeleton();
     try {
-      const searchResultArray = await this.sendSearchRequest(keyword);
-      this.#renderSearchResult(searchResultArray, keyword);
+      const { searchResultArray, hasNextPage } = await this.sendSearchRequest(keyword);
+      this.#renderSearchResult({ searchResultArray, keyword, hasNextPage });
     } catch (error) {
       this.#renderError(error.message);
     }
@@ -69,8 +67,8 @@ class View {
         if (entries[0].isIntersecting) {
           this.requestMoreResult.unobserve(entries[0].target);
           this.#loadSkeleton();
-          const moreResult = await this.sendLoadMoreRequest();
-          this.#renderSearchResult(moreResult);
+          const { searchResultArray, hasNextPage } = await this.sendSearchRequest();
+          this.#renderSearchResult({ searchResultArray, hasNextPage });
         }
       },
       { threshold: 0.5 }
@@ -92,19 +90,20 @@ class View {
     removeElementList([...this.videoList.childNodes]);
   }
 
-  #renderSearchResult(searchResultArray, keyword) {
+  #renderSearchResult({ searchResultArray, keyword, hasNextPage }) {
     const skeletonList = this.videoList.querySelectorAll('.skeleton');
     removeElementList(skeletonList);
 
     if (this.#isEndOfResult(searchResultArray)) return;
-
     if (keyword) {
       this.searchResultTitle.textContent = `'${keyword}' 검색 결과입니다`;
     }
 
     const resultElementArray = this.#createElementFromObject(searchResultArray);
     this.videoList.append(...resultElementArray);
-    this.requestMoreResult.observe(this.videoList.lastChild);
+    if (hasNextPage) {
+      this.requestMoreResult.observe(this.videoList.lastChild);
+    }
   }
 
   #isEndOfResult(searchResultArray) {
