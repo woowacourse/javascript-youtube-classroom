@@ -1,6 +1,5 @@
-import VideoBuilder from './VideoBuilder.js';
 import { checkSavedVideo } from '../util/validator.js';
-
+import Video from './Video.js';
 export default class VideoFactory {
   static generate(item) {
     const { videoId } = item.id;
@@ -14,7 +13,7 @@ export default class VideoFactory {
       publishTime,
     } = item.snippet;
 
-    return new VideoBuilder()
+    return new Video.Builder()
       .setId(videoId)
       .setThumbnails(url)
       .setTitle(title)
