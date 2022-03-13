@@ -7,7 +7,11 @@ export default class Modal extends Display {
   }
 
   bindEvents() {
-    this.addEvent('click', '.dimmer', this.handleCloseModal.bind(this));
+    this.addEvent({
+      eventType: 'click',
+      selector: '.dimmer',
+      handler: this.handleCloseModal.bind(this),
+    });
   }
 
   handleCloseModal() {

@@ -14,8 +14,17 @@ export default class SearchForm extends Display {
   defaultElement() {}
 
   bindEvents() {
-    this.addEvent('keyup', SELECTOR.ID.SEARCH_INPUT_KEYWORD, this.handleInputValue.bind(this));
-    this.addEvent('submit', SELECTOR.ID.SEARCH_FORM, this.handleSubmitForm.bind(this));
+    this.addEvent({
+      eventType: 'keyup',
+      selector: SELECTOR.ID.SEARCH_INPUT_KEYWORD,
+      handler: this.handleInputValue.bind(this),
+    });
+    this.addEvent({
+      eventType: 'submit',
+      selector: SELECTOR.ID.SEARCH_FORM,
+      handler: this.handleSubmitForm.bind(this),
+      isPreventedDefault: true,
+    });
   }
 
   handleInputValue({ target: $target }) {

@@ -37,11 +37,11 @@ export default class SearchResult extends Display {
       YoutubeSearchStore.dispatch(ACTION_TYPE.UPDATE_SEARCH_LOADING_STATUS);
       YoutubeSearchStore.dispatch(ACTION_TYPE.UPDATE_SEARCH_RESULT);
     });
-    this.addEvent(
-      'click',
-      SELECTOR.CLASS.VIDEO_ITEM_SAVE_BUTTON,
-      this.handleToggleSaveButton.bind(this),
-    );
+    this.addEvent({
+      eventType: 'click',
+      selector: SELECTOR.CLASS.VIDEO_ITEM_SAVE_BUTTON,
+      handler: this.handleToggleSaveButton.bind(this),
+    });
   }
 
   subscribeStores() {

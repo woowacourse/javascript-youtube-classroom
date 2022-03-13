@@ -8,7 +8,11 @@ export default class Navigation extends Display {
   }
 
   bindEvents() {
-    this.addEvent('click', SELECTOR.ID.SEARCH_MODAL_BUTTON, this.handleOpenModal.bind(this));
+    this.addEvent({
+      eventType: 'click',
+      selector: SELECTOR.ID.SEARCH_MODAL_BUTTON,
+      handler: this.handleOpenModal.bind(this),
+    });
   }
 
   handleOpenModal({ target: $target }) {
