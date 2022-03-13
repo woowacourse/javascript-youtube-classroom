@@ -1,4 +1,8 @@
-import { ERROR_MESSAGE, MAX_VIDEO_COUNT, REDIRECT_SERVER_HOST } from './constants/contants.js';
+import {
+  ERROR_MESSAGE,
+  MAX_VIDEO_REQUEST_COUNT,
+  REDIRECT_SERVER_HOST,
+} from './constants/contants.js';
 
 class SearchVideo {
   constructor() {
@@ -18,18 +22,19 @@ class SearchVideo {
     const params = new URLSearchParams({
       part: 'snippet',
       type: 'video',
-      maxResults: MAX_VIDEO_COUNT,
+      maxResults: MAX_VIDEO_REQUEST_COUNT,
       regionCode: 'kr',
-      pageToken: this.nextPageToken || '',
+      pageToken: this.nextPageToken,
       q: searchKeyword,
     });
     url.search = params.toString();
+
     const response = await fetch(url);
     if (!response.ok) {
       throw new Error(ERROR_MESSAGE.CANNOT_GET_YOUTUBE_VIDEO);
     }
     const { items, nextPageToken } = await response.json();
-    this.nextPageToken = nextPageToken;
+    this.nextPageToken = nextPageToken ?? '';
     return items;
   };
 
@@ -38,6 +43,10 @@ class SearchVideo {
       throw new Error(ERROR_MESSAGE.CANNOT_SEARCH_EMPTY);
     }
   };
+
+  initNextPageToken() {
+    this.nextPageToken = '';
+  }
 }
 
 export default SearchVideo;
