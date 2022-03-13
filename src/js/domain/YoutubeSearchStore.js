@@ -8,6 +8,7 @@ class YoutubeSearchStore extends Store {
     isLoading: false,
     isLoaded: false,
     items: [],
+    totalResults: Number.MAX_SAFE_INTEGER,
     nextPageToken: '',
     error: false,
   };
@@ -22,6 +23,10 @@ class YoutubeSearchStore extends Store {
     stateByType[type](data);
   }
 
+  #isLastItem() {
+    return this.state.items.length >= this.state.totalResults;
+  }
+
   setUpdateKeyword(keyword) {
     this.setState({
       ...this.state,
@@ -29,6 +34,7 @@ class YoutubeSearchStore extends Store {
       isLoading: true,
       isLoaded: false,
       items: [],
+      totalResults: Number.MAX_SAFE_INTEGER,
       nextPageToken: '',
       error: false,
     });
@@ -39,8 +45,18 @@ class YoutubeSearchStore extends Store {
   }
 
   async setUpdateResult() {
+    if (this.#isLastItem() === true) {
+      this.setState({
+        ...this.state,
+        isLoading: false,
+        isLoaded: true,
+      });
+      return;
+    }
+
     const {
       items = [],
+      pageInfo = { totalResults: 0 },
       nextPageToken = '',
       error = false,
     } = await requestYoutubeSearch(this.state.searchKeyword, this.state.nextPageToken);
@@ -50,6 +66,7 @@ class YoutubeSearchStore extends Store {
       isLoading: false,
       isLoaded: true,
       items: [...this.state.items, ...items],
+      totalResults: pageInfo.totalResults,
       error,
       nextPageToken,
     });
