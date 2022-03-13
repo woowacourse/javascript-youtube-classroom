@@ -62,7 +62,6 @@ export default class SearchModal {
     this.videoListWrapper.scrollTo({ top: 0 });
     this.videoListWrapper.replaceChildren(...this.skeletons);
     this.pageToken = '';
-    this.searchErrorMessage.textContent = '';
   }
 
   searchHandler(e) {
@@ -70,7 +69,6 @@ export default class SearchModal {
 
     try {
       validateKeyword(this.searchInputKeyword.value);
-
       const hasPrevVideoList = this.pageToken !== '';
 
       if (hasPrevVideoList) {
@@ -83,6 +81,7 @@ export default class SearchModal {
         options: OPTIONS,
         pageToken: this.pageToken,
       });
+      this.searchErrorMessage.textContent = '';
     } catch (error) {
       this.searchErrorMessage.textContent = ERROR_MESSAGE.EMPTY_KEYWORD;
     }
