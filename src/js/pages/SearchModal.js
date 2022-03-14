@@ -130,13 +130,13 @@ export default class SearchModal {
     });
 
     try {
-      const videoList = await fetchData(URLquery);
+      const videos = await fetchData(URLquery);
 
-      this.VideoCardContainer.setState({ items: videoList.items });
+      this.VideoCardContainer.setState({ items: videos.items });
 
-      this.showSearchResult(videoList.items);
+      this.showSearchResult(videos.items);
 
-      this.pageToken = videoList.nextPageToken || '';
+      this.pageToken = videos.nextPageToken || '';
     } catch (error) {
       console.log(error);
       this.showNoResultContainer();
