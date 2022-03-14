@@ -38,7 +38,7 @@ export default class SearchModal {
     this.videoList = this.element.querySelector('.video-list');
     this.dimmer = this.element.querySelector('.dimmer');
     this.searchForm = this.element.querySelector('#search-form');
-    [this.resultContainer, this.noResultContainer] =
+    [this.searchResultContainer, this.noSearchResultContainer] =
       this.element.querySelectorAll('.search-result');
   }
 
