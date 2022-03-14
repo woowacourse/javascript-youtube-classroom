@@ -5,7 +5,7 @@ import {
   selectDom,
   scrollToTop,
 } from '../util/util';
-import { MAX_SEARCH_RESULT } from '../constants/constants';
+import { ERROR_MESSAGES, MAX_SEARCH_RESULT } from '../constants/constants';
 import '../../assets/images/not_found.png';
 
 class View {
@@ -45,7 +45,10 @@ class View {
   #handleSearch = async (event) => {
     event.preventDefault();
     const { value: keyword } = this.searchInputKeyword;
-    if (isBlankValue(keyword)) return;
+    if (isBlankValue(keyword)) {
+      alert(ERROR_MESSAGES.NO_SEARCH_KEYWORD);
+      return;
+    }
 
     this.#clearPreviousRender();
 
