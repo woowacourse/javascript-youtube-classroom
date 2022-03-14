@@ -14,11 +14,15 @@ export default function App() {
     try {
       youtubeSearchClient.resetSearchResults();
       userInterface.resetVideoList();
+
       const searchInput = $('#search-input-keyword').value.trim();
       youtubeSearchClient.searchTarget = searchInput;
+
       userInterface.renderSkeletonUI();
+
       const response = youtubeSearchClient.callSearchAPI();
       youtubeSearchClient.updateSearchResults(response);
+
       userInterface.renderSearchResult(response);
     } catch (error) {
       alert(error.message);
@@ -28,8 +32,10 @@ export default function App() {
   const handleScroll = e => {
     if (isEndOfScroll(e.target)) {
       userInterface.renderSkeletonUI();
+
       const response = youtubeSearchClient.callSearchAPI();
       youtubeSearchClient.updateSearchResults(response);
+
       userInterface.renderNextSearchResult(response);
     }
   };
@@ -38,9 +44,14 @@ export default function App() {
     if (!e.target.classList.contains('video-item__save-button')) {
       return;
     }
-    e.target.closest('button').hidden = true;
-    const { videoId } = e.target.parentElement.dataset;
-    storage.saveVideo(videoId);
+    try {
+      const saveTargetVideo = e.target.parentElement.dataset;
+      storage.updateSavedVideos(saveTargetVideo);
+
+      e.target.closest('button').hidden = true;
+    } catch (error) {
+      alert(error.message);
+    }
   };
 
   // 이벤트 등록

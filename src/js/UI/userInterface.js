@@ -28,9 +28,11 @@ const userInterface = {
   resetSearchInput() {
     $('#search-input-keyword').value = '';
   },
+
   resetVideoList() {
     $('.video-list').replaceChildren();
   },
+
   renderSkeletonUI() {
     $('.search-result').classList.remove('search-result--no-result');
     $('.no-result').hidden = true;
@@ -38,19 +40,22 @@ const userInterface = {
     $('.video-list').insertAdjacentHTML('beforeEnd', template.skeletonUI.repeat(10));
     this.resetSearchInput();
   },
+
   removeSkeletonUI() {
     $$('.skeleton').forEach(element => element.remove());
   },
+
   removeSavedVideoButton() {
-    const savedStorage = storage.getLocalStorage();
-    if (savedStorage) {
-      savedStorage.forEach(video => {
+    const savedVideos = storage.getSavedVideos();
+    if (savedVideos) {
+      savedVideos.forEach(video => {
         if ($('.video-list').lastElementChild.dataset.videoId === video.id) {
           $('.video-list').lastElementChild.lastElementChild.hidden = true;
         }
       });
     }
   },
+
   renderVideoItems({ items }) {
     this.removeSkeletonUI();
     items.forEach(item => {
@@ -58,12 +63,14 @@ const userInterface = {
       this.removeSavedVideoButton();
     });
   },
+
   renderNoResult() {
     this.removeSkeletonUI();
     $('.search-result').classList.add('search-result--no-result');
     $('.no-result').hidden = false;
     $('.video-list').classList.add('hide');
   },
+
   renderSearchResult(response) {
     response
       .then(searchResults => {
@@ -73,6 +80,7 @@ const userInterface = {
         this.renderNoResult();
       });
   },
+
   renderNextSearchResult(response) {
     response.then(searchResults => {
       this.renderVideoItems(searchResults);
