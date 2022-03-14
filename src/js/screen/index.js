@@ -20,10 +20,11 @@ export default class ScreenManager {
     this.searchButton = $('#search-button');
     this.searchInputKeyword = $('#search-input-keyword');
     this.searchResult = $('.search-result');
+    this.dimmer = $('.dimmer');
 
     // 이벤트 핸들러 등록
     this.searchModalButton.addEventListener('click', this.handleOpenModal.bind(this));
-    document.addEventListener('click', this.handleCloseModal.bind(this));
+    this.dimmer.addEventListener('click', this.handleCloseModal.bind(this));
     this.searchButton.addEventListener('click', this.handleSearchVideos.bind(this));
     this.searchInputKeyword.addEventListener('keydown', this.handleSearchVideos.bind(this));
     this.searchResult.addEventListener('click', this.handleSaveVideo.bind(this));
@@ -33,12 +34,8 @@ export default class ScreenManager {
     this.modalContainer.classList.remove('hide');
   }
 
-  handleCloseModal(e) {
-    if (e.target.matches('#search-modal-button')) return;
-
-    if (!e.target.closest('.search-modal')) {
-      this.modalContainer.classList.add('hide');
-    }
+  handleCloseModal() {
+    this.modalContainer.classList.add('hide');
   }
 
   async handleSearchVideos(e) {
