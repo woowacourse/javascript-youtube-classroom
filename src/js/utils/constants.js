@@ -25,3 +25,7 @@ export const STORE = {
 export const VIDEO_LIST = {
   RENDER_SIZE: 10,
 };
+
+export const KEYBOARD = {
+  ENTER: 13,
+};
