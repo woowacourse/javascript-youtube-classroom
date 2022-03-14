@@ -54,10 +54,14 @@ export default function App() {
     $('.video-list').addEventListener('click', handleSaveButtonClick);
   };
 
+  const toggleModal = () => {
+    $('.modal-container').classList.toggle('hide');
+  };
+
   // 이벤트 등록
-  $('#search-modal-button').addEventListener('click', () => {
-    $('.modal-container').classList.remove('hide');
-  });
+  $('#search-modal-button').addEventListener('click', toggleModal);
+
+  $('.dimmer').addEventListener('click', toggleModal);
 
   $('#search-button').addEventListener('click', handleSearch);
 
