@@ -74,11 +74,11 @@ class SearchModal {
     this.resetSearchResult();
     const searchKeyWord = this.$searchKeyWordInput.value;
     const searchResult = await this.requestYoutubeVideos(searchKeyWord);
-    const videos = this.checkSearchResult(searchResult);
-    if (!videos) {
+    if (searchResult === null) {
       this.$searchResult.classList.add('search-result--no-result');
       return;
     }
+    const videos = this.checkSearchResult(searchResult);
     this.renderVideoItems(videos);
     this.nextPageToken = searchResult.nextPageToken;
   };
@@ -108,8 +108,7 @@ class SearchModal {
     const { target } = event;
     const $videoItem = target.closest('.video-item');
     const videoId = $videoItem.getAttribute('data-video-id');
-    const videoList = JSON.parse(localStorage.getItem(LOCAL_STORAGE_VIDEO_LIST_KEY)) ?? [];
-    if (this.saveVideo(videoId, videoList)) {
+    if (this.saveVideo(videoId)) {
       target.setAttribute('hidden', true);
     }
   };
@@ -121,12 +120,19 @@ class SearchModal {
     }
   };
 
-  saveVideo(videoId, videoList) {
+  saveVideo(videoId) {
+    const videoList = JSON.parse(localStorage.getItem(LOCAL_STORAGE_VIDEO_LIST_KEY)) ?? [];
     if (videoList.length >= MAX_SAVABLE_VIDEOS_COUNT) {
       alert(`비디오는 ${MAX_SAVABLE_VIDEOS_COUNT}개 이상 저장할 수 없습니다`);
       return false;
     }
-    localStorage.setItem(LOCAL_STORAGE_VIDEO_LIST_KEY, JSON.stringify([...videoList, videoId]));
+    const newVideoSet = new Set([...videoList, videoId]);
+    const isDuplicated = videoList.length === newVideoSet.size();
+    if (isDuplicated) {
+      alert('이미 저장된 비디오입니다');
+      return false;
+    }
+    localStorage.setItem(LOCAL_STORAGE_VIDEO_LIST_KEY, JSON.stringify([...newVideoSet]));
     return true;
   }
 
