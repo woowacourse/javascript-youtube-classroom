@@ -35,30 +35,6 @@ export default class VideoView {
     }
   }
 
-  #appendVideos(videos) {
-    const html = videos.map(
-      ({ id, snippet }) =>
-        `<li class="video-item">
-          <img
-            src="${snippet.thumbnails.default.url}"
-            alt="video-item-thumbnail" class="video-item__thumbnail">
-          <h4 class="video-item__title">[Playlist] ${snippet.title}</h4>
-          <p class="video-item__channel-name">${snippet.channelTitle}</p>
-          <p class="video-item__published-date">${convertYYYYMMDD(snippet.publishTime)}</p>
-          <button data-video-id="${id.videoId}" class="video-item__save-button button">⬇ 저장</button>
-        </li>`
-    ).join('');
-    this.#$container.insertAdjacentHTML('beforeend', html);
-  }
-
-  #controllScreen(order) {
-    this.#$emptyScreen.classList[order]('empty');
-  }
-
-  #lastVideoItem() {
-    return this.#$container.lastChild;
-  }
-
   onSkeleton() {
     const html = (
       `<div class="skeleton">
@@ -82,5 +58,29 @@ export default class VideoView {
         e.target.classList.add('saved');
       }
     })   
+  }
+
+  #appendVideos(videos) {
+    const html = videos.map(
+      ({ id, snippet }) =>
+        `<li class="video-item">
+          <img
+            src="${snippet.thumbnails.default.url}"
+            alt="video-item-thumbnail" class="video-item__thumbnail">
+          <h4 class="video-item__title">[Playlist] ${snippet.title}</h4>
+          <p class="video-item__channel-name">${snippet.channelTitle}</p>
+          <p class="video-item__published-date">${convertYYYYMMDD(snippet.publishTime)}</p>
+          <button data-video-id="${id.videoId}" class="video-item__save-button button">⬇ 저장</button>
+        </li>`
+    ).join('');
+    this.#$container.insertAdjacentHTML('beforeend', html);
+  }
+
+  #controllScreen(order) {
+    this.#$emptyScreen.classList[order]('empty');
+  }
+
+  #lastVideoItem() {
+    return this.#$container.lastChild;
   }
 }
