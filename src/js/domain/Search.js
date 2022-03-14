@@ -7,7 +7,7 @@ class Search {
     this.nextPageToken = null;
   }
 
-  async handleSearchRequest(keyword, pageToken = undefined) {
+  async getSearchResultArray(keyword, pageToken = undefined) {
     const { items, nextPageToken } = await this.#getSearchResult(keyword, pageToken);
     this.keyword = keyword;
     this.nextPageToken = nextPageToken;
@@ -15,13 +15,9 @@ class Search {
     return { searchResultArray: this.#getVideoObjectArray(items, savedVideos), nextPageToken };
   }
 
-  async handleLoadMoreRequest() {
+  async getLoadMoreResultArray() {
     if (this.nextPageToken === undefined) return null;
-    const { searchResultArray, nextPageToken } = await this.handleSearchRequest(
-      this.keyword,
-      this.nextPageToken
-    );
-    this.nextPageToken = nextPageToken;
+    const { searchResultArray } = await this.getSearchResultArray(this.keyword, this.nextPageToken);
     return searchResultArray;
   }
 

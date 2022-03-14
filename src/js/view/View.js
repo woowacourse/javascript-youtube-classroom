@@ -6,10 +6,12 @@ import {
   scrollToTop,
 } from '../util/util';
 import { MAX_SEARCH_RESULT } from '../constants/constants';
-import '../../assets/images/not_found.png';
+import storage from '../domain/storage';
 
 class View {
-  constructor() {
+  constructor(search) {
+    this.search = search;
+
     this.searchModalButton = selectDom('#search-modal-button');
     this.modalContainer = selectDom('.modal-container');
     this.searchForm = selectDom('#search-form');
@@ -19,9 +21,6 @@ class View {
     this.videoList = selectDom('.video-list', this.searchResult);
     this.requestMoreResult = this.#handleScrollToLastItem();
 
-    this.sendSearchRequest = () => {};
-    this.sendLoadMoreRequest = () => {};
-    this.sendSaveRequest = () => {};
     this.addEventListeners();
   }
 
@@ -30,12 +29,6 @@ class View {
     this.searchForm.addEventListener('submit', this.#handleSearch);
     this.searchInputKeyword.addEventListener('keyup', this.#handleValidInput);
   };
-
-  attachRequestSender(sendSearchRequest, sendLoadMoreRequest, sendSaveRequest) {
-    this.sendSearchRequest = sendSearchRequest;
-    this.sendLoadMoreRequest = sendLoadMoreRequest;
-    this.sendSaveRequest = sendSaveRequest;
-  }
 
   #openModal = () => {
     this.modalContainer.classList.remove('hide');
@@ -56,12 +49,9 @@ class View {
     this.#clearNoResult();
     scrollToTop(this.videoList);
     const { value: keyword } = this.searchInputKeyword;
-    if (isEmptyValue(keyword)) {
-      return;
-    }
     removeElementList([...this.videoList.childNodes]);
     this.#loadSkeleton();
-    const searchResultArray = await this.sendSearchRequest(keyword);
+    const { searchResultArray } = await this.search.getSearchResultArray(keyword);
     this.#renderSearchResult(searchResultArray);
   };
 
@@ -71,7 +61,7 @@ class View {
         if (entries[0].isIntersecting) {
           this.requestMoreResult.unobserve(this.videoList.lastChild);
           this.#loadSkeleton();
-          const moreResult = await this.sendLoadMoreRequest();
+          const moreResult = await this.search.getLoadMoreResultArray();
           this.#renderSearchResult(moreResult);
         }
       },
@@ -81,7 +71,7 @@ class View {
 
   #handleVideoSaveClick = (event) => {
     try {
-      this.sendSaveRequest(event.target.dataset.videoId);
+      storage.setSavedVideos(event.target.dataset.videoId);
       event.target.disabled = true;
     } catch (error) {
       alert(error.message);
