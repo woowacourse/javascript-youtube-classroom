@@ -58,9 +58,9 @@ export default class SearchModal {
   scrollHandler(e) {
     const { scrollTop, offsetHeight, scrollHeight } = e.target;
 
-    const isNextScroll = scrollTop + offsetHeight >= scrollHeight;
+    const isEndOfScroll = scrollTop + offsetHeight >= scrollHeight;
 
-    if (isNextScroll) {
+    if (isEndOfScroll) {
       this.renderVideoList({
         url: YOUTUBE_URL,
         keyword: this.searchInputKeyword.value,
