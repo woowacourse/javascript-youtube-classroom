@@ -1,20 +1,20 @@
 import { ERROR_MESSAGE, STORE } from '../utils/constants.js';
 
 const storageManager = {
-  keys: {
-    videoId: 'videoId',
+  KEYS: {
+    VIDEO_ID: 'videoId',
   },
 
   storeVideoId: function (videoId) {
     if (!this.hasVideoID(videoId)) {
       const videoList = this.getVideoIdList();
       videoList.push(videoId);
-      localStorage.setItem(this.keys.videoId, JSON.stringify(videoList));
+      localStorage.setItem(this.KEYS.VIDEO_ID, JSON.stringify(videoList));
     }
   },
 
   getVideoIdList: function () {
-    const videoList = JSON.parse(localStorage.getItem(this.keys.videoId));
+    const videoList = JSON.parse(localStorage.getItem(this.KEYS.VIDEO_ID));
     return videoList || [];
   },
 
