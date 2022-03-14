@@ -14,11 +14,10 @@ export const skeleton = {
 
   renderSkeletonUI() {
     const $videoList = $('.video-list');
-    $videoList.replaceChildren();
     $videoList.insertAdjacentHTML('beforeend', this.skeletonTemplate().repeat(10));
   },
 
   removeSkeletonUI() {
-    $$('.skeleton').forEach(skeleton => skeleton.replaceChildren());
+    $$('.skeleton').forEach(skeleton => skeleton.remove());
   },
 };

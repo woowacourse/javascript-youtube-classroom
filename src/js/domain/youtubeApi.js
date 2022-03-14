@@ -4,7 +4,7 @@ import { MESSAGE } from '../constants';
 const request = async (searchText, nextPageToken = '') => {
   try {
     const response = await fetch(
-      `https://suspicious-shaw-d70614.netlify.app/youtube/v3/search?part=snippet&q=${searchText}&maxResults=10&type=video&pageToken=${nextPageToken}`,
+      `https://mincho-youtube.netlify.app/youtube/v3/search?part=snippet&q=${searchText}&maxResults=10&type=video&pageToken=${nextPageToken}`,
     );
     if (response.ok) {
       const searchResult = await response.json();

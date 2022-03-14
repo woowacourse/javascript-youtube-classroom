@@ -4,6 +4,7 @@ import NoResultImage from '../../assets/images/not_found.png';
 import { store } from '../domain/store';
 import { request } from '../domain/youtubeApi';
 import { convertToKoreaLocaleDate, delay } from '../utils/common';
+import { skeleton } from './skeleton';
 
 export const result = {
   searchResultFoundTemplate(items) {
@@ -31,6 +32,7 @@ export const result = {
           </li>`;
       })
       .join('');
+
     return resultTemplate;
   },
 
@@ -51,11 +53,13 @@ export const result = {
 
   renderInitialVideoList(json) {
     const $videoList = $('.video-list');
+
     $videoList.replaceChildren();
     $videoList.insertAdjacentHTML(
       'beforeend',
       json.items.length ? this.searchResultFoundTemplate(json.items) : this.searchResultNotFoundTemplate(),
     );
+
     this.addSaveButtonClickEvent(json.items.length);
     if (json && json.nextPageToken) {
       this.scrollObserver(json.nextPageToken);
@@ -63,16 +67,20 @@ export const result = {
   },
 
   renderNextVideoList(nextPageToken) {
+    skeleton.renderSkeletonUI();
+
     request($('#search-input-keyword').value, nextPageToken)
       .then(json => {
+        skeleton.removeSkeletonUI();
         $('.video-list').insertAdjacentHTML('beforeend', this.searchResultFoundTemplate(json.items));
+
         this.addSaveButtonClickEvent(json.items.length);
         if (json && json.nextPageToken) {
           this.scrollObserver(json.nextPageToken);
         }
       })
       .catch(async ({ message }) => {
-        await delay(700);
+        await delay(500);
         showSnackBar(message);
       });
   },
@@ -86,6 +94,7 @@ export const result = {
 
   handleSaveVideo(e) {
     const videoId = e.target.closest('li').dataset.videoId;
+
     try {
       store.setLocalStorage(STORAGE_KEY, videoId);
       showSnackBar(MESSAGE.SAVE_COMPLETE);
@@ -97,7 +106,6 @@ export const result = {
 
   scrollObserver(nextPageToken) {
     const $li = $('li:last-child');
-
     const io = new IntersectionObserver(
       entry => {
         if (entry[0].isIntersecting) {
