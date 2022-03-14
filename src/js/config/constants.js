@@ -25,3 +25,5 @@ export const INTERSECTION_OBSERVER = {
     FULLY_EXPOSED: 1,
   },
 };
+
+export const SUBMIT_WAIT = 200;

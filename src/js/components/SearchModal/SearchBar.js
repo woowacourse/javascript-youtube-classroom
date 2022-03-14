@@ -1,6 +1,8 @@
 import Component from '../../core/Component.js';
 import { rootStore } from '../../store/rootStore.js';
 import { getSavedVideos, searchVideos } from '../../api/api.js';
+import { debounce } from '../../utils/commons.js';
+import { SUBMIT_WAIT } from '../../config/constants.js';
 
 export default class SearchBar extends Component {
   template() {
@@ -26,18 +28,24 @@ export default class SearchBar extends Component {
   }
 
   setEvent() {
-    this.addEvent('submit', '#search-form', async (e) => {
-      const query = e.target.elements.searchInput.value;
-      const data = await searchVideos(query).catch((err) => {
-        alert(err);
-      });
+    this.addEvent(
+      'submit',
+      '#search-form',
+      debounce(this.onSubmitSearchInput.bind(this), SUBMIT_WAIT)
+    );
+  }
 
-      if (data.items)
-        this.updateSearchResult(data.items, {
-          query,
-          nextPageToken: data.nextPageToken,
-        });
+  async onSubmitSearchInput(e) {
+    const query = e.target.elements.searchInput.value;
+    const data = await searchVideos(query).catch((err) => {
+      alert(err);
     });
+
+    if (data.items)
+      this.updateSearchResult(data.items, {
+        query,
+        nextPageToken: data.nextPageToken,
+      });
   }
 
   updateSearchResult(items, searchOption) {
