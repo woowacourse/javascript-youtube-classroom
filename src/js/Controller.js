@@ -24,6 +24,7 @@ export default class Controller {
   }
 
   async #searchVideo(event) {
+    this.searchResultView.hideNotFound();
     this.searchResultView.removeVideo();
     const { keyword } = event.detail;
 
@@ -45,9 +46,8 @@ export default class Controller {
       return;
     }
 
-    this.video.accumulateVideoItems();
     this.video.updateNewVideoItems();
-    this.searchResultView.hideNotFound();
+    this.video.accumulateVideoItems();
     this.searchResultView.renderVideo(this.video.newVideoItems);
     this.searchResultView.startObserve();
   }

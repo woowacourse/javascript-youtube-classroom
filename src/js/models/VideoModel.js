@@ -91,6 +91,7 @@ export default class VideoModel {
   }
 
   setVideoInfo() {
+    console.log(this.#fetchedVideos);
     this.#newVideoItems = this.#fetchedVideos.items.map((item) => ({
       videoId: item.id.videoId,
       description: item.snippet.description,
@@ -104,6 +105,7 @@ export default class VideoModel {
     checkLengthExist(this.#newVideoItems);
 
     this.#nextPageToken = this.#fetchedVideos.nextPageToken;
+    console.log(this.#newVideoItems);
   }
 
   async fetchYoutubeApi(query, nextPageToken) {
