@@ -1,9 +1,18 @@
 import { ERROR_MESSAGE } from "../../src/js/constants/constants";
 
 describe("보고싶은 영상 찾기 모달창 전체 로직 테스트", () => {
+  // let responseData;
+
   before(() => {
     cy.visit("./index.html");
+    // cy.fixture("fixture").then((todo) => {
+    //   responseData = todo;
+    // });
   });
+
+  // it("fixture test", () => {
+  //   cy.log("fixture test", responseData);
+  // });
 
   const searchKeyword = "xooos";
   const errorSearchKeyword = `\!\@\!\@\$\!\%\@\$\^\%\&\$\^\*\%\!\@\!\$\!\%\&\(\^\*\%\$\!\@!@$$!#@!#)_)&_%^_)&%_^)&_@!@#!#$@#$%$@#^%&$%^&#$@$^#%&$%^$^%*$^&^@#$@#$@#%@#$^#%&^**#^#$%@#$@#$^@#$!$@#%@#$%#$^#$%^$%@#$!@#!@#%)^_&)%_^$%#$%#$^#%^#%^#^&_%^_)&_#$)%_)#_$)%#_$%!@#!@$#$!#@!#)_)&_%^_)&%_^)&_%)^_&)%_^&_%^_)&_#$)%_)#_$)%#_$\%`;
@@ -22,14 +31,11 @@ describe("보고싶은 영상 찾기 모달창 전체 로직 테스트", () => {
   //   cy.get(".search-result--no-result").should("be.visible");
   // });
 
-  /**
-   * 실제 API 호출 했을 경우 주석을 제거 후 테스트를 돌려주세요.
-   */
-  // it("보고싶은 영상 찾기 모달창 안에서 검색된 영상을 불러오는 동안 로딩 이미지를 보여준다.", () => {
-  //   cy.get("#search-input-keyword").clear().type(searchKeyword);
-  //   cy.get("#search-button").click();
-  //   cy.get(".skeleton").should("be.visible");
-  // });
+  it("보고싶은 영상 찾기 모달창 안에서 검색된 영상을 불러오는 동안 로딩 이미지를 보여준다.", () => {
+    cy.get("#search-input-keyword").clear().type(searchKeyword);
+    cy.get("#search-button").click();
+    cy.get(".skeleton").should("be.visible");
+  });
 
   it("보고싶은 영상 찾기 모달창 안에서 검색창에 검색어를 입력하지 않으면 에러 메시지를 보여준다.", () => {
     const alertStub = cy.stub();

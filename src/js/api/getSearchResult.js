@@ -4,18 +4,21 @@ export default async function getSearchResult(
   searchKeyword,
   nextPageToken = ""
 ) {
-  const usageRedirect = "https://unruffled-turing-aacdf7.netlify.app";
-  const kkojaeRedirect = "https://clever-aryabhata-ff1fc1.netlify.app";
-  const REDIRECT_SERVER_HOST = kkojaeRedirect;
+  const REDIRECT_SERVER_HOST =
+    "https://clever-aryabhata-ff1fc1.netlify.app/youtube/v3/search";
+  const DUMMY_REDIRECT_SERVER_HOST =
+    "https://clever-aryabhata-ff1fc1.netlify.app/dummy/youtube/v3";
 
-  const url = new URL("youtube/v3/search", REDIRECT_SERVER_HOST);
+  const url = new URL(REDIRECT_SERVER_HOST);
+  // const url = new URL(DUMMY_REDIRECT_SERVER_HOST);
+
   const parameters = new URLSearchParams({
     part: "snippet",
     type: "video",
     maxResults: ITEMS_PER_REQUEST,
     regionCode: "kr",
     safeSearch: "strict",
-    pageToken: nextPageToken || "",
+    pageToken: nextPageToken,
     q: searchKeyword,
   });
 
