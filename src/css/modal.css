@@ -140,6 +140,10 @@
   background: #efefef;
 }
 
+.video-item__save-button:disabled:hover {
+  background: #f9f9f9;
+}
+
 .hide {
   display: none;
 }
