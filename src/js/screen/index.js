@@ -106,7 +106,7 @@ export default class ScreenManager {
   async handleScroll(e) {
     const { scrollHeight, scrollTop, clientHeight } = e.target;
 
-    if (!this.#throttle && scrollHeight === scrollTop + clientHeight) {
+    if (!this.#throttle && scrollHeight <= scrollTop + clientHeight) {
       this.#throttle = setTimeout(async () => {
         this.#throttle = null;
         this.renderSkeleton();
