@@ -6,6 +6,7 @@ const rootStore = {
       query: '',
       nextPageToken: null,
     },
+    isSearchQuerySubmitted: false,
     searchResult: [],
     isNoResult: null,
   }),

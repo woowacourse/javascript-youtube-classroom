@@ -37,6 +37,9 @@ export default class SearchBar extends Component {
 
   async onSubmitSearchInput(e) {
     const query = e.target.elements.searchInput.value;
+
+    rootStore.setState({ isSearchQuerySubmitted: true });
+
     const data = await searchVideos(query).catch((err) => {
       alert(err);
     });

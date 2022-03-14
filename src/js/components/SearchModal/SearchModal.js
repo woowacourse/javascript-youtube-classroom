@@ -6,7 +6,7 @@ import { rootStore } from '../../store/rootStore.js';
 
 export default class SearchModal extends Component {
   template() {
-    const { isNoResult } = rootStore.state;
+    const { isSearchQuerySubmitted, isNoResult } = rootStore.state;
 
     return `
     <div id="modal-background" class="dimmer"></div>
@@ -20,21 +20,23 @@ export default class SearchModal extends Component {
       </h2>
       <section id="search-input" class="search-input"></section>
       ${
-        isNoResult
+        isSearchQuerySubmitted &&
+        (isNoResult
           ? '<section id="not-found" class="search-result search-result--no-result"></section>'
-          : '<section id="search-result" class="search-result"></section>'
+          : '<section id="search-result" class="search-result"></section>')
       }
     </div>
     `;
   }
 
   afterMounted() {
-    const { isNoResult } = rootStore.state;
+    const { isSearchQuerySubmitted, isNoResult } = rootStore.state;
 
     new SearchBar(this.$('#search-input'));
-    isNoResult
-      ? new NotFound(this.$('#not-found'))
-      : new SearchResult(this.$('#search-result'));
+    isSearchQuerySubmitted &&
+      (isNoResult
+        ? new NotFound(this.$('#not-found'))
+        : new SearchResult(this.$('#search-result')));
   }
 
   setEvent() {
