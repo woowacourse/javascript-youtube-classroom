@@ -3,7 +3,7 @@ export function formatDateString(dateTimeString) {
   return `${date.getFullYear()}년 ${date.getMonth() + 1}월 ${date.getDate()}일`;
 }
 
-export function isBlankValue(value) {
+export function isEmptyValue(value) {
   return value.trim() === '';
 }
 

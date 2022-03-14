@@ -1,6 +1,6 @@
 import {
   formatDateString,
-  isBlankValue,
+  isEmptyValue,
   removeElementList,
   selectDom,
   scrollToTop,
@@ -12,18 +12,24 @@ class View {
   constructor() {
     this.searchModalButton = selectDom('#search-modal-button');
     this.modalContainer = selectDom('.modal-container');
-    this.searchInputKeyword = selectDom('#search-input-keyword');
     this.searchForm = selectDom('#search-form');
-    this.searchResult = selectDom('.search-result');
-    this.videoList = selectDom('.video-list');
+    this.searchInputKeyword = selectDom('#search-input-keyword', this.searchForm);
+    this.searchButton = selectDom('#search-button', this.searchForm);
+    this.searchResult = selectDom('.search-result', this.modalContainer);
+    this.videoList = selectDom('.video-list', this.searchResult);
     this.requestMoreResult = this.#handleScrollToLastItem();
 
-    this.searchModalButton.addEventListener('click', this.#openModal);
-    this.searchForm.addEventListener('submit', this.#handleSearch);
     this.sendSearchRequest = () => {};
     this.sendLoadMoreRequest = () => {};
     this.sendSaveRequest = () => {};
+    this.addEventListeners();
   }
+
+  addEventListeners = () => {
+    this.searchModalButton.addEventListener('click', this.#openModal);
+    this.searchForm.addEventListener('submit', this.#handleSearch);
+    this.searchInputKeyword.addEventListener('keyup', this.#handleValidInput);
+  };
 
   attachRequestSender(sendSearchRequest, sendLoadMoreRequest, sendSaveRequest) {
     this.sendSearchRequest = sendSearchRequest;
@@ -35,12 +41,22 @@ class View {
     this.modalContainer.classList.remove('hide');
   };
 
+  #handleValidInput = (event) => {
+    if (isEmptyValue(event.target.value)) {
+      this.searchButton.disabled = true;
+      this.searchButton.classList.add('disabled-button');
+      return;
+    }
+    this.searchButton.disabled = false;
+    this.searchButton.classList.remove('disabled-button');
+  };
+
   #handleSearch = async (event) => {
     event.preventDefault();
     this.#clearNoResult();
     scrollToTop(this.videoList);
     const { value: keyword } = this.searchInputKeyword;
-    if (isBlankValue(keyword)) {
+    if (isEmptyValue(keyword)) {
       return;
     }
     removeElementList([...this.videoList.childNodes]);
