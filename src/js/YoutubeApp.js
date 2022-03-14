@@ -1,10 +1,9 @@
 import generateTemplate from "./templates";
-import mockObject from "./mockObject";
 import getSearchResult from "./api/getSearchResult";
 import notFountImage from "../assets/images/not_found.png";
 import { DELAY_TIME } from "./constants/constants";
 import { throttle } from "./utils/utils";
-import videoStorage from "./VideoStorage";
+import videoStorage from "./videoStorage";
 import {
   clearModalContainer,
   removeChildElements,
@@ -99,21 +98,23 @@ export default class YoutubeApp {
       template: generateTemplate.skeleton(),
     });
 
-    /**
-     * 목 데이터로 검색 결과 대체
-     */
-    const responseData = {
-      items: mockObject(),
-    };
+    if (!this.nextPageToken) {
+      setTimeout(() => {
+        removeChildElements(
+          this.videoList,
+          document.querySelectorAll(".skeleton")
+        );
+      }, 300);
 
-    // const responseData = await getSearchResult(
-    //   this.keyword,
-    //   this.nextPageToken
-    // );
+      return;
+    }
 
-    // this.nextPageToken = responseData.nextPageToken;
+    const responseData = await getSearchResult(
+      this.keyword,
+      this.nextPageToken
+    );
 
-    // 만약에 nextPageToken이 없을 경우에는 render 하지 않고... alert?? 메시지 띄워주기?!
+    this.nextPageToken = responseData.nextPageToken;
 
     const videoItemTemplate = generateTemplate.videoItems(
       responseData.items,
@@ -130,16 +131,9 @@ export default class YoutubeApp {
   };
 
   async searchKeyword(keyword) {
-    // this.keyword = keyword;
-    // const responseData = await getSearchResult(this.keyword);
-    // this.nextPageToken = responseData.nextPageToken;
-
-    /**
-     * 목 데이터로 검색 결과 대체
-     */
-    const responseData = {
-      items: mockObject(),
-    };
+    this.keyword = keyword;
+    const responseData = await getSearchResult(this.keyword);
+    this.nextPageToken = responseData.nextPageToken;
 
     // 검색 결과가 없을 경우
     if (responseData.items.length === 0) {

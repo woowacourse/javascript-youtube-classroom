@@ -19,7 +19,7 @@ export const render = ({ element, position, template }) => {
 };
 
 export const getTotalScrollHeight = (element) => {
-  return element.scrollHeight - ALLOCATE_FOR_RENDER_PX;
+  return element.scrollHeight;
 };
 
 export const getCurrentScrollHeight = (element) => {
