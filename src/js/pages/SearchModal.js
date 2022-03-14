@@ -50,9 +50,7 @@ export default class SearchModal {
 
     if (isNextScroll) {
       this.renderVideoList({
-        url: YOUTUBE_URL,
         keyword: this.searchInputKeyword.value,
-        options: OPTIONS,
         pageToken: this.pageToken,
       });
     }
@@ -76,9 +74,7 @@ export default class SearchModal {
       }
 
       this.renderVideoList({
-        url: YOUTUBE_URL,
         keyword: this.searchInputKeyword.value,
-        options: OPTIONS,
         pageToken: this.pageToken,
       });
       this.searchErrorMessage.textContent = '';
@@ -124,16 +120,15 @@ export default class SearchModal {
     this.skeletons.forEach((skeleton) => skeleton.classList.add('hidden'));
   }
 
-  async renderVideoList(options) {
+  async renderVideoList(queryProps) {
     this.showSkeletons();
 
-    let videoList = await fetchData({ ...options });
+    const { videoList, error = false } = await fetchData({ ...queryProps });
 
-    if (videoList.error) {
-      videoList = await fetchData({
-        ...options, url: YOUTUBE_URL_DUMMY
-      });
+    if (error) {
       toastPopup(ERROR_MESSAGE.API_CALLS_QUOTA_EXCEEDED);
+      this.hideSkeletons();
+      return;
     }
 
     this.VideoCardContainer.setState({ items: videoList.items });

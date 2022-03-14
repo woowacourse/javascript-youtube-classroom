@@ -1,5 +1,8 @@
 import { RULES } from './constants';
 
+const HOME_URL = YOUTUBE_URL;
+const TEST_URL = YOUTUBE_URL_DUMMY;
+
 const OPTIONS = {
   part: 'snippet',
   maxResults: RULES.MAX_VIDEO_AMOUNT_PER_REQUEST,
@@ -8,7 +11,7 @@ const OPTIONS = {
 };
 
 const stringQuery = (props) => {
-  const { url, keyword, pageToken, options } = props;
+  const { url = HOME_URL, keyword, pageToken, options = OPTIONS } = props;
   const query = Object.entries(options).reduce(
     (acc, [key, value]) => (acc += `${key}=${value}&`),
     `${url}q=${keyword}&`
@@ -21,10 +24,19 @@ const stringQuery = (props) => {
 };
 
 const fetchData = async (props) => {
-  const result = await fetch(stringQuery(props));
-  const json = await result.json();
+  try {
+    const response = await fetch(stringQuery(props));
 
-  return json;
+    if (!response.ok) {
+      throw new Error(response.ok);
+    }
+
+    const videoList = await response.json();
+
+    return { videoList };
+  } catch (error) {
+    return { error };
+  }
 };
 
 export { OPTIONS, fetchData };
