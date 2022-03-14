@@ -1,13 +1,14 @@
 import { $ } from '@Utils/Dom';
-import Display from '@Core/Display';
 import { addEventDelegate } from '@Utils/ElementControl';
 
-export default class Modal extends Display {
-  setContainer() {
-    this.container = $('#modal');
+export default class Modal {
+  container = $('#modal');
+
+  constructor() {
+    this.setBindEvents();
   }
 
-  bindEvents() {
+  setBindEvents() {
     addEventDelegate(this.container, '.dimmer', {
       eventType: 'click',
       handler: this.handleCloseModal.bind(this),
