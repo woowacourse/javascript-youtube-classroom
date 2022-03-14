@@ -20,10 +20,11 @@ export default class SearchModal extends Component {
       </h2>
       <section id="search-input" class="search-input"></section>
       ${
-        isSearchQuerySubmitted &&
-        (isNoResult
-          ? '<section id="not-found" class="search-result search-result--no-result"></section>'
-          : '<section id="search-result" class="search-result"></section>')
+        (isSearchQuerySubmitted &&
+          (isNoResult
+            ? '<section id="not-found" class="search-result search-result--no-result"></section>'
+            : '<section id="search-result" class="search-result"></section>')) ||
+        ''
       }
     </div>
     `;
