@@ -1,6 +1,8 @@
 export const SEARCH_KEYWORD_MIN_LENGTH = 2;
 export const MAX_VIDEO_SAVE = 100;
 export const MAX_DATA_FETCH_AT_ONCE = 10;
+export const SCROLL_BUFFER_SECOND = 200;
+export const SCROLL_BUFFER_HEIGHT = 50;
 
 export const ERROR_MESSAGE = {
   SEARCH_KEYWORD_MIN_LENGTH: `검색 키워드는 ${SEARCH_KEYWORD_MIN_LENGTH}자 이상이어야 합니다.`,

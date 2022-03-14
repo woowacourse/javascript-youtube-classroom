@@ -58,25 +58,17 @@ export default class SearchResultView {
     this.isShownNoResult = false;
   }
 
-  showNoResult() {
+  showErrorResult(message = MESSAGE.ERROR_RESULT) {
     this.noResultContainer.classList.remove('hide');
     this.searchResultVideoList.classList.add('hide');
     this.searchResultSection.classList.add('search-result--no-result');
-    this.noResultDescription.innerHTML = MESSAGE.NO_RESULT;
-    this.isShownNoResult = true;
-  }
-
-  showErrorResult() {
-    this.noResultContainer.classList.remove('hide');
-    this.searchResultVideoList.classList.add('hide');
-    this.searchResultSection.classList.add('search-result--no-result');
-    this.noResultDescription.innerHTML = MESSAGE.ERROR_RESULT;
+    this.noResultDescription.innerHTML = message;
     this.isShownNoResult = true;
   }
 
   updateOnSearchDataReceived(videos) {
     if (videos.length === 0) {
-      this.showNoResult();
+      this.showErrorResult(MESSAGE.NO_RESULT);
       return;
     }
     if (this.isShownNoResult) {

@@ -1,7 +1,7 @@
 import { $, debounce } from '../util';
 import SearchKeywordFormView from './SearchKeywordFormView';
 import SearchResultView from './SearchResultView';
-import { ALERT_MESSAGE } from '../constants';
+import { ALERT_MESSAGE, SCROLL_BUFFER_SECOND, SCROLL_BUFFER_HEIGHT } from '../constants';
 import { validateSearchKeyword } from '../validation';
 
 export default class SearchModalView {
@@ -22,7 +22,7 @@ export default class SearchModalView {
   bindEvents() {
     $('.dimmer').addEventListener('click', this.closeModal);
     this.#modal.addEventListener('searchKeyword', this.onSubmitSearchKeyword.bind(this));
-    this.#modal.addEventListener('searchOnScroll', debounce(this.searchOnScroll.bind(this), 100));
+    this.#modal.addEventListener('searchOnScroll', debounce(this.searchOnScroll.bind(this), SCROLL_BUFFER_SECOND));
     this.#modal.addEventListener('saveVideo', this.onClickVideoSaveButton.bind(this));
   }
 
@@ -84,7 +84,7 @@ export default class SearchModalView {
 
   impossibleToLoadMore(e) {
     const { scrollTop, clientHeight, scrollHeight } = e.detail;
-    if (scrollTop + clientHeight + 20 < scrollHeight) return true;
+    if (scrollTop + clientHeight + SCROLL_BUFFER_HEIGHT < scrollHeight) return true;
     if (this.searchManager.isLastPage) {
       alert(ALERT_MESSAGE.NO_MORE_SEARCH_RESULT);
       return true;
