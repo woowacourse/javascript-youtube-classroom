@@ -6,7 +6,7 @@ const getStorageVideoIDs = (key) => {
   try {
     return JSON.parse(localStorage.getItem(key)) ?? [];
   } catch (error) {
-    throw new Error(ERROR.FAILED_TO_PARSE);
+    alert(ERROR.FAILED_TO_PARSE);
   }
 };
 
