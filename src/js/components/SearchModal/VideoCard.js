@@ -1,5 +1,5 @@
 import Component from '../../core/Component.js';
-import { api } from '../../api/api.js';
+import api from '../../api/api.js';
 import { convertTime } from '../../utils/customDate.js';
 
 export default class VideoCard extends Component {

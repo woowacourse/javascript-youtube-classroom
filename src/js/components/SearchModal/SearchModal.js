@@ -2,7 +2,7 @@ import Component from '../../core/Component.js';
 import SearchBar from './SearchBar.js';
 import SearchResult from './SearchResult.js';
 import NotFound from './NotFound.js';
-import { api } from '../../api/api.js';
+import api from '../../api/api.js';
 
 export default class SearchModal extends Component {
   template() {

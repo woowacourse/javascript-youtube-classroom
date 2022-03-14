@@ -33,14 +33,18 @@ const getSearchUrl = (query, nextPageToken) => {
   return url;
 };
 
-export const api = {
+const api = {
   rootStore,
   webStore: new WebStore(SAVED_VIDEO.KEY),
-  async searchVideos(query, nextPageToken = null) {
+  clear() {
+    this.rootStore.clear();
+    this.webStore.clear();
+  },
+  async searchVideos(query, nextPageToken = null, requestStrategy = request) {
     this.rootStore.setState({ isSearchQuerySubmitted: true });
 
     try {
-      const data = await request(getSearchUrl(query, nextPageToken));
+      const data = await requestStrategy(getSearchUrl(query, nextPageToken));
 
       if (data.items)
         this.updateSearchResult(data.items, {
@@ -53,10 +57,10 @@ export const api = {
       throw err;
     }
   },
-  async loadNextPage() {
+  async loadNextPage(requestStrategy = request) {
     const { query, nextPageToken } = this.rootStore.state.searchOption;
 
-    const data = await request(getSearchUrl(query, nextPageToken));
+    const data = await requestStrategy(getSearchUrl(query, nextPageToken));
 
     if (data.items)
       this.appendSearchResult(data.items, {
@@ -114,3 +118,5 @@ export const api = {
     this.webStore.save(duplicatedRemoved);
   },
 };
+
+export default api;

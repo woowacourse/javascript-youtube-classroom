@@ -1,7 +1,7 @@
 import Component from '../../core/Component.js';
 import VideoCard from './VideoCard.js';
 import SkeletonCard from './SkeletonCard.js';
-import { api } from '../../api/api.js';
+import api from '../../api/api.js';
 import {
   INTERSECTION_OBSERVER,
   QUERY_OPTIONS,

@@ -13,11 +13,15 @@ export default class WebStore {
   }
 
   load() {
-    return [...this.#cached]
+    return [...this.#cached];
   }
 
   save(data) {
     this.#cache(data);
     localStorage.setItem(this.#key, JSON.stringify(data));
+  }
+
+  clear() {
+    this.save([]);
   }
 }
