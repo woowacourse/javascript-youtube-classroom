@@ -1,3 +1,5 @@
+import { MAX_VIDEO_COUNT } from '../constants/constants.js';
+
 const storage = {
   setLocalStorage(video) {
     localStorage.setItem('data', JSON.stringify(video));
@@ -7,7 +9,7 @@ const storage = {
   },
   updateLocalStorage(videoId) {
     const savedStorage = this.getLocalStorage();
-    if (savedStorage.length > 100) {
+    if (savedStorage.length > MAX_VIDEO_COUNT) {
       return;
     }
     if (savedStorage.some(savedId => savedId === videoId)) {

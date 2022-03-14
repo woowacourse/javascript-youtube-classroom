@@ -5,3 +5,5 @@ export const ERROR = {
 };
 
 export const THROTTLE_DELAY = 1000;
+
+export const MAX_VIDEO_COUNT = 100;
