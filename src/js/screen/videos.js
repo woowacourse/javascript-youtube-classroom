@@ -4,12 +4,13 @@ import { $$, $ } from '../util/domHelper.js';
 import { SKELETON_TEMPLATE } from '../util/template.js';
 import { preprocessDate } from '../util/common.js';
 
-export default class Videos {
+export default class VideosScreen {
   constructor(searchResult) {
     this.storageEngine = new StorageEngine();
 
     searchResult.addEventListener('click', this.handleSaveVideo.bind(this));
   }
+
   handleSaveVideo(e) {
     if (e.target.classList.contains('video-item__save-button')) {
       const { videoId } = e.target.closest('.video-item').dataset;
@@ -30,7 +31,7 @@ export default class Videos {
 
   render(data) {
     const skeletonList = $$('.skeleton');
-    const preprocessedData = Videos.preprocessData(data);
+    const preprocessedData = VideosScreen.preprocessData(data);
 
     skeletonList.forEach((element, index) => {
       const { videoId, channelTitle, thumbnails, title, publishTime } = preprocessedData[index];
