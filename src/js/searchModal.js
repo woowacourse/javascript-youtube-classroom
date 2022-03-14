@@ -15,13 +15,13 @@ class SearchModal {
   init() {
     this.$modal = $('.search-modal');
     this.$searchKeyWordInput = $('#search-input-keyword', this.$modal);
-    this.$button = $('#search-button', this.$modal);
+    this.$searchButton = $('#search-button', this.$modal);
     this.$searchResult = $('.search-result');
     this.$videoList = $('.video-list', this.$searchResult);
 
-    this.$button.addEventListener('click', this.handleClickButton);
+    this.$searchButton.addEventListener('click', this.handleClickSearchButton);
     this.$videoList.addEventListener('click', this.handleClickVideoList);
-    this.$videoList.addEventListener('scroll', this.handleScroll);
+    this.$videoList.addEventListener('scroll', this.handleScrollVideoList);
   }
 
   renderVideoItems(videos) {
@@ -66,11 +66,11 @@ class SearchModal {
     return videos;
   }
 
-  handleClickButton = async () => {
+  handleClickSearchButton = async () => {
     removeChildren(this.$videoList);
     const searchKeyWord = this.$searchKeyWordInput.value;
     this.renderSkeletonItems(MAX_RENDER_VIDEOS_COUNT);
-    const searchResult = await this.request(searchKeyWord);
+    const searchResult = await this.requestYoutubeVideos(searchKeyWord);
     this.removeSkeleton();
     const videos = this.checkSearchResult(searchResult);
     if (!videos) {
@@ -82,14 +82,14 @@ class SearchModal {
     this.nextPageToken = searchResult.nextPageToken;
   };
 
-  handleScroll = async () => {
+  handleScrollVideoList = async () => {
     const title = this.$searchKeyWordInput.value;
     const isScrollEnd =
       this.$videoList.scrollHeight - this.$videoList.scrollTop === this.$videoList.clientHeight;
 
     if (isScrollEnd && this.$videoList.scrollTop !== 0) {
       this.renderSkeletonItems(MAX_RENDER_VIDEOS_COUNT);
-      const jsonResult = await this.request(title);
+      const jsonResult = await this.requestYoutubeVideos(title);
       this.removeSkeleton();
       if (jsonResult === null) {
         return;
@@ -130,7 +130,7 @@ class SearchModal {
     [...this.$videoList.querySelectorAll('.skeleton')].forEach($el => $el.remove());
   }
 
-  async request(query) {
+  async requestYoutubeVideos(query) {
     try {
       const url = new URL(this.serverUrl);
       const parameters = new URLSearchParams({
