@@ -2,14 +2,17 @@ import 'regenerator-runtime';
 import { MESSAGE } from '../constants';
 
 const request = async (searchText, nextPageToken = '') => {
-  const response = await fetch(
-    `https://suspicious-shaw-d70614.netlify.app/youtube/v3/search?part=snippet&q=${searchText}&maxResults=10&type=video&pageToken=${nextPageToken}`,
-  );
-  if (response.status === 200) {
-    const searchResult = await response.json();
-    return searchResult;
+  try {
+    const response = await fetch(
+      `https://suspicious-shaw-d70614.netlify.app/youtube/v3/search?part=snippet&q=${searchText}&maxResults=10&type=video&pageToken=${nextPageToken}`,
+    );
+    if (response.ok) {
+      const searchResult = await response.json();
+      return searchResult;
+    }
+  } catch {
+    throw new Error(MESSAGE.ERROR_GET_REQUEST);
   }
-  throw new Error(MESSAGE.ERROR_GET_REQUEST);
 };
 
 export { request };
