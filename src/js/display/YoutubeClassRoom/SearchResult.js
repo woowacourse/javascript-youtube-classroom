@@ -153,12 +153,7 @@ export default class SearchResult extends Display {
   }
 
   drawLoadingStatus({ searchKeyword, isLoading }) {
-    searchKeyword
-      ? this.$scrollObserver.classList.add('enable')
-      : this.$scrollObserver.classList.remove('enable');
-
-    isLoading
-      ? this.container.classList.add('loading')
-      : this.container.classList.remove('loading');
+    this.$scrollObserver.classList.toggle('enable', !!searchKeyword);
+    this.container.classList.toggle('loading', isLoading);
   }
 }
