@@ -6,19 +6,19 @@ import YoutubeSearchStore from '@Domain/YoutubeSearchStore';
 import { isEmptyString, isSameKeyword } from '@Utils/Validator';
 
 export default class SearchForm {
-  container = $(SELECTOR.ID.SEARCH_FORM);
+  $container = $(SELECTOR.ID.SEARCH_FORM);
 
   constructor() {
     this.setBindEvents();
   }
 
   setBindEvents() {
-    addEventDelegate(this.container, SELECTOR.ID.SEARCH_INPUT_KEYWORD, {
+    addEventDelegate(this.$container, SELECTOR.ID.SEARCH_INPUT_KEYWORD, {
       eventType: 'keyup',
       handler: this.handleInputValue,
     });
 
-    addEventDelegate(this.container, SELECTOR.ID.SEARCH_FORM, {
+    addEventDelegate(this.$container, SELECTOR.ID.SEARCH_FORM, {
       eventType: 'submit',
       handler: this.handleSubmitForm,
       defaultEvent: true,
@@ -26,12 +26,12 @@ export default class SearchForm {
   }
 
   handleInputValue = ({ target: $target }) => {
-    const $searchButton = $(SELECTOR.ID.SEARCH_BUTTON, this.container);
+    const $searchButton = $(SELECTOR.ID.SEARCH_BUTTON, this.$container);
     onEnableButton($searchButton, () => $target.value.length > 0);
   };
 
   handleSubmitForm = () => {
-    const newKeyword = $(SELECTOR.ID.SEARCH_INPUT_KEYWORD, this.container).value;
+    const newKeyword = $(SELECTOR.ID.SEARCH_INPUT_KEYWORD, this.$container).value;
     const { isLoading, keyword: beforeKeyword } = YoutubeSearchStore.getState();
 
     if (isEmptyString(newKeyword)) {

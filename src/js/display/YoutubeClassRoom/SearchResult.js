@@ -9,7 +9,7 @@ import YoutubeSaveStorage from '@Domain/YoutubeSaveStorage';
 import notFoundImage from '@Images/not_found.png';
 
 export default class SearchResult {
-  container = $(SELECTOR.ID.SEARCH_RESULT_CONTAINER);
+  $container = $(SELECTOR.ID.SEARCH_RESULT_CONTAINER);
   drawList = [];
 
   constructor() {
@@ -39,10 +39,10 @@ export default class SearchResult {
   }
 
   setDefaultElements() {
-    this.$videoResult = $(SELECTOR.ID.VIDEO_RESULT, this.container);
-    this.$scrollObserver = $(SELECTOR.ID.SEARCH_RESULT_SCROLL_OBSERVER, this.container);
+    this.$videoResult = $(SELECTOR.ID.VIDEO_RESULT, this.$container);
+    this.$scrollObserver = $(SELECTOR.ID.SEARCH_RESULT_SCROLL_OBSERVER, this.$container);
 
-    this.$skeletonList = $('#skeleton-list', this.container);
+    this.$skeletonList = $('#skeleton-list', this.$container);
     this.drawSkeletonList();
   }
 
@@ -52,7 +52,7 @@ export default class SearchResult {
       YoutubeSearchStore.dispatch(ACTION_TYPE.UPDATE_SEARCH_RESULT);
     });
 
-    addEventDelegate(this.container, SELECTOR.CLASS.VIDEO_ITEM_SAVE_BUTTON, {
+    addEventDelegate(this.$container, SELECTOR.CLASS.VIDEO_ITEM_SAVE_BUTTON, {
       eventType: 'click',
       handler: this.handleToggleSaveButton,
     });
@@ -168,6 +168,6 @@ export default class SearchResult {
 
   drawLoadingStatus({ searchKeyword, isLoading }) {
     this.$scrollObserver.classList.toggle('enable', !!searchKeyword);
-    this.container.classList.toggle('loading', isLoading);
+    this.$container.classList.toggle('loading', isLoading);
   }
 }

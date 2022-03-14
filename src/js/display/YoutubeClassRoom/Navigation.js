@@ -3,14 +3,14 @@ import { SELECTOR } from '@Constants/Selector';
 import { addEventDelegate } from '@Utils/ElementControl';
 
 export default class Navigation {
-  container = $(SELECTOR.ID.CLASSROOM_NAVIGATION);
+  $container = $(SELECTOR.ID.CLASSROOM_NAVIGATION);
 
   constructor() {
     this.setBindEvents();
   }
 
   setBindEvents() {
-    addEventDelegate(this.container, SELECTOR.ID.SEARCH_MODAL_BUTTON, {
+    addEventDelegate(this.$container, SELECTOR.ID.SEARCH_MODAL_BUTTON, {
       eventType: 'click',
       handler: this.handleOpenModal,
     });

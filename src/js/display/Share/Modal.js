@@ -2,21 +2,21 @@ import { $ } from '@Utils/Dom';
 import { addEventDelegate } from '@Utils/ElementControl';
 
 export default class Modal {
-  container = $('#modal');
+  $container = $('#modal');
 
   constructor() {
     this.setBindEvents();
   }
 
   setBindEvents() {
-    addEventDelegate(this.container, '.dimmer', {
+    addEventDelegate(this.$container, '.dimmer', {
       eventType: 'click',
       handler: this.handleCloseModal,
     });
   }
 
   handleCloseModal = () => {
-    this.container.classList.add('hide');
-    $('.modal-content.show', this.container).classList.remove('show');
+    this.$container.classList.add('hide');
+    $('.modal-content.show', this.$container).classList.remove('show');
   };
 }
