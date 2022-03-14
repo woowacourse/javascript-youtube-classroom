@@ -156,7 +156,7 @@ class SearchModal {
         maxResults: MAX_RENDER_VIDEOS_COUNT,
         regionCode: 'kr',
         safeSearch: 'strict',
-        pageToken: this.nextPageToken,
+        pageToken: this.nextPageToken ?? '',
         q: query,
       });
       url.search = parameters.toString();
