@@ -1,5 +1,5 @@
 /* eslint-disable max-lines-per-function */
-import { $, removeChildren } from './utils/dom';
+import { $ } from './utils/dom';
 import {
   MAX_SAVABLE_VIDEOS_COUNT,
   MAX_RENDER_VIDEOS_COUNT,
@@ -18,10 +18,30 @@ class SearchModal {
     this.$searchButton = $('#search-button', this.$modal);
     this.$searchResult = $('.search-result');
     this.$videoList = $('.video-list', this.$searchResult);
+    this.renderSkeletonItems(MAX_RENDER_VIDEOS_COUNT);
 
     this.$searchButton.addEventListener('click', this.handleClickSearchButton);
     this.$videoList.addEventListener('click', this.handleClickVideoList);
     this.$videoList.addEventListener('scroll', this.handleScrollVideoList);
+  }
+
+  templateSkeletons(videoCount) {
+    const skeletonListHtmlString = [...Array(videoCount).keys()]
+      .map(
+        () => `
+          <div class="skeleton">
+            <div class="image"></div>
+            <p class="line"></p>
+            <p class="line"></p>
+          </div>
+        `
+      )
+      .join('');
+    return skeletonListHtmlString;
+  }
+
+  renderSkeletonItems(videoCount) {
+    this.$videoList.insertAdjacentHTML('beforeend', this.templateSkeletons(videoCount)); // 그냥 더해도 CSS로 처음에 안보이게 해놨다
   }
 
   renderVideoItems(videos) {
@@ -38,24 +58,8 @@ class SearchModal {
         </li>`;
       })
       .join('');
-
-    this.$videoList.insertAdjacentHTML('beforeend', videoListTemplate);
-  }
-
-  renderSkeletonItems(videoCount) {
-    const skeletonListHtmlString = [...Array(videoCount).keys()]
-      .map(
-        () => `
-          <div class="skeleton">
-            <div class="image"></div>
-            <p class="line"></p>
-            <p class="line"></p>
-          </div>
-        `
-      )
-      .join('');
-
-    this.$videoList.insertAdjacentHTML('beforeend', skeletonListHtmlString);
+    const $firstSkeleton = this.$videoList.querySelector('.skeleton');
+    $firstSkeleton.insertAdjacentHTML('beforebegin', videoListTemplate);
   }
 
   checkSearchResult(searchResult) {
@@ -67,17 +71,14 @@ class SearchModal {
   }
 
   handleClickSearchButton = async () => {
-    removeChildren(this.$videoList);
+    this.resetSearchResult();
     const searchKeyWord = this.$searchKeyWordInput.value;
-    this.renderSkeletonItems(MAX_RENDER_VIDEOS_COUNT);
     const searchResult = await this.requestYoutubeVideos(searchKeyWord);
-    this.removeSkeleton();
     const videos = this.checkSearchResult(searchResult);
     if (!videos) {
       this.$searchResult.classList.add('search-result--no-result');
       return;
     }
-    this.$searchResult.classList.remove('search-result--no-result');
     this.renderVideoItems(videos);
     this.nextPageToken = searchResult.nextPageToken;
   };
@@ -88,9 +89,7 @@ class SearchModal {
       this.$videoList.scrollHeight - this.$videoList.scrollTop === this.$videoList.clientHeight;
 
     if (isScrollEnd && this.$videoList.scrollTop !== 0) {
-      this.renderSkeletonItems(MAX_RENDER_VIDEOS_COUNT);
       const jsonResult = await this.requestYoutubeVideos(title);
-      this.removeSkeleton();
       if (jsonResult === null) {
         return;
       }
@@ -126,11 +125,18 @@ class SearchModal {
     return true;
   }
 
+  resetSearchResult() {
+    this.$videoList.replaceChildren(); // 내용물을 모두 비워준다
+    this.renderSkeletonItems(MAX_RENDER_VIDEOS_COUNT); // skeleton을 다시 그려준다
+    this.$searchResult.classList.remove('search-result--no-result'); // 결과 없음 class를 삭제한다
+  }
+
   removeSkeleton() {
     [...this.$videoList.querySelectorAll('.skeleton')].forEach($el => $el.remove());
   }
 
   async requestYoutubeVideos(query) {
+    this.$searchResult.classList.add('loading');
     try {
       const url = new URL(this.serverUrl);
       const parameters = new URLSearchParams({
@@ -154,6 +160,8 @@ class SearchModal {
     } catch (error) {
       console.error(error);
       return null;
+    } finally {
+      this.$searchResult.classList.remove('loading');
     }
   }
 }

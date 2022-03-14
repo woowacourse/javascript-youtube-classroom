@@ -69,6 +69,14 @@
   text-align: center;
 }
 
+.search-result .skeleton {
+  display: none;
+}
+
+.search-result.loading .skeleton {
+  display: block;
+}
+
 .search-result.search-result--no-result {
     justify-content: center;
     align-items: center;
