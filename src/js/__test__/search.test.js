@@ -14,4 +14,3 @@ describe('검색어 검색 테스트', () => {
         expect(() => validateKeyword(keyword)).not.toThrowError(ERROR_MESSAGE.EMPTY_KEYWORD);
     });
 })
-
