@@ -1,8 +1,8 @@
 import MainView from '../view/MainView.js';
 import ModalView from '../view/ModalView.js';
-import APIManager from '../managers/APIManager.js';
+import videoAPI from '../videoAPI.js';
 import validator from '../utils/validator.js';
-import storageManager from '../managers/storageManager.js';
+import videoStorage from '../videoStorage.js';
 
 export default class EventHandler {
   constructor() {
@@ -28,12 +28,12 @@ export default class EventHandler {
   }
 
   clickStoreButton(videoId) {
-    storageManager.storeVideoId(videoId);
+    videoStorage.storeVideoId(videoId);
   }
 
   async clickSearchButton(searchInput) {
     try {
-      validator.isValidSearchInput(searchInput);
+      validator.checkValidSearchInput(searchInput);
       this.modalView.resetVideoList();
       this.modalView.appendEmptyList();
       this.modalView.appendVideoItem();
@@ -60,10 +60,10 @@ export default class EventHandler {
 
   async getVideoListData(searchInput) {
     try {
-      const rawData = await APIManager.fetchData(searchInput);
-      return APIManager.parsingVideoData(rawData);
-    } catch (err) {
-      throw new Error(err);
+      const rawData = await videoAPI.fetchData(searchInput);
+      return videoAPI.parsingVideoData(rawData);
+    } catch (error) {
+      throw new Error(error);
     }
   }
 }

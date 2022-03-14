@@ -1,5 +1,5 @@
 import VideoItemView from './VideoItemView.js';
-import storageManager from '../managers/storageManager.js';
+import videoStorage from '../videoStorage.js';
 import { DOM_STRING, EVENT, VIDEO_LIST } from '../utils/constants.js';
 import { $ } from '../utils/common.js';
 
@@ -65,7 +65,7 @@ export default class ModalView {
     this.$videoList.addEventListener('click', event => {
       try {
         if ([...event.target.classList].includes(DOM_STRING.VIDEO_ITEM_SAVE_BUTTON)) {
-          storageManager.checkOverMaxLength();
+          videoStorage.checkOverMaxLength();
           event.target.classList.add(DOM_STRING.HIDE);
           callback(event.target.dataset.videoid);
         }

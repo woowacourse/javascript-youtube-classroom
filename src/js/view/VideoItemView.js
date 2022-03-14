@@ -1,4 +1,4 @@
-import storageManager from '../managers/storageManager.js';
+import videoStorage from '../videoStorage.js';
 import { DOM_STRING } from '../utils/constants.js';
 
 export default class VideoItemView {
@@ -27,7 +27,7 @@ export default class VideoItemView {
       <button data-videoid=${
         parseData ? parseData.videoId : ''
       } class="video-item__save-button button ${parseData ? '' : DOM_STRING.SKELETON} ${
-      parseData && storageManager.hasVideoID(parseData.videoId) ? `${DOM_STRING.HIDE}` : ''
+      parseData && videoStorage.hasVideoID(parseData.videoId) ? `${DOM_STRING.HIDE}` : ''
     }"
       >${parseData ? '⬇ 저장' : ''}</button>
     </li>

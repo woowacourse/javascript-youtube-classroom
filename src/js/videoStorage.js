@@ -1,12 +1,12 @@
-import { ERROR_MESSAGE, STORE } from '../utils/constants.js';
+import { ERROR_MESSAGE, STORE } from './utils/constants.js';
 
-const storageManager = {
+const videoStorage = {
   KEYS: {
     VIDEO_ID: 'videoId',
   },
 
   storeVideoId: function (videoId) {
-    if (!this.hasVideoId(videoId)) {
+    if (!this.hasVideoID(videoId)) {
       const videoList = this.getVideoIdList();
       videoList.push(videoId);
       localStorage.setItem(this.KEYS.VIDEO_ID, JSON.stringify(videoList));
@@ -18,7 +18,7 @@ const storageManager = {
     return videoList || [];
   },
 
-  hasVideoId: function (videoId) {
+  hasVideoID: function (videoId) {
     const videoList = this.getVideoIdList();
     return videoList.includes(videoId);
   },
@@ -30,4 +30,4 @@ const storageManager = {
   },
 };
 
-export default storageManager;
+export default videoStorage;
