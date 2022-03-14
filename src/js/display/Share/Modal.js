@@ -1,5 +1,6 @@
 import { $ } from '@Utils/Dom';
 import Display from '@Core/Display';
+import { addEventDelegate } from '@Utils/ElementControl';
 
 export default class Modal extends Display {
   setContainer() {
@@ -7,8 +8,9 @@ export default class Modal extends Display {
   }
 
   bindEvents() {
-    this.addEvent('click', '.dimmer', () => {
-      this.handleCloseModal();
+    addEventDelegate(this.container, '.dimmer', {
+      eventType: 'click',
+      handler: this.handleCloseModal.bind(this),
     });
   }
 

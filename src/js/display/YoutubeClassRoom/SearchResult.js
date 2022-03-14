@@ -1,6 +1,6 @@
 import { $, createElement } from '@Utils/Dom';
 import { getParsedTime } from '@Utils/ManageData';
-import { onObserveElement } from '@Utils/ElementControl';
+import { onObserveElement, addEventDelegate } from '@Utils/ElementControl';
 import { CLASS_ROOM_SETTING } from '@Constants/Setting';
 import { ERROR_MESSAGE, ACTION_TYPE } from '@Constants/String';
 import { SELECTOR, DOM_NAME } from '@Constants/Selector';
@@ -33,11 +33,10 @@ export default class SearchResult extends Display {
       YoutubeSearchStore.dispatch(ACTION_TYPE.UPDATE_SEARCH_RESULT);
     });
 
-    this.addEvent(
-      'click',
-      SELECTOR.CLASS.VIDEO_ITEM_SAVE_BUTTON,
-      this.handleToggleSaveButton.bind(this),
-    );
+    addEventDelegate(this.container, SELECTOR.CLASS.VIDEO_ITEM_SAVE_BUTTON, {
+      eventType: 'click',
+      handler: this.handleToggleSaveButton.bind(this),
+    });
   }
 
   subscribeStores() {

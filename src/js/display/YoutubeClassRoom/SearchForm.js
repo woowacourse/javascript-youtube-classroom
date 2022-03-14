@@ -1,7 +1,7 @@
 import { $ } from '@Utils/Dom';
 import { SELECTOR } from '@Constants/Selector';
 import { ERROR_MESSAGE, ACTION_TYPE } from '@Constants/String';
-import { onEnableButton } from '@Utils/ElementControl';
+import { onEnableButton, addEventDelegate } from '@Utils/ElementControl';
 import Display from '@Core/Display';
 import YoutubeSearchStore from '@Domain/YoutubeSearchStore';
 import { isEmptyString, isSameKeyword } from '@Utils/Validator';
@@ -12,9 +12,15 @@ export default class SearchForm extends Display {
   }
 
   bindEvents() {
-    this.addEvent('keyup', SELECTOR.ID.SEARCH_INPUT_KEYWORD, this.handleInputValue.bind(this));
-    this.addEvent('submit', SELECTOR.ID.SEARCH_FORM, this.handleSubmitForm.bind(this), {
-      default: true,
+    addEventDelegate(this.container, SELECTOR.ID.SEARCH_INPUT_KEYWORD, {
+      eventType: 'keyup',
+      handler: this.handleInputValue.bind(this),
+    });
+
+    addEventDelegate(this.container, SELECTOR.ID.SEARCH_FORM, {
+      eventType: 'submit',
+      handler: this.handleSubmitForm.bind(this),
+      defaultEvent: true,
     });
   }
 

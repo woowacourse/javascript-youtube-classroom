@@ -1,5 +1,6 @@
 import { $ } from '@Utils/Dom';
 import { SELECTOR } from '@Constants/Selector';
+import { addEventDelegate } from '@Utils/ElementControl';
 import Display from '@Core/Display';
 
 export default class Navigation extends Display {
@@ -8,7 +9,10 @@ export default class Navigation extends Display {
   }
 
   bindEvents() {
-    this.addEvent('click', SELECTOR.ID.SEARCH_MODAL_BUTTON, this.handleOpenModal.bind(this));
+    addEventDelegate(this.container, SELECTOR.ID.SEARCH_MODAL_BUTTON, {
+      eventType: 'click',
+      handler: this.handleOpenModal.bind(this),
+    });
   }
 
   handleOpenModal({ target: $target }) {
