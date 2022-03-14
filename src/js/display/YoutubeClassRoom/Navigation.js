@@ -12,15 +12,15 @@ export default class Navigation {
   setBindEvents() {
     addEventDelegate(this.container, SELECTOR.ID.SEARCH_MODAL_BUTTON, {
       eventType: 'click',
-      handler: this.handleOpenModal.bind(this),
+      handler: this.handleOpenModal,
     });
   }
 
-  handleOpenModal({ target: $target }) {
+  handleOpenModal = ({ target: $target }) => {
     const modalId = $target.dataset.modal;
     const $modalContainer = $(SELECTOR.ID.MODAL_CONTAINER);
 
     $modalContainer.classList.remove('hide');
     $(`#${modalId}`, $modalContainer).classList.add('show');
-  }
+  };
 }

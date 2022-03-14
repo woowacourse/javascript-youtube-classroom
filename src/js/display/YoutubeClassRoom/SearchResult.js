@@ -54,11 +54,11 @@ export default class SearchResult {
 
     addEventDelegate(this.container, SELECTOR.CLASS.VIDEO_ITEM_SAVE_BUTTON, {
       eventType: 'click',
-      handler: this.handleToggleSaveButton.bind(this),
+      handler: this.handleToggleSaveButton,
     });
   }
 
-  handleToggleSaveButton({ target: $target }) {
+  handleToggleSaveButton = ({ target: $target }) => {
     const { videoId } = $target.closest(SELECTOR.CLASS.VIDEO_ITEM).dataset;
     if (YoutubeSaveStorage.has(videoId)) {
       YoutubeSaveStorage.remove(videoId);
@@ -74,7 +74,7 @@ export default class SearchResult {
 
     YoutubeSaveStorage.add(videoId);
     $target.textContent = '🗑 저장 취소';
-  }
+  };
 
   drawSkeletonList() {
     const $fragment = document.createDocumentFragment();

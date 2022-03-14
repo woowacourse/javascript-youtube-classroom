@@ -11,12 +11,12 @@ export default class Modal {
   setBindEvents() {
     addEventDelegate(this.container, '.dimmer', {
       eventType: 'click',
-      handler: this.handleCloseModal.bind(this),
+      handler: this.handleCloseModal,
     });
   }
 
-  handleCloseModal() {
+  handleCloseModal = () => {
     this.container.classList.add('hide');
     $('.modal-content.show', this.container).classList.remove('show');
-  }
+  };
 }
