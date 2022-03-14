@@ -52,7 +52,7 @@ export default class ModalView {
           this.throttle = null;
           if (
             this.$videoList.scrollHeight - this.$videoList.scrollTop <=
-            this.$videoList.offsetHeight - EVENT.SCROLL.OFFSET
+            this.$videoList.offsetHeight + EVENT.SCROLL.OFFSET
           ) {
             callback(this.$searchInput.value);
           }
