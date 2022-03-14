@@ -44,6 +44,12 @@ export default class Subject {
   }
 
   setState(newState) {
+    if (
+      this.state === newState ||
+      JSON.stringify(this.state) === JSON.stringify(newState)
+    )
+      return;
+
     this.state = newState;
     this.#updated = true;
     this.notify();
