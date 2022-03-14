@@ -1,13 +1,11 @@
-import MainView from '../view/MainView.js';
-import ModalView from '../view/ModalView.js';
 import videoAPI from '../videoAPI.js';
 import validator from '../utils/validator.js';
 import videoStorage from '../videoStorage.js';
 
 export default class EventHandler {
-  constructor() {
-    this.mainView = new MainView();
-    this.modalView = new ModalView();
+  constructor(mainView, modalView) {
+    this.mainView = mainView;
+    this.modalView = modalView;
     this.setBindEvents();
   }
 
