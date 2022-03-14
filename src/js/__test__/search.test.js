@@ -1,11 +1,14 @@
 import validator from '../utils/validator.js';
 import APIManager from '../managers/APIManager.js';
 import { fetchData, errorData, parseData } from '../utils/mockData.js';
+import { ERROR_MESSAGE } from '../utils/constants.js';
 
-describe('보고 싶은 영상을 검색 했을 때', () => {
-  test('입력 없이 버튼을 눌렀다면 error를 throw한다.', () => {
+describe('검색어가 비었을 때 검색을 하면', () => {
+  test('검색어가 비어있다는 error가 발생한다.', () => {
     const inputValue = '';
-    expect(() => validator.isValidSearchInput(inputValue)).toThrowError();
+    expect(() => validator.checkValidSearchInput(inputValue)).toThrowError(
+      ERROR_MESSAGE.EMPTY_INPUT
+    );
   });
 });
 
