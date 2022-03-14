@@ -11,6 +11,7 @@ export const store = {
     saveDatas.push(value);
     localStorage.setItem(key, JSON.stringify(saveDatas));
   },
+
   getLocalStorage(key) {
     return JSON.parse(localStorage.getItem(key));
   },

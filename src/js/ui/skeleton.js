@@ -15,10 +15,7 @@ export const skeleton = {
   renderSkeletonUI() {
     const $videoList = $('.video-list');
     $videoList.replaceChildren();
-    $videoList.insertAdjacentHTML(
-      'beforeend',
-      this.skeletonTemplate().repeat(10),
-    );
+    $videoList.insertAdjacentHTML('beforeend', this.skeletonTemplate().repeat(10));
   },
 
   removeSkeletonUI() {

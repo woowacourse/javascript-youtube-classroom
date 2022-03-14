@@ -26,7 +26,7 @@ export default class Search {
           result.renderInitialVideoList(json);
         })
         .catch(async ({ message }) => {
-          await delay(700);
+          await delay(500);
           showSnackBar(message);
           skeleton.removeSkeletonUI();
         });
