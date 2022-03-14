@@ -1,1 +1,7 @@
-export const VIDEO_PROPERTY = ['videoId', 'videoTitle', 'channelTitle', 'publishTime', 'thumbnail'];
+export const VIDEO_PROPERTIES = [
+  'videoId',
+  'videoTitle',
+  'channelTitle',
+  'publishTime',
+  'thumbnail',
+];

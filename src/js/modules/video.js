@@ -1,6 +1,6 @@
 import { ERROR_MESSAGE } from '../constants/errorMessage.js';
-import { VIDEO_PROPERTY } from '../constants/video.js';
-import { isMissingProperty } from '../utils/validation.js';
+import { VIDEO_PROPERTIES } from '../constants/video.js';
+import { hasMissingProperty } from '../utils/validation.js';
 
 class Video {
   #videoId = null;
@@ -36,7 +36,7 @@ class Video {
   }
 
   static create(videoInfo) {
-    if (isMissingProperty(VIDEO_PROPERTY, videoInfo)) {
+    if (hasMissingProperty(VIDEO_PROPERTIES, videoInfo)) {
       throw new Error(ERROR_MESSAGE.VIDEO_MISSING_PROPERTY);
     }
     return new Video(videoInfo);
