@@ -7,8 +7,8 @@ export default class App {
     this.$modalContainer = $('.modal-container');
 
     $('.search-modal').insertAdjacentHTML('beforeend', this.searchResultTemplate());
-    $('#search-modal-button').addEventListener('click', this.openModal.bind(this));
-    $('.dimmer').addEventListener('click', this.closeModal.bind(this));
+    $('#search-modal-button').addEventListener('click', this.openModal);
+    $('.dimmer').addEventListener('click', this.closeModal);
 
     const searchModal = new SearchModal();
     searchModal.init();
@@ -29,16 +29,16 @@ export default class App {
       </section>`;
   }
 
-  closeModal(e) {
+  closeModal = (e) => {
     $('#search-input-keyword').value = '';
     $('.search-result').classList.remove('search-result--no-result');
     removeChildren($('.video-list'));
     this.$modalContainer.classList.add('hide');
-  }
+  };
 
-  openModal() {
+  openModal = () => {
     this.$modalContainer.classList.toggle('hide');
-  }
+  };
 }
 
 new App();

@@ -19,11 +19,9 @@ class SearchModal {
     this.$searchResult = $('.search-result');
     this.$videoList = $('.video-list', this.$searchResult);
 
-    this.$button.addEventListener('click', this.handleClickButton.bind(this));
-    this.$videoList.addEventListener('click', event => {
-      this.handleClickVideoList(event);
-    });
-    this.$videoList.addEventListener('scroll', this.handleScroll.bind(this));
+    this.$button.addEventListener('click', this.handleClickButton);
+    this.$videoList.addEventListener('click', this.handleClickVideoList);
+    this.$videoList.addEventListener('scroll', this.handleScroll);
   }
 
   renderVideoItems(videos) {
@@ -68,7 +66,7 @@ class SearchModal {
     return videos;
   }
 
-  async handleClickButton() {
+  handleClickButton = async () => {
     removeChildren(this.$videoList);
     const searchKeyWord = this.$searchKeyWordInput.value;
     this.renderSkeletonItems(MAX_RENDER_VIDEOS_COUNT);
@@ -82,9 +80,9 @@ class SearchModal {
     this.$searchResult.classList.remove('search-result--no-result');
     this.renderVideoItems(videos);
     this.nextPageToken = searchResult.nextPageToken;
-  }
+  };
 
-  async handleScroll() {
+  handleScroll = async () => {
     const title = this.$searchKeyWordInput.value;
     const isScrollEnd =
       this.$videoList.scrollHeight - this.$videoList.scrollTop === this.$videoList.clientHeight;
@@ -100,9 +98,9 @@ class SearchModal {
       const videos = jsonResult.items.map(item => new VideoItem(item));
       this.renderVideoItems(videos);
     }
-  }
+  };
 
-  handleClickSaveButton(event) {
+  handleClickSaveButton = event => {
     const { target } = event;
     const $videoItem = target.closest('.video-item');
     const videoId = $videoItem.getAttribute('data-video-id');
@@ -110,14 +108,14 @@ class SearchModal {
     if (this.saveVideo(videoId, videoList)) {
       target.setAttribute('hidden', true);
     }
-  }
+  };
 
-  handleClickVideoList(event) {
+  handleClickVideoList = event => {
     const { target } = event;
     if (target.classList.contains('video-item__save-button')) {
       this.handleClickSaveButton(event);
     }
-  }
+  };
 
   saveVideo(videoId, videoList) {
     if (videoList.length >= MAX_SAVABLE_VIDEOS_COUNT) {
