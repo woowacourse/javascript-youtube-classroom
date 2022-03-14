@@ -8,14 +8,19 @@ class SearchForm extends CustomElement {
   }
 
   setEvent() {
-    addEvent(this, 'submit', '.search-form', (e) => this.emitEvent(e));
+    addEvent({
+      component: this,
+      eventType: 'submit',
+      selector: '.search-form',
+      callback: (e) => this.emitEvent(e),
+    });
   }
 
   emitEvent(e) {
     e.preventDefault();
     const keyword = $('#search-input-keyword').value;
 
-    emit('.search-form', '@search', { keyword }, this);
+    emit({ selector: '.search-form', eventName: '@search', detail: { keyword }, component: this });
   }
 }
 

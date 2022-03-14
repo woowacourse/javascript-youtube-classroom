@@ -18,7 +18,12 @@ class Save {
   }
 
   subscribeEvents(videoItem) {
-    on('.video-item__save-button', '@save', (e) => this.saveVideo(e.detail.videoId), videoItem);
+    on({
+      selector: '.video-item__save-button',
+      eventName: '@save',
+      handler: (e) => this.saveVideo(e.detail.videoId),
+      component: videoItem,
+    });
   }
 
   saveVideo(videoId) {

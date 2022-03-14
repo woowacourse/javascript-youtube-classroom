@@ -18,7 +18,12 @@ class VideoItem extends CustomElement {
   }
 
   setEvent() {
-    addEvent(this, 'click', '.video-item__save-button', (e) => this.emitEvent(e));
+    addEvent({
+      component: this,
+      eventType: 'click',
+      selector: '.video-item__save-button',
+      callback: (e) => this.emitEvent(e),
+    });
   }
 
   emitEvent(e) {
@@ -27,7 +32,12 @@ class VideoItem extends CustomElement {
 
     const videoId = this.dataset.id;
 
-    emit('.video-item__save-button', '@save', { videoId }, this);
+    emit({
+      selector: '.video-item__save-button',
+      eventName: '@save',
+      detail: { videoId },
+      component: this,
+    });
   }
 
   hideSaveButton(e) {

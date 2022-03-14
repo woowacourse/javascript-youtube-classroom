@@ -8,7 +8,12 @@ class MyClassroom extends CustomElement {
   }
 
   setEvent() {
-    addEvent(this, 'click', '#search-modal-button', this.showSearchModal);
+    addEvent({
+      component: this,
+      eventType: 'click',
+      selector: '#search-modal-button',
+      callback: this.showSearchModal,
+    });
   }
 
   showSearchModal() {

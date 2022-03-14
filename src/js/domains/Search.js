@@ -3,12 +3,23 @@ import { on, $, fetchData } from '../utils';
 import { ERROR_MESSAGE, SEARCH_API } from '../constants';
 
 class Search {
+  // eslint-disable-next-line max-lines-per-function
   constructor() {
     this.keyword = '';
     this.nextPageToken = '';
 
-    on('.search-form', '@search', (e) => this.search('search', e.detail.keyword), $('search-form'));
-    on('.video-list', '@scroll', () => this.search('scroll'), $('search-result'));
+    on({
+      selector: '.search-form',
+      eventName: '@search',
+      handler: (e) => this.search('search', e.detail.keyword),
+      component: $('search-form'),
+    });
+    on({
+      selector: '.video-list',
+      eventName: '@scroll',
+      handler: () => this.search('scroll'),
+      component: $('search-result'),
+    });
   }
 
   async search(type, keyword = this.keyword) {

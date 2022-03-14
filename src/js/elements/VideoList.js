@@ -12,7 +12,12 @@ class VideoList extends HTMLUListElement {
   }
 
   setEvent() {
-    addEvent(this, 'scroll', 'ul', (e) => this.emitEvent(e));
+    addEvent({
+      component: this,
+      eventType: 'scroll',
+      selector: 'ul',
+      callback: (e) => this.emitEvent(e),
+    });
   }
 
   emitEvent(e) {
@@ -20,7 +25,7 @@ class VideoList extends HTMLUListElement {
     const { scrollTop, scrollHeight } = e.target;
 
     if (clientHeight + scrollTop >= scrollHeight && scrollTop !== 0) {
-      emit('ul', '@scroll', {}, $('search-result'));
+      emit({ selector: 'ul', eventName: '@scroll', detail: {}, component: $('search-result') });
     }
   }
 

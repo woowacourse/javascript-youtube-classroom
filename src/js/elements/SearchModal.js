@@ -8,7 +8,12 @@ class SearchModal extends CustomElement {
   }
 
   setEvent() {
-    addEvent(this, 'click', '.dimmer', this.hideSearchModal);
+    addEvent({
+      component: this,
+      eventType: 'click',
+      selector: '.dimmer',
+      callback: this.hideSearchModal,
+    });
   }
 
   hideSearchModal() {
