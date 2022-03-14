@@ -25,7 +25,7 @@ const fetchData = async (query) => {
   const json = await response.json();
 
   if (!response.ok) {
-    throw new Error(json.error.message);
+    throw response.status;
   }
 
   return json;

@@ -21,6 +21,16 @@ const SKELETON_TEMPLATE = `
   </div>
 `;
 
+const NO_SEARCH_RESULT_TEMPLATE = `
+  검색 결과가 없습니다<br />
+  다른 키워드로 검색해보세요
+  `;
+
+const EXCEEDED_QUOTA_TEMPLATE = `
+  오늘 검색 할당량을 모두 소진했습니다<br />
+  내일 다시 찾아주세요.
+`;
+
 export default class SearchModal {
   constructor(element) {
     this.element = element;
@@ -38,6 +48,7 @@ export default class SearchModal {
     this.videoList = this.element.querySelector('.video-list');
     this.dimmer = this.element.querySelector('.dimmer');
     this.searchForm = this.element.querySelector('#search-form');
+    this.noResultDescription = this.element.querySelector('.no-result__description');
     [this.searchResultContainer, this.noSearchResultContainer] =
       this.element.querySelectorAll('.search-result');
   }
@@ -137,10 +148,18 @@ export default class SearchModal {
       this.showSearchResult(videos.items);
 
       this.pageToken = videos.nextPageToken || '';
-    } catch (error) {
+    } catch (status) {
+      this.noResultDescription.innerHTML = this.getNoResultDescription(status);
       this.showNoResultContainer();
     }
 
     this.removeSkeletonUI(this.videoList);
+  }
+
+  getNoResultDescription(status) {
+    if (status === 403) {
+      return EXCEEDED_QUOTA_TEMPLATE;
+    }
+    return NO_SEARCH_RESULT_TEMPLATE;
   }
 }
