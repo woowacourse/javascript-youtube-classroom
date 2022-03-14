@@ -26,6 +26,11 @@ export const VIDEO_LIST = {
   RENDER_SIZE: 10,
 };
 
-export const KEYBOARD = {
-  ENTER: 13,
+export const EVENT = {
+  KEYBOARD: {
+    ENTER: 13,
+  },
+  SCROLL: {
+    OFFSET: 50,
+  },
 };
