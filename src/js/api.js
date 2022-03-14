@@ -39,4 +39,4 @@ const fetchData = async (props) => {
   }
 };
 
-export { OPTIONS, fetchData };
+export { OPTIONS, fetchData, stringQuery };
