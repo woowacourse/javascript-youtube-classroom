@@ -105,13 +105,13 @@ export default class SearchModal {
   }
 
   showNoResultContainer() {
-    this.resultContainer.classList.add('hidden');
-    this.noResultContainer.classList.remove('hidden');
+    this.searchResultContainer.classList.add('hidden');
+    this.noSearchResultContainer.classList.remove('hidden');
   }
 
   showResultContainer() {
-    this.resultContainer.classList.remove('hidden');
-    this.noResultContainer.classList.add('hidden');
+    this.searchResultContainer.classList.remove('hidden');
+    this.noSearchResultContainer.classList.add('hidden');
   }
 
   showSearchResult(videoList) {
