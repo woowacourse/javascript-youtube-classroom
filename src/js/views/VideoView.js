@@ -38,14 +38,14 @@ export default class VideoView {
   #appendVideos(videos) {
     const html = videos.map(
       ({ id, snippet }) =>
-        `<li class="video-item" data-video-id="${id.videoId}">
+        `<li class="video-item">
           <img
             src="${snippet.thumbnails.default.url}"
             alt="video-item-thumbnail" class="video-item__thumbnail">
           <h4 class="video-item__title">[Playlist] ${snippet.title}</h4>
           <p class="video-item__channel-name">${snippet.channelTitle}</p>
           <p class="video-item__published-date">${convertYYYYMMDD(snippet.publishTime)}</p>
-          <button class="video-item__save-button button">⬇ 저장</button>
+          <button data-video-id="${id.videoId}" class="video-item__save-button button">⬇ 저장</button>
         </li>`
     ).join('');
     this.#$container.insertAdjacentHTML('beforeend', html);
@@ -71,5 +71,22 @@ export default class VideoView {
 
   offSkeleton() {
     this.#$container.querySelectorAll('.skeleton').forEach((node) => node.remove());
+  }
+
+  bindSaveVideo() {
+    this.#$container.addEventListener('click', (e) => {
+      try {
+        const videoId = e.target.dataset.videoId;
+
+        if (!videoId) return;
+  
+        const videoIds = JSON.parse(localStorage.getItem('videoIds')) || [];
+        videoIds.push(videoId);
+        localStorage.setItem('videoIds', JSON.stringify(videoIds));
+        e.target.classList.add('saved');
+      } catch (error) {
+        alert(error.message);
+      }
+    })   
   }
 }
