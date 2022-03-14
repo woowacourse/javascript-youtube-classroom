@@ -7,17 +7,13 @@ import { VIDEO } from '../constants';
 class VideoList extends HTMLUListElement {
   constructor() {
     super();
-    this.setEvent();
-    this.subscribe();
-  }
-
-  setEvent() {
     addEvent({
       component: this,
       eventType: 'scroll',
       selector: 'ul',
       callback: (e) => this.emitEvent(e),
     });
+    VideoStore.instance.subscribe(this);
   }
 
   emitEvent(e) {
@@ -27,10 +23,6 @@ class VideoList extends HTMLUListElement {
     if (clientHeight + scrollTop >= scrollHeight && scrollTop !== 0) {
       emit({ selector: 'ul', eventName: '@scroll', detail: {}, component: $('search-result') });
     }
-  }
-
-  subscribe() {
-    VideoStore.instance.subscribe(this);
   }
 
   notify(type, data) {

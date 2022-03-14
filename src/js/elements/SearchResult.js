@@ -6,15 +6,11 @@ import TEMPLATE from '../templates';
 class SearchResult extends CustomElement {
   connectedCallback() {
     super.connectedCallback();
-    this.subscribe();
+    VideoStore.instance.subscribe(this);
   }
 
   template() {
     return TEMPLATE.SEARCH_RESULT;
-  }
-
-  subscribe() {
-    VideoStore.instance.subscribe(this);
   }
 
   notify(type, data) {
