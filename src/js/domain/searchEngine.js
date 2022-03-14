@@ -31,7 +31,7 @@ export default class SearchEngine {
   }
 
   #isDataExist(data) {
-    return Object.keys(data.items[0]).includes('snippet');
+    return data.items.length > 0 && Object.keys(data.items[0]).includes('snippet');
   }
 
   #getYoutubeApiUrl(keyword) {
