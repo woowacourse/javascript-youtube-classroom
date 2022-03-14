@@ -1,8 +1,6 @@
 import { setCurrentObserver } from '../store/rootStore.js';
 
 export default class Component {
-  target;
-
   constructor(target, props) {
     this.target = target;
     this.props = props;

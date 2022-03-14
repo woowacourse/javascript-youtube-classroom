@@ -4,8 +4,6 @@ export const setCurrentObserver = observer => {
   currentObserver = observer;
 };
 
-let i = 0;
-
 const observable = target => {
   Object.keys(target).forEach(key => {
     const observers = {};
