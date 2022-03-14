@@ -14,8 +14,8 @@ export default class YoutubeMachine {
     return this.#searchTarget;
   }
 
-  set pageToken(data) {
-    this.#pageToken = data;
+  set pageToken(token) {
+    this.#pageToken = token;
   }
 
   get pageToken() {
@@ -24,8 +24,8 @@ export default class YoutubeMachine {
 
   getURL() {
     const URL = `https://ahns.netlify.app/youtube/v3/search?part=snippet&q=${this.searchTarget}&maxResults=10&type=video`;
-    if (this.#pageToken) {
-      return URL.concat(`&pageToken=${this.#pageToken}`);
+    if (this.pageToken) {
+      return URL.concat(`&pageToken=${this.pageToken}`);
     }
     return URL;
   }

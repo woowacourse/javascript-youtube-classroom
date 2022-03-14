@@ -14,7 +14,8 @@ export default function App() {
     searchResultView.renderSkeletonUI();
     const response = await youtubeMachine.callSearchAPI();
     searchResultView.renderSearchResult(response);
-    if (!response.nextPageToken) {
+    const isLastVideos = response.items.length !== 0 && !response.nextPageToken;
+    if (isLastVideos) {
       $('.video-list').removeEventListener('scroll', handleScroll);
     }
   };
@@ -24,6 +25,7 @@ export default function App() {
     try {
       const searchInput = $('#search-input-keyword').value.trim();
       youtubeMachine.searchTarget = searchInput;
+      youtubeMachine.pageToken = '';
       searchResultView.resetVideoList();
       addVideoListEvents();
       renderHandler();
