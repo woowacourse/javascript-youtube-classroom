@@ -52,6 +52,7 @@ export const result = {
   },
 
   renderInitialVideoList(json) {
+    this.addSaveButtonClickEvent();
     const $videoList = $('.video-list');
 
     $videoList.replaceChildren();
@@ -60,7 +61,6 @@ export const result = {
       json.items.length ? this.searchResultFoundTemplate(json.items) : this.searchResultNotFoundTemplate(),
     );
 
-    this.addSaveButtonClickEvent(json.items.length);
     if (json && json.nextPageToken) {
       this.scrollObserver(json.nextPageToken);
     }
@@ -74,7 +74,6 @@ export const result = {
         skeleton.removeSkeletonUI();
         $('.video-list').insertAdjacentHTML('beforeend', this.searchResultFoundTemplate(json.items));
 
-        this.addSaveButtonClickEvent(json.items.length);
         if (json && json.nextPageToken) {
           this.scrollObserver(json.nextPageToken);
         }
@@ -85,10 +84,11 @@ export const result = {
       });
   },
 
-  addSaveButtonClickEvent(length) {
-    const saveButtons = $$('.video-item__save-button');
-    [...saveButtons].slice(-length).forEach(saveButton => {
-      saveButton.addEventListener('click', this.handleSaveVideo);
+  addSaveButtonClickEvent() {
+    $('.video-list').addEventListener('click', e => {
+      if (e.target.classList.contains('video-item__save-button')) {
+        this.handleSaveVideo(e);
+      }
     });
   },
 
