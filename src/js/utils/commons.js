@@ -23,3 +23,10 @@ export const debounce = (callback, wait = 0) => {
     }, wait);
   };
 };
+
+export const logger = (callback, ...logs) => {
+  // eslint-disable-next-line no-console
+  console.log(...logs);
+
+  return (...args) => callback(...args);
+};

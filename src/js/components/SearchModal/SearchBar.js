@@ -36,19 +36,28 @@ export default class SearchBar extends Component {
   }
 
   async onSubmitSearchInput(e) {
-    const query = e.target.elements.searchInput.value;
+    const query = e.target.elements.searchInput.value.trim();
 
-    rootStore.setState({ isSearchQuerySubmitted: true });
-
-    const data = await searchVideos(query).catch((err) => {
-      alert(err);
-    });
-
-    if (data.items)
-      this.updateSearchResult(data.items, {
-        query,
-        nextPageToken: data.nextPageToken,
+    try {
+      validate(query, queryStringValidator, {
+        log: process.env.NODE_ENV === 'development',
       });
+
+      rootStore.setState({ isSearchQuerySubmitted: true });
+
+      const data = await searchVideos(query).catch((err) => {
+        alert(err);
+      });
+
+      if (data.items)
+        this.updateSearchResult(data.items, {
+          query,
+          nextPageToken: data.nextPageToken,
+        });
+    } catch (err) {
+      rootStore.setState({ isSearchQuerySubmitted: false });
+      alert(err);
+    }
   }
 
   updateSearchResult(items, searchOption) {
