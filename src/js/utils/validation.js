@@ -1,6 +1,6 @@
 import { ERROR_MESSAGES, NUM } from "./contants";
 
-export const isDuplicatedId = (storage, id) => {
+export const hasDuplicatedId = (storage, id) => {
   return storage.includes(id);
 };
 
@@ -9,7 +9,7 @@ export const isExceedStorage = (storage) => {
 };
 
 export const verifySaveId = (storage, id) => {
-  if (isDuplicatedId(storage, id)) {
+  if (hasDuplicatedId(storage, id)) {
     throw new Error(ERROR_MESSAGES.DUPLICATE_DATA);
   }
   if (isExceedStorage(storage)) {
