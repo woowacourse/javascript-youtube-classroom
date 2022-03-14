@@ -25,8 +25,8 @@ export default class YoutubeSearchModal {
   }
 
   addModalOuterClickEvent() {
-    window.addEventListener('click', e => {
-      e.target === $('.dimmer') ? this.reset() : false;
+    $('.dimmer').addEventListener('click', e => {
+      this.reset();
     });
   }
 }
