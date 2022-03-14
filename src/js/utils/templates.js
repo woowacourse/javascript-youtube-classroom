@@ -9,13 +9,7 @@ export const noSearchResultTemplate = `
 export const makeIframeTemplate = (video) => {
   return `
     <li class='video-item-container'>
-      <iframe
-          class="video-item"
-          type="text/html"
-          src="https://www.youtube.com/embed/${video.id.videoId}"
-          frameborder="0"
-          allowfullscreen="allowfullscreen"
-      ></iframe>
+      <img src=${video.snippet.thumbnails.medium.url} alt="video-item-thumbnail" class="video-item__thumbnail">
       <h4 class="video-item__title">${video.snippet.title}</h4>
       <p class="video-item__channel-name">${video.snippet.channelTitle}</p>
       <p class="video-item__published-date">${changeDateFormat(video.snippet.publishedAt)}</p>
