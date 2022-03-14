@@ -2,11 +2,11 @@ import Component from '../../core/Component.js';
 import SearchBar from './SearchBar.js';
 import SearchResult from './SearchResult.js';
 import NotFound from './NotFound.js';
-import { rootStore } from '../../store/rootStore.js';
+import { api } from '../../api/api.js';
 
 export default class SearchModal extends Component {
   template() {
-    const { isSearchQuerySubmitted, isNoResult } = rootStore.state;
+    const { isSearchQuerySubmitted, isNoResult } = api.rootStore.state;
 
     return `
     <div id="modal-background" class="dimmer"></div>
@@ -31,7 +31,7 @@ export default class SearchModal extends Component {
   }
 
   afterMounted() {
-    const { isSearchQuerySubmitted, isNoResult } = rootStore.state;
+    const { isSearchQuerySubmitted, isNoResult } = api.rootStore.state;
 
     new SearchBar(this.$('#search-input'));
     isSearchQuerySubmitted &&
