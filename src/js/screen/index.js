@@ -148,8 +148,12 @@ export default class ScreenManager {
     if (e.target.classList.contains('video-item__save-button')) {
       const { videoId } = e.target.closest('.video-item').dataset;
 
-      this.storageEngine.saveVideo(videoId);
-      e.target.classList.add('hide');
+      try {
+        this.storageEngine.saveVideo(videoId);
+        e.target.classList.add('hide');
+      } catch (error) {
+        alert(error.message);
+      }
     }
   }
 }
