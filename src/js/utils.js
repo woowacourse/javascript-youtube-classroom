@@ -49,3 +49,21 @@ export const formatDate = (dateString) => {
 
   return `${year}년 ${month}월 ${day}일`;
 };
+
+// eslint-disable-next-line max-lines-per-function
+export const throttle = (callback, delay = 100) => {
+  let timerId;
+
+  return (event) => {
+    if (timerId) return;
+
+    timerId = setTimeout(
+      () => {
+        callback(event);
+        timerId = null;
+      },
+      delay,
+      event
+    );
+  };
+};

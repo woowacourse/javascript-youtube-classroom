@@ -1,5 +1,5 @@
 import VideoStore from '../VideoStore';
-import { on, $, fetchData } from '../utils';
+import { fetchData, on, throttle, $ } from '../utils';
 import { ERROR_MESSAGE, SEARCH_API } from '../constants';
 
 class Search {
@@ -17,7 +17,7 @@ class Search {
     on({
       selector: '.video-list',
       eventName: '@scroll',
-      handler: () => this.search('scroll'),
+      handler: throttle(() => this.search('scroll')),
       component: $('search-result'),
     });
   }
