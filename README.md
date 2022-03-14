@@ -11,7 +11,65 @@
   <img src="https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square"/>
 </p>
 
-## ⚙️ Before Started
+<br />
+
+## [💻 나만의 유투브 강의실 데모 페이지](https://soyi47.github.io/javascript-youtube-classroom/)
+
+<br />
+
+## 기능 구현 목록
+
+### Step 1
+
+1. 메인 화면 검색 버튼 누르기
+
+- 검색 모달 창이 나온다.
+
+2. 검색하기
+
+- 엔터키를 눌러 검색할 수 있다.
+- 검색 버튼을 클릭해 검색할 수 있다.
+- 입력 조건
+  - 검색 키워드는 2자 이상이어야 한다.
+
+3. 검색 결과 가져오기
+
+- 결과를 가져 오는 동안 스켈레톤 이미지를 보여준다.
+- YouTube 검색 API를 이용하여 영상 검색 결과를 가져온다.
+
+4. 검색 결과 보여주기
+
+- 결과를 가져오는데 실패한 경우, 에러 결과 화면을 보여준다.
+- 결과가 없으면 결과 없음 이미지를 보여준다.
+- 결과가 있으면 최대 10개까지 보여준다.
+  - 결과 화면에서 스크롤 바를 끝까지 이동시키면 추가 검색 결과 10개를 불러온다.
+  - 추가로 가져올 검색 결과가 없는 경우, 마지막 결과까지 가져왔다는 안내 문구를 띄운다.
+  - 이미 저장된 영상이라면 저장 버튼이 보이지 않도록 한다.
+
+5. 원하는 영상 저장하기
+
+- 저장 버튼을 누르면
+  - 영상 id를 Web Storage에 저장한다.
+  - 저장 버튼이 보이지 않도록 한다.
+- 저장 가능한 최대 동영상의 갯수는 100개이다.
+
+<br />
+
+## 개요도
+
+### Step 1
+
+#### 초기 개요도
+
+<img alt="Tip" src="./images/step1_summary.png">
+
+<br />
+
+#### 1차 수정 - 주요 흐름도
+
+<img alt="Tip" src="./images/step1_review1_main_flow_chart.png">
+
+<br />
 
 #### <img alt="Tip" src="https://img.shields.io/static/v1.svg?label=&message=Tip&style=flat-square&color=673ab8"> 로컬에서 서버 띄워서 손쉽게 static resources 변경 및 확인하는 방법
 

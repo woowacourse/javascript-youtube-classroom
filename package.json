@@ -1,0 +1,53 @@
+{
+  "name": "javascript-youtube-classroom",
+  "version": "1.0.0",
+  "description": "<우아한테크코스 4기 프론트엔드> level 1 - 나만의 유튜브 강의실",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest --watch --no-cache",
+    "build": "webpack",
+    "start": "webpack serve --open",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d dist"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/soyi47/javascript-youtube-classroom.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/soyi47/javascript-youtube-classroom/issues"
+  },
+  "homepage": "https://github.com/soyi47/javascript-youtube-classroom#readme",
+  "devDependencies": {
+    "@babel/core": "^7.17.5",
+    "@babel/preset-env": "^7.16.11",
+    "babel-jest": "^27.5.1",
+    "babel-loader": "^8.2.3",
+    "clean-webpack-plugin": "^4.0.0",
+    "css-loader": "^6.7.0",
+    "eslint": "^8.10.0",
+    "eslint-config-airbnb-base": "^15.0.0",
+    "eslint-config-prettier": "^8.5.0",
+    "eslint-plugin-html": "^6.2.0",
+    "eslint-plugin-import": "^2.25.4",
+    "gh-pages": "^3.2.3",
+    "html-webpack-plugin": "^5.5.0",
+    "jest": "^27.5.1",
+    "jest-localstorage-mock": "^2.4.19",
+    "prettier": "2.5.1",
+    "style-loader": "^3.3.1",
+    "webpack": "^5.70.0",
+    "webpack-cli": "^4.9.2",
+    "webpack-dev-server": "^4.7.4"
+  },
+  "jest": {
+    "setupFiles": [
+      "jest-localstorage-mock"
+    ],
+    "transform": {
+      "^.+\\.js$": "babel-jest"
+    }
+  }
+}
