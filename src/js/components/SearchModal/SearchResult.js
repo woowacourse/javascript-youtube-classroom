@@ -70,6 +70,10 @@ export default class SearchResult {
   }
 
   async #renderNextPage() {
+    if (this.videos.nextPageToken === undefined) {
+      return;
+    }
+
     this.videos = await fetchDataFromKeyword(this.searchManager.getKeyword(), this.videos.nextPageToken);
     this.#renderIframe();
     this.observer.observe(this.videoList.lastElementChild);
