@@ -2,10 +2,12 @@ import VideoItemView from './VideoItemView.js';
 import videoStorage from '../videoStorage.js';
 import { DOM_STRING, EVENT, VIDEO_LIST } from '../utils/constants.js';
 import { $ } from '../utils/common.js';
+import notFoundImage from '../../assets/images/not_found.png';
 
 export default class ModalView {
   constructor() {
     this.registerDOM();
+    this.registerImage();
     this.videoItemList = [];
     this.throttle = null;
   }
@@ -17,10 +19,18 @@ export default class ModalView {
     this.$searchButton = $(DOM_STRING.SEARCH_BUTTOM);
     this.$searchInput = $(DOM_STRING.SEARCH_INPUT);
     this.$searchNoResult = $(DOM_STRING.SEARCH_NO_RESULT);
+    this.$searchReslt = $(DOM_STRING.SEARCH_RESULT);
+    this.$noResultImage = $(DOM_STRING.NO_RESULT_IMAGE);
+  }
+
+  registerImage() {
+    console.log(this.$noResultImage);
+    this.$noResultImage.src = notFoundImage;
   }
 
   showModal() {
     this.$modalContainer.classList.remove(DOM_STRING.HIDE);
+    this.$searchReslt.classList.add(DOM_STRING.HIDE);
     this.$searchNoResult.classList.add(DOM_STRING.HIDE);
     this.$searchInput.value = '';
     this.focusSearch();

@@ -70,7 +70,15 @@
   align-items: center;
 }
 
+.no-result {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
 .no-result__image {
+  margin-top: 10%;
   width: 190px;
   height: 140px;
   margin-bottom: 32px;

@@ -9,6 +9,8 @@ export const DOM_STRING = {
   MODAL_OPEN_BUTTON: '#search-modal-button',
   SKELETON: 'skeleton',
   VIDEO_ITEM_SAVE_BUTTON: 'video-item__save-button',
+  NO_RESULT_IMAGE: '.no-result__image',
+  SEARCH_RESULT: '.search-result',
 };
 
 export const ERROR_MESSAGE = {
