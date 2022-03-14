@@ -1,3 +1,4 @@
+import { transformDate } from './utils/common.js';
 import { ERROR_MESSAGE, VIDEO_LIST } from './utils/constants.js';
 
 const videoAPI = {
@@ -37,7 +38,7 @@ const videoAPI = {
       return responseData.items.map(item => {
         return {
           videoId: item.id.videoId,
-          publishedAt: item.snippet.publishedAt,
+          publishedAt: transformDate(item.snippet.publishedAt),
           title: item.snippet.title,
           url: item.snippet.thumbnails.medium.url,
           channelTitle: item.snippet.channelTitle,
