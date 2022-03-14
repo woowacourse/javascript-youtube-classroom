@@ -23,7 +23,7 @@ export default class ModalView {
     this.$modalContainer.classList.remove(DOM_STRING.HIDE);
     this.$searchNoResult.classList.add(DOM_STRING.HIDE);
     this.$searchInput.value = '';
-    this.$searchInput.focus();
+    this.focusSearch();
   }
 
   hideModal() {
@@ -111,5 +111,9 @@ export default class ModalView {
   showNoResult() {
     this.$searchNoResult.classList.remove(DOM_STRING.HIDE);
     this.$videoList.classList.add(DOM_STRING.HIDE);
+  }
+
+  focusSearch() {
+    this.$searchInput.focus();
   }
 }

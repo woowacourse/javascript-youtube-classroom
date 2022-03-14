@@ -42,7 +42,7 @@ export default class EventHandler {
       this.modalView.getData(videoListData);
     } catch (error) {
       alert(error.message);
-      this.modalView.showNoResult();
+      this.modalView.focusSearch();
     }
   }
 
