@@ -6,7 +6,7 @@
 
 import Video from '../modules/video';
 import { VIDEO_PROPERTIES } from '../constants/video';
-import { hasMissingProperty } from '../utils/validation';
+import { hasMissingProperty, isNullVideoList, isFirstSearchByKeyword } from '../utils/validation';
 
 describe('비디오 모듈 테스트', () => {
   test('비디오 생성할 수 있다.', () => {
@@ -48,5 +48,46 @@ describe('비디오 모듈 테스트', () => {
     };
 
     expect(hasMissingProperty(VIDEO_PROPERTIES, givenVideoInfo)).toBeTruthy();
+  });
+});
+
+describe('비디오 렌더링 관련 테스트', () => {
+  test('검색된 비디오가 없다면 false를 반환해야 한다.', () => {
+    const videoList = null;
+
+    expect(isNullVideoList(videoList)).toBeTruthy();
+  });
+
+  test('검색된 비디오가 있다면 true를 반환해야 한다.', () => {
+    const givenVideoInput = {
+      videoId: '1',
+      videoTitle: '빅터의 브이로그',
+      channelTitle: '승리자 빅터',
+      publishTime: '12:30',
+      thumbnail: '1.jpg',
+    };
+    const video = new Video(givenVideoInput);
+
+    const videoList = [video];
+
+    expect(isNullVideoList(videoList)).toBeFalsy();
+  });
+
+  test('검색된 비디오 데이터가 초깃값(빈 배열)이라면 true를 반환해야 한다.', () => {
+    const videoList = [];
+
+    expect(isNullVideoList(videoList)).toBeFalsy();
+  });
+
+  test('검색어를 검색하고 처음 비디오를 렌더링하는 것이라면 true를 반환해야 한다.', () => {
+    const previousVideoListLength = 0;
+
+    expect(isFirstSearchByKeyword(previousVideoListLength)).toBeTruthy();
+  });
+
+  test('검색어를 검색하고 스크롤을 내려 추가로 비디옹를 렌더링하는 것이라면 false를 반환해야 한다.', () => {
+    const previousVideoListLength = 10;
+
+    expect(isFirstSearchByKeyword(previousVideoListLength)).toBeFalsy();
   });
 });
