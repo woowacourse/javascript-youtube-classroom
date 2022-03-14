@@ -19,7 +19,7 @@ class VideoStore {
   dispatch(action, data) {
     const newVideos = [...this.getVideos(), ...data];
 
-    this.#setVideos(newVideos);
+    this.#videos = newVideos;
 
     this.#subscribers.forEach((subscriber) => {
       subscriber.notify(action, data);
@@ -32,10 +32,6 @@ class VideoStore {
 
   getVideos() {
     return this.#videos;
-  }
-
-  #setVideos(newVideos) {
-    this.#videos = newVideos;
   }
 }
 

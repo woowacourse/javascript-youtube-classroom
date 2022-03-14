@@ -33,7 +33,7 @@ class Save {
       }
 
       localStorage.setItem('videos', JSON.stringify([...this.#videos, { videoId }]));
-      this.#setVideos();
+      this.#videos = this.loadVideos();
     } catch (error) {
       alert(error.message);
     }
@@ -41,10 +41,6 @@ class Save {
 
   getVideos() {
     return this.#videos;
-  }
-
-  #setVideos() {
-    this.#videos = this.loadVideos();
   }
 
   loadVideos() {
