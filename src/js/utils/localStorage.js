@@ -1,9 +1,15 @@
 const LOCALSTORAGE_KEY = 'VIDEO_IDS';
 
-const getStorageVideoIDs = (key) => JSON.parse(window.localStorage.getItem(key)) || [];
+const getStorageVideoIDs = (key) => {
+  try {
+    return JSON.parse(localStorage.getItem(key)) ?? [];
+  } catch (error) {
+    throw new Error('');
+  }
+};
 
 const setStorageVideoIDs = (key, value) => {
-  window.localStorage.setItem(key, JSON.stringify(value));
+  localStorage.setItem(key, JSON.stringify(value));
 };
 
 export { getStorageVideoIDs, setStorageVideoIDs, LOCALSTORAGE_KEY };
