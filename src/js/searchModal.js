@@ -18,7 +18,12 @@ class SearchModal {
     this.$button = $('#search-button', this.$modal);
     this.$searchResult = $('.search-result');
     this.$videoList = $('.video-list', this.$searchResult);
-    this.addEvent();
+
+    this.$button.addEventListener('click', this.handleClickButton.bind(this));
+    this.$videoList.addEventListener('click', event => {
+      this.handleClickVideoList(event);
+    });
+    this.$videoList.addEventListener('scroll', this.handleScroll.bind(this));
   }
 
   renderVideoItems(videos) {
@@ -53,14 +58,6 @@ class SearchModal {
       .join('');
 
     this.$videoList.insertAdjacentHTML('beforeend', skeletonListHtmlString);
-  }
-
-  addEvent() {
-    this.$button.addEventListener('click', this.handleClickButton.bind(this));
-    this.$videoList.addEventListener('click', event => {
-      this.handleClickVideoList(event);
-    });
-    this.$videoList.addEventListener('scroll', this.handleScroll.bind(this));
   }
 
   checkSearchResult(searchResult) {
