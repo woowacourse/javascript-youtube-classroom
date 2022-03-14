@@ -1,14 +1,15 @@
 import { $ } from '@Utils/Dom';
 import { SELECTOR } from '@Constants/Selector';
 import { addEventDelegate } from '@Utils/ElementControl';
-import Display from '@Core/Display';
 
-export default class Navigation extends Display {
-  setContainer() {
-    this.container = $(SELECTOR.ID.CLASSROOM_NAVIGATION);
+export default class Navigation {
+  container = $(SELECTOR.ID.CLASSROOM_NAVIGATION);
+
+  constructor() {
+    this.setBindEvents();
   }
 
-  bindEvents() {
+  setBindEvents() {
     addEventDelegate(this.container, SELECTOR.ID.SEARCH_MODAL_BUTTON, {
       eventType: 'click',
       handler: this.handleOpenModal.bind(this),
