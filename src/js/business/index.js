@@ -9,6 +9,7 @@ import webStore from '../modules/webStore';
 import { bind } from '../modules/eventFactory';
 import { CUSTOM_EVENT_KEY } from '../constants/events';
 import { WEB_STORE_KEY } from '../constants/webStore';
+import { ERROR_MESSAGE } from '../constants/errorMessage';
 class AppBusiness {
   constructor() {
     bind(CUSTOM_EVENT_KEY.CLICK_SEARCH_MODAL_BUTTON, this.onClickSearchModalButton);
@@ -74,8 +75,16 @@ class AppBusiness {
 
   onClickSaveButton = ({ detail: { saveVideoId } }) => {
     try {
-      webStore.setSavedVideoList(saveVideoId);
-      setState(STATE_STORE_KEY.SAVED_VIDEO, webStore.getData(WEB_STORE_KEY.SAVED_VIDEO_LIST_KEY));
+      const savedVideoList = webStore.getData(WEB_STORE_KEY.SAVED_VIDEO_LIST_KEY) ?? [];
+
+      if (savedVideoList.length === 100) {
+        throw new Error(ERROR_MESSAGE.SAVE_VIDEO_COUNT_OVER);
+      }
+
+      const updatedVideoList = [...savedVideoList, saveVideoId];
+
+      webStore.setData(WEB_STORE_KEY.SAVED_VIDEO_LIST_KEY, updatedVideoList);
+      setState(STATE_STORE_KEY.SAVED_VIDEO, updatedVideoList);
     } catch ({ message }) {
       alert(message);
     }
