@@ -1,4 +1,4 @@
-import { observe } from '../store/rootStore.js';
+import { setCurrentObserver } from '../store/rootStore.js';
 
 export default class Component {
   target;
@@ -8,9 +8,7 @@ export default class Component {
     this.props = props;
     this.setup();
     this.setEvent();
-    observe(() => {
-      this.render();
-    });
+    this.render();
   }
 
   setup() {}
@@ -24,9 +22,11 @@ export default class Component {
   }
 
   render() {
+    setCurrentObserver(this);
     this.beforeMounted();
     this.target.innerHTML = this.template();
     this.afterMounted();
+    setCurrentObserver(null);
   }
 
   setState(newState) {

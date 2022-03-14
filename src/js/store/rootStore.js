@@ -1,25 +1,27 @@
 let currentObserver = null;
 
-export const observe = fn => {
-  currentObserver = fn;
-  fn();
-  currentObserver = null;
+export const setCurrentObserver = observer => {
+  currentObserver = observer;
 };
+
+let i = 0;
 
 const observable = target => {
   Object.keys(target).forEach(key => {
-    const observers = new Set();
+    const observers = {};
     let cache = target[key];
 
     Object.defineProperty(target, key, {
       get() {
-        if (currentObserver) observers.add(currentObserver);
+        if (currentObserver) {
+          observers[currentObserver.constructor.name] = currentObserver;
+        }
 
         return cache;
       },
       set(value) {
         cache = value;
-        observers.forEach(fn => fn());
+        Object.keys(observers).map(key => observers[key].render());
       },
     });
   });

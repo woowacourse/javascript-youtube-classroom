@@ -2,6 +2,7 @@ import { getSearchAPI } from '../../api/api.js';
 import Component from '../../core/Component.js';
 import { rootStore } from '../../store/rootStore.js';
 import { webStore } from '../../store/WebStore.js';
+import request from '../../__mocks__/request.js';
 
 export default class SearchBar extends Component {
   template() {
@@ -61,6 +62,7 @@ export default class SearchBar extends Component {
         notFound: false,
         isLoading: false,
       });
+      console.log('rootStore.state', rootStore.state.isLoading);
     });
   }
 }
