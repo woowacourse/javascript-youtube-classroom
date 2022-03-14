@@ -1,4 +1,4 @@
 import '../css/index.css';
-import Modal from './ui/Modal';
+import YoutubeSearchModal from './ui/YoutubeSearchModal';
 
-new Modal();
+new YoutubeSearchModal();

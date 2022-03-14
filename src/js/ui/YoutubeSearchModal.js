@@ -1,7 +1,7 @@
 import { $ } from '../utils/dom';
 import Search from './Search';
 
-export default class Modal {
+export default class YoutubeSearchModal {
   constructor() {
     this.addSearchModalButtonClickEvent();
     this.addModalOuterClickEvent();
