@@ -1,6 +1,6 @@
 import SearchManager from "../manager/SearchManager.js";
 import MenuBar from "./MenuBar.js";
-import SearchModal from "./SearchModal.js";
+import SearchModal from "./SearchModal/index.js";
 
 export default class App {
   constructor() {

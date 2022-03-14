@@ -1,8 +1,8 @@
-import { LOCAL_DB, NUM } from "../utils/contants.js";
-import { fetchDataFromKeyword } from "../utils/api.js";
-import { makeIframeTemplate, makeSkeletonTemplate, noSearchResultTemplate } from "../utils/templates.js";
-import { getLocalStorage, saveLocalStorage } from "../utils/localStorage.js";
-import { verifySaveId } from "../utils/validation.js";
+import { LOCAL_DB, NUM } from "../../utils/contants.js";
+import { fetchDataFromKeyword } from "../../utils/api.js";
+import { makeIframeTemplate, makeSkeletonTemplate, noSearchResultTemplate } from "../../utils/templates.js";
+import { getLocalStorage, saveLocalStorage } from "../../utils/localStorage.js";
+import { verifySaveId } from "../../utils/validation.js";
 
 export default class SearchResult {
   constructor({ searchManager }) {
