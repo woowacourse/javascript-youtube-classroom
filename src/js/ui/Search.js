@@ -3,6 +3,7 @@ import { request } from '../domain/youtubeApi';
 import { delay } from '../utils/common';
 import { $, showExceptionSnackBar } from '../utils/dom';
 import Result from './Result';
+import { skeleton } from './skeleton';
 
 export default class Search {
   constructor() {
@@ -19,7 +20,7 @@ export default class Search {
         return;
       }
 
-      this.result.renderSkeletonUI();
+      skeleton.renderSkeletonUI();
 
       request(this.input.value)
         .then(json => {
@@ -28,7 +29,7 @@ export default class Search {
         .catch(async ({ message }) => {
           await delay(700);
           showExceptionSnackBar(message);
-          this.result.removeSkeletonUI();
+          skeleton.removeSkeletonUI();
         });
     });
   }
