@@ -11,27 +11,28 @@ export default function App() {
   let throttle;
 
   // 핸들러
-  const handleSearch = () => {
+  const handleSearch = async () => {
     try {
-      youtubeMachine.resetData();
-      userInterface.resetVideoList();
       const searchInput = $('#search-input-keyword').value.trim();
       youtubeMachine.searchTarget = searchInput;
+      userInterface.resetVideoList();
       userInterface.renderSkeletonUI();
-      const response = youtubeMachine.callSearchAPI();
-      youtubeMachine.updateData(response);
+      addVideoListEvents();
+      const response = await youtubeMachine.callSearchAPI();
       userInterface.renderSearchResult(response);
     } catch (error) {
       alert(error.message);
     }
   };
 
-  const handleScroll = e => {
+  const handleScroll = async e => {
     if (isEndOfScroll(e.target) && !throttle) {
       userInterface.renderSkeletonUI();
-      const response = youtubeMachine.callSearchAPI();
-      youtubeMachine.updateData(response);
-      userInterface.renderNextSearchResult(response);
+      const response = await youtubeMachine.callSearchAPI();
+      userInterface.renderSearchResult(response);
+      if (!response.nextPageToken) {
+        $('.video-list').removeEventListener('scroll', handleScroll);
+      }
       throttle = setTimeout(() => {
         throttle = null;
       }, THROTTLE_DELAY);
@@ -47,6 +48,12 @@ export default function App() {
     }
   };
 
+  const addVideoListEvents = () => {
+    $('.video-list').addEventListener('scroll', handleScroll);
+
+    $('.video-list').addEventListener('click', handleSaveButtonClick);
+  };
+
   // 이벤트 등록
   $('#search-modal-button').addEventListener('click', () => {
     $('.modal-container').classList.remove('hide');
@@ -57,10 +64,6 @@ export default function App() {
   $('#search-input-keyword').addEventListener('keypress', e => {
     if (e.key === 'Enter') handleSearch();
   });
-
-  $('.search-result').addEventListener('scroll', handleScroll);
-
-  $('.search-result').addEventListener('click', handleSaveButtonClick);
 }
 
 App();

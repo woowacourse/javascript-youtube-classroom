@@ -65,10 +65,6 @@
   color: #ffffff;
 }
 
-.search-result {
-  overflow-y: scroll;
-}
-
 .no-result {
   display: flex;
   flex-direction: column;
@@ -96,6 +92,7 @@
   flex-direction: row;
   flex-wrap: wrap;
   gap: 32px 20px;
+  overflow-y: scroll;
 }
 
 .video-item {

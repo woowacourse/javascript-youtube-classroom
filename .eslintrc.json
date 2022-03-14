@@ -17,7 +17,8 @@
     "class-methods-use-this": "off",
     "no-new": "off",
     "lines-between-class-members": "off",
-    "no-return-assign": "off"
+    "no-return-assign": "off",
+    "no-use-before-define": "off"
   },
   "plugins": ["prettier"]
 }
