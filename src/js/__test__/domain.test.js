@@ -9,32 +9,40 @@ const generateMaxSavedVideos = () => {
   return Array.from({ length: MAX_SAVED_VIDEOS_LENGTH }, () => sample);
 };
 
-test('유튜브 검색 기능 정상 작동', () => {
-  const searchEngine = new SearchEngine();
-  const keyword = '지피티';
+// test('유튜브 검색 기능 정상 작동', () => {
+//   const searchEngine = new SearchEngine();
+//   const keyword = '지피티';
 
-  searchEngine.searchKeyword(keyword).then((response) => {
-    expect(response).not.toBe(null);
+//   searchEngine.searchKeyword(keyword).then((response) => {
+//     expect(response).not.toBe(null);
+//   });
+// });
+
+describe('저장 기능 테스트', () => {
+  const storageEngine = new StorageEngine();
+
+  beforeEach(() => {
+    storageEngine.init();
   });
-});
 
-test('유튜브 검색 결과를 webstorage에 저장할 수 있다', () => {
-  const storageEngine = new StorageEngine();
-  const videoId = 'eMf0jojpdJQ';
+  test('유튜브 검색 결과를 webstorage에 저장할 수 있다', () => {
+    const videoId = 'eMf0jojpdJQ';
 
-  storageEngine.saveVideo(videoId);
+    storageEngine.saveVideo(videoId);
 
-  expect(storageEngine.getSavedVideos()).not.toBe(null);
-});
+    const [specificVideo] = storageEngine.getSpecificVideo(videoId);
 
-test('유튜브 검색 결과를 webstorage에 100개까지 저장할 수 있다.', () => {
-  const storageEngine = new StorageEngine();
-  const mockVideos = generateMaxSavedVideos();
+    expect(specificVideo.videoId).toEqual(videoId);
+  });
 
-  localStorage.setItem('savedVideos', JSON.stringify(mockVideos));
-  expect(storageEngine.getSavedVideos()).toHaveLength(MAX_SAVED_VIDEOS_LENGTH);
+  test('유튜브 검색 결과를 webstorage에 100개까지 저장할 수 있다.', () => {
+    const mockVideos = generateMaxSavedVideos();
 
-  const videoId = 'eMf0jojpdJQ';
-  storageEngine.saveVideo(videoId);
-  expect(storageEngine.getSavedVideos()).toHaveLength(MAX_SAVED_VIDEOS_LENGTH);
+    localStorage.setItem('savedVideos', JSON.stringify(mockVideos));
+    expect(storageEngine.getSavedVideos()).toHaveLength(MAX_SAVED_VIDEOS_LENGTH);
+
+    const videoId = 'eMf0jojpdJQ';
+    storageEngine.saveVideo(videoId);
+    expect(storageEngine.getSavedVideos()).toHaveLength(MAX_SAVED_VIDEOS_LENGTH);
+  });
 });

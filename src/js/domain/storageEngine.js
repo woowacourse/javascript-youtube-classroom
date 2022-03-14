@@ -12,6 +12,17 @@ export default class StorageEngine {
 
     const newVideo = { videoId };
     savedVideos.push(newVideo);
+
     localStorage.setItem('savedVideos', JSON.stringify(savedVideos));
+  }
+
+  getSpecificVideo(specificVideoId) {
+    const savedVideos = this.getSavedVideos();
+
+    return savedVideos.filter(({ videoId }) => videoId === specificVideoId);
+  }
+
+  init() {
+    localStorage.clear();
   }
 }
