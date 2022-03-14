@@ -51,8 +51,12 @@ class View {
     const { value: keyword } = this.searchInputKeyword;
     removeElementList([...this.videoList.childNodes]);
     this.#loadSkeleton();
-    const searchResultArray = await this.search.getSearchResultArray(keyword);
-    this.#renderSearchResult(searchResultArray);
+    try {
+      const searchResultArray = await this.search.getSearchResultArray(keyword);
+      this.#renderSearchResult(searchResultArray);
+    } catch (error) {
+      alert(error.message);
+    }
   };
 
   #handleScrollToLastItem() {
@@ -61,8 +65,12 @@ class View {
         if (entries[0].isIntersecting) {
           this.observer.unobserve(entries[0].target);
           this.#loadSkeleton();
-          const searchResultArray = await this.search.getLoadMoreResultArray();
-          this.#renderSearchResult(searchResultArray);
+          try {
+            const searchResultArray = await this.search.getLoadMoreResultArray();
+            this.#renderSearchResult(searchResultArray);
+          } catch (error) {
+            alert(error.message);
+          }
         }
       },
       { threshold: 0.5 }

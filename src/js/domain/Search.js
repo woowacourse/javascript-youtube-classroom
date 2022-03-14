@@ -1,5 +1,5 @@
 import storage from './storage';
-import { SEARCH_URL_BASE, MAX_SEARCH_RESULT } from '../constants/constants';
+import { SEARCH_URL_BASE, MAX_SEARCH_RESULT, ERROR_MESSAGES } from '../constants/constants';
 
 class Search {
   constructor() {
@@ -8,11 +8,15 @@ class Search {
   }
 
   async getSearchResultArray(keyword, pageToken = undefined) {
-    const { items, nextPageToken } = await this.#getSearchResult(keyword, pageToken);
-    this.keyword = keyword;
-    this.nextPageToken = nextPageToken;
-    const savedVideos = storage.getSavedVideos() || {};
-    return this.#getVideoObjectArray(items, savedVideos);
+    try {
+      const { items, nextPageToken } = await this.#getSearchResult(keyword, pageToken);
+      this.keyword = keyword;
+      this.nextPageToken = nextPageToken;
+      const savedVideos = storage.getSavedVideos() || {};
+      return this.#getVideoObjectArray(items, savedVideos);
+    } catch (error) {
+      throw new Error(error.message);
+    }
   }
 
   async getLoadMoreResultArray() {
@@ -30,10 +34,14 @@ class Search {
       regionCode: 'KR',
       pageToken,
     };
-    const queryString = this.#generateQueryString(query);
-    const response = await fetch(`${SEARCH_URL_BASE}${queryString}`);
-    const { items, nextPageToken } = await response.json();
-    return { items, nextPageToken };
+    try {
+      const queryString = this.#generateQueryString(query);
+      const response = await fetch(`${SEARCH_URL_BASE}${queryString}`);
+      const { items, nextPageToken } = await response.json();
+      return { items, nextPageToken };
+    } catch (error) {
+      throw new Error(ERROR_MESSAGES.SERVER_MALFUNCTION);
+    }
   }
 
   #generateQueryString(query) {
