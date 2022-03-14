@@ -13,7 +13,7 @@ const youtubeSearchAPI = {
     const response = await fetch(url, { method: 'GET' });
 
     this.checkExceedCapacity(response);
-    return await response.json();
+    return response.json();
   },
 
   createURL(value, pageToken) {

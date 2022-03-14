@@ -116,7 +116,6 @@ class SearchModal {
       this.scrollHandler.setError(true);
       this.$videoListContainer.insertAdjacentHTML('beforeend', template.exceedCapacityErrorImage());
     }
-    console.log(err);
   }
 
   renderResult(items) {
