@@ -1,10 +1,20 @@
 import CustomElement from '../abstract/CustomElement';
 import { addEvent, emit, $ } from '../utils';
-import TEMPLATE from '../templates';
 
 class SearchForm extends CustomElement {
   template() {
-    return TEMPLATE.SEARCH_FORM;
+    return `
+      <form class="search-form">
+        <h3 hidden>검색어 입력</h3>
+        <input
+          id="search-input-keyword"
+          placeholder="검색"
+          class="search-input__keyword"
+          required
+        />
+        <button id="search-button" class="search-input__search-button button">검색</button>
+      </form>
+    `;
   }
 
   setEvent() {

@@ -1,7 +1,7 @@
 import VideoStore from '../VideoStore';
 import CustomElement from '../abstract/CustomElement';
 import { $ } from '../utils';
-import TEMPLATE from '../templates';
+import NotFoundImage from '../../assets/images/not_found.png';
 
 class SearchResult extends CustomElement {
   connectedCallback() {
@@ -9,8 +9,22 @@ class SearchResult extends CustomElement {
     VideoStore.instance.subscribe(this);
   }
 
+  // eslint-disable-next-line max-lines-per-function
   template() {
-    return TEMPLATE.SEARCH_RESULT;
+    return `
+      <h3 hidden>검색 결과</h3>
+      <ul is="video-list" class="video-list"></ul>
+      <section class="search-result search-result--no-result hidden">
+        <h3 hidden>검색 결과</h3>
+        <div class="no-result">
+          <img src=${NotFoundImage} alt="no result image" class="no-result__image">
+          <p class="no-result__description">
+            검색 결과가 없습니다<br />
+            다른 키워드로 검색해보세요
+          </p>
+        </div>
+      </section>
+    `;
   }
 
   notify(type, data) {

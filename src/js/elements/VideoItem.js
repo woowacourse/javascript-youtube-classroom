@@ -1,8 +1,7 @@
 import VideoStore from '../VideoStore';
 import CustomElement from '../abstract/CustomElement';
 import Save from '../domains/Save';
-import { addEvent, emit } from '../utils';
-import TEMPLATE from '../templates';
+import { addEvent, emit, formatDate } from '../utils';
 import { VIDEO } from '../constants';
 
 class VideoItem extends CustomElement {
@@ -14,7 +13,17 @@ class VideoItem extends CustomElement {
   }
 
   template(video) {
-    return TEMPLATE.generateVideoItem(video);
+    return `
+      <li class="video-item" data-video-id="${video.id}">
+        <img
+          src="${decodeURI(video.thumbnail)}"
+          alt="video-item-thumbnail" class="video-item__thumbnail">
+        <h4 class="video-item__title">${decodeURI(video.title)}</h4>
+        <p class="video-item__channel-name">${decodeURI(video.channelTitle)}</p>
+        <p class="video-item__published-date">${formatDate(video.publishedAt)}</p>
+        <button id="${video.id}-save-button" class="video-item__save-button button">⬇ 저장</button>
+      </li>
+    `;
   }
 
   setEvent() {

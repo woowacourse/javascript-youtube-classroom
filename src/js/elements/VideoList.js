@@ -1,8 +1,7 @@
 import VideoStore from '../VideoStore';
 import Save from '../domains/Save';
 import { addEvent, emit, $, $$ } from '../utils';
-import TEMPLATE from '../templates';
-import { VIDEO } from '../constants';
+import SKELETONS from '../templates';
 
 class VideoList extends HTMLUListElement {
   constructor() {
@@ -41,7 +40,7 @@ class VideoList extends HTMLUListElement {
   insertSkeleton(type) {
     const position = type === 'search' ? 'afterbegin' : 'beforeend';
 
-    this.insertAdjacentHTML(position, TEMPLATE.SKELETON.repeat(VIDEO.MAX_RESULT_PER_SEARCH));
+    this.insertAdjacentHTML(position, SKELETONS);
   }
 
   removeSkeleton() {
