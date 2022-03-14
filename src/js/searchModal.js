@@ -4,12 +4,12 @@ import {
   MAX_SAVABLE_VIDEOS_COUNT,
   MAX_RENDER_VIDEOS_COUNT,
   LOCAL_STORAGE_VIDEO_LIST_KEY,
+  SERVER_URL,
 } from './constants/constant';
 import VideoItem from './videoItem';
+import { isInputValueEmpty } from './utils/checkvalue';
 
 class SearchModal {
-  serverUrl = 'https://silly-volhard-192918.netlify.app/.netlify/functions/youtube';
-
   nextPageToken = null;
 
   init() {
@@ -77,11 +77,15 @@ class SearchModal {
   async handleClickButton() {
     removeChildren(this.$videoList);
     const searchKeyWord = this.$searchKeyWordInput.value;
+    if (isInputValueEmpty(searchKeyWord)) {
+      return;
+    }
     this.renderSkeletonItems(MAX_RENDER_VIDEOS_COUNT);
-    const searchResult = await this.request(searchKeyWord);
+    const searchResult = await this.searchResultRequest(searchKeyWord);
     this.removeSkeleton();
     const videos = this.checkSearchResult(searchResult);
-    if (!videos) {
+
+    if (videos.length === 0) {
       this.$searchResult.classList.add('search-result--no-result');
       return;
     }
@@ -97,13 +101,13 @@ class SearchModal {
 
     if (isScrollEnd && this.$videoList.scrollTop !== 0) {
       this.renderSkeletonItems(MAX_RENDER_VIDEOS_COUNT);
-      const jsonResult = await this.request(title);
+      const searchResult = await this.searchResultRequest(title);
       this.removeSkeleton();
-      if (jsonResult === null) {
+      if (searchResult === null) {
         return;
       }
-      this.nextPageToken = jsonResult.nextPageToken;
-      const videos = jsonResult.items.map(item => new VideoItem(item));
+      this.nextPageToken = searchResult.nextPageToken;
+      const videos = searchResult.items.map(item => new VideoItem(item));
       this.renderVideoItems(videos);
     }
   }
@@ -131,9 +135,9 @@ class SearchModal {
     [...this.$videoList.querySelectorAll('.skeleton')].forEach($el => $el.remove());
   }
 
-  async request(query) {
+  async searchResultRequest(query) {
     try {
-      const url = new URL(this.serverUrl);
+      const url = new URL(SERVER_URL);
       const parameters = new URLSearchParams({
         part: 'snippet',
         type: 'video',
@@ -146,11 +150,10 @@ class SearchModal {
       url.search = parameters.toString();
 
       const response = await fetch(url);
-      const body = await response.json();
-
       if (!response.ok) {
-        throw new Error(body.error.message);
+        throw new Error(response.ok);
       }
+      const body = await response.json();
       return body;
     } catch (error) {
       console.error(error);
