@@ -67,5 +67,3 @@
 - [ ] 커밋 메시지 
 - [ ] 페어 리팩터링 
 - [ ] 동영상의 썸네일이 보이지 않는 경우 (검색어 a)
-## 질문 
-- [ ] saveVideo에서 try, catch의 방식 (checkExceedLimit 내에서 dom 요소를 불러오고 있음.)
