@@ -111,17 +111,19 @@ class View {
   }
 
   #videoElementTemplate({ thumbnail, title, channelTitle, publishedAt, videoId, isSaved }) {
-    return `<img src="${thumbnail}" alt="video-item-thumbnail" class="video-item__thumbnail">
-    <h4 class="video-item__title">${title}</h4>
-    <p class="video-item__channel-name">${channelTitle}</p>
-    <p class="video-item__published-date">${formatDateString(publishedAt)}</p>
-    <button 
-      ${isSaved && 'disabled'}
-      class="video-item__save-button button"
-      data-video-id="${videoId}"
-    >
-      ⬇ 저장
-    </button>`;
+    return `
+      <img src="${thumbnail}" alt="video-item-thumbnail" class="video-item__thumbnail">
+      <h4 class="video-item__title">${title}</h4>
+      <p class="video-item__channel-name">${channelTitle}</p>
+      <p class="video-item__published-date">${formatDateString(publishedAt)}</p>
+      <button 
+        ${isSaved && 'disabled'}
+        class="video-item__save-button button"
+        data-video-id="${videoId}"
+      >
+        ⬇ 저장
+      </button>
+    `;
   }
 
   #loadSkeleton() {
@@ -129,11 +131,13 @@ class View {
   }
 
   #skeletonTemplate() {
-    return `<div class="skeleton">
-      <div class="image"></div>
-      <p class="line"></p>
-      <p class="line"></p>
-    </div>`.repeat(MAX_SEARCH_RESULT);
+    return `
+      <div class="skeleton">
+        <div class="image"></div>
+        <p class="line"></p>
+        <p class="line"></p>
+      </div>
+    `.repeat(MAX_SEARCH_RESULT);
   }
 
   #renderNoResult() {
