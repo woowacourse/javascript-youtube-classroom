@@ -74,11 +74,13 @@ const userInterface = {
   renderSearchResult(response) {
     response
       .then(searchResults => {
+        if (searchResults.items.length === 0) {
+          this.renderNoResult();
+          return;
+        }
         this.renderVideoItems(searchResults);
       })
-      .catch(() => {
-        this.renderNoResult();
-      });
+      .catch(error => alert(error.message));
   },
 
   renderNextSearchResult(response) {

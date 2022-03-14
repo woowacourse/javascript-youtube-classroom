@@ -22,11 +22,16 @@ export default class YoutubeSearchClient {
   }
 
   getURL(nextPageToken) {
-    const URL = `https://onstar.netlify.app/dummy/youtube/v3/search?part=snippet&q=${this.searchTarget}&maxResults=10&type=video`;
-    if (nextPageToken) {
-      return URL.concat(`&pageToken=${nextPageToken}`);
-    }
-    return URL;
+    const url = new URL('youtube/v3/search', 'https://onstar.netlify.app');
+    const parameter = new URLSearchParams({
+      part: 'snippet',
+      maxResults: 10,
+      q: this.#searchTarget,
+      pageToken: nextPageToken || '',
+      type: 'video',
+    });
+    url.search = parameter.toString();
+    return url.href;
   }
 
   updateSearchResults(response) {
@@ -39,7 +44,9 @@ export default class YoutubeSearchClient {
     const URL = this.#searchResults
       ? this.getURL(this.#searchResults.nextPageToken)
       : this.getURL();
-    return fetch(URL).then(response => response.json());
+    return fetch(URL).then(response => {
+      return response.json();
+    });
   }
 
   resetSearchResults() {
