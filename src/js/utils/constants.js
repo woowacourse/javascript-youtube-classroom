@@ -5,11 +5,13 @@ export const DOM_STRING = {
   SEARCH_BUTTOM: '.search-input__search-button',
   SEARCH_INPUT: '.search-input__keyword',
   SEARCH_NO_RESULT: '.search-result.search-result--no-result',
-  HIDE: 'hide',
   MODAL_OPEN_BUTTON: '#search-modal-button',
-  SKELETON: 'skeleton',
-  VIDEO_ITEM_SAVE_BUTTON: 'video-item__save-button',
+};
+
+export const CLASS_NAME_STRING = {
+  HIDE: 'hide',
   VIDEO_ITEM: 'video-item',
+  VIDEO_ITEM_SAVE_BUTTON: 'video-item__save-button',
 };
 
 export const ERROR_MESSAGE = {
