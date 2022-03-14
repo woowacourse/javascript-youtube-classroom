@@ -1,4 +1,5 @@
 import ValidationError from '../ValidationError/index.js';
+import { MAX_STORE_CAPACITY, ERROR_MESSAGE } from '../constants/index.js';
 
 const UserStorage = {
   getVideoIds() {
@@ -8,7 +9,7 @@ const UserStorage = {
   addVideoId(videoId) {
     const videoIds = this.getVideoIds();
 
-    if (videoIds.length >= 100) throw new ValidationError('100개보다 많이 저장할 수 없습니다.');
+    if (videoIds.length >= MAX_STORE_CAPACITY) throw new ValidationError(ERROR_MESSAGE.EXCEED_MAX_STORE_CAPACITY);
 		
     videoIds.push(videoId);
     localStorage.setItem('videoIds', JSON.stringify(videoIds));
