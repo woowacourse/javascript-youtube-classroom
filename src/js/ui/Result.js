@@ -32,7 +32,7 @@ export default class Result {
     $$('.skeleton').forEach(skeleton => skeleton.replaceChildren());
   }
 
-  foundResultTemplate(items) {
+  searchResultFoundTemplate(items) {
     const saveDatas = store.getLocalStorage(STORAGE_KEY) ?? [];
     const resultTemplate = items
       .map(item => {
@@ -61,7 +61,7 @@ export default class Result {
     return resultTemplate;
   }
 
-  notFoundTemplate() {
+  searchResultNotFoundTemplate() {
     return `
       <div class="no-result">
         <img class="no-result__image"
@@ -82,8 +82,8 @@ export default class Result {
     $videoList.insertAdjacentHTML(
       'beforeend',
       json.items.length
-        ? this.foundResultTemplate(json.items)
-        : this.notFoundTemplate(),
+        ? this.searchResultFoundTemplate(json.items)
+        : this.searchResultNotFoundTemplate(),
     );
     this.addSaveButtonClickEvent(json.items.length);
     if (json && json.nextPageToken) {
@@ -96,7 +96,7 @@ export default class Result {
       .then(json => {
         $('.video-list').insertAdjacentHTML(
           'beforeend',
-          this.foundResultTemplate(json.items),
+          this.searchResultFoundTemplate(json.items),
         );
         this.addSaveButtonClickEvent(json.items.length);
         if (json && json.nextPageToken) {
