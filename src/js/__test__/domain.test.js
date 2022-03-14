@@ -1,12 +1,12 @@
 import SearchEngine from '../domain/searchEngine.js';
 import StorageEngine from '../domain/storageEngine.js';
 
-import { MAX_SAVED_VIDEOS_LENGTH } from '../util/constants.js';
+import { ERROR_MESSAGE, MAX_SAVED_VIDEOS_COUNT } from '../util/constants.js';
 
 const generateMaxSavedVideos = () => {
   const sample = { videoId: 'eMf0jojpdJQ' };
 
-  return Array.from({ length: MAX_SAVED_VIDEOS_LENGTH }, () => sample);
+  return Array.from({ length: MAX_SAVED_VIDEOS_COUNT }, () => sample);
 };
 
 // test('유튜브 검색 기능 정상 작동', () => {
@@ -26,11 +26,11 @@ describe('저장 기능 테스트', () => {
   });
 
   test('유튜브 검색 결과를 webstorage에 저장할 수 있다', () => {
-    const videoId = 'eMf0jojpdJQ';
+    const videoId = 'newVideoId';
 
     storageEngine.saveVideo(videoId);
 
-    const [specificVideo] = storageEngine.getSpecificVideo(videoId);
+    const specificVideo = storageEngine.getSpecificVideo(videoId);
 
     expect(specificVideo.videoId).toEqual(videoId);
   });
@@ -39,10 +39,14 @@ describe('저장 기능 테스트', () => {
     const mockVideos = generateMaxSavedVideos();
 
     localStorage.setItem('savedVideos', JSON.stringify(mockVideos));
-    expect(storageEngine.getSavedVideos()).toHaveLength(MAX_SAVED_VIDEOS_LENGTH);
+    expect(storageEngine.getSavedVideos()).toHaveLength(MAX_SAVED_VIDEOS_COUNT);
 
-    const videoId = 'eMf0jojpdJQ';
-    storageEngine.saveVideo(videoId);
-    expect(storageEngine.getSavedVideos()).toHaveLength(MAX_SAVED_VIDEOS_LENGTH);
+    const videoId = 'newVideoId';
+
+    expect(() => storageEngine.saveVideo(videoId)).toThrowError(
+      new Error(ERROR_MESSAGE.NO_MORE_VIDEO_SAVABLE)
+    );
+
+    expect(storageEngine.getSpecificVideo(videoId)).toBeUndefined();
   });
 });

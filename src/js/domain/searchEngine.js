@@ -1,5 +1,5 @@
 import fetch from 'node-fetch';
-import { SEARCH_NOT_WORKING_ERROR_MESSAGE, VIDEO_COUNT } from '../util/constants.js';
+import { ERROR_MESSAGE, VIDEO_COUNT } from '../util/constants.js';
 
 export default class SearchEngine {
   #pageToken = null;
@@ -27,7 +27,7 @@ export default class SearchEngine {
       return this.#isDataExist(json) ? json.items : null;
     }
 
-    throw Error(SEARCH_NOT_WORKING_ERROR_MESSAGE);
+    throw Error(ERROR_MESSAGE.SEARCH_NOT_WORKING);
   }
 
   #isDataExist(data) {

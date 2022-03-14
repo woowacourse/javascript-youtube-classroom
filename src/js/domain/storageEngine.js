@@ -1,4 +1,4 @@
-import { MAX_SAVED_VIDEOS_LENGTH } from '../util/constants.js';
+import { ERROR_MESSAGE, MAX_SAVED_VIDEOS_COUNT } from '../util/constants.js';
 
 export default class StorageEngine {
   getSavedVideos() {
@@ -8,7 +8,8 @@ export default class StorageEngine {
   saveVideo(videoId) {
     const savedVideos = this.getSavedVideos() ?? [];
 
-    if (savedVideos.length >= MAX_SAVED_VIDEOS_LENGTH) return;
+    if (savedVideos.length >= MAX_SAVED_VIDEOS_COUNT)
+      throw new Error(ERROR_MESSAGE.NO_MORE_VIDEO_SAVABLE);
 
     const newVideo = { videoId };
     savedVideos.push(newVideo);
@@ -19,7 +20,7 @@ export default class StorageEngine {
   getSpecificVideo(specificVideoId) {
     const savedVideos = this.getSavedVideos();
 
-    return savedVideos.filter(({ videoId }) => videoId === specificVideoId);
+    return savedVideos.filter(({ videoId }) => videoId === specificVideoId)[0];
   }
 
   init() {
