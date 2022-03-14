@@ -8,10 +8,6 @@ export default class VideoCardContainer {
   constructor(element, props) {
     this.element = element;
     this.#state = props;
-    this.bindEvents();
-  }
-
-  bindEvents() {
     this.element.addEventListener('click', this.storeVideoIDHandler.bind(this));
   }
 
