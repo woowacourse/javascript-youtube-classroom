@@ -4,8 +4,10 @@ import NotFoundImage from '../assets/images/not_found.png';
 
 export default class App {
   constructor() {
+    this.$modalContainer = $('.modal-container');
+
     $('.search-modal').insertAdjacentHTML('beforeend', this.searchResultTemplate());
-    $('#search-modal-button').addEventListener('click', this.openModal);
+    $('#search-modal-button').addEventListener('click', this.openModal.bind(this));
     $('.dimmer').addEventListener('click', this.closeModal.bind(this));
 
     const searchModal = new SearchModal();
@@ -31,12 +33,11 @@ export default class App {
     $('#search-input-keyword').value = '';
     $('.search-result').classList.remove('search-result--no-result');
     removeChildren($('.video-list'));
-    $('.modal-container').classList.add('hide');
+    this.$modalContainer.classList.add('hide');
   }
 
   openModal() {
-    const $modalContainer = $('.modal-container');
-    $modalContainer.classList.toggle('hide');
+    this.$modalContainer.classList.toggle('hide');
   }
 }
 
