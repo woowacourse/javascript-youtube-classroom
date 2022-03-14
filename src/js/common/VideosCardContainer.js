@@ -12,10 +12,10 @@ export default class VideoCardContainer {
   }
 
   bindEvents() {
-    this.parentElement.addEventListener('click', this.storeIDHandler.bind(this));
+    this.parentElement.addEventListener('click', this.storeVideoIDHandler.bind(this));
   }
 
-  storeIDHandler(e) {
+  storeVideoIDHandler(e) {
     if (e.target.className.includes('video-item__save-button')) {
       const videoID = e.target.closest('li').dataset.videoId;
 
