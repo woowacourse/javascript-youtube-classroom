@@ -3,7 +3,7 @@ const $ = (selector, baseElement = document) =>
 const $$ = (selector, baseElement = document) =>
   baseElement.querySelectorAll(selector);
 
-const showExceptionSnackBar = message => {
+const showSnackBar = message => {
   const $snackBar = $('#snack-bar');
   $snackBar.classList.add('show');
   $snackBar.textContent = message;
@@ -13,4 +13,4 @@ const showExceptionSnackBar = message => {
   }, 2000);
 };
 
-export { $, $$, showExceptionSnackBar };
+export { $, $$, showSnackBar };

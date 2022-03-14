@@ -1,5 +1,5 @@
 import { MESSAGE, STORAGE_KEY } from '../constants';
-import { $, $$, showExceptionSnackBar } from '../utils/dom';
+import { $, $$, showSnackBar } from '../utils/dom';
 import NoResultImage from '../../assets/images/not_found.png';
 import { store } from '../domain/store';
 import { request } from '../domain/youtubeApi';
@@ -83,7 +83,7 @@ export const result = {
       })
       .catch(async ({ message }) => {
         await delay(700);
-        showExceptionSnackBar(message);
+        showSnackBar(message);
       });
   },
 
@@ -98,15 +98,15 @@ export const result = {
     const videoId = e.target.closest('li').dataset.videoId;
     try {
       store.setLocalStorage(STORAGE_KEY, videoId);
-      showExceptionSnackBar(MESSAGE.SAVE_COMPLETE);
+      showSnackBar(MESSAGE.SAVE_COMPLETE);
       e.target.setAttribute('hidden', true);
     } catch ({ message }) {
-      showExceptionSnackBar(message);
+      showSnackBar(message);
     }
   },
 
   scrollObserver(nextPageToken) {
-    let $li = $('li:last-child');
+    const $li = $('li:last-child');
 
     const io = new IntersectionObserver(
       entry => {

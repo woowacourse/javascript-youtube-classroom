@@ -1,7 +1,7 @@
 import { MESSAGE } from '../constants';
 import { request } from '../domain/youtubeApi';
 import { delay } from '../utils/common';
-import { $, showExceptionSnackBar } from '../utils/dom';
+import { $, showSnackBar } from '../utils/dom';
 import { skeleton } from './skeleton';
 import { result } from './Result';
 
@@ -15,7 +15,7 @@ export default class Search {
     $('#search-form').addEventListener('submit', e => {
       e.preventDefault();
       if (this.input.value === '') {
-        showExceptionSnackBar(MESSAGE.ERROR_BLANK_SEARCH_INPUT);
+        showSnackBar(MESSAGE.ERROR_BLANK_SEARCH_INPUT);
         return;
       }
 
@@ -27,7 +27,7 @@ export default class Search {
         })
         .catch(async ({ message }) => {
           await delay(700);
-          showExceptionSnackBar(message);
+          showSnackBar(message);
           skeleton.removeSkeletonUI();
         });
     });
