@@ -88,7 +88,11 @@ class SearchModal {
     const isScrollEnd =
       this.$videoList.scrollHeight - this.$videoList.scrollTop === this.$videoList.clientHeight;
 
-    if (isScrollEnd && this.$videoList.scrollTop !== 0) {
+    if (
+      isScrollEnd &&
+      this.$videoList.scrollTop !== 0 &&
+      !this.$searchResult.classList.contains('loading')
+    ) {
       const jsonResult = await this.requestYoutubeVideos(title);
       if (jsonResult === null) {
         return;
