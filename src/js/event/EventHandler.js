@@ -15,7 +15,7 @@ export default class EventHandler {
     this.mainView.bindModalOpenButton(this.onModalOpenButtonClick.bind(this));
     this.modalView.bindOnClickSearchButton(this.onSearchButtonClick.bind(this));
     this.modalView.bindOnClickDimmer(this.onDimmerClick.bind(this));
-    this.modalView.bindVideoListScroll(this.onvideoListScroll.bind(this));
+    this.modalView.bindVideoListScroll(this.onVideoListScroll.bind(this));
     this.modalView.bindVideoListClickStoreButton(this.onStoreButtonClick.bind(this));
   }
 
