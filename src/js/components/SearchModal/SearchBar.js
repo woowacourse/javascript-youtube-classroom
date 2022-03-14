@@ -40,6 +40,7 @@ export default class SearchBar extends Component {
       const [error, data] = await getSearchAPI(query);
       if (error) {
         alert(`${error.message}, status: ${error.statusCode}`);
+        rootStore.setState({ isLoading: false });
 
         return;
       }
