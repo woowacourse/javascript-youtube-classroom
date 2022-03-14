@@ -1,4 +1,4 @@
-import SaveVideoManager from '../src/js/SaveVideoManager';
+import SaveVideoManager from '../src/js/Manager/SaveVideoManager';
 
 describe('localStorage에 영상 ID 저장 기능 테스트', () => {
   beforeEach(() => {

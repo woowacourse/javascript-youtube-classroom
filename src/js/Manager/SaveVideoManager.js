@@ -1,5 +1,5 @@
-import { ERROR_MESSAGE } from './constants';
-import { isOverVideoSaveMaxCount } from './validation';
+import { ERROR_MESSAGE } from '../constants';
+import { isOverVideoSaveMaxCount } from '../validation';
 
 const setData = (key, data) => localStorage.setItem(key, JSON.stringify(data));
 const getData = (key) => JSON.parse(localStorage.getItem(key));

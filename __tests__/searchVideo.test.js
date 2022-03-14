@@ -1,4 +1,4 @@
-import SearchVideoManager from '../src/js/SearchVideoManager';
+import SearchVideoManager from '../src/js/Manager/SearchVideoManager';
 
 describe('youtube 검색 기능 테스트', () => {
   it('키워드를 사용하여 검색할 수 있다. 결과 있음', () => {
@@ -6,11 +6,14 @@ describe('youtube 검색 기능 테스트', () => {
 
     const searchVideoManager = new SearchVideoManager();
 
-    expect(searchVideoManager.search(keyword)).not.toBe(null);
+    searchVideoManager.search(keyword).then((data) => {
+      expect(data).not.toBe(null);
+    });
   });
 
   it('키워드를 사용하여 검색할 수 있다. 결과 없음', () => {
-    const keyword = '@^';
+    const keyword =
+      '!@#!@$!#%@$^#%&$^%!@#!$!#%&(^#%$!@#!@$#$!#@!#))&%^)&%^)&@!@#!#$@#$%$@#^%&$%^&#$@$^#%&$%^$^%*$^&^@#$@#$@#%@#$^#%&^**#^#$%@#$@#$^@#$!$@#%@#$%#$^#$%^$%@#$!@#!@#%)^&)%^$%#$%#$^#%^#%^#^&%^)&#$)%)#$)%#$%!@#!@$#$!#@!#))&%^)&%^)&%)^&)%^&%^)&#$)%)#$)%#$%';
 
     const searchVideoManager = new SearchVideoManager();
 

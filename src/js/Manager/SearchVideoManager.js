@@ -1,12 +1,5 @@
 import fetch from 'node-fetch';
-import { MAX_DATA_FETCH_AT_ONCE } from './constants';
-
-const DUMMY_YOUTUBE_API_ENDPOINT = (keyword) =>
-  `https://brave-lichterman-77e301.netlify.app/dummy/youtube/v3/search?part=snippet&q=${keyword}&maxResults=${MAX_DATA_FETCH_AT_ONCE}`;
-const YOUTUBE_API_ENDPOINT = (keyword) =>
-  `https://brave-lichterman-77e301.netlify.app/youtube/v3/search?part=snippet&q=${keyword}&maxResults=${MAX_DATA_FETCH_AT_ONCE}`;
-const WRONG_API_ENDPOINT = (keyword) =>
-  `https://elastic-goldstine-10f16a.netlify.app/search?part=snippettt&q=${keyword}&maxResults=${MAX_DATA_FETCH_AT_ONCE}`;
+import { YOUTUBE_API_ENDPOINT } from '../youtubeApi';
 
 export default class SearchVideoManager {
   #isLastPage;
@@ -34,11 +27,7 @@ export default class SearchVideoManager {
   }
 
   fetchYoutubeData(keyword) {
-    return fetch(
-      this.nextPageToken
-        ? `${YOUTUBE_API_ENDPOINT(keyword)}&pageToken=${this.nextPageToken}`
-        : YOUTUBE_API_ENDPOINT(keyword)
-    ).then((response) => {
+    return fetch(YOUTUBE_API_ENDPOINT(keyword, this.nextPageToken)).then((response) => {
       if (!response.ok) {
         throw new Error(response.status);
       }
