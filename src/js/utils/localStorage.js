@@ -1,10 +1,12 @@
+import { ERROR } from '../constants';
+
 const LOCALSTORAGE_KEY = 'VIDEO_IDS';
 
 const getStorageVideoIDs = (key) => {
   try {
     return JSON.parse(localStorage.getItem(key)) ?? [];
   } catch (error) {
-    throw new Error('');
+    throw new Error(ERROR.FAILED_TO_PARSE);
   }
 };
 

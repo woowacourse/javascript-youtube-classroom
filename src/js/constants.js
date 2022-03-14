@@ -5,4 +5,8 @@ const RULES = {
 
 const THROTTLE_PENDING_MILLISECOND = 500;
 
-export { RULES, THROTTLE_PENDING_MILLISECOND };
+const ERROR = {
+  FAILED_TO_PARSE: 'localStorage의 값을 불러 오는데 실패했습니다.',
+};
+
+export { RULES, THROTTLE_PENDING_MILLISECOND, ERROR };

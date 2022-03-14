@@ -138,7 +138,6 @@ export default class SearchModal {
 
       this.pageToken = videos.nextPageToken || '';
     } catch (error) {
-      console.log(error);
       this.showNoResultContainer();
     }
 
