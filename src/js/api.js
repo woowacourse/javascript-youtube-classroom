@@ -7,6 +7,7 @@ const OPTIONS = {
   part: 'snippet',
   maxResults: RULES.MAX_VIDEO_AMOUNT_PER_REQUEST,
   order: 'date',
+  type: 'video',
 };
 
 const makeURLQuery = (props) => {
@@ -20,8 +21,12 @@ const makeURLQuery = (props) => {
 };
 
 const fetchData = async (query) => {
-  const result = await fetch(query);
-  const json = await result.json();
+  const response = await fetch(query);
+  const json = await response.json();
+
+  if (!response.ok) {
+    throw new Error(json.error.message);
+  }
 
   return json;
 };
