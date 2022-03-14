@@ -1,14 +1,14 @@
-import SearchFormComponent from './SearchFormComponent';
-import VideoContainerComponent from './VideoContainerComponent';
+import SearchForm from './SearchFormComponent';
+import VideoContainer from './VideoContainerComponent';
 import { subscribe } from '../modules/stateStore';
 import { STATE_STORE_KEY } from '../constants/stateStore';
 import { CUSTOM_EVENT_KEY } from '../constants/events';
 import { dispatch } from '../modules/eventFactory';
 
-class SearchModalComponent {
-  searchFormComponent = null;
+class SearchModal {
+  searchForm = null;
 
-  videoContainerComponent = null;
+  videoContainer = null;
 
   $searchModal = null;
 
@@ -43,8 +43,8 @@ class SearchModalComponent {
   }
 
   #initChidrenComponent() {
-    this.searchFormComponent = new SearchFormComponent(this.$searchModal);
-    this.videoContainerComponent = new VideoContainerComponent(this.$searchModal);
+    this.searchForm = new SearchForm(this.$searchModal);
+    this.videoContainer = new VideoContainer(this.$searchModal);
   }
 
   #bindEventHandler() {
@@ -77,4 +77,4 @@ class SearchModalComponent {
         `;
   }
 }
-export default SearchModalComponent;
+export default SearchModal;

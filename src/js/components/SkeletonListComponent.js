@@ -1,4 +1,4 @@
-class SkeletonListComponent {
+class SkeletonList {
   $skeletonList;
 
   #parentElement = null;
@@ -37,4 +37,4 @@ class SkeletonListComponent {
   }
 }
 
-export default SkeletonListComponent;
+export default SkeletonList;

@@ -3,10 +3,10 @@ import { STATE_STORE_KEY } from '../constants/stateStore';
 import { dispatch } from '../modules/eventFactory';
 import { subscribe } from '../modules/stateStore';
 import { isFirstSearchByKeyword, isNullVideoList } from '../utils/validation';
-import SkeletonListComponent from './SkeletonListComponent';
-import VideoComponent from './VideoComponent';
+import SkeletonList from './SkeletonListComponent';
+import Video from './VideoComponent';
 
-class VideoContainerComponent {
+class VideoContainer {
   $videoList = null;
 
   $searchResult = null;
@@ -83,11 +83,11 @@ class VideoContainerComponent {
 
   #renderSkeletonUI(isWaitingResponse) {
     if (isWaitingResponse) {
-      this.skeletonListComponent = new SkeletonListComponent(this.$videoList);
+      this.skeletonList = new SkeletonList(this.$videoList);
       return;
     }
     /** 하위컴포넌트의 메소드를 직접 수행하고 싶지 않습니다.. unmount 되도록 하는게 좋겟져 ?! */
-    this.skeletonListComponent?.unmount();
+    this.skeletonList?.unmount();
   }
 
   #renderSearchResult(searchResult) {
@@ -104,7 +104,7 @@ class VideoContainerComponent {
 
     videoList.slice(prevVideoListLength).forEach(
       (video, idx, arr) =>
-        new VideoComponent(this.$videoList, {
+        new Video(this.$videoList, {
           video,
           observer: idx === arr.length - 1 ? this.#videoContainerObserver : null,
         })
@@ -148,4 +148,4 @@ class VideoContainerComponent {
     });
   }
 }
-export default VideoContainerComponent;
+export default VideoContainer;

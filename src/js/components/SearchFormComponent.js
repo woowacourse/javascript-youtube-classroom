@@ -3,7 +3,7 @@ import { CUSTOM_EVENT_KEY } from '../constants/events';
 import { dispatch } from '../modules/eventFactory';
 import { isEmptyKeyword } from '../utils/validation';
 
-class SearchFormComponent {
+class SearchForm {
   $searchButton = null;
 
   $searchInput = null;
@@ -62,4 +62,4 @@ class SearchFormComponent {
     `;
   }
 }
-export default SearchFormComponent;
+export default SearchForm;

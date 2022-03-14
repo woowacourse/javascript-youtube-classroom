@@ -1,8 +1,8 @@
 import AppBusiness from './business';
-import AppComponent from './components';
+import App from './components';
 
 const runApp = () => {
-  new AppComponent(document.querySelector('body'));
+  new App(document.querySelector('body'));
   new AppBusiness();
 };
 

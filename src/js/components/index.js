@@ -1,8 +1,8 @@
-import SearchModalComponent from './SearchModalComponent';
+import SearchModal from './SearchModalComponent';
 import { dispatch } from '../modules/eventFactory';
 import { CUSTOM_EVENT_KEY } from '../constants/events';
-class AppComponent {
-  searchModalComponent = null;
+class App {
+  searchModal = null;
 
   $searchModalButton = null;
 
@@ -26,7 +26,7 @@ class AppComponent {
   }
 
   #initChildrenComponent() {
-    this.searchModalComponent = new SearchModalComponent(this.#parentElement);
+    this.searchModal = new SearchModal(this.#parentElement);
   }
 
   #bindEventHandler() {
@@ -44,4 +44,4 @@ class AppComponent {
   </main>`;
   }
 }
-export default AppComponent;
+export default App;

@@ -2,7 +2,7 @@ import { STATE_STORE_KEY } from '../constants/stateStore';
 import { subscribe } from '../modules/stateStore';
 import { parseTimeStamp } from '../utils/util';
 
-class VideoComponent {
+class Video {
   $videoItem = null;
 
   $saveButton = null;
@@ -72,4 +72,4 @@ class VideoComponent {
   }
 }
 
-export default VideoComponent;
+export default Video;
