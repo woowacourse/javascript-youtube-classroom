@@ -5,18 +5,20 @@ import { SKELETON_TEMPLATE } from '../util/template.js';
 import { preprocessDate } from '../util/common.js';
 
 export default class VideosScreen {
-  constructor(searchResult) {
-    this.storageEngine = new StorageEngine();
+  #storageEngine;
 
-    searchResult.addEventListener('click', this.handleSaveVideo.bind(this));
+  constructor(searchResult) {
+    this.#storageEngine = new StorageEngine();
+
+    searchResult.addEventListener('click', this.#handleSaveVideo.bind(this));
   }
 
-  handleSaveVideo(e) {
+  #handleSaveVideo(e) {
     if (e.target.classList.contains('video-item__save-button')) {
       const { videoId } = e.target.closest('.video-item').dataset;
 
       try {
-        this.storageEngine.saveVideo(videoId);
+        this.#storageEngine.saveVideo(videoId);
         e.target.classList.add('hide');
       } catch (error) {
         alert(error.message);
@@ -42,7 +44,7 @@ export default class VideosScreen {
       $('.video-item__title', element).textContent = title;
       $('.video-item__channel-name', element).textContent = channelTitle;
       $('.video-item__published-date', element).textContent = publishTime;
-      this.storageEngine.getSpecificVideo(videoId) &&
+      this.#storageEngine.getSpecificVideo(videoId) &&
         $('.video-item__save-button', element).classList.add('hide');
 
       element.classList.remove('skeleton');

@@ -6,13 +6,17 @@ import { DELAY_MILISECOND_TIME } from '../util/constants.js';
 
 export default class SearchResultScreen {
   #throttle;
+  #searchInputKeyword;
+  #searchEngine;
+  #videosScreen;
+  #videoList;
 
   constructor(searchInputKeyword, searchEngine) {
     this.searchResult = $('.search-result');
-    this.searchInputKeyword = searchInputKeyword;
-    this.searchEngine = searchEngine;
+    this.#searchInputKeyword = searchInputKeyword;
+    this.#searchEngine = searchEngine;
 
-    this.videosScreen = new VideosScreen(this.searchResult);
+    this.#videosScreen = new VideosScreen(this.searchResult);
   }
 
   init() {
@@ -29,16 +33,16 @@ export default class SearchResultScreen {
       return;
     }
 
-    this.videosScreen.render(data);
-    this.bindScrollEvent();
+    this.#videosScreen.render(data);
+    this.#bindScrollEvent();
   }
 
-  bindScrollEvent() {
-    this.videoList = $('.video-list');
-    this.videoList.addEventListener('scroll', this.handleScroll.bind(this));
+  #bindScrollEvent() {
+    this.#videoList = $('.video-list');
+    this.#videoList.addEventListener('scroll', this.#handleScroll.bind(this));
   }
 
-  async handleScroll(e) {
+  async #handleScroll(e) {
     const { scrollHeight, scrollTop, clientHeight } = e.target;
 
     if (!this.#throttle && scrollHeight <= scrollTop + clientHeight) {
@@ -46,24 +50,24 @@ export default class SearchResultScreen {
         this.#throttle = null;
         this.renderSkeleton();
 
-        const keyword = this.searchInputKeyword.value;
-        const data = await this.searchEngine.searchKeyword(keyword);
+        const keyword = this.#searchInputKeyword.value;
+        const data = await this.#searchEngine.searchKeyword(keyword);
 
-        this.renderAdditionalVideos(data);
+        this.#renderAdditionalVideos(data);
       }, DELAY_MILISECOND_TIME);
     }
   }
 
-  renderAdditionalVideos(data) {
+  #renderAdditionalVideos(data) {
     if (data === null) {
       this.searchResult.removeChild(this.searchResult.lastElementChild);
       return;
     }
 
-    this.videosScreen.render(data);
+    this.#videosScreen.render(data);
   }
 
   renderSkeleton() {
-    this.videosScreen.renderSkeleton();
+    this.#videosScreen.renderSkeleton();
   }
 }
