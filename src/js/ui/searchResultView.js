@@ -2,16 +2,16 @@ import { $, $$ } from '../util/general.js';
 import storage from '../storage/storage.js';
 
 const template = {
+  videoList: `
+    <h3 hidden>검색 결과</h3>
+    <ul class="video-list"></ul>
+  `,
   skeletonUI: `
     <li class="skeleton">
       <div class="image"></div>
       <p class="line"></p>
       <p class="line"></p>
     </li>
-  `,
-  videoList: `
-    <h3 hidden>검색 결과</h3>
-    <ul class="video-list"></ul>
   `,
   videoItem: item => {
     return `
@@ -40,7 +40,10 @@ const template = {
   `,
 };
 
-const userInterface = {
+const searchResultView = {
+  toggleModal() {
+    $('.modal-container').classList.toggle('hide');
+  },
   resetVideoList() {
     $('.search-result').innerHTML = template.videoList;
   },
@@ -51,33 +54,25 @@ const userInterface = {
     $$('.skeleton').forEach(element => element.remove());
   },
   removeSavedVideoButton() {
-    const savedStorage = storage.getLocalStorage();
-    if (savedStorage) {
-      savedStorage.forEach(video => {
-        if ($('.video-list').lastElementChild.dataset.videoId === video.id) {
-          $('.video-list').lastElementChild.lastElementChild.hidden = true;
-        }
-      });
-    }
+    $('.video-list').lastElementChild.lastElementChild.hidden = true;
   },
   renderVideoItems({ items }) {
-    this.removeSkeletonUI();
+    const savedStorage = storage.getLocalStorage();
     items.forEach(item => {
       $('.video-list').insertAdjacentHTML('beforeEnd', template.videoItem(item));
-      this.removeSavedVideoButton();
+      if (savedStorage && savedStorage.includes(item.id.videoId)) {
+        this.removeSavedVideoButton();
+      }
     });
   },
-  renderNoResult() {
-    this.removeSkeletonUI();
-    $('.search-result').innerHTML = template.noResult;
-  },
   renderSearchResult(videoData) {
+    this.removeSkeletonUI();
     if (videoData.items.length === 0) {
-      this.renderNoResult();
+      $('.search-result').innerHTML = template.noResult;
       return;
     }
     this.renderVideoItems(videoData);
   },
 };
 
-export default userInterface;
+export default searchResultView;

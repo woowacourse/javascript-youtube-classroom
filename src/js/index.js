@@ -1,6 +1,6 @@
 import { $, isEndOfScroll } from './util/general.js';
 import YoutubeMachine from './domain/YoutubeMachine.js';
-import userInterface from './ui/userInterface.js';
+import searchResultView from './ui/searchResultView.js';
 import '../css/index.css';
 import '../assets/images/not_found.png';
 import storage from './storage/storage.js';
@@ -15,11 +15,11 @@ export default function App() {
     try {
       const searchInput = $('#search-input-keyword').value.trim();
       youtubeMachine.searchTarget = searchInput;
-      userInterface.resetVideoList();
-      userInterface.renderSkeletonUI();
+      searchResultView.resetVideoList();
+      searchResultView.renderSkeletonUI();
       addVideoListEvents();
       const response = await youtubeMachine.callSearchAPI();
-      userInterface.renderSearchResult(response);
+      searchResultView.renderSearchResult(response);
     } catch (error) {
       alert(error.message);
     }
@@ -27,9 +27,9 @@ export default function App() {
 
   const handleScroll = async e => {
     if (isEndOfScroll(e.target) && !throttle) {
-      userInterface.renderSkeletonUI();
+      searchResultView.renderSkeletonUI();
       const response = await youtubeMachine.callSearchAPI();
-      userInterface.renderSearchResult(response);
+      searchResultView.renderSearchResult(response);
       if (!response.nextPageToken) {
         $('.video-list').removeEventListener('scroll', handleScroll);
       }
@@ -48,20 +48,16 @@ export default function App() {
     }
   };
 
+  // 이벤트 등록
   const addVideoListEvents = () => {
     $('.video-list').addEventListener('scroll', handleScroll);
 
     $('.video-list').addEventListener('click', handleSaveButtonClick);
   };
 
-  const toggleModal = () => {
-    $('.modal-container').classList.toggle('hide');
-  };
+  $('#search-modal-button').addEventListener('click', searchResultView.toggleModal);
 
-  // 이벤트 등록
-  $('#search-modal-button').addEventListener('click', toggleModal);
-
-  $('.dimmer').addEventListener('click', toggleModal);
+  $('.dimmer').addEventListener('click', searchResultView.toggleModal);
 
   $('#search-button').addEventListener('click', handleSearch);
 
