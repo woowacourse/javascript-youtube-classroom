@@ -19,7 +19,7 @@ class View {
     this.searchButton = selectDom('#search-button', this.searchForm);
     this.searchResult = selectDom('.search-result', this.modalContainer);
     this.videoList = selectDom('.video-list', this.searchResult);
-    this.requestMoreResult = this.#handleScrollToLastItem();
+    this.observer = this.#handleScrollToLastItem();
 
     this.addEventListeners();
   }
@@ -51,7 +51,7 @@ class View {
     const { value: keyword } = this.searchInputKeyword;
     removeElementList([...this.videoList.childNodes]);
     this.#loadSkeleton();
-    const { searchResultArray } = await this.search.getSearchResultArray(keyword);
+    const searchResultArray = await this.search.getSearchResultArray(keyword);
     this.#renderSearchResult(searchResultArray);
   };
 
@@ -59,10 +59,10 @@ class View {
     return new IntersectionObserver(
       async (entries) => {
         if (entries[0].isIntersecting) {
-          this.requestMoreResult.unobserve(this.videoList.lastChild);
+          this.observer.unobserve(entries[0].target);
           this.#loadSkeleton();
-          const moreResult = await this.search.getLoadMoreResultArray();
-          this.#renderSearchResult(moreResult);
+          const searchResultArray = await this.search.getLoadMoreResultArray();
+          this.#renderSearchResult(searchResultArray);
         }
       },
       { threshold: 0.5 }
@@ -90,7 +90,7 @@ class View {
 
     const resultElementArray = this.#createElementFromObject(searchResultArray);
     this.videoList.append(...resultElementArray);
-    this.requestMoreResult.observe(this.videoList.lastChild);
+    this.observer.observe(this.videoList.lastChild);
   }
 
   #isEndOfResult(searchResultArray) {

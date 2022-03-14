@@ -12,12 +12,12 @@ class Search {
     this.keyword = keyword;
     this.nextPageToken = nextPageToken;
     const savedVideos = storage.getSavedVideos() || {};
-    return { searchResultArray: this.#getVideoObjectArray(items, savedVideos), nextPageToken };
+    return this.#getVideoObjectArray(items, savedVideos);
   }
 
   async getLoadMoreResultArray() {
+    const searchResultArray = await this.getSearchResultArray(this.keyword, this.nextPageToken);
     if (this.nextPageToken === undefined) return null;
-    const { searchResultArray } = await this.getSearchResultArray(this.keyword, this.nextPageToken);
     return searchResultArray;
   }
 
