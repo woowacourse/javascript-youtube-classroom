@@ -10,29 +10,31 @@ export default function App() {
   const youtubeMachine = new YoutubeMachine();
   let throttle;
 
+  const renderHandler = async () => {
+    searchResultView.renderSkeletonUI();
+    const response = await youtubeMachine.callSearchAPI();
+    searchResultView.renderSearchResult(response);
+    if (!response.nextPageToken) {
+      $('.video-list').removeEventListener('scroll', handleScroll);
+    }
+  };
+
   // 핸들러
-  const handleSearch = async () => {
+  const handleSearch = () => {
     try {
       const searchInput = $('#search-input-keyword').value.trim();
       youtubeMachine.searchTarget = searchInput;
       searchResultView.resetVideoList();
-      searchResultView.renderSkeletonUI();
       addVideoListEvents();
-      const response = await youtubeMachine.callSearchAPI();
-      searchResultView.renderSearchResult(response);
+      renderHandler();
     } catch (error) {
       alert(error.message);
     }
   };
 
-  const handleScroll = async e => {
+  const handleScroll = e => {
     if (isEndOfScroll(e.target) && !throttle) {
-      searchResultView.renderSkeletonUI();
-      const response = await youtubeMachine.callSearchAPI();
-      searchResultView.renderSearchResult(response);
-      if (!response.nextPageToken) {
-        $('.video-list').removeEventListener('scroll', handleScroll);
-      }
+      renderHandler();
       throttle = setTimeout(() => {
         throttle = null;
       }, THROTTLE_DELAY);
@@ -42,7 +44,7 @@ export default function App() {
   const handleSaveButtonClick = e => {
     const isSaveButtonClick = e.target.classList.contains('video-item__save-button');
     if (isSaveButtonClick) {
-      e.target.closest('button').hidden = true;
+      e.target.hidden = true;
       const selectedVideoId = e.target.closest('li').dataset.videoId;
       storage.saveVideo(selectedVideoId);
     }
