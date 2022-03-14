@@ -91,7 +91,8 @@ class SearchModal {
     if (
       isScrollEnd &&
       this.$videoList.scrollTop !== 0 &&
-      !this.$searchResult.classList.contains('loading')
+      !this.$searchResult.classList.contains('loading') &&
+      this.nextPageToken !== null
     ) {
       const jsonResult = await this.requestYoutubeVideos(title);
       if (jsonResult === null) {
@@ -149,7 +150,7 @@ class SearchModal {
         maxResults: MAX_RENDER_VIDEOS_COUNT,
         regionCode: 'kr',
         safeSearch: 'strict',
-        pageToken: this.nextPageToken || '',
+        pageToken: this.nextPageToken,
         q: query,
       });
       url.search = parameters.toString();
