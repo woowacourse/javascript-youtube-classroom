@@ -6,7 +6,7 @@ const storageManager = {
   },
 
   storeVideoId: function (videoId) {
-    if (!this.hasVideoID(videoId)) {
+    if (!this.hasVideoId(videoId)) {
       const videoList = this.getVideoIdList();
       videoList.push(videoId);
       localStorage.setItem(this.KEYS.VIDEO_ID, JSON.stringify(videoList));
@@ -18,7 +18,7 @@ const storageManager = {
     return videoList || [];
   },
 
-  hasVideoID: function (videoId) {
+  hasVideoId: function (videoId) {
     const videoList = this.getVideoIdList();
     return videoList.includes(videoId);
   },
