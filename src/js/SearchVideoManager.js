@@ -35,8 +35,8 @@ export default class SearchVideoManager {
   fetchYoutubeData(keyword) {
     return fetch(
       this.nextPageToken
-        ? `${DUMMY_YOUTUBE_API_ENDPOINT(keyword)}&pageToken=${this.nextPageToken}`
-        : DUMMY_YOUTUBE_API_ENDPOINT(keyword)
+        ? `${YOUTUBE_API_ENDPOINT(keyword)}&pageToken=${this.nextPageToken}`
+        : YOUTUBE_API_ENDPOINT(keyword)
     ).then((response) => {
       if (!response.ok) {
         throw new Error(response.status);
