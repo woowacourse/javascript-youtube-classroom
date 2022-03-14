@@ -1,14 +1,14 @@
-import { $, isEndOfScroll } from './util/general.js';
+import { $ } from './util/general.js';
 import YoutubeMachine from './domain/YoutubeMachine.js';
 import userInterface from './UI/userInterface.js';
 import '../css/index.css';
 import '../assets/images/not_found.png';
 import storage from './storage/storage.js';
 import { THROTTLE_DELAY } from './constants/constants.js';
+import { applyThrottle } from './util/throttle.js';
 
 export default function App() {
   const youtubeMachine = new YoutubeMachine();
-  let throttle;
   // 핸들러
   const handleSearch = () => {
     try {
@@ -26,14 +26,11 @@ export default function App() {
   };
 
   const handleScroll = e => {
-    if (isEndOfScroll(e.target) && !throttle) {
+    if (e.target.scrollHeight - e.target.scrollTop === e.target.clientHeight) {
       userInterface.renderSkeletonUI();
       const response = youtubeMachine.callSearchAPI();
       youtubeMachine.updateData(response);
       userInterface.renderNextSearchResult(response);
-      throttle = setTimeout(() => {
-        throttle = null;
-      }, THROTTLE_DELAY);
     }
   };
 
@@ -57,7 +54,7 @@ export default function App() {
     if (e.key === 'Enter') handleSearch();
   });
 
-  $('.video-list').addEventListener('scroll', handleScroll);
+  $('.video-list').addEventListener('scroll', applyThrottle(handleScroll, THROTTLE_DELAY));
 
   $('.video-list').addEventListener('click', handleSaveButtonClick);
 }
