@@ -8,6 +8,7 @@ module.exports = {
     ecmaVersion: 'latest',
     sourceType: 'module',
   },
+  'prettier/prettier': ['error', { endOfLine: 'auto' }],
   rules: {
     'max-depth': ['error', 2],
     'max-lines-per-function': ['error', 20],
