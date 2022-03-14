@@ -65,21 +65,25 @@ export default class Video {
     return JSON.parse(localStorage.getItem('saved-video')) ?? [];
   }
 
-  updateNewVideoItems() {
-    const updatedNewVideoItems = [];
-    for (const newItem of this.#newVideoItems) {
-      let isfindSavedItem = false;
-      for (const savedItem of this.#savedVideoItems) {
-        if (newItem.videoId === savedItem.videoId) {
-          isfindSavedItem = true;
-          updatedNewVideoItems.push(savedItem);
-          break;
-        }
-      }
-      if (isfindSavedItem === false) {
-        updatedNewVideoItems.push(newItem);
+  IsIncludedSavedItem(newItem) {
+    let isfindSavedItem = false;
+    for (const savedItem of this.#savedVideoItems) {
+      if (newItem.videoId === savedItem.videoId) {
+        isfindSavedItem = true;
+        return savedItem;
       }
     }
+    if (isfindSavedItem === false) {
+      return newItem;
+    }
+  }
+
+  updateNewVideoItems() {
+    const updatedNewVideoItems = [];
+
+    this.#newVideoItems.forEach((newItem) => {
+      updatedNewVideoItems.push(this.IsIncludedSavedItem(newItem));
+    });
 
     if (updatedNewVideoItems.length) {
       this.#newVideoItems = updatedNewVideoItems;
@@ -104,7 +108,7 @@ export default class Video {
 
   async fetchYoutubeApi(query, nextPageToken) {
     try {
-      const REDIRECT_SERVER_HOST = 'https://thirsty-ritchie-0c8419.netlify.app/';
+      const REDIRECT_SERVER_HOST = 'https://upbeat-payne-6f096c.netlify.app/';
 
       const url = new URL('youtube/v3/search', REDIRECT_SERVER_HOST);
       const parameters = new URLSearchParams({
