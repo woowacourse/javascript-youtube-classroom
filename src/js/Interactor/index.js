@@ -4,6 +4,7 @@ import ValidationError from '../ValidationError/index.js';
 import KeywordInputView from '../views/KeywordInputView.js';
 import VideoView from '../views/VideoView.js';
 import SearchModalView from '../views/SearchModalView.js';
+import UserStorage from '../UserStorage/index.js';
 
 import { checkKeyword } from '../Validator/index.js';
 
@@ -26,11 +27,20 @@ const handleKeywordInputSubmit = async (keyword) => {
   }
 };
 
+const handleSaveVideoButtonClick = (videoId) => {
+  try {
+    UserStorage.addVideoId(videoId);
+  } catch (error) {
+    if (error instanceof ValidationError) return alert(error.message);
+    throw error;
+  }
+};
+
 const runApp = () => {
   keywordInputView.bindSubmitKeyword(handleKeywordInputSubmit);
 	searchModalView.bindShowModal();
   searchModalView.bindCloseModal();
-  videoView.bindSaveVideo();
+  videoView.bindSaveVideo(handleSaveVideoButtonClick);
 };
 
 export default runApp;

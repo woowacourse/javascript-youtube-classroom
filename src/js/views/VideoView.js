@@ -73,19 +73,13 @@ export default class VideoView {
     this.#$container.querySelectorAll('.skeleton').forEach((node) => node.remove());
   }
 
-  bindSaveVideo() {
+  bindSaveVideo(handler) {
     this.#$container.addEventListener('click', (e) => {
-      try {
-        const videoId = e.target.dataset.videoId;
+      const videoId = e.target.dataset.videoId;
 
-        if (!videoId) return;
-  
-        const videoIds = JSON.parse(localStorage.getItem('videoIds')) || [];
-        videoIds.push(videoId);
-        localStorage.setItem('videoIds', JSON.stringify(videoIds));
+      if (videoId) {
+        handler(videoId);
         e.target.classList.add('saved');
-      } catch (error) {
-        alert(error.message);
       }
     })   
   }
