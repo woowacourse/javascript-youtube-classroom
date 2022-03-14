@@ -1,3 +1,4 @@
+import fetch from 'node-fetch';
 import { MAX_DATA_FETCH_AT_ONCE } from './constants';
 
 const DUMMY_YOUTUBE_API_ENDPOINT = (keyword) =>
