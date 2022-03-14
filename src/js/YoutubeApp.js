@@ -60,6 +60,7 @@ export default class YoutubeApp {
     e.preventDefault();
 
     this.modalContainer.classList.remove("hide");
+    this.searchInputKeyword.focus();
   };
 
   onSubmitSearchButton = (e) => {
@@ -99,12 +100,10 @@ export default class YoutubeApp {
     });
 
     if (!this.nextPageToken) {
-      setTimeout(() => {
-        removeChildElements(
-          this.videoList,
-          document.querySelectorAll(".skeleton")
-        );
-      }, 300);
+      removeChildElements(
+        this.videoList,
+        document.querySelectorAll(".skeleton")
+      );
 
       return;
     }
