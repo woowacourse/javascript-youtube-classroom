@@ -3,6 +3,8 @@ import { on, $, fetchData } from '../utils';
 import { ERROR_MESSAGE, SEARCH_API } from '../constants';
 
 class Search {
+  debounce;
+
   constructor() {
     this.subscribeEvents();
     this.keyword = '';
@@ -10,13 +12,27 @@ class Search {
   }
 
   subscribeEvents() {
-    on('form', '@search', (e) => this.search('search', e.detail.keyword), $('search-form'));
-    on('ul', '@scroll', () => this.search('scroll'), $('search-result'));
+    on('form', '@search', (e) => this.debounceSearch('search', e.detail.keyword), $('search-form'));
+    on('ul', '@scroll', () => this.debounceSearch('scroll'), $('search-result'));
   }
 
-  async search(type, keyword = this.keyword) {
+  loading() {
     $('ul', $('search-result')).insertSkeleton();
+  }
 
+  debounceSearch(type, keyword = this.keyword) {
+    this.loading();
+
+    if (this.debounce) {
+      clearTimeout(this.debounce);
+    }
+
+    this.debounce = setTimeout(() => {
+      this.search(type, keyword);
+    }, 500);
+  }
+
+  async search(type, keyword) {
     const videos = await this.fetchVideo(keyword);
 
     this.keyword = keyword;
