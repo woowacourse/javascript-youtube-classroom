@@ -20,7 +20,7 @@ const storageManager = {
 
   hasVideoID: function (videoId) {
     const videoList = this.getVideoIdList();
-    return videoList ? videoList.includes(videoId) : false;
+    return videoList.includes(videoId);
   },
 
   checkOverMaxLength: function () {
