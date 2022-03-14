@@ -1,12 +1,3 @@
-export const findVideoInVideoList = (videoList, targetVideoId) =>
-  videoList.find((video) => {
-    const { videoId } = video.getVideoInfo();
-
-    return videoId === targetVideoId;
-  });
-export const findVideoInVideoInfoList = (videoInfoList, targetVideoId) =>
-  videoInfoList.find(({ videoId }) => videoId === targetVideoId);
-
 export const parserVideos = (data) => {
   const { nextPageToken } = data;
   const { items } = data;
