@@ -92,17 +92,13 @@ export default class ModalView {
     });
   }
 
-  getSkeletonTemplate() {
+  renderSkeletonUI() {
     this.videoItemList
       .slice(-VIDEO_LIST.RENDER_SIZE)
-      .forEach(videoItem => videoItem.getVideoItemTemplate());
+      .forEach(videoItem => videoItem.getSkeletonTemplate());
   }
 
-  getData(parsedData) {
-    this.updateVideoItems(parsedData);
-  }
-
-  updateVideoItems(data) {
+  renderVideoList(data) {
     this.videoItemList
       .slice(-VIDEO_LIST.RENDER_SIZE)
       .forEach((videoItem, index) => videoItem.getVideoItemTemplate(data[index]));

@@ -8,30 +8,34 @@ export default class VideoItemView {
 
   getVideoItemTemplate(parseData) {
     const template = `
-    <li class="video-item" data-video-id="">
+    <li class="video-item">
       <img
-        src=${parseData ? parseData.url : ''}
-        alt="video-item-thumbnail" class="video-item__thumbnail ${
-          parseData ? '' : DOM_STRING.SKELETON
-        }"
-        loading="lazy">
-      <h4 class="video-item__title ${parseData ? '' : DOM_STRING.SKELETON}">${
-      parseData ? parseData.title : ''
-    }</h4>
-      <p class="video-item__channel-nagetVideoItemTemplateme ${
-        parseData ? '' : DOM_STRING.SKELETON
-      }">${parseData ? parseData.channelTitle : ''}</p>
-      <p class="video-item__published-date ${parseData ? '' : DOM_STRING.SKELETON}">${
-      parseData ? parseData.publishedAt : ''
-    }</p>
-      <button data-videoid=${
-        parseData ? parseData.videoId : ''
-      } class="video-item__save-button button ${parseData ? '' : DOM_STRING.SKELETON} ${
-      parseData && videoStorage.hasVideoID(parseData.videoId) ? `${DOM_STRING.HIDE}` : ''
-    }"
-      >${parseData ? '⬇ 저장' : ''}</button>
+        src=${parseData.url}
+        alt="video-item-thumbnail" class="video-item__thumbnail"
+        loading="lazy" />
+      <h4 class="video-item__title">${parseData.title}</h4>
+      <p class="video-item__channel-name">${parseData.channelTitle}</p>
+      <p class="video-item__published-date">${parseData.publishedAt}</p>
+      <button data-videoid=${parseData.videoId} class="video-item__save-button button ${
+      videoStorage.hasVideoID(parseData.videoId) ? `${DOM_STRING.HIDE}` : ''
+    }">⬇ 저장</button>
     </li>
     `;
+
+    this.$element.textContent = '';
+    this.$element.insertAdjacentHTML('afterbegin', template);
+  }
+
+  getSkeletonTemplate() {
+    const template = `
+    <li class="video-item">
+    <div class="video-item__thumbnail skeleton"></div>
+    <div class="video-item__title skeleton"></div>
+    <div class="video-item__channel-name skeleton"></div>
+    <div class="video-item__published-date skeleton"></div>
+    <div class="video-item__save-button skeleton"></div>
+  </li>
+  `;
 
     this.$element.textContent = '';
     this.$element.insertAdjacentHTML('afterbegin', template);

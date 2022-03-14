@@ -37,9 +37,9 @@ export default class EventHandler {
       this.modalView.resetVideoList();
       this.modalView.appendEmptyList();
       this.modalView.appendVideoItem();
-      this.modalView.getSkeletonTemplate();
+      this.modalView.renderSkeletonUI();
       const videoListData = await this.getVideoListData(searchInput);
-      this.modalView.getData(videoListData);
+      this.modalView.renderVideoList(videoListData);
     } catch (error) {
       alert(error.message);
       this.modalView.focusSearch();
@@ -50,9 +50,9 @@ export default class EventHandler {
     try {
       this.modalView.appendEmptyList();
       this.modalView.appendVideoItem();
-      this.modalView.getSkeletonTemplate();
+      this.modalView.renderSkeletonUI();
       const videoListData = await this.getVideoListData(searchInput);
-      this.modalView.getData(videoListData);
+      this.modalView.renderVideoList(videoListData);
     } catch (error) {
       alert(error.message);
     }
