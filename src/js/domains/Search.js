@@ -11,7 +11,7 @@ class Search {
     on({
       selector: '.search-form',
       eventName: '@search',
-      handler: (e) => this.search('search', e.detail.keyword),
+      handler: throttle((e) => this.search('search', e.detail.keyword), 500),
       component: $('search-form'),
     });
     on({
