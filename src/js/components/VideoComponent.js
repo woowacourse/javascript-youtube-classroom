@@ -1,5 +1,5 @@
 import { STATE_STORE_KEY } from '../constants/stateStore';
-import { subscribe } from '../modules/stateStore';
+import { getState, subscribe } from '../modules/stateStore';
 import { parseTimeStamp } from '../utils/util';
 
 class Video {
@@ -19,8 +19,15 @@ class Video {
     observer?.observe(this.$videoItem);
   }
 
-  wakeUp(stateValue, stateKey) {
-    this.#render(stateValue);
+  render() {
+    const { video } = this.props;
+    const { videoId } = video.getVideoInfo();
+
+    const savedVideo = getState(STATE_STORE_KEY.SAVED_VIDEO);
+
+    if (savedVideo.includes(videoId)) {
+      this.$saveButton.setAttribute('hidden', true);
+    }
   }
 
   #mount() {
@@ -39,19 +46,9 @@ class Video {
   }
 
   #subscribeStore() {
-    const initialSavedVideo = subscribe(STATE_STORE_KEY.SAVED_VIDEO, this);
+    subscribe(STATE_STORE_KEY.SAVED_VIDEO, this);
 
-    this.#render(initialSavedVideo);
-  }
-
-  #render(savedVideo) {
-    const { video } = this.props;
-
-    const { videoId } = video.getVideoInfo();
-
-    if (savedVideo.includes(videoId)) {
-      this.$saveButton.setAttribute('hidden', true);
-    }
+    this.render();
   }
 
   #generateTemplate() {

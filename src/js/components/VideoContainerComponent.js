@@ -1,7 +1,7 @@
 import { CUSTOM_EVENT_KEY } from '../constants/events';
 import { STATE_STORE_KEY } from '../constants/stateStore';
 import { dispatch } from '../modules/eventFactory';
-import { subscribe } from '../modules/stateStore';
+import { subscribe, getState } from '../modules/stateStore';
 import { isFirstSearchByKeyword, isNullVideoList } from '../utils/validation';
 import SkeletonList from './SkeletonListComponent';
 import Video from './VideoComponent';
@@ -32,12 +32,12 @@ class VideoContainer {
     });
   }
 
-  wakeUp(stateValue, stateKey) {
+  render(stateKey) {
     if (stateKey === STATE_STORE_KEY.IS_WAITING_RESPONSE) {
-      this.#renderSkeletonUI(stateValue);
+      this.#renderSkeletonUI();
     }
     if (stateKey === STATE_STORE_KEY.SEARCH_RESULT) {
-      this.#renderSearchResult(stateValue);
+      this.#renderSearchResult();
     }
   }
 
@@ -74,14 +74,16 @@ class VideoContainer {
   }
 
   #subscribeStore() {
-    const initialSearchResult = subscribe(STATE_STORE_KEY.SEARCH_RESULT, this);
-    this.#renderSearchResult(initialSearchResult);
+    subscribe(STATE_STORE_KEY.SEARCH_RESULT, this);
+    this.#renderSearchResult();
 
-    const initialIsWaitingResponse = subscribe(STATE_STORE_KEY.IS_WAITING_RESPONSE, this);
-    this.#renderSkeletonUI(initialIsWaitingResponse);
+    subscribe(STATE_STORE_KEY.IS_WAITING_RESPONSE, this);
+    this.#renderSkeletonUI();
   }
 
-  #renderSkeletonUI(isWaitingResponse) {
+  #renderSkeletonUI() {
+    const isWaitingResponse = getState(STATE_STORE_KEY.IS_WAITING_RESPONSE);
+
     if (isWaitingResponse) {
       this.skeletonList = new SkeletonList(this.$videoList);
       return;
@@ -90,8 +92,9 @@ class VideoContainer {
     this.skeletonList?.unmount();
   }
 
-  #renderSearchResult(searchResult) {
-    const { videoList, prevVideoListLength } = searchResult;
+  #renderSearchResult() {
+    const { videoList, prevVideoListLength } = getState(STATE_STORE_KEY.SEARCH_RESULT);
+
     if (isNullVideoList(videoList)) {
       this.#showNoResult();
       return;

@@ -1,6 +1,6 @@
 import SearchForm from './SearchFormComponent';
 import VideoContainer from './VideoContainerComponent';
-import { subscribe } from '../modules/stateStore';
+import { subscribe, getState } from '../modules/stateStore';
 import { STATE_STORE_KEY } from '../constants/stateStore';
 import { CUSTOM_EVENT_KEY } from '../constants/events';
 import { dispatch } from '../modules/eventFactory';
@@ -27,8 +27,14 @@ class SearchModal {
     this.#subscribeStore();
   }
 
-  wakeUp(stateValue, stateKey) {
-    this.#render(stateValue);
+  render() {
+    const isModalShow = getState(STATE_STORE_KEY.IS_MODAL_SHOW);
+
+    if (isModalShow) {
+      this.$modalContainer.classList.remove('hide');
+      return;
+    }
+    this.$modalContainer.classList.add('hide');
   }
 
   #mount() {
@@ -54,16 +60,8 @@ class SearchModal {
   }
 
   #subscribeStore() {
-    const initalIsModalShow = subscribe(STATE_STORE_KEY.IS_MODAL_SHOW, this);
-    this.#render(initalIsModalShow);
-  }
-
-  #render(isModalShow) {
-    if (isModalShow) {
-      this.$modalContainer.classList.remove('hide');
-      return;
-    }
-    this.$modalContainer.classList.add('hide');
+    subscribe(STATE_STORE_KEY.IS_MODAL_SHOW, this);
+    this.render();
   }
 
   #generateTemplate() {

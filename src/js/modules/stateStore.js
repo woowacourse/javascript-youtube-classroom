@@ -22,7 +22,7 @@ export const { subscribe, setState, getState } = (function () {
   };
   function notify(stateKey) {
     const subscribedComponents = components[stateKey];
-    subscribedComponents.forEach((component) => component.wakeUp(state[stateKey], stateKey));
+    subscribedComponents.forEach((component) => component.render(stateKey));
   }
   return {
     subscribe: (key, component) => {
