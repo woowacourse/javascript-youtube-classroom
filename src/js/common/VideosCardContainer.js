@@ -5,14 +5,14 @@ import VideoCard from './VideoCard';
 export default class VideoCardContainer {
   #state;
 
-  constructor(parentElement, props) {
-    this.parentElement = parentElement;
+  constructor(element, props) {
+    this.element = element;
     this.#state = props;
     this.bindEvents();
   }
 
   bindEvents() {
-    this.parentElement.addEventListener('click', this.storeVideoIDHandler.bind(this));
+    this.element.addEventListener('click', this.storeVideoIDHandler.bind(this));
   }
 
   storeVideoIDHandler(e) {
@@ -37,7 +37,7 @@ export default class VideoCardContainer {
   }
 
   render() {
-    this.parentElement.insertAdjacentHTML('beforeend', this.template());
+    this.element.insertAdjacentHTML('beforeend', this.template());
   }
 
   setState(newState) {
