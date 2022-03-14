@@ -71,19 +71,12 @@ const userInterface = {
     this.removeSkeletonUI();
     $('.search-result').innerHTML = template.noResult;
   },
-  renderSearchResult(response) {
-    response.then(data => {
-      if (data.items.length === 0) {
-        this.renderNoResult();
-        return;
-      }
-      this.renderVideoItems(data);
-    });
-  },
-  renderNextSearchResult(response) {
-    response.then(data => {
-      this.renderVideoItems(data);
-    });
+  renderSearchResult(videoData) {
+    if (videoData.items.length === 0) {
+      this.renderNoResult();
+      return;
+    }
+    this.renderVideoItems(videoData);
   },
 };
 

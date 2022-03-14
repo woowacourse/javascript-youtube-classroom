@@ -2,7 +2,7 @@ import { validateInput } from '../util/general.js';
 // import dummyData from '../../../dummyData.js';
 
 export default class YoutubeMachine {
-  #data = {};
+  #pageToken = '';
   #searchTarget = '';
 
   set searchTarget(searchInput) {
@@ -14,34 +14,27 @@ export default class YoutubeMachine {
     return this.#searchTarget;
   }
 
-  set data(data) {
-    this.#data = data;
+  set pageToken(data) {
+    this.#pageToken = data;
   }
 
-  get data() {
-    return this.#data;
+  get pageToken() {
+    return this.#pageToken;
   }
 
-  getURL(nextPageToken) {
+  getURL() {
     const URL = `https://ahns.netlify.app/youtube/v3/search?part=snippet&q=${this.searchTarget}&maxResults=10&type=video`;
-    if (nextPageToken) {
-      return URL.concat(`&pageToken=${nextPageToken}`);
+    if (this.#pageToken) {
+      return URL.concat(`&pageToken=${this.#pageToken}`);
     }
     return URL;
   }
 
-  updateData(response) {
-    response.then(data => {
-      this.data = data;
-    });
-  }
-
-  callSearchAPI() {
-    const URL = this.#data ? this.getURL(this.#data.nextPageToken) : this.getURL();
-    return fetch(URL).then(response => response.json());
-  }
-
-  resetData() {
-    this.#data = {};
+  async callSearchAPI() {
+    const URL = this.getURL();
+    const response = await fetch(URL);
+    const videoData = await response.json();
+    this.#pageToken = videoData.nextPageToken;
+    return videoData;
   }
 }
