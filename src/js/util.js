@@ -10,5 +10,5 @@ export const debounce = (callback, delay) => {
   };
 };
 
-export const yearMonthDate = (publishedDate) =>
+export const parseDate = (publishedDate) =>
   `${publishedDate.getFullYear()}년 ${publishedDate.getMonth()}월 ${publishedDate.getDate()}일`;
