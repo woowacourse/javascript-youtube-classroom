@@ -18,7 +18,7 @@ export default class StorageEngine {
   }
 
   getSpecificVideo(specificVideoId) {
-    const savedVideos = this.getSavedVideos();
+    const savedVideos = this.getSavedVideos() || [];
 
     return savedVideos.filter(({ videoId }) => videoId === specificVideoId)[0];
   }
