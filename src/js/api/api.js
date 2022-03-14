@@ -14,7 +14,9 @@ const request = async (url) => {
 
 const getSearchUrl = (query, nextPageToken) => {
   const url = new URL(
-    `${process.env.NODE_ENV === 'development' && 'dummy/'}youtube/v3/search`,
+    `${
+      process.env.NODE_ENV === 'development' ? 'dummy/' : ''
+    }youtube/v3/search`,
     REDIRECT_SERVER_HOST
   );
 
