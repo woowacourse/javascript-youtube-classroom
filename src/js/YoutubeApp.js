@@ -4,83 +4,63 @@ import getSearchResult from "./api/getSearchResult";
 import notFountImage from "../assets/images/not_found.png";
 import { DELAY_TIME } from "./constants/constants";
 import { throttle } from "./utils/utils";
+import videoStorage from "./VideoStorage";
 import {
-  addClassList,
-  removeClassList,
-  bindEventListener,
-  findTargetDataset,
-  scrollToTop,
-  removeAllChildElements,
+  clearModalContainer,
   removeChildElements,
   render,
-  totalScrollHeight,
-  currentScrollHeight,
-  removeChildElement,
-  insertImageSrc,
-  inputClear,
-  alertMessage,
+  getTotalScrollHeight,
+  getCurrentScrollHeight,
   validateInput,
 } from "./utils/dom";
 
 export default class YoutubeApp {
-  constructor(userStorage) {
+  constructor() {
     this.modalContainer = document.querySelector(".modal-container");
     this.searchInputKeyword = document.querySelector("#search-input-keyword");
     this.searchResult = document.querySelector(".search-result");
     this.videoList = document.querySelector(".video-list");
 
-    this.bindEvents();
-    this.userStorage = userStorage;
-  }
-
-  bindEvents() {
-    bindEventListener(
-      document.querySelector("#search-modal-button"),
-      "click",
-      this.onSubmitSearchModalButton
-    );
-    bindEventListener(
-      document.querySelector("#search-button"),
-      "click",
-      this.onSubmitSearchButton
-    );
-    bindEventListener(
-      this.videoList,
+    this.videoList.addEventListener("click", this.onClickSaveButton);
+    this.videoList.addEventListener(
       "scroll",
       throttle(this.onScrollVideoList, DELAY_TIME)
     );
-    bindEventListener(this.videoList, "click", this.onClickSaveButton);
-    bindEventListener(
-      document.querySelector(".dimmer"),
-      "click",
-      this.onClickDimmer
-    );
+    document
+      .querySelector("#search-modal-button")
+      .addEventListener("click", this.onSubmitSearchModalButton);
+    document
+      .querySelector("#search-button")
+      .addEventListener("click", this.onSubmitSearchButton);
+    document
+      .querySelector(".dimmer")
+      .addEventListener("click", this.onClickDimmer);
   }
 
   onClickDimmer = () => {
-    inputClear(this.searchInputKeyword);
-    scrollToTop(this.videoList);
-    removeAllChildElements(this.videoList);
-    addClassList(this.modalContainer, "hide");
+    this.searchInputKeyword.value = "";
+    clearModalContainer(this.videoList);
+    this.modalContainer.classList.add("hide");
   };
 
   onClickSaveButton = ({ target }) => {
     if (!target.matches(".video-item__save-button")) return;
 
-    const { videoId } = findTargetDataset(target, ".video-item");
+    const { videoId } = target.closest(".video-item").dataset;
 
     try {
-      this.userStorage.addStorage(videoId);
+      videoStorage.addVideo(videoId);
     } catch ({ message }) {
-      alertMessage(message);
+      alert(message);
     }
 
-    addClassList(target, "hide");
+    target.classList.add("hide");
   };
 
   onSubmitSearchModalButton = (e) => {
     e.preventDefault();
-    removeClassList(this.modalContainer, "hide");
+
+    this.modalContainer.classList.remove("hide");
   };
 
   onSubmitSearchButton = (e) => {
@@ -89,13 +69,12 @@ export default class YoutubeApp {
     try {
       validateInput(this.searchInputKeyword.value);
     } catch ({ message }) {
-      alertMessage(message);
+      alert(message);
 
       return;
     }
 
-    scrollToTop(this.videoList);
-    removeAllChildElements(this.videoList);
+    clearModalContainer(this.videoList);
 
     render({
       element: this.videoList,
@@ -103,13 +82,13 @@ export default class YoutubeApp {
       template: generateTemplate.skeleton(),
     });
 
-    this.searchInputKeyword = document.querySelector("#search-input-keyword");
-    this.search(this.searchInputKeyword.value);
+    this.searchKeyword(this.searchInputKeyword.value);
   };
 
   onScrollVideoList = async () => {
     if (
-      totalScrollHeight(this.videoList) > currentScrollHeight(this.videoList)
+      getTotalScrollHeight(this.videoList) >
+      getCurrentScrollHeight(this.videoList)
     ) {
       return;
     }
@@ -123,20 +102,22 @@ export default class YoutubeApp {
     /**
      * 목 데이터로 검색 결과 대체
      */
-    // const responseData = {
-    //   items: mockObject(),
-    // };
+    const responseData = {
+      items: mockObject(),
+    };
 
-    const responseData = await getSearchResult(
-      this.keyword,
-      this.nextPageToken
-    );
+    // const responseData = await getSearchResult(
+    //   this.keyword,
+    //   this.nextPageToken
+    // );
 
-    this.nextPageToken = responseData.nextPageToken;
+    // this.nextPageToken = responseData.nextPageToken;
+
+    // 만약에 nextPageToken이 없을 경우에는 render 하지 않고... alert?? 메시지 띄워주기?!
 
     const videoItemTemplate = generateTemplate.videoItems(
       responseData.items,
-      this.userStorage
+      videoStorage.getVideo()
     );
 
     removeChildElements(this.videoList, document.querySelectorAll(".skeleton"));
@@ -148,32 +129,30 @@ export default class YoutubeApp {
     });
   };
 
-  async search(keyword) {
-    this.keyword = keyword;
-    const responseData = await getSearchResult(this.keyword);
-    this.nextPageToken = responseData.nextPageToken;
+  async searchKeyword(keyword) {
+    // this.keyword = keyword;
+    // const responseData = await getSearchResult(this.keyword);
+    // this.nextPageToken = responseData.nextPageToken;
 
     /**
      * 목 데이터로 검색 결과 대체
      */
-    // const responseData = {
-    //   items: mockObject(),
-    // };
+    const responseData = {
+      items: mockObject(),
+    };
 
     // 검색 결과가 없을 경우
     if (responseData.items.length === 0) {
-      removeChildElement(this.searchResult, this.videoList);
-      addClassList(this.searchResult, "search-result--no-result");
+      this.searchResult.removeChild(this.videoList);
+      this.searchResult.classList.add("search-result--no-result");
+
       render({
         element: this.searchResult,
         position: "beforeend",
         template: generateTemplate.noResult(),
       });
 
-      insertImageSrc(
-        document.querySelector(".no-result__image"),
-        notFountImage
-      );
+      document.querySelector(".no-result__image").src = notFountImage;
 
       return;
     }
@@ -182,7 +161,7 @@ export default class YoutubeApp {
 
     const videoItemTemplate = generateTemplate.videoItems(
       responseData.items,
-      this.userStorage
+      videoStorage.getVideo()
     );
 
     render({

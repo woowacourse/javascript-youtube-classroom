@@ -1,4 +1,4 @@
-import { isDuplicate, parsedDate, isEmpty } from "../utils/utils";
+import { isDuplicate, parsedDate, isEmptyString } from "../utils/utils";
 
 describe("저장하려는 동영상의 Id값이 기존에 저장된 동영상의 Id값들과 중복되는지 확인한다.", () => {
   const storeData = [{ id: "abc" }];
@@ -20,13 +20,13 @@ describe("검색하려는 입력값이 유효한 값인지 검증한다.", () =>
   test("입력값이 비어있는 경우 true를 반환한다.", () => {
     const inputValue = "     ";
 
-    expect(isEmpty(inputValue)).toBe(true);
+    expect(isEmptyString(inputValue)).toBe(true);
   });
 
   test("입력값이 비어있지 않을 경우 false를 반환한다.", () => {
     const inputValue = "xooos";
 
-    expect(isEmpty(inputValue)).toBe(false);
+    expect(isEmptyString(inputValue)).toBe(false);
   });
 });
 

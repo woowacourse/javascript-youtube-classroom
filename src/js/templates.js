@@ -44,7 +44,7 @@ const generateTemplate = {
     </button>
   </li>`;
   },
-  videoItems(responseData, userStorage) {
+  videoItems(responseData, video) {
     return responseData
       .map((item) =>
         this.videoItem(
@@ -55,7 +55,7 @@ const generateTemplate = {
             title: item.snippet.title,
             date: parsedDate(item.snippet.publishTime),
           },
-          userStorage.getStorage()
+          video
         )
       )
       .join("");

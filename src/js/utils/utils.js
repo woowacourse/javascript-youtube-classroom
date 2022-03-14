@@ -26,6 +26,6 @@ export const throttle = (callback, delayTime) => {
   };
 };
 
-export const isEmpty = (inputValue) => {
+export const isEmptyString = (inputValue) => {
   return !inputValue.trim().length;
 };
