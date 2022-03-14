@@ -43,7 +43,7 @@ class Save {
   }
 
   loadVideos() {
-    return localStorage.getItem('videos') ? JSON.parse(localStorage.getItem('videos')) : [];
+    return JSON.parse(localStorage.getItem('videos')) ?? [];
   }
 }
 
