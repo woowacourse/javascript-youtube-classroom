@@ -32,7 +32,7 @@ const videoAPICaller = {
         title: item.snippet.title,
         url: item.snippet.thumbnails.medium.url,
         channelTitle: item.snippet.channelTitle,
-        isLastPage: isLastPage,
+        isLastPage,
       }));
     } catch (error) {
       throw new Error(ERROR_MESSAGE.DATA_PROCESSING_ERROR);

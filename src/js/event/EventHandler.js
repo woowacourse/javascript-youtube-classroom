@@ -49,7 +49,7 @@ export default class EventHandler {
     }
   }
 
-  async onvideoListScroll(inputValue) {
+  async onVideoListScroll(inputValue) {
     try {
       this.modalView.showLoadingVideoItems();
       const videoListData = await videoAPICaller.getVideoListData(inputValue);
