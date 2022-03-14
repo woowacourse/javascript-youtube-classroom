@@ -4,14 +4,38 @@ import { onObserveElement, addEventDelegate } from '@Utils/ElementControl';
 import { CLASS_ROOM_SETTING } from '@Constants/Setting';
 import { ERROR_MESSAGE, ACTION_TYPE } from '@Constants/String';
 import { SELECTOR, DOM_NAME } from '@Constants/Selector';
-import Display from '@Core/Display';
 import YoutubeSearchStore from '@Domain/YoutubeSearchStore';
 import YoutubeSaveStorage from '@Domain/YoutubeSaveStorage';
 import notFoundImage from '@Images/not_found.png';
 
-export default class SearchResult extends Display {
-  setContainer() {
-    this.container = $(SELECTOR.ID.SEARCH_RESULT_CONTAINER);
+export default class SearchResult {
+  container = $(SELECTOR.ID.SEARCH_RESULT_CONTAINER);
+  drawList = [];
+
+  constructor() {
+    this.setDefaultElements();
+    this.setBindEvents();
+    this.setRenderList();
+    this.setSubscribeStores();
+  }
+
+  render(state) {
+    this.drawList.forEach(drawEvent => {
+      drawEvent(state);
+    });
+  }
+
+  setSubscribeStores() {
+    YoutubeSearchStore.addSubscriber(this.render.bind(this));
+  }
+
+  addDrawList(drawEvent) {
+    this.drawList.push(drawEvent);
+  }
+
+  setRenderList() {
+    this.addDrawList(this.drawVideoList.bind(this));
+    this.addDrawList(this.drawLoadingStatus.bind(this));
   }
 
   setDefaultElements() {
@@ -22,12 +46,7 @@ export default class SearchResult extends Display {
     this.drawSkeletonList();
   }
 
-  setRenderList() {
-    this.addDrawList(this.drawVideoList.bind(this));
-    this.addDrawList(this.drawLoadingStatus.bind(this));
-  }
-
-  bindEvents() {
+  setBindEvents() {
     onObserveElement(this.$scrollObserver, () => {
       YoutubeSearchStore.dispatch(ACTION_TYPE.UPDATE_SEARCH_LOADING_STATUS);
       YoutubeSearchStore.dispatch(ACTION_TYPE.UPDATE_SEARCH_RESULT);
@@ -37,10 +56,6 @@ export default class SearchResult extends Display {
       eventType: 'click',
       handler: this.handleToggleSaveButton.bind(this),
     });
-  }
-
-  subscribeStores() {
-    YoutubeSearchStore.addSubscriber(this.render.bind(this));
   }
 
   handleToggleSaveButton({ target: $target }) {
