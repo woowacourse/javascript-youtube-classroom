@@ -5,7 +5,7 @@ import { store } from '../domain/store';
 import { request } from '../domain/youtubeApi';
 import { convertToKoreaLocaleDate, delay } from '../utils/common';
 
-export default class Result {
+export const result = {
   searchResultFoundTemplate(items) {
     const saveDatas = store.getLocalStorage(STORAGE_KEY) ?? [];
     const resultTemplate = items
@@ -37,7 +37,7 @@ export default class Result {
       })
       .join('');
     return resultTemplate;
-  }
+  },
 
   searchResultNotFoundTemplate() {
     return `
@@ -52,7 +52,7 @@ export default class Result {
         </div>
       </div>
     `;
-  }
+  },
 
   renderInitialVideoList(json) {
     const $videoList = $('.video-list');
@@ -67,7 +67,7 @@ export default class Result {
     if (json && json.nextPageToken) {
       this.scrollObserver(json.nextPageToken);
     }
-  }
+  },
 
   renderNextVideoList(nextPageToken) {
     request($('#search-input-keyword').value, nextPageToken)
@@ -85,14 +85,14 @@ export default class Result {
         await delay(700);
         showExceptionSnackBar(message);
       });
-  }
+  },
 
   addSaveButtonClickEvent(length) {
     const saveButtons = $$('.video-item__save-button');
     [...saveButtons].slice(-length).forEach(saveButton => {
       saveButton.addEventListener('click', this.handleSaveVideo);
     });
-  }
+  },
 
   handleSaveVideo(e) {
     const videoId = e.target.closest('li').dataset.videoId;
@@ -103,7 +103,7 @@ export default class Result {
     } catch ({ message }) {
       showExceptionSnackBar(message);
     }
-  }
+  },
 
   scrollObserver(nextPageToken) {
     let $li = $('li:last-child');
@@ -121,9 +121,9 @@ export default class Result {
     );
 
     io.observe($li);
-  }
+  },
 
   resetVideoList() {
     $('.video-list').replaceChildren();
-  }
-}
+  },
+};

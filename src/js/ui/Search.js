@@ -2,13 +2,12 @@ import { MESSAGE } from '../constants';
 import { request } from '../domain/youtubeApi';
 import { delay } from '../utils/common';
 import { $, showExceptionSnackBar } from '../utils/dom';
-import Result from './Result';
 import { skeleton } from './skeleton';
+import { result } from './Result';
 
 export default class Search {
   constructor() {
     this.input = $('#search-input-keyword');
-    this.result = new Result();
     this.addSubmitEvent();
   }
 
@@ -24,7 +23,7 @@ export default class Search {
 
       request(this.input.value)
         .then(json => {
-          this.result.renderInitialVideoList(json);
+          result.renderInitialVideoList(json);
         })
         .catch(async ({ message }) => {
           await delay(700);
@@ -35,7 +34,7 @@ export default class Search {
   }
 
   reset() {
-    this.result.resetVideoList();
+    result.resetVideoList();
     this.input.value = '';
   }
 }
