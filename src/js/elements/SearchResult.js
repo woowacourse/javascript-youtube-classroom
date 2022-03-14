@@ -31,12 +31,12 @@ class SearchResult extends CustomElement {
 
   showNoResult() {
     $('.search-result--no-result').classList.remove('hidden');
-    $('ul', this).classList.add('hidden');
+    $('.video-list', this).classList.add('hidden');
   }
 
   showResult() {
     $('.search-result--no-result').classList.add('hidden');
-    $('ul', this).classList.remove('hidden');
+    $('.video-list', this).classList.remove('hidden');
   }
 }
 

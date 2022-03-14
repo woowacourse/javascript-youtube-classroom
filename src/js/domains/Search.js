@@ -7,12 +7,12 @@ class Search {
     this.keyword = '';
     this.nextPageToken = '';
 
-    on('form', '@search', (e) => this.search('search', e.detail.keyword), $('search-form'));
-    on('ul', '@scroll', () => this.search('scroll'), $('search-result'));
+    on('.search-form', '@search', (e) => this.search('search', e.detail.keyword), $('search-form'));
+    on('.video-list', '@scroll', () => this.search('scroll'), $('search-result'));
   }
 
   async search(type, keyword = this.keyword) {
-    $('ul', $('search-result')).insertSkeleton();
+    $('.video-list', $('search-result')).insertSkeleton();
 
     const videos = await this.fetchVideo(keyword);
 

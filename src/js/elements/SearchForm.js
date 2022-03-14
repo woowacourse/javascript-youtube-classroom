@@ -8,14 +8,14 @@ class SearchForm extends CustomElement {
   }
 
   setEvent() {
-    addEvent(this, 'submit', 'form', (e) => this.emitEvent(e));
+    addEvent(this, 'submit', '.search-form', (e) => this.emitEvent(e));
   }
 
   emitEvent(e) {
     e.preventDefault();
     const keyword = $('#search-input-keyword').value;
 
-    emit('form', '@search', { keyword }, this);
+    emit('.search-form', '@search', { keyword }, this);
   }
 }
 
