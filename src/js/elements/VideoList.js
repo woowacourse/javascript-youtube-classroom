@@ -2,6 +2,7 @@ import VideoStore from '../VideoStore';
 import Save from '../domains/Save';
 import { addEvent, emit, $, $$ } from '../utils';
 import TEMPLATE from '../templates';
+import { VIDEO } from '../constants';
 
 class VideoList extends HTMLUListElement {
   constructor() {
@@ -28,22 +29,22 @@ class VideoList extends HTMLUListElement {
   }
 
   notify(type, data) {
-    if (type === 'search') {
-      this.resetResult();
-      this.scrollTop = 0;
-    }
-
     this.removeSkeleton();
     this.insertVideoItems(data);
     this.hideStoredVideoSaveButton(data);
   }
 
-  resetResult() {
+  resetResult(type) {
+    if (type === 'scroll') return;
+
     this.textContent = '';
+    this.scrollTop = 0;
   }
 
-  insertSkeleton() {
-    this.insertAdjacentHTML('beforeend', TEMPLATE.SKELETON.repeat(10));
+  insertSkeleton(type) {
+    const position = type === 'search' ? 'afterbegin' : 'beforeend';
+
+    this.insertAdjacentHTML(position, TEMPLATE.SKELETON.repeat(VIDEO.MAX_RESULT_PER_SEARCH));
   }
 
   removeSkeleton() {
