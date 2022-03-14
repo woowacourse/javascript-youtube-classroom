@@ -37,7 +37,7 @@ export default class EventHandler {
 
   async onSearchButtonClick(inputValue) {
     try {
-      validator.isValidSearchInput(inputValue);
+      validator.checkSearchInput(inputValue);
       this.modalView.resetVideoList();
       this.modalView.showLoadingVideoItems();
       const videoListData = await videoAPICaller.getVideoListData(inputValue);

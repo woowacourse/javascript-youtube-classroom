@@ -1,7 +1,7 @@
 import { ERROR_MESSAGE, STORE } from './constants.js';
 
 const validator = {
-  isValidSearchInput: searchInput => {
+  checkSearchInput: searchInput => {
     if (isEmptyInput(searchInput)) {
       throw new Error(ERROR_MESSAGE.EMPTY_INPUT);
     }

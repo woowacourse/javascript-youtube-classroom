@@ -4,7 +4,7 @@ import { ERROR_MESSAGE } from './constants.js';
 describe('입력된 검색 문자열을 확인하여', () => {
   test('비어있는 문자열이라면 error를 throw한다.', () => {
     const inputValue = '  ';
-    expect(() => validator.isValidSearchInput(inputValue)).toThrowError(ERROR_MESSAGE.EMPTY_INPUT);
+    expect(() => validator.checkSearchInput(inputValue)).toThrowError(ERROR_MESSAGE.EMPTY_INPUT);
   });
 });
 
