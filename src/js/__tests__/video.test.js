@@ -1,11 +1,11 @@
 import dummyObject from '../dummy/dummyObject.js';
-import Video from '../models/Video.js';
+import VideoModel from '../models/VideoModel.js';
 import EXCEPTION from '../../constants/exception.js'
 
 describe('검색어를 정상적으로 입력해야 한다.', () => {
   test('검색어가 입력되지 않은 경우, 에러를 발생시킨다.', () => {
     // given
-    const video = new Video();
+    const video = new VideoModel();
     
     // when
     const input = '';
@@ -19,7 +19,7 @@ describe('검색어를 정상적으로 입력해야 한다.', () => {
 describe('API에서 데이터가 불러졌을 경우(또는 dummy), 입력된 검색어에 부합하는 데이터를 가져와야한다.', () => {
   test('API(또는 dummy)에서 가져온 영상들의 제목 또는 설명에 사용자가 입력한 검색어가 포함되어있어야한다.', () => {
     // given
-    const video = new Video(dummyObject);
+    const video = new VideoModel(dummyObject);
     
     // when
     const keyword = '우아한테크코스';
@@ -36,7 +36,7 @@ describe('API에서 데이터가 불러졌을 경우(또는 dummy), 입력된 �
 
   test('API(또는 dummy)에서 가져온 영상의 데이터(썸네일 사진, 제목, 채널명, 날짜, 링크)가 존재해야한다.', () => {
     // given
-    const video = new Video(dummyObject);
+    const video = new VideoModel(dummyObject);
 
     // when
     video.setVideoInfo();

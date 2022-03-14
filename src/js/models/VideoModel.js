@@ -1,6 +1,6 @@
 import { checkLengthExist, checkEmpty } from '../utils/validator';
 
-export default class Video {
+export default class VideoModel {
   #keyword;
 
   #fetchedVideos;

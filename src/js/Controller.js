@@ -3,13 +3,13 @@ import SearchInputView from './views/SearchInputView.js';
 import SearchResultView from './views/SearchResultView.js';
 
 import dummyObject from './dummy/dummyObject.js';
-import Video from './models/Video.js';
+import VideoModel from './models/VideoModel.js';
 import { on } from './utils/event.js';
 import { checkExceedLimit, checkVideoIsNone } from './utils/validator.js';
 
 export default class Controller {
   constructor() {
-    this.video = new Video(dummyObject);
+    this.video = new VideoModel(dummyObject);
     this.video.savedVideoItems = this.video.getItemsLocalStorage();
     this.appView = new AppView();
     this.searchInputView = new SearchInputView();
