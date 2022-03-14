@@ -24,14 +24,22 @@ export default class ModalView {
   }
 
   registerImage() {
-    console.log(this.$noResultImage);
     this.$noResultImage.src = notFoundImage;
+  }
+
+  showResult() {
+    this.$searchReslt.classList.remove(DOM_STRING.HIDE);
+    this.$searchNoResult.classList.add(DOM_STRING.HIDE);
+  }
+
+  showNoResult() {
+    this.$searchNoResult.classList.remove(DOM_STRING.HIDE);
+    this.$searchReslt.classList.add(DOM_STRING.HIDE);
   }
 
   showModal() {
     this.$modalContainer.classList.remove(DOM_STRING.HIDE);
-    this.$searchReslt.classList.add(DOM_STRING.HIDE);
-    this.$searchNoResult.classList.add(DOM_STRING.HIDE);
+    this.showResult();
     this.$searchInput.value = '';
     this.focusSearch();
   }
@@ -109,14 +117,16 @@ export default class ModalView {
   }
 
   renderVideoList(data) {
+    if (data.size === 0) {
+      this.showNoResult();
+      return;
+    }
+
     this.videoItemList
       .slice(-VIDEO_LIST.RENDER_SIZE)
       .forEach((videoItem, index) => videoItem.getVideoItemTemplate(data[index]));
-  }
 
-  showNoResult() {
-    this.$searchNoResult.classList.remove(DOM_STRING.HIDE);
-    this.$videoList.classList.add(DOM_STRING.HIDE);
+    this.showResult();
   }
 
   focusSearch() {
