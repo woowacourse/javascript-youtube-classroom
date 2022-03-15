@@ -29,7 +29,7 @@ const polishVideos = (videos) => {
     id: id.videoId,
     thumbnail: snippet.thumbnails.default.url,
     title: snippet.title,
-    channelTitle: snippet.channelTitle, 
+    channelTitle: snippet.channelTitle,
     date: convertYYYYMMDD(snippet.publishTime),
     saved: savedVideoIds.includes(id.videoId),
   }));
@@ -38,6 +38,14 @@ const polishVideos = (videos) => {
 const keywordInputView = new KeywordInputView();
 const searchModalView = new SearchModalView();
 const videoView = new VideoView(async () => polishVideos(await youtubeAPI.videos()));
+
+const checkError = (error) => {
+  if (error instanceof ValidationError) {
+    alert(error.message);
+    return;
+  }
+  throw error;
+};
 
 const handleKeywordInputSubmit = async (keyword) => {
   try {
@@ -48,8 +56,7 @@ const handleKeywordInputSubmit = async (keyword) => {
     videoView.offSkeleton();
     videoView.renderScreenByVideos(videos);
   } catch (error) {
-    if (error instanceof ValidationError) return alert(error.message);
-    throw error;
+    checkError(error);
   }
 };
 
@@ -57,8 +64,7 @@ const handleSaveVideoButtonClick = (videoId) => {
   try {
     UserStorage.addVideoId(videoId);
   } catch (error) {
-    if (error instanceof ValidationError) return alert(error.message);
-    throw error;
+    checkError(error);
   }
 };
 
