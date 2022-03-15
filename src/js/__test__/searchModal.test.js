@@ -5,14 +5,14 @@ import SearchModal from "../searchModal";
 const searchModal = new SearchModal();
 
 describe('videos', () => {
-  test('videos가 최대 렌더할 비디오 수만큼 items를 가지고 있는지 체크', async () => {
+  test('videos가 MAX_RENDER_VIDEOS_COUNT만큼 items를 가지고 있는지 확인', async () => {
     const dummy = { ...DUMMY_VIDEO_LIST };
     dummy.items = dummy.items.slice(0, MAX_RENDER_VIDEOS_COUNT);
     const videos = searchModal.checkSearchResult(dummy);
     expect(videos).toHaveLength(MAX_RENDER_VIDEOS_COUNT);
   });
   
-  test('videos가 view 구성을 위한 프로퍼티를 가지고 있는지 체크', async () => {
+  test('videos가 view 구성을 위한 프로퍼티를 가지고 있는지 확인', async () => {
     const dummy = { ...DUMMY_VIDEO_LIST };
     const videos = searchModal.checkSearchResult(dummy);
     videos.forEach(video => {

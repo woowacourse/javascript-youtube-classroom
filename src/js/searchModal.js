@@ -117,12 +117,12 @@ class SearchModal {
     const $videoItem = target.closest('.video-item');
     const videoId = $videoItem.getAttribute('data-video-id');
     const videoList = JSON.parse(localStorage.getItem(LOCAL_STORAGE_VIDEO_LIST_KEY)) ?? [];
-    if (this.saveVideo(videoId, videoList)) {
+    if (this.isSaveVideo(videoId, videoList)) {
       target.setAttribute('hidden', true);
     }
   }
 
-  saveVideo(videoId, videoList) {
+  isSaveVideo(videoId, videoList) {
     if (videoList.length >= MAX_SAVABLE_VIDEOS_COUNT) {
       alert(`비디오는 ${MAX_SAVABLE_VIDEOS_COUNT}개 이상 저장할 수 없습니다`);
       return false;
