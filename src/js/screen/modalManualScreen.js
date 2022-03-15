@@ -1,24 +1,24 @@
 import { $ } from '../util/domHelper';
 
 export default class ModalManualScreen {
-  constructor() {
-    this.searchModalButton = $('#search-modal-button');
-    this.dimmer = $('.dimmer');
+  #searchModalButton = $('#search-modal-button');
+  #dimmer = $('.dimmer');
+  #modalContainer = $('.modal-container');
 
-    this.searchModalButton.addEventListener('click', this.handleOpenModal);
-    this.dimmer.addEventListener('click', this.handleCloseModal);
-    this.modalContainer = $('.modal-container');
+  constructor() {
+    this.#searchModalButton.addEventListener('click', this.#handleOpenModal);
+    this.#dimmer.addEventListener('click', this.#handleCloseModal);
   }
 
-  handleOpenModal = () => {
-    this.modalContainer.classList.remove('hide');
+  #handleOpenModal = () => {
+    this.#modalContainer.classList.remove('hide');
   };
 
-  handleCloseModal = (e) => {
+  #handleCloseModal = (e) => {
     if (e.target.matches('#search-modal-button')) return;
 
     if (!e.target.closest('.search-modal')) {
-      this.modalContainer.classList.add('hide');
+      this.#modalContainer.classList.add('hide');
     }
   };
 }

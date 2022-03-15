@@ -36,63 +36,59 @@ const SKELETON_TEMPLATE = `
 
 //class
 export default class SearchVideoScreen {
-  constructor() {
-    //인스턴스 생성
-    this.searchEngine = new SearchEngine();
-    this.storageEngine = new StorageEngine();
+  #searchEngine = new SearchEngine();
+  #storageEngine = new StorageEngine();
+  #searchButton = $('#search-button');
+  #searchInputKeyword = $('#search-input-keyword');
+  #searchResult = $('.search-result');
+  #noResult = $('.no-result');
+  #videoList = $('.video-list');
 
-    //element 초기화
-    this.searchButton = $('#search-button');
-    this.searchInputKeyword = $('#search-input-keyword');
-    this.searchResult = $('.search-result');
-    this.noResult = $('.no-result');
-    this.videoList = $('.video-list');
+  constructor() {
+    this.#searchButton.addEventListener('click', this.#handleSearchVideos);
+    this.#searchInputKeyword.addEventListener('keypress', this.#handleSearchVideos);
 
     //초기 화면 렌더링
-    this.noResult.insertAdjacentHTML('beforeend', NO_RESULT_TEMPLATE);
-
-    //이벤트 핸들러 등록
-    this.searchButton.addEventListener('click', this.handleSearchVideos);
-    this.searchInputKeyword.addEventListener('keypress', this.handleSearchVideos);
+    this.#noResult.insertAdjacentHTML('beforeend', NO_RESULT_TEMPLATE);
   }
 
-  handleSearchVideos = async (e) => {
+  #handleSearchVideos = async (e) => {
     if (e.key === 'Enter' || e.type === 'click') {
-      this.initSearchEnvironment();
-      this.renderSkeleton();
-      const keyword = this.searchInputKeyword.value;
+      this.#initSearchEnvironment();
+      this.#renderSkeleton();
+      const keyword = this.#searchInputKeyword.value;
 
       try {
-        const data = await this.searchEngine.searchKeyword(keyword);
-        this.renderSearchResult(data);
+        const data = await this.#searchEngine.searchKeyword(keyword);
+        this.#renderSearchResult(data);
       } catch ({ message: status }) {
-        if (status === SERVER_ERROR_STATUS) this.renderServerErrorResult();
+        if (status === SERVER_ERROR_STATUS) this.#renderServerErrorResult();
       }
-      this.videoList.addEventListener('scroll', this.handleInfiniteScroll);
+      this.#videoList.addEventListener('scroll', this.#handleInfiniteScroll);
     }
   };
 
-  initSearchEnvironment() {
-    this.hideNoResultView();
-    this.videoList.replaceChildren('');
-    this.searchEngine.resetPageToken();
+  #initSearchEnvironment() {
+    this.#hideNoResultView();
+    this.#videoList.replaceChildren('');
+    this.#searchEngine.resetPageToken();
   }
 
-  renderSkeleton() {
-    this.videoList.insertAdjacentHTML('beforeend', SKELETON_TEMPLATE);
+  #renderSkeleton() {
+    this.#videoList.insertAdjacentHTML('beforeend', SKELETON_TEMPLATE);
   }
 
-  hideNoResultView() {
-    this.searchResult.classList.remove('search-result--no-result');
-    this.noResult.classList.add('hide');
+  #hideNoResultView() {
+    this.#searchResult.classList.remove('search-result--no-result');
+    this.#noResult.classList.add('hide');
   }
 
-  showNoResultView() {
-    this.searchResult.classList.add('search-result--no-result');
-    this.noResult.classList.remove('hide');
+  #showNoResultView() {
+    this.#searchResult.classList.add('search-result--no-result');
+    this.#noResult.classList.remove('hide');
   }
 
-  allocatePreprocessedData(preprocessedData) {
+  #allocatePreprocessedData(preprocessedData) {
     const skeletonList = $$('.skeleton');
 
     for (let i = 0; i < preprocessedData.length; i += 1) {
@@ -105,66 +101,68 @@ export default class SearchVideoScreen {
       $('.video-item__channel-name', element).textContent = channelTitle;
       $('.video-item__published-date', element).textContent = publishTime;
 
-      if (this.storageEngine.isSavedVideo(videoId)) {
+      if (this.#storageEngine.isSavedVideo(videoId)) {
         $('.video-item__save-button', element).classList.add('saved');
       }
       element.classList.remove('skeleton');
     }
   }
 
-  removeRemainedSkeleton(preprocessedData) {
+  #removeRemainedSkeleton(preprocessedData) {
     const remainedSkeletonCount = VIDEO_COUNT - preprocessedData.length;
 
     for (let i = 0; i < remainedSkeletonCount; i++) {
-      this.videoList.removeChild(this.videoList.lastElementChild);
+      this.#videoList.removeChild(this.#videoList.lastElementChild);
     }
 
-    if (this.searchEngine.pageToken === null) {
-      this.videoList.removeEventListener('scroll', this.handleScroll);
+    if (this.#searchEngine.pageToken === null) {
+      this.#videoList.removeEventListener('scroll', this.#handleInfiniteScroll);
       //TODO : 스낵바로 "더 이상의 검색결과는 존재하지 않습니다."
     }
   }
 
-  handleInfiniteScroll = (e) => {
+  #handleInfiniteScroll = (e) => {
     const { scrollHeight, scrollTop, clientHeight } = e.target;
 
     if (scrollTop + clientHeight >= scrollHeight) {
-      throttle(this.handleScrollEvent, DELAY_MILISECOND_TIME)();
+      throttle(this.#handleScrollEvent, DELAY_MILISECOND_TIME)();
     }
   };
 
-  handleScrollEvent = async () => {
-    if (this.searchEngine.pageToken !== null) {
-      this.renderSkeleton();
+  #handleScrollEvent = async () => {
+    if (this.#searchEngine.pageToken !== null) {
+      this.#renderSkeleton();
     }
-    const keyword = this.searchInputKeyword.value;
+    const keyword = this.#searchInputKeyword.value;
 
     try {
-      const data = await this.searchEngine.searchKeyword(keyword);
-      this.renderSearchResult(data, '@scroll');
+      const data = await this.#searchEngine.searchKeyword(keyword);
+      this.#renderSearchResult(data, '@scroll');
     } catch ({ message: status }) {
-      if (status === SERVER_ERROR_STATUS) this.renderServerErrorResult();
+      if (status === SERVER_ERROR_STATUS) this.#renderServerErrorResult();
     }
   };
 
-  renderSearchResult(data, eventType) {
+  #renderSearchResult(data, eventType) {
     if (data === null) {
-      this.videoList.replaceChildren('');
+      this.#videoList.replaceChildren('');
       if (eventType === '@scroll') return;
 
-      this.showNoResultView();
+      this.#showNoResultView();
       return;
     }
 
-    const preprocessedData = this.searchEngine.preprocessData(data);
-    this.allocatePreprocessedData(preprocessedData);
-    this.removeRemainedSkeleton(preprocessedData);
+    const preprocessedData = this.#searchEngine.preprocessData(data);
+    this.#allocatePreprocessedData(preprocessedData);
+    this.#removeRemainedSkeleton(preprocessedData);
   }
 
-  renderServerErrorResult() {
-    this.showNoResultView();
-    this.videoList.replaceChildren('');
-    this.noResult.removeChild(this.noResult.lastElementChild);
-    this.noResult.insertAdjacentHTML('beforeend', SERVER_ERROR_TEMPLATE);
+  #renderServerErrorResult() {
+    this.#showNoResultView();
+    this.#videoList.replaceChildren('');
+    this.#noResult.removeChild(this.#noResult.lastElementChild);
+    this.#noResult.insertAdjacentHTML('beforeend', SERVER_ERROR_TEMPLATE);
   }
 }
+
+//지피티에서 스크롤을 내린후, 3개있는 리스트에가면 연달아 3번 호출...throttle 문제다!
