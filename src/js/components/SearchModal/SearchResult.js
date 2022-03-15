@@ -40,7 +40,7 @@ export default class SearchResult {
       return;
     }
 
-    this.#renderIframe();
+    this.#renderVideoList();
     this.observer.observe(this.videoList.lastElementChild);
   };
 
@@ -49,7 +49,7 @@ export default class SearchResult {
     this.noResultContainer.insertAdjacentHTML("afterbegin", noSearchResultTemplate);
   }
 
-  #renderIframe() {
+  #renderVideoList() {
     this.videoList.insertAdjacentHTML(
       "beforeend",
       this.videos.items.map((video) => makeIframeTemplate(video)).join(""),
@@ -75,7 +75,7 @@ export default class SearchResult {
     }
 
     this.videos = await fetchDataFromKeyword(this.searchManager.getKeyword(), this.videos.nextPageToken);
-    this.#renderIframe();
+    this.#renderVideoList();
     this.observer.observe(this.videoList.lastElementChild);
   }
 
