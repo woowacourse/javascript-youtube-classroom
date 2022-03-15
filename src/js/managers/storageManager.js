@@ -21,9 +21,9 @@ const storageManager = {
     return videoIdList || [];
   },
 
-  hasVideoID(videoId) {
+  hasVideoId(videoId) {
     const videoIdList = this.getVideoIdList();
-    return videoIdList && videoIdList.includes(videoId);
+    return videoIdList.includes(videoId);
   },
 };
 
