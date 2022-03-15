@@ -10,7 +10,12 @@ export const noSearchResultTemplate = () => {
           </p></div>`;
 };
 
-export const makeIframeTemplate = (video) => {
+export const makeIframeTemplate = (video, exist) => {
+  let displayProp = '';
+  if (exist === 'exist') {
+    displayProp = 'hide';
+  }
+
   return `
     <li class='video-item-container'>
       <iframe
@@ -23,7 +28,7 @@ export const makeIframeTemplate = (video) => {
       <h4 class="video-item__title">${video.snippet.title}</h4>
       <p class="video-item__channel-name">${video.snippet.channelTitle}</p>
       <p class="video-item__published-date">${changeDateFormat(video.snippet.publishedAt)}</p>
-      <button id="${video.id.videoId}" class="video-item__save-button button">⬇ 저장</button>
+      <button id="${video.id.videoId}"  class="video-item__save-button button ${displayProp}">⬇ 저장</button>
   </li>`;
 };
 

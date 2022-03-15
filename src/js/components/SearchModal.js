@@ -54,10 +54,18 @@ export class SearchModal {
   }
 
   renderIframe() {
+    const local = getVideoIdFromLocalStorage();
     this.resultLabel.removeAttribute('hidden');
     this.videoList.insertAdjacentHTML(
       'beforeend',
-      this.videos.items.map((video) => makeIframeTemplate(video)).join(''),
+      this.videos.items
+        .map((video) => {
+          if (local.includes(video.id.videoId)) {
+            return makeIframeTemplate(video, 'exist');
+          }
+          return makeIframeTemplate(video);
+        })
+        .join(''),
     );
   }
 
@@ -104,7 +112,7 @@ export class SearchModal {
     const tempVideoIdsInLocalStorage = getVideoIdFromLocalStorage();
     if (this.canSaveVideoIdInLocalStorage(e.target)) {
       tempVideoIdsInLocalStorage.push(e.target.id);
-      e.target.remove();
+      e.target.style.display = 'none';
     }
     saveVideoIdToLocalStorage(tempVideoIdsInLocalStorage);
   };

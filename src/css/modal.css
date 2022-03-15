@@ -153,6 +153,10 @@
   background: #efefef;
 }
 
+.video-item__save-button.hide {
+  display: none;
+}
+
 .skeleton {
   height: 280px;
   width: 240px;
