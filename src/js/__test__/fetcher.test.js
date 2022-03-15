@@ -1,4 +1,3 @@
-/* eslint-disable */
 import { API_PATHS } from '../constants/fetcher';
 import { youtubeAPIFetcher } from '../modules/fetcher';
 import dummyVideo from './dummy/dummy.json';
