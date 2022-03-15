@@ -113,7 +113,7 @@ export default class ModalView {
   renderSkeletonUI() {
     this.videoItemList
       .slice(-VIDEO_LIST.RENDER_SIZE)
-      .forEach(videoItem => videoItem.getSkeletonTemplate());
+      .forEach(videoItem => videoItem.setSkeletonTemplate());
   }
 
   renderVideoList(data) {
@@ -125,7 +125,7 @@ export default class ModalView {
     this.hideSkeletonTemplates(data);
     this.videoItemList
       .slice(-data.length)
-      .forEach((videoItem, index) => videoItem.getVideoItemTemplate(data[index]));
+      .forEach((videoItem, index) => videoItem.setVideoItemTemplate(data[index]));
   }
 
   hideSkeletonTemplates(data) {
