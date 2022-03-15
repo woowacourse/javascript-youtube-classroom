@@ -2,13 +2,15 @@ import SearchEngine from '../domain/searchEngine.js';
 import StorageEngine from '../domain/storageEngine.js';
 
 import { $, $$ } from '../util/domHelper.js';
-import { NO_RESULT_IMAGE_TEMPLATE, SKELETON_TEMPLATE } from '../util/template.js';
+import {
+  NO_RESULT_IMAGE_TEMPLATE,
+  SERVER_ERROR_TEMPLATE,
+  SKELETON_TEMPLATE,
+} from '../util/template.js';
 import { preprocessDate, throttle } from '../util/common.js';
-import { DELAY_MILISECOND_TIME, VIDEO_COUNT } from '../util/constants.js';
+import { DELAY_MILISECOND_TIME, SERVER_ERROR_STATUS, VIDEO_COUNT } from '../util/constants.js';
 
 export default class ScreenManager {
-  #throttle;
-
   constructor() {
     // 인스턴스 생성
     this.searchEngine = new SearchEngine();
@@ -55,8 +57,14 @@ export default class ScreenManager {
       try {
         const data = await this.searchEngine.searchKeyword(keyword);
         this.renderSearchResult(data);
-      } catch (error) {
-        alert(error);
+      } catch ({ message: status }) {
+        if (status === SERVER_ERROR_STATUS) {
+          this.searchResult.classList.add('search-result--no-result');
+          this.noResult.classList.remove('hide');
+          this.videoList.replaceChildren('');
+          this.noResult.replaceChildren('');
+          this.noResult.insertAdjacentHTML('beforeend', SERVER_ERROR_TEMPLATE);
+        }
       }
     }
   }
@@ -155,8 +163,14 @@ export default class ScreenManager {
     try {
       const data = await this.searchEngine.searchKeyword(keyword);
       this.renderAdditionalVideos(data);
-    } catch (error) {
-      alert(error);
+    } catch ({ message: status }) {
+      if (status === SERVER_ERROR_STATUS) {
+        this.searchResult.classList.add('search-result--no-result');
+        this.noResult.classList.remove('hide');
+        this.videoList.replaceChildren('');
+        this.noResult.replaceChildren('');
+        this.noResult.insertAdjacentHTML('beforeend', SERVER_ERROR_TEMPLATE);
+      }
     }
   }
 

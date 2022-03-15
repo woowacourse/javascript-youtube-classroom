@@ -73,9 +73,13 @@
 
 .no-result {
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
   margin-top: 50px;
+
+  font-size: 25px;
+  font-weight: bold;
 }
 
 .no-result.hide {
@@ -85,6 +89,11 @@
 .no-result__image {
   width: 350px;
   margin-bottom: 32px;
+}
+
+.no-result__error-image {
+  width: 350px;
+  margin-bottom: 20px;
 }
 
 .video-list {

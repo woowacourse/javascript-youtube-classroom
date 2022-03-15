@@ -32,7 +32,7 @@ export default class SearchEngine {
       return null;
     }
 
-    throw Error(SEARCH_NOT_WORKING_ERROR_MESSAGE);
+    throw Error(response.status);
   }
 
   #isDataExist(data) {
