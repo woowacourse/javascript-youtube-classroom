@@ -27,6 +27,7 @@
     "gh-pages": "^3.2.3",
     "html-webpack-plugin": "^5.5.0",
     "jest": "^27.5.1",
+    "jest-localstorage-mock": "^2.4.19",
     "node-fetch": "^3.2.2",
     "style-loader": "^3.3.1",
     "url-loader": "^4.1.1",
@@ -36,6 +37,15 @@
     "webpack-dev-server": "^4.7.4"
   },
   "dependencies": {
-    "@babel/runtime": "^7.17.2"
+    "@babel/runtime": "^7.17.2",
+    "transform-runtime": "^0.0.0"
+  },
+  "jest": {
+    "setupFiles": [
+      "jest-localstorage-mock"
+    ],
+    "transform": {
+      "^.+\\.js$": "babel-jest"
+    }
   }
 }

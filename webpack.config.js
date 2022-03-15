@@ -2,8 +2,6 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const path = require('path');
 const webpack = require('webpack');
 
-const dotenv = require('dotenv').config();
-
 module.exports = {
   mode: 'development',
   entry: './src/js/index.js',
@@ -28,6 +26,7 @@ module.exports = {
             loader: 'babel-loader',
             options: {
               presets: ['@babel/preset-env'],
+              plugins: ['@babel/transform-runtime'],
             },
           },
         ],
