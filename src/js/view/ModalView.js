@@ -1,5 +1,5 @@
 import VideoItemView from './VideoItemView.js';
-import { DOM_STRING, VIDEO_LIST, CLASS_NAME_STRING, SCROLL } from '../utils/constants.js';
+import { DOM_STRING, VIDEO_LIST, CLASS_NAME_STRING, SCROLL, KEY_CODE } from '../utils/constants.js';
 import { $, throttle } from '../utils/common.js';
 
 export default class ModalView {
@@ -44,7 +44,7 @@ export default class ModalView {
       callback(this.searchInputValue);
     });
     this.$searchInput.addEventListener('keyup', e => {
-      if (e.keyCode === 13) {
+      if (e.keyCode === KEY_CODE.ENTER) {
         this.searchInputValue = this.$searchInput.value;
         callback(this.searchInputValue);
       }
