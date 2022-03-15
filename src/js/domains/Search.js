@@ -34,6 +34,7 @@ class Search {
     VideoStore.instance.dispatch(type, this.preprocessor(videos));
   }
 
+  // eslint-disable-next-line max-lines-per-function
   async fetchVideo(keyword) {
     try {
       SEARCH_API.URL.search = this.#generateSearchParams(keyword);
@@ -45,6 +46,7 @@ class Search {
 
       return response;
     } catch (error) {
+      $('.video-list', $('search-result')).removeSkeleton();
       alert(error.message);
       return error;
     }
