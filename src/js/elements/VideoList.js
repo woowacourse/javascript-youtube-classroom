@@ -30,17 +30,15 @@ class VideoList extends HTMLUListElement {
     this.hideStoredVideoSaveButton(data);
   }
 
-  resetResult(type) {
-    if (type === 'scroll') return;
-
-    this.textContent = '';
-    this.scrollTop = 0;
-  }
-
   insertSkeleton(type) {
-    const position = type === 'search' ? 'afterbegin' : 'beforeend';
+    if (type === 'scroll') {
+      this.insertAdjacentHTML('beforeend', SKELETONS);
 
-    this.insertAdjacentHTML(position, SKELETONS);
+      return;
+    }
+
+    this.innerHTML = SKELETONS;
+    this.scrollTop = 0;
   }
 
   removeSkeleton() {

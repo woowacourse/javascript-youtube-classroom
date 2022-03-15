@@ -32,11 +32,7 @@ class SearchResult extends CustomElement {
 
     if (data.length === 0) {
       this.showNoResult();
-
-      return;
     }
-
-    this.showResult();
   }
 
   showNoResult() {

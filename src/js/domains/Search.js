@@ -23,7 +23,7 @@ class Search {
   }
 
   async search(type, keyword = this.keyword) {
-    $('.video-list', $('search-result')).resetResult(type);
+    $('search-result').showResult();
     $('.video-list', $('search-result')).insertSkeleton(type);
 
     const videos = await this.fetchVideo(keyword);
