@@ -1,18 +1,14 @@
-import { $, createElement } from '@Utils/dom';
+import { $, addEvent, createElement } from '@Utils/dom';
 import { getParsedTime } from '@Utils/dataManager';
 import { onObserveElement } from '@Utils/elementController';
 import { YOUTUBE_SETTING, YOUTUBE_SEARCH_ACTION, ERROR_MESSAGE } from '@Constants';
-import Display from '@Core/Display';
 import YoutubeSearchStore from '@Domain/YoutubeSearchStore';
 import YoutubeSaveStorage from '@Domain/YoutubeSaveStorage';
 import notFoundImage from '@Images/not_found.png';
 
-export default class SearchResult extends Display {
-  setContainer() {
+export default class SearchResult {
+  constructor() {
     this.container = $('#search-result');
-  }
-
-  setDefaultElement() {
     this.$videoList = $('#video-list', this.container);
     this.$tempFragment = document.createDocumentFragment();
     this.$scrollObserver = createElement('DIV', {
@@ -28,6 +24,8 @@ export default class SearchResult extends Display {
       `,
       }),
     );
+    this.bindEvents();
+    YoutubeSearchStore.addSubscriber(this.render.bind(this));
   }
 
   bindEvents() {
@@ -37,15 +35,11 @@ export default class SearchResult extends Display {
       YoutubeSearchStore.dispatch(YOUTUBE_SEARCH_ACTION.UPDATE_SEARCH_LOADING_STATUS, true);
       YoutubeSearchStore.dispatch(YOUTUBE_SEARCH_ACTION.UPDATE_SEARCH_RESULT);
     });
-    this.addEvent({
+    addEvent(this.container, {
       eventType: 'click',
       selector: '.video-item__save-button',
       handler: this.handleToggleSaveButton.bind(this),
     });
-  }
-
-  subscribeStores() {
-    YoutubeSearchStore.addSubscriber(this.render.bind(this));
   }
 
   handleToggleSaveButton({ target: $target }) {
