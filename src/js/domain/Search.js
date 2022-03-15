@@ -39,16 +39,14 @@ class Search {
 
   #generateQueryString(keyword, pageToken) {
     const query = {
-      q: keyword,
-      pageToken,
-      maxResults: MAX_SEARCH_RESULT,
+      part: 'snippet',
       type: 'video',
       regionCode: 'KR',
+      q: keyword,
+      maxResults: MAX_SEARCH_RESULT,
     };
-    return Object.keys(query).reduce(
-      (str, key) => (query[key] ? `${str}&${key}=${query[key]}` : `${str}`),
-      ''
-    );
+    if (pageToken) query.pageToken = pageToken;
+    return new URLSearchParams(query);
   }
 
   #getVideoObjectArray(items, savedVideos) {
