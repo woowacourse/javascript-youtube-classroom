@@ -1,4 +1,4 @@
-const { default: webStore } = require('../modules/webStore');
+import webStore from '../modules/webStore';
 
 describe('webStore 모듈 테스트', () => {
   jest.mock(
