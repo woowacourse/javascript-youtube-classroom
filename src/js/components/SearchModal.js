@@ -12,7 +12,6 @@ export class SearchModal {
     this.noResultContainer = document.getElementById('no-result');
     this.searchButton = document.getElementById('search-button');
     this.closeModalButton = document.getElementById('close-modal-button');
-    this.searchModal = document.getElementById('search-modal');
 
     this.searchButton.addEventListener('click', this.handleSearchButton);
     this.videoList.addEventListener('click', this.handleVideoItemSave);
@@ -102,16 +101,18 @@ export class SearchModal {
       return;
     }
 
-    const proviousLocalStorage = getVideoIdFromLocalStorage();
-    if (this.canSaveVideoItems(proviousLocalStorage, e.target)) {
-      proviousLocalStorage.push(e.target.id);
+    const tempVideoIdsInLocalStorage = getVideoIdFromLocalStorage();
+    if (this.canSaveVideoIdInLocalStorage(e.target)) {
+      tempVideoIdsInLocalStorage.push(e.target.id);
       e.target.remove();
     }
-    saveVideoIdToLocalStorage(proviousLocalStorage);
+    saveVideoIdToLocalStorage(tempVideoIdsInLocalStorage);
   };
 
-  canSaveVideoItems(localStorage, target) {
-    return !localStorage.includes(target.id) && localStorage.length <= NUM.MAX_STORAGE_LENGTH;
+  canSaveVideoIdInLocalStorage(target) {
+    return (
+      !getVideoIdFromLocalStorage().includes(target.id) && getVideoIdFromLocalStorage().length <= NUM.MAX_STORAGE_LENGTH
+    );
   }
 
   handleCloseButton = () => {

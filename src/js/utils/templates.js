@@ -30,10 +30,10 @@ export const makeIframeTemplate = (video) => {
 export const makeSkeletonTemplate = () => {
   return `
     <div class="skeleton">
-        <div class="image"></div>
-        <p class="line"></p>
-        <p class="line"></p>
-        <p class="line"></p>
+      <div class="image"></div>
+      <p class="line"></p>
+      <p class="line"></p>
+      <p class="skeleton-button"></p>
     </div>
     `;
 };
