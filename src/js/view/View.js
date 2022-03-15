@@ -22,7 +22,7 @@ class View {
   }
 
   #attachEventListeners() {
-    this.lastItemOfListObserver = this.#handleScrollToLastItem();
+    this.loadMoreResultObserver = this.#handleScrollToLastItem();
 
     const searchModalButton = selectDom('#search-modal-button');
     searchModalButton.addEventListener('click', this.#toggleModal);
@@ -59,7 +59,7 @@ class View {
     return new IntersectionObserver(
       async (entries) => {
         if (entries[0].isIntersecting) {
-          this.lastItemOfListObserver.unobserve(entries[0].target);
+          this.loadMoreResultObserver.unobserve(entries[0].target);
           this.#sendSearchRequest();
         }
       },
@@ -105,7 +105,7 @@ class View {
     );
 
     this.videoList.append(...resultElementArray);
-    if (hasNextPage) this.lastItemOfListObserver.observe(this.videoList.lastChild);
+    if (hasNextPage) this.loadMoreResultObserver.observe(this.videoList.lastChild);
   }
 
   #createVideoElement(resultItem) {
