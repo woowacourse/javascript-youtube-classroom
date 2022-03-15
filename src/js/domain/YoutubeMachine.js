@@ -11,7 +11,9 @@ export default class YoutubeMachine {
   get searchResult() {
     return this.#searchResult;
   }
-
+  set searchTarget(searchInput) {
+    this.#searchTarget = searchInput;
+  }
   search(searchInput) {
     validateInput(searchInput);
     this.#searchTarget = searchInput;
