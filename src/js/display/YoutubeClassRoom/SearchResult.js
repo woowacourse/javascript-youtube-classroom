@@ -1,9 +1,7 @@
 import { $, createElement } from '@Utils/dom';
 import { getParsedTime } from '@Utils/dataManager';
 import { onObserveElement } from '@Utils/elementController';
-import { YOUTUBE_SETTING } from '@Constants/setting';
-import { YOUTUBE_SEARCH_ACTION } from '@Constants/action';
-import { ERROR_MESSAGE } from '@Constants/message';
+import { YOUTUBE_SETTING, YOUTUBE_SEARCH_ACTION, ERROR_MESSAGE } from '@Constants';
 import Display from '@Core/Display';
 import YoutubeSearchStore from '@Domain/YoutubeSearchStore';
 import YoutubeSaveStorage from '@Domain/YoutubeSaveStorage';

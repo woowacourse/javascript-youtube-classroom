@@ -1,4 +1,4 @@
-import { YOUTUBE_SETTING } from '@Constants/setting';
+import { YOUTUBE_SETTING } from '@Constants';
 import { uriBuilder } from '@Utils/dataManager';
 
 const request = async (uri, option) => {

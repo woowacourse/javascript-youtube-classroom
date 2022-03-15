@@ -1,5 +1,5 @@
 import Store from '@Core/Store';
-import { YOUTUBE_SEARCH_ACTION } from '@Constants/action';
+import { YOUTUBE_SEARCH_ACTION } from '@Constants';
 import { requestYoutubeSearch } from '../api';
 
 class YoutubeSearchStore extends Store {

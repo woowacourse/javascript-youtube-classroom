@@ -1,7 +1,6 @@
 import { $ } from '@Utils/dom';
 import { isEmptyString, isSameKeyword } from '@Utils/validator';
-import { YOUTUBE_SEARCH_ACTION } from '@Constants/action';
-import { ERROR_MESSAGE } from '@Constants/message';
+import { YOUTUBE_SEARCH_ACTION, ERROR_MESSAGE } from '@Constants';
 import { onEnableButton } from '@Utils/elementController';
 import Display from '@Core/Display';
 import YoutubeSearchStore from '@Domain/YoutubeSearchStore';
