@@ -8,7 +8,7 @@ import UserStorage from '../UserStorage/index.js';
 
 import { checkKeyword } from '../Validator/index.js';
 
-export const convertYYYYMMDD = (publishTime) => {
+export const formatDate = (publishTime) => {
   const videoTime = new Date(publishTime.slice(0, 10));
   return (
     videoTime.getFullYear().toString() +
@@ -30,7 +30,7 @@ const polishVideos = (videos) => {
     thumbnail: snippet.thumbnails.default.url,
     title: snippet.title,
     channelTitle: snippet.channelTitle,
-    date: convertYYYYMMDD(snippet.publishTime),
+    date: formatDate(snippet.publishTime),
     saved: savedVideoIds.includes(id.videoId),
   }));
 };
