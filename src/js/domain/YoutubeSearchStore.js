@@ -1,6 +1,6 @@
 import Store from '@Core/Store';
 import { YOUTUBE_SEARCH_ACTION } from '@Constants';
-import { requestYoutubeSearch } from '../api';
+import { requestYoutubeSearch } from '@Api';
 
 class YoutubeSearchStore extends Store {
   state = {
