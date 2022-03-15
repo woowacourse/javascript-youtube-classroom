@@ -1,6 +1,7 @@
 import AppView from './views/AppView.js';
 import SearchInputView from './views/SearchInputView.js';
 import SearchResultView from './views/SearchResultView.js';
+import SearchCloseView from './views/SearchCloseView.js';
 
 import dummyObject from './dummy/dummyObject.js';
 import VideoModel from './models/VideoModel.js';
@@ -14,15 +15,17 @@ export default class Controller {
     this.appView = new AppView();
     this.searchInputView = new SearchInputView();
     this.searchResultView = new SearchResultView();
+    this.SearchCloseView = new SearchCloseView();
     this.#subscribeViewEvents();
   }
 
   #subscribeViewEvents() {
     on(this.searchInputView.$searchButton, '@search', this.#searchVideo.bind(this));
-    on(this.searchInputView.$closeButton, '@close-modal', this.#closeModal.bind(this));
 
     on(this.searchResultView.$searchTarget, '@scroll-bottom', this.#scrollNextVideos.bind(this));
     on(this.searchResultView.$searchTarget, '@save-video', this.#saveVideo.bind(this));
+
+    on(this.SearchCloseView.$closeButton, '@close-modal', this.#closeModal.bind(this));
   }
 
   async #searchVideo(event) {
@@ -88,11 +91,8 @@ export default class Controller {
   }
 
   #closeModal() {
-    // 모달 가리기
-    this.searchInputView.hideModal();
-    // 검색어 초기화
     this.searchInputView.resetSearchInputKeyword();
-    // 스켈레톤 초기화
+    this.searchResultView.hideModal();
     this.searchResultView.removeVideo();
   }
 }

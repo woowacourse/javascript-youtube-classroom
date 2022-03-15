@@ -4,6 +4,7 @@ import { emit } from '../utils/event.js';
 
 export default class SearchResultView {
   constructor() {
+    this.$modalContainer = $('.modal-container');
     this.$videoList = $('.video-list');
     this.template = new Template();
     this.$searchTarget = $('#search-target');
@@ -88,5 +89,9 @@ export default class SearchResultView {
   hideNotFound() {
     this.$searchTarget.classList.remove('hide');
     this.$searchNoResult.classList.add('hide');
+  }
+
+  hideModal() {
+    this.$modalContainer.classList.add('hide');
   }
 }
