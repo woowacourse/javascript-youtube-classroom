@@ -24,12 +24,18 @@ class RenderVideo {
     this.renderResultWrap = selectDom('.search-result', this.modalContainer);
     this.renderVideoListWrap = selectDom('.video-list', this.modalContainer);
     this.renderSkeletonWrap = selectDom('.skeleton-list', this.modalContainer);
+    this.searchModalBackground = selectDom('.dimmer', this.modalContainer);
 
     addEvent(this.searchModalButton, 'click', this.onClickVideoSearchModal);
     addEvent(this.renderResultWrap, 'scroll', this.onScrollVideoList);
     addEvent(this.searchVideoForm, 'submit', this.onSubmitVideoSearch);
     addEvent(this.renderVideoListWrap, 'click', this.onSaveButtonClick);
+    addEvent(this.searchModalBackground, 'click', this.onClickDimmer);
   }
+
+  onClickDimmer = () => {
+    this.modalContainer.classList.add('hide');
+  };
 
   onScrollVideoList = () => {
     if (!this.searchVideo.nextPageToken) {
