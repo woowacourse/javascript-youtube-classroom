@@ -1,8 +1,8 @@
 import validator from '../utils/validator.js';
 
 const storageManager = {
-  keys: {
-    videoIdList: 'videoId',
+  KEY: {
+    VIDEO_ID_LIST: 'videoId',
   },
 
   storeVideoId(videoId) {
@@ -10,14 +10,14 @@ const storageManager = {
       const videoIdList = this.getVideoIdList();
       validator.checkOverVideoIdListMaxLength(videoIdList);
       const videoIdSet = new Set(videoIdList).add(videoId);
-      localStorage.setItem(this.keys.videoIdList, JSON.stringify([...videoIdSet]));
+      localStorage.setItem(this.KEY.VIDEO_ID_LIST, JSON.stringify([...videoIdSet]));
     } catch (error) {
       throw error;
     }
   },
 
   getVideoIdList() {
-    const videoIdList = JSON.parse(localStorage.getItem(this.keys.videoIdList));
+    const videoIdList = JSON.parse(localStorage.getItem(this.KEY.VIDEO_ID_LIST));
     return videoIdList || [];
   },
 
