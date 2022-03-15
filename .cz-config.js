@@ -40,7 +40,6 @@ module.exports = {
     { name: 'settings' },
     { name: 'todo' },
     { name: 'flux' },
-    { name: 'component' },
     { name: 'validation' },
     { name: 'util' },
     { name: 'unit' },
@@ -56,6 +55,6 @@ module.exports = {
   allowCustomScopes: true,
   allowBreakingChanges: ['feat', 'fix'],
   // skip any questions you want
-  skipQuestions: ['ticketNumber', 'breaking', 'issues', 'issuesClosed'],
+  skipQuestions: ['ticketNumber'],
   subjectLimit: 100,
 };
