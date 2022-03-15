@@ -1,4 +1,5 @@
 import { ERROR_MESSAGE, GET_VIDEO_COUNT, REDIRECT_SERVER_HOST } from './constants/contants.js';
+import mockDatas from './utils/mock.js';
 
 class SearchVideo {
   constructor() {
@@ -6,10 +7,10 @@ class SearchVideo {
     this.nextPageToken = '';
   }
 
-  async handleSearchVideo(searchKeyword) {
+  handleSearchVideo(searchKeyword) {
     this.#validateSearchInput(searchKeyword);
     this.prevSearchKeyword = searchKeyword;
-    return await this.#getYoutubeVideos(searchKeyword);
+    return this.#getYoutubeVideos(searchKeyword);
   }
 
   #getYoutubeVideos = async (searchKeyword) => {
@@ -30,6 +31,7 @@ class SearchVideo {
     const { items, nextPageToken } = await response.json();
     this.nextPageToken = nextPageToken;
     return items;
+    // return mockDatas;
   };
 
   #validateSearchInput = (searchKeyword) => {
