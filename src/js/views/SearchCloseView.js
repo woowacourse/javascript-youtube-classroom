@@ -1,7 +1,7 @@
+import KEYCODE from '../../constants/keycode.js';
+
 import { $ } from '../utils/dom.js';
 import { emit, on } from '../utils/event.js';
-
-import KEYCODE from '../../constants/keycode.js';
 
 export default class SearchCloseView {
   constructor() {

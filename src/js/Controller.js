@@ -1,12 +1,13 @@
+import { on } from './utils/event.js';
+import { checkExceedLimit, checkVideoIsNone } from './utils/validator.js';
+
 import AppView from './views/AppView.js';
 import SearchInputView from './views/SearchInputView.js';
 import SearchResultView from './views/SearchResultView.js';
 import SearchCloseView from './views/SearchCloseView.js';
 
-import dummyObject from './dummy/dummyObject.js';
 import VideoModel from './models/VideoModel.js';
-import { on } from './utils/event.js';
-import { checkExceedLimit, checkVideoIsNone } from './utils/validator.js';
+import dummyObject from './dummy/dummyObject.js';
 
 export default class Controller {
   constructor() {

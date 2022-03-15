@@ -1,6 +1,7 @@
-import Template from './Template.js';
 import { $, $$ } from '../utils/dom.js';
 import { emit } from '../utils/event.js';
+
+import Template from './Template.js';
 
 export default class SearchResultView {
   constructor() {
