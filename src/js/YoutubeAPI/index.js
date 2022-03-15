@@ -33,10 +33,9 @@ export default class YoutubeAPI {
     if (this.#checkEndPage()) return [];
 
     const response = await fetch(this.#makeURL(), { method: 'GET' });
+    if (!response.ok) throw new Error(response.statusText);
+
     const body = await response.json();
-
-    if (!response.ok) throw new Error(body.error.message);
-
     this.#nextPageToken = body.nextPageToken;
     return body.items;
   }
