@@ -11,11 +11,11 @@ const request = async (searchText, nextPageToken = '') => {
       if (response.status === 200) {
         searchResult = await response.json();
       } else if (response.status === 403) {
-        throw Error(MESSAGE.ERROR_GET_REQUEST);
+        throw Error(MESSAGE.ERROR_EXCESS_API_QUOTA);
       }
     })
     .catch(error => {
-      throw Error(error.message);
+      throw Error(MESSAGE.ERROR_GET_REQUEST);
     });
 
   return searchResult;
