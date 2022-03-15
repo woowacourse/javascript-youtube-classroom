@@ -18,13 +18,9 @@ export const makeIframeTemplate = (video, exist) => {
 
   return `
     <li class='video-item-container'>
-      <iframe
-          class = "video-item"
-          type="text/html"
-          src="https://www.youtube.com/embed/${video.id.videoId}"
-          frameborder="0"
-          allowfullscreen="allowfullscreen"
-      ></iframe>
+      <img
+        src="https://img.youtube.com/vi/${video.id.videoId}/0.jpg"
+        alt="video-item-thumbnail" class="video-item">
       <h4 class="video-item__title">${video.snippet.title}</h4>
       <p class="video-item__channel-name">${video.snippet.channelTitle}</p>
       <p class="video-item__published-date">${changeDateFormat(video.snippet.publishedAt)}</p>
