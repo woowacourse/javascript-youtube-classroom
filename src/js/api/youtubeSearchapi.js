@@ -13,6 +13,9 @@ const youtubeSearchAPI = {
     const response = await fetch(url, { method: 'GET' });
 
     this.checkExceedCapacity(response);
+    if (!response.ok) {
+      throw new Error(ERROR_MESSAGE.RESPONSE_DENIED);
+    }
     return response.json();
   },
 
