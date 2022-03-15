@@ -29,7 +29,7 @@ export default class App {
       </section>`;
   }
 
-  closeModal = (e) => {
+  closeModal = () => {
     $('#search-input-keyword').value = '';
     $('.search-result').classList.remove('search-result--no-result');
     $('.video-list').replaceChildren();
