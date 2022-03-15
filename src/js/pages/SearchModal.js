@@ -34,16 +34,8 @@ const EXCEEDED_QUOTA_TEMPLATE = `
 export default class SearchModal {
   constructor(element) {
     this.element = element;
-    this.configureDOMs();
-    this.bindEvents();
-    this.VideoCardContainer = new VideoCardContainer(this.videoList, {
-      items: [],
-    });
-    this.pageToken = '';
-    this.keyword = '';
-  }
 
-  configureDOMs() {
+    //configureDOMs
     this.searchInputKeyword = this.element.querySelector('#search-input-keyword');
     this.searchErrorMessage = this.element.querySelector('#search-error-message');
     this.videoList = this.element.querySelector('.video-list');
@@ -52,15 +44,20 @@ export default class SearchModal {
     this.noResultDescription = this.element.querySelector('.no-result__description');
     [this.searchResultContainer, this.noSearchResultContainer] =
       this.element.querySelectorAll('.search-result');
-  }
 
-  bindEvents() {
+    //bindEvents
     this.dimmer.addEventListener('click', this.closeModalHandler.bind(this));
     this.searchForm.addEventListener('submit', this.searchHandler.bind(this));
     this.videoList.addEventListener(
       'scroll',
       throttle(this.scrollHandler.bind(this), THROTTLE_PENDING_MILLISECOND),
     );
+
+    this.VideoCardContainer = new VideoCardContainer(this.videoList, {
+      items: [],
+    });
+    this.pageToken = '';
+    this.keyword = '';
   }
 
   closeModalHandler() {
