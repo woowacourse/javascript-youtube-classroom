@@ -67,8 +67,8 @@ export default class Controller {
     } catch (error) {
       return;
     }
-    this.video.accumulateVideoItems();
     this.video.updateNewVideoItems();
+    this.video.accumulateVideoItems();
     this.searchResultView.renderVideo(this.video.newVideoItems);
     this.searchResultView.startObserve();
   }
