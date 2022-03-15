@@ -80,6 +80,7 @@ class SearchModal {
 
   handleClickSearchButton = async () => {
     this.resetSearchResult();
+    this.nextPageToken = null; // 같은 검색어로 또 검색했을때 첫페이지가 보여지도록 한다
     const searchKeyWord = this.$searchKeyWordInput.value;
     const searchResult = await this.requestYoutubeVideos(searchKeyWord);
     if (searchResult === null) {
