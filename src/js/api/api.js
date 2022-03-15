@@ -1,3 +1,5 @@
+import 'regenerator-runtime/runtime.js';
+
 const BASE_URL =
   'https://trusting-bardeen-f1fc38.netlify.app/youtube/v3/search';
 const OPTIONS = {
