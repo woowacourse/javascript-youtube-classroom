@@ -86,19 +86,19 @@ class SearchModal {
   }
 
   scrollVideoContainerHandler() {
-    let errored = false;
+    let requestErrored = false;
 
     return {
       requestAdditionalSearchResult: () => {
         const { offsetHeight, scrollHeight, scrollTop } = this.$videoListContainer;
-        if (scrollTop === 0 || errored) return;
+        if (scrollTop === 0 || requestErrored) return;
         if (offsetHeight + scrollTop >= scrollHeight) {
           this.searchVideo();
         }
       },
 
       setError: (isErrored) => {
-        errored = isErrored;
+        requestErrored = isErrored;
       },
     };
   }
