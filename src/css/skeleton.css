@@ -1,0 +1,34 @@
+.skeleton .video-item__thumbnail,
+.skeleton .line,
+.skeleton .video-item__save-button {
+  background-image: linear-gradient(
+    90deg,
+    #e0e0e0 0px,
+    #ededed 30px,
+    #e0e0e0 60px
+  );
+  animation: refresh 2s infinite ease-out;
+}
+
+.skeleton .line {
+  height: 24px;
+  line-height: 24px;
+}
+
+.skeleton .line:first-child {
+  width: 50%;
+}
+
+.skeleton .line:last-child {
+  width: 80%;
+}
+
+@keyframes refresh {
+  0% {
+    background-position: calc(-100px);
+  }
+  40%,
+  100% {
+    background-position: 320px;
+  }
+}

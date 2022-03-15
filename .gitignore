@@ -102,3 +102,11 @@ dist
 
 # TernJS port file
 .tern-port
+
+.vscode
+
+.DS_Store
+
+api_key.js
+
+src/js/__mocks__
