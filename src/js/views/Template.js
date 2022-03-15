@@ -64,7 +64,7 @@ export default class Template {
 
       </style>
       <a href='https://www.youtube.com/embed/${videoId}?autoplay=1&mute=1'>
-      <img src=${imgUrl}>
+      <img src=${imgUrl} loading="lazy">
         <div class='play'></div>
       </a>
     `;
@@ -78,6 +78,7 @@ export default class Template {
           srcdoc="" 
           frameborder="0"
           allow="autoplay"
+          loading="lazy"
           allowfullscreen>
         </iframe>
         <h4 class="video-item__title"></h4>
@@ -86,20 +87,5 @@ export default class Template {
         <button data-id="" class="video-item__save-button button"></button>
       </li>
     `.repeat(10);
-  }
-
-  getNotFound() {
-    return `
-    <section class="search-result search-result--no-result">
-        <h3 hidden>검색 결과 없음</h3>
-        <div class="no-result">
-          <img src="./src/assets/images/not_found.png" alt="no result image" class="no-result__image">
-          <p class="no-result__description">
-            검색 결과가 없습니다<br />
-            다른 키워드로 검색해보세요
-          </p>
-        </div>
-      </section>
-    `;
   }
 }

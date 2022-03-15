@@ -1,4 +1,3 @@
-import EXCEPTION from '../../constants/exception';
 import { checkLengthExist, checkEmpty } from '../utils/validator';
 
 export default class Video {
