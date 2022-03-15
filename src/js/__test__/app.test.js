@@ -16,24 +16,12 @@ describe('localStorage', () => {
   });
 
   it(`localStorage에 저장된 영상이 ${MAX_SAVE_COUNT}개를 초과하면, 더 이상 저장되지 않는다.`, () => {
-    try {
-      const webStore = new WebStore('saved');
-      for (let i = 0; i < MAX_SAVE_COUNT; i++) {
+    const webStore = new WebStore('saved2');
+
+    expect(() => {
+      for (let i = 0; i < MAX_SAVE_COUNT + 1; i++) {
         webStore.save([...webStore.load(), i]);
       }
-      const videoId = 'F_sOWEje2mE';
-      webStore.save([...webStore.load(), videoId]);
-    } catch (err) {
-      expect(err).toEqual(new Error(ALERT_MESSAGE.EXCEED_MAX_SAVE_VOLUME));
-    }
-
-    // const webStore = new WebStore('saved');
-    //   for (let i = 0; i < 100; i++) {
-    //     webStore.save([...webStore.load(), i]);
-    //   }
-    //   const videoId = 'F_sOWEje2mE';
-    // expect(() => webStore.save([...webStore.load(), videoId])).toThrowError(
-    //   ALERT_MESSAGE.EXCEED_MAX_SAVE_VOLUME
-    // );
+    }).toThrowError(ALERT_MESSAGE.EXCEED_MAX_SAVE_VOLUME);
   });
 });
