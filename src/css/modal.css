@@ -87,13 +87,13 @@
 }
 
 .no-result__image {
-  width: 350px;
+  width: 430px;
   margin-bottom: 32px;
 }
 
 .no-result__error-image {
   width: 350px;
-  margin-bottom: 20px;
+  margin-bottom: 32px;
 }
 
 .video-list {
