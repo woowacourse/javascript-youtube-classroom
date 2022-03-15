@@ -123,3 +123,19 @@ body {
 .video-item__button-wrapper button:hover {
   background: #efefef;
 }
+
+.no-saved-videos {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+}
+
+.no-saved-videos__emoji {
+  font-size: 10rem;
+  color: #c4c4c4;
+}
+
+.no-saved-videos__description {
+  line-height: 1.5;
+}
