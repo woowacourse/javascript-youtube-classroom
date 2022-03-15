@@ -1,0 +1,12 @@
+const RULES = {
+  MAX_VIDEO_AMOUNT_PER_REQUEST: 10,
+  MAX_STORED_IDS_AMOUNT: 100,
+};
+
+const THROTTLE_PENDING_MILLISECOND = 500;
+
+const ERROR = {
+  FAILED_TO_PARSE: 'localStorage의 값을 불러 오는데 실패했습니다.',
+};
+
+export { RULES, THROTTLE_PENDING_MILLISECOND, ERROR };
