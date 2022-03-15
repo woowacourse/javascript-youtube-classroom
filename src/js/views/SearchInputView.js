@@ -1,3 +1,5 @@
+import KEYCODE from '../../constants/keycode.js';
+
 import { $ } from '../utils/dom.js';
 import { emit, on } from '../utils/event.js';
 
@@ -20,10 +22,10 @@ export default class SearchInputView {
   }
 
   #handleKeydown() {
-    if (window.event.keyCode === 13) {
+    if (window.event.keyCode === KEYCODE.ENTER) {
       this.#handleClick();
     }
-    if (window.event.keyCode === 27) {
+    if (window.event.keyCode === KEYCODE.ESC) {
       this.#handleClickCloseButton();
     }
   }
