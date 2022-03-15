@@ -1,5 +1,5 @@
 import { STATE_STORE_KEY } from '../constants/stateStore';
-import { subscribe } from '../modules/stateStore';
+import { getState, subscribe } from '../modules/stateStore';
 import { parseTimeStamp } from '../utils/util';
 
 class VideoComponent {
@@ -19,7 +19,8 @@ class VideoComponent {
     observer?.observe(this.$videoItem);
   }
 
-  wakeUp(stateValue, stateKey) {
+  wakeUp(stateKey) {
+    const stateValue = getState(STATE_STORE_KEY.SAVED_VIDEO);
     this.#render(stateValue);
   }
 

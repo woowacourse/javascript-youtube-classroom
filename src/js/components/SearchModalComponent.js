@@ -1,6 +1,6 @@
 import SearchFormComponent from './SearchFormComponent';
 import VideoContainerComponent from './VideoContainerComponent';
-import { subscribe } from '../modules/stateStore';
+import { getState, subscribe } from '../modules/stateStore';
 import { STATE_STORE_KEY } from '../constants/stateStore';
 import { CUSTOM_EVENT_KEY } from '../constants/events';
 import { dispatch } from '../modules/eventFactory';
@@ -27,7 +27,8 @@ class SearchModalComponent {
     this.#subscribeStore();
   }
 
-  wakeUp(stateValue, stateKey) {
+  wakeUp(stateKey) {
+    const stateValue = getState(STATE_STORE_KEY.IS_MODAL_SHOW);
     this.#render(stateValue);
   }
 

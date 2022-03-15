@@ -1,7 +1,7 @@
 import { CUSTOM_EVENT_KEY } from '../constants/events';
 import { STATE_STORE_KEY } from '../constants/stateStore';
 import { dispatch } from '../modules/eventFactory';
-import { subscribe } from '../modules/stateStore';
+import { getState, subscribe } from '../modules/stateStore';
 import { isFirstSearchByKeyword, isNullVideoList } from '../utils/validation';
 import SkeletonListComponent from './SkeletonListComponent';
 import VideoComponent from './VideoComponent';
@@ -32,11 +32,13 @@ class VideoContainerComponent {
     });
   }
 
-  wakeUp(stateValue, stateKey) {
+  wakeUp(stateKey) {
     if (stateKey === STATE_STORE_KEY.IS_WAITING_RESPONSE) {
+      const stateValue = getState(STATE_STORE_KEY.IS_WAITING_RESPONSE);
       this.#renderSkeletonUI(stateValue);
     }
     if (stateKey === STATE_STORE_KEY.SEARCH_RESULT) {
+      const stateValue = getState(STATE_STORE_KEY.SEARCH_RESULT);
       this.#renderSearchResult(stateValue);
     }
   }
