@@ -3,13 +3,13 @@ import { YOUTUBE_API_REQUEST_COUNT, SELECTOR } from '../constants/index.js';
 
 export default class VideoView {
   #io;
+  #videoAPI;
   #$container;
   #$emptyScreen;
-  #$videoAPI;
 
   constructor(videoAPI) {
     this.#$container = $(SELECTOR.VIDEOS);
-    this.#$videoAPI = videoAPI;
+    this.#videoAPI = videoAPI;
     this.#io = intersectionObserver(this.#findObserverElement.bind(this), { root: this.#$container });
     this.#$emptyScreen = $(SELECTOR.EMPTY_SCREEN);
   }
@@ -54,7 +54,7 @@ export default class VideoView {
 
   async #findObserverElement() {
     this.onSkeleton();
-    const videos = await this.#$videoAPI();
+    const videos = await this.#videoAPI();
     this.offSkeleton();
     this.#appendVideos(videos);
     return videos.length ? this.#lastVideoItem() : null;
