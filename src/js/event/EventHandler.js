@@ -31,7 +31,7 @@ export default class EventHandler {
 
   async clickSearchButton(searchInput) {
     try {
-      validator.checkValidSearchInput(searchInput);
+      validator.validateSearchInput(searchInput);
       this.modalView.resetVideoList();
       this.modalView.appendEmptyList();
       this.modalView.appendVideoItem();
