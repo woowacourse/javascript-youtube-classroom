@@ -117,16 +117,26 @@ export default class ModalView {
   }
 
   renderVideoList(data) {
-    if (data.size === 0) {
+    this.showResult();
+    if (data.length === 0) {
       this.showNoResult();
       return;
     }
-
+    this.hideSkeletonTemplates(data);
     this.videoItemList
-      .slice(-VIDEO_LIST.RENDER_SIZE)
+      .slice(-data.length)
       .forEach((videoItem, index) => videoItem.getVideoItemTemplate(data[index]));
+  }
 
-    this.showResult();
+  hideSkeletonTemplates(data) {
+    if (data.length < VIDEO_LIST.RENDER_SIZE) {
+      this.videoItemList
+        .slice(-VIDEO_LIST.RENDER_SIZE)
+        .slice(0, data.length)
+        .forEach(el => {
+          el.$element.classList.add('hide');
+        });
+    }
   }
 
   focusSearch() {
