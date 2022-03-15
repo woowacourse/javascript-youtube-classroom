@@ -160,7 +160,7 @@ export default class SearchVideoScreen {
   #renderServerErrorResult() {
     this.#showNoResultView();
     this.#videoList.replaceChildren('');
-    this.#noResult.removeChild(this.#noResult.lastElementChild);
+    this.#noResult.replaceChildren('');
     this.#noResult.insertAdjacentHTML('beforeend', SERVER_ERROR_TEMPLATE);
   }
 }
