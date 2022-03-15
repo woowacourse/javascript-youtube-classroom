@@ -136,12 +136,6 @@ class SearchModal {
       return false;
     }
     const newVideoList = [...videoList, videoId];
-    const videoSet = new Set(newVideoList);
-    const isDuplicated = newVideoList.length > videoSet.size;
-    if (isDuplicated) {
-      alert('이미 저장된 비디오입니다');
-      return false;
-    }
     this.savedVideoMap = arrayToMap(newVideoList);
     this.saveVideoListToLocalStorage(newVideoList);
     return true;
