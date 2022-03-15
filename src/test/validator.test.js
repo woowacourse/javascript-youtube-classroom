@@ -1,5 +1,4 @@
-import { isEmpty } from '../js/utils/index.js';
-import { formatDate } from '../js/Interactor/index.js';
+import { isEmpty, formatDate } from '../js/utils/index.js';
 
 test('빈 값을 입력하면 검색이 불가능하다.', () => {
   const keyword = '';
