@@ -22,8 +22,11 @@ export default class SearchEngine {
 
     if (response.ok) {
       const json = await response.json();
+
+      //TODO : nextPageToken이 없을때
       this.#pageToken = json.nextPageToken;
 
+      console.log(this.#isDataExist(json));
       return this.#isDataExist(json) ? json.items : null;
     }
 
@@ -31,7 +34,7 @@ export default class SearchEngine {
   }
 
   #isDataExist(data) {
-    return Object.keys(data.items[0]).includes('snippet');
+    return data.items.length && Object.keys(data.items[0]).includes('snippet');
   }
 
   #getYoutubeApiUrl(keyword) {
