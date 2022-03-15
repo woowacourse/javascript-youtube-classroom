@@ -85,12 +85,12 @@
 
 .video-list {
   width: 1040px;
-  height: 493px;
+  overflow: hidden;
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
   gap: 32px 20px;
-  overflow-y: scroll;
+  /* overflow-y: scroll; */
 }
 
 .video-item {
@@ -144,7 +144,13 @@
 }
 
 .search-result {
+  width: 1040px;
+  height: 493px;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
   margin: auto;
+  overflow-y: scroll;
 }
 
 .video-item__save-button:disabled {
@@ -153,4 +159,14 @@
 
 .video-no-more {
   margin: auto;
+}
+
+.skeleton-list {
+  width: 1040px;
+  height: 493px;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 32px 20px;
+  margin-top: 20px;
 }
