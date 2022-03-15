@@ -1,4 +1,5 @@
 import { $, addEvent } from '@Utils/dom';
+import { EVENT_TYPE } from '@Constants';
 
 export default class Navigation {
   constructor() {
@@ -8,7 +9,7 @@ export default class Navigation {
 
   bindEvents() {
     addEvent(this.container, {
-      eventType: 'click',
+      eventType: EVENT_TYPE.CLICK,
       selector: '#search-modal-button',
       handler: this.handleOpenModal,
     });

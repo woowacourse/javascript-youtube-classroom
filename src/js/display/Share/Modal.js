@@ -1,4 +1,5 @@
 import { $, addEvent } from '@Utils/dom';
+import { EVENT_TYPE } from '@Constants';
 
 export default class Modal {
   constructor() {
@@ -8,7 +9,7 @@ export default class Modal {
 
   bindEvents() {
     addEvent(this.container, {
-      eventType: 'click',
+      eventType: EVENT_TYPE.CLICK,
       selector: '.dimmer',
       handler: this.handleCloseModal,
     });

@@ -15,3 +15,9 @@ export const YOUTUBE_SETTING = {
   MAX_VIDEO_NUMBER: 10,
   MAX_SAVE_NUMBER: 100,
 };
+
+export const EVENT_TYPE = {
+  CLICK: 'click',
+  INPUT: 'input',
+  SUBMIT: 'submit',
+};

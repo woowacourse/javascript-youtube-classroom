@@ -1,6 +1,6 @@
 import { $, addEvent } from '@Utils/dom';
 import { isEmptyString, isSameKeyword } from '@Utils/validator';
-import { YOUTUBE_SEARCH_ACTION, ERROR_MESSAGE } from '@Constants';
+import { YOUTUBE_SEARCH_ACTION, ERROR_MESSAGE, EVENT_TYPE } from '@Constants';
 import { onEnableButton } from '@Utils/elementController';
 import YoutubeSearchStore from '@Domain/YoutubeSearchStore';
 
@@ -12,12 +12,12 @@ export default class SearchForm {
 
   bindEvents() {
     addEvent(this.container, {
-      eventType: 'input',
+      eventType: EVENT_TYPE.INPUT,
       selector: '#search-input-keyword',
       handler: this.handleInputValue,
     });
     addEvent(this.container, {
-      eventType: 'submit',
+      eventType: EVENT_TYPE.SUBMIT,
       selector: '#search-form',
       handler: this.handleSubmitForm,
     });
