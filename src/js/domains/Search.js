@@ -33,27 +33,16 @@ class Search {
   }
 
   async search(type, keyword) {
-    const videos = await this.fetchVideo(keyword);
-
-    this.keyword = keyword;
-    this.nextPageToken = videos.nextPageToken ?? '';
-
-    VideoStore.instance.dispatch(type, this.preprocessor(videos));
-  }
-
-  async fetchVideo(keyword) {
     try {
       SEARCH_API.URL.search = this.generateSearchParams(keyword);
-      const response = await fetchData(SEARCH_API.URL);
+      const videos = await fetchData(SEARCH_API.URL);
 
-      if (response instanceof Error) {
-        throw new Error(ERROR_MESSAGE.FAIL_TO_REQUEST_API);
-      }
+      this.keyword = keyword;
+      this.nextPageToken = videos.nextPageToken ?? '';
 
-      return response;
-    } catch (error) {
-      alert(error.message);
-      return error;
+      VideoStore.instance.dispatch(type, this.preprocessor(videos));
+    } catch (e) {
+      alert(ERROR_MESSAGE.FAIL_TO_REQUEST_API);
     }
   }
 
