@@ -51,7 +51,11 @@ export default class Controller {
     this.video.accumulateVideoItems();
     this.video.updateNewVideoItems();
     this.searchResultView.hideNotFound();
-    this.searchResultView.renderVideo(this.video.newVideoItems);
+    try {
+      this.searchResultView.renderVideo(this.video.newVideoItems);
+    } catch (error) {
+      this.searchResultView.hideSkeleton();
+    }
     this.searchResultView.startObserve();
   }
 
@@ -77,7 +81,11 @@ export default class Controller {
       return;
     }
 
-    this.searchResultView.renderVideo(this.video.newVideoItems);
+    try {
+      this.searchResultView.renderVideo(this.video.newVideoItems);
+    } catch (error) {
+      this.searchResultView.hideSkeleton();
+    }
     this.searchResultView.startObserve();
   }
 

@@ -24,12 +24,13 @@ export default class SearchResultView {
 
   renderVideo(newVideoItems) {
     this.$videoItems = $$('.skeleton');
+
     this.$videoItems.forEach(($item, idx) => {
-      $item.classList.remove('skeleton');
       $('.video-item__thumbnail', $item).setAttribute(
         'srcdoc',
         this.template.getThumbnail(newVideoItems[idx].thumbnailUrl, newVideoItems[idx].videoId),
       );
+      $item.classList.remove('skeleton');
       $('.video-item__title', $item).innerText = newVideoItems[idx].title;
       $('.video-item__channel-name', $item).innerText = newVideoItems[idx].channelTitle;
       $('.video-item__published-date', $item).innerText = newVideoItems[idx].publishTime;
@@ -39,6 +40,12 @@ export default class SearchResultView {
       $savedButton.disabled = newVideoItems[idx].saved;
       $savedButton.addEventListener('click', this.handleSaveButton.bind(this));
       $savedButton.dataset.id = newVideoItems[idx].videoId;
+    });
+  }
+
+  hideSkeleton() {
+    $$('.skeleton').forEach((element) => {
+      element.classList.add('hide');
     });
   }
 
