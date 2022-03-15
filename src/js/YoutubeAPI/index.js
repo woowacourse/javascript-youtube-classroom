@@ -29,7 +29,7 @@ export default class YoutubeAPI {
     return this.#nextPageToken === undefined;
   }
 
-  async videos() {
+  async getVideosInfo() {
     if (this.#checkEndPage()) return [];
 
     const response = await fetch(this.#makeURL(), { method: 'GET' });
@@ -43,6 +43,6 @@ export default class YoutubeAPI {
 
   async search(keyword) {
     this.#refresh(keyword);
-    return await this.videos();
+    return await this.getVideosInfo();
   }
 }

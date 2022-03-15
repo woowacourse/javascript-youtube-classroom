@@ -37,7 +37,7 @@ const polishVideos = (videos) => {
 
 const keywordInputView = new KeywordInputView();
 const searchModalView = new SearchModalView();
-const videoView = new VideoView(async () => polishVideos(await youtubeAPI.videos()));
+const videoView = new VideoView(async () => polishVideos(await youtubeAPI.getVideosInfo()));
 
 const checkError = (error) => {
   if (error instanceof ValidationError) {
