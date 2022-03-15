@@ -12,7 +12,7 @@ export default class SearchForm extends Display {
 
   bindEvents() {
     this.addEvent({
-      eventType: 'keyup',
+      eventType: 'input',
       selector: '#search-input-keyword',
       handler: this.handleInputValue.bind(this),
     });
