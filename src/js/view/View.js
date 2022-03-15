@@ -73,7 +73,7 @@ class View {
       const { searchResultArray, hasNextPage } = await this.search.handleSearchRequest(keyword);
       this.#renderSearchResult({ searchResultArray, keyword, hasNextPage });
     } catch (error) {
-      this.#renderError(error.message);
+      this.#renderError(error.message, keyword);
     }
   }
 
@@ -141,18 +141,20 @@ class View {
     </div>`.repeat(MAX_SEARCH_RESULT);
   }
 
-  #renderError(errorMessage) {
+  #renderError(errorMessage, keyword) {
     this.videoList.classList.add('hide');
     this.searchResult.classList.add('search-result--no-result');
     this.searchResult.insertAdjacentHTML(
       'beforeend',
       `<div class="no-result">
         <img src="./not_found.png" alt="no result image" class="no-result__image">
-        <p class= "no-result__description">
-          ${errorMessage}
-        </p>
+        <p class= "no-result__description">${errorMessage}</p>
       </div>`
     );
+    if (keyword) {
+      const searchResultTitle = selectDom('.search-result-title', this.searchResult);
+      searchResultTitle.textContent = `'${keyword}' 검색 결과입니다`;
+    }
   }
 
   #clearNoResult() {
