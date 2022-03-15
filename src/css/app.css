@@ -1,42 +1,42 @@
 body {
-    padding: 64px 0;
-    font-size: 16px;
+  padding: 64px 0;
+  font-size: 16px;
 }
 
 #app {
-    max-width: 1020px;
-    margin: 0 auto;
+  max-width: 1020px;
+  margin: 0 auto;
 }
 
 .classroom-container__title {
-    text-align: center;
-    font-weight: bold;
-    font-size: 34px;
-    line-height: 36px;
-    margin-bottom: 64px;
+  text-align: center;
+  font-weight: bold;
+  font-size: 34px;
+  line-height: 36px;
+  margin-bottom: 64px;
 }
 
 .nav {
-    display: flex;
-    justify-content: center;
+  display: flex;
+  justify-content: center;
 }
 
 .button {
-    cursor: pointer;
-    border-radius: 4px;
-    border: none;
-    font-style: normal;
-    font-weight: bold;
-    font-size: 14px;
-    letter-spacing: 1.25px;
+  cursor: pointer;
+  border-radius: 4px;
+  border: none;
+  font-style: normal;
+  font-weight: bold;
+  font-size: 14px;
+  letter-spacing: 1.25px;
 }
 
 .nav__button {
-    width: 80px;
-    height: 36px;
-    background: #F5F5F5;
+  width: 80px;
+  height: 36px;
+  background: var(--nav-button-bg-color);
 }
 
 .nav__button:hover {
-    background: #ebebeb;
+  background: var(--nav-button-hover-bg-color);
 }

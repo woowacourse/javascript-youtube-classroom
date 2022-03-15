@@ -1,0 +1,19 @@
+:root {
+  --nav-button-bg-color: #f5f5f5;
+  --nav-button-hover-bg-color: #ebebeb;
+  --dimmer-bg-color: rgba(0, 0, 0, 0.5);
+  --search-modal-bg-color: #ffffff;
+  --search-modal-border-color: rgba(0, 0, 0, 0.12);
+  --search-error-message-text-color: rgb(160, 158, 158);
+  --search-input-border-color: #b4b4b4;
+  --search-input-placeholder-color: #8b8b8b;
+  --search-button-bg-color: #00bcd4;
+  --search-button-text-color: #ffffff;
+  --video-list-scrollbar-bg-color: #00bcd4;
+  --video-item-save-button-bg-color: #f9f9f9;
+  --video-item-save-button-hover-bg-color: #efefef;
+  --skeleton-linear-gradient-bg-color: #e0e0e0;
+  --skeleton-linear-gradient-middle-bg-color: #ededed;
+  --toast-bg-color: rgba(0, 188, 212);
+  --toast-text-color: #ffffff;
+}
