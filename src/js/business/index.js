@@ -1,7 +1,7 @@
 import { STATE_STORE_KEY } from '../constants/stateStore';
 import { getState, setState } from '../modules/stateStore';
 import { youtubeAPIFetcher } from '../modules/fetcher';
-import { isNoneSearchResult } from '../utils/validation';
+import { isMoreThanMaxVideoCount, isNoneSearchResult } from '../utils/validation';
 import { parserVideos } from '../utils/util';
 import Video from '../modules/video';
 import { API_PATHS } from '../constants/fetcher';
@@ -9,6 +9,7 @@ import webStore from '../modules/webStore';
 import { bind } from '../modules/eventFactory';
 import { CUSTOM_EVENT_KEY } from '../constants/events';
 import { WEB_STORE_KEY } from '../constants/webStore';
+import { ERROR_MESSAGE } from '../constants/errorMessage';
 class AppBusiness {
   constructor() {
     bind(CUSTOM_EVENT_KEY.CLICK_SEARCH_MODAL_BUTTON, this.onClickSearchModalButton);
@@ -73,12 +74,19 @@ class AppBusiness {
   };
 
   onClickSaveButton = ({ detail: { saveVideoId } }) => {
-    try {
-      webStore.setSavedVideoList(saveVideoId);
-      setState(STATE_STORE_KEY.SAVED_VIDEO, webStore.getData(WEB_STORE_KEY.SAVED_VIDEO_LIST_KEY));
-    } catch ({ message }) {
-      alert(message);
+    const videoList = webStore.getArrayData(WEB_STORE_KEY.SAVED_VIDEO_LIST_KEY);
+
+    if (isMoreThanMaxVideoCount(videoList)) {
+      alert(ERROR_MESSAGE.SAVE_VIDEO_COUNT_OVER);
+      return;
     }
+
+    webStore.setDataInArray(WEB_STORE_KEY.SAVED_VIDEO_LIST_KEY, saveVideoId);
+
+    setState(
+      STATE_STORE_KEY.SAVED_VIDEO,
+      webStore.getArrayData(WEB_STORE_KEY.SAVED_VIDEO_LIST_KEY)
+    );
   };
 
   async requestVideo(keyword, pageToken) {
