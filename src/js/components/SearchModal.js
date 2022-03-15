@@ -1,5 +1,5 @@
 import { fetchDataFromKeyword } from '../utils/apiFetch.js';
-import { saveLocalStorage, getLocalStorage } from '../utils/localStorage.js';
+import { getVideoIdFromLocalStorage, saveVideoIdToLocalStorage } from '../utils/localStorage.js';
 import { noSearchResultTemplate, makeIframeTemplate, makeSkeletonTemplate } from '../utils/templates.js';
 import { NUM } from '../../const/consts.js';
 
@@ -11,9 +11,13 @@ export class SearchModal {
     this.resultLabel = document.getElementById('result-label');
     this.noResultContainer = document.getElementById('no-result');
     this.searchButton = document.getElementById('search-button');
+    this.closeModalButton = document.getElementById('close-modal-button');
+    this.searchModal = document.getElementById('search-modal');
 
     this.searchButton.addEventListener('click', this.handleSearchButton);
     this.videoList.addEventListener('click', this.handleVideoItemSave);
+    this.closeModalButton.addEventListener('click', this.handleCloseButton);
+    this.searchInputKeyword.addEventListener('keyup', (event) => this.handleEnterKeyEvent(event));
   }
 
   show() {
@@ -98,15 +102,25 @@ export class SearchModal {
       return;
     }
 
-    const proviousLocalStorage = getLocalStorage('videoId');
+    const proviousLocalStorage = getVideoIdFromLocalStorage();
     if (this.canSaveVideoItems(proviousLocalStorage, e.target)) {
       proviousLocalStorage.push(e.target.id);
       e.target.remove();
     }
-    saveLocalStorage('videoId', proviousLocalStorage);
+    saveVideoIdToLocalStorage(proviousLocalStorage);
   };
 
   canSaveVideoItems(localStorage, target) {
     return !localStorage.includes(target.id) && localStorage.length <= NUM.MAX_STORAGE_LENGTH;
   }
+
+  handleCloseButton = () => {
+    this.modalContainer.classList.add('hide');
+  };
+
+  handleEnterKeyEvent = (event) => {
+    if (event.key === 'Enter') {
+      this.searchButton.click();
+    }
+  };
 }

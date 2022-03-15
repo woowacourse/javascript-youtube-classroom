@@ -33,6 +33,7 @@ export const makeSkeletonTemplate = () => {
         <div class="image"></div>
         <p class="line"></p>
         <p class="line"></p>
+        <p class="line"></p>
     </div>
     `;
 };

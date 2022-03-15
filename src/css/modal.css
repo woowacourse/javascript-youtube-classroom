@@ -184,3 +184,7 @@
     background-position: 320px;
   }
 }
+
+#close-modal-button {
+  float: right;
+}
