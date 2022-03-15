@@ -7,6 +7,7 @@ export default class SearchInputView {
     this.$searchButton = $('#search-button');
     this.$closeButton = $('.close-button');
     this.$modalContainer = $('.modal-container');
+    this.$dimmer = $('.dimmer');
     this.#bindEvents();
   }
 
@@ -14,6 +15,7 @@ export default class SearchInputView {
     on(this.$searchButton, 'click', this.#handleClick.bind(this));
     on(this.$searchInputKeyword, 'keypress', this.#handleKeypress.bind(this));
     on(this.$closeButton, 'click', this.#handleClickCloseButton.bind(this));
+    on(this.$dimmer, 'click', this.#handleClickCloseButton.bind(this));
   }
 
   #handleKeypress() {
