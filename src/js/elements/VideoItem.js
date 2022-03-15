@@ -21,7 +21,9 @@ class VideoItem extends CustomElement {
         <h4 class="video-item__title">${decodeURI(video.title)}</h4>
         <p class="video-item__channel-name">${decodeURI(video.channelTitle)}</p>
         <p class="video-item__published-date">${formatDate(video.publishedAt)}</p>
-        <button id="${video.id}-save-button" class="video-item__save-button button">⬇ 저장</button>
+        <button type="button" id="${
+          video.id
+        }-save-button" class="video-item__save-button button">⬇ 저장</button>
       </li>
     `;
   }
