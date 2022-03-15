@@ -6,6 +6,7 @@ import {
   LOCAL_STORAGE_VIDEO_LIST_KEY,
 } from './constants/constant';
 import VideoItem from './videoItem';
+import arrayToMap from './utils/array';
 
 class SearchModal {
   serverUrl = 'https://silly-volhard-192918.netlify.app/.netlify/functions/youtube';
@@ -23,6 +24,9 @@ class SearchModal {
     this.$searchButton.addEventListener('click', this.handleClickSearchButton);
     this.$videoList.addEventListener('click', this.handleClickVideoList);
     this.$videoList.addEventListener('scroll', this.handleScrollVideoList);
+
+    const videoList = this.getVideoListFromLocalStorage();
+    this.savedVideoMap = arrayToMap(videoList);
   }
 
   templateSkeletons(videoCount) {
@@ -47,6 +51,10 @@ class SearchModal {
   renderVideoItems(videos) {
     const videoListTemplate = videos
       .map(video => {
+        const isSavedVideo = Object.prototype.hasOwnProperty.call(this.savedVideoMap, video.id);
+        const button = !isSavedVideo
+          ? '<button class="video-item__save-button button">⬇ 저장</button>'
+          : '';
         return `<li class="video-item" data-video-id="${video.id}">
           <img
             src="${video.thumbnailUrl}"
@@ -54,7 +62,7 @@ class SearchModal {
           <h4 class="video-item__title">${video.title}</h4>
           <p class="video-item__channel-name">${video.channelTitle}</p>
           <p class="video-item__published-date">${video.publishedAt}</p>
-          <button class="video-item__save-button button">⬇ 저장</button>
+          ${button}
         </li>`;
       })
       .join('');
@@ -121,18 +129,20 @@ class SearchModal {
   };
 
   saveVideo(videoId) {
-    const videoList = JSON.parse(localStorage.getItem(LOCAL_STORAGE_VIDEO_LIST_KEY)) ?? [];
+    const videoList = this.getVideoListFromLocalStorage();
     if (videoList.length >= MAX_SAVABLE_VIDEOS_COUNT) {
       alert(`비디오는 ${MAX_SAVABLE_VIDEOS_COUNT}개 이상 저장할 수 없습니다`);
       return false;
     }
-    const newVideoSet = new Set([...videoList, videoId]);
-    const isDuplicated = videoList.length === newVideoSet.size();
+    const newVideoList = [...videoList, videoId];
+    const videoSet = new Set(newVideoList);
+    const isDuplicated = newVideoList.length > videoSet.size;
     if (isDuplicated) {
       alert('이미 저장된 비디오입니다');
       return false;
     }
-    localStorage.setItem(LOCAL_STORAGE_VIDEO_LIST_KEY, JSON.stringify([...newVideoSet]));
+    this.savedVideoMap = arrayToMap(newVideoList);
+    this.saveVideoListToLocalStorage(newVideoList);
     return true;
   }
 
@@ -174,6 +184,14 @@ class SearchModal {
     } finally {
       this.$searchResult.classList.remove('loading');
     }
+  }
+
+  getVideoListFromLocalStorage() {
+    return JSON.parse(localStorage.getItem(LOCAL_STORAGE_VIDEO_LIST_KEY)) ?? [];
+  }
+
+  saveVideoListToLocalStorage(videoList) {
+    localStorage.setItem(LOCAL_STORAGE_VIDEO_LIST_KEY, JSON.stringify(videoList));
   }
 }
 
