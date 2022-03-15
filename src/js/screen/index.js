@@ -3,7 +3,7 @@ import StorageEngine from '../domain/storageEngine.js';
 
 import { $, $$ } from '../util/domHelper.js';
 import { NO_RESULT_IMAGE_TEMPLATE, SKELETON_TEMPLATE } from '../util/template.js';
-import { preprocessDate } from '../util/common.js';
+import { preprocessDate, throttle } from '../util/common.js';
 import { DELAY_MILISECOND_TIME, VIDEO_COUNT } from '../util/constants.js';
 
 export default class ScreenManager {
@@ -135,30 +135,30 @@ export default class ScreenManager {
   }
 
   bindScrollEvent() {
-    this.videoList.addEventListener('scroll', this.handleScroll);
+    this.videoList.addEventListener('scroll', this.handleInfiniteScroll);
   }
 
-  handleScroll = async (e) => {
+  handleInfiniteScroll = (e) => {
     const { scrollHeight, scrollTop, clientHeight } = e.target;
 
-    if (!this.#throttle && scrollTop + clientHeight >= scrollHeight) {
-      this.#throttle = setTimeout(async () => {
-        if (this.searchEngine.pageToken !== null) {
-          this.renderSkeleton();
-        }
-
-        this.#throttle = null;
-        const keyword = this.searchInputKeyword.value;
-
-        try {
-          const data = await this.searchEngine.searchKeyword(keyword);
-          this.renderAdditionalVideos(data);
-        } catch (error) {
-          alert(error);
-        }
-      }, DELAY_MILISECOND_TIME);
+    if (scrollTop + clientHeight >= scrollHeight) {
+      throttle(this.handleScrollEvent.bind(this), DELAY_MILISECOND_TIME)();
     }
   };
+
+  async handleScrollEvent() {
+    if (this.searchEngine.pageToken !== null) {
+      this.renderSkeleton();
+    }
+    const keyword = this.searchInputKeyword.value;
+
+    try {
+      const data = await this.searchEngine.searchKeyword(keyword);
+      this.renderAdditionalVideos(data);
+    } catch (error) {
+      alert(error);
+    }
+  }
 
   renderAdditionalVideos(data) {
     if (data === null) {
