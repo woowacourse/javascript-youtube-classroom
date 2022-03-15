@@ -9,3 +9,10 @@ export const validateInput = input => {
     throw new Error(ERROR.MESSAGE.EMPTY_INPUT);
   }
 };
+
+export const quickModalElement = e => {
+  e.preventDefault();
+  if (!$('.modal-container').classList.contains('hide')) {
+    $('.modal-container').classList.toggle('hide');
+  }
+};

@@ -1,4 +1,4 @@
-import { $ } from './util/general.js';
+import { $, quickModalElement } from './util/general.js';
 import YoutubeMachine from './domain/YoutubeMachine.js';
 import userInterface from './ui/userInterface.js';
 import '../css/index.css';
@@ -53,6 +53,8 @@ export default function App() {
   $('.video-list').addEventListener('scroll', applyThrottle(handleScroll, THROTTLE_DELAY));
 
   $('.video-list').addEventListener('click', handleSaveButtonClick);
+
+  $('.dimmer').addEventListener('click', quickModalElement);
 }
 
 App();
