@@ -30,7 +30,7 @@ export const VIDEO_LIST = {
 };
 
 export const SCROLL = {
-  ADDITIONAL_OFFSET: 400,
+  ADDITIONAL_OFFSET: 300,
 };
 
 export const KEY_CODE = {
