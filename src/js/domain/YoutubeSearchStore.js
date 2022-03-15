@@ -1,16 +1,17 @@
-import Store from '@Core/Store';
 import { YOUTUBE_SEARCH_ACTION } from '@Constants';
 import { requestYoutubeSearch } from '@Api';
 
-class YoutubeSearchStore extends Store {
-  state = {
-    searchKeyword: '',
-    isLoading: false,
-    isLoaded: false,
-    items: [],
-    nextPageToken: '',
-    error: false,
-  };
+class YoutubeSearchStore {
+  state = {};
+
+  subscribers = [];
+
+  reducer = {};
+
+  constructor(initialState) {
+    this.state = initialState;
+    this.setReducer();
+  }
 
   setReducer() {
     this.reducer = {
@@ -54,6 +55,30 @@ class YoutubeSearchStore extends Store {
       nextPageToken,
     });
   }
+
+  getState() {
+    return this.state;
+  }
+
+  setState(newState) {
+    this.state = newState;
+    this.subscribers.forEach(subscriber => subscriber(this.state));
+  }
+
+  dispatch(type, data) {
+    this.reducer[type] && this.reducer[type](data);
+  }
+
+  addSubscriber(subscriber) {
+    this.subscribers.push(subscriber);
+  }
 }
 
-export default new YoutubeSearchStore();
+export default new YoutubeSearchStore({
+  searchKeyword: '',
+  isLoading: false,
+  isLoaded: false,
+  items: [],
+  nextPageToken: '',
+  error: false,
+});
