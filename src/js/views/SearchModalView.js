@@ -12,15 +12,9 @@ export default class SearchModalView {
     this.#$modalBackground = $(SELECTOR.MODAL_BACKGROUND);
   }
 
-  bindShowModal() {
-    this.#$searchModalButton.addEventListener('click', () => {
-      this.#controllModal('remove');
-    });
-  }
-
-  bindCloseModal() {
+  bindModal() {
+    this.#$searchModalButton.addEventListener('click', this.#controllModal.bind(this, 'remove'));
     this.#$modalBackground.addEventListener('click', this.#controllModal.bind(this, 'add'));
-
     document.addEventListener('keyup', (e) => {
       if (e.key === 'Escape') {
         this.#controllModal('add');

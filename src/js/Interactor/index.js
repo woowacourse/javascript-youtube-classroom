@@ -60,8 +60,7 @@ const handleSaveVideoButtonClick = (videoId) => {
 
 const runApp = () => {
   keywordInputView.bindSubmitKeyword(handleKeywordInputSubmit);
-  searchModalView.bindShowModal();
-  searchModalView.bindCloseModal();
+  searchModalView.bindModal();
   videoView.bindSaveVideo(handleSaveVideoButtonClick);
 };
 
