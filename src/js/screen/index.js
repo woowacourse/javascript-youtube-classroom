@@ -4,7 +4,7 @@ import StorageEngine from '../domain/storageEngine.js';
 import { $, $$ } from '../util/domHelper.js';
 import { NO_RESULT_TEMPLATE, SKELETON_TEMPLATE, VIDEO_LIST_TEMPLATE } from '../util/template.js';
 import { preprocessDate } from '../util/common.js';
-import { DELAY_MILISECOND_TIME } from '../util/constants.js';
+import { DELAY_MILISECOND_TIME, VIDEO_COUNT } from '../util/constants.js';
 
 export default class ScreenManager {
   #throttle;
@@ -25,7 +25,7 @@ export default class ScreenManager {
     this.searchModalButton.addEventListener('click', this.handleOpenModal.bind(this));
     document.addEventListener('click', this.handleCloseModal.bind(this));
     this.searchButton.addEventListener('click', this.handleSearchVideos.bind(this));
-    this.searchInputKeyword.addEventListener('keydown', this.handleSearchVideos.bind(this));
+    this.searchInputKeyword.addEventListener('keypress', this.handleSearchVideos.bind(this));
     this.searchResult.addEventListener('click', this.handleSaveVideo.bind(this));
   }
 
@@ -65,8 +65,8 @@ export default class ScreenManager {
   }
 
   renderSkeleton() {
-    const videoList = $('.video-list');
-    videoList.insertAdjacentHTML('beforeend', SKELETON_TEMPLATE);
+    this.videoList = $('.video-list');
+    this.videoList.insertAdjacentHTML('beforeend', SKELETON_TEMPLATE);
   }
 
   renderSearchResult(data) {
@@ -76,56 +76,10 @@ export default class ScreenManager {
       this.searchResult.classList.add('search-result--no-result');
       return;
     }
+
     const preprocessedData = ScreenManager.preprocessData(data);
     this.allocatePreprocessedData(preprocessedData);
     this.bindScrollEvent();
-  }
-
-  allocatePreprocessedData(preprocessedData) {
-    const skeletonList = $$('.skeleton');
-
-    skeletonList.forEach((element, index) => {
-      const { videoId, channelTitle, thumbnails, title, publishTime } = preprocessedData[index];
-
-      element.dataset.videoId = videoId;
-
-      $('.video-item__thumbnail', element).src = thumbnails;
-      $('.video-item__title', element).textContent = title;
-      $('.video-item__channel-name', element).textContent = channelTitle;
-      $('.video-item__published-date', element).textContent = publishTime;
-
-      element.classList.remove('skeleton');
-    });
-  }
-
-  bindScrollEvent() {
-    this.videoList = $('.video-list');
-    this.videoList.addEventListener('scroll', this.handleScroll.bind(this));
-  }
-
-  async handleScroll(e) {
-    const { scrollHeight, scrollTop, clientHeight } = e.target;
-
-    if (!this.#throttle && scrollHeight === scrollTop + clientHeight) {
-      this.#throttle = setTimeout(async () => {
-        this.#throttle = null;
-        this.renderSkeleton();
-
-        const keyword = this.searchInputKeyword.value;
-        const data = await this.searchEngine.searchKeyword(keyword);
-
-        this.renderAdditionalVideos(data);
-      }, DELAY_MILISECOND_TIME);
-    }
-  }
-
-  renderAdditionalVideos(data) {
-    if (data === null) {
-      this.searchResult.removeChild(this.searchResult.lastElementChild);
-      return;
-    }
-    const preprocessedData = ScreenManager.preprocessData(data);
-    this.allocatePreprocessedData(preprocessedData);
   }
 
   static preprocessData(data) {
@@ -142,6 +96,68 @@ export default class ScreenManager {
         videoId,
       };
     });
+  }
+
+  allocatePreprocessedData(preprocessedData) {
+    const skeletonList = $$('.skeleton');
+
+    for (let i = 0; i < preprocessedData.length; i++) {
+      const element = skeletonList[i];
+      const { videoId, channelTitle, thumbnails, title, publishTime } = preprocessedData[i];
+
+      element.dataset.videoId = videoId;
+      $('.video-item__thumbnail', element).src = thumbnails;
+      $('.video-item__title', element).textContent = title;
+      $('.video-item__channel-name', element).textContent = channelTitle;
+      $('.video-item__published-date', element).textContent = publishTime;
+
+      element.classList.remove('skeleton');
+    }
+
+    const remainedSkeletonCount = VIDEO_COUNT - preprocessedData.length;
+
+    for (let i = 0; i < remainedSkeletonCount; i++) {
+      this.videoList.removeChild(this.videoList.lastElementChild);
+    }
+
+    if (this.searchEngine.pageToken === null) {
+      this.videoList.removeEventListener('scroll', this.handleScroll);
+      //TODO : 스낵바로 "더 이상의 검색결과는 존재하지 않습니다."
+    }
+  }
+
+  bindScrollEvent() {
+    this.videoList.addEventListener('scroll', this.handleScroll);
+  }
+
+  handleScroll = async (e) => {
+    const { scrollHeight, scrollTop, clientHeight } = e.target;
+
+    if (!this.#throttle && scrollTop + clientHeight >= scrollHeight) {
+      this.#throttle = setTimeout(async () => {
+        this.#throttle = null;
+        this.renderSkeleton();
+
+        const keyword = this.searchInputKeyword.value;
+
+        try {
+          const data = await this.searchEngine.searchKeyword(keyword);
+          this.renderAdditionalVideos(data);
+        } catch (error) {
+          alert(error);
+        }
+      }, DELAY_MILISECOND_TIME);
+    }
+  };
+
+  renderAdditionalVideos(data) {
+    if (data === null) {
+      this.searchResult.removeChild(this.searchResult.lastElementChild);
+      return;
+    }
+
+    const preprocessedData = ScreenManager.preprocessData(data);
+    this.allocatePreprocessedData(preprocessedData);
   }
 
   handleSaveVideo(e) {

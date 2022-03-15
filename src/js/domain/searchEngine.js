@@ -2,7 +2,7 @@ import fetch from 'node-fetch';
 import { SEARCH_NOT_WORKING_ERROR_MESSAGE, VIDEO_COUNT } from '../util/constants.js';
 
 export default class SearchEngine {
-  #pageToken = null;
+  #pageToken = '';
 
   get pageToken() {
     return this.#pageToken;
@@ -13,7 +13,7 @@ export default class SearchEngine {
   }
 
   resetPageToken() {
-    this.#pageToken = null;
+    this.#pageToken = '';
   }
 
   async searchKeyword(keyword) {
@@ -22,11 +22,8 @@ export default class SearchEngine {
 
     if (response.ok) {
       const json = await response.json();
+      this.#pageToken = json['nextPageToken'] ? json.nextPageToken : null;
 
-      //TODO : nextPageToken이 없을때
-      this.#pageToken = json.nextPageToken;
-
-      console.log(this.#isDataExist(json));
       return this.#isDataExist(json) ? json.items : null;
     }
 
