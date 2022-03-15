@@ -25,10 +25,6 @@ const template = {
 };
 
 const userInterface = {
-  resetSearchInput() {
-    $('#search-input-keyword').value = '';
-  },
-
   resetVideoList() {
     $('.video-list').replaceChildren();
   },
@@ -38,7 +34,6 @@ const userInterface = {
     $('.no-result').hidden = true;
     $('.video-list').classList.remove('hide');
     $('.video-list').insertAdjacentHTML('beforeEnd', template.skeletonUI.repeat(10));
-    this.resetSearchInput();
   },
 
   removeSkeletonUI() {
