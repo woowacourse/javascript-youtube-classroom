@@ -1,4 +1,4 @@
-import { OPTIONS, fetchData } from '../api';
+import { fetchData } from '../api';
 import { ERROR_MESSAGE, RULES, THROTTLE_PENDING_MILLISECOND } from '../constants';
 
 import { SKELETON_TEMPLATE } from '../common/template';
@@ -47,8 +47,9 @@ export default class SearchModal {
   scrollHandler(e) {
     const { scrollTop, offsetHeight, scrollHeight } = e.target;
     const isNextScroll = scrollTop + offsetHeight >= scrollHeight;
+    const isNotEndPage = this.pageToken !== null;
 
-    if (isNextScroll) {
+    if (isNextScroll && isNotEndPage) {
       this.renderVideoList({
         keyword: this.searchInputKeyword.value,
         pageToken: this.pageToken,
@@ -67,11 +68,8 @@ export default class SearchModal {
 
     try {
       validateKeyword(this.searchInputKeyword.value);
-      const hasPrevVideoList = this.pageToken !== '';
 
-      if (hasPrevVideoList) {
-        this.reSearch();
-      }
+      this.reSearch();
 
       this.renderVideoList({
         keyword: this.searchInputKeyword.value,
@@ -134,6 +132,6 @@ export default class SearchModal {
     this.VideoCardContainer.setState({ items: videoList.items });
     this.showSearchResult(videoList.items);
     this.hideSkeletons();
-    this.pageToken = videoList.nextPageToken || '';
+    this.pageToken = videoList.nextPageToken || null;
   }
 }
