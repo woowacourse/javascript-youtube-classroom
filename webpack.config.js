@@ -9,25 +9,23 @@ module.exports = {
     path: path.resolve(__dirname, 'dist'),
   },
   resolve: {
-    // import 할 때 .js와 .css를 붙이지 않아도 된다.
     extensions: ['.js', '.css'],
   },
   devServer: {
-    // 매번 build 하지 않아도, 자동으로 build 된다.
     static: {
       directory: path.resolve(__dirname, 'dist'),
     },
     port: 8080,
   },
-  devtool: 'source-map', // 디버깅이 가능하도록, 우리가 짠 코드대로 보여준다.
+  devtool: 'source-map',
   module: {
     rules: [
       {
-        test: /\.js$/, // 로더를 적용할 파일
-        exclude: /node_modules/, // node_modules는 로더를 처리하지 않는다.
+        test: /\.js$/,
+        exclude: /node_modules/,
         use: [
           {
-            loader: 'babel-loader', // babel.config.js를 사용하지 않아도 babel을 처리해준다.
+            loader: 'babel-loader',
             options: {
               presets: ['@babel/preset-env'],
             },
