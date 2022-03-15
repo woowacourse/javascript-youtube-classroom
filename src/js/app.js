@@ -1,5 +1,5 @@
 import SearchModal from './searchModal';
-import { $, removeChildren } from './utils';
+import { $ } from './utils';
 import NotFoundImage from '../assets/images/not_found.png';
 
 export default class App {
@@ -32,7 +32,7 @@ export default class App {
   closeModal = (e) => {
     $('#search-input-keyword').value = '';
     $('.search-result').classList.remove('search-result--no-result');
-    removeChildren($('.video-list'));
+    $('.video-list').replaceChildren();
     this.$modalContainer.classList.add('hide');
   };
 

@@ -1,11 +1,5 @@
 export const $ = (selector, parentNode = document) => parentNode.querySelector(selector);
 
-export const removeChildren = parentNode => {
-  while (parentNode.firstChild) {
-    parentNode.removeChild(parentNode.firstChild);
-  }
-};
-
 /* eslint-disable no-param-reassign */
 export const arrayToMap = arr => {
   return arr.reduce((obj, val) => {
