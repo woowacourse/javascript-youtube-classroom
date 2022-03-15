@@ -13,7 +13,6 @@ export default class Result {
       'beforeend',
       json.items.length ? getFoundResultTemplate(json.items) : notFoundTemplate,
     );
-    this.addSaveButtonClickEvent(json.items.length);
     if (json && json.nextPageToken) {
       this.scrollObserver(json.nextPageToken);
     }
@@ -42,24 +41,6 @@ export default class Result {
         await delay(700);
         showExceptionSnackBar(message);
       });
-  }
-
-  addSaveButtonClickEvent(length) {
-    const saveButtons = $$('.video-item__save-button');
-    [...saveButtons].slice(-length).forEach(saveButton => {
-      saveButton.addEventListener('click', this.handleSaveVideo);
-    });
-  }
-
-  handleSaveVideo(e) {
-    const videoId = e.target.closest('li').dataset.videoId;
-    try {
-      store.setLocalStorage(STORAGE_KEY, videoId);
-      showExceptionSnackBar(MESSAGE.SAVE_COMPLETE);
-      e.target.setAttribute('hidden', true);
-    } catch ({ message }) {
-      showExceptionSnackBar(message);
-    }
   }
 
   scrollObserver(nextPageToken) {
