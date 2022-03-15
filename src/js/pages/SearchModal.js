@@ -40,6 +40,7 @@ export default class SearchModal {
       items: [],
     });
     this.pageToken = '';
+    this.keyword = '';
   }
 
   configureDOMs() {
@@ -74,7 +75,7 @@ export default class SearchModal {
     if (isEndOfScroll) {
       this.renderVideoList({
         url: YOUTUBE_URL,
-        keyword: this.searchInputKeyword.value,
+        keyword: this.keyword,
         options: OPTIONS,
         pageToken: this.pageToken,
       });
@@ -87,13 +88,14 @@ export default class SearchModal {
     try {
       validateKeyword(this.searchInputKeyword.value);
 
+      this.keyword = this.searchInputKeyword.value;
       this.videoList.scrollTo({ top: 0 });
       this.videoList.replaceChildren();
       this.pageToken = '';
 
       this.renderVideoList({
         url: YOUTUBE_URL,
-        keyword: this.searchInputKeyword.value,
+        keyword: this.keyword,
         options: OPTIONS,
         pageToken: this.pageToken,
       });
