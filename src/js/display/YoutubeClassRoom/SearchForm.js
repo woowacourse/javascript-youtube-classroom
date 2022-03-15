@@ -1,6 +1,5 @@
 import { $ } from '@Utils/dom';
 import { isEmptyString, isSameKeyword } from '@Utils/validator';
-import { SELECTOR } from '@Constants/selector';
 import { YOUTUBE_SEARCH_ACTION } from '@Constants/action';
 import { ERROR_MESSAGE } from '@Constants/message';
 import { onEnableButton } from '@Utils/elementController';
@@ -9,30 +8,30 @@ import YoutubeSearchStore from '@Domain/YoutubeSearchStore';
 
 export default class SearchForm extends Display {
   setContainer() {
-    this.container = $(SELECTOR.ID.SEARCH_FORM);
+    this.container = $('#search-form');
   }
 
   bindEvents() {
     this.addEvent({
       eventType: 'keyup',
-      selector: SELECTOR.ID.SEARCH_INPUT_KEYWORD,
+      selector: '#search-input-keyword',
       handler: this.handleInputValue.bind(this),
     });
     this.addEvent({
       eventType: 'submit',
-      selector: SELECTOR.ID.SEARCH_FORM,
+      selector: '#search-form',
       handler: this.handleSubmitForm.bind(this),
       isPreventedDefault: true,
     });
   }
 
   handleInputValue({ target: $target }) {
-    const $searchButton = $(SELECTOR.ID.SEARCH_BUTTON, this.container);
+    const $searchButton = $('#search-button', this.container);
     onEnableButton($searchButton, () => $target.value.length > 0);
   }
 
   handleSubmitForm() {
-    const newKeyword = $(SELECTOR.ID.SEARCH_INPUT_KEYWORD, this.container).value;
+    const newKeyword = $('#search-input-keyword', this.container).value;
     const { isLoading, keyword: beforeKeyword } = YoutubeSearchStore.getState();
 
     if (isEmptyString(newKeyword)) {

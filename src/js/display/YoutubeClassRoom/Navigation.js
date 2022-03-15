@@ -1,23 +1,22 @@
 import { $ } from '@Utils/dom';
-import { SELECTOR } from '@Constants/selector';
 import Display from '@Core/Display';
 
 export default class Navigation extends Display {
   setContainer() {
-    this.container = $(SELECTOR.ID.CLASSROOM_NAVIGATION);
+    this.container = $('#classroom-navigation');
   }
 
   bindEvents() {
     this.addEvent({
       eventType: 'click',
-      selector: SELECTOR.ID.SEARCH_MODAL_BUTTON,
+      selector: '#search-modal-button',
       handler: this.handleOpenModal.bind(this),
     });
   }
 
   handleOpenModal({ target: $target }) {
     const modalId = $target.dataset.modal;
-    const $modalContainer = $(SELECTOR.ID.MODAL_CONTAINER);
+    const $modalContainer = $('#modal');
 
     $modalContainer.classList.remove('hide');
     $(`#${modalId}`, $modalContainer).classList.add('show');
