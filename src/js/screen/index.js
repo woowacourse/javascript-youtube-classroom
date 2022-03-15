@@ -77,6 +77,7 @@ export default class ScreenManager {
       this.searchResult.classList.add('search-result--no-result');
       this.noResult.classList.remove('hide');
       this.videoList.replaceChildren('');
+
       return;
     }
 
@@ -142,9 +143,11 @@ export default class ScreenManager {
 
     if (!this.#throttle && scrollTop + clientHeight >= scrollHeight) {
       this.#throttle = setTimeout(async () => {
-        this.#throttle = null;
-        this.renderSkeleton();
+        if (this.searchEngine.pageToken !== null) {
+          this.renderSkeleton();
+        }
 
+        this.#throttle = null;
         const keyword = this.searchInputKeyword.value;
 
         try {
@@ -158,6 +161,11 @@ export default class ScreenManager {
   };
 
   renderAdditionalVideos(data) {
+    if (data === null) {
+      this.videoList.replaceChildren('');
+      return;
+    }
+
     const preprocessedData = ScreenManager.preprocessData(data);
     this.allocatePreprocessedData(preprocessedData);
   }

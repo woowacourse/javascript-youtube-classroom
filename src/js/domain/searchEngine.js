@@ -22,9 +22,14 @@ export default class SearchEngine {
 
     if (response.ok) {
       const json = await response.json();
-      this.#pageToken = json['nextPageToken'] ? json.nextPageToken : null;
 
-      return this.#isDataExist(json) ? json.items : null;
+      if (this.#isDataExist(json)) {
+        this.#pageToken = json.nextPageToken;
+        return json.items;
+      }
+
+      this.#pageToken = null;
+      return null;
     }
 
     throw Error(SEARCH_NOT_WORKING_ERROR_MESSAGE);
