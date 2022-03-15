@@ -6,11 +6,11 @@ import Template from './Template.js';
 export default class SearchResultView {
   constructor() {
     this.$modalContainer = $('.modal-container');
-    this.$videoList = $('.video-list');
-    this.template = new Template();
-    this.$searchTarget = $('#search-target');
-    this.$searchNoResult = $('#search-no-result');
+    this.$videoList = $('.video-list', this.$modalContainer);
+    this.$searchTarget = $('#search-target', this.$modalContainer);
+    this.$searchNoResult = $('#search-no-result', this.$modalContainer);
 
+    this.template = new Template();
     this.observer = new IntersectionObserver(
       (entries) => {
         if (entries[0].isIntersecting) {

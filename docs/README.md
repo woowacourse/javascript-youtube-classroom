@@ -72,7 +72,7 @@
 - [x] SearchInputView에서 keycode 상수화 🤔괜찮은 방식인지? 
 - [x] closeModal에 대한 view를 input에서 분리 
 - [x] import문 정리 
-- [ ] dom요소 부모에서 불러오기 
+- [x] dom요소 부모에서 불러오기 
 - [ ] css 인덴트 
 - [ ] 동영상의 썸네일이 보이지 않는 경우 (검색어 a)
 - [ ] 동영상이 10개 이상, 20개 미만일 경우 

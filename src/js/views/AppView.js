@@ -4,6 +4,7 @@ export default class AppView {
   constructor() {
     this.$searchModalButton = $('#search-modal-button');
     this.$modalContainer = $('.modal-container');
+
     this.#bindEvents();
   }
 

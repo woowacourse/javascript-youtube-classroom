@@ -5,8 +5,10 @@ import { emit, on } from '../utils/event.js';
 
 export default class SearchInputView {
   constructor() {
-    this.$searchInputKeyword = $('#search-input-keyword');
-    this.$searchButton = $('#search-button');
+    this.$searchInput = $('.search-input');
+    this.$searchInputKeyword = $('#search-input-keyword', this.$searchInput);
+    this.$searchButton = $('#search-button', this.$searchInput);
+
     this.#bindEvents();
   }
 

@@ -5,8 +5,10 @@ import { emit, on } from '../utils/event.js';
 
 export default class SearchCloseView {
   constructor() {
-    this.$closeButton = $('.close-button');
-    this.$dimmer = $('.dimmer');
+    this.$modalContainer = $('.modal-container');
+    this.$closeButton = $('.close-button', this.$modalContainer);
+    this.$dimmer = $('.dimmer', this.$modalContainer);
+
     this.#bindEvents();
   }
 
