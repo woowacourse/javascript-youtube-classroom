@@ -38,15 +38,11 @@ export default class SearchForm {
       return;
     }
 
-    if (isSameKeyword(beforeKeyword, newKeyword)) {
-      return;
-    }
-
-    if (isLoading) {
+    if (isSameKeyword(beforeKeyword, newKeyword) || isLoading) {
       return;
     }
 
     YoutubeSearchStore.dispatch(YOUTUBE_SEARCH_ACTION.UPDATE_SEARCH_KEYWORD, newKeyword);
-    YoutubeSearchStore.dispatch(YOUTUBE_SEARCH_ACTION.UPDATE_SEARCH_RESULT);
+    YoutubeSearchStore.dispatch(YOUTUBE_SEARCH_ACTION.UPDATE_SEARCH_RESULT_REQUEST);
   };
 }

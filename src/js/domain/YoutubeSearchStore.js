@@ -8,52 +8,55 @@ class YoutubeSearchStore {
 
   reducer = {};
 
+  middleware = {};
+
   constructor(initialState) {
     this.state = initialState;
     this.setReducer();
+    this.setMiddleWare();
   }
 
   setReducer() {
     this.reducer = {
-      [YOUTUBE_SEARCH_ACTION.UPDATE_SEARCH_KEYWORD]: this.updateSearchKeyword,
-      [YOUTUBE_SEARCH_ACTION.UPDATE_SEARCH_LOADING_STATUS]: this.updateSearchLoadingStatus,
-      [YOUTUBE_SEARCH_ACTION.UPDATE_SEARCH_RESULT]: this.updateSearchResult,
+      [YOUTUBE_SEARCH_ACTION.UPDATE_SEARCH_KEYWORD]: searchKeyword => ({
+        ...this.state,
+        searchKeyword,
+        isLoading: true,
+        isLoaded: false,
+        items: [],
+        nextPageToken: '',
+        error: false,
+      }),
+      [YOUTUBE_SEARCH_ACTION.UPDATE_SEARCH_RESULT_REQUEST]: () => ({
+        ...this.state,
+        isLoading: true,
+        isLoaded: false,
+        error: false,
+      }),
+      [YOUTUBE_SEARCH_ACTION.UPDATE_SEARCH_RESULT_SUCCESS]: ({ items, nextPageToken }) => ({
+        ...this.state,
+        items: [...this.state.items, ...items],
+        nextPageToken,
+        isLoading: false,
+        isLoaded: true,
+        error: false,
+      }),
+      [YOUTUBE_SEARCH_ACTION.UPDATE_SEARCH_RESULT_FAIL]: () => ({
+        ...this.state,
+        isLoading: false,
+        isLoaded: false,
+        error: true,
+      }),
     };
   }
 
-  updateSearchKeyword = searchKeyword => {
-    this.setState({
-      ...this.state,
-      searchKeyword,
-      isLoading: true,
-      isLoaded: false,
-      items: [],
-      nextPageToken: '',
-      error: false,
-    });
-  };
-
-  updateSearchLoadingStatus = isLoading => {
-    this.setState({ ...this.state, isLoading });
-  };
-
-  updateSearchResult = async () => {
-    if (this.state.nextPageToken === undefined) return;
-    const {
-      items = [],
-      nextPageToken = '',
-      error = false,
-    } = await requestYoutubeSearch(this.state.searchKeyword, this.state.nextPageToken);
-
-    this.setState({
-      ...this.state,
-      isLoading: false,
-      isLoaded: true,
-      items: [...this.state.items, ...items],
-      error,
-      nextPageToken,
-    });
-  };
+  setMiddleWare() {
+    this.middleware = {
+      [YOUTUBE_SEARCH_ACTION.UPDATE_SEARCH_RESULT_REQUEST]: async () => {
+        await requestYoutubeSearch(this.state.searchKeyword, this.state.nextPageToken);
+      },
+    };
+  }
 
   getState() {
     return this.state;
@@ -64,8 +67,10 @@ class YoutubeSearchStore {
     this.subscribers.forEach(subscriber => subscriber(this.state));
   }
 
-  dispatch(type, data) {
-    this.reducer[type] && this.reducer[type](data);
+  dispatch(type, payload) {
+    if (!this.reducer[type]) return;
+    this.setState(this.reducer[type](payload) ?? this.state);
+    this.middleware[type] && this.middleware[type](payload);
   }
 
   addSubscriber(subscriber) {

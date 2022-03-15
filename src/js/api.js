@@ -1,5 +1,6 @@
-import { YOUTUBE_SETTING } from '@Constants';
+import { YOUTUBE_SETTING, YOUTUBE_SEARCH_ACTION } from '@Constants';
 import { uriBuilder } from '@Utils/dataManager';
+import YoutubeSearchStore from '@Domain/YoutubeSearchStore';
 
 const request = async (uri, option) => {
   const response = await fetch(uri, option);
@@ -22,8 +23,11 @@ export const requestYoutubeSearch = async (keyword = '', pageToken = '') => {
     const response = await request(uri, {
       method: 'GET',
     });
-    return response;
+    return YoutubeSearchStore.dispatch(
+      YOUTUBE_SEARCH_ACTION.UPDATE_SEARCH_RESULT_SUCCESS,
+      response,
+    );
   } catch (error) {
-    return { error: true };
+    return YoutubeSearchStore.dispatch(YOUTUBE_SEARCH_ACTION.UPDATE_SEARCH_RESULT_FAIL);
   }
 };

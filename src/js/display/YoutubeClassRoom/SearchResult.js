@@ -32,8 +32,7 @@ export default class SearchResult {
     onObserveElement(this.$scrollObserver, () => {
       const { isLoading } = YoutubeSearchStore.getState();
       if (isLoading) return;
-      YoutubeSearchStore.dispatch(YOUTUBE_SEARCH_ACTION.UPDATE_SEARCH_LOADING_STATUS, true);
-      YoutubeSearchStore.dispatch(YOUTUBE_SEARCH_ACTION.UPDATE_SEARCH_RESULT);
+      YoutubeSearchStore.dispatch(YOUTUBE_SEARCH_ACTION.UPDATE_SEARCH_RESULT_REQUEST);
     });
     addEvent(this.container, {
       eventType: 'click',
@@ -61,23 +60,21 @@ export default class SearchResult {
   };
 
   render = ({ isLoading, isLoaded, items, error }) => {
-    this.$videoList.innerHTML = '';
-
+    this.$videoList.innerHTML = ''; // TODO: replaceChildren으로 변경
     if (error) {
       this.$videoList.append(this.getResultServerError());
       return;
     }
 
-    if (items.length === 0 && isLoaded) {
+    if (items.length < 0 && isLoaded) {
       this.$videoList.append(this.getResultNotFound());
       return;
     }
 
     const $fragment = document.createDocumentFragment();
-    if (items.length !== 0 && isLoaded) {
+    if (items.length > 0) {
       $fragment.append(...this.getVideoList(items));
     }
-
     if (isLoading) {
       $fragment.append(...this.$skeleton);
     }
