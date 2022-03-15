@@ -22,11 +22,12 @@ const makeURLQuery = (props) => {
 
 const fetchData = async (query) => {
   const response = await fetch(query);
-  const json = await response.json();
 
   if (!response.ok) {
     throw response.status;
   }
+
+  const json = await response.json();
 
   return json;
 };

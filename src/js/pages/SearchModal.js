@@ -35,7 +35,7 @@ export default class SearchModal {
   constructor(element) {
     this.element = element;
 
-    //configureDOMs
+    //initDOM
     this.searchInputKeyword = this.element.querySelector('#search-input-keyword');
     this.searchErrorMessage = this.element.querySelector('#search-error-message');
     this.videoList = this.element.querySelector('.video-list');
@@ -45,7 +45,7 @@ export default class SearchModal {
     [this.searchResultContainer, this.noSearchResultContainer] =
       this.element.querySelectorAll('.search-result');
 
-    //bindEvents
+    //bindEvent
     this.dimmer.addEventListener('click', this.closeModalHandler.bind(this));
     this.searchForm.addEventListener('submit', this.searchHandler.bind(this));
     this.videoList.addEventListener(
