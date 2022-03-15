@@ -4,4 +4,4 @@ export const VIDEO_COUNT = 10;
 
 export const DELAY_MILISECOND_TIME = 500;
 
-export const SERVER_ERROR_STATUS = '403';
+export const SERVER_ERROR = 4;

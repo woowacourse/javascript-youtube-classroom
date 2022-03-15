@@ -4,8 +4,8 @@ import StorageEngine from '../domain/storageEngine';
 import notFoundImage from '../../assets/images/not_found.jpg';
 import serverErrorImage from '../../assets/images/server_error.jpg';
 
-import { throttle } from '../util/common';
-import { DELAY_MILISECOND_TIME, SERVER_ERROR_STATUS, VIDEO_COUNT } from '../util/constants';
+import { isServerError, throttle } from '../util/common';
+import { DELAY_MILISECOND_TIME, VIDEO_COUNT } from '../util/constants';
 import { $, $$ } from '../util/domHelper';
 
 //template
@@ -15,7 +15,7 @@ const NO_RESULT_TEMPLATE = `
 
 const SERVER_ERROR_TEMPLATE = `
   <img src=${serverErrorImage} alt="no result image" class="no-result__error-image">
-  <span>앗...서버 점검중 시간입니다! ∑(O_O;)</span>
+  <span>앗...현재는 서버 점검중입니다~ ∑(O_O;)</span>
 `;
 
 const PLAIN_TEXT = '---------';
@@ -62,7 +62,7 @@ export default class SearchVideoScreen {
         const data = await this.#searchEngine.searchKeyword(keyword);
         this.#renderSearchResult(data);
       } catch ({ message: status }) {
-        if (status === SERVER_ERROR_STATUS) this.#renderServerErrorResult();
+        if (isServerError(status)) this.#renderServerErrorResult();
       }
       this.#videoList.addEventListener('scroll', this.#handleInfiniteScroll);
     }
@@ -139,7 +139,7 @@ export default class SearchVideoScreen {
       const data = await this.#searchEngine.searchKeyword(keyword);
       this.#renderSearchResult(data, '@scroll');
     } catch ({ message: status }) {
-      if (status === SERVER_ERROR_STATUS) this.#renderServerErrorResult();
+      if (isServerError(status)) this.#renderServerErrorResult();
     }
   };
 
@@ -164,5 +164,3 @@ export default class SearchVideoScreen {
     this.#noResult.insertAdjacentHTML('beforeend', SERVER_ERROR_TEMPLATE);
   }
 }
-
-//지피티에서 스크롤을 내린후, 3개있는 리스트에가면 연달아 3번 호출...throttle 문제다!

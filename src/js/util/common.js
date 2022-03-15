@@ -1,3 +1,5 @@
+import { SERVER_ERROR } from './constants';
+
 export const preprocessDate = (date) => {
   const [year, month, day] = date.slice(0, 10).split('-');
 
@@ -15,4 +17,8 @@ export const throttle = (func, delay) => {
       }, delay);
     }
   };
+};
+
+export const isServerError = (status) => {
+  return Math.floor(parseInt(status, 10) / 100) === SERVER_ERROR;
 };
