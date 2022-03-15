@@ -1,6 +1,7 @@
 import { STATE_STORE_KEY } from '../constants/stateStore';
 import { getState, subscribe } from '../modules/stateStore';
 import { parseTimeStamp } from '../utils/util';
+import { canLoadImage } from '../utils/validation';
 
 class VideoComponent {
   $videoItem = null;
@@ -24,6 +25,18 @@ class VideoComponent {
     this.#render(stateValue);
   }
 
+  loadImg(showingCutline) {
+    const { top } = this.$videoImg.getBoundingClientRect();
+
+    if (canLoadImage(top, showingCutline)) {
+      const {
+        dataset: { src },
+      } = this.$videoImg;
+
+      this.$videoImg.src = src;
+    }
+  }
+
   #mount() {
     const { video } = this.props;
     const template = this.#generateTemplate(video);
@@ -35,6 +48,7 @@ class VideoComponent {
     const { videoId } = video.getVideoInfo();
     this.$videoItem = this.#parentElement.querySelector(`[data-video-id="${videoId}"]`);
     this.$saveButton = this.$videoItem.querySelector('.video-item__save-button.button');
+    this.$videoImg = this.$videoItem.querySelector('img');
   }
 
   #subscribeStore() {
@@ -56,7 +70,9 @@ class VideoComponent {
     return `
     <li class="video-item" data-video-id="${videoId}">
     <img
-      src="${thumbnail}" class="video-item__thumbnail">
+      data-src="${thumbnail}" class="video-item__thumbnail" ${
+      this.props.notLazyLoad ? `src="${thumbnail}"` : ''
+    }>
     <h4 class="video-item__title">${videoTitle}</h4>
     <p class="video-item__channel-name">${channelTitle}</p>
     <p class="video-item__published-date">${parseTimeStamp(publishTime)}</p>

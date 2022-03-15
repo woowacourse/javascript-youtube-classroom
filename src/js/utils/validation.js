@@ -13,3 +13,5 @@ export const isNullVideoList = (videoList) => videoList === null;
 export const isFirstSearchByKeyword = (prevVideoListLength) => prevVideoListLength === 0;
 
 export const isMoreThanMaxVideoCount = (videoList) => videoList.length >= MAX_SAVE_VIDEO_COUNT;
+
+export const canLoadImage = (showingPX, showingCutline) => showingPX < showingCutline;
