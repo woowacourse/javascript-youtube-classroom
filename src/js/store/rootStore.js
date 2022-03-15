@@ -35,7 +35,10 @@ export const rootStore = {
       pageToken: null,
     },
     videos: [],
-    notFound: false,
+    status: {
+      notFound: false,
+      statusCode: 200,
+    },
   }),
   setState(newState) {
     Object.entries(newState).forEach(([key, value]) => {

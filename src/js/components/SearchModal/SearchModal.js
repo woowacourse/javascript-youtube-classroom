@@ -6,7 +6,7 @@ import { rootStore } from '../../store/rootStore.js';
 
 export default class SearchModal extends Component {
   template() {
-    const { notFound } = rootStore.state;
+    const { notFound, statusCode } = rootStore.state.status;
 
     return `
     <div id="modal-background" class="dimmer"></div>
@@ -20,7 +20,7 @@ export default class SearchModal extends Component {
       </h2>
       <section id="search-input" class="search-input"></section>
       ${
-        notFound
+        notFound || statusCode !== 200
           ? `<section id="not-found" class="search-result search-result--no-result"></section>`
           : `<section id="search-result" class="search-result"></section>`
       }
@@ -29,15 +29,16 @@ export default class SearchModal extends Component {
   }
 
   afterMounted() {
-    const { notFound } = rootStore.state;
+    const { notFound, statusCode } = rootStore.state.status;
 
-    new SearchBar(this.$('#search-input'), { notFound });
+    new SearchBar(this.$('#search-input'));
 
-    if (notFound) {
+    if (notFound || statusCode !== 200) {
       new NotFound(this.$('#not-found'));
 
       return;
     }
+
     new SearchResult(this.$('#search-result'));
   }
 

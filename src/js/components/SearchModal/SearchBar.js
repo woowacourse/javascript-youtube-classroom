@@ -39,15 +39,19 @@ export default class SearchBar extends Component {
 
       const [error, data] = await getSearchAPI(query);
       if (error) {
-        alert(`${error.message}, status: ${error.statusCode}`);
-        rootStore.setState({ isLoading: false });
+        rootStore.setState({
+          isLoading: false,
+          status: { notFound: true, statusCode: error.statusCode },
+        });
 
         return;
       }
 
       const { items, nextPageToken } = data;
       if (!items.length) {
-        rootStore.setState({ notFound: true });
+        rootStore.setState({
+          status: { notFound: true, statusCode: 200 },
+        });
 
         return;
       }
@@ -58,7 +62,7 @@ export default class SearchBar extends Component {
           pageToken: nextPageToken,
         },
         videos: addSavedToVideos(items),
-        notFound: false,
+        status: { notFound: false, statusCode: 200 },
         isLoading: false,
       });
     });

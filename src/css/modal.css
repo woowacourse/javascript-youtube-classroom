@@ -87,7 +87,8 @@
 }
 
 .no-result__description {
-  font-size: 16px;
+  font-size: 24px;
+  font-weight: 500;
   line-height: 150%;
   text-align: center;
   letter-spacing: 0.5px;
