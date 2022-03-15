@@ -19,12 +19,11 @@ export default class Display {
 
   subscribeStores() {}
 
-  addEvent({ eventType, selector, handler, isPreventedDefault = false }) {
+  addEvent({ eventType, selector, handler }) {
     const children = [...this.container.querySelectorAll(selector)];
     const isTarget = target => children.includes(target) || target.closest(selector);
 
     this.container.addEventListener(eventType, event => {
-      if (isPreventedDefault) event.preventDefault();
       if (!isTarget(event.target)) return false;
       handler(event);
     });

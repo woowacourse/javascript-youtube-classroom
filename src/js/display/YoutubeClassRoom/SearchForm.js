@@ -29,7 +29,8 @@ export default class SearchForm extends Display {
     onEnableButton($searchButton, () => $target.value.length > 0);
   }
 
-  handleSubmitForm() {
+  handleSubmitForm(event) {
+    event.preventDefault();
     const newKeyword = $('#search-input-keyword', this.container).value;
     const { isLoading, keyword: beforeKeyword } = YoutubeSearchStore.getState();
 
