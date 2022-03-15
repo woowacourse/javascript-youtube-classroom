@@ -43,6 +43,7 @@ class Search {
       VideoStore.instance.dispatch(type, this.preprocessor(videos));
     } catch (e) {
       alert(ERROR_MESSAGE.FAIL_TO_REQUEST_API);
+      $('ul', $('search-result')).resetResult();
     }
   }
 
