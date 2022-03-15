@@ -28,11 +28,6 @@ class VideoList extends HTMLUListElement {
   }
 
   notify(type, data) {
-    if (type === 'search') {
-      this.resetResult();
-      this.scrollTop = 0;
-    }
-
     this.removeSkeleton();
     this.insertVideoItems(data);
     this.hideStoredVideoSaveButton(data);
@@ -40,9 +35,14 @@ class VideoList extends HTMLUListElement {
 
   resetResult() {
     this.textContent = '';
+    this.scrollTop = 0;
   }
 
-  insertSkeleton() {
+  insertSkeleton(type) {
+    if (type === 'search') {
+      this.resetResult();
+    }
+
     this.insertAdjacentHTML('beforeend', TEMPLATE.SKELETON.repeat(10));
   }
 

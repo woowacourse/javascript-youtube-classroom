@@ -16,12 +16,12 @@ class Search {
     on('ul', '@scroll', () => this.debounceSearch('scroll'), $('search-result'));
   }
 
-  loading() {
-    $('ul', $('search-result')).insertSkeleton();
+  loading(type) {
+    $('ul', $('search-result')).insertSkeleton(type);
   }
 
   debounceSearch(type, keyword = this.keyword) {
-    this.loading();
+    this.loading(type);
 
     if (this.debounce) {
       clearTimeout(this.debounce);
