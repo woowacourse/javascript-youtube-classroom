@@ -1,14 +1,16 @@
 import SearchInput from "./SearchInput.js";
 import SearchResult from "./SearchResult.js";
+import SearchManager from "../../manager/SearchManager.js";
 
 export default class SearchModal {
-  constructor({ searchManager }) {
+  constructor() {
+    this.searchManager = new SearchManager();
     this.modalContainer = document.getElementById("modal-container");
     this.modalCloseButton = document.getElementById("modal-close-button");
     this.modalCloseButton.addEventListener("click", this.closeModal);
 
-    new SearchInput({ searchManager });
-    new SearchResult({ searchManager });
+    new SearchInput({ searchManager: this.searchManager });
+    new SearchResult({ searchManager: this.searchManager });
   }
 
   openModal() {
