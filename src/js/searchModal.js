@@ -1,12 +1,15 @@
 /* eslint-disable max-lines-per-function */
 import { $ } from './utils/dom';
 import {
-  MAX_SAVABLE_VIDEOS_COUNT,
   MAX_RENDER_VIDEOS_COUNT,
   LOCAL_STORAGE_VIDEO_LIST_KEY,
+  VALIDATION_ERROR_NAME,
 } from './constants/constant';
 import VideoItem from './videoItem';
 import arrayToMap from './utils/array';
+import checkVideoListFull from './validation/validators';
+import ValidationError from './validation/validation-error';
+import consoleErrorWithConditionalAlert from './utils/utils';
 
 class SearchModal {
   serverUrl = 'https://silly-volhard-192918.netlify.app/.netlify/functions/youtube';
@@ -117,8 +120,11 @@ class SearchModal {
     const { target } = event;
     const $videoItem = target.closest('.video-item');
     const videoId = $videoItem.getAttribute('data-video-id');
-    if (this.saveVideo(videoId)) {
+    try {
+      this.saveVideo(videoId);
       target.setAttribute('hidden', true);
+    } catch (error) {
+      consoleErrorWithConditionalAlert(error, VALIDATION_ERROR_NAME);
     }
   };
 
@@ -131,14 +137,13 @@ class SearchModal {
 
   saveVideo(videoId) {
     const videoList = this.getVideoListFromLocalStorage();
-    if (videoList.length >= MAX_SAVABLE_VIDEOS_COUNT) {
-      alert(`비디오는 ${MAX_SAVABLE_VIDEOS_COUNT}개 이상 저장할 수 없습니다`);
-      return false;
+    const { hasError, errorMessage } = checkVideoListFull(videoList);
+    if (hasError) {
+      throw new ValidationError(errorMessage);
     }
     const newVideoList = [...videoList, videoId];
     this.savedVideoMap = arrayToMap(newVideoList);
     this.saveVideoListToLocalStorage(newVideoList);
-    return true;
   }
 
   resetSearchResult() {
