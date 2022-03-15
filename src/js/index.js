@@ -1,6 +1,6 @@
 import { $ } from './util/general.js';
 import YoutubeMachine from './domain/YoutubeMachine.js';
-import userInterface from './UI/userInterface.js';
+import userInterface from './ui/userInterface.js';
 import '../css/index.css';
 import '../assets/images/not_found.png';
 import storage from './storage/storage.js';
@@ -9,17 +9,15 @@ import { applyThrottle } from './util/throttle.js';
 
 export default function App() {
   const youtubeMachine = new YoutubeMachine();
-  // 핸들러
+
   const handleSearch = () => {
     try {
-      youtubeMachine.resetData();
+      youtubeMachine.resetSearchResult();
       userInterface.resetVideoList();
       const searchInput = $('#search-input-keyword').value.trim();
-      youtubeMachine.searchTarget = searchInput;
       userInterface.renderSkeletonUI();
-      const response = youtubeMachine.callSearchAPI();
-      youtubeMachine.updateData(response);
-      userInterface.renderSearchResult(response);
+      youtubeMachine.search(searchInput);
+      userInterface.renderSearchResult(youtubeMachine.searchResult);
     } catch (error) {
       alert(error.message);
     }
@@ -28,9 +26,8 @@ export default function App() {
   const handleScroll = e => {
     if (e.target.scrollHeight - e.target.scrollTop === e.target.clientHeight) {
       userInterface.renderSkeletonUI();
-      const response = youtubeMachine.callSearchAPI();
-      youtubeMachine.updateData(response);
-      userInterface.renderNextSearchResult(response);
+      youtubeMachine.searchScrollingResult();
+      userInterface.renderNextSearchResult(youtubeMachine.searchResult);
     }
   };
 
@@ -43,7 +40,6 @@ export default function App() {
     storage.saveVideo(videoId);
   };
 
-  // 이벤트 등록
   $('#search-modal-button').addEventListener('click', () => {
     $('.modal-container').classList.toggle('hide');
   });

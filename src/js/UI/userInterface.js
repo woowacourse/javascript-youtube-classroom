@@ -65,13 +65,13 @@ const userInterface = {
     $('.video-list').classList.add('hide');
   },
   renderSearchResult(response) {
-    response
-      .then(data => {
-        this.renderVideoItems(data);
-      })
-      .catch(() => {
+    response.then(data => {
+      if (data.items.length === 0) {
         this.renderNoResult();
-      });
+        return;
+      }
+      this.renderVideoItems(data);
+    });
   },
   renderNextSearchResult(response) {
     response.then(data => {

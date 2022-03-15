@@ -1,46 +1,53 @@
+import { API } from '../constants/constants.js';
 import { validateInput } from '../util/general.js';
 
 export default class YoutubeMachine {
-  #data = {};
+  #searchResult = {};
   #searchTarget = '';
 
-  set searchTarget(searchInput) {
+  set searchResult(searchResult) {
+    this.#searchResult = searchResult;
+  }
+  get searchResult() {
+    return this.#searchResult;
+  }
+
+  search(searchInput) {
     validateInput(searchInput);
     this.#searchTarget = searchInput;
+    this.updateSearchResult(this.callSearchAPI());
   }
 
-  get searchTarget() {
-    return this.#searchTarget;
-  }
-
-  set data(data) {
-    this.#data = data;
-  }
-
-  get data() {
-    return this.#data;
+  searchScrollingResult() {
+    this.updateSearchResult(this.callSearchAPI());
   }
 
   getURL(nextPageToken) {
-    const URL = `https://liswktjs.netlify.app/youtube/v3/search?part=snippet&q=${this.searchTarget}&maxResults=10&type=video`;
-    if (nextPageToken) {
-      return URL.concat(`&pageToken=${nextPageToken}`);
-    }
-    return URL;
-  }
-
-  updateData(response) {
-    response.then(data => {
-      this.data = data;
+    const url = new URL(API.RELATIVE_URL, API.BASE_URL);
+    const parameter = new URLSearchParams({
+      part: 'snippet',
+      maxResults: API.MAX_RESULT,
+      q: this.#searchTarget,
+      pageToken: nextPageToken || '',
+      type: API.SEARCH_TYPE,
     });
+    url.search = parameter.toString();
+
+    return url;
   }
 
-  callSearchAPI() {
-    const URL = this.#data ? this.getURL(this.#data.nextPageToken) : this.getURL();
-    return fetch(URL).then(response => response.json());
+  async callSearchAPI() {
+    const URL = this.#searchResult ? this.getURL(this.#searchResult.nextPageToken) : this.getURL();
+    const response = await fetch(URL);
+    const searchResult = await response.json();
+    return searchResult;
+  }
+  updateSearchResult(response) {
+    this.#searchResult = response;
   }
 
-  resetData() {
-    this.#data = {};
+  resetSearchResult() {
+    this.#searchResult = {};
+    this.#searchTarget = '';
   }
 }
