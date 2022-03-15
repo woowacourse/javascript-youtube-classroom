@@ -9,7 +9,7 @@ const storage = {
   },
   updateLocalStorage(data) {
     const savedStorage = this.getLocalStorage();
-    if (savedStorage.length > LIMIT_VIDEO_COUNTS) {
+    if (savedStorage.length > LIMIT_VIDEO_COUNTS - 1) {
       return;
     }
     if (savedStorage.some(video => video.id === data.id)) {

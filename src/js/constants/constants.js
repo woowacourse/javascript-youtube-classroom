@@ -10,3 +10,5 @@ export const API = {
   SEARCH_TYPE: 'video',
 };
 export const THROTTLE_DELAY = 1000;
+
+export const LIMIT_VIDEO_COUNTS = 100;
