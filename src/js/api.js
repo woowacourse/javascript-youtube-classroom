@@ -3,7 +3,7 @@ import { uriBuilder } from '@Utils/dataManager';
 
 const request = async (uri, option) => {
   const response = await fetch(uri, option);
-  if (response.ok === false) throw new Error('서버 오류');
+  if (!response.ok) throw new Error('서버 오류');
   const data = await response.json();
 
   return data;
