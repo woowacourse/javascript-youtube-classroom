@@ -1,14 +1,12 @@
 export default class Store {
   state = {};
+  reducers = {};
 
   subscribers = [];
 
-  constructor(initialState) {
-    if (new.target.name === Store.name) {
-      throw new Error('추상 클래스는 인스턴스화 할 수 없습니다.');
-    }
-
+  constructor(initialState, reducers) {
     this.state = initialState;
+    this.reducers = reducers;
   }
 
   getState() {
@@ -20,7 +18,10 @@ export default class Store {
     this.subscribers.forEach(subscriber => subscriber(this.state));
   }
 
-  dispatch(type, data) {}
+  async dispatch(type, data) {
+    const newState = await this.reducers[type](this.state, data);
+    if (newState) this.setState(newState);
+  }
 
   addSubscriber(subscriber) {
     this.subscribers.push(subscriber);
