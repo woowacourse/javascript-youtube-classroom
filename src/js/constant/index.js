@@ -18,4 +18,6 @@ export const ERROR_MESSAGE = {
   NO_INPUT: '검색어를 입력해주세요',
 
   RESPONSE_DENIED: '검색을 불러오는 데 문제가 발생하였습니다',
+
+  NO_ID: '아이디가 존재하지 않습니다',
 };

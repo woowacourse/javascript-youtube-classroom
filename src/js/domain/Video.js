@@ -1,3 +1,5 @@
+import { ERROR_MESSAGE } from '../constant';
+
 export default class Video {
   #id;
 
@@ -45,9 +47,9 @@ export default class Video {
   }
 
   static Builder() {
-    let id = 'NO_ID';
+    let id;
 
-    let thumbnails = 'NO_THUNBMNAILS_';
+    let thumbnails = 'NO_THUNBMNAILS';
 
     let channelTitle = 'NO_CHANNEL_TITLE';
 
@@ -89,7 +91,15 @@ export default class Video {
       },
 
       build: () => {
-        return new Video({ id, thumbnails, title, channelTitle, publishTime, isSaved });
+        if (!id) throw new Error(ERROR_MESSAGE.NO_ID);
+        return new Video({
+          id,
+          thumbnails,
+          title,
+          channelTitle,
+          publishTime,
+          isSaved,
+        });
       },
     };
   }

@@ -20,6 +20,7 @@ describe('youtubeAPI 테스트', () => {
     });
     youtubeSearchAPI.searchByPage().then((data) => expect(data).toBe(testData));
   });
+
   test('response 용량이 초과된 경우', () => {
     global.fetch = jest.fn().mockResolvedValue({
       status: 403,
@@ -30,6 +31,7 @@ describe('youtubeAPI 테스트', () => {
         expect(e.message).toBe(ERROR_MESSAGE.EXCEED_REQUEST_CAPACITY_ERROR),
       );
   });
+
   test('다른 에러가 발생한 경우', () => {
     global.fetch = jest.fn().mockResolvedValue({
       ok: false,
