@@ -151,3 +151,7 @@
 .video-item__save-button:hover {
   background: #efefef;
 }
+
+.video-item__save-button.saved {
+  display: none;
+}
