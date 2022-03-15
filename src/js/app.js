@@ -1,5 +1,5 @@
 import SearchModal from './searchModal';
-import { $, removeChildren } from './utils/dom';
+import { $, removeChildren } from './utils';
 import NotFoundImage from '../assets/images/not_found.png';
 
 export default class App {

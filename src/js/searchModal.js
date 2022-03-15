@@ -1,15 +1,13 @@
 /* eslint-disable max-lines-per-function */
-import { $ } from './utils/dom';
 import {
   MAX_RENDER_VIDEOS_COUNT,
   LOCAL_STORAGE_VIDEO_LIST_KEY,
   VALIDATION_ERROR_NAME,
 } from './constants/constant';
 import VideoItem from './videoItem';
-import arrayToMap from './utils/array';
 import checkVideoListFull from './validation/validators';
 import ValidationError from './validation/validation-error';
-import consoleErrorWithConditionalAlert from './utils/utils';
+import { consoleErrorWithConditionalAlert, arrayToMap, $ } from './utils';
 
 class SearchModal {
   serverUrl = 'https://silly-volhard-192918.netlify.app/.netlify/functions/youtube';
