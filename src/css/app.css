@@ -34,9 +34,9 @@ body {
 .nav__button {
     width: 80px;
     height: 36px;
-    background: #F5F5F5;
+    background: var(--nav-button-background-color);
 }
 
 .nav__button:hover {
-    background: #ebebeb;
+    background: var(--nav-button-hover-color);
 }

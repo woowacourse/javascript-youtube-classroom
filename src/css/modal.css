@@ -9,23 +9,19 @@
     left: 0;
 }
 
-.modal-container.hide {
-    display: none;
-}
-
 .dimmer {
     position: absolute;
     width: 100%;
     height: 100%;
-    background: rgba(0, 0, 0, 0.5);
+    background: var(--modal-dimmer-color);
 }
 
 .search-modal {
     position: relative;
     width: 1080px;
     height: 727px;
-    background: #FFFFFF;
-    border: 1px solid rgba(0, 0, 0, 0.12);
+    background: var(--search-modal-background-color);
+    border: 1px solid var(--search-modal-border-color);
     border-radius: 4px;
     padding: 50px 30px 32px 30px;
 }
@@ -49,25 +45,34 @@
     height: 36px;
     margin-right: 20px;
     padding: 4px 8px;
-    border: 1px solid #B4B4B4;
+    border: 1px solid var(--search-input-border-color);
     border-radius: 4px;
 }
 
 .search-input__keyword::placeholder {
-    color: #8B8B8B;
+    color: var(--search-input-text-color);
     font-size: 16px;
 }
 
 .search-input__search-button {
     width: 72px;
     height: 36px;
-    background: #00BCD4;
-    color: #FFFFFF;
+    background: var(--search-button-background-color);
+    color: var( --search-button-text-color);
 }
 
 .search-result.search-result--no-result {
+    height: 493px;
+    display: flex;
     justify-content: center;
     align-items: center;
+}
+
+.no-result {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
 }
 
 .no-result__image {
@@ -135,10 +140,56 @@
     right: 0;
     width: 80px;
     height: 36px;
-    background: #F9F9F9;
+    background: var(--video-save-button-background-color);
     margin-top: 4px;
 }
 
 .video-item__save-button:hover {
-    background: #efefef;
+    background: var(--video-save-button-hover-color);
+}
+
+.skeleton {
+    width: 240px;
+}
+  
+.skeleton .image,
+.skeleton .line {
+    background-image: linear-gradient(
+    90deg,
+    var(--skeleton-ui-dark-color) 0px,
+    var(--skeleton-ui-light-color) 30px,
+    var(--skeleton-ui-dark-color) 60px
+    );
+    animation: refresh 2s infinite ease-out;
+}
+  
+.skeleton .image {
+    height: 135px;
+}
+  
+.skeleton .line {
+    height: 24px;
+    margin: 6px 0;
+}
+  
+.skeleton .line:first-child {
+    width: 50%;
+}
+  
+.skeleton .line:last-child {
+    width: 80%;
+}
+  
+@keyframes refresh {
+    0% {
+      background-position: calc(-100px);
+    }
+    40%,
+    100% {
+      background-position: 320px;
+    }
+}
+
+.hide {
+    display: none;
 }
