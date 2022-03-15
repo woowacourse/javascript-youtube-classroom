@@ -1,12 +1,13 @@
 import VideoItemView from './VideoItemView.js';
-import { DOM_STRING, VIDEO_LIST, CLASS_NAME_STRING } from '../utils/constants.js';
+import { DOM_STRING, VIDEO_LIST, CLASS_NAME_STRING, SCROLL } from '../utils/constants.js';
 import { $, throttle } from '../utils/common.js';
 
 export default class ModalView {
   constructor() {
     this.registerDOM();
     this.videoItemList = [];
-    this.enabledScrollSearch = true;
+    this.enabledScrollSearch = false;
+    this.searchInputValue = '';
   }
 
   registerDOM() {
@@ -39,11 +40,13 @@ export default class ModalView {
 
   bindOnClickSearchButton(callback) {
     this.$searchButton.addEventListener('click', () => {
-      callback(this.$searchInput.value);
+      this.searchInputValue = this.$searchInput.value;
+      callback(this.searchInputValue);
     });
     this.$searchInput.addEventListener('keyup', e => {
       if (e.keyCode === 13) {
-        callback(this.$searchInput.value);
+        this.searchInputValue = this.$searchInput.value;
+        callback(this.searchInputValue);
       }
     });
   }
@@ -53,10 +56,10 @@ export default class ModalView {
       throttle(() => {
         if (
           this.$videoList.scrollHeight - this.$videoList.scrollTop <=
-            this.$videoList.offsetHeight &&
+            this.$videoList.offsetHeight + SCROLL.ADDITIONAL_OFFSET &&
           this.enabledScrollSearch
         ) {
-          callback(this.$searchInput.value);
+          callback(this.searchInputValue);
         }
       });
     });

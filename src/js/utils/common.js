@@ -7,7 +7,7 @@ export const throttle = (function () {
       throttle = setTimeout(() => {
         throttle = null;
         callback();
-      }, 1000);
+      }, 200);
     }
   };
 })();

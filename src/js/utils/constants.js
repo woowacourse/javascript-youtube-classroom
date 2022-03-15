@@ -28,3 +28,7 @@ export const STORE = {
 export const VIDEO_LIST = {
   RENDER_SIZE: 10,
 };
+
+export const SCROLL = {
+  ADDITIONAL_OFFSET: 400,
+};
