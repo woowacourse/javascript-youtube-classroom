@@ -25,7 +25,7 @@ export default class SearchResult {
       }),
     );
     this.bindEvents();
-    YoutubeSearchStore.addSubscriber(this.render.bind(this));
+    YoutubeSearchStore.addSubscriber(this.render);
   }
 
   bindEvents() {
@@ -38,11 +38,11 @@ export default class SearchResult {
     addEvent(this.container, {
       eventType: 'click',
       selector: '.video-item__save-button',
-      handler: this.handleToggleSaveButton.bind(this),
+      handler: this.handleToggleSaveButton,
     });
   }
 
-  handleToggleSaveButton({ target: $target }) {
+  handleToggleSaveButton = ({ target: $target }) => {
     const { videoId } = $target.closest('.video-item').dataset;
     if (YoutubeSaveStorage.has(videoId)) {
       YoutubeSaveStorage.remove(videoId);
@@ -58,9 +58,9 @@ export default class SearchResult {
 
     YoutubeSaveStorage.add(videoId);
     $target.textContent = '🗑 저장 취소';
-  }
+  };
 
-  render({ isLoading, isLoaded, items, error }) {
+  render = ({ isLoading, isLoaded, items, error }) => {
     this.$videoList.innerHTML = '';
 
     if (error) {
@@ -84,7 +84,7 @@ export default class SearchResult {
 
     $fragment.append(this.$scrollObserver);
     this.$videoList.append($fragment);
-  }
+  };
 
   getResultNotFound() {
     return createElement('DIV', {

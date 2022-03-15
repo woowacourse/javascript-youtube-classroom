@@ -15,14 +15,13 @@ class YoutubeSearchStore {
 
   setReducer() {
     this.reducer = {
-      [YOUTUBE_SEARCH_ACTION.UPDATE_SEARCH_KEYWORD]: this.updateSearchKeyword.bind(this),
-      [YOUTUBE_SEARCH_ACTION.UPDATE_SEARCH_LOADING_STATUS]:
-        this.updateSearchLoadingStatus.bind(this),
-      [YOUTUBE_SEARCH_ACTION.UPDATE_SEARCH_RESULT]: this.updateSearchResult.bind(this),
+      [YOUTUBE_SEARCH_ACTION.UPDATE_SEARCH_KEYWORD]: this.updateSearchKeyword,
+      [YOUTUBE_SEARCH_ACTION.UPDATE_SEARCH_LOADING_STATUS]: this.updateSearchLoadingStatus,
+      [YOUTUBE_SEARCH_ACTION.UPDATE_SEARCH_RESULT]: this.updateSearchResult,
     };
   }
 
-  updateSearchKeyword(searchKeyword) {
+  updateSearchKeyword = searchKeyword => {
     this.setState({
       ...this.state,
       searchKeyword,
@@ -32,13 +31,13 @@ class YoutubeSearchStore {
       nextPageToken: '',
       error: false,
     });
-  }
+  };
 
-  updateSearchLoadingStatus(isLoading) {
+  updateSearchLoadingStatus = isLoading => {
     this.setState({ ...this.state, isLoading });
-  }
+  };
 
-  async updateSearchResult() {
+  updateSearchResult = async () => {
     if (this.state.nextPageToken === undefined) return;
     const {
       items = [],
@@ -54,7 +53,7 @@ class YoutubeSearchStore {
       error,
       nextPageToken,
     });
-  }
+  };
 
   getState() {
     return this.state;

@@ -10,15 +10,15 @@ export default class Navigation {
     addEvent(this.container, {
       eventType: 'click',
       selector: '#search-modal-button',
-      handler: this.handleOpenModal.bind(this),
+      handler: this.handleOpenModal,
     });
   }
 
-  handleOpenModal({ target: $target }) {
+  handleOpenModal = ({ target: $target }) => {
     const modalId = $target.dataset.modal;
     const $modalContainer = $('#modal');
 
     $modalContainer.classList.remove('hide');
     $(`#${modalId}`, $modalContainer).classList.add('show');
-  }
+  };
 }

@@ -14,21 +14,21 @@ export default class SearchForm {
     addEvent(this.container, {
       eventType: 'input',
       selector: '#search-input-keyword',
-      handler: this.handleInputValue.bind(this),
+      handler: this.handleInputValue,
     });
     addEvent(this.container, {
       eventType: 'submit',
       selector: '#search-form',
-      handler: this.handleSubmitForm.bind(this),
+      handler: this.handleSubmitForm,
     });
   }
 
-  handleInputValue({ target: $target }) {
+  handleInputValue = ({ target: $target }) => {
     const $searchButton = $('#search-button', this.container);
     onEnableButton($searchButton, () => $target.value.length > 0);
-  }
+  };
 
-  handleSubmitForm(event) {
+  handleSubmitForm = event => {
     event.preventDefault();
     const newKeyword = $('#search-input-keyword', this.container).value;
     const { isLoading, keyword: beforeKeyword } = YoutubeSearchStore.getState();
@@ -48,5 +48,5 @@ export default class SearchForm {
 
     YoutubeSearchStore.dispatch(YOUTUBE_SEARCH_ACTION.UPDATE_SEARCH_KEYWORD, newKeyword);
     YoutubeSearchStore.dispatch(YOUTUBE_SEARCH_ACTION.UPDATE_SEARCH_RESULT);
-  }
+  };
 }
