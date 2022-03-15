@@ -29,14 +29,6 @@ const keywordInputView = new KeywordInputView();
 const searchModalView = new SearchModalView();
 const videoView = new VideoView(async () => polishVideos(await youtubeAPI.getVideosInfo()));
 
-const checkError = (error) => {
-  if (error instanceof ValidationError) {
-    alert(error.message);
-    return;
-  }
-  throw error;
-};
-
 const handleKeywordInputSubmit = async (keyword) => {
   try {
     checkKeyword(keyword);
@@ -46,7 +38,7 @@ const handleKeywordInputSubmit = async (keyword) => {
     videoView.offSkeleton();
     videoView.renderScreenByVideos(videos);
   } catch (error) {
-    checkError(error);
+    alert(error.message);
   }
 };
 
@@ -54,7 +46,7 @@ const handleSaveVideoButtonClick = (videoId) => {
   try {
     UserStorage.addVideoId(videoId);
   } catch (error) {
-    checkError(error);
+    alert(error.message);
   }
 };
 
