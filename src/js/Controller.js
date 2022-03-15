@@ -19,6 +19,8 @@ export default class Controller {
 
   #subscribeViewEvents() {
     on(this.searchInputView.$searchButton, '@search', this.#searchVideo.bind(this));
+    on(this.searchInputView.$closeButton, '@close-modal', this.#closeModal.bind(this));
+
     on(this.searchResultView.$searchTarget, '@scroll-bottom', this.#scrollNextVideos.bind(this));
     on(this.searchResultView.$searchTarget, '@save-video', this.#saveVideo.bind(this));
   }
@@ -83,5 +85,14 @@ export default class Controller {
     this.searchResultView.changeSaveButtonStyle(event.detail.buttonElement);
     const { savedId } = event.detail;
     this.video.setItemsLocalStorage(savedId);
+  }
+
+  #closeModal() {
+    // 모달 가리기
+    this.searchInputView.hideModal();
+    // 검색어 초기화
+    this.searchInputView.resetSearchInputKeyword();
+    // 스켈레톤 초기화
+    this.searchResultView.removeVideo();
   }
 }
