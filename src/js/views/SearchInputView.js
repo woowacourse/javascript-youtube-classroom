@@ -1,5 +1,6 @@
 import { $ } from '../utils/dom.js';
 import { emit, on } from '../utils/event.js';
+import throttle from '../utils/throttle.js';
 
 export default class SearchInputView {
   constructor() {
@@ -9,12 +10,12 @@ export default class SearchInputView {
   }
 
   #bindEvents() {
-    on(this.$searchButton, 'click', this.#handleClick.bind(this));
-    on(this.$searchInputKeyword, 'keypress', this.#handleKeypress.bind(this));
+    on(this.$searchButton, 'click', throttle(this.#handleClick.bind(this), 2000));
+    on(this.$searchInputKeyword, 'keypress', throttle(this.#handleKeypress.bind(this), 2000));
   }
 
-  #handleKeypress() {
-    if (window.event.keyCode === 13) {
+  #handleKeypress(event) {
+    if (event.key === 'Enter') {
       this.#handleClick();
     }
   }
