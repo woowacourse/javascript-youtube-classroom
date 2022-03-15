@@ -2,7 +2,7 @@ import SearchEngine from '../domain/searchEngine.js';
 import StorageEngine from '../domain/storageEngine.js';
 
 import { $, $$ } from '../util/domHelper.js';
-import { NO_RESULT_TEMPLATE, SKELETON_TEMPLATE, VIDEO_LIST_TEMPLATE } from '../util/template.js';
+import { NO_RESULT_IMAGE_TEMPLATE, SKELETON_TEMPLATE } from '../util/template.js';
 import { preprocessDate } from '../util/common.js';
 import { DELAY_MILISECOND_TIME, VIDEO_COUNT } from '../util/constants.js';
 
@@ -20,6 +20,11 @@ export default class ScreenManager {
     this.searchButton = $('#search-button');
     this.searchInputKeyword = $('#search-input-keyword');
     this.searchResult = $('.search-result');
+    this.noResult = $('.no-result');
+    this.videoList = $('.video-list');
+
+    //초기 화면 렌더링
+    this.noResult.insertAdjacentHTML('beforeend', NO_RESULT_IMAGE_TEMPLATE);
 
     // 이벤트 핸들러 등록
     this.searchModalButton.addEventListener('click', this.handleOpenModal.bind(this));
@@ -45,7 +50,6 @@ export default class ScreenManager {
     if (e.key === 'Enter' || e.type === 'click') {
       this.initSearchEnvironment();
       this.renderSkeleton();
-
       const keyword = this.searchInputKeyword.value;
 
       try {
@@ -58,22 +62,21 @@ export default class ScreenManager {
   }
 
   initSearchEnvironment() {
-    this.searchEngine.resetPageToken();
-    this.searchResult.removeChild(this.searchResult.lastElementChild);
     this.searchResult.classList.remove('search-result--no-result');
-    this.searchResult.insertAdjacentHTML('beforeend', VIDEO_LIST_TEMPLATE);
+    this.noResult.classList.add('hide');
+    this.videoList.replaceChildren('');
+    this.searchEngine.resetPageToken();
   }
 
   renderSkeleton() {
-    this.videoList = $('.video-list');
     this.videoList.insertAdjacentHTML('beforeend', SKELETON_TEMPLATE);
   }
 
   renderSearchResult(data) {
     if (data === null) {
-      this.searchResult.removeChild(this.searchResult.lastElementChild);
-      this.searchResult.insertAdjacentHTML('beforeend', NO_RESULT_TEMPLATE);
       this.searchResult.classList.add('search-result--no-result');
+      this.noResult.classList.remove('hide');
+      this.videoList.replaceChildren('');
       return;
     }
 
@@ -155,11 +158,6 @@ export default class ScreenManager {
   };
 
   renderAdditionalVideos(data) {
-    if (data === null) {
-      this.searchResult.removeChild(this.searchResult.lastElementChild);
-      return;
-    }
-
     const preprocessedData = ScreenManager.preprocessData(data);
     this.allocatePreprocessedData(preprocessedData);
   }

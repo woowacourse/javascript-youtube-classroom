@@ -1,10 +1,9 @@
 import notFoundImage from '../../assets/images/not_found.jpg';
 import { VIDEO_COUNT } from './constants.js';
 
-export const NO_RESULT_TEMPLATE = `
-  <div class="no-result">
+export const NO_RESULT_IMAGE_TEMPLATE = `
     <img src=${notFoundImage} alt="no result image" class="no-result__image">
-  </div>
+
 `;
 
 export const SKELETON_TEMPLATE = `
