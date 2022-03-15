@@ -168,6 +168,7 @@
   width: 80px;
   height: 36px;
   background: var(--save-btn-bg-color);
+  color: var(--save-btn-text-color);
   margin-top: 4px;
 }
 
@@ -176,5 +177,7 @@
 }
 
 .video-item__save-button.hide {
-  display: none;
+  background: var(--save-btn-bg-hide-color);
+  color: var(--save-btn-text-color);
+  cursor: not-allowed;
 }

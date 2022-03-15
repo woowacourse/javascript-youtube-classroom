@@ -10,6 +10,8 @@
   --search-btn-bg-color: #00bcd4;
   --search-btn-text-color: #ffffff;
 
-  --save-btn-bg-color: #f9f9f9;
-  --save-btn-bg-hover-color: #efefef;
+  --save-btn-bg-color: #3bc9db;
+  --save-btn-bg-hover-color: #c5f6fa;
+  --save-btn-bg-hide-color: #e3fafc;
+  --save-btn-text-color: #000000;
 }
