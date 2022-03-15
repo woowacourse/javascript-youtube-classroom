@@ -30,6 +30,7 @@ class Search {
     const queryString = this.#generateQueryString(keyword, pageToken);
     try {
       const response = await fetch(`${SEARCH_URL_BASE}${queryString}`);
+      if (!response.ok) throw new Error();
       const { items, nextPageToken } = await response.json();
       return { items, nextPageToken };
     } catch (error) {
