@@ -11,7 +11,7 @@ export default class SearchInputView {
 
   #bindEvents() {
     on(this.$searchButton, 'click', throttle(this.#handleClick.bind(this), 2000));
-    on(this.$searchInputKeyword, 'keypress', throttle(this.#handleKeypress.bind(this), 2000));
+    on(this.$searchInputKeyword, 'keypress', throttle(this.#handleKeypress.bind(this), 500));
   }
 
   #handleKeypress(event) {
