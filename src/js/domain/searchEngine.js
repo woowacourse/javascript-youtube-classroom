@@ -1,5 +1,6 @@
 import fetch from 'node-fetch';
-import { SEARCH_NOT_WORKING_ERROR_MESSAGE, VIDEO_COUNT } from '../util/constants.js';
+import { preprocessDate } from '../util/common.js';
+import { VIDEO_COUNT } from '../util/constants.js';
 
 export default class SearchEngine {
   #pageToken = '';
@@ -47,5 +48,23 @@ export default class SearchEngine {
     }
 
     return YOUTUBE_API_URL;
+  }
+
+  preprocessData(data) {
+    const preprocessedData = data.map((datum) => {
+      const thumbnails = datum.snippet.thumbnails.high.url;
+      const { title, channelTitle, publishTime } = datum.snippet;
+      const { videoId } = datum.id;
+
+      return {
+        thumbnails,
+        title,
+        channelTitle,
+        publishTime: preprocessDate(publishTime),
+        videoId,
+      };
+    });
+
+    return preprocessedData;
   }
 }

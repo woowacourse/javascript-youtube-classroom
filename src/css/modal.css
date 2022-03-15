@@ -19,6 +19,7 @@
   height: 100%;
   background: var(--dimmer-bg-color);
   opacity: 0.5;
+  cursor: pointer;
 }
 
 .search-modal {
@@ -189,7 +190,7 @@
   background: var(--save-btn-bg-hover-color);
 }
 
-.video-item__save-button.hide {
+.video-item__save-button.saved {
   background: var(--save-btn-bg-hide-color);
   color: var(--save-btn-text-color);
   cursor: not-allowed;

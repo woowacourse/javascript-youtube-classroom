@@ -4,7 +4,7 @@ import StorageEngine from '../domain/storageEngine.js';
 import { MAX_SAVED_VIDEOS_LENGTH } from '../util/constants.js';
 
 const generateMaxSavedVideos = () => {
-  const sample = { videoId: 'eMf0jojpdJQ' };
+  const sample = 'eMf0jojpdJQ';
 
   return Array.from({ length: MAX_SAVED_VIDEOS_LENGTH }, () => sample);
 };
