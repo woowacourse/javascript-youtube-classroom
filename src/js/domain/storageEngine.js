@@ -10,8 +10,12 @@ export default class StorageEngine {
 
     if (savedVideos.length >= MAX_SAVED_VIDEOS_LENGTH) return;
 
-    const newVideo = { videoId };
-    savedVideos.push(newVideo);
+    savedVideos.push(videoId);
     localStorage.setItem('savedVideos', JSON.stringify(savedVideos));
+  }
+
+  isSavedVideo(videoId) {
+    const savedVideos = this.getSavedVideos() ?? [];
+    return savedVideos.includes(videoId);
   }
 }

@@ -111,6 +111,10 @@ export default class ScreenManager {
       $('.video-item__channel-name', element).textContent = channelTitle;
       $('.video-item__published-date', element).textContent = publishTime;
 
+      if (this.storageEngine.isSavedVideo(videoId)) {
+        $('.video-item__save-button', element).classList.add('hide');
+      }
+
       element.classList.remove('skeleton');
     }
 
