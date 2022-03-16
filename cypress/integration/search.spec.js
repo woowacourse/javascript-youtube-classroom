@@ -88,4 +88,26 @@ describe('검색 후 렌더링 검사', () => {
     // then
     cy.get('.video-item').should('have.length', 10);
   });
+
+  it('검색 결과가 없는 검색어로 검색 시 "검색 결과가 없습니다 다른 키워드로 검색해보세요" 문구가 화면에 보여져야 한다.', () => {
+    const searchKeyword =
+      '!@%23!@$!%23%@$^%23%%26$^%!@%23!$!%23%%26(^%23%$!@%23!@$%23$!%23@!%23))%26%^)%26%^)%26@!@%23!%23$@%23$%$@%23^%%26$%^%26%23$@$^%23%%26$%^$^%*$^%26^@%23$@%23$@%23%@%23$^%23%%26^**%23^%23$%@%23$@%23$^@%23$!$@%23%@%23$%%23$^%23$%^$%@%23$!@%23!@%23%)^%26)%^$%%23$%%23$^%23%^%23%^%23^%26%^)%26%23$)%)%23$)%%23$%!@%23!@$%23$!%23@!%23))%26%^)%26%^)%26%)^%26)%^%26%^)%26%23$)%)%23$)%%23$%';
+
+    const expectedNoneResultMessage =
+      '\n        검색 결과가 없습니다\n        다른 키워드로 검색해보세요\n      ';
+
+    cy.fixture('searchResultNoneData.json');
+
+    cy.intercept(API_URL, { fixture: 'searchResultNoneData' }).as('requestVideo');
+
+    cy.get('#search-input-keyword').type(searchKeyword);
+
+    // when
+    cy.get('#search-button').click();
+    cy.wait('@requestVideo');
+
+    // then
+    cy.get('.no-result').should('be.visible');
+    cy.get('.no-result__description').should('have.text', expectedNoneResultMessage);
+  });
 });
