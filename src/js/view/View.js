@@ -8,7 +8,6 @@ class View {
 
     this.search = search;
     this.savedVideosView = new SavedVideosView();
-    this.savedVideosView.renderVideoList();
 
     this.searchModalView = new SearchModalView(search, saveVideos);
 
