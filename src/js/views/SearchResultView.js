@@ -6,8 +6,8 @@ export default class SearchResultView {
   constructor() {
     this.$videoList = $('.video-list');
     this.template = new Template();
-    this.$searchTarget = $('#search-target');
-    this.$searchNoResult = $('#search-no-result');
+    this.$searchTarget = $('.search-target');
+    this.$searchNoResult = $('.search-result--no-result');
 
     this.observer = new IntersectionObserver(
       (entries) => {

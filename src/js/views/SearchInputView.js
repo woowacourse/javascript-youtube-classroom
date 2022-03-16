@@ -4,8 +4,8 @@ import throttle from '../utils/throttle.js';
 
 export default class SearchInputView {
   constructor() {
-    this.$searchInputKeyword = $('#search-input-keyword');
-    this.$searchButton = $('#search-button');
+    this.$searchInputKeyword = $('.search-input__keyword');
+    this.$searchButton = $('.search-input__search-button');
     this.#bindEvents();
   }
 
