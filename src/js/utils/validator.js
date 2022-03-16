@@ -1,7 +1,7 @@
 import { ERROR_MESSAGES, QUERY_STRING } from '../config/constants';
 import { logger } from './commons.js';
 
-export const validate = (target, validator, log = false) => {
+export const validate = (target, validator) => {
   const { subject, rules } = validator;
 
   rules.every(({ description, test, errorMessage }) => {
@@ -11,7 +11,7 @@ export const validate = (target, validator, log = false) => {
       return true;
     };
 
-    return log
+    return process.env.NODE_ENV === 'development'
       ? logger(doTest, subject, description, test(target) ? '✓' : '✗')
       : doTest();
   });
