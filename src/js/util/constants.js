@@ -6,6 +6,6 @@ export const ERROR_MESSAGE = {
 
 export const MAX_SAVED_VIDEOS_COUNT = 100;
 
-export const DELAY_MILISECOND_TIME = 500;
+export const DELAY_MILISECOND_TIME = 1000;
 
 export const VIDEO_COUNT = 10;

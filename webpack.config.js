@@ -2,9 +2,9 @@ const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const Dotenv = require('dotenv-webpack');
-const webpack = require('webpack');
 
 module.exports = {
+  mode: 'development',
   entry: ['@babel/polyfill', './src/js/index.js'],
   output: {
     path: path.resolve(__dirname, 'dist'),
@@ -48,6 +48,5 @@ module.exports = {
     new HtmlWebpackPlugin({ template: './index.html' }),
     new MiniCssExtractPlugin(),
     new Dotenv({ systemvars: true }),
-    new webpack.HotModuleReplacementPlugin(),
   ],
 };

@@ -4,9 +4,12 @@
   "description": "<p align=\"middle\" >\r   <img width=\"200px;\" src=\"./images/laptop_with_youtube_logo.png\"/>\r </p>\r <h2 align=\"middle\">level1 - 나만의 유튜브 강의실</h2>\r <p align=\"middle\">자바스크립트와 외부 API를 이용해 구현 하는 나만의 유튜브 강의실</p>\r <p align=\"middle\">\r   <img src=\"https://img.shields.io/badge/version-1.0.0-blue?style=flat-square\" alt=\"template version\"/>\r   <img src=\"https://img.shields.io/badge/language-html-red.svg?style=flat-square\"/>\r   <img src=\"https://img.shields.io/badge/language-css-blue.svg?style=flat-square\"/>\r   <img src=\"https://img.shields.io/badge/language-js-yellow.svg?style=flat-square\"/>\r   <img src=\"https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square\"/>\r </p>",
   "main": "index.js",
   "scripts": {
-    "build": "webpack --mode=production",
-    "start": "webpack serve --open --mode=development",
-    "test:unit": "jest unit --setupFiles dotenv/config"
+    "build": "webpack",
+    "start": "webpack serve --open",
+    "test:unit": "jest unit --setupFiles dotenv/config",
+    "test:e2e:afterbuild": "npm run build && cypress run --browser chrome",
+    "test:e2e": "cypress run --browser chrome",
+    "cypress:open": "cypress open"
   },
   "repository": {
     "type": "git",
@@ -25,6 +28,7 @@
     "babel-loader": "^8.2.3",
     "commitizen": "^4.2.4",
     "css-loader": "^6.7.0",
+    "cypress": "^9.5.2",
     "cz-customizable": "^6.3.0",
     "dotenv-webpack": "^7.1.0",
     "eslint": "^8.10.0",
