@@ -15,13 +15,12 @@ const generateTemplate = {
     </li>
   `.repeat(ITEMS_PER_REQUEST);
   },
-  noResult() {
+  noResult(src, message) {
     return `
     <div class="no-result">
-      <img src="./src/assets/images/not_found.png" alt="no result image" class="no-result__image">
+      <img src=${src} alt="no result image" class="no-result__image">
       <p class="no-result__description">
-        검색 결과가 없습니다<br />
-        다른 키워드로 검색해보세요
+        ${message}
       </p>
     </div>
   `;
@@ -60,6 +59,24 @@ const generateTemplate = {
         )
       )
       .join("");
+  },
+  savedVideoItem({ id, channel, defaultThumbnail, title, date, isWatched }) {
+    return `<li class="video-item" data-video-id="${id}">
+    <img
+      src=${defaultThumbnail}"
+      alt="video-item-thumbnail"
+      class="video-item__thumbnail"
+    />
+    <h4 class="video-item__title">${title}</h4>
+    <p class="video-item__channel-name">${channel}</p>
+    <p class="video-item__published-date">${date}</p>
+    <div class="video-button__wrapper">
+      <button class="video-item__watched-button button ${
+        isWatched ? "selected" : ""
+      }">✅</button>
+      <button class="video-item__delete-button button">🗑️</button>
+    </div>
+  </li>`;
   },
 };
 

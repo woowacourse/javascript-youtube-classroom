@@ -1,5 +1,6 @@
 import VideoStorage from "./VideoStorage";
 import SearchModalView from "./view/SearchModalView";
+import VideoStorageView from "./view/VideoStorageView";
 import getSearchResult from "./api/getSearchResult";
 import { DELAY_TIME } from "./constants/constants";
 import { throttle, checkKeywordValid, isScrollToBottom } from "./utils/utils";
@@ -10,8 +11,11 @@ export default class YoutubeApp {
     this.videoList = document.querySelector(".video-list");
 
     this.#bindEvents();
-    this.searchModalView = new SearchModalView();
     this.videoStorage = new VideoStorage();
+    this.VideoStorageView = new VideoStorageView();
+    this.searchModalView = new SearchModalView();
+
+    this.#reloadStorageData();
   }
 
   #bindEvents() {
@@ -37,6 +41,13 @@ export default class YoutubeApp {
       this.#onClickDimmer
     );
   }
+
+  #reloadStorageData = () => {
+    console.log(this.videoStorage.getStorage());
+    if (!this.videoStorage.getStorage().length) {
+      this.VideoStorageView.renderEmptyStorage();
+    }
+  };
 
   #onClickSearchModalButton = () => {
     this.searchModalView.openSearchModal();

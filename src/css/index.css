@@ -19,8 +19,14 @@ body {
 }
 
 input,
-button,
 textarea,
 select {
   font: inherit;
+}
+
+button {
+  height: 36px;
+  font: inherit;
+  padding: 0 10px;
+  background: #f5f5f5;
 }

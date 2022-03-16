@@ -37,14 +37,14 @@ export default class SearchModalView {
   }
 
   renderNoResultPage() {
+    const message = "검색 결과가 없습니다<br />다른 키워드로 검색해보세요";
+
     this.searchResult.removeChild(this.videoList);
     this.searchResult.classList.add("search-result--no-result");
     this.searchResult.insertAdjacentHTML(
       "beforeend",
-      generateTemplate.noResult()
+      generateTemplate.noResult(notFountImage, message)
     );
-
-    document.querySelector(".no-result__image").src = notFountImage;
   }
 
   renderSearchResult(responseData, videoStorage) {
