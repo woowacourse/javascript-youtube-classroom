@@ -30,12 +30,12 @@ export const makeThumbnailTemplate = (video, exist) => {
 
 export const makeSkeletonTemplate = () => {
   return `
-    <div class="skeleton">
-      <div class="image"></div>
-      <p class="line"></p>
-      <p class="line"></p>
-      <p class="line"></p>
-      <p class="skeleton-button"></p>
-    </div>
+  <div class="skeleton">
+    <div class="image"></div>
+    <p class="line title"></p>
+    <p class="line channel-name"></p>
+    <p class="line pblsh-date"></p>
+    <p class="skeleton-button"></p>
+  </div>
     `;
 };

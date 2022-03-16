@@ -174,13 +174,18 @@
 }
 
 .skeleton .line {
-  height: 15px;
-  margin: 2px;
+  height: 12px;
+  margin-top: 2px;
+}
+
+.skeleton .pblsh-date {
+  width: 80%;
 }
 
 .skeleton .skeleton-button {
   width: 25%;
   height: 25px;
+  margin-top: 5px;
   float: right;
 }
 
