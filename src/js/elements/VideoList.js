@@ -3,6 +3,8 @@ import Save from '../domains/Save';
 import { addEvent, emit, $, $$ } from '../utils';
 import TEMPLATE from '../templates';
 
+import './VideoItem';
+
 class VideoList extends HTMLUListElement {
   constructor() {
     super();
@@ -27,7 +29,7 @@ class VideoList extends HTMLUListElement {
     VideoStore.instance.subscribe(this);
   }
 
-  notify(type, data) {
+  notify(_, data) {
     this.removeSkeleton();
     this.insertVideoItems(data);
     this.hideStoredVideoSaveButton(data);

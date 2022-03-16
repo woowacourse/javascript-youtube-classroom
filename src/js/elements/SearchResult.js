@@ -3,6 +3,8 @@ import CustomElement from '../abstract/CustomElement';
 import { $ } from '../utils';
 import TEMPLATE from '../templates';
 
+import './VideoList';
+
 class SearchResult extends CustomElement {
   connectedCallback() {
     super.connectedCallback();
