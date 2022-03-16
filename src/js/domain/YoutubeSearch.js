@@ -1,6 +1,6 @@
 import { validateInput } from '../util/general.js';
 
-export default class YoutubeSearchClient {
+export default class YoutubeSearch {
   #searchResults = {};
   #searchTarget = '';
 
@@ -22,7 +22,7 @@ export default class YoutubeSearchClient {
   }
 
   getURL(nextPageToken) {
-    const url = new URL('youtube/v3/search', 'https://onstar.netlify.app');
+    const url = new URL('dummy/youtube/v3/search', 'https://onstar.netlify.app');
     const parameter = new URLSearchParams({
       part: 'snippet',
       maxResults: 10,

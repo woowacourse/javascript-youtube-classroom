@@ -10,8 +10,13 @@
     <main id="app" class="classroom-container">
       <h1 class="classroom-container__title">👩🏻‍💻 나만의 유튜브 강의실 👨🏻‍💻</h1>
       <nav class="nav">
+        <div>
+          <button id="going-watch-button" class="select__button going-watch">👁 볼 영상</button>
+          <button id="watched-button" class="select__button watched">✅ 본 영상</button>
+        </div>
         <button id="search-modal-button" class="button nav__button">🔍 검색</button>
       </nav>
+      <ul class="saved-video-list watched"></ul>
     </main>
     <div class="modal-container hide">
       <div class="dimmer"></div>

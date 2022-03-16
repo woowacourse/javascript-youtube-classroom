@@ -1,42 +1,93 @@
 body {
-    padding: 64px 0;
-    font-size: 16px;
+  padding: 64px 0;
+  font-size: 16px;
 }
 
 #app {
-    max-width: 1020px;
-    margin: 0 auto;
+  max-width: 1020px;
+  margin: 0 auto;
 }
 
 .classroom-container__title {
-    text-align: center;
-    font-weight: bold;
-    font-size: 34px;
-    line-height: 36px;
-    margin-bottom: 64px;
+  text-align: center;
+  font-weight: bold;
+  font-size: 34px;
+  line-height: 36px;
+  margin-bottom: 64px;
 }
 
 .nav {
-    display: flex;
-    justify-content: center;
+  display: flex;
+  justify-content: space-between;
 }
 
 .button {
-    cursor: pointer;
-    border-radius: 4px;
-    border: none;
-    font-style: normal;
-    font-weight: bold;
-    font-size: 14px;
-    letter-spacing: 1.25px;
+  cursor: pointer;
+  border-radius: 4px;
+  border: none;
+  font-style: normal;
+  font-weight: bold;
+  font-size: 14px;
+  letter-spacing: 1.25px;
+}
+
+.going-watch {
+  border-radius: 4px 0 0 4px;
+}
+
+.watched {
+  border-radius: 0 4px 4px 0;
+  margin-left: -5px;
+}
+
+.select__button {
+  width: 120px;
+  background: rgba(0, 188, 212, 0.12);
+  border: 1px solid rgba(0, 0, 0, 0.12);
+  height: 36px;
+  background: #f5f5f5;
+  cursor: pointer;
+  margin-bottom: 39px;
+}
+
+.select__button:hover {
+  background: #ebebeb;
 }
 
 .nav__button {
-    width: 80px;
-    height: 36px;
-    background: #F5F5F5;
+  width: 80px;
+  height: 36px;
+  background: #f5f5f5;
 }
 
 .nav__button:hover {
-    background: #ebebeb;
+  background: #ebebeb;
+}
+
+.saved-video-list {
+  width: 1040px;
+  height: 493px;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 32px 20px;
+  overflow-y: scroll;
+}
+
+.video-item-buttons {
+  display: flex;
+  justify-content: flex-end;
+}
+.video-item__watched-button {
+  width: 36px;
+  height: 36px;
+  padding: 6px 2px;
+  margin: 4px;
+}
+
+.video-item__delete-button {
+  width: 36px;
+  height: 36px;
+  padding: 6px 2px;
+  margin: 4px;
 }
