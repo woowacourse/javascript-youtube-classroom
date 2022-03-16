@@ -9,6 +9,7 @@ import {
   videoSkeletonTemplate,
   videoNotFoundTemplate,
   videoNoMoreTemplate,
+  watchVideoTemplate,
 } from './template/videoTemplate.js';
 import { selectDom, addEvent } from './utils/selectDom.js';
 
@@ -18,20 +19,53 @@ class RenderVideo {
     this.saveVideo = saveVideo;
 
     this.searchModalButton = selectDom('#search-modal-button');
+    this.willWatchSectionButton = selectDom('#will-watch-section-button');
+    this.watchedSectionButton = selectDom('#watched-section-button');
+
+    this.renderResultWrap = selectDom('.search-result', this.modalContainer);
+    this.willWatchVideoWrap = selectDom('.will-watch-video');
+    this.watchedVideoWrap = selectDom('.watched-video');
+
+    this.willWatchVideoList = selectDom('.will-watch-video-list');
+    this.noWillWatchVideoText = selectDom('.no-will-watch-video');
+
     this.modalContainer = selectDom('.modal-container');
     this.searchVideoForm = selectDom('#search-form', this.modalContainer);
     this.searchVideoInput = selectDom('#search-input-keyword', this.searchVideoForm);
-    this.renderResultWrap = selectDom('.search-result', this.modalContainer);
     this.renderVideoListWrap = selectDom('.video-list', this.modalContainer);
     this.renderSkeletonWrap = selectDom('.skeleton-list', this.modalContainer);
     this.searchModalBackground = selectDom('.dimmer', this.modalContainer);
 
     addEvent(this.searchModalButton, 'click', this.onClickVideoSearchModal);
+    addEvent(this.willWatchSectionButton, 'click', this.onClickWillWatchSection);
+    addEvent(this.watchedSectionButton, 'click', this.onClickWatchedSection);
+
     addEvent(this.renderResultWrap, 'scroll', this.onScrollVideoList);
     addEvent(this.searchVideoForm, 'submit', this.onSubmitVideoSearch);
     addEvent(this.renderVideoListWrap, 'click', this.onSaveButtonClick);
     addEvent(this.searchModalBackground, 'click', this.onClickDimmer);
+
+    this.renderWillWatchVideo();
   }
+
+  renderWillWatchVideo = async () => {
+    const willWatchVideoItems = await this.saveVideo.getSaveVideoList();
+    this.willWatchVideoList.insertAdjacentHTML('afterbegin', willWatchVideoItems.map((willWatchVideoItem) => watchVideoTemplate(willWatchVideoItem)).join(' '));
+
+    if (this.willWatchVideoList.children.length !== 0) {
+      this.noWillWatchVideoText.classList.add('hide-element');
+    }
+  };
+
+  onClickWatchedSection = () => {
+    this.willWatchVideoWrap.classList.add('hide-element');
+    this.watchedVideoWrap.classList.remove('hide-element');
+  };
+
+  onClickWillWatchSection = () => {
+    this.willWatchVideoWrap.classList.remove('hide-element');
+    this.watchedVideoWrap.classList.add('hide-element');
+  };
 
   onClickDimmer = () => {
     this.modalContainer.classList.add('hide');
@@ -68,7 +102,7 @@ class RenderVideo {
       return;
     }
 
-    if (this.saveVideo.saveVideoList.length > MAX_SAVE_VIDEO_COUNT) {
+    if (this.saveVideo.saveVideoIdList.length > MAX_SAVE_VIDEO_COUNT) {
       alert(ERROR_MESSAGE.CANNOT_SAVE_VIDEO_ANYMORE);
       return;
     }
@@ -96,7 +130,7 @@ class RenderVideo {
         'beforeend',
         searchVideo
           .map((video) =>
-            videoTemplate(video, this.saveVideo.saveVideoList.includes(video.id.videoId)))
+            videoTemplate(video, this.saveVideo.saveVideoIdList.includes(video.id.videoId)))
           .join(' ')
       );
   }
