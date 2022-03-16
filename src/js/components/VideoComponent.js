@@ -1,7 +1,7 @@
 import { STATE_STORE_KEY } from '../constants/stateStore';
 import { getState, subscribe } from '../modules/stateStore';
 import { parseTimeStamp } from '../utils/util';
-import { canLoadImage } from '../utils/validation';
+import { canLoadImage, hasNotSrcAttribute } from '../utils/validation';
 
 class VideoComponent {
   $videoItem = null;
@@ -28,7 +28,7 @@ class VideoComponent {
   loadImg(showingCutline) {
     const { top } = this.$videoImg.getBoundingClientRect();
 
-    if (canLoadImage(top, showingCutline)) {
+    if (canLoadImage(top, showingCutline) && hasNotSrcAttribute(this.$videoImg)) {
       const {
         dataset: { src },
       } = this.$videoImg;
