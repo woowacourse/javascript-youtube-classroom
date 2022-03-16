@@ -6,7 +6,7 @@ const TEMPLATE = {
     <main id="app" class="classroom-container">
       <h1 class="classroom-container__title">👩🏻‍💻 나만의 유튜브 강의실 👨🏻‍💻</h1>
       <nav class="nav">
-        <button id="search-modal-button" class="button nav__button">🔍 검색</button>
+        <button id="search-modal-button" class="button nav__button" type="button">🔍 검색</button>
       </nav>
     </main>
   `,
@@ -55,7 +55,9 @@ const TEMPLATE = {
         <h4 class="video-item__title">${decodeURI(video.title)}</h4>
         <p class="video-item__channel-name">${decodeURI(video.channelTitle)}</p>
         <p class="video-item__published-date">${formatDate(video.publishedAt)}</p>
-        <button id="${video.id}-save-button" class="video-item__save-button button">⬇ 저장</button>
+        <button id="${
+          video.id
+        }-save-button" class="video-item__save-button button" type="button">⬇ 저장</button>
       </li>
     `;
   },
