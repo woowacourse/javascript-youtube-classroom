@@ -1,7 +1,7 @@
 import { $, $$ } from "../../utils/dom.js";
 import { LOCAL_DB, NUM } from "../../utils/contants.js";
 import { fetchDataFromKeyword } from "../../utils/api.js";
-import { makeIframeTemplate, makeSkeletonTemplate, noSearchResultTemplate } from "../../utils/templates.js";
+import { getVideoListTemplate, getSkeletonTemplate, getEmptyResultTemplate } from "../../utils/templates.js";
 import { getLocalStorage, saveLocalStorage } from "../../utils/localStorage.js";
 import { verifySaveId } from "../../utils/validation.js";
 
@@ -47,13 +47,13 @@ export default class SearchResult {
 
   #renderNoVideosImg() {
     this.resultLabel.setAttribute("hidden", true);
-    this.noResultContainer.insertAdjacentHTML("afterbegin", noSearchResultTemplate);
+    this.noResultContainer.insertAdjacentHTML("afterbegin", getEmptyResultTemplate);
   }
 
   #renderVideoList() {
     this.videoList.insertAdjacentHTML(
       "beforeend",
-      this.videos.items.map((video) => makeIframeTemplate(video)).join(""),
+      this.videos.items.map((video) => getVideoListTemplate(video)).join(""),
     );
   }
 
@@ -61,7 +61,7 @@ export default class SearchResult {
     this.resultLabel.removeAttribute("hidden");
     this.videoList.insertAdjacentHTML(
       "beforeend",
-      Array.from({ length: NUM.VIDEO_ITEMS_UNIT }, () => makeSkeletonTemplate).join(""),
+      Array.from({ length: NUM.VIDEO_ITEMS_UNIT }, () => getSkeletonTemplate).join(""),
     );
   }
 

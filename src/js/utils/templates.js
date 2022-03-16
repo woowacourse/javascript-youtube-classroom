@@ -1,12 +1,12 @@
 import { changeDateFormat } from "./common.js";
 import noImage from "../../assets/images/not_found.png";
 
-export const noSearchResultTemplate = `
+export const getEmptyResultTemplate = `
   <img src=${noImage} class="modal-result__empty-image" alt="empty-image" />
   <p class="modal-result__empty-text">검색 결과가 없습니다<br/>다른 키워드로 검색해보세요</p>
 `;
 
-export const makeIframeTemplate = (video) => {
+export const getVideoListTemplate = (video) => {
   return `
     <li class="video-item">
       <img src=${video.snippet.thumbnails.medium.url} class="video-item__thumbnail" alt="video-thumbnail">
@@ -17,7 +17,7 @@ export const makeIframeTemplate = (video) => {
   </li>`;
 };
 
-export const makeSkeletonTemplate = `
+export const getSkeletonTemplate = `
   <div class="skeleton">
     <div class="image"></div>
     <p class="line"></p>
