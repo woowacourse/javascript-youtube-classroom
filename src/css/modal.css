@@ -18,12 +18,12 @@
 
 .search-modal {
   position: relative;
-  width: 1080px;
+  width: max-content;
   height: 727px;
   background: #ffffff;
   border: 1px solid rgba(0, 0, 0, 0.12);
   border-radius: 4px;
-  padding: 50px 30px 32px 30px;
+  padding: 50px 50px 32px;
 }
 
 .search-modal__title {
@@ -47,6 +47,12 @@
   padding: 4px 8px;
   border: 1px solid #b4b4b4;
   border-radius: 4px;
+}
+
+@media screen and (max-width: 599px) {
+  .search-input__keyword {
+    width: 300px;
+  }
 }
 
 .search-input__keyword::placeholder {
@@ -95,18 +101,15 @@
 }
 
 .modal-container .video-list {
-  width: 1040px;
+  position: relative;
   height: 448px;
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-  gap: 32px 20px;
   overflow-y: scroll;
 }
 
 .video-item__save-button {
   position: absolute;
   right: 0;
+  bottom: 0;
   width: 80px;
   height: 36px;
   background: #f9f9f9;
