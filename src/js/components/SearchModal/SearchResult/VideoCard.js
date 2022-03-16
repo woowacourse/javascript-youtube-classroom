@@ -7,6 +7,7 @@ export default class VideoCard extends Component {
   template() {
     const { videoId, thumbnailUrl, title, channelTitle, publishTime, saved } =
       this.props.video;
+    const watched = this.props.video.watched;
 
     return `
       <li class="video-item" data-video-id="${videoId}">
@@ -21,7 +22,14 @@ export default class VideoCard extends Component {
           publishTime
         )}</p>
         ${
-          saved
+          watched !== undefined
+            ? `<div class="video-item__buttons">
+                <button class="video-item__watched-button ${
+                  watched ? 'watched' : ''
+                }" >✅</button>
+                <button class="video-item__delete-button">🗑</button>
+              </div>`
+            : saved
             ? ''
             : '<button class="video-item__save-button button">⬇ 저장</button>'
         }
