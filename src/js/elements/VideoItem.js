@@ -22,7 +22,6 @@ class VideoItem extends CustomElement {
   }
 
   emitEvent(e) {
-    e.preventDefault();
     this.hideSaveButton(e);
 
     const videoId = this.dataset.id;
