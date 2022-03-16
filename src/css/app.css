@@ -75,3 +75,12 @@ body {
 .select_saved_video_option input[type='radio']:checked + label {
   background: rgba(0, 188, 212, 0.12);
 }
+
+.hide_videolist .playlist_display {
+  display: block;
+}
+
+.hide_videolist .watched_display,
+.playlist_display {
+  display: none;
+}

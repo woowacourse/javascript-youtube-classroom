@@ -9,6 +9,7 @@ import UserStorage from '../UserStorage/index.js';
 import { checkKeyword } from '../Validator/index.js';
 
 import { formatDate } from '../utils/index.js';
+import SavedVideoView from '../views/SavedVideoView.js';
 
 const youtubeAPI = new YoutubeAPI();
 
@@ -26,6 +27,7 @@ const polishVideos = (videos) => {
 };
 
 const keywordInputView = new KeywordInputView();
+const savedVideoView = new SavedVideoView();
 const searchModalView = new SearchModalView();
 const videoView = new VideoView(async () => polishVideos(await youtubeAPI.getVideosInfo()));
 
