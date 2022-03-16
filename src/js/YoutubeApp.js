@@ -19,6 +19,7 @@ export default class YoutubeApp {
   #searchInputKeyword = document.querySelector("#search-input-keyword");
   #searchResult = document.querySelector(".search-result");
   #videoList = document.querySelector(".video-list");
+  #noResult = document.querySelector(".no-result");
   #nextPageToken = "";
   #keyword = "";
 
@@ -68,6 +69,10 @@ export default class YoutubeApp {
 
   #onSubmitSearchButton = (e) => {
     e.preventDefault();
+
+    this.#videoList.classList.remove("hide");
+    this.#searchResult.classList.remove("search-result--no-result");
+    this.#noResult.classList.add("hide");
 
     try {
       validateInput(this.#searchInputKeyword.value);
@@ -142,14 +147,9 @@ export default class YoutubeApp {
 
     // 검색 결과가 없을 경우
     if (responseData.items.length === 0) {
-      this.#searchResult.removeChild(this.#videoList);
+      this.#videoList.classList.add("hide");
       this.#searchResult.classList.add("search-result--no-result");
-
-      render({
-        element: this.#searchResult,
-        position: "beforeend",
-        template: generateTemplate.noResult(),
-      });
+      this.#noResult.classList.remove("hide");
 
       document.querySelector(".no-result__image").src = notFountImage;
 

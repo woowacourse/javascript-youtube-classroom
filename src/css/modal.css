@@ -9,6 +9,8 @@
   left: 0;
 }
 
+.no-result.hide,
+.video-list.hide,
 .video-item__save-button.hide,
 .modal-container.hide {
   display: none;

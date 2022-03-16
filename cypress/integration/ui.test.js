@@ -1,40 +1,29 @@
 import { ERROR_MESSAGE } from "../../src/js/constants/constants";
 
 describe("보고싶은 영상 찾기 모달창 전체 로직 테스트", () => {
-  // let responseData;
+  const searchKeyword = "xooos";
+  const errorSearchKeyword = `\!\@\!\@\$\!\%\@\$\^\%\&\$\^\*\%\!\@\!\$\!\%\&\(\^\*\%\$\!\@!@$$!#@!#)_)&_%^_)&%_^)&_@!@#!#$@#$%$@#^%&$%^&#$@$^#%&$%^$^%*$^&^@#$@#$@#%@#$^#%&^**#^#$%@#$@#$^@#$!$@#%@#$%#$^#$%^$%@#$!@#!@#%)^_&)%_^$%#$%#$^#%^#%^#^&_%^_)&_#$)%_)#_$)%#_$%!@#!@$#$!#@!#)_)&_%^_)&%_^)&_%)^_&)%_^&_%^_)&_#$)%_)#_$)%#_$\%`;
 
   before(() => {
     cy.visit("./index.html");
-    // cy.fixture("fixture").then((todo) => {
-    //   responseData = todo;
-    // });
   });
-
-  // it("fixture test", () => {
-  //   cy.log("fixture test", responseData);
-  // });
-
-  const searchKeyword = "xooos";
-  const errorSearchKeyword = `\!\@\!\@\$\!\%\@\$\^\%\&\$\^\*\%\!\@\!\$\!\%\&\(\^\*\%\$\!\@!@$$!#@!#)_)&_%^_)&%_^)&_@!@#!#$@#$%$@#^%&$%^&#$@$^#%&$%^$^%*$^&^@#$@#$@#%@#$^#%&^**#^#$%@#$@#$^@#$!$@#%@#$%#$^#$%^$%@#$!@#!@#%)^_&)%_^$%#$%#$^#%^#%^#^&_%^_)&_#$)%_)#_$)%#_$%!@#!@$#$!#@!#)_)&_%^_)&%_^)&_%)^_&)%_^&_%^_)&_#$)%_)#_$)%#_$\%`;
 
   it("초기 화면에서 검색 버튼을 누르면 보고싶은 영상 찾기 모달창이 나타난다.", () => {
     cy.get("#search-modal-button").click();
     cy.get(".modal-container").should("be.visible");
   });
 
-  /**
-   * youtube에 검색한 결과가 없는 경우를 찾기 어려움... (테스트 통과가 되지 않을 확률이 높다.)
-   */
-  // it("보고싶은 영상 찾기 모달창 안에서 원하는 영상을 검색한 결과가 없는 경우 검색 결과 없음 이미지를 보여준다.", () => {
-  //   cy.get("#search-input-keyword").type(errorSearchKeyword);
-  //   cy.get("#search-button").click();
-  //   cy.get(".search-result--no-result").should("be.visible");
-  // });
+  it("보고싶은 영상 찾기 모달창 안에서 원하는 영상을 검색한 결과가 없는 경우 검색 결과 없음 이미지를 보여준다.", () => {
+    cy.intercept(
+      "https://clever-aryabhata-ff1fc1.netlify.app/youtube/v3/search?*",
+      {
+        fixture: "no-search",
+      }
+    ).as("noSearch");
 
-  it("보고싶은 영상 찾기 모달창 안에서 검색된 영상을 불러오는 동안 로딩 이미지를 보여준다.", () => {
-    cy.get("#search-input-keyword").clear().type(searchKeyword);
+    cy.get("#search-input-keyword").type(errorSearchKeyword);
     cy.get("#search-button").click();
-    cy.get(".skeleton").should("be.visible");
+    cy.get(".search-result--no-result").should("be.visible");
   });
 
   it("보고싶은 영상 찾기 모달창 안에서 검색창에 검색어를 입력하지 않으면 에러 메시지를 보여준다.", () => {
@@ -49,9 +38,16 @@ describe("보고싶은 영상 찾기 모달창 전체 로직 테스트", () => {
       });
   });
 
-  it("보고싶은 영상 찾기 모달창 안에서 원하는 영상을 검색할 수 있다.", () => {
+  it("보고싶은 영상 찾기 모달창 안에서 원하는 영상을 검색하면 검색된 영상을 불러오는 동안 로딩 이미지를 보여준 후 검색 결과를 보여준다.", () => {
+    cy.intercept(
+      "https://clever-aryabhata-ff1fc1.netlify.app/youtube/v3/search?*",
+      {
+        fixture: "search",
+      }
+    ).as("search");
     cy.get("#search-input-keyword").clear().type(searchKeyword);
     cy.get("#search-button").click();
+    // cy.get(".skeleton").should("be.visible");
     cy.get(".video-item").should("be.visible");
   });
 
@@ -61,6 +57,13 @@ describe("보고싶은 영상 찾기 모달창 전체 로직 테스트", () => {
   });
 
   it("보고싶은 영상 찾기 모달창 안에서 검색 결과 영역 스크롤 바를 끝까지 내리면 새로운 영상 10개를 추가로 사용자에게 보여준다.", () => {
+    cy.intercept(
+      "https://clever-aryabhata-ff1fc1.netlify.app/youtube/v3/search?*",
+      {
+        fixture: "search",
+      }
+    ).as("search");
+
     cy.get(".video-list").scrollTo("bottom");
     cy.get(".video-list").children().should("have.length", 20);
   });
