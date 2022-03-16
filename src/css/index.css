@@ -1,21 +1,50 @@
 @import './app.css';
 @import './modal.css';
+@import './snackbar.css';
+@import './skeleton.css';
+
+:root {
+  --a-color: #000000;
+  --a-hover-color: #00bcd4;
+}
 
 * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
-ol,ul {
-    list-style: none;
+ul,
+li {
+  list-style: none;
 }
 
-html, body {
-    height: 100%;
-    -webkit-font-smoothing: antialiased;
+html,
+body {
+  height: 100%;
+  -webkit-font-smoothing: antialiased;
 }
 
-input, button, textarea, select {
-    font: inherit;
+input,
+button,
+textarea,
+select {
+  font: inherit;
+}
+
+a {
+  text-decoration: none;
+  color: var(--a-color);
+}
+a:visited {
+  text-decoration: none;
+}
+a:hover {
+  color: var(--a-hover-color);
+}
+a:focus {
+  text-decoration: none;
+}
+a:active {
+  text-decoration: none;
 }
