@@ -3,6 +3,11 @@
 @import './snackbar.css';
 @import './skeleton.css';
 
+:root {
+  --a-color: #000000;
+  --a-hover-color: #00bcd4;
+}
+
 * {
   margin: 0;
   padding: 0;
@@ -29,13 +34,13 @@ select {
 
 a {
   text-decoration: none;
-  color: black;
+  color: var(--a-color);
 }
 a:visited {
   text-decoration: none;
 }
 a:hover {
-  color: #00bcd4;
+  color: var(--a-hover-color);
 }
 a:focus {
   text-decoration: none;

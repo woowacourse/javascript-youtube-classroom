@@ -1,9 +1,14 @@
+:root {
+  --snack-bar-font-color: #fff;
+  --snack-bar-background-color: #333;
+}
+
 #snack-bar {
   visibility: hidden;
   min-width: 250px;
   margin-left: -125px;
-  background-color: #333;
-  color: #fff;
+  background-color: var(--snack-bar-background-color);
+  color: var(--snack-bar-font-color);
   text-align: center;
   border-radius: 2px;
   padding: 16px;
