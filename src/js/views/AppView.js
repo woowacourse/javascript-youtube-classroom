@@ -3,7 +3,7 @@ import { on } from '../utils/event.js';
 
 export default class AppView {
   constructor() {
-    this.$searchModalButton = $('.nav__button');
+    this.$searchModalButton = $('.nav-right__button');
     this.$modalContainer = $('.modal-container');
     this.$dimmer = $('.dimmer');
     this.$closeButton = $('.x-shape');

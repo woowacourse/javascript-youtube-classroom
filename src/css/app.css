@@ -18,7 +18,7 @@ body {
 
 .nav {
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
 }
 
 .button {
@@ -31,17 +31,46 @@ body {
   letter-spacing: 1.25px;
 }
 
-.nav__button {
-  width: 80px;
-  height: 36px;
-  background: var(--secondary-lighten);
-}
-
-.nav__button:hover {
-  background: var(--secondary);
-}
-
 .bottom-target {
   margin-top: 100px;
   height: 100px;
+}
+
+.nav-left {
+  float: left;
+}
+
+.nav-right {
+  float: right;
+}
+
+.nav-left__button {
+  height: 36px;
+  padding: 10px;
+  background: var(--secondary-lighten);
+  border: 1px solid var(--secondary);
+}
+
+.nav-left__button--watch-later {
+  margin-right: -3px;
+  border-radius: 5px 0 0 5px;
+}
+
+.nav-left__button--watched-already {
+  margin-left: -3px;
+  border-radius: 0 5px 5px 0;
+}
+
+.nav-left__button:hover {
+  background: var(--primary-lighten);
+}
+
+.nav-right__button {
+  height: 36px;
+  padding: 10px;
+  background: var(--secondary-lighten);
+}
+
+.nav-right__button:hover {
+  background: var(--secondary);
 }
