@@ -3,6 +3,7 @@
 @import './video.css';
 @import './snackbar.css';
 @import './skeleton.css';
+@import './responsive.css';
 
 * {
   margin: 0;
