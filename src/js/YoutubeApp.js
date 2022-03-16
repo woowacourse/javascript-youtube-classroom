@@ -1,9 +1,10 @@
-import generateTemplate from "./templates";
-import getSearchResult from "./api/getSearchResult";
 import notFountImage from "../assets/images/not_found.png";
+import getSearchResult from "./api/getSearchResult";
 import { DELAY_TIME } from "./constants/constants";
-import { throttle } from "./utils/utils";
+import generateTemplate from "./templates";
 import videoStorage from "./videoStorage";
+
+import { throttle } from "./utils/utils";
 import {
   clearModalContainer,
   removeChildElements,
@@ -14,35 +15,37 @@ import {
 } from "./utils/dom";
 
 export default class YoutubeApp {
-  constructor() {
-    this.modalContainer = document.querySelector(".modal-container");
-    this.searchInputKeyword = document.querySelector("#search-input-keyword");
-    this.searchResult = document.querySelector(".search-result");
-    this.videoList = document.querySelector(".video-list");
+  #modalContainer = document.querySelector(".modal-container");
+  #searchInputKeyword = document.querySelector("#search-input-keyword");
+  #searchResult = document.querySelector(".search-result");
+  #videoList = document.querySelector(".video-list");
+  #nextPageToken = "";
+  #keyword = "";
 
-    this.videoList.addEventListener("click", this.onClickSaveButton);
-    this.videoList.addEventListener(
+  constructor() {
+    this.#videoList.addEventListener("click", this.#onClickSaveButton);
+    this.#videoList.addEventListener(
       "scroll",
-      throttle(this.onScrollVideoList, DELAY_TIME)
+      throttle(this.#onScrollVideoList, DELAY_TIME)
     );
     document
       .querySelector("#search-modal-button")
-      .addEventListener("click", this.onSubmitSearchModalButton);
+      .addEventListener("click", this.#onSubmitSearchModalButton);
     document
       .querySelector("#search-button")
-      .addEventListener("click", this.onSubmitSearchButton);
+      .addEventListener("click", this.#onSubmitSearchButton);
     document
       .querySelector(".dimmer")
-      .addEventListener("click", this.onClickDimmer);
+      .addEventListener("click", this.#onClickDimmer);
   }
 
-  onClickDimmer = () => {
-    this.searchInputKeyword.value = "";
-    clearModalContainer(this.videoList);
-    this.modalContainer.classList.add("hide");
+  #onClickDimmer = () => {
+    this.#searchInputKeyword.value = "";
+    clearModalContainer(this.#videoList);
+    this.#modalContainer.classList.add("hide");
   };
 
-  onClickSaveButton = ({ target }) => {
+  #onClickSaveButton = ({ target }) => {
     if (!target.matches(".video-item__save-button")) return;
 
     const { videoId } = target.closest(".video-item").dataset;
@@ -56,52 +59,52 @@ export default class YoutubeApp {
     target.classList.add("hide");
   };
 
-  onSubmitSearchModalButton = (e) => {
+  #onSubmitSearchModalButton = (e) => {
     e.preventDefault();
 
-    this.modalContainer.classList.remove("hide");
-    this.searchInputKeyword.focus();
+    this.#modalContainer.classList.remove("hide");
+    this.#searchInputKeyword.focus();
   };
 
-  onSubmitSearchButton = (e) => {
+  #onSubmitSearchButton = (e) => {
     e.preventDefault();
 
     try {
-      validateInput(this.searchInputKeyword.value);
+      validateInput(this.#searchInputKeyword.value);
     } catch ({ message }) {
       alert(message);
 
       return;
     }
 
-    clearModalContainer(this.videoList);
+    clearModalContainer(this.#videoList);
 
     render({
-      element: this.videoList,
+      element: this.#videoList,
       position: "beforeend",
       template: generateTemplate.skeleton(),
     });
 
-    this.searchKeyword(this.searchInputKeyword.value);
+    this.#searchKeyword(this.#searchInputKeyword.value);
   };
 
-  onScrollVideoList = async () => {
+  #onScrollVideoList = async () => {
     if (
-      getTotalScrollHeight(this.videoList) >
-      getCurrentScrollHeight(this.videoList)
+      getTotalScrollHeight(this.#videoList) >
+      getCurrentScrollHeight(this.#videoList)
     ) {
       return;
     }
 
     render({
-      element: this.videoList,
+      element: this.#videoList,
       position: "beforeend",
       template: generateTemplate.skeleton(),
     });
 
-    if (!this.nextPageToken) {
+    if (!this.#nextPageToken) {
       removeChildElements(
-        this.videoList,
+        this.#videoList,
         document.querySelectorAll(".skeleton")
       );
 
@@ -109,38 +112,41 @@ export default class YoutubeApp {
     }
 
     const responseData = await getSearchResult(
-      this.keyword,
-      this.nextPageToken
+      this.#keyword,
+      this.#nextPageToken
     );
 
-    this.nextPageToken = responseData.nextPageToken;
+    this.#nextPageToken = responseData.nextPageToken;
 
     const videoItemTemplate = generateTemplate.videoItems(
       responseData.items,
       videoStorage.getVideo()
     );
 
-    removeChildElements(this.videoList, document.querySelectorAll(".skeleton"));
+    removeChildElements(
+      this.#videoList,
+      document.querySelectorAll(".skeleton")
+    );
 
     render({
-      element: this.videoList,
+      element: this.#videoList,
       position: "beforeend",
       template: videoItemTemplate,
     });
   };
 
-  async searchKeyword(keyword) {
-    this.keyword = keyword;
-    const responseData = await getSearchResult(this.keyword);
-    this.nextPageToken = responseData.nextPageToken;
+  async #searchKeyword(keyword) {
+    this.#keyword = keyword;
+    const responseData = await getSearchResult(this.#keyword);
+    this.#nextPageToken = responseData.nextPageToken;
 
     // 검색 결과가 없을 경우
     if (responseData.items.length === 0) {
-      this.searchResult.removeChild(this.videoList);
-      this.searchResult.classList.add("search-result--no-result");
+      this.#searchResult.removeChild(this.#videoList);
+      this.#searchResult.classList.add("search-result--no-result");
 
       render({
-        element: this.searchResult,
+        element: this.#searchResult,
         position: "beforeend",
         template: generateTemplate.noResult(),
       });
@@ -150,7 +156,10 @@ export default class YoutubeApp {
       return;
     }
 
-    removeChildElements(this.videoList, document.querySelectorAll(".skeleton"));
+    removeChildElements(
+      this.#videoList,
+      document.querySelectorAll(".skeleton")
+    );
 
     const videoItemTemplate = generateTemplate.videoItems(
       responseData.items,
@@ -158,7 +167,7 @@ export default class YoutubeApp {
     );
 
     render({
-      element: this.videoList,
+      element: this.#videoList,
       position: "beforeend",
       template: videoItemTemplate,
     });
