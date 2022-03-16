@@ -96,7 +96,7 @@ export default class SearchResult {
       saveLocalStorage(LOCAL_DB.VIDEO_ID, [...videoIdsArray, newVideoId]);
       target.remove();
     } catch ({ message }) {
-      alert(message);
+      toastMessage(message);
     }
   };
 }

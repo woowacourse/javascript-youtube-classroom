@@ -18,7 +18,7 @@ export const fetchDataFromKeyword = async (keyword, pageToken = "") => {
     const data = await res.json();
 
     if (!res.ok) {
-      return { errorMessage: ERROR_MESSAGES.EXCEED_API };
+      return { errorMessage: ERROR_MESSAGES.CANNOT_USE_API };
     }
     return data;
   } catch {
