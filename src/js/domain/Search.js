@@ -16,7 +16,7 @@ class Search {
       const { items, nextPageToken } = await this.#getSearchResult(keyword, this.#nextPageToken);
       this.#keyword = keyword;
       this.#nextPageToken = nextPageToken;
-      const savedVideos = storage.getSavedVideos();
+      const savedVideos = [...storage.getUnwatchedVideos(), ...storage.getWatchedVideos()];
       return {
         searchResultArray: this.#getVideoObjectArray(items, savedVideos),
         hasNextPage: !!nextPageToken,

@@ -3,13 +3,13 @@ import SavedVideosView from './SavedVideosView';
 import SearchModalView from './SearchModalView';
 
 class View {
-  constructor(search, saveVideos) {
+  constructor(search, saveVideosToUnwatchedList) {
     this.modalContainer = selectDom('.modal-container');
 
     this.search = search;
     this.savedVideosView = new SavedVideosView();
 
-    this.searchModalView = new SearchModalView(search, saveVideos);
+    this.searchModalView = new SearchModalView(search, saveVideosToUnwatchedList);
 
     this.#attachEventListeners();
   }

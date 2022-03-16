@@ -11,7 +11,7 @@ class SavedVideosView {
   }
 
   renderVideoList = async () => {
-    const videos = storage.getSavedVideos();
+    const videos = storage.getUnwatchedVideos();
     if (videos.length === 0) {
       this.#renderNoSavedVideoTemplate();
       return;
@@ -30,6 +30,11 @@ class SavedVideosView {
       const element = document.createElement('li');
       element.className = 'video-item';
       element.innerHTML = this.#videoElementTemplate(object);
+      selectDom('.video-item__watched-button', element).addEventListener(
+        'click',
+        this.#moveToWatchedList
+      );
+      selectDom('.video-item__unsave-button', element).addEventListener('click', this.#unsaveVideo);
       return element;
     });
   }
@@ -50,13 +55,17 @@ class SavedVideosView {
     }
   }
 
+  #moveToWatchedList = () => {};
+
+  #unsaveVideo = () => {};
+
   #videoElementTemplate = ({ videoId, thumbnail, title, channelTitle, publishedAt }) => `
   <img src="${thumbnail}" alt="video-item-thumbnail" class="video-item__thumbnail" />
   <h4 class="video-item__title">${title}</h4>
   <p class="video-item__channel-name">${channelTitle}</p>
   <p class="video-item__published-date">${formatDateString(publishedAt)}</p>
   <div class="video-item__button-wrapper">
-    <button type="button" class="video-item__check-watched-button button" data-video-id="${videoId}">
+    <button type="button" class="video-item__watched-button button" data-video-id="${videoId}">
       ✅
     </button>
     <button type="button" class="video-item__unsave-button button" data-video-id="${videoId}">

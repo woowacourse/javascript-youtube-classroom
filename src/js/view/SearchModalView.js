@@ -9,7 +9,7 @@ import {
 import '../../assets/images/not_found.png';
 
 class SearchModalView {
-  constructor(search, saveVideos) {
+  constructor(search, saveVideosToUnwatchedList) {
     this.modalContainer = selectDom('.modal-container');
     this.searchForm = selectDom('#search-form', this.modalContainer);
     this.searchInputKeyword = selectDom('#search-input-keyword', this.searchForm);
@@ -17,7 +17,7 @@ class SearchModalView {
     this.videoList = selectDom('.video-list', this.searchResult);
 
     this.search = search;
-    this.sendSaveRequest = saveVideos;
+    this.sendSaveRequest = saveVideosToUnwatchedList;
 
     this.#attachEventListeners();
   }

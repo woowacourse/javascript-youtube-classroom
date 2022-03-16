@@ -5,7 +5,8 @@ export const VIDEO_LIST_URL_BASE =
   'https://pensive-fermat-630884.netlify.app/dummy/youtube/v3/videos?';
 
 export const MAX_SAVE_AMOUNT = 100;
-export const STORAGE_KEY = 'idObj';
+export const UNWATCHED_LIST_KEY = 'unwatchedList';
+export const WATCHED_LIST_KEY = 'watchedList';
 
 export const ERROR_MESSAGES = Object.freeze({
   EXCEED_MAX_SAVE_AMOUNT: `저장된 비디오의 개수가 ${MAX_SAVE_AMOUNT}개를 초과했습니다.`,
