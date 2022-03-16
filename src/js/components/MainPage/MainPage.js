@@ -8,17 +8,17 @@ export default class MainPage extends Component {
     const savedVideos = webStore.load();
     const videos = savedVideos.filter(video => video.watched === false);
 
-    this.state = { videos, watched: false, pagination: 1 };
+    this.state = { videos, mode: 'watching', pagination: 1 };
   }
   template() {
     return `
       <h1 class="classroom-container__title">👩🏻‍💻 나만의 유튜브 강의실 👨🏻‍💻</h1>
       <nav class="nav">
         <span class="nav-left">
-          <button type="button" class="button nav-left__button">
+          <button type="button" name="watching" class="button nav-left__button">
             👁️ 볼 영상
           </button>
-          <button type="button" class="button nav-left__button">
+          <button type="button" name="watched" class="button nav-left__button">
             ✅ 본 영상
           </button>
         </span>
@@ -45,6 +45,16 @@ export default class MainPage extends Component {
     const { toggleSearchModal } = this.props;
 
     this.addEvent('click', '#search-modal-button', toggleSearchModal);
+    this.addEvent('click', '.nav-left', this.handleMode.bind(this));
+  }
+
+  handleMode(e) {
+    if (e.target.name) {
+      const savedVideos = webStore.load();
+      const watched = e.target.name === 'watched';
+      const videos = savedVideos.filter(video => video.watched === watched);
+      this.setState({ mode: e.target.name, videos });
+    }
   }
 
   loadNextVideos() {

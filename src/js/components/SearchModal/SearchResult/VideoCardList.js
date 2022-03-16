@@ -35,9 +35,7 @@ export default class VideoCardList extends Component {
 
   afterMounted() {
     const { videos, isLoading } = this.props;
-    if (videos.length === 0) {
-      return;
-    }
+
     const videoCards = this.target.querySelectorAll('.video-card.real');
     videoCards.forEach((videoCard, index) => {
       index < videos.length &&
