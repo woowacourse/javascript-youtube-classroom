@@ -4,8 +4,8 @@ import { emit } from '../utils/event.js';
 
 export default class SearchResultView {
   constructor() {
-    this.$videoList = $('.video-list');
     this.template = new Template();
+    this.$videoList = $('.video-list');
     this.$searchTarget = $('.search-target');
     this.$searchNoResult = $('.search-result--no-result');
 

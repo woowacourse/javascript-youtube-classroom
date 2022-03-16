@@ -72,7 +72,7 @@ export default class Template {
 
   getSkeleton() {
     return `
-      <li class="video-item skeleton" data-video-id="">
+      <li class="video-item skeleton">
         <iframe 
           class="video-item__thumbnail" 
           srcdoc="" 
@@ -87,5 +87,25 @@ export default class Template {
         <button data-id="" class="video-item__save-button button"></button>
       </li>
     `.repeat(10);
+  }
+
+  getSavedVideo({ title, channelName, publishTime, videoId, imgUrl }) {
+    return `
+      <li class="video-item">
+        <iframe 
+          class="video-item__thumbnail" 
+          srcdoc="${this.getThumbnail(imgUrl, videoId)}" 
+          frameborder="0"
+          allow="autoplay"
+          loading="lazy"
+          allowfullscreen>
+        </iframe>
+        <h4 class="video-item__title">${title}</h4>
+        <p class="video-item__channel-name">${channelName}</p>
+        <p class="video-item__published-date">${publishTime}</p>
+        <button data-id="${videoId}" class="button video-item__button--watched">✅</button>
+        <button data-id="${videoId}" class="button video-item__button--delete">🗑️</button>
+      </li>
+    `;
   }
 }

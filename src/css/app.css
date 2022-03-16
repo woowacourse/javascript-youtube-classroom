@@ -74,3 +74,13 @@ body {
 .nav-right__button:hover {
   background: var(--secondary);
 }
+
+.video-item__button--watched {
+  width: 36px;
+  height: 36px;
+}
+
+.video-item__button--delete {
+  width: 36px;
+  height: 36px;
+}
