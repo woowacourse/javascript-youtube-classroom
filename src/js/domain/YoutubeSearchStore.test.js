@@ -1,5 +1,5 @@
 import YoutubeSearchStore from './YoutubeSearchStore';
-import { YOUTUBE_SEARCH_ACTION } from '../constants/action';
+import { YOUTUBE_SEARCH_ACTION } from '../constants';
 import * as apiModules from '../api';
 
 describe('유튜브 강의실 검색 시도 상태 테스트', () => {
@@ -17,29 +17,62 @@ describe('유튜브 강의실 검색 시도 상태 테스트', () => {
     });
   });
 
-  test('검색 로딩 상태를 변경 할 수 있어야한다.', () => {
-    YoutubeSearchStore.dispatch(YOUTUBE_SEARCH_ACTION.UPDATE_SEARCH_LOADING_STATUS, true);
-    expect(YoutubeSearchStore.getState().isLoading).toBe(true);
-
-    YoutubeSearchStore.dispatch(YOUTUBE_SEARCH_ACTION.UPDATE_SEARCH_LOADING_STATUS, false);
-    expect(YoutubeSearchStore.getState().isLoading).toBe(false);
-  });
-
-  test('검색 결과를 업데이트 할 때 상태가 정상적으로 저장되어야 한다.', async () => {
+  test('검색 결과 업데이트 요청 할 때 상태가 정상적으로 저장되어야 한다.', async () => {
     YoutubeSearchStore.dispatch(YOUTUBE_SEARCH_ACTION.UPDATE_SEARCH_KEYWORD, '검색어');
     const spy = jest.spyOn(apiModules, 'requestYoutubeSearch');
     spy.mockReturnValue({
-      items: ['1', '2', '3'],
+      items: [],
+      nextPageToken: '',
+    });
+    await YoutubeSearchStore.dispatch(YOUTUBE_SEARCH_ACTION.UPDATE_SEARCH_RESULT_REQUEST);
+    expect(YoutubeSearchStore.getState()).toStrictEqual({
+      searchKeyword: '검색어',
+      isLoading: true,
+      isLoaded: false,
+      items: [],
+      nextPageToken: '',
+      error: false,
+    });
+  });
+
+  test('검색 결과 업데이트 성공 할 때 상태가 정상적으로 저장되어야 한다.', async () => {
+    YoutubeSearchStore.dispatch(YOUTUBE_SEARCH_ACTION.UPDATE_SEARCH_KEYWORD, '검색어');
+    YoutubeSearchStore.dispatch(YOUTUBE_SEARCH_ACTION.UPDATE_SEARCH_RESULT_SUCCESS, {
+      items: [1, 2, 3],
       nextPageToken: '1',
     });
-    await YoutubeSearchStore.dispatch(YOUTUBE_SEARCH_ACTION.UPDATE_SEARCH_RESULT);
     expect(YoutubeSearchStore.getState()).toStrictEqual({
       searchKeyword: '검색어',
       isLoading: false,
       isLoaded: true,
-      items: ['1', '2', '3'],
+      items: [1, 2, 3],
       nextPageToken: '1',
       error: false,
+    });
+    YoutubeSearchStore.dispatch(YOUTUBE_SEARCH_ACTION.UPDATE_SEARCH_RESULT_SUCCESS, {
+      items: [4, 5, 6],
+      nextPageToken: '2',
+    });
+    expect(YoutubeSearchStore.getState()).toStrictEqual({
+      searchKeyword: '검색어',
+      isLoading: false,
+      isLoaded: true,
+      items: [1, 2, 3, 4, 5, 6],
+      nextPageToken: '2',
+      error: false,
+    });
+  });
+
+  test('검색 결과 업데이트 실패 할 때 상태가 정상적으로 저장되어야 한다.', async () => {
+    YoutubeSearchStore.dispatch(YOUTUBE_SEARCH_ACTION.UPDATE_SEARCH_KEYWORD, '검색어');
+    YoutubeSearchStore.dispatch(YOUTUBE_SEARCH_ACTION.UPDATE_SEARCH_RESULT_FAIL);
+    expect(YoutubeSearchStore.getState()).toStrictEqual({
+      searchKeyword: '검색어',
+      isLoading: false,
+      isLoaded: false,
+      items: [],
+      nextPageToken: '',
+      error: true,
     });
   });
 });
