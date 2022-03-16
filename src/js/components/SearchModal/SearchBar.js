@@ -1,6 +1,6 @@
 import Component from '../../core/Component.js';
 import api from '../../api/api.js';
-import { debounce } from '../../utils/commons.js';
+import { throttle } from '../../utils/commons.js';
 import { SUBMIT_WAIT } from '../../config/constants.js';
 import { queryStringValidator, validate } from '../../utils/validator.js';
 
@@ -31,7 +31,7 @@ export default class SearchBar extends Component {
     this.addEvent(
       'submit',
       '#search-form',
-      debounce(this.onSubmitSearchInput.bind(this), SUBMIT_WAIT)
+      throttle(this.onSubmitSearchInput.bind(this), SUBMIT_WAIT)
     );
   }
 
