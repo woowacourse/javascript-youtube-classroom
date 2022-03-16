@@ -1,4 +1,4 @@
 import '../css/index.css';
-import ScreenManager from './screen/index.js';
+import ScreenManager from './screen/screenManager.js';
 
 new ScreenManager();
