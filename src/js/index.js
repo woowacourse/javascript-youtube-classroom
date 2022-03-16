@@ -5,7 +5,7 @@ import SearchModal from './ui/SearchModal';
 import { showExceptionSnackBar } from './utils/snackBar';
 
 global.saveVideo = e => {
-  const videoId = e.target.closest('li').dataset.videoId;
+  const videoId = e.target.dataset.videoId;
   try {
     store.setLocalStorage(STORAGE_KEY, videoId);
     showExceptionSnackBar(MESSAGE.SAVE_COMPLETE);

@@ -19,7 +19,7 @@ const getFoundResultTemplate = items => {
       const { publishedAt, channelId, title, thumbnails, channelTitle } =
         item.snippet;
       return `
-        <li class="video-item" data-video-id=${item.id.videoId}>
+        <li class="video-item">
           <a
             href="https://www.youtube.com/watch?v=${item.id.videoId}"
             target="_blank"
@@ -42,6 +42,7 @@ const getFoundResultTemplate = items => {
           <button
             class="video-item__save-button button"
             onclick="saveVideo(event);"
+            data-video-id=${item.id.videoId}
             ${saveDatas.includes(item.id.videoId) ? 'hidden' : ''}
           >⬇ 저장</button>
         </li>
