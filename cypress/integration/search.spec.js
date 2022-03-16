@@ -4,6 +4,7 @@
 import { ERROR_MESSAGE } from '../../src/js/constants/errorMessage.js';
 
 const LOCAL_URL = 'http://localhost:9000/';
+const API_URL = 'https://practical-nightingale-c76b8a.netlify.app/youtube/v3/search?*';
 
 describe('모달 동작 검사', () => {
   before(() => {
@@ -62,5 +63,29 @@ describe('검색 키워드 유효성 검사', () => {
         // then
         expect(alertStub).to.be.calledWith(ERROR_MESSAGE.EMPTY_KEYWORD);
       });
+  });
+});
+
+describe('검색 후 렌더링 검사', () => {
+  beforeEach(() => {
+    cy.visit(LOCAL_URL);
+
+    cy.get('#search-modal-button').click();
+  });
+
+  it('적절한 검색어(검색 결과가 있는 검색어)로 검색 시 영상 카드가 화면에 보여져야한다.', () => {
+    const searchKeyword = '고양이';
+    cy.fixture('searchResultData.json').as('searchResultData');
+
+    cy.intercept(API_URL, { fixture: 'searchResultData' }).as('requestVideo');
+
+    cy.get('#search-input-keyword').type(searchKeyword);
+
+    // when
+    cy.get('#search-button').click();
+    cy.wait('@requestVideo');
+
+    // then
+    cy.get('.video-item').should('have.length', 10);
   });
 });
