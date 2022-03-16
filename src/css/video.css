@@ -72,6 +72,10 @@
   margin-top: 0.29em;
 }
 
+.video-item__check-button.selected {
+  background-color: #00bcd41f;
+}
+
 .video-item__delete-button {
   position: absolute;
   right: 0;
