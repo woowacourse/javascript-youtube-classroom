@@ -4,7 +4,5 @@ export const getParsedTime = timeString => {
   return `${time.getFullYear()}년 ${time.getMonth() + 1}월 ${time.getDate()}일`;
 };
 
-export const uriBuilder = (uri, params = {}) =>
-  `${uri}?${Object.entries(params)
-    .map(([key, value]) => `${key}=${value}`)
-    .join('&')}`;
+export const uriBuilder = (endPoint, params) =>
+  `${endPoint}?${new URLSearchParams(params).toString()}`;
