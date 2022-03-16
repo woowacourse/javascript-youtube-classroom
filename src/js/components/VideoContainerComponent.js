@@ -106,16 +106,9 @@ class VideoContainerComponent {
       this.#videoComponents = [];
       this.$videoList.innerHTML = '';
     }
-    if (videoList === null) {
-      this.$searchResult.classList.add('search-result--no-result');
-      this.$searchResult.innerHTML = this.#generateNoneResultTemplate();
-      return;
-    }
-    if (isFirstSearchByKeyword(prevVideoListLength)) {
-      this.$videoList.innerHTML = '';
-    }
 
     this.#showVideoList();
+
     videoList.slice(prevVideoListLength).forEach((video, idx, arr) => {
       this.#videoComponents = [
         ...this.#videoComponents,
