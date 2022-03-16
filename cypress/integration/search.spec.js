@@ -5,7 +5,7 @@ import { ERROR_MESSAGE } from '../../src/js/constants/errorMessage.js';
 
 const LOCAL_URL = 'http://localhost:9000/';
 
-describe.only('모달 동작 검사', () => {
+describe('모달 동작 검사', () => {
   before(() => {
     cy.viewport(1920, 975);
   });
@@ -33,7 +33,7 @@ describe('검색 키워드 유효성 검사', () => {
     cy.get('#search-modal-button').click();
   });
 
-  it('빈 검색어를 입력하면 alert 창이 나타나야 한다.', () => {
+  it('빈 검색어를 입력하면 에러 메시지를 확인할 수 있어야 한다..', () => {
     // given
     const alertStub = cy.stub();
     cy.on('window:alert', alertStub);
@@ -47,7 +47,7 @@ describe('검색 키워드 유효성 검사', () => {
       });
   });
 
-  it('공백으로만 이루어진 키워드로 검색 시 alert 창이 나타나야한다.', () => {
+  it('공백으로만 이루어진 키워드로 검색 시 에러 메시지를 확인할 수 있어야 한다.', () => {
     // given
     const alertStub = cy.stub();
     cy.on('window:alert', alertStub);
