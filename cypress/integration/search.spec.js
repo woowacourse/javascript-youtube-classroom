@@ -80,9 +80,7 @@ describe('검색 후 렌더링 검사', () => {
     const searchKeyword = '우테코';
     const expectedVideoItemCount = 10;
 
-    cy.fixture('searchResultData.json');
-
-    cy.intercept(API_URL, { fixture: 'searchResultData' }).as('requestVideo');
+    cy.intercept(API_URL, { fixture: 'searchResultData.json' }).as('requestVideo');
 
     cy.get('#search-input-keyword').type(searchKeyword);
 
@@ -101,9 +99,7 @@ describe('검색 후 렌더링 검사', () => {
     const expectedNoneResultMessage =
       '\n        검색 결과가 없습니다\n        다른 키워드로 검색해보세요\n      ';
 
-    cy.fixture('searchResultNoneData.json');
-
-    cy.intercept(API_URL, { fixture: 'searchResultNoneData' }).as('requestVideo');
+    cy.intercept(API_URL, { fixture: 'searchResultNoneData.json' }).as('requestVideo');
 
     cy.get('#search-input-keyword').type(searchKeyword);
 
