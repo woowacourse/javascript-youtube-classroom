@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 export const throttle = (callback, delay = 0) => {
   let timerId = null;
 
@@ -24,9 +25,18 @@ export const debounce = (callback, wait = 0) => {
   };
 };
 
-export const logger = (callback, ...logs) => {
-  // eslint-disable-next-line no-console
-  console.log(...logs);
+export const grouper = (callback, label, avoid = false) => {
+  if (avoid) {
+    callback((_) => _);
 
-  return (...args) => callback(...args);
+    return;
+  }
+
+  console.group(label);
+
+  try {
+    callback(console.log);
+  } finally {
+    console.groupEnd();
+  }
 };
