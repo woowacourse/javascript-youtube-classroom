@@ -6,6 +6,7 @@ import { getVideoTemplate } from './template';
 export default class Video {
   constructor() {
     this.tab = 'will';
+    this.renderVideo(false);
     this.addNavButtonClickEvent();
   }
 
