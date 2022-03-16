@@ -30,12 +30,16 @@ export default class VideoCard extends Component {
   }
 
   setEvent() {
-    const { videoId } = this.props.video;
+    const { video } = this.props;
+    const { videoId } = video;
 
     this.addEvent('click', '.video-item__save-button', () => {
       try {
         const prevSavedVideos = webStore.load();
-        webStore.save([...prevSavedVideos, videoId]);
+        webStore.save([
+          ...prevSavedVideos,
+          { ...video, saved: true, watched: false },
+        ]);
 
         const { videos } = rootStore.state;
         const newVideos = [...videos].map(video => {
