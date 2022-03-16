@@ -61,7 +61,7 @@ export default class SearchBar extends Component {
           query,
           pageToken: nextPageToken,
         },
-        videos: addSavedToVideos(items),
+        videos: makeCardData(items),
         status: { notFound: false, statusCode: 200 },
         isLoading: false,
       });
@@ -69,21 +69,30 @@ export default class SearchBar extends Component {
   }
 }
 
-export function addSavedToVideos(rawVideos) {
+export function makeCardData(rawVideos) {
+  return addSavedToVideos(extractCardData(rawVideos));
+}
+
+function addSavedToVideos(videos) {
   const savedVideos = webStore.load();
 
-  return rawVideos.map(({ id, snippet }) => {
+  // TODO: 이중 for문 해결
+  return videos.map(video => {
     const saved = !!savedVideos.find(
-      savedVideo => savedVideo.videoId === id.videoId
+      savedVideo => savedVideo.videoId === video.videoId
     );
+    return { ...video, saved };
+  });
+}
 
+function extractCardData(rawVideos) {
+  return rawVideos.map(({ id, snippet }) => {
     return {
       videoId: id.videoId,
       thumbnailUrl: snippet.thumbnails.default.url,
       title: snippet.title,
       channelTitle: snippet.channelTitle,
       publishTime: snippet.publishTime,
-      saved,
     };
   });
 }
