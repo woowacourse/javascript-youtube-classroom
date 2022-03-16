@@ -131,4 +131,10 @@ export default class Video {
 
     this.#saveLocalStorage();
   }
+
+  setDeletedVideoItem(deletedVideoId) {
+    this.savedVideoItems = this.#savedVideoItems.filter((item) => item.videoId !== deletedVideoId);
+
+    this.#saveLocalStorage();
+  }
 }

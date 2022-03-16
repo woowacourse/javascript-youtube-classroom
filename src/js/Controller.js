@@ -18,6 +18,7 @@ export default class Controller {
     this.searchInputView = new SearchInputView();
     this.searchResultView = new SearchResultView();
     this.#subscribeViewEvents();
+    this.#renderUnwatchedTab();
   }
 
   #subscribeViewEvents() {
@@ -28,6 +29,8 @@ export default class Controller {
     on(this.mainView.$watchedButton, '@show-watched-tab', this.#renderWatchedTab.bind(this));
     on(this.mainView.$unwatchedTab, '@check-watched', this.#checkWatchedVideo.bind(this));
     on(this.mainView.$watchedTab, '@check-unwatched', this.#checkUnwatchedVideo.bind(this));
+    on(this.mainView.$unwatchedTab, '@check-delete', this.#checkDeleteVideo.bind(this));
+    on(this.mainView.$watchedTab, '@check-delete', this.#checkDeleteVideo.bind(this));
   }
 
   // 검색 버튼을 눌렀을 때
@@ -124,12 +127,18 @@ export default class Controller {
   #checkWatchedVideo(event) {
     const watchedVideoId = event.detail.videoId;
     this.video.setWatchedVideoItem(watchedVideoId);
-    $(`[data-video-id=${watchedVideoId}]`).remove();
+    this.mainView.removeVideo(watchedVideoId);
   }
 
   #checkUnwatchedVideo(event) {
     const unwatchedVideoId = event.detail.videoId;
     this.video.setUnwatchedVideoItem(unwatchedVideoId);
-    $(`[data-video-id=${unwatchedVideoId}]`).remove();
+    this.mainView.removeVideo(unwatchedVideoId);
+  }
+
+  #checkDeleteVideo(event) {
+    const deletedVideoId = event.detail.videoId;
+    this.video.setDeletedVideoItem(deletedVideoId);
+    this.mainView.removeVideo(deletedVideoId);
   }
 }

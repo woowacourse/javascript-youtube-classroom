@@ -13,8 +13,9 @@ export default class MainView {
     this.$watchedButton = $('.nav-left__button--watched');
     this.$unwatchedTab = $('.unwatched-tab');
     this.$watchedTab = $('.watched-tab');
-    this.watchButton = this.watchButton.bind(this);
-    this.unwatchButton = this.unwatchButton.bind(this);
+    this.watchVideoButton = this.watchVideoButton.bind(this);
+    this.unwatchVideoButton = this.unwatchVideoButton.bind(this);
+    this.deleteVideoButton = this.deleteVideoButton.bind(this);
     this.#bindEvents();
   }
 
@@ -62,10 +63,11 @@ export default class MainView {
       const $videoItem = this.template.getVideoItem(item);
       this.$unwatchedTab.insertAdjacentHTML('beforeend', $videoItem);
     });
+    this.$watchedTab.removeEventListener('click', this.unwatchVideoButton);
+    this.$unwatchedTab.addEventListener('click', this.watchVideoButton);
 
-    // on(this.$unwatchedTab, 'click', this.watchButton.bind(this, '@check-watched'));
-    this.$watchedTab.removeEventListener('click', this.unwatchButton);
-    this.$unwatchedTab.addEventListener('click', this.watchButton);
+    this.$watchedTab.removeEventListener('click', this.deleteVideoButton);
+    this.$unwatchedTab.addEventListener('click', this.deleteVideoButton);
   }
 
   renderWatchedVideoItems(videoItems) {
@@ -75,23 +77,35 @@ export default class MainView {
       this.$watchedTab.insertAdjacentHTML('beforeend', $videoItem);
     });
     $$('.video-item__button--watched').forEach((button) => button.classList.add('active'));
-    // on(this.$watchedTab, 'click', this.watchButton.bind(this, '@check-unwatched'));
+    this.$unwatchedTab.removeEventListener('click', this.watchVideoButton);
+    this.$watchedTab.addEventListener('click', this.unwatchVideoButton);
 
-    this.$unwatchedTab.removeEventListener('click', this.watchButton);
-    this.$watchedTab.addEventListener('click', this.unwatchButton);
+    this.$watchedTab.addEventListener('click', this.deleteVideoButton);
+    this.$unwatchedTab.removeEventListener('click', this.deleteVideoButton);
   }
 
-  watchButton(event) {
+  watchVideoButton(event) {
     if (event.target.classList.contains('video-item__button--watched')) {
       const videoId = event.target.dataset.id;
       emit(event.currentTarget, '@check-watched', { videoId });
     }
   }
 
-  unwatchButton(event) {
+  unwatchVideoButton(event) {
     if (event.target.classList.contains('video-item__button--watched')) {
       const videoId = event.target.dataset.id;
       emit(event.currentTarget, '@check-unwatched', { videoId });
     }
+  }
+
+  deleteVideoButton(event) {
+    if (event.target.classList.contains('video-item__button--delete')) {
+      const videoId = event.target.dataset.id;
+      emit(event.currentTarget, '@check-delete', { videoId });
+    }
+  }
+
+  removeVideo(videoId) {
+    $(`[data-video-id=${videoId}]`).remove();
   }
 }
