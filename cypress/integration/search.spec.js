@@ -3,10 +3,12 @@
 
 import { ERROR_MESSAGE } from '../../src/js/constants/errorMessage.js';
 
-describe('검색 테스트', () => {
+describe('검색 키워드 유효성 검사', () => {
   beforeEach(() => {
     const LOCAL_URL = 'http://localhost:9000/';
     cy.visit(LOCAL_URL);
+
+    cy.get('#search-modal-button').click();
   });
 
   it('빈 검색어를 입력하면 alert 창이 나타나야 한다.', () => {
@@ -14,14 +16,12 @@ describe('검색 테스트', () => {
     const alertStub = cy.stub();
     cy.on('window:alert', alertStub);
 
-    cy.get('#search-modal-button').click();
-
     // when
     cy.get('#search-button')
       .click()
       .then(() => {
         // then
-        expect(alertStub.getCall(0)).to.be.calledWith(ERROR_MESSAGE.EMPTY_KEYWORD);
+        expect(alertStub).to.be.calledWith(ERROR_MESSAGE.EMPTY_KEYWORD);
       });
   });
 
@@ -30,17 +30,15 @@ describe('검색 테스트', () => {
     const alertStub = cy.stub();
     cy.on('window:alert', alertStub);
 
-    cy.get('#search-modal-button').click();
-
-    const keyword = '   ';
-    cy.get('#search-input-keyword').type(keyword);
+    const searchKeyword = '   ';
+    cy.get('#search-input-keyword').type(searchKeyword);
 
     // when
     cy.get('#search-button')
       .click()
       .then(() => {
         // then
-        expect(alertStub.getCall(0)).to.be.calledWith(ERROR_MESSAGE.EMPTY_KEYWORD);
+        expect(alertStub).to.be.calledWith(ERROR_MESSAGE.EMPTY_KEYWORD);
       });
   });
 });
