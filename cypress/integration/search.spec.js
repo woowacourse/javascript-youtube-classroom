@@ -7,6 +7,10 @@ const LOCAL_URL = 'http://localhost:9000/';
 
 describe.only('모달 동작 검사', () => {
   before(() => {
+    cy.viewport(1920, 975);
+  });
+
+  beforeEach(() => {
     cy.visit(LOCAL_URL);
 
     cy.get('#search-modal-button').click();
@@ -14,6 +18,11 @@ describe.only('모달 동작 검사', () => {
 
   it('초기 화면에서 검색 버튼을 누르면 검색 모달 창이 보여야 한다.', () => {
     cy.get('.modal-container').should('be.exist');
+  });
+
+  it('검색 모달 창이 보이는 상태에서 어두운 영억(dimmed layer)를 클릭하면 모달 창이 안보여야 한다.', () => {
+    cy.get('.modal-container').click('top');
+    cy.get('.modal-container').should('not.visible');
   });
 });
 
