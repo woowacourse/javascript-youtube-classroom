@@ -107,3 +107,5 @@ dist
 .vscode
 
 cypress/videos
+cypress/screenshots
+cypress/plugins
