@@ -13,6 +13,8 @@ export default class MainView {
     this.$watchedButton = $('.nav-left__button--watched');
     this.$unwatchedTab = $('.unwatched-tab');
     this.$watchedTab = $('.watched-tab');
+    this.watchButton = this.watchButton.bind(this);
+    this.unwatchButton = this.unwatchButton.bind(this);
     this.#bindEvents();
   }
 
@@ -41,15 +43,15 @@ export default class MainView {
   }
 
   showUnwatchedTab() {
-    this.$unwatchedButton.classList.add('opened');
-    this.$watchedButton.classList.remove('opened');
+    this.$unwatchedButton.classList.add('active');
+    this.$watchedButton.classList.remove('active');
     this.$unwatchedTab.classList.remove('hide');
     this.$watchedTab.classList.add('hide');
   }
 
   showWatchedTab() {
-    this.$unwatchedButton.classList.remove('opened');
-    this.$watchedButton.classList.add('opened');
+    this.$unwatchedButton.classList.remove('active');
+    this.$watchedButton.classList.add('active');
     this.$watchedTab.classList.remove('hide');
     this.$unwatchedTab.classList.add('hide');
   }
@@ -57,31 +59,36 @@ export default class MainView {
   renderUnwatchedVideoItems(videoItems) {
     this.$unwatchedTab.replaceChildren();
     videoItems.forEach((item) => {
-      const $videoItem = this.template.getUnwatchedVideo(item);
+      const $videoItem = this.template.getVideoItem(item);
       this.$unwatchedTab.insertAdjacentHTML('beforeend', $videoItem);
     });
 
-    on(this.$unwatchedTab, 'click', this.#checkWatchedButton.bind(this));
+    // on(this.$unwatchedTab, 'click', this.watchButton.bind(this, '@check-watched'));
+    this.$watchedTab.removeEventListener('click', this.unwatchButton);
+    this.$unwatchedTab.addEventListener('click', this.watchButton);
   }
 
   renderWatchedVideoItems(videoItems) {
     this.$watchedTab.replaceChildren();
     videoItems.forEach((item) => {
-      const $videoItem = this.template.getWatchedVideo(item);
+      const $videoItem = this.template.getVideoItem(item);
       this.$watchedTab.insertAdjacentHTML('beforeend', $videoItem);
     });
+    $$('.video-item__button--watched').forEach((button) => button.classList.add('active'));
+    // on(this.$watchedTab, 'click', this.watchButton.bind(this, '@check-unwatched'));
 
-    on(this.$watchedTab, 'click', this.#checkUnwatchedButton.bind(this));
+    this.$unwatchedTab.removeEventListener('click', this.watchButton);
+    this.$watchedTab.addEventListener('click', this.unwatchButton);
   }
 
-  #checkWatchedButton(event) {
+  watchButton(event) {
     if (event.target.classList.contains('video-item__button--watched')) {
       const videoId = event.target.dataset.id;
       emit(event.currentTarget, '@check-watched', { videoId });
     }
   }
 
-  #checkUnwatchedButton(event) {
+  unwatchButton(event) {
     if (event.target.classList.contains('video-item__button--watched')) {
       const videoId = event.target.dataset.id;
       emit(event.currentTarget, '@check-unwatched', { videoId });

@@ -62,7 +62,7 @@ body {
 }
 
 .nav-left__button:hover {
-  background: var(--primary-lighten);
+  background: var(--active);
 }
 
 .nav-right__button {
@@ -75,17 +75,18 @@ body {
   background: var(--secondary);
 }
 
-.video-item__button--watched {
+.video-item__button {
   width: 36px;
   height: 36px;
   position: absolute;
   right: 40px;
 }
 
+.video-item__button:hover {
+  background: var(--active);
+}
+
 .video-item__button--delete {
-  width: 36px;
-  height: 36px;
-  position: absolute;
   right: 0;
 }
 
@@ -101,6 +102,6 @@ body {
 .video-item {
 }
 
-.opened {
-  background: var(--primary-lighten);
+.active {
+  background: var(--active);
 }

@@ -119,4 +119,16 @@ export default class Video {
 
     this.#saveLocalStorage();
   }
+
+  setUnwatchedVideoItem(watchedVideoId) {
+    this.savedVideoItems = this.#savedVideoItems.map((item) => {
+      const newItem = item;
+      if (newItem.videoId === watchedVideoId) {
+        newItem.watched = false;
+      }
+      return newItem;
+    });
+
+    this.#saveLocalStorage();
+  }
 }
