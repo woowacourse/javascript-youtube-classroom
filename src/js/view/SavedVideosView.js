@@ -51,18 +51,16 @@ class SavedVideosView {
 
   #removeDeletedVideos(videos) {
     const videosIdArray = videos || storage.getFromStorage(this.currentTabName);
+
     const deletedVideoIdArray = this.renderedVideoIdArray.filter(
       (id) => !videosIdArray.includes(id)
     );
+
     const toDeleteArray = [...this.videoList.childNodes].filter((child) =>
       deletedVideoIdArray.includes(child.dataset.videoId)
     );
 
-    toDeleteArray.forEach((element) => {
-      const { videoId } = element;
-      this.renderedVideoIdArray.splice(this.renderedVideoIdArray.indexOf(videoId), 1);
-      element.remove();
-    });
+    toDeleteArray.forEach((element) => element.remove());
   }
 
   #createVideoElements(videoObjectArray) {
