@@ -98,6 +98,7 @@ export default class Video {
       publishTime: item.snippet.publishTime,
       thumbnailUrl: item.snippet.thumbnails.high.url,
       saved: false,
+      watched: false,
     }));
 
     this.#nextPageToken = fetchedVideos.nextPageToken;
