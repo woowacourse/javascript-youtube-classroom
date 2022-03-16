@@ -1,5 +1,6 @@
 import { $, $$ } from '../util/general.js';
 import storage from '../storage/storage.js';
+import { SEARCH_RESULT_COUNT } from '../constants/constants.js';
 
 const template = {
   videoList: `
@@ -48,7 +49,10 @@ const searchResultView = {
     $('.search-result').innerHTML = template.videoList;
   },
   renderSkeletonUI() {
-    $('.video-list').insertAdjacentHTML('beforeEnd', template.skeletonUI.repeat(10));
+    $('.video-list').insertAdjacentHTML(
+      'beforeEnd',
+      template.skeletonUI.repeat(SEARCH_RESULT_COUNT)
+    );
   },
   removeSkeletonUI() {
     $$('.skeleton').forEach((element) => element.remove());
