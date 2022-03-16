@@ -27,7 +27,7 @@
   background: #ffffff;
   border: 1px solid var(--secondary);
   border-radius: 4px;
-  padding: 50px 30px 32px 30px;
+  padding: 20px 30px 20px 30px;
 }
 
 .search-modal__title {
@@ -164,4 +164,19 @@
 .saved-button:hover {
   color: white;
   background-color: var(--primary);
+}
+
+.x-shape {
+  box-sizing: border-box;
+  display: flex;
+  width: 100%;
+  justify-content: flex-end;
+  /* padding: 12px 12px 0 12px; */
+  cursor: pointer;
+}
+
+.x-shape:after {
+  content: '\00d7';
+  font-size: 20pt;
+  font-weight: bolder;
 }
