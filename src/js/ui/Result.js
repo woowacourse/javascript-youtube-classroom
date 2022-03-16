@@ -42,7 +42,7 @@ export default class Result {
   }
 
   scrollObserver(nextPageToken) {
-    let $li = $('li:last-child');
+    let $li = $('.video-item:last-child');
 
     const io = new IntersectionObserver(
       entry => {
