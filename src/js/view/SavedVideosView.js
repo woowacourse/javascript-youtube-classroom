@@ -1,5 +1,6 @@
 import storage from '../domain/storage';
-import { selectDom } from '../util/util';
+import getSearchResult from '../domain/VideoListAPI';
+import { formatDateString, selectDom } from '../util/util';
 
 class SavedVideosView {
   constructor() {
@@ -9,27 +10,26 @@ class SavedVideosView {
     this.renderVideoList();
   }
 
-  renderVideoList = () => {
+  renderVideoList = async () => {
     const videos = storage.getSavedVideos();
-
     if (videos.length === 0) {
       this.#renderNoSavedVideoTemplate();
       return;
     }
     const noSavedVideos = selectDom('.no-saved-videos');
     noSavedVideos?.remove();
-
     const newVideoIdArray = videos.filter((id) => !this.renderedVideoIdArray.includes(id));
-    const videoElementList = this.#createVideoElements(newVideoIdArray);
+    const videoObjectArray = await getSearchResult(newVideoIdArray);
+    const videoElementList = this.#createVideoElements(videoObjectArray);
     this.videoList.append(...videoElementList);
     this.renderedVideoIdArray = [...this.renderedVideoIdArray, ...newVideoIdArray];
   };
 
-  #createVideoElements(videoIdArray) {
-    return videoIdArray.map(() => {
+  #createVideoElements(videoObjectArray) {
+    return videoObjectArray.map((object) => {
       const element = document.createElement('li');
       element.className = 'video-item';
-      element.innerHTML = this.#sampleVideoItem;
+      element.innerHTML = this.#videoElementTemplate(object);
       return element;
     });
   }
@@ -50,29 +50,16 @@ class SavedVideosView {
     }
   }
 
-  #sampleVideoItem = `
-  <img
-    src="https://i.ytimg.com/vi/mQhgF7RoUCA/mqdefault.jpg"
-    alt="video-item-thumbnail"
-    class="video-item__thumbnail"
-  />
-  <h4 class="video-item__title">우아한테크코스 4기 온라인 교육 설명회</h4>
-  <p class="video-item__channel-name">박재성</p>
-  <p class="video-item__published-date">2021년 10월 15일</p>
-
+  #videoElementTemplate = ({ videoId, thumbnail, title, channelTitle, publishedAt }) => `
+  <img src="${thumbnail}" alt="video-item-thumbnail" class="video-item__thumbnail" />
+  <h4 class="video-item__title">${title}</h4>
+  <p class="video-item__channel-name">${channelTitle}</p>
+  <p class="video-item__published-date">${formatDateString(publishedAt)}</p>
   <div class="video-item__button-wrapper">
-    <button
-      type="button"
-      class="video-item__check-watched-button button"
-      data-video-id="{videoId}"
-    >
+    <button type="button" class="video-item__check-watched-button button" data-video-id="${videoId}">
       ✅
     </button>
-    <button
-      type="button"
-      class="video-item__unsave-button button"
-      data-video-id="{videoId}"
-    >
+    <button type="button" class="video-item__unsave-button button" data-video-id="${videoId}">
       🗑
     </button>
   </div>`;
