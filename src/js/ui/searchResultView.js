@@ -13,7 +13,7 @@ const template = {
       <p class="line"></p>
     </li>
   `,
-  videoItem: item => {
+  videoItem: (item) => {
     return `
       <li class="video-item" data-video-id='${item.id.videoId}'>
         <img
@@ -51,14 +51,14 @@ const searchResultView = {
     $('.video-list').insertAdjacentHTML('beforeEnd', template.skeletonUI.repeat(10));
   },
   removeSkeletonUI() {
-    $$('.skeleton').forEach(element => element.remove());
+    $$('.skeleton').forEach((element) => element.remove());
   },
   removeSavedVideoButton() {
     $('.video-list').lastElementChild.lastElementChild.hidden = true;
   },
   renderVideoItems({ items }) {
     const savedStorage = storage.getLocalStorage();
-    items.forEach(item => {
+    items.forEach((item) => {
       $('.video-list').insertAdjacentHTML('beforeEnd', template.videoItem(item));
       if (savedStorage && savedStorage.includes(item.id.videoId)) {
         this.removeSavedVideoButton();

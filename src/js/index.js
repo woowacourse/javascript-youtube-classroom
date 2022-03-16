@@ -34,7 +34,7 @@ export default function App() {
     }
   };
 
-  const handleScroll = e => {
+  const handleScroll = (e) => {
     if (isEndOfScroll(e.target) && !throttle) {
       renderHandler();
       throttle = setTimeout(() => {
@@ -43,7 +43,7 @@ export default function App() {
     }
   };
 
-  const handleSaveButtonClick = e => {
+  const handleSaveButtonClick = (e) => {
     const isSaveButtonClick = e.target.classList.contains('video-item__save-button');
     if (isSaveButtonClick) {
       e.target.hidden = true;
@@ -65,7 +65,7 @@ export default function App() {
 
   $('#search-button').addEventListener('click', handleSearch);
 
-  $('#search-input-keyword').addEventListener('keypress', e => {
+  $('#search-input-keyword').addEventListener('keypress', (e) => {
     if (e.key === 'Enter') handleSearch();
   });
 }

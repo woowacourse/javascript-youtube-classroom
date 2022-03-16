@@ -12,7 +12,7 @@ const storage = {
     if (savedStorage.length > MAX_VIDEO_COUNT) {
       return;
     }
-    if (savedStorage.some(savedId => savedId === videoId)) {
+    if (savedStorage.some((savedId) => savedId === videoId)) {
       return;
     }
     this.setLocalStorage([...savedStorage, videoId]);
