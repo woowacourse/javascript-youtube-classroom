@@ -1,7 +1,5 @@
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const path = require('path');
-const webpack = require('webpack');
-const dotenv = require('dotenv').config();
 
 module.exports = {
   mode: 'development',
@@ -54,6 +52,5 @@ module.exports = {
     new HtmlWebpackPlugin({
       template: './index.html',
     }),
-    new webpack.EnvironmentPlugin(Object.keys(dotenv.parsed || {})),
   ],
 };
