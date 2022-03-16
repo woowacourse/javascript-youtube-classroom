@@ -29,7 +29,7 @@ class Search {
 
     this.debounce = setTimeout(() => {
       this.search(type, keyword);
-    }, 500);
+    }, 1000);
   }
 
   async search(type, keyword) {
