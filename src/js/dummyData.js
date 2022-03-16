@@ -1,4 +1,4 @@
-const dummyData = {
+const YOUTUBE_DUMMY_DATA = {
   kind: 'youtube#searchListResponse',
   etag: '_OfNA0LaufepG8rEmnOdpIN_YbE',
   nextPageToken: 'z',
@@ -361,4 +361,4 @@ const dummyData = {
   ],
 };
 
-export default dummyData;
+export default YOUTUBE_DUMMY_DATA;
