@@ -9,3 +9,5 @@ export const MAX_SAVED_VIDEOS_COUNT = 100;
 export const DELAY_MILISECOND_TIME = 1000;
 
 export const VIDEO_COUNT = 10;
+
+export const STORAGE_KEY_SAVED_VIDEOS = 'savedVideos';
