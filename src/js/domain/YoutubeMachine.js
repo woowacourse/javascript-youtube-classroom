@@ -1,5 +1,5 @@
+import { SEARCH_RESULT_COUNT } from '../constants/constants.js';
 import { validateInput } from '../util/general.js';
-// import dummyData from '../../../dummyData.js';
 
 export default class YoutubeMachine {
   #pageToken = '';
@@ -22,17 +22,20 @@ export default class YoutubeMachine {
     return this.#pageToken;
   }
 
-  getURL() {
-    const URL = `https://ahns.netlify.app/youtube/v3/search?part=snippet&q=${this.searchTarget}&maxResults=10&type=video`;
-    if (this.pageToken) {
-      return URL.concat(`&pageToken=${this.pageToken}`);
-    }
-    return URL;
-  }
+  async fetchYoutubeAPI() {
+    const REDIRECT_SERVER_HOST = 'https://ahns.netlify.app/youtube/v3/search';
+    const url = new URL(REDIRECT_SERVER_HOST);
+    const parameter = new URLSearchParams({
+      part: 'snippet',
+      maxResults: SEARCH_RESULT_COUNT,
+      q: this.#searchTarget,
+      regionCode: 'kr',
+      pageToken: this.#pageToken || '',
+      type: 'video',
+    });
+    url.search = parameter.toString();
 
-  async callSearchAPI() {
-    const URL = this.getURL();
-    const response = await fetch(URL);
+    const response = await fetch(url, { method: 'GET' });
     const videoData = await response.json();
     this.#pageToken = videoData.nextPageToken;
     return videoData;

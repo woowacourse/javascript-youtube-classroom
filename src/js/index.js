@@ -12,7 +12,7 @@ export default function App() {
 
   const renderHandler = async () => {
     searchResultView.renderSkeletonUI();
-    const response = await youtubeMachine.callSearchAPI();
+    const response = await youtubeMachine.fetchYoutubeAPI();
     searchResultView.renderSearchResult(response);
     const isLastVideos = response.items.length !== 0 && !response.nextPageToken;
     if (isLastVideos) {
@@ -43,7 +43,7 @@ export default function App() {
     }
   };
 
-  const handleSaveButtonClick = (e) => {
+  const handleSaveVideos = (e) => {
     const isSaveButtonClick = e.target.classList.contains('video-item__save-button');
     if (isSaveButtonClick) {
       e.target.hidden = true;
@@ -56,7 +56,7 @@ export default function App() {
   const addVideoListEvents = () => {
     $('.video-list').addEventListener('scroll', handleScroll);
 
-    $('.video-list').addEventListener('click', handleSaveButtonClick);
+    $('.video-list').addEventListener('click', handleSaveVideos);
   };
 
   $('#search-modal-button').addEventListener('click', searchResultView.toggleModal);
