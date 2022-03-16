@@ -1,15 +1,43 @@
 <!DOCTYPE html>
-<html lang="kr">
-
+<html lang="ko">
 <head>
   <meta charset="UTF-8" />
-  <title>👩🏻‍💻 유튜브 강의실</title>
+  <title>나만의 유튜브 강의실</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
 </head>
-
 <body>
-  <div id="app"> </div>
-  <script type="module" src="./src/js/index.js"></script>
+  <main id="app" class="classroom-container">
+    <h1 class="classroom-container__title">👩🏻‍💻 나만의 유튜브 강의실 👨🏻‍💻</h1>
+    <nav class="nav">
+      <button type="button" id="search-modal-button" class="button nav__button">🔍 검색</button>
+    </nav>
+  </main>
+  <div class="modal-container hide">
+    <div class="dimmer"></div>
+    <div class="search-modal" role="dialog" aria-labelledby="search-modal-title">
+      <h2 id="search-modal-title" class="search-modal__title">🔍 보고싶은 영상 찾기 🔍</h2>
+      <button class="close-button">❎</button>
+      <section class="search-input">
+        <h3 hidden>검색어 입력</h3>
+        <input id="search-input-keyword" type="text" placeholder="검색" class="search-input__keyword">
+        <button id="search-button" class="search-input__search-button button">검색</button>
+      </section>
+      <section id="search-target" class="search-result">
+        <h3 hidden>검색 결과</h3>
+        <ul class="video-list scroll">
+        </ul>
+      </section>
+      <section id="search-no-result" class="search-result search-result--no-result hide">
+        <h3 hidden>검색 결과 없음</h3>
+        <div class="no-result">
+          <img src="./not_found.png" alt="no result image" class="no-result__image">
+          <p class="no-result__description">
+            검색 결과가 없습니다<br />
+            다른 키워드로 검색해보세요
+          </p>
+        </div>
+      </section>
+    </div>
+  </div>
 </body>
-
 </html>
