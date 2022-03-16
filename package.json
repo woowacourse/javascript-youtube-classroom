@@ -1,7 +1,7 @@
 {
-  "name": "my-webpack-project",
+  "name": "youtube-classroom",
   "version": "1.0.0",
-  "description": "My webpack project",
+  "description": "My youtube-classroom project",
   "main": "index.js",
   "scripts": {
     "test": "jest --watch --no-cache",
