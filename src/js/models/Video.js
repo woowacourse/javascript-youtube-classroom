@@ -103,4 +103,20 @@ export default class Video {
 
     this.#nextPageToken = fetchedVideos.nextPageToken;
   }
+
+  #saveLocalStorage() {
+    localStorage.setItem('saved-video', JSON.stringify(this.savedVideoItems));
+  }
+
+  setWatchedVideoItem(watchedVideoId) {
+    this.savedVideoItems = this.#savedVideoItems.map((item) => {
+      const newItem = item;
+      if (newItem.videoId === watchedVideoId) {
+        newItem.watched = true;
+      }
+      return newItem;
+    });
+
+    this.#saveLocalStorage();
+  }
 }

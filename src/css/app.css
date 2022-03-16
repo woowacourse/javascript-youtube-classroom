@@ -51,12 +51,12 @@ body {
   border: 1px solid var(--secondary);
 }
 
-.nav-left__button--watch-later {
+.nav-left__button--unwatched {
   margin-right: -3px;
   border-radius: 5px 0 0 5px;
 }
 
-.nav-left__button--watched-already {
+.nav-left__button--watched {
   margin-left: -3px;
   border-radius: 0 5px 5px 0;
 }
@@ -89,7 +89,7 @@ body {
   right: 0;
 }
 
-.watch-later-tab {
+.video-grid {
   max-width: 1020px;
   padding: 0;
   margin: 39px 0;

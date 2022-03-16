@@ -1,4 +1,4 @@
-import { $ } from '../utils/dom.js';
+import { $, $$ } from '../utils/dom.js';
 import { on, emit } from '../utils/event.js';
 import Template from './Template.js';
 
@@ -9,9 +9,9 @@ export default class MainView {
     this.$modalContainer = $('.modal-container');
     this.$dimmer = $('.dimmer');
     this.$closeButton = $('.x-shape');
-    this.$unwatchedButton = $('.nav-left__button--watch-later');
-    this.$watchedButton = $('.nav-left__button--watched-already');
-    this.$unwatchedTab = $('.watch-later-tab');
+    this.$unwatchedButton = $('.nav-left__button--unwatched');
+    this.$watchedButton = $('.nav-left__button--watched');
+    this.$unwatchedTab = $('.unwatched-tab');
     this.$watchedTab = $('.watched-tab');
     this.#bindEvents();
   }
@@ -33,7 +33,7 @@ export default class MainView {
   }
 
   #handleUnwatchedButton() {
-    emit(this.$unwatchedButton, '@show-watch-later-tab');
+    emit(this.$unwatchedButton, '@show-unwatched-tab');
   }
 
   #handleWatchedButton() {
@@ -54,11 +54,37 @@ export default class MainView {
     this.$unwatchedTab.classList.add('hide');
   }
 
-  renderVideoItems(videoItems, target) {
-    target.replaceChildren();
+  renderUnwatchedVideoItems(videoItems) {
+    this.$unwatchedTab.replaceChildren();
     videoItems.forEach((item) => {
-      const $videoItem = this.template.getSavedVideo(item);
-      target.insertAdjacentHTML('beforeend', $videoItem);
+      const $videoItem = this.template.getUnwatchedVideo(item);
+      this.$unwatchedTab.insertAdjacentHTML('beforeend', $videoItem);
     });
+
+    on(this.$unwatchedTab, 'click', this.#checkWatchedButton.bind(this));
+  }
+
+  renderWatchedVideoItems(videoItems) {
+    this.$watchedTab.replaceChildren();
+    videoItems.forEach((item) => {
+      const $videoItem = this.template.getWatchedVideo(item);
+      this.$watchedTab.insertAdjacentHTML('beforeend', $videoItem);
+    });
+
+    on(this.$watchedTab, 'click', this.#checkUnwatchedButton.bind(this));
+  }
+
+  #checkWatchedButton(event) {
+    if (event.target.classList.contains('video-item__button--watched')) {
+      const videoId = event.target.dataset.id;
+      emit(event.currentTarget, '@check-watched', { videoId });
+    }
+  }
+
+  #checkUnwatchedButton(event) {
+    if (event.target.classList.contains('video-item__button--watched')) {
+      const videoId = event.target.dataset.id;
+      emit(event.currentTarget, '@check-unwatched', { videoId });
+    }
   }
 }

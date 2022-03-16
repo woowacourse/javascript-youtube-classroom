@@ -23,8 +23,9 @@ export default class Controller {
     on(this.searchInputView.$searchButton, '@search', this.#searchVideo.bind(this));
     on(this.searchResultView.$searchTarget, '@scroll-bottom', this.#scrollNextVideos.bind(this));
     on(this.searchResultView.$searchTarget, '@save-video', this.#saveVideo.bind(this));
-    on(this.mainView.$unwatchedButton, '@show-watch-later-tab', this.#renderUnwatchedTab.bind(this));
+    on(this.mainView.$unwatchedButton, '@show-unwatched-tab', this.#renderUnwatchedTab.bind(this));
     on(this.mainView.$watchedButton, '@show-watched-tab', this.#renderWatchedTab.bind(this));
+    on(this.mainView.$unwatchedTab, '@check-watched', this.#checkWatchedVideo.bind(this));
   }
 
   // 검색 버튼을 눌렀을 때
@@ -107,14 +108,20 @@ export default class Controller {
   #renderUnwatchedTab() {
     const unwatchedVideoItems = this.video.savedVideoItems.filter((item) => item.watched === false);
 
-    this.mainView.renderVideoItems(unwatchedVideoItems, this.mainView.$unwatchedTab);
+    this.mainView.renderUnwatchedVideoItems(unwatchedVideoItems);
     this.mainView.showUnwatchedTab();
   }
 
   #renderWatchedTab() {
     const watchedVideoItems = this.video.savedVideoItems.filter((item) => item.watched === true);
 
-    this.mainView.renderVideoItems(watchedVideoItems, this.mainView.$watchedTab);
+    this.mainView.renderWatchedVideoItems(watchedVideoItems, this.mainView.$watchedTab);
     this.mainView.showWatchedTab();
+  }
+
+  #checkWatchedVideo(event) {
+    const watchedVideoId = event.detail.videoId;
+    this.video.setWatchedVideoItem(watchedVideoId);
+    console.log(this.video.savedVideoItems);
   }
 }
