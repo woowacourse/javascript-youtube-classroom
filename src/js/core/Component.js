@@ -29,7 +29,11 @@ export default class Component {
   }
 
   setState(newState) {
-    this.state = { ...this.state, ...newState };
+    const updatedState = { ...this.state, ...newState };
+
+    if (JSON.stringify(updatedState) === JSON.stringify(this.state)) return;
+
+    this.state = updatedState;
     this.render();
   }
 
