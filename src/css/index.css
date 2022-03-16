@@ -1,5 +1,6 @@
 @import './app.css';
 @import './modal.css';
+@import './skeleton.css';
 
 * {
     margin: 0;
@@ -18,4 +19,20 @@ html, body {
 
 input, button, textarea, select {
     font: inherit;
+}
+
+.search-result .no-result {
+  display: none;
+}
+
+.search-result--no-result .video-list {
+  display: none;
+}
+
+.search-result--no-result h3 {
+  display: none;
+}
+
+.search-result--no-result .no-result {
+  display: block;
 }
