@@ -4,10 +4,14 @@ import { webStore } from '../../../store/WebStore.js';
 import { convertTime } from '../../../utils/customDate.js';
 
 export default class VideoCard extends Component {
+  setup() {
+    this.state = { watched: this.props.video.watched };
+  }
+
   template() {
     const { videoId, thumbnailUrl, title, channelTitle, publishTime, saved } =
       this.props.video;
-    const watched = this.props.video.watched;
+    const { watched } = this.state;
 
     return `
       <li class="video-item" data-video-id="${videoId}">
@@ -38,30 +42,54 @@ export default class VideoCard extends Component {
   }
 
   setEvent() {
+    this.addEvent(
+      'click',
+      '.video-item__save-button',
+      this.handleSave.bind(this)
+    );
+    this.addEvent(
+      'click',
+      '.video-item__watched-button',
+      this.handleWatched.bind(this)
+    );
+  }
+
+  handleWatched() {
+    const { videoId } = this.props.video;
+    const prevSavedVideos = webStore.load();
+    const payload = prevSavedVideos.map(video => {
+      if (video.videoId === videoId) {
+        video.watched = !video.watched;
+      }
+      return video;
+    });
+    webStore.save(payload);
+    this.setState({ watched: !this.state.watched });
+  }
+
+  handleSave() {
     const { video } = this.props;
     const { videoId } = video;
+    const prevSavedVideos = webStore.load();
 
-    this.addEvent('click', '.video-item__save-button', () => {
-      try {
-        const prevSavedVideos = webStore.load();
-        webStore.save([
-          ...prevSavedVideos,
-          { ...video, saved: true, watched: false },
-        ]);
+    try {
+      webStore.save([
+        ...prevSavedVideos,
+        { ...video, saved: true, watched: false },
+      ]);
 
-        const { videos } = rootStore.state;
-        const newVideos = [...videos].map(video => {
-          if (video.videoId === videoId) {
-            return { ...video, saved: true };
-          }
+      const { videos } = rootStore.state;
+      const newVideos = [...videos].map(video => {
+        if (video.videoId === videoId) {
+          return { ...video, saved: true };
+        }
 
-          return video;
-        });
+        return video;
+      });
 
-        rootStore.setState({ videos: newVideos });
-      } catch ({ message }) {
-        alert(message);
-      }
-    });
+      rootStore.setState({ videos: newVideos });
+    } catch ({ message }) {
+      alert(message);
+    }
   }
 }
