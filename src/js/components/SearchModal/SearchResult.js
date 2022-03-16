@@ -42,7 +42,6 @@ export default class SearchResult {
     }
 
     this.#renderVideoList();
-    this.observer.observe(this.videoList.lastElementChild);
   };
 
   #renderNoVideosImg() {
@@ -55,6 +54,7 @@ export default class SearchResult {
       "beforeend",
       this.videos.items.map((video) => getVideoListTemplate(video)).join(""),
     );
+    this.observer.observe(this.videoList.lastElementChild);
   }
 
   #renderSkeleton() {
@@ -76,7 +76,6 @@ export default class SearchResult {
 
     this.videos = await fetchDataFromKeyword(this.searchManager.getKeyword(), this.videos.nextPageToken);
     this.#renderVideoList();
-    this.observer.observe(this.videoList.lastElementChild);
   }
 
   #handleVideoItemSave = ({ target }) => {
