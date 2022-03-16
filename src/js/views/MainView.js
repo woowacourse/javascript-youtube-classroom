@@ -13,9 +13,9 @@ export default class MainView {
     this.$watchedButton = $('.nav-left__button--watched');
     this.$unwatchedTab = $('.unwatched-tab');
     this.$watchedTab = $('.watched-tab');
-    this.watchVideoButton = this.watchVideoButton.bind(this);
-    this.unwatchVideoButton = this.unwatchVideoButton.bind(this);
-    this.deleteVideoButton = this.deleteVideoButton.bind(this);
+    // this.watchVideoButton = this.watchVideoButton.bind(this);
+    // this.unwatchVideoButton = this.unwatchVideoButton.bind(this);
+    // this.deleteVideoButton = this.deleteVideoButton.bind(this);
     this.#bindEvents();
   }
 
@@ -84,26 +84,26 @@ export default class MainView {
     this.$unwatchedTab.removeEventListener('click', this.deleteVideoButton);
   }
 
-  watchVideoButton(event) {
+  watchVideoButton = (event) => {
     if (event.target.classList.contains('video-item__button--watched')) {
       const videoId = event.target.dataset.id;
       emit(event.currentTarget, '@check-watched', { videoId });
     }
-  }
+  };
 
-  unwatchVideoButton(event) {
+  unwatchVideoButton = (event) => {
     if (event.target.classList.contains('video-item__button--watched')) {
       const videoId = event.target.dataset.id;
       emit(event.currentTarget, '@check-unwatched', { videoId });
     }
-  }
+  };
 
-  deleteVideoButton(event) {
+  deleteVideoButton = (event) => {
     if (event.target.classList.contains('video-item__button--delete')) {
       const videoId = event.target.dataset.id;
       emit(event.currentTarget, '@check-delete', { videoId });
     }
-  }
+  };
 
   removeVideo(videoId) {
     $(`[data-video-id=${videoId}]`).remove();
