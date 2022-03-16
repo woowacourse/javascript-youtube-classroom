@@ -4,6 +4,7 @@ import { fetchDataFromKeyword } from "../../utils/api.js";
 import { getVideoListTemplate, getSkeletonTemplate, getEmptyResultTemplate } from "../../utils/templates.js";
 import { getLocalStorage, saveLocalStorage } from "../../utils/localStorage.js";
 import { verifySaveId } from "../../utils/validation.js";
+import { toastMessage } from "../../utils/common.js";
 
 export default class SearchResult {
   constructor({ searchManager }) {
@@ -36,8 +37,8 @@ export default class SearchResult {
     this.videos = await fetchDataFromKeyword(this.searchManager.getKeyword());
     this.#removeSkeleton();
 
-    if (this.videos.items.length === 0) {
-      this.#renderNoVideosImg();
+    if (this.videos.errorMessage) {
+      toastMessage(this.videos.errorMessage);
       return;
     }
 
@@ -50,6 +51,11 @@ export default class SearchResult {
   }
 
   #renderVideoList() {
+    if (this.videos.items.length === 0) {
+      this.#renderNoVideosImg();
+      return;
+    }
+
     this.videoList.insertAdjacentHTML(
       "beforeend",
       this.videos.items.map((video) => getVideoListTemplate(video)).join(""),
