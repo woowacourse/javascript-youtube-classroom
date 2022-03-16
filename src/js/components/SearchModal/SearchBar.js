@@ -15,6 +15,7 @@ export default class SearchBar extends Component {
           placeholder="검색"
           class="search-input__keyword"
           name="searchInput"
+          autofocus
         />
         <button
           type="submit"
