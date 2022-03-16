@@ -1,6 +1,6 @@
 import { store } from '../domain/store';
 import { MESSAGE, STORAGE_KEY } from '../constants';
-import { convertToKoreaLocaleDate } from '../utils/common';
+import { convertToKoreaLocaleDate, isSavedVideo } from '../utils/common';
 import NoResultImage from '../../assets/images/not_found.png';
 
 const skeletonTemplate = `
@@ -43,7 +43,7 @@ const getFoundResultTemplate = items => {
             class="video-item__save-button button"
             onclick="saveVideo(event);"
             data-video-id=${item.id.videoId}
-            ${saveDatas.includes(item.id.videoId) ? 'hidden' : ''}
+            ${isSavedVideo(saveDatas, item.id.videoId) ? 'hidden' : ''}
           >⬇ 저장</button>
         </li>
       `;

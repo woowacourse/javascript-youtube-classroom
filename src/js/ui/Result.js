@@ -1,9 +1,7 @@
 import { getFoundResultTemplate, notFoundTemplate } from './template';
 import { skeletonUI } from './loading';
-import { store } from '../domain/store';
-import { request } from '../domain/youtubeApi';
-import { MESSAGE, STORAGE_KEY } from '../constants';
-import { $, $$ } from '../utils/dom';
+import { searchVideos } from '../domain/youtubeApi';
+import { $ } from '../utils/dom';
 import { delay } from '../utils/common';
 import { showExceptionSnackBar } from '../utils/snackBar';
 
@@ -19,7 +17,7 @@ export default class Result {
   }
 
   renderInitialVideoList(searchText) {
-    request(searchText)
+    searchVideos(searchText)
       .then(json => {
         $('.video-list').replaceChildren();
         this.renderVideoList(json);
@@ -32,7 +30,7 @@ export default class Result {
   }
 
   renderNextVideoList(nextPageToken) {
-    request($('#search-input-keyword').value, nextPageToken)
+    searchVideos($('#search-input-keyword').value, nextPageToken)
       .then(json => {
         skeletonUI.remove();
         this.renderVideoList(json);

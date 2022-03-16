@@ -11,6 +11,6 @@ const MESSAGE = {
   SAVE_COMPLETE: '저장되었습니다.',
 };
 
-const STORAGE_KEY = 'videoId';
+const STORAGE_KEY = 'video';
 
 export { MAX_SAVE_COUNT, GET_VIDEO_UNIT, MESSAGE, STORAGE_KEY };
