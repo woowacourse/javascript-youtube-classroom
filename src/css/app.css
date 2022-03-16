@@ -78,9 +78,29 @@ body {
 .video-item__button--watched {
   width: 36px;
   height: 36px;
+  position: absolute;
+  right: 40px;
 }
 
 .video-item__button--delete {
   width: 36px;
   height: 36px;
+  position: absolute;
+  right: 0;
+}
+
+.watch-later-tab {
+  max-width: 1020px;
+  padding: 0;
+  margin: 39px 0;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 30px 10px;
+}
+
+.video-item {
+}
+
+.opened {
+  background: var(--primary-lighten);
 }

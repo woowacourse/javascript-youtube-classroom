@@ -64,7 +64,7 @@ export default class Template {
 
       </style>
       <a href='https://www.youtube.com/embed/${videoId}?autoplay=1&mute=1'>
-      <img src=${imgUrl} loading="lazy">
+      <img src=${imgUrl} loading='lazy'>
         <div class='play'></div>
       </a>
     `;
@@ -89,23 +89,23 @@ export default class Template {
     `.repeat(10);
   }
 
-  getSavedVideo({ title, channelName, publishTime, videoId, imgUrl }) {
+  getSavedVideo({ title, channelTitle, publishTime, videoId, thumbnailUrl }) {
     return `
-      <li class="video-item">
+      <div class="video-item">
         <iframe 
           class="video-item__thumbnail" 
-          srcdoc="${this.getThumbnail(imgUrl, videoId)}" 
+          srcdoc="${this.getThumbnail(thumbnailUrl, videoId)}" 
           frameborder="0"
           allow="autoplay"
           loading="lazy"
           allowfullscreen>
         </iframe>
         <h4 class="video-item__title">${title}</h4>
-        <p class="video-item__channel-name">${channelName}</p>
+        <p class="video-item__channel-name">${channelTitle}</p>
         <p class="video-item__published-date">${publishTime}</p>
         <button data-id="${videoId}" class="button video-item__button--watched">✅</button>
         <button data-id="${videoId}" class="button video-item__button--delete">🗑️</button>
-      </li>
+      </div>
     `;
   }
 }

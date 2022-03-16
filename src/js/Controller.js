@@ -1,4 +1,4 @@
-import AppView from './views/AppView.js';
+import MainView from './views/MainView.js';
 import SearchInputView from './views/SearchInputView.js';
 import SearchResultView from './views/SearchResultView.js';
 
@@ -13,7 +13,7 @@ export default class Controller {
   constructor() {
     this.video = new Video(dummyObject);
     this.video.savedVideoItems = this.video.getItemsLocalStorage();
-    this.appView = new AppView();
+    this.mainView = new MainView();
     this.searchInputView = new SearchInputView();
     this.searchResultView = new SearchResultView();
     this.#subscribeViewEvents();
@@ -23,6 +23,8 @@ export default class Controller {
     on(this.searchInputView.$searchButton, '@search', this.#searchVideo.bind(this));
     on(this.searchResultView.$searchTarget, '@scroll-bottom', this.#scrollNextVideos.bind(this));
     on(this.searchResultView.$searchTarget, '@save-video', this.#saveVideo.bind(this));
+    on(this.mainView.$watchLaterButton, '@show-watch-later-tab', this.#showWatchLaterTab.bind(this));
+    on(this.mainView.$watchedButton, '@show-watched-tab', this.#showWatchedTab.bind(this));
   }
 
   // 검색 버튼을 눌렀을 때
@@ -51,6 +53,7 @@ export default class Controller {
     this.video.accumulateVideoItems();
     this.video.updateNewVideoItems();
     this.searchResultView.hideNotFound();
+
     try {
       this.searchResultView.renderVideo(this.video.newVideoItems);
     } catch (error) {
@@ -99,5 +102,15 @@ export default class Controller {
     this.searchResultView.changeSaveButtonStyle(event.detail.buttonElement);
     const { savedId } = event.detail;
     this.video.setItemsLocalStorage(savedId);
+  }
+
+  #showWatchLaterTab() {
+    const savedVideoItems = [...this.video.savedVideoItems];
+    this.mainView.renderWatchLaterVideoItems(savedVideoItems);
+    this.mainView.showWatchLaterTab();
+  }
+
+  #showWatchedTab() {
+    this.mainView.showWatchedTab();
   }
 }
