@@ -1,6 +1,7 @@
 @import './app.css';
 @import './modal.css';
 @import './skeleton.css';
+@import './video.css';
 * {
   margin: 0;
   padding: 0;
