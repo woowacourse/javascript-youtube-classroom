@@ -91,7 +91,7 @@ export default class Template {
 
   getVideoItem({ title, channelTitle, publishTime, videoId, thumbnailUrl }) {
     return `
-      <div class="video-item">
+      <div data-video-id="${videoId}" class="video-item">
         <iframe 
           class="video-item__thumbnail" 
           srcdoc="${this.getThumbnail(thumbnailUrl, videoId)}" 

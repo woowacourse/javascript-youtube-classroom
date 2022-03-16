@@ -8,6 +8,7 @@ import { on } from './utils/event.js';
 import VIDEO from '../constants/video.js';
 import { checkExceedLimit } from './utils/validator.js';
 import { fetchYoutubeApi } from './utils/fetch.js';
+import { $, $$ } from './utils/dom.js';
 
 export default class Controller {
   constructor() {
@@ -123,12 +124,12 @@ export default class Controller {
   #checkWatchedVideo(event) {
     const watchedVideoId = event.detail.videoId;
     this.video.setWatchedVideoItem(watchedVideoId);
-    console.log(this.video.savedVideoItems);
+    $(`[data-video-id=${watchedVideoId}]`).remove();
   }
 
   #checkUnwatchedVideo(event) {
     const unwatchedVideoId = event.detail.videoId;
     this.video.setUnwatchedVideoItem(unwatchedVideoId);
-    console.log(this.video.savedVideoItems);
+    $(`[data-video-id=${unwatchedVideoId}]`).remove();
   }
 }
