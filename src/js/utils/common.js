@@ -4,4 +4,14 @@ const convertToKoreaLocaleDate = date => {
 
 const delay = ms => new Promise(resolve => setTimeout(resolve, ms));
 
-export { convertToKoreaLocaleDate, delay };
+const debounce = (callback, wait) => {
+  let timerId;
+  return (...args) => {
+    clearTimeout(timerId);
+    timerId = setTimeout(() => {
+      callback(...args);
+    }, wait);
+  };
+};
+
+export { convertToKoreaLocaleDate, delay, debounce };
