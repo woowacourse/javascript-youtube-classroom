@@ -7,19 +7,29 @@ import { getVideoInfo } from './domain/youtubeApi';
 import { configureVideoData } from './utils/common';
 import { showExceptionSnackBar } from './utils/snackBar';
 
-global.saveVideo = e => {
-  const videoId = e.target.dataset.videoId;
-  try {
-    getVideoInfo(videoId).then(response => {
-      const saveData = configureVideoData(response.items[0]);
-      store.setLocalStorage(STORAGE_KEY, saveData);
-      showExceptionSnackBar(MESSAGE.SAVE_COMPLETE);
-      e.target.setAttribute('hidden', true);
-    });
-  } catch ({ message }) {
-    showExceptionSnackBar(message);
+class App {
+  constructor() {
+    this.video = new Video();
+    new SearchModal();
   }
-};
 
-new Video();
-new SearchModal();
+  saveVideoHandler(e) {
+    const { videoId } = e.target.dataset;
+    try {
+      getVideoInfo(videoId).then(response => {
+        const saveData = configureVideoData(response.items[0]);
+        store.setLocalStorage(STORAGE_KEY, saveData);
+        showExceptionSnackBar(MESSAGE.SAVE_COMPLETE);
+        e.target.setAttribute('hidden', true);
+        this.video.renderVideo(false);
+      });
+    } catch ({ message }) {
+      showExceptionSnackBar(message);
+    }
+  }
+}
+
+const app = new App();
+global.saveVideo = e => {
+  app.saveVideoHandler(e);
+};
