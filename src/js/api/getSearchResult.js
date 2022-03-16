@@ -1,12 +1,18 @@
-import { ITEMS_PER_REQUEST } from "../constants/constants";
+import { ITEMS_PER_REQUEST, DEVELOP_MODE } from "../constants/constants";
+import mockObject from "../mockObject";
 
 export default async function getSearchResult(
   searchKeyword,
   nextPageToken = ""
 ) {
-  const usageRedirect = "https://unruffled-turing-aacdf7.netlify.app";
-  const kkojaeRedirect = "https://clever-aryabhata-ff1fc1.netlify.app";
-  const REDIRECT_SERVER_HOST = usageRedirect;
+  if (DEVELOP_MODE) {
+    return {
+      items: mockObject(),
+      nextPageToken: "ABCDEF",
+    };
+  }
+
+  const REDIRECT_SERVER_HOST = "https://unruffled-turing-aacdf7.netlify.app";
 
   const url = new URL("youtube/v3/search", REDIRECT_SERVER_HOST);
   const parameters = new URLSearchParams({
@@ -31,6 +37,7 @@ export default async function getSearchResult(
 
     return data;
   } catch (error) {
-    console.error(error);
+    // TODO: 에러 메시지 핸들링 객체 만들어서 붙여주기
+    return null;
   }
 }

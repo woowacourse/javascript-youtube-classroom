@@ -1,6 +1,5 @@
 import VideoStorage from "./VideoStorage";
 import SearchModalView from "./view/SearchModalView";
-import mockObject from "./mockObject";
 import getSearchResult from "./api/getSearchResult";
 import { DELAY_TIME } from "./constants/constants";
 import { throttle, checkKeywordValid, isScrollToBottom } from "./utils/utils";
@@ -88,18 +87,10 @@ export default class YoutubeApp {
     this.searchModalView.renderSkeleton();
 
     this.keyword = keyword;
-    /**
-     * 목 데이터로 검색 결과 대체
-     */
-    // const responseData = {
-    //   items: mockObject(),
-    //   nextPageToken: "ABCDEF",
-    // };
 
     const responseData = await getSearchResult(this.keyword);
     this.nextPageToken = responseData.nextPageToken;
 
-    // 검색 결과가 없을 경우
     if (responseData.items.length === 0) {
       this.searchModalView.renderNoResultPage();
       return;
@@ -111,13 +102,6 @@ export default class YoutubeApp {
   async searchNextPage() {
     this.searchModalView.renderSkeleton();
 
-    /**
-     * 목 데이터로 검색 결과 대체
-     */
-    // const responseData = {
-    //   items: mockObject(),
-    //   nextPageToken: "ABCDEF",
-    // };
     const responseData = await getSearchResult(
       this.keyword,
       this.nextPageToken
