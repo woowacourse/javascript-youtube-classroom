@@ -1,25 +1,25 @@
 .skeleton {
-  width: 240px;
-  height: 255px;
+  width: 15em;
+  height: 16em;
 }
 
 .skeleton .image,
 .skeleton .line {
-  background-image: linear-gradient(90deg, #e0e0e0 0px, #ededed 30px, #e0e0e0 60px);
+  background-image: linear-gradient(90deg, #e0e0e0 0, #ededed 1.875em, #e0e0e0 3.75em);
   animation: refresh 2s infinite ease-out;
 }
 
 .skeleton .image {
-  height: 135px;
+  height: 8.44em;
 }
 
 .skeleton .line {
-  height: 16px;
+  height: 1rem;
 }
 
 .line {
-  height: 24px;
-  margin: 14px 0;
+  height: 1.5rem;
+  margin: 0.875em 0;
 }
 
 .skeleton .line:first-child {
@@ -32,10 +32,10 @@
 
 @keyframes refresh {
   0% {
-    background-position: calc(-100px);
+    background-position: calc(-6.25em);
   }
   40%,
   100% {
-    background-position: 320px;
+    background-position: 20em;
   }
 }

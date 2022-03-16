@@ -1,19 +1,23 @@
 body {
-  padding: 64px 0;
-  font-size: 16px;
+  padding: 4em 0;
+  font-size: 1rem;
 }
 
 #app {
-  max-width: 1020px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  max-width: 70em;
   margin: 0 auto;
+  padding: 0 1rem;
 }
 
 .classroom-container__title {
   text-align: center;
   font-weight: bold;
-  font-size: 34px;
-  line-height: 36px;
-  margin-bottom: 64px;
+  font-size: 2.25rem;
+  line-height: 2.25rem;
+  margin-bottom: 4rem;
 }
 
 .nav {
@@ -23,17 +27,16 @@ body {
 
 .button {
   cursor: pointer;
-  border-radius: 4px;
+  border-radius: 0.25rem;
   font-style: normal;
   font-weight: bold;
-  font-size: 14px;
-  letter-spacing: 1.25px;
+  font-size: 0.875rem;
   border: none;
 }
 
 .nav__button {
-  width: 80px;
-  height: 36px;
+  width: 5em;
+  height: 2.25em;
 
   background: #f5f5f5;
 }
@@ -43,10 +46,15 @@ body {
 }
 
 .tab__button {
-  width: 120px;
+  width: 8.6em;
   margin: 0;
   border: 1px solid #e0e0e0;
   border-radius: 4px 0 0 4px;
+}
+
+.tab__button.selected {
+  background-color: #00bcd41f;
+  border: 1px solid #00c8e25e;
 }
 
 .filter-video-section {
@@ -54,5 +62,6 @@ body {
 }
 
 .saved-result-section {
-  margin: 40px auto;
+  margin: 2.5em 0;
+  width: 100%;
 }
