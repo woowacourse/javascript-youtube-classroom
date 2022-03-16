@@ -2,7 +2,7 @@ import { MAX_SAVE_COUNT, MESSAGE } from '../constants';
 
 export const store = {
   setLocalStorage(key, value) {
-    const saveDatas = store.getLocalStorage(key) ?? [];
+    const saveDatas = store.getLocalStorage(key);
 
     if (saveDatas.length >= MAX_SAVE_COUNT) {
       throw Error(MESSAGE.ERROR_EXCESS_SAVE_COUNT);
@@ -13,6 +13,6 @@ export const store = {
   },
 
   getLocalStorage(key) {
-    return JSON.parse(localStorage.getItem(key));
+    return JSON.parse(localStorage.getItem(key)) ?? [];
   },
 };

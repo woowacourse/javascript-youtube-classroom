@@ -9,7 +9,7 @@ import { video } from '../domain/video';
 
 export const result = {
   searchResultFoundTemplate(items) {
-    const saveDatas = store.getLocalStorage(STORAGE_KEY) ?? [];
+    const saveDatas = store.getLocalStorage(STORAGE_KEY);
     const resultTemplate = items
       .map(item => {
         const { publishedAt, channelId, title, thumbnails, channelTitle } = item.snippet;
