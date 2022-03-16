@@ -15,15 +15,15 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/kkojae91/javascript-youtube-classroom.git"
+    "url": "git+https://github.com/usageness/javascript-youtube-classroom.git"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/kkojae91/javascript-youtube-classroom/issues"
+    "url": "https://github.com/usageness/javascript-youtube-classroom/issues"
   },
-  "homepage": "https://github.com/kkojae91/javascript-youtube-classroom#readme",
+  "homepage": "https://usageness.github.io/javascript-youtube-classroom/",
   "devDependencies": {
     "@babel/core": "^7.17.5",
     "@babel/plugin-transform-runtime": "^7.17.0",
