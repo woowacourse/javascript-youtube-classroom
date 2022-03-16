@@ -8,7 +8,10 @@ const API_URL = 'https://practical-nightingale-c76b8a.netlify.app/youtube/v3/sea
 
 describe('모달 동작 검사', () => {
   before(() => {
-    cy.viewport(1920, 975);
+    const viewportWidth = 1920;
+    const viewportHeight = 975;
+
+    cy.viewport(viewportWidth, viewportHeight);
   });
 
   beforeEach(() => {
@@ -74,8 +77,10 @@ describe('검색 후 렌더링 검사', () => {
   });
 
   it('적절한 검색어(검색 결과가 있는 검색어)로 검색 시 영상 카드가 화면에 보여져야한다.', () => {
-    const searchKeyword = '고양이';
-    cy.fixture('searchResultData.json').as('searchResultData');
+    const searchKeyword = '우테코';
+    const expectedVideoItemCount = 10;
+
+    cy.fixture('searchResultData.json');
 
     cy.intercept(API_URL, { fixture: 'searchResultData' }).as('requestVideo');
 
@@ -86,7 +91,7 @@ describe('검색 후 렌더링 검사', () => {
     cy.wait('@requestVideo');
 
     // then
-    cy.get('.video-item').should('have.length', 10);
+    cy.get('.video-item').should('have.length', expectedVideoItemCount);
   });
 
   it('검색 결과가 없는 검색어로 검색 시 "검색 결과가 없습니다 다른 키워드로 검색해보세요" 문구가 화면에 보여져야 한다.', () => {
