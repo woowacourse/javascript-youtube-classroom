@@ -21,7 +21,7 @@ export const requestYoutubeSearch = async (keyword = '', pageToken = '') => {
     const uri = uriBuilder(YOUTUBE_SETTING.URI, {
       part: 'snippet',
       type: 'video',
-      q: encodeURIComponent(keyword),
+      q: keyword,
       maxResults: YOUTUBE_SETTING.MAX_VIDEO_NUMBER,
       key: process.env.YOUTUBE_API_KEY,
       pageToken,
