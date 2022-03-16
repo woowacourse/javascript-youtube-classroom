@@ -11,4 +11,6 @@ const MESSAGE = {
 
 const STORAGE_KEY = 'videoId';
 
-export { MAX_SAVE_COUNT, MESSAGE, STORAGE_KEY };
+const KEY_CODE_ESC = 27;
+
+export { MAX_SAVE_COUNT, MESSAGE, STORAGE_KEY, KEY_CODE_ESC };
