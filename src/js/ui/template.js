@@ -77,7 +77,7 @@ const getVideoTemplate = videos => {
         channelTitle,
       } = video;
       return `
-        <li class="save-video-item" data-video-id=${videoId}>
+        <li class="save-video-item">
           <a
             href="http://www.youtube.com/watch?v=${videoId}"
             target="_blank"
@@ -98,8 +98,8 @@ const getVideoTemplate = videos => {
           <p class="video-item__published-date">
             ${convertToKoreaLocaleDate(publishedAt)}
           </p>
-          <button type="button" class="delete-button save-video-item__button button" title="삭제">🗑️</button>
-          <button type="button" class="watch-button save-video-item__button button" title="체크">✅</button>
+          <button type="button" data-video-id=${videoId} class="delete-button save-video-item__button button" title="삭제">🗑️</button>
+          <button type="button" data-video-id=${videoId} class="watch-button save-video-item__button button" title="체크">✅</button>
         </li>
       `;
     })

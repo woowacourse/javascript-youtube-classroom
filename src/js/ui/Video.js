@@ -1,6 +1,7 @@
 import { MESSAGE, STORAGE_KEY } from '../constants';
 import { store } from '../domain/store';
-import { $ } from '../utils/dom';
+import { $, $$ } from '../utils/dom';
+import { showExceptionSnackBar } from '../utils/snackBar';
 import { getVideoTemplate } from './template';
 
 export default class Video {
@@ -37,6 +38,8 @@ export default class Video {
       getVideoTemplate(filteredVideos),
     );
     $videoContainer.appendChild($saveVideoList);
+    this.addWatchButtonClickEvent();
+    this.addDeleteButtonClickEvent();
   }
 
   addNavButtonClickEvent() {
@@ -57,5 +60,55 @@ export default class Video {
       this.renderVideo(true);
       this.tab = 'watched';
     });
+  }
+
+  addWatchButtonClickEvent() {
+    $$('.watch-button').forEach(button =>
+      button.addEventListener('click', e => {
+        const { videoId } = e.target.dataset;
+        const saveVideos = store.getLocalStorage(STORAGE_KEY);
+
+        store.removeLocalStorage(STORAGE_KEY);
+        saveVideos.forEach(video => {
+          if (video.videoId === videoId) {
+            video.watched = !video.watched;
+          }
+          store.setLocalStorage(STORAGE_KEY, video);
+        });
+
+        showExceptionSnackBar(MESSAGE.MODIFY_COMPLETE);
+
+        if (this.tab === 'will') {
+          this.renderVideo(false);
+        } else if (this.tab === 'watched') {
+          this.renderVideo(true);
+        }
+      }),
+    );
+  }
+
+  addDeleteButtonClickEvent() {
+    $$('.delete-button').forEach(button =>
+      button.addEventListener('click', e => {
+        if (!confirm(MESSAGE.ASK_DELETE)) return;
+        const { videoId } = e.target.dataset;
+        const saveVideos = store.getLocalStorage(STORAGE_KEY);
+
+        store.removeLocalStorage(STORAGE_KEY);
+        saveVideos.forEach(video => {
+          if (video.videoId !== videoId) {
+            store.setLocalStorage(STORAGE_KEY, video);
+          }
+        });
+
+        showExceptionSnackBar(MESSAGE.MODIFY_COMPLETE);
+
+        if (this.tab === 'will') {
+          this.renderVideo(false);
+        } else if (this.tab === 'watched') {
+          this.renderVideo(true);
+        }
+      }),
+    );
   }
 }
