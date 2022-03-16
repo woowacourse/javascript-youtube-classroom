@@ -16,11 +16,12 @@ class Search {
       const { items, nextPageToken } = await this.#getSearchResult(keyword, this.#nextPageToken);
       this.#keyword = keyword;
       this.#nextPageToken = nextPageToken;
-      const savedVideos = [...storage.getUnwatchedVideos(), ...storage.getWatchedVideos()];
-      return {
-        searchResultArray: this.#getVideoObjectArray(items, savedVideos),
-        hasNextPage: !!nextPageToken,
-      };
+      const savedVideos = [
+        ...storage.getFromStorage('watched'),
+        ...storage.getFromStorage('unwatched'),
+      ];
+      const searchResultArray = this.#getVideoObjectArray(items, savedVideos);
+      return { searchResultArray, hasNextPage: !!nextPageToken };
     } catch (error) {
       throw new Error(error.message);
     }

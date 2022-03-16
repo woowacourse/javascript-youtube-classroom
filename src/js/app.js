@@ -5,4 +5,4 @@ import storage from './domain/storage';
 
 const search = new Search();
 // eslint-disable-next-line
-const view = new View(search, storage.saveVideosToUnwatchedList);
+const view = new View(search, storage.saveToStorage);

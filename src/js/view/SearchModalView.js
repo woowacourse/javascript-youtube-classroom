@@ -9,7 +9,7 @@ import {
 import '../../assets/images/not_found.png';
 
 class SearchModalView {
-  constructor(search, saveVideosToUnwatchedList) {
+  constructor(search, saveToStorage) {
     this.modalContainer = selectDom('.modal-container');
     this.searchForm = selectDom('#search-form', this.modalContainer);
     this.searchInputKeyword = selectDom('#search-input-keyword', this.searchForm);
@@ -17,7 +17,7 @@ class SearchModalView {
     this.videoList = selectDom('.video-list', this.searchResult);
 
     this.search = search;
-    this.sendSaveRequest = saveVideosToUnwatchedList;
+    this.sendSaveRequest = saveToStorage;
 
     this.#attachEventListeners();
   }
@@ -74,7 +74,7 @@ class SearchModalView {
 
   #handleVideoSaveClick = (event) => {
     try {
-      this.sendSaveRequest(event.target.dataset.videoId);
+      this.sendSaveRequest('unwatched', event.target.dataset.videoId);
       event.target.disabled = true;
     } catch (error) {
       alert(error.message);

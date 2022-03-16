@@ -5,35 +5,40 @@ import {
   WATCHED_LIST_KEY,
 } from '../constants/constants';
 
-function getUnwatchedVideos() {
-  return JSON.parse(localStorage.getItem(UNWATCHED_LIST_KEY)) || [];
+const keys = {
+  watched: WATCHED_LIST_KEY,
+  unwatched: UNWATCHED_LIST_KEY,
+};
+
+function getFromStorage(key) {
+  return JSON.parse(localStorage.getItem(keys[key])) || [];
 }
 
-function getWatchedVideos() {
-  return JSON.parse(localStorage.getItem(WATCHED_LIST_KEY)) || [];
-}
-
-function saveVideosToUnwatchedList(videoId) {
-  const idObj = getUnwatchedVideos();
-  if (idObj.length >= MAX_SAVE_AMOUNT) {
+function saveToStorage(key, value) {
+  const idArray = getFromStorage(key);
+  if (idArray.length >= MAX_SAVE_AMOUNT) {
     throw new Error(ERROR_MESSAGES.EXCEED_MAX_SAVE_AMOUNT);
   }
-  localStorage.setItem(UNWATCHED_LIST_KEY, JSON.stringify([...idObj, videoId]));
+  localStorage.setItem(keys[key], JSON.stringify([...idArray, value]));
 }
 
-function saveVideosToWatchedList(videoId) {
-  const idObj = getWatchedVideos();
-  if (idObj.length >= MAX_SAVE_AMOUNT) {
-    throw new Error(ERROR_MESSAGES.EXCEED_MAX_SAVE_AMOUNT);
-  }
-  localStorage.setItem(WATCHED_LIST_KEY, JSON.stringify([...idObj, videoId]));
+function removeFromStorage(key, value) {
+  const idArray = getFromStorage(key);
+  const index = idArray.indexOf(value);
+  if (index >= 0) idArray.splice(index, 1);
+  localStorage.setItem(keys[key], JSON.stringify(idArray));
+}
+
+function moveVideo({ from, to, value }) {
+  removeFromStorage(from, value);
+  saveToStorage(to, value);
 }
 
 const storage = {
-  getUnwatchedVideos,
-  getWatchedVideos,
-  saveVideosToUnwatchedList,
-  saveVideosToWatchedList,
+  getFromStorage,
+  saveToStorage,
+  removeFromStorage,
+  moveVideo,
 };
 
 export default storage;

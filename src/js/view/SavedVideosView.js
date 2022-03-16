@@ -11,30 +11,45 @@ class SavedVideosView {
   }
 
   renderVideoList = async () => {
-    const videos = storage.getUnwatchedVideos();
+    const videos = storage.getFromStorage('unwatched');
     if (videos.length === 0) {
       this.#renderNoSavedVideoTemplate();
       return;
     }
     const noSavedVideos = selectDom('.no-saved-videos');
     noSavedVideos?.remove();
+
+    this.#removeDeletedVideos(videos);
     const newVideoIdArray = videos.filter((id) => !this.renderedVideoIdArray.includes(id));
+    await this.#renderNewVideos(newVideoIdArray);
+    this.renderedVideoIdArray = [...this.renderedVideoIdArray, ...newVideoIdArray];
+  };
+
+  async #renderNewVideos(newVideoIdArray) {
     const videoObjectArray = await getSearchResult(newVideoIdArray);
     const videoElementList = this.#createVideoElements(videoObjectArray);
     this.videoList.append(...videoElementList);
-    this.renderedVideoIdArray = [...this.renderedVideoIdArray, ...newVideoIdArray];
-  };
+  }
+
+  #removeDeletedVideos(videos) {
+    const videosIdArray = videos || storage.getFromStorage('unwatched');
+    const deletedVideoIdArray = this.renderedVideoIdArray.filter(
+      (id) => !videosIdArray.includes(id)
+    );
+    this.videoList.childNodes.forEach((child) => {
+      if (deletedVideoIdArray.includes(child.dataset.videoId)) {
+        child.remove();
+      }
+    });
+  }
 
   #createVideoElements(videoObjectArray) {
     return videoObjectArray.map((object) => {
       const element = document.createElement('li');
       element.className = 'video-item';
+      element.dataset.videoId = object.videoId;
       element.innerHTML = this.#videoElementTemplate(object);
-      selectDom('.video-item__watched-button', element).addEventListener(
-        'click',
-        this.#moveToWatchedList
-      );
-      selectDom('.video-item__unsave-button', element).addEventListener('click', this.#unsaveVideo);
+      element.addEventListener('click', this.#handleVideoItemButtons);
       return element;
     });
   }
@@ -55,9 +70,26 @@ class SavedVideosView {
     }
   }
 
-  #moveToWatchedList = () => {};
+  #handleVideoItemButtons = ({ target }) => {
+    if (target.classList.contains('video-item__watched-button')) {
+      this.#moveToWatchedList(target);
+    }
+    if (target.classList.contains('video-item__unsave-button')) {
+      this.#unsaveVideo(target);
+    }
+  };
 
-  #unsaveVideo = () => {};
+  #moveToWatchedList(target) {
+    const { videoId } = target.dataset;
+    storage.moveVideo({ from: 'unwatched', to: 'watched', value: videoId });
+    this.#removeDeletedVideos();
+  }
+
+  #unsaveVideo(target) {
+    const { videoId } = target.dataset;
+    storage.removeFromStorage('unwatched', videoId);
+    this.#removeDeletedVideos();
+  }
 
   #videoElementTemplate = ({ videoId, thumbnail, title, channelTitle, publishedAt }) => `
   <img src="${thumbnail}" alt="video-item-thumbnail" class="video-item__thumbnail" />
