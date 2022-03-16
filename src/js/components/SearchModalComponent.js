@@ -1,9 +1,9 @@
 import SearchFormComponent from './SearchFormComponent';
-import VideoContainerComponent from './VideoContainerComponent';
 import { getState, subscribe } from '../modules/stateStore';
 import { STATE_STORE_KEY } from '../constants/stateStore';
 import { CUSTOM_EVENT_KEY } from '../constants/events';
 import { dispatch } from '../modules/eventFactory';
+import SearchResultComponent from './SearchResultComponent';
 
 class SearchModalComponent {
   searchFormComponent = null;
@@ -22,7 +22,7 @@ class SearchModalComponent {
     this.#parentElement = parentElement;
     this.#mount();
     this.#initDOM();
-    this.#initChidrenComponent();
+    this.#initChildrenComponent();
     this.#bindEventHandler();
     this.#subscribeStore();
   }
@@ -43,9 +43,9 @@ class SearchModalComponent {
     this.$dimmer = this.#parentElement.querySelector('.dimmer');
   }
 
-  #initChidrenComponent() {
+  #initChildrenComponent() {
     this.searchFormComponent = new SearchFormComponent(this.$searchModal);
-    this.videoContainerComponent = new VideoContainerComponent(this.$searchModal);
+    this.videoContainerComponent = new SearchResultComponent(this.$searchModal);
   }
 
   #bindEventHandler() {
