@@ -40,9 +40,18 @@ class SearchModal {
   }
 
   bindEvent() {
-    this.$searchInputKeyword.addEventListener('keypress', this.submitKeywordHandler.bind(this));
-    this.$searchButton.addEventListener('click', this.submitKeywordHandler.bind(this));
-    this.$videoListContainer.addEventListener('click', this.saveVideo.bind(this));
+    this.$searchInputKeyword.addEventListener(
+      'keypress',
+      this.submitKeywordHandler.bind(this),
+    );
+    this.$searchButton.addEventListener(
+      'click',
+      this.submitKeywordHandler.bind(this),
+    );
+    this.$videoListContainer.addEventListener(
+      'click',
+      this.saveVideo.bind(this),
+    );
     this.$videoListContainer.addEventListener(
       'scroll',
       this.requestAdditionalSearchResult.bind(this),
@@ -50,7 +59,10 @@ class SearchModal {
   }
 
   submitKeywordHandler(event) {
-    if ((event.type === 'keypress' && event.key === 'Enter') || event.type === 'click') {
+    if (
+      (event.type === 'keypress' && event.key === 'Enter') ||
+      event.type === 'click'
+    ) {
       try {
         this.scrollHandler.setError(false);
         this.machine.keyword = this.$searchInputKeyword.value;
@@ -89,7 +101,8 @@ class SearchModal {
 
     return {
       requestAdditionalSearchResult: () => {
-        const { offsetHeight, scrollHeight, scrollTop } = this.$videoListContainer;
+        const { offsetHeight, scrollHeight, scrollTop } =
+          this.$videoListContainer;
         if (scrollTop === 0 || errored) return;
         if (offsetHeight + scrollTop >= scrollHeight) {
           this.searchVideo();
@@ -112,9 +125,13 @@ class SearchModal {
   }
 
   renderNetworkError(err) {
+    this.scrollHandler.setError(true);
     if (err.name === ERROR_403) {
-      this.scrollHandler.setError(true);
-      this.$videoListContainer.insertAdjacentHTML('beforeend', template.exceedCapacityErrorImage());
+      this.$videoListContainer.insertAdjacentHTML(
+        'beforeend',
+        template.exceedCapacityErrorImage(),
+      );
+      return;
     }
   }
 
@@ -144,13 +161,19 @@ class SearchModal {
 
   renderNoResultImage() {
     this.$videoListContainer.classList.add('hide');
-    this.$searchResult.insertAdjacentHTML('beforeend', template.noSearchResult());
+    this.$searchResult.insertAdjacentHTML(
+      'beforeend',
+      template.noSearchResult(),
+    );
     this.$searchResult.classList.add('search-result--no-result');
   }
 
   renderVideo(items) {
     items.forEach((item) => {
-      this.$videoListContainer.insertAdjacentHTML('beforeend', template.videoItems(item));
+      this.$videoListContainer.insertAdjacentHTML(
+        'beforeend',
+        template.videoItems(item),
+      );
     });
   }
 }
