@@ -9,6 +9,7 @@ const MESSAGE = {
   NOT_FOUND: '검색 결과가 없습니다.',
   OTHER_KEYWORD: '다른 키워드로 검색해보세요.',
   SAVE_COMPLETE: '저장되었습니다.',
+  NO_SAVED_VIDEO: '저장된 영상이 없습니다.',
 };
 
 const STORAGE_KEY = 'video';

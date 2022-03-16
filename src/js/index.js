@@ -1,4 +1,5 @@
 import '../css/index.css';
+import Video from './ui/Video';
 import SearchModal from './ui/SearchModal';
 import { MESSAGE, STORAGE_KEY } from './constants';
 import { store } from './domain/store';
@@ -20,4 +21,5 @@ global.saveVideo = e => {
   }
 };
 
+new Video();
 new SearchModal();
