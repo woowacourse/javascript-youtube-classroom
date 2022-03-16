@@ -1,4 +1,10 @@
-import { ITEMS_PER_REQUEST } from "../constants/constants";
+import { ITEMS_PER_REQUEST, ERROR_MESSAGE } from "../constants/constants";
+
+function checkErrorCodeNumber(errorCode) {
+  if (errorCode === 403) {
+    alert(ERROR_MESSAGE.API_QUOTA_EXCEEDED);
+  }
+}
 
 export default async function getSearchResult(
   searchKeyword,
@@ -10,7 +16,7 @@ export default async function getSearchResult(
     "https://clever-aryabhata-ff1fc1.netlify.app/dummy/youtube/v3";
 
   const url = new URL(REDIRECT_SERVER_HOST);
-  // const url = new URL(DUMMY_REDIRECT_SERVER_HOST);
+  const dummyUrl = new URL(DUMMY_REDIRECT_SERVER_HOST);
 
   const parameters = new URLSearchParams({
     part: "snippet",
@@ -23,12 +29,15 @@ export default async function getSearchResult(
   });
 
   url.search = parameters.toString();
+  dummyUrl.search = parameters.toString();
 
   try {
     const response = await fetch(url, { method: "GET" });
     const data = await response.json();
 
     if (!response.ok) {
+      checkErrorCodeNumber(data.error.code);
+
       throw new Error(data.error.message);
     }
 
