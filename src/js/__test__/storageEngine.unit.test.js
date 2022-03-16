@@ -1,4 +1,3 @@
-import SearchEngine from '../domain/searchEngine.js';
 import StorageEngine from '../domain/storageEngine.js';
 
 import { ERROR_MESSAGE, MAX_SAVED_VIDEOS_COUNT } from '../util/constants.js';
@@ -9,15 +8,6 @@ const generateMaxSavedVideos = () => {
   return Array.from({ length: MAX_SAVED_VIDEOS_COUNT }, () => sample);
 };
 
-// test('유튜브 검색 기능 정상 작동', () => {
-//   const searchEngine = new SearchEngine();
-//   const keyword = '지피티';
-
-//   searchEngine.searchKeyword(keyword).then((response) => {
-//     expect(response).not.toBe(null);
-//   });
-// });
-
 describe('저장 기능 테스트', () => {
   const storageEngine = new StorageEngine();
 
@@ -27,11 +17,13 @@ describe('저장 기능 테스트', () => {
 
   test('유튜브 검색 결과를 webstorage에 저장할 수 있다', () => {
     const videoId = 'newVideoId';
+    let specificVideo = null;
+
+    specificVideo = storageEngine.getSpecificVideo(videoId);
+    expect(specificVideo).toBeUndefined();
 
     storageEngine.saveVideo(videoId);
-
-    const specificVideo = storageEngine.getSpecificVideo(videoId);
-
+    specificVideo = storageEngine.getSpecificVideo(videoId);
     expect(specificVideo.videoId).toEqual(videoId);
   });
 
