@@ -5,9 +5,8 @@ import SearchManager from "../../manager/SearchManager.js";
 export default class SearchModal {
   constructor() {
     this.searchManager = new SearchManager();
-    this.modalContainer = document.getElementById("modal-container");
-    this.modalCloseButton = document.getElementById("modal-close-button");
-    this.modalCloseButton.addEventListener("click", this.closeModal);
+    this.modalContainer = document.querySelector(".modal");
+    document.querySelector(".search-modal__close-button").addEventListener("click", this.closeModal);
 
     new SearchInput({ searchManager: this.searchManager });
     new SearchResult({ searchManager: this.searchManager });

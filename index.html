@@ -6,32 +6,31 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
   </head>
   <body>
-    <main id="app" class="classroom-container">
-      <h1 class="classroom-container__title">👩🏻‍💻 나만의 유튜브 강의실 👨🏻‍💻</h1>
-      <nav class="nav">
-        <button id="search-modal-button" type="button" class="button nav__button">🔍 검색</button>
+    <main id="app" class="classroom">
+      <h1 class="classroom-title">👩🏻‍💻 나만의 유튜브 강의실 👨🏻‍💻</h1>
+      <nav class="classroom-nav">
+        <button class="classroom-nav__button button" type="button">🔍 검색</button>
       </nav>
     </main>
-    <div id="modal-container" class="modal-container hide">
+    <section class="modal hide">
       <div class="dimmer"></div>
       <div class="search-modal" role="dialog" aria-labelledby="search-modal-title">
-        <div class="modal-close-container">
-          <button id="modal-close-button" class="close-button">❌</button>
+        <div class="search-modal__close">
+          <button class="search-modal__close-button" type="button">❌</button>
         </div>
-        <h2 id="search-modal-title" type="button" class="search-modal__title">🔍 보고싶은 영상 찾기 🔍</h2>
-        <section class="search-input">
-          <h3 hidden>검색어 입력</h3>
-          <form id="search-form">
-            <input id="search-input-keyword" type="text" placeholder="검색" class="search-input__keyword" />
-            <button id="search-button" type="submit" class="search-input__search-button button">검색</button>
+        <h2 class="search-modal__title">🔍 보고싶은 영상 찾기 🔍</h2>
+        <section class="modal-input__container">
+          <form class="modal-input__form">
+            <input class="modal-input__keyword" type="text" placeholder="검색" />
+            <button class="modal-input__button button" type="submit">검색</button>
           </form>
         </section>
-        <section id="search-result">
-          <h3 id="result-label" hidden>검색 결과</h3>
-          <div id="no-result"></div>
-          <ul id="video-list"></ul>
+        <section class="modal-result">
+          <h3 class="modal-result__label" hidden>검색 결과</h3>
+          <div class="modal-result__empty"></div>
+          <ul class="modal-result__list"></ul>
         </section>
       </div>
-    </div>
+    </section>
   </body>
 </html>

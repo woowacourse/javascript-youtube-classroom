@@ -1,4 +1,11 @@
-.modal-container {
+.dimmer {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+}
+
+.modal {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -9,31 +16,8 @@
   left: 0;
 }
 
-.modal-container.hide {
+.modal.hide {
   display: none;
-}
-
-.modal-close-container {
-  display: flex;
-  justify-content: flex-end;
-}
-
-.modal-close-container .close-button {
-  border: none;
-  background-color: white;
-  font-size: 20px;
-  cursor: pointer;
-}
-
-.dimmer {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  background: rgba(0, 0, 0, 0.5);
-}
-
-#result-label {
-  margin-bottom: 20px;
 }
 
 .search-modal {
@@ -47,6 +31,18 @@
   overflow: hidden;
 }
 
+.search-modal__close {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.search-modal__close .search-modal__close-button {
+  border: none;
+  background-color: white;
+  font-size: 20px;
+  cursor: pointer;
+}
+
 .search-modal__title {
   font-weight: bold;
   font-size: 34px;
@@ -55,13 +51,13 @@
   margin-bottom: 40px;
 }
 
-.search-input {
+.modal-input__container {
   display: flex;
   justify-content: center;
   margin-bottom: 40px;
 }
 
-.search-input__keyword {
+.modal-input__keyword {
   width: 400px;
   height: 36px;
   margin-right: 20px;
@@ -70,39 +66,43 @@
   border-radius: 4px;
 }
 
-.search-input__keyword::placeholder {
+.modal-input__keyword::placeholder {
   color: #8b8b8b;
   font-size: 16px;
 }
 
-.search-input__search-button {
+.modal-input__button {
   width: 72px;
   height: 36px;
   background: #00bcd4;
   color: #ffffff;
 }
 
-#no-result {
+.modal-result__label {
+  margin-bottom: 20px;
+}
+
+.modal-result__empty {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
 }
 
-.no-result__image {
+.modal-result__empty-image {
   width: 190px;
   height: 140px;
   margin-bottom: 45px;
 }
 
-.no-result__description {
+.modal-result__empty-text {
   font-size: 16px;
   line-height: 200%;
   text-align: center;
   letter-spacing: 0.5px;
 }
 
-#video-list {
+.modal-result__list {
   width: 1040px;
   height: 493px;
   display: flex;
@@ -113,15 +113,10 @@
   padding-bottom: 50px;
 }
 
-.video-item-container {
+.video-item {
   position: relative;
   width: 240px;
   height: 255px;
-}
-
-.video-item {
-  width: 100%;
-  height: 135px;
 }
 
 .video-item__thumbnail {

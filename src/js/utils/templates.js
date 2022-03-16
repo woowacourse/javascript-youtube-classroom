@@ -2,14 +2,14 @@ import { changeDateFormat } from "./common.js";
 import noImage from "../../assets/images/not_found.png";
 
 export const noSearchResultTemplate = `
-  <img src=${noImage} class="no-result__image" alt="검색결과 없음" />
-  <p class="no-result__description">검색 결과가 없습니다<br/>다른 키워드로 검색해보세요</p>
+  <img src=${noImage} class="modal-result__empty-image" alt="empty-image" />
+  <p class="modal-result__empty-text">검색 결과가 없습니다<br/>다른 키워드로 검색해보세요</p>
 `;
 
 export const makeIframeTemplate = (video) => {
   return `
-    <li class='video-item-container'>
-      <img src=${video.snippet.thumbnails.medium.url} alt="video-item-thumbnail" class="video-item__thumbnail">
+    <li class="video-item">
+      <img src=${video.snippet.thumbnails.medium.url} class="video-item__thumbnail" alt="video-thumbnail">
       <h4 class="video-item__title">${video.snippet.title}</h4>
       <p class="video-item__channel-name">${video.snippet.channelTitle}</p>
       <p class="video-item__published-date">${changeDateFormat(video.snippet.publishedAt)}</p>

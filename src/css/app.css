@@ -8,7 +8,7 @@ body {
   margin: 0 auto;
 }
 
-.classroom-container__title {
+.classroom-title {
   text-align: center;
   font-weight: bold;
   font-size: 34px;
@@ -16,7 +16,7 @@ body {
   margin-bottom: 64px;
 }
 
-.nav {
+.classroom-nav {
   display: flex;
   justify-content: center;
 }
@@ -31,12 +31,12 @@ body {
   letter-spacing: 1.25px;
 }
 
-.nav__button {
+.classroom-nav__button {
   width: 80px;
   height: 36px;
   background: #f5f5f5;
 }
 
-.nav__button:hover {
+.classroom-nav__button:hover {
   background: #ebebeb;
 }

@@ -6,9 +6,9 @@ import { verifySaveId } from "../../utils/validation.js";
 
 export default class SearchResult {
   constructor({ searchManager }) {
-    this.videoList = document.getElementById("video-list");
-    this.noResultContainer = document.getElementById("no-result");
-    this.resultLabel = document.getElementById("result-label");
+    this.videoList = document.querySelector(".modal-result__list");
+    this.noResultContainer = document.querySelector(".modal-result__empty");
+    this.resultLabel = document.querySelector(".modal-result__label");
     this.videoList.addEventListener("click", this.#handleVideoItemSave);
 
     this.searchManager = searchManager;
@@ -65,7 +65,7 @@ export default class SearchResult {
   }
 
   #removeSkeleton() {
-    this.skeletonCards = [...document.getElementsByClassName("skeleton")];
+    this.skeletonCards = [...document.querySelectorAll(".skeleton")];
     this.skeletonCards.forEach((card) => this.videoList.removeChild(card));
   }
 
