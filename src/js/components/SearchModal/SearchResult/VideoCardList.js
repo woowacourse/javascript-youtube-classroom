@@ -18,7 +18,6 @@ export default class VideoCardList extends Component {
 
   template() {
     const { videos, isLoading } = this.props;
-    // console.log(this.props.videos.length);
 
     return `
       ${videos.map(() => `<div class="video-card real"></div>`).join('')}

@@ -90,7 +90,10 @@ export default class VideoCard extends Component {
     const prevSavedVideos = webStore.load();
 
     try {
-      webStore.save([...prevSavedVideos, { ...video, saved: true }]);
+      webStore.save([
+        ...prevSavedVideos,
+        { ...video, saved: true, watched: false },
+      ]);
 
       const { videos } = rootStore.state;
       const newVideos = [...videos].map(video => {

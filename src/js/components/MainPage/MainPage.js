@@ -6,26 +6,26 @@ import VideoCardList from '../SearchModal/SearchResult/VideoCardList.js';
 
 export default class MainPage extends Component {
   setup() {
+    const { watchedMode } = this.props;
     const savedVideos = webStore.load();
-    const videos = savedVideos.filter(video => video.watched === false);
+    const videos = savedVideos.filter(video => video.watched === watchedMode);
 
-    this.state = { videos, mode: 'watching', pagination: 1 };
-    console.log('this.state.mode', this.state.mode);
+    this.state = { videos, pagination: 1 };
   }
 
   template() {
-    const { mode } = this.state;
+    const { watchedMode } = this.props;
     return `
       <h1 class="classroom-container__title">👩🏻‍💻 나만의 유튜브 강의실 👨🏻‍💻</h1>
       <nav class="nav">
         <span class="nav-left">
           <button type="button" name="watching" class="button nav-left__button ${
-            mode === 'watching' ? 'active' : ''
+            watchedMode ? '' : 'active'
           }">
             👁️ 볼 영상
           </button>
           <button type="button" name="watched" class="button nav-left__button ${
-            mode === 'watching' ? '' : 'active'
+            watchedMode ? 'active' : ''
           }">
             ✅ 본 영상
           </button>
@@ -63,12 +63,19 @@ export default class MainPage extends Component {
   }
 
   handleMode(e) {
-    if (e.target.name) {
-      const savedVideos = webStore.load();
-      const watched = e.target.name === 'watched';
-      const videos = savedVideos.filter(video => video.watched === watched);
-      this.setState({ mode: e.target.name, videos });
+    if (!e.target.name) {
+      return;
     }
+    if ([...e.target.classList].includes('active')) {
+      return;
+    }
+
+    const { changeMode } = this.props;
+    const savedVideos = webStore.load();
+    const watched = e.target.name === 'watched';
+    const videos = savedVideos.filter(video => video.watched === watched);
+    this.setState({ videos });
+    changeMode();
   }
 
   loadNextVideos() {
