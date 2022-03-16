@@ -21,7 +21,7 @@ class VideoComponent {
   }
 
   wakeUp(stateKey) {
-    const stateValue = getState(STATE_STORE_KEY.SAVED_VIDEO);
+    const stateValue = getState(stateKey);
     this.#render(stateValue);
   }
 

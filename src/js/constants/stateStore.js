@@ -3,4 +3,5 @@ export const STATE_STORE_KEY = {
   SEARCH_RESULT: 'searchResult',
   IS_WAITING_RESPONSE: 'isWaitingResponse',
   SAVED_VIDEO: 'savedVideo',
+  CURRENT_APP_SECTION: 'currentAppSection',
 };

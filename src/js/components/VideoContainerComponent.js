@@ -37,12 +37,11 @@ class VideoContainerComponent {
   }
 
   wakeUp(stateKey) {
+    const stateValue = getState(stateKey);
     if (stateKey === STATE_STORE_KEY.IS_WAITING_RESPONSE) {
-      const stateValue = getState(STATE_STORE_KEY.IS_WAITING_RESPONSE);
       this.#renderSkeletonUI(stateValue);
     }
     if (stateKey === STATE_STORE_KEY.SEARCH_RESULT) {
-      const stateValue = getState(STATE_STORE_KEY.SEARCH_RESULT);
       this.#renderSearchResult(stateValue);
     }
   }

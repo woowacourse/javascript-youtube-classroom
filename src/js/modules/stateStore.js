@@ -11,12 +11,14 @@ const getInitialState = () => ({
   },
   [STATE_STORE_KEY.IS_WAITING_RESPONSE]: false,
   [STATE_STORE_KEY.SAVED_VIDEO]: webStore.getArrayData(WEB_STORE_KEY.SAVED_VIDEO_LIST_KEY) ?? [],
+  [STATE_STORE_KEY.CURRENT_APP_SECTION]: 'watch-video-section-button',
 });
 const getInitialSubcribeList = () => ({
   [STATE_STORE_KEY.IS_MODAL_SHOW]: new Set(),
   [STATE_STORE_KEY.SEARCH_RESULT]: new Set(),
   [STATE_STORE_KEY.IS_WAITING_RESPONSE]: new Set(),
   [STATE_STORE_KEY.SAVED_VIDEO]: new Set(),
+  [STATE_STORE_KEY.CURRENT_APP_SECTION]: new Set(),
 });
 export const { subscribe, setState, getState } = (function () {
   const state = getInitialState();

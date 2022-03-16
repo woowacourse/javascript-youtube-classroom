@@ -28,7 +28,7 @@ class SearchModalComponent {
   }
 
   wakeUp(stateKey) {
-    const stateValue = getState(STATE_STORE_KEY.IS_MODAL_SHOW);
+    const stateValue = getState(stateKey);
     this.#render(stateValue);
   }
 

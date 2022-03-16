@@ -20,8 +20,14 @@ class AppBusiness {
     bind(CUSTOM_EVENT_KEY.CLICK_SAVE_BUTTON, this.onClickSaveButton);
   }
 
-  onClickSearchModalButton = () => {
-    setState(STATE_STORE_KEY.IS_MODAL_SHOW, true);
+  onClickSearchModalButton = ({ detail: { targetId } }) => {
+    if (targetId === 'search-modal-button') {
+      setState(STATE_STORE_KEY.IS_MODAL_SHOW, true);
+      return;
+    }
+    if (targetId === 'watch-video-section-button' || targetId === 'watched-video-section-button') {
+      setState(STATE_STORE_KEY.CURRENT_APP_SECTION, targetId);
+    }
   };
 
   onClickOutsideModal = () => {
