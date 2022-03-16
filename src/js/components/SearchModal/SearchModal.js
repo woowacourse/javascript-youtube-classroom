@@ -43,8 +43,10 @@ export default class SearchModal extends Component {
   }
 
   setEvent() {
-    const { toggleSearchModal } = this.props;
+    this.addEvent('click', '#modal-background', this.openSearchModal);
+  }
 
-    this.addEvent('click', '#modal-background', toggleSearchModal);
+  openSearchModal() {
+    rootStore.setState({ isSearchModalOpened: false });
   }
 }

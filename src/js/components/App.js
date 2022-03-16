@@ -1,14 +1,11 @@
 import Component from '../core/Component.js';
+import { rootStore } from '../store/rootStore.js';
 import MainPage from './MainPage/MainPage.js';
 import SearchModal from './SearchModal/SearchModal.js';
 
 export default class App extends Component {
-  setup() {
-    this.state = { isSearchModalOpened: false };
-  }
-
   template() {
-    const { isSearchModalOpened } = this.state;
+    const { isSearchModalOpened } = rootStore.state;
 
     return `
       <main id="main-page" class="classroom-container"></main>
@@ -19,15 +16,7 @@ export default class App extends Component {
   }
 
   afterMounted() {
-    new MainPage(document.querySelector('#main-page'), {
-      toggleSearchModal: this.toggleSearchModal.bind(this),
-    });
-    new SearchModal(document.querySelector('#search-modal'), {
-      toggleSearchModal: this.toggleSearchModal.bind(this),
-    });
-  }
-
-  toggleSearchModal() {
-    this.setState({ isSearchModalOpened: !this.state.isSearchModalOpened });
+    new MainPage(document.querySelector('#main-page'));
+    new SearchModal(document.querySelector('#search-modal'));
   }
 }

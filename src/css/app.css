@@ -19,9 +19,7 @@ body {
 .nav {
   display: flex;
   justify-content: space-between;
-}
-
-.nav-left {
+  margin-bottom: 39px;
 }
 
 .button {

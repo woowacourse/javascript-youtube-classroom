@@ -1,5 +1,6 @@
 import { LOAD_VIDEOS_COUNT } from '../../constant.js';
 import Component from '../../core/Component.js';
+import { rootStore } from '../../store/rootStore.js';
 import { webStore } from '../../store/WebStore.js';
 import VideoCardList from '../SearchModal/SearchResult/VideoCardList.js';
 
@@ -9,7 +10,9 @@ export default class MainPage extends Component {
     const videos = savedVideos.filter(video => video.watched === false);
 
     this.state = { videos, mode: 'watching', pagination: 1 };
+    console.log('this.state.mode', this.state.mode);
   }
+
   template() {
     const { mode } = this.state;
     return `
@@ -47,10 +50,16 @@ export default class MainPage extends Component {
   }
 
   setEvent() {
-    const { toggleSearchModal } = this.props;
-
-    this.addEvent('click', '#search-modal-button', toggleSearchModal);
+    this.addEvent(
+      'click',
+      '#search-modal-button',
+      this.openSearchModal.bind(this)
+    );
     this.addEvent('click', '.nav-left', this.handleMode.bind(this));
+  }
+
+  openSearchModal() {
+    rootStore.setState({ isSearchModalOpened: true });
   }
 
   handleMode(e) {
