@@ -1,4 +1,4 @@
-import { VIDEO_COUNT } from '../../src/js/util/constants.js';
+import { VIDEO_COUNT, STORAGE_KEY_SAVED_VIDEOS } from '../../src/js/util/constants.js';
 
 // localStorage 초기화도 필요해보임
 
@@ -40,36 +40,46 @@ describe('유튜브 검색 정상 작동 테스트', () => {
         .and('not.have.class', 'skeleton');
     });
 
-    it('결과물의 맨 밑까지 스크롤을 내리면 추가적인 결과물을 확인할 수 있다', () => {
-      const keyword = 'javascript';
+    // it('결과물의 맨 밑까지 스크롤을 내리면 추가적인 결과물을 확인할 수 있다', () => {
+    //   const keyword = 'javascript';
 
-      cy.intercept(
-        'GET',
-        `https://www.googleapis.com/youtube/v3/search?type=video&key=${Cypress.env(
-          'YOUTUBE_API_KEY'
-        )}&q=${keyword}&part=snippet&maxResults=${VIDEO_COUNT}&pageToken=CAoQAA`
-      ).as('getNextVideos');
+    //   cy.intercept(
+    //     'GET',
+    //     `https://www.googleapis.com/youtube/v3/search?type=video&key=${Cypress.env(
+    //       'YOUTUBE_API_KEY'
+    //     )}&q=${keyword}&part=snippet&maxResults=${VIDEO_COUNT}&pageToken=CAoQAA`
+    //   ).as('getNextVideos');
 
-      // 스크롤 내리기
-      cy.get('.video-list').scrollTo('bottom');
+    //   // 스크롤 내리기
+    //   cy.get('.video-list').scrollTo('bottom');
 
-      // 무한스크롤에 의한 결과값 보여주기
-      cy.wait('@getNextVideos');
-      cy.get('.video-list')
-        .children('.video-item')
-        .should('have.length', VIDEO_COUNT * 2);
+    //   // 무한스크롤에 의한 결과값 보여주기
+    //   cy.wait('@getNextVideos');
+    //   cy.get('.video-list')
+    //     .children('.video-item')
+    //     .should('have.length', VIDEO_COUNT * 2);
+    // });
+  });
+
+  context('저장 버튼을 클릭하면, 비디오ID를 저장할 수 있다', () => {
+    it('저장소를 초기화해줘야한다', () => {
+      cy.clearLocalStorage();
+      expect(localStorage.getItem(STORAGE_KEY_SAVED_VIDEOS)).to.be.null;
+    });
+
+    it('저장 버튼을 클릭해 비디오ID를 저장한 후 해당 비디오의 저장 버튼이 사라진다.', () => {
+      cy.get('.video-item__save-button').first().as('firstVideoSaveButton');
+
+      cy.get('@firstVideoSaveButton').click();
+      cy.get('@firstVideoSaveButton').should('not.be.visible');
     });
   });
-  context('저장 버튼을 클릭하면, 비디오ID를 저장할 수 있다', () => {
-    // 저장하고 저장 버튼을 안볼 수 있다.
-    // it('저장 버튼을 클릭해 비디오ID를 저장한 후 해당 비디오의 저장 버튼이 사라진다.', () => {});
-  });
 });
 
-describe('검색 모달창 관련 실패 테스트', () => {
-  it('검색 결과가 없는 경우 결과없음 페이지를 확인할 수 있다', () => {
-    // 검색어를 비워준다.
-    // 검색을 한다
-    // no result를 보여준다
-  });
-});
+// describe('검색 모달창 관련 실패 테스트', () => {
+//   it('검색 결과가 없는 경우 결과없음 페이지를 확인할 수 있다', () => {
+//     // 검색어를 비워준다.
+//     // 검색을 한다
+//     // no result를 보여준다
+//   });
+// });
