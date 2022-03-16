@@ -1,10 +1,11 @@
 import { MESSAGE, STORAGE_KEY } from '../constants';
-import { $, $$, showSnackBar } from '../utils/dom';
+import { $, showSnackBar } from '../utils/dom';
 import NoResultImage from '../../assets/images/not_found.png';
 import { store } from '../domain/store';
 import { request } from '../domain/youtubeApi';
 import { convertToKoreaLocaleDate, delay } from '../utils/common';
 import { skeleton } from './skeleton';
+import { video } from '../domain/video';
 
 export const result = {
   searchResultFoundTemplate(items) {
@@ -87,21 +88,9 @@ export const result = {
   addSaveButtonClickEvent() {
     $('.video-list').addEventListener('click', e => {
       if (e.target.classList.contains('video-item__save-button')) {
-        this.handleSaveVideo(e);
+        video.save(e);
       }
     });
-  },
-
-  handleSaveVideo(e) {
-    const videoId = e.target.closest('li').dataset.videoId;
-
-    try {
-      store.setLocalStorage(STORAGE_KEY, videoId);
-      showSnackBar(MESSAGE.SAVE_COMPLETE);
-      e.target.setAttribute('hidden', true);
-    } catch ({ message }) {
-      showSnackBar(message);
-    }
   },
 
   scrollObserver(nextPageToken) {
