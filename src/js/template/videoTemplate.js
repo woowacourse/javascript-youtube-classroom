@@ -1,6 +1,11 @@
 import notFoundImage from '../../assets/images/not_found.png';
 import { MAX_VIDEO_REQUEST_COUNT } from '../constants/contants';
 
+const stringFormatToDate = (dateString) => {
+  const date = new Date(dateString);
+  return `${date.getFullYear()}년 ${date.getMonth()}월 ${date.getDay()}일`;
+};
+
 const videoTemplate = (
   {
     id: { videoId },
@@ -19,7 +24,7 @@ const videoTemplate = (
     <img src="${url}" alt="video-item-thumbnail" class="video-item__thumbnail" />
     <h4 class="video-item__title">${title}</h4>
     <p class="video-item__channel-name">${channelTitle}</p>
-    <p class="video-item__published-date">${publishTime}</p>
+    <p class="video-item__published-date">${stringFormatToDate(publishTime)}</p>
     ${
       isSaved
         ? '<button type="button" class="video-item__save-button button" disabled >저장됨</button>'
