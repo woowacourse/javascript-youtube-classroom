@@ -1,0 +1,16 @@
+:root {
+  --nav-button-background-color: #f5f5f5;
+  --nav-button-hover-color: #ebebeb;
+  --dimmer-background-color: rgba(0, 0, 0, 0.5);
+  --search-modal-background-color: #ffffff;
+  --search-modal-border-color: rgba(0, 0, 0, 0.12);
+  --search-input-border-color: #b4b4b4;
+  --search-input-placeholder-color: #8b8b8b;
+  --search-button-background-color: #00bcd4;
+  --search-button-font-color: #ffffff;
+  --save-button-background-color: #f9f9f9;
+  --save-button-hover-color: #efefef;
+  --skeleton-background-linear-start-color: #e0e0e0;
+  --skeleton-background-linear-medium-color: #ededed;
+  --skeleton-background-linear-end-color: #e0e0e0;
+}
