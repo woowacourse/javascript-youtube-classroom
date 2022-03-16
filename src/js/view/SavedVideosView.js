@@ -121,7 +121,8 @@ class SavedVideosView {
   <p class="video-item__channel-name">${channelTitle}</p>
   <p class="video-item__published-date">${formatDateString(publishedAt)}</p>
   <div class="video-item__button-wrapper">
-    <button type="button" class="video-item__watched-button button" data-video-id="${videoId}">
+    <button type="button" class="video-item__watched-button button 
+    ${this.currentTabName === 'watched' && 'checked'}" data-video-id="${videoId}">
       ✅
     </button>
     <button type="button" class="video-item__unsave-button button" data-video-id="${videoId}">

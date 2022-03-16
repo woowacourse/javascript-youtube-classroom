@@ -121,6 +121,10 @@ body {
   background: #f9f9f9;
 }
 
+.video-item__button-wrapper button.checked {
+  background: rgba(0, 188, 212, 0.12);
+}
+
 .video-item__button-wrapper button:hover {
   background: #efefef;
 }
