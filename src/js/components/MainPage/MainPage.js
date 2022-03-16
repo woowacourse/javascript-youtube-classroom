@@ -1,6 +1,15 @@
+import { LOAD_VIDEOS_COUNT } from '../../constant.js';
 import Component from '../../core/Component.js';
+import { webStore } from '../../store/WebStore.js';
+import VideoCardList from '../SearchModal/SearchResult/VideoCardList.js';
 
 export default class MainPage extends Component {
+  setup() {
+    const savedVideos = webStore.load();
+    const videos = savedVideos.filter(video => video.watched === false);
+
+    this.state = { videos, watched: false, pagination: 1 };
+  }
   template() {
     return `
       <h1 class="classroom-container__title">👩🏻‍💻 나만의 유튜브 강의실 👨🏻‍💻</h1>
@@ -21,9 +30,25 @@ export default class MainPage extends Component {
     `;
   }
 
+  afterMounted() {
+    new VideoCardList(this.$('#saved-video-list'), {
+      videos: this.state.videos.slice(
+        0,
+        LOAD_VIDEOS_COUNT * this.state.pagination - 1
+      ),
+      isLoading: false,
+      loadNextVideos: this.loadNextVideos.bind(this),
+    });
+  }
+
   setEvent() {
     const { toggleSearchModal } = this.props;
 
     this.addEvent('click', '#search-modal-button', toggleSearchModal);
+  }
+
+  loadNextVideos() {
+    console.log('this.state', this.state);
+    // this.setState({ pagination: this.state.pagination + 1 });
   }
 }

@@ -1,10 +1,8 @@
 import Component from '../../../core/Component.js';
 import VideoCard from './VideoCard.js';
 import { rootStore } from '../../../store/rootStore.js';
-import { getSearchAPI } from '../../../api/api.js';
 import SkeletonCard from './SkeletonCard.js';
 import { LOAD_VIDEOS_COUNT } from '../../../constant.js';
-import { makeCardData } from '../SearchBar.js';
 
 export default class VideoCardList extends Component {
   setup() {
@@ -19,7 +17,8 @@ export default class VideoCardList extends Component {
   }
 
   template() {
-    const { videos, isLoading } = rootStore.state;
+    const { videos, isLoading } = this.props;
+    // console.log(this.props.videos.length);
 
     return `
       ${videos.map(() => `<div class="video-card real"></div>`).join('')}
@@ -35,15 +34,20 @@ export default class VideoCardList extends Component {
   }
 
   afterMounted() {
-    const { videos, isLoading } = rootStore.state;
-    const videoCards = document.querySelectorAll('.video-card.real');
+    const { videos, isLoading } = this.props;
+    if (videos.length === 0) {
+      return;
+    }
+    const videoCards = this.target.querySelectorAll('.video-card.real');
     videoCards.forEach((videoCard, index) => {
       index < videos.length &&
         new VideoCard(videoCard, { video: videos[index] });
     });
 
     if (isLoading) {
-      const skeletonCards = document.querySelectorAll('.video-card.skeleton');
+      const skeletonCards = this.target.querySelectorAll(
+        '.video-card.skeleton'
+      );
       skeletonCards.forEach(skeletonCard => {
         new SkeletonCard(skeletonCard);
       });
@@ -51,6 +55,11 @@ export default class VideoCardList extends Component {
       return;
     }
 
+    // 10개 이하로 fetching 해오는 경우, 더 이상 observe 하지 않는다.
+    if (videos.length % 10 !== 0) {
+      this.observer.disconnect();
+      return;
+    }
     this.observeLastChild();
   }
 
@@ -62,40 +71,18 @@ export default class VideoCardList extends Component {
 
   handleLastVideoVisible(entries, observer) {
     entries.forEach(async entry => {
-      if (!entry.isIntersecting || rootStore.state.isLoading) return;
+      if (!entry.isIntersecting || this.props.isLoading) return;
 
       observer.disconnect();
 
       rootStore.setState({ isLoading: true });
 
-      const newVideos = await this.loadNextVideos();
+      const newVideos = await this.props.loadNextVideos();
 
       rootStore.setState({
         videos: [...rootStore.state.videos, ...newVideos],
         isLoading: false,
       });
     });
-  }
-
-  async loadNextVideos() {
-    const { query, pageToken: prevPageToken } = rootStore.state.searchOption;
-
-    const [error, data] = await getSearchAPI(query, prevPageToken);
-    if (error) {
-      alert(`${error.message}, status: ${error.statusCode}`);
-
-      return;
-    }
-
-    const { items, nextPageToken } = data;
-
-    rootStore.setState({
-      searchOption: {
-        query,
-        pageToken: nextPageToken,
-      },
-    });
-
-    return makeCardData(items);
   }
 }
