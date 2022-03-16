@@ -38,6 +38,11 @@ body {
   width: 171px;
   height: 36px;
   background: #f5f5f5;
+  border: 1px solid rgba(0, 0, 0, 0.12);
+}
+
+.nav-left__button.active {
+  background: rgba(0, 188, 212, 0.12);
 }
 
 .nav__button {

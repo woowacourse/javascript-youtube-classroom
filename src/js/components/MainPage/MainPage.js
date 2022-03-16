@@ -11,14 +11,19 @@ export default class MainPage extends Component {
     this.state = { videos, mode: 'watching', pagination: 1 };
   }
   template() {
+    const { mode } = this.state;
     return `
       <h1 class="classroom-container__title">👩🏻‍💻 나만의 유튜브 강의실 👨🏻‍💻</h1>
       <nav class="nav">
         <span class="nav-left">
-          <button type="button" name="watching" class="button nav-left__button">
+          <button type="button" name="watching" class="button nav-left__button ${
+            mode === 'watching' ? 'active' : ''
+          }">
             👁️ 볼 영상
           </button>
-          <button type="button" name="watched" class="button nav-left__button">
+          <button type="button" name="watched" class="button nav-left__button ${
+            mode === 'watching' ? '' : 'active'
+          }">
             ✅ 본 영상
           </button>
         </span>
