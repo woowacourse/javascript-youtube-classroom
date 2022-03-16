@@ -11,10 +11,20 @@
       <h1 class="classroom-container__title">👩🏻‍💻 나만의 유튜브 강의실 👨🏻‍💻</h1>
       <nav class="nav">
         <div class="nav__tab-buttons-wrapper">
-          <button type="button" id="to-watch-list-button" class="button nav__button current">
+          <button
+            type="button"
+            data-tab-name="unwatched"
+            id="to-watch-list-button"
+            class="button nav__button current tab-button"
+          >
             👀 볼 영상
           </button>
-          <button type="button" id="watched-list-button" class="button nav__button">
+          <button
+            type="button"
+            data-tab-name="watched"
+            id="watched-list-button"
+            class="button nav__button tab-button"
+          >
             ✅ 본 영상
           </button>
         </div>

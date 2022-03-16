@@ -6,23 +6,34 @@ class SavedVideosView {
   constructor() {
     this.savedVideos = selectDom('.saved-videos');
     this.videoList = selectDom('.video-list', this.savedVideos);
+    this.currentTabName = 'unwatched';
+    this.otherTabName = 'watched';
     this.renderedVideoIdArray = [];
     this.renderVideoList();
   }
 
+  async changeTab(tabName) {
+    if (tabName === this.currentTabName) return;
+    this.otherTabName = this.currentTabName;
+    this.currentTabName = tabName;
+    this.#clearAllVideos();
+    await this.renderVideoList();
+  }
+
   renderVideoList = async () => {
-    const videos = storage.getFromStorage('unwatched');
+    const videos = storage.getFromStorage(this.currentTabName);
+    this.#removeDeletedVideos(videos);
     if (videos.length === 0) {
       this.#renderNoSavedVideoTemplate();
       return;
     }
     const noSavedVideos = selectDom('.no-saved-videos');
     noSavedVideos?.remove();
-
-    this.#removeDeletedVideos(videos);
     const newVideoIdArray = videos.filter((id) => !this.renderedVideoIdArray.includes(id));
-    await this.#renderNewVideos(newVideoIdArray);
-    this.renderedVideoIdArray = [...this.renderedVideoIdArray, ...newVideoIdArray];
+    if (newVideoIdArray.length !== 0) {
+      await this.#renderNewVideos(newVideoIdArray);
+      this.renderedVideoIdArray = [...this.renderedVideoIdArray, ...newVideoIdArray];
+    }
   };
 
   async #renderNewVideos(newVideoIdArray) {
@@ -31,15 +42,26 @@ class SavedVideosView {
     this.videoList.append(...videoElementList);
   }
 
+  #clearAllVideos() {
+    [...this.videoList.childNodes].forEach((child) => {
+      child.remove();
+    });
+    this.renderedVideoIdArray = [];
+  }
+
   #removeDeletedVideos(videos) {
-    const videosIdArray = videos || storage.getFromStorage('unwatched');
+    const videosIdArray = videos || storage.getFromStorage(this.currentTabName);
     const deletedVideoIdArray = this.renderedVideoIdArray.filter(
       (id) => !videosIdArray.includes(id)
     );
-    this.videoList.childNodes.forEach((child) => {
-      if (deletedVideoIdArray.includes(child.dataset.videoId)) {
-        child.remove();
-      }
+    const toDeleteArray = [...this.videoList.childNodes].filter((child) =>
+      deletedVideoIdArray.includes(child.dataset.videoId)
+    );
+
+    toDeleteArray.forEach((element) => {
+      const { videoId } = element;
+      this.renderedVideoIdArray.splice(this.renderedVideoIdArray.indexOf(videoId), 1);
+      element.remove();
     });
   }
 
@@ -81,14 +103,16 @@ class SavedVideosView {
 
   #moveToWatchedList(target) {
     const { videoId } = target.dataset;
-    storage.moveVideo({ from: 'unwatched', to: 'watched', value: videoId });
+    storage.moveVideo({ from: this.currentTabName, to: this.otherTabName, value: videoId });
     this.#removeDeletedVideos();
   }
 
   #unsaveVideo(target) {
-    const { videoId } = target.dataset;
-    storage.removeFromStorage('unwatched', videoId);
-    this.#removeDeletedVideos();
+    if (window.confirm('해당 영상의 저장을 취소합니다. 계속하시겠습니까?')) {
+      const { videoId } = target.dataset;
+      storage.removeFromStorage(this.currentTabName, videoId);
+      this.#removeDeletedVideos();
+    }
   }
 
   #videoElementTemplate = ({ videoId, thumbnail, title, channelTitle, publishedAt }) => `

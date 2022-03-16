@@ -11,6 +11,9 @@ class View {
 
     this.searchModalView = new SearchModalView(search, saveToStorage);
 
+    this.tabButtons = document.querySelectorAll('.tab-button');
+    this.tabButtons.forEach((button) => button.addEventListener('click', this.handleTabSwitch));
+
     this.#attachEventListeners();
   }
 
@@ -24,6 +27,13 @@ class View {
 
   handleModalToggle = () => {
     this.searchModalView.toggleModal(this.savedVideosView.renderVideoList);
+  };
+
+  handleTabSwitch = async ({ target }) => {
+    const { dataset } = target;
+    this.tabButtons.forEach((button) => button.classList.remove('current'));
+    target.classList.add('current');
+    await this.savedVideosView.changeTab(dataset.tabName);
   };
 }
 
