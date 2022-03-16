@@ -2,11 +2,17 @@ import { YOUTUBE_SETTING, YOUTUBE_SEARCH_ACTION } from '@Constants';
 import { uriBuilder } from '@Utils/dataManager';
 import YoutubeSearchStore from '@Domain/YoutubeSearchStore';
 
-const request = async (uri, option) => {
-  const response = await fetch(uri, option);
+const controller = new AbortController();
+const { signal } = controller;
+const timeout = 8000;
+
+const request = async (uri, options) => {
+  const timer = setTimeout(() => controller.abort(), timeout);
+  const response = await fetch(uri, { ...options, signal });
+
   if (!response.ok) throw new Error('서버 오류');
   const data = await response.json();
-
+  clearTimeout(timer);
   return data;
 };
 
