@@ -10,6 +10,7 @@ import { bind } from '../modules/eventFactory';
 import { CUSTOM_EVENT_KEY } from '../constants/events';
 import { WEB_STORE_KEY } from '../constants/webStore';
 import { ERROR_MESSAGE } from '../constants/errorMessage';
+import { getCacheData, setCacheData } from '../modules/cacheStore';
 class AppBusiness {
   constructor() {
     bind(CUSTOM_EVENT_KEY.CLICK_SEARCH_MODAL_BUTTON, this.onClickSearchModalButton);
@@ -92,6 +93,13 @@ class AppBusiness {
   async requestVideo(keyword, pageToken) {
     setState(STATE_STORE_KEY.IS_WAITING_RESPONSE, true);
 
+    const alreadyData = getCacheData(`${keyword}-${pageToken}`);
+
+    if (alreadyData) {
+      setState(STATE_STORE_KEY.IS_WAITING_RESPONSE, false);
+      return alreadyData;
+    }
+
     const searchResult = await youtubeAPIFetcher({
       path: API_PATHS.SEARCH,
       params: {
@@ -102,6 +110,8 @@ class AppBusiness {
         pageToken: pageToken ?? '',
       },
     });
+
+    setCacheData(`${keyword}-${pageToken}`, searchResult);
 
     setState(STATE_STORE_KEY.IS_WAITING_RESPONSE, false);
 
