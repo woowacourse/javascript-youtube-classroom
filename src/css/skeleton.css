@@ -1,0 +1,45 @@
+.skeleton {
+  background-image: linear-gradient(
+    90deg,
+    var(--skeleton-background-color) 0px,
+    var(--skeleton-point-color) 30px,
+    var(--skeleton-background-color) 60px
+  );
+  animation: refresh 2s infinite ease-out;
+}
+
+.skeleton-container {
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+}
+
+.skeleton.thumbnail {
+  width: 100%;
+  height: 135px;
+}
+
+.skeleton.title {
+  width: 90%;
+  height: 20px;
+}
+
+.skeleton.text {
+  width: 80%;
+  height: 16px;
+}
+
+.skeleton.date {
+  width: 40%;
+  height: 14px;
+}
+
+@keyframes refresh {
+  0% {
+    background-position: calc(-100px);
+  }
+  40%,
+  100% {
+    background-position: 320px;
+  }
+}
