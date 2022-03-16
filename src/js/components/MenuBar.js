@@ -1,7 +1,8 @@
+import { $ } from "../utils/dom";
+
 export default class MenuBar {
   constructor({ handleOpenModal }) {
     this.handleOpenModal = handleOpenModal;
-    this.searchModalButton = document.querySelector(".classroom-nav__button");
-    this.searchModalButton.addEventListener("click", this.handleOpenModal);
+    $(".classroom-nav__button").addEventListener("click", this.handleOpenModal);
   }
 }

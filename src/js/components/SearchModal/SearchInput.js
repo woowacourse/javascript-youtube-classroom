@@ -1,7 +1,9 @@
+import { $ } from "../../utils/dom";
+
 export default class SearchInput {
   constructor({ searchManager }) {
-    this.searchInputKeyword = document.querySelector(".modal-input__keyword");
-    document.querySelector(".modal-input__form").addEventListener("submit", this.#handleSearch);
+    this.searchInputKeyword = $(".modal-input__keyword");
+    $(".modal-input__form").addEventListener("submit", this.#handleSearch);
 
     this.searchManager = searchManager;
   }
