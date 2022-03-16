@@ -52,6 +52,23 @@ export default class VideoCard extends Component {
       '.video-item__watched-button',
       this.handleWatched.bind(this)
     );
+    this.addEvent(
+      'click',
+      '.video-item__delete-button',
+      this.handleDelete.bind(this)
+    );
+  }
+
+  handleDelete() {
+    if (window.confirm('삭제하시겠습니까?')) {
+      const { videoId } = this.props.video;
+      const prevSavedVideos = webStore.load();
+      const payload = prevSavedVideos.filter(
+        video => video.videoId !== videoId
+      );
+      webStore.save(payload);
+      this.target.remove();
+    }
   }
 
   handleWatched() {
@@ -73,10 +90,7 @@ export default class VideoCard extends Component {
     const prevSavedVideos = webStore.load();
 
     try {
-      webStore.save([
-        ...prevSavedVideos,
-        { ...video, saved: true, watched: false },
-      ]);
+      webStore.save([...prevSavedVideos, { ...video, saved: true }]);
 
       const { videos } = rootStore.state;
       const newVideos = [...videos].map(video => {
