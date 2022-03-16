@@ -69,6 +69,7 @@ export default class SearchBar extends Component {
   }
 }
 
+// TODO: test
 export function makeCardData(rawVideos) {
   return addSavedToVideos(extractCardData(rawVideos));
 }
