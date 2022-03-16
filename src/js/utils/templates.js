@@ -10,7 +10,7 @@ export const noSearchResultTemplate = () => {
           </p></div>`;
 };
 
-export const makeIframeTemplate = (video, exist) => {
+export const makeThumbnailTemplate = (video, exist) => {
   let displayProp = '';
   if (exist === 'exist') {
     displayProp = 'hide';
@@ -32,6 +32,7 @@ export const makeSkeletonTemplate = () => {
   return `
     <div class="skeleton">
       <div class="image"></div>
+      <p class="line"></p>
       <p class="line"></p>
       <p class="line"></p>
       <p class="skeleton-button"></p>

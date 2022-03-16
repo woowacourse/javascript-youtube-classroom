@@ -1,6 +1,6 @@
 import { fetchDataFromKeyword } from '../utils/apiFetch.js';
 import { getVideoIdFromLocalStorage, saveVideoIdToLocalStorage } from '../utils/localStorage.js';
-import { noSearchResultTemplate, makeIframeTemplate, makeSkeletonTemplate } from '../utils/templates.js';
+import { noSearchResultTemplate, makeThumbnailTemplate, makeSkeletonTemplate } from '../utils/templates.js';
 import { NUM } from '../../const/consts.js';
 
 export class SearchModal {
@@ -45,7 +45,7 @@ export class SearchModal {
       return;
     }
 
-    this.renderIframe();
+    this.renderThumbnail();
     this.createObserver();
   }
 
@@ -53,7 +53,7 @@ export class SearchModal {
     this.noResultContainer.insertAdjacentHTML('afterbegin', noSearchResultTemplate());
   }
 
-  renderIframe() {
+  renderThumbnail() {
     const local = getVideoIdFromLocalStorage();
     this.resultLabel.removeAttribute('hidden');
     this.videoList.insertAdjacentHTML(
@@ -61,9 +61,9 @@ export class SearchModal {
       this.videos.items
         .map((video) => {
           if (local.includes(video.id.videoId)) {
-            return makeIframeTemplate(video, 'exist');
+            return makeThumbnailTemplate(video, 'exist');
           }
-          return makeIframeTemplate(video);
+          return makeThumbnailTemplate(video);
         })
         .join(''),
     );
@@ -95,8 +95,10 @@ export class SearchModal {
 
   async renderNextPage() {
     this.removePreviousObserver();
+    this.renderSkeleton();
     this.videos = await fetchDataFromKeyword(this.keyword, this.videos.nextPageToken);
-    this.renderIframe();
+    this.removeSkeleton();
+    this.renderThumbnail();
     this.createObserver();
   }
 
