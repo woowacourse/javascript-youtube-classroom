@@ -13,7 +13,7 @@ describe('dataManager 유틸 함수 테스트', () => {
       q: 'keyword',
       maxResult: 5,
     };
-    const uri = `${baseUri}?q=keyword&maxResult=5`;
-    expect(uriBuilder(baseUri, params)).toBe(uri);
+    expect(uriBuilder(baseUri, params)).toBe(`${baseUri}?q=keyword&maxResult=5`);
+    expect(uriBuilder(baseUri, {})).toBe(`${baseUri}?`);
   });
 });
