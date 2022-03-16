@@ -117,7 +117,9 @@ export default class SearchResult {
         className: 'video-item',
         innerHTML: `<img
           src="${video.snippet.thumbnails.medium.url}"
-          alt="video-item-thumbnail" class="video-item__thumbnail">
+          alt="video-item-thumbnail" class="video-item__thumbnail"
+          loading="lazy"
+          >
         <h4 class="video-item__title">${video.snippet.title}</h4>
         <p class="video-item__channel-name">${video.snippet.channelTitle}</p>
         <p class="video-item__published-date">${getParsedTime(video.snippet.publishTime)}</p>
