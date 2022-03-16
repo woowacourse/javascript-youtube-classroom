@@ -94,7 +94,7 @@
 
 .video-list {
   display: grid;
-  place-items: center;
+  justify-items: center;
   max-width: 1040px;
   height: 493px;
   gap: 32px 20px;
