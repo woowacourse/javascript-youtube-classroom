@@ -40,6 +40,12 @@ const template = {
       </li>
   `;
   },
+  notingSavedImage: `        
+  <img
+  src="./assets/nothing_saved.png"
+  alt="nothing saved image"
+  class="nothing-saved__image"/>
+  `,
 };
 
 const userInterface = {
@@ -104,12 +110,22 @@ const userInterface = {
 
   renderSavedVideoItems() {
     const savedVideos = storage.getSavedVideos();
-
+    if (!savedVideos) {
+      this.renderNothingSavedImage();
+      return;
+    }
+    $('.nothing-saved').replaceChildren();
     savedVideos.forEach(savedVideo => {
       if (!savedVideo.watched) {
         $('.saved-video-list').insertAdjacentHTML('beforeEnd', template.savedVideoItem(savedVideo));
       }
     });
+  },
+
+  renderNothingSavedImage() {
+    if ($('.nothing-saved').childElementCount === 0) {
+      $('.nothing-saved').insertAdjacentHTML('beforeEnd', template.notingSavedImage);
+    }
   },
 };
 

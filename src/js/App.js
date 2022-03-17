@@ -2,9 +2,15 @@ import { $, throttle } from './util/general.js';
 import { THROTTLE_DELAY } from './constants/constants.js';
 import { handleSearch, handleScroll, handleSaveButtonClick } from './eventHandlers/searchEvents.js';
 import userInterface from './ui/userInterface.js';
+import storage from './storage/storage.js';
 
 export default function App() {
-  userInterface.renderSavedVideoItems();
+  const savedVideos = storage.getSavedVideos();
+  if (savedVideos) {
+    userInterface.renderSavedVideoItems();
+  } else {
+    userInterface.renderNothingSavedImage();
+  }
   // 이벤트 등록
   $('#search-modal-button').addEventListener('click', () => {
     $('.modal-container').classList.toggle('hide');

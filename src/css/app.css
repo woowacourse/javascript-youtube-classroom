@@ -91,3 +91,15 @@ body {
   padding: 6px 2px;
   margin: 4px;
 }
+
+.nothing-saved {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.nothing-saved .nothing-saved__image {
+  width: 720px;
+  height: 480px;
+  margin-bottom: 32px;
+}
