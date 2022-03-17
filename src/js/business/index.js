@@ -18,6 +18,7 @@ class AppBusiness {
     bind(CUSTOM_EVENT_KEY.SUBMIT_SEARCH_KEYWORD, this.onSubmitSearchKeyword);
     bind(CUSTOM_EVENT_KEY.LOAD_NEW_VIDEO_LIST, this.onLoadNewVideoList);
     bind(CUSTOM_EVENT_KEY.CLICK_SAVE_BUTTON, this.onClickSaveButton);
+    bind(CUSTOM_EVENT_KEY.INITIALIZE_SAVED_VIDEO_STATE, this.onLoadTopLevelComponent);
   }
 
   onClickSearchModalButton = ({ detail: { targetId } }) => {
@@ -80,29 +81,51 @@ class AppBusiness {
     }
   };
 
-  onClickSaveButton = ({ detail: { saveVideoId } }) => {
-    const videoList = webStore.getArrayData(WEB_STORE_KEY.SAVED_VIDEO_LIST_KEY);
+  onClickSaveButton = async ({ detail: { saveVideoId } }) => {
+    const videoIdList = webStore.getArrayData(WEB_STORE_KEY.SAVED_VIDEO_LIST_KEY);
 
-    if (isMoreThanMaxVideoCount(videoList)) {
+    if (isMoreThanMaxVideoCount(videoIdList)) {
       alert(ERROR_MESSAGE.SAVE_VIDEO_COUNT_OVER);
       return;
     }
 
-    webStore.setDataInArray(WEB_STORE_KEY.SAVED_VIDEO_LIST_KEY, saveVideoId);
+    try {
+      const savedVideo = await this.requestVideoById(saveVideoId);
+      /** webStore, stateStore에 정보를 set해준다. */
+      webStore.setDataInArray(WEB_STORE_KEY.SAVED_VIDEO_LIST_KEY, saveVideoId);
+      setState(STATE_STORE_KEY.SAVED_VIDEO, (prevState) => ({
+        ...prevState,
+        videoList: [...prevState.videoList, savedVideo],
+        prevVideoListLength: prevState.videoList.length,
+      }));
+    } catch ({ message }) {
+      alert(message);
+    }
+  };
 
-    setState(
-      STATE_STORE_KEY.SAVED_VIDEO,
-      webStore.getArrayData(WEB_STORE_KEY.SAVED_VIDEO_LIST_KEY)
-    );
+  onLoadTopLevelComponent = async () => {
+    const savedVideoIdList = webStore.getArrayData(WEB_STORE_KEY.SAVED_VIDEO_LIST_KEY) ?? [];
+    try {
+      const savedVideoList = await Promise.all(
+        savedVideoIdList.map((savedVideoId) => this.requestVideoById(savedVideoId))
+      );
+      setState(STATE_STORE_KEY.SAVED_VIDEO, (prevState) => ({
+        ...prevState,
+        videoList: savedVideoList,
+        prevVideoListLength: 0,
+      }));
+    } catch ({ message }) {
+      alert(message);
+    }
   };
 
   async requestVideo(keyword, pageToken) {
-    setState(STATE_STORE_KEY.IS_WAITING_RESPONSE, true);
+    setState(STATE_STORE_KEY.IS_SEARCH_VIDEO_WAITING, true);
 
     const alreadyData = getCacheData(`${keyword}-${pageToken}`);
 
     if (alreadyData) {
-      setState(STATE_STORE_KEY.IS_WAITING_RESPONSE, false);
+      setState(STATE_STORE_KEY.IS_SEARCH_VIDEO_WAITING, false);
       return alreadyData;
     }
 
@@ -119,9 +142,19 @@ class AppBusiness {
 
     setCacheData(`${keyword}-${pageToken}`, searchResult);
 
-    setState(STATE_STORE_KEY.IS_WAITING_RESPONSE, false);
+    setState(STATE_STORE_KEY.IS_SEARCH_VIDEO_WAITING, false);
 
     return searchResult;
+  }
+
+  async requestVideoById(id) {
+    const videoResult = this.#savedVideoMockData;
+
+    const {
+      items: [videoInfos],
+    } = parserVideos(videoResult);
+
+    return Video.create({ ...videoInfos, videoId: id });
   }
 
   /** 검색 API 결과로 부터, videoList - nextPageToken 값을 추출한다. */
@@ -132,6 +165,67 @@ class AppBusiness {
 
     return { nextPageToken, videoList };
   }
+
+  #savedVideoMockData = {
+    kind: 'youtube#videoListResponse',
+    etag: 'CHfy7iZJw_MUUhz_O8MZhpndvIQ',
+    items: [
+      {
+        kind: 'youtube#video',
+        etag: 'OrqPPvgI6IYaxTmm_DhiezMQaPI',
+        id: '2oaGrBW5jxo',
+        snippet: {
+          publishedAt: '2019-02-04T13:36:09Z',
+          channelId: 'UCjLDL_hX8XrwSRMUba-39Fw',
+          title: '[ENG Sub] 보더콜리 하이는 누구인가? 슬로우모션 손 하는 강아지',
+          description:
+            '해보고 싶었던 아이들 하나하나 속성으로 파헤치는!\n총 정리 영상입니다! 첫 타자로는 막내 하이부터 시작할게요!\n우리의 막내 완쟈님 하이에 대해 속성으로 알아봅시다! :-)\n\n재밌게 예쁘게 봐주셔서 미리 감사드립니다!\n구독도 알람도 많이 부탁드릴게요 :-)\n\n* 예의없는 댓글과 악플은 차단/삭제 합니다 !\n-\n페퍼네 인스타그램\nhttps://www.instagram.com/peppoya\n\nbgm\n#14 Vendredi - Show me the way\nhttps://youtu.be/1swecA5cnnQ',
+          thumbnails: {
+            default: {
+              url: 'https://i.ytimg.com/vi/2oaGrBW5jxo/default.jpg',
+              width: 120,
+              height: 90,
+            },
+            medium: {
+              url: 'https://i.ytimg.com/vi/2oaGrBW5jxo/mqdefault.jpg',
+              width: 320,
+              height: 180,
+            },
+            high: {
+              url: 'https://i.ytimg.com/vi/2oaGrBW5jxo/hqdefault.jpg',
+              width: 480,
+              height: 360,
+            },
+            standard: {
+              url: 'https://i.ytimg.com/vi/2oaGrBW5jxo/sddefault.jpg',
+              width: 640,
+              height: 480,
+            },
+            maxres: {
+              url: 'https://i.ytimg.com/vi/2oaGrBW5jxo/maxresdefault.jpg',
+              width: 1280,
+              height: 720,
+            },
+          },
+          channelTitle: '보더로운생활',
+          tags: ['보더콜리', 'bordercollie', '하이를속성으로', '알아봅시다'],
+          categoryId: '15',
+          liveBroadcastContent: 'none',
+          defaultLanguage: 'ko',
+          localized: {
+            title: '[ENG Sub] 보더콜리 하이는 누구인가? 슬로우모션 손 하는 강아지',
+            description:
+              '해보고 싶었던 아이들 하나하나 속성으로 파헤치는!\n총 정리 영상입니다! 첫 타자로는 막내 하이부터 시작할게요!\n우리의 막내 완쟈님 하이에 대해 속성으로 알아봅시다! :-)\n\n재밌게 예쁘게 봐주셔서 미리 감사드립니다!\n구독도 알람도 많이 부탁드릴게요 :-)\n\n* 예의없는 댓글과 악플은 차단/삭제 합니다 !\n-\n페퍼네 인스타그램\nhttps://www.instagram.com/peppoya\n\nbgm\n#14 Vendredi - Show me the way\nhttps://youtu.be/1swecA5cnnQ',
+          },
+          defaultAudioLanguage: 'ko',
+        },
+      },
+    ],
+    pageInfo: {
+      totalResults: 1,
+      resultsPerPage: 1,
+    },
+  };
 }
 
 export default AppBusiness;

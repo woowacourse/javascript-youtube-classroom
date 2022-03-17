@@ -56,10 +56,16 @@ class VideoComponent {
     this.#render(initialSavedVideo);
   }
 
-  #render(savedVideo) {
+  #render({ videoList: savedVideoList }) {
     const { video } = this.props;
     const { videoId } = video.getVideoInfo();
-    if (savedVideo.includes(videoId)) {
+
+    if (
+      savedVideoList.find((savedVideo) => {
+        const { videoId: savedVideoId } = savedVideo.getVideoInfo();
+        return savedVideoId === videoId;
+      })
+    ) {
       this.$saveButton.setAttribute('hidden', true);
     }
   }

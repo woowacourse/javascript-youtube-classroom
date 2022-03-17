@@ -18,7 +18,7 @@ class SearchResultComponent {
 
   wakeUp(stateKey) {
     const stateValue = getState(stateKey);
-    if (stateKey === STATE_STORE_KEY.IS_WAITING_RESPONSE) {
+    if (stateKey === STATE_STORE_KEY.IS_SEARCH_VIDEO_WAITING) {
       this.#renderSkeletonVideoList(stateValue);
     }
     if (stateKey === STATE_STORE_KEY.SEARCH_RESULT) {
@@ -44,8 +44,8 @@ class SearchResultComponent {
     const initialSearchResult = subscribe(STATE_STORE_KEY.SEARCH_RESULT, this);
     this.#renderSearchResult(initialSearchResult);
 
-    const initialIsWaitingResponse = subscribe(STATE_STORE_KEY.IS_WAITING_RESPONSE, this);
-    this.#renderSkeletonVideoList(initialIsWaitingResponse);
+    const initialIsSearchVideoWaiting = subscribe(STATE_STORE_KEY.IS_SEARCH_VIDEO_WAITING, this);
+    this.#renderSkeletonVideoList(initialIsSearchVideoWaiting);
   }
 
   #renderSearchResult(searchResult) {

@@ -7,7 +7,7 @@ import VideoComponent from './VideoComponent';
 class VideoListComponent {
   #parentElement = null;
 
-  #videoComponents = null;
+  #videoComponents = [];
 
   #lazyLoadThrottleTimeout = null;
 
@@ -28,9 +28,7 @@ class VideoListComponent {
     });
   }
 
-  renderSearchVideoList(searchResult) {
-    const { prevVideoListLength, videoList } = searchResult;
-
+  renderSearchVideoList({ videoList, prevVideoListLength }) {
     if (isFirstSearchByKeyword(prevVideoListLength)) {
       this.#videoComponents = [];
       this.$videoList.innerHTML = '';
@@ -38,16 +36,32 @@ class VideoListComponent {
 
     this.$videoList.classList.remove('hide');
 
-    videoList.slice(prevVideoListLength).forEach((video, idx, arr) => {
-      this.#videoComponents = [
-        ...this.#videoComponents,
-        new VideoComponent(this.$videoList, {
-          video,
-          observer: idx === arr.length - 1 ? this.#searchVideoObserver : null,
-          notLazyLoad: prevVideoListLength === 0,
-        }),
-      ];
-    });
+    this.#videoComponents = [
+      ...this.#videoComponents,
+      ...videoList.slice(prevVideoListLength).map(
+        (video, idx, arr) =>
+          new VideoComponent(this.$videoList, {
+            video,
+            observer: idx === arr.length - 1 ? this.#searchVideoObserver : null,
+            notLazyLoad: prevVideoListLength === 0,
+          })
+      ),
+    ];
+  }
+
+  renderSavedVideoList({ videoList: savedVideoList, prevVideoListLength }) {
+    /** 이전에 렌더링 된 것들은 또 그리지 않기 위한 처리 prevVideoListLength */
+    this.#videoComponents = [
+      ...this.#videoComponents,
+      ...savedVideoList.slice(prevVideoListLength).map(
+        (savedVideo, idx) =>
+          new VideoComponent(this.$videoList, {
+            video: savedVideo,
+            observer: null,
+            notLazyLoad: idx < 10,
+          })
+      ),
+    ];
   }
 
   renderSkeletonVideoList(isWaitingResponse) {
@@ -55,7 +69,6 @@ class VideoListComponent {
       this.#skeletonListComponent = new SkeletonListComponent(this.$videoList);
       return;
     }
-    /** 하위컴포넌트의 메소드를 직접 수행하고 싶지 않습니다.. unmount 되도록 하는게 좋겟져 ?! */
     this.#skeletonListComponent?.unmount();
   }
 
@@ -77,23 +90,7 @@ class VideoListComponent {
   }
 
   #bindEventHandler() {
-    this.$videoList.addEventListener('click', (e) => {
-      const {
-        target: { className },
-      } = e;
-
-      if (className.includes('video-item__save-button')) {
-        const {
-          dataset: { videoId },
-        } = e.target.closest('.video-item');
-
-        dispatch(CUSTOM_EVENT_KEY.CLICK_SAVE_BUTTON, {
-          detail: {
-            saveVideoId: videoId,
-          },
-        });
-      }
-    });
+    this.$videoList.addEventListener('click', this.#onClickVideoList);
     this.$videoList.addEventListener('scroll', this.#onScrollInVideoContainer);
   }
 
@@ -116,6 +113,24 @@ class VideoListComponent {
         videoComponent.loadImg(bottom);
       });
     }, 100);
+  };
+
+  #onClickVideoList = (e) => {
+    const {
+      target: { className },
+    } = e;
+
+    if (className.includes('video-item__save-button')) {
+      const {
+        dataset: { videoId },
+      } = e.target.closest('.video-item');
+
+      dispatch(CUSTOM_EVENT_KEY.CLICK_SAVE_BUTTON, {
+        detail: {
+          saveVideoId: videoId,
+        },
+      });
+    }
   };
 }
 export default VideoListComponent;
