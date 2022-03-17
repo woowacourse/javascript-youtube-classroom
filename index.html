@@ -6,32 +6,41 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
   </head>
   <body>
-    <main id="app" class="classroom">
-      <h1 class="classroom-title">👩🏻‍💻 나만의 유튜브 강의실 👨🏻‍💻</h1>
-      <nav class="classroom-nav">
-        <button class="classroom-nav__button button" type="button">🔍 검색</button>
-      </nav>
-    </main>
-    <section class="modal hide">
-      <div class="dimmer"></div>
-      <div class="search-modal" role="dialog" aria-labelledby="search-modal-title">
-        <div class="search-modal__close">
-          <button class="search-modal__close-button" type="button">❌</button>
+    <div id="app">
+      <header class="header">
+        <h1 class="header-title">👩🏻‍💻 나만의 유튜브 강의실 👨🏻‍💻</h1>
+        <nav class="header-nav">
+          <div>
+            <button class="header-nav__watching button" type="button">👁 볼 영상</button>
+            <button class="header-nav__watched button" type="button">✅ 본 영상</button>
+          </div>
+          <button class="header-nav__search button" type="button">🔍 검색</button>
+        </nav>
+      </header>
+      <main class="classroom">
+        <div class="classroom__empty" hidden></div>
+      </main>
+      <section class="modal hide">
+        <div class="dimmer"></div>
+        <div class="search-modal" role="dialog" aria-labelledby="search-modal-title">
+          <div class="search-modal__close">
+            <button class="search-modal__close-button" type="button">❌</button>
+          </div>
+          <h2 class="search-modal__title">🔍 보고싶은 영상 찾기 🔍</h2>
+          <section class="modal-input__container">
+            <form class="modal-input__form">
+              <input class="modal-input__keyword" type="text" placeholder="검색" />
+              <button class="modal-input__button button" type="submit">검색</button>
+            </form>
+          </section>
+          <section class="modal-result">
+            <h3 class="modal-result__label" hidden>검색 결과</h3>
+            <div class="modal-result__empty"></div>
+            <ul class="modal-result__list"></ul>
+          </section>
         </div>
-        <h2 class="search-modal__title">🔍 보고싶은 영상 찾기 🔍</h2>
-        <section class="modal-input__container">
-          <form class="modal-input__form">
-            <input class="modal-input__keyword" type="text" placeholder="검색" />
-            <button class="modal-input__button button" type="submit">검색</button>
-          </form>
-        </section>
-        <section class="modal-result">
-          <h3 class="modal-result__label" hidden>검색 결과</h3>
-          <div class="modal-result__empty"></div>
-          <ul class="modal-result__list"></ul>
-        </section>
-      </div>
-    </section>
+      </section>
+    </div>
     <div class="toast"></div>
   </body>
 </html>
