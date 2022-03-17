@@ -15,7 +15,6 @@ export default class MainView {
     this.$modalOpenButton = $(SELECTOR.MODAL_OPEN_BUTTON);
     this.$willSeeButton = $('#will-see-button');
     this.$sawButton = $('#saw-button');
-    this.$videoList = $('.main-video-list');
     this.$willSeeVideoList = $('#will-see-video-list');
     this.$sawVideoList = $('#saw-video-list');
   }
@@ -64,16 +63,34 @@ export default class MainView {
   }
 
   bindVideoItemButton(callback) {
-    this.$videoList.addEventListener('click', event => {
-      if (
-        [
-          DOM_STRING.CHECK_WILL_SEE_BUTTON,
-          DOM_STRING.CHECK_SAW_BUTTON,
-          DOM_STRING.DELETE_STORE_BUTTON,
-        ].includes(event.target.id)
-      )
-        callback(event.target.id);
-    });
+    [this.$willSeeVideoList, this.$sawVideoList].forEach(videoList =>
+      videoList.addEventListener('click', event => {
+        if (
+          [
+            DOM_STRING.CHECK_WILL_SEE_BUTTON,
+            DOM_STRING.CHECK_SAW_BUTTON,
+            DOM_STRING.DELETE_STORE_BUTTON,
+          ].includes(event.target.id)
+        ) {
+          const videoId = event.target.closest(SELECTOR.VIDEO_ITEM).dataset.videoid;
+          callback(event.target.id, videoId);
+          this.deleteVideoItem(event.target.closest(SELECTOR.VIDEO_ITEM));
+        }
+      })
+    );
+  }
+
+  deleteVideoItem(videoElement) {
+    if (this.$currentVideoList === this.$willSeeVideoList) {
+      const targetIndex = this.willSeeVideoList.findIndex(
+        video => video.getElement() === videoElement
+      );
+      this.willSeeVideoList.splice(targetIndex, 1);
+    } else {
+      const targetIndex = this.sawVideoList.findIndex(video => video.getElement() === videoElement);
+      this.sawVideoList.splice(targetIndex, 1);
+    }
+    videoElement.parentNode.removeChild(videoElement);
   }
 
   bindModalOpenButton(callback) {
@@ -102,15 +119,13 @@ export default class MainView {
     if (button === this.$willSeeButton) {
       this.$sawButton.disabled = false;
       this.$sawButton.classList.remove('nav__button-clicked');
-      this.$willSeeVideoList.classList.remove('display-none');
-      this.$sawVideoList.classList.add('display-none');
+      this.$willSeeVideoList.classList.remove(DOM_STRING.HIDE);
+      this.$sawVideoList.classList.add(DOM_STRING.HIDE);
     } else {
       this.$willSeeButton.disabled = false;
       this.$willSeeButton.classList.remove('nav__button-clicked');
-      this.$willSeeVideoList.classList.add('display-none');
-      this.$sawVideoList.classList.remove('display-none');
+      this.$willSeeVideoList.classList.add(DOM_STRING.HIDE);
+      this.$sawVideoList.classList.remove(DOM_STRING.HIDE);
     }
   }
-
-  getRenderedVideoId() {}
 }

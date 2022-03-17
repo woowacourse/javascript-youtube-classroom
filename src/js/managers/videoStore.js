@@ -27,13 +27,32 @@ const videoStore = {
   },
 
   getWillSeeVideoList() {
-    const videoList = this.getStoredVideoList();
-    return videoList.filter(videoData => !videoData.saw);
+    const storedVideoList = this.getStoredVideoList();
+    return storedVideoList.filter(videoData => !videoData.saw);
   },
 
   getSawVideoList() {
-    const videoList = this.getStoredVideoList();
-    return videoList.filter(videoData => videoData.saw);
+    const storedVideoList = this.getStoredVideoList();
+    return storedVideoList.filter(videoData => videoData.saw);
+  },
+
+  moveToSawVideoList(videoId) {
+    const storedVideoList = this.getStoredVideoList();
+    storedVideoList.find(video => video.id === videoId).saw = true;
+    storageUtil.setItem(this.KEY.STORED_VIDEO_LIST, storedVideoList);
+  },
+
+  moveToWillSeeVideoList(videoId) {
+    const storedVideoList = this.getStoredVideoList();
+    storedVideoList.find(video => video.id === videoId).saw = false;
+    storageUtil.setItem(this.KEY.STORED_VIDEO_LIST, storedVideoList);
+  },
+
+  deleteVideoWithId(videoId) {
+    const storedVideoList = videoStore.getStoredVideoList();
+    const targetIndex = storedVideoList.findIndex(video => video.id === videoId);
+    storedVideoList.splice(targetIndex, 1);
+    storageUtil.setItem(this.KEY.STORED_VIDEO_LIST, storedVideoList);
   },
 };
 

@@ -6,6 +6,7 @@ export const SELECTOR = {
   SEARCH_INPUT: '.search-input__keyword',
   SEARCH_NO_RESULT: '.search-result.search-result--no-result',
   MODAL_OPEN_BUTTON: '#search-modal-button',
+  VIDEO_ITEM: '.video-item',
 };
 
 export const DOM_STRING = {

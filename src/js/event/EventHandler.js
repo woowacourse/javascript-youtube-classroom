@@ -4,6 +4,7 @@ import validator from '../utils/validator.js';
 import searchVideoAPICaller from '../managers/searchVideoAPICaller.js';
 import videoStore from '../managers/videoStore.js';
 import storeVideoAPICaller from '../managers/storeVideoAPICaller.js';
+import { DOM_STRING } from '../utils/constants.js';
 
 export default class EventHandler {
   constructor() {
@@ -40,8 +41,17 @@ export default class EventHandler {
     }
   }
 
-  onVideoItemButtonClick(buttonId) {
-    console.log(buttonId);
+  onVideoItemButtonClick(buttonId, videoId) {
+    switch (buttonId) {
+      case DOM_STRING.CHECK_WILL_SEE_BUTTON:
+        videoStore.moveToWillSeeVideoList(videoId);
+        break;
+      case DOM_STRING.CHECK_SAW_BUTTON:
+        videoStore.moveToSawVideoList(videoId);
+        break;
+      case DOM_STRING.DELETE_STORE_BUTTON:
+        videoStore.deleteVideoWithId(videoId);
+    }
   }
 
   async onSearchButtonClick(inputValue) {

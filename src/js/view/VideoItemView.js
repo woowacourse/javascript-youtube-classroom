@@ -74,4 +74,8 @@ export default class VideoItemView {
   deleteTemplate() {
     this.$element.textContent = '';
   }
+
+  getElement() {
+    return this.$element;
+  }
 }
