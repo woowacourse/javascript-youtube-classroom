@@ -1,3 +1,4 @@
+import storage from '../storage/storage.js';
 import watchLaterInterface from '../ui/watchLaterInterface.js';
 import { $ } from '../util/general.js';
 
@@ -14,5 +15,12 @@ export class WatchLaterVideoEventHandler {
     if (!$('.watched-videos').classList.contains('hidden')) {
       $('.watched-videos').classList.toggle('hidden');
     }
+  };
+  handleWatchedButtonClick = e => {
+    if (!e.target.classList.contains('video-item__watched-button')) {
+      return;
+    }
+    storage.toggleWatchedVideo(e.target.parentElement.parentElement.dataset.videoId);
+    // render 옮기기
   };
 }

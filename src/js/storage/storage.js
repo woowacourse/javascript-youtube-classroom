@@ -31,6 +31,21 @@ const storage = {
     }
     this.setLocalStorage([video]);
   },
+  toggleWatchedVideo(videoId) {
+    const savedVideoStorage = this.getLocalStorage();
+    const updatedVideoStorage = savedVideoStorage.map(item => {
+      const video = {
+        id: item.id,
+        snippet: item.snippet,
+        watched: false,
+      };
+      if (item.id === videoId) {
+        video.watched = true;
+      }
+      return video;
+    });
+    this.setLocalStorage(updatedVideoStorage);
+  },
 };
 
 export default storage;

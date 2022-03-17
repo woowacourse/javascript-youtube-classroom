@@ -36,6 +36,11 @@ export default function App() {
 
   $('.watch-later-nav-button').addEventListener('click', handleWatchLaterEvent.handleWatchLater);
   $('.watched-nav-button').addEventListener('click', handleWatchedVideoEvent.handleWatchedVideo);
+
+  $('.watch-later-videos-container ul').addEventListener(
+    'click',
+    handleWatchLaterEvent.handleWatchedButtonClick,
+  );
 }
 
 App();
