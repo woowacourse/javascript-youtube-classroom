@@ -37,7 +37,7 @@ class RenderVideo {
 
     addEvent(this.navSection, 'click', this.#onNavButtonClick);
     addEvent(this.savedVideoListContainer, 'click', this.#onCheckAndDeleteButtonClick);
-    addEvent(this.modalOutside, 'click', this.#closeModal);
+    addEvent(this.modalOutside, 'click', this.#onCloseModal);
     addEvent(this.searchForm, 'submit', this.#onSearchFormSubmit);
     addEvent(this.videoListContainer, 'scroll', this.#onScrollVideoList);
     addEvent(this.videoListContainer, 'click', this.#onSaveButtonClick);
@@ -95,7 +95,7 @@ class RenderVideo {
     if (!targetVideo) return;
     if (target.classList.contains(CLASSNAME.VIDEO_CHECK_BUTTON)) {
       this.saveVideo.toggleVideoIsCheckedFromStorage(targetVideo.dataset);
-      targetVideo.remove();
+      this.#renderUpdatedVideoList(targetVideo);
       return;
     }
     if (
@@ -103,14 +103,11 @@ class RenderVideo {
       confirm(DELETE_CONFIRM_MESSAGE(targetVideo.dataset.title))
     ) {
       this.saveVideo.removeVideoFromStorage(targetVideo.dataset);
-      targetVideo.remove();
-      if (!this.savedVideoListContainer.children.length) {
-        this.savedVideoListContainer.insertAdjacentHTML('afterbegin', emptyVideoListTemplate);
-      }
+      this.#renderUpdatedVideoList(targetVideo);
     }
   };
 
-  #closeModal = () => {
+  #onCloseModal = () => {
     this.modalContainer.classList.add(CLASSNAME.HIDE_ELEMENT);
   };
 
@@ -158,6 +155,13 @@ class RenderVideo {
       alert(ERROR_MESSAGE.CANNOT_SAVE_VIDEO_ANYMORE);
     }
   };
+
+  #renderUpdatedVideoList(targetVideo) {
+    targetVideo.remove();
+    if (!this.savedVideoListContainer.children.length) {
+      this.savedVideoListContainer.insertAdjacentHTML('afterbegin', emptyVideoListTemplate);
+    }
+  }
 
   #renderSearchVideo(searchVideo) {
     if (!searchVideo.length) {
