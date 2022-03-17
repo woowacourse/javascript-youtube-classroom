@@ -3,54 +3,41 @@ import throttle, { SCROLL_THROTTLE_DELAY } from './util/throttle.js';
 import debounce from './util/debounce.js';
 import { handleSearch, handleScrollSearch } from './handlers/searchHandle.js';
 import { handleSaveButtonClick } from './handlers/saveVideoHandle.js';
-import userInterface from './ui/userInterface.js';
+import {
+  handleGoingWatchButtonClick,
+  handleWatchedButtonClick,
+} from './handlers/showSavedVideosHandle.js';
+import { handleModalClose } from './handlers/modalHandle.js';
+
+import mainPageUI from './ui/mainPage/mainPageUI.js';
 import videoStorage from './localStorage/videoStorage.js';
 
 export default function App() {
   const savedVideos = videoStorage.getSavedVideos();
-  if (savedVideos) {
-    userInterface.renderSavedVideoItems();
-  } else {
-    userInterface.renderNothingSavedImage();
-  }
+  mainPageUI.renderSavedVideos(savedVideos);
+
   // 이벤트 등록
-  $('#search-modal-button').addEventListener('click', () => {
-    $('.modal-container').classList.toggle('hide');
+  $('.search-input').addEventListener('submit', e => {
+    e.preventDefault();
+    $('.suggestion').hidden = true;
+    handleSearch();
   });
 
   $('.video-list').addEventListener('scroll', throttle(handleScrollSearch, SCROLL_THROTTLE_DELAY));
 
   $('.video-list').addEventListener('click', handleSaveButtonClick);
-
-  $('.dimmer').addEventListener('click', () => {
+  //
+  $('#search-modal-button').addEventListener('click', () => {
     $('.modal-container').classList.toggle('hide');
-    $('.video-list').replaceChildren();
-    $('#search-input-keyword').value = '';
-    $('.saved-video').hidden = false;
-    $('.saved-video-list').replaceChildren();
-    userInterface.renderSavedVideoItems();
   });
 
-  $('#going-watch-button').addEventListener('click', () => {
-    if (!$('.saved-video-list').classList.contains('watched')) {
-      $('#going-watch-button').classList.add('checked');
-      $('#watched-button').classList.remove('checked');
-      $('.saved-video-list').classList.add('watched');
-      $('.saved-video-list').replaceChildren();
-      userInterface.renderSavedVideoItems();
-    }
-  });
+  $('.dimmer').addEventListener('click', handleModalClose);
+  //
+  $('#going-watch-button').addEventListener('click', handleGoingWatchButtonClick);
 
-  $('#watched-button').addEventListener('click', () => {
-    if ($('.saved-video-list').classList.contains('watched')) {
-      $('#watched-button').classList.add('checked');
-      $('#going-watch-button').classList.remove('checked');
-      $('.saved-video-list').classList.remove('watched');
-      $('.saved-video-list').replaceChildren();
-      userInterface.renderSavedVideoItems();
-    }
-  });
+  $('#watched-button').addEventListener('click', handleWatchedButtonClick);
 
+  //
   $('.saved-video-list').addEventListener('click', e => {
     if (e.target.classList.contains('video-item__watched-button')) {
       const videoItem = e.target.parentElement.parentElement;
@@ -72,16 +59,17 @@ export default function App() {
       const newSavedVideos = savedVideos.filter(
         savedVideo => savedVideo.id !== videoItem.dataset.videoId,
       );
-      console.log(newSavedVideos.length);
       if (newSavedVideos.length === 0) {
         videoStorage.removeSavedVideo();
         $('.saved-video').hidden = true;
-        userInterface.renderNothingSavedImage();
+        mainPageUI.renderNothingSavedImage();
         return;
       }
       videoStorage.setSavedVideos(newSavedVideos);
     }
   });
+
+  ////////////////////////
 
   $('.search-input').addEventListener('submit', e => {
     e.preventDefault();

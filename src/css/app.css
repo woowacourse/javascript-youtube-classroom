@@ -35,7 +35,7 @@ body {
   border-radius: 4px 0 0 4px;
 }
 
-.watched_button {
+.watched-button {
   border-radius: 0 4px 4px 0;
   margin-left: -5px;
 }
@@ -97,13 +97,13 @@ body {
   background-color: rgba(0, 188, 212, 0.12);
 }
 
-.nothing-saved {
+.nothing-saved-image-container {
   display: flex;
   justify-content: center;
   align-items: center;
 }
 
-.nothing-saved .nothing-saved__image {
+.nothing-saved-image-container .nothing-saved__image {
   width: 720px;
   height: 480px;
   margin-bottom: 32px;
