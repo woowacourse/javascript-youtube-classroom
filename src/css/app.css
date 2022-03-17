@@ -40,3 +40,14 @@ body {
 .nav__button:hover {
   background: #ebebeb;
 }
+
+.video__container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.empty__video__image {
+  width: 50vw;
+  height: 50vh;
+}

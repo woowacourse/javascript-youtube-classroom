@@ -1,14 +1,20 @@
-import { $, isEndOfScroll } from './util/general.js';
-import YoutubeSearch from './domain/YoutubeSearch.js';
-import searchResultView from './ui/searchResultView.js';
 import '../css/index.css';
 import '../assets/images/not_found.png';
-import storage from './storage/storage.js';
+import { $ } from './util/dom.js';
 import { THROTTLE_DELAY } from './constants/constants.js';
+import { isEndOfScroll, throttle } from './util/general.js';
+import storage from './storage/storage.js';
+import YoutubeSearch from './domain/YoutubeSearch.js';
+import searchResultView from './ui/searchResultView.js';
 
 export default function App() {
   const youtubeSearch = new YoutubeSearch();
-  let throttle;
+
+  const initSavedVideo = () => {
+    if (storage.getLocalStorage()) {
+      console.log('store');
+    }
+  };
 
   const renderHandler = async () => {
     searchResultView.renderSkeletonUI();
@@ -16,7 +22,10 @@ export default function App() {
     searchResultView.renderSearchResult(response);
     const isLastVideos = response.items.length !== 0 && !response.nextPageToken;
     if (isLastVideos) {
-      $('.video-list').removeEventListener('scroll', handleScroll);
+      $('.video-list').removeEventListener(
+        'scroll',
+        throttle(handleVideoListScroll, THROTTLE_DELAY)
+      );
     }
   };
 
@@ -34,12 +43,9 @@ export default function App() {
     }
   };
 
-  const handleScroll = (e) => {
-    if (isEndOfScroll(e.target) && !throttle) {
+  const handleVideoListScroll = () => {
+    if (isEndOfScroll($('.video-list'))) {
       renderHandler();
-      throttle = setTimeout(() => {
-        throttle = null;
-      }, THROTTLE_DELAY);
     }
   };
 
@@ -54,7 +60,7 @@ export default function App() {
 
   // 이벤트 등록
   const addVideoListEvents = () => {
-    $('.video-list').addEventListener('scroll', handleScroll);
+    $('.video-list').addEventListener('scroll', throttle(handleVideoListScroll, THROTTLE_DELAY));
 
     $('.video-list').addEventListener('click', handleSaveVideos);
   };
@@ -68,6 +74,8 @@ export default function App() {
   $('#search-input-keyword').addEventListener('keypress', (e) => {
     if (e.key === 'Enter') handleSearch();
   });
+
+  initSavedVideo();
 }
 
 App();
