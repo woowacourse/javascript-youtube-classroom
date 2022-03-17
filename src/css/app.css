@@ -19,7 +19,7 @@ body {
 
 .nav {
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
 }
 
 .button {
@@ -40,4 +40,9 @@ body {
 
 .nav__button:hover {
   background: var(--nav-button-hover-color);
+}
+
+.hidden {
+  display: none;
+  visibility: hidden;
 }
