@@ -11,8 +11,34 @@ export default class MainContents {
     this.$videoList = $('#saved-video-list', this.container);
     UIStore.addSubscriber(this.render, ['selectedPage']);
     YoutubeSaveStorage.addSubscriber(this.render);
+    this.bindEvents();
     this.render();
   }
+
+  bindEvents() {
+    addEvent(this.container, {
+      eventType: EVENT_TYPE.CLICK,
+      selector: '#remove-video-button',
+      handler: this.handleClickRemoveButton,
+    });
+    addEvent(this.container, {
+      eventType: EVENT_TYPE.CLICK,
+      selector: '#toggle-watched-button',
+      handler: this.handleToggleWatched,
+    });
+  }
+
+  handleClickRemoveButton = ({ target: $target }) => {
+    const { videoId } = $target.closest('.saved-video-item').dataset;
+    if (confirm('정말 지우시겠습니까?')) {
+      YoutubeSaveStorage.removeVideo(videoId);
+    }
+  };
+
+  handleToggleWatched = ({ target: $target }) => {
+    const { videoId } = $target.closest('.saved-video-item').dataset;
+    YoutubeSaveStorage.toggleVideoWatchStatus(videoId);
+  };
 
   render = () => {
     this.$videoList.replaceChildren();

@@ -25,6 +25,7 @@
         "no-return-assign":"off",
         "object-curly-newline":"off",
         "operator-linebreak":"off",
-        "no-shadow":"off"
+        "no-shadow":"off",
+        "no-restricted-globals":"off"
     }
 }
