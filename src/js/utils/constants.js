@@ -14,7 +14,6 @@ export const DOM_STRING = {
   WATCH_LATER_BUTTON: '#watch-later-button',
   WATCHED_BUTTON: '#watched-button',
   STORED_VIDEO_LIST: '.stored-video-list',
-  DELETE_BUTTON: '.delete-button',
 };
 
 export const ERROR_MESSAGE = {
