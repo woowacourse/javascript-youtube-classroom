@@ -48,8 +48,8 @@ live-server 폴더명
 
 - [x] 본 영상 nav 버튼을 누르면 본 영상 화면으로 이동한다
 - [x] 본 영상에서 보여지는 비디오 리스트는 localStorage에 저장된 watched 가 true인 영상들로 한다
-- [ ] 저장버튼을 누르면 localStorage에서 watched가 false가 된다
-- [ ] 저장 버튼을 누르면 해당 비디오가 본 영상에서 제거 된다
+- [x] 저장버튼을 누르면 localStorage에서 watched가 false가 된다
+- [x] 저장 버튼을 누르면 해당 비디오가 본 영상에서 제거 된다
 - [ ] 삭제버튼 클릭시 localStorage에서 제거되고 화면상에서도 사라진다
   - [ ] 삭제시 사용자에게 정말 삭제할 것인지 다시 확인한다
 

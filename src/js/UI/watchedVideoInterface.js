@@ -1,4 +1,4 @@
-import { $ } from '../util/general.js';
+import { $, $$ } from '../util/general.js';
 import storage from '../storage/storage.js';
 import { videoItemTemplate } from '../util/render.js';
 
@@ -12,7 +12,7 @@ const watchedVideoInterface = {
       if (item.watched) {
         $('.watched-videos-container ul').insertAdjacentHTML(
           'beforeEnd',
-          videoItemTemplate.videoItem(item),
+          videoItemTemplate.videoItem('watched-video-item', item),
         );
       }
     });

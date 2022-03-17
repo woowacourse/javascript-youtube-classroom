@@ -40,7 +40,7 @@ const storage = {
         watched: item.watched,
       };
       if (item.id === videoId) {
-        video.watched = true;
+        video.watched = !item.watched;
       }
       return video;
     });
