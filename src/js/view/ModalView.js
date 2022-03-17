@@ -90,6 +90,7 @@ export default class ModalView {
             title: clickedVideo.children[1].textContent,
             url: clickedVideo.children[0].src,
             channelTitle: clickedVideo.children[2].textContent,
+            type: 'watch-later',
           };
           event.target.classList.add(DOM_STRING.HIDE);
           callback(clickedData);
