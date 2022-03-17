@@ -80,3 +80,21 @@
 .video-list.hide {
   display: none;
 }
+
+.video-item__button_container {
+  position: absolute;
+  right: 0;
+  background: #f9f9f9;
+  margin-top: 4px;
+}
+
+.video-item__button_container button:first-child {
+  margin: 0 5px 0 0;
+}
+.video-item__button_container button:hover {
+  background-color: rgba(0, 188, 212, 0.36);
+}
+
+.video-item__button_container button {
+  padding: 5px;
+}

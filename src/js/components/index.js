@@ -48,8 +48,8 @@ class AppComponent {
 
   #initChildrenComponent() {
     this.searchModalComponent = new SearchModalComponent(this.#parentElement);
-    this.watchVideoComponent = new VideoListComponent(this.$watchVideoSection);
-    this.watchedVideoComponent = new VideoListComponent(this.$watchedVideoSection);
+    this.watchVideoComponent = new VideoListComponent(this.$watchVideoSection, 'WATCH');
+    this.watchedVideoComponent = new VideoListComponent(this.$watchedVideoSection, 'WATCHED');
   }
 
   #bindEventHandler() {

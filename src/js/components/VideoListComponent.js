@@ -7,6 +7,8 @@ import VideoComponent from './VideoComponent';
 class VideoListComponent {
   #parentElement = null;
 
+  #componentType = 'SEARCH';
+
   #videoComponents = [];
 
   #lazyLoadThrottleTimeout = null;
@@ -15,8 +17,9 @@ class VideoListComponent {
 
   #skeletonListComponent = null;
 
-  constructor(parentElement) {
+  constructor(parentElement, type = 'SEARCH') {
     this.#parentElement = parentElement;
+    this.#componentType = type;
     this.#mount();
     this.#initDOM();
     this.#bindEventHandler();
@@ -59,6 +62,7 @@ class VideoListComponent {
             video: savedVideo,
             observer: null,
             notLazyLoad: idx < 10,
+            type: this.#componentType,
           })
       ),
     ];
