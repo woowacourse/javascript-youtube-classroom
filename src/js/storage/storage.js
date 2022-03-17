@@ -17,9 +17,11 @@ const storage = {
     }
     this.setLocalStorage([...savedStorage, data]);
   },
-  saveVideo(videoId) {
+  saveVideo(item) {
     const video = {
-      id: videoId,
+      id: item.id.videoId,
+      snippet: item.snippet,
+      watched: false,
     };
     const savedStorage = this.getLocalStorage();
 
