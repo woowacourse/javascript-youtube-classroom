@@ -45,7 +45,28 @@ export default class YoutubeApp {
     document
       .querySelector(".save-video-container__video-list")
       .addEventListener("click", this.#onClickDeleteButton);
+    document
+      .querySelector(".save-video-container__video-list")
+      .addEventListener("click", this.#onClickWatchedButton);
   }
+
+  #onClickWatchedButton = ({ target }) => {
+    if (!target.matches(".video-item__watched-video-button")) return;
+
+    const targetParentElement = target.closest(".save-video-item");
+
+    if (
+      target.classList.contains("video-item__watched-video-button--focused")
+    ) {
+      target.classList.remove("video-item__watched-video-button--focused");
+      videoStorage.removeChecked(getTargetData(targetParentElement));
+
+      return;
+    }
+
+    videoStorage.addChecked(getTargetData(targetParentElement));
+    target.classList.add("video-item__watched-video-button--focused");
+  };
 
   #onClickDeleteButton = ({ target }) => {
     if (!target.matches(".video-item__delete-video-button")) return;
@@ -71,6 +92,7 @@ export default class YoutubeApp {
 
   #renderSavedVideo() {
     const saveVideoData = videoStorage.getVideo();
+
     if (!saveVideoData.length) {
       document
         .querySelector(".save-video-container__no-video-list")

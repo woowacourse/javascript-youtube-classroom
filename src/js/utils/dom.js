@@ -55,5 +55,12 @@ export const getTargetData = (element) => {
     ".video-item__published-date"
   ).textContent;
 
-  return { videoId, thumbnailUrl, title, channelName, publishDate };
+  return {
+    videoId,
+    thumbnailUrl,
+    title,
+    channelName,
+    publishDate,
+    checked: false,
+  };
 };

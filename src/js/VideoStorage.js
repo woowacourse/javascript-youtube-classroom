@@ -33,6 +33,26 @@ const videoStorage = {
 
     return storage.filter((data) => data.videoId === responseId).length > 0;
   },
+  addChecked(addData) {
+    let storage = this.getVideo();
+
+    const addIndex = storage.findIndex(
+      (data) => data.videoId === addData.videoId
+    );
+
+    storage[addIndex].checked = true;
+    localStorage.setItem("saveVideoData", JSON.stringify(storage));
+  },
+  removeChecked(removeData) {
+    let storage = this.getVideo();
+
+    const removeIndex = storage.findIndex(
+      (data) => data.videoId === removeData.videoId
+    );
+
+    storage[removeIndex].checked = false;
+    localStorage.setItem("saveVideoData", JSON.stringify(storage));
+  },
 };
 
 export default videoStorage;

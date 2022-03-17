@@ -73,7 +73,9 @@ const generateTemplate = {
     <p class="video-item__channel-name ">${data.channelName}</p>
     <p class="video-item__published-date ">${data.publishDate}</p>
     <div class="video-item-button-container">
-      <button class="video-item__watched-video-button video-item__watched-video-button--focused button">
+      <button class="video-item__watched-video-button button${
+        data.checked ? " video-item__watched-video-button--focused" : ""
+      }">
         ✅
       </button>
       <button class="video-item__delete-video-button button">🗑</button>
