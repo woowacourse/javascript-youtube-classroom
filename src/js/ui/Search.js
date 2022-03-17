@@ -24,7 +24,7 @@ export default class Search {
       showSnackBar(MESSAGE.ERROR_BLANK_SEARCH_INPUT);
       return;
     }
-
+    $('.video-list').replaceChildren();
     skeleton.renderSkeletonUI();
     request(this.input.value)
       .then(json => {
