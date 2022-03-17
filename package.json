@@ -9,6 +9,7 @@
     "test:unit": "jest unit --setupFiles dotenv/config",
     "test:e2e:afterbuild": "npm run build && cypress run --browser chrome",
     "test:e2e": "cypress run --browser chrome",
+    "test": "npm run test:unit && npm run test:e2e:afterbuild",
     "cypress:open": "cypress open"
   },
   "repository": {

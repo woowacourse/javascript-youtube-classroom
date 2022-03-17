@@ -57,13 +57,15 @@ describe('저장 기능 테스트', () => {
   });
 
   test('저장되어 있는 특정 비디오중 본 비디오를 체크할 수 있다', () => {
-    // const newVideoId = "newVideoId"
-    // 저장되어 있는지 체크
-    // const specificVideo = storageEngine.getSpecificVideo(newVideoId);
-    expect(specificVideo.videoId).toEqual(newVideoId);
-    // 봤다고 체크 로직
-    // 본 영상으로 체크 되어 있는지 체크
-    expect().toMatchObject({
+    const newVideoId = 'newVideoId';
+    storageEngine.saveVideo(newVideoId);
+    expect(storageEngine.getSpecificVideo(newVideoId)).toMatchObject({
+      videoId: newVideoId,
+      isViewed: false,
+    });
+
+    storageEngine.checkVideoViewed(newVideoId);
+    expect(storageEngine.getSpecificVideo(newVideoId)).toMatchObject({
       videoId: newVideoId,
       isViewed: true,
     });

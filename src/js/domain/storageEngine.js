@@ -32,7 +32,7 @@ export default class StorageEngine {
     const savedVideos = this.getSavedVideos();
 
     const specificVideo = savedVideos.find(({ videoId }) => videoId === specificVideoId);
-    specificVideo.isViewed = true;
+    specificVideo.isViewed = true; // 여기서는 이미 복사한 object니까 이렇게 변경해도 다른 곳에 영향 안끼쳐서 괜찮아보임
 
     localStorage.setItem(STORAGE_KEY_SAVED_VIDEOS, JSON.stringify(savedVideos));
   }

@@ -1,6 +1,6 @@
 import { VIDEO_COUNT, STORAGE_KEY_SAVED_VIDEOS } from '../../src/js/util/constants.js';
 
-describe('유튜브 검색 정상 작동 테스트', () => {
+describe('유튜브 검색 및 비디오 저장 정상 작동 테스트', () => {
   before(() => {
     cy.visit('../../dist/index.html');
   });
@@ -34,8 +34,6 @@ describe('유튜브 검색 정상 작동 테스트', () => {
     });
 
     it('결과물의 맨 밑까지 스크롤을 내리면 추가적인 결과물을 확인할 수 있다', () => {
-      const keyword = 'javascript';
-
       cy.intercept('GET', 'https://www.googleapis.com/youtube/v3/search?*').as('getNextVideos');
 
       // 스크롤 내리기
