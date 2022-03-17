@@ -86,26 +86,26 @@ export default class MainView {
 
   watchVideoButton = (event) => {
     if (event.target.classList.contains('video-item__button--watched')) {
-      const videoId = event.target.dataset.id;
+      const videoId = event.target.id;
       emit(event.currentTarget, '@check-watched', { videoId });
     }
   };
 
   unwatchVideoButton = (event) => {
     if (event.target.classList.contains('video-item__button--watched')) {
-      const videoId = event.target.dataset.id;
+      const videoId = event.target.id;
       emit(event.currentTarget, '@check-unwatched', { videoId });
     }
   };
 
   deleteVideoButton = (event) => {
     if (event.target.classList.contains('video-item__button--delete')) {
-      const videoId = event.target.dataset.id;
+      const videoId = event.target.id;
       emit(event.currentTarget, '@check-delete', { videoId });
     }
   };
 
   removeVideo(videoId) {
-    $(`[data-video-id=${videoId}]`).remove();
+    document.getElementById(videoId).remove();
   }
 }

@@ -27,7 +27,7 @@ export default class Controller {
     on(this.searchResultView.$searchTarget, '@save-video', this.#saveVideo.bind(this));
     on(this.mainView.$unwatchedButton, '@show-unwatched-tab', this.#renderUnwatchedTab.bind(this));
     on(this.mainView.$watchedButton, '@show-watched-tab', this.#renderWatchedTab.bind(this));
-    on(this.mainView.$unwatchedTab, '@check-watched', this.#checkWatchedVideo.bind(this));
+    on(this.mainView.$unwatchedTab, '@check-watched', this.#checkWatchedVideo);
     on(this.mainView.$watchedTab, '@check-unwatched', this.#checkUnwatchedVideo.bind(this));
     on(this.mainView.$unwatchedTab, '@check-delete', this.#checkDeleteVideo.bind(this));
     on(this.mainView.$watchedTab, '@check-delete', this.#checkDeleteVideo.bind(this));
@@ -124,11 +124,11 @@ export default class Controller {
     this.mainView.showWatchedTab();
   }
 
-  #checkWatchedVideo(event) {
+  #checkWatchedVideo = (event) => {
     const watchedVideoId = event.detail.videoId;
     this.video.setWatchedVideoItem(watchedVideoId);
     this.mainView.removeVideo(watchedVideoId);
-  }
+  };
 
   #checkUnwatchedVideo(event) {
     const unwatchedVideoId = event.detail.videoId;

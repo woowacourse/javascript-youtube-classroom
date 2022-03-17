@@ -91,7 +91,7 @@ export default class Template {
 
   getVideoItem({ title, channelTitle, publishTime, videoId, thumbnailUrl }) {
     return `
-      <div data-video-id="${videoId}" class="video-item">
+      <div id="${videoId}" class="video-item">
         <iframe 
           class="video-item__thumbnail" 
           srcdoc="${this.getThumbnail(thumbnailUrl, videoId)}" 
@@ -103,29 +103,9 @@ export default class Template {
         <h4 class="video-item__title">${title}</h4>
         <p class="video-item__channel-name">${channelTitle}</p>
         <p class="video-item__published-date">${publishTime}</p>
-        <button data-id="${videoId}" class="button video-item__button  video-item__button--watched">✅</button>
-        <button data-id="${videoId}" class="button video-item__button video-item__button--delete">🗑️</button>
+        <button id="${videoId}" class="button video-item__button  video-item__button--watched">✅</button>
+        <button id="${videoId}" class="button video-item__button video-item__button--delete">🗑️</button>
       </div>
     `;
   }
-
-  // getWatchedVideo({ title, channelTitle, publishTime, videoId, thumbnailUrl }) {
-  //   return `
-  //     <div class="video-item">
-  //       <iframe
-  //         class="video-item__thumbnail"
-  //         srcdoc="${this.getThumbnail(thumbnailUrl, videoId)}"
-  //         frameborder="0"
-  //         allow="autoplay"
-  //         loading="lazy"
-  //         allowfullscreen>
-  //       </iframe>
-  //       <h4 class="video-item__title">${title}</h4>
-  //       <p class="video-item__channel-name">${channelTitle}</p>
-  //       <p class="video-item__published-date">${publishTime}</p>
-  //       <button data-id="${videoId}" class="button video-item__button video-item__button--unwatched">👁️</button>
-  //       <button data-id="${videoId}" class="button video-item__button video-item__button--delete">🗑️</button>
-  //     </div>
-  //   `;
-  // }
 }
