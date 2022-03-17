@@ -19,8 +19,8 @@ body {
 .nav {
   display: flex;
   justify-content: left;
-  margin-left: 10%;
-  margin-right: 10%;
+  margin-left: 0%;
+  margin-right: 0%;
 }
 
 .button {
@@ -56,16 +56,27 @@ body {
 }
 
 #classroom-contents-container {
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-  gap: 62px 20px;
-  overflow-y: auto;
-  justify-content: space-around;
-  margin-left: 10%;
-  margin-right: 10%;
-  height: 90vh;
-  background-color: aliceblue;
+  display: grid;
+  gap: 100px 20px;
+  grid-auto-flow: dense;
+  justify-items: center;
+  grid-template-columns: repeat(4, 1fr);
+}
+
+@media (max-width: 1280px) {
+  #classroom-contents-container {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+@media (max-width: 960px) {
+  #classroom-contents-container {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+@media (max-width: 600px) {
+  #classroom-contents-container {
+    grid-template-columns: repeat(1, 1fr);
+  }
 }
 
 .already-watch-button,
