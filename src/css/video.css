@@ -94,6 +94,40 @@
   background: #efefef;
 }
 
+/* no Result Image */
+.save-result {
+  margin: auto;
+}
+
+.save-result.save-result--no-result {
+  justify-content: center;
+  align-items: center;
+  grid-column: 1 / span 4;
+}
+
+.search-result {
+  margin: auto;
+}
+
+.search-result.search-result--no-result {
+  justify-content: center;
+  align-items: center;
+  grid-column: 1 / span 4;
+}
+
+.no-result__image {
+  width: 11.875em;
+  height: 8.75em;
+  margin-bottom: 2em;
+}
+
+.no-result__description {
+  font-size: 1rem;
+  line-height: 150%;
+  text-align: center;
+  letter-spacing: 0.03rem;
+}
+
 @media only screen and (max-width: 1280px) {
   .video-list {
     grid-template-columns: repeat(3, 1fr);

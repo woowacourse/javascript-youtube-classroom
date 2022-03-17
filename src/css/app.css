@@ -69,13 +69,3 @@ body {
   width: 100%;
   box-shadow: 0 1em 1em -1em #00c8e246 inset;
 }
-
-.save-result {
-  margin: auto;
-}
-
-.save-result.save-result--no-result {
-  justify-content: center;
-  align-items: center;
-  grid-column: 1 / span 3;
-}
