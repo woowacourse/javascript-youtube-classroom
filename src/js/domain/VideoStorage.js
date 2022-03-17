@@ -38,6 +38,10 @@ export class VideoStorage {
     this.videoList.find(({ id }) => id === targetId).toggleIsWatched();
   }
 
+  removeVideo(targetId) {
+    this.videoList = this.videoList.filter(({ id }) => id !== targetId);
+  }
+
   get notWachedVideoList() {
     return this.videoList.filter((video) => !video.isWatched);
   }

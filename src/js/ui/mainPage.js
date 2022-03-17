@@ -91,6 +91,7 @@ class MainPage {
         e.target.closest('li').remove();
         removeLocalStorage('save', id);
         removeLocalStorage('watched', id);
+        this.videoStorage.removeVideo(id);
       }
     }
   }
