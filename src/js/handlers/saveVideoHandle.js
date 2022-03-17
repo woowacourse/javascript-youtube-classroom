@@ -29,10 +29,10 @@ export const handleSaveButtonClick = e => {
     // 저장된 비디오가 있는 경우, 뒤에 추가
     validateAbleToSaveVideo(savedVideos, saveTargetVideo);
     videoStorage.setSavedVideos([...savedVideos, saveTargetVideo]);
-
-    const saveVideoButton = e.target.closest('button');
-    saveVideoButton.remove();
   } catch (error) {
     alert(error.message);
+  } finally {
+    const saveVideoButton = e.target.closest('button');
+    saveVideoButton.remove();
   }
 };

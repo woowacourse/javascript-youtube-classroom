@@ -1,5 +1,4 @@
 import { $ } from '../utils/querySelector.js';
-import mainPageUI from '../ui/mainPage/mainPageUI.js';
 import videoStorage from '../localStorage/videoStorage.js';
 
 export const handleWatchedButtonClick = e => {
