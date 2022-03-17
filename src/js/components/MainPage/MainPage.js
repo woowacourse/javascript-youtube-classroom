@@ -1,8 +1,7 @@
 import Component from '../../core/Component.js';
 import { rootStore } from '../../store/rootStore.js';
 import { webStore } from '../../store/WebStore.js';
-import WatchedVideoCardList from './WatchedVideoCardList.js';
-import WatchingVideoCardList from './WatchingVideoCardList.js';
+import SavedVideoCardList from './SavedVideoCardList.js';
 
 export default class MainPage extends Component {
   setup() {
@@ -36,11 +35,10 @@ export default class MainPage extends Component {
   }
 
   afterMounted() {
-    if (this.props.watchedMode) {
-      new WatchedVideoCardList(this.$('#saved-video-list'));
-    } else {
-      new WatchingVideoCardList(this.$('#saved-video-list'));
-    }
+    const { watchedMode } = this.props;
+    new SavedVideoCardList(this.$('#saved-video-list'), {
+      watchedMode,
+    });
   }
 
   setEvent() {

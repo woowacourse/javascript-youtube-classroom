@@ -3,7 +3,7 @@ import Component from '../../core/Component.js';
 import { rootStore } from '../../store/rootStore.js';
 import VideoCard from '../SearchModal/SearchResult/VideoCard.js';
 
-export default class WatchingVideoCardList extends Component {
+export default class SavedVideoCardList extends Component {
   setup() {
     this.observer = new IntersectionObserver(
       this.handleLastVideoVisible.bind(this),
@@ -20,7 +20,7 @@ export default class WatchingVideoCardList extends Component {
   template() {
     const { savedVideos } = rootStore.state;
     this.videos = savedVideos
-      .filter(video => video.watched === false)
+      .filter(video => video.watched === this.props.watchedMode)
       .reverse();
     this.renderedVideos = this.videos.slice(
       0,
