@@ -1,4 +1,4 @@
-export const DOM_STRING = {
+export const SELECTOR = {
   MODAL_CONTAINER: '.modal-container',
   DIMMER: '.dimmer',
   VIDEO_LIST: '.video-list',
@@ -8,10 +8,13 @@ export const DOM_STRING = {
   MODAL_OPEN_BUTTON: '#search-modal-button',
 };
 
-export const CLASS_NAME_STRING = {
+export const DOM_STRING = {
   HIDE: 'hide',
   VIDEO_ITEM: 'video-item',
   VIDEO_ITEM_SAVE_BUTTON: 'video-item__save-button',
+  CHECK_SAW_BUTTON: 'check-saw-button',
+  CHECK_WILL_SEE_BUTTON: 'check-will-see-button',
+  DELETE_STORE_BUTTON: 'delete-store-button',
 };
 
 export const ERROR_MESSAGE = {

@@ -1,5 +1,5 @@
 import videoStore from '../managers/videoStore.js';
-import { CLASS_NAME_STRING } from '../utils/constants.js';
+import { DOM_STRING } from '../utils/constants.js';
 
 export default class VideoItemView {
   constructor($element) {
@@ -21,7 +21,7 @@ export default class VideoItemView {
     const template = `
       ${this.getMainTemplate(parseData)}
       <button data-videoid=${parseData.videoId} class="video-item__save-button button 
-      ${videoStore.hasVideoId(parseData.videoId) ? `${CLASS_NAME_STRING.HIDE}` : ''}"> 
+      ${videoStore.hasVideoId(parseData.videoId) ? `${DOM_STRING.HIDE}` : ''}"> 
       ⬇ 저장
       </button>
     `;
@@ -33,9 +33,9 @@ export default class VideoItemView {
   renderWillSeeVideoItemTemplate(parseData) {
     const template = `
     ${this.getMainTemplate(parseData)}
-    <div>
-      <button>✅</button>
-      <button>🗑</button>
+    <div class="video-item-button-container">
+      <button id="check-saw-button" class="video-item-button">✅</button>
+      <button id="delete-store-button" class="video-item-button">🗑</button>
     </div>
     `;
 
@@ -47,9 +47,9 @@ export default class VideoItemView {
   renderSawVideoItemTemplate(parseData) {
     const template = `
     ${this.getMainTemplate(parseData)}
-    <div>
-      <button>✅</button>
-      <button>🗑</button>
+    <div class="video-item-button-container">
+      <button id="check-will-see-button" class="video-item-button">✅</button>
+      <button id="delete-store-button" class="video-item-button">🗑</button>
     </div>
     `;
 

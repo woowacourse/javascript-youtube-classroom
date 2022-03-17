@@ -1,22 +1,23 @@
-import { DOM_STRING } from '../utils/constants.js';
+import { SELECTOR } from '../utils/constants.js';
 import { $ } from '../utils/common.js';
-import { CLASS_NAME_STRING } from '../utils/constants.js';
+import { DOM_STRING } from '../utils/constants.js';
 import VideoItemView from './VideoItemView.js';
 
 export default class MainView {
   constructor() {
     this.registerDOM();
+    this.$currentVideoList = this.$willSeeVideoList;
     this.willSeeVideoList = [];
     this.sawVideoList = [];
   }
 
   registerDOM() {
-    this.$modalOpenButton = $(DOM_STRING.MODAL_OPEN_BUTTON);
+    this.$modalOpenButton = $(SELECTOR.MODAL_OPEN_BUTTON);
     this.$willSeeButton = $('#will-see-button');
     this.$sawButton = $('#saw-button');
+    this.$videoList = $('.main-video-list');
     this.$willSeeVideoList = $('#will-see-video-list');
     this.$sawVideoList = $('#saw-video-list');
-    this.$currentVideoList = this.$willSeeVideoList;
   }
 
   getRenderedVideoIdList() {
@@ -28,7 +29,7 @@ export default class MainView {
   showSkeletonVideoList(videoList) {
     this.$currentVideoList.insertAdjacentHTML(
       'beforeend',
-      `<li class=${CLASS_NAME_STRING.VIDEO_ITEM}></li>`.repeat(videoList.length)
+      `<li class=${DOM_STRING.VIDEO_ITEM}></li>`.repeat(videoList.length)
     );
     [...this.$currentVideoList.childNodes].slice(-videoList.length).forEach(li => {
       if (this.$currentVideoList === this.$willSeeVideoList) {
@@ -60,6 +61,19 @@ export default class MainView {
         .slice(-videoListData.length)
         .forEach((videoItem, index) => videoItem.renderSawVideoItemTemplate(videoListData[index]));
     }
+  }
+
+  bindVideoItemButton(callback) {
+    this.$videoList.addEventListener('click', event => {
+      if (
+        [
+          DOM_STRING.CHECK_WILL_SEE_BUTTON,
+          DOM_STRING.CHECK_SAW_BUTTON,
+          DOM_STRING.DELETE_STORE_BUTTON,
+        ].includes(event.target.id)
+      )
+        callback(event.target.id);
+    });
   }
 
   bindModalOpenButton(callback) {
