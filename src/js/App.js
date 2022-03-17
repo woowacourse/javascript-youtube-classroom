@@ -1,11 +1,8 @@
 import { $ } from './util/querySelector.js';
 import throttle, { SCROLL_THROTTLE_DELAY } from './util/throttle.js';
 import debounce from './util/debounce.js';
-import {
-  handleSearch,
-  handleScrollSearch,
-  handleSaveButtonClick,
-} from './handlers/searchHandlers.js';
+import { handleSearch, handleScrollSearch } from './handlers/searchHandle.js';
+import { handleSaveButtonClick } from './handlers/saveVideoHandle.js';
 import userInterface from './ui/userInterface.js';
 import videoStorage from './localStorage/videoStorage.js';
 
