@@ -73,7 +73,7 @@ class AppBusiness {
     }
   };
 
-  onClickSaveButton = ({ detail: { saveVideoId } }) => {
+  onClickSaveButton = ({ detail: { savedVideo } }) => {
     try {
       const savedVideoList = webStore.getData(WEB_STORE_KEY.SAVED_VIDEO_LIST_KEY) ?? [];
 
@@ -81,7 +81,8 @@ class AppBusiness {
         throw new Error(ERROR_MESSAGE.SAVE_VIDEO_COUNT_OVER);
       }
 
-      const updatedVideoList = [...savedVideoList, saveVideoId];
+      const savedVideoInfo = savedVideo.getVideoInfo();
+      const updatedVideoList = [...savedVideoList, savedVideoInfo];
 
       webStore.setData(WEB_STORE_KEY.SAVED_VIDEO_LIST_KEY, updatedVideoList);
       setState(STATE_STORE_KEY.SAVED_VIDEO, updatedVideoList);
