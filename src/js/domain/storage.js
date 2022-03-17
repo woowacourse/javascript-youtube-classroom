@@ -16,7 +16,11 @@ function getFromStorage(key) {
 
 function saveToStorage(key, value) {
   const idArray = getFromStorage(key);
-  if (idArray.length >= MAX_SAVE_AMOUNT) {
+  const allIdArray = Object.keys(keys).reduce(
+    (array, storageKey) => [...array, ...getFromStorage(storageKey)],
+    []
+  );
+  if (allIdArray.length >= MAX_SAVE_AMOUNT) {
     throw new Error(ERROR_MESSAGES.EXCEED_MAX_SAVE_AMOUNT);
   }
   localStorage.setItem(keys[key], JSON.stringify([...idArray, value]));
