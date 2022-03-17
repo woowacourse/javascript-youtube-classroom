@@ -8,7 +8,9 @@
     "start": "webpack serve --open",
     "build": "webpack",
     "predeploy": "npm run build",
-    "deploy": "gh-pages -d dist"
+    "deploy": "gh-pages -d dist",
+    "cypress:run": "cypress run --browser chrome",
+    "cypress:open": "cypress open"
   },
   "devDependencies": {
     "@babel/core": "^7.17.5",
@@ -37,6 +39,7 @@
     }
   },
   "dependencies": {
+    "cypress": "^9.5.2",
     "html-loader": "^3.1.0",
     "prettier": "^2.5.1",
     "regenerator-runtime": "^0.13.9"
