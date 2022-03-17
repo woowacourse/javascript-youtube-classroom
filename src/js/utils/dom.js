@@ -1,3 +1,5 @@
+import { SNACK_BAR_SHOWING_TIME_IN_MS } from '../constants';
+
 const $ = (selector, baseElement = document) => baseElement.querySelector(selector);
 const $$ = (selector, baseElement = document) => baseElement.querySelectorAll(selector);
 
@@ -8,7 +10,7 @@ const showSnackBar = message => {
 
   setTimeout(() => {
     $snackBar.classList.remove('show');
-  }, 2000);
+  }, SNACK_BAR_SHOWING_TIME_IN_MS);
 };
 
 export { $, $$, showSnackBar };

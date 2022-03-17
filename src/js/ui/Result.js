@@ -1,4 +1,4 @@
-import { MESSAGE, STORAGE_KEY } from '../constants';
+import { INTERSECTION_RATIO, MESSAGE, STORAGE_KEY } from '../constants';
 import { $, showSnackBar } from '../utils/dom';
 import NoResultImage from '../../assets/images/not_found.png';
 import { store } from '../domain/store';
@@ -102,7 +102,7 @@ export const result = {
         }
       },
       {
-        threshold: 0.5,
+        threshold: INTERSECTION_RATIO,
       },
     );
 
