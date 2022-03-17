@@ -2,20 +2,20 @@ const setData = (key, data) => localStorage.setItem(key, JSON.stringify(data));
 const getData = (key) => JSON.parse(localStorage.getItem(key));
 
 export default class Storage {
-  #videoIds;
+  #videos;
 
   constructor() {
-    this.#videoIds = getData('id') || [];
+    this.#videos = getData('videos') || [];
   }
 
-  get videoIds() { return this.#videoIds; }
+  get videos() { return this.#videos; }
 
-  saveVideoById(id) {
-    this.#videoIds.push(id);
-    setData('id', this.#videoIds);
+  saveVideo(video) {
+    this.#videos.push(video);
+    setData('videos', this.#videos);
   }
   
   findVideoById(id) {
-    return this.#videoIds.includes(id);
+    return this.#videos.find((video) => video.id === id);
   }
 }

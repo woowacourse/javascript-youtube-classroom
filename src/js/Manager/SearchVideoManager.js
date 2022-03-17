@@ -10,7 +10,7 @@ const WRONG_API_URL= (keyword) =>
   `https://elastic-goldstine-10f16a.netlify.app/search?part=snippettt&q=${keyword}&maxResults=${MAX_DATA_FETCH_AT_ONCE}`;
 
 const FETCH_URL = (keyword, nextPageToken) =>
-  `${YOUTUBE_API_URL(keyword)}${nextPageToken ? `&pageToken=${nextPageToken}` : ''}`;
+  `${DUMMY_YOUTUBE_API_URL(keyword)}${nextPageToken ? `&pageToken=${nextPageToken}` : ''}`;
 
 export default class SearchVideoManager {
   #keyword;
@@ -87,7 +87,7 @@ export default class SearchVideoManager {
       title: item.snippet.title,
       channelName: item.snippet.channelTitle,
       publishedDate: new Date(item.snippet.publishedAt),
-      saved: this.storage.findVideoById(item.id.videoId),
+      saved: !!this.storage.findVideoById(item.id.videoId),
     })).filter((item) => checkNoUndefinedProperty(item));
   }
 }
