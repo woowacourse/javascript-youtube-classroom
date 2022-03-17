@@ -9,6 +9,7 @@ export default class MainView {
 
     this.bindOnClickWatchLaterButton();
     this.onClickWatchLaterButton();
+    this.bindOnClickWatchedButton();
   }
 
   registerDOM() {
@@ -24,6 +25,10 @@ export default class MainView {
 
   bindOnClickWatchLaterButton() {
     this.$watchLaterButton.addEventListener('click', this.onClickWatchLaterButton.bind(this));
+  }
+
+  bindOnClickWatchedButton() {
+    this.$watchedButton.addEventListener('click', this.onClickWatchedButton.bind(this));
   }
 
   renderStoredVideoList() {
@@ -49,6 +54,16 @@ export default class MainView {
   onClickWatchLaterButton() {
     [...this.$storedVideoList.children].forEach(el => {
       if ([...el.classList].includes('watch-later')) {
+        el.classList.remove('hide');
+        return;
+      }
+      el.classList.add('hide');
+    });
+  }
+
+  onClickWatchedButton() {
+    [...this.$storedVideoList.children].forEach(el => {
+      if ([...el.classList].includes('watched')) {
         el.classList.remove('hide');
         return;
       }
