@@ -58,7 +58,8 @@ const template = {
   ${savedItems
     .map(({ videoId, videoThumbnail, videoDate, videoTitle, videoChannelTitle }) => {
       return `
-    <div class="video-item" data-video-id=${videoId}>
+    <section class="video-item" data-video-id=${videoId}>
+      <h2 hidden>본 영상</h2>
       <img
         src=${videoThumbnail}
         alt="video-item-thumbnail" class="video-item__thumbnail" />
@@ -69,7 +70,7 @@ const template = {
         <button class="watch-video-button button">✅</button>
         <button class="delete-watch-video-button button">🗑️</button>
       </div>
-    </div>
+    </section>
       `;
     })
     .join('')}

@@ -1,6 +1,7 @@
 import { LOCALSTORAGE_KEY_SAVE } from '../constant';
 import { getLocalStorage } from '../domain/localStorage';
 import MainView from '../ui/mainView';
+import { on } from '../util/event';
 import { $ } from '../util/selector';
 
 class MainInterferer {
