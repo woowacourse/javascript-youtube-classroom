@@ -6,14 +6,20 @@ export default class VideoItemView {
     this.$element = $element;
   }
 
-  renderVideoItemTemplate(parseData) {
-    const template = `
+  getMainTemplate(parseData) {
+    return `
       <img 
         src=${parseData.url}
         alt="video-item-thumbnail" class="video-item__thumbnail" loading="lazy" />
       <h4 class="video-item__title">${parseData.title}</h4>
       <p class="video-item__channel-nagetVideoItemTemplateme">${parseData.channelTitle}</p>
       <p class="video-item__published-date ">${parseData.publishedAt}</p>
+    `;
+  }
+
+  renderVideoItemTemplate(parseData) {
+    const template = `
+      ${this.getMainTemplate(parseData)}
       <button data-videoid=${parseData.videoId} class="video-item__save-button button 
       ${videoStore.hasVideoId(parseData.videoId) ? `${CLASS_NAME_STRING.HIDE}` : ''}"> 
       ⬇ 저장
@@ -26,12 +32,25 @@ export default class VideoItemView {
 
   renderWillSeeVideoItemTemplate(parseData) {
     const template = `
-      <img 
-        src=${parseData.url}
-        alt="video-item-thumbnail" class="video-item__thumbnail" loading="lazy" />
-      <h4 class="video-item__title">${parseData.title}</h4>
-      <p class="video-item__channel-nagetVideoItemTemplateme">${parseData.channelTitle}</p>
-      <p class="video-item__published-date ">${parseData.publishedAt}</p>
+    ${this.getMainTemplate(parseData)}
+    <div>
+      <button>✅</button>
+      <button>🗑</button>
+    </div>
+    `;
+
+    this.$element.setAttribute('data-videoid', parseData.videoId);
+    this.$element.textContent = '';
+    this.$element.insertAdjacentHTML('afterbegin', template);
+  }
+
+  renderSawVideoItemTemplate(parseData) {
+    const template = `
+    ${this.getMainTemplate(parseData)}
+    <div>
+      <button>✅</button>
+      <button>🗑</button>
+    </div>
     `;
 
     this.$element.setAttribute('data-videoid', parseData.videoId);

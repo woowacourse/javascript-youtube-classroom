@@ -20,12 +20,9 @@ export default class MainView {
   }
 
   getRenderedVideoIdList() {
-    if (this.$currentVideoList === this.$willSeeVideoList) {
-      return [...this.$currentVideoList.childNodes].map(videoItem => {
-        return videoItem.dataset.videoid;
-      });
-    } else {
-    }
+    return [...this.$currentVideoList.childNodes].map(videoItem => {
+      return videoItem.dataset.videoid;
+    });
   }
 
   showSkeletonVideoList(videoList) {
@@ -61,7 +58,7 @@ export default class MainView {
     } else {
       this.sawVideoList
         .slice(-videoListData.length)
-        .forEach((videoItem, index) => videoItem.renderVideoItemTemplate(videoListData[index]));
+        .forEach((videoItem, index) => videoItem.renderSawVideoItemTemplate(videoListData[index]));
     }
   }
 
