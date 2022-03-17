@@ -38,6 +38,7 @@ export default class EventHandler {
       this.modalView.appendVideoItem();
       this.modalView.renderSkeletonUI();
       // const videoListData = await this.getVideoListData(searchInput);
+      const videoListData = parseData;
       this.modalView.renderVideoList(videoListData);
     } catch (error) {
       alert(error.message);
