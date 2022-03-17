@@ -1,7 +1,7 @@
 import { ERROR_MESSAGE, VIDEO_LIST } from '../utils/constants.js';
 import APIUtil from './APIUtil.js';
 
-const videoAPICaller = {
+const searchVideoAPICaller = {
   endPoint: 'https://vigorous-boyd-74648a.netlify.app/youtube/v3/search',
   queryItems: {
     part: 'snippet',
@@ -45,4 +45,4 @@ const videoAPICaller = {
   },
 };
 
-export default videoAPICaller;
+export default searchVideoAPICaller;
