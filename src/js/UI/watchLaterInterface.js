@@ -1,6 +1,11 @@
 import storage from '../storage/storage.js';
 import { $, $$ } from '../util/general.js';
-import { showEmptyImg, videoItemTemplate } from '../util/render.js';
+import {
+  clearVideoItems,
+  showEmptyImg,
+  videoItemTemplate,
+  removeEmptyImg,
+} from '../util/render.js';
 
 const watchLaterInterface = {
   renderEmptyImg() {
@@ -20,7 +25,10 @@ const watchLaterInterface = {
     }
   },
   renderWatchLaterVideos() {
+    removeEmptyImg('.watch-later-videos-container .empyt-img-container');
+
     this.renderEmptyImg();
+    clearVideoItems('.watch-later-video-item');
 
     const savedVideoData = storage.getLocalStorage();
     const watchLaterVideos = savedVideoData.filter(item => {

@@ -1,4 +1,6 @@
 import { ERROR } from '../constants/constants.js';
+import watchedVideoInterface from '../ui/watchedVideoInterface.js';
+import watchLaterInterface from '../ui/watchLaterInterface.js';
 
 export const $ = selector => document.querySelector(selector);
 
@@ -12,8 +14,15 @@ export const validateInput = input => {
 
 export const quickModalElement = e => {
   e.preventDefault();
+
   if (!$('.modal-container').classList.contains('hide')) {
     $('.modal-container').classList.toggle('hide');
+    if ($('.watch-later-videos').classList.contains('hidden')) {
+      watchedVideoInterface.renderWatchedVideos();
+    }
+    if ($('.watched-videos').classList.contains('hidden')) {
+      watchLaterInterface.renderWatchLaterVideos();
+    }
   }
 };
 

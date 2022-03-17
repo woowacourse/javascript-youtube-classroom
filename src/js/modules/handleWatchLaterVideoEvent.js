@@ -11,8 +11,7 @@ import {
 export class WatchLaterVideoEventHandler {
   handleWatchLater = () => {
     this.toggleWatchLaterContent();
-    clearVideoItems('.watch-later-video-item');
-    removeEmptyImg('.watch-later-videos-container .empyt-img-container');
+
     watchLaterInterface.renderWatchLaterVideos();
   };
   toggleWatchLaterContent = () => {

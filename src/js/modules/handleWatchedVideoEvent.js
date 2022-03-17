@@ -10,8 +10,7 @@ import {
 export class WatchedVideoEventHandler {
   handleWatchedVideo = () => {
     this.toggleWatchedVideoContent();
-    clearVideoItems('.watched-video-item');
-    removeEmptyImg('.watched-videos-container .empyt-img-container');
+
     watchedVideoInterface.renderWatchedVideos();
   };
 
