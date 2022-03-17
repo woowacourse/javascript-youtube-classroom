@@ -2,20 +2,26 @@ import { ERROR_MESSAGE, STORAGE_MAX_COUNT } from "./constants/constants";
 
 const videoStorage = {
   getVideo() {
-    return JSON.parse(localStorage.getItem("videos")) || [];
+    return JSON.parse(localStorage.getItem("saveVideoData")) || [];
   },
   addVideo(data) {
     let storage = this.getVideo();
+
+    if (this.isSavedVideoId(data.videoId)) {
+      return;
+    }
 
     if (storage.length >= STORAGE_MAX_COUNT) {
       throw new Error(ERROR_MESSAGE.USER_STORAGE_OVERFLOW);
     }
 
     storage = [...storage, data];
-    localStorage.setItem("videos", JSON.stringify(storage));
+    localStorage.setItem("saveVideoData", JSON.stringify(storage));
   },
   isSavedVideoId(responseId) {
-    return this.getVideo().includes(responseId);
+    const storage = this.getVideo();
+
+    return storage.filter((data) => data.videoId === responseId).length > 0;
   },
 };
 

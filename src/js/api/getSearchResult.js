@@ -32,7 +32,7 @@ export default async function getSearchResult(
   dummyUrl.search = parameters.toString();
 
   try {
-    const response = await fetch(url, { method: "GET" });
+    const response = await fetch(dummyUrl, { method: "GET" });
     const data = await response.json();
 
     if (!response.ok) {

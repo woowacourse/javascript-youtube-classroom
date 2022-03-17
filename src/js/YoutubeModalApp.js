@@ -12,6 +12,7 @@ import {
   getTotalScrollHeight,
   getCurrentScrollHeight,
   validateInput,
+  getTargetData,
 } from "./utils/dom";
 
 export default class YoutubeModalApp {
@@ -46,10 +47,8 @@ export default class YoutubeModalApp {
   #onClickSaveButton = ({ target }) => {
     if (!target.matches(".video-item__save-button")) return;
 
-    const { videoId } = target.closest(".video-item").dataset;
-
     try {
-      videoStorage.addVideo(videoId);
+      videoStorage.addVideo(getTargetData(target.closest(".video-item")));
     } catch ({ message }) {
       alert(message);
     }

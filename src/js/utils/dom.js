@@ -38,3 +38,17 @@ export const clearModalContainer = (videoList) => {
     .querySelectorAll(".video-item")
     .forEach((videoItem) => videoList.removeChild(videoItem));
 };
+
+export const getTargetData = (element) => {
+  const { videoId } = element.dataset;
+  const thumbnailUrl = element.querySelector(".video-item__thumbnail").src;
+  const title = element.querySelector(".video-item__title").textContent;
+  const channelName = element.querySelector(
+    ".video-item__channel-name"
+  ).textContent;
+  const publishDate = element.querySelector(
+    ".video-item__published-date"
+  ).textContent;
+
+  return { videoId, thumbnailUrl, title, channelName, publishDate };
+};
