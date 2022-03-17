@@ -1,5 +1,5 @@
 import '../css/index.css';
-import Video from './ui/Video';
+import Main from './ui/Main';
 import SearchModal from './ui/SearchModal';
 import { MESSAGE, STORAGE_KEY } from './constants';
 import { store } from './domain/store';
@@ -9,7 +9,7 @@ import { showExceptionSnackBar } from './utils/snackBar';
 
 class App {
   constructor() {
-    this.video = new Video();
+    this.main = new Main();
     new SearchModal();
   }
 
@@ -21,7 +21,7 @@ class App {
         store.setLocalStorage(STORAGE_KEY, saveData);
         showExceptionSnackBar(MESSAGE.SAVE_COMPLETE);
         e.target.setAttribute('hidden', true);
-        this.video.renderVideo(false);
+        this.main.renderVideo(false);
       });
     } catch ({ message }) {
       showExceptionSnackBar(message);

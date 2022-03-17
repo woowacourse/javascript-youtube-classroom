@@ -4,7 +4,7 @@ import { $, $$ } from '../utils/dom';
 import { showExceptionSnackBar } from '../utils/snackBar';
 import { getVideoTemplate } from './template';
 
-export default class Video {
+export default class Main {
   constructor() {
     this.tab = 'will';
     this.renderVideo(false);

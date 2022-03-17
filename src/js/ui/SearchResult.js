@@ -5,7 +5,7 @@ import { $ } from '../utils/dom';
 import { delay } from '../utils/common';
 import { showExceptionSnackBar } from '../utils/snackBar';
 
-export default class Result {
+export default class SearchResult {
   renderVideoList(json) {
     $('.video-list').insertAdjacentHTML(
       'beforeend',

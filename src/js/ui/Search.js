@@ -1,4 +1,4 @@
-import Result from './Result';
+import SearchResult from './SearchResult';
 import { skeletonUI } from './loading';
 import { MESSAGE } from '../constants';
 import { $ } from '../utils/dom';
@@ -7,7 +7,7 @@ import { showExceptionSnackBar } from '../utils/snackBar';
 export default class Search {
   constructor() {
     this.input = $('#search-input-keyword');
-    this.result = new Result();
+    this.result = new SearchResult();
     this.addSubmitEvent();
   }
 
