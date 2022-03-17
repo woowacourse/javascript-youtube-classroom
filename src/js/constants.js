@@ -5,8 +5,11 @@ export const MAX_DATA_FETCH_AT_ONCE = 10;
 export const ERROR_MESSAGE = {
   SEARCH_KEYWORD_MIN_LENGTH: `검색 키워드는 ${SEARCH_KEYWORD_MIN_LENGTH}자 이상이어야 합니다.`,
   MAX_VIDEO_SAVE: `저장 에러! 영상은 최대 ${MAX_VIDEO_SAVE}개만 저장할 수 있습니다.`,
+  CAN_NOT_UPDATE_ON_NOT_SAVED_VIDEO: '저장된 비디오가 아닙니다. 정보를 업데이트 할 수 없습니다.',
+  CAN_NOT_DELETE_ON_NOT_SAVED_VIDEO: '저장된 비디오가 아닙니다. 삭제할 수 없습니다.',
 };
 
-export const ALERT_MESSAGE = {
+export const GUIDE_MESSAGE = {
   NO_MORE_SEARCH_RESULT: '마지막 검색결과까지 모두 출력되었습니다.',
+  CONFIRM_DELETE: '정말 삭제하시겠습니까?',
 };

@@ -1,4 +1,3 @@
-import { ERROR_MESSAGE, MAX_VIDEO_SAVE } from './constants';
 import { event } from '../util';
 
 export default class SaveVideoManager {
@@ -8,11 +7,11 @@ export default class SaveVideoManager {
     this.storage = storage;
     this.#videos = this.storage.videos;
 
-    event.addListener('saveVideo', this.trySaveVideo.bind(this));
+    event.addListener('saveVideo', this.saveVideo.bind(this));
     event.addListener('changeWatchedInfo', this.changeWatchedInfo.bind(this));
     event.addListener('deleteVideo', this.deleteVideo.bind(this));
 
-    event.dispatch('updateOnVideoList', { 
+    event.dispatch('updateOnSavedVideoList', { 
       unwatchedVideos: this.unwatchedVideos,
       watchedVideos: this.watchedVideos,
     });
@@ -22,37 +21,32 @@ export default class SaveVideoManager {
 
   get unwatchedVideos() { return this.#videos.filter((video) => video.watched === false )}
 
-  trySaveVideo(e) {
+  saveVideo(e) {
     const { video, target } = e.detail
     if ( !video ) return;
     try {
-      this.saveVideo(video);
+      this.storage.saveVideo({ ...video, watched: false })
     } catch (err) {
-      return alert(message);
+      return alert(err.message);
     }
-    event.dispatch('saveVideoSuccess', { target });
-  }
-
-  saveVideo(video) {
-    if (this.#videos.length >= MAX_VIDEO_SAVE) {
-      throw new Error(ERROR_MESSAGE.MAX_VIDEO_SAVE);
-    }
-    this.storage.saveVideo({
-      ...video,
-      watched: false,
-    })
     this.#videos = this.storage.videos;
+    event.dispatch('updateOnSavedVideoList', { 
+      unwatchedVideos: this.unwatchedVideos,
+      watchedVideos: this.watchedVideos,
+    });
+    event.dispatch('saveVideoSuccess', { target });
   }
 
   changeWatchedInfo(e) {
     const videoId = e.detail.id;
     const video = this.storage.findVideoById(videoId);
-    this.storage.updateVideo({
-      ...video,
-      watched: !video.watched
-    });
+    try {
+      this.storage.updateVideo({ ...video, watched: !video.watched });
+    } catch (err) {
+      alert(err.message); 
+    }
     this.#videos = this.storage.videos;
-    event.dispatch('updateOnVideoList', { 
+    event.dispatch('updateOnSavedVideoList', { 
       unwatchedVideos: this.unwatchedVideos,
       watchedVideos: this.watchedVideos,
     });
@@ -66,7 +60,7 @@ export default class SaveVideoManager {
       alert(err.message);  
     }
     this.#videos = this.storage.videos;
-    event.dispatch('updateOnVideoList', { 
+    event.dispatch('updateOnSavedVideoList', { 
       unwatchedVideos: this.unwatchedVideos,
       watchedVideos: this.watchedVideos,
     });

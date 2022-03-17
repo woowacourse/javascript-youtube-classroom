@@ -1,4 +1,4 @@
-import { ALERT_MESSAGE, MAX_DATA_FETCH_AT_ONCE } from './constants';
+import { GUIDE_MESSAGE, MAX_DATA_FETCH_AT_ONCE } from '../constants';
 import { event } from '../util';
 import { validateSearchKeyword, checkNoUndefinedProperty } from './validation';
 
@@ -46,7 +46,7 @@ export default class SearchVideoManager {
 
   searchOnScroll() {
     if (this.#isLastPage) {
-      alert(ALERT_MESSAGE.NO_MORE_SEARCH_RESULT);
+      alert(GUIDE_MESSAGE.NO_MORE_SEARCH_RESULT);
       return;
     }
     this.search();

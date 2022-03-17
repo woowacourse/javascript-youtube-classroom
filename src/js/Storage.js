@@ -1,3 +1,5 @@
+import { ERROR_MESSAGE, MAX_VIDEO_SAVE } from './constants';
+
 const setData = (key, data) => localStorage.setItem(key, JSON.stringify(data));
 const getData = (key) => JSON.parse(localStorage.getItem(key));
 
@@ -11,6 +13,9 @@ export default class Storage {
   get videos() { return this.#videos; }
 
   saveVideo(video) {
+    if (this.#videos.length >= MAX_VIDEO_SAVE) {
+      throw new Error(ERROR_MESSAGE.MAX_VIDEO_SAVE);
+    }
     this.#videos.push(video);
     setData('videos', this.#videos);
   }
@@ -22,7 +27,7 @@ export default class Storage {
   updateVideo(newVideo) {
     const index = this.#videos.findIndex((video) => video.id === newVideo.id);
     if (index === -1) {
-      throw new Error('저장된 비디오가 아닙니다. 정보를 업데이트 할 수 없습니다.');
+      throw new Error(ERROR_MESSAGE.CAN_NOT_UPDATE_ON_NOT_SAVED_VIDEO);
     }
     this.#videos.splice(index, 1, newVideo);
     setData('videos', this.#videos);
@@ -31,7 +36,7 @@ export default class Storage {
   deleteVideoById(id) {
     const index = this.#videos.findIndex((video) => video.id === id);
     if (index === -1) {
-      throw new Error('저장된 비디오가 아닙니다. 삭제할 수 없습니다.');
+      throw new Error(ERROR_MESSAGE.CAN_NOT_DELETE_ON_NOT_SAVED_VIDEO);
     }
     this.#videos.splice(index, 1);
     setData('videos', this.#videos);

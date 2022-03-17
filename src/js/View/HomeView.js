@@ -1,3 +1,4 @@
+import { GUIDE_MESSAGE } from '../constants';
 import { $, event } from '../util';
 import { template } from './template';
 
@@ -10,7 +11,7 @@ export default class HomeView {
     $('#unwatched-video-list').addEventListener('click', this.onClickIconButton.bind(this));
     $('#watched-video-list').addEventListener('click', this.onClickIconButton.bind(this));
 
-    event.addListener('updateOnVideoList', this.updateOnVideoList.bind(this));
+    event.addListener('updateOnSavedVideoList', this.updateOnVideoList.bind(this));
   }
 
   onClickUnwatchedVideoListButton() {
@@ -40,7 +41,7 @@ export default class HomeView {
   }
 
   onClickDeleteButton(e) {
-    if (window.confirm('정말 삭제하시겠습니까?')) {
+    if (window.confirm(GUIDE_MESSAGE.CONFIRM_DELETE)) {
       const { id } = e.target.parentNode.dataset;
       event.dispatch('deleteVideo', { id });
     }
