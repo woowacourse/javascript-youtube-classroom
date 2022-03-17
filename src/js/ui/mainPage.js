@@ -1,4 +1,7 @@
-import { toggleWatchedToStorage } from '../domain/localStorage.js';
+import {
+  removeLocalStorage,
+  toggleWatchedToStorage,
+} from '../domain/localStorage.js';
 import { VideoStorage } from '../domain/VideoStorage.js';
 import SearchModal from './searchModal.js';
 import template from './templates.js';
@@ -81,6 +84,14 @@ class MainPage {
       e.target.closest('li').remove();
       this.videoStorage.toggleState(id);
       toggleWatchedToStorage(id);
+    }
+    if (e.target.classList.contains('video-delete--btn')) {
+      if (window.confirm('정말 삭제하실거에요??')) {
+        const id = e.target.closest('li').dataset.videoId;
+        e.target.closest('li').remove();
+        removeLocalStorage('save', id);
+        removeLocalStorage('watched', id);
+      }
     }
   }
 }
