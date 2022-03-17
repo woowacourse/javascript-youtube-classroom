@@ -10,6 +10,7 @@ export default class SaveVideoManager {
 
     event.addListener('saveVideo', this.trySaveVideo.bind(this));
     event.addListener('changeWatchedInfo', this.changeWatchedInfo.bind(this));
+    event.addListener('deleteVideo', this.deleteVideo.bind(this));
 
     event.dispatch('updateOnVideoList', { 
       unwatchedVideos: this.unwatchedVideos,
@@ -50,6 +51,20 @@ export default class SaveVideoManager {
       ...video,
       watched: !video.watched
     });
+    this.#videos = this.storage.videos;
+    event.dispatch('updateOnVideoList', { 
+      unwatchedVideos: this.unwatchedVideos,
+      watchedVideos: this.watchedVideos,
+    });
+  }
+
+  deleteVideo(e) {
+    const videoId = e.detail.id;
+    try {
+      this.storage.deleteVideoById(videoId);
+    } catch (err) {
+      alert(err.message);  
+    }
     this.#videos = this.storage.videos;
     event.dispatch('updateOnVideoList', { 
       unwatchedVideos: this.unwatchedVideos,

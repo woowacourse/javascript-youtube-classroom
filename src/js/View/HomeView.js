@@ -25,19 +25,12 @@ export default class HomeView {
     }
   }
 
-  toggleVideoList() {
-    $('#unwatched-video-list').classList.toggle('hide');
-    $('#watched-video-list').classList.toggle('hide');
-    $('#unwatched-video-list-button').classList.toggle('selected');
-    $('#watched-video-list-button').classList.toggle('selected');
-  }
-
   onClickIconButton(e) {
     if (e.target.id === 'check-watched-button') {
       this.onClickCheckWatchedButton(e);
     }
     if (e.target.id === 'delete-button') {
-      console.log(e.target.id);
+      this.onClickDeleteButton(e);
     }
   }
 
@@ -46,12 +39,26 @@ export default class HomeView {
     event.dispatch('changeWatchedInfo', { id });
   }
 
+  onClickDeleteButton(e) {
+    if (window.confirm('정말 삭제하시겠습니까?')) {
+      const { id } = e.target.parentNode.dataset;
+      event.dispatch('deleteVideo', { id });
+    }
+  }
+
   updateOnVideoList(e) {
     const { unwatchedVideos, watchedVideos } = e.detail;
     const unwatchedVideoListItems = unwatchedVideos.map((video) => template.savedVideoListItem(video)).join('');
     const watchedVideoListItems = watchedVideos.map((video) => template.savedVideoListItem(video)).join('');
     $('#unwatched-video-list').innerHTML = unwatchedVideoListItems;
     $('#watched-video-list').innerHTML = watchedVideoListItems;
+  }
+    
+  toggleVideoList() {
+    $('#unwatched-video-list').classList.toggle('hide');
+    $('#watched-video-list').classList.toggle('hide');
+    $('#unwatched-video-list-button').classList.toggle('selected');
+    $('#watched-video-list-button').classList.toggle('selected');
   }
 
   openModal() {
