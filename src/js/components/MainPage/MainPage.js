@@ -7,10 +7,23 @@ import VideoCardList from '../SearchModal/SearchResult/VideoCardList.js';
 export default class MainPage extends Component {
   setup() {
     const { watchedMode } = this.props;
-    const savedVideos = webStore.load();
-    const videos = savedVideos.filter(video => video.watched === watchedMode);
+    this.savedVideos = webStore.load();
+    this.watchedVideos = this.savedVideos.filter(
+      video => video.watched === true
+    );
+    this.watchingVideos = this.savedVideos.filter(
+      video => video.watched === false
+    );
 
-    this.state = { videos, pagination: 1 };
+    this.watchedVideosLength = this.watchedVideos.length;
+    this.watchingVideosLength =
+      this.savedVideos.length - this.watchedVideosLength;
+
+    const videos = this.savedVideos
+      .filter(video => video.watched === watchedMode)
+      .slice(0, 10);
+
+    this.state = { videos, watchedPagination: 1, watchingPagination: 1 };
   }
 
   template() {
@@ -39,11 +52,17 @@ export default class MainPage extends Component {
   }
 
   afterMounted() {
+    const pagination =
+      this.props.watchedMode === true
+        ? this.state.watchedPagination
+        : this.state.watchingPagination;
+    const videos =
+      this.props.watchedMode === true
+        ? this.watchedVideos
+        : this.watchingVideos;
+    console.log('pagination', pagination);
     new VideoCardList(this.$('#saved-video-list'), {
-      videos: this.state.videos.slice(
-        0,
-        LOAD_VIDEOS_COUNT * this.state.pagination
-      ),
+      videos: videos.slice(0, LOAD_VIDEOS_COUNT * pagination),
       isLoading: false,
       handleLastVideoVisible: this.handleLastVideoVisible.bind(this),
     });
@@ -78,10 +97,28 @@ export default class MainPage extends Component {
     changeMode();
   }
 
-  handleLastVideoVisible() {}
+  handleLastVideoVisible(entries, observer) {
+    entries.forEach(async entry => {
+      if (!entry.isIntersecting) return;
 
-  loadNextVideos() {
-    console.log('this.state', this.state);
-    // this.setState({ pagination: this.state.pagination + 1 });
+      observer.disconnect();
+      if (this.props.watchedMode) {
+        if (
+          this.watchedVideosLength <=
+          this.state.watchedPagination * LOAD_VIDEOS_COUNT
+        )
+          return;
+        this.setState({ watchedPagination: this.state.watchedPagination + 1 });
+      } else {
+        if (
+          this.watchingVideosLength <=
+          this.state.watchingPagination * LOAD_VIDEOS_COUNT
+        )
+          return;
+        this.setState({
+          watchingPagination: this.state.watchingPagination + 1,
+        });
+      }
+    });
   }
 }
