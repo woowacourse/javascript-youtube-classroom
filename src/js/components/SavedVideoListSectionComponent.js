@@ -60,8 +60,8 @@ class SavedVideoListSection {
         <ul class="saved-video-list__container"></ul>
       </div>
       <div class="saved-video-list__no-result">
-        <img src="./not_found.png" alt="no result image" class="no-result__image">
-        <p class="no-result__description">아직 저장된 영상이 없습니다.</p>
+        <img src="./not_found.png" alt="no result image" class="saved-video-list__no-result-image">
+        <p class="saved-video-list__no-result-description">아직 저장된 영상이 없습니다.</p>
       </div>
     `;
   }

@@ -38,3 +38,16 @@
 .saved-video-list__no-result.hide {
   display: none;
 }
+
+.saved-video-list__no-result-image {
+  width: 190px;
+  height: 140px;
+  margin-bottom: 32px;
+}
+
+.saved-video-list__no-result-description {
+  font-size: 16px;
+  line-height: 150%;
+  text-align: center;
+  letter-spacing: 0.5px;
+}

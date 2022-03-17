@@ -135,10 +135,7 @@ class VideoContainer {
 
         <div class="no-result">
           <img src="./not_found.png" alt="no result image" class="no-result__image">
-          <p class="no-result__description">
-            검색 결과가 없습니다<br />
-            다른 키워드로 검색해보세요
-          </p>
+          <p class="no-result__description">검색 결과가 없습니다.<br />다른 키워드로 검색해보세요.</p>
         </div>
       </section>
     `;
