@@ -2,7 +2,6 @@ import {
   BUTTON_SAVED_TEXT,
   ERROR_MESSAGE,
   MAX_SAVE_VIDEO_COUNT,
-  MAX_VIDEO_REQUEST_COUNT,
   MAX_VIDEO_LIST_LENGTH,
 } from './constants/contants.js';
 import SaveVideo from './saveVideo.js';
@@ -11,6 +10,7 @@ import {
   videoTemplate,
   totalVideoSkeletonTemplate,
   videoNotFoundTemplate,
+  savedVideoTemplate,
 } from './template/videoTemplate.js';
 import { selectDom, addEvent } from './utils/handleElement.js';
 
@@ -19,18 +19,67 @@ class RenderVideo {
     this.searchVideo = new SearchVideo();
     this.saveVideo = new SaveVideo();
 
-    this.searchModalButton = selectDom('#search-modal-button');
+    this.navSection = selectDom('.nav');
+    this.playlistTabButton = selectDom('#playlist-tab-button', this.navSection);
+    this.watchedTabButton = selectDom('#watched-tab-button', this.navSection);
+    this.savedVideoListContainer = selectDom('.saved-video-list');
+
     this.modalContainer = selectDom('.modal-container');
     this.searchForm = selectDom('#search-form', this.modalContainer);
     this.searchInput = selectDom('#search-input-keyword', this.searchForm);
     this.videoListContainer = selectDom('.video-list', this.modalContainer);
     this.searchResultSection = selectDom('.search-result', this.modalContainer);
 
-    addEvent(this.searchModalButton, 'click', this.#onSearchModalButtonClick);
+    addEvent(this.navSection, 'click', this.#onNavButtonClick);
     addEvent(this.searchForm, 'submit', this.#onSearchFormSubmit);
     addEvent(this.videoListContainer, 'scroll', this.#onScrollVideoList);
     addEvent(this.videoListContainer, 'click', this.#onSaveButtonClick);
+
+    this.savedVideoListContainer.insertAdjacentHTML(
+      'afterbegin',
+      this.saveVideo.saveVideoList
+        .filter((video) => !video.isChecked)
+        .map((video) => savedVideoTemplate(video))
+        .join(' ')
+    );
   }
+
+  #onNavButtonClick = ({ target: { id: targetId } }) => {
+    const navClickHandler = {
+      'playlist-tab-button'() {
+        this.#onTabButtonClick(
+          this.playlistTabButton,
+          this.watchedTabButton,
+          this.saveVideo.saveVideoList.filter((video) => !video.isChecked)
+        );
+      },
+      'watched-tab-button'() {
+        this.#onTabButtonClick(
+          this.watchedTabButton,
+          this.playlistTabButton,
+          this.saveVideo.saveVideoList.filter((video) => video.isChecked)
+        );
+      },
+      'search-modal-button'() {
+        this.modalContainer.classList.remove('hide');
+      },
+    };
+
+    if (Object.keys(navClickHandler).includes(targetId)) {
+      navClickHandler[targetId].call(this);
+    }
+  };
+
+  #onTabButtonClick = (clickedTabButton, anotherTabButton, videoList) => {
+    clickedTabButton.classList.add('selected');
+    anotherTabButton.classList.remove('selected');
+
+    this.savedVideoListContainer.replaceChildren();
+    this.savedVideoListContainer.insertAdjacentHTML(
+      'afterbegin',
+      videoList.map((video) => savedVideoTemplate(video)).join(' ')
+    );
+  };
 
   #onScrollVideoList = () => {
     const { scrollHeight, offsetHeight, scrollTop, children: videoList } = this.videoListContainer;
@@ -41,10 +90,6 @@ class RenderVideo {
     ) {
       this.#loadVideo();
     }
-  };
-
-  #onSearchModalButtonClick = () => {
-    this.modalContainer.classList.remove('hide');
   };
 
   #onSearchFormSubmit = (e) => {
@@ -64,7 +109,7 @@ class RenderVideo {
   #onSaveButtonClick = ({ target }) => {
     const isSaveButton = target.classList.contains('video-item__save-button');
     if (isSaveButton && this.saveVideo.saveVideoList.length < MAX_SAVE_VIDEO_COUNT) {
-      this.saveVideo.setStorageVideoList(target.closest('li').dataset.videoId);
+      this.saveVideo.saveVideoInformationToStorage(target.closest('li').dataset);
       target.textContent = BUTTON_SAVED_TEXT;
       target.disabled = true;
       return;
@@ -91,7 +136,10 @@ class RenderVideo {
       'beforebegin',
       searchVideo
         .map((video) =>
-          videoTemplate(video, this.saveVideo.saveVideoList.includes(video.id.videoId))
+          videoTemplate(
+            video,
+            this.saveVideo.saveVideoList.some((saveVideo) => saveVideo.videoId === video.id.videoId)
+          )
         )
         .join(' ')
     );

@@ -20,7 +20,13 @@ const videoTemplate = (
   },
   isSaved
 ) => `
-  <li class="video-item" data-video-id="${videoId}"> 
+  <li class="video-item" 
+    data-video-id="${videoId}"
+    data-title="${title}"
+    data-channel-title="${channelTitle}"
+    data-publish-time="${publishTime}"
+    data-thumbnails-url="${url}"
+  > 
     <img src="${url}" alt="video-item-thumbnail" class="video-item__thumbnail" />
     <h4 class="video-item__title">${title}</h4>
     <p class="video-item__channel-name">${channelTitle}</p>
@@ -30,6 +36,28 @@ const videoTemplate = (
         ? '<button type="button" class="video-item__save-button button" disabled >저장됨</button>'
         : '<button type="button" class="video-item__save-button button">⬇ 저장</button>'
     }
+  </li>
+`;
+
+const savedVideoTemplate = ({
+  videoId,
+  title,
+  channelTitle,
+  publishTime,
+  thumbnailsUrl,
+  isChecked,
+}) => `
+  <li class="video-item" data-video-id="${videoId}"> 
+    <img src="${thumbnailsUrl}" alt="video-item-thumbnail" class="video-item__thumbnail" />
+    <h4 class="video-item__title">${title}</h4>
+    <p class="video-item__channel-name">${channelTitle}</p>
+    <p class="video-item__published-date">${stringFormatToDate(publishTime)}</p>
+    ${
+      isChecked
+        ? '<button type="button" class="button video-item__check-button selected">✅ </button>'
+        : '<button type="button" class="button video-item__check-button">✅ </button>'
+    }
+    <button type="button" class="button video-item__delete-button">🗑️</button> 
   </li>
 `;
 
@@ -59,4 +87,4 @@ const videoNotFoundTemplate = `
   </section>
 `;
 
-export { videoTemplate, totalVideoSkeletonTemplate, videoNotFoundTemplate };
+export { videoTemplate, totalVideoSkeletonTemplate, videoNotFoundTemplate, savedVideoTemplate };
