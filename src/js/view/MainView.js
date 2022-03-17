@@ -6,6 +6,9 @@ export default class MainView {
   constructor() {
     this.registerDOM();
     this.renderStoredVideoList();
+
+    this.bindOnClickWatchLaterButton();
+    this.onClickWatchLaterButton();
   }
 
   registerDOM() {
@@ -19,11 +22,15 @@ export default class MainView {
     this.$modalOpenButton.addEventListener('click', callback);
   }
 
+  bindOnClickWatchLaterButton() {
+    this.$watchLaterButton.addEventListener('click', this.onClickWatchLaterButton.bind(this));
+  }
+
   renderStoredVideoList() {
     const storedVideoList = videoStorage.getVideoDataList();
     storedVideoList.forEach(videoData => {
       const template = `
-        <li class="video-item">
+        <li class="video-item ${videoData.type}">
           <img
             src=${videoData.url}
             alt="video-item-thumbnail" class="video-item__thumbnail"
@@ -36,6 +43,16 @@ export default class MainView {
         </li>`;
 
       this.$storedVideoList.insertAdjacentHTML('beforeend', template);
+    });
+  }
+
+  onClickWatchLaterButton() {
+    [...this.$storedVideoList.children].forEach(el => {
+      if ([...el.classList].includes('watch-later')) {
+        el.classList.remove('hide');
+        return;
+      }
+      el.classList.add('hide');
     });
   }
 }
