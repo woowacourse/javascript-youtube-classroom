@@ -11,4 +11,5 @@
   --saveButtonHover-color: #efefef;
   --skeletonDefault-color: #e0e0e0;
   --skeletonMoving-color: #ededed;
+  --selectedButton-color: rgba(0, 188, 212, 0.12);
 }

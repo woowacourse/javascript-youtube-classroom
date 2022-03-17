@@ -3,6 +3,8 @@
   min-width: 5vw;
 }
 
+.selected__button,
+.selected__button:hover,
 .clicked {
-  background-color: red;
+  background-color: var(--selectedButton-color);
 }

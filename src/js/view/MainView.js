@@ -48,7 +48,7 @@ export default class MainView {
   bindOnClickDeleteButton() {
     this.$storedVideoList.addEventListener('click', e => {
       if ([...e.target.classList].includes('delete-button')) {
-        if (confirm('삭제하시겠습니까?')) {
+        if (confirm('삭제 하시겠습니까?')) {
           const videoId = e.target.dataset.videoid;
           videoStorage.deleteVideoData(videoId);
           e.target.parentElement.remove();
@@ -81,6 +81,8 @@ export default class MainView {
 
   onClickWatchLaterButton() {
     this.showType = 'watch-later';
+    this.$watchLaterButton.classList.add('selected__button');
+    this.$watchedButton.classList.remove('selected__button');
     [...this.$storedVideoList.children].forEach(el => {
       if ([...el.classList].includes('watch-later')) {
         el.classList.remove('hide');
@@ -92,6 +94,8 @@ export default class MainView {
 
   onClickWatchedButton() {
     this.showType = 'watched';
+    this.$watchedButton.classList.add('selected__button');
+    this.$watchLaterButton.classList.remove('selected__button');
     [...this.$storedVideoList.children].forEach(el => {
       if ([...el.classList].includes('watched')) {
         el.classList.remove('hide');
