@@ -31,8 +31,8 @@ export default class SearchResultView {
 
   onClickVideoSaveButton({ target }) {
     if (target.tagName === 'BUTTON') {
-      const { videoId } = target.parentNode.dataset;
-      event.dispatch('saveVideo', { videoId, target });
+      const video = target.parentNode.dataset;
+      event.dispatch('saveVideo', { video, target });
     }
   }
 
@@ -55,7 +55,7 @@ export default class SearchResultView {
     if (this.isShownNoResult) {
       this.showSearchResultVideoList();
     }
-    const listItems = videos.map((video) => template.videoListItem(video)).join('');
+    const listItems = videos.map((video) => template.searchResultListItem(video)).join('');
     this.$firstSkeletonListItem.insertAdjacentHTML('beforebegin', listItems);
     this.changeSkeletonListItemVisibility();
   }

@@ -67,6 +67,28 @@ body {
   margin-left: auto;
 }
 
+.check-icon-button {
+  margin-left: 160px;
+}
+
+.icon-button {
+  width: 36px;
+  height: 36px;
+  background: #f5f5f5;
+}
+
+.icon-button:hover {
+  background: #ebebeb;
+}
+
+.icon-button.selected {
+  background: rgba(0, 188, 212, 0.12);
+}
+
+.icon-button.selected:hover {
+  background: rgba(0, 188, 212, 0.2);
+}
+
 .classroom-container {
   width: 368px;
   height: 36px;

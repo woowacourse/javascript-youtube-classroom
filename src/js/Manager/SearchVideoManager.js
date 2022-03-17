@@ -86,7 +86,7 @@ export default class SearchVideoManager {
       thumbnail: item.snippet.thumbnails.medium.url,
       title: item.snippet.title,
       channelName: item.snippet.channelTitle,
-      publishedDate: new Date(item.snippet.publishedAt),
+      publishedDate: item.snippet.publishedAt,
       saved: !!this.storage.findVideoById(item.id.videoId),
     })).filter((item) => checkNoUndefinedProperty(item));
   }
