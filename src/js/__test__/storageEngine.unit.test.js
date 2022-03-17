@@ -38,7 +38,6 @@ describe('저장 기능 테스트', () => {
     expect(storageEngine.getSavedVideos()).toHaveLength(MAX_SAVED_VIDEOS_COUNT);
 
     const videoId = 'newVideoId';
-
     expect(() => storageEngine.saveVideo(videoId)).toThrowError(
       new Error(ERROR_MESSAGE.NO_MORE_VIDEO_SAVABLE)
     );
@@ -48,14 +47,15 @@ describe('저장 기능 테스트', () => {
 
   test('유튜브 검색 결과를 webstorage에서 삭제할 수 있다', () => {
     const newVideoId = 'newVideoId';
-    // 저장한다.
+    expect(() => storageEngine.removeVideo(newVideoId)).toThrowError(
+      new Error(ERROR_MESSAGE.NO_REMOVABLE_VIDEO_EXIST)
+    );
+
     storageEngine.saveVideo(newVideoId);
-    // 확인한다.
     const specificVideo = storageEngine.getSpecificVideo(newVideoId);
     expect(specificVideo.videoId).toEqual(newVideoId);
-    // 삭제한다.
+
     storageEngine.removeVideo(newVideoId);
-    // 없는지 확인한다.
     expect(storageEngine.getSpecificVideo(newVideoId)).toBeUndefined();
   });
 });

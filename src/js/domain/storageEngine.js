@@ -25,10 +25,9 @@ export default class StorageEngine {
 
     if (savedVideos.length <= 0) throw new Error(ERROR_MESSAGE.NO_REMOVABLE_VIDEO_EXIST);
 
-    localStorage.setItem(
-      STORAGE_KEY_SAVED_VIDEOS,
-      JSON.stringify(savedVideos.filter(({ videoId }) => videoId !== newVideoId))
-    );
+    const restSavedVideos = savedVideos.filter(({ videoId }) => videoId !== newVideoId);
+
+    localStorage.setItem(STORAGE_KEY_SAVED_VIDEOS, JSON.stringify(restSavedVideos));
   }
 
   getSpecificVideo(specificVideoId) {
