@@ -1,6 +1,6 @@
 import validator from '../utils/validator.js';
 
-const storageManager = {
+const storageUtil = {
   KEY: {
     VIDEO_ID_LIST: 'videoId',
   },
@@ -27,4 +27,4 @@ const storageManager = {
   },
 };
 
-export default storageManager;
+export default storageUtil;
