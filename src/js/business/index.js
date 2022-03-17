@@ -123,9 +123,7 @@ class AppBusiness {
 
   onClickSavedDeleteButton({ detail: { savedVideoId } }) {
     if (confirm('정말로 삭제하시겠습니까?')) {
-      const { videoList: savedVideoList, prevVideoListLength } = getState(
-        STATE_STORE_KEY.SAVED_VIDEO
-      );
+      const { videoList: savedVideoList } = getState(STATE_STORE_KEY.SAVED_VIDEO);
 
       const newSavedVideoList = savedVideoList.filter((video) => {
         const { videoId } = video.getVideoInfo();
@@ -145,10 +143,22 @@ class AppBusiness {
 
       webStore.setData(WEB_STORE_KEY.SAVED_VIDEO_LIST_KEY, newSavedVideoIdList);
     }
-    // setState(STATE_STORE_KEY.SAVED_VIDEO);
   }
 
-  onClickSavedCheckButton() {}
+  onClickSavedCheckButton({ detail: { savedVideoId, element } }) {
+    const { className } = element;
+    if (className.includes('checked')) {
+      webStore.setData(WEB_STORE_KEY.WATCHED_VIDEO_LIST_KEY, (prev) =>
+        prev.filter((videoId) => savedVideoId !== videoId)
+      );
+      setState(STATE_STORE_KEY.WATCHED_VIDEO, (prev) =>
+        prev.filter((videoId) => savedVideoId !== videoId)
+      );
+      return;
+    }
+    webStore.setData(WEB_STORE_KEY.WATCHED_VIDEO_LIST_KEY, (prev) => [...prev, savedVideoId]);
+    setState(STATE_STORE_KEY.WATCHED_VIDEO, (prev) => [...prev, savedVideoId]);
+  }
 
   async requestVideo(keyword, pageToken) {
     setState(STATE_STORE_KEY.IS_SEARCH_VIDEO_WAITING, true);

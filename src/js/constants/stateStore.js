@@ -5,4 +5,5 @@ export const STATE_STORE_KEY = {
   SAVED_VIDEO: 'savedVideo',
   CURRENT_APP_SECTION: 'currentAppSection',
   IS_SAVED_VIDEO_WAITING: 'isSavedVideoWaiting',
+  WATCHED_VIDEO: 'watchedVideo',
 };

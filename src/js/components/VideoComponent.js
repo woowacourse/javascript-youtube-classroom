@@ -64,10 +64,7 @@ class VideoComponent {
   #render({ videoList: savedVideoList }) {
     if (this.#componentType === 'SEARCH') {
       this.#renderSearchVideo(savedVideoList);
-      return;
     }
-
-    this.#renderSavedVideo(savedVideoList);
   }
 
   #renderSearchVideo(savedVideoList) {
@@ -83,8 +80,6 @@ class VideoComponent {
       this.$saveButton.setAttribute('hidden', true);
     }
   }
-
-  #renderSavedVideo() {}
 
   #generateSearchVideoTemplate() {
     const { video } = this.props;

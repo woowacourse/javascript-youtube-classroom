@@ -28,7 +28,12 @@ class AppComponent {
       this.#renderCurrentAppSection(stateValue);
     }
     if (stateKey === STATE_STORE_KEY.SAVED_VIDEO) {
-      this.#renderSavedVideo(stateValue);
+      const watchedVideoList = getState(STATE_STORE_KEY.WATCHED_VIDEO);
+      this.#renderSavedVideo(stateValue, watchedVideoList);
+    }
+    if (stateKey === STATE_STORE_KEY.WATCHED_VIDEO) {
+      const savedVideoResult = getState(STATE_STORE_KEY.SAVED_VIDEO);
+      this.#renderSavedVideo(savedVideoResult, stateValue);
     }
   }
 
@@ -67,7 +72,8 @@ class AppComponent {
     this.#renderCurrentAppSection(initialCurrentAppSection);
 
     const initialSavedVideoIdList = subscribe(STATE_STORE_KEY.SAVED_VIDEO, this);
-    this.#renderSavedVideo(initialSavedVideoIdList);
+    const initialWatchedVideoList = subscribe(STATE_STORE_KEY.WATCHED_VIDEO, this);
+    this.#renderSavedVideo(initialSavedVideoIdList, initialWatchedVideoList);
 
     const initialIsSavedVideoWaiting = subscribe(STATE_STORE_KEY.IS_SAVED_VIDEO_WAITING, this);
     this.#renderSkeletonUI(initialIsSavedVideoWaiting);
@@ -82,9 +88,9 @@ class AppComponent {
     }
   }
 
-  #renderSavedVideo(savedVideoResult) {
-    this.watchVideoComponent.renderSavedVideoList(savedVideoResult);
-    this.watchedVideoComponent.renderSavedVideoList(savedVideoResult);
+  #renderSavedVideo(savedVideoResult, initialWatchedVideoList) {
+    this.watchVideoComponent.renderSavedVideoList(savedVideoResult, initialWatchedVideoList);
+    this.watchedVideoComponent.renderSavedVideoList(savedVideoResult, initialWatchedVideoList);
   }
 
   #renderSkeletonUI(initialIsSavedVideoWaiting) {

@@ -1,5 +1,7 @@
 import { CUSTOM_EVENT_KEY } from '../constants/events';
+import { WEB_STORE_KEY } from '../constants/webStore';
 import { dispatch } from '../modules/eventFactory';
+import webStore from '../modules/webStore';
 import { isFirstSearchByKeyword } from '../utils/validation';
 import SkeletonListComponent from './SkeletonListComponent';
 import VideoComponent from './VideoComponent';
@@ -53,24 +55,31 @@ class VideoListComponent {
     ];
   }
 
-  renderSavedVideoList({ videoList: savedVideoList, prevVideoListLength }) {
-    if (isFirstSearchByKeyword(prevVideoListLength)) {
-      this.#videoComponents = [];
-      this.$videoList.innerHTML = '';
-    }
+  renderSavedVideoList({ videoList: savedVideoList }, watchedVideoIdList) {
+    this.$videoList.innerHTML = '';
 
-    this.#videoComponents = [
-      ...this.#videoComponents,
-      ...savedVideoList.slice(prevVideoListLength).map(
-        (savedVideo, idx) =>
-          new VideoComponent(this.$videoList, {
-            video: savedVideo,
-            observer: null,
-            notLazyLoad: idx < 10,
-            type: this.#componentType,
-          })
-      ),
-    ];
+    const { watchVideoList, watchedVideoList } = savedVideoList.reduce(
+      (prev, savedVideo) => {
+        const { videoId } = savedVideo.getVideoInfo();
+        const isWatched = watchedVideoIdList.includes(videoId);
+
+        return {
+          ...prev,
+          watchVideoList: isWatched ? prev.watchVideoList : [...prev.watchVideoList, savedVideo],
+          watchedVideoList: isWatched
+            ? [...prev.watchedVideoList, savedVideo]
+            : prev.watchedVideoList,
+        };
+      },
+      {
+        watchVideoList: [],
+        watchedVideoList: [],
+      }
+    );
+
+    this.#videoComponents = this.#generateVideoComponents(
+      this.#componentType === 'WATCH' ? watchVideoList : watchedVideoList
+    );
   }
 
   renderSkeletonVideoList(isWaitingResponse) {
@@ -96,6 +105,18 @@ class VideoListComponent {
 
   #generateTemplate() {
     return `<ul class="video-list"></ul>`;
+  }
+
+  #generateVideoComponents(savedVideoList) {
+    return savedVideoList.map(
+      (savedVideo, idx) =>
+        new VideoComponent(this.$videoList, {
+          video: savedVideo,
+          observer: null,
+          notLazyLoad: idx < 10,
+          type: this.#componentType,
+        })
+    );
   }
 
   #bindEventHandler() {
@@ -147,7 +168,12 @@ class VideoListComponent {
       });
     }
     if (className.includes('video-item__check-button')) {
-      dispatch(CUSTOM_EVENT_KEY.CLICK_SAVED_CHECK_BUTTON);
+      dispatch(CUSTOM_EVENT_KEY.CLICK_SAVED_CHECK_BUTTON, {
+        detail: {
+          savedVideoId: videoId,
+          element: e.target,
+        },
+      });
     }
   };
 }

@@ -1,4 +1,6 @@
 import { STATE_STORE_KEY } from '../constants/stateStore';
+import { WEB_STORE_KEY } from '../constants/webStore';
+import webStore from './webStore';
 
 const getInitialState = () => ({
   [STATE_STORE_KEY.IS_MODAL_SHOW]: false,
@@ -15,6 +17,7 @@ const getInitialState = () => ({
   },
   [STATE_STORE_KEY.CURRENT_APP_SECTION]: 'watch-video-section-button',
   [STATE_STORE_KEY.IS_SAVED_VIDEO_WAITING]: false,
+  [STATE_STORE_KEY.WATCHED_VIDEO]: webStore.getArrayData(WEB_STORE_KEY.WATCHED_VIDEO_LIST_KEY),
 });
 const getInitialSubcribeList = () => ({
   [STATE_STORE_KEY.IS_MODAL_SHOW]: new Set(),
@@ -23,6 +26,7 @@ const getInitialSubcribeList = () => ({
   [STATE_STORE_KEY.SAVED_VIDEO]: new Set(),
   [STATE_STORE_KEY.CURRENT_APP_SECTION]: new Set(),
   [STATE_STORE_KEY.IS_SAVED_VIDEO_WAITING]: new Set(),
+  [STATE_STORE_KEY.WATCHED_VIDEO]: new Set(),
 });
 export const { subscribe, setState, getState } = (function () {
   const state = getInitialState();

@@ -6,7 +6,13 @@ export default {
     const currentData = this.getArrayData(key);
     localStorage.setItem(key, JSON.stringify([...currentData, data]));
   },
-  setData(key, data) {
-    localStorage.setItem(key, JSON.stringify(data));
+  setData(key, dataOrFunction) {
+    if (typeof dataOrFunction === 'function') {
+      const currentData = this.getArrayData(key);
+      localStorage.setItem(key, JSON.stringify(dataOrFunction(currentData)));
+    }
+    if (typeof dataOrFunction !== 'function') {
+      localStorage.setItem(key, JSON.stringify(dataOrFunction));
+    }
   },
 };
