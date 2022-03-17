@@ -68,6 +68,22 @@ export default class VideoCard extends Component {
       );
       webStore.save(payload);
       this.target.remove();
+
+      const watchedVideo = payload.filter(video => video.watched === true);
+
+      if (watchedVideo.length === 0) {
+        rootStore.setState({ hasWatchedVideo: false });
+      }
+
+      if (payload.length - watchedVideo.length === 0) {
+        rootStore.setState({ hasWatchingVideo: false });
+      }
+
+      // @TODO: 밑에 방식으로 안 되는 이유
+      // rootStore.setState({
+      //   hasWatchedVideo: watchedVideo.length !== 0,
+      //   hasWatchingVideo: payload.length - watchedVideo.length !== 0,
+      // });
     }
   }
 
@@ -81,7 +97,13 @@ export default class VideoCard extends Component {
       return video;
     });
     webStore.save(payload);
-    this.setState({ watched: !this.state.watched });
+    this.target.remove();
+    const watchedVideo = payload.filter(video => video.watched === true);
+
+    rootStore.setState({
+      hasWatchedVideo: watchedVideo.length !== 0,
+      hasWatchingVideo: payload.length - watchedVideo.length !== 0,
+    });
   }
 
   handleSave() {
