@@ -66,7 +66,7 @@
 }
 
 .search-result .no-result {
-  text-align: center;
+    text-align: center;
 }
 
 .search-result.search-result--no-result {
@@ -95,6 +95,10 @@
     flex-wrap: wrap;
     gap: 32px 20px;
     overflow-y: scroll;
+}
+
+.video-list::-webkit-scrollbar {
+    display: none; 
 }
 
 .video-item {

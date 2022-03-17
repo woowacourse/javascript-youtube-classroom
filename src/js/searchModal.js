@@ -1,13 +1,14 @@
 /* eslint-disable max-lines-per-function */
-import { $, removeChildren } from './utils/dom';
+import { $ } from './utils/dom';
 import {
   MAX_SAVABLE_VIDEOS_COUNT,
   MAX_RENDER_VIDEOS_COUNT,
   LOCAL_STORAGE_VIDEO_LIST_KEY,
-  SERVER_URL,
 } from './constants/constant';
 import VideoItem from './videoItem';
 import { isInputValueEmpty } from './utils/checkvalue';
+import { renderSkeletonItems, removeSkeleton } from './views/render';
+import searchResultRequest from './utils/request';
 
 class SearchModal {
   nextPageToken = null;
@@ -16,9 +17,22 @@ class SearchModal {
     this.$modal = $('.search-modal');
     this.$searchKeyWordInput = $('#search-input-keyword', this.$modal);
     this.$button = $('#search-button', this.$modal);
-    this.$searchResult = $('.search-result');
-    this.$videoList = $('.video-list', this.$searchResult);
+    this.$modalSearchResult = $('.modal__search-result');
+    this.$modalVideoList = $('.video-list', this.$modalSearchResult);
     this.addEvent();
+  }
+
+  addEvent() {
+    this.$button.addEventListener('click', this.handleClickButton.bind(this));
+    this.$modalVideoList.addEventListener('scroll', this.handleScroll.bind(this));
+  }
+
+  checkSearchResult(searchResult) {
+    if (searchResult === null) {
+      return [];
+    }
+    const videos = searchResult.items.map(item => new VideoItem(item));
+    return videos;
   }
 
   renderVideoItems(videos) {
@@ -41,55 +55,27 @@ class SearchModal {
 
     template.childNodes.forEach($el => {
       $el.addEventListener('click', this.handleClickSaveButton.bind(this));
-      this.$videoList.insertAdjacentElement('beforeend', $el);
+      this.$modalVideoList.insertAdjacentElement('beforeend', $el);
     });
   }
 
-  renderSkeletonItems(videoCount) {
-    const skeletonListHtmlString = [...Array(videoCount).keys()]
-      .map(
-        () => `
-          <div class="skeleton">
-            <div class="image"></div>
-            <p class="line"></p>
-            <p class="line"></p>
-          </div>
-        `
-      )
-      .join('');
-
-    this.$videoList.insertAdjacentHTML('beforeend', skeletonListHtmlString);
-  }
-
-  addEvent() {
-    this.$button.addEventListener('click', this.handleClickButton.bind(this));
-    this.$videoList.addEventListener('scroll', this.handleScroll.bind(this));
-  }
-
-  checkSearchResult(searchResult) {
-    if (searchResult === null) {
-      return [];
-    }
-    const videos = searchResult.items.map(item => new VideoItem(item));
-    return videos;
-  }
-
   async handleClickButton() {
-    removeChildren(this.$videoList);
+    this.$modalSearchResult.classList.add('search-result--no-result');
+    this.$modalVideoList.replaceChildren();
     const searchKeyWord = this.$searchKeyWordInput.value;
     if (isInputValueEmpty(searchKeyWord)) {
       return;
     }
-    this.renderSkeletonItems(MAX_RENDER_VIDEOS_COUNT);
-    const searchResult = await this.searchResultRequest(searchKeyWord);
-    this.removeSkeleton();
+    renderSkeletonItems(MAX_RENDER_VIDEOS_COUNT, this.$modalVideoList);
+    const searchResult = await searchResultRequest(searchKeyWord, this.nextPageToken);
+    removeSkeleton(this.$modalVideoList);
     const videos = this.checkSearchResult(searchResult);
 
     if (videos.length === 0) {
-      this.$searchResult.classList.add('search-result--no-result');
+      this.$modalSearchResult.classList.add('search-result--no-result');
       return;
     }
-    this.$searchResult.classList.remove('search-result--no-result');
+    this.$modalSearchResult.classList.remove('search-result--no-result');
     this.renderVideoItems(videos);
     this.nextPageToken = searchResult.nextPageToken;
   }
@@ -97,12 +83,13 @@ class SearchModal {
   async handleScroll() {
     const title = this.$searchKeyWordInput.value;
     const isScrollEnd =
-      this.$videoList.scrollHeight - this.$videoList.scrollTop === this.$videoList.clientHeight;
+      this.$modalVideoList.scrollHeight - this.$modalVideoList.scrollTop ===
+      this.$modalVideoList.clientHeight;
 
-    if (isScrollEnd && this.$videoList.scrollTop !== 0) {
-      this.renderSkeletonItems(MAX_RENDER_VIDEOS_COUNT);
-      const searchResult = await this.searchResultRequest(title);
-      this.removeSkeleton();
+    if (isScrollEnd && this.$modalVideoList.scrollTop !== 0) {
+      renderSkeletonItems(MAX_RENDER_VIDEOS_COUNT, this.$modalVideoList);
+      const searchResult = await searchResultRequest(title, this.nextPageToken);
+      removeSkeleton(this.$modalVideoList);
       if (searchResult === null) {
         return;
       }
@@ -129,36 +116,6 @@ class SearchModal {
     }
     localStorage.setItem(LOCAL_STORAGE_VIDEO_LIST_KEY, JSON.stringify([...videoList, videoId]));
     return true;
-  }
-
-  removeSkeleton() {
-    [...this.$videoList.querySelectorAll('.skeleton')].forEach($el => $el.remove());
-  }
-
-  async searchResultRequest(query) {
-    try {
-      const url = new URL(SERVER_URL);
-      const parameters = new URLSearchParams({
-        part: 'snippet',
-        type: 'video',
-        maxResults: MAX_RENDER_VIDEOS_COUNT,
-        regionCode: 'kr',
-        safeSearch: 'strict',
-        pageToken: this.nextPageToken || '',
-        q: query,
-      });
-      url.search = parameters.toString();
-
-      const response = await fetch(url);
-      if (!response.ok) {
-        throw new Error(response.ok);
-      }
-      const body = await response.json();
-      return body;
-    } catch (error) {
-      console.error(error);
-      return null;
-    }
   }
 }
 

@@ -18,7 +18,7 @@ body {
 
 .nav {
     display: flex;
-    justify-content: center;
+    justify-content: space-between;
 }
 
 .button {
@@ -39,4 +39,57 @@ body {
 
 .nav__button:hover {
     background: #ebebeb;
+}
+
+.nav__no-watched-button {
+    width: 117.17px;
+    height: 36px;
+    left: 0px;
+    top: 0px;
+
+    background: #F5F5F5;
+    border: 1px solid rgba(0, 0, 0, 0.12);
+    box-sizing: border-box;
+    border-radius: 4px 0px 0px 4px;
+}
+
+.nav__watched-button {
+    width: 117.17px;
+    height: 36px;
+    left: 115.83px;
+    top: 0px;
+    
+    border: 1px solid rgba(0, 0, 0, 0.12);
+    box-sizing: border-box;
+    border-radius: 0px 4px 4px 0px;
+}
+
+.nav__button-container {
+    display: flex;
+}
+
+.main__search-result {
+    margin-top: 30px;
+}
+
+.buttons-container {
+    display: flex;
+    justify-content: end;
+}
+
+.buttons-container {
+    display: flex;
+    justify-content: end;
+}
+
+.main-videos-button:first-child {
+    margin-right: 8px;
+}
+
+.main-videos-button {
+    padding: 10px;
+}
+
+.button-active {
+    background: #E0F8F9;
 }
