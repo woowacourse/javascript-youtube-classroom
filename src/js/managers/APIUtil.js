@@ -17,7 +17,13 @@ const APIUtil = {
   },
 
   createQueryString(endPoint, params) {
-    return endPoint + '?' + new URLSearchParams(params).toString();
+    return (
+      endPoint +
+      '?' +
+      Object.entries(params)
+        .map(pair => pair[0] + '=' + pair[1])
+        .join('&')
+    );
   },
 };
 
