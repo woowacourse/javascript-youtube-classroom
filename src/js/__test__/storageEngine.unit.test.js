@@ -56,6 +56,6 @@ describe('저장 기능 테스트', () => {
     // 삭제한다.
     storageEngine.removeVideo(newVideoId);
     // 없는지 확인한다.
-    expect(storageEngine.getSpecificVideo(videoId)).toBeUndefined();
+    expect(storageEngine.getSpecificVideo(newVideoId)).toBeUndefined();
   });
 });

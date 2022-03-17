@@ -9,15 +9,26 @@ export default class StorageEngine {
     return JSON.parse(localStorage.getItem(STORAGE_KEY_SAVED_VIDEOS));
   }
 
-  saveVideo(videoId) {
+  saveVideo(newVideoId) {
     const savedVideos = this.getSavedVideos() ?? [];
 
     if (savedVideos.length >= MAX_SAVED_VIDEOS_COUNT)
       throw new Error(ERROR_MESSAGE.NO_MORE_VIDEO_SAVABLE);
 
-    const newVideo = { videoId };
+    const newVideo = { videoId: newVideoId };
 
     localStorage.setItem(STORAGE_KEY_SAVED_VIDEOS, JSON.stringify([...savedVideos, newVideo]));
+  }
+
+  removeVideo(newVideoId) {
+    const savedVideos = this.getSavedVideos() ?? [];
+
+    if (savedVideos.length <= 0) throw new Error(ERROR_MESSAGE.NO_REMOVABLE_VIDEO_EXIST);
+
+    localStorage.setItem(
+      STORAGE_KEY_SAVED_VIDEOS,
+      JSON.stringify(savedVideos.filter(({ videoId }) => videoId !== newVideoId))
+    );
   }
 
   getSpecificVideo(specificVideoId) {
