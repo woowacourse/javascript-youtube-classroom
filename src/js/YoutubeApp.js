@@ -42,7 +42,32 @@ export default class YoutubeApp {
     document
       .querySelector(".dimmer")
       .addEventListener("click", this.#onClickDimmer);
+    document
+      .querySelector(".save-video-container__video-list")
+      .addEventListener("click", this.#onClickDeleteButton);
   }
+
+  #onClickDeleteButton = ({ target }) => {
+    if (!target.matches(".video-item__delete-video-button")) return;
+
+    const targetGrandParentElement = target.closest(
+      ".save-video-container__video-list"
+    );
+    const targetParentElement = target.closest(".save-video-item");
+
+    if (
+      !confirm(
+        `${targetParentElement
+          .querySelector(".video-item__title")
+          .textContent.trim()}\n영상을 정말 삭제하시겠습니까?`
+      )
+    ) {
+      return;
+    }
+
+    videoStorage.removeVideo(getTargetData(targetParentElement));
+    targetGrandParentElement.removeChild(targetParentElement);
+  };
 
   #renderSavedVideo() {
     const saveVideoData = videoStorage.getVideo();

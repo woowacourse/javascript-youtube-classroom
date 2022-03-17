@@ -18,6 +18,16 @@ const videoStorage = {
     storage = [...storage, data];
     localStorage.setItem("saveVideoData", JSON.stringify(storage));
   },
+  removeVideo(removeData) {
+    let storage = this.getVideo();
+
+    const removeIndex = storage.findIndex(
+      (data) => data.videoId === removeData.videoId
+    );
+
+    storage.splice(removeIndex, 1);
+    localStorage.setItem("saveVideoData", JSON.stringify(storage));
+  },
   isSavedVideoId(responseId) {
     const storage = this.getVideo();
 

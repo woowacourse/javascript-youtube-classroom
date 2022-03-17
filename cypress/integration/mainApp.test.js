@@ -21,7 +21,9 @@ describe("사용자가 저장한 비디오 목록이 존재하는지 확인한�
   });
 });
 
-it("삭제 이모지를 클릭할 경우 정말 삭제할지 확인한다.", () => {
+it("삭제 이모지를 클릭할 경우 정말 삭제할지 확인하는 메시지를 보여준 후 확인 버튼을 누르면 해당하는 영상이 제거된다.", () => {
+  cy.visit("./index.html");
+
   videoStorage.addVideo({
     videoId: "kkojaeId",
     thumbnailUrl: "https:",
@@ -30,7 +32,13 @@ it("삭제 이모지를 클릭할 경우 정말 삭제할지 확인한다.", () 
     publishDate: "2022년 3월 3일",
   });
 
-  cy.visit("./index.html");
+  videoStorage.addVideo({
+    videoId: "usageId",
+    thumbnailUrl: "https:",
+    title: "this is title",
+    channelName: "kkojae's channel",
+    publishDate: "2022년 3월 3일",
+  });
 
   const confirmStub = cy.stub();
   cy.on("window:confirm", confirmStub);
@@ -39,6 +47,8 @@ it("삭제 이모지를 클릭할 경우 정말 삭제할지 확인한다.", () 
     .eq(0)
     .click()
     .then(() => {
-      expect(confirmStub).to.be.called();
+      expect(confirmStub).to.be.called;
     });
+
+  cy.get(".video-item__delete-video-button").should("have.length", 1);
 });
