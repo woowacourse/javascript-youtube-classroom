@@ -1,13 +1,14 @@
 import storage from '../storage/storage.js';
 import watchedVideoInterface from '../ui/watchedVideoInterface.js';
-import { $ } from '../util/general.js';
-import { clearVideoItems, removeCheckedVideoItem } from '../util/render.js';
+import { $, confrimVideoDelete } from '../util/general.js';
+import { clearVideoItems, removeCheckedVideoItem, removeDeleteVideoItem } from '../util/render.js';
 export class WatchedVideoEventHandler {
   handleWatchedVideo = () => {
     this.toggleWatchedVideoContent();
     clearVideoItems('.watched-video-item');
     watchedVideoInterface.renderWatchedVideos();
   };
+
   toggleWatchedVideoContent = () => {
     if (!$('.watch-later-videos').classList.contains('hidden')) {
       $('.watch-later-videos').classList.toggle('hidden');
@@ -16,6 +17,7 @@ export class WatchedVideoEventHandler {
       $('.watched-videos').classList.toggle('hidden');
     }
   };
+
   handledWatchedButtonClick = e => {
     if (!e.target.classList.contains('video-item__watched-button')) {
       return;
@@ -25,5 +27,19 @@ export class WatchedVideoEventHandler {
       '.watched-video-item',
       e.target.parentElement.parentElement.dataset.videoId,
     );
+  };
+
+  handleDeleteButtonClick = e => {
+    console.log(e.target.classList);
+    if (!e.target.classList.contains('video-item__delete-button')) {
+      return;
+    }
+    if (confrimVideoDelete()) {
+      storage.deleteSavedVideo(e.target.parentElement.parentElement.dataset.videoId);
+      removeDeleteVideoItem(
+        '.watched-video-item',
+        e.target.parentElement.parentElement.dataset.videoId,
+      );
+    }
   };
 }

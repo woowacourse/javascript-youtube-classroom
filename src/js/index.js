@@ -50,6 +50,10 @@ export default function App() {
     'click',
     handleWatchedVideoEvent.handledWatchedButtonClick,
   );
+  $('.watched-videos-container ul').addEventListener(
+    'click',
+    handleWatchedVideoEvent.handleDeleteButtonClick,
+  );
 }
 
 App();
