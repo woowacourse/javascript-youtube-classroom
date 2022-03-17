@@ -17,10 +17,28 @@ export default class MainView {
   }
 
   bindWillSeeButton(callback) {
-    this.$willSeeButton.addEventListener('click', callback);
+    this.$willSeeButton.addEventListener('click', event => {
+      this.toggleStoreButtons(event.target);
+      callback(event.target);
+    });
   }
 
   bindSawButton(callback) {
-    this.$sawButton.addEventListener('click', callback);
+    this.$sawButton.addEventListener('click', event => {
+      this.toggleStoreButtons(event.target);
+      callback(event.target);
+    });
+  }
+
+  toggleStoreButtons(button) {
+    button.disabled = true;
+    button.classList.add('nav__button-clicked');
+    if (button === this.$willSeeButton) {
+      this.$sawButton.disabled = false;
+      this.$sawButton.classList.remove('nav__button-clicked');
+    } else {
+      this.$willSeeButton.disabled = false;
+      this.$willSeeButton.classList.remove('nav__button-clicked');
+    }
   }
 }
