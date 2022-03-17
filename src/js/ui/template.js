@@ -65,57 +65,51 @@ const notFoundTemplate = `
   <div>
 `;
 
-const getVideoTemplate = videos => {
-  const template = videos
-    .map(video => {
-      const {
-        videoId,
-        publishedAt,
-        channelId,
-        title,
-        thumbnailURL,
-        channelTitle,
-      } = video;
-      return `
-        <li class="save-video-item">
-          <a
-            href="http://www.youtube.com/watch?v=${videoId}"
-            target="_blank"
-          >
-            <img
-              src=${thumbnailURL}
-              alt="video-item-thumbnail" class="video-item__thumbnail">
-          </a>
-          <a
-            href="https://www.youtube.com/watch?v=${videoId}"
-            target="_blank"
-          >
-            <h4 class="video-item__title">${title}</h4>
-          </a>
-          <a href="https://www.youtube.com/channel/${channelId}" target="_blank">
-            <p class="video-item__channel-name">${channelTitle}</p>
-          </a>
-          <p class="video-item__published-date">
-            ${convertToKoreaLocaleDate(publishedAt)}
-          </p>
-          <button
-            type="button"
-            data-video-id=${videoId}
-            onclick="deleteVideo(event);"
-            class="save-video-item__button button"
-            title="삭제"
-          >🗑️</button>
-          <button
-            type="button"
-            data-video-id=${videoId}
-            onclick="reverseWatchVideo(event);"
-            class="save-video-item__button button"
-            title="체크"
-          >✅</button>
-        </li>
-      `;
-    })
-    .join('');
+const getVideoTemplate = video => {
+  const { videoId, publishedAt, channelId, title, thumbnailURL, channelTitle } =
+    video;
+  return `
+    <li class="save-video-item">
+      <a
+        href="http://www.youtube.com/watch?v=${videoId}"
+        target="_blank"
+      >
+        <img
+          src=${thumbnailURL}
+          alt="video-item-thumbnail" class="video-item__thumbnail">
+      </a>
+      <a
+        href="https://www.youtube.com/watch?v=${videoId}"
+        target="_blank"
+      >
+        <h4 class="video-item__title">${title}</h4>
+      </a>
+      <a href="https://www.youtube.com/channel/${channelId}" target="_blank">
+        <p class="video-item__channel-name">${channelTitle}</p>
+      </a>
+      <p class="video-item__published-date">
+        ${convertToKoreaLocaleDate(publishedAt)}
+      </p>
+      <button
+        type="button"
+        data-video-id=${videoId}
+        onclick="deleteVideo(event);"
+        class="save-video-item__button button"
+        title="삭제"
+      >🗑️</button>
+      <button
+        type="button"
+        data-video-id=${videoId}
+        onclick="reverseWatchVideo(event);"
+        class="save-video-item__button button"
+        title="체크"
+      >✅</button>
+    </li>
+  `;
+};
+
+const getAllVideoTemplate = videos => {
+  const template = videos.map(video => getVideoTemplate(video)).join('');
   return template;
 };
 
@@ -123,5 +117,6 @@ export {
   skeletonTemplate,
   getFoundResultTemplate,
   notFoundTemplate,
+  getAllVideoTemplate,
   getVideoTemplate,
 };

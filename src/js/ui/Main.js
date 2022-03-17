@@ -1,13 +1,13 @@
 import { store } from '../domain/store';
 import { $ } from '../utils/dom';
 import { MESSAGE, STATE, STORAGE_KEY } from '../constants';
-import { getVideoTemplate } from './template';
+import { getAllVideoTemplate, getVideoTemplate } from './template';
 
 export default class Main {
   constructor() {
     this.tab = STATE.WILL;
     this.$videoContainer = $('.video-container');
-    this.renderVideo(this.tab);
+    this.renderVideos(this.tab);
     this.addNavButtonClickEvent();
   }
 
@@ -19,7 +19,35 @@ export default class Main {
     );
   }
 
-  renderVideo(watched) {
+  createVideoList(videoList) {
+    this.$videoContainer.replaceChildren();
+
+    const $saveVideoList = document.createElement('ul');
+    $saveVideoList.classList.add('save-video-list');
+    $saveVideoList.insertAdjacentHTML('beforeend', videoList);
+
+    this.$videoContainer.appendChild($saveVideoList);
+  }
+
+  addVideo(video) {
+    const $saveVideoList = $('.save-video-list');
+    const videoTemplate = getVideoTemplate(video);
+    if ($saveVideoList) {
+      $saveVideoList.insertAdjacentHTML('beforeend', videoTemplate);
+      return;
+    }
+    this.createVideoList(videoTemplate);
+  }
+
+  removeVideo(video) {
+    const $saveVideoList = $('.save-video-list');
+    $saveVideoList.removeChild(video.parentNode);
+    if (!$saveVideoList.firstElementChild) {
+      this.renderNoSavedVideo();
+    }
+  }
+
+  renderVideos(watched) {
     const saveVideos = store.getLocalStorage(STORAGE_KEY);
     const filteredVideos = saveVideos?.filter(
       video => video.watched === watched,
@@ -28,15 +56,7 @@ export default class Main {
       this.renderNoSavedVideo();
       return;
     }
-
-    this.$videoContainer.replaceChildren();
-    const $saveVideoList = document.createElement('ul');
-    $saveVideoList.classList.add('save-video-list');
-    $saveVideoList.insertAdjacentHTML(
-      'beforeend',
-      getVideoTemplate(filteredVideos),
-    );
-    this.$videoContainer.appendChild($saveVideoList);
+    this.createVideoList(getAllVideoTemplate(filteredVideos));
   }
 
   addNavButtonClickEvent() {
@@ -48,14 +68,14 @@ export default class Main {
         button.classList.toggle('clicked'),
       );
       this.tab = STATE.WILL;
-      this.renderVideo(this.tab);
+      this.renderVideos(this.tab);
     });
     $watchedVideoButton.addEventListener('click', () => {
       [$willWatchVideoButton, $watchedVideoButton].forEach(button =>
         button.classList.toggle('clicked'),
       );
       this.tab = STATE.WATCHED;
-      this.renderVideo(this.tab);
+      this.renderVideos(this.tab);
     });
   }
 }

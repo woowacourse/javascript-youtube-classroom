@@ -21,7 +21,7 @@ class App {
         store.setLocalStorage(STORAGE_KEY, saveData);
         showExceptionSnackBar(MESSAGE.SAVE_COMPLETE);
         e.target.setAttribute('hidden', true);
-        this.main.renderVideo(this.tab);
+        this.main.addVideo(saveData);
       });
     } catch ({ message }) {
       showExceptionSnackBar(message);
@@ -42,7 +42,7 @@ class App {
 
     showExceptionSnackBar(MESSAGE.MODIFY_COMPLETE);
 
-    this.main.renderVideo(this.main.tab);
+    this.main.removeVideo(e.target);
   }
 
   deleteVideoHandler(e) {
@@ -59,7 +59,7 @@ class App {
 
     showExceptionSnackBar(MESSAGE.MODIFY_COMPLETE);
 
-    this.main.renderVideo(this.main.tab);
+    this.main.removeVideo(e.target);
   }
 }
 
