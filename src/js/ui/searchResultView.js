@@ -1,4 +1,4 @@
-import { $, $$ } from '../util/general.js';
+import { $, $$ } from '../util/dom.js';
 import storage from '../storage/storage.js';
 import { SEARCH_RESULT_COUNT } from '../constants/constants.js';
 
