@@ -5,23 +5,31 @@ import { $ } from '../util/general.js';
 
 export class SearchEventHandler {
   youtubeMachine = new YoutubeMachine();
-  handleSearch = () => {
+  handleSearch = async () => {
     try {
       this.youtubeMachine.resetSearchResult();
       searchModalInterface.resetVideoList();
+
       const searchInput = $('#search-input-keyword').value.trim();
-      searchModalInterface.renderSkeletonUI();
       this.youtubeMachine.search(searchInput);
+
+      searchModalInterface.renderSkeletonUI();
+
+      const response = await this.youtubeMachine.callSearchAPI();
+      this.youtubeMachine.updateSearchResult(response);
+
       searchModalInterface.renderSearchResult(this.youtubeMachine.searchResult);
     } catch (error) {
       alert(error.message);
     }
   };
 
-  handleScroll = e => {
+  handleScroll = async e => {
     if (e.target.scrollHeight - e.target.scrollTop === e.target.clientHeight) {
       searchModalInterface.renderSkeletonUI();
-      this.youtubeMachine.searchScrollingResult();
+      const response = await this.youtubeMachine.callSearchAPI();
+
+      this.youtubeMachine.updateSearchResult(response);
       searchModalInterface.renderNextSearchResult(this.youtubeMachine.searchResult);
     }
   };
@@ -31,7 +39,10 @@ export class SearchEventHandler {
       return;
     }
     e.target.closest('button').hidden = true;
-    const { videoId } = e.target.parentElement.dataset;
-    storage.saveVideo(videoId);
+    this.youtubeMachine.searchResult.items.forEach(item => {
+      if (item.id.videoId === e.target.parentElement.dataset.videoId) {
+        storage.saveVideo(item);
+      }
+    });
   };
 }

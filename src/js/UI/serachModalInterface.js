@@ -65,18 +65,14 @@ const searchModalInterface = {
     $('.video-list').classList.add('hide');
   },
   renderSearchResult(response) {
-    response.then(data => {
-      if (data.items.length === 0) {
-        this.renderNoResult();
-        return;
-      }
-      this.renderVideoItems(data);
-    });
+    if (response.length === 0) {
+      this.renderNoResult();
+      return;
+    }
+    this.renderVideoItems(response);
   },
   renderNextSearchResult(response) {
-    response.then(data => {
-      this.renderVideoItems(data);
-    });
+    this.renderVideoItems(response);
   },
 };
 
