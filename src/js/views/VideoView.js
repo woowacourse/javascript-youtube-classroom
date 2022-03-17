@@ -43,13 +43,27 @@ export default class VideoView {
 
   bindSaveVideo(handler) {
     this.#$container.addEventListener('click', (e) => {
-      const videoId = e.target.dataset.videoId;
+      const element = e.target;
+      const children = element.parentNode.children;
+      const videoData = this.#makeVideoDataObject(element, children);
 
-      if (videoId) {
-        handler(videoId);
+      if (videoData.id) {
+        handler(videoData);
         e.target.classList.add('saved');
       }
     });
+  }
+
+  #makeVideoDataObject(element, children) {
+    return {
+      id: element.dataset.videoId,
+      thumbnail: children[0].getAttribute('src'),
+      title: children[1].currentSrc,
+      channelTitle: children[2].textContent,
+      date: children[3].textContent,
+      saved: children[4].textContent,
+      watched: false,
+    };
   }
 
   async #findObserverElement() {

@@ -14,7 +14,8 @@ import SavedVideoView from '../views/SavedVideoView.js';
 const youtubeAPI = new YoutubeAPI();
 
 const polishVideos = (videos) => {
-  const savedVideoIds = UserStorage.getVideoIds();
+  const savedVideoDataList = UserStorage.getVideoData();
+  const savedVideoIds = savedVideoDataList.map((video) => video.id);
 
   return videos.map(({ id, snippet }) => ({
     id: id.videoId,
@@ -27,7 +28,7 @@ const polishVideos = (videos) => {
 };
 
 const keywordInputView = new KeywordInputView();
-const savedVideoView = new SavedVideoView();
+const savedVideoView = new SavedVideoView(UserStorage.getVideoData());
 const searchModalView = new SearchModalView();
 const videoView = new VideoView(async () => polishVideos(await youtubeAPI.getVideosInfo()));
 
@@ -44,9 +45,9 @@ const handleKeywordInputSubmit = async (keyword) => {
   }
 };
 
-const handleSaveVideoButtonClick = (videoId) => {
+const handleSaveVideoButtonClick = (videoData) => {
   try {
-    UserStorage.addVideoId(videoId);
+    UserStorage.addVideoData(videoData);
   } catch (error) {
     alert(error.message);
   }
