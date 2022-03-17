@@ -7,22 +7,22 @@ const storage = {
   getLocalStorage() {
     return JSON.parse(localStorage.getItem('data'));
   },
-  updateLocalStorage(videoId) {
-    const savedStorage = this.getLocalStorage();
-    if (savedStorage.length > MAX_VIDEO_COUNT) {
+  updateLocalStorage(videoData) {
+    const savedVideoData = this.getLocalStorage();
+    if (savedVideoData.length > MAX_VIDEO_COUNT) {
       return;
     }
-    if (savedStorage.some((savedId) => savedId === videoId)) {
+    if (savedVideoData.some((video) => video.videoId === videoData.videoId)) {
       return;
     }
-    this.setLocalStorage([...savedStorage, videoId]);
+    this.setLocalStorage([...savedVideoData, videoData]);
   },
-  saveVideo(videoId) {
+  saveVideo(videoData) {
     if (this.getLocalStorage()) {
-      this.updateLocalStorage(videoId);
+      this.updateLocalStorage(videoData);
       return;
     }
-    this.setLocalStorage([videoId]);
+    this.setLocalStorage([videoData]);
   },
 };
 

@@ -11,8 +11,11 @@ export default function App() {
   const youtubeSearch = new YoutubeSearch();
 
   const initSavedVideo = () => {
-    if (storage.getLocalStorage()) {
-      console.log('store');
+    const savedVideos = storage.getLocalStorage();
+    console.log(savedVideos);
+    if (savedVideos) {
+      $('.video__container').innerHTML = '<ul class="saved__video__list"></ul>';
+      searchResultView.renderSavedVideos(savedVideos);
     }
   };
 
@@ -53,8 +56,16 @@ export default function App() {
     const isSaveButtonClick = e.target.classList.contains('video-item__save-button');
     if (isSaveButtonClick) {
       e.target.hidden = true;
-      const selectedVideoId = e.target.closest('li').dataset.videoId;
-      storage.saveVideo(selectedVideoId);
+      const selectedVideo = e.target.closest('li');
+      const videoData = {
+        videoId: selectedVideo.dataset.videoId,
+        thumbnails: selectedVideo.querySelector('.video-item__thumbnail').src,
+        title: selectedVideo.querySelector('.video-item__title').textContent,
+        channelTitle: selectedVideo.querySelector('.video-item__channel-name').textContent,
+        publishTime: selectedVideo.querySelector('.video-item__published-date').textContent,
+      };
+      storage.saveVideo(videoData);
+      searchResultView.renderSavedVideos(videoData);
     }
   };
 

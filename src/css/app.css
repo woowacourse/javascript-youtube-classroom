@@ -47,6 +47,13 @@ body {
   align-items: center;
 }
 
+.saved__video__list {
+  display: flex;
+  /* flex-direction: row; */
+  flex-wrap: wrap;
+  gap: 32px 20px;
+}
+
 .empty__video__image {
   width: 50vw;
   height: 50vh;

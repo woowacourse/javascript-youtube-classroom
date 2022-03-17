@@ -29,6 +29,22 @@ const template = {
       </li>
   `;
   },
+  savedVideoItem: (item) => {
+    return `
+      <li class="video-item" data-video-id='${item.videoId}'>
+        <img
+          src='${item.thumbnails}'
+          alt="video-item-thumbnail"
+          class="video-item__thumbnail"
+        />
+        <h4 class="video-item__title">${item.title}</h4>
+        <p class="video-item__channel-name">${item.channelTitle}</p>
+        <p class="video-item__published-date">${item.publishTime}</p>
+        <button class="video-item__save-button button">✅</button>
+        <button class="video-item__save-button button">🗑</button>
+      </li>
+`;
+  },
   noResult: `
     <h3 hidden>검색 결과</h3>
     <div class="no-result">
@@ -64,7 +80,7 @@ const searchResultView = {
     const savedStorage = storage.getLocalStorage();
     items.forEach((item) => {
       $('.video-list').insertAdjacentHTML('beforeEnd', template.videoItem(item));
-      if (savedStorage && savedStorage.includes(item.id.videoId)) {
+      if (savedStorage && savedStorage.find((data) => data.videoId === item.id.videoId)) {
         this.removeSavedVideoButton();
       }
     });
@@ -76,6 +92,11 @@ const searchResultView = {
       return;
     }
     this.renderVideoItems(videoData);
+  },
+  renderSavedVideos(savedVideos) {
+    savedVideos.forEach((video) =>
+      $('.saved__video__list').insertAdjacentHTML('beforeEnd', template.savedVideoItem(video))
+    );
   },
 };
 
