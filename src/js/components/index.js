@@ -3,7 +3,7 @@ import { dispatch } from '../modules/eventFactory';
 import { CUSTOM_EVENT_KEY } from '../constants/events';
 import { STATE_STORE_KEY } from '../constants/stateStore';
 import { getState, subscribe } from '../modules/stateStore';
-import SavedVideoSectionComponent from './SavedVideoSectionComponent';
+import VideoListComponent from './VideoListComponent';
 
 class AppComponent {
   searchModalComponent = null;
@@ -48,8 +48,8 @@ class AppComponent {
 
   #initChildrenComponent() {
     this.searchModalComponent = new SearchModalComponent(this.#parentElement);
-    this.watchVideoComponent = new SavedVideoSectionComponent(this.$app, { type: 'WATCH' });
-    this.watchedVideoComponent = new SavedVideoSectionComponent(this.$app, { type: 'WATCHED' });
+    this.watchVideoComponent = new VideoListComponent(this.$watchVideoSection);
+    this.watchedVideoComponent = new VideoListComponent(this.$watchedVideoSection);
   }
 
   #bindEventHandler() {
@@ -75,28 +75,35 @@ class AppComponent {
 
   #renderCurrentAppSection(currentAppSection) {
     if (currentAppSection === 'watch-video-section-button') {
-      this.watchVideoComponent.show();
-      this.watchedVideoComponent.hide();
-      this.$watchVideoButton.classList.add('checked');
-      this.$watchedVideoButton.classList.remove('checked');
+      this.#showWatchVideoSection();
     }
     if (currentAppSection === 'watched-video-section-button') {
-      this.watchedVideoComponent.show();
-      this.watchVideoComponent.hide();
-      this.$watchedVideoButton.classList.add('checked');
-      this.$watchVideoButton.classList.remove('checked');
+      this.#showWatchedVideoSection();
     }
   }
 
   #renderSavedVideo(savedVideoResult) {
-    console.log(savedVideoResult);
     this.watchVideoComponent.renderSavedVideoList(savedVideoResult);
     this.watchedVideoComponent.renderSavedVideoList(savedVideoResult);
   }
 
   #renderSkeletonUI(initialIsSavedVideoWaiting) {
-    this.watchVideoComponent.renderSkeletonUI(initialIsSavedVideoWaiting);
-    this.watchedVideoComponent.renderSkeletonUI(initialIsSavedVideoWaiting);
+    this.watchVideoComponent.renderSkeletonVideoList(initialIsSavedVideoWaiting);
+    this.watchedVideoComponent.renderSkeletonVideoList(initialIsSavedVideoWaiting);
+  }
+
+  #showWatchVideoSection() {
+    this.$watchVideoSection.classList.remove('hide');
+    this.$watchedVideoSection.classList.add('hide');
+    this.$watchVideoButton.classList.add('checked');
+    this.$watchedVideoButton.classList.remove('checked');
+  }
+
+  #showWatchedVideoSection() {
+    this.$watchVideoSection.classList.add('hide');
+    this.$watchedVideoSection.classList.remove('hide');
+    this.$watchedVideoButton.classList.add('checked');
+    this.$watchVideoButton.classList.remove('checked');
   }
 
   #generateTemplate() {
@@ -109,6 +116,8 @@ class AppComponent {
     </div>
     <button id="search-modal-button" class="button nav__button" type="button">🔍 검색</button>
     </nav>
+    <div id="watch-video-section" class="saved-video-section"></div>
+    <div id="watched-video-section" class="saved-video-section"></div>
     </main>`;
   }
 }
