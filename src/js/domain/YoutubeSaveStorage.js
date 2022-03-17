@@ -1,17 +1,15 @@
 class YoutubeSaveStorage {
-  #WATCHED_KEY = 'YOUTUBE_CLASSROOM_WATCHED';
-
-  #WATCH_LATER_KEY = 'YOUTUBE_CLASSROOM_WATCH_LATER';
+  #KEY = 'YOUTUBE_CLASSROOM_LIBRARY';
 
   #subscribers = [];
 
-  #get(key) {
-    const item = localStorage.getItem(key) ?? '[]';
+  #get() {
+    const item = localStorage.getItem(this.#KEY) ?? '[]';
     return JSON.parse(item);
   }
 
-  #set(key, newItem) {
-    localStorage.setItem(key, JSON.stringify(newItem));
+  #set(items) {
+    localStorage.setItem(this.#KEY, JSON.stringify(items));
     this.#subscribers.forEach(subscriber => subscriber());
   }
 
@@ -20,55 +18,37 @@ class YoutubeSaveStorage {
   }
 
   getWatchedList() {
-    return this.#get(this.#WATCHED_KEY);
+    return this.#get().filter(({ watched }) => watched);
   }
 
   getWatchLaterList() {
-    return this.#get(this.#WATCH_LATER_KEY);
+    return this.#get().filter(({ watched }) => !watched);
   }
 
-  addWatchLaterList(id, videoData) {
-    this.#set(this.#WATCH_LATER_KEY, [...this.getWatchLaterList(), { id, videoData }]);
+  addVideo(id, videoData) {
+    this.#set([...this.#get(), { id, videoData, watched: false }]);
   }
 
-  toggleWatchedList(id, videoData) {
-    if (this.isInWatchedList(id)) {
-      this.removeFromWatchedList();
-      return;
-    }
-    if (this.isInWatchLaterList(id)) this.removeFromWatchLaterList(id);
-    this.#set(this.#WATCHED_KEY, [...this.getWatchedList(), { id, videoData }]);
+  toggleVideoWatchStatus(videoId) {
+    const updatedList = this.#get(this.#KEY).map(({ id, watched, videoData }) => {
+      if (id === videoId) {
+        return { id, watched: !watched, videoData };
+      }
+      return { id, watched, videoData };
+    });
+    this.#set(updatedList);
   }
 
-  toggleWatchLaterList({ id, videoData }) {
-    if (this.isInWatchLaterList(id)) {
-      this.removeFromWatchLaterList(id);
-      return;
-    }
-    if (this.isInWatchedList(id)) this.removeFromWatchedList(id);
-    this.#set(this.#WATCHED_KEY, [...this.getWatchLaterList(), { id, videoData }]);
+  hasVideo(videoId) {
+    return this.#get().some(({ id }) => id === videoId);
   }
 
-  isInWatchedList(videoId) {
-    return this.getWatchedList().some(({ id }) => id === videoId);
+  isWatchedVideo(videoId) {
+    return this.#get()[videoId].watched;
   }
 
-  isInWatchLaterList(videoId) {
-    return this.getWatchLaterList().some(({ id }) => id === videoId);
-  }
-
-  removeFromWatchedList(videoId) {
-    this.#set(
-      this.#WATCHED_KEY,
-      this.getWatchedList().filter(({ id }) => videoId !== id),
-    );
-  }
-
-  removeFromWatchLaterList(videoId) {
-    this.#set(
-      this.#WATCH_LATER_KEY,
-      this.getWatchLaterList().filter(({ id }) => videoId !== id),
-    );
+  removeVideo(videoId) {
+    this.#set(this.#get().filter(({ id }) => videoId !== id));
   }
 }
 

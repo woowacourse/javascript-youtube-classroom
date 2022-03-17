@@ -4,7 +4,7 @@ import { onObserveElement } from '@Utils/elementController';
 import { YOUTUBE_SETTING, YOUTUBE_SEARCH_ACTION, ERROR_MESSAGE, EVENT_TYPE } from '@Constants';
 import YoutubeSearchStore from '@Domain/YoutubeSearchStore';
 import YoutubeSaveStorage from '@Domain/YoutubeSaveStorage';
-import notFoundImage from '@Images/not_found.png';
+import notFoundImage from '@Images/not_found.jpeg';
 
 export default class SearchResult {
   constructor() {
@@ -45,7 +45,7 @@ export default class SearchResult {
     const { videoId, videoTitle, videoChanneltitle, videoPublishtime, videoThumbnail } =
       $target.closest('.video-item').dataset;
 
-    YoutubeSaveStorage.addWatchLaterList(videoId, {
+    YoutubeSaveStorage.addVideo(videoId, {
       videoTitle,
       videoChanneltitle,
       videoPublishtime,
@@ -110,9 +110,7 @@ export default class SearchResult {
     return items.map(video => {
       const { videoId } = video.id;
       const { title, channelTitle, publishTime, thumbnails } = video.snippet;
-      const isSaved =
-        YoutubeSaveStorage.isInWatchedList(videoId) ||
-        YoutubeSaveStorage.isInWatchLaterList(videoId);
+      const isSaved = YoutubeSaveStorage.hasVideo(videoId);
       return createElement('LI', {
         dataset: {
           'video-id': videoId,
