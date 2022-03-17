@@ -37,6 +37,8 @@ export const template = {
       <button id="delete-button" class="button icon-button">🗑️</button>
       </li>
     `,
+  noUnwatchedVideo: '<li class="align-center">볼 영상이 없습니다.</li>',
+  noWatchedVideo: '<li class="align-center">본 영상이 없습니다.</li>',
 };
 
 export const MESSAGE = {

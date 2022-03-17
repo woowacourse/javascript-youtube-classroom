@@ -7,7 +7,6 @@ export default class HomeView {
     $('#unwatched-video-list-button').addEventListener('click', this.onClickUnwatchedVideoListButton.bind(this));
     $('#watched-video-list-button').addEventListener('click', this.onClickWatchedVideoListButton.bind(this));
     $('#search-modal-button').addEventListener('click', this.openModal.bind(this));
-
     $('#unwatched-video-list').addEventListener('click', this.onClickIconButton.bind(this));
     $('#watched-video-list').addEventListener('click', this.onClickIconButton.bind(this));
 
@@ -48,10 +47,27 @@ export default class HomeView {
   }
 
   updateOnVideoList(e) {
-    const { unwatchedVideos, watchedVideos } = e.detail;
+    this.updateOnUnwatchedVideoList(e);
+    this.updateOnWatchedVideoList(e);
+  }
+
+  updateOnUnwatchedVideoList(e) {
+    const { unwatchedVideos } = e.detail;
+    if (unwatchedVideos.length === 0) {
+      $('#unwatched-video-list').innerHTML = template.noUnwatchedVideo;
+      return;
+    }
     const unwatchedVideoListItems = unwatchedVideos.map((video) => template.savedVideoListItem(video)).join('');
-    const watchedVideoListItems = watchedVideos.map((video) => template.savedVideoListItem(video)).join('');
     $('#unwatched-video-list').innerHTML = unwatchedVideoListItems;
+  }
+
+  updateOnWatchedVideoList(e) {
+    const { watchedVideos } = e.detail;
+    if (watchedVideos.length === 0) {
+      $('#watched-video-list').innerHTML = template.noWatchedVideo;
+      return;
+    }
+    const watchedVideoListItems = watchedVideos.map((video) => template.savedVideoListItem(video)).join('');
     $('#watched-video-list').innerHTML = watchedVideoListItems;
   }
     
