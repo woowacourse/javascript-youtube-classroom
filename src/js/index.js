@@ -1,4 +1,8 @@
-import MainPage from './ui/mainPage.js';
+import SaveInterferer from './interferer/saveInterferer';
+import SearchInterferer from './interferer/searchInterferer';
 
-const mainPage = new MainPage();
-mainPage.init();
+const saveInterferer = new SaveInterferer();
+const searchInterferer = new SearchInterferer();
+
+saveInterferer.init();
+searchInterferer.init();
