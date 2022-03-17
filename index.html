@@ -14,12 +14,12 @@
           <button id="going-watch-button" class="select__button going-watch checked">
             👁 볼 영상
           </button>
-          <button id="watched-button" class="select__button watched">✅ 본 영상</button>
+          <button id="watched-button" class="select__button watched_button">✅ 본 영상</button>
         </div>
         <button id="search-modal-button" class="button nav__button">🔍 검색</button>
       </nav>
       <div class="nothing-saved"></div>
-      <div class="saved-video">
+      <div class="saved-video" hidden>
         <ul class="saved-video-list watched"></ul>
       </div>
     </main>
@@ -27,16 +27,20 @@
       <div class="dimmer"></div>
       <div class="search-modal" role="dialog" aria-labelledby="search-modal-title">
         <h2 id="search-modal-title" class="search-modal__title">🔍 보고싶은 영상 찾기 🔍</h2>
-        <section class="search-input">
+        <form class="search-input">
           <h3 hidden>검색어 입력</h3>
           <input
             id="search-input-keyword"
             type="text"
             placeholder="검색"
             class="search-input__keyword"
+            autocomplete="off"
           />
+          <div class="suggestion" hidden>
+            <ul id="suggestion-list"></ul>
+          </div>
           <button id="search-button" class="search-input__search-button button">검색</button>
-        </section>
+        </form>
         <section class="search-result">
           <h3 hidden>검색 결과</h3>
           <!-- 검색 성공-->

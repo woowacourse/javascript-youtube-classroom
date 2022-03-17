@@ -1,0 +1,19 @@
+.suggestion {
+  position: absolute;
+  top: 163px;
+  left: 294px;
+  width: 400px;
+  background-color: white;
+  z-index: 1;
+  border: 1px solid black;
+  border-radius: 5px;
+}
+
+#suggestion-list > li {
+  margin: 5px;
+  cursor: pointer;
+}
+
+#suggestion-list > li:hover {
+  background-color: rgba(128, 128, 128, 0.1);
+}

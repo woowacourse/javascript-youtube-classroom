@@ -1,4 +1,4 @@
-import { $, throttle } from './util/general.js';
+import { $, throttle, debounce } from './util/general.js';
 import { THROTTLE_DELAY } from './constants/constants.js';
 import { handleSearch, handleScroll, handleSaveButtonClick } from './eventHandlers/searchEvents.js';
 import userInterface from './ui/userInterface.js';
@@ -14,12 +14,6 @@ export default function App() {
   // 이벤트 등록
   $('#search-modal-button').addEventListener('click', () => {
     $('.modal-container').classList.toggle('hide');
-  });
-
-  $('#search-button').addEventListener('click', handleSearch);
-
-  $('#search-input-keyword').addEventListener('keypress', e => {
-    if (e.key === 'Enter') handleSearch();
   });
 
   $('.video-list').addEventListener('scroll', throttle(handleScroll, THROTTLE_DELAY));
@@ -86,4 +80,82 @@ export default function App() {
       storage.setSavedVideos(newSavedVideos);
     }
   });
+
+  $('.search-input').addEventListener('submit', e => {
+    e.preventDefault();
+    $('.suggestion').hidden = true;
+    handleSearch();
+  });
+
+  $('#search-input-keyword').addEventListener(
+    'keyup',
+    debounce(e => {
+      if (e.key !== 'Enter') {
+        $('#suggestion-list').replaceChildren();
+        $('.suggestion').hidden = true;
+        console.log(e.target.value.length);
+        if (e.target.value.length == 0) {
+          $('.suggestion').hidden = true;
+          return;
+        }
+        fetch(
+          convertToCorsUrl(
+            `https://suggestqueries.google.com/complete/search?output=firefox&q=${e.target.value}`,
+          ),
+        )
+          .then(res => res.json())
+          .then(data => {
+            if (data[1].length !== 0) {
+              data[1].forEach(suggestion => {
+                $('#suggestion-list').insertAdjacentHTML('beforeend', `<li>${suggestion}</li>`);
+              });
+              $('.suggestion').hidden = false;
+            }
+          });
+      }
+    }, 300),
+  );
+
+  $('#suggestion-list').addEventListener('click', e => {
+    e.preventDefault();
+    if (e.target.localName === 'li') {
+      $('#search-input-keyword').value = e.target.textContent;
+      $('.suggestion').hidden = true;
+    }
+  });
+
+  $('#search-input-keyword').addEventListener('focusout', e => {
+    setTimeout(() => {
+      $('.suggestion').hidden = true;
+    }, 150);
+  });
+
+  $('#search-input-keyword').addEventListener('click', e => {
+    $('#suggestion-list').replaceChildren();
+    $('.suggestion').hidden = true;
+    if (e.target.value.length == 0) {
+      $('.suggestion').hidden = true;
+      return;
+    }
+    fetch(
+      convertToCorsUrl(
+        `https://suggestqueries.google.com/complete/search?output=firefox&q=${e.target.value}`,
+      ),
+    )
+      .then(res => res.json())
+      .then(data => {
+        if (data[1].length !== 0) {
+          data[1].forEach(suggestion => {
+            $('#suggestion-list').insertAdjacentHTML('beforeend', `<li>${suggestion}</li>`);
+          });
+          $('.suggestion').hidden = false;
+        }
+      });
+  });
+}
+
+function convertToCorsUrl(url) {
+  //Cors-Anywhere형식의 url생성
+  var protocol = window.location.protocol === 'http:' ? 'http:' : 'https:';
+  return protocol + '//cors-anywhere.herokuapp.com/' + url;
 }

@@ -35,7 +35,7 @@ body {
   border-radius: 4px 0 0 4px;
 }
 
-.watched {
+.watched_button {
   border-radius: 0 4px 4px 0;
   margin-left: -5px;
 }
@@ -74,6 +74,7 @@ body {
   display: flex;
   justify-content: flex-end;
 }
+
 .video-item__watched-button {
   width: 36px;
   height: 36px;
@@ -81,11 +82,19 @@ body {
   margin: 4px;
 }
 
+.video-item__watched-button:active {
+  background-color: rgba(0, 188, 212, 0.12);
+}
+
 .video-item__delete-button {
   width: 36px;
   height: 36px;
   padding: 6px 2px;
   margin: 4px;
+}
+
+.video-item__delete-button:active {
+  background-color: rgba(0, 188, 212, 0.12);
 }
 
 .nothing-saved {
