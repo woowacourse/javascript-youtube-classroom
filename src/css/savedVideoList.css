@@ -1,0 +1,21 @@
+.saved-video-list__section {
+  display: flex;
+  flex-direction: column;
+  height: 670px;
+  margin: 39px 0 64px;
+  overflow-y: scroll;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.saved-video-list__section::-webkit-scrollbar {
+  display: none;
+}
+
+.saved-video-list__no-result {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+}
