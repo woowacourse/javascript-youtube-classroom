@@ -77,10 +77,8 @@ export default class VideoModel {
   }
 
   updateNewVideoItems() {
-    const updatedNewVideoItems = [];
-
-    this.#newVideoItems.forEach((newItem) => {
-      updatedNewVideoItems.push(this.IsIncludedSavedItem(newItem));
+    const updatedNewVideoItems = this.#newVideoItems.map((newItem) => {
+      return this.IsIncludedSavedItem(newItem);
     });
 
     if (updatedNewVideoItems.length) {
