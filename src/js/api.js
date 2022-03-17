@@ -24,6 +24,30 @@ const stringQuery = (props) => {
   return `${query}pageToken=${pageToken}`;
 };
 
+const videoListFormatter = (item) => {
+  const {
+    id: { videoId },
+    snippet: {
+      publishTime,
+      channelTitle,
+      title,
+    },
+  } = item;
+
+  const thumbnailURL = item.snippet.thumbnails.medium.url || '';
+
+  const date = new Date(publishTime);
+  const dateText = `${date.getFullYear()}년 ${date.getMonth() + 1}월 ${date.getDate()}일`;
+
+  return {
+    videoId,
+    thumbnailURL,
+    title,
+    channelTitle,
+    publishedDate: dateText,
+  };
+};
+
 const fetchData = async (props) => {
   try {
     const response = await fetch(stringQuery(props));
@@ -32,9 +56,11 @@ const fetchData = async (props) => {
       throw new Error(response.ok);
     }
 
-    const videoList = await response.json();
+    const result = await response.json();
+    const { nextPageToken } = result;
+    const videoList = result.items.map((item) => videoListFormatter(item));
 
-    return { videoList };
+    return { videoList, nextPageToken };
   } catch (error) {
     return { error };
   }

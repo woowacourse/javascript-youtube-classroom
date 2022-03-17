@@ -15,7 +15,7 @@ export default class VideoCardContainer {
   constructor(parentElement, props) {
     this.parentElement = parentElement;
     this.#state = {
-      items: [],
+      videoList: [],
       ...props
     };
     this.bindEvents();
@@ -32,19 +32,19 @@ export default class VideoCardContainer {
     try {
       if (e.target.className.includes('video-item__save-button')) {
         const li = e.target.closest('li');
-        const videoID = li.dataset.videoId;
+        const { videoId } = li.dataset;
 
         const videoItem = {
-          id: videoID,
-          thumbnail: li.querySelector('img').dataset.videoThumbnail,
+          videoId,
+          thumbnailURL: li.querySelector('img').dataset.videoThumbnail,
           title: li.querySelector('h4').dataset.videoTitle,
-          channelName: li.querySelector('.video-item__channel-name').dataset.videoChannelName,
+          channelTitle: li.querySelector('.video-item__channel-name').dataset.videoChannelName,
           publishedDate: li.querySelector('.video-item__published-date').dataset.videoPublishedDate
         };
 
         checkVideoStorageFull();
 
-        setStorageVideoIDs({ value: videoID });
+        setStorageVideoIDs({ value: videoId });
         setStorageVideos({ value: videoItem });
 
         e.target.remove();
@@ -57,8 +57,8 @@ export default class VideoCardContainer {
   template() {
     const videoIds = getStorageVideoIDs();
 
-    return this.#state.items
-      ?.map((item) => new VideoCard(this.parentElement, { item, videoIds }).template())
+    return this.#state.videoList
+      ?.map((videoItem) => new VideoCard(this.parentElement, { videoItem, videoIds }).template())
       .join('');
   }
 

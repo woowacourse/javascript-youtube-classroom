@@ -121,7 +121,7 @@ export default class SearchModal {
   async renderVideoList(queryProps) {
     this.showSkeletons();
 
-    const { videoList, error = false } = await fetchData({ ...queryProps });
+    const { videoList, error = false, nextPageToken } = await fetchData({ ...queryProps });
 
     if (error) {
       toastPopup(ERROR_MESSAGE.API_CALLS_QUOTA_EXCEEDED);
@@ -129,9 +129,9 @@ export default class SearchModal {
       return;
     }
 
-    this.VideoCardContainer.setState({ items: videoList.items });
-    this.showSearchResult(videoList.items);
+    this.VideoCardContainer.setState({ videoList });
+    this.showSearchResult(videoList);
     this.hideSkeletons();
-    this.pageToken = videoList.nextPageToken || null;
+    this.pageToken = nextPageToken || null;
   }
 }
