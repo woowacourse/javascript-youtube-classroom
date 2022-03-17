@@ -7,7 +7,7 @@ export const ERROR_MESSAGE = {
     "API 할당량을 초과하셨습니다. \n오후 5시 이후 다시 시도해주세요.",
 };
 
-export const DELAY_TIME = 700;
+export const DELAY_TIME = 500;
 export const ITEMS_PER_REQUEST = 10;
 export const ALLOCATE_FOR_RENDER_PX = 40;
 export const STORAGE_MAX_COUNT = 100;
