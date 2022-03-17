@@ -46,3 +46,7 @@ body {
 .button.checked {
   background-color: rgba(0, 188, 212, 0.12);
 }
+
+.saved-video-section.hide {
+  display: none;
+}
