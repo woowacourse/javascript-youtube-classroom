@@ -25,6 +25,17 @@
       <img src="./no_watched_video.png" alt="no watched video image" class="no-watched-video__image hide">
     </section>
   </main>
+  <div id="confirm-container" class="confirm-container hide">
+    <div class="confirm-dimmer"></div>
+    <div id="confirm-modal" class="confirm-modal" role="dialog" aria-labelledby="confirm-modal-title">
+      <h2 id="confirm-modal-title" class="confirm-modal__title">정말로 삭제하시겠습니까?</h2>
+      <p>삭제한 비디오는 다시 복구할 수 없습니다</p>
+      <div class="confirm-buttons">
+        <button id="yes-button">예</button>
+        <button id="no-button">아니오</button>
+      </div>
+    </div>
+  </div>
   <div id="modal-container" class="modal-container hide">
     <div class="dimmer"></div>
     <div id="search-modal" class="search-modal" role="dialog" aria-labelledby="search-modal-title">

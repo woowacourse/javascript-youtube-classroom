@@ -34,9 +34,7 @@ export default class HomeView {
     });
 
     if ($('#will-watch-video-list').children.length === 0) {
-      $('.no-saved-video__image').classList.remove('hide');
-      $('#will-watch-video-list').classList.add('hide');
-      return;
+      this.showNoWillWatchVideo();
     }
 
     $$('.watch-delete-button').forEach((element) => {
@@ -69,7 +67,7 @@ export default class HomeView {
 
     $('.no-saved-video__image').classList.add('hide');
     if ($('#watched-video-list').children.length === 0) {
-      $('.no-watched-video__image').classList.remove('hide');
+      this.showNoWatchedVideo();
       return;
     }
     $('#watched-video-list').classList.remove('hide');
@@ -79,6 +77,10 @@ export default class HomeView {
     this.modalView.onClickVideoSaveButton(e);
     const savedVideo = this.saveVideoManager.getVideoData();
     if (savedVideo.length !== $('#will-watch-video-list').children.length) {
+      if ($('#will-watch-video-list').children.length === 0) {
+        $('.no-saved-video__image').classList.add('hide');
+        $('#will-watch-video-list').classList.remove('hide');
+      }
       $('#will-watch-video-list').insertAdjacentHTML(
         'afterbegin',
         template.watchVideoListItem(savedVideo[savedVideo.length - 1])
@@ -97,5 +99,39 @@ export default class HomeView {
     e.target.classList.add('selected');
     this.saveVideoManager.changeWatchState(parent.dataset.videoId);
     $('#watched-video-list').insertAdjacentElement('afterbegin', parent);
+  }
+
+  deleteVideo(e) {
+    const target = e.target.parentNode.parentNode;
+    $('#confirm-container').classList.remove('hide');
+    $('.confirm-dimmer').addEventListener('click', this.closeConfirmModal());
+    $('#yes-button').addEventListener('click', this.onClickYesButton(target));
+    $('#no-button').addEventListener('click', this.closeConfirmModal());
+  }
+
+  onClickYesButton(target) {
+    this.saveVideoManager.removeVideo(target.dataset.videoId);
+    target.remove();
+    if ($('#will-watch-video-list').children.length === 0 && !$('#will-watch-video-list').classList.contains('hide')) {
+      this.showNoWillWatchVideo();
+    }
+    if ($('#watched-video-list').children.length === 0 && !$('#watched-video-list').classList.contains('hide')) {
+      this.showNoWatchedVideo();
+    }
+    $('#confirm-container').classList.add('hide');
+  }
+
+  closeConfirmModal() {
+    $('#confirm-container').classList.add('hide');
+  }
+
+  showNoWillWatchVideo() {
+    $('.no-saved-video__image').classList.remove('hide');
+    $('#will-watch-video-list').classList.add('hide');
+  }
+
+  showNoWatchedVideo() {
+    $('.no-watched-video__image').classList.remove('hide');
+    $('#watched-video-list').classList.add('hide');
   }
 }

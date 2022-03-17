@@ -47,4 +47,9 @@ export default class SaveVideoManager {
     });
     setData('id', this.videoData);
   }
+
+  removeVideo(id) {
+    this.videoData = this.videoData.filter((video) => video.id !== id);
+    setData('id', this.videoData);
+  }
 }

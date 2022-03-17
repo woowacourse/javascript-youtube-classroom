@@ -26,7 +26,7 @@ export const template = {
         <button class="video-item__watched-button button ${
           watched ? 'selected' : ''
         }" type="button" data-action="changeWatchState">✅</button>
-        <button class="video-item__delete-button button" type="button">🗑</button>
+        <button class="video-item__delete-button button" type="button" data-action="deleteVideo">🗑</button>
       </div>
     </li>
 `,

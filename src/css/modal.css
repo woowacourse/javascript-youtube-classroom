@@ -9,7 +9,7 @@
     left: 0;
 }
 
-.dimmer {
+.dimmer, .confirm-dimmer {
     position: absolute;
     width: 100%;
     height: 100%;
@@ -188,6 +188,52 @@
     100% {
       background-position: 320px;
     }
+}
+
+.confirm-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100vw;
+    height: 100vh;
+    position: fixed;
+    top: 0;
+    left: 0;
+}
+
+.confirm-modal {
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    width: 400px;
+    height: 250px;
+    background: var(--search-modal-background-color);
+    border: 1px solid var(--search-modal-border-color);
+    border-radius: 4px;
+    padding: 50px 30px 32px 30px;
+    align-items: center;
+    justify-content: center;
+}
+
+.confirm-buttons{
+    margin-top: 30px;
+}
+
+#yes-button, #no-button{
+    width: 90px;
+    height: 40px;
+    border: none;
+    border-radius: 4px;
+    color: white;
+    cursor: pointer;
+}
+
+#yes-button {
+    background-color: rgb(17, 209, 17);
+}
+
+#no-button {
+    background-color: rgb(245, 78, 78);
 }
 
 .hide {
