@@ -22,6 +22,7 @@ export default class YoutubeSearch {
     return this.#pageToken;
   }
 
+  // eslint-disable-next-line consistent-return
   async fetchYoutubeAPI() {
     const REDIRECT_SERVER_HOST = 'https://ahns.netlify.app/youtube/v3/search';
     const url = new URL(REDIRECT_SERVER_HOST);
@@ -35,9 +36,16 @@ export default class YoutubeSearch {
     });
     url.search = parameter.toString();
 
-    const response = await fetch(url, { method: 'GET' });
-    const videoData = await response.json();
-    this.#pageToken = videoData.nextPageToken;
-    return videoData;
+    try {
+      const response = await fetch(url, { method: 'GET' });
+      const videoData = await response.json();
+      if (!response.ok) {
+        throw new Error(videoData.error.message);
+      }
+      this.#pageToken = videoData.nextPageToken;
+      return videoData;
+    } catch (error) {
+      console.error(error);
+    }
   }
 }
