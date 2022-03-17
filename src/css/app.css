@@ -37,11 +37,16 @@ body {
   width: 115px;
   height: 36px;
   background: #f5f5f5;
+  transition: background-color 0.5s;
   margin: 1%;
 }
 
 .nav__button:hover {
-  background: #ebebeb;
+  background: #73fcf0;
+}
+
+.clicked {
+  background: #73fcf0;
 }
 
 #search-modal-button {
@@ -56,11 +61,11 @@ body {
   flex-wrap: wrap;
   gap: 62px 20px;
   overflow-y: auto;
-  background-color: tan;
   justify-content: space-around;
   margin-left: 10%;
   margin-right: 10%;
   height: 90vh;
+  background-color: aliceblue;
 }
 
 .already-watch-button,
@@ -69,4 +74,13 @@ body {
   width: 36px;
   height: 30px;
   background: #f9f9f9;
+  transition: background-color 0.3s;
+}
+
+.already-watch-button:hover,
+.discard-button:hover {
+  position: relative;
+  width: 36px;
+  height: 30px;
+  background: #73fcf0;
 }
