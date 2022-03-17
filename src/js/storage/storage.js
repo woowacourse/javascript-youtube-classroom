@@ -37,7 +37,7 @@ const storage = {
       const video = {
         id: item.id,
         snippet: item.snippet,
-        watched: false,
+        watched: item.watched,
       };
       if (item.id === videoId) {
         video.watched = true;
