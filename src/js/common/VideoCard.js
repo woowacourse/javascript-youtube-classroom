@@ -30,10 +30,10 @@ export default class VideoCard {
       <li class="video-item" data-video-id="${videoId}">
         <img
           src="${url}"
-          alt="video-item-thumbnail" class="video-item__thumbnail">
-        <h4 class="video-item__title">${title}</h4>
-        <p class="video-item__channel-name">${channelTitle}</p>
-        <p class="video-item__published-date">${dateText}</p>
+          alt="video-item-thumbnail" class="video-item__thumbnail" data-video-thumbnail="${url}">
+        <h4 class="video-item__title" data-video-title="${title}">${title}</h4>
+        <p class="video-item__channel-name" data-video-channel-name="${channelTitle}">${channelTitle}</p>
+        <p class="video-item__published-date" data-video-published-date="${dateText}">${dateText}</p>
         ${storeButton}
       </li>
       `;

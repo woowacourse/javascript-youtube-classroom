@@ -1,4 +1,9 @@
-import { LOCALSTORAGE_KEY, getStorageVideoIDs, setStorageVideoIDs, checkVideoStorageFull } from '../utils/localStorage';
+import {
+  getStorageVideoIDs,
+  setStorageVideoIDs,
+  checkVideoStorageFull,
+  setStorageVideos
+} from '../utils/localStorage';
 import VideoCard from './VideoCard';
 import toast from './toast';
 
@@ -26,15 +31,21 @@ export default class VideoCardContainer {
   storeIDHandler(e) {
     try {
       if (e.target.className.includes('video-item__save-button')) {
-        const videoID = e.target.closest('li').dataset.videoId;
-        const videoIDs = getStorageVideoIDs(LOCALSTORAGE_KEY);
+        const li = e.target.closest('li');
+        const videoID = li.dataset.videoId;
 
-        checkVideoStorageFull(LOCALSTORAGE_KEY);
+        const videoItem = {
+          id: videoID,
+          thumbnail: li.querySelector('img').dataset.videoThumbnail,
+          title: li.querySelector('h4').dataset.videoTitle,
+          channelName: li.querySelector('.video-item__channel-name').dataset.videoChannelName,
+          publishedDate: li.querySelector('.video-item__published-date').dataset.videoPublishedDate
+        };
 
-        setStorageVideoIDs({
-          key: LOCALSTORAGE_KEY,
-          value: videoIDs.concat(videoID),
-        });
+        checkVideoStorageFull();
+
+        setStorageVideoIDs({ value: videoID });
+        setStorageVideos({ value: videoItem });
 
         e.target.remove();
       }
@@ -44,7 +55,7 @@ export default class VideoCardContainer {
   }
 
   template() {
-    const videoIds = getStorageVideoIDs(LOCALSTORAGE_KEY);
+    const videoIds = getStorageVideoIDs();
 
     return this.#state.items
       ?.map((item) => new VideoCard(this.parentElement, { item, videoIds }).template())
