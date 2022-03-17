@@ -1,6 +1,7 @@
 import videoAPI from '../videoAPI.js';
 import validator from '../utils/validator.js';
 import videoStorage from '../videoStorage.js';
+import { parseData } from '../utils/mockData.js';
 
 export default class EventHandler {
   constructor(mainView, modalView) {
@@ -26,7 +27,7 @@ export default class EventHandler {
   }
 
   clickStoreButton(videoId) {
-    videoStorage.storeVideoId(videoId);
+    videoStorage.storeVideoData(videoId);
   }
 
   async clickSearchButton(searchInput) {
@@ -36,7 +37,7 @@ export default class EventHandler {
       this.modalView.appendEmptyList();
       this.modalView.appendVideoItem();
       this.modalView.renderSkeletonUI();
-      const videoListData = await this.getVideoListData(searchInput);
+      // const videoListData = await this.getVideoListData(searchInput);
       this.modalView.renderVideoList(videoListData);
     } catch (error) {
       alert(error.message);
@@ -49,7 +50,8 @@ export default class EventHandler {
       this.modalView.appendEmptyList();
       this.modalView.appendVideoItem();
       this.modalView.renderSkeletonUI();
-      const videoListData = await this.getVideoListData(searchInput);
+      // const videoListData = await this.getVideoListData(searchInput);
+      const videoListData = parseData;
       this.modalView.renderVideoList(videoListData);
     } catch (error) {
       alert(error.message);
