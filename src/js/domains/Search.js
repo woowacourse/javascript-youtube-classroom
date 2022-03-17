@@ -28,6 +28,8 @@ class Search {
 
     const videos = await this.fetchVideo(keyword);
 
+    if (videos instanceof Error) return;
+
     this.keyword = keyword;
     this.nextPageToken = videos.nextPageToken ?? '';
 
