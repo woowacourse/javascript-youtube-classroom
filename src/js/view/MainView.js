@@ -11,6 +11,7 @@ export default class MainView {
     this.onClickWatchLaterButton();
     this.bindOnClickWatchedButton();
     this.bindOnClickSwitchButton();
+    this.bindOnClickDeleteButton();
   }
 
   registerDOM() {
@@ -44,6 +45,18 @@ export default class MainView {
     });
   }
 
+  bindOnClickDeleteButton() {
+    this.$storedVideoList.addEventListener('click', e => {
+      if ([...e.target.classList].includes('delete-button')) {
+        if (confirm('삭제하시겠습니까?')) {
+          const videoId = e.target.dataset.videoid;
+          videoStorage.deleteVideoData(videoId);
+          e.target.parentElement.remove();
+        }
+      }
+    });
+  }
+
   renderStoredVideoList() {
     const storedVideoList = videoStorage.getVideoDataList();
     storedVideoList.forEach(videoData => {
@@ -59,7 +72,7 @@ export default class MainView {
           <button data-videoid=${videoData.videoId} class="switch-show-type button ${
         videoData.type === 'watch-later' ? '' : 'clicked'
       }">✅</button>
-          <button data-videoid=${videoData.videoId} class="button">🗑️</button>
+          <button data-videoid=${videoData.videoId} class="delete-button button">🗑️</button>
         </li>`;
 
       this.$storedVideoList.insertAdjacentHTML('beforeend', template);
@@ -101,7 +114,7 @@ export default class MainView {
       <button data-videoid=${videoData.videoId} class="button switch-show-type ${
       videoData.type === 'watch-later' ? '' : 'clicked'
     }">✅</button>
-      <button data-videoid=${videoData.videoId} class="button">🗑️</button>
+      <button data-videoid=${videoData.videoId} class="delete-button button">🗑️</button>
     </li>`;
 
     this.$storedVideoList.insertAdjacentHTML('beforeend', template);
@@ -120,7 +133,7 @@ export default class MainView {
       <button data-videoid=${videoData.videoId} class="button switch-show-type ${
       videoData.type === 'watch-later' ? '' : 'clicked'
     }">✅</button>
-      <button data-videoid=${videoData.videoId} class="button">🗑️</button>
+      <button data-videoid=${videoData.videoId} class="delete-button button">🗑️</button>
     </li>`;
 
     this.$storedVideoList.insertAdjacentHTML('beforeend', template);
