@@ -1,7 +1,6 @@
 import { LOAD_VIDEOS_COUNT } from '../../constant.js';
 import Component from '../../core/Component.js';
 import { rootStore } from '../../store/rootStore.js';
-import { webStore } from '../../store/WebStore.js';
 import VideoCard from '../SearchModal/SearchResult/VideoCard.js';
 
 export default class WatchingVideoCardList extends Component {
@@ -20,7 +19,9 @@ export default class WatchingVideoCardList extends Component {
 
   template() {
     const { savedVideos } = rootStore.state;
-    this.videos = savedVideos.filter(video => video.watched === false);
+    this.videos = savedVideos
+      .filter(video => video.watched === false)
+      .reverse();
     this.renderedVideos = this.videos.slice(
       0,
       LOAD_VIDEOS_COUNT * this.state.pagination
