@@ -9,25 +9,28 @@ export default class App extends Component {
   }
 
   template() {
-    // TODO: modal 상태가 번함에 따라, main-page가 re-rendering되지 않게 하기
-    // SOLVE: watchedMode를 MainPage -> App으로 올림으로써 해결
-    const { isSearchModalOpened } = rootStore.state;
-
     return `
       <main id="main-page" class="classroom-container"></main>
-      <div id="search-modal" class="modal-container ${
-        isSearchModalOpened ? '' : 'hide'
-      }"></div>
+      <div id="search-modal" class="modal-container hide"></div>
     `;
   }
 
+  toggleSearchModal() {
+    this.$searchModal.classList.toggle('hide');
+  }
+
   afterMounted() {
+    this.$searchModal = this.$('#search-modal');
+
     const { watchedMode } = this.state;
     new MainPage(document.querySelector('#main-page'), {
       watchedMode,
       changeMode: this.changeMode.bind(this),
+      toggleSearchModal: this.toggleSearchModal.bind(this),
     });
-    new SearchModal(document.querySelector('#search-modal'));
+    new SearchModal(document.querySelector('#search-modal'), {
+      toggleSearchModal: this.toggleSearchModal.bind(this),
+    });
   }
 
   changeMode() {

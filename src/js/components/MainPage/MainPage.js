@@ -60,6 +60,7 @@ export default class MainPage extends Component {
       this.props.watchedMode === true
         ? this.watchedVideos
         : this.watchingVideos;
+    console.log('videos', videos);
     console.log('pagination', pagination);
     new VideoCardList(this.$('#saved-video-list'), {
       videos: videos.slice(0, LOAD_VIDEOS_COUNT * pagination),
@@ -72,13 +73,9 @@ export default class MainPage extends Component {
     this.addEvent(
       'click',
       '#search-modal-button',
-      this.openSearchModal.bind(this)
+      this.props.toggleSearchModal
     );
     this.addEvent('click', '.nav-left', this.handleMode.bind(this));
-  }
-
-  openSearchModal() {
-    rootStore.setState({ isSearchModalOpened: true });
   }
 
   handleMode(e) {
