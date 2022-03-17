@@ -4,7 +4,7 @@ import SearchMachine from '../domain/SearchMachine.js';
 import { ERROR_403, REQUEST_VIDEO_QUANTITY } from '../constant';
 
 class SearchModal {
-  constructor() {
+  constructor(appendList) {
     this.$modalContainer = document.querySelector('.modal-container');
     this.$dimmer = document.querySelector('.dimmer');
     this.$searchInputKeyword = document.querySelector('#search-input-keyword');
@@ -18,6 +18,7 @@ class SearchModal {
     ).bind(this);
     this.machine = new SearchMachine();
     this.bindEvent();
+    this.appendList = appendList;
   }
 
   toggleModalContainerView() {
@@ -65,7 +66,6 @@ class SearchModal {
       event.type === 'click'
     ) {
       try {
-        console.log(1);
         this.scrollHandler.setError(false);
         this.machine.keyword = this.$searchInputKeyword.value;
         this.initVideoState();
@@ -90,8 +90,9 @@ class SearchModal {
     }
 
     try {
-      const newVideo = target.closest('li').dataset.videoId;
+      const newVideo = target.dataset.id;
       this.machine.saveVideoToLocalStorage(newVideo);
+      this.appendList(target.dataset);
       target.classList.add('hide');
     } catch (err) {
       alert(err.message);

@@ -57,6 +57,9 @@ body {
   background-color:var(--nav-btn--choosed-color);
 }
 
+#store-video-list{
+  width:100%;
+}
 .video-list-grid{
   display: grid;
   grid-template-columns: repeat(4, 1fr);
@@ -66,9 +69,12 @@ body {
 
 .video-list-grid-item{
   width: 100%;
-  display: flex;
+  display: block;
+  max-width: 300px;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
+  overflow: hidden;
 }
 
 .video-list-grid-item-btn--contianer{
@@ -96,8 +102,9 @@ body {
   }
 }
 @media screen and (max-width:600px) {
-  .video-list-grid{
-    grid-template-columns: repeat(1,1fr);
+  .video-list-grid{display: flex;
+    flex-direction: column;
+    align-items: center;
   }
 }
 

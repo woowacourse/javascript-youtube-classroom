@@ -3,15 +3,33 @@ import error_403 from '../../assets/images/error-background.png';
 import { convertDataToDateString } from '../util/converter.js';
 
 const template = {
-  videoItems: ({ id, thumbnails, channelTitle, title, publishTime, isSaved }) => `
+  videoItems: ({
+    id,
+    thumbnails,
+    channelTitle,
+    title,
+    publishTime,
+    isSaved,
+  }) => `
   <li class="video-item" data-video-id=${id}>
     <img
       src=${thumbnails}
       alt="video-item-thumbnail" class="video-item__thumbnail" />
     <h4 class="video-item__title">${title}</h4>
     <p class="video-item__channel-name">${channelTitle}</p>
-    <p class="video-item__published-date">${convertDataToDateString(publishTime)}</p>
-    ${isSaved ? '' : '<button class="video-item__save-button button">⬇ 저장</button>'}
+    <p class="video-item__published-date">${convertDataToDateString(
+      publishTime,
+    )}</p>
+    ${
+      isSaved
+        ? ''
+        : `<button class="video-item__save-button button" 
+        data-id=${id} 
+        data-thumbnails=${thumbnails} 
+        data-title=${title} 
+        data-channel-title=${channelTitle} 
+        data-publish-time=${publishTime}>⬇ 저장</button>`
+    }
   </li>
   `,
 
@@ -43,6 +61,24 @@ const template = {
     </p>
   </div>
   `,
+
+  storageVideoItem: ({ id, thumbnails, channelTitle, title, publishTime }) => {
+    return `
+  <li class="video-list-grid-item" data-video-id=${id}>
+          
+            <img src=${thumbnails} alt="video-item-thumbnail"
+              class="video-item__thumbnail" />
+            <h4 class="video-item__title">${title}</h4>
+            <p class="video-item__channel-name">${channelTitle}</p>
+            <p class="video-item__published-date">${convertDataToDateString(
+              publishTime,
+            )}</p>
+            <div class="video-list-grid-item-btn--contianer">
+              <button class="button video-watched--btn">✅</button>
+              <button class="button video-delete--btn">🗑️</button>
+            </div>
+        </li>`;
+  },
 };
 
 export default template;
