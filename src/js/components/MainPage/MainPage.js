@@ -1,9 +1,15 @@
-import { LOAD_VIDEOS_COUNT } from '../../constant.js';
 import Component from '../../core/Component.js';
+import { rootStore } from '../../store/rootStore.js';
+import { webStore } from '../../store/WebStore.js';
 import WatchedVideoCardList from './WatchedVideoCardList.js';
 import WatchingVideoCardList from './WatchingVideoCardList.js';
 
 export default class MainPage extends Component {
+  setup() {
+    const savedVideos = webStore.load();
+    rootStore.setState({ savedVideos });
+  }
+
   template() {
     const { watchedMode } = this.props;
     return `

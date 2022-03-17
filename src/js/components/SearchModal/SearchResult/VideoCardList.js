@@ -2,7 +2,7 @@ import Component from '../../../core/Component.js';
 import VideoCard from './VideoCard.js';
 import { rootStore } from '../../../store/rootStore.js';
 import { getSearchAPI } from '../../../api/api.js';
-import { addSavedToVideos, makeCardData } from '../SearchBar.js';
+import { makeCardData } from '../SearchBar.js';
 import SkeletonCard from './SkeletonCard.js';
 import { LOAD_VIDEOS_COUNT } from '../../../constant.js';
 import request from '../../../__mocks__/request.js';

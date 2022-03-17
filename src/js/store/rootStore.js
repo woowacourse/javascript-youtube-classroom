@@ -36,6 +36,7 @@ export const rootStore = {
       pageToken: null,
     },
     videos: [],
+    savedVideos: [],
     status: {
       notFound: false,
       statusCode: 200,

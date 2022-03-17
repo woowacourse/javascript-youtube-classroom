@@ -88,12 +88,13 @@ export default class VideoCard extends Component {
     const { video } = this.props;
     const { videoId } = video;
     const prevSavedVideos = webStore.load();
+    const newSavedVideos = [
+      ...prevSavedVideos,
+      { ...video, saved: true, watched: false },
+    ];
 
     try {
-      webStore.save([
-        ...prevSavedVideos,
-        { ...video, saved: true, watched: false },
-      ]);
+      webStore.save(newSavedVideos);
 
       const { videos } = rootStore.state;
       const newVideos = [...videos].map(video => {
@@ -104,7 +105,7 @@ export default class VideoCard extends Component {
         return video;
       });
 
-      rootStore.setState({ videos: newVideos });
+      rootStore.setState({ videos: newVideos, savedVideos: newSavedVideos });
     } catch ({ message }) {
       alert(message);
     }
