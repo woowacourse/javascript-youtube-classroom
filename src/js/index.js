@@ -1,4 +1,4 @@
 import initDisplays from '@Display';
-import '../scss/index.scss';
+import '../css/index.css';
 
 initDisplays();
