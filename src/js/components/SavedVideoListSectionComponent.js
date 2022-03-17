@@ -1,10 +1,11 @@
 import { getState, subscribe } from '../modules/stateStore';
 import { STATE_STORE_KEY } from '../constants/stateStore';
+import SavedVideo from './SavedVideoComponent';
 
 class SavedVideoListSection {
   #parentElement = null;
 
-  $savedVideoListContainer = null;
+  $savedVideoListWrapper = null;
 
   $savedVideoListNoResult = null;
 
@@ -19,12 +20,17 @@ class SavedVideoListSection {
   render() {
     const savedVideoList = getState(STATE_STORE_KEY.SAVED_VIDEO);
 
-    if (savedVideoList.length > 0) {
-      this.#showSavedVideoListContainer();
+    this.$savedVideoListContainer.innerHTML = '';
+
+    if (savedVideoList.length === 0) {
+      this.#showSavedVideoListNoResult();
       return;
     }
 
-    this.#showSavedVideoListNoResult();
+    this.#showSavedVideoListContainer();
+    savedVideoList.forEach(
+      (savedVideo) => new SavedVideo(this.$savedVideoListContainer, { savedVideo })
+    );
   }
 
   #mount() {
@@ -34,6 +40,7 @@ class SavedVideoListSection {
   }
 
   #initDOM() {
+    this.$savedVideoListWrapper = this.#parentElement.querySelector('.saved-video-list__wrapper');
     this.$savedVideoListContainer = this.#parentElement.querySelector(
       '.saved-video-list__container'
     );
@@ -49,8 +56,8 @@ class SavedVideoListSection {
 
   #generateTemplate() {
     return `
-      <div class="saved-video-list__container">
-        여기는 저장된 동영상이 보이는  곳~~
+      <div class="saved-video-list__wrapper">
+        <ul class="saved-video-list__container"></ul>
       </div>
       <div class="saved-video-list__no-result">
         <img src="./not_found.png" alt="no result image" class="no-result__image">
@@ -60,12 +67,12 @@ class SavedVideoListSection {
   }
 
   #showSavedVideoListContainer() {
-    this.$savedVideoListContainer.classList.remove('hide');
+    this.$savedVideoListWrapper.classList.remove('hide');
     this.$savedVideoListNoResult.classList.add('hide');
   }
 
   #showSavedVideoListNoResult() {
-    this.$savedVideoListContainer.classList.add('hide');
+    this.$savedVideoListWrapper.classList.add('hide');
     this.$savedVideoListNoResult.classList.remove('hide');
   }
 }

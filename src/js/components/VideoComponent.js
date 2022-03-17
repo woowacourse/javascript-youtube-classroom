@@ -29,8 +29,7 @@ class Video {
   }
 
   #mount() {
-    const { video } = this.props;
-    const template = this.#generateTemplate(video);
+    const template = this.#generateTemplate();
     this.#parentElement.insertAdjacentHTML('beforeend', template);
   }
 
