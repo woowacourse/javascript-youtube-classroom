@@ -1,13 +1,13 @@
-import { MESSAGE, STORAGE_KEY } from '../constants';
 import { store } from '../domain/store';
 import { $, $$ } from '../utils/dom';
 import { showExceptionSnackBar } from '../utils/snackBar';
+import { MESSAGE, STATE, STORAGE_KEY } from '../constants';
 import { getVideoTemplate } from './template';
 
 export default class Main {
   constructor() {
-    this.tab = 'will';
-    this.renderVideo(false);
+    this.tab = STATE.WILL;
+    this.renderVideo(this.tab);
     this.addNavButtonClickEvent();
   }
 
@@ -50,15 +50,15 @@ export default class Main {
       [$willWatchVideoButton, $watchedVideoButton].forEach(button =>
         button.classList.toggle('clicked'),
       );
-      this.renderVideo(false);
-      this.tab = 'will';
+      this.tab = STATE.WILL;
+      this.renderVideo(this.tab);
     });
     $watchedVideoButton.addEventListener('click', () => {
       [$willWatchVideoButton, $watchedVideoButton].forEach(button =>
         button.classList.toggle('clicked'),
       );
-      this.renderVideo(true);
-      this.tab = 'watched';
+      this.tab = STATE.WATCHED;
+      this.renderVideo(this.tab);
     });
   }
 
@@ -78,11 +78,7 @@ export default class Main {
 
         showExceptionSnackBar(MESSAGE.MODIFY_COMPLETE);
 
-        if (this.tab === 'will') {
-          this.renderVideo(false);
-        } else if (this.tab === 'watched') {
-          this.renderVideo(true);
-        }
+        this.renderVideo(this.tab);
       }),
     );
   }
@@ -103,11 +99,7 @@ export default class Main {
 
         showExceptionSnackBar(MESSAGE.MODIFY_COMPLETE);
 
-        if (this.tab === 'will') {
-          this.renderVideo(false);
-        } else if (this.tab === 'watched') {
-          this.renderVideo(true);
-        }
+        this.renderVideo(this.tab);
       }),
     );
   }

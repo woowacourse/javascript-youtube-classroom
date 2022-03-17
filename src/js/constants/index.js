@@ -16,4 +16,9 @@ const MESSAGE = {
 
 const STORAGE_KEY = 'video';
 
-export { MAX_SAVE_COUNT, GET_VIDEO_UNIT, MESSAGE, STORAGE_KEY };
+const STATE = {
+  WILL: false,
+  WATCHED: true,
+};
+
+export { MAX_SAVE_COUNT, GET_VIDEO_UNIT, MESSAGE, STORAGE_KEY, STATE };
