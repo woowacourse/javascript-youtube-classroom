@@ -1,31 +1,9 @@
 import { LOAD_VIDEOS_COUNT } from '../../constant.js';
 import Component from '../../core/Component.js';
-import { rootStore } from '../../store/rootStore.js';
-import { webStore } from '../../store/WebStore.js';
-import VideoCardList from '../SearchModal/SearchResult/VideoCardList.js';
+import WatchedVideoCardList from './WatchedVideoCardList.js';
+import WatchingVideoCardList from './WatchingVideoCardList.js';
 
 export default class MainPage extends Component {
-  setup() {
-    const { watchedMode } = this.props;
-    this.savedVideos = webStore.load();
-    this.watchedVideos = this.savedVideos.filter(
-      video => video.watched === true
-    );
-    this.watchingVideos = this.savedVideos.filter(
-      video => video.watched === false
-    );
-
-    this.watchedVideosLength = this.watchedVideos.length;
-    this.watchingVideosLength =
-      this.savedVideos.length - this.watchedVideosLength;
-
-    const videos = this.savedVideos
-      .filter(video => video.watched === watchedMode)
-      .slice(0, 10);
-
-    this.state = { videos, watchedPagination: 1, watchingPagination: 1 };
-  }
-
   template() {
     const { watchedMode } = this.props;
     return `
@@ -52,21 +30,11 @@ export default class MainPage extends Component {
   }
 
   afterMounted() {
-    const pagination =
-      this.props.watchedMode === true
-        ? this.state.watchedPagination
-        : this.state.watchingPagination;
-    const videos =
-      this.props.watchedMode === true
-        ? this.watchedVideos
-        : this.watchingVideos;
-    console.log('videos', videos);
-    console.log('pagination', pagination);
-    new VideoCardList(this.$('#saved-video-list'), {
-      videos: videos.slice(0, LOAD_VIDEOS_COUNT * pagination),
-      isLoading: false,
-      handleLastVideoVisible: this.handleLastVideoVisible.bind(this),
-    });
+    if (this.props.watchedMode) {
+      new WatchedVideoCardList(this.$('#saved-video-list'));
+    } else {
+      new WatchingVideoCardList(this.$('#saved-video-list'));
+    }
   }
 
   setEvent() {
@@ -87,35 +55,6 @@ export default class MainPage extends Component {
     }
 
     const { changeMode } = this.props;
-    const savedVideos = webStore.load();
-    const watched = e.target.name === 'watched';
-    const videos = savedVideos.filter(video => video.watched === watched);
-    this.setState({ videos });
     changeMode();
-  }
-
-  handleLastVideoVisible(entries, observer) {
-    entries.forEach(async entry => {
-      if (!entry.isIntersecting) return;
-
-      observer.disconnect();
-      if (this.props.watchedMode) {
-        if (
-          this.watchedVideosLength <=
-          this.state.watchedPagination * LOAD_VIDEOS_COUNT
-        )
-          return;
-        this.setState({ watchedPagination: this.state.watchedPagination + 1 });
-      } else {
-        if (
-          this.watchingVideosLength <=
-          this.state.watchingPagination * LOAD_VIDEOS_COUNT
-        )
-          return;
-        this.setState({
-          watchingPagination: this.state.watchingPagination + 1,
-        });
-      }
-    });
   }
 }
