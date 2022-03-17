@@ -64,7 +64,11 @@ export default class VideoCardContainer {
   }
 
   render() {
-    this.#state.skeletonElement.insertAdjacentHTML('beforebegin', this.template());
+    if (this.#state.skeletonElement) {
+      this.#state.skeletonElement.insertAdjacentHTML('beforebegin', this.template());
+      return;
+    }
+    this.parentElement.insertAdjacentHTML('beforeend', this.template());
   }
 
   setState(newState) {

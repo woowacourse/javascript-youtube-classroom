@@ -34,4 +34,11 @@ const videoCardStyled = (props) => {
     `;
 };
 
-export { SKELETON_TEMPLATE, videoCardStyled };
+const storedResultStyled = `
+    <section class="stored-result">
+      <h3 hidden>저장된 영상</h3>
+      <ul class="video-list"></ul>
+    </section>
+  `;
+
+export { SKELETON_TEMPLATE, videoCardStyled, storedResultStyled };
