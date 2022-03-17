@@ -8,7 +8,7 @@ import { skeleton } from './skeleton';
 import { video } from '../domain/video';
 
 export const result = {
-  searchResultFoundTemplate(items) {
+  searchResultTemplate(items) {
     const saveDatas = store.getLocalStorage(STORAGE_KEY);
     const resultTemplate = items
       .map(item => {
@@ -37,7 +37,7 @@ export const result = {
     return resultTemplate;
   },
 
-  searchResultNotFoundTemplate() {
+  noSearchResultTemplate() {
     return `
       <div class="no-result">
         <img class="no-result__image"
@@ -59,7 +59,7 @@ export const result = {
     $videoList.replaceChildren();
     $videoList.insertAdjacentHTML(
       'beforeend',
-      json.items.length ? this.searchResultFoundTemplate(json.items) : this.searchResultNotFoundTemplate(),
+      json.items.length ? this.searchResultTemplate(json.items) : this.noSearchResultTemplate(),
     );
 
     if (json && json.nextPageToken) {
@@ -73,7 +73,7 @@ export const result = {
     request($('#search-input-keyword').value, nextPageToken)
       .then(json => {
         skeleton.removeSkeletonUI();
-        $('.video-list').insertAdjacentHTML('beforeend', this.searchResultFoundTemplate(json.items));
+        $('.video-list').insertAdjacentHTML('beforeend', this.searchResultTemplate(json.items));
 
         if (json && json.nextPageToken) {
           this.scrollObserver(json.nextPageToken);
