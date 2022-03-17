@@ -8,8 +8,8 @@ import {
 
 const youtubeSearchAPI = {
   REDIRECT_SERVER_HOST: HOST_URL,
-  async searchByPage(value, pageToken) {
-    const url = this.createURL(value, pageToken);
+  async searchByApi(value, pageToken) {
+    const url = this.createSearchByPageURL(value, pageToken);
     const response = await fetch(url, { method: 'GET' });
 
     this.checkResponceOk(response);
@@ -18,7 +18,7 @@ const youtubeSearchAPI = {
     return result;
   },
 
-  createURL(value, pageToken) {
+  createSearchByPageURL(value, pageToken) {
     const url = new URL(REQUEST_PATH, this.REDIRECT_SERVER_HOST);
     const parameter = new URLSearchParams({
       part: 'snippet',

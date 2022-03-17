@@ -2,7 +2,7 @@ export const LOCALSTORAGE_KEY_SAVE = 'save';
 
 export const ERROR_403 = '403 Error';
 
-export const REQUEST_VIDEO_QUANTITY = 10;
+export const REQUEST_VIDEO_QUANTITY = 2;
 
 export const MAX_STOARGE_CAPACITY = 100;
 

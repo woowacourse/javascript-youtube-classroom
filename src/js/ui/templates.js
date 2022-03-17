@@ -8,9 +8,9 @@ const template = {
     <img
       src=${thumbnails}
       alt="video-item-thumbnail" class="video-item__thumbnail" />
-    <h4 class="video-item__title">${title}</h4>
-    <p class="video-item__channel-name">${channelTitle}</p>
-    <p class="video-item__published-date">${convertDataToDateString(publishTime)}</p>
+    <h4 class="video-item__title" >${title}</h4>
+    <p class="video-item__channel-name" >${channelTitle}</p>
+    <p class="video-item__published-date" >${convertDataToDateString(publishTime)}</p>
     ${isSaved ? '' : '<button class="video-item__save-button button">⬇ 저장</button>'}
   </li>
   `,
@@ -52,6 +52,31 @@ const template = {
       다시 요청해주세요
     </p>
   </div>
+  `,
+
+  afterWatchVideoItem: (savedItems) => `
+  ${savedItems
+    .map(({ videoId, videoThumbnail, videoDate, videoTitle, videoChannelTitle }) => {
+      return `
+    <div class="video-item" data-video-id=${videoId}>
+      <img
+        src=${videoThumbnail}
+        alt="video-item-thumbnail" class="video-item__thumbnail" />
+      <h4 class="video-item__title" >${videoTitle}</h4>
+      <p class="video-item__channel-name" >${videoChannelTitle}</p>
+      <p class="video-item__published-date" >${videoDate}</p>
+      <div class="video-watch-controller">
+        <button class="watch-video-button button">✅</button>
+        <button class="delete-watch-video-button button">🗑️</button>
+      </div>
+    </div>
+      `;
+    })
+    .join('')}
+  `,
+
+  noAfterWatchItem: () => `
+    <p>저장된 영상이 없습니다~</p>
   `,
 };
 

@@ -1,8 +1,11 @@
 import SaveInterferer from './interferer/saveInterferer';
-import SearchInterferer from './interferer/searchInterferer';
+import ModalInterferer from './interferer/modalInterferer';
+import MainInterferer from './interferer/mainInterferer';
 
 const saveInterferer = new SaveInterferer();
-const searchInterferer = new SearchInterferer();
+const modalInterferer = new ModalInterferer();
+const mainInterferer = new MainInterferer();
 
 saveInterferer.init();
-searchInterferer.init();
+modalInterferer.init();
+mainInterferer.init();

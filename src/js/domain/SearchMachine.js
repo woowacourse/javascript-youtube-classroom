@@ -8,8 +8,8 @@ const searchMachine = {
     return value;
   },
 
-  async search(keyword, pageToken) {
-    const data = await youtubeSearchAPI.searchByPage(keyword, pageToken);
+  async searchByKeyword(keyword, pageToken) {
+    const data = await youtubeSearchAPI.searchByApi(keyword, pageToken);
     const videos = data.items.map((item) => VideoFactory.generate(item));
 
     return { videos, nextPageToken: data.nextPageToken };

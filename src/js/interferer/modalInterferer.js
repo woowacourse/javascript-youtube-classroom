@@ -6,7 +6,7 @@ import SearchResultView from '../ui/searchResultView';
 import SkeletonView from '../ui/skeletonView';
 import { $ } from '../util/selector';
 
-class SearchInterferer {
+class ModalInterferer {
   #keyword;
 
   #pageToken;
@@ -78,7 +78,7 @@ class SearchInterferer {
 
   requestSearchVideos() {
     searchMachine
-      .search(this.#keyword, this.#pageToken)
+      .searchByKeyword(this.#keyword, this.#pageToken)
       .then(({ videos, nextPageToken }) => {
         this.searchResultView.renderSearchResult(videos);
         this.#pageToken = nextPageToken;
@@ -109,4 +109,4 @@ class SearchInterferer {
   }
 }
 
-export default SearchInterferer;
+export default ModalInterferer;

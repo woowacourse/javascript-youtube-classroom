@@ -16,7 +16,17 @@ class SaveView {
       return;
     }
     target.classList.add('hide');
-    emit(currentTarget, '@save', { newVideo: target.closest('li').dataset.videoId });
+
+    const parentTarget = target.closest('li');
+    emit(currentTarget, '@save', {
+      newVideo: {
+        videoId: parentTarget.dataset.videoId,
+        videoThumbnail: parentTarget.querySelector('.video-item__thumbnail').src,
+        videoChannelTitle: parentTarget.querySelector('.video-item__channel-name').innerText,
+        videoTitle: parentTarget.querySelector('.video-item__title').innerText,
+        videoDate: parentTarget.querySelector('.video-item__published-date').innerText,
+      },
+    });
   }
 }
 
