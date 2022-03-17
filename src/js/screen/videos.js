@@ -15,10 +15,10 @@ export default class VideosScreen {
 
   #handleSaveVideo(e) {
     if (e.target.classList.contains('video-item__save-button')) {
-      const { videoId } = e.target.closest('.video-item').dataset;
+      const video = VideosScreen.extractDataForStorage(e);
 
       try {
-        this.#storageEngine.saveVideo(videoId);
+        this.#storageEngine.saveVideo(video);
         e.target.classList.add('hide');
       } catch (error) {
         alert(error.message);
@@ -65,5 +65,16 @@ export default class VideosScreen {
         videoId,
       };
     });
+  }
+
+  static extractDataForStorage(e) {
+    const parentElement = e.target.closest('.video-item');
+    const { videoId } = parentElement.dataset;
+    const thumbnail = $('.video-item__thumbnail', parentElement).src;
+    const title = $('.video-item__title', parentElement).textContent;
+    const channelTitle = $('.video-item__channel-name', parentElement).textContent;
+    const publishTime = $('.video-item__published-date', parentElement).textContent;
+
+    return { videoId, thumbnail, title, channelTitle, publishTime };
   }
 }

@@ -96,7 +96,7 @@
   width: 236px;
 }
 
-.skeleton > #image-wrapper {
+.skeleton > .image-wrapper {
   height: 150px;
 }
 
@@ -104,7 +104,7 @@
   display: none;
 }
 
-.skeleton #image-wrapper,
+.skeleton .image-wrapper,
 .skeleton .video-item__title,
 .skeleton .video-item__channel-name,
 .skeleton .video-item__published-date,

@@ -9,38 +9,41 @@ export default class StorageEngine {
     return JSON.parse(localStorage.getItem(STORAGE_KEY_SAVED_VIDEOS));
   }
 
-  saveVideo(newVideoId) {
+  saveVideo(video) {
     const savedVideos = this.getSavedVideos() ?? [];
 
     if (savedVideos.length >= MAX_SAVED_VIDEOS_COUNT)
       throw new Error(ERROR_MESSAGE.NO_MORE_VIDEO_SAVABLE);
 
-    const newVideo = { videoId: newVideoId, isViewed: false };
+    const newVideo = {
+      ...video,
+      isViewed: false,
+    };
 
     localStorage.setItem(STORAGE_KEY_SAVED_VIDEOS, JSON.stringify([...savedVideos, newVideo]));
   }
 
-  removeVideo(newVideoId) {
+  removeVideo(videoId) {
     const savedVideos = this.getSavedVideos();
 
-    const restSavedVideos = savedVideos.filter(({ videoId }) => videoId !== newVideoId);
+    const restSavedVideos = savedVideos.filter((video) => video.videoId !== videoId);
 
     localStorage.setItem(STORAGE_KEY_SAVED_VIDEOS, JSON.stringify(restSavedVideos));
   }
 
-  checkVideoViewed(specificVideoId) {
+  checkVideoViewed(videoId) {
     const savedVideos = this.getSavedVideos();
 
-    const specificVideo = savedVideos.find(({ videoId }) => videoId === specificVideoId);
-    specificVideo.isViewed = true; // 여기서는 이미 복사한 object니까 이렇게 변경해도 다른 곳에 영향 안끼쳐서 괜찮아보임
+    const targetVideo = savedVideos.find((video) => video.videoId === videoId);
+    targetVideo.isViewed = true; // 여기서는 이미 복사한 object니까 이렇게 변경해도 다른 곳에 영향 안끼쳐서 괜찮아보임
 
     localStorage.setItem(STORAGE_KEY_SAVED_VIDEOS, JSON.stringify(savedVideos));
   }
 
-  getSpecificVideo(specificVideoId) {
+  getSpecificVideo(videoId) {
     const savedVideos = this.getSavedVideos() || [];
 
-    return savedVideos.find(({ videoId }) => videoId === specificVideoId);
+    return savedVideos.find((video) => video.videoId === videoId);
   }
 
   init() {
