@@ -8,6 +8,8 @@ export default class MainView {
 
   registerDOM() {
     this.$modalOpenButton = $(DOM_STRING.MODAL_OPEN_BUTTON);
+    this.$watchLaterButton = $(DOM_STRING.WATCH_LATER_BUTTON);
+    this.$watchedButton = $(DOM_STRING.WATCHED_BUTTON);
   }
 
   bindModalOpenButton(callback) {
