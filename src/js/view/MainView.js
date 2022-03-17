@@ -8,9 +8,19 @@ export default class MainView {
 
   registerDOM() {
     this.$modalOpenButton = $(DOM_STRING.MODAL_OPEN_BUTTON);
+    this.$willSeeButton = $('#will-see-button');
+    this.$sawButton = $('#saw-button');
   }
 
   bindModalOpenButton(callback) {
     this.$modalOpenButton.addEventListener('click', callback);
+  }
+
+  bindWillSeeButton(callback) {
+    this.$willSeeButton.addEventListener('click', callback);
+  }
+
+  bindSawButton(callback) {
+    this.$sawButton.addEventListener('click', callback);
   }
 }

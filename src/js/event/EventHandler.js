@@ -13,6 +13,8 @@ export default class EventHandler {
 
   setBindEvents() {
     this.mainView.bindModalOpenButton(this.onModalOpenButtonClick.bind(this));
+    this.mainView.bindWillSeeButton(this.onWillSeeButtonClick.bind(this));
+    this.mainView.bindSawButton(this.onSawButtonClick.bind(this));
     this.modalView.bindOnClickSearchButton(this.onSearchButtonClick.bind(this));
     this.modalView.bindOnClickDimmer(this.onDimmerClick.bind(this));
     this.modalView.bindVideoListScroll(this.onVideoListScroll.bind(this));
@@ -58,5 +60,13 @@ export default class EventHandler {
     } catch (error) {
       alert(error.message);
     }
+  }
+
+  onWillSeeButtonClick() {
+    console.log('will see');
+  }
+
+  onSawButtonClick() {
+    console.log('saw');
   }
 }
