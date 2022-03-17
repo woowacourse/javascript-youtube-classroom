@@ -5,8 +5,8 @@ class SaveVideo {
     this.saveVideoList = this.#getStorageVideoList();
   }
 
-  setStorageVideoList(videoId) {
-    this.saveVideoList = [videoId, ...this.saveVideoList];
+  saveVideoInformationToStorage(videoInformation) {
+    this.saveVideoList = [videoInformation, ...this.saveVideoList];
     localStorage.setItem(VIDEO_ID_LIST_KEY, JSON.stringify(this.saveVideoList));
   }
 
