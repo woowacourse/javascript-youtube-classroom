@@ -50,10 +50,6 @@ body {
   margin-bottom: 39px;
 }
 
-.select__button:hover {
-  background: #ebebeb;
-}
-
 .nav__button {
   width: 80px;
   height: 36px;
