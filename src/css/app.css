@@ -103,3 +103,7 @@ body {
   height: 480px;
   margin-bottom: 32px;
 }
+
+.checked {
+  background-color: rgba(0, 188, 212, 0.12);
+}

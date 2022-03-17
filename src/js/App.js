@@ -37,6 +37,8 @@ export default function App() {
 
   $('#going-watch-button').addEventListener('click', () => {
     if (!$('.saved-video-list').classList.contains('watched')) {
+      $('#going-watch-button').classList.add('checked');
+      $('#watched-button').classList.remove('checked');
       $('.saved-video-list').classList.add('watched');
       $('.saved-video-list').replaceChildren();
       userInterface.renderSavedVideoItems();
@@ -45,6 +47,8 @@ export default function App() {
 
   $('#watched-button').addEventListener('click', () => {
     if ($('.saved-video-list').classList.contains('watched')) {
+      $('#watched-button').classList.add('checked');
+      $('#going-watch-button').classList.remove('checked');
       $('.saved-video-list').classList.remove('watched');
       $('.saved-video-list').replaceChildren();
       userInterface.renderSavedVideoItems();
