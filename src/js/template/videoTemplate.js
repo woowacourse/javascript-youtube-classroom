@@ -1,4 +1,6 @@
 import notFoundImage from '../../assets/images/not_found.png';
+import emptyVideoListImage from '../../assets/images/empty_saved_video_list.png';
+
 import { MAX_VIDEO_REQUEST_COUNT } from '../constants/contants';
 
 const stringFormatToDate = (dateString) => {
@@ -87,4 +89,22 @@ const videoNotFoundTemplate = `
   </section>
 `;
 
-export { videoTemplate, totalVideoSkeletonTemplate, videoNotFoundTemplate, savedVideoTemplate };
+const emptyVideoListTemplate = `
+  <section class="save-result save-result--no-result">
+    <h3 hidden>저장 목록</h3>
+    <div class="no-result">
+      <img src="${emptyVideoListImage}" alt="no result image" class="no-result__image">
+      <p class="no-result__description">
+        저장된 비디오가 없습니다
+      </p>
+    </div>
+  </section>
+`;
+
+export {
+  videoTemplate,
+  totalVideoSkeletonTemplate,
+  videoNotFoundTemplate,
+  savedVideoTemplate,
+  emptyVideoListTemplate,
+};

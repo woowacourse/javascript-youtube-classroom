@@ -65,3 +65,13 @@ body {
   margin: 2.5em 0;
   width: 100%;
 }
+
+.save-result {
+  margin: auto;
+}
+
+.save-result.save-result--no-result {
+  justify-content: center;
+  align-items: center;
+  grid-column: 1 / span 3;
+}

@@ -11,6 +11,7 @@ import {
   totalVideoSkeletonTemplate,
   videoNotFoundTemplate,
   savedVideoTemplate,
+  emptyVideoListTemplate,
 } from './template/videoTemplate.js';
 import { selectDom, addEvent } from './utils/handleElement.js';
 
@@ -35,12 +36,10 @@ class RenderVideo {
     addEvent(this.videoListContainer, 'scroll', this.#onScrollVideoList);
     addEvent(this.videoListContainer, 'click', this.#onSaveButtonClick);
 
-    this.savedVideoListContainer.insertAdjacentHTML(
-      'afterbegin',
-      this.saveVideo.saveVideoList
-        .filter((video) => !video.isChecked)
-        .map((video) => savedVideoTemplate(video))
-        .join(' ')
+    this.#onTabButtonClick(
+      this.playlistTabButton,
+      this.watchedTabButton,
+      this.saveVideo.saveVideoList.filter((video) => !video.isChecked)
     );
   }
 
@@ -75,6 +74,10 @@ class RenderVideo {
     anotherTabButton.classList.remove('selected');
 
     this.savedVideoListContainer.replaceChildren();
+    if (!videoList.length) {
+      this.savedVideoListContainer.insertAdjacentHTML('afterbegin', emptyVideoListTemplate);
+      return;
+    }
     this.savedVideoListContainer.insertAdjacentHTML(
       'afterbegin',
       videoList.map((video) => savedVideoTemplate(video)).join(' ')
