@@ -7,6 +7,7 @@ class MainView {
   }
 
   renderItems(savedItems) {
+    this.$afterWatchVideoList.replaceChildren();
     if (savedItems.length > 0) {
       this.renderSavedItems(savedItems);
       return;

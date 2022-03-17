@@ -4,9 +4,10 @@ import { on } from '../util/event';
 import { $ } from '../util/selector';
 
 class SaveInterferer {
-  constructor() {
+  constructor(mainInterferer) {
     this.$videoListContainer = $('.video-list');
     this.saveView = new SaveView(this.$videoListContainer);
+    this.mainInterferer = mainInterferer;
   }
 
   init() {
@@ -16,6 +17,7 @@ class SaveInterferer {
   saveVideo(newVideo) {
     try {
       saveMachine.saveVideoToLocalStorage(newVideo);
+      this.mainInterferer.init();
     } catch (err) {
       alert(err.message);
     }
