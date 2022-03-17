@@ -10,15 +10,16 @@ export class Classroom {
 
     this.contentsContainer = document.getElementById('classroom-contents-container');
     this.willSeeVideoButton = document.getElementById('will-see-video-button');
+    this.alreadyWatchedVideoButton = document.getElementById('already-watched-video-button');
 
     this.willSeeVideoButton.addEventListener('click', this.handleWillSeeVideoNav);
+    this.alreadyWatchedVideoButton.addEventListener('click', this.handleAlreadyWatchedVideoNav);
     this.contentsContainer.addEventListener('click', this.handleContentsButton);
   }
 
   handleWillSeeVideoNav = async () => {
     this.clearClassroomContentsContainer();
     this.videoList = getVideoItemsFromLocalStorage();
-    console.log(this.videoList);
     this.contentsContainer.insertAdjacentHTML(
       'beforeend',
       this.videoList
@@ -43,13 +44,29 @@ export class Classroom {
           e.target.parentNode.parentNode.remove();
         }
       });
+      saveVideoItemToLocalStorage(this.videoList);
     }
 
     if (e.target.classList.contains('discard-button')) {
       this.videoList = this.videoList.filter((video) => video.id !== e.target.id);
       e.target.parentNode.parentNode.remove();
-    }
 
-    saveVideoItemToLocalStorage(this.videoList);
+      saveVideoItemToLocalStorage(this.videoList);
+    }
+  };
+
+  handleAlreadyWatchedVideoNav = () => {
+    this.clearClassroomContentsContainer();
+    this.videoList = getVideoItemsFromLocalStorage();
+    this.contentsContainer.insertAdjacentHTML(
+      'beforeend',
+      this.videoList
+        .map((video) => {
+          if (video.watchLater === false) {
+            return makeThumbnailTemplate(video);
+          }
+        })
+        .join(''),
+    );
   };
 }

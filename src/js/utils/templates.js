@@ -1,4 +1,3 @@
-import { changeDateFormat } from './common.js';
 import noImage from '../../assets/images/not_found.png';
 
 export const noSearchResultTemplate = () => {
@@ -20,10 +19,10 @@ export const makeThumbnailTemplate = (video, exist) => {
       <p class="video-item__channel-name">${video.channelName}</p>
       <p class="video-item__published-date">${video.publishedDate}</p>
       <div class = 'button-container'>
-        <button id="${video.id}" class="already-watch-button button ${video.watchLater ? '' : 'hide'}">✅</button>
-        <button id="${video.id}" class="discard-button button ${video.watchLater ? '' : 'hide'}">🗑️</button>
-        <button id="${video.id}" class="video-item__save-button button 
-          ${exist === 'exist' ? 'hide' : ''} ${video.watchLater ? 'hide' : ''}">⬇ 저장</button>
+        <button id="${video.id}" class="already-watch-button button" ${video.watchLater ? '' : 'hidden'}>✅</button>
+        <button id="${video.id}" class="discard-button button" ${video.watchLater ? '' : 'hidden'}>🗑️</button>
+        <button id="${video.id}" class="video-item__save-button button" 
+          ${exist === 'exist' ? 'hidden' : ''} ${video.watchLater ? 'hidden' : ''}>⬇ 저장</button>
       </div>
   </li>`;
 };

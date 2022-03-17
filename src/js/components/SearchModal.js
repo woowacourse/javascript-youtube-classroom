@@ -141,9 +141,9 @@ export class SearchModal {
   saveVideoItemInformationToLocalStorage(target) {
     const tempVideosInLocalStorage = getVideoItemsFromLocalStorage();
     tempVideosInLocalStorage.push({
-      title: target.parentNode.childNodes[3].innerText,
-      channelName: target.parentNode.childNodes[5].innerText,
-      publishedDate: target.parentNode.childNodes[7].innerText,
+      title: target.parentNode.parentNode.childNodes[3].innerText,
+      channelName: target.parentNode.parentNode.childNodes[5].innerText,
+      publishedDate: target.parentNode.parentNode.childNodes[7].innerText,
       id: target.id,
       watchLater: true,
     });
