@@ -2,3 +2,7 @@
 #watched-button {
   min-width: 5vw;
 }
+
+.clicked {
+  background-color: red;
+}

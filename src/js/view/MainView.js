@@ -10,6 +10,7 @@ export default class MainView {
     this.bindOnClickWatchLaterButton();
     this.onClickWatchLaterButton();
     this.bindOnClickWatchedButton();
+    this.bindOnClickDeleteButton();
   }
 
   registerDOM() {
@@ -31,6 +32,12 @@ export default class MainView {
     this.$watchedButton.addEventListener('click', this.onClickWatchedButton.bind(this));
   }
 
+  bindOnClickDeleteButton() {
+    this.$storedVideoList.addEventListener('click', e => {
+      console.log(e.target);
+    });
+  }
+
   renderStoredVideoList() {
     const storedVideoList = videoStorage.getVideoDataList();
     storedVideoList.forEach(videoData => {
@@ -43,8 +50,10 @@ export default class MainView {
           <h4 class="video-item__title">${videoData.title}</h4>
           <p class="video-item__channel-name">${videoData.channelTitle}</p>
           <p class="video-item__published-date">${videoData.publishedAt}</p>
-          <button data-videoid=${videoData.videoId}>✅</button>
-          <button data-videoid=${videoData.videoId}>🗑️</button>
+          <button data-videoid=${videoData.videoId} class="button ${
+        videoData.type === 'watch-later' ? '' : 'clicked'
+      }">✅</button>
+          <button data-videoid=${videoData.videoId} class="button">🗑️</button>
         </li>`;
 
       this.$storedVideoList.insertAdjacentHTML('beforeend', template);
@@ -83,8 +92,10 @@ export default class MainView {
       <h4 class="video-item__title">${videoData.title}</h4>
       <p class="video-item__channel-name">${videoData.channelTitle}</p>
       <p class="video-item__published-date">${videoData.publishedAt}</p>
-      <button data-videoid=${videoData.videoId}>✅</button>
-      <button data-videoid=${videoData.videoId}>🗑️</button>
+      <button data-videoid=${videoData.videoId} class="button ${
+      videoData.type === 'watch-later' ? '' : 'clicked'
+    }">✅</button>
+      <button data-videoid=${videoData.videoId} class="button">🗑️</button>
     </li>`;
 
     this.$storedVideoList.insertAdjacentHTML('beforeend', template);
