@@ -23,7 +23,7 @@ class MyClassroom extends CustomElement {
   }
 
   showSearchModal() {
-    $('.modal-container').classList.remove('hide');
+    $('.modal-container').classList.remove('hidden');
   }
 }
 

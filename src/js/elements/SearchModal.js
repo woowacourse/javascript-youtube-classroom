@@ -4,7 +4,7 @@ import { addEvent, $ } from '../utils';
 class SearchModal extends CustomElement {
   template() {
     return `
-      <div class="modal-container hide">
+      <div class="modal-container hidden">
         <div class="dimmer"></div>
         <div class="search-modal" role="dialog" aria-labelledby="search-modal-title">
           <h2 id="search-modal-title" class="search-modal__title">🔍 보고싶은 영상 찾기 🔍</h2>
@@ -25,7 +25,7 @@ class SearchModal extends CustomElement {
   }
 
   hideSearchModal() {
-    $('.modal-container').classList.add('hide');
+    $('.modal-container').classList.add('hidden');
   }
 }
 

@@ -9,10 +9,6 @@
   left: 0;
 }
 
-.modal-container.hide {
-  display: none;
-}
-
 .dimmer {
   position: absolute;
   width: 100%;
