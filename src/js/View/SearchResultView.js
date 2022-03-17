@@ -10,19 +10,13 @@ export default class SearchResultView {
     this.$noResultContainer = $('#no-result-container', this.$searchResultSection);
     this.$noResultDescription = $('#no-result-description', this.$noResultContainer);
 
-    this.bindEvents();
-  }
-
-  bindEvents() {
     this.$searchResultVideoList.addEventListener('scroll', debounce(this.onScrollVideoList.bind(this), 500));
     this.$searchResultVideoList.addEventListener('click', this.onClickVideoSaveButton.bind(this));
-    event.addListener('resetSearchResult', this.resetSearchResult.bind(this));
-    event.addListener('updateLoading', this.updateOnLoading.bind(this));
-    event.addListener('updateFetchedData', this.updateOnNewDataReceived.bind(this));
-    event.addListener('showSearchErrorResult', this.showErrorResult.bind(this));
-    event.addListener('saveVideoSuccess', this.updateOnSaveVideoSuccess.bind(this));
+
+    event.addListener('saveVideoReturn', this.updateOnSaveVideoSuccess.bind(this));
+    event.addListener('updateSearchState', this.updateOnSearchState.bind(this));
   }
-  
+
   onScrollVideoList() {
     const { scrollTop, clientHeight, scrollHeight } = this.$searchResultVideoList;
     if (scrollTop + clientHeight + 50 < scrollHeight) return;
@@ -36,6 +30,14 @@ export default class SearchResultView {
     }
   }
 
+  updateOnSearchState(e) {
+    const { state } = e.detail;
+    if (state === 'READY') { this.resetSearchResult(); };
+    if (state === 'LOADING') { this.updateOnLoading(); };
+    if (state === 'SUCCESS') { this.updateOnNewDataReceived(e.detail.videos); }
+    if (state === 'ERROR') { this.showErrorResult(); }
+  }
+
   resetSearchResult() {
     this.$searchResultVideoList.scrollTo(0, 0);
     this.$searchResultVideoList.innerHTML = template.skeletonListItem();
@@ -46,8 +48,7 @@ export default class SearchResultView {
     this.changeSkeletonListItemVisibility();
   }
 
-  updateOnNewDataReceived(e) {
-    const { videos } = e.detail;
+  updateOnNewDataReceived(videos) {
     if (videos.length === 0) {
       this.showNoResult();
       return;

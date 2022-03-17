@@ -10,7 +10,7 @@ export default class HomeView {
     $('#unwatched-video-list').addEventListener('click', this.onClickIconButton.bind(this));
     $('#watched-video-list').addEventListener('click', this.onClickIconButton.bind(this));
 
-    event.addListener('updateOnSavedVideoList', this.updateOnVideoList.bind(this));
+    event.addListener('updateSavedVideoList', this.updateOnSavedVideoList.bind(this));
   }
 
   onClickUnwatchedVideoListButton() {
@@ -46,7 +46,7 @@ export default class HomeView {
     }
   }
 
-  updateOnVideoList(e) {
+  updateOnSavedVideoList(e) {
     this.updateOnUnwatchedVideoList(e);
     this.updateOnWatchedVideoList(e);
   }

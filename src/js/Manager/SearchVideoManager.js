@@ -35,6 +35,11 @@ export default class SearchVideoManager {
     event.addListener('searchOnScroll', this.searchOnScroll.bind(this));
   }
 
+  updateSearchState(state, data = {}) {
+    const detail = { state, ...data };
+    event.dispatch('updateSearchState', detail);
+  }
+
   searchWithNewKeyword(e) {
     const { keyword } = e.detail;
     try {
@@ -44,7 +49,7 @@ export default class SearchVideoManager {
       return 
     }
     this.#keyword = keyword;
-    event.dispatch('resetSearchResult');
+    this.updateSearchState('READY');
     this.resetNextPageToken();
     this.search();
   }
@@ -58,13 +63,13 @@ export default class SearchVideoManager {
   }
 
   search() {
-    event.dispatch('updateLoading');
+    this.updateSearchState('LOADING');
     this.fetchYoutubeData()
       .then((data) => this.processFetchedResult(data))
       .then((fetchedData) => { 
-        event.dispatch('updateFetchedData', { videos: fetchedData })
+        this.updateSearchState('SUCCESS', { videos: fetchedData });
       }).catch(() => {
-        event.dispatch('showSearchErrorResult');
+        this.updateSearchState('ERROR');
       });
   }
 
