@@ -8,3 +8,11 @@
 .clicked {
   background-color: var(--selectedButton-color);
 }
+
+.stored-video-list {
+  margin-top: 5vh;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 32px 20px;
+}
