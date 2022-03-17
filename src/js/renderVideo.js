@@ -3,6 +3,8 @@ import {
   ERROR_MESSAGE,
   MAX_SAVE_VIDEO_COUNT,
   MAX_VIDEO_LIST_LENGTH,
+  SEARCH_MODAL_BUTTON_ID,
+  CLASSNAME,
 } from './constants/contants.js';
 import SaveVideo from './saveVideo.js';
 import SearchVideo from './searchVideo.js';
@@ -26,12 +28,14 @@ class RenderVideo {
     this.savedVideoListContainer = selectDom('.saved-video-list');
 
     this.modalContainer = selectDom('.modal-container');
+    this.modalOutside = selectDom('.dimmer', this.modalContainer);
     this.searchForm = selectDom('#search-form', this.modalContainer);
     this.searchInput = selectDom('#search-input-keyword', this.searchForm);
     this.videoListContainer = selectDom('.video-list', this.modalContainer);
     this.searchResultSection = selectDom('.search-result', this.modalContainer);
 
     addEvent(this.navSection, 'click', this.#onNavButtonClick);
+    addEvent(this.modalOutside, 'click', this.#closeModal);
     addEvent(this.searchForm, 'submit', this.#onSearchFormSubmit);
     addEvent(this.videoListContainer, 'scroll', this.#onScrollVideoList);
     addEvent(this.videoListContainer, 'click', this.#onSaveButtonClick);
@@ -45,22 +49,22 @@ class RenderVideo {
 
   #onNavButtonClick = ({ target: { id: targetId } }) => {
     const navClickHandler = {
-      'playlist-tab-button'() {
+      [this.playlistTabButton.id]() {
         this.#onTabButtonClick(
           this.playlistTabButton,
           this.watchedTabButton,
           this.saveVideo.saveVideoList.filter((video) => !video.isChecked)
         );
       },
-      'watched-tab-button'() {
+      [this.watchedTabButton.id]() {
         this.#onTabButtonClick(
           this.watchedTabButton,
           this.playlistTabButton,
           this.saveVideo.saveVideoList.filter((video) => video.isChecked)
         );
       },
-      'search-modal-button'() {
-        this.modalContainer.classList.remove('hide');
+      [SEARCH_MODAL_BUTTON_ID]() {
+        this.modalContainer.classList.remove(CLASSNAME.HIDE_ELEMENT);
       },
     };
 
@@ -82,6 +86,10 @@ class RenderVideo {
       'afterbegin',
       videoList.map((video) => savedVideoTemplate(video)).join(' ')
     );
+  };
+
+  #closeModal = () => {
+    this.modalContainer.classList.add(CLASSNAME.HIDE_ELEMENT);
   };
 
   #onScrollVideoList = () => {
@@ -110,7 +118,7 @@ class RenderVideo {
   };
 
   #onSaveButtonClick = ({ target }) => {
-    const isSaveButton = target.classList.contains('video-item__save-button');
+    const isSaveButton = target.classList.contains(CLASSNAME.VIDEO_SAVE_BUTTON);
     if (isSaveButton && this.saveVideo.saveVideoList.length < MAX_SAVE_VIDEO_COUNT) {
       this.saveVideo.saveVideoInformationToStorage(target.closest('li').dataset);
       target.textContent = BUTTON_SAVED_TEXT;
@@ -131,7 +139,7 @@ class RenderVideo {
 
     Array.from(this.videoListContainer.children).forEach((videoLi) => {
       if (videoLi.classList.contains('skeleton')) {
-        videoLi.classList.add('hide');
+        videoLi.classList.add(CLASSNAME.HIDE_ELEMENT);
       }
     });
 
@@ -151,7 +159,7 @@ class RenderVideo {
   #renderVideoSkeleton() {
     Array.from(this.videoListContainer.children).forEach((videoLi) => {
       if (videoLi.classList.contains('skeleton')) {
-        videoLi.classList.remove('hide');
+        videoLi.classList.remove(CLASSNAME.HIDE_ELEMENT);
       }
     });
   }

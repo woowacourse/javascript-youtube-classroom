@@ -4,9 +4,16 @@ const MAX_SAVE_VIDEO_COUNT = 100;
 
 const BUTTON_SAVED_TEXT = '저장됨';
 
+const SEARCH_MODAL_BUTTON_ID = 'search-modal-button';
+
+const CLASSNAME = {
+  VIDEO_SAVE_BUTTON: 'video-item__save-button',
+  HIDE_ELEMENT: 'hide',
+};
+
 const VIDEO_ID_LIST_KEY = 'VIDEO_ID_LIST';
 
-const REDIRECT_SERVER_HOST = 'https://youtube-classroom-project.netlify.app';
+const REDIRECT_SERVER_HOST = 'https://www.googleapis.com'; //'https://youtube-classroom-project.netlify.app'; // 'https://www.googleapis.com'
 
 const ERROR_MESSAGE = {
   CANNOT_GET_YOUTUBE_VIDEO: '[404] 개발자에게 문의하세요.',
@@ -22,4 +29,6 @@ export {
   BUTTON_SAVED_TEXT,
   VIDEO_ID_LIST_KEY,
   REDIRECT_SERVER_HOST,
+  SEARCH_MODAL_BUTTON_ID,
+  CLASSNAME,
 };
