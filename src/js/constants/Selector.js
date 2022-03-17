@@ -1,5 +1,5 @@
-export const SELECTOR = Object.freeze({
-  ID: Object.freeze({
+export const SELECTOR = {
+  ID: {
     CLASSROOM_NAVIGATION: '#classroom-navigation',
     SEARCH_MODAL_BUTTON: '#search-modal-button',
     MODAL_CONTAINER: '#modal',
@@ -10,24 +10,24 @@ export const SELECTOR = Object.freeze({
     SEARCH_BUTTON: '#search-button',
     SEARCH_RESULT_CONTAINER: '#search-result',
     SEARCH_RESULT_SCROLL_OBSERVER: '#search-result-scroll-observer',
-  }),
-  CLASS: Object.freeze({
+  },
+  CLASS: {
     VIDEO_LIST_SKELETON: '.skeleton',
     VIDEO_ITEM: '.video-item',
     VIDEO_ITEM_SAVE_BUTTON: '.video-item__save-button',
     SEARCH_RESULT_NOT_FOUND: '.no-result',
-  }),
-});
+  },
+};
 
 const removeSelectorSymbol = origin => {
   const output = Object.entries(origin).reduce((previous, [key, value]) => {
     previous[key] = value.substring(1);
     return previous;
   }, {});
-  return Object.freeze(output);
+  return output;
 };
 
-export const DOM_NAME = Object.freeze({
+export const DOM_NAME = {
   ID: removeSelectorSymbol(SELECTOR.ID),
   CLASS: removeSelectorSymbol(SELECTOR.CLASS),
-});
+};
