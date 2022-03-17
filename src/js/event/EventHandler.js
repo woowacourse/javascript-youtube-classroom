@@ -69,14 +69,26 @@ export default class EventHandler {
     if (videoList.length === 0) {
       return;
     }
+    const videoIdList = videoList.map(video => video.id);
+    const renderedVideoIdList = this.mainView.getRenderedVideoIdList();
+    console.log(renderedVideoIdList);
+    const willRequestVideoIdList = videoIdList.filter(id => !renderedVideoIdList.includes(id));
+    console.log(willRequestVideoIdList);
+    this.mainView.showSkeletonVideoList(willRequestVideoIdList);
+    const videoData = await storeVideoAPICaller.getVideoListData(willRequestVideoIdList);
+    console.log(videoData);
+    this.mainView.updateVideoItems(videoData);
+  }
+
+  async onSawButtonClick() {
+    const videoList = videoStore.getSawVideoList();
+    if (videoList.length === 0) {
+      return;
+    }
     const renderedVideoIdList = this.mainView.getRenderedVideoIdList();
     const willRequestVideoIdList = videoList.filter(id => !renderedVideoIdList.includes(id));
     this.mainView.showSkeletonVideoList(willRequestVideoIdList);
     const videoData = await storeVideoAPICaller.getVideoListData(willRequestVideoIdList);
     this.mainView.updateVideoItems(videoData);
-  }
-
-  onSawButtonClick(data) {
-    console.log(data);
   }
 }

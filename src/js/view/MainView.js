@@ -22,10 +22,9 @@ export default class MainView {
   getRenderedVideoIdList() {
     if (this.$currentVideoList === this.$willSeeVideoList) {
       return [...this.$currentVideoList.childNodes].map(videoItem => {
-        return videoItem;
+        return videoItem.dataset.videoid;
       });
     } else {
-      this.sawVideoList.push(new VideoItemView(li));
     }
   }
 
@@ -56,7 +55,9 @@ export default class MainView {
     if (this.$currentVideoList === this.$willSeeVideoList) {
       this.willSeeVideoList
         .slice(-videoListData.length)
-        .forEach((videoItem, index) => videoItem.renderVideoItemTemplate(videoListData[index]));
+        .forEach((videoItem, index) =>
+          videoItem.renderWillSeeVideoItemTemplate(videoListData[index])
+        );
     } else {
       this.sawVideoList
         .slice(-videoListData.length)
@@ -87,15 +88,16 @@ export default class MainView {
   toggleStoreButtons(button) {
     button.disabled = true;
     button.classList.add('nav__button-clicked');
-    button.classList.remove('display-none');
     if (button === this.$willSeeButton) {
       this.$sawButton.disabled = false;
       this.$sawButton.classList.remove('nav__button-clicked');
-      this.$sawButton.classList.add('display-none');
+      this.$willSeeVideoList.classList.remove('display-none');
+      this.$sawVideoList.classList.add('display-none');
     } else {
       this.$willSeeButton.disabled = false;
       this.$willSeeButton.classList.remove('nav__button-clicked');
-      this.$willSeeButton.classList.add('display-none');
+      this.$willSeeVideoList.classList.add('display-none');
+      this.$sawVideoList.classList.remove('display-none');
     }
   }
 

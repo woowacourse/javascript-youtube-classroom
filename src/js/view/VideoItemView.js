@@ -24,6 +24,21 @@ export default class VideoItemView {
     this.$element.insertAdjacentHTML('afterbegin', template);
   }
 
+  renderWillSeeVideoItemTemplate(parseData) {
+    const template = `
+      <img 
+        src=${parseData.url}
+        alt="video-item-thumbnail" class="video-item__thumbnail" loading="lazy" />
+      <h4 class="video-item__title">${parseData.title}</h4>
+      <p class="video-item__channel-nagetVideoItemTemplateme">${parseData.channelTitle}</p>
+      <p class="video-item__published-date ">${parseData.publishedAt}</p>
+    `;
+
+    this.$element.setAttribute('data-videoid', parseData.videoId);
+    this.$element.textContent = '';
+    this.$element.insertAdjacentHTML('afterbegin', template);
+  }
+
   renderSkeletonTemplate() {
     const template = `
       <div class="video-item__thumbnail skeleton"></div>

@@ -13,7 +13,9 @@ const storeVideoAPICaller = {
   async getVideoListData(videoIdList) {
     try {
       this.queryItems.id = videoIdList.join(',');
+      console.log(this.queryItems.id);
       const requestURL = APIUtil.createQueryString(this.endPoint, this.queryItems);
+      console.log(requestURL);
       const rawData = await APIUtil.fetchData(requestURL);
       return this.parsingVideoData(rawData);
     } catch (error) {
