@@ -30,21 +30,21 @@ const watchVideoTemplate = (
     snippet: {
       title,
       channelTitle,
-      publishTime,
+      publishedAt,
       thumbnails: {
         default: { url },
       },
     },
   },
-  division
+  divisionSection
 ) => `
   <li class="video-item" data-video-id="${id}"> 
     <img src="${url}" alt="video-item-thumbnail" class="video-item__thumbnail" />
     <h4 class="video-item__title">${title}</h4>
     <p class="video-item__channel-name">${channelTitle}</p>
-    <p class="video-item__published-date">${publishTime}</p>
+    <p class="video-item__published-date">${publishedAt}</p>
     <button class="delete-video-button">🗑️</button>
-    ${division === 'watched' ? '<button class="watched-video-button button-click">✅</button>' : '<button class="watched-video-button">✅</button>'}
+    ${divisionSection === 'watched' ? '<button class="watched-video-button button-click">✅</button>' : '<button class="watched-video-button">✅</button>'}
   </li>
 `;
 

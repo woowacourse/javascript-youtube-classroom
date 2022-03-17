@@ -7,8 +7,15 @@ class SaveVideo {
     this.watchedVideoList = this.getStorageWatchedVideoList();
   }
 
-  deleteVideoList(videoId) {
-    console.log(videoId);
+  deleteVideoList(videoId, divisionSection) {
+    if (divisionSection.contains('will-watch-video-list')) {
+      this.saveVideoIdList = this.saveVideoIdList.filter((saveVideoId) => videoId !== saveVideoId);
+      localStorage.setItem(VIDEO_ID_LIST_KEY, JSON.stringify(this.saveVideoIdList));
+    } else if (divisionSection.contains('watched-video-list')) {
+      this.watchedVideoList =
+        this.watchedVideoList.filter((watchedVideo) => videoId !== watchedVideo);
+      localStorage.setItem(WATCHED_ID_LIST_KEY, JSON.stringify(this.watchedVideoList));
+    }
   }
 
   setStorageVideoList(videoId) {
@@ -21,7 +28,8 @@ class SaveVideo {
   }
 
   setStorageWatchedVideoList(watchedVideoId) {
-    this.saveVideoIdList = this.saveVideoIdList.filter((v) => v !== watchedVideoId);
+    this.saveVideoIdList =
+      this.saveVideoIdList.filter((saveVideoId) => saveVideoId !== watchedVideoId);
     localStorage.setItem(VIDEO_ID_LIST_KEY, JSON.stringify(this.saveVideoIdList));
     this.watchedVideoList = [watchedVideoId, ...this.watchedVideoList];
     localStorage.setItem(WATCHED_ID_LIST_KEY, JSON.stringify(this.watchedVideoList));
