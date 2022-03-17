@@ -63,3 +63,42 @@ body {
   flex-wrap: wrap;
   gap: 32px 20px;
 }
+
+.watched-video-button {
+  width: 36px;
+  height: 36px;
+  background-color: #F5F5F5;
+  border: none;
+  float: right;
+  cursor: pointer;
+}
+
+.watched-video-button:hover {
+  background-color: #ebebeb;
+}
+
+.delete-video-button {
+  width: 36px;
+  height: 36px;
+  background-color: #F5F5F5;
+  border: none;
+  float: right;
+  margin-left: 8px;
+  cursor: pointer;
+}
+
+.delete-video-button:hover {
+  background-color: #ebebeb;
+}
+
+.watched-video-list {
+  width: 1040px;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 32px 20px;
+}
+
+.button-click {
+  background-color: #00BCD41F;
+}

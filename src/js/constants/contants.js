@@ -5,6 +5,8 @@ const ALREADY_SAVED_VIDEO = '저장됨';
 
 const VIDEO_ID_LIST_KEY = 'VIDEO_ID_LIST';
 
+const WATCHED_ID_LIST_KEY = 'WATCHED_ID_LIST';
+
 const REDIRECT_SERVER_HOST = 'https://youtubeclassroom.netlify.app';
 
 const ERROR_MESSAGE = {
@@ -20,4 +22,5 @@ export {
   ALREADY_SAVED_VIDEO,
   VIDEO_ID_LIST_KEY,
   REDIRECT_SERVER_HOST,
+  WATCHED_ID_LIST_KEY
 };

@@ -28,6 +28,7 @@ class RenderVideo {
 
     this.willWatchVideoList = selectDom('.will-watch-video-list');
     this.noWillWatchVideoText = selectDom('.no-will-watch-video');
+    this.watchedVideoList = selectDom('.watched-video-list');
 
     this.modalContainer = selectDom('.modal-container');
     this.searchVideoForm = selectDom('#search-form', this.modalContainer);
@@ -45,12 +46,50 @@ class RenderVideo {
     addEvent(this.renderVideoListWrap, 'click', this.onSaveButtonClick);
     addEvent(this.searchModalBackground, 'click', this.onClickDimmer);
 
+    addEvent(this.willWatchVideoList, 'click', this.onClickWillWatchVideoButtons);
+
     this.renderWillWatchVideo();
   }
 
+  onClickWillWatchVideoButtons = ({ target }) => {
+    if (target.classList.contains('watched-video-button')) {
+      this.saveVideo.setStorageWatchedVideoList(target.closest('li').dataset.videoId);
+      target.closest('li').remove();
+    } else if (target.classList.contains('delete-video-button')) {
+      // if (confirm('정말 삭제하겠습니까?')) {
+      //   console.log(target);
+      //   target.closest('li').remove();
+      //   this.saveVideo.deleteVideoList(target.closest('li').dataset.videoId);
+      // }
+    }
+  };
+
+  renderWatchedVideo = async () => {
+    const watchedVideoItems =
+      [...await this.saveVideo.getSaveVideoList(this.saveVideo.watchedVideoList)]
+        .filter(({ id }) =>
+          !Array.from(this.watchedVideoList.children)
+            .map((watchedVideo) => watchedVideo.dataset.videoId).includes(id));
+
+    this.watchedVideoList.insertAdjacentHTML(
+      'afterbegin',
+      watchedVideoItems.map((watchVideoItem) => watchVideoTemplate(watchVideoItem, 'watched')).join(' ')
+    );
+  };
+
   renderWillWatchVideo = async () => {
-    const willWatchVideoItems = await this.saveVideo.getSaveVideoList();
-    this.willWatchVideoList.insertAdjacentHTML('afterbegin', willWatchVideoItems.map((willWatchVideoItem) => watchVideoTemplate(willWatchVideoItem)).join(' '));
+    const willWatchVideoItems =
+      [...await this.saveVideo.getSaveVideoList(this.saveVideo.saveVideoIdList)]
+        .filter(({ id }) =>
+          !Array.from(this.willWatchVideoList.children)
+            .map((willWatchVideo) => willWatchVideo.dataset.videoId).includes(id));
+
+    this.willWatchVideoList.insertAdjacentHTML(
+      'afterbegin',
+      willWatchVideoItems
+        .map((willWatchVideoItem) => watchVideoTemplate(willWatchVideoItem))
+        .join(' ')
+    );
 
     if (this.willWatchVideoList.children.length !== 0) {
       this.noWillWatchVideoText.classList.add('hide-element');
@@ -58,17 +97,38 @@ class RenderVideo {
   };
 
   onClickWatchedSection = () => {
+    this.willWatchSectionButton.classList.remove('button-click');
+    this.watchedSectionButton.classList.add('button-click');
     this.willWatchVideoWrap.classList.add('hide-element');
     this.watchedVideoWrap.classList.remove('hide-element');
+
+    if (Array.from(this.watchedVideoList.children)
+      .find((v, i) => this.saveVideo.watchedVideoList[i] === v.dataset.videoId)
+    ) {
+      return;
+    }
+    this.renderWatchedVideo();
   };
 
   onClickWillWatchSection = () => {
+    this.willWatchSectionButton.classList.add('button-click');
+    this.watchedSectionButton.classList.remove('button-click');
     this.willWatchVideoWrap.classList.remove('hide-element');
     this.watchedVideoWrap.classList.add('hide-element');
+
+    if (
+      Array.from(this.willWatchVideoList.children).find(
+        (v, i) => this.saveVideo.saveVideoIdList[i] === v.dataset.videoId
+      )
+    ) {
+      return;
+    }
+    this.renderWillWatchVideo();
   };
 
   onClickDimmer = () => {
     this.modalContainer.classList.add('hide');
+    this.renderWillWatchVideo();
   };
 
   onScrollVideoList = () => {
@@ -125,14 +185,13 @@ class RenderVideo {
       return;
     }
 
-    this.renderVideoListWrap
-      .insertAdjacentHTML(
-        'beforeend',
-        searchVideo
-          .map((video) =>
-            videoTemplate(video, this.saveVideo.saveVideoIdList.includes(video.id.videoId)))
-          .join(' ')
-      );
+    this.renderVideoListWrap.insertAdjacentHTML(
+      'beforeend',
+      searchVideo
+        .map((video) =>
+          videoTemplate(video, this.saveVideo.saveVideoIdList.includes(video.id.videoId)))
+        .join(' ')
+    );
   }
 
   renderVideoSkeleton() {
@@ -151,8 +210,9 @@ class RenderVideo {
   async renderSearchScreen() {
     this.renderVideoSkeleton();
     try {
-      const searchResults =
-        await this.searchVideo.handleSearchVideo(this.searchVideoInput.value.trim());
+      const searchResults = await this.searchVideo.handleSearchVideo(
+        this.searchVideoInput.value.trim()
+      );
       this.renderSearchVideo(searchResults);
     } catch (error) {
       this.searchVideoInput.value = '';
