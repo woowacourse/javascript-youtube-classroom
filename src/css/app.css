@@ -90,6 +90,10 @@ body {
   }
 }
 
+.end-of-list {
+  height: 30px;
+}
+
 .video-item {
   position: relative;
   margin: auto;

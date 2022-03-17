@@ -25,14 +25,14 @@ class View {
   }
 
   handleModalToggle = () => {
-    this.searchModalView.toggleModal(this.savedVideosView.renderVideoList);
+    this.searchModalView.toggleModal(this.savedVideosView.renderOnModalClose);
   };
 
   handleTabSwitch = async ({ target }) => {
     const { dataset } = target;
     this.tabButtons.forEach((button) => button.classList.remove('current'));
     target.classList.add('current');
-    await this.savedVideosView.changeTab(dataset.tabName);
+    await this.savedVideosView.renderTab(dataset.tabName);
   };
 }
 

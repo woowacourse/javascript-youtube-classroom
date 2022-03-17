@@ -23,7 +23,7 @@ function saveToStorage(key, value) {
   if (allIdArray.length >= MAX_SAVE_AMOUNT) {
     throw new Error(ERROR_MESSAGES.EXCEED_MAX_SAVE_AMOUNT);
   }
-  localStorage.setItem(keys[key], JSON.stringify([...idArray, value]));
+  localStorage.setItem(keys[key], JSON.stringify([...new Set([...idArray, value])]));
 }
 
 function removeFromStorage(key, value) {

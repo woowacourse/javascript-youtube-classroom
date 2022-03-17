@@ -9,21 +9,24 @@ class SavedVideosView {
     this.videoList = selectDom('.video-list', this.savedVideos);
     this.currentTabName = 'unwatched';
     this.otherTabName = 'watched';
+    this.unrenderedVideoIdArray = storage.getFromStorage(this.currentTabName);
     this.renderedVideoIdArray = [];
+    this.#addLoadMoreVideoObserver();
     this.renderVideoList();
   }
 
-  async changeTab(tabName) {
+  async renderTab(tabName) {
     if (tabName === this.currentTabName) return;
     this.otherTabName = this.currentTabName;
     this.currentTabName = tabName;
+    this.unrenderedVideoIdArray = storage.getFromStorage(this.currentTabName);
     this.#clearAllVideos();
+    this.#addLoadMoreVideoObserver();
     await this.renderVideoList();
   }
 
   renderVideoList = async () => {
-    const videos = storage.getFromStorage(this.currentTabName);
-    this.#removeDeletedVideos(videos);
+    const videos = this.unrenderedVideoIdArray.splice(0, 10);
     if (videos.length === 0) {
       this.#renderNoSavedVideoTemplate();
       return;
@@ -34,7 +37,14 @@ class SavedVideosView {
     if (newVideoIdArray.length !== 0) {
       await this.#renderNewVideos(newVideoIdArray);
       this.renderedVideoIdArray = [...this.renderedVideoIdArray, ...newVideoIdArray];
+      this.#addLoadMoreVideoObserver();
     }
+  };
+
+  renderOnModalClose = async () => {
+    this.unrenderedVideoIdArray = storage.getFromStorage(this.currentTabName);
+    this.#clearAllVideos();
+    this.renderVideoList();
   };
 
   async #renderNewVideos(newVideoIdArray) {
@@ -64,6 +74,21 @@ class SavedVideosView {
     );
 
     toDeleteArray.forEach((element) => element.remove());
+  }
+
+  #addLoadMoreVideoObserver() {
+    const endOfList = selectDom('.end-of-list');
+    if (this.renderedVideoIdArray.length < 10) return;
+    const observer = new IntersectionObserver(
+      async (entries) => {
+        if (this.unrenderedVideoIdArray.length === 0) observer.unobserve(endOfList);
+        if (entries[0].isIntersecting) {
+          this.renderVideoList();
+        }
+      },
+      { threshold: 1 }
+    );
+    observer.observe(endOfList);
   }
 
   #createVideoElements(videoObjectArray) {
