@@ -47,4 +47,36 @@ export default function App() {
       userInterface.renderSavedVideoItems();
     }
   });
+
+  $('.saved-video-list').addEventListener('click', e => {
+    if (e.target.classList.contains('video-item__watched-button')) {
+      const videoItem = e.target.parentElement.parentElement;
+      videoItem.remove();
+      const savedVideos = storage.getSavedVideos();
+      const newSavedVideos = savedVideos.map(savedVideo => {
+        if (savedVideo.id === videoItem.dataset.videoId) {
+          savedVideo.watched = true;
+          return savedVideo;
+        }
+        return savedVideo;
+      });
+      storage.setSavedVideos(newSavedVideos);
+    }
+    if (e.target.classList.contains('video-item__delete-button')) {
+      const videoItem = e.target.parentElement.parentElement;
+      videoItem.remove();
+      const savedVideos = storage.getSavedVideos();
+      const newSavedVideos = savedVideos.filter(
+        savedVideo => savedVideo.id !== videoItem.dataset.videoId,
+      );
+      storage.setSavedVideos(newSavedVideos);
+    }
+  });
+
+  function deleteToDo(event) {
+    const li = event.target.parentElement;
+    li.remove();
+    toDos = toDos.filter(toDo => toDo.id !== parseInt(li.id));
+    saveToDos();
+  }
 }
