@@ -61,9 +61,32 @@
   background-color: var(--primary-darken);
 }
 
-@media screen and (max-width: 300px) {
+@media screen and (max-width: 1280px) {
+  .confirm-modal__form {
+    width: 350px;
+  }
   .confirm-modal__cancel-button,
   .confirm-modal__delete-button {
     width: 100%;
+    margin: 3px 0;
+  }
+  .confirm-modal__span {
+    font-size: 19px;
+  }
+}
+
+@media screen and (max-width: 960px) {
+  .confirm-modal__form {
+    width: 300px;
+  }
+
+  .confirm-modal__span {
+    font-size: 17px;
+  }
+}
+
+@media screen and (max-width: 600px) {
+  .confirm-modal__form {
+    width: 250px;
   }
 }
