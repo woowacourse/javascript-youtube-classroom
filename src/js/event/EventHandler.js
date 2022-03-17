@@ -3,6 +3,7 @@ import ModalView from '../view/ModalView.js';
 import validator from '../utils/validator.js';
 import searchVideoAPICaller from '../managers/searchVideoAPICaller.js';
 import videoStore from '../managers/videoStore.js';
+import storeVideoAPICaller from '../managers/storeVideoAPICaller.js';
 
 export default class EventHandler {
   constructor() {
@@ -63,8 +64,16 @@ export default class EventHandler {
     }
   }
 
-  onWillSeeButtonClick(data) {
-    console.log(data);
+  async onWillSeeButtonClick() {
+    const videoList = videoStore.getWillSeeVideoList();
+    if (videoList.length === 0) {
+      return;
+    }
+    const renderedVideoIdList = this.mainView.getRenderedVideoIdList();
+    const willRequestVideoIdList = videoList.filter(id => !renderedVideoIdList.includes(id));
+    this.mainView.showSkeletonVideoList(willRequestVideoIdList);
+    const videoData = await storeVideoAPICaller.getVideoListData(willRequestVideoIdList);
+    this.mainView.updateVideoItems(videoData);
   }
 
   onSawButtonClick(data) {

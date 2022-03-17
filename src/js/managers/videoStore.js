@@ -25,6 +25,16 @@ const videoStore = {
     const storedVideoList = this.getStoredVideoList();
     return storedVideoList.some(storedVideo => storedVideo.id === videoId);
   },
+
+  getWillSeeVideoList() {
+    const videoList = this.getStoredVideoList();
+    return videoList.filter(videoData => !videoData.saw);
+  },
+
+  getSawVideoList() {
+    const videoList = this.getStoredVideoList();
+    return videoList.filter(videoData => videoData.saw);
+  },
 };
 
 export default videoStore;
