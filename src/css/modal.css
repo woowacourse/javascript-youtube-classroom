@@ -22,7 +22,7 @@
 
 .search-modal {
   position: relative;
-  width: 70em;
+  width: fit-content;
   height: 45.5em;
   background: #ffffff;
   border: 1px solid rgba(0, 0, 0, 0.12);

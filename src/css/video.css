@@ -3,7 +3,7 @@
   height: 31em;
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  gap: 2em 0;
+  gap: 2em 2em;
   overflow-y: scroll;
 }
 
