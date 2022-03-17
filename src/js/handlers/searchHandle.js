@@ -1,5 +1,5 @@
-import { isEndOfScroll } from '../util/scroll.js';
-import { $ } from '../util/querySelector.js';
+import { isEndOfScroll } from '../utils/scroll.js';
+import { $ } from '../utils/querySelector.js';
 import YoutubeSearchAPI from '../service/YoutubeSearchAPI.js';
 import modalUI from '../ui/modal/modalUI.js';
 

@@ -1,5 +1,5 @@
 import template from './template.js';
-import { $, $$ } from '../../util/querySelector.js';
+import { $, $$ } from '../../utils/querySelector.js';
 import videoStorage from '../../localStorage/videoStorage.js';
 
 const modalUI = {

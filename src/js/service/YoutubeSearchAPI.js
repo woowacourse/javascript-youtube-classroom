@@ -1,5 +1,3 @@
-import { validateInput } from '../validate.js';
-
 export default class YoutubeSearchAPI {
   #searchResults = {};
 
@@ -22,7 +20,7 @@ export default class YoutubeSearchAPI {
   }
 
   getURL(searchKeyword, nextPageToken) {
-    const url = new URL('youtube/v3/search', 'https://onstar.netlify.app');
+    const url = new URL('dummy/youtube/v3/search', 'https://onstar.netlify.app');
     const parameter = new URLSearchParams({
       part: 'snippet',
       maxResults: 10,

@@ -1,8 +1,8 @@
 import template from './template.js';
-import { $ } from '../../util/querySelector.js';
+import { $ } from '../../utils/querySelector.js';
 
 const mainPageUI = {
-  renderSavedVideos: savedVideos => {
+  renderSavedVideoItems: savedVideos => {
     if (!savedVideos) {
       mainPageUI.renderNothingSavedImage();
       return;
@@ -12,8 +12,27 @@ const mainPageUI = {
 
     $('.saved-video').hidden = false;
     const isWatchedVideoList = $('.saved-video-list').classList.contains('watched-list');
+    if (isWatchedVideoList) {
+      mainPageUI.renderWatchedVideos(savedVideos);
+      return;
+    }
+    mainPageUI.renderSavedVideos(savedVideos);
+  },
+
+  renderWatchedVideos: savedVideos => {
     savedVideos.forEach(savedVideo => {
-      if (savedVideo.watched === isWatchedVideoList) {
+      if (savedVideo.watched) {
+        $('.saved-video-list').insertAdjacentHTML(
+          'beforeEnd',
+          template.watchedVideoItem(savedVideo),
+        );
+      }
+    });
+  },
+
+  renderSavedVideos: savedVideos => {
+    savedVideos.forEach(savedVideo => {
+      if (!savedVideo.watched) {
         $('.saved-video-list').insertAdjacentHTML('beforeEnd', template.savedVideoItem(savedVideo));
       }
     });
