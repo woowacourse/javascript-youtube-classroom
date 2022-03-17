@@ -8,6 +8,13 @@ export default class SearchModalView {
     this.searchResultView = new SearchResultView();
 
     $('.dimmer').addEventListener('click', this.closeModal);
+    window.addEventListener('keydown', this.onKeyDown.bind(this));
+  }
+
+  onKeyDown(e) {
+    if (e.key === 'Escape' && !$('#modal-container').classList.contains('hide')) {
+      $('#modal-container').classList.add('hide');
+    }
   }
 
   closeModal() {
