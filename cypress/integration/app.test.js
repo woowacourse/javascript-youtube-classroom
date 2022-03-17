@@ -65,4 +65,8 @@ describe("나만의 유튜브 강의실 전체 플로우 테스트", () => {
     cy.closeSearchModal();
     cy.get(".modal-container").should("be.not.visible");
   });
+
+  it("초기 화면에서 저장된 영상을 확인할 수 있어야 한다.", () => {
+    cy.get(".video-item").should("be.visible");
+  });
 });
