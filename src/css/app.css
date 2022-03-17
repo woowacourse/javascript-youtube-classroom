@@ -49,12 +49,14 @@ body {
   width: 8.6em;
   margin: 0;
   border: 1px solid #e0e0e0;
+  border-bottom: none;
   border-radius: 4px 0 0 4px;
 }
 
 .tab__button.selected {
   background-color: #00bcd41f;
   border: 1px solid #00c8e25e;
+  border-bottom: none;
 }
 
 .filter-video-section {
@@ -62,8 +64,10 @@ body {
 }
 
 .saved-result-section {
-  margin: 2.5em 0;
+  margin: 0 0 2.5em;
+  padding: 1em 0;
   width: 100%;
+  box-shadow: 0 1em 1em -1em #00c8e246 inset;
 }
 
 .save-result {
