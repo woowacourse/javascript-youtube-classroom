@@ -15,19 +15,26 @@ export default class StorageEngine {
     if (savedVideos.length >= MAX_SAVED_VIDEOS_COUNT)
       throw new Error(ERROR_MESSAGE.NO_MORE_VIDEO_SAVABLE);
 
-    const newVideo = { videoId: newVideoId };
+    const newVideo = { videoId: newVideoId, isViewed: false };
 
     localStorage.setItem(STORAGE_KEY_SAVED_VIDEOS, JSON.stringify([...savedVideos, newVideo]));
   }
 
   removeVideo(newVideoId) {
-    const savedVideos = this.getSavedVideos() ?? [];
-
-    if (savedVideos.length <= 0) throw new Error(ERROR_MESSAGE.NO_REMOVABLE_VIDEO_EXIST);
+    const savedVideos = this.getSavedVideos();
 
     const restSavedVideos = savedVideos.filter(({ videoId }) => videoId !== newVideoId);
 
     localStorage.setItem(STORAGE_KEY_SAVED_VIDEOS, JSON.stringify(restSavedVideos));
+  }
+
+  checkVideoViewed(specificVideoId) {
+    const savedVideos = this.getSavedVideos();
+
+    const specificVideo = savedVideos.find(({ videoId }) => videoId === specificVideoId);
+    specificVideo.isViewed = true;
+
+    localStorage.setItem(STORAGE_KEY_SAVED_VIDEOS, JSON.stringify(savedVideos));
   }
 
   getSpecificVideo(specificVideoId) {

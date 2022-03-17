@@ -7,7 +7,7 @@ import {
 } from '../util/constants.js';
 
 const generateMaxSavedVideos = () => {
-  const sample = { videoId: 'eMf0jojpdJQ' };
+  const sample = { videoId: 'eMf0jojpdJQ', isViewed: false };
 
   return Array.from({ length: MAX_SAVED_VIDEOS_COUNT }, () => sample);
 };
@@ -19,7 +19,7 @@ describe('저장 기능 테스트', () => {
     storageEngine.init();
   });
 
-  test('유튜브 검색 결과를 webstorage에 저장할 수 있다', () => {
+  test('유튜브 검색 결과중 특정 비디오를 webstorage에 저장할 수 있다', () => {
     const videoId = 'newVideoId';
     let specificVideo = null;
 
@@ -31,7 +31,7 @@ describe('저장 기능 테스트', () => {
     expect(specificVideo.videoId).toEqual(videoId);
   });
 
-  test('유튜브 검색 결과를 webstorage에 100개까지 저장할 수 있다.', () => {
+  test('webstorage에 비디오들을 100개까지만 저장할 수 있다.', () => {
     const mockVideos = generateMaxSavedVideos();
 
     localStorage.setItem(STORAGE_KEY_SAVED_VIDEOS, JSON.stringify(mockVideos));
@@ -45,11 +45,8 @@ describe('저장 기능 테스트', () => {
     expect(storageEngine.getSpecificVideo(videoId)).toBeUndefined();
   });
 
-  test('유튜브 검색 결과를 webstorage에서 삭제할 수 있다', () => {
+  test('webstorage에 저장되어 있는 특정 비디오를 삭제할 수 있다', () => {
     const newVideoId = 'newVideoId';
-    expect(() => storageEngine.removeVideo(newVideoId)).toThrowError(
-      new Error(ERROR_MESSAGE.NO_REMOVABLE_VIDEO_EXIST)
-    );
 
     storageEngine.saveVideo(newVideoId);
     const specificVideo = storageEngine.getSpecificVideo(newVideoId);
@@ -57,5 +54,18 @@ describe('저장 기능 테스트', () => {
 
     storageEngine.removeVideo(newVideoId);
     expect(storageEngine.getSpecificVideo(newVideoId)).toBeUndefined();
+  });
+
+  test('저장되어 있는 특정 비디오중 본 비디오를 체크할 수 있다', () => {
+    // const newVideoId = "newVideoId"
+    // 저장되어 있는지 체크
+    // const specificVideo = storageEngine.getSpecificVideo(newVideoId);
+    expect(specificVideo.videoId).toEqual(newVideoId);
+    // 봤다고 체크 로직
+    // 본 영상으로 체크 되어 있는지 체크
+    expect().toMatchObject({
+      videoId: newVideoId,
+      isViewed: true,
+    });
   });
 });
