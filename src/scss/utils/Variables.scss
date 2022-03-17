@@ -1,0 +1,36 @@
+$border-radius: 0.35rem;
+
+/*
+  반응형 화면 기준 세팅
+*/
+$breakpoint-mobile: 335px;
+$breakpoint-tablet: 756px;
+$breakpoint-desktop: 1024px;
+
+/*
+  컬러 세팅
+    * 컬러 이름 지정 기준
+    : https://marketplace.visualstudio.com/items?itemName=volynetsserhii.get-color-name
+*/
+
+/* 무채색 계열 */
+$color-white: #fff;
+$color-wild-sand: #f5f5f5;
+$color-alto: #ddd;
+$color-gray: #8b8b8b;
+$color-black: #000;
+$color-black-50: rgba(0, 0, 0, 0.5);
+
+/* 파란색 계열 */
+$color-robins-egg-blue: #00bcd4;
+$color-robins-egg-blue-12: #e3f4f9;
+
+/* 디자인 시안 주요 컬러 */
+$brand-base-color: $color-white;
+$brand-base-color-font: $color-black;
+$brand-accent-color: $color-robins-egg-blue;
+$brand-accent-color-font: $color-white;
+$brand-interaction-color: $color-wild-sand;
+$brand-interaction-color-font: $color-black;
+$brand-disabled-color: $color-wild-sand;
+$brand-disabled-color-font: $color-alto;

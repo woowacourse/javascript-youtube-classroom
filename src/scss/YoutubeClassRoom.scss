@@ -1,0 +1,209 @@
+@import './utils/Variables.scss';
+
+h1.classroom-title {
+  text-align: center;
+  font-weight: bold;
+  font-size: 2.25rem;
+  margin-bottom: 4.25rem;
+}
+
+.classroom-container {
+  padding: 2rem 0;
+}
+
+.navigation {
+  display: grid;
+
+  .button {
+    background-color: $brand-interaction-color;
+    color: $brand-interaction-color-font;
+
+    &.focus {
+      background-color: $color-robins-egg-blue-12;
+    }
+  }
+
+  > #search-modal-button {
+    grid-column: 20 / 1 span;
+  }
+
+  > #classroom-watched-filter-button {
+    grid-column: 1 / 5;
+
+    .button {
+      &[data-watched]::before {
+        font-size: 0.7rem;
+        margin-right: 0.3rem;
+        vertical-align: middle;
+      }
+
+      &[data-watched='false']::before {
+        content: '👁️';
+      }
+
+      &[data-watched='true']::before {
+        content: '✅';
+      }
+    }
+  }
+}
+
+.video-result {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-auto-rows: max-content;
+  gap: 1rem;
+  width: 100%;
+
+  .no-result {
+    grid-column: 4 span;
+    text-align: center;
+    padding: 4rem 0 0;
+
+    > .image {
+      width: 25%;
+      margin-bottom: 2rem;
+    }
+
+    > .description {
+      color: $color-gray;
+      font-size: 1.1rem;
+      text-align: center;
+      letter-spacing: 0.5px;
+    }
+  }
+
+  > .item {
+    overflow: hidden;
+    grid-column: 1 span;
+    font-size: 1.1rem;
+    margin-bottom: 1rem;
+
+    > .thumbnail {
+      width: 100%;
+      border-radius: $border-radius;
+    }
+
+    > .title {
+      font-weight: bold;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      margin-bottom: 0.2rem;
+    }
+
+    .channel-name {
+      font-size: 0.9rem;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      margin-bottom: 0.5rem;
+    }
+
+    > .published-date {
+      font-size: 0.8rem;
+      color: $color-black-50;
+    }
+
+    > .save-button {
+      font-size: 0.9rem;
+      margin-top: 0.4rem;
+      background-color: $brand-interaction-color;
+      color: $brand-interaction-color-font;
+      padding: 0.3rem 0.6rem;
+      float: right;
+    }
+  }
+}
+
+#search-modal {
+  .search-input-form {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    margin-bottom: 3.5rem;
+
+    > .search-input-keyword {
+      width: 50%;
+    }
+
+    > .search-button {
+      width: 10%;
+      border: none;
+    }
+  }
+
+  .search-result {
+    width: 100%;
+    .video-list {
+      overflow-y: scroll;
+      height: 30rem;
+      padding: 0 0.5rem;
+    }
+    #skeleton-list {
+      display: none;
+      grid-template-columns: repeat(4, 1fr);
+      grid-auto-rows: max-content;
+      gap: 1rem;
+      width: 100%;
+
+      .skeleton {
+        overflow: hidden;
+        grid-column: 1 span;
+        font-size: 1.1rem;
+        margin-bottom: 1rem;
+
+        > .image,
+        .line {
+          background-image: linear-gradient(90deg, #e0e0e0 0px, #ededed 30px, #e0e0e0 60px);
+          animation: refresh 2s infinite ease-out;
+          margin-bottom: 0.8rem;
+        }
+
+        > .image {
+          height: 10rem;
+        }
+
+        > .line {
+          height: 1rem;
+
+          &:last-child {
+            width: 80%;
+          }
+        }
+
+        @keyframes refresh {
+          0% {
+            background-position: calc(-100px);
+          }
+
+          40%,
+          100% {
+            background-position: 320px;
+          }
+        }
+      }
+    }
+
+    #search-result-scroll-observer {
+      display: none;
+      position: relative;
+      grid-column: 4 span;
+      height: 50px;
+
+      &.enable {
+        display: block;
+      }
+    }
+
+    &.loading {
+      #skeleton-list {
+        display: grid;
+      }
+
+      #search-result-scroll-observer {
+        display: none;
+      }
+    }
+  }
+}

@@ -8,58 +8,98 @@
 </head>
 
 <body>
-  <main id="app" class="classroom-container">
-    <h1 class="classroom-container__title">👩🏻‍💻 나만의 유튜브 강의실 👨🏻‍💻</h1>
-    <nav id="classroom-navigation" class="nav">
-      <button id="search-modal-button" class="button nav__button" data-modal="search-modal">🔍 검색</button>
-    </nav>
-  </main>
-  <!-- 1 검색 버튼을 누르면 아래와 같은 검색 모달을 보여줍니다.-->
-  <div id="modal" class="modal-container hide">
-    <div class="dimmer"></div>
-    <div id="search-modal" class="modal-content show" role="dialog" aria-labelledby="modal-content-title">
-      <h2 id="search-modal-title" class="modal-content__title">🔍 보고싶은 영상 찾기 🔍</h2>
-      <form id="search-form" class="search-input">
-        <h3 hidden>검색어 입력</h3>
-        <input id="search-input-keyword" type="text" placeholder="검색" class="search-input__keyword">
-        <button id="search-button" class="search-input__search-button button" disabled>검색</button>
-      </form>
-      <!-- 2-1 검색 결과가 있을 경우, 아래와 같은 검색 결과 목록을 보여줍니다.-->
-      <section id="search-result" class="search-result">
-        <h3 hidden>검색 결과</h3>
-        <div id="video-list" class="video-list">
-          <ul id="video-result">
-
-          </ul>
-
-          <ul id="skeleton-list">
-
-          </ul>
-
-          <div id="search-result-scroll-observer"></div>
-          <!-- <li class="video-item" data-video-id="">
-            <img
-              src="https://i.ytimg.com/vi/ECfuKi5-Cfs/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLDvmIcX-TgdcH2g_Bd4AUxw6hjmvQ"
-              alt="video-item-thumbnail" class="video-item__thumbnail">
-            <h4 class="video-item__title">[Playlist] 너무 좋은데 괜찮으시겠어요?</h4>
-            <p class="video-item__channel-name">essential;</p>
-            <p class="video-item__published-date">2022년 3월 2일</p>
-            <button class="video-item__save-button button">⬇ 저장</button>
-          </li> -->
+  <div id="app">
+    <header>
+      <h1 class="classroom-title">👩🏻‍💻 나만의 유튜브 강의실 👨🏻‍💻</h1>
+      <nav id="classroom-navigation" class="navigation">
+        <div id="classroom-watched-filter-button" class="button-group">
+          <button class="button focus" data-watched="false">볼 영상</button>
+          <button class="button" data-watched="true">본 영상</button>
         </div>
-      </section>
-      <!-- 2-2 검색 결과가 없을 경우, `search-result--no-result` class를 붙이고 아래와 같은 no-result를 보여줍니다.-->
-      <!-- <section class="search-result search-result--no-result">
-        <h3 hidden>검색 결과</h3>
-        <div class="no-result">
-          <img src="./src/assets/images/not_found.png" alt="no result image" class="no-result__image">
-          <p class="no-result__description">
-            검색 결과가 없습니다<br />
-            다른 키워드로 검색해보세요
-          </p>
-        </div>
-      </section> -->
+
+        <button id="search-modal-button" class="button" data-modal="search-modal">🔍 검색</button>
+      </nav>
+    </header>
+  
+    <main class="classroom-container"><ul id="search-video-result" class="video-result"><li data-video-id="mQhgF7RoUCA" class="item"> <img src="https://i.ytimg.com/vi/mQhgF7RoUCA/mqdefault.jpg" alt="우아한테크코스 4기 온라인 설명회 썸네일" class="thumbnail">
+      <h4 class="title">우아한테크코스 4기 온라인 설명회</h4>
+      <p class="channel-name">박재성</p>
+      <p class="published-date">2021년 10월 15일</p>
+      <button class="save-button button">⬇ 저장</button></li><li data-video-id="ytt37XkcHTU" class="item"> <img src="https://i.ytimg.com/vi/ytt37XkcHTU/mqdefault.jpg" alt="[우테코 🎬vlog] Ep.4 그루밍의 하루 ☀️ 썸네일" class="thumbnail">
+      <h4 class="title">[우테코 🎬vlog] Ep.4 그루밍의 하루 ☀️</h4>
+      <p class="channel-name">우아한Tech</p>
+      <p class="published-date">2021년 6월 3일</p>
+      <button class="save-button button">🗑 저장 취소</button></li><li data-video-id="nhQRaRgV19o" class="item"> <img src="https://i.ytimg.com/vi/nhQRaRgV19o/mqdefault.jpg" alt="[우테코 인터뷰 챌린지] 🎙 코치에게 묻다! 코테뷰 #4 포비 썸네일" class="thumbnail">
+      <h4 class="title">[우테코 인터뷰 챌린지] 🎙 코치에게 묻다! 코테뷰 #4 포비</h4>
+      <p class="channel-name">우아한Tech</p>
+      <p class="published-date">2021년 9월 9일</p>
+      <button class="save-button button">🗑 저장 취소</button></li><li data-video-id="HxzKg7V6r00" class="item"> <img src="https://i.ytimg.com/vi/HxzKg7V6r00/mqdefault.jpg" alt="우아한테크코스 1기 합격 노하우 전격 공개. 비전공자 크루가 직접 들려주는 이야기 2편 썸네일" class="thumbnail">
+      <h4 class="title">우아한테크코스 1기 합격 노하우 전격 공개. 비전공자 크루가 직접 들려주는 이야기 2편</h4>
+      <p class="channel-name">개발왕루피</p>
+      <p class="published-date">2019년 10월 5일</p>
+      <button class="save-button button">⬇ 저장</button></li><li data-video-id="enINkqC7FAc" class="item"> <img src="https://i.ytimg.com/vi/enINkqC7FAc/mqdefault.jpg" alt="[우테코 인터뷰 챌린지] 🧡 프론트엔드 백엔드 서로에게 묻다! #1 썸네일" class="thumbnail">
+      <h4 class="title">[우테코 인터뷰 챌린지] 🧡 프론트엔드 백엔드 서로에게 묻다! #1</h4>
+      <p class="channel-name">우아한Tech</p>
+      <p class="published-date">2021년 7월 14일</p>
+      <button class="save-button button">⬇ 저장</button></li><li data-video-id="UGsM1vSTAno" class="item"> <img src="https://i.ytimg.com/vi/UGsM1vSTAno/mqdefault.jpg" alt="[우테코 인터뷰 챌린지] 🧡 프론트엔드 백엔드 서로에게 묻다! #3 썸네일" class="thumbnail">
+      <h4 class="title">[우테코 인터뷰 챌린지] 🧡 프론트엔드 백엔드 서로에게 묻다! #3</h4>
+      <p class="channel-name">우아한Tech</p>
+      <p class="published-date">2021년 7월 14일</p>
+      <button class="save-button button">⬇ 저장</button></li><li data-video-id="wDs7tTvz_lg" class="item"> <img src="https://i.ytimg.com/vi/wDs7tTvz_lg/mqdefault.jpg" alt="[우테코 인터뷰 챌린지] 🧡 릴레이 밸런스 게임! #1 썸네일" class="thumbnail">
+      <h4 class="title">[우테코 인터뷰 챌린지] 🧡 릴레이 밸런스 게임! #1</h4>
+      <p class="channel-name">우아한Tech</p>
+      <p class="published-date">2021년 10월 15일</p>
+      <button class="save-button button">⬇ 저장</button></li><li data-video-id="r1AWm783YeY" class="item"> <img src="https://i.ytimg.com/vi/r1AWm783YeY/mqdefault.jpg" alt="[우테코 인터뷰 챌린지] 🎙 코치에게 묻다! 코테뷰 #3 포코 썸네일" class="thumbnail">
+      <h4 class="title">[우테코 인터뷰 챌린지] 🎙 코치에게 묻다! 코테뷰 #3 포코</h4>
+      <p class="channel-name">우아한Tech</p>
+      <p class="published-date">2021년 9월 9일</p>
+      <button class="save-button button">⬇ 저장</button></li><li data-video-id="ZQklkmFlYQI" class="item"> <img src="https://i.ytimg.com/vi/ZQklkmFlYQI/mqdefault.jpg" alt="[우테코 🎬vlog] Ep.5 우테코 프로젝트 비하인드 🎞 썸네일" class="thumbnail">
+      <h4 class="title">[우테코 🎬vlog] Ep.5 우테코 프로젝트 비하인드 🎞</h4>
+      <p class="channel-name">우아한Tech</p>
+      <p class="published-date">2021년 7월 28일</p>
+      <button class="save-button button">⬇ 저장</button></li><li data-video-id="BgaUJqZFFCU" class="item"> <img src="https://i.ytimg.com/vi/BgaUJqZFFCU/mqdefault.jpg" alt="[우테코 🎬vlog] 우테코 온라인 방학식 썸네일" class="thumbnail">
+      <h4 class="title">[우테코 🎬vlog] 우테코 온라인 방학식</h4>
+      <p class="channel-name">우아한Tech</p>
+      <p class="published-date">2020년 9월 8일</p>
+      <button class="save-button button">⬇ 저장</button></li><li data-video-id="HxN6xciGDkI" class="item"> <img src="https://i.ytimg.com/vi/HxN6xciGDkI/mqdefault.jpg" alt="[우테코 🎬vlog] Ep. 7 샐리의 하루 ☀️ 썸네일" class="thumbnail">
+      <h4 class="title">[우테코 🎬vlog] Ep. 7 샐리의 하루 ☀️</h4>
+      <p class="channel-name">우아한Tech</p>
+      <p class="published-date">2021년 10월 13일</p>
+      <button class="save-button button">⬇ 저장</button></li><li data-video-id="Xm0SmqBGaBA" class="item"> <img src="https://i.ytimg.com/vi/Xm0SmqBGaBA/mqdefault.jpg" alt="[우테코 🎬vlog] 우테코 1기가 2기에게 전하는 ✉️메세지 썸네일" class="thumbnail">
+      <h4 class="title">[우테코 🎬vlog] 우테코 1기가 2기에게 전하는 ✉️메세지</h4>
+      <p class="channel-name">우아한Tech</p>
+      <p class="published-date">2020년 1월 8일</p>
+      <button class="save-button button">⬇ 저장</button></li></ul>
+    </main>
+
+    <div id="modal" class="modal-container hide">
+      <div class="dimmer"></div>
+
+      <div id="search-modal" class="modal-content show" role="dialog" aria-labelledby="modal-content-title">
+        <h2 id="search-modal-title" class="modal-content-title">🔍 보고싶은 영상 찾기 🔍</h2>
+        <form id="search-form" class="search-input-form">
+          <h3 hidden>검색어 입력</h3>
+          <input id="search-input-keyword" type="text" placeholder="검색어를 입력해주세요" class="search-input-keyword">
+          <button id="search-button" class="button search-button" disabled>검색</button>
+        </form>
+
+        <section id="search-result" class="search-result">
+          <h3 hidden>검색 결과</h3>
+          <div id="video-list" class="video-list">
+            <ul id="search-video-result" class="video-result">
+  
+            </ul>
+  
+            <ul id="skeleton-list">
+  
+            </ul>
+  
+            <div id="search-result-scroll-observer"></div>
+          </div>
+        </section>
+      </div>
     </div>
+
   </div>
 </body>
 

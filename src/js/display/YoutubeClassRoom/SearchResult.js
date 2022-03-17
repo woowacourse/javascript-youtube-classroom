@@ -99,8 +99,8 @@ export default class SearchResult {
       className: DOM_NAME.CLASS.SEARCH_RESULT_NOT_FOUND,
       insertAdjacentHTML: [
         'afterbegin',
-        ` <img src="${notFoundImage}" alt="no result image" class="no-result__image">
-          <p class="no-result__description">
+        ` <img src="${notFoundImage}" alt="no result image" class="image">
+          <p class="description">
             검색 결과가 없습니다<br />
             다른 키워드로 검색해보세요
           </p>`,
@@ -114,8 +114,8 @@ export default class SearchResult {
       src: notFoundImage,
       insertAdjacentHTML: [
         'afterbegin',
-        ` <img src="${notFoundImage}" alt="no result image" class="no-result__image">
-          <p class="no-result__description">
+        ` <img src="${notFoundImage}" alt="no result image" class="image">
+          <p class="description">
             서버에서 오류가 발생하였습니다.<br />
             잠시 후 다시 시도해주세요.
           </p>`,
@@ -132,11 +132,11 @@ export default class SearchResult {
         insertAdjacentHTML: [
           'afterbegin',
           ` <img src="${video.snippet.thumbnails.medium.url}"
-              alt="video-item-thumbnail" class="video-item__thumbnail">
-            <h4 class="video-item__title">${video.snippet.title}</h4>
-            <p class="video-item__channel-name">${video.snippet.channelTitle}</p>
-            <p class="video-item__published-date">${getParsedTime(video.snippet.publishTime)}</p>
-            <button class="video-item__save-button button">${buttonText}</button>`,
+              alt="${video.snippet.title} 썸네일" class="thumbnail">
+            <h4 class="title">${video.snippet.title}</h4>
+            <p class="channel-name">${video.snippet.channelTitle}</p>
+            <p class="published-date">${getParsedTime(video.snippet.publishTime)}</p>
+            <button class="save-button button">${buttonText}</button>`,
         ],
       });
 
