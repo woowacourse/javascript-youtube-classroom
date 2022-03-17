@@ -5,6 +5,7 @@ import {
   MAX_VIDEO_LIST_LENGTH,
   SEARCH_MODAL_BUTTON_ID,
   CLASSNAME,
+  DELETE_CONFIRM_MESSAGE,
 } from './constants/contants.js';
 import SaveVideo from './saveVideo.js';
 import SearchVideo from './searchVideo.js';
@@ -35,6 +36,7 @@ class RenderVideo {
     this.searchResultSection = selectDom('.search-result', this.modalContainer);
 
     addEvent(this.navSection, 'click', this.#onNavButtonClick);
+    addEvent(this.savedVideoListContainer, 'click', this.#onCheckAndDeleteButtonClick);
     addEvent(this.modalOutside, 'click', this.#closeModal);
     addEvent(this.searchForm, 'submit', this.#onSearchFormSubmit);
     addEvent(this.videoListContainer, 'scroll', this.#onScrollVideoList);
@@ -88,6 +90,25 @@ class RenderVideo {
     );
   };
 
+  #onCheckAndDeleteButtonClick = ({ target }) => {
+    const targetVideo = target.closest('li');
+    if (targetVideo && target.classList.contains(CLASSNAME.VIDEO_CHECK_BUTTON)) {
+      alert('hi');
+      return;
+    }
+    if (
+      targetVideo &&
+      target.classList.contains(CLASSNAME.VIDEO_DELETE_BUTTON) &&
+      confirm(DELETE_CONFIRM_MESSAGE(targetVideo.dataset.title))
+    ) {
+      this.saveVideo.removeVideoFromStorage(targetVideo.dataset);
+      targetVideo.remove();
+      if (!this.savedVideoListContainer.children.length) {
+        this.savedVideoListContainer.insertAdjacentHTML('afterbegin', emptyVideoListTemplate);
+      }
+    }
+  };
+
   #closeModal = () => {
     this.modalContainer.classList.add(CLASSNAME.HIDE_ELEMENT);
   };
@@ -138,7 +159,7 @@ class RenderVideo {
     }
 
     Array.from(this.videoListContainer.children).forEach((videoLi) => {
-      if (videoLi.classList.contains('skeleton')) {
+      if (videoLi.classList.contains(CLASSNAME.SKELETON_ELEMENT)) {
         videoLi.classList.add(CLASSNAME.HIDE_ELEMENT);
       }
     });
@@ -158,7 +179,7 @@ class RenderVideo {
 
   #renderVideoSkeleton() {
     Array.from(this.videoListContainer.children).forEach((videoLi) => {
-      if (videoLi.classList.contains('skeleton')) {
+      if (videoLi.classList.contains(CLASSNAME.SKELETON_ELEMENT)) {
         videoLi.classList.remove(CLASSNAME.HIDE_ELEMENT);
       }
     });

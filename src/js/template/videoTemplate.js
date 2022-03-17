@@ -49,7 +49,10 @@ const savedVideoTemplate = ({
   thumbnailsUrl,
   isChecked,
 }) => `
-  <li class="video-item" data-video-id="${videoId}"> 
+  <li class="video-item"
+    data-video-id="${videoId}"
+    data-title="${title}"
+  > 
     <img src="${thumbnailsUrl}" alt="video-item-thumbnail" class="video-item__thumbnail" />
     <h4 class="video-item__title">${title}</h4>
     <p class="video-item__channel-name">${channelTitle}</p>
