@@ -1,8 +1,10 @@
+import watchedVideoInterface from '../ui/watchedVideoInterface.js';
 import { $ } from '../util/general.js';
 
 export class WatchedVideoEventHandler {
   handleWatchedVideo = () => {
     this.toggleWatchedVideoContent();
+    watchedVideoInterface.renderWatchedVideos();
   };
   toggleWatchedVideoContent = () => {
     if (!$('.watch-later-videos').classList.contains('hidden')) {
