@@ -1,4 +1,4 @@
-import { $$ } from './general.js';
+import { $, $$ } from './general.js';
 
 export const videoItemTemplate = {
   videoItem: (className, item) => {
@@ -19,6 +19,8 @@ export const videoItemTemplate = {
     </li>
       `;
   },
+  emptyImageItem:
+    '<div class="empyt-img-container"><label for="empty-img" hidden>저장된 비디오가 없습니다! 비디오를 저장해주세요</label><img id="empty-img" name="empty-img" src="./assets/empty_img.png"/></div>',
 };
 
 export const removeDeleteVideoItem = (selector, videoId) => {
@@ -39,4 +41,14 @@ export const removeCheckedVideoItem = (selector, videoId) => {
       element.remove();
     }
   });
+};
+
+export const showEmptyImg = selector => {
+  $(selector).insertAdjacentHTML('beforeEnd', videoItemTemplate.emptyImageItem);
+};
+
+export const removeEmptyImg = selector => {
+  if ($(selector)) {
+    $(selector).remove();
+  }
 };

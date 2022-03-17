@@ -1,12 +1,18 @@
 import storage from '../storage/storage.js';
 import watchLaterInterface from '../ui/watchLaterInterface.js';
 import { $, confrimVideoDelete } from '../util/general.js';
-import { clearVideoItems, removeCheckedVideoItem, removeDeleteVideoItem } from '../util/render.js';
+import {
+  clearVideoItems,
+  removeCheckedVideoItem,
+  removeDeleteVideoItem,
+  removeEmptyImg,
+} from '../util/render.js';
 
 export class WatchLaterVideoEventHandler {
   handleWatchLater = () => {
     this.toggleWatchLaterContent();
     clearVideoItems('.watch-later-video-item');
+    removeEmptyImg('.watch-later-videos-container .empyt-img-container');
     watchLaterInterface.renderWatchLaterVideos();
   };
   toggleWatchLaterContent = () => {
@@ -26,6 +32,7 @@ export class WatchLaterVideoEventHandler {
       '.watch-later-video-item',
       e.target.parentElement.parentElement.dataset.videoId,
     );
+    watchLaterInterface.renderEmptyImg();
   };
   handleDeleteButtonClick = e => {
     if (!e.target.classList.contains('video-item__delete-button')) {
@@ -37,6 +44,7 @@ export class WatchLaterVideoEventHandler {
         '.watch-later-video-item',
         e.target.parentElement.parentElement.dataset.videoId,
       );
+      watchLaterInterface.renderEmptyImg();
     }
   };
 }

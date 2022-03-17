@@ -1,5 +1,6 @@
 import '../css/index.css';
 import '../assets/images/not_found.png';
+import '../assets/images/empty_img.png';
 
 import { $, quickModalElement } from './util/general.js';
 import { THROTTLE_DELAY } from './constants/constants.js';

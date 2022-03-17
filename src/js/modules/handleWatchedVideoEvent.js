@@ -1,11 +1,17 @@
 import storage from '../storage/storage.js';
 import watchedVideoInterface from '../ui/watchedVideoInterface.js';
 import { $, confrimVideoDelete } from '../util/general.js';
-import { clearVideoItems, removeCheckedVideoItem, removeDeleteVideoItem } from '../util/render.js';
+import {
+  clearVideoItems,
+  removeCheckedVideoItem,
+  removeDeleteVideoItem,
+  removeEmptyImg,
+} from '../util/render.js';
 export class WatchedVideoEventHandler {
   handleWatchedVideo = () => {
     this.toggleWatchedVideoContent();
     clearVideoItems('.watched-video-item');
+    removeEmptyImg('.watched-videos-container .empyt-img-container');
     watchedVideoInterface.renderWatchedVideos();
   };
 
@@ -27,10 +33,10 @@ export class WatchedVideoEventHandler {
       '.watched-video-item',
       e.target.parentElement.parentElement.dataset.videoId,
     );
+    watchedVideoInterface.renderEmptyImg();
   };
 
   handleDeleteButtonClick = e => {
-    console.log(e.target.classList);
     if (!e.target.classList.contains('video-item__delete-button')) {
       return;
     }
@@ -40,6 +46,7 @@ export class WatchedVideoEventHandler {
         '.watched-video-item',
         e.target.parentElement.parentElement.dataset.videoId,
       );
+      watchedVideoInterface.renderEmptyImg();
     }
   };
 }

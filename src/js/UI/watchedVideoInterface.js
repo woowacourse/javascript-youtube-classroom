@@ -1,20 +1,36 @@
 import { $, $$ } from '../util/general.js';
 import storage from '../storage/storage.js';
-import { videoItemTemplate } from '../util/render.js';
+import { showEmptyImg, videoItemTemplate } from '../util/render.js';
 
 const watchedVideoInterface = {
-  renderWatchedVideos() {
+  renderEmptyImg() {
     const savedVideoData = storage.getLocalStorage();
-    if (!savedVideoData) {
+    if (savedVideoData.length === 0) {
+      showEmptyImg('.watched-videos-container');
       return;
     }
-    savedVideoData.forEach(item => {
+    const watchedVideos = savedVideoData.filter(item => {
       if (item.watched) {
-        $('.watched-videos-container ul').insertAdjacentHTML(
-          'beforeEnd',
-          videoItemTemplate.videoItem('watched-video-item', item),
-        );
+        return item;
       }
+    });
+    if (watchedVideos.length === 0) {
+      showEmptyImg('.watched-videos-container');
+    }
+  },
+  renderWatchedVideos() {
+    this.renderEmptyImg();
+    const savedVideoData = storage.getLocalStorage();
+    const watchedVideos = savedVideoData.filter(item => {
+      if (item.watched) {
+        return item;
+      }
+    });
+    watchedVideos.forEach(item => {
+      $('.watched-videos-container ul').insertAdjacentHTML(
+        'beforeEnd',
+        videoItemTemplate.videoItem('watched-video-item', item),
+      );
     });
   },
 };

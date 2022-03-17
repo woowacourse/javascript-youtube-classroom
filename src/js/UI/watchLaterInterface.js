@@ -1,20 +1,39 @@
 import storage from '../storage/storage.js';
 import { $, $$ } from '../util/general.js';
-import { videoItemTemplate } from '../util/render.js';
+import { showEmptyImg, videoItemTemplate } from '../util/render.js';
 
 const watchLaterInterface = {
-  renderWatchLaterVideos() {
+  renderEmptyImg() {
     const savedVideoData = storage.getLocalStorage();
-    if (!savedVideoData) {
+    if (savedVideoData.length === 0) {
+      showEmptyImg('.watch-later-videos-container');
       return;
     }
-    savedVideoData.forEach(item => {
+    const watchLaterVideos = savedVideoData.filter(item => {
       if (item.watched === false) {
-        $('.watch-later-videos-container ul').insertAdjacentHTML(
-          'beforeEnd',
-          videoItemTemplate.videoItem('watch-later-video-item', item),
-        );
+        return item;
       }
+    });
+    if (watchLaterVideos.length === 0) {
+      showEmptyImg('.watch-later-videos-container');
+      return;
+    }
+  },
+  renderWatchLaterVideos() {
+    this.renderEmptyImg();
+
+    const savedVideoData = storage.getLocalStorage();
+    const watchLaterVideos = savedVideoData.filter(item => {
+      if (item.watched === false) {
+        return item;
+      }
+    });
+
+    watchLaterVideos.forEach(item => {
+      $('.watch-later-videos-container ul').insertAdjacentHTML(
+        'beforeEnd',
+        videoItemTemplate.videoItem('watch-later-video-item', item),
+      );
     });
   },
 };
