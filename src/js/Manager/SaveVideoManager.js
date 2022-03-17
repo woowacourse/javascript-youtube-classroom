@@ -9,13 +9,11 @@ export default class SaveVideoManager {
     this.#videos = this.storage.videos;
 
     event.addListener('saveVideo', this.trySaveVideo.bind(this));
-    event.addListener('clickUnwatchedVideoListButton', () => {
-      console.log('updateOnUnwatchedVideoList');
-      event.dispatch('updateOnUnwatchedVideoList', { videos: this.unwatchedVideos });
-    });
-    event.addListener('clickWatchedVideoListButton', () => {
-      console.log('updateOnWatchedVideoList');
-      event.dispatch('updateOnWatchedVideoList', { videos: this.watchedVideos });
+    event.addListener('changeWatchedInfo', this.changeWatchedInfo.bind(this));
+
+    event.dispatch('updateOnVideoList', { 
+      unwatchedVideos: this.unwatchedVideos,
+      watchedVideos: this.watchedVideos,
     });
   }
 
@@ -45,21 +43,17 @@ export default class SaveVideoManager {
     this.#videos = this.storage.videos;
   }
 
-  updateVideoToWatched(videoId) {
+  changeWatchedInfo(e) {
+    const videoId = e.detail.id;
     const video = this.storage.findVideoById(videoId);
     this.storage.updateVideo({
       ...video,
-      watched: true,
+      watched: !video.watched
     });
     this.#videos = this.storage.videos;
-  }
-
-  updateVideoToUnwatched(videoId) {
-    const video = this.storage.findVideoById(videoId);
-    this.storage.updateVideo({
-      ...video,
-      watched: false,
+    event.dispatch('updateOnVideoList', { 
+      unwatchedVideos: this.unwatchedVideos,
+      watchedVideos: this.watchedVideos,
     });
-    this.#videos = this.storage.videos;
   }
 }

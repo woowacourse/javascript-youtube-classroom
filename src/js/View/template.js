@@ -25,7 +25,7 @@ export const template = {
       ${saved ? '' : '<button class="video-item__save-button button">⬇ 저장</button>'}
       </li>
     `,
-  savedVideoListItem: ({ id, thumbnail, title, channelName, publishedDate }) =>
+  savedVideoListItem: ({ id, thumbnail, title, channelName, publishedDate, watched }) =>
     `<li class="video-item" 
       data-id="${id}"
     >
@@ -33,8 +33,8 @@ export const template = {
       <h4 class="video-item__title">${title}</h4>
       <p class="video-item__channel-name">${channelName}</p>
       <p class="video-item__published-date">${dateTemplate(publishedDate)}</p>
-      <button class="button icon-button check-icon-button">✅</button>
-      <button class="button icon-button">🗑️</button>
+      <button id="check-watched-button" class="button icon-button check-icon-button ${watched ? 'selected' : ''}">✅</button>
+      <button id="delete-button" class="button icon-button">🗑️</button>
       </li>
     `,
 };

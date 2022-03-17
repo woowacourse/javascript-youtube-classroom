@@ -6,32 +6,52 @@ export default class HomeView {
     $('#unwatched-video-list-button').addEventListener('click', this.onClickUnwatchedVideoListButton.bind(this));
     $('#watched-video-list-button').addEventListener('click', this.onClickWatchedVideoListButton.bind(this));
     $('#search-modal-button').addEventListener('click', this.openModal.bind(this));
-    event.addListener('updateOnUnwatchedVideoList', this.updateOnUnwatchedVideoList.bind(this));
-    event.addListener('updateOnWatchedVideoList', this.updateOnUnwatchedVideoList.bind(this));
 
-    this.onClickUnwatchedVideoListButton();
+    $('#unwatched-video-list').addEventListener('click', this.onClickIconButton.bind(this));
+    $('#watched-video-list').addEventListener('click', this.onClickIconButton.bind(this));
+
+    event.addListener('updateOnVideoList', this.updateOnVideoList.bind(this));
   }
 
   onClickUnwatchedVideoListButton() {
-    console.log('clickUnwatchedVideoListButton');
-    event.dispatch('clickUnwatchedVideoListButton');
+    if ($('#unwatched-video-list').classList.contains('hide')) {
+      this.toggleVideoList();
+    }
   }
 
   onClickWatchedVideoListButton() {
-    console.log('clickWatchedVideoListButton');
-    event.dispatch('clickWatchedVideoListButton');
+    if ($('#watched-video-list').classList.contains('hide')) {
+      this.toggleVideoList();
+    }
   }
 
-  updateOnUnwatchedVideoList(e) {
-    const { videos } = e.detail;
-    const listItems = videos.map((video) => template.savedVideoListItem(video)).join('');
-    $('#unwatched-video-list').innerHTML = listItems;
+  toggleVideoList() {
+    $('#unwatched-video-list').classList.toggle('hide');
+    $('#watched-video-list').classList.toggle('hide');
+    $('#unwatched-video-list-button').classList.toggle('selected');
+    $('#watched-video-list-button').classList.toggle('selected');
   }
 
-  updateOnWatchedVideoList(e) {
-    const { videos } = e.detail;
-    const listItems = videos.map((video) => template.savedVideoListItem(video)).join('');
-    $('#watched-video-list').innerHTML = listItems;
+  onClickIconButton(e) {
+    if (e.target.id === 'check-watched-button') {
+      this.onClickCheckWatchedButton(e);
+    }
+    if (e.target.id === 'delete-button') {
+      console.log(e.target.id);
+    }
+  }
+
+  onClickCheckWatchedButton(e) {
+    const { id } = e.target.parentNode.dataset;
+    event.dispatch('changeWatchedInfo', { id });
+  }
+
+  updateOnVideoList(e) {
+    const { unwatchedVideos, watchedVideos } = e.detail;
+    const unwatchedVideoListItems = unwatchedVideos.map((video) => template.savedVideoListItem(video)).join('');
+    const watchedVideoListItems = watchedVideos.map((video) => template.savedVideoListItem(video)).join('');
+    $('#unwatched-video-list').innerHTML = unwatchedVideoListItems;
+    $('#watched-video-list').innerHTML = watchedVideoListItems;
   }
 
   openModal() {
