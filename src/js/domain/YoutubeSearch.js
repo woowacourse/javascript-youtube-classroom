@@ -1,7 +1,7 @@
 import { SEARCH_RESULT_COUNT } from '../constants/constants.js';
 import { validateInput } from '../util/general.js';
 
-export default class YoutubeMachine {
+export default class YoutubeSearch {
   #pageToken = '';
   #searchTarget = '';
 

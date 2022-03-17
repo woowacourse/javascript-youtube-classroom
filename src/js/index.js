@@ -1,5 +1,5 @@
 import { $, isEndOfScroll } from './util/general.js';
-import YoutubeMachine from './domain/YoutubeMachine.js';
+import YoutubeSearch from './domain/YoutubeSearch.js';
 import searchResultView from './ui/searchResultView.js';
 import '../css/index.css';
 import '../assets/images/not_found.png';
@@ -7,12 +7,12 @@ import storage from './storage/storage.js';
 import { THROTTLE_DELAY } from './constants/constants.js';
 
 export default function App() {
-  const youtubeMachine = new YoutubeMachine();
+  const youtubeSearch = new YoutubeSearch();
   let throttle;
 
   const renderHandler = async () => {
     searchResultView.renderSkeletonUI();
-    const response = await youtubeMachine.fetchYoutubeAPI();
+    const response = await youtubeSearch.fetchYoutubeAPI();
     searchResultView.renderSearchResult(response);
     const isLastVideos = response.items.length !== 0 && !response.nextPageToken;
     if (isLastVideos) {
@@ -24,8 +24,8 @@ export default function App() {
   const handleSearch = () => {
     try {
       const searchInput = $('#search-input-keyword').value.trim();
-      youtubeMachine.searchTarget = searchInput;
-      youtubeMachine.pageToken = '';
+      youtubeSearch.searchTarget = searchInput;
+      youtubeSearch.pageToken = '';
       searchResultView.resetVideoList();
       addVideoListEvents();
       renderHandler();
