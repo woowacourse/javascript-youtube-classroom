@@ -11,11 +11,6 @@ export const noSearchResultTemplate = () => {
 };
 
 export const makeThumbnailTemplate = (video, exist) => {
-  let displayProp = '';
-  if (exist === 'exist') {
-    displayProp = 'hide';
-  }
-
   return `
     <li class='video-item-container'>
       <img
@@ -24,7 +19,12 @@ export const makeThumbnailTemplate = (video, exist) => {
       <h4 class="video-item__title">${video.title}</h4>
       <p class="video-item__channel-name">${video.channelName}</p>
       <p class="video-item__published-date">${video.publishedDate}</p>
-      <button id="${video.id}"  class="video-item__save-button button ${displayProp}">⬇ 저장</button>
+      <div class = 'button-container'>
+        <button class="video-item__save-button button ${video.watchLater ? '' : 'hide'}">✅</button>
+        <button class="video-item__save-button button ${video.watchLater ? '' : 'hide'}">🗑️</button>
+        <button id="${video.id}" class="video-item__save-button button 
+          ${exist === 'exist' ? 'hide' : ''} ${video.watchLater ? 'hide' : ''}">⬇ 저장</button>
+      </div>
   </li>`;
 };
 

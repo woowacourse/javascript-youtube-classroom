@@ -19,7 +19,13 @@ export class Classroom {
     console.log(videoList);
     this.contentsContainer.insertAdjacentHTML(
       'beforeend',
-      videoList.map((video) => makeThumbnailTemplate(video)).join(''),
+      videoList
+        .map((video) => {
+          if (video.watchLater === true) {
+            return makeThumbnailTemplate(video);
+          }
+        })
+        .join(''),
     );
   };
 

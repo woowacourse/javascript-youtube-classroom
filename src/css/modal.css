@@ -141,12 +141,15 @@
   letter-spacing: 0.5px;
 }
 
+.button-container {
+  float: right;
+}
+
 .video-item__save-button {
   position: relative;
   width: 70px;
   height: 30px;
   background: #f9f9f9;
-  float: right;
 }
 
 .video-item__save-button:hover {

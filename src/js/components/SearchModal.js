@@ -58,7 +58,6 @@ export class SearchModal {
   videosToObject(videos) {
     return videos.items.map((video) => {
       return {
-        imgSrc: `https://img.youtube.com/vi/${video.id.videoId}/0.jpg`,
         title: video.snippet.title,
         channelName: video.snippet.channelTitle,
         publishedDate: changeDateFormat(video.snippet.publishedAt),
@@ -134,6 +133,7 @@ export class SearchModal {
       tempVideoIdsInLocalStorage.push(e.target.id);
       e.target.style.display = 'none';
     }
+
     this.saveVideoItemInformationToLocalStorage(e.target);
     saveVideoIdToLocalStorage(tempVideoIdsInLocalStorage);
   };
@@ -145,6 +145,7 @@ export class SearchModal {
       channelName: target.parentNode.childNodes[5].innerText,
       publishedDate: target.parentNode.childNodes[7].innerText,
       id: target.id,
+      watchLater: true,
     });
     saveVideoItemToLocalStorage(tempVideosInLocalStorage);
   }
