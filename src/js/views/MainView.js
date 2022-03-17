@@ -13,9 +13,7 @@ export default class MainView {
     this.$watchedButton = $('.nav-left__button--watched');
     this.$unwatchedTab = $('.unwatched-tab');
     this.$watchedTab = $('.watched-tab');
-    // this.watchVideoButton = this.watchVideoButton.bind(this);
-    // this.unwatchVideoButton = this.unwatchVideoButton.bind(this);
-    // this.deleteVideoButton = this.deleteVideoButton.bind(this);
+    this.$confirmModalContainer = $('.confirm-modal-container');
     this.#bindEvents();
   }
 
@@ -28,6 +26,7 @@ export default class MainView {
   }
 
   #closeModal() {
+    this.#handleUnwatchedButton();
     this.$modalContainer.classList.add('hide');
   }
 
@@ -107,5 +106,10 @@ export default class MainView {
 
   removeVideo(videoId) {
     document.getElementById(videoId).remove();
+  }
+
+  confirmDelete() {
+    this.$confirmModalContainer.replaceChildren();
+    this.$confirmModalContainer.insertAdjacentHTML('beforeend', this.template.getConfirmModal());
   }
 }

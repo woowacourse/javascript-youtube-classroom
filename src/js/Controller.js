@@ -137,8 +137,10 @@ export default class Controller {
   }
 
   #checkDeleteVideo(event) {
-    const deletedVideoId = event.detail.videoId;
-    this.video.setDeletedVideoItem(deletedVideoId);
-    this.mainView.removeVideo(deletedVideoId);
+    if (this.mainView.confirmDelete()) {
+      const deletedVideoId = event.detail.videoId;
+      this.video.setDeletedVideoItem(deletedVideoId);
+      this.mainView.removeVideo(deletedVideoId);
+    }
   }
 }

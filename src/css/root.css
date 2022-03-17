@@ -1,9 +1,11 @@
 :root {
   --primary: #00bcd4;
   --primary-lighten: #80deea;
+  --primary-darken: #009eb3;
   --active: #00bcd41f;
   --secondary: #b4b4b4;
   --secondary-lighten: #ededed;
+  --secondary-darken: #999999;
   --surface: #212121;
   --dimmer: rgba(0, 0, 0, 0.5);
   --white: #ffffff;

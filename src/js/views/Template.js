@@ -108,4 +108,21 @@ export default class Template {
       </div>
     `;
   }
+
+  getConfirmModal() {
+    return `
+      <div class="confirm-modal">
+        <form class="confirm-modal__form">
+          <div class="confirm-modal__content">
+            <span class="confirm-modal__span">해당 영상을 저장 목록에서<br />삭제하시겠습니까?</span>
+          
+            <div class="clearfix">
+              <button type="button" onclick="" class="button cancelbtn">취소하기</button>
+              <button type="button" onclick="" class="button deletebtn">삭제하기</button>
+            </div>
+          </div>
+        </form>
+      </div>
+    `;
+  }
 }
