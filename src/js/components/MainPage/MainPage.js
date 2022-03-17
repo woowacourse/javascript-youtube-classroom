@@ -42,10 +42,10 @@ export default class MainPage extends Component {
     new VideoCardList(this.$('#saved-video-list'), {
       videos: this.state.videos.slice(
         0,
-        LOAD_VIDEOS_COUNT * this.state.pagination - 1
+        LOAD_VIDEOS_COUNT * this.state.pagination
       ),
       isLoading: false,
-      loadNextVideos: this.loadNextVideos.bind(this),
+      handleLastVideoVisible: this.handleLastVideoVisible.bind(this),
     });
   }
 
@@ -77,6 +77,8 @@ export default class MainPage extends Component {
     this.setState({ videos });
     changeMode();
   }
+
+  handleLastVideoVisible() {}
 
   loadNextVideos() {
     console.log('this.state', this.state);

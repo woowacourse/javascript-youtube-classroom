@@ -7,7 +7,7 @@ import { LOAD_VIDEOS_COUNT } from '../../../constant.js';
 export default class VideoCardList extends Component {
   setup() {
     this.observer = new IntersectionObserver(
-      this.handleLastVideoVisible.bind(this),
+      this.props.handleLastVideoVisible,
       {
         root: this.target,
         rootMargin: '0px',
@@ -64,22 +64,5 @@ export default class VideoCardList extends Component {
     if (this.target.lastElementChild) {
       this.observer.observe(this.target.lastElementChild);
     }
-  }
-
-  handleLastVideoVisible(entries, observer) {
-    entries.forEach(async entry => {
-      if (!entry.isIntersecting || this.props.isLoading) return;
-
-      observer.disconnect();
-
-      rootStore.setState({ isLoading: true });
-
-      const newVideos = await this.props.loadNextVideos();
-
-      rootStore.setState({
-        videos: [...rootStore.state.videos, ...newVideos],
-        isLoading: false,
-      });
-    });
   }
 }

@@ -17,7 +17,24 @@ export default class SearchResult extends Component {
     new VideoCardList(this.$('#video-list'), {
       videos,
       isLoading,
-      loadNextVideos: this.loadNextVideos,
+      handleLastVideoVisible: this.handleLastVideoVisible.bind(this),
+    });
+  }
+
+  handleLastVideoVisible(entries, observer) {
+    entries.forEach(async entry => {
+      if (!entry.isIntersecting || rootStore.state.isLoading) return;
+
+      observer.disconnect();
+
+      rootStore.setState({ isLoading: true });
+
+      const newVideos = await this.loadNextVideos();
+
+      rootStore.setState({
+        videos: [...rootStore.state.videos, ...newVideos],
+        isLoading: false,
+      });
     });
   }
 
