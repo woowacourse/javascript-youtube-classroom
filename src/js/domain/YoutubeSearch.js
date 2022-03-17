@@ -1,4 +1,4 @@
-import { validateInput } from '../util/general.js';
+import { validateInput } from '../validate.js';
 
 export default class YoutubeSearch {
   #searchResults = {};

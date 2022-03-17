@@ -1,4 +1,5 @@
-import { $, isEndOfScroll } from '../util/general.js';
+import { isEndOfScroll } from '../util/scroll.js';
+import { $ } from '../util/querySelector.js';
 import YoutubeSearch from '../domain/YoutubeSearch.js';
 import userInterface from '../ui/userInterface.js';
 import storage from '../storage/storage.js';

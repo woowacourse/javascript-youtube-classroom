@@ -7,7 +7,3 @@ export const ERROR = {
 };
 
 export const MAX_SAVED_VIDEOS_NUMBER = 100;
-
-export const THROTTLE_DELAY = 500;
-
-export const SCROLL_OFFSET = 50;

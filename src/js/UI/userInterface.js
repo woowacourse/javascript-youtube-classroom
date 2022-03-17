@@ -1,4 +1,4 @@
-import { $, $$ } from '../util/general.js';
+import { $, $$ } from '../util/querySelector.js';
 import storage from '../storage/storage.js';
 
 const template = {
