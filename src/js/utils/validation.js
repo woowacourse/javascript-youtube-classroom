@@ -1,18 +1,18 @@
-import { ERROR_MESSAGES, NUM } from "./contants";
+import { ERROR_MESSAGES, NUM } from "./contants.js";
 
-export const hasDuplicatedId = (storage, id) => {
-  return storage.includes(id);
+export const hasDuplicatedId = (array, id) => {
+  return array.includes(id);
 };
 
-export const isExceedStorage = (storage) => {
-  return storage.length >= NUM.MAX_STORAGE_LENGTH;
+export const isExceedStorage = (array) => {
+  return array.length >= NUM.MAX_STORAGE_LENGTH;
 };
 
-export const verifySaveId = (storage, id) => {
-  if (hasDuplicatedId(storage, id)) {
+export const verifySaveId = (array, id) => {
+  if (hasDuplicatedId(array, id)) {
     throw new Error(ERROR_MESSAGES.DUPLICATE_DATA);
   }
-  if (isExceedStorage(storage)) {
+  if (isExceedStorage(array)) {
     throw new Error(ERROR_MESSAGES.FULL_STORAGE);
   }
 };

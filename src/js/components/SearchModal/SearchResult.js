@@ -1,13 +1,12 @@
 import { $, $$ } from "../../utils/dom.js";
-import { LOCAL_DB, NUM } from "../../utils/contants.js";
+import { NUM } from "../../utils/contants.js";
 import { fetchDataFromKeyword } from "../../utils/api.js";
 import { getVideoListTemplate, getSkeletonTemplate, getEmptyResultTemplate } from "../../utils/templates.js";
-import { getLocalStorage, saveLocalStorage } from "../../utils/localStorage.js";
 import { verifySaveId } from "../../utils/validation.js";
 import { toastMessage } from "../../utils/common.js";
 
 export default class SearchResult {
-  constructor({ searchManager }) {
+  constructor({ searchManager, saveVideoManager }) {
     this.videoList = $(".modal-result__list");
     this.noResultContainer = $(".modal-result__empty");
     this.resultLabel = $(".modal-result__label");
@@ -16,6 +15,7 @@ export default class SearchResult {
     this.searchManager = searchManager;
     this.searchManager.subscribe(this.#initResult);
     this.searchManager.subscribe(this.#getDataMatchKeyword);
+    this.saveVideoManager = saveVideoManager;
 
     this.observer = new IntersectionObserver((entries) => {
       const [entry] = entries;
@@ -90,10 +90,10 @@ export default class SearchResult {
     }
 
     try {
-      const videoIdsArray = getLocalStorage(LOCAL_DB.VIDEO_ID);
-      const newVideoId = target.id;
-      verifySaveId(videoIdsArray, newVideoId);
-      saveLocalStorage(LOCAL_DB.VIDEO_ID, [...videoIdsArray, newVideoId]);
+      const savedVideoArray = this.saveVideoManager.getSavedIds();
+      const { videoId } = target.dataset;
+      verifySaveId(savedVideoArray, videoId);
+      this.saveVideoManager.saveVideos(videoId);
       target.remove();
     } catch ({ message }) {
       toastMessage(message);
