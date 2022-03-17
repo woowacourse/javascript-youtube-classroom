@@ -13,6 +13,7 @@ export const DOM_STRING = {
   SEARCH_RESULT: '.search-result',
   WATCH_LATER_BUTTON: '#watch-later-button',
   WATCHED_BUTTON: '#watched-button',
+  STORED_VIDEO_LIST: '.stored-video-list',
 };
 
 export const ERROR_MESSAGE = {
