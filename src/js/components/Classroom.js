@@ -7,6 +7,7 @@ export class Classroom {
 
     this.openModalButton = document.getElementById('search-modal-button');
     this.openModalButton.addEventListener('click', this.props.openModal);
+    this.openModalButton.addEventListener('click', this.removeNavButtonClicked);
 
     this.nav = document.getElementById('nav');
     this.contentsContainer = document.getElementById('classroom-contents-container');
@@ -17,6 +18,11 @@ export class Classroom {
     this.alreadyWatchedVideoButton.addEventListener('click', this.handleAlreadyWatchedVideoNav);
     this.contentsContainer.addEventListener('click', this.handleContentsButton);
   }
+
+  removeNavButtonClicked = () => {
+    this.alreadyWatchedVideoButton.classList.remove('clicked');
+    this.willSeeVideoButton.classList.remove('clicked');
+  };
 
   handleWillSeeVideoNav = async () => {
     this.clearClassroomContentsContainer();
