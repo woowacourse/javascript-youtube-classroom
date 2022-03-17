@@ -24,7 +24,7 @@ const polishVideos = (videos) => {
 
 const keywordInputView = new KeywordInputView();
 const searchModalView = new SearchModalView();
-const videoView = new VideoView(async () => polishVideos(await youtubeAPI.videos()));
+const videoView = new VideoView(async () => polishVideos(await youtubeAPI.getVideos()));
 
 const handleKeywordInputSubmit = async (keyword) => {
   try {
