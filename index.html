@@ -9,10 +9,108 @@
     <main id="app" class="classroom-container">
       <h1 class="classroom-container__title">👩🏻‍💻 나만의 유튜브 강의실 👨🏻‍💻</h1>
       <nav class="nav">
-        <button id="search-modal-button" class="button nav__button">
+        <div class="video-button-container">
+          <button
+            id="search-modal-button"
+            class="button nav__save-video-button nav__save-video-button--focused"
+            type="button"
+          >
+            👁 볼 영상
+          </button>
+          <button
+            id="search-modal-button"
+            class="button nav__watched-video-button"
+            type="button"
+          >
+            ✅ 본 영상
+          </button>
+        </div>
+        <button
+          id="search-modal-button"
+          class="button nav__button--search"
+          type="button"
+        >
           🔍 검색
         </button>
       </nav>
+      <section class="save-video-container">
+        <ul class="save-video-container__video-list">
+          <li class="video-list__video-item" data-video-id="">
+            <img
+              src="https://i.ytimg.com/vi/ECfuKi5-Cfs/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLDvmIcX-TgdcH2g_Bd4AUxw6hjmvQ"
+              alt="video-item-thumbnail"
+              class="video-item__thumbnail"
+            />
+            <h4 class="video-item__title">
+              [Playlist] 너무 좋은데 괜찮으시겠어요?
+            </h4>
+            <p class="video-item__channel-name">essential;</p>
+            <p class="video-item__published-date">2022년 3월 2일</p>
+            <div class="video-item-button-container">
+              <button
+                class="video-item__watched-video-button video-item__watched-video-button--focused button"
+              >
+                ✅
+              </button>
+              <button class="video-item__delete-video-button button">🗑</button>
+            </div>
+          </li>
+          <li class="video-list__video-item" data-video-id="">
+            <img
+              src="https://i.ytimg.com/vi/ECfuKi5-Cfs/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLDvmIcX-TgdcH2g_Bd4AUxw6hjmvQ"
+              alt="video-item-thumbnail"
+              class="video-item__thumbnail"
+            />
+            <h4 class="video-item__title">
+              [Playlist] 너무 좋은데 괜찮으시겠어요?
+            </h4>
+            <p class="video-item__channel-name">essential;</p>
+            <p class="video-item__published-date">2022년 3월 2일</p>
+            <div class="video-item-button-container">
+              <button class="video-item__watched-video-button button">
+                ✅
+              </button>
+              <button class="video-item__delete-video-button button">🗑</button>
+            </div>
+          </li>
+          <li class="video-list__video-item" data-video-id="">
+            <img
+              src="https://i.ytimg.com/vi/ECfuKi5-Cfs/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLDvmIcX-TgdcH2g_Bd4AUxw6hjmvQ"
+              alt="video-item-thumbnail"
+              class="video-item__thumbnail"
+            />
+            <h4 class="video-item__title">
+              [Playlist] 너무 좋은데 괜찮으시겠어요?
+            </h4>
+            <p class="video-item__channel-name">essential;</p>
+            <p class="video-item__published-date">2022년 3월 2일</p>
+            <div class="video-item-button-container">
+              <button class="video-item__watched-video-button button">
+                ✅
+              </button>
+              <button class="video-item__delete-video-button button">🗑</button>
+            </div>
+          </li>
+          <li class="video-list__video-item" data-video-id="">
+            <img
+              src="https://i.ytimg.com/vi/ECfuKi5-Cfs/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLDvmIcX-TgdcH2g_Bd4AUxw6hjmvQ"
+              alt="video-item-thumbnail"
+              class="video-item__thumbnail"
+            />
+            <h4 class="video-item__title">
+              [Playlist] 너무 좋은데 괜찮으시겠어요?
+            </h4>
+            <p class="video-item__channel-name">essential;</p>
+            <p class="video-item__published-date">2022년 3월 2일</p>
+            <div class="video-item-button-container">
+              <button class="video-item__watched-video-button button">
+                ✅
+              </button>
+              <button class="video-item__delete-video-button button">🗑</button>
+            </div>
+          </li>
+        </ul>
+      </section>
     </main>
     <div class="modal-container hide">
       <div class="dimmer"></div>
