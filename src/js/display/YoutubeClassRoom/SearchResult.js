@@ -5,6 +5,7 @@ import { YOUTUBE_SETTING, YOUTUBE_SEARCH_ACTION, ERROR_MESSAGE, EVENT_TYPE } fro
 import YoutubeSearchStore from '@Domain/YoutubeSearchStore';
 import YoutubeSaveStorage from '@Domain/YoutubeSaveStorage';
 import notFoundImage from '@Images/not_found.jpeg';
+import serverErrorImage from '@Images/server_error.jpeg';
 
 export default class SearchResult {
   constructor() {
@@ -85,10 +86,6 @@ export default class SearchResult {
       className: 'no-result',
       innerHTML: `
         <img src="${notFoundImage}" alt="no result image" class="no-result__image">
-        <p class="no-result__description">
-          검색 결과가 없습니다<br />
-          다른 키워드로 검색해보세요
-        </p>
       `,
     });
   }
@@ -97,11 +94,7 @@ export default class SearchResult {
     return createElement('DIV', {
       className: 'no-result',
       innerHTML: `
-        <img src="${notFoundImage}" alt="no result image" class="no-result__image">
-        <p class="no-result__description">
-          서버에서 오류가 발생하였습니다.<br />
-          잠시 후 다시 시도해주세요.
-        </p>
+        <img src="${serverErrorImage}" alt="no result image" class="no-result__image">
       `,
     });
   }
