@@ -69,12 +69,13 @@ export default class SearchModal {
     try {
       validateKeyword(this.searchInputKeyword.value);
 
+      this.showResultContainer();
       this.reSearch();
-
       this.renderVideoList({
         keyword: this.searchInputKeyword.value,
         pageToken: this.pageToken,
       });
+
       this.searchErrorMessage.textContent = '';
     } catch (error) {
       this.searchErrorMessage.textContent = ERROR_MESSAGE.EMPTY_KEYWORD;
@@ -102,14 +103,6 @@ export default class SearchModal {
     this.noResultContainer.classList.add('hidden');
   }
 
-  showSearchResult(videoList) {
-    if (this.hasVideoList(videoList)) {
-      this.showResultContainer();
-      return;
-    }
-    this.showNoResultContainer();
-  }
-
   showSkeletons() {
     this.skeletons.forEach((skeleton) => skeleton.classList.remove('hidden'));
   }
@@ -124,13 +117,13 @@ export default class SearchModal {
     const { videoList, error = false, nextPageToken } = await fetchData({ ...queryProps });
 
     if (error) {
-      toastPopup(ERROR_MESSAGE.API_CALLS_QUOTA_EXCEEDED);
+      toastPopup(error.message);
       this.hideSkeletons();
+      this.showNoResultContainer();
       return;
     }
 
     this.VideoCardContainer.setState({ videoList });
-    this.showSearchResult(videoList);
     this.hideSkeletons();
     this.pageToken = nextPageToken || null;
   }

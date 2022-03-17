@@ -1,4 +1,4 @@
-import { RULES } from './constants';
+import { ERROR_MESSAGE, RULES } from './constants';
 
 const HOME_URL = YOUTUBE_URL;
 const TEST_URL = YOUTUBE_URL_DUMMY;
@@ -25,27 +25,31 @@ const stringQuery = (props) => {
 };
 
 const videoListFormatter = (item) => {
-  const {
-    id: { videoId },
-    snippet: {
-      publishTime,
-      channelTitle,
+  try {
+    const {
+      id: { videoId },
+      snippet: {
+        publishTime,
+        channelTitle,
+        title,
+      },
+    } = item;
+
+    const thumbnailURL = item.snippet.thumbnails.medium.url || '';
+
+    const date = new Date(publishTime);
+    const dateText = `${date.getFullYear()}년 ${date.getMonth() + 1}월 ${date.getDate()}일`;
+
+    return {
+      videoId,
+      thumbnailURL,
       title,
-    },
-  } = item;
-
-  const thumbnailURL = item.snippet.thumbnails.medium.url || '';
-
-  const date = new Date(publishTime);
-  const dateText = `${date.getFullYear()}년 ${date.getMonth() + 1}월 ${date.getDate()}일`;
-
-  return {
-    videoId,
-    thumbnailURL,
-    title,
-    channelTitle,
-    publishedDate: dateText,
-  };
+      channelTitle,
+      publishedDate: dateText,
+    };
+  } catch (err) {
+    throw new Error(ERROR_MESSAGE.NOT_RESULT);
+  }
 };
 
 const fetchData = async (props) => {
