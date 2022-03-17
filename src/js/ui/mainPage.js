@@ -1,3 +1,4 @@
+import { toggleWatchedToStorage } from '../domain/localStorage.js';
 import { VideoStorage } from '../domain/VideoStorage.js';
 import SearchModal from './searchModal.js';
 import template from './templates.js';
@@ -5,9 +6,9 @@ import template from './templates.js';
 class MainPage {
   constructor() {
     this.$searchModalButton = document.querySelector('#search-modal-button');
-    this.modalComponent = new SearchModal(this.appendList);
-    this.$dimmer = document.querySelector('.dimmer');
     this.videoStorage = new VideoStorage();
+    this.modalComponent = new SearchModal(this.appendList, this.videoStorage);
+    this.$dimmer = document.querySelector('.dimmer');
     this.menuState = 'not-watched-tab-menu';
   }
 
@@ -36,7 +37,7 @@ class MainPage {
   }
 
   initStorageView() {
-    this.renderVideoList(this.videoStorage.videoList);
+    this.renderVideoList(this.videoStorage.notWachedVideoList);
   }
 
   renderVideoList(videos) {
@@ -73,7 +74,15 @@ class MainPage {
       return;
     }
   }
-  handleVideo() {}
+  handleVideo(e) {
+    if (e.target.nodeName !== 'BUTTON') return;
+    if (e.target.classList.contains('video-watched--btn')) {
+      const id = e.target.closest('li').dataset.videoId;
+      e.target.closest('li').remove();
+      this.videoStorage.toggleState(id);
+      toggleWatchedToStorage(id);
+    }
+  }
 }
 
 export default MainPage;

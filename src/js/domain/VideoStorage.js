@@ -3,6 +3,7 @@ import { getLocalStorage } from './localStorage';
 import { LOCALSTORAGE_KEY_SAVE } from '../constant';
 import youtubeSearchAPI from '../api/youtubeSearchapi';
 import VideoFactory from './VideoFactory';
+import Video from './Video';
 
 export class VideoStorage {
   constructor() {
@@ -19,6 +20,22 @@ export class VideoStorage {
     this.videoList = videoDatas.map((video) =>
       VideoFactory.generateById(video.items[0]),
     );
+  }
+
+  appendVideo({ id, thumbnails, title, channelTitle, publishTime }) {
+    this.videoList.push(
+      Video.Builder()
+        .setId(id)
+        .setThumbnails(thumbnails)
+        .setTitle(title)
+        .setChannelTitle(channelTitle)
+        .setPublishTime(publishTime)
+        .build(),
+    );
+  }
+
+  toggleState(targetId) {
+    this.videoList.find(({ id }) => id === targetId).toggleIsWatched();
   }
 
   get notWachedVideoList() {

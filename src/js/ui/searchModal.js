@@ -4,7 +4,7 @@ import SearchMachine from '../domain/SearchMachine.js';
 import { ERROR_403, REQUEST_VIDEO_QUANTITY } from '../constant';
 
 class SearchModal {
-  constructor(appendList) {
+  constructor(appendList, storage) {
     this.$modalContainer = document.querySelector('.modal-container');
     this.$dimmer = document.querySelector('.dimmer');
     this.$searchInputKeyword = document.querySelector('#search-input-keyword');
@@ -17,6 +17,7 @@ class SearchModal {
       1000,
     ).bind(this);
     this.machine = new SearchMachine();
+    this.videoStorage = storage;
     this.bindEvent();
     this.appendList = appendList;
   }
@@ -93,6 +94,7 @@ class SearchModal {
       const newVideo = target.dataset.id;
       this.machine.saveVideoToLocalStorage(newVideo);
       this.appendList(target.dataset);
+      this.videoStorage.appendVideo(target.dataset);
       target.classList.add('hide');
     } catch (err) {
       alert(err.message);

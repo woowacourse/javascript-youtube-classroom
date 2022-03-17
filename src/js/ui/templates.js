@@ -24,11 +24,11 @@ const template = {
       isSaved
         ? ''
         : `<button class="video-item__save-button button" 
-        data-id=${id} 
-        data-thumbnails=${thumbnails} 
-        data-title=${title} 
-        data-channel-title=${channelTitle} 
-        data-publish-time=${publishTime}>⬇ 저장</button>`
+        data-id="${id}" 
+        data-thumbnails="${thumbnails}"
+        data-title="${title}" 
+        data-channel-title="${channelTitle}"
+        data-publish-time="${publishTime}">⬇ 저장</button>`
     }
   </li>
   `,
@@ -79,10 +79,10 @@ const template = {
               publishTime,
             )}</p>
             <div class="video-list-grid-item-btn--contianer">
-              <button class="button video-watched--btn ${
+              <button type="button" class="button video-watched--btn ${
                 isWatched ? 'choosed' : ''
               }">✅</button>
-              <button class="button video-delete--btn">🗑️</button>
+              <button type="button" class="button video-delete--btn">🗑️</button>
             </div>
         </li>`,
 };

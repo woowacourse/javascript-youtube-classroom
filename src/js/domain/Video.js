@@ -1,4 +1,5 @@
 import { ERROR_MESSAGE } from '../constant';
+import { getLocalStorage } from './localStorage';
 
 export default class Video {
   #id;
@@ -22,7 +23,7 @@ export default class Video {
     this.#title = builder.title;
     this.#publishTime = builder.publishTime;
     this.#isSaved = builder.isSaved;
-    this.#isWatched = false;
+    this.#isWatched = getLocalStorage('watched').includes(this.#id);
   }
 
   get id() {
