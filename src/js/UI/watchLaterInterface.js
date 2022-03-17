@@ -40,6 +40,13 @@ const watchLaterInterface = {
   removeWatchLaterItems() {
     $$('.watch-later-video-item').forEach(element => element.remove());
   },
+  removeCheckedWatchLaterItem(videoId) {
+    $$('.watch-later-video-item').forEach(element => {
+      if (element.dataset.videoId === videoId) {
+        element.remove();
+      }
+    });
+  },
 };
 
 export default watchLaterInterface;

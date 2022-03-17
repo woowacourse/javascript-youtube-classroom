@@ -21,6 +21,8 @@ export class WatchLaterVideoEventHandler {
       return;
     }
     storage.toggleWatchedVideo(e.target.parentElement.parentElement.dataset.videoId);
-    // render 옮기기
+    watchLaterInterface.removeCheckedWatchLaterItem(
+      e.target.parentElement.parentElement.dataset.videoId,
+    );
   };
 }
