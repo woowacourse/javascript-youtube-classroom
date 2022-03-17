@@ -4,7 +4,7 @@ import {
   checkVideoStorageFull,
   setStorageVideos
 } from '../utils/localStorage';
-import VideoCard from './VideoCard';
+import { videoCardStyled } from './template';
 import toast from './toast';
 
 const toastPopup = toast();
@@ -56,9 +56,10 @@ export default class VideoCardContainer {
 
   template() {
     const videoIds = getStorageVideoIDs();
+    const { videoList } = this.#state;
 
-    return this.#state.videoList
-      ?.map((videoItem) => new VideoCard(this.parentElement, { videoItem, videoIds }).template())
+    return videoList
+      .map((videoItem) => videoCardStyled({ videoItem, videoIds }))
       .join('');
   }
 
