@@ -46,6 +46,20 @@ const storage = {
     });
     this.setLocalStorage(updatedVideoStorage);
   },
+  deleteSavedVideo(videoId) {
+    const savedVideoStorage = this.getLocalStorage();
+    const updatedVideoStorage = savedVideoStorage.filter(item => {
+      if (videoId !== item.id) {
+        const video = {
+          id: item.id,
+          snippet: item.snippet,
+          watched: item.watched,
+        };
+        return video;
+      }
+    });
+    this.setLocalStorage(updatedVideoStorage);
+  },
 };
 
 export default storage;

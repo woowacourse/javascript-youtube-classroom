@@ -1,6 +1,6 @@
 import storage from '../storage/storage.js';
 import watchLaterInterface from '../ui/watchLaterInterface.js';
-import { $ } from '../util/general.js';
+import { $, confrimVideoDelete } from '../util/general.js';
 
 export class WatchLaterVideoEventHandler {
   handleWatchLater = () => {
@@ -24,5 +24,13 @@ export class WatchLaterVideoEventHandler {
     watchLaterInterface.removeCheckedWatchLaterItem(
       e.target.parentElement.parentElement.dataset.videoId,
     );
+  };
+  handleDeleteButtonClick = e => {
+    if (!e.target.classList.contains('video-item__delete-button')) {
+      return;
+    }
+    if (confrimVideoDelete()) {
+      storage.deleteSavedVideo(e.target.parentElement.parentElement.dataset.videoId);
+    }
   };
 }

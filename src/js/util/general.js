@@ -16,3 +16,7 @@ export const quickModalElement = e => {
     $('.modal-container').classList.toggle('hide');
   }
 };
+
+export const confrimVideoDelete = () => {
+  return window.confirm('정말로 삭제하시겠습니까?');
+};

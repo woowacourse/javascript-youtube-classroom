@@ -41,6 +41,10 @@ export default function App() {
     'click',
     handleWatchLaterEvent.handleWatchedButtonClick,
   );
+  $('.watch-later-videos-container ul').addEventListener(
+    'click',
+    handleWatchLaterEvent.handleDeleteButtonClick,
+  );
 }
 
 App();
