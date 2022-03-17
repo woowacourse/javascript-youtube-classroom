@@ -1,9 +1,9 @@
 import { $$ } from './general.js';
 
 export const videoItemTemplate = {
-  videoItem: item => {
+  videoItem: (className, item) => {
     return `
-      <li class="watch-later-video-item video-item" data-video-id='${item.id}'>
+      <li class="${className} video-item" data-video-id='${item.id}'>
       <img
         src='${item.snippet.thumbnails.high.url}'
         alt="video-item-thumbnail"
@@ -31,4 +31,12 @@ export const removeDeleteVideoItem = (selector, videoId) => {
 
 export const clearVideoItems = selector => {
   $$(selector).forEach(element => element.remove());
+};
+
+export const removeCheckedVideoItem = (selector, videoId) => {
+  $$(selector).forEach(element => {
+    if (element.dataset.videoId === videoId) {
+      element.remove();
+    }
+  });
 };

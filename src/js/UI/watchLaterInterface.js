@@ -12,16 +12,8 @@ const watchLaterInterface = {
       if (item.watched === false) {
         $('.watch-later-videos-container ul').insertAdjacentHTML(
           'beforeEnd',
-          videoItemTemplate.videoItem(item),
+          videoItemTemplate.videoItem('watch-later-video-item', item),
         );
-      }
-    });
-  },
-
-  removeCheckedWatchLaterItem(videoId) {
-    $$('.watch-later-video-item').forEach(element => {
-      if (element.dataset.videoId === videoId) {
-        element.remove();
       }
     });
   },

@@ -1,7 +1,7 @@
 import storage from '../storage/storage.js';
 import watchLaterInterface from '../ui/watchLaterInterface.js';
 import { $, confrimVideoDelete } from '../util/general.js';
-import { clearVideoItems, removeDeleteVideoItem } from '../util/render.js';
+import { clearVideoItems, removeCheckedVideoItem, removeDeleteVideoItem } from '../util/render.js';
 
 export class WatchLaterVideoEventHandler {
   handleWatchLater = () => {
@@ -22,7 +22,8 @@ export class WatchLaterVideoEventHandler {
       return;
     }
     storage.toggleWatchedVideo(e.target.parentElement.parentElement.dataset.videoId);
-    watchLaterInterface.removeCheckedWatchLaterItem(
+    removeCheckedVideoItem(
+      '.watch-later-video-item',
       e.target.parentElement.parentElement.dataset.videoId,
     );
   };
