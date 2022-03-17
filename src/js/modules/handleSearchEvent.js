@@ -1,6 +1,6 @@
 import storage from '../storage/storage.js';
 import YoutubeMachine from '../domain/YoutubeMachine.js';
-import userInterface from '../ui/userInterface.js';
+import searchModalInterface from '../ui/serachModalInterface.js';
 import { $ } from '../util/general.js';
 
 export class SearchEventHandler {
@@ -8,11 +8,11 @@ export class SearchEventHandler {
   handleSearch = () => {
     try {
       this.youtubeMachine.resetSearchResult();
-      userInterface.resetVideoList();
+      searchModalInterface.resetVideoList();
       const searchInput = $('#search-input-keyword').value.trim();
-      userInterface.renderSkeletonUI();
+      searchModalInterface.renderSkeletonUI();
       this.youtubeMachine.search(searchInput);
-      userInterface.renderSearchResult(this.youtubeMachine.searchResult);
+      searchModalInterface.renderSearchResult(this.youtubeMachine.searchResult);
     } catch (error) {
       alert(error.message);
     }
@@ -20,9 +20,9 @@ export class SearchEventHandler {
 
   handleScroll = e => {
     if (e.target.scrollHeight - e.target.scrollTop === e.target.clientHeight) {
-      userInterface.renderSkeletonUI();
+      searchModalInterface.renderSkeletonUI();
       this.youtubeMachine.searchScrollingResult();
-      userInterface.renderNextSearchResult(this.youtubeMachine.searchResult);
+      searchModalInterface.renderNextSearchResult(this.youtubeMachine.searchResult);
     }
   };
 

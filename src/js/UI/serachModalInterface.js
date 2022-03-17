@@ -1,7 +1,7 @@
 import { $, $$ } from '../util/general.js';
 import storage from '../storage/storage.js';
 
-const template = {
+const searchVideoTemplate = {
   skeletonUI: `<li class="skeleton">
   <div class="image"></div>
   <p class="line"></p>
@@ -24,7 +24,7 @@ const template = {
   },
 };
 
-const userInterface = {
+const searchModalInterface = {
   resetSearchInput() {
     $('#search-input-keyword').value = '';
   },
@@ -35,7 +35,7 @@ const userInterface = {
     $('.search-result').classList.remove('search-result--no-result');
     $('.no-result').hidden = true;
     $('.video-list').classList.remove('hide');
-    $('.video-list').insertAdjacentHTML('beforeEnd', template.skeletonUI.repeat(10));
+    $('.video-list').insertAdjacentHTML('beforeEnd', searchVideoTemplate.skeletonUI.repeat(10));
     this.resetSearchInput();
   },
   removeSkeletonUI() {
@@ -54,7 +54,7 @@ const userInterface = {
   renderVideoItems({ items }) {
     this.removeSkeletonUI();
     items.forEach(item => {
-      $('.video-list').insertAdjacentHTML('beforeEnd', template.videoItem(item));
+      $('.video-list').insertAdjacentHTML('beforeEnd', searchVideoTemplate.videoItem(item));
       this.removeSavedVideoButton();
     });
   },
@@ -80,4 +80,4 @@ const userInterface = {
   },
 };
 
-export default userInterface;
+export default searchModalInterface;
