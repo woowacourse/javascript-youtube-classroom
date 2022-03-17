@@ -42,11 +42,11 @@ body {
 }
 
 .nav__button:hover {
-  background: #73fcf0;
+  background: #c4bfbf;
 }
 
 .clicked {
-  background: #73fcf0;
+  background: #c4bfbf;
 }
 
 #search-modal-button {
@@ -93,5 +93,5 @@ body {
   position: relative;
   width: 36px;
   height: 30px;
-  background: #73fcf0;
+  background: #efefef;
 }
