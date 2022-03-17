@@ -2,7 +2,7 @@ import notFountImage from "../assets/images/not_found.png";
 import getSearchResult from "./api/getSearchResult";
 import { DELAY_TIME } from "./constants/constants";
 import generateTemplate from "./templates";
-import videoStorage from "./videoStorage";
+import videoStorage from "./VideoStorage";
 
 import { throttle } from "./utils/utils";
 import {
@@ -13,9 +13,10 @@ import {
   getCurrentScrollHeight,
   validateInput,
   getTargetData,
+  renderSaveVideo,
 } from "./utils/dom";
 
-export default class YoutubeModalApp {
+export default class YoutubeApp {
   #modalContainer = document.querySelector(".modal-container");
   #searchInputKeyword = document.querySelector("#search-input-keyword");
   #searchResult = document.querySelector(".search-result");
@@ -25,11 +26,16 @@ export default class YoutubeModalApp {
   #keyword = "";
 
   constructor() {
+    this.#renderSavedVideo();
+
     this.#videoList.addEventListener("click", this.#onClickSaveButton);
     this.#videoList.addEventListener(
       "scroll",
       throttle(this.#onScrollVideoList, DELAY_TIME)
     );
+    document
+      .querySelector("#search-modal-button")
+      .addEventListener("click", this.#onClickSearchModalButton);
     document
       .querySelector("#search-button")
       .addEventListener("click", this.#onSubmitSearchButton);
@@ -38,10 +44,46 @@ export default class YoutubeModalApp {
       .addEventListener("click", this.#onClickDimmer);
   }
 
+  #renderSavedVideo() {
+    const saveVideoData = videoStorage.getVideo();
+    if (!saveVideoData.length) {
+      document
+        .querySelector(".save-video-container__no-video-list")
+        .classList.remove("hide");
+
+      document
+        .querySelector(".save-video-container__video-list")
+        .classList.add("hide");
+
+      return;
+    }
+
+    document
+      .querySelector(".save-video-container__video-list")
+      .classList.remove("hide");
+
+    document
+      .querySelector(".save-video-container__no-video-list")
+      .classList.add("hide");
+
+    renderSaveVideo({
+      element: document.querySelector(".save-video-container__video-list"),
+      template: saveVideoData
+        .map((data) => generateTemplate.saveVideoItem(data))
+        .join(""),
+    });
+  }
+
+  #onClickSearchModalButton = () => {
+    this.#modalContainer.classList.remove("hide");
+    this.#searchInputKeyword.focus();
+  };
+
   #onClickDimmer = () => {
     this.#searchInputKeyword.value = "";
     clearModalContainer(this.#videoList);
     this.#modalContainer.classList.add("hide");
+    this.#renderSavedVideo();
   };
 
   #onClickSaveButton = ({ target }) => {

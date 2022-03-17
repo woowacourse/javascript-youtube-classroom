@@ -1,8 +1,6 @@
 import "../css/index";
-import YoutubeModalApp from "./YoutubeModalApp";
-import YoutubeMainApp from "./YoutubeMainApp";
+import YoutubeApp from "./YoutubeApp";
 
 (function main() {
-  new YoutubeModalApp();
-  new YoutubeMainApp();
+  new YoutubeApp();
 })();

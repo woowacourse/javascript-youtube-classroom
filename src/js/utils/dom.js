@@ -14,6 +14,10 @@ export const removeChildElements = (parentElement, elements) => {
   });
 };
 
+export const renderSaveVideo = ({ element, template }) => {
+  element.innerHTML = template;
+};
+
 export const render = ({ element, position, template }) => {
   element.insertAdjacentHTML(position, template);
 };
@@ -34,6 +38,7 @@ export const validateInput = (inputValue) => {
 
 export const clearModalContainer = (videoList) => {
   scrollToTop(videoList);
+
   document
     .querySelectorAll(".video-item")
     .forEach((videoItem) => videoList.removeChild(videoItem));

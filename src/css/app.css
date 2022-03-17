@@ -131,6 +131,14 @@ body {
   background-color: var(--fouces-button-background-color);
 }
 
+.save-video-item {
+  position: relative;
+  width: 240px;
+  height: 255px;
+  margin: 0;
+  padding: 0;
+}
+
 /* ******** */
 /* skeleton */
 /* ******** */

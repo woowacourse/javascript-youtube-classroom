@@ -60,6 +60,20 @@ const generateTemplate = {
       )
       .join("");
   },
+  saveVideoItem(data) {
+    return `<li class="save-video-item" data-video-id="${data.videoId}">
+    <img
+    src="${data.thumbnailUrl}"
+    alt="video-item-thumbnail"
+    class="video-item__thumbnail"
+    />
+    <h4 class="video-item__title">
+      ${data.title}
+    </h4>
+    <p class="video-item__channel-name ">${data.channelName}</p>
+    <p class="video-item__published-date ">${data.publishDate}</p>
+  </li>`;
+  },
 };
 
 export default generateTemplate;
