@@ -1,7 +1,13 @@
 import { fetchDataFromKeyword } from '../utils/apiFetch.js';
-import { getVideoIdFromLocalStorage, saveVideoIdToLocalStorage } from '../utils/localStorage.js';
+import {
+  getVideoIdFromLocalStorage,
+  getVideoItemsFromLocalStorage,
+  saveVideoIdToLocalStorage,
+  saveVideoItemToLocalStorage,
+} from '../utils/localStorage.js';
 import { noSearchResultTemplate, makeThumbnailTemplate, makeSkeletonTemplate } from '../utils/templates.js';
 import { NUM } from '../../const/consts.js';
+import { changeDateFormat } from '../utils/common.js';
 
 export class SearchModal {
   constructor() {
@@ -45,22 +51,34 @@ export class SearchModal {
       return;
     }
 
-    this.renderThumbnail();
+    this.renderThumbnail(this.videosToObject(this.videos));
     this.createObserver();
+  }
+
+  videosToObject(videos) {
+    return videos.items.map((video) => {
+      return {
+        imgSrc: `https://img.youtube.com/vi/${video.id.videoId}/0.jpg`,
+        title: video.snippet.title,
+        channelName: video.snippet.channelTitle,
+        publishedDate: changeDateFormat(video.snippet.publishedAt),
+        id: video.id.videoId,
+      };
+    });
   }
 
   renderNoVideosImg() {
     this.noResultContainer.insertAdjacentHTML('afterbegin', noSearchResultTemplate());
   }
 
-  renderThumbnail() {
+  renderThumbnail(videos) {
     const local = getVideoIdFromLocalStorage();
     this.resultLabel.removeAttribute('hidden');
     this.videoList.insertAdjacentHTML(
       'beforeend',
-      this.videos.items
+      videos
         .map((video) => {
-          if (local.includes(video.id.videoId)) {
+          if (local.includes(video.id)) {
             return makeThumbnailTemplate(video, 'exist');
           }
           return makeThumbnailTemplate(video);
@@ -116,8 +134,20 @@ export class SearchModal {
       tempVideoIdsInLocalStorage.push(e.target.id);
       e.target.style.display = 'none';
     }
+    this.saveVideoItemInformationToLocalStorage(e.target);
     saveVideoIdToLocalStorage(tempVideoIdsInLocalStorage);
   };
+
+  saveVideoItemInformationToLocalStorage(target) {
+    const tempVideosInLocalStorage = getVideoItemsFromLocalStorage();
+    tempVideosInLocalStorage.push({
+      title: target.parentNode.childNodes[3].innerText,
+      channelName: target.parentNode.childNodes[5].innerText,
+      publishedDate: target.parentNode.childNodes[7].innerText,
+      id: target.id,
+    });
+    saveVideoItemToLocalStorage(tempVideosInLocalStorage);
+  }
 
   canSaveVideoIdInLocalStorage(target) {
     return (

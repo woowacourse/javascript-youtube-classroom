@@ -19,12 +19,12 @@ export const makeThumbnailTemplate = (video, exist) => {
   return `
     <li class='video-item-container'>
       <img
-        src="https://img.youtube.com/vi/${video.id.videoId}/0.jpg"
+        src="https://img.youtube.com/vi/${video.id}/0.jpg"
         alt="video-item-thumbnail" class="video-item">
-      <h4 class="video-item__title">${video.snippet.title}</h4>
-      <p class="video-item__channel-name">${video.snippet.channelTitle}</p>
-      <p class="video-item__published-date">${changeDateFormat(video.snippet.publishedAt)}</p>
-      <button id="${video.id.videoId}"  class="video-item__save-button button ${displayProp}">⬇ 저장</button>
+      <h4 class="video-item__title">${video.title}</h4>
+      <p class="video-item__channel-name">${video.channelName}</p>
+      <p class="video-item__published-date">${video.publishedDate}</p>
+      <button id="${video.id}"  class="video-item__save-button button ${displayProp}">⬇ 저장</button>
   </li>`;
 };
 
