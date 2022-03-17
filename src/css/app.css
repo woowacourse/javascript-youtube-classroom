@@ -98,9 +98,62 @@ body {
   gap: 30px 10px;
 }
 
-.video-item {
-}
-
 .active {
   background: var(--active);
+}
+
+@media screen and (max-width: 1280px) {
+  .classroom-container {
+    width: 720px;
+  }
+  .saved-list-container {
+    width: 720px;
+  }
+  .video-grid {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 30px 20px;
+  }
+  .classroom-container__title {
+    font-size: 32px;
+  }
+}
+
+@media screen and (max-width: 960px) {
+  .classroom-container {
+    width: 480px;
+  }
+  .saved-list-container {
+    width: 480px;
+  }
+  .video-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .classroom-container__title {
+    font-size: 30px;
+  }
+}
+
+@media screen and (max-width: 600px) {
+  .classroom-container {
+    width: 240px;
+  }
+  .saved-list-container {
+    width: 240px;
+  }
+  .video-grid {
+    grid-template-columns: 1fr;
+  }
+  .nav {
+    flex-direction: column;
+  }
+  .nav-left__button {
+    width: 50%;
+  }
+  .nav-right__button {
+    margin: 7px 0 0 0;
+    width: 100%;
+  }
+  .classroom-container__title {
+    font-size: 26px;
+  }
 }
