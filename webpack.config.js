@@ -1,5 +1,5 @@
-const HtmlWebpackPlugin = require('html-webpack-plugin');
 const path = require('path');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = {
   mode: 'development',
@@ -35,16 +35,8 @@ module.exports = {
         use: ['style-loader', 'css-loader'],
       },
       {
-        test: /\.(png|jpg|jpeg|gif)$/,
-        exclude: /node_module/,
-        use: {
-          loader: 'url-loader',
-          options: {
-            name: 'assets/[name].[ext]',
-            fallback: 'file-loader',
-            limit: 5000, // 5kb 미만 파일만 data url로 처리
-          },
-        },
+        test: /\.(png|svg|jpg|jpeg|gif)$/i,
+        type: 'asset/resource',
       },
     ],
   },
