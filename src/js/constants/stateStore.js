@@ -7,3 +7,8 @@ export const STATE_STORE_KEY = {
   IS_SAVED_VIDEO_WAITING: 'isSavedVideoWaiting',
   WATCHED_VIDEO: 'watchedVideo',
 };
+
+export const CURRENT_APP_SECTION_VALUE = {
+  WATCH: 'watch-video-section-button',
+  WATCHED: 'watched-video-section-button',
+};

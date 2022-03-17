@@ -151,13 +151,17 @@ class AppBusiness {
       webStore.setData(WEB_STORE_KEY.WATCHED_VIDEO_LIST_KEY, (prev) =>
         prev.filter((videoId) => savedVideoId !== videoId)
       );
-      setState(STATE_STORE_KEY.WATCHED_VIDEO, (prev) =>
-        prev.filter((videoId) => savedVideoId !== videoId)
+      setState(
+        STATE_STORE_KEY.WATCHED_VIDEO,
+        webStore.getArrayData(WEB_STORE_KEY.WATCHED_VIDEO_LIST_KEY)
       );
       return;
     }
     webStore.setData(WEB_STORE_KEY.WATCHED_VIDEO_LIST_KEY, (prev) => [...prev, savedVideoId]);
-    setState(STATE_STORE_KEY.WATCHED_VIDEO, (prev) => [...prev, savedVideoId]);
+    setState(
+      STATE_STORE_KEY.WATCHED_VIDEO,
+      webStore.getArrayData(WEB_STORE_KEY.WATCHED_VIDEO_LIST_KEY)
+    );
   }
 
   async requestVideo(keyword, pageToken) {

@@ -1,9 +1,10 @@
 import SearchModalComponent from './SearchModalComponent';
 import { dispatch } from '../modules/eventFactory';
 import { CUSTOM_EVENT_KEY } from '../constants/events';
-import { STATE_STORE_KEY } from '../constants/stateStore';
+import { CURRENT_APP_SECTION_VALUE, STATE_STORE_KEY } from '../constants/stateStore';
 import { getState, subscribe } from '../modules/stateStore';
 import VideoListComponent from './VideoListComponent';
+import { VIDEO_COMPONENT_TYPE } from '../constants/components';
 
 class AppComponent {
   searchModalComponent = null;
@@ -53,8 +54,14 @@ class AppComponent {
 
   #initChildrenComponent() {
     this.searchModalComponent = new SearchModalComponent(this.#parentElement);
-    this.watchVideoComponent = new VideoListComponent(this.$watchVideoSection, 'WATCH');
-    this.watchedVideoComponent = new VideoListComponent(this.$watchedVideoSection, 'WATCHED');
+    this.watchVideoComponent = new VideoListComponent(
+      this.$watchVideoSection,
+      VIDEO_COMPONENT_TYPE.WATCH
+    );
+    this.watchedVideoComponent = new VideoListComponent(
+      this.$watchedVideoSection,
+      VIDEO_COMPONENT_TYPE.WATCHED
+    );
   }
 
   #bindEventHandler() {
@@ -80,10 +87,10 @@ class AppComponent {
   }
 
   #renderCurrentAppSection(currentAppSection) {
-    if (currentAppSection === 'watch-video-section-button') {
+    if (currentAppSection === CURRENT_APP_SECTION_VALUE.WATCH) {
       this.#showWatchVideoSection();
     }
-    if (currentAppSection === 'watched-video-section-button') {
+    if (currentAppSection === CURRENT_APP_SECTION_VALUE.WATCHED) {
       this.#showWatchedVideoSection();
     }
   }

@@ -1,3 +1,4 @@
+import { VIDEO_COMPONENT_TYPE } from '../constants/components';
 import { STATE_STORE_KEY } from '../constants/stateStore';
 import { getState, subscribe } from '../modules/stateStore';
 import { parseTimeStamp } from '../utils/util';
@@ -6,13 +7,13 @@ import { canLoadImage, hasNotSrcAttribute } from '../utils/validation';
 class VideoComponent {
   #parentElement = null;
 
-  #componentType = 'SEARCH';
+  #componentType = VIDEO_COMPONENT_TYPE.SEARCH;
 
   $videoItem = null;
 
   $saveButton = null;
 
-  constructor(parentElement, { observer, type = 'SEARCH', ...restProps }) {
+  constructor(parentElement, { observer, type = VIDEO_COMPONENT_TYPE.SEARCH, ...restProps }) {
     this.#parentElement = parentElement;
     this.#componentType = type;
     this.props = restProps;
@@ -41,7 +42,7 @@ class VideoComponent {
   }
 
   #mount() {
-    if (this.#componentType === 'SEARCH') {
+    if (this.#componentType === VIDEO_COMPONENT_TYPE.SEARCH) {
       this.#parentElement.insertAdjacentHTML('beforeend', this.#generateSearchVideoTemplate());
       return;
     }
@@ -62,7 +63,7 @@ class VideoComponent {
   }
 
   #render({ videoList: savedVideoList }) {
-    if (this.#componentType === 'SEARCH') {
+    if (this.#componentType === VIDEO_COMPONENT_TYPE.SEARCH) {
       this.#renderSearchVideo(savedVideoList);
     }
   }
@@ -113,7 +114,7 @@ class VideoComponent {
     
     <div class="video-item__button_container">
       <button class="video-item__check-button button ${
-        this.#componentType === 'WATCHED' ? 'checked' : ''
+        this.#componentType === VIDEO_COMPONENT_TYPE.WATCHED ? 'checked' : ''
       }">✅</button>
       <button class="video-item__delete-button button">🗑</button>
     </div>

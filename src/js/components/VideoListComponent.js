@@ -1,7 +1,6 @@
+import { VIDEO_COMPONENT_TYPE } from '../constants/components';
 import { CUSTOM_EVENT_KEY } from '../constants/events';
-import { WEB_STORE_KEY } from '../constants/webStore';
 import { dispatch } from '../modules/eventFactory';
-import webStore from '../modules/webStore';
 import { isFirstSearchByKeyword } from '../utils/validation';
 import SkeletonListComponent from './SkeletonListComponent';
 import VideoComponent from './VideoComponent';
@@ -9,7 +8,7 @@ import VideoComponent from './VideoComponent';
 class VideoListComponent {
   #parentElement = null;
 
-  #componentType = 'SEARCH';
+  #componentType = VIDEO_COMPONENT_TYPE.SEARCH;
 
   #videoComponents = [];
 
@@ -19,7 +18,7 @@ class VideoListComponent {
 
   #skeletonListComponent = null;
 
-  constructor(parentElement, type = 'SEARCH') {
+  constructor(parentElement, type = VIDEO_COMPONENT_TYPE.SEARCH) {
     this.#parentElement = parentElement;
     this.#componentType = type;
     this.#mount();
@@ -55,6 +54,7 @@ class VideoListComponent {
     ];
   }
 
+  /** 깜빡거림이 신경쓰인다. */
   renderSavedVideoList({ videoList: savedVideoList }, watchedVideoIdList) {
     this.$videoList.innerHTML = '';
 
@@ -76,9 +76,8 @@ class VideoListComponent {
         watchedVideoList: [],
       }
     );
-
     this.#videoComponents = this.#generateVideoComponents(
-      this.#componentType === 'WATCH' ? watchVideoList : watchedVideoList
+      this.#componentType === VIDEO_COMPONENT_TYPE.WATCH ? watchVideoList : watchedVideoList
     );
   }
 
@@ -149,28 +148,26 @@ class VideoListComponent {
     const {
       target: { className },
     } = e;
-    const {
-      dataset: { videoId },
-    } = e.target.closest('.video-item');
+    const { dataset } = e.target.closest('.video-item');
 
     if (className.includes('video-item__save-button')) {
       dispatch(CUSTOM_EVENT_KEY.CLICK_SAVE_BUTTON, {
         detail: {
-          saveVideoId: videoId,
+          saveVideoId: dataset.videoId,
         },
       });
     }
     if (className.includes('video-item__delete-button')) {
       dispatch(CUSTOM_EVENT_KEY.CLICK_SAVED_DELETE_BUTTON, {
         detail: {
-          savedVideoId: videoId,
+          savedVideoId: dataset.videoId,
         },
       });
     }
     if (className.includes('video-item__check-button')) {
       dispatch(CUSTOM_EVENT_KEY.CLICK_SAVED_CHECK_BUTTON, {
         detail: {
-          savedVideoId: videoId,
+          savedVideoId: dataset.videoId,
           element: e.target,
         },
       });

@@ -1,4 +1,4 @@
-import { STATE_STORE_KEY } from '../constants/stateStore';
+import { CURRENT_APP_SECTION_VALUE, STATE_STORE_KEY } from '../constants/stateStore';
 import { WEB_STORE_KEY } from '../constants/webStore';
 import webStore from './webStore';
 
@@ -15,7 +15,7 @@ const getInitialState = () => ({
     videoList: [],
     prevVideoListLength: 0,
   },
-  [STATE_STORE_KEY.CURRENT_APP_SECTION]: 'watch-video-section-button',
+  [STATE_STORE_KEY.CURRENT_APP_SECTION]: CURRENT_APP_SECTION_VALUE.WATCH,
   [STATE_STORE_KEY.IS_SAVED_VIDEO_WAITING]: false,
   [STATE_STORE_KEY.WATCHED_VIDEO]: webStore.getArrayData(WEB_STORE_KEY.WATCHED_VIDEO_LIST_KEY),
 });
