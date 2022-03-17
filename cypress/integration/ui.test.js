@@ -60,9 +60,9 @@ describe("보고싶은 영상 찾기 모달창 전체 로직 테스트", () => {
     cy.intercept(
       "https://clever-aryabhata-ff1fc1.netlify.app/youtube/v3/search?*",
       {
-        fixture: "search",
+        fixture: "scroll",
       }
-    ).as("search");
+    ).as("scroll");
 
     cy.get(".video-list").scrollTo("bottom");
     cy.get(".video-list").children().should("have.length", 20);

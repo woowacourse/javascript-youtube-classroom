@@ -14,7 +14,7 @@ import {
   validateInput,
 } from "./utils/dom";
 
-export default class YoutubeApp {
+export default class YoutubeModalApp {
   #modalContainer = document.querySelector(".modal-container");
   #searchInputKeyword = document.querySelector("#search-input-keyword");
   #searchResult = document.querySelector(".search-result");
@@ -29,9 +29,6 @@ export default class YoutubeApp {
       "scroll",
       throttle(this.#onScrollVideoList, DELAY_TIME)
     );
-    document
-      .querySelector("#search-modal-button")
-      .addEventListener("click", this.#onSubmitSearchModalButton);
     document
       .querySelector("#search-button")
       .addEventListener("click", this.#onSubmitSearchButton);
@@ -58,13 +55,6 @@ export default class YoutubeApp {
     }
 
     target.classList.add("hide");
-  };
-
-  #onSubmitSearchModalButton = (e) => {
-    e.preventDefault();
-
-    this.#modalContainer.classList.remove("hide");
-    this.#searchInputKeyword.focus();
   };
 
   #onSubmitSearchButton = (e) => {
@@ -96,7 +86,8 @@ export default class YoutubeApp {
   #onScrollVideoList = async () => {
     if (
       getTotalScrollHeight(this.#videoList) >
-      getCurrentScrollHeight(this.#videoList)
+        getCurrentScrollHeight(this.#videoList) ||
+      !this.#nextPageToken
     ) {
       return;
     }
@@ -107,7 +98,13 @@ export default class YoutubeApp {
       template: generateTemplate.skeleton(),
     });
 
-    if (!this.#nextPageToken) {
+    const responseData = await getSearchResult(
+      this.#keyword,
+      this.#nextPageToken
+    );
+
+    // 중복된 요청을 보냈을 경우
+    if (this.#nextPageToken === responseData.nextPageToken) {
       removeChildElements(
         this.#videoList,
         document.querySelectorAll(".skeleton")
@@ -115,11 +112,6 @@ export default class YoutubeApp {
 
       return;
     }
-
-    const responseData = await getSearchResult(
-      this.#keyword,
-      this.#nextPageToken
-    );
 
     this.#nextPageToken = responseData.nextPageToken;
 

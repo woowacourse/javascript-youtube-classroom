@@ -1,0 +1,352 @@
+{
+  "kind": "youtube#searchListResponse",
+  "etag": "lf9ns36l6_OegJKRR6EvWPxlpUw",
+  "nextPageToken": "CA2QAA",
+  "regionCode": "KR",
+  "pageInfo": {
+    "totalResults": 72178,
+    "resultsPerPage": 10
+  },
+  "items": [
+    {
+      "kind": "youtube#searchResult",
+      "etag": "-piEZHK04rg06_wgjHeNl5YGMJE",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "JucV43KbvQk"
+      },
+      "snippet": {
+        "publishedAt": "2019-10-12T09:00:04Z",
+        "channelId": "UC9NCnL0ZJmx33uL5GtkvsyQ",
+        "title": "콜린(Choline)영양소에 대해서~~~! 계란에 함유되어 있다? 치매, 치매예방(기능의학,영양의학)",
+        "description": "치매 #지방간 #알츠하이머 #콜린 1998년도에 연구되어 필수 영양소로 인정된 성분입니다. 아직도 많은 연구가 진행중이며, 알츠하이머, 치매, 지방간, 부교감신경 ...",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/JucV43KbvQk/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/JucV43KbvQk/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/JucV43KbvQk/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "닥터덕 Dr Duk",
+        "liveBroadcastContent": "none",
+        "publishTime": "2019-10-12T09:00:04Z"
+      }
+    },
+    {
+      "kind": "youtube#searchResult",
+      "etag": "XOoh91cULoBFeKaH_C0-mRQdq1g",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "kAxs62WB1Dk"
+      },
+      "snippet": {
+        "publishedAt": "2019-10-29T13:56:34Z",
+        "channelId": "UCXlXpZzz9rtd3YxZPALtBeg",
+        "title": "치매 영양제 - 기억력 집중력 퇴행성 뇌기능 - 콜린알포세레이트, 알파GPC",
+        "description": "혈관성이나 퇴행성 뇌기능 저하로 인한 기억력 저하에 처방되는 약에 대해 약사가 설명해 드립니다. -- 약짱 TV 프로그램 편성표 -- ◇ 보조식품 녹차 테아닌 효능 ...",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/kAxs62WB1Dk/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/kAxs62WB1Dk/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/kAxs62WB1Dk/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "약사설명 약짱TV",
+        "liveBroadcastContent": "none",
+        "publishTime": "2019-10-29T13:56:34Z"
+      }
+    },
+    {
+      "kind": "youtube#searchResult",
+      "etag": "NbFDFCBS3K0cBQYcX02RdELmAfU",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "felKaQEed1c"
+      },
+      "snippet": {
+        "publishedAt": "2019-12-23T09:00:08Z",
+        "channelId": "UCF9vbHlZpz7FbOAky3fnYxw",
+        "title": "&quot;뇌영양제? 치매예방약?&quot; 이름은 하나인데 별명은 여러개~♪_치매 걱정되는데 👉콜린알포세레이트👈🤔 먹어야 할까?-서울브레인신경과 이일근 원장",
+        "description": "서울브레인신경과 이일근 원장님이 진행하는 생방송에 올라온 질문! \"뇌영양제... 먹어야 될까요?\" 비온뒤 구독자분들에게는 뇌영양제라는 단어가 낯설게 느껴지실수 ...",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/felKaQEed1c/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/felKaQEed1c/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/felKaQEed1c/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "의학채널 비온뒤",
+        "liveBroadcastContent": "none",
+        "publishTime": "2019-12-23T09:00:08Z"
+      }
+    },
+    {
+      "kind": "youtube#searchResult",
+      "etag": "3LKd9SSs7q8cvFAeUVYjXex8HhU",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "GGzPYpTnUCw"
+      },
+      "snippet": {
+        "publishedAt": "2020-10-15T07:00:01Z",
+        "channelId": "UCeafeAXWKATIdyJKzxiaOxA",
+        "title": "[MV] 콜린 (COLL!N) - Fantasy (Feat. amin) | 애니메이션으로 만들어진 뮤직비디오ㅣ영상과 음악의 퀄리티가 예술인 작품",
+        "description": "[MV] 애니메이션으로 만들어진 뮤직비디오ㅣ영상과 음악의 퀄리티가 예술인 작품ㅣ콜린 (COLL!N)의 타이틀 곡 Fantasy (Feat. amin) #알앤비노래 #알앤비신곡 ...",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/GGzPYpTnUCw/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/GGzPYpTnUCw/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/GGzPYpTnUCw/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "FLEXWAG 플렉스웨그",
+        "liveBroadcastContent": "none",
+        "publishTime": "2020-10-15T07:00:01Z"
+      }
+    },
+    {
+      "kind": "youtube#searchResult",
+      "etag": "CEIKvEhqS3FaPee2SgUuRqtkRtQ",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "RIMsqb-1aCo"
+      },
+      "snippet": {
+        "publishedAt": "2019-07-03T14:23:09Z",
+        "channelId": "UCmBa7nrktYqWvhxhNzNTw8Q",
+        "title": "ORANGE",
+        "description": "Provided to YouTube by IOKI ORANGE · 콜린 (COLL!N) ORANGE ℗ Luminant Entertainment Released on: 2018-09-18 Auto-generated by YouTube.",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/RIMsqb-1aCo/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/RIMsqb-1aCo/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/RIMsqb-1aCo/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "COLL!N - Topic",
+        "liveBroadcastContent": "none",
+        "publishTime": "2019-07-03T14:23:09Z"
+      }
+    },
+    {
+      "kind": "youtube#searchResult",
+      "etag": "s5bJYaIgNo_dhXOAdmI8yC6ZH-U",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "7IeiqTH4bLw"
+      },
+      "snippet": {
+        "publishedAt": "2018-07-31T01:14:08Z",
+        "channelId": "UCeafeAXWKATIdyJKzxiaOxA",
+        "title": "콜린 (COLL!N) - Callin on night",
+        "description": "설명.",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/7IeiqTH4bLw/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/7IeiqTH4bLw/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/7IeiqTH4bLw/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "FLEXWAG 플렉스웨그",
+        "liveBroadcastContent": "none",
+        "publishTime": "2018-07-31T01:14:08Z"
+      }
+    },
+    {
+      "kind": "youtube#searchResult",
+      "etag": "UyX-w8Y2EDjvEwgAQEAXAPqyUIQ",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "5pvkw5KkQuw"
+      },
+      "snippet": {
+        "publishedAt": "2017-09-30T12:07:59Z",
+        "channelId": "UCg-p3lQIqmhh7gHpyaOmOiQ",
+        "title": "콜린퍼스가 직접 말해주는 신사답게 옷입는법!!?",
+        "description": "드디어 콜린퍼스 만난다니!!!!ㅠ 너무 떨렸다! ㅋㅋㅋ 원래 연예인 만나면 그렇게 긴장 되진 않은데 왠지 이번에는 정말 긴장긴장   제가 원래 콜린님한테도 한국음식도 ...",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/5pvkw5KkQuw/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/5pvkw5KkQuw/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/5pvkw5KkQuw/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "영국남자 Korean Englishman",
+        "liveBroadcastContent": "none",
+        "publishTime": "2017-09-30T12:07:59Z"
+      }
+    },
+    {
+      "kind": "youtube#searchResult",
+      "etag": "beQMO--5nQcZeDRX4f_ws7y8-IU",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "p_fxF4upENk"
+      },
+      "snippet": {
+        "publishedAt": "2020-08-10T02:00:07Z",
+        "channelId": "UCFlNbBTPi8uQJbKkpHI50_A",
+        "title": "아세틸콜린 결핍이 치매의 원인이라고? 아세틸콜린이 뭐길래?!",
+        "description": "거의 모든 치매약들에 아세틸콜린이라는 성분이 들어간다는 사실 알고계신가요? - 아세틸콜린 결핍은 ADHD, 치매, 파킨슨병 등 뇌질환에 큰 원인 제공을 하기도 ...",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/p_fxF4upENk/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/p_fxF4upENk/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/p_fxF4upENk/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "닥터지노의 병원탈출 with 기능의학",
+        "liveBroadcastContent": "none",
+        "publishTime": "2020-08-10T02:00:07Z"
+      }
+    },
+    {
+      "kind": "youtube#searchResult",
+      "etag": "nipKZGDI-hCAk6gI3NYLpzpegSw",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "TKsQUetlhps"
+      },
+      "snippet": {
+        "publishedAt": "2020-08-15T12:27:01Z",
+        "channelId": "UCkS59PMRtcYz8o6N5X9J2eQ",
+        "title": "미니멀캠핑 최적화! 신상 텐트 RCE 콜린 리뷰",
+        "description": "안녕하세요! 레디캠프고 입니다. 오늘은 로티캠프에서 새롭게 런칭한 고퀄리티 백패킹 브랜드 RCE(로티캠프익스트림) 콜린의 리뷰를 준비했습니다. 해당 제품은 ...",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/TKsQUetlhps/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/TKsQUetlhps/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/TKsQUetlhps/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "레디캠프고-READY,CAMP,GO!",
+        "liveBroadcastContent": "none",
+        "publishTime": "2020-08-15T12:27:01Z"
+      }
+    },
+    {
+      "kind": "youtube#searchResult",
+      "etag": "wvZd_7eMuUhry3fJ98FLgB8PcWc",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "htEYD1I6QDk"
+      },
+      "snippet": {
+        "publishedAt": "2020-06-27T01:10:49Z",
+        "channelId": "UCRi6vxDfMdRogVgYsmjbdTQ",
+        "title": "콜린(COLL!N) - orange 🍊",
+        "description": "",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/htEYD1I6QDk/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/htEYD1I6QDk/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/htEYD1I6QDk/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "봄과 여름 그 사이, 오월",
+        "liveBroadcastContent": "none",
+        "publishTime": "2020-06-27T01:10:49Z"
+      }
+    }
+  ]
+}
