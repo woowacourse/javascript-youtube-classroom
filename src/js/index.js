@@ -21,15 +21,55 @@ class App {
         store.setLocalStorage(STORAGE_KEY, saveData);
         showExceptionSnackBar(MESSAGE.SAVE_COMPLETE);
         e.target.setAttribute('hidden', true);
-        this.main.renderVideo(false);
+        this.main.renderVideo(this.tab);
       });
     } catch ({ message }) {
       showExceptionSnackBar(message);
     }
+  }
+
+  watchVideoHandler(e) {
+    const { videoId } = e.target.dataset;
+    const saveVideos = store.getLocalStorage(STORAGE_KEY);
+
+    store.removeLocalStorage(STORAGE_KEY);
+    saveVideos.forEach(video => {
+      if (video.videoId === videoId) {
+        video.watched = !video.watched;
+      }
+      store.setLocalStorage(STORAGE_KEY, video);
+    });
+
+    showExceptionSnackBar(MESSAGE.MODIFY_COMPLETE);
+
+    this.main.renderVideo(this.main.tab);
+  }
+
+  deleteVideoHandler(e) {
+    if (!confirm(MESSAGE.ASK_DELETE)) return;
+    const { videoId } = e.target.dataset;
+    const saveVideos = store.getLocalStorage(STORAGE_KEY);
+
+    store.removeLocalStorage(STORAGE_KEY);
+    saveVideos.forEach(video => {
+      if (video.videoId !== videoId) {
+        store.setLocalStorage(STORAGE_KEY, video);
+      }
+    });
+
+    showExceptionSnackBar(MESSAGE.MODIFY_COMPLETE);
+
+    this.main.renderVideo(this.main.tab);
   }
 }
 
 const app = new App();
 global.saveVideo = e => {
   app.saveVideoHandler(e);
+};
+global.reverseWatchVideo = e => {
+  app.watchVideoHandler(e);
+};
+global.deleteVideo = e => {
+  app.deleteVideoHandler(e);
 };

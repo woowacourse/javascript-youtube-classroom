@@ -98,8 +98,20 @@ const getVideoTemplate = videos => {
           <p class="video-item__published-date">
             ${convertToKoreaLocaleDate(publishedAt)}
           </p>
-          <button type="button" data-video-id=${videoId} class="delete-button save-video-item__button button" title="삭제">🗑️</button>
-          <button type="button" data-video-id=${videoId} class="watch-button save-video-item__button button" title="체크">✅</button>
+          <button
+            type="button"
+            data-video-id=${videoId}
+            onclick="deleteVideo(event);"
+            class="save-video-item__button button"
+            title="삭제"
+          >🗑️</button>
+          <button
+            type="button"
+            data-video-id=${videoId}
+            onclick="reverseWatchVideo(event);"
+            class="save-video-item__button button"
+            title="체크"
+          >✅</button>
         </li>
       `;
     })
