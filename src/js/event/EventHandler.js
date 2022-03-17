@@ -26,8 +26,8 @@ export default class EventHandler {
     this.modalView.hideModal();
   }
 
-  clickStoreButton(videoId) {
-    videoStorage.storeVideoData(videoId);
+  clickStoreButton(videoData) {
+    videoStorage.storeVideoData(videoData);
   }
 
   async clickSearchButton(searchInput) {

@@ -11,8 +11,8 @@ export const DOM_STRING = {
   VIDEO_ITEM_SAVE_BUTTON: 'video-item__save-button',
   NO_RESULT_IMAGE: '.no-result__image',
   SEARCH_RESULT: '.search-result',
-  WATCH_LATER_BUTTON: '.watch-later-button',
-  WATCHED_BUTTON: '.watched-button',
+  WATCH_LATER_BUTTON: '#watch-later-button',
+  WATCHED_BUTTON: '#watched-button',
 };
 
 export const ERROR_MESSAGE = {
