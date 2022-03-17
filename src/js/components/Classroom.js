@@ -1,4 +1,4 @@
-import { getVideoItemsFromLocalStorage } from '../utils/localStorage.js';
+import { getVideoItemsFromLocalStorage, saveVideoItemToLocalStorage } from '../utils/localStorage.js';
 import { makeThumbnailTemplate } from '../utils/templates.js';
 
 export class Classroom {
@@ -10,16 +10,18 @@ export class Classroom {
 
     this.contentsContainer = document.getElementById('classroom-contents-container');
     this.willSeeVideoButton = document.getElementById('will-see-video-button');
-    this.willSeeVideoButton.addEventListener('click', this.handleWillSeeVideoButton);
+
+    this.willSeeVideoButton.addEventListener('click', this.handleWillSeeVideoNav);
+    this.contentsContainer.addEventListener('click', this.handleContentsButton);
   }
 
-  handleWillSeeVideoButton = async () => {
+  handleWillSeeVideoNav = async () => {
     this.clearClassroomContentsContainer();
-    const videoList = getVideoItemsFromLocalStorage();
-    console.log(videoList);
+    this.videoList = getVideoItemsFromLocalStorage();
+    console.log(this.videoList);
     this.contentsContainer.insertAdjacentHTML(
       'beforeend',
-      videoList
+      this.videoList
         .map((video) => {
           if (video.watchLater === true) {
             return makeThumbnailTemplate(video);
@@ -32,4 +34,22 @@ export class Classroom {
   clearClassroomContentsContainer() {
     this.contentsContainer.innerHTML = ``;
   }
+
+  handleContentsButton = (e) => {
+    if (e.target.classList.contains('already-watch-button')) {
+      this.videoList.forEach((video) => {
+        if (e.target.id === video.id) {
+          video.watchLater = false;
+          e.target.parentNode.parentNode.remove();
+        }
+      });
+    }
+
+    if (e.target.classList.contains('discard-button')) {
+      this.videoList = this.videoList.filter((video) => video.id !== e.target.id);
+      e.target.parentNode.parentNode.remove();
+    }
+
+    saveVideoItemToLocalStorage(this.videoList);
+  };
 }
