@@ -1,4 +1,4 @@
-export default class Index {
+export default class Home {
   constructor(element) {
     this.element = element;
     this.configureDOMs();
