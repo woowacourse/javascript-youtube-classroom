@@ -34,7 +34,12 @@
         </button>
       </nav>
       <section class="save-video-container">
-        <ul class="save-video-container__video-list">
+        <h2 hidden>🎥 내가 저장한 비디오 보기</h2>
+        <section class="save-video-container__no-video-list">
+          <h2 hidden>저장한 비디오 목록 없음</h2>
+          <p>저장된 비디오 목록이 없습니다.</p>
+        </section>
+        <ul class="save-video-container__video-list hide">
           <li class="video-list__video-item" data-video-id="">
             <img
               src="https://i.ytimg.com/vi/ECfuKi5-Cfs/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLDvmIcX-TgdcH2g_Bd4AUxw6hjmvQ"
@@ -112,7 +117,7 @@
         </ul>
       </section>
     </main>
-    <div class="modal-container hide">
+    <section class="modal-container hide">
       <div class="dimmer"></div>
       <div
         class="search-modal"
@@ -156,6 +161,6 @@
           </div>
         </section>
       </div>
-    </div>
+    </section>
   </body>
 </html>

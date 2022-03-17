@@ -41,12 +41,12 @@ body {
   /* display: block; */
   width: 117px;
   height: 36px;
-  background-color: #f5f5f5;
+  background-color: var(--default-button-background-color);
 }
 
 .nav__save-video-button--focused,
 .nav__watched-video-button--focused {
-  background: rgba(0, 188, 212, 0.12);
+  background-color: var(--fouces-button-background-color);
 }
 
 .nav__save-video-button {
@@ -60,17 +60,17 @@ body {
 .nav__button--search {
   width: 80px;
   height: 36px;
-  background: #f5f5f5;
+  background: var(--default-button-background-color);
 }
 
 .nav__button--search:hover {
-  background: #ebebeb;
+  background: var(--hover-button-background-color);
 }
 
 .nav__watched-video-button:hover,
 .nav__save-video-button--focused:hover,
 .nav__watched-video-button--focused:hover {
-  background-color: rgba(59, 225, 247, 0.12);
+  background-color: var(--checkbox-hover-background-color);
 }
 
 /* ******************** */
@@ -80,6 +80,11 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+.save-video-container__no-video-list.hide,
+.save-video-container__video-list.hide {
+  display: none;
 }
 
 .save-video-container__video-list {
@@ -113,17 +118,17 @@ body {
   width: 36px;
   height: 36px;
   padding: 6px 2px;
-  background-color: #f5f5f5;
+  background-color: var(--default-button-background-color);
 }
 
 .video-item__watched-video-button:hover,
 .video-item__delete-video-button:hover {
-  background-color: rgba(59, 225, 247, 0.12);
+  background-color: var(--checkbox-hover-background-color);
 }
 
 .video-item__watched-video-button--focused,
 .video-item__delete-video-button--focused {
-  background-color: rgba(0, 188, 212, 0.12);
+  background-color: var(--fouces-button-background-color);
 }
 
 /* ******** */
