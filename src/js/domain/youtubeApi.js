@@ -1,5 +1,6 @@
 import 'regenerator-runtime';
 import { MESSAGE } from '../constants';
+import { skeleton } from '../ui/skeleton';
 
 const request = async (searchText, nextPageToken = '') => {
   try {
@@ -11,6 +12,7 @@ const request = async (searchText, nextPageToken = '') => {
       return searchResult;
     }
   } catch {
+    skeleton.removeSkeletonUI();
     throw new Error(MESSAGE.ERROR_GET_REQUEST);
   }
 };
