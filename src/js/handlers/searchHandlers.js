@@ -1,24 +1,22 @@
 import { isEndOfScroll } from '../util/scroll.js';
 import { $ } from '../util/querySelector.js';
-import YoutubeSearch from '../domain/YoutubeSearch.js';
+import YoutubeSearchAPI from '../service/YoutubeSearchAPI.js';
 import userInterface from '../ui/userInterface.js';
 import videoStorage from '../localStorage/videoStorage.js';
 import { ERROR, MAX_SAVED_VIDEOS_NUMBER } from '../constants/constants';
 
-const youtubeSearch = new YoutubeSearch();
+const youtubeSearchAPI = new YoutubeSearchAPI();
 
 export const handleSearch = () => {
   try {
-    youtubeSearch.resetSearchResults();
+    youtubeSearchAPI.resetSearchResults();
     userInterface.resetVideoList();
-
-    const searchInput = $('#search-input-keyword').value.trim();
-    youtubeSearch.searchTarget = searchInput;
 
     userInterface.renderSkeletonUI();
 
-    const response = youtubeSearch.callSearchAPI();
-    youtubeSearch.updateSearchResults(response);
+    const searchKeyword = $('#search-input-keyword').value.trim();
+    const response = youtubeSearchAPI.callSearchAPI(searchKeyword);
+    youtubeSearchAPI.updateSearchResults(response);
 
     userInterface.renderSearchResult(response);
   } catch (error) {
@@ -26,14 +24,18 @@ export const handleSearch = () => {
   }
 };
 
-export const handleScroll = e => {
-  if (isEndOfScroll(e.target)) {
-    userInterface.renderSkeletonUI();
+export const handleScrollSearch = e => {
+  try {
+    if (isEndOfScroll(e.target)) {
+      userInterface.renderSkeletonUI();
 
-    const response = youtubeSearch.callSearchAPI();
-    youtubeSearch.updateSearchResults(response);
+      const response = youtubeSearchAPI.callSearchAPI();
+      youtubeSearchAPI.updateSearchResults(response);
 
-    userInterface.renderNextSearchResult(response);
+      userInterface.renderAdditionalSearchResult(response);
+    }
+  } catch (error) {
+    alert(error.message);
   }
 };
 

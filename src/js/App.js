@@ -1,7 +1,11 @@
 import { $ } from './util/querySelector.js';
 import throttle, { SCROLL_THROTTLE_DELAY } from './util/throttle.js';
 import debounce from './util/debounce.js';
-import { handleSearch, handleScroll, handleSaveButtonClick } from './eventHandlers/searchEvents.js';
+import {
+  handleSearch,
+  handleScrollSearch,
+  handleSaveButtonClick,
+} from './handlers/searchHandlers.js';
 import userInterface from './ui/userInterface.js';
 import videoStorage from './localStorage/videoStorage.js';
 
@@ -17,7 +21,7 @@ export default function App() {
     $('.modal-container').classList.toggle('hide');
   });
 
-  $('.video-list').addEventListener('scroll', throttle(handleScroll, SCROLL_THROTTLE_DELAY));
+  $('.video-list').addEventListener('scroll', throttle(handleScrollSearch, SCROLL_THROTTLE_DELAY));
 
   $('.video-list').addEventListener('click', handleSaveButtonClick);
 

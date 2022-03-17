@@ -119,7 +119,7 @@ const userInterface = {
       .catch(error => alert(error.message));
   },
 
-  renderNextSearchResult(response) {
+  renderAdditionalSearchResult(response) {
     response.then(searchResults => {
       this.renderVideoItems(searchResults);
     });

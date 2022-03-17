@@ -1,17 +1,7 @@
 import { validateInput } from '../validate.js';
 
-export default class YoutubeSearch {
+export default class YoutubeSearchAPI {
   #searchResults = {};
-  #searchTarget = '';
-
-  set searchTarget(searchInput) {
-    validateInput(searchInput);
-    this.#searchTarget = searchInput;
-  }
-
-  get searchTarget() {
-    return this.#searchTarget;
-  }
 
   set searchResults(searchResults) {
     this.#searchResults = searchResults;
@@ -21,17 +11,8 @@ export default class YoutubeSearch {
     return this.#searchResults;
   }
 
-  getURL(nextPageToken) {
-    const url = new URL('dummy/youtube/v3/search', 'https://onstar.netlify.app');
-    const parameter = new URLSearchParams({
-      part: 'snippet',
-      maxResults: 10,
-      q: this.#searchTarget,
-      pageToken: nextPageToken || '',
-      type: 'video',
-    });
-    url.search = parameter.toString();
-    return url.href;
+  resetSearchResults() {
+    this.#searchResults = {};
   }
 
   updateSearchResults(response) {
@@ -40,16 +21,25 @@ export default class YoutubeSearch {
     });
   }
 
-  callSearchAPI() {
+  getURL(searchKeyword, nextPageToken) {
+    const url = new URL('dummy/youtube/v3/search', 'https://onstar.netlify.app');
+    const parameter = new URLSearchParams({
+      part: 'snippet',
+      maxResults: 10,
+      q: searchKeyword,
+      pageToken: nextPageToken || '',
+      type: 'video',
+    });
+    url.search = parameter.toString();
+    return url.href;
+  }
+
+  callSearchAPI(searchKeyword) {
     const URL = this.#searchResults
-      ? this.getURL(this.#searchResults.nextPageToken)
-      : this.getURL();
+      ? this.getURL(searchKeyword, this.#searchResults.nextPageToken)
+      : this.getURL(searchKeyword);
     return fetch(URL).then(response => {
       return response.json();
     });
-  }
-
-  resetSearchResults() {
-    this.#searchResults = {};
   }
 }
