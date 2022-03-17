@@ -52,6 +52,16 @@ body {
   background: rgba(0, 188, 212, 0.12);
 }
 
+.saved-video-list {
+  width: 1040px;
+  height: 493px;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 32px 20px;
+  overflow-y: scroll;
+}
+
 .video-button__wrapper {
   text-align: right;
 }

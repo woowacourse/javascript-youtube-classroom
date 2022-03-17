@@ -47,11 +47,11 @@ export default class SearchModalView {
     );
   }
 
-  renderSearchResult(responseData, videoStorage) {
+  renderSearchResult(responseData, videoIdArray) {
     this.unrenderSkeleton();
     const videoItemTemplate = generateTemplate.videoItems(
       responseData.items,
-      videoStorage
+      videoIdArray
     );
 
     this.videoList.insertAdjacentHTML("beforeend", videoItemTemplate);

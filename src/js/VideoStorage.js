@@ -21,4 +21,8 @@ export default class VideoStorage {
   getStorage() {
     return this.videos;
   }
+
+  getVideoIdArray() {
+    return this.getStorage().map((item) => item.videoId);
+  }
 }

@@ -9,8 +9,7 @@
   left: 0;
 }
 
-.video-item__save-button.hide,
-.modal-container.hide {
+.hide {
   display: none;
 }
 

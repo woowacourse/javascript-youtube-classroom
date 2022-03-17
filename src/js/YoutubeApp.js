@@ -4,7 +4,7 @@ import VideoStorageView from "./view/VideoStorageView";
 import getSearchResult from "./api/getSearchResult";
 import { DELAY_TIME } from "./constants/constants";
 import { throttle, checkKeywordValid, isScrollToBottom } from "./utils/utils";
-import { bindEventListener, findTargetDataset } from "./utils/dom";
+import { bindEventListener, getTargetVideoData } from "./utils/dom";
 
 export default class YoutubeApp {
   constructor() {
@@ -46,7 +46,10 @@ export default class YoutubeApp {
     console.log(this.videoStorage.getStorage());
     if (!this.videoStorage.getStorage().length) {
       this.VideoStorageView.renderEmptyStorage();
+      return;
     }
+
+    this.VideoStorageView.renderSavedVideo(this.videoStorage.getStorage());
   };
 
   #onClickSearchModalButton = () => {
@@ -55,15 +58,16 @@ export default class YoutubeApp {
 
   #onClickDimmer = () => {
     this.searchModalView.closeSearchModal();
+    this.#reloadStorageData();
   };
 
   #onClickSaveButton = ({ target }) => {
     if (!target.matches(".video-item__save-button")) return;
 
-    const { videoId } = findTargetDataset(target, ".video-item");
+    const videoData = getTargetVideoData(target, ".video-item");
 
     try {
-      this.videoStorage.addVideoData(videoId);
+      this.videoStorage.addVideoData(videoData);
     } catch ({ message }) {
       alert(message);
     }
@@ -107,7 +111,10 @@ export default class YoutubeApp {
       return;
     }
 
-    this.searchModalView.renderSearchResult(responseData, this.videoStorage);
+    this.searchModalView.renderSearchResult(
+      responseData,
+      this.videoStorage.getVideoIdArray()
+    );
   }
 
   async searchNextPage() {
@@ -119,6 +126,9 @@ export default class YoutubeApp {
     );
 
     this.nextPageToken = responseData.nextPageToken;
-    this.searchModalView.renderSearchResult(responseData, this.videoStorage);
+    this.searchModalView.renderSearchResult(
+      responseData,
+      this.videoStorage.getVideoIdArray()
+    );
   }
 }

@@ -11,11 +11,24 @@ export default class VideoStorageView {
     const message =
       "저장된 영상이 없습니다<br />나만의 영상을 검색하여 저장해보세요";
 
-    this.savedVideoSection.removeChild(this.savedVideoList);
-    this.savedVideoSection.classList.add("search-result--no-result");
+    this.savedVideoList.classList.add("hide");
     this.savedVideoSection.insertAdjacentHTML(
       "beforeend",
       generateTemplate.noResult(notFountImage, message)
     );
+  };
+
+  renderSavedVideo = (videoData) => {
+    const videoItemTemplate = generateTemplate.savedVideoItems(videoData);
+    const noResultDiv = document.querySelector(".no-result");
+
+    this.savedVideoList.classList.remove("hide");
+    this.savedVideoList.insertAdjacentHTML("beforeend", videoItemTemplate);
+
+    if (!noResultDiv) {
+      return;
+    }
+
+    noResultDiv.classList.add("hide");
   };
 }

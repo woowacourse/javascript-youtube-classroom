@@ -25,10 +25,10 @@ const generateTemplate = {
     </div>
   `;
   },
-  videoItem({ id, channel, defaultThumbnail, title, date }, storage) {
+  videoItem({ id, channel, thumbnail, title, date }, videoIdArray) {
     return `<li class="video-item" data-video-id="${id}">
     <img
-    src="${defaultThumbnail}"
+    src="${thumbnail}"
     alt="video-item-thumbnail"
     class="video-item__thumbnail"
     />
@@ -38,32 +38,32 @@ const generateTemplate = {
     <p class="video-item__channel-name ">${channel}</p>
     <p class="video-item__published-date ">${date}</p>
     <button class="video-item__save-button button ${
-      storage.includes(String(id)) ? "hide" : ""
+      videoIdArray.includes(String(id)) ? "hide" : ""
     } ">
       ⬇ 저장
     </button>
   </li>`;
   },
-  videoItems(responseData, videoStorage) {
+  videoItems(responseData, videoIdArray) {
     return responseData
       .map((item) =>
         this.videoItem(
           {
             id: item.id.videoId,
             channel: item.snippet.channelTitle,
-            defaultThumbnail: item.snippet.thumbnails.high.url,
+            thumbnail: item.snippet.thumbnails.high.url,
             title: item.snippet.title,
             date: parsedDate(item.snippet.publishTime),
           },
-          videoStorage.getStorage()
+          videoIdArray
         )
       )
       .join("");
   },
-  savedVideoItem({ id, channel, defaultThumbnail, title, date, isWatched }) {
+  savedVideoItem({ id, channel, thumbnail, title, date, isWatched }) {
     return `<li class="video-item" data-video-id="${id}">
     <img
-      src=${defaultThumbnail}"
+      src="${thumbnail}"
       alt="video-item-thumbnail"
       class="video-item__thumbnail"
     />
@@ -77,6 +77,20 @@ const generateTemplate = {
       <button class="video-item__delete-button button">🗑️</button>
     </div>
   </li>`;
+  },
+  savedVideoItems(videoStorage) {
+    return videoStorage
+      .map((item) =>
+        this.savedVideoItem({
+          id: item.videoId,
+          channel: item.channel,
+          thumbnail: item.thumbnail,
+          title: item.title,
+          date: item.publishTime,
+          isWatched: item.isWatched,
+        })
+      )
+      .join("");
   },
 };
 
