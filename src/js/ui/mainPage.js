@@ -8,6 +8,7 @@ class MainPage {
     this.modalComponent = new SearchModal(this.appendList);
     this.$dimmer = document.querySelector('.dimmer');
     this.videoStorage = new VideoStorage();
+    this.menuState = 'not-watched-tab-menu';
   }
 
   init() {
@@ -32,12 +33,14 @@ class MainPage {
   }
 
   initStorageView() {
-    document.querySelector('.video-list-grid').innerHTML =
+    document.querySelector('.video-list-grid').insertAdjacentHTML(
+      'beforeend',
       this.videoStorage.videoList
         .map((item) => {
           return template.storageVideoItem(item);
         })
-        .join(' ');
+        .join(' '),
+    );
   }
 
   appendList(item) {
@@ -46,10 +49,44 @@ class MainPage {
       .insertAdjacentHTML('beforeend', template.storageVideoItem(item));
   }
 
-  changeTab() {
+  changeTab(e) {
+    if (e.target.id === this.menuState) return;
+    this.menuState = e.target.id;
     document
       .querySelectorAll('.nav-tab__button')
       .forEach((element) => element.classList.toggle('choosed'));
+    this.renderVideo();
+  }
+  renderVideo() {
+    document.querySelector('.video-list-grid').replaceChildren();
+    if (this.menuState === 'not-watched-tab-menu') {
+      this.renderNotWatchedVideo();
+      return;
+    }
+    if (this.menuState === 'watched-tab-menu') {
+      this.renderWachedVideo();
+      return;
+    }
+  }
+  renderNotWatchedVideo() {
+    document.querySelector('.video-list-grid').insertAdjacentHTML(
+      'beforeend',
+      this.videoStorage.notWachedVideoList
+        .map((item) => {
+          return template.storageVideoItem(item);
+        })
+        .join(' '),
+    );
+  }
+  renderWachedVideo() {
+    document.querySelector('.video-list-grid').insertAdjacentHTML(
+      'beforeend',
+      this.videoStorage.wachedVideoList
+        .map((item) => {
+          return template.storageVideoItem(item);
+        })
+        .join(' '),
+    );
   }
 }
 

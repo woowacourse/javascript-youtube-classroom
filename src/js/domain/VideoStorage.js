@@ -20,4 +20,12 @@ export class VideoStorage {
       VideoFactory.generateById(video.items[0]),
     );
   }
+
+  get notWachedVideoList() {
+    return this.videoList.filter((video) => !video.isWatched);
+  }
+
+  get wachedVideoList() {
+    return this.videoList.filter((video) => video.isWatched);
+  }
 }

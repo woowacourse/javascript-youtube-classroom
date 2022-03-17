@@ -62,10 +62,15 @@ const template = {
   </div>
   `,
 
-  storageVideoItem: ({ id, thumbnails, channelTitle, title, publishTime }) => {
-    return `
-  <li class="video-list-grid-item" data-video-id=${id}>
-          
+  storageVideoItem: ({
+    id,
+    thumbnails,
+    channelTitle,
+    title,
+    publishTime,
+    isWatched,
+  }) => `
+      <li class="video-list-grid-item" data-video-id=${id}>
             <img src=${thumbnails} alt="video-item-thumbnail"
               class="video-item__thumbnail" />
             <h4 class="video-item__title">${title}</h4>
@@ -74,11 +79,12 @@ const template = {
               publishTime,
             )}</p>
             <div class="video-list-grid-item-btn--contianer">
-              <button class="button video-watched--btn">✅</button>
+              <button class="button video-watched--btn ${
+                isWatched ? 'choosed' : ''
+              }">✅</button>
               <button class="button video-delete--btn">🗑️</button>
             </div>
-        </li>`;
-  },
+        </li>`,
 };
 
 export default template;

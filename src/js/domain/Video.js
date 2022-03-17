@@ -13,6 +13,8 @@ export default class Video {
 
   #isSaved;
 
+  #isWatched;
+
   constructor(builder) {
     this.#id = builder.id;
     this.#thumbnails = builder.thumbnails;
@@ -20,6 +22,7 @@ export default class Video {
     this.#title = builder.title;
     this.#publishTime = builder.publishTime;
     this.#isSaved = builder.isSaved;
+    this.#isWatched = false;
   }
 
   get id() {
@@ -44,6 +47,14 @@ export default class Video {
 
   get isSaved() {
     return this.#isSaved;
+  }
+
+  get isWatched() {
+    return this.#isWatched;
+  }
+
+  toggleIsWatched() {
+    this.#isWatched = !this.#isWatched;
   }
 
   static Builder() {

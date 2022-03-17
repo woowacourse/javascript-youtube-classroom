@@ -53,7 +53,7 @@ body {
   gap:0;
 }
 
-.nav-tab__button.choosed{
+.choosed{
   background-color:var(--nav-btn--choosed-color);
 }
 
