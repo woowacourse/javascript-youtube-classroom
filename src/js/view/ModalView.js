@@ -83,8 +83,16 @@ export default class ModalView {
       try {
         if ([...event.target.classList].includes(DOM_STRING.VIDEO_ITEM_SAVE_BUTTON)) {
           videoStorage.checkOverMaxLength();
+          const clickedVideo = event.target.parentElement;
+          const clickedData = {
+            videoId: clickedVideo.children[4].dataset.videoid,
+            publishedAt: clickedVideo.children[3].textContent,
+            title: clickedVideo.children[1].textContent,
+            url: clickedVideo.children[0].src,
+            channelTitle: clickedVideo.children[2].textContent,
+          };
           event.target.classList.add(DOM_STRING.HIDE);
-          callback(event.target.dataset.videoid);
+          callback(clickedData);
         }
       } catch (error) {
         alert(error.message);

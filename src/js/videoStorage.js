@@ -2,25 +2,25 @@ import { ERROR_MESSAGE, STORE } from './utils/constants.js';
 
 const videoStorage = {
   KEYS: {
-    VIDEO_ID: 'videoId',
+    VIDEO_LIST: 'videoList',
   },
 
-  storeVideoId: function (videoId) {
-    if (!this.hasVideoId(videoId)) {
+  storeVideoId: function (videoData) {
+    if (!this.hasVideoId(videoData)) {
       const videoList = this.getVideoIdList();
-      videoList.push(videoId);
-      localStorage.setItem(this.KEYS.VIDEO_ID, JSON.stringify(videoList));
+      videoList.push(videoData);
+      localStorage.setItem(this.KEYS.VIDEO_LIST, JSON.stringify(videoList));
     }
   },
 
   getVideoIdList: function () {
-    const videoList = JSON.parse(localStorage.getItem(this.KEYS.VIDEO_ID));
+    const videoList = JSON.parse(localStorage.getItem(this.KEYS.VIDEO_LIST));
     return videoList || [];
   },
 
   hasVideoId: function (videoId) {
     const videoList = this.getVideoIdList();
-    return videoList.includes(videoId);
+    return videoList.some(videoData => videoData.videoId === videoId);
   },
 
   checkOverMaxLength: function () {
