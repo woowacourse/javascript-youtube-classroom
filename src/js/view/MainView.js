@@ -97,6 +97,10 @@ export default class MainView {
     this.$modalOpenButton.addEventListener('click', callback);
   }
 
+  clickWillSeeButton() {
+    this.$willSeeButton.click();
+  }
+
   bindWillSeeButton(callback) {
     this.$willSeeButton.addEventListener('click', event => {
       this.$currentVideoList = this.$willSeeVideoList;

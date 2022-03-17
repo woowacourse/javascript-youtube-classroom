@@ -11,6 +11,7 @@ export default class EventHandler {
     this.mainView = new MainView();
     this.modalView = new ModalView();
     this.setBindEvents();
+    this.mainView.clickWillSeeButton();
   }
 
   setBindEvents() {
@@ -31,6 +32,7 @@ export default class EventHandler {
 
   onDimmerClick() {
     this.modalView.hideModal();
+    this.mainView.clickWillSeeButton();
   }
 
   onStoreButtonClick(videoId) {
