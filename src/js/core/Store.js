@@ -1,5 +1,6 @@
 export default class Store {
   state = {};
+  reducers = {};
 
   subscribers = [];
 
@@ -9,6 +10,11 @@ export default class Store {
     }
 
     this.state = initialState;
+    this.setReducers();
+  }
+
+  addReducer(key, event) {
+    this.reducers[key] = event;
   }
 
   getState() {
@@ -20,7 +26,15 @@ export default class Store {
     this.subscribers.forEach(subscriber => subscriber(this.state));
   }
 
-  dispatch(type, data) {}
+  getReducer(type) {
+    return this.reducers[type];
+  }
+
+  setReducers() {}
+
+  dispatch(type, data) {
+    this.getReducer(type)(data);
+  }
 
   addSubscriber(subscriber) {
     this.subscribers.push(subscriber);
