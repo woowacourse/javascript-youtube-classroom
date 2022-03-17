@@ -16,6 +16,15 @@ class MainView {
     if (target.classList.contains('watch-video-button')) {
       this.$watchedVideoList.append(target.closest('section'));
     }
+
+    if (target.classList.contains('delete-watch-video-button')) {
+      if (!confirm('정말로 삭제하시겠습니까?')) return;
+
+      const parentTarget = target.closest('section');
+      parentTarget.remove();
+
+      emit(this.$afterWatchVideoList, '@delete', { id: parentTarget.dataset.videoId });
+    }
   }
 
   renderItems(savedItems) {
