@@ -3,7 +3,7 @@ import { $, showSnackBar } from '../utils/dom';
 import NoResultImage from '../../assets/images/not_found.png';
 import { store } from '../domain/store';
 import { request } from '../domain/youtubeApi';
-import { convertToKoreaLocaleDate, delay } from '../utils/common';
+import { convertToKoreaLocaleDate } from '../utils/common';
 import { skeleton } from './skeleton';
 import { video } from '../domain/video';
 
@@ -80,7 +80,6 @@ export const result = {
         }
       })
       .catch(async ({ message }) => {
-        await delay(500);
         showSnackBar(message);
       });
   },

@@ -1,6 +1,6 @@
 import { MESSAGE } from '../constants';
 import { request } from '../domain/youtubeApi';
-import { delay, debounce } from '../utils/common';
+import { debounce } from '../utils/common';
 import { $, showSnackBar } from '../utils/dom';
 import { skeleton } from './skeleton';
 import { result } from './Result';
@@ -30,8 +30,7 @@ export default class Search {
       .then(json => {
         result.renderInitialVideoList(json);
       })
-      .catch(async ({ message }) => {
-        await delay(500);
+      .catch(({ message }) => {
         showSnackBar(message);
         skeleton.removeSkeletonUI();
       });
