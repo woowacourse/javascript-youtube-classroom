@@ -22,8 +22,8 @@
 
 .search-modal {
   position: relative;
-  width: 1080px;
-  height: 727px;
+  width: 80vw;
+  height: 90vh;
   background: var(--white-color);
   border: 1px solid var(--modalBorder-color);
   border-radius: 4px;
@@ -92,7 +92,6 @@
 }
 
 .video-list {
-  width: 1040px;
   height: 493px;
   display: flex;
   flex-direction: row;
