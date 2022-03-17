@@ -1,5 +1,5 @@
 import fetch from 'node-fetch';
-import { DUMMY_YOUTUBE_API_ENDPOINT } from '../youtubeApi';
+import { YOUTUBE_API_ENDPOINT } from '../youtubeApi';
 
 export default class SearchVideoManager {
   #isLastPage;
@@ -28,7 +28,7 @@ export default class SearchVideoManager {
   }
 
   fetchYoutubeData(keyword) {
-    return fetch(DUMMY_YOUTUBE_API_ENDPOINT(keyword, this.nextPageToken)).then((response) => {
+    return fetch(YOUTUBE_API_ENDPOINT(keyword, this.nextPageToken)).then((response) => {
       if (!response.ok) {
         throw new Error(response.status);
       }

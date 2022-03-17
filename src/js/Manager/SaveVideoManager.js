@@ -40,7 +40,7 @@ export default class SaveVideoManager {
     this.videoData = this.videoData.map((video) => {
       if (video.id === id) {
         const changedVideo = video;
-        changedVideo.watched = true;
+        changedVideo.watched = !changedVideo.watched;
         return changedVideo;
       }
       return video;

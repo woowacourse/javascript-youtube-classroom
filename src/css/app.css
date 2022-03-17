@@ -62,8 +62,11 @@ body {
     border-radius: 0px 4px 4px 0px;
 }
 
-.selected{
+.selected {
     background-color: var(--selected-background-color);
+}
+
+.block-toggle {
     pointer-events: none;
 }
 

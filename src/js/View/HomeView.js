@@ -47,8 +47,8 @@ export default class HomeView {
 
   openWillWatchPage() {
     this.tab = 'willWatch';
-    $('#will-watch-button').classList.add('selected');
-    $('#watched-button').classList.remove('selected');
+    $('#will-watch-button').classList.add('selected', 'block-toggle');
+    $('#watched-button').classList.remove('selected', 'block-toggle');
 
     $('#watched-video-list').classList.add('hide');
     $('.no-watched-video__image').classList.add('hide');
@@ -61,8 +61,8 @@ export default class HomeView {
 
   openWatchedPage() {
     this.tab = 'watched';
-    $('#will-watch-button').classList.remove('selected');
-    $('#watched-button').classList.add('selected');
+    $('#will-watch-button').classList.remove('selected', 'block-toggle');
+    $('#watched-button').classList.add('selected', 'block-toggle');
     $('#will-watch-video-list').classList.add('hide');
 
     $('.no-saved-video__image').classList.add('hide');
@@ -96,11 +96,19 @@ export default class HomeView {
 
   changeWatchState(e) {
     const target = e.target.parentNode.parentNode;
-    e.target.classList.add('selected');
+    e.target.classList.toggle('selected');
     this.saveVideoManager.changeWatchState(target.dataset.videoId);
-    $('#watched-video-list').insertAdjacentElement('afterbegin', target);
-    if ($('#will-watch-video-list').children.length === 0) {
-      this.showEmptyWillWatchVideo();
+    if (this.tab === 'watched') {
+      $('#will-watch-video-list').insertAdjacentElement('afterbegin', target);
+      if ($('#watched-video-list').children.length === 0) {
+        this.showEmptyWatchedVideo();
+      }
+    }
+    if (this.tab === 'willWatch') {
+      $('#watched-video-list').insertAdjacentElement('afterbegin', target);
+      if ($('#will-watch-video-list').children.length === 0) {
+        this.showEmptyWillWatchVideo();
+      }
     }
   }
 
