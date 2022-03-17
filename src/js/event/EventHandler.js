@@ -28,6 +28,7 @@ export default class EventHandler {
 
   clickStoreButton(videoData) {
     videoStorage.storeVideoData(videoData);
+    this.mainView.renderAddedVideoData(videoData);
   }
 
   async clickSearchButton(searchInput) {
