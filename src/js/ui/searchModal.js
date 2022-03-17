@@ -59,11 +59,13 @@ class SearchModal {
   }
 
   submitKeywordHandler(event) {
+    console.log(event);
     if (
       (event.type === 'keypress' && event.key === 'Enter') ||
       event.type === 'click'
     ) {
       try {
+        console.log(1);
         this.scrollHandler.setError(false);
         this.machine.keyword = this.$searchInputKeyword.value;
         this.initVideoState();

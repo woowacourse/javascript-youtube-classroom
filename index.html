@@ -11,12 +11,240 @@
   <main id="app" class="classroom-container">
     <h1 class="classroom-container__title">👩🏻‍💻 나만의 유튜브 강의실 👨🏻‍💻</h1>
     <nav class="nav">
-      <button id="search-modal-button" class="button nav__button">
+      <div class="nav-tab">
+        <button type="button" class="nav-tab__button choosed">👁️ 볼 영상</button>
+        <button type="button" class="nav-tab__button">✅ 본 영상</button>
+      </div>
+      <button id="search-modal-button" class="button nav__button" type="button">
         🔍 검색
       </button>
     </nav>
+    <section id="store-vide-list">
+      <ul class="video-list-grid">
+        <li class="video-list-grid-item" data-video-id=1>
+          <div>
+            <img src="https://i.ytimg.com/vi/mKbcl5C01Ds/hqdefault.jpg" alt="video-item-thumbnail"
+              class="video-item__thumbnail" />
+            <h4 class="video-item__title">${title}</h4>
+            <p class="video-item__channel-name">${channelTitle}</p>
+            <p class="video-item__published-date">${convertDataToDateString(publishTime)}</p>
+            <div class="video-list-grid-item-btn--contianer">
+              <button class="button video-watched--btn">✅</button>
+              <button class="button video-delete--btn">🗑️</button>
+            </div>
+          </div>
+        </li>
+        <li class="video-list-grid-item" data-video-id=1>
+          <div>
+            <img src="https://i.ytimg.com/vi/mKbcl5C01Ds/hqdefault.jpg" alt="video-item-thumbnail"
+              class="video-item__thumbnail" />
+            <h4 class="video-item__title">${title}</h4>
+            <p class="video-item__channel-name">${channelTitle}</p>
+            <p class="video-item__published-date">${convertDataToDateString(publishTime)}</p>
+            <div class="video-list-grid-item-btn--contianer">
+              <button class="button video-watched--btn">✅</button>
+              <button class="button video-delete--btn">🗑️</button>
+            </div>
+          </div>
+        </li>
+        <li class="video-list-grid-item" data-video-id=1>
+          <div>
+            <img src="https://i.ytimg.com/vi/mKbcl5C01Ds/hqdefault.jpg" alt="video-item-thumbnail"
+              class="video-item__thumbnail" />
+            <h4 class="video-item__title">${title}</h4>
+            <p class="video-item__channel-name">${channelTitle}</p>
+            <p class="video-item__published-date">${convertDataToDateString(publishTime)}</p>
+            <div class="video-list-grid-item-btn--contianer">
+              <button class="button video-watched--btn">✅</button>
+              <button class="button video-delete--btn">🗑️</button>
+            </div>
+          </div>
+        </li>
+        <li class="video-list-grid-item" data-video-id=1>
+          <div>
+            <img src="https://i.ytimg.com/vi/mKbcl5C01Ds/hqdefault.jpg" alt="video-item-thumbnail"
+              class="video-item__thumbnail" />
+            <h4 class="video-item__title">${title}</h4>
+            <p class="video-item__channel-name">${channelTitle}</p>
+            <p class="video-item__published-date">${convertDataToDateString(publishTime)}</p>
+            <div class="video-list-grid-item-btn--contianer">
+              <button class="button video-watched--btn">✅</button>
+              <button class="button video-delete--btn">🗑️</button>
+            </div>
+          </div>
+        </li>
+        <li class="video-list-grid-item" data-video-id=1>
+          <div>
+            <img src="https://i.ytimg.com/vi/mKbcl5C01Ds/hqdefault.jpg" alt="video-item-thumbnail"
+              class="video-item__thumbnail" />
+            <h4 class="video-item__title">${title}</h4>
+            <p class="video-item__channel-name">${channelTitle}</p>
+            <p class="video-item__published-date">${convertDataToDateString(publishTime)}</p>
+            <div class="video-list-grid-item-btn--contianer">
+              <button class="button video-watched--btn">✅</button>
+              <button class="button video-delete--btn">🗑️</button>
+            </div>
+          </div>
+        </li>
+        <li class="video-list-grid-item" data-video-id=1>
+          <div>
+            <img src="https://i.ytimg.com/vi/mKbcl5C01Ds/hqdefault.jpg" alt="video-item-thumbnail"
+              class="video-item__thumbnail" />
+            <h4 class="video-item__title">${title}</h4>
+            <p class="video-item__channel-name">${channelTitle}</p>
+            <p class="video-item__published-date">${convertDataToDateString(publishTime)}</p>
+            <div class="video-list-grid-item-btn--contianer">
+              <button class="button video-watched--btn">✅</button>
+              <button class="button video-delete--btn">🗑️</button>
+            </div>
+          </div>
+        </li>
+        <li class="video-list-grid-item" data-video-id=1>
+          <div>
+            <img src="https://i.ytimg.com/vi/mKbcl5C01Ds/hqdefault.jpg" alt="video-item-thumbnail"
+              class="video-item__thumbnail" />
+            <h4 class="video-item__title">${title}</h4>
+            <p class="video-item__channel-name">${channelTitle}</p>
+            <p class="video-item__published-date">${convertDataToDateString(publishTime)}</p>
+            <div class="video-list-grid-item-btn--contianer">
+              <button class="button video-watched--btn">✅</button>
+              <button class="button video-delete--btn">🗑️</button>
+            </div>
+          </div>
+        </li>
+        <li class="video-list-grid-item" data-video-id=1>
+          <div>
+            <img src="https://i.ytimg.com/vi/mKbcl5C01Ds/hqdefault.jpg" alt="video-item-thumbnail"
+              class="video-item__thumbnail" />
+            <h4 class="video-item__title">${title}</h4>
+            <p class="video-item__channel-name">${channelTitle}</p>
+            <p class="video-item__published-date">${convertDataToDateString(publishTime)}</p>
+            <div class="video-list-grid-item-btn--contianer">
+              <button class="button video-watched--btn">✅</button>
+              <button class="button video-delete--btn">🗑️</button>
+            </div>
+          </div>
+        </li>
+        <li class="video-list-grid-item" data-video-id=1>
+          <div>
+            <img src="https://i.ytimg.com/vi/mKbcl5C01Ds/hqdefault.jpg" alt="video-item-thumbnail"
+              class="video-item__thumbnail" />
+            <h4 class="video-item__title">${title}</h4>
+            <p class="video-item__channel-name">${channelTitle}</p>
+            <p class="video-item__published-date">${convertDataToDateString(publishTime)}</p>
+            <div class="video-list-grid-item-btn--contianer">
+              <button class="button video-watched--btn">✅</button>
+              <button class="button video-delete--btn">🗑️</button>
+            </div>
+          </div>
+        </li>
+        <li class="video-list-grid-item" data-video-id=1>
+          <div>
+            <img src="https://i.ytimg.com/vi/mKbcl5C01Ds/hqdefault.jpg" alt="video-item-thumbnail"
+              class="video-item__thumbnail" />
+            <h4 class="video-item__title">${title}</h4>
+            <p class="video-item__channel-name">${channelTitle}</p>
+            <p class="video-item__published-date">${convertDataToDateString(publishTime)}</p>
+            <div class="video-list-grid-item-btn--contianer">
+              <button class="button video-watched--btn">✅</button>
+              <button class="button video-delete--btn">🗑️</button>
+            </div>
+          </div>
+        </li>
+        <li class="video-list-grid-item" data-video-id=1>
+          <div>
+            <img src="https://i.ytimg.com/vi/mKbcl5C01Ds/hqdefault.jpg" alt="video-item-thumbnail"
+              class="video-item__thumbnail" />
+            <h4 class="video-item__title">${title}</h4>
+            <p class="video-item__channel-name">${channelTitle}</p>
+            <p class="video-item__published-date">${convertDataToDateString(publishTime)}</p>
+            <div class="video-list-grid-item-btn--contianer">
+              <button class="button video-watched--btn">✅</button>
+              <button class="button video-delete--btn">🗑️</button>
+            </div>
+          </div>
+        </li>
+        <li class="video-list-grid-item" data-video-id=1>
+          <div>
+            <img src="https://i.ytimg.com/vi/mKbcl5C01Ds/hqdefault.jpg" alt="video-item-thumbnail"
+              class="video-item__thumbnail" />
+            <h4 class="video-item__title">${title}</h4>
+            <p class="video-item__channel-name">${channelTitle}</p>
+            <p class="video-item__published-date">${convertDataToDateString(publishTime)}</p>
+            <div class="video-list-grid-item-btn--contianer">
+              <button class="button video-watched--btn">✅</button>
+              <button class="button video-delete--btn">🗑️</button>
+            </div>
+          </div>
+        </li>
+        <li class="video-list-grid-item" data-video-id=1>
+          <div>
+            <img src="https://i.ytimg.com/vi/mKbcl5C01Ds/hqdefault.jpg" alt="video-item-thumbnail"
+              class="video-item__thumbnail" />
+            <h4 class="video-item__title">${title}</h4>
+            <p class="video-item__channel-name">${channelTitle}</p>
+            <p class="video-item__published-date">${convertDataToDateString(publishTime)}</p>
+            <div class="video-list-grid-item-btn--contianer">
+              <button class="button video-watched--btn">✅</button>
+              <button class="button video-delete--btn">🗑️</button>
+            </div>
+          </div>
+        </li>
+        <li class="video-list-grid-item" data-video-id=1>
+          <div>
+            <img src="https://i.ytimg.com/vi/mKbcl5C01Ds/hqdefault.jpg" alt="video-item-thumbnail"
+              class="video-item__thumbnail" />
+            <h4 class="video-item__title">${title}</h4>
+            <p class="video-item__channel-name">${channelTitle}</p>
+            <p class="video-item__published-date">${convertDataToDateString(publishTime)}</p>
+            <div class="video-list-grid-item-btn--contianer">
+              <button class="button video-watched--btn">✅</button>
+              <button class="button video-delete--btn">🗑️</button>
+            </div>
+          </div>
+        </li>
+        <li class="video-list-grid-item" data-video-id=1>
+          <div>
+            <img src="https://i.ytimg.com/vi/mKbcl5C01Ds/hqdefault.jpg" alt="video-item-thumbnail"
+              class="video-item__thumbnail" />
+            <h4 class="video-item__title">${title}</h4>
+            <p class="video-item__channel-name">${channelTitle}</p>
+            <p class="video-item__published-date">${convertDataToDateString(publishTime)}</p>
+            <div class="video-list-grid-item-btn--contianer">
+              <button class="button video-watched--btn">✅</button>
+              <button class="button video-delete--btn">🗑️</button>
+            </div>
+          </div>
+        </li>
+        <li class="video-list-grid-item" data-video-id=1>
+          <div>
+            <img src="https://i.ytimg.com/vi/mKbcl5C01Ds/hqdefault.jpg" alt="video-item-thumbnail"
+              class="video-item__thumbnail" />
+            <h4 class="video-item__title">${title}</h4>
+            <p class="video-item__channel-name">${channelTitle}</p>
+            <p class="video-item__published-date">${convertDataToDateString(publishTime)}</p>
+            <div class="video-list-grid-item-btn--contianer">
+              <button class="button video-watched--btn">✅</button>
+              <button class="button video-delete--btn">🗑️</button>
+            </div>
+          </div>
+        </li>
+        <li class="video-list-grid-item" data-video-id=1>
+          <div>
+            <img src="https://i.ytimg.com/vi/mKbcl5C01Ds/hqdefault.jpg" alt="video-item-thumbnail"
+              class="video-item__thumbnail" />
+            <h4 class="video-item__title">${title}</h4>
+            <p class="video-item__channel-name">${channelTitle}</p>
+            <p class="video-item__published-date">${convertDataToDateString(publishTime)}</p>
+            <div class="video-list-grid-item-btn--contianer">
+              <button class="button video-watched--btn">✅</button>
+              <button class="button video-delete--btn">🗑️</button>
+            </div>
+          </div>
+        </li>
+      </ul>
+    </section>
   </main>
-  <!-- 1 검색 버튼을 누르면 아래와 같은 검색 모달을 보여줍니다.-->
   <dialog class="modal-container hide">
     <div class="dimmer"></div>
     <div class="search-modal" role="dialog" aria-labelledby="search-modal-title">
@@ -26,11 +254,10 @@
       <section class="search-input">
         <h3 hidden>검색어 입력</h3>
         <input id="search-input-keyword" type="text" placeholder="검색" class="search-input__keyword" />
-        <button id="search-button" class="search-input__search-button button">
+        <button id="search-button" class="search-input__search-button button" type="button">
           검색
         </button>
       </section>
-      <!-- 2-1 검색 결과가 있을 경우, 아래와 같은 검색 결과 목록을 보여줍니다.-->
       <section class="search-result">
         <h3 hidden>검색 결과</h3>
         <ul class="video-list">

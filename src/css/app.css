@@ -18,7 +18,7 @@ body {
 
 .nav {
   display: flex;
-  justify-content: center;
+  justify-content:space-between;
 }
 
 .button {
@@ -40,3 +40,64 @@ body {
 .nav__button:hover {
   background: var(--nav-btn--hover-color);
 }
+
+.nav-tab__button{
+  cursor: pointer;
+  width:118px;
+  height: 36px;
+  border:1px solid rgba(0,0,0,0.12);
+}
+
+.nav-tab{
+  display: flex;
+  gap:0;
+}
+
+.nav-tab__button.choosed{
+  background-color:var(--nav-btn--choosed-color);
+}
+
+.video-list-grid{
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  margin-top: 40px;
+  gap:10px;
+}
+
+.video-list-grid-item{
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.video-list-grid-item-btn--contianer{
+  width:100%;
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+}
+
+.video-list-grid-item-btn--contianer > button{
+  width: 36px;
+  height:36px;
+  text-align: center;
+}
+
+@media screen and (max-width:1280px) {
+  .video-list-grid{
+    grid-template-columns: repeat(3,1fr);
+  }
+}
+
+@media screen and (max-width:960px) {
+  .video-list-grid{
+    grid-template-columns: repeat(2,1fr);
+  }
+}
+@media screen and (max-width:600px) {
+  .video-list-grid{
+    grid-template-columns: repeat(1,1fr);
+  }
+}
+
