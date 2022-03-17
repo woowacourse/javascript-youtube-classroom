@@ -12,10 +12,23 @@
   display: none;
 }
 
+.saved-video-list__container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+}
+
 .saved-video-list__no-result {
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   height: 100%;
+}
+
+.saved-video-list__container.hide,
+.saved-video-list__no-result.hide {
+  display: none;
 }
