@@ -1,23 +1,73 @@
 class YoutubeSaveStorage {
-  #STORAGE_NAME = 'YOUTUBE_CLASSROOM_SAVE_LIST';
+  #WATCHED_KEY = 'YOUTUBE_CLASSROOM_WATCHED';
 
-  get() {
-    const item = localStorage.getItem(this.#STORAGE_NAME) ?? '[]';
+  #WATCH_LATER_KEY = 'YOUTUBE_CLASSROOM_WATCH_LATER';
+
+  #subscribers = [];
+
+  #get(key) {
+    const item = localStorage.getItem(key) ?? '[]';
     return JSON.parse(item);
   }
 
-  add(videoId) {
-    localStorage.setItem(this.#STORAGE_NAME, JSON.stringify([...this.get(), videoId]));
+  #set(key, newItem) {
+    localStorage.setItem(key, JSON.stringify(newItem));
+    this.#subscribers.forEach(subscriber => subscriber());
   }
 
-  has(videoId) {
-    return this.get().includes(videoId);
+  addSubscriber(subscriber) {
+    this.#subscribers.push(subscriber);
   }
 
-  remove(videoId) {
-    localStorage.setItem(
-      this.#STORAGE_NAME,
-      JSON.stringify(this.get().filter(id => videoId !== id)),
+  getWatchedList() {
+    return this.#get(this.#WATCHED_KEY);
+  }
+
+  getWatchLaterList() {
+    return this.#get(this.#WATCH_LATER_KEY);
+  }
+
+  addWatchLaterList(id, videoData) {
+    this.#set(this.#WATCH_LATER_KEY, [...this.getWatchLaterList(), { id, videoData }]);
+  }
+
+  toggleWatchedList(id, videoData) {
+    if (this.isInWatchedList(id)) {
+      this.removeFromWatchedList();
+      return;
+    }
+    if (this.isInWatchLaterList(id)) this.removeFromWatchLaterList(id);
+    this.#set(this.#WATCHED_KEY, [...this.getWatchedList(), { id, videoData }]);
+  }
+
+  toggleWatchLaterList({ id, videoData }) {
+    if (this.isInWatchLaterList(id)) {
+      this.removeFromWatchLaterList(id);
+      return;
+    }
+    if (this.isInWatchedList(id)) this.removeFromWatchedList(id);
+    this.#set(this.#WATCHED_KEY, [...this.getWatchLaterList(), { id, videoData }]);
+  }
+
+  isInWatchedList(videoId) {
+    return this.getWatchedList().some(({ id }) => id === videoId);
+  }
+
+  isInWatchLaterList(videoId) {
+    return this.getWatchLaterList().some(({ id }) => id === videoId);
+  }
+
+  removeFromWatchedList(videoId) {
+    this.#set(
+      this.#WATCHED_KEY,
+      this.getWatchedList().filter(({ id }) => videoId !== id),
+    );
+  }
+
+  removeFromWatchLaterList(videoId) {
+    this.#set(
+      this.#WATCH_LATER_KEY,
+      this.getWatchLaterList().filter(({ id }) => videoId !== id),
     );
   }
 }

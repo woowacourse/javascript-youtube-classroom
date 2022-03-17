@@ -1,7 +1,7 @@
 import { $, addEvent, createElement } from '@Utils/dom';
 import { getParsedTime } from '@Utils/dataManager';
 import { onObserveElement } from '@Utils/elementController';
-import { YOUTUBE_SETTING, YOUTUBE_SEARCH_ACTION, ERROR_MESSAGE } from '@Constants';
+import { YOUTUBE_SETTING, YOUTUBE_SEARCH_ACTION, ERROR_MESSAGE, EVENT_TYPE } from '@Constants';
 import YoutubeSearchStore from '@Domain/YoutubeSearchStore';
 import YoutubeSaveStorage from '@Domain/YoutubeSaveStorage';
 import notFoundImage from '@Images/not_found.png';
@@ -35,32 +35,29 @@ export default class SearchResult {
       YoutubeSearchStore.dispatch(YOUTUBE_SEARCH_ACTION.UPDATE_SEARCH_RESULT_REQUEST);
     });
     addEvent(this.container, {
-      eventType: 'click',
+      eventType: EVENT_TYPE.CLICK,
       selector: '.video-item__save-button',
-      handler: this.handleToggleSaveButton,
+      handler: this.handleClickSaveButton,
     });
   }
 
-  handleToggleSaveButton = ({ target: $target }) => {
-    const { videoId } = $target.closest('.video-item').dataset;
-    if (YoutubeSaveStorage.has(videoId)) {
-      YoutubeSaveStorage.remove(videoId);
-      $target.textContent = '⬇ 저장';
-      return;
-    }
+  handleClickSaveButton = ({ target: $target }) => {
+    const { videoId, videoTitle, videoChanneltitle, videoPublishtime, videoThumbnail } =
+      $target.closest('.video-item').dataset;
 
-    const saveItemsCount = YoutubeSaveStorage.get().length;
-    if (saveItemsCount === YOUTUBE_SETTING.MAX_SAVE_NUMBER) {
-      alert(ERROR_MESSAGE.MAX_SAVE_VIDEO);
-      return;
-    }
-
-    YoutubeSaveStorage.add(videoId);
-    $target.textContent = '🗑 저장 취소';
+    YoutubeSaveStorage.addWatchLaterList(videoId, {
+      videoTitle,
+      videoChanneltitle,
+      videoPublishtime,
+      videoThumbnail,
+    });
+    $target.classList.add('hide');
   };
 
-  render = ({ isLoading, isLoaded, items, error }) => {
-    this.$videoList.innerHTML = ''; // TODO: replaceChildren으로 변경
+  render = () => {
+    const { isLoading, isLoaded, items, error } = YoutubeSearchStore.getState();
+    this.$videoList.replaceChildren();
+
     if (error) {
       this.$videoList.append(this.getResultServerError());
       return;
@@ -111,19 +108,29 @@ export default class SearchResult {
 
   getVideoList(items) {
     return items.map(video => {
-      const buttonText = YoutubeSaveStorage.has(video.id.videoId) ? '🗑 저장 취소' : '⬇ 저장';
+      const { videoId } = video.id;
+      const { title, channelTitle, publishTime, thumbnails } = video.snippet;
+      const isSaved =
+        YoutubeSaveStorage.isInWatchedList(videoId) ||
+        YoutubeSaveStorage.isInWatchLaterList(videoId);
       return createElement('LI', {
-        dataset: { 'video-id': video.id.videoId },
+        dataset: {
+          'video-id': videoId,
+          'video-title': title,
+          'video-channelTitle': channelTitle,
+          'video-publishTime': publishTime,
+          'video-thumbnail': thumbnails.medium.url,
+        },
         className: 'video-item',
         innerHTML: `<img
-          src="${video.snippet.thumbnails.medium.url}"
+          src="${thumbnails.medium.url}"
           alt="video-item-thumbnail" class="video-item__thumbnail"
           loading="lazy"
           >
-        <h4 class="video-item__title">${video.snippet.title}</h4>
-        <p class="video-item__channel-name">${video.snippet.channelTitle}</p>
-        <p class="video-item__published-date">${getParsedTime(video.snippet.publishTime)}</p>
-        <button class="video-item__save-button button">${buttonText}</button>`,
+        <h4 class="video-item__title">${title}</h4>
+        <p class="video-item__channel-name">${channelTitle}</p>
+        <p class="video-item__published-date">${getParsedTime(publishTime)}</p>
+        ${isSaved ? '' : '<button class="video-item__save-button button">⬇ 나중에 보기</button>'}`,
       });
     });
   }
