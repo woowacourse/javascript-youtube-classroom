@@ -28,19 +28,23 @@ export default function App() {
 
   $('.dimmer').addEventListener('click', () => {
     $('.modal-container').classList.toggle('hide');
+    $('.saved-video-list').replaceChildren();
+    userInterface.renderSavedVideoItems();
   });
 
   $('#going-watch-button').addEventListener('click', () => {
     if (!$('.saved-video-list').classList.contains('watched')) {
-      $('.saved-video-list').classList.toggle('watched');
+      $('.saved-video-list').classList.add('watched');
+      $('.saved-video-list').replaceChildren();
       userInterface.renderSavedVideoItems();
     }
   });
 
   $('#watched-button').addEventListener('click', () => {
     if ($('.saved-video-list').classList.contains('watched')) {
-      $('.saved-video-list').classList.toggle('watched');
+      $('.saved-video-list').classList.remove('watched');
       $('.saved-video-list').replaceChildren();
+      userInterface.renderSavedVideoItems();
     }
   });
 }

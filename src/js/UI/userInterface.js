@@ -115,8 +115,20 @@ const userInterface = {
       return;
     }
     $('.nothing-saved').replaceChildren();
+    if ($('.saved-video-list').classList.contains('watched')) {
+      savedVideos.forEach(savedVideo => {
+        if (!savedVideo.watched) {
+          $('.saved-video-list').insertAdjacentHTML(
+            'beforeEnd',
+            template.savedVideoItem(savedVideo),
+          );
+        }
+      });
+      return;
+    }
+    console.log('gd');
     savedVideos.forEach(savedVideo => {
-      if (!savedVideo.watched) {
+      if (savedVideo.watched) {
         $('.saved-video-list').insertAdjacentHTML('beforeEnd', template.savedVideoItem(savedVideo));
       }
     });
