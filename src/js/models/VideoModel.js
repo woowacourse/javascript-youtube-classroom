@@ -73,9 +73,7 @@ export default class VideoModel {
         return savedItem;
       }
     }
-    if (isfindSavedItem === false) {
-      return newItem;
-    }
+    return isfindSavedItem || newItem;
   }
 
   updateNewVideoItems() {
@@ -104,7 +102,6 @@ export default class VideoModel {
     checkLengthExist(this.#newVideoItems);
 
     this.#nextPageToken = this.#fetchedVideos.nextPageToken;
-    console.log(this.#newVideoItems);
   }
 
   async fetchYoutubeApi(query, nextPageToken) {
