@@ -1,12 +1,7 @@
 import storage from '../storage/storage.js';
 import watchLaterInterface from '../ui/watchLaterInterface.js';
 import { $, confrimVideoDelete } from '../util/general.js';
-import {
-  clearVideoItems,
-  removeCheckedVideoItem,
-  removeDeleteVideoItem,
-  removeEmptyImg,
-} from '../util/render.js';
+import { removeCheckedVideoItem, removeDeleteVideoItem } from '../util/render.js';
 
 export class WatchLaterVideoEventHandler {
   handleWatchLater = () => {

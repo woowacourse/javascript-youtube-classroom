@@ -3,6 +3,11 @@ export const ERROR = {
     EMPTY_INPUT: '빈값을 입력할 수 없습니다. 다시 입력해 주세요.',
   },
 };
+export const ALERT = {
+  MESSAGE: {
+    DELETE_CONFRIM: '정말로 삭제하시겠습니까?',
+  },
+};
 export const API = {
   BASE_URL: 'https://liswktjs.netlify.app',
   RELATIVE_URL: 'youtube/v3/search',

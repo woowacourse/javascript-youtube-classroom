@@ -1,4 +1,4 @@
-import { ERROR } from '../constants/constants.js';
+import { ALERT, ERROR } from '../constants/constants.js';
 import watchedVideoInterface from '../ui/watchedVideoInterface.js';
 import watchLaterInterface from '../ui/watchLaterInterface.js';
 
@@ -27,5 +27,5 @@ export const quickModalElement = e => {
 };
 
 export const confrimVideoDelete = () => {
-  return window.confirm('정말로 삭제하시겠습니까?');
+  return window.confirm(ALERT.MESSAGE.DELETE_CONFRIM);
 };

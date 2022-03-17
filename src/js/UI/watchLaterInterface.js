@@ -1,5 +1,5 @@
 import storage from '../storage/storage.js';
-import { $, $$ } from '../util/general.js';
+import { $ } from '../util/general.js';
 import {
   clearVideoItems,
   showEmptyImg,
