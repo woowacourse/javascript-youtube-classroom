@@ -1,4 +1,4 @@
-import { $ } from '../util';
+import { $, $$ } from '../util';
 import SearchModalView from './SearchModalView';
 import { template } from './template';
 
@@ -36,7 +36,17 @@ export default class HomeView {
     if ($('#will-watch-video-list').children.length === 0) {
       $('.no-saved-video__image').classList.remove('hide');
       $('#will-watch-video-list').classList.add('hide');
+      return;
     }
+
+    $$('.watch-delete-button').forEach((element) => {
+      element.addEventListener('click', (e) => {
+        const { action } = e.target.dataset;
+        if (action) {
+          this[action](e);
+        }
+      });
+    });
   }
 
   openWillWatchPage() {
@@ -73,6 +83,19 @@ export default class HomeView {
         'afterbegin',
         template.watchVideoListItem(savedVideo[savedVideo.length - 1])
       );
+      $('#will-watch-video-list').firstElementChild.lastElementChild.addEventListener('click', (e) => {
+        const { action } = e.target.dataset;
+        if (action) {
+          this[action](e);
+        }
+      });
     }
+  }
+
+  changeWatchState(e) {
+    const parent = e.target.parentNode.parentNode;
+    e.target.classList.add('selected');
+    this.saveVideoManager.changeWatchState(parent.dataset.videoId);
+    $('#watched-video-list').insertAdjacentElement('afterbegin', parent);
   }
 }

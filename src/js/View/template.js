@@ -23,7 +23,9 @@ export const template = {
       <p class="video-item__channel-name">${channelName}</p>
       <p class="video-item__published-date">${publishedDate}</p>
       <div class="watch-delete-button">
-        <button class="video-item__watched-button button ${watched ? 'selected' : ''}" type="button">✅</button>
+        <button class="video-item__watched-button button ${
+          watched ? 'selected' : ''
+        }" type="button" data-action="changeWatchState">✅</button>
         <button class="video-item__delete-button button" type="button">🗑</button>
       </div>
     </li>

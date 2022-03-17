@@ -35,4 +35,16 @@ export default class SaveVideoManager {
     this.videoData.push(videoInfo);
     setData('id', this.videoData);
   }
+
+  changeWatchState(id) {
+    this.videoData = this.videoData.map((video) => {
+      if (video.id === id) {
+        const changedVideo = video;
+        changedVideo.watched = true;
+        return changedVideo;
+      }
+      return video;
+    });
+    setData('id', this.videoData);
+  }
 }
