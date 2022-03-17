@@ -7,6 +7,9 @@ const storage = {
   getSavedVideos() {
     return JSON.parse(localStorage.getItem('saved-videos'));
   },
+  removeSavedVideo() {
+    localStorage.removeItem('saved-videos');
+  },
   updateSavedVideos(saveTargetVideo) {
     const savedVideos = this.getSavedVideos();
 

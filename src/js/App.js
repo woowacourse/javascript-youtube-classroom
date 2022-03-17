@@ -28,6 +28,9 @@ export default function App() {
 
   $('.dimmer').addEventListener('click', () => {
     $('.modal-container').classList.toggle('hide');
+    $('.video-list').replaceChildren();
+    $('#search-input-keyword').value = '';
+    $('.saved-video').hidden = false;
     $('.saved-video-list').replaceChildren();
     userInterface.renderSavedVideoItems();
   });
@@ -69,14 +72,14 @@ export default function App() {
       const newSavedVideos = savedVideos.filter(
         savedVideo => savedVideo.id !== videoItem.dataset.videoId,
       );
+      console.log(newSavedVideos.length);
+      if (newSavedVideos.length === 0) {
+        storage.removeSavedVideo();
+        $('.saved-video').hidden = true;
+        userInterface.renderNothingSavedImage();
+        return;
+      }
       storage.setSavedVideos(newSavedVideos);
     }
   });
-
-  function deleteToDo(event) {
-    const li = event.target.parentElement;
-    li.remove();
-    toDos = toDos.filter(toDo => toDo.id !== parseInt(li.id));
-    saveToDos();
-  }
 }
