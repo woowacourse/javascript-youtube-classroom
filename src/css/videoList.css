@@ -1,0 +1,20 @@
+.video-list-button {
+  position: absolute;
+  width: 36px;
+  height: 36px;
+  background: #f9f9f9;
+  margin-top: 4px;
+}
+
+.check-watched-button {
+  right: 44px;
+}
+
+.delete-button {
+  right: 0;
+}
+
+.video-item__save-button:hover,
+.delete-button:hover {
+  background: #efefef;
+}

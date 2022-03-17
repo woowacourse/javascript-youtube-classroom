@@ -30,7 +30,8 @@ export default class SavedVideoView {
         <h4 class="video-item__title">[Playlist] ${video.title}</h4>
         <p class="video-item__channel-name">${video.channelTitle}</p>
         <p class="video-item__published-date">${video.date}</p>
-        <button data-video-id="${video.id}" class="video-item__save-button button ${video.saved ? 'saved' : ''}" type="button">⬇ 저장</button>
+        <button class="check-watched-button video-list-button button" type="button">✅</button>
+        <button data-video-id="${video.id}" class="delete-button video-list-button button" type="button">🗑️</button>
       </li>`
       )
       .join('');
