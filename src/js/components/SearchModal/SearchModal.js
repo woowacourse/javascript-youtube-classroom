@@ -3,6 +3,7 @@ import SearchBar from './SearchBar.js';
 import SearchResult from './SearchResult/SearchResult.js';
 import NotFound from './NotFound.js';
 import { rootStore } from '../../store/rootStore.js';
+import { EXCEPTION_MESSAGE } from '../../constant.js';
 
 export default class SearchModal extends Component {
   template() {
@@ -35,9 +36,7 @@ export default class SearchModal extends Component {
 
     if (notFound || statusCode !== 200) {
       new NotFound(this.$('#not-found'), {
-        message: `${
-          EXCEPTION_MESSAGE[statusCode] || 'Sorry, Something went wrong'
-        }`,
+        message: `${EXCEPTION_MESSAGE[statusCode] || EXCEPTION_MESSAGE.OTHERS}`,
       });
 
       return;

@@ -1,3 +1,4 @@
+import { EXCEPTION_MESSAGE } from '../../constant.js';
 import Component from '../../core/Component.js';
 import { rootStore } from '../../store/rootStore.js';
 import { webStore } from '../../store/WebStore.js';
@@ -53,7 +54,7 @@ export default class MainPage extends Component {
         });
       } else {
         new NotFound(this.$('#saved-video-list'), {
-          message: '본 영상이 없어요!',
+          message: EXCEPTION_MESSAGE.NO_WATCHED_VIDEO,
         });
       }
     } else {
@@ -63,7 +64,7 @@ export default class MainPage extends Component {
         });
       } else {
         new NotFound(this.$('#saved-video-list'), {
-          message: '볼 영상이 없어요!',
+          message: EXCEPTION_MESSAGE.NO_WATCHING_VIDEO,
         });
       }
     }
