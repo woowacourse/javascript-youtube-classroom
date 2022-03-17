@@ -1,4 +1,3 @@
-import { KEY_CODE_ESC } from '../constants';
 import { $ } from '../utils/dom';
 import Search from './Search';
 
@@ -29,8 +28,8 @@ export default class YoutubeSearchModal {
     $('.dimmer').addEventListener('click', e => {
       this.reset();
     });
-    $('.modal-container').addEventListener('keyup', e => {
-      if (e.keyCode === KEY_CODE_ESC) {
+    $('.modal-container').addEventListener('keydown', e => {
+      if (e.key === 'Escape') {
         this.reset();
       }
     });
