@@ -92,12 +92,12 @@ class RenderVideo {
 
   #onCheckAndDeleteButtonClick = ({ target }) => {
     const targetVideo = target.closest('li');
-    if (targetVideo && target.classList.contains(CLASSNAME.VIDEO_CHECK_BUTTON)) {
+    if (!targetVideo) return;
+    if (target.classList.contains(CLASSNAME.VIDEO_CHECK_BUTTON)) {
       alert('hi');
       return;
     }
     if (
-      targetVideo &&
       target.classList.contains(CLASSNAME.VIDEO_DELETE_BUTTON) &&
       confirm(DELETE_CONFIRM_MESSAGE(targetVideo.dataset.title))
     ) {
@@ -113,6 +113,19 @@ class RenderVideo {
     this.modalContainer.classList.add(CLASSNAME.HIDE_ELEMENT);
   };
 
+  #onSearchFormSubmit = (e) => {
+    e.preventDefault();
+    this.videoListContainer.scrollTop = 0;
+
+    if (this.searchVideo.prevSearchKeyword === this.searchInput.value.trim()) {
+      return;
+    }
+    this.searchVideo.initSearchVideo();
+    this.videoListContainer.replaceChildren();
+    this.videoListContainer.insertAdjacentHTML('afterbegin', totalVideoSkeletonTemplate);
+    this.#loadVideo();
+  };
+
   #onScrollVideoList = () => {
     const { scrollHeight, offsetHeight, scrollTop, children: videoList } = this.videoListContainer;
     if (
@@ -124,26 +137,20 @@ class RenderVideo {
     }
   };
 
-  #onSearchFormSubmit = (e) => {
-    e.preventDefault();
-    this.videoListContainer.scrollTop = 0;
-
-    if (this.searchVideo.prevSearchKeyword === this.searchInput.value.trim()) {
-      return;
-    }
-
-    this.searchVideo.initSearchVideo();
-    this.videoListContainer.replaceChildren();
-    this.videoListContainer.insertAdjacentHTML('afterbegin', totalVideoSkeletonTemplate);
-    this.#loadVideo();
-  };
-
   #onSaveButtonClick = ({ target }) => {
     const isSaveButton = target.classList.contains(CLASSNAME.VIDEO_SAVE_BUTTON);
     if (isSaveButton && this.saveVideo.saveVideoList.length < MAX_SAVE_VIDEO_COUNT) {
       this.saveVideo.saveVideoInformationToStorage(target.closest('li').dataset);
       target.textContent = BUTTON_SAVED_TEXT;
       target.disabled = true;
+
+      if (this.playlistTabButton.classList.contains('selected')) {
+        this.#onTabButtonClick(
+          this.playlistTabButton,
+          this.watchedTabButton,
+          this.saveVideo.saveVideoList.filter((video) => !video.isChecked)
+        );
+      }
       return;
     }
     if (isSaveButton) {
@@ -196,7 +203,7 @@ class RenderVideo {
       this.videoListContainer.replaceChildren();
 
       this.searchVideo.initSearchVideo();
-      alert(error);
+      alert(`에러: '${error.message}'. 개발자에게 문의해주세요.`);
     }
   }
 }
