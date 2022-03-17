@@ -5,28 +5,47 @@ const videoStorage = {
     VIDEO_LIST: 'videoList',
   },
 
-  storeVideoId: function (videoData) {
-    if (!this.hasVideoId(videoData)) {
-      const videoList = this.getVideoIdList();
+  storeVideoData: function (videoData) {
+    if (!this.hasVideoData(videoData.videoId)) {
+      const videoList = this.getVideoDataList();
       videoList.push(videoData);
       localStorage.setItem(this.KEYS.VIDEO_LIST, JSON.stringify(videoList));
     }
   },
 
-  getVideoIdList: function () {
+  getVideoDataList: function () {
     const videoList = JSON.parse(localStorage.getItem(this.KEYS.VIDEO_LIST));
     return videoList || [];
   },
 
-  hasVideoId: function (videoId) {
-    const videoList = this.getVideoIdList();
+  hasVideoData: function (videoId) {
+    const videoList = this.getVideoDataList();
     return videoList.some(videoData => videoData.videoId === videoId);
   },
 
   checkOverMaxLength: function () {
-    if (this.getVideoIdList().length >= STORE.MAX_LENGTH) {
+    if (this.getVideoDataList().length >= STORE.MAX_LENGTH) {
       throw new Error(ERROR_MESSAGE.OVER_MAX_STORE_LENGTH);
     }
+  },
+
+  deleteVideoData(videoId) {
+    if (this.hasVideoData(videoId)) {
+      const deletedList = this.getVideoDataList();
+      deletedList.splice(this.getDataIndexInList(videoId), 1);
+      localStorage.setItem(this.KEYS.VIDEO_LIST, JSON.stringify(deletedList));
+    }
+  },
+
+  getDataIndexInList(videoId) {
+    let dataIndex = 0;
+    const videoList = this.getVideoDataList();
+    videoList.forEach((videoData, idx) => {
+      if (videoData.videoId === videoId) {
+        dataIndex = idx;
+      }
+    });
+    return dataIndex;
   },
 };
 
