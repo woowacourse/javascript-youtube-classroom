@@ -57,7 +57,6 @@ const videoSkeletonTemplate = `
 `;
 
 const videoNotFoundTemplate = `
-  <section class="search-result search-result--no-result">
     <h3 hidden>검색 결과</h3>
     <div class="no-result">
       <img src="${notFoundImage}" alt="no result image" class="no-result__image">
@@ -66,7 +65,6 @@ const videoNotFoundTemplate = `
         다른 키워드로 검색해보세요
       </p>
     </div>
-  </section>
 `;
 
 const videoNoMoreTemplate = '<p class="video-no-more">결과가 더 이상 없습니다</p>';

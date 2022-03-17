@@ -35,6 +35,11 @@
   width: 80%;
 }
 
+.skeleton-list {
+  display: grid;
+  margin-top: 20px;
+}
+
 .hide-element {
   display: none;
 }

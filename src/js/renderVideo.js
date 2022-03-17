@@ -29,6 +29,7 @@ class RenderVideo {
     this.renderVideoListWrap = selectDom('.video-list', this.modalContainer);
     this.renderSkeletonWrap = selectDom('.skeleton-list', this.modalContainer);
     this.searchModalBackground = selectDom('.dimmer', this.modalContainer);
+    this.noSearchResultWrap = selectDom('.search-result-no-result', this.modalContainer);
 
     this.searchResultWrap = selectDom('.search-result', this.modalContainer);
     this.willWatchVideoWrap = selectDom('.will-watch-video', this.watchVideoWrap);
@@ -171,6 +172,7 @@ class RenderVideo {
       return;
     }
 
+    this.noSearchResultWrap.replaceChildren();
     this.renderVideoListWrap.replaceChildren();
     this.renderSearchScreen();
   };
@@ -197,7 +199,7 @@ class RenderVideo {
     this.handleSketonUi(this.renderSkeletonWrap, 'hide');
 
     if (this.renderVideoListWrap.children.length === 0 && !searchVideo.length) {
-      this.renderVideoListWrap.insertAdjacentHTML('afterbegin', videoNotFoundTemplate);
+      this.noSearchResultWrap.insertAdjacentHTML('afterbegin', videoNotFoundTemplate);
       return;
     }
 
