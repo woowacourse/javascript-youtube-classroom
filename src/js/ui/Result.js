@@ -52,18 +52,18 @@ export const result = {
     `;
   },
 
-  renderInitialVideoList(json) {
+  renderInitialVideoList(videoData) {
     this.addSaveButtonClickEvent();
     const $videoList = $('.video-list');
 
     $videoList.replaceChildren();
     $videoList.insertAdjacentHTML(
       'beforeend',
-      json.items.length ? this.searchResultTemplate(json.items) : this.noSearchResultTemplate(),
+      videoData.items.length ? this.searchResultTemplate(videoData.items) : this.noSearchResultTemplate(),
     );
 
-    if (json && json.nextPageToken) {
-      this.scrollObserver(json.nextPageToken);
+    if (videoData && videoData.nextPageToken) {
+      this.scrollObserver(videoData.nextPageToken);
     }
   },
 
@@ -71,12 +71,12 @@ export const result = {
     skeleton.renderSkeletonUI();
 
     request($('#search-input-keyword').value, nextPageToken)
-      .then(json => {
+      .then(videoData => {
         skeleton.removeSkeletonUI();
-        $('.video-list').insertAdjacentHTML('beforeend', this.searchResultTemplate(json.items));
+        $('.video-list').insertAdjacentHTML('beforeend', this.searchResultTemplate(videoData.items));
 
-        if (json && json.nextPageToken) {
-          this.scrollObserver(json.nextPageToken);
+        if (videoData && videoData.nextPageToken) {
+          this.scrollObserver(videoData.nextPageToken);
         }
       })
       .catch(async ({ message }) => {

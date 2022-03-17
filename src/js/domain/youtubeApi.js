@@ -8,8 +8,8 @@ const request = async (searchText, nextPageToken = '') => {
       `https://mincho-youtube.netlify.app/youtube/v3/search?part=snippet&q=${searchText}&maxResults=10&type=video&pageToken=${nextPageToken}`,
     );
     if (response.ok) {
-      const searchResult = await response.json();
-      return searchResult;
+      const videoData = await response.json();
+      return videoData;
     }
   } catch {
     skeleton.removeSkeletonUI();
