@@ -18,12 +18,24 @@
 
 .search-modal {
   position: relative;
-  width: max-content;
+  width: 1080px;
   height: 727px;
   background: #ffffff;
   border: 1px solid rgba(0, 0, 0, 0.12);
   border-radius: 4px;
-  padding: 50px 50px 32px;
+  padding: 50px 20px 32px;
+}
+
+@media screen and (max-width: 1279px) {
+  .search-modal {
+    width: 810px;
+  }
+}
+
+@media screen and (max-width: 959px) {
+  .search-modal {
+    width: max-content;
+  }
 }
 
 .search-modal__title {
