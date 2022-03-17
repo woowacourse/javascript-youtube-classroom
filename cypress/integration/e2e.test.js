@@ -62,6 +62,21 @@ describe('유튜브 검색 및 비디오 저장 정상 작동 테스트', () => 
   });
 });
 
+describe('영상 삭제/ 본 영상 체크/ 볼 영상과 본 영상 확인 기능 정상 작동 테스트', () => {
+  before(() => {
+    cy.visit('../../dist/index.html');
+  });
+
+  it('저장된 영상이 있을 경우 저장된 영상들을 확인할 수 있다.', () => {
+    cy.get('.video-item__view-check-button').should('be.visible');
+    cy.get('.video-item__delete-button').should('be.visible');
+  });
+
+  // it('삭제 버튼을 클릭하면, 비디오를 삭제할 수 있다', () => {});
+
+  // it('저장된 영상이 없을 경우 메시지를 확인할 수 있다.', () => {});
+});
+
 describe('유튜브 검색 예외 사항 테스트', () => {
   before(() => {
     cy.visit('../../dist/index.html');
