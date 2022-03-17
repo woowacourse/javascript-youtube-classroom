@@ -17,7 +17,7 @@ export default class SaveVideoManager {
     return this.videoData.some((video) => video.id === id);
   }
 
-  saveVideoBy(video) {
+  saveVideo(video) {
     const videoInfo = {
       id: video.dataset.videoId,
       thumbnail: video.children[0].currentSrc,

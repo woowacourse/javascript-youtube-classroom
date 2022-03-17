@@ -41,12 +41,7 @@ export default class SearchModalView {
 
   onClickVideoSaveButton(e) {
     const { target } = e.detail;
-    try {
-      this.saveVideoManager.saveVideoBy(target.parentNode);
-    } catch ({ message }) {
-      return alert(message);
-    }
-    target.remove();
+    target.classList.add('hide');
   }
 
   searchOnSubmitKeyword(keyword) {
@@ -88,5 +83,9 @@ export default class SearchModalView {
       return true;
     }
     return false;
+  }
+
+  addSaveButton(id) {
+    this.searchResultView.addSaveButton(id);
   }
 }

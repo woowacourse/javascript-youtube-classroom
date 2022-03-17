@@ -79,4 +79,13 @@ export default class SearchResultView {
     this.removeSkeletonListItem();
     this.searchResultVideoList.insertAdjacentHTML('beforeend', listItems);
   }
+
+  addSaveButton(id) {
+    const resultList = this.searchResultVideoList.children;
+    [...resultList].forEach((item) => {
+      if (item.dataset.videoId === id) {
+        item.lastElementChild.classList.remove('hide');
+      }
+    });
+  }
 }

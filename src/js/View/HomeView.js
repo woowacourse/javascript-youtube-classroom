@@ -6,6 +6,7 @@ export default class HomeView {
   constructor(searchVideoManager, saveVideoManager) {
     this.saveVideoManager = saveVideoManager;
     this.modalView = new SearchModalView(searchVideoManager, this.saveVideoManager);
+    this.tab = 'willWatch';
 
     this.bindEvents();
     this.initializeHomepage();
@@ -15,7 +16,7 @@ export default class HomeView {
     $('#search-modal-button').addEventListener('click', this.openModal.bind(this));
     $('#will-watch-button').addEventListener('click', this.openWillWatchPage.bind(this));
     $('#watched-button').addEventListener('click', this.openWatchedPage.bind(this));
-    $('#search-modal').addEventListener('saveVideo', this.render.bind(this));
+    $('#search-modal').addEventListener('saveVideo', this.addSaveVideo.bind(this));
   }
 
   openModal() {
@@ -27,15 +28,11 @@ export default class HomeView {
 
     savedVideo.forEach((video) => {
       if (!video.watched) {
-        $('#will-watch-video-list').insertAdjacentHTML('afterbegin', template.watchVideoListItem(video));
+        this.addWillWatchVideo(video);
       } else {
-        $('#watched-video-list').insertAdjacentHTML('afterbegin', template.watchVideoListItem(video));
+        this.addWatchedVideo(video);
       }
     });
-
-    if ($('#will-watch-video-list').children.length === 0) {
-      this.showNoWillWatchVideo();
-    }
 
     $$('.watch-delete-button').forEach((element) => {
       element.addEventListener('click', (e) => {
@@ -45,92 +42,114 @@ export default class HomeView {
         }
       });
     });
+    this.openWillWatchPage();
   }
 
   openWillWatchPage() {
+    this.tab = 'willWatch';
     $('#will-watch-button').classList.add('selected');
     $('#watched-button').classList.remove('selected');
 
     $('#watched-video-list').classList.add('hide');
     $('.no-watched-video__image').classList.add('hide');
     if ($('#will-watch-video-list').children.length === 0) {
-      $('.no-saved-video__image').classList.remove('hide');
+      this.showEmptyWillWatchVideo();
       return;
     }
-    $('#will-watch-video-list').classList.remove('hide');
+    this.showWillWatchVideo();
   }
 
   openWatchedPage() {
+    this.tab = 'watched';
     $('#will-watch-button').classList.remove('selected');
     $('#watched-button').classList.add('selected');
     $('#will-watch-video-list').classList.add('hide');
 
     $('.no-saved-video__image').classList.add('hide');
     if ($('#watched-video-list').children.length === 0) {
-      this.showNoWatchedVideo();
+      this.showEmptyWatchedVideo();
       return;
     }
     $('#watched-video-list').classList.remove('hide');
   }
 
-  render(e) {
-    this.modalView.onClickVideoSaveButton(e);
+  addSaveVideo(e) {
+    const { target } = e.detail;
+    try {
+      this.saveVideoManager.saveVideo(target.parentNode);
+    } catch ({ message }) {
+      return alert(message);
+    }
     const savedVideo = this.saveVideoManager.getVideoData();
-    if (savedVideo.length !== $('#will-watch-video-list').children.length) {
-      if ($('#will-watch-video-list').children.length === 0) {
-        $('.no-saved-video__image').classList.add('hide');
-        $('#will-watch-video-list').classList.remove('hide');
+    this.addWillWatchVideo(savedVideo[savedVideo.length - 1]);
+    $('#will-watch-video-list').firstChild.lastElementChild.addEventListener('click', (e) => {
+      const { action } = e.target.dataset;
+      if (action) {
+        this[action](e);
       }
-      $('#will-watch-video-list').insertAdjacentHTML(
-        'afterbegin',
-        template.watchVideoListItem(savedVideo[savedVideo.length - 1])
-      );
-      $('#will-watch-video-list').firstElementChild.lastElementChild.addEventListener('click', (e) => {
-        const { action } = e.target.dataset;
-        if (action) {
-          this[action](e);
-        }
-      });
+    });
+    this.modalView.onClickVideoSaveButton(e);
+    if (this.tab === 'willWatch') {
+      this.openWillWatchPage();
     }
   }
 
   changeWatchState(e) {
-    const parent = e.target.parentNode.parentNode;
+    const target = e.target.parentNode.parentNode;
     e.target.classList.add('selected');
-    this.saveVideoManager.changeWatchState(parent.dataset.videoId);
-    $('#watched-video-list').insertAdjacentElement('afterbegin', parent);
+    this.saveVideoManager.changeWatchState(target.dataset.videoId);
+    $('#watched-video-list').insertAdjacentElement('afterbegin', target);
+    if ($('#will-watch-video-list').children.length === 0) {
+      this.showEmptyWillWatchVideo();
+    }
   }
 
   deleteVideo(e) {
     const target = e.target.parentNode.parentNode;
     $('#confirm-container').classList.remove('hide');
-    $('.confirm-dimmer').addEventListener('click', this.closeConfirmModal());
-    $('#yes-button').addEventListener('click', this.onClickYesButton(target));
-    $('#no-button').addEventListener('click', this.closeConfirmModal());
+    $('.confirm-dimmer').addEventListener('click', this.closeConfirmModal);
+    $('#yes-button').addEventListener('click', () => this.onClickYesButton(target));
+    $('#no-button').addEventListener('click', this.closeConfirmModal);
   }
 
   onClickYesButton(target) {
     this.saveVideoManager.removeVideo(target.dataset.videoId);
+    this.modalView.addSaveButton(target.dataset.videoId);
+
     target.remove();
+
     if ($('#will-watch-video-list').children.length === 0 && !$('#will-watch-video-list').classList.contains('hide')) {
-      this.showNoWillWatchVideo();
+      this.showEmptyWillWatchVideo();
     }
     if ($('#watched-video-list').children.length === 0 && !$('#watched-video-list').classList.contains('hide')) {
-      this.showNoWatchedVideo();
+      this.showEmptyWatchedVideo();
     }
     $('#confirm-container').classList.add('hide');
+  }
+
+  addWillWatchVideo(video) {
+    $('#will-watch-video-list').insertAdjacentHTML('afterbegin', template.watchVideoListItem(video));
+  }
+
+  addWatchedVideo(video) {
+    $('#watched-video-list').insertAdjacentHTML('afterbegin', template.watchVideoListItem(video));
   }
 
   closeConfirmModal() {
     $('#confirm-container').classList.add('hide');
   }
 
-  showNoWillWatchVideo() {
+  showWillWatchVideo() {
+    $('.no-saved-video__image').classList.add('hide');
+    $('#will-watch-video-list').classList.remove('hide');
+  }
+
+  showEmptyWillWatchVideo() {
     $('.no-saved-video__image').classList.remove('hide');
     $('#will-watch-video-list').classList.add('hide');
   }
 
-  showNoWatchedVideo() {
+  showEmptyWatchedVideo() {
     $('.no-watched-video__image').classList.remove('hide');
     $('#watched-video-list').classList.add('hide');
   }

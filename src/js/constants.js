@@ -1,5 +1,5 @@
 export const SEARCH_KEYWORD_MIN_LENGTH = 2;
-export const MAX_VIDEO_SAVE = 100;
+export const MAX_VIDEO_SAVE = 10;
 export const MAX_DATA_FETCH_AT_ONCE = 10;
 export const SCROLL_BUFFER_SECOND = 200;
 export const SCROLL_BUFFER_HEIGHT = 50;
