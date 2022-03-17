@@ -1,5 +1,5 @@
 import { $, $$ } from '../util/querySelector.js';
-import storage from '../storage/storage.js';
+import videoStorage from '../localStorage/videoStorage.js';
 
 const template = {
   skeletonUI: `<li class="skeleton">
@@ -82,7 +82,7 @@ const userInterface = {
   },
 
   removeSavedVideoButton() {
-    const savedVideos = storage.getSavedVideos();
+    const savedVideos = videoStorage.getSavedVideos();
     if (savedVideos) {
       savedVideos.forEach(video => {
         if ($('.video-list').lastElementChild.dataset.videoId === video.id) {
@@ -126,7 +126,7 @@ const userInterface = {
   },
 
   renderSavedVideoItems() {
-    const savedVideos = storage.getSavedVideos();
+    const savedVideos = videoStorage.getSavedVideos();
     if (!savedVideos) {
       this.renderNothingSavedImage();
       return;

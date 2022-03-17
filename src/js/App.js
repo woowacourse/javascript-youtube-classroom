@@ -3,10 +3,10 @@ import throttle, { SCROLL_THROTTLE_DELAY } from './util/throttle.js';
 import debounce from './util/debounce.js';
 import { handleSearch, handleScroll, handleSaveButtonClick } from './eventHandlers/searchEvents.js';
 import userInterface from './ui/userInterface.js';
-import storage from './storage/storage.js';
+import videoStorage from './localStorage/videoStorage.js';
 
 export default function App() {
-  const savedVideos = storage.getSavedVideos();
+  const savedVideos = videoStorage.getSavedVideos();
   if (savedVideos) {
     userInterface.renderSavedVideoItems();
   } else {
@@ -54,7 +54,7 @@ export default function App() {
     if (e.target.classList.contains('video-item__watched-button')) {
       const videoItem = e.target.parentElement.parentElement;
       videoItem.remove();
-      const savedVideos = storage.getSavedVideos();
+      const savedVideos = videoStorage.getSavedVideos();
       const newSavedVideos = savedVideos.map(savedVideo => {
         if (savedVideo.id === videoItem.dataset.videoId) {
           savedVideo.watched = true;
@@ -62,23 +62,23 @@ export default function App() {
         }
         return savedVideo;
       });
-      storage.setSavedVideos(newSavedVideos);
+      videoStorage.setSavedVideos(newSavedVideos);
     }
     if (e.target.classList.contains('video-item__delete-button')) {
       const videoItem = e.target.parentElement.parentElement;
       videoItem.remove();
-      const savedVideos = storage.getSavedVideos();
+      const savedVideos = videoStorage.getSavedVideos();
       const newSavedVideos = savedVideos.filter(
         savedVideo => savedVideo.id !== videoItem.dataset.videoId,
       );
       console.log(newSavedVideos.length);
       if (newSavedVideos.length === 0) {
-        storage.removeSavedVideo();
+        videoStorage.removeSavedVideo();
         $('.saved-video').hidden = true;
         userInterface.renderNothingSavedImage();
         return;
       }
-      storage.setSavedVideos(newSavedVideos);
+      videoStorage.setSavedVideos(newSavedVideos);
     }
   });
 
