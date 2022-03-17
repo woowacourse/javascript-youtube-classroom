@@ -16,3 +16,17 @@
   flex-wrap: wrap;
   gap: 32px 20px;
 }
+
+.switch-show-type {
+  position: absolute;
+  right: 15%;
+  bottom: 5%;
+  padding: 5px;
+}
+
+.delete-button {
+  position: absolute;
+  right: 0%;
+  bottom: 5%;
+  padding: 5px;
+}
