@@ -13,6 +13,7 @@ export class SearchModal {
   constructor() {
     this.modalContainer = document.getElementById('modal-container');
     this.searchInputKeyword = document.getElementById('search-input-keyword');
+    this.clearSearchInputKeywordButton = document.getElementById('search-input-clear-button');
     this.videoList = document.getElementById('video-list');
     this.resultLabel = document.getElementById('result-label');
     this.noResultContainer = document.getElementById('no-result');
@@ -23,6 +24,7 @@ export class SearchModal {
     this.videoList.addEventListener('click', this.handleVideoItemSave);
     this.closeModalButton.addEventListener('click', this.handleCloseButton);
     this.searchInputKeyword.addEventListener('keyup', (event) => this.handleEnterKeyEvent(event));
+    this.clearSearchInputKeywordButton.addEventListener('click', this.clearSearchInputKeyword);
   }
 
   show() {
@@ -164,5 +166,9 @@ export class SearchModal {
     if (event.key === 'Enter') {
       this.searchButton.click();
     }
+  };
+
+  clearSearchInputKeyword = () => {
+    this.searchInputKeyword.value = '';
   };
 }

@@ -68,6 +68,25 @@
   background: #00bcd4;
   color: #ffffff;
 }
+#search-input-clear-button {
+  position: absolute;
+  left: 666px;
+  top: 132px;
+  width: 25px;
+  height: 25px;
+  border: none;
+  background-color: transparent;
+}
+
+#search-input-clear-button:after {
+  content: '\00d7';
+  font-size: 12pt;
+}
+
+#search-input-clear-button:active {
+  background-color: #f3f3f3;
+  border-radius: 50%;
+}
 
 #no-result {
   display: flex;
