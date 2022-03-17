@@ -4,7 +4,7 @@ body {
 }
 
 #app {
-  max-width: 1020px;
+  max-width: 1400px;
   margin: 0 auto;
 }
 
@@ -18,7 +18,10 @@ body {
 
 .nav {
   display: flex;
-  justify-content: center;
+}
+
+#search-modal-button {
+  margin-left: auto;
 }
 
 .button {
