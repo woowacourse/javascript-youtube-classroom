@@ -82,7 +82,7 @@ export default class MainPage extends Component {
     if (!e.target.name) {
       return;
     }
-    if ([...e.target.classList].includes('active')) {
+    if (e.target.classList.contains('active')) {
       return;
     }
 

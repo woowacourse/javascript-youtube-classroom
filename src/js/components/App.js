@@ -1,5 +1,4 @@
 import Component from '../core/Component.js';
-import { rootStore } from '../store/rootStore.js';
 import MainPage from './MainPage/MainPage.js';
 import SearchModal from './SearchModal/SearchModal.js';
 
@@ -11,10 +10,6 @@ export default class App extends Component {
     `;
   }
 
-  toggleSearchModal() {
-    this.$searchModal.classList.toggle('hide');
-  }
-
   afterMounted() {
     this.$searchModal = this.$('#search-modal');
 
@@ -24,5 +19,9 @@ export default class App extends Component {
     new SearchModal(document.querySelector('#search-modal'), {
       toggleSearchModal: this.toggleSearchModal.bind(this),
     });
+  }
+
+  toggleSearchModal() {
+    this.$searchModal.classList.toggle('hide');
   }
 }
