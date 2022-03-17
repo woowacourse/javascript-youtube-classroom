@@ -94,7 +94,8 @@ class RenderVideo {
     const targetVideo = target.closest('li');
     if (!targetVideo) return;
     if (target.classList.contains(CLASSNAME.VIDEO_CHECK_BUTTON)) {
-      alert('hi');
+      this.saveVideo.toggleVideoIsCheckedFromStorage(targetVideo.dataset);
+      targetVideo.remove();
       return;
     }
     if (
