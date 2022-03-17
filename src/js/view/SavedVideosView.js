@@ -1,6 +1,7 @@
 import storage from '../domain/storage';
 import getSearchResult from '../domain/VideoListAPI';
 import { formatDateString, selectDom } from '../util/util';
+import getSkeletonTemplateArray, { removeAllSkeletons } from './Skeleton';
 
 class SavedVideosView {
   constructor() {
@@ -37,8 +38,10 @@ class SavedVideosView {
   };
 
   async #renderNewVideos(newVideoIdArray) {
+    this.videoList.append(...getSkeletonTemplateArray(newVideoIdArray.length));
     const videoObjectArray = await getSearchResult(newVideoIdArray);
     const videoElementList = this.#createVideoElements(videoObjectArray);
+    removeAllSkeletons(this.videoList);
     this.videoList.append(...videoElementList);
   }
 

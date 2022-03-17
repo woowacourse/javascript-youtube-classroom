@@ -1,12 +1,9 @@
 import { ERROR_MESSAGES, MAX_SEARCH_RESULT } from '../../constants/constants';
 import { isBlankValue, removeElementList, scrollToTop, selectDom } from '../../util/util';
-import {
-  errorTemplate,
-  searchVideoElementTemplate,
-  skeletonTemplate,
-} from './SearchModalTemplates';
+import { errorTemplate, searchVideoElementTemplate } from './SearchModalTemplates';
 import Search from '../../domain/Search';
 import storage from '../../domain/storage';
+import getSkeletonTemplateArray, { removeAllSkeletons } from '../Skeleton';
 
 class SearchModalView {
   constructor() {
@@ -67,8 +64,7 @@ class SearchModalView {
 
   async #sendSearchRequest(keyword) {
     try {
-      const skeletons = Array.from({ length: MAX_SEARCH_RESULT }, () => skeletonTemplate());
-      this.videoList.append(...skeletons);
+      this.videoList.append(...getSkeletonTemplateArray(MAX_SEARCH_RESULT));
       const { searchResultArray, hasNextPage } = await this.search.handleSearchRequest(keyword);
       this.#renderSearchResult({ searchResultArray, keyword, hasNextPage });
     } catch (error) {
@@ -86,8 +82,7 @@ class SearchModalView {
   };
 
   #renderSearchResult({ searchResultArray, hasNextPage }) {
-    const skeletonList = this.videoList.querySelectorAll('.skeleton');
-    removeElementList(skeletonList);
+    removeAllSkeletons(this.videoList);
 
     const resultElementArray = searchResultArray.map((resultItem) => {
       const videoElement = searchVideoElementTemplate(resultItem);

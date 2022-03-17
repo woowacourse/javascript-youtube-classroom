@@ -15,18 +15,6 @@ export function searchVideoElementTemplate(resultItem) {
   return videoElement;
 }
 
-export function skeletonTemplate() {
-  return element({
-    tag: 'div',
-    className: 'skeleton',
-    children: [
-      element({ tag: 'div', className: 'image' }),
-      element({ tag: 'p', className: 'line' }),
-      element({ tag: 'p', className: 'line' }),
-    ],
-  });
-}
-
 export function errorTemplate(errorMessage) {
   return element({
     tag: 'div',
