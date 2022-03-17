@@ -1,13 +1,16 @@
 import Component from '../../../core/Component.js';
 import VideoCard from './VideoCard.js';
 import { rootStore } from '../../../store/rootStore.js';
+import { getSearchAPI } from '../../../api/api.js';
+import { addSavedToVideos, makeCardData } from '../SearchBar.js';
 import SkeletonCard from './SkeletonCard.js';
 import { LOAD_VIDEOS_COUNT } from '../../../constant.js';
+import request from '../../../__mocks__/request.js';
 
 export default class VideoCardList extends Component {
   setup() {
     this.observer = new IntersectionObserver(
-      this.props.handleLastVideoVisible,
+      this.handleLastVideoVisible.bind(this),
       {
         root: this.target,
         rootMargin: '0px',
@@ -17,7 +20,7 @@ export default class VideoCardList extends Component {
   }
 
   template() {
-    const { videos, isLoading } = this.props;
+    const { videos, isLoading } = rootStore.state;
 
     return `
       ${videos.map(() => `<div class="video-card real"></div>`).join('')}
@@ -33,8 +36,7 @@ export default class VideoCardList extends Component {
   }
 
   afterMounted() {
-    const { videos, isLoading } = this.props;
-
+    const { videos, isLoading } = rootStore.state;
     const videoCards = this.target.querySelectorAll('.video-card.real');
     videoCards.forEach((videoCard, index) => {
       index < videos.length &&
@@ -52,11 +54,6 @@ export default class VideoCardList extends Component {
       return;
     }
 
-    // 10개 이하로 fetching 해오는 경우, 더 이상 observe 하지 않는다.
-    if (videos.length % 10 !== 0) {
-      this.observer.disconnect();
-      return;
-    }
     this.observeLastChild();
   }
 
@@ -64,5 +61,45 @@ export default class VideoCardList extends Component {
     if (this.target.lastElementChild) {
       this.observer.observe(this.target.lastElementChild);
     }
+  }
+
+  handleLastVideoVisible(entries, observer) {
+    entries.forEach(async entry => {
+      if (!entry.isIntersecting || rootStore.state.isLoading) return;
+
+      observer.disconnect();
+
+      rootStore.setState({ isLoading: true });
+
+      const newVideos = await this.loadNextVideos();
+
+      rootStore.setState({
+        videos: [...rootStore.state.videos, ...newVideos],
+        isLoading: false,
+      });
+    });
+  }
+
+  async loadNextVideos() {
+    const { query, pageToken: prevPageToken } = rootStore.state.searchOption;
+
+    // const [error, data] = await getSearchAPI(query, prevPageToken);
+    const [error, data] = await request();
+    if (error) {
+      alert(`${error.message}, status: ${error.statusCode}`);
+
+      return;
+    }
+
+    const { items, nextPageToken } = data;
+
+    rootStore.setState({
+      searchOption: {
+        query,
+        pageToken: nextPageToken,
+      },
+    });
+
+    return makeCardData(items);
   }
 }
