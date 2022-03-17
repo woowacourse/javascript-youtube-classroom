@@ -14,5 +14,5 @@ export const MAX_STORE_CAPACITY = 100;
 
 export const ERROR_MESSAGE = {
   EMPTY_KEYWORD: '검색어를 입력해주세요!',
-  EXCEED_MAX_STORE_CAPACITY: '100개보다 많이 저장할 수 없습니다.',
+  EXCEED_MAX_STORE_CAPACITY: `${MAX_STORE_CAPACITY}개보다 많이 저장할 수 없습니다.`,
 };
