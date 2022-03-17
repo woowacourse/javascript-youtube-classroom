@@ -1,5 +1,5 @@
 import { getVideoItemsFromLocalStorage, saveVideoItemToLocalStorage } from '../utils/localStorage.js';
-import { makeThumbnailTemplate } from '../utils/templates.js';
+import { makeThumbnailTemplate, noClassroomContentsTemplate } from '../utils/templates.js';
 
 export class Classroom {
   constructor(props) {
@@ -30,6 +30,10 @@ export class Classroom {
         })
         .join(''),
     );
+
+    if (this.contentsContainer.childElementCount === 0) {
+      this.contentsContainer.insertAdjacentHTML('beforeend', noClassroomContentsTemplate());
+    }
   };
 
   clearClassroomContentsContainer() {
@@ -70,5 +74,9 @@ export class Classroom {
         })
         .join(''),
     );
+
+    if (this.contentsContainer.childElementCount === 0) {
+      this.contentsContainer.insertAdjacentHTML('beforeend', noClassroomContentsTemplate());
+    }
   };
 }
