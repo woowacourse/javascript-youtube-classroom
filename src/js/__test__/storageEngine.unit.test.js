@@ -28,7 +28,7 @@ const mockVideo = {
 };
 
 describe('저장 기능 테스트', () => {
-  const storageEngine = new StorageEngine();
+  const storageEngine = StorageEngine.instance;
 
   beforeEach(() => {
     storageEngine.init();

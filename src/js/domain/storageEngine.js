@@ -5,6 +5,16 @@ import {
 } from '../util/constants.js';
 
 export default class StorageEngine {
+  static _instance = null;
+
+  static get instance() {
+    if (!StorageEngine._instance) {
+      StorageEngine._instance = new StorageEngine();
+    }
+
+    return StorageEngine._instance;
+  }
+
   getSavedVideos() {
     return JSON.parse(localStorage.getItem(STORAGE_KEY_SAVED_VIDEOS));
   }
