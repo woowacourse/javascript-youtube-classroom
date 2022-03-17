@@ -47,6 +47,17 @@ const videoStorage = {
     });
     return dataIndex;
   },
+
+  switchType(videoId) {
+    const switchedList = this.getVideoDataList();
+    const cutVideo = switchedList[this.getDataIndexInList(videoId)];
+    cutVideo.type = cutVideo.type === 'watch-later' ? 'watched' : 'watch-later';
+    this.deleteVideoData(videoId);
+    localStorage.setItem(
+      this.KEYS.VIDEO_LIST,
+      JSON.stringify([...this.getVideoDataList(), cutVideo])
+    );
+  },
 };
 
 export default videoStorage;

@@ -10,7 +10,7 @@ export default class MainView {
     this.bindOnClickWatchLaterButton();
     this.onClickWatchLaterButton();
     this.bindOnClickWatchedButton();
-    this.bindOnClickDeleteButton();
+    this.bindOnClickSwitchButton();
   }
 
   registerDOM() {
@@ -32,9 +32,15 @@ export default class MainView {
     this.$watchedButton.addEventListener('click', this.onClickWatchedButton.bind(this));
   }
 
-  bindOnClickDeleteButton() {
+  bindOnClickSwitchButton() {
     this.$storedVideoList.addEventListener('click', e => {
-      console.log(e.target);
+      if ([...e.target.classList].includes('switch-show-type')) {
+        const videoId = e.target.dataset.videoid;
+        videoStorage.switchType(videoId);
+        e.target.parentElement.remove();
+        const storedList = videoStorage.getVideoDataList();
+        this.renderSwitchedVideoData(storedList[storedList.length - 1]);
+      }
     });
   }
 
@@ -50,7 +56,7 @@ export default class MainView {
           <h4 class="video-item__title">${videoData.title}</h4>
           <p class="video-item__channel-name">${videoData.channelTitle}</p>
           <p class="video-item__published-date">${videoData.publishedAt}</p>
-          <button data-videoid=${videoData.videoId} class="button ${
+          <button data-videoid=${videoData.videoId} class="switch-show-type button ${
         videoData.type === 'watch-later' ? '' : 'clicked'
       }">✅</button>
           <button data-videoid=${videoData.videoId} class="button">🗑️</button>
@@ -92,7 +98,26 @@ export default class MainView {
       <h4 class="video-item__title">${videoData.title}</h4>
       <p class="video-item__channel-name">${videoData.channelTitle}</p>
       <p class="video-item__published-date">${videoData.publishedAt}</p>
-      <button data-videoid=${videoData.videoId} class="button ${
+      <button data-videoid=${videoData.videoId} class="button switch-show-type ${
+      videoData.type === 'watch-later' ? '' : 'clicked'
+    }">✅</button>
+      <button data-videoid=${videoData.videoId} class="button">🗑️</button>
+    </li>`;
+
+    this.$storedVideoList.insertAdjacentHTML('beforeend', template);
+  }
+
+  renderSwitchedVideoData(videoData) {
+    const template = `
+    <li class="video-item ${videoData.type} hide">
+      <img
+        src=${videoData.url}
+        alt="video-item-thumbnail" class="video-item__thumbnail"
+        loading="lazy" />
+      <h4 class="video-item__title">${videoData.title}</h4>
+      <p class="video-item__channel-name">${videoData.channelTitle}</p>
+      <p class="video-item__published-date">${videoData.publishedAt}</p>
+      <button data-videoid=${videoData.videoId} class="button switch-show-type ${
       videoData.type === 'watch-later' ? '' : 'clicked'
     }">✅</button>
       <button data-videoid=${videoData.videoId} class="button">🗑️</button>
