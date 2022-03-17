@@ -23,3 +23,15 @@
 //
 // -- This will overwrite an existing command --
 // Cypress.Commands.overwrite('visit', (originalFn, url, options) => { ... })
+
+Cypress.Commands.add('saveVideo', () => {
+  cy.get('#search-modal-button').click();
+
+  cy.get('#search-input-keyword').type('우테코');
+  cy.get('#search-button').click();
+
+  cy.wait('@getSearchResult');
+  cy.get('.video-item__save-button').first().click();
+  cy.get('.dimmer').click({ force: true });
+  cy.wait('@getVideo');
+});
