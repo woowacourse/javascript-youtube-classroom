@@ -1,7 +1,8 @@
-import { OPTIONS, fetchData, makeURLQuery, YOUTUBE_URL } from '../api';
+import { OPTIONS, fetchData, makeURLQuery, YOUTUBE_URL, fetchVideoList } from '../api';
 import { RULES, THROTTLE_PENDING_MILLISECOND } from '../constants';
 import VideoCardContainer from '../common/VideosCardContainer';
 import throttle from '../utils/throttle';
+import ErrorContainer from '../common/ErrorContainer';
 
 const isEmptyKeyword = (keyword) => keyword.trim().length === 0;
 
@@ -19,16 +20,6 @@ const SKELETON_TEMPLATE = `
     <p class="line"></p>
     <p class="line"></p>
   </div>
-`;
-
-const NO_SEARCH_RESULT_TEMPLATE = `
-  검색 결과가 없습니다<br />
-  다른 키워드로 검색해보세요
-  `;
-
-const EXCEEDED_QUOTA_TEMPLATE = `
-  오늘 검색 할당량을 모두 소진했습니다<br />
-  내일 다시 찾아주세요.
 `;
 
 export default class SearchModal {
@@ -56,6 +47,8 @@ export default class SearchModal {
     this.VideoCardContainer = new VideoCardContainer(this.videoList, {
       items: [],
     });
+    this.ErrorContainer = new ErrorContainer(this.noResultDescription);
+
     this.pageToken = '';
     this.keyword = '';
   }
@@ -140,25 +133,19 @@ export default class SearchModal {
     });
 
     try {
-      const videos = await fetchData(URLquery);
+      const videos = await fetchVideoList(URLquery);
 
       this.VideoCardContainer.setState({ items: videos.items });
 
       this.showSearchResult(videos.items);
 
       this.pageToken = videos.nextPageToken || '';
-    } catch (status) {
-      this.noResultDescription.innerHTML = this.getNoResultDescription(status);
+    } catch ({ message }) {
+      console.log(message);
+      this.ErrorContainer.setState({ status: message });
       this.showNoResultContainer();
     }
 
     this.removeSkeletonUI(this.videoList);
-  }
-
-  getNoResultDescription(status) {
-    if (status === 403) {
-      return EXCEEDED_QUOTA_TEMPLATE;
-    }
-    return NO_SEARCH_RESULT_TEMPLATE;
   }
 }
