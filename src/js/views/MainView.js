@@ -62,11 +62,11 @@ export default class MainView {
       const $videoItem = this.template.getVideoItem(item);
       this.$unwatchedTab.insertAdjacentHTML('beforeend', $videoItem);
     });
-    this.$watchedTab.removeEventListener('click', this.unwatchVideoButton);
-    this.$unwatchedTab.addEventListener('click', this.watchVideoButton);
+    this.$watchedTab.removeEventListener('click', this.#unwatchVideoButton);
+    this.$unwatchedTab.addEventListener('click', this.#watchVideoButton);
 
-    this.$watchedTab.removeEventListener('click', this.deleteVideoButton);
-    this.$unwatchedTab.addEventListener('click', this.deleteVideoButton);
+    this.$watchedTab.removeEventListener('click', this.#deleteVideoButton);
+    this.$unwatchedTab.addEventListener('click', this.#deleteVideoButton);
   }
 
   renderWatchedVideoItems(videoItems) {
@@ -76,28 +76,28 @@ export default class MainView {
       this.$watchedTab.insertAdjacentHTML('beforeend', $videoItem);
     });
     $$('.video-item__button--watched').forEach((button) => button.classList.add('active'));
-    this.$unwatchedTab.removeEventListener('click', this.watchVideoButton);
-    this.$watchedTab.addEventListener('click', this.unwatchVideoButton);
+    this.$unwatchedTab.removeEventListener('click', this.#watchVideoButton);
+    this.$watchedTab.addEventListener('click', this.#unwatchVideoButton);
 
-    this.$watchedTab.addEventListener('click', this.deleteVideoButton);
-    this.$unwatchedTab.removeEventListener('click', this.deleteVideoButton);
+    this.$watchedTab.addEventListener('click', this.#deleteVideoButton);
+    this.$unwatchedTab.removeEventListener('click', this.#deleteVideoButton);
   }
 
-  watchVideoButton = (event) => {
+  #watchVideoButton = (event) => {
     if (event.target.classList.contains('video-item__button--watched')) {
       const videoId = event.target.id;
       emit(event.currentTarget, '@check-watched', { videoId });
     }
   };
 
-  unwatchVideoButton = (event) => {
+  #unwatchVideoButton = (event) => {
     if (event.target.classList.contains('video-item__button--watched')) {
       const videoId = event.target.id;
       emit(event.currentTarget, '@check-unwatched', { videoId });
     }
   };
 
-  deleteVideoButton = (event) => {
+  #deleteVideoButton = (event) => {
     if (event.target.classList.contains('video-item__button--delete')) {
       const videoId = event.target.id;
       emit(event.currentTarget, '@check-delete', { videoId });
@@ -108,8 +108,30 @@ export default class MainView {
     document.getElementById(videoId).remove();
   }
 
-  confirmDelete() {
+  confirmDelete(event) {
     this.$confirmModalContainer.replaceChildren();
     this.$confirmModalContainer.insertAdjacentHTML('beforeend', this.template.getConfirmModal());
+    $('.confirm-modal__cancel-button').addEventListener('click', () => this.#handleCancelButton(), { once: true });
+    $('.confirm-modal__delete-button').addEventListener('click', () => this.#handleDeleteButton(event), {
+      once: true,
+    });
+    this.showConfirmModal();
+  }
+
+  #handleCancelButton() {
+    this.hideConfirmModal();
+  }
+
+  #handleDeleteButton(event) {
+    const { videoId } = event.detail;
+    emit(this.$modalContainer, '@delete-video', { videoId });
+  }
+
+  showConfirmModal() {
+    this.$confirmModalContainer.classList.remove('hide');
+  }
+
+  hideConfirmModal() {
+    this.$confirmModalContainer.classList.add('hide');
   }
 }

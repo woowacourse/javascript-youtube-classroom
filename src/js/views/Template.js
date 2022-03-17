@@ -116,9 +116,9 @@ export default class Template {
           <div class="confirm-modal__content">
             <span class="confirm-modal__span">해당 영상을 저장 목록에서<br />삭제하시겠습니까?</span>
           
-            <div class="clearfix">
-              <button type="button" onclick="" class="button cancelbtn">취소하기</button>
-              <button type="button" onclick="" class="button deletebtn">삭제하기</button>
+            <div class="confirm-modal__clear-fix">
+              <button type="button" class="button confirm-modal__cancel-button">취소하기</button>
+              <button type="button" class="button confirm-modal__delete-button">삭제하기</button>
             </div>
           </div>
         </form>

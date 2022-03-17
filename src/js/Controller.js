@@ -31,6 +31,7 @@ export default class Controller {
     on(this.mainView.$watchedTab, '@check-unwatched', this.#checkUnwatchedVideo.bind(this));
     on(this.mainView.$unwatchedTab, '@check-delete', this.#checkDeleteVideo.bind(this));
     on(this.mainView.$watchedTab, '@check-delete', this.#checkDeleteVideo.bind(this));
+    // on(this.$confirmModalContainer, '');
   }
 
   // 검색 버튼을 눌렀을 때
@@ -137,10 +138,14 @@ export default class Controller {
   }
 
   #checkDeleteVideo(event) {
-    if (this.mainView.confirmDelete()) {
-      const deletedVideoId = event.detail.videoId;
-      this.video.setDeletedVideoItem(deletedVideoId);
-      this.mainView.removeVideo(deletedVideoId);
-    }
+    this.mainView.confirmDelete(event);
+    this.mainView.$modalContainer.addEventListener('@delete-video', this.#deleteVideo, { once: true });
   }
+
+  #deleteVideo = (customEvent) => {
+    const deletedVideoId = customEvent.detail.videoId;
+    this.video.setDeletedVideoItem(deletedVideoId);
+    this.mainView.removeVideo(deletedVideoId);
+    this.mainView.hideConfirmModal();
+  };
 }
