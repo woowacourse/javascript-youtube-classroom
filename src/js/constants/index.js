@@ -1,6 +1,7 @@
 export const YOUTUBE_API_REQUEST_COUNT = 10;
 
 export const SELECTOR = {
+  APP: '#app',
   SEARCH_MODAL_BUTTON: '#search-modal-button',
   SEARCH_MODAL: '#search-modal',
   MODAL_BACKGROUND: '#modal-background',
@@ -8,6 +9,8 @@ export const SELECTOR = {
   SEARCH_INPUT_KEYWORD: '#search-input-keyword',
   VIDEOS: '#videos',
   EMPTY_SCREEN: '#empty-screen',
+  PLAYLIST_VIDEO: '#playlist_video',
+  WATCHED_VIDEO: '#watched_video',
 };
 
 export const MAX_STORE_CAPACITY = 100;

@@ -7,11 +7,11 @@ export default class SavedVideoView {
   }
 
   bindSavedVideoList() {
-    $('#playlist_video').addEventListener('click', this.#changeVideoListContents.bind(this, 'add'));
-    $('#watched_video').addEventListener('click', this.#changeVideoListContents.bind(this, 'remove'));
+    $(SELECTOR.PLAYLIST_VIDEO).addEventListener('click', this.#changeVideoListContents.bind(this, 'add'));
+    $(SELECTOR.WATCHED_VIDEO).addEventListener('click', this.#changeVideoListContents.bind(this, 'remove'));
   }
 
   #changeVideoListContents(option) {
-    $('#app').classList[option]('hide_videolist');
+    $(SELECTOR.APP).classList[option]('hide_videolist');
   }
 }
