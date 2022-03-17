@@ -34,7 +34,11 @@ export default class SearchModal extends Component {
     new SearchBar(this.$('#search-input'));
 
     if (notFound || statusCode !== 200) {
-      new NotFound(this.$('#not-found'));
+      new NotFound(this.$('#not-found'), {
+        message: `${
+          EXCEPTION_MESSAGE[statusCode] || 'Sorry, Something went wrong'
+        }`,
+      });
 
       return;
     }

@@ -37,6 +37,8 @@ export const rootStore = {
     },
     videos: [],
     savedVideos: [],
+    hasWatchedVideo: false,
+    hasWatchingVideo: false,
     status: {
       notFound: false,
       statusCode: 200,

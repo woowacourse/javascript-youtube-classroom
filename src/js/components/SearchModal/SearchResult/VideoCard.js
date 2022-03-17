@@ -105,7 +105,11 @@ export default class VideoCard extends Component {
         return video;
       });
 
-      rootStore.setState({ videos: newVideos, savedVideos: newSavedVideos });
+      rootStore.setState({
+        videos: newVideos,
+        savedVideos: newSavedVideos,
+        hasWatchedVideo: true, // @TODO: 처음에만 true로 바꿔주고, 나중에는 동작하지 않게 하기
+      });
     } catch ({ message }) {
       alert(message);
     }

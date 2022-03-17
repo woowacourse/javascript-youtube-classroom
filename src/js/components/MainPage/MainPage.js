@@ -1,12 +1,19 @@
 import Component from '../../core/Component.js';
 import { rootStore } from '../../store/rootStore.js';
 import { webStore } from '../../store/WebStore.js';
+import NotFound from '../SearchModal/NotFound.js';
 import SavedVideoCardList from './SavedVideoCardList.js';
 
 export default class MainPage extends Component {
   setup() {
     const savedVideos = webStore.load();
-    rootStore.setState({ savedVideos });
+    const watchedVideos = savedVideos.filter(video => video.watched === true);
+
+    rootStore.setState({
+      savedVideos,
+      hasWatchedVideo: watchedVideos.length !== 0,
+      hasWatchingVideo: savedVideos.length - watchedVideos.length !== 0,
+    });
   }
 
   template() {
@@ -35,10 +42,29 @@ export default class MainPage extends Component {
   }
 
   afterMounted() {
+    const { hasWatchedVideo, hasWatchingVideo } = rootStore.state;
     const { watchedMode } = this.props;
-    new SavedVideoCardList(this.$('#saved-video-list'), {
-      watchedMode,
-    });
+    if (watchedMode) {
+      if (hasWatchedVideo) {
+        new SavedVideoCardList(this.$('#saved-video-list'), {
+          watchedMode,
+        });
+      } else {
+        new NotFound(this.$('#saved-video-list'), {
+          message: '본 영상이 없어요!',
+        });
+      }
+    } else {
+      if (hasWatchingVideo) {
+        new SavedVideoCardList(this.$('#saved-video-list'), {
+          watchedMode,
+        });
+      } else {
+        new NotFound(this.$('#saved-video-list'), {
+          message: '볼 영상이 없어요!',
+        });
+      }
+    }
   }
 
   setEvent() {
