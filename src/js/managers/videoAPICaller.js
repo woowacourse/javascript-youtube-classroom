@@ -1,5 +1,5 @@
 import { ERROR_MESSAGE, VIDEO_LIST } from '../utils/constants.js';
-import APIManager from './APIManager.js';
+import APIUtil from './APIUtil.js';
 
 const videoAPICaller = {
   endPoint: 'https://vigorous-boyd-74648a.netlify.app/youtube/v3/search',
@@ -15,8 +15,8 @@ const videoAPICaller = {
   async getVideoListData(inputValue) {
     try {
       this.queryItems.q = inputValue;
-      const requestURL = APIManager.createQueryString(this.endPoint, this.queryItems);
-      const rawData = await APIManager.fetchData(requestURL);
+      const requestURL = APIUtil.createQueryString(this.endPoint, this.queryItems);
+      const rawData = await APIUtil.fetchData(requestURL);
       return this.parsingVideoData(rawData);
     } catch (error) {
       throw error;

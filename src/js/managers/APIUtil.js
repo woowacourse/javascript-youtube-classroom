@@ -1,7 +1,7 @@
 import { ERROR_MESSAGE } from '../utils/constants.js';
 import { videoData } from '../utils/mockData.js';
 
-const APIManager = {
+const APIUtil = {
   async fetchData(requestURL) {
     try {
       // const response = await fetch(requestURL);
@@ -21,4 +21,4 @@ const APIManager = {
   },
 };
 
-export default APIManager;
+export default APIUtil;
