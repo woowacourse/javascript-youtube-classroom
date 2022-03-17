@@ -1,5 +1,5 @@
 import fetch from 'node-fetch';
-import { YOUTUBE_API_ENDPOINT } from '../youtubeApi';
+import { DUMMY_YOUTUBE_API_ENDPOINT } from '../youtubeApi';
 
 export default class SearchVideoManager {
   #isLastPage;
@@ -8,6 +8,7 @@ export default class SearchVideoManager {
     this.keyword = '';
     this.nextPageToken = '';
     this.#isLastPage = false;
+    this.totalVideoData = [];
   }
 
   get isLastPage() {
@@ -27,7 +28,7 @@ export default class SearchVideoManager {
   }
 
   fetchYoutubeData(keyword) {
-    return fetch(YOUTUBE_API_ENDPOINT(keyword, this.nextPageToken)).then((response) => {
+    return fetch(DUMMY_YOUTUBE_API_ENDPOINT(keyword, this.nextPageToken)).then((response) => {
       if (!response.ok) {
         throw new Error(response.status);
       }
@@ -39,7 +40,11 @@ export default class SearchVideoManager {
   processVideoData(result) {
     if (!result.nextPageToken) this.#isLastPage = true;
     this.nextPageToken = result.nextPageToken;
-    return result.items.map((item) => ({
+    return this.parseVideoInfo(result);
+  }
+
+  parseVideoInfo(videoList) {
+    return videoList.items.map((item) => ({
       id: item.id.videoId,
       thumbnail: item.snippet.thumbnails.medium.url,
       title: item.snippet.title,

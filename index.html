@@ -11,8 +11,19 @@
   <main id="app" class="classroom-container">
     <h1 class="classroom-container__title">👩🏻‍💻 나만의 유튜브 강의실 👨🏻‍💻</h1>
     <nav class="nav">
+      <div class="button-group">
+        <button id="will-watch-button" class="button nav__button selected">👁 볼 영상</button>
+        <button id="watched-button" class="button nav__button">✅ 본 영상</button>
+      </div>
       <button id="search-modal-button" class="button nav__button">🔍 검색</button>
     </nav>
+    <section id="main-homepage-body">
+      <h2 hidden>메인 페이지</h2>
+      <ul id="will-watch-video-list" class="video-list"></ul>
+      <ul id="watched-video-list" class="video-list hide"></ul>
+      <img src="./no_saved_video.png" alt="no saved video image" class="no-saved-video__image hide">
+      <img src="./no_watched_video.png" alt="no watched video image" class="no-watched-video__image hide">
+    </section>
   </main>
   <div id="modal-container" class="modal-container hide">
     <div class="dimmer"></div>

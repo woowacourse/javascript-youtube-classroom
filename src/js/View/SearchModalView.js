@@ -7,14 +7,14 @@ import { validateSearchKeyword } from '../validation';
 export default class SearchModalView {
   #modal;
 
-  constructor(searchManager, saveManager) {
+  constructor(searchManager, saveVideoManager) {
     this.#modal = $('#search-modal');
 
     this.searchKeywordFormView = new SearchKeywordFormView();
     this.searchResultView = new SearchResultView();
 
     this.searchManager = searchManager;
-    this.saveManager = saveManager;
+    this.saveVideoManager = saveVideoManager;
 
     this.bindEvents();
   }
@@ -23,7 +23,6 @@ export default class SearchModalView {
     $('.dimmer').addEventListener('click', this.closeModal);
     this.#modal.addEventListener('searchKeyword', this.onSubmitSearchKeyword.bind(this));
     this.#modal.addEventListener('searchOnScroll', debounce(this.searchOnScroll.bind(this), SCROLL_BUFFER_SECOND));
-    this.#modal.addEventListener('saveVideo', this.onClickVideoSaveButton.bind(this));
   }
 
   closeModal() {
@@ -42,9 +41,8 @@ export default class SearchModalView {
 
   onClickVideoSaveButton(e) {
     const { target } = e.detail;
-    const { videoId } = target.parentNode.dataset;
     try {
-      this.saveManager.saveVideoById(videoId);
+      this.saveVideoManager.saveVideoBy(target.parentNode);
     } catch ({ message }) {
       return alert(message);
     }
@@ -78,7 +76,7 @@ export default class SearchModalView {
   addSavedInfoToVideos(videos) {
     return videos.map((video) => ({
       ...video,
-      saved: this.saveManager.findVideoById(video.id),
+      saved: this.saveVideoManager.findVideoById(video.id),
     }));
   }
 

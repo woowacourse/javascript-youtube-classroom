@@ -4,7 +4,7 @@ body {
 }
 
 #app {
-    max-width: 1020px;
+    max-width: 1040px;
     margin: 0 auto;
 }
 
@@ -18,7 +18,8 @@ body {
 
 .nav {
     display: flex;
-    justify-content: center;
+    justify-content: space-between;
+    margin-bottom: 39px;
 }
 
 .button {
@@ -39,4 +40,56 @@ body {
 
 .nav__button:hover {
     background: var(--nav-button-hover-color);
+}
+
+.button-group{
+    display: inline-flex;
+}
+
+.no-saved-video__image, .no-watched-video__image{
+    width: 70%;
+}
+
+#will-watch-button{
+    width: 117px;
+    border: 1px solid var(--border-color);
+    border-radius: 4px 0px 0px 4px;
+}
+
+#watched-button {
+    width: 117px;
+    border: 1px solid var(--border-color);
+    border-radius: 0px 4px 4px 0px;
+}
+
+.selected{
+    background-color: var(--selected-background-color);
+    pointer-events: none;
+}
+
+#main-homepage-body {
+    display: flex;
+    justify-content: center;
+}
+
+.watch-delete-button{
+    position: absolute;
+    right: 0;
+}
+
+.video-item__watched-button,
+.video-item__delete-button{
+    width: 36px;
+    height: 36px;
+}
+
+.video-item__watched-button:hover,
+.video-item__delete-button:hover{
+    background:  var(--nav-button-hover-color);
+}
+
+.no-saved-video {
+    text-align: center;
+    font-size: 30px;
+    color: gray;
 }

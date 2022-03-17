@@ -6,25 +6,33 @@ const getData = (key) => JSON.parse(localStorage.getItem(key));
 
 export default class SaveVideoManager {
   constructor() {
-    this.videoIds = this.getVideoIds();
+    this.videoData = this.getVideoData();
   }
 
-  getVideoIds() {
+  getVideoData() {
     return getData('id') || [];
   }
 
   findVideoById(id) {
-    return this.videoIds.includes(id);
+    return this.videoData.some((video) => video.id === id);
   }
 
-  saveVideoById(id) {
-    if (isOverVideoSaveMaxCount(this.videoIds)) {
+  saveVideoBy(video) {
+    const videoInfo = {
+      id: video.dataset.videoId,
+      thumbnail: video.children[0].currentSrc,
+      title: video.children[1].textContent,
+      channelName: video.children[2].textContent,
+      publishedDate: video.children[3].textContent,
+      watched: false,
+    };
+    if (isOverVideoSaveMaxCount(this.videoData)) {
       throw new Error(ERROR_MESSAGE.MAX_VIDEO_SAVE);
     }
-    if (this.findVideoById(id)) {
+    if (this.findVideoById(videoInfo.id)) {
       throw new Error('이미 저장한 동영상입니다');
     }
-    this.videoIds.push(id);
-    setData('id', this.videoIds);
+    this.videoData.push(videoInfo);
+    setData('id', this.videoData);
   }
 }
