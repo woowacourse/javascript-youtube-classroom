@@ -9,6 +9,8 @@ export default class MainPage extends Component {
     const savedVideos = webStore.load();
     const watchedVideos = savedVideos.filter(video => video.watched === true);
 
+    this.state = { watchedMode: false };
+
     rootStore.setState({
       savedVideos,
       hasWatchedVideo: watchedVideos.length !== 0,
@@ -17,7 +19,7 @@ export default class MainPage extends Component {
   }
 
   template() {
-    const { watchedMode } = this.props;
+    const { watchedMode } = this.state;
     return `
       <h1 class="classroom-container__title">👩🏻‍💻 나만의 유튜브 강의실 👨🏻‍💻</h1>
       <nav class="nav">
@@ -43,7 +45,7 @@ export default class MainPage extends Component {
 
   afterMounted() {
     const { hasWatchedVideo, hasWatchingVideo } = rootStore.state;
-    const { watchedMode } = this.props;
+    const { watchedMode } = this.state;
     if (watchedMode) {
       if (hasWatchedVideo) {
         new SavedVideoCardList(this.$('#saved-video-list'), {
@@ -84,7 +86,7 @@ export default class MainPage extends Component {
       return;
     }
 
-    const { changeMode } = this.props;
-    changeMode();
+    const { watchedMode } = this.state;
+    this.setState({ watchedMode: !watchedMode });
   }
 }
