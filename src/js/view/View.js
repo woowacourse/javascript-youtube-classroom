@@ -1,15 +1,14 @@
 import { selectDom } from '../util/util';
 import SavedVideosView from './SavedVideosView';
-import SearchModalView from './SearchModalView';
+import SearchModalView from './SearchModal/SearchModalView';
 
 class View {
-  constructor(search, saveToStorage) {
+  constructor() {
     this.modalContainer = selectDom('.modal-container');
 
-    this.search = search;
     this.savedVideosView = new SavedVideosView();
 
-    this.searchModalView = new SearchModalView(search, saveToStorage);
+    this.searchModalView = new SearchModalView();
 
     this.tabButtons = document.querySelectorAll('.tab-button');
     this.tabButtons.forEach((button) => button.addEventListener('click', this.handleTabSwitch));

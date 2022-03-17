@@ -1,23 +1,23 @@
-import { ERROR_MESSAGES, MAX_SEARCH_RESULT } from '../constants/constants';
+import { ERROR_MESSAGES, MAX_SEARCH_RESULT } from '../../constants/constants';
+import { isBlankValue, removeElementList, scrollToTop, selectDom } from '../../util/util';
 import {
-  formatDateString,
-  isBlankValue,
-  removeElementList,
-  scrollToTop,
-  selectDom,
-} from '../util/util';
-import '../../assets/images/not_found.png';
+  errorTemplate,
+  searchVideoElementTemplate,
+  skeletonTemplate,
+} from './SearchModalTemplates';
+import Search from '../../domain/Search';
+import storage from '../../domain/storage';
 
 class SearchModalView {
-  constructor(search, saveToStorage) {
+  constructor() {
     this.modalContainer = selectDom('.modal-container');
     this.searchForm = selectDom('#search-form', this.modalContainer);
     this.searchInputKeyword = selectDom('#search-input-keyword', this.searchForm);
     this.searchResult = selectDom('.search-result', this.modalContainer);
     this.videoList = selectDom('.video-list', this.searchResult);
 
-    this.search = search;
-    this.sendSaveRequest = saveToStorage;
+    this.search = new Search();
+    this.sendSaveRequest = storage.saveToStorage;
 
     this.#attachEventListeners();
   }
@@ -45,6 +45,9 @@ class SearchModalView {
       return;
     }
 
+    const searchResultTitle = selectDom('.search-result-title', this.searchResult);
+    searchResultTitle.textContent = `'${keyword}' 검색 결과입니다`;
+
     this.#clearPreviousRender();
 
     this.#sendSearchRequest(keyword);
@@ -64,7 +67,8 @@ class SearchModalView {
 
   async #sendSearchRequest(keyword) {
     try {
-      this.videoList.insertAdjacentHTML('beforeend', this.#skeletonTemplate());
+      const skeletons = Array.from({ length: MAX_SEARCH_RESULT }, () => skeletonTemplate());
+      this.videoList.append(...skeletons);
       const { searchResultArray, hasNextPage } = await this.search.handleSearchRequest(keyword);
       this.#renderSearchResult({ searchResultArray, keyword, hasNextPage });
     } catch (error) {
@@ -81,75 +85,32 @@ class SearchModalView {
     }
   };
 
-  #clearPreviousRender() {
-    this.#clearNoResult();
-    scrollToTop(this.videoList);
-    removeElementList([...this.videoList.childNodes]);
-  }
-
-  #renderSearchResult({ searchResultArray, keyword, hasNextPage }) {
+  #renderSearchResult({ searchResultArray, hasNextPage }) {
     const skeletonList = this.videoList.querySelectorAll('.skeleton');
     removeElementList(skeletonList);
-    if (keyword) {
-      const searchResultTitle = selectDom('.search-result-title', this.searchResult);
-      searchResultTitle.textContent = `'${keyword}' 검색 결과입니다`;
-    }
 
-    const resultElementArray = searchResultArray.map((resultItem) =>
-      this.#createVideoElement(resultItem)
-    );
-
+    const resultElementArray = searchResultArray.map((resultItem) => {
+      const videoElement = searchVideoElementTemplate(resultItem);
+      selectDom('.video-item__save-button', videoElement).addEventListener(
+        'click',
+        this.#handleVideoSaveClick
+      );
+      return videoElement;
+    });
     this.videoList.append(...resultElementArray);
     if (hasNextPage) this.loadMoreResultObserver.observe(this.videoList.lastChild);
   }
 
-  #createVideoElement(resultItem) {
-    const videoElement = document.createElement('li');
-    videoElement.className = 'video-item';
-    videoElement.insertAdjacentHTML('beforeend', this.#videoElementTemplate(resultItem));
-    selectDom('.video-item__save-button', videoElement).addEventListener(
-      'click',
-      this.#handleVideoSaveClick
-    );
-    return videoElement;
-  }
-
-  #videoElementTemplate({ thumbnail, title, channelTitle, publishedAt, videoId, isSaved }) {
-    return `<img src="${thumbnail}" alt="video-item-thumbnail" class="video-item__thumbnail">
-    <h4 class="video-item__title">${title}</h4>
-    <p class="video-item__channel-name">${channelTitle}</p>
-    <p class="video-item__published-date">${formatDateString(publishedAt)}</p>
-    <button 
-      ${isSaved && 'disabled'}
-      class="video-item__save-button button"
-      data-video-id="${videoId}"
-    >
-      ⬇ 저장
-    </button>`;
-  }
-
-  #skeletonTemplate() {
-    return `<div class="skeleton">
-      <div class="image"></div>
-      <p class="line"></p>
-      <p class="line"></p>
-    </div>`.repeat(MAX_SEARCH_RESULT);
-  }
-
-  #renderError(errorMessage, keyword) {
+  #renderError(errorMessage) {
     this.videoList.classList.add('hide');
     this.searchResult.classList.add('search-result--no-result');
-    this.searchResult.insertAdjacentHTML(
-      'beforeend',
-      `<div class="no-result">
-        <img src="./not_found.png" alt="no result image" class="no-result__image">
-        <p class= "no-result__description">${errorMessage}</p>
-      </div>`
-    );
-    if (keyword) {
-      const searchResultTitle = selectDom('.search-result-title', this.searchResult);
-      searchResultTitle.textContent = `'${keyword}' 검색 결과입니다`;
-    }
+    this.searchResult.append(errorTemplate(errorMessage));
+  }
+
+  #clearPreviousRender() {
+    this.#clearNoResult();
+    scrollToTop(this.videoList);
+    removeElementList([...this.videoList.childNodes]);
   }
 
   #clearNoResult() {
