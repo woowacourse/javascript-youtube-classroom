@@ -18,6 +18,8 @@ class AppBusiness {
     bind(CUSTOM_EVENT_KEY.SUBMIT_SEARCH_KEYWORD, this.onSubmitSearchKeyword);
     bind(CUSTOM_EVENT_KEY.LOAD_NEW_VIDEO_LIST, this.onLoadNewVideoList);
     bind(CUSTOM_EVENT_KEY.CLICK_SAVE_BUTTON, this.onClickSaveButton);
+    bind(CUSTOM_EVENT_KEY.CLICK_SAVED_DELETE_BUTTON, this.onClickSavedDeleteButton);
+    bind(CUSTOM_EVENT_KEY.CLICK_SAVED_CHECK_BUTTON, this.onClickSavedCheckButton);
     bind(CUSTOM_EVENT_KEY.INITIALIZE_SAVED_VIDEO_STATE, this.onLoadTopLevelComponent);
   }
 
@@ -118,6 +120,35 @@ class AppBusiness {
       alert(message);
     }
   };
+
+  onClickSavedDeleteButton({ detail: { savedVideoId } }) {
+    if (confirm('정말로 삭제하시겠습니까?')) {
+      const { videoList: savedVideoList, prevVideoListLength } = getState(
+        STATE_STORE_KEY.SAVED_VIDEO
+      );
+
+      const newSavedVideoList = savedVideoList.filter((video) => {
+        const { videoId } = video.getVideoInfo();
+
+        return videoId !== savedVideoId;
+      });
+
+      setState(STATE_STORE_KEY.SAVED_VIDEO, (prevState) => ({
+        ...prevState,
+        videoList: newSavedVideoList,
+        prevVideoListLength: 0,
+      }));
+
+      const savedVideoIdList = webStore.getArrayData(WEB_STORE_KEY.SAVED_VIDEO_LIST_KEY);
+
+      const newSavedVideoIdList = savedVideoIdList.filter((videoId) => videoId !== savedVideoId);
+
+      webStore.setData(WEB_STORE_KEY.SAVED_VIDEO_LIST_KEY, newSavedVideoIdList);
+    }
+    // setState(STATE_STORE_KEY.SAVED_VIDEO);
+  }
+
+  onClickSavedCheckButton() {}
 
   async requestVideo(keyword, pageToken) {
     setState(STATE_STORE_KEY.IS_SEARCH_VIDEO_WAITING, true);

@@ -31,6 +31,7 @@ class VideoListComponent {
     });
   }
 
+  /** 하나의 함수로 동작하게는 할 수 없나..? */
   renderSearchVideoList({ videoList, prevVideoListLength }) {
     if (isFirstSearchByKeyword(prevVideoListLength)) {
       this.#videoComponents = [];
@@ -53,7 +54,11 @@ class VideoListComponent {
   }
 
   renderSavedVideoList({ videoList: savedVideoList, prevVideoListLength }) {
-    /** 이전에 렌더링 된 것들은 또 그리지 않기 위한 처리 prevVideoListLength */
+    if (isFirstSearchByKeyword(prevVideoListLength)) {
+      this.#videoComponents = [];
+      this.$videoList.innerHTML = '';
+    }
+
     this.#videoComponents = [
       ...this.#videoComponents,
       ...savedVideoList.slice(prevVideoListLength).map(
@@ -123,17 +128,26 @@ class VideoListComponent {
     const {
       target: { className },
     } = e;
+    const {
+      dataset: { videoId },
+    } = e.target.closest('.video-item');
 
     if (className.includes('video-item__save-button')) {
-      const {
-        dataset: { videoId },
-      } = e.target.closest('.video-item');
-
       dispatch(CUSTOM_EVENT_KEY.CLICK_SAVE_BUTTON, {
         detail: {
           saveVideoId: videoId,
         },
       });
+    }
+    if (className.includes('video-item__delete-button')) {
+      dispatch(CUSTOM_EVENT_KEY.CLICK_SAVED_DELETE_BUTTON, {
+        detail: {
+          savedVideoId: videoId,
+        },
+      });
+    }
+    if (className.includes('video-item__check-button')) {
+      dispatch(CUSTOM_EVENT_KEY.CLICK_SAVED_CHECK_BUTTON);
     }
   };
 }
