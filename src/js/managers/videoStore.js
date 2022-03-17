@@ -10,7 +10,7 @@ const videoStore = {
     try {
       const storedVideoList = this.getStoredVideoList();
       validator.checkStoredVideoListOverMaxLength(storedVideoList);
-      storedVideoList.push({ id: videoId, seen: false });
+      storedVideoList.push({ id: videoId, saw: false });
       storageUtil.setItem(this.KEY.STORED_VIDEO_LIST, storedVideoList);
     } catch (error) {
       throw error;
