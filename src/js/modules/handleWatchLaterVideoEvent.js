@@ -1,11 +1,12 @@
 import storage from '../storage/storage.js';
 import watchLaterInterface from '../ui/watchLaterInterface.js';
 import { $, confrimVideoDelete } from '../util/general.js';
+import { clearVideoItems, removeDeleteVideoItem } from '../util/render.js';
 
 export class WatchLaterVideoEventHandler {
   handleWatchLater = () => {
     this.toggleWatchLaterContent();
-    watchLaterInterface.removeWatchLaterItems();
+    clearVideoItems('.watch-later-video-item');
     watchLaterInterface.renderWatchLaterVideos();
   };
   toggleWatchLaterContent = () => {
@@ -31,7 +32,8 @@ export class WatchLaterVideoEventHandler {
     }
     if (confrimVideoDelete()) {
       storage.deleteSavedVideo(e.target.parentElement.parentElement.dataset.videoId);
-      watchLaterInterface.removeDeleteVideoItem(
+      removeDeleteVideoItem(
+        '.watch-later-video-item',
         e.target.parentElement.parentElement.dataset.videoId,
       );
     }

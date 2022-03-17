@@ -18,3 +18,15 @@ export const videoItemTemplate = {
       `;
   },
 };
+
+export const removeDeleteVideoItem = (selector, videoId) => {
+  $$(selector).forEach(element => {
+    if (element.dataset.videoId === videoId) {
+      element.remove();
+    }
+  });
+};
+
+export const clearVideoItems = selector => {
+  $$(selector).forEach(element => element.remove());
+};
