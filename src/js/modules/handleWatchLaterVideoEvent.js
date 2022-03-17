@@ -31,6 +31,9 @@ export class WatchLaterVideoEventHandler {
     }
     if (confrimVideoDelete()) {
       storage.deleteSavedVideo(e.target.parentElement.parentElement.dataset.videoId);
+      watchLaterInterface.removeDeleteVideoItem(
+        e.target.parentElement.parentElement.dataset.videoId,
+      );
     }
   };
 }
