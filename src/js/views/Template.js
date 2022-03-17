@@ -83,7 +83,7 @@ export default class Template {
         <h4 class="video-item__title"></h4>
         <p class="video-item__channel-name"></p>
         <p class="video-item__published-date"></p>
-        <button data-id="" class="video-item__save-button button"></button>
+        <button class="video-item__save-button button"></button>
       </li>
     `.repeat(10);
   }
