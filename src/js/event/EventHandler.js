@@ -1,8 +1,8 @@
 import MainView from '../view/MainView.js';
 import ModalView from '../view/ModalView.js';
 import validator from '../utils/validator.js';
-import storageUtil from '../managers/storageUtil.js';
 import videoAPICaller from '../managers/videoAPICaller.js';
+import videoStore from '../managers/videoStore.js';
 
 export default class EventHandler {
   constructor() {
@@ -29,7 +29,7 @@ export default class EventHandler {
 
   onStoreButtonClick(videoId) {
     try {
-      storageUtil.storeVideoId(videoId);
+      videoStore.storeVideoWithVideoId(videoId);
     } catch (error) {
       alert(error.message);
     }

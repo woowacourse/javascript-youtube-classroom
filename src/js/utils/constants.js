@@ -22,7 +22,7 @@ export const ERROR_MESSAGE = {
 };
 
 export const STORE = {
-  VIDEO_ID_LIST_MAX_LENGTH: 100,
+  VIDEO_LIST_MAX_LENGTH: 100,
 };
 
 export const VIDEO_LIST = {

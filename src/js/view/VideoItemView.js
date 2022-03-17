@@ -1,4 +1,4 @@
-import storageUtil from '../managers/storageUtil.js';
+import videoStore from '../managers/videoStore.js';
 import { CLASS_NAME_STRING } from '../utils/constants.js';
 
 export default class VideoItemView {
@@ -15,7 +15,7 @@ export default class VideoItemView {
       <p class="video-item__channel-nagetVideoItemTemplateme">${parseData.channelTitle}</p>
       <p class="video-item__published-date ">${parseData.publishedAt}</p>
       <button data-videoid=${parseData.videoId} class="video-item__save-button button 
-      ${storageUtil.hasVideoId(parseData.videoId) ? `${CLASS_NAME_STRING.HIDE}` : ''}"> 
+      ${videoStore.hasVideoId(parseData.videoId) ? `${CLASS_NAME_STRING.HIDE}` : ''}"> 
       ⬇ 저장
       </button>
     `;
