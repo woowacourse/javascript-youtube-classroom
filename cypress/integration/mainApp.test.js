@@ -52,3 +52,23 @@ it("삭제 이모지를 클릭할 경우 정말 삭제할지 확인하는 메시
 
   cy.get(".video-item__delete-video-button").should("have.length", 1);
 });
+
+it("✅ 이모지를 클릭하면 본 영상으로 체크 된다.", () => {
+  cy.visit("./index.html");
+
+  videoStorage.addVideo({
+    videoId: "kkojaeId",
+    thumbnailUrl: "https:",
+    title: "this is title",
+    channelName: "kkojae's channel",
+    publishDate: "2022년 3월 3일",
+  });
+
+  cy.get(".video-item__watched-video-button").eq(0).click();
+  cy.get(".video-item__watched-video-button")
+    .invoke("attr", "class")
+    .should(
+      "eq",
+      "video-item__watched-video-button button video-item__watched-video-button--focused"
+    );
+});
