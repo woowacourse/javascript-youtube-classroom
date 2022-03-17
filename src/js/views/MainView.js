@@ -25,13 +25,13 @@ export default class MainView {
     on(this.$watchedButton, 'click', this.#handleWatchedButton.bind(this));
   }
 
+  #openSearchModal() {
+    this.$modalContainer.classList.remove('hide');
+  }
+
   #closeModal() {
     this.#handleUnwatchedButton();
     this.$modalContainer.classList.add('hide');
-  }
-
-  #openSearchModal() {
-    this.$modalContainer.classList.remove('hide');
   }
 
   #handleUnwatchedButton() {
@@ -40,20 +40,6 @@ export default class MainView {
 
   #handleWatchedButton() {
     emit(this.$watchedButton, '@show-watched-tab');
-  }
-
-  showUnwatchedTab() {
-    this.$unwatchedButton.classList.add('active');
-    this.$watchedButton.classList.remove('active');
-    this.$unwatchedTab.classList.remove('hide');
-    this.$watchedTab.classList.add('hide');
-  }
-
-  showWatchedTab() {
-    this.$unwatchedButton.classList.remove('active');
-    this.$watchedButton.classList.add('active');
-    this.$watchedTab.classList.remove('hide');
-    this.$unwatchedTab.classList.add('hide');
   }
 
   renderUnwatchedVideoItems(videoItems) {
@@ -104,6 +90,20 @@ export default class MainView {
     }
   };
 
+  showUnwatchedTab() {
+    this.$unwatchedButton.classList.add('active');
+    this.$watchedButton.classList.remove('active');
+    this.$unwatchedTab.classList.remove('hide');
+    this.$watchedTab.classList.add('hide');
+  }
+
+  showWatchedTab() {
+    this.$unwatchedButton.classList.remove('active');
+    this.$watchedButton.classList.add('active');
+    this.$watchedTab.classList.remove('hide');
+    this.$unwatchedTab.classList.add('hide');
+  }
+
   removeVideo(videoId) {
     document.getElementById(videoId).remove();
   }
@@ -115,11 +115,15 @@ export default class MainView {
     $('.confirm-modal__delete-button').addEventListener('click', () => this.#handleDeleteButton(event), {
       once: true,
     });
-    this.showConfirmModal();
+    this.#showConfirmModal();
   }
 
   #handleCancelButton() {
     this.hideConfirmModal();
+  }
+
+  hideConfirmModal() {
+    this.$confirmModalContainer.classList.add('hide');
   }
 
   #handleDeleteButton(event) {
@@ -127,11 +131,7 @@ export default class MainView {
     emit(this.$modalContainer, '@delete-video', { videoId });
   }
 
-  showConfirmModal() {
+  #showConfirmModal() {
     this.$confirmModalContainer.classList.remove('hide');
-  }
-
-  hideConfirmModal() {
-    this.$confirmModalContainer.classList.add('hide');
   }
 }
