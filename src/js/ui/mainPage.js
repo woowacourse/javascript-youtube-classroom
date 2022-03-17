@@ -30,17 +30,22 @@ class MainPage {
       'click',
       this.modalComponent.initModalState.bind(this.modalComponent),
     );
+    document
+      .querySelector('.video-list-grid')
+      .addEventListener('click', this.handleVideo.bind(this));
   }
 
   initStorageView() {
-    document.querySelector('.video-list-grid').insertAdjacentHTML(
-      'beforeend',
-      this.videoStorage.videoList
-        .map((item) => {
-          return template.storageVideoItem(item);
-        })
-        .join(' '),
-    );
+    this.renderVideoList(this.videoStorage.videoList);
+  }
+
+  renderVideoList(videos) {
+    document
+      .querySelector('.video-list-grid')
+      .insertAdjacentHTML(
+        'beforeend',
+        videos.map((item) => template.storageVideoItem(item)).join(' '),
+      );
   }
 
   appendList(item) {
@@ -60,34 +65,15 @@ class MainPage {
   renderVideo() {
     document.querySelector('.video-list-grid').replaceChildren();
     if (this.menuState === 'not-watched-tab-menu') {
-      this.renderNotWatchedVideo();
+      this.renderVideoList(this.videoStorage.notWachedVideoList);
       return;
     }
     if (this.menuState === 'watched-tab-menu') {
-      this.renderWachedVideo();
+      this.renderVideoList(this.videoStorage.wachedVideoList);
       return;
     }
   }
-  renderNotWatchedVideo() {
-    document.querySelector('.video-list-grid').insertAdjacentHTML(
-      'beforeend',
-      this.videoStorage.notWachedVideoList
-        .map((item) => {
-          return template.storageVideoItem(item);
-        })
-        .join(' '),
-    );
-  }
-  renderWachedVideo() {
-    document.querySelector('.video-list-grid').insertAdjacentHTML(
-      'beforeend',
-      this.videoStorage.wachedVideoList
-        .map((item) => {
-          return template.storageVideoItem(item);
-        })
-        .join(' '),
-    );
-  }
+  handleVideo() {}
 }
 
 export default MainPage;
