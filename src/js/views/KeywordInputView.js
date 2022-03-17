@@ -3,6 +3,7 @@ import { SELECTOR } from '../constants/index.js';
 
 export default class KeywordInputView {
   #$keywordInput;
+
   #$searchForm;
 
   constructor() {

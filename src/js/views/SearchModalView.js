@@ -3,7 +3,9 @@ import { SELECTOR } from '../constants/index.js';
 
 export default class SearchModalView {
   #$modal;
+
   #$searchModalButton;
+
   #$modalBackground;
 
   constructor() {

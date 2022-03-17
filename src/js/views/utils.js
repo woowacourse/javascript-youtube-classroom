@@ -5,7 +5,7 @@ export const intersectionObserver = (lastItemOnInterSect, option = {}) => {
     entries.forEach(async (entry) => {
       if (entry.isIntersecting) {
         const lastItem = await lastItemOnInterSect();
-        lastItem && io.observe(lastItem);
+        if (lastItem) io.observe(lastItem);
         io.unobserve(entry.target);
       }
     });

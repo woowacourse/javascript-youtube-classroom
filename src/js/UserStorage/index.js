@@ -9,8 +9,9 @@ const UserStorage = {
   addVideoId(videoId) {
     const videoIds = this.getVideoIds();
 
-    if (videoIds.length >= MAX_STORE_CAPACITY) throw new ValidationError(ERROR_MESSAGE.EXCEED_MAX_STORE_CAPACITY);
-		
+    if (videoIds.length >= MAX_STORE_CAPACITY)
+      throw new ValidationError(ERROR_MESSAGE.EXCEED_MAX_STORE_CAPACITY);
+
     videoIds.push(videoId);
     localStorage.setItem('videoIds', JSON.stringify(videoIds));
   },

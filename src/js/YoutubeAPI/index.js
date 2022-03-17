@@ -1,8 +1,9 @@
-import { REDIRECT_SERVER_HOST } from './constants.js';
+import REDIRECT_SERVER_HOST from './constants.js';
 import { YOUTUBE_API_REQUEST_COUNT } from '../constants/index.js';
 
 export default class YoutubeAPI {
   #nextPageToken;
+
   #keyword;
 
   #makeURL() {
@@ -43,6 +44,8 @@ export default class YoutubeAPI {
 
   async search(keyword) {
     this.#refresh(keyword);
-    return await this.videos();
+    const result = await this.videos();
+
+    return result;
   }
 }
