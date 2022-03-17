@@ -17,14 +17,14 @@ describe('Storage 영상 ID 저장 기능 테스트', () => {
 
   it('영상 ID를 저장한다.', () => {
     const videoID = 'testVideoID';
-    saveVideoManager.saveVideoById(videoID);
+    saveVideoManager.saveVideo(videoID);
 
-    expect(JSON.parse(localStorage.getItem('id').includes(videoID))).toBeTruthy();
+    expect(JSON.parse(localStorage.getItem('videos')).find((video) => video.id === videoID)).toBeTruthy();
   });
 
   it('영상을 이미 저장했는지 확인할 수 있다.', () => {
     const videoID = 'testVideoID';
-    saveVideoManager.saveVideoById(videoID);
+    saveVideoManager.saveVideo(videoID);
 
     expect(storage.findVideoById(videoID)).toBeTruthy();
   });
