@@ -45,4 +45,17 @@ describe('저장 기능 테스트', () => {
 
     expect(storageEngine.getSpecificVideo(videoId)).toBeUndefined();
   });
+
+  test('유튜브 검색 결과를 webstorage에서 삭제할 수 있다', () => {
+    const newVideoId = 'newVideoId';
+    // 저장한다.
+    storageEngine.saveVideo(newVideoId);
+    // 확인한다.
+    const specificVideo = storageEngine.getSpecificVideo(newVideoId);
+    expect(specificVideo.videoId).toEqual(newVideoId);
+    // 삭제한다.
+    storageEngine.removeVideo(newVideoId);
+    // 없는지 확인한다.
+    expect(storageEngine.getSpecificVideo(videoId)).toBeUndefined();
+  });
 });
