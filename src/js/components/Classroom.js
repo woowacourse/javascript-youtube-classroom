@@ -48,10 +48,12 @@ export class Classroom {
     }
 
     if (e.target.classList.contains('discard-button')) {
-      this.videoList = this.videoList.filter((video) => video.id !== e.target.id);
-      e.target.parentNode.parentNode.remove();
+      if (window.confirm('진짜 지우실?')) {
+        this.videoList = this.videoList.filter((video) => video.id !== e.target.id);
+        e.target.parentNode.parentNode.remove();
 
-      saveVideoItemToLocalStorage(this.videoList);
+        saveVideoItemToLocalStorage(this.videoList);
+      }
     }
   };
 
