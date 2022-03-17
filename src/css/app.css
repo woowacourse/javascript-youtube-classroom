@@ -19,6 +19,21 @@ body {
 .nav {
   display: flex;
   justify-content: center;
+  margin-bottom: 48px;
+}
+
+#stored-video-filter-button {
+  border: 1px solid var(--nav-filter-button-border-color);
+  width: 120px;
+}
+
+#watched-video-filter-button {
+  border: 1px solid var(--nav-filter-button-border-color);
+  width: 120px;
+}
+
+#search-modal-button {
+  margin-left: auto;
 }
 
 .button {
