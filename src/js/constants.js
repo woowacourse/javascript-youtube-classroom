@@ -5,6 +5,17 @@ export const YOUTUBE_SEARCH_ACTION = {
   UPDATE_SEARCH_RESULT_FAIL: 'UPDATE_SEARCH_RESULT_FAIL',
 };
 
+export const UI_ACTION = {
+  OPEN_MODAL: 'OPEN_MODAL',
+  CLOSE_MODAL: 'CLOSE_MODAL',
+  SELECT_PAGE: 'SELECT_PAGE',
+};
+
+export const PAGE_NAME = {
+  WATCH_LATER: 'watchLater',
+  WATCHED: 'watched',
+};
+
 export const ERROR_MESSAGE = {
   EMPTY_SEARCH_KEYWORD: '검색어를 입력해주세요.',
   MAX_SAVE_VIDEO: '동영상은 최대 100개까지 저장할 수 있습니다.',

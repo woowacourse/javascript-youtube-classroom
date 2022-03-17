@@ -1,25 +1,36 @@
 import { $, addEvent } from '@Utils/dom';
-import { EVENT_TYPE } from '@Constants';
+import { EVENT_TYPE, UI_ACTION } from '@Constants';
+import UIStore from '@Domain/UIStore';
 
 export default class Navigation {
   constructor() {
     this.container = $('#classroom-navigation');
+    // this.$modalContainer =
+    // this.$modal = $('#search-modal');
     this.bindEvents();
   }
 
   bindEvents() {
     addEvent(this.container, {
       eventType: EVENT_TYPE.CLICK,
-      selector: '#search-modal-button',
-      handler: this.handleOpenModal,
+      selector: '#classroom-navigation',
+      handler: this.handleClickNavigation,
     });
   }
 
-  handleOpenModal = ({ target: $target }) => {
-    const modalId = $target.dataset.modal;
-    const $modalContainer = $('#modal');
+  handleClickNavigation = ({ target: $target }) => {
+    const { navigation } = $target.dataset;
+    if (!navigation) return;
+    if (navigation === 'searchModal') {
+      UIStore.dispatch(UI_ACTION.OPEN_MODAL);
+      return;
+    }
+    UIStore.dispatch(UI_ACTION.SELECT_PAGE, navigation);
+  };
 
+  handleOpenModal = () => {
+    const $modalContainer = $('#modal');
     $modalContainer.classList.remove('hide');
-    $(`#${modalId}`, $modalContainer).classList.add('show');
+    this.$modal.classList.add('show');
   };
 }
