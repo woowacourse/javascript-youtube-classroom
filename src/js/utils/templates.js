@@ -21,6 +21,22 @@ export const getThumnailTemplate = (video) => {
   `;
 };
 
+export const getFrameTemplate = (video) => {
+  return `
+    <li class="video-item">
+      <iframe
+      type="text/html"
+      src="https://www.youtube.com/embed/${video.id}"
+      frameborder="0"
+      allowfullscreen="allowfullscreen"
+      ></iframe>
+      <h4 class="video-item__title">${video.title}</h4>
+      <p class="video-item__channel-name">${video.channelTitle}</p>
+      <p class="video-item__published-date">${video.date}</p> 
+    </li>
+  `;
+};
+
 export const getSkeletonTemplate = `
   <div class="skeleton">
     <div class="image"></div>
