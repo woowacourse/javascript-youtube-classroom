@@ -11,12 +11,7 @@
   transform: translateX(-50%);
   bottom: 30px;
   font-size: 17px;
-}
-
-.toast--visible {
-  top: 0px;
-  opacity: 0.8;
-  visibility: visible;
+  border-radius: 5px;
 }
 
 .toast--success {
