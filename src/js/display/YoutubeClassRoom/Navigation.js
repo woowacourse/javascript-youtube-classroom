@@ -5,6 +5,8 @@ import UIStore from '@Domain/UIStore';
 export default class Navigation {
   constructor() {
     this.container = $('#classroom-navigation');
+    this.$watchLaterNavigation = $('#watch-later-list-button', this.container);
+    this.$watchedNavigation = $('#watched-list-button', this.container);
     this.bindEvents();
   }
 
@@ -23,12 +25,17 @@ export default class Navigation {
       UIStore.dispatch(UI_ACTION.OPEN_MODAL);
       return;
     }
+    this.selectNavigation(navigation);
     UIStore.dispatch(UI_ACTION.SELECT_PAGE, navigation);
   };
 
-  handleOpenModal = () => {
-    const $modalContainer = $('#modal');
-    $modalContainer.classList.remove('hide');
-    this.$modal.classList.add('show');
-  };
+  selectNavigation(navigation) {
+    if (navigation === 'watchLater') {
+      this.$watchedNavigation.classList.remove('selected');
+      this.$watchLaterNavigation.classList.add('selected');
+      return;
+    }
+    this.$watchLaterNavigation.classList.remove('selected');
+    this.$watchedNavigation.classList.add('selected');
+  }
 }

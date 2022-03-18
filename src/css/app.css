@@ -63,9 +63,10 @@ body {
     margin-left: 1.25rem;
 }
 
-.nav__button:hover {
-    background: var(--nav-hover-bg-color);
+.nav__button:hover,.nav__button.selected {
+    background-color: var(--nav-hover-bg-color);
 }
+
 
 .hide {
     display: none !important;
