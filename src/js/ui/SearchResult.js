@@ -6,9 +6,13 @@ import { showExceptionSnackBar } from '../utils/snackBar';
 import { getFoundResultTemplate, notFoundTemplate } from './template';
 
 export default class SearchResult {
-  renderVideoList(json) {
+  constructor() {
+    this.$searchResult = $('.search-result');
+  }
+
+  #renderVideoList(json) {
     if (!json.items.length) {
-      $('.search-result').insertAdjacentHTML('beforeend', notFoundTemplate);
+      this.$searchResult.insertAdjacentHTML('beforeend', notFoundTemplate);
       return;
     }
     $('.video-list').insertAdjacentHTML(
@@ -16,7 +20,7 @@ export default class SearchResult {
       getFoundResultTemplate(json.items),
     );
     if (json && json.nextPageToken) {
-      this.scrollObserver(json.nextPageToken);
+      this.#scrollObserver(json.nextPageToken);
     }
   }
 
@@ -24,7 +28,7 @@ export default class SearchResult {
     searchVideos(searchText)
       .then(json => {
         $('.video-list').replaceChildren();
-        this.renderVideoList(json);
+        this.#renderVideoList(json);
       })
       .catch(async ({ message }) => {
         await delay(700);
@@ -33,11 +37,11 @@ export default class SearchResult {
       });
   }
 
-  renderNextVideoList(nextPageToken) {
+  #renderNextVideoList(nextPageToken) {
     searchVideos($('#search-input-keyword').value, nextPageToken)
       .then(json => {
         skeletonUI.remove();
-        this.renderVideoList(json);
+        this.#renderVideoList(json);
       })
       .catch(async ({ message }) => {
         await delay(700);
@@ -45,7 +49,7 @@ export default class SearchResult {
       });
   }
 
-  scrollObserver(nextPageToken) {
+  #scrollObserver(nextPageToken) {
     let $li = $('.video-item:last-child');
 
     const io = new IntersectionObserver(
@@ -53,7 +57,7 @@ export default class SearchResult {
         if (entry[0].isIntersecting) {
           io.unobserve($li);
           skeletonUI.render();
-          this.renderNextVideoList(nextPageToken);
+          this.#renderNextVideoList(nextPageToken);
         }
       },
       {
@@ -65,6 +69,6 @@ export default class SearchResult {
   }
 
   resetVideoList() {
-    $('.search-result').replaceChildren();
+    this.$searchResult.replaceChildren();
   }
 }

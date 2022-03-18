@@ -10,27 +10,12 @@ export default class Search {
   constructor() {
     this.input = $('#search-input-keyword');
     this.result = new SearchResult();
-    this.renderRecentSearchText();
-    this.addSubmitEvent();
-    this.addClearButtonClickEvent();
+    this.#renderRecentSearchText();
+    this.#addSubmitEvent();
+    this.#addClearButtonClickEvent();
   }
 
-  addSubmitEvent() {
-    $('#search-form').addEventListener('submit', e => {
-      e.preventDefault();
-      if (this.input.value === '') {
-        showExceptionSnackBar(MESSAGE.ERROR_BLANK_SEARCH_INPUT);
-        return;
-      }
-
-      this.renderSearchResult(this.input.value);
-
-      this.saveSearchText(this.input.value);
-      this.renderRecentSearchText();
-    });
-  }
-
-  saveSearchText(text) {
+  #saveSearchText(text) {
     const recentSearch = store.getLocalStorage(STORAGE_KEY.RECENT_SEARCH);
 
     if (!recentSearch || recentSearch.length < MAX_SEARCH_TEXT_SAVE_COUNT) {
@@ -47,7 +32,7 @@ export default class Search {
     }
   }
 
-  renderSearchResult(searchText) {
+  #renderSearchResult(searchText) {
     const $searchResult = $('.search-result');
 
     $searchResult.replaceChildren();
@@ -59,7 +44,7 @@ export default class Search {
     this.result.renderInitialVideoList(searchText);
   }
 
-  renderRecentSearchText() {
+  #renderRecentSearchText() {
     const $recentSearch = $('.recent-search');
     $recentSearch.replaceChildren();
 
@@ -73,15 +58,31 @@ export default class Search {
 
     $$('.recent-search__button').forEach(button => {
       button.onclick = e => {
-        this.renderSearchResult(e.target.textContent);
+        this.reset();
+        this.#renderSearchResult(e.target.textContent);
       };
     });
   }
 
-  addClearButtonClickEvent() {
+  #addClearButtonClickEvent() {
     $('.search-input__clear').addEventListener('click', () => {
       this.input.value = '';
       this.input.focus();
+    });
+  }
+
+  #addSubmitEvent() {
+    $('#search-form').addEventListener('submit', e => {
+      e.preventDefault();
+      if (this.input.value === '') {
+        showExceptionSnackBar(MESSAGE.ERROR_BLANK_SEARCH_INPUT);
+        return;
+      }
+
+      this.#renderSearchResult(this.input.value);
+
+      this.#saveSearchText(this.input.value);
+      this.#renderRecentSearchText();
     });
   }
 

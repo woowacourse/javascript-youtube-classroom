@@ -8,13 +8,13 @@ export default class Main {
   constructor() {
     this.tab = STATE.WILL;
     this.$videoContainer = $('.video-container');
-    this.renderVideos(this.tab);
-    this.addNavButtonClickEvent();
-    this.addAllCheckButtonClickEvent();
-    this.addAllDeleteButtonClickEvent();
+    this.#renderVideos(this.tab);
+    this.#addNavButtonClickEvent();
+    this.#addAllCheckButtonClickEvent();
+    this.#addAllDeleteButtonClickEvent();
   }
 
-  renderNoSavedVideo() {
+  #renderNoSavedVideo() {
     this.$videoContainer.replaceChildren();
     this.$videoContainer.insertAdjacentHTML(
       'beforeend',
@@ -22,7 +22,7 @@ export default class Main {
     );
   }
 
-  createVideoList(videoList) {
+  #createVideoList(videoList) {
     this.$videoContainer.replaceChildren();
 
     const $saveVideoList = document.createElement('ul');
@@ -39,30 +39,30 @@ export default class Main {
       $saveVideoList.insertAdjacentHTML('beforeend', videoTemplate);
       return;
     }
-    this.createVideoList(videoTemplate);
+    this.#createVideoList(videoTemplate);
   }
 
   removeVideo(video) {
     const $saveVideoList = $('.save-video-list');
     $saveVideoList.removeChild(video.parentNode);
     if (!$saveVideoList.firstElementChild) {
-      this.renderNoSavedVideo();
+      this.#renderNoSavedVideo();
     }
   }
 
-  renderVideos(watched) {
+  #renderVideos(watched) {
     const saveVideos = store.getLocalStorage(STORAGE_KEY.VIDEO);
     const filteredVideos = saveVideos?.filter(
       video => video.watched === watched,
     );
     if (!filteredVideos || filteredVideos.length === 0) {
-      this.renderNoSavedVideo();
+      this.#renderNoSavedVideo();
       return;
     }
-    this.createVideoList(getAllVideoTemplate(filteredVideos));
+    this.#createVideoList(getAllVideoTemplate(filteredVideos));
   }
 
-  addNavButtonClickEvent() {
+  #addNavButtonClickEvent() {
     const $willWatchVideoButton = $('#will-watch-video-button');
     const $watchedVideoButton = $('#watched-video-button');
 
@@ -71,18 +71,18 @@ export default class Main {
         button.classList.toggle('clicked'),
       );
       this.tab = STATE.WILL;
-      this.renderVideos(this.tab);
+      this.#renderVideos(this.tab);
     });
     $watchedVideoButton.addEventListener('click', () => {
       [$willWatchVideoButton, $watchedVideoButton].forEach(button =>
         button.classList.toggle('clicked'),
       );
       this.tab = STATE.WATCHED;
-      this.renderVideos(this.tab);
+      this.#renderVideos(this.tab);
     });
   }
 
-  addAllCheckButtonClickEvent() {
+  #addAllCheckButtonClickEvent() {
     $('#all-check').addEventListener('click', () => {
       if (!confirm(MESSAGE.ASK_ALL_CHECK)) return;
 
@@ -102,11 +102,11 @@ export default class Main {
 
       showExceptionSnackBar(MESSAGE.MODIFY_COMPLETE);
 
-      this.renderVideos(this.tab);
+      this.#renderVideos(this.tab);
     });
   }
 
-  addAllDeleteButtonClickEvent() {
+  #addAllDeleteButtonClickEvent() {
     $('#all-delete').addEventListener('click', () => {
       if (!confirm(MESSAGE.ASK_ALL_DELETE)) return;
 
@@ -125,7 +125,7 @@ export default class Main {
 
       showExceptionSnackBar(MESSAGE.MODIFY_COMPLETE);
 
-      this.renderVideos(this.tab);
+      this.#renderVideos(this.tab);
     });
   }
 }

@@ -13,8 +13,9 @@ class App {
   }
 
   saveVideoHandler(e) {
+    const saveData = configureVideoData(e.target.parentNode.dataset);
+
     try {
-      const saveData = configureVideoData(e.target.parentNode.dataset);
       store.setLocalStorage(STORAGE_KEY.VIDEO, saveData);
       showExceptionSnackBar(MESSAGE.SAVE_COMPLETE);
       e.target.setAttribute('hidden', true);

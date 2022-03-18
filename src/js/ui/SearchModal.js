@@ -3,31 +3,31 @@ import Search from './Search';
 
 export default class SearchModal {
   constructor() {
-    this.addSearchButtonClickEvent();
-    this.addSearchModalOuterClickEvent();
+    this.#addSearchButtonClickEvent();
+    this.#addSearchModalOuterClickEvent();
     this.search = new Search();
   }
 
-  reset() {
-    this.toggleShowSearchModal();
-    this.search.reset();
-  }
-
-  toggleShowSearchModal() {
+  #toggleShowSearchModal() {
     $('.modal-container').classList.toggle('hide');
     $('body').classList.toggle('scroll-off');
   }
 
-  addSearchButtonClickEvent() {
+  #addSearchButtonClickEvent() {
     $('#search-modal-button').addEventListener('click', () => {
-      this.toggleShowSearchModal();
+      this.#toggleShowSearchModal();
       this.search.input.focus();
     });
   }
 
-  addSearchModalOuterClickEvent() {
+  #addSearchModalOuterClickEvent() {
     $('.dimmer').addEventListener('click', () => {
       this.reset();
     });
+  }
+
+  reset() {
+    this.#toggleShowSearchModal();
+    this.search.reset();
   }
 }
