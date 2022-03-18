@@ -65,6 +65,14 @@
   background: #efefef;
 }
 
+.video-item__button-item.watched {
+  background: rgba(0, 188, 212, 0.12);
+}
+
+.video-item__button-item:hover {
+  background: rgba(0, 188, 212, 0.24);
+}
+
 @media (max-width: 599px) {
   .video-item {
     width: 240px;

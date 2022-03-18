@@ -1,3 +1,6 @@
+import { getState } from '../modules/stateStore';
+import { SAVED_VIDEO_FILTER_TYPE } from '../constants/video';
+import { STATE_STORE_KEY } from '../constants/stateStore';
 import { parseTimeStamp } from '../utils/util';
 
 class SavedVideo {
@@ -23,6 +26,7 @@ class SavedVideo {
   #generateTemplate() {
     const { savedVideo } = this.#props;
     const { videoId, videoTitle, channelTitle, publishTime, thumbnail } = savedVideo.getVideoInfo();
+    const savedVideoFilter = getState(STATE_STORE_KEY.SAVED_VIDEO_FILTER);
 
     return `
       <li class="video-item" data-video-id="${videoId}">
@@ -32,7 +36,9 @@ class SavedVideo {
         <p class="video-item__channel-name">${channelTitle}</p>
         <p class="video-item__published-date">${parseTimeStamp(publishTime)}</p>
         <div class="video-item__button-wrapper">
-          <button class="video-item__watched-button video-item__button-item button">✅</button>  
+          <button class="video-item__watched-button video-item__button-item button ${
+            savedVideoFilter === SAVED_VIDEO_FILTER_TYPE.WATCHED ? 'watched' : ''
+          }">✅</button>  
           <button class="video-item__delete-button video-item__button-item button">🗑</button>
         </div>
       </li>
