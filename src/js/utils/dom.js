@@ -4,7 +4,6 @@ import { isEmptyString } from "./utils";
 export const scrollToTop = (element = document.querySelector("body")) => {
   element.scrollTo({
     top: 0,
-    behavior: "smooth",
   });
 };
 
@@ -23,7 +22,7 @@ export const render = ({ element, position, template }) => {
 };
 
 export const getTotalScrollHeight = (element) => {
-  return element.scrollHeight - ALLOCATE_FOR_RENDER_PX;
+  return element.scrollHeight;
 };
 
 export const getCurrentScrollHeight = (element) => {
@@ -37,6 +36,8 @@ export const validateInput = (inputValue) => {
 };
 
 export const clearModalContainer = (videoList) => {
+  console.log(videoList);
+  console.log(document.querySelectorAll(".video-item"));
   scrollToTop(videoList);
 
   document

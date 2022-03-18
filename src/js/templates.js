@@ -38,7 +38,7 @@ const generateTemplate = {
     <p class="video-item__channel-name ">${channel}</p>
     <p class="video-item__published-date ">${date}</p>
     <button class="video-item__save-button button ${
-      storage.includes(String(id)) ? "hide" : ""
+      storage.some((data) => data.videoId === id) ? "hide" : ""
     } ">
       ⬇ 저장
     </button>

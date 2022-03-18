@@ -1,5 +1,5 @@
 export const isDuplicate = (inputData, storeData) => {
-  return storeData.some((store) => store.id === inputData.id);
+  return storeData.some((store) => store.videoId === inputData.videoId);
 };
 
 export const parsedDate = (rawDate) => {

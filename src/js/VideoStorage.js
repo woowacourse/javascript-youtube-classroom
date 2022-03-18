@@ -1,4 +1,5 @@
 import { ERROR_MESSAGE, STORAGE_MAX_COUNT } from "./constants/constants";
+import { isDuplicate } from "./utils/utils";
 
 const videoStorage = {
   getVideo() {
@@ -7,7 +8,7 @@ const videoStorage = {
   addVideo(data) {
     let storage = this.getVideo();
 
-    if (this.isSavedVideoId(data.videoId)) {
+    if (isDuplicate(data, storage)) {
       return;
     }
 
@@ -27,11 +28,6 @@ const videoStorage = {
 
     storage.splice(removeIndex, 1);
     localStorage.setItem("saveVideoData", JSON.stringify(storage));
-  },
-  isSavedVideoId(responseId) {
-    const storage = this.getVideo();
-
-    return storage.filter((data) => data.videoId === responseId).length > 0;
   },
   addChecked(addData) {
     let storage = this.getVideo();

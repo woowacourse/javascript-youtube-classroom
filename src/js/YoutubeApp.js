@@ -184,6 +184,7 @@ export default class YoutubeApp {
 
   #onClickSearchModalButton = () => {
     this.#modalContainer.classList.remove("hide");
+    clearModalContainer(this.#videoList);
     this.#searchInputKeyword.focus();
   };
 
@@ -191,6 +192,16 @@ export default class YoutubeApp {
     this.#searchInputKeyword.value = "";
     clearModalContainer(this.#videoList);
     this.#modalContainer.classList.add("hide");
+
+    if (
+      document
+        .querySelector(".nav__watched-video-button")
+        .classList.contains("nav__watched-video-button--focused")
+    ) {
+      this.#renderCheckedVideo();
+      return;
+    }
+
     this.#renderSavedVideo();
   };
 
