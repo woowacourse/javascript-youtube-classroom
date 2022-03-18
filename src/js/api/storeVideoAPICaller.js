@@ -24,7 +24,7 @@ const storeVideoAPICaller = {
   parsingVideoData(rawData) {
     try {
       return rawData.items.map(item => ({
-        videoId: item.id.videoId,
+        videoId: item.id,
         publishedAt: item.snippet.publishedAt,
         title: item.snippet.title,
         url: item.snippet.thumbnails.medium.url,

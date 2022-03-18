@@ -81,6 +81,9 @@ export default class EventHandler {
     const videoIdList = videoList.map(video => video.id);
     const renderedVideoIdList = this.mainView.getRenderedVideoIdList();
     const willRequestVideoIdList = videoIdList.filter(id => !renderedVideoIdList.includes(id));
+    if (willRequestVideoIdList.length === 0) {
+      return;
+    }
 
     this.mainView.showSkeletonVideoList(willRequestVideoIdList);
     const videoData = await storeVideoAPICaller.getVideoListData(willRequestVideoIdList);
