@@ -2,3 +2,13 @@ my-result {
   display: flex;
   margin: 39px 5% 0 5%;
 }
+
+my-result ul {
+  width: 1040px;
+  height: 493px;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 32px 20px;
+  overflow-y: scroll;
+}

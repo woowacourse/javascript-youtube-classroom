@@ -150,3 +150,14 @@ search-result ul {
 .video-item__save-button:hover {
   background: #efefef;
 }
+
+.video-item__state {
+  float: right;
+}
+
+.video-item__state-button {
+  width: 36px;
+  height: 36px;
+  background: #f9f9f9;
+  margin-top: 4px;
+}
