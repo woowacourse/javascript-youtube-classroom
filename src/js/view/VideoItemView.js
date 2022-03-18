@@ -34,8 +34,8 @@ export default class VideoItemView {
     const template = `
     ${this.getMainTemplate(parseData)}
     <div class="video-item-button-container">
-      <button class="check-saw-button video-item-button">✅</button>
-      <button class="delete-store-button video-item-button">🗑</button>
+      <button id="check-saw" class="check-saw-button video-item-button">✅</button>
+      <button id-"delete-store" class="delete-store-button video-item-button">🗑</button>
     </div>
     `;
 
@@ -48,8 +48,8 @@ export default class VideoItemView {
     const template = `
     ${this.getMainTemplate(parseData)}
     <div class="video-item-button-container">
-      <button class="check-will-see-button video-item-button">✅</button>
-      <button class="delete-store-button video-item-button">🗑</button>
+      <button id="check-will-see" class="check-will-see-button video-item-button">✅</button>
+      <button id-"delete-store" class="delete-store-button video-item-button">🗑</button>
     </div>
     `;
 
