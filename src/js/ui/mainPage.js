@@ -43,8 +43,9 @@ class MainPage {
   }
 
   changeTab({ target: { id } }) {
-    this.mainPagePresenter.toggleTabChoosed();
-    this.mainPagePresenter.renderVideo(id, this.videoStorage); // render
+    if (this.menuState === id) return;
+    this.menuState = id;
+    EventFactory.generate('CHANGE_TAB', { id });
   }
 
   handleVideo({ target }) {

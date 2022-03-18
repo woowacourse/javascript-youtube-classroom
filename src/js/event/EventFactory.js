@@ -1,3 +1,4 @@
+import { ChangeTab } from './ChangeTab';
 import ChangeVideoStatus from './ChangeVideoStatus';
 import LoadInitialVideoList from './LoadInitialVideoList';
 import SaveVideoEvent from './SaveVideoEvent';
@@ -17,6 +18,9 @@ export default class EventFactory {
         break;
       case 'CHANGE_VIDEO_STATUS':
         new ChangeVideoStatus(data).action();
+        break;
+      case 'CHANGE_TAB':
+        new ChangeTab(data).action();
         break;
     }
   }

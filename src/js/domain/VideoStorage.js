@@ -1,4 +1,3 @@
-import SearchMachine from './SearchMachine';
 import { getLocalStorage } from './localStorage';
 import { LOCALSTORAGE_KEY_SAVE } from '../constant';
 import youtubeSearchAPI from '../api/youtubeSearchapi';
@@ -7,7 +6,6 @@ import Video from './Video';
 
 export class VideoStorage {
   constructor() {
-    this.machine = new SearchMachine();
     this.videoList = [];
   }
 

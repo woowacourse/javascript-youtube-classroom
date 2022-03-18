@@ -3,7 +3,6 @@ import template from '../ui/templates';
 export default class MainPagePresenter {
   constructor() {
     this.$videoListContainer = document.querySelector('.video-list-grid');
-    this.menuState = 'not-watched-tab-menu';
   }
 
   renderVideoList(videos) {
@@ -30,25 +29,24 @@ export default class MainPagePresenter {
         .insertAdjacentHTML('beforeend', template.noVideoList());
   }
 
-  renderVideo(id, data) {
+  renderVideo(menuState, data) {
     // render
-    if (id === this.menuState) return;
-    this.menuState = id;
     this.$videoListContainer.replaceChildren();
-    if (this.menuState === 'not-watched-tab-menu') {
+    if (menuState === 'not-watched-tab-menu') {
       this.renderVideoList(data.notWachedVideoList);
       return;
     }
-    if (this.menuState === 'watched-tab-menu') {
+    if (menuState === 'watched-tab-menu') {
       this.renderVideoList(data.wachedVideoList);
       return;
     }
   }
 
-  toggleTabChoosed() {
+  toggleTabChoosed(menuState, data) {
     document
       .querySelectorAll('.nav-tab__button')
       .forEach((element) => element.classList.toggle('choosed')); // render
+    this.renderVideo(menuState, data);
   }
 
   appendList(item) {
