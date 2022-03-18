@@ -1,4 +1,4 @@
-import VideoStore from '../VideoStore';
+import SearchVideoStore from '../stores/SearchVideoStore';
 import Save from '../domains/Save';
 import { addEvent, emit, $, $$ } from '../utils';
 import SKELETONS from '../templates';
@@ -12,7 +12,7 @@ class SearchVideoList extends HTMLUListElement {
       selector: 'ul',
       callback: (e) => this.emitEvent(e),
     });
-    VideoStore.instance.subscribe(this);
+    SearchVideoStore.instance.subscribe(this);
   }
 
   emitEvent(e) {

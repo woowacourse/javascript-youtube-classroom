@@ -1,4 +1,4 @@
-import VideoStore from '../VideoStore';
+import SearchVideoStore from '../stores/SearchVideoStore';
 import CustomElement from '../abstract/CustomElement';
 import { $ } from '../utils';
 import NotFoundImage from '../../assets/images/not_found.png';
@@ -6,7 +6,7 @@ import NotFoundImage from '../../assets/images/not_found.png';
 class SearchResult extends CustomElement {
   connectedCallback() {
     super.connectedCallback();
-    VideoStore.instance.subscribe(this);
+    SearchVideoStore.instance.subscribe(this);
   }
 
   // eslint-disable-next-line max-lines-per-function

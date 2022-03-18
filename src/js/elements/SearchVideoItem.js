@@ -1,4 +1,4 @@
-import VideoStore from '../VideoStore';
+import SearchVideoStore from '../stores/SearchVideoStore';
 import CustomElement from '../abstract/CustomElement';
 import Save from '../domains/Save';
 import { addEvent, emit, formatDate } from '../utils';
@@ -6,7 +6,7 @@ import { VIDEO } from '../constants';
 
 class SearchVideoItem extends CustomElement {
   render() {
-    const video = VideoStore.instance.findVideo(this.dataset.id);
+    const video = SearchVideoStore.instance.findVideo(this.dataset.id);
 
     this.innerHTML = this.template(video);
     Save.instance.subscribeEvents(this);

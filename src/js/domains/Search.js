@@ -1,4 +1,4 @@
-import VideoStore from '../VideoStore';
+import SearchVideoStore from '../stores/SearchVideoStore';
 import { fetchData, on, throttle, $ } from '../utils';
 import { ERROR_MESSAGE, SEARCH_API } from '../constants';
 
@@ -33,7 +33,7 @@ class Search {
     this.keyword = keyword;
     this.nextPageToken = videos.nextPageToken ?? '';
 
-    VideoStore.instance.dispatch(type, this.preprocessor(videos));
+    SearchVideoStore.instance.dispatch(type, this.preprocessor(videos));
   }
 
   // eslint-disable-next-line max-lines-per-function
