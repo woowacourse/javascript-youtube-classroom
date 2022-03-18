@@ -75,7 +75,6 @@
   width: 190px;
   height: 140px;
   margin-bottom: 32px;
-  
 }
 
 .no-result__description {
@@ -145,6 +144,18 @@
   width: auto;
   height: 490px;
   overflow-y: scroll;
+}
+
+.video-item__save-button:disabled {
+  background-color: #f9f9f9;
+}
+
+.video-no-more {
+  margin: auto;
+}
+
+.search-result {
+  margin: auto;
 }
 
 .video-item__save-button:disabled {
