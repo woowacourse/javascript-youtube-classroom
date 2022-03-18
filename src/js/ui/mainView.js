@@ -1,3 +1,4 @@
+import { CONFIRM_MESSAGE } from '../constant';
 import { convertDOMToSaveObject } from '../util/converter';
 import { emit, on } from '../util/event';
 import template from './templates';
@@ -18,11 +19,19 @@ class MainView {
   }
 
   onClickNavButton({ target }) {
+    this.checkClickAfterWatchNavbarButton(target);
+    this.checkClickWatchedVideoNavbarButton(target);
+  }
+
+  checkClickAfterWatchNavbarButton(target) {
     if (target.id === 'after-watch-video-button') {
       this.moveAfterWatchVideoPage();
       emit(this.$nav, '@updatesaved', {});
       return;
     }
+  }
+
+  checkClickWatchedVideoNavbarButton() {
     if (target.id === 'watched-video-button') {
       this.moveWatchedVideoPage();
       emit(this.$nav, '@updatewatched', {});
@@ -30,6 +39,12 @@ class MainView {
   }
 
   onClickStatusButton({ target }) {
+    this.checkClickWatchVideoButton(target);
+    this.checkClickDeleteVideoButton(target);
+    this.checkClickAfterWatchVideoButton(target);
+  }
+
+  checkClickWatchVideoButton(target) {
     if (target.classList.contains('watch-video-button')) {
       const parentTarget = target.closest('section');
 
@@ -39,9 +54,11 @@ class MainView {
       });
       emit(this.$afterWatchVideoList, '@delete', { id: parentTarget.dataset.videoId });
     }
+  }
 
+  checkClickDeleteVideoButton(target) {
     if (target.classList.contains('delete-watch-video-button')) {
-      if (!confirm('정말로 삭제하시겠습니까?')) return;
+      if (!confirm(CONFIRM_MESSAGE.DELETE)) return;
 
       const parentTarget = target.closest('section');
       parentTarget.remove();
@@ -51,7 +68,9 @@ class MainView {
       }
       emit(this.$afterWatchVideoList, '@delete', { id: parentTarget.dataset.videoId });
     }
+  }
 
+  checkClickAfterWatchVideoButton(target) {
     if (target.classList.contains('after-watch-video-button')) {
       const parentTarget = target.closest('section');
 

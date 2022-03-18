@@ -67,7 +67,7 @@ class ModalInterferer {
       this.searchResultView.reset();
       this.searchVideo();
     } catch (err) {
-      alert(err);
+      alert(err.message);
     }
   }
 

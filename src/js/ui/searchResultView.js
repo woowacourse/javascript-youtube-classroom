@@ -8,7 +8,7 @@ class SearchResultView {
     this.$target = target;
     this.$searchInputKeyword = keywordInput;
     this.$searchResult = searchresult;
-    this.onThrottledScroll = throttle(this.onScroll.bind(this), 500);
+    this.onThrottledScroll = throttle(this.onScroll.bind(this), 300);
 
     this.bindEvents();
   }
