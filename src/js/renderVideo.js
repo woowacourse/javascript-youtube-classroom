@@ -20,6 +20,7 @@ import { selectDom, addEvent } from './utils/selectDom.js';
 class RenderVideo {
   constructor(searchVideo) {
     this.searchVideo = searchVideo;
+    this.scrollThrottle = true;
 
     this.searchModalButton = selectDom('#search-modal-button');
     this.willWatchSectionButton = selectDom('#will-watch-section-button');
@@ -96,6 +97,64 @@ class RenderVideo {
 
     this.emptyWatchVideo();
   };
+
+  renderSearchVideo(searchVideo) {
+    this.handleSketonUi(this.renderSkeletonWrap, 'hide');
+
+    if (this.renderVideoListWrap.children.length === 0 && !searchVideo.length) {
+      this.noSearchResultWrap.insertAdjacentHTML('afterbegin', videoNotFoundTemplate);
+      return;
+    }
+
+    if (this.renderVideoListWrap.children.length > 0 && !this.searchVideo.nextPageToken) {
+      this.renderVideoListWrap.insertAdjacentHTML('beforeend', videoNoMoreTemplate);
+      return;
+    }
+
+    this.renderVideoListWrap.insertAdjacentHTML(
+      'beforeend',
+      searchVideo
+        .map((video) =>
+          videoTemplate(
+            video,
+            [
+              ...ControlVideo.getStorageWillWatchVideoList(),
+              ...ControlVideo.getStorageWatchedVideoList(),
+            ].includes(video.id.videoId)
+          ))
+        .join(' ')
+    );
+  }
+
+  renderVideoSkeleton() {
+    if (this.renderSkeletonWrap.children.length === 0) {
+      this.renderSkeletonWrap.insertAdjacentHTML(
+        'afterbegin',
+        Array.from({ length: GET_VIDEO_COUNT }, () => videoSkeletonTemplate).join(' ')
+      );
+      return;
+    }
+
+    this.handleSketonUi(this.renderSkeletonWrap, 'show');
+  }
+
+  async renderSearchScreen() {
+    this.renderVideoSkeleton();
+    try {
+      const searchResults =
+        await this.searchVideo.handleSearchVideo(this.searchVideoInput.value.trim());
+      this.renderSearchVideo(searchResults);
+    } catch (error) {
+      this.searchVideoInput.value = '';
+      this.searchVideoInput.focus();
+      this.renderVideoListWrap.replaceChildren();
+      return alert(error);
+    }
+  }
+
+  handleSketonUi(skeletonWrap, event) {
+    skeletonWrap.classList.toggle('hide-element', event === 'hide');
+  }
 
   renderWillWatchVideo = async () => {
     const willWatchVideoItems = [
@@ -175,8 +234,12 @@ class RenderVideo {
     }
 
     const { scrollHeight, offsetHeight, scrollTop } = this.searchResultWrap;
-    if (scrollHeight - offsetHeight <= scrollTop) {
+    if (scrollHeight - offsetHeight - 180 <= scrollTop && this.scrollThrottle) {
       this.renderSearchScreen();
+      this.scrollThrottle = false;
+      setTimeout(() => {
+        this.scrollThrottle = true;
+      }, 500);
     }
   };
 
@@ -215,34 +278,6 @@ class RenderVideo {
     target.disabled = true;
   };
 
-  renderSearchVideo(searchVideo) {
-    this.handleSketonUi(this.renderSkeletonWrap, 'hide');
-
-    if (this.renderVideoListWrap.children.length === 0 && !searchVideo.length) {
-      this.noSearchResultWrap.insertAdjacentHTML('afterbegin', videoNotFoundTemplate);
-      return;
-    }
-
-    if (this.renderVideoListWrap.children.length > 0 && !this.searchVideo.nextPageToken) {
-      this.renderVideoListWrap.insertAdjacentHTML('beforeend', videoNoMoreTemplate);
-      return;
-    }
-
-    this.renderVideoListWrap.insertAdjacentHTML(
-      'beforeend',
-      searchVideo
-        .map((video) =>
-          videoTemplate(
-            video,
-            [
-              ...ControlVideo.getStorageWillWatchVideoList(),
-              ...ControlVideo.getStorageWatchedVideoList(),
-            ].includes(video.id.videoId)
-          ))
-        .join(' ')
-    );
-  }
-
   onClickVideoSearchModal = () => {
     this.modalContainer.classList.remove('hide');
     if (this.renderVideoListWrap.children.length > 0) {
@@ -260,36 +295,6 @@ class RenderVideo {
       saveButton.textContent = SAVE_VIDEO_TEXT;
       saveButton.disabled = false;
     }
-  }
-
-  renderVideoSkeleton() {
-    if (this.renderSkeletonWrap.children.length === 0) {
-      this.renderSkeletonWrap.insertAdjacentHTML(
-        'afterbegin',
-        Array.from({ length: GET_VIDEO_COUNT }, () => videoSkeletonTemplate).join(' ')
-      );
-      return;
-    }
-
-    this.handleSketonUi(this.renderSkeletonWrap, 'show');
-  }
-
-  async renderSearchScreen() {
-    this.renderVideoSkeleton();
-    try {
-      const searchResults =
-        await this.searchVideo.handleSearchVideo(this.searchVideoInput.value.trim());
-      this.renderSearchVideo(searchResults);
-    } catch (error) {
-      this.searchVideoInput.value = '';
-      this.searchVideoInput.focus();
-      this.renderVideoListWrap.replaceChildren();
-      return alert(error);
-    }
-  }
-
-  handleSketonUi(skeletonWrap, event) {
-    skeletonWrap.classList.toggle('hide-element', event === 'hide');
   }
 }
 
