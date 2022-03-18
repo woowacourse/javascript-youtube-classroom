@@ -1,6 +1,5 @@
-import { $, $$ } from '../util';
+import { $, $$, hideElement, showElement, showSnackbar } from '../dom';
 import { template, MESSAGE } from './template';
-import { hideElement, showElement } from '../dom';
 
 export default class SearchResultView {
   constructor() {

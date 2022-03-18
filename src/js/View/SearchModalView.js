@@ -1,4 +1,4 @@
-import { $, debounce } from '../util';
+import { $, debounce, showSnackbar } from '../dom';
 import SearchResultView from './SearchResultView';
 import { ALERT_MESSAGE, SCROLL_BUFFER_SECOND, SCROLL_BUFFER_HEIGHT } from '../constants';
 import { validateSearchKeyword } from '../validation';
@@ -73,7 +73,7 @@ export default class SearchModalView {
     const { scrollTop, clientHeight, scrollHeight } = e.detail;
     if (scrollTop + clientHeight + SCROLL_BUFFER_HEIGHT < scrollHeight) return true;
     if (this.searchManager.isLastPage) {
-      alert(ALERT_MESSAGE.NO_MORE_SEARCH_RESULT);
+      showSnackbar(ALERT_MESSAGE.NO_MORE_SEARCH_RESULT);
       return true;
     }
     return false;

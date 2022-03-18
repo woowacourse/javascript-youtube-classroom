@@ -1,7 +1,7 @@
-import { $, $$ } from '../util';
+import { $, $$, hideElement, showElement, showSnackbar } from '../dom';
 import SearchModalView from './SearchModalView';
 import { template } from './template';
-import { hideElement, showElement } from '../dom';
+import { ALERT_MESSAGE } from '../constants';
 
 export default class HomeView {
   constructor(searchVideoManager, saveVideoManager) {
@@ -86,6 +86,7 @@ export default class HomeView {
       return alert(message);
     }
 
+    showSnackbar(ALERT_MESSAGE.SAVED);
     const savedVideo = this.saveVideoManager.getVideoData();
     this.addWillWatchVideo(savedVideo[savedVideo.length - 1]);
     this.willWatchVideoList.firstChild.lastElementChild.addEventListener('click', (e) => {
@@ -105,10 +106,12 @@ export default class HomeView {
     e.target.classList.toggle('selected');
     this.saveVideoManager.changeWatchState(target.dataset.videoId);
     if (this.tab === 'watched') {
+      showSnackbar(ALERT_MESSAGE.CHANGED_TO_WILL_WATCH);
       this.willWatchVideoList.insertAdjacentElement('afterbegin', target);
       this.isWatchedVideoEmpty();
     }
     if (this.tab === 'willWatch') {
+      showSnackbar(ALERT_MESSAGE.CHANGED_TO_WATCHED);
       this.watchedVideoList.insertAdjacentElement('afterbegin', target);
       this.isWillWatchVideoEmpty();
     }
