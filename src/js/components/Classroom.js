@@ -4,8 +4,9 @@ import { getEmptyClassroomTemplate, getFrameTemplate } from "../utils/templates.
 
 export default class Classroom {
   constructor({ videoManager }) {
-    this.classroomList = $(".classroom__list");
-    this.emptyContainer = $(".classroom__empty");
+    this.classroom = $(".classroom");
+    this.classroomList = $(".classroom__list", this.classroom);
+    this.emptyContainer = $(".classroom__empty", this.classroom);
     this.classroomList.addEventListener("click", this.handleVideoOption);
 
     this.videoManager = videoManager;

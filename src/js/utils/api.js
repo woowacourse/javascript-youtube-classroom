@@ -20,6 +20,7 @@ export const fetchDataFromKeyword = async (keyword, pageToken = "") => {
     if (!res.ok) {
       return { errorMessage: ERROR_MESSAGES.CANNOT_USE_API };
     }
+
     return data;
   } catch {
     return { errorMessage: ERROR_MESSAGES.CANNOT_CONNECT };

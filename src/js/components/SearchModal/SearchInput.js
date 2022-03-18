@@ -2,8 +2,10 @@ import { $ } from "../../utils/dom.js";
 
 export default class SearchInput {
   constructor({ searchManager }) {
-    this.searchInputKeyword = $(".modal-input__keyword");
-    $(".modal-input__form").addEventListener("submit", this.#handleSearch);
+    this.modalInputContainer = $(".modal-input__container");
+    this.modalInputForm = $(".modal-input__form", this.modalInputContainer);
+    this.searchInputKeyword = $(".modal-input__keyword", this.modalInputContainer);
+    this.modalInputForm.addEventListener("submit", this.#handleSearch);
 
     this.searchManager = searchManager;
   }
@@ -15,6 +17,7 @@ export default class SearchInput {
     if (value.trim() === "") {
       return;
     }
+
     this.searchManager.updateKeyword(value);
   };
 }

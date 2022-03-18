@@ -2,9 +2,12 @@ import { $ } from "../utils/dom.js";
 
 export default class MenuBar {
   constructor({ handleOpenModal, handleWatchState }) {
+    this.header = $(".header");
+    this.nav = $(".header-nav", this.header);
+    this.nav.addEventListener("click", this.handleMenu);
+
     this.handleOpenModal = handleOpenModal;
     this.handleWatchState = handleWatchState;
-    $(".header-nav").addEventListener("click", this.handleMenu);
   }
 
   handleMenu = ({ target }) => {

@@ -1,2 +1,3 @@
-export const $ = (selector) => document.querySelector(selector);
-export const $$ = (selector) => document.querySelectorAll(selector);
+export const $ = (selector, parentElement = document) => parentElement.querySelector(selector);
+
+export const $$ = (selector, parentElement = document) => parentElement.querySelectorAll(selector);

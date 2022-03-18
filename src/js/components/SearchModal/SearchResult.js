@@ -7,9 +7,10 @@ import { toastMessage } from "../../utils/common.js";
 
 export default class SearchResult {
   constructor({ searchManager, videoManager }) {
-    this.videoList = $(".modal-result__list");
-    this.noResultContainer = $(".modal-result__empty");
-    this.resultLabel = $(".modal-result__label");
+    this.modalResult = $(".modal-result");
+    this.videoList = $(".modal-result__list", this.modalResult);
+    this.emptyContainer = $(".modal-result__empty", this.modalResult);
+    this.resultLabel = $(".modal-result__label", this.modalResult);
     this.videoList.addEventListener("click", this.#handleVideoItemSave);
 
     this.searchManager = searchManager;
@@ -29,7 +30,7 @@ export default class SearchResult {
 
   #initResult = () => {
     this.videoList.replaceChildren();
-    this.noResultContainer.replaceChildren();
+    this.emptyContainer.replaceChildren();
   };
 
   #getDataMatchKeyword = async () => {
@@ -47,7 +48,7 @@ export default class SearchResult {
 
   #renderNoVideosImg() {
     this.resultLabel.setAttribute("hidden", true);
-    this.noResultContainer.insertAdjacentHTML("afterbegin", getEmptyResultTemplate);
+    this.emptyContainer.insertAdjacentHTML("afterbegin", getEmptyResultTemplate);
   }
 
   #renderVideoList() {

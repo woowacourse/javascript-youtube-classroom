@@ -5,11 +5,13 @@ import SearchManager from "../../manager/SearchManager.js";
 
 export default class SearchModal {
   constructor({ videoManager }) {
-    this.searchManager = new SearchManager();
     this.modalContainer = $(".modal");
-    $(".search-modal__close-button").addEventListener("click", this.closeModal);
-    $(".dimmer").addEventListener("click", this.closeModal);
+    this.modalCloseButton = $(".search-modal__close-button", this.modalContainer);
+    this.modalCloseButton.addEventListener("click", this.closeModal);
+    this.dimmer = $(".dimmer", this.modalContainer);
+    this.dimmer.addEventListener("click", this.closeModal);
 
+    this.searchManager = new SearchManager();
     new SearchInput({ searchManager: this.searchManager });
     new SearchResult({ searchManager: this.searchManager, videoManager });
   }
