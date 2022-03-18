@@ -66,12 +66,16 @@
 
 .search-result-no-result {
   margin: auto;
+  display: flex;
+  justify-content: center;
+  margin-top: 80px;
 }
 
 .no-result__image {
   width: 190px;
   height: 140px;
   margin-bottom: 32px;
+  
 }
 
 .no-result__description {
