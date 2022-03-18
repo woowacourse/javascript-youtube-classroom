@@ -1,5 +1,6 @@
 import { on } from '../utils';
 import { ERROR_MESSAGE, VIDEO } from '../constants';
+import VideoStore from '../VideoStore';
 
 class Save {
   static _instance = null;
@@ -27,8 +28,10 @@ class Save {
         throw new Error(ERROR_MESSAGE.EXCEED_MAX_SAVABLE_COUNT);
       }
 
-      localStorage.setItem('videos', JSON.stringify([...this.#videos, { videoId }]));
-      this.#setVideos();
+      const videoInfo = VideoStore.instance.findVideo(videoId);
+
+      localStorage.setItem('videos', JSON.stringify([...this.#videos, videoInfo]));
+      this.#videos = this.loadVideos();
     } catch (error) {
       alert(error.message);
     }
@@ -36,10 +39,6 @@ class Save {
 
   getVideos() {
     return this.#videos;
-  }
-
-  #setVideos() {
-    this.#videos = this.loadVideos();
   }
 
   loadVideos() {
