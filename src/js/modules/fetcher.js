@@ -4,7 +4,7 @@ export const youtubeAPIFetcher = async ({ path, params }) => {
   const url = createURL(path, params);
 
   const response = await fetch(url, { method: 'GET' });
-  /** 빠른 실패 */
+
   if (response.ok) {
     const data = await response.json();
     return data;

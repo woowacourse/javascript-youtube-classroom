@@ -22,7 +22,7 @@ class SearchModal {
     this.#parentElement = parentElement;
     this.#mount();
     this.#initDOM();
-    this.#initChidrenComponent();
+    this.#initChildrenComponent();
     this.#bindEventHandler();
     this.#subscribeStore();
   }
@@ -48,7 +48,7 @@ class SearchModal {
     this.$dimmer = this.#parentElement.querySelector('.dimmer');
   }
 
-  #initChidrenComponent() {
+  #initChildrenComponent() {
     this.searchForm = new SearchForm(this.$searchModal);
     this.videoContainer = new VideoContainer(this.$searchModal);
   }

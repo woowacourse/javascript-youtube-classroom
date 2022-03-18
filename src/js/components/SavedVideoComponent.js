@@ -21,8 +21,6 @@ class SavedVideo {
     this.#parentElement.insertAdjacentHTML('beforeend', template);
   }
 
-  #initDOM() {}
-
   #generateTemplate() {
     const { savedVideo } = this.#props;
     const { videoId, videoTitle, channelTitle, publishTime, thumbnail } = savedVideo.getVideoInfo();

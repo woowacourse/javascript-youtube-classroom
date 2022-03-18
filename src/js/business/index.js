@@ -136,8 +136,6 @@ class AppBusiness {
     return searchResult;
   }
 
-  /** 검색 API 결과로 부터, videoList - nextPageToken 값을 추출한다. */
-
   extractSearchResult(searchResult) {
     const { items: videoInfos, nextPageToken } = parserVideos(searchResult);
     const videoList = videoInfos.map((videoInfo) => Video.create(videoInfo));
