@@ -13,7 +13,6 @@ export const video = {
   },
 
   check(videoId) {
-    console.log(videoId);
     const savedVideoList = store.getLocalStorage(STORAGE_KEY);
     const updatedVideoList = savedVideoList.map(savedVideo => {
       if (savedVideo.videoId === videoId) {

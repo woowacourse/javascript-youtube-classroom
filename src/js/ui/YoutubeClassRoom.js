@@ -40,7 +40,8 @@ export default class YoutubeClassRoom {
       if (e.target.classList.contains('video-item__check-button')) {
         const videoId = e.target.dataset.videoId;
         video.check(videoId);
-        // this.renderVideoList(false, '.will-watch-video-list');
+        this.reset();
+        this.renderVideoList(false, '.will-watch-video-list');
       }
     });
   }
