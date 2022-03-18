@@ -1,7 +1,7 @@
 import { isEndOfScroll } from '../utils/scroll.js';
 import { $ } from '../utils/querySelector.js';
 import YoutubeSearchAPI from '../service/YoutubeSearchAPI.js';
-import modalUI from '../ui/modal/modalUI.js';
+import modalUI from '../views/modal/modalUI.js';
 
 const youtubeSearchAPI = new YoutubeSearchAPI();
 

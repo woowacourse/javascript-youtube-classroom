@@ -1,6 +1,6 @@
 import { $ } from '../utils/querySelector.js';
 import videoStorage from '../localStorage/videoStorage.js';
-import mainPageUI from '../ui/mainPage/mainPageUI.js';
+import mainPageUI from '../views/mainPage/mainPageUI.js';
 
 export const handleWatchedButtonClick = e => {
   const targetVideo = e.target.parentElement.parentElement;
