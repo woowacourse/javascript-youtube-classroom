@@ -57,8 +57,8 @@ export default class SearchModalView {
         const checkedVideos = this.addSavedInfoToVideos(videos);
         this.searchResultView.updateOnSearchDataReceived(checkedVideos);
       })
-      .catch(() => {
-        this.searchResultView.showErrorResult();
+      .catch(({ message }) => {
+        showSnackbar(message);
       });
   }
 

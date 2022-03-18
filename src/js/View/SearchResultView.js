@@ -1,4 +1,4 @@
-import { $, $$, hideElement, showElement, showSnackbar } from '../dom';
+import { $, $$, hideElement, showElement } from '../dom';
 import { template, MESSAGE } from './template';
 
 export default class SearchResultView {
@@ -60,17 +60,17 @@ export default class SearchResultView {
     this.isShownNoResult = false;
   }
 
-  showErrorResult(message = MESSAGE.ERROR_RESULT) {
+  showNoResult() {
     hideElement(this.searchResultVideoList);
     showElement(this.noResultContainer);
     this.searchResultSection.classList.add('search-result--no-result');
-    this.noResultDescription.innerHTML = message;
+    this.noResultDescription.innerHTML = MESSAGE.NO_RESULT;
     this.isShownNoResult = true;
   }
 
   updateOnSearchDataReceived(videos) {
     if (videos.length === 0) {
-      this.showErrorResult(MESSAGE.NO_RESULT);
+      this.showNoResult();
       return;
     }
     if (this.isShownNoResult) {

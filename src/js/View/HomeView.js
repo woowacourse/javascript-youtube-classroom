@@ -21,6 +21,9 @@ export default class HomeView {
     $('#will-watch-button').addEventListener('click', this.openWillWatchPage.bind(this));
     $('#watched-button').addEventListener('click', this.openWatchedPage.bind(this));
     $('#search-modal').addEventListener('saveVideo', this.saveVideo.bind(this));
+    window.addEventListener('offline', () => {
+      showSnackbar(ALERT_MESSAGE.OFFLINE);
+    });
   }
 
   openModal() {
