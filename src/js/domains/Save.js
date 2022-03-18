@@ -46,6 +46,10 @@ class Save {
     return JSON.parse(localStorage.getItem('videos')) ?? [];
   }
 
+  getFilteredVideos(state) {
+    return this.#videos.filter((video) => video.isWatched === state);
+  }
+
   findVideo(videoId) {
     return this.#videos.find((video) => video.id === videoId);
   }

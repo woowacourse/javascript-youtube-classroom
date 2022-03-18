@@ -11,6 +11,7 @@ class MyClassroom extends CustomElement {
 
   setEvent() {
     addEvent(this, 'click', '#search-modal-button', this.showSearchModal);
+    addEvent(this, 'click', '.menu', (e) => $('my-result').switchMenu(e));
   }
 
   showSearchModal() {

@@ -8,7 +8,7 @@ class MyVideoList extends HTMLUListElement {
   }
 
   render() {
-    const videos = Save.instance.getVideos();
+    const videos = Save.instance.getFilteredVideos(!this.id.includes('unwatched'));
 
     videos.forEach((video) => {
       this.insertAdjacentHTML(
