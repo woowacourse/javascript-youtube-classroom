@@ -1,7 +1,7 @@
 import StorageEngine from '../domain/storageEngine.js';
 
 import { $ } from '../util/domHelper.js';
-import { myVideoTemplate } from '../util/template.js';
+import { myVideoTemplate, NO_SAVED_VIDEOS_MESSAGE_TEMPLATE } from '../util/template.js';
 import { DELETE_VIDEO_CONFIRM_MESSAGE } from '../util/constants.js';
 
 export default class MyVideosScreen {
@@ -28,7 +28,11 @@ export default class MyVideosScreen {
       const myVideosTemplate = videos.map((datum) => myVideoTemplate(datum)).join('');
 
       this.#myVideoList.insertAdjacentHTML('beforeend', myVideosTemplate);
+
+      return;
     }
+
+    this.#renderNoSavedVideosMessage();
   }
 
   #handleCheckVideoViewed = (e) => {
@@ -39,6 +43,7 @@ export default class MyVideosScreen {
       this.#storageEngine.checkVideoViewed(videoId);
 
       this.#myVideoList.removeChild(video);
+      this.#renderNoSavedVideosMessage();
     }
   };
 
@@ -65,6 +70,13 @@ export default class MyVideosScreen {
       this.#storageEngine.removeVideo(videoId);
 
       this.#myVideoList.removeChild(video);
+      this.#renderNoSavedVideosMessage();
     }
   };
+
+  #renderNoSavedVideosMessage() {
+    if (this.#myVideoList.children.length <= 0) {
+      this.#myVideoList.insertAdjacentHTML('beforeend', NO_SAVED_VIDEOS_MESSAGE_TEMPLATE);
+    }
+  }
 }
