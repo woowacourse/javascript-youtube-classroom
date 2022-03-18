@@ -13,3 +13,14 @@ export const ERROR_MESSAGE = {
 export const ALERT_MESSAGE = {
   NO_MORE_SEARCH_RESULT: '마지막 검색결과까지 모두 출력되었습니다.',
 };
+
+export const FAKE_DATA = [
+  {
+    id: '3iM_06QeZi8',
+    thumbnail: 'https://i.ytimg.com/vi/3iM_06QeZi8/mqdefault.jpg',
+    title: "[IU] '내 손을 잡아(Hold My Hand)' Live Clip (2019 IU Tour Concert 'Love, poem')",
+    channelName: '이지금 [IU Official]',
+    publishedDate: '2020년 10월 21일',
+    watched: false,
+  },
+];
