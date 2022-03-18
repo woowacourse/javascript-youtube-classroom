@@ -26,6 +26,7 @@
         "object-curly-newline":"off",
         "operator-linebreak":"off",
         "lines-between-class-members":"off",
-        "array-callback-return":"off"
+        "array-callback-return":"off",
+        "no-extra-boolean-cast":"off"
     }
 }
