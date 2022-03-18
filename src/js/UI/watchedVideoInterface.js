@@ -10,7 +10,7 @@ import {
 const watchedVideoInterface = {
   renderEmptyImg() {
     const savedVideoData = storage.getLocalStorage();
-    if (savedVideoData.length === 0) {
+    if (!savedVideoData) {
       showEmptyImg('.watched-empty-img-container');
       return;
     }
@@ -29,6 +29,9 @@ const watchedVideoInterface = {
     clearVideoItems('.watched-video-item');
 
     const savedVideoData = storage.getLocalStorage();
+    if (!savedVideoData) {
+      return;
+    }
     const watchedVideos = savedVideoData.filter(item => {
       if (item.watched) {
         return item;

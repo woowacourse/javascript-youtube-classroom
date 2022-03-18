@@ -10,7 +10,8 @@ import {
 const watchLaterInterface = {
   renderEmptyImg() {
     const savedVideoData = storage.getLocalStorage();
-    if (savedVideoData.length === 0) {
+    if (!savedVideoData) {
+      console.log(!savedVideoData);
       showEmptyImg('.watch-later-empty-img-container');
       return;
     }
@@ -31,6 +32,9 @@ const watchLaterInterface = {
     clearVideoItems('.watch-later-video-item');
 
     const savedVideoData = storage.getLocalStorage();
+    if (!savedVideoData) {
+      return;
+    }
     const watchLaterVideos = savedVideoData.filter(item => {
       if (item.watched === false) {
         return item;
