@@ -32,3 +32,8 @@ export const EVENT_TYPE = {
   SAVE_VIDEO: 'save-video',
   SEARCH_VIDEO: 'search-video',
 };
+
+export const MENU_STATE = {
+  NOT_WATCHED_MENU: 'not-watched-tab-menu',
+  WATCHED_MENU: 'watched-tab-menu',
+};

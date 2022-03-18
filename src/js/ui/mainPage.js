@@ -1,4 +1,4 @@
-import { EVENT_TYPE } from '../constant/index.js';
+import { EVENT_TYPE, MENU_STATE } from '../constant/index.js';
 import EventFactory from '../event/EventFactory.js';
 import SearchModalPresenter from '../presenter/SearchModalPresenter.js';
 
@@ -9,7 +9,7 @@ class MainPage {
     this.$dimmer = document.querySelector('.dimmer');
     this.$videoListContainer = document.querySelector('.video-list-grid');
     this.searchModalPresenter = new SearchModalPresenter();
-    this.menuState = 'not-watched-tab-menu';
+    this.menuState = MENU_STATE.NOT_WATCHED_MENU;
   }
 
   init() {

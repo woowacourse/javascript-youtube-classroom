@@ -52,7 +52,7 @@ export default class SearchModalPresenter {
       );
       return;
     }
-    console.log(err);
+    alert(err);
   }
 
   renderResult(items) {

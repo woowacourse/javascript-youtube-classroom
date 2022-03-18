@@ -1,9 +1,10 @@
+import { MENU_STATE } from '../constant';
 import template from '../ui/templates';
 
 class MainPagePresenter {
   constructor() {
     this.$videoListContainer = document.querySelector('.video-list-grid');
-    this.menuState = 'not-watched-tab-menu';
+    this.menuState = MENU_STATE.NOT_WATCHED_MENU;
   }
 
   renderVideoList(videos) {
@@ -31,11 +32,11 @@ class MainPagePresenter {
 
   renderVideo(menuState, data) {
     this.$videoListContainer.replaceChildren();
-    if (menuState === 'not-watched-tab-menu') {
+    if (menuState === MENU_STATE.NOT_WATCHED_MENU) {
       this.renderVideoList(data.notWachedVideoList);
       return;
     }
-    if (menuState === 'watched-tab-menu') {
+    if (menuState === MENU_STATE.WATCHED_MENU) {
       this.renderVideoList(data.wachedVideoList);
       return;
     }
@@ -51,7 +52,7 @@ class MainPagePresenter {
 
   appendList(item) {
     this.removeNoVideoImg();
-    if (this.menuState === 'not-watched-tab-menu') {
+    if (this.menuState === MENU_STATE.NOT_WATCHED_MENU) {
       this.$videoListContainer.insertAdjacentHTML(
         'beforeend',
         template.storageVideoItem(item),
