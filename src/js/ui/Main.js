@@ -87,6 +87,10 @@ export default class Main {
       if (!confirm(MESSAGE.ASK_ALL_CHECK)) return;
 
       const saveVideos = store.getLocalStorage(STORAGE_KEY.VIDEO);
+      if (!saveVideos) {
+        showExceptionSnackBar(MESSAGE.NO_SAVED_VIDEO);
+        return;
+      }
 
       store.removeLocalStorage(STORAGE_KEY.VIDEO);
       saveVideos.forEach(video => {
@@ -107,9 +111,14 @@ export default class Main {
       if (!confirm(MESSAGE.ASK_ALL_DELETE)) return;
 
       const saveVideos = store.getLocalStorage(STORAGE_KEY.VIDEO);
+      if (!saveVideos) {
+        showExceptionSnackBar(MESSAGE.NO_SAVED_VIDEO);
+        return;
+      }
 
       store.removeLocalStorage(STORAGE_KEY.VIDEO);
-      const newVideos = saveVideos.filter(video => video.watched !== this.tab);
+      const newVideos = saveVideos?.filter(video => video.watched !== this.tab);
+
       newVideos.forEach(video => {
         store.setLocalStorage(STORAGE_KEY.VIDEO, video);
       });
