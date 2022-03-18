@@ -20,9 +20,9 @@
 }
 
 .saved-video-list__container {
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  justify-items: stretch;
   gap: 32px 20px;
 }
 
@@ -50,4 +50,22 @@
   line-height: 150%;
   text-align: center;
   letter-spacing: 0.5px;
+}
+
+@media (max-width: 1279px) {
+  .saved-video-list__container {
+    grid-template-columns: 1fr 1fr 1fr;
+  }
+}
+
+@media (max-width: 959px) {
+  .saved-video-list__container {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+@media (max-width: 599px) {
+  .saved-video-list__container {
+    grid-template-columns: 1fr;
+  }
 }

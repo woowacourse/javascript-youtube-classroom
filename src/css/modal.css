@@ -101,9 +101,45 @@
 .video-list {
   width: 1040px;
   height: 493px;
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  justify-items: stretch;
   gap: 32px 20px;
   overflow-y: scroll;
+}
+
+@media (max-width: 1279px) {
+  .search-modal {
+    width: 80vw;
+    margin: 0 100px;
+  }
+  
+  .video-list {
+    width: calc(80vw - 40px);
+    grid-template-columns: 1fr 1fr 1fr;
+  }
+}
+
+@media (max-width: 959px) {
+  .search-modal {
+    margin: 0 50px;
+  }
+
+  .video-list {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+@media (max-width: 599px) {
+  .search-modal {
+    margin: 0 16px;
+  }
+
+  .search-modal__title {
+    font-size: 24px;
+  }
+
+  .video-list {
+    grid-template-columns: 1fr;
+  }
 }

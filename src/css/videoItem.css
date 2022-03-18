@@ -1,8 +1,7 @@
 .video-item {
-  position: relative;
-  width: 240px;
   height: 255px;
-  /* border: solid 1px lightblue; */
+  display: grid;
+  grid-template-rows: 135px 28px 24px 24px;
 }
 
 .video-item__thumbnail {
@@ -11,6 +10,7 @@
 }
 
 .video-item__title {
+  height: 24px;
   font-weight: bold;
   font-size: 16px;
   line-height: 24px;
@@ -37,8 +37,7 @@
 }
 
 .video-item__save-button {
-  position: absolute;
-  right: 0;
+  justify-self: end;
   width: 80px;
   height: 36px;
   background: #f9f9f9;
