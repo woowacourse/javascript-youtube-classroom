@@ -36,6 +36,9 @@ class AppComponent {
       const savedVideoResult = getState(STATE_STORE_KEY.SAVED_VIDEO);
       this.#renderSavedVideo(savedVideoResult, stateValue);
     }
+    if (stateKey === STATE_STORE_KEY.IS_SAVED_VIDEO_WAITING) {
+      this.#renderSkeletonUI(stateValue);
+    }
   }
 
   #mount() {
