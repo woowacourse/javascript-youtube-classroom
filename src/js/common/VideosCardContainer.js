@@ -3,7 +3,9 @@ import {
   getStorageVideos,
   setStorageVideoIDs,
   checkVideoStorageFull,
-  setStorageVideos
+  setStorageVideos,
+  removeStorageVideoID,
+  removeStorageVideo
 } from '../utils/localStorage';
 import { videoCardStyled } from './template';
 import toast from './toast';
@@ -64,11 +66,10 @@ export default class VideoCardContainer {
 
       const videoIds = getStorageVideoIDs();
       const index = videoIds.indexOf(videoId);
-      // console.log(index);
-      // console.log(videoIds);
-      // console.log(li, videoId);
-      console.log('remove');
-      // li.remove();
+      removeStorageVideoID(index);
+      removeStorageVideo(index);
+
+      li.remove();
     }
   };
 

@@ -7,11 +7,6 @@ const getStorageVideoIDs = (key = LOCALSTORAGE_VIDEO_IDS_KEY) =>
   JSON.parse(window.localStorage.getItem(key)) || [];
 
 const setStorageVideoIDs = ({ key = LOCALSTORAGE_VIDEO_IDS_KEY, value }) => {
-  // const newVideoIDs = [
-  //   ...getStorageVideoIDs(key),
-  //   value,
-  // ];
-
   window.localStorage.setItem(key, JSON.stringify(value));
 };
 
@@ -19,13 +14,17 @@ const getStorageVideos = (key = LOCALSTORAGE_KEY_VIDEOS) =>
   JSON.parse(window.localStorage.getItem(key)) || [];
 
 const setStorageVideos = ({ key = LOCALSTORAGE_KEY_VIDEOS, value }) => {
-  // const newVideos = [
-  //   ...getStorageVideos(key),
-  //   value,
-  // ];
   window.localStorage.setItem(key, JSON.stringify(value));
 };
 
+const removeStorageVideoID = (index) => {
+  const newVideoIDs = getStorageVideoIDs().filter((_, idx) => idx !== index);
+  setStorageVideoIDs({ value: newVideoIDs });
+};
+const removeStorageVideo = (index) => {
+  const newVideos = getStorageVideos().filter((_, idx) => idx !== index);
+  setStorageVideos({ value: newVideos });
+};
 const checkVideoStorageFull = (key = LOCALSTORAGE_VIDEO_IDS_KEY) => {
   if (getStorageVideoIDs(key).length >= RULES.MAX_STORED_IDS_AMOUNT) {
     throw new Error(ERROR_MESSAGE.FULL_STORAGE);
@@ -39,5 +38,7 @@ export {
   LOCALSTORAGE_KEY_VIDEOS,
   checkVideoStorageFull,
   getStorageVideos,
-  setStorageVideos
+  setStorageVideos,
+  removeStorageVideoID,
+  removeStorageVideo
 };
