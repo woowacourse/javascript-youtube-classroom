@@ -41,14 +41,17 @@ export default class VideoView {
     this.#$container.querySelectorAll('.skeleton').forEach((node) => node.remove());
   }
 
-  bindSaveVideo(handler) {
+  bindSaveVideo(handler, reRenderSavedVideoView) {
     this.#$container.addEventListener('click', (e) => {
       const element = e.target;
       const children = element.parentNode.children;
       const videoData = this.#makeVideoDataObject(element, children);
 
       if (videoData.id) {
+        console.log('checkvideoID');
+        console.log(reRenderSavedVideoView);
         handler(videoData);
+        reRenderSavedVideoView();
         e.target.classList.add('saved');
       }
     });
@@ -57,8 +60,8 @@ export default class VideoView {
   #makeVideoDataObject(element, children) {
     return {
       id: element.dataset.videoId,
-      thumbnail: children[0].getAttribute('src'),
-      title: children[1].currentSrc,
+      thumbnail: children[0].currentSrc,
+      title: children[1].textContent,
       channelTitle: children[2].textContent,
       date: children[3].textContent,
       saved: children[4].textContent,

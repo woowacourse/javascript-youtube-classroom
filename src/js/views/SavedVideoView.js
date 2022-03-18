@@ -2,18 +2,19 @@ import { $ } from './utils.js';
 import { SELECTOR } from '../constants/index.js';
 
 export default class SavedVideoView {
+  #getSavedVideoData;
   #savedVideoData;
   #editVideoData;
   #$playlist;
   #$watched;
 
-  constructor(savedVideoData, editVideoData) {
-    this.#savedVideoData = savedVideoData;
+  constructor(getSavedVideoData, editVideoData) {
+    this.#getSavedVideoData = getSavedVideoData;
     this.#editVideoData = editVideoData;
     this.#$playlist = $(SELECTOR.PLAYLIST_VIDEO);
     this.#$watched = $(SELECTOR.WATCHED_VIDEO);
     this.#bindSavedVideoList();
-    this.#appendVideos();
+    this.appendVideos();
   }
 
   #bindSavedVideoList() {
@@ -40,7 +41,7 @@ export default class SavedVideoView {
         <img
           src="${video.thumbnail}"
           alt="video-item-thumbnail" class="video-item__thumbnail">
-        <h4 class="video-item__title">[Playlist] ${video.title}</h4>
+        <h4 class="video-item__title">${video.title}</h4>
         <p class="video-item__channel-name">${video.channelTitle}</p>
         <p class="video-item__published-date">${video.date}</p>
         <button data-kind="checkWatched" data-video-id="${video.id}" class="check-watched-button video-list-button button ${
@@ -57,7 +58,8 @@ export default class SavedVideoView {
     this.#$watched.innerHTML = this.#makeSavedVideoListTemplate('watched', this.#savedVideoData);
   }
 
-  #appendVideos() {
+  appendVideos() {
+    this.#savedVideoData = this.#getSavedVideoData();
     this.#renderVideo();
     this.#bindButtonEvent();
   }
@@ -66,8 +68,8 @@ export default class SavedVideoView {
     $('#saved-video-list').addEventListener('click', (e) => {
       const element = e.target;
       if (element.dataset.kind === 'checkWatched') {
-        const currentVideo = this.#savedVideoData.find((video) => video.id === element.dataset.videoId);
-        currentVideo.watched = !currentVideo.watched;
+        const currentVideoIndex = this.#savedVideoData.findIndex((video) => video.id === element.dataset.videoId);
+        this.#savedVideoData[currentVideoIndex].watched = !this.#savedVideoData[currentVideoIndex].watched;
         this.#editVideoData(this.#savedVideoData);
         this.#renderVideo();
       }

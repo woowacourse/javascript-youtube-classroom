@@ -28,7 +28,7 @@ const polishVideos = (videos) => {
 };
 
 const keywordInputView = new KeywordInputView();
-const savedVideoView = new SavedVideoView(UserStorage.getVideoData(), UserStorage.editVideoData);
+const savedVideoView = new SavedVideoView(UserStorage.getVideoData, UserStorage.editVideoData);
 const searchModalView = new SearchModalView();
 const videoView = new VideoView(async () => polishVideos(await youtubeAPI.getVideosInfo()));
 
@@ -53,10 +53,14 @@ const handleSaveVideoButtonClick = (videoData) => {
   }
 };
 
+const handleReRender = () => {
+  savedVideoView.appendVideos();
+};
+
 const runApp = () => {
   keywordInputView.bindSubmitKeyword(handleKeywordInputSubmit);
   searchModalView.bindModal();
-  videoView.bindSaveVideo(handleSaveVideoButtonClick);
+  videoView.bindSaveVideo(handleSaveVideoButtonClick, handleReRender);
 };
 
 export default runApp;
