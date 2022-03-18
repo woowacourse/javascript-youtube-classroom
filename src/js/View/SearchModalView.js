@@ -1,5 +1,4 @@
 import { $, debounce } from '../util';
-import SearchKeywordFormView from './SearchKeywordFormView';
 import SearchResultView from './SearchResultView';
 import { ALERT_MESSAGE, SCROLL_BUFFER_SECOND, SCROLL_BUFFER_HEIGHT } from '../constants';
 import { validateSearchKeyword } from '../validation';
@@ -10,7 +9,6 @@ export default class SearchModalView {
   constructor(searchManager, saveVideoManager) {
     this.#modal = $('#search-modal');
 
-    this.searchKeywordFormView = new SearchKeywordFormView();
     this.searchResultView = new SearchResultView();
 
     this.searchManager = searchManager;
@@ -21,7 +19,7 @@ export default class SearchModalView {
 
   bindEvents() {
     $('.dimmer').addEventListener('click', this.closeModal);
-    this.#modal.addEventListener('searchKeyword', this.onSubmitSearchKeyword.bind(this));
+    $('#search-form').addEventListener('submit', this.onSubmitSearchKeyword.bind(this));
     this.#modal.addEventListener('searchOnScroll', debounce(this.searchOnScroll.bind(this), SCROLL_BUFFER_SECOND));
   }
 
@@ -30,18 +28,14 @@ export default class SearchModalView {
   }
 
   onSubmitSearchKeyword(e) {
-    const { keyword } = e.detail;
+    e.preventDefault();
+    const keyword = $('#search-input-keyword').value;
     try {
       validateSearchKeyword(keyword);
     } catch ({ message }) {
       return alert(message);
     }
     this.searchOnSubmitKeyword(keyword);
-  }
-
-  onClickVideoSaveButton(e) {
-    const { target } = e.detail;
-    target.classList.add('hide');
   }
 
   searchOnSubmitKeyword(keyword) {

@@ -1,5 +1,6 @@
 import fetch from 'node-fetch';
 import { YOUTUBE_API_ENDPOINT } from '../youtubeApi';
+import { parseVideoInfo } from '../util';
 
 export default class SearchVideoManager {
   #isLastPage;
@@ -40,16 +41,6 @@ export default class SearchVideoManager {
   processVideoData(result) {
     if (!result.nextPageToken) this.#isLastPage = true;
     this.nextPageToken = result.nextPageToken;
-    return this.parseVideoInfo(result);
-  }
-
-  parseVideoInfo(videoList) {
-    return videoList.items.map((item) => ({
-      id: item.id.videoId,
-      thumbnail: item.snippet.thumbnails.medium.url,
-      title: item.snippet.title,
-      channelName: item.snippet.channelTitle,
-      publishedDate: new Date(item.snippet.publishedAt),
-    }));
+    return parseVideoInfo(result);
   }
 }

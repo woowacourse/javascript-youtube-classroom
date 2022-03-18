@@ -7,6 +7,7 @@ export const SCROLL_BUFFER_HEIGHT = 50;
 export const ERROR_MESSAGE = {
   SEARCH_KEYWORD_MIN_LENGTH: `검색 키워드는 ${SEARCH_KEYWORD_MIN_LENGTH}자 이상이어야 합니다.`,
   MAX_VIDEO_SAVE: `저장 에러! 영상은 최대 ${MAX_VIDEO_SAVE}개만 저장할 수 있습니다.`,
+  ALREADY_SAVE: '이미 저장한 동영상입니다',
 };
 
 export const ALERT_MESSAGE = {
