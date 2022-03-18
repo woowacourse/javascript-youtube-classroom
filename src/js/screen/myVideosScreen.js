@@ -15,9 +15,8 @@ export default class MyVideosScreen {
 
     this.#storageEngine = StorageEngine.instance;
 
-    this.#myVideoList.addEventListener('click', this.#handleCheckVideoViewed);
+    this.#myVideoList.addEventListener('click', this.#handleChangeVideoViewed);
     this.#myVideoList.addEventListener('click', this.#handleDeleteVideo);
-    this.#myVideoList.addEventListener('click', this.#handleUncheckVideoViewed);
     this.#nav.addEventListener('click', this.#renderFilteredVideos);
 
     const savedVideos = this.#storageEngine.getSavedVideos();
@@ -36,24 +35,19 @@ export default class MyVideosScreen {
     this.#renderNoSavedVideosMessage();
   }
 
-  #handleCheckVideoViewed = (e) => {
-    if (e.target.classList.contains('video-item__view-check-button')) {
+  #handleChangeVideoViewed = (e) => {
+    if (
+      e.target.classList.contains('video-item__view-uncheck-button') ||
+      e.target.classList.contains('video-item__view-check-button')
+    ) {
       const video = e.target.closest('.video-item');
       const { videoId } = video.dataset;
 
-      this.#storageEngine.changeVideoViewed(videoId, true);
+      const viewStatus = e.target.classList.contains('video-item__view-uncheck-button')
+        ? false
+        : true;
 
-      this.#myVideoList.removeChild(video);
-      this.#renderNoSavedVideosMessage();
-    }
-  };
-
-  #handleUncheckVideoViewed = (e) => {
-    if (e.target.classList.contains('video-item__view-uncheck-button')) {
-      const video = e.target.closest('.video-item');
-      const { videoId } = video.dataset;
-
-      this.#storageEngine.changeVideoViewed(videoId, false);
+      this.#storageEngine.changeVideoViewed(videoId, viewStatus);
 
       this.#myVideoList.removeChild(video);
       this.#renderNoSavedVideosMessage();
