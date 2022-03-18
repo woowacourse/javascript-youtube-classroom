@@ -17,6 +17,11 @@
   height: 36px;
   border: none;
   border-radius: 4px;
+  cursor: pointer;
+}
+
+.video-item-button:hover {
+  background-color: #00bcd41f;
 }
 
 @media screen and (min-width: 1280px) {
