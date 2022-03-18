@@ -27,3 +27,5 @@ export const FAKE_DATA = [
     watched: false,
   },
 ];
+
+export const SAVE_KEY = 'video';

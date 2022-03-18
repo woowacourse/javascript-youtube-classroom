@@ -1,4 +1,4 @@
-import { ERROR_MESSAGE } from '../constants';
+import { ERROR_MESSAGE, SAVE_KEY } from '../constants';
 import { isOverVideoSaveMaxCount } from '../validation';
 import { getVideoInfo } from '../util';
 
@@ -11,7 +11,7 @@ export class SaveVideoManager {
   }
 
   getVideoData() {
-    return getData('id') || [];
+    return getData(SAVE_KEY) || [];
   }
 
   findVideoById(id) {
@@ -27,7 +27,7 @@ export class SaveVideoManager {
       throw new Error(ERROR_MESSAGE.ALREADY_SAVE);
     }
     this.videoData.push(videoInfo);
-    setData('id', this.videoData);
+    setData(SAVE_KEY, this.videoData);
   }
 
   changeWatchState(id) {
@@ -39,11 +39,11 @@ export class SaveVideoManager {
       }
       return video;
     });
-    setData('id', this.videoData);
+    setData(SAVE_KEY, this.videoData);
   }
 
   removeVideo(id) {
     this.videoData = this.videoData.filter((video) => video.id !== id);
-    setData('id', this.videoData);
+    setData(SAVE_KEY, this.videoData);
   }
 }

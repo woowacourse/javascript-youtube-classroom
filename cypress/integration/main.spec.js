@@ -1,10 +1,10 @@
 import { setData } from '../../src/js/Manager/SaveVideoManager';
-import { FAKE_DATA } from '../../src/js/constants';
+import { FAKE_DATA, SAVE_KEY } from '../../src/js/constants';
 
 describe('저장된 비디오를 메인 화면에서 확인할 수 있다.', () => {
   it('저장된 동영상이 있을 경우, 볼 영상에서 확인할 수 있다.', () => {
     const videoId = '3iM_06QeZi8';
-    setData('id', FAKE_DATA);
+    setData(SAVE_KEY, FAKE_DATA);
     cy.visit('/index.html');
     cy.get(`.video-item[data-video-id=${videoId}]`).should('exist');
   });
@@ -18,7 +18,7 @@ describe('저장된 비디오를 메인 화면에서 확인할 수 있다.', () 
 describe('볼 동영상에서 본 동영상으로 변환할 수 있다.', () => {
   const videoId = '3iM_06QeZi8';
   it('체크 이모지 버튼을 누르면 본 동영상으로 전환된다.', () => {
-    setData('id', FAKE_DATA);
+    setData(SAVE_KEY, FAKE_DATA);
     cy.visit('/index.html');
     cy.get(`.video-item[data-video-id=${videoId}] > div > button.video-item__watched-button.button`).click();
     cy.get(`.video-item[data-video-id=${videoId}]`).should('be.not.visible');
@@ -34,7 +34,7 @@ describe('동영상을 삭제할 수 있다', () => {
   const videoId = '3iM_06QeZi8';
 
   beforeEach(() => {
-    setData('id', FAKE_DATA);
+    setData(SAVE_KEY, FAKE_DATA);
     cy.visit('/index.html');
   });
 
