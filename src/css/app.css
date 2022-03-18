@@ -46,3 +46,7 @@ body {
   flex-wrap: wrap;
   column-gap: 20px;
 }
+
+.video-item__view-cancel-button {
+  filter: grayscale(1);
+}

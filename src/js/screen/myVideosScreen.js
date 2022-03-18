@@ -6,12 +6,16 @@ import { myVideoTemplate } from '../util/template.js';
 export default class MyVideosScreen {
   #myVideoList;
   #storageEngine;
+  #viewedVideosTabButton;
 
   constructor() {
     this.#myVideoList = $('.my-video-list');
+    this.#viewedVideosTabButton = $('#viewed-videos-tab-button');
+
     this.#storageEngine = StorageEngine.instance;
 
     this.#myVideoList.addEventListener('click', this.#handleCheckVideoViewed);
+    this.#viewedVideosTabButton.addEventListener('click', this.#changeToViewedVideosTab);
 
     this.#render();
   }
@@ -36,4 +40,17 @@ export default class MyVideosScreen {
       this.#myVideoList.removeChild(video);
     }
   };
+
+  #changeToViewedVideosTab = () => {
+    this.#clear();
+
+    const viewedVideos = this.#storageEngine.getViewedVideos();
+    const viewedVideosTemplate = viewedVideos.map((video) => myVideoTemplate(video)).join('');
+
+    this.#myVideoList.insertAdjacentHTML('beforeend', viewedVideosTemplate);
+  };
+
+  #clear() {
+    this.#myVideoList.replaceChildren();
+  }
 }

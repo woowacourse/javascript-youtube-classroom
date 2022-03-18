@@ -60,6 +60,10 @@ export default class StorageEngine {
     return this.getSavedVideos().filter(({ isViewed }) => isViewed === false);
   }
 
+  getViewedVideos() {
+    return this.getSavedVideos().filter(({ isViewed }) => isViewed === true);
+  }
+
   init() {
     localStorage.clear();
   }
