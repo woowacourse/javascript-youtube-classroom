@@ -31,7 +31,8 @@ export const handleScrollSearch = e => {
     if (isEndOfScroll(e.target)) {
       modalUI.renderSkeletonUI();
 
-      const response = youtubeSearchAPI.callSearchAPI();
+      const searchKeyword = $('#search-input-keyword').value.trim();
+      const response = youtubeSearchAPI.callSearchAPI(searchKeyword);
       youtubeSearchAPI.updateSearchResults(response);
 
       modalUI.renderAdditionalSearchResult(response);
