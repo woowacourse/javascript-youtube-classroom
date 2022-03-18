@@ -43,6 +43,7 @@ module.exports = {
     { name: 'ui' },
     { name: 'element' },
     { name: 'domain' },
+    { name: 'store' },
     { name: 'validation' },
     { name: 'util' },
     { name: 'test' },
