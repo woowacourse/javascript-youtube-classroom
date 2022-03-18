@@ -11,11 +11,11 @@ class SearchModal extends CustomElement {
   }
 
   setEvent() {
-    addEvent(this, 'click', '.dimmer', this.hideSearchModal);
+    addEvent(this, 'click', '.dimmer', () => this.hideSearchModal());
   }
 
   hideSearchModal() {
-    $('.modal-container').classList.add('hide');
+    $('.modal-container', this).classList.add('hide');
   }
 }
 
