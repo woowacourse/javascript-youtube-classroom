@@ -13,6 +13,7 @@ export const SELECTOR = {
   DISPLAY_WATCHED_SECTION: '#display-watched-section',
   PLAYLIST_VIDEO: '#playlist-video',
   WATCHED_VIDEO: '#watched-video',
+  SAVED_VIDEO_LIST: '#saved-video-list',
 };
 
 export const MAX_STORE_CAPACITY = 100;
