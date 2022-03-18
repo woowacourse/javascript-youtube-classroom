@@ -54,8 +54,8 @@ export default class Controller {
 
     this.video.updateNewVideoItems();
     this.video.accumulateVideoItems();
-    this.searchResultView.renderVideo(this.video.newVideoItems);
     this.searchResultView.startObserve();
+    this.searchResultView.renderVideo(this.video.newVideoItems);
   }
 
   async #scrollNextVideos() {
@@ -75,8 +75,8 @@ export default class Controller {
     }
     this.video.updateNewVideoItems();
     this.video.accumulateVideoItems();
-    this.searchResultView.renderVideo(this.video.newVideoItems);
     this.searchResultView.startObserve();
+    this.searchResultView.renderVideo(this.video.newVideoItems);
   }
 
   #saveVideo(event) {

@@ -19,7 +19,7 @@ export default class SearchResultView {
       },
       {
         root: this.$videoList,
-        threshold: 1.0,
+        threshold: 1,
       },
     );
   }
