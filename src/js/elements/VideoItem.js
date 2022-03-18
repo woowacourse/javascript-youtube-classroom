@@ -2,7 +2,6 @@ import SearchedVideo from '../stores/SearchedVideo';
 import CustomElement from '../abstract/CustomElement';
 import { addEvent, emit } from '../utils';
 import TEMPLATE from '../templates';
-import { VIDEO } from '../constants';
 import SavedVideo from '../stores/SavedVideo';
 import Save from '../domains/Save';
 
@@ -29,9 +28,7 @@ class VideoItem extends CustomElement {
   }
 
   hideSaveButton(e) {
-    const videos = SavedVideo.instance.getVideos();
-
-    if (videos.length >= VIDEO.MAX_SAVABLE_COUNT) return;
+    if (!SavedVideo.instance.isStorable()) return;
 
     e.target.hidden = true;
   }

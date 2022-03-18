@@ -1,3 +1,5 @@
+import { VIDEO } from '../constants';
+
 class SavedVideo {
   static _instance = null;
 
@@ -43,6 +45,10 @@ class SavedVideo {
 
   findVideo(videoId) {
     return this.#videos.find((video) => video.id === videoId);
+  }
+
+  isStorable() {
+    return this.#videos.length < VIDEO.MAX_SAVABLE_COUNT;
   }
 }
 
