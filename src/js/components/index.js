@@ -1,7 +1,12 @@
+/* eslint-disable complexity */
+/* eslint-disable max-lines-per-function */
 import SearchModal from './SearchModalComponent';
 import SavedVideoListSection from './SavedVideoListSectionComponent';
 import { dispatch } from '../modules/eventFactory';
+import { getState } from '../modules/stateStore';
 import { CUSTOM_EVENT_KEY } from '../constants/events';
+import { SAVED_VIDEO_FILTER_TYPE } from '../constants/video';
+import { STATE_STORE_KEY } from '../constants/stateStore';
 class App {
   searchModal = null;
 
@@ -39,11 +44,26 @@ class App {
       }
 
       const { buttonFor } = e.target.dataset;
+      const savedVideoFilter = getState(STATE_STORE_KEY.SAVED_VIDEO_FILTER);
 
-      if (buttonFor === 'watch-later-video') {
-        // TODO: 볼 영상 필터링
-      } else if (buttonFor === 'watched-video') {
-        // TODO: 본 영상 필터링
+      if (
+        buttonFor === 'watch-later-video' &&
+        savedVideoFilter !== SAVED_VIDEO_FILTER_TYPE.WATCH_LATER
+      ) {
+        dispatch(CUSTOM_EVENT_KEY.CLICK_SAVED_VIDEO_FILTER_BUTTON, {
+          detail: {
+            savedVideoFilterType: SAVED_VIDEO_FILTER_TYPE.WATCH_LATER,
+          },
+        });
+      } else if (
+        buttonFor === 'watched-video' &&
+        savedVideoFilter !== SAVED_VIDEO_FILTER_TYPE.WATCHED
+      ) {
+        dispatch(CUSTOM_EVENT_KEY.CLICK_SAVED_VIDEO_FILTER_BUTTON, {
+          detail: {
+            savedVideoFilterType: SAVED_VIDEO_FILTER_TYPE.WATCHED,
+          },
+        });
       } else if (buttonFor === 'search-modal') {
         dispatch(CUSTOM_EVENT_KEY.CLICK_SEARCH_MODAL_BUTTON);
       }

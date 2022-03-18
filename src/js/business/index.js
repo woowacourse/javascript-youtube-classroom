@@ -17,6 +17,7 @@ class AppBusiness {
     bind(CUSTOM_EVENT_KEY.SUBMIT_SEARCH_KEYWORD, this.onSubmitSearchKeyword);
     bind(CUSTOM_EVENT_KEY.LOAD_NEW_VIDEO_LIST, this.onLoadNewVideoList);
     bind(CUSTOM_EVENT_KEY.CLICK_SAVE_BUTTON, this.onClickSaveButton);
+    bind(CUSTOM_EVENT_KEY.CLICK_SAVED_VIDEO_FILTER_BUTTON, this.onClickSavedVideoFilterButton);
   }
 
   onClickSearchModalButton = () => {
@@ -92,6 +93,10 @@ class AppBusiness {
     } catch ({ message }) {
       alert(message);
     }
+  };
+
+  onClickSavedVideoFilterButton = ({ detail: { savedVideoFilterType } }) => {
+    setState(STATE_STORE_KEY.SAVED_VIDEO_FILTER, savedVideoFilterType);
   };
 
   async requestVideo(keyword, pageToken) {

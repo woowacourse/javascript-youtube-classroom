@@ -4,4 +4,5 @@ export const CUSTOM_EVENT_KEY = {
   SUBMIT_SEARCH_KEYWORD: 'submit-search-keyword',
   LOAD_NEW_VIDEO_LIST: 'load-new-video-list',
   CLICK_SAVE_BUTTON: 'click-save-button',
+  CLICK_SAVED_VIDEO_FILTER_BUTTON: 'click-saved-video-filter-button',
 };

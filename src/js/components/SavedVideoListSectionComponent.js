@@ -1,5 +1,6 @@
 import { getState, subscribe } from '../modules/stateStore';
 import { STATE_STORE_KEY } from '../constants/stateStore';
+import { SAVED_VIDEO_FILTER_TYPE } from '../constants/video';
 import SavedVideo from './SavedVideoComponent';
 
 class SavedVideoListSection {
@@ -20,16 +21,18 @@ class SavedVideoListSection {
 
   render() {
     const savedVideoList = getState(STATE_STORE_KEY.SAVED_VIDEO);
+    const filteredVideoList = this.#filterSameFilterTypeVideo(savedVideoList);
 
     this.$savedVideoListContainer.innerHTML = '';
 
-    if (savedVideoList.length === 0) {
+    if (filteredVideoList.length === 0) {
       this.#showSavedVideoListNoResult();
       return;
     }
 
     this.#showSavedVideoListContainer();
-    savedVideoList.forEach(
+
+    filteredVideoList.forEach(
       (savedVideo) => new SavedVideo(this.$savedVideoListContainer, { savedVideo })
     );
   }
@@ -52,13 +55,13 @@ class SavedVideoListSection {
 
   #subscribeStore() {
     subscribe(STATE_STORE_KEY.SAVED_VIDEO, this);
+    subscribe(STATE_STORE_KEY.SAVED_VIDEO_FILTER, this);
     this.render();
   }
 
   #bindEventHandler() {
     this.$savedVideoListContainer.addEventListener('click', (e) => {
       if (!e.target.classList.contains('button')) {
-        console.log('버튼 아님');
         return;
       }
 
@@ -94,6 +97,19 @@ class SavedVideoListSection {
   #showSavedVideoListNoResult() {
     this.$savedVideoListWrapper.classList.add('hide');
     this.$savedVideoListNoResult.classList.remove('hide');
+  }
+
+  #filterSameFilterTypeVideo(savedVideoList) {
+    const savedVideoFilter = getState(STATE_STORE_KEY.SAVED_VIDEO_FILTER);
+    const isCurrentFilterTypeWatched = savedVideoFilter === SAVED_VIDEO_FILTER_TYPE.WATCHED;
+
+    const filteredVideoList = savedVideoList.filter((savedVideo) => {
+      const { isWatched } = savedVideo.getVideoInfo();
+
+      return isWatched === isCurrentFilterTypeWatched;
+    });
+
+    return filteredVideoList;
   }
 }
 
