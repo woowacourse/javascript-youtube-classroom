@@ -4,7 +4,7 @@ body {
 }
 
 #app {
-    max-width: 1040px;
+    max-width: var(--xlarge-list-size);
     margin: 0 auto;
 }
 
@@ -96,3 +96,30 @@ body {
     font-size: 30px;
     color: gray;
 }
+
+@media screen and (max-width: 1280px) {
+    #app {
+        width: var(--large-list-size);
+    }
+  }
+
+  @media screen and (max-width: 960px) {
+    #app {
+        width: var(--medium-list-size);
+    }
+  }
+
+  @media screen and (max-width: 600px) {
+    #app {
+        width: var(--small-list-size);
+    }
+    #will-watch-button, #watched-button{
+        width: 90px;
+    }
+    .nav__button {
+        width: 40px;
+    }
+    .search-text{
+        display: none;
+    }
+  }

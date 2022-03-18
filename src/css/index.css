@@ -1,6 +1,8 @@
 @import './app.css';
 @import './modal.css';
-@import './color.css';
+@import './confirm.css';
+@import './custom/color.css';
+@import './custom/size.css';
 
 * {
     margin: 0;
