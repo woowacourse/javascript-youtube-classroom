@@ -39,12 +39,11 @@ body {
 }
 
 .nav__button:hover {
-  background: var(--nav-btn-bg-hover-color);
-  background: #e6fcf5;
+  background: var(--btn-bg-stress-color);
 }
 
 .nav__button.clicked {
-  background: #e6fcf5;
+  background: var(--btn-bg-stress-color);
 }
 
 .video-container {
@@ -68,5 +67,9 @@ body {
 }
 
 .button-list > button:hover {
-  background: #ced4da;
+  background: var(--btn-bg-stress-color);
+}
+
+.video-item__watch_button[data-is-watched='true'] {
+  background: var(--btn-bg-stress-color);
 }
