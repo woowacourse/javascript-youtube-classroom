@@ -31,6 +31,7 @@ export default class EventHandler {
 
   onDimmerClick() {
     this.modalView.hideModal();
+    this.onStoreTypeButtonsClick(this.mainView.getCurrentStoreType());
   }
 
   onStoreButtonClick(videoId) {
@@ -96,6 +97,7 @@ export default class EventHandler {
         break;
       case DOM_STRING.DELETE_STORE_BUTTON:
         videoStore.deleteVideoWithId(videoId);
+        this.onStoreTypeButtonsClick(this.mainView.getCurrentStoreType());
     }
   }
 }

@@ -25,47 +25,6 @@ export default class MainView {
     this.videoItemViewLists[STORE.SAW] = [];
   }
 
-  clickWillSeeButton() {
-    this.$willSeeButton.click();
-  }
-
-  clickSawButton() {
-    this.$sawButton.click();
-  }
-
-  showEmptyStorage(bool) {
-    bool
-      ? $(SELECTOR.EMPTY_CONTAINER).classList.remove(DOM_STRING.HIDE)
-      : $(SELECTOR.EMPTY_CONTAINER).classList.add(DOM_STRING.HIDE);
-  }
-
-  getRenderedVideoIdList() {
-    const currentVideoListElement = this.#getCurrentVideoListElement();
-    return [...currentVideoListElement.childNodes].map(videoItem => videoItem.dataset.videoid);
-  }
-
-  showSkeletonVideoList(videoList) {
-    this.#appendEmptyList(videoList);
-    this.#appendVideoItem(videoList);
-    this.#showSkeletonTemplate(videoList);
-  }
-
-  updateVideoItems(videoListData) {
-    if (this.currentStoreType === STORE.WILL_SEE) {
-      this.#renderWillSeeVideoItems(videoListData);
-      return;
-    }
-    this.#renderSawVideoItems(videoListData);
-  }
-
-  deleteVideoItem(videoElement) {
-    const targetIndex = this.videoItemViewLists[this.currentStoreType].findIndex(
-      video => video.getElement() === videoElement
-    );
-    this.videoItemViewLists[this.currentStoreType].splice(targetIndex, 1);
-    videoElement.parentNode.removeChild(videoElement);
-  }
-
   bindModalOpenButton(callback) {
     this.$modalOpenButton.addEventListener('click', callback);
   }
@@ -95,6 +54,48 @@ export default class MainView {
         }
       })
     );
+  }
+
+  clickWillSeeButton() {
+    this.$willSeeButton.click();
+  }
+
+  showEmptyStorage(bool) {
+    bool
+      ? $(SELECTOR.EMPTY_CONTAINER).classList.remove(DOM_STRING.HIDE)
+      : $(SELECTOR.EMPTY_CONTAINER).classList.add(DOM_STRING.HIDE);
+  }
+
+  getCurrentStoreType() {
+    return this.currentStoreType;
+  }
+
+  getRenderedVideoIdList() {
+    const currentVideoListElement = this.#getCurrentVideoListElement();
+    return [...currentVideoListElement.childNodes].map(videoItem => videoItem.dataset.videoid);
+  }
+
+  showSkeletonVideoList(videoList) {
+    this.#appendEmptyList(videoList);
+    this.#appendVideoItem(videoList);
+    this.#showSkeletonTemplate(videoList);
+  }
+
+  updateVideoItems(videoListData) {
+    if (this.currentStoreType === STORE.WILL_SEE) {
+      this.#renderWillSeeVideoItems(videoListData);
+      return;
+    }
+    this.#renderSawVideoItems(videoListData);
+  }
+
+  deleteVideoItem(videoElement) {
+    console.log(videoElement);
+    const targetIndex = this.videoItemViewLists[this.currentStoreType].findIndex(
+      video => video.getElement() === videoElement
+    );
+    this.videoItemViewLists[this.currentStoreType].splice(targetIndex, 1);
+    videoElement.parentNode.removeChild(videoElement);
   }
 
   #getCurrentVideoListElement() {
