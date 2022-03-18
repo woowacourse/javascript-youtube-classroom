@@ -63,7 +63,7 @@ class SavedVideosView {
       return;
     }
 
-    const noSavedVideos = selectDom('.no-saved-videos');
+    const noSavedVideos = selectDom('.no-saved-videos', this.#savedVideos);
     noSavedVideos?.remove();
 
     const newVideoIdArray = removeArrayIntersection(videos, this.#renderedVideoIdArray);
@@ -96,15 +96,13 @@ class SavedVideosView {
         this.#renderedVideoIdArray = [...this.#renderedVideoIdArray, ...newVideoIdArray];
       }
     } catch (e) {
-      if (!selectDom('.no-saved-videos')) {
-        this.#savedVideos.append(errorTemplate());
-      }
+      this.#savedVideos.append(errorTemplate());
     }
   }
 
   #renderNoSavedVideoTemplate() {
     removeElementList([...this.#videoList.childNodes]);
-    if (!selectDom('.no-saved-videos')) {
+    if (!selectDom('.no-saved-videos', this.#savedVideos)) {
       this.#savedVideos.append(noSavedVideosTemplate());
     }
   }
