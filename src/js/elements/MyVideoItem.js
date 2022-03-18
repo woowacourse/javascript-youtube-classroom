@@ -1,13 +1,12 @@
 import CustomElement from '../abstract/CustomElement';
 import TEMPLATE from '../templates';
-import { addEvent, emit } from '../utils';
+import { addEvent, emit, confirm } from '../utils';
 import SavedVideo from '../stores/SavedVideo';
 import State from '../domains/State';
 
 class MyVideoItem extends CustomElement {
   render() {
     this.innerHTML = this.template(SavedVideo.instance.findVideo(this.dataset.videoId));
-    // SavedVideo.instance.subscribeWatchEvent(this);
     State.instance.subscribe(this);
   }
 
@@ -19,23 +18,19 @@ class MyVideoItem extends CustomElement {
     addEvent(this, 'click', '.video-item__state-button', (e) => this.emitEvent(e));
   }
 
-  // eslint-disable-next-line max-lines-per-function
   emitEvent(e) {
     const id = this.dataset.videoId;
+    const { action } = e.target.dataset;
 
-    switch (e.target.dataset.action) {
-      case 'watch':
-        emit('.video-item__state-button', '@watch', { id }, this);
-        break;
+    if (action === 'watch') {
+      emit('.video-item__state-button', '@watch', { id }, this);
+      return;
+    }
 
-      case 'remove':
-        if (window.confirm('해당 영상을 삭제하시겠습니까?')) {
-          emit('.video-item__state-button', '@remove', { id }, this);
-        }
-        break;
-
-      default:
-        break;
+    if (action === 'remove') {
+      confirm('해당 영상을 삭제하시겠습니까?', () =>
+        emit('.video-item__state-button', '@remove', { id }, this)
+      );
     }
   }
 }
