@@ -9,7 +9,7 @@ export default class SearchVideoEvent {
     this.searchMachine = new SearchMachine();
   }
 
-  action() {
+  reaction() {
     this.initialAction(this.data);
     this.searchModalPresenter.renderSkeletonImage();
     globalStore

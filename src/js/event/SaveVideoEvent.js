@@ -6,7 +6,7 @@ export default class SaveVideoEvent {
     this.data = data;
   }
 
-  action() {
+  reaction() {
     globalStore.saveVideoToLocalStorage(this.data.target.id);
     globalStore.appendVideo(this.data.target);
     mainPagePresenter.appendList(this.data.target);

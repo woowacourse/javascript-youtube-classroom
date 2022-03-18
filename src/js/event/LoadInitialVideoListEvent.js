@@ -4,7 +4,7 @@ import { globalStore } from '../store/VideoStore';
 export default class LoadInitialVideoList {
   constructor() {}
 
-  action() {
+  reaction() {
     globalStore
       .initVideoList()
       .then(() =>

@@ -1,15 +1,15 @@
 import { mainPagePresenter } from '../presenter/MainPagePresenter';
 import { globalStore } from '../store/VideoStore';
 
-export default class ChangeVideoStatus {
+export default class DeleteVideo {
   constructor(data) {
     this.data = data;
   }
 
-  action() {
+  reaction() {
     this.data.target.closest('li').remove();
-    globalStore.toggleState(this.data.id);
-    globalStore.toggleWatchedToStarge(this.data.id);
+    globalStore.removeLocalStorageVideo(this.data.id);
+    globalStore.removeVideo(this.data.id);
     mainPagePresenter.renderNoVideo();
   }
 }

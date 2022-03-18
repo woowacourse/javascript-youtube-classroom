@@ -6,7 +6,7 @@ export class ChangeTab {
     this.data = data;
   }
 
-  action() {
+  reaction() {
     mainPagePresenter.toggleTabChoosed(this.data.id, globalStore.videoStorage);
   }
 }
