@@ -30,7 +30,7 @@ export default class SearchForm {
 
   handleSubmitForm = event => {
     event.preventDefault();
-    const newKeyword = $('#search-input-keyword', this.container).value;
+    const newKeyword = $('#search-input-keyword', this.container).value.trim();
     const { isLoading, keyword: beforeKeyword } = YoutubeSearchStore.getState();
 
     if (isEmptyString(newKeyword)) {
