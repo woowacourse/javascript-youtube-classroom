@@ -9,7 +9,7 @@
     "start": "webpack serve --open",
     "deploy": "gh-pages -d dist",
     "cypress:run": "cypress run —browser chrome",
-    "cypress:test": "npm run cypress:run"
+    "cypress:open": "cypress open"
   },
   "repository": {
     "type": "git",
