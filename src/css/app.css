@@ -52,7 +52,8 @@ body {
 }
 
 .watch-video-button,
-.delete-watch-video-button {
+.delete-watch-video-button,
+.after-watch-video-button {
   font-size: 20px;
 }
 
@@ -66,4 +67,25 @@ body {
 
 .hide {
   display: none;
+}
+
+@media screen and (max-width: 1280px) {
+  .after-watch-video-list,
+  .watched-video-list {
+    grid-template-columns: 1fr 1fr 1fr;
+  }
+}
+
+@media screen and (max-width: 960px) {
+  .after-watch-video-list,
+  .watched-video-list {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+@media screen and (max-width: 600px) {
+  .after-watch-video-list,
+  .watched-video-list {
+    grid-template-columns: 1fr;
+  }
 }
