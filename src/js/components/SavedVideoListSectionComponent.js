@@ -15,6 +15,7 @@ class SavedVideoListSection {
     this.#mount();
     this.#initDOM();
     this.#subscribeStore();
+    this.#bindEventHandler();
   }
 
   render() {
@@ -52,6 +53,25 @@ class SavedVideoListSection {
   #subscribeStore() {
     subscribe(STATE_STORE_KEY.SAVED_VIDEO, this);
     this.render();
+  }
+
+  #bindEventHandler() {
+    this.$savedVideoListContainer.addEventListener('click', (e) => {
+      if (!e.target.classList.contains('button')) {
+        console.log('버튼 아님');
+        return;
+      }
+
+      const { videoId } = e.target.closest('.video-item').dataset;
+
+      if (e.target.classList.contains('video-item__watched-button')) {
+        // TODO: 해당 영상의 본 영상 상태를 변경하기
+        console.log('본 영상 버튼 클릭됨: ', videoId);
+      } else if (e.target.classList.contains('video-item__delete-button')) {
+        // TODO: 해당 영상을 저장된 영상 리스트에서 제거하기
+        console.log('삭제 버튼 클릭됨', videoId);
+      }
+    });
   }
 
   #generateTemplate() {
