@@ -1,8 +1,8 @@
 import './elements/MyClassroom';
 import './elements/SearchModal';
 import './elements/SearchForm';
-import './elements/VideoItem';
-import './elements/VideoList';
+import './elements/SearchVideoItem';
+import './elements/SearchVideoList';
 import './elements/SearchResult';
 
 import '../css/index.css';

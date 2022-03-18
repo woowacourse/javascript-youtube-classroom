@@ -3,7 +3,7 @@ import Save from '../domains/Save';
 import { addEvent, emit, $, $$ } from '../utils';
 import SKELETONS from '../templates';
 
-class VideoList extends HTMLUListElement {
+class SearchVideoList extends HTMLUListElement {
   constructor() {
     super();
     addEvent({
@@ -47,7 +47,10 @@ class VideoList extends HTMLUListElement {
 
   insertVideoItems(videos) {
     videos.forEach((video) => {
-      this.insertAdjacentHTML('beforeend', `<video-item data-id=${video.id}></video-item>`);
+      this.insertAdjacentHTML(
+        'beforeend',
+        `<search-video-item data-id=${video.id}></search-video-item>`
+      );
     });
   }
 
@@ -62,6 +65,6 @@ class VideoList extends HTMLUListElement {
   }
 }
 
-customElements.define('video-list', VideoList, { extends: 'ul' });
+customElements.define('search-video-list', SearchVideoList, { extends: 'ul' });
 
-export default VideoList;
+export default SearchVideoList;

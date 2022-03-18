@@ -13,7 +13,7 @@ class SearchResult extends CustomElement {
   template() {
     return `
       <h3 hidden>검색 결과</h3>
-      <ul is="video-list" class="video-list"></ul>
+      <ul is="search-video-list" class="video-list"></ul>
       <section class="search-result search-result--no-result hidden">
         <h3 hidden>검색 결과</h3>
         <div class="no-result">

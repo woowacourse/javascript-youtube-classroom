@@ -4,7 +4,7 @@ import Save from '../domains/Save';
 import { addEvent, emit, formatDate } from '../utils';
 import { VIDEO } from '../constants';
 
-class VideoItem extends CustomElement {
+class SearchVideoItem extends CustomElement {
   render() {
     const video = VideoStore.instance.findVideo(this.dataset.id);
 
@@ -60,6 +60,6 @@ class VideoItem extends CustomElement {
   }
 }
 
-customElements.define('video-item', VideoItem);
+customElements.define('search-video-item', SearchVideoItem);
 
-export default VideoItem;
+export default SearchVideoItem;
