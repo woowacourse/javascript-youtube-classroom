@@ -46,6 +46,10 @@ body {
   border: 1px solid rgba(0, 0, 0, 0.12);
 }
 
+.nav__button:disabled {
+  color: #000000;
+}
+
 .nav__button.current,
 .nav__button.current:hover {
   background: rgba(0, 188, 212, 0.12);

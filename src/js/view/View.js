@@ -21,10 +21,17 @@ class View {
   handleTabSwitch = async ({ target }) => {
     const { dataset } = target;
 
-    this.tabButtons.forEach((button) => button.classList.remove('current'));
-    target.classList.add('current');
+    this.tabButtons.forEach((button) => {
+      button.classList.remove('current');
+      button.disabled = true;
+    });
 
     await this.savedVideosView.renderTab(dataset.tabName);
+    target.classList.add('current');
+
+    this.tabButtons.forEach((button) => {
+      button.disabled = false;
+    });
   };
 }
 
