@@ -123,7 +123,7 @@ export default class SearchResult {
         ${
           isSaved
             ? ''
-            : '<button class="list-item__save-button button" type="button" aria-label="save video">⬇ 나중에 보기</button>'
+            : '<button class="list-item__save-button button" type="button" aria-label="save video">⬇ 저장</button>'
         }`,
       });
     });
