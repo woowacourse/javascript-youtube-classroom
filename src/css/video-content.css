@@ -11,6 +11,18 @@
   margin-top: 40px;
   width: 100%;
 }
+.empty-img-container {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  justify-items: center;
+  flex-wrap: wrap;
+}
+
+#empty-img {
+  width: 700px;
+  height: auto;
+}
 
 .watch-later-video-item {
   margin-bottom: 20px;
