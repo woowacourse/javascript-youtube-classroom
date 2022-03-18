@@ -23,7 +23,7 @@ body {
 
 .nav {
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
 }
 
 .button {
@@ -44,4 +44,8 @@ body {
 
 .nav__button:hover {
   background: var(--nav__button-hover-background-color);
+}
+
+.nav__tab .nav__button {
+  width: 100px;
 }
