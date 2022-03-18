@@ -56,10 +56,6 @@ body {
   display: grid;
   grid-gap: 20px;
 }
-/* - [ ] 1280px 이상: 4개
-  - [ ] 960px이상~1280px 미만: 3개
-  - [ ] 600px이상~960px 미만: 2개
-  - [ ] 600px 미만: 1개 */
 
 @media (max-width: 599px) {
   .my-video-list,

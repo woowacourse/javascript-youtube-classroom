@@ -28,10 +28,6 @@ export const myVideoTemplate = ({
   `;
 };
 
-export const NO_SAVED_VIDEOS_MESSAGE_TEMPLATE = `
-  <p class="no-saved-videos__content">${NO_SAVED_VIDEOS_MESSAGE}</p>
-`;
-
 export const NO_RESULT_TEMPLATE = `
   <div class="no-result">
     <img src=${notFoundImage} alt="no result image" class="no-result__image">

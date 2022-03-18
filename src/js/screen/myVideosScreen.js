@@ -1,8 +1,8 @@
 import StorageEngine from '../domain/storageEngine.js';
 
 import { $ } from '../util/domHelper.js';
-import { myVideoTemplate, NO_SAVED_VIDEOS_MESSAGE_TEMPLATE } from '../util/template.js';
-import { DELETE_VIDEO_CONFIRM_MESSAGE } from '../util/constants.js';
+import { myVideoTemplate } from '../util/template.js';
+import { DELETE_VIDEO_CONFIRM_MESSAGE, NO_SAVED_VIDEOS_MESSAGE } from '../util/constants.js';
 
 export default class MyVideosScreen {
   #myVideoList;
@@ -95,7 +95,7 @@ export default class MyVideosScreen {
 
   #renderNoSavedVideosMessage() {
     if (this.#myVideoList.children.length <= 0) {
-      this.#myVideoList.insertAdjacentHTML('beforeend', NO_SAVED_VIDEOS_MESSAGE_TEMPLATE);
+      this.#myVideoList.textContent = NO_SAVED_VIDEOS_MESSAGE;
     }
   }
 }

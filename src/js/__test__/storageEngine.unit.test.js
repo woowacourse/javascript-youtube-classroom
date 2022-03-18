@@ -84,7 +84,7 @@ describe('저장 기능 테스트', () => {
       isViewed: false,
     });
 
-    storageEngine.checkVideoViewed(newVideo.videoId);
+    storageEngine.changeVideoViewed(newVideo.videoId, true);
     expect(storageEngine.getSpecificVideo(newVideo.videoId)).toMatchObject({
       videoId: 'newVideoId',
       thumbnail: 'https://img.co.kr',

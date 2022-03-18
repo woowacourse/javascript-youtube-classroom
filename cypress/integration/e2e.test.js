@@ -122,28 +122,28 @@ describe('저장한 영상 확인 /볼 영상 확인/ 본 영상 확인 / 영상
     });
   });
 
-  // context('영상을 삭제하고, 저장된 영상이 없을 경우 메시지를 통해 확인할 수 있다.', () => {
-  //   it('삭제 버튼을 클릭하면, 삭제 확인창을 통해 영상을 삭제할 수 있다.', () => {
-  //     const stub = cy.stub();
+  context('영상을 삭제하고, 저장된 영상이 없을 경우 메시지를 통해 확인할 수 있다.', () => {
+    it('삭제 버튼을 클릭하면, 삭제 확인창을 통해 영상을 삭제할 수 있다.', () => {
+      const stub = cy.stub();
 
-  //     cy.on('window:confirm', stub);
-  //     stub.onFirstCall().returns(true);
+      cy.on('window:confirm', stub);
+      stub.onFirstCall().returns(true);
 
-  //     cy.get('.my-video-list')
-  //       .children('.video-item')
-  //       .find('.video-item__delete-button')
-  //       .click()
-  //       .then(() => {
-  //         expect(stub.getCall(0)).to.be.calledWith(DELETE_VIDEO_CONFIRM_MESSAGE);
-  //       });
+      cy.get('.my-video-list')
+        .children('.video-item')
+        .find('.video-item__delete-button')
+        .click()
+        .then(() => {
+          expect(stub.getCall(0)).to.be.calledWith(DELETE_VIDEO_CONFIRM_MESSAGE);
+        });
 
-  //     cy.get('.my-video-list > .video-item').should('not.exist');
-  //   });
+      cy.get('.my-video-list > .video-item').should('not.exist');
+    });
 
-  //   it('저장된 영상이 없을 경우 메시지를 확인할 수 있다.', () => {
-  //     cy.get('.no-saved-videos__content').should('have.text', NO_SAVED_VIDEOS_MESSAGE);
-  //   });
-  // });
+    it('저장된 영상이 없을 경우 메시지를 확인할 수 있다.', () => {
+      cy.get('.my-video-list').should('have.text', NO_SAVED_VIDEOS_MESSAGE);
+    });
+  });
 });
 
 // describe('유튜브 검색 예외 사항 테스트', () => {
