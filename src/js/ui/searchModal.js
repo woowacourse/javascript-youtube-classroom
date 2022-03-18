@@ -1,16 +1,12 @@
-import template from './templates.js';
 import throttle from '../util/throttle.js';
 import SearchMachine from '../domain/SearchMachine.js';
-import { ERROR_403, REQUEST_VIDEO_QUANTITY } from '../constant';
+import { SearchModalPresenter } from '../presenter/SearchModalPresenter.js';
 
 class SearchModal {
   constructor(appendList, storage) {
-    this.$modalContainer = document.querySelector('.modal-container');
-    this.$dimmer = document.querySelector('.dimmer');
     this.$searchInputKeyword = document.querySelector('#search-input-keyword');
     this.$searchButton = document.querySelector('#search-button');
     this.$videoListContainer = document.querySelector('.video-list');
-    this.$searchResult = document.querySelector('.search-result');
     this.scrollHandler = this.scrollVideoContainerHandler();
     this.requestAdditionalSearchResult = throttle(
       this.scrollHandler.requestAdditionalSearchResult,
@@ -18,27 +14,9 @@ class SearchModal {
     ).bind(this);
     this.machine = new SearchMachine();
     this.videoStorage = storage;
-    this.bindEvent();
     this.appendList = appendList;
-  }
-
-  toggleModalContainerView() {
-    this.$modalContainer.classList.toggle('hide');
-  }
-
-  initModalState() {
-    this.toggleModalContainerView();
-    this.$videoListContainer.replaceChildren();
-    this.$searchInputKeyword.value = '';
-    this.removeNoResult();
-  }
-
-  removeNoResult() {
-    const $noResultContainer = document.querySelector('.no-result');
-    if ($noResultContainer) {
-      $noResultContainer.remove();
-      this.$searchResult.classList.remove('search-result--no-result');
-    }
+    this.searchModalPresenter = new SearchModalPresenter();
+    this.bindEvent();
   }
 
   bindEvent() {
@@ -61,7 +39,6 @@ class SearchModal {
   }
 
   submitKeywordHandler(event) {
-    console.log(event);
     if (
       (event.type === 'keypress' && event.key === 'Enter') ||
       event.type === 'click'
@@ -78,10 +55,7 @@ class SearchModal {
   }
 
   initVideoState() {
-    this.removeNoResult();
-    this.$videoListContainer.replaceChildren();
-    this.$searchInputKeyword.blur();
-    this.$videoListContainer.classList.remove('hide');
+    this.searchModalPresenter.renderInitState();
     this.machine.initPageToken();
   }
 
@@ -121,65 +95,15 @@ class SearchModal {
   }
 
   searchVideo() {
-    this.renderSkeletonImage();
+    this.searchModalPresenter.renderSkeletonImage();
     this.machine
       .search()
-      .then((items) => this.renderResult(items))
-      .catch((err) => this.renderNetworkError(err))
-      .finally(this.removeSkeleton);
-  }
-
-  renderNetworkError(err) {
-    this.scrollHandler.setError(true);
-    if (err.name === ERROR_403) {
-      this.$videoListContainer.insertAdjacentHTML(
-        'beforeend',
-        template.exceedCapacityErrorImage(),
-      );
-      return;
-    }
-  }
-
-  renderResult(items) {
-    if (items.length === 0) {
-      this.renderNoResultImage();
-      return;
-    }
-    this.renderVideo(items);
-  }
-
-  renderSkeletonImage() {
-    this.$videoListContainer.insertAdjacentHTML(
-      'beforeend',
-      Array(REQUEST_VIDEO_QUANTITY)
-        .fill()
-        .map((_) => template.skeletonItem())
-        .join(' '),
-    );
-  }
-
-  removeSkeleton() {
-    document.querySelectorAll('.skeleton-container').forEach((element) => {
-      element.remove();
-    });
-  }
-
-  renderNoResultImage() {
-    this.$videoListContainer.classList.add('hide');
-    this.$searchResult.insertAdjacentHTML(
-      'beforeend',
-      template.noSearchResult(),
-    );
-    this.$searchResult.classList.add('search-result--no-result');
-  }
-
-  renderVideo(items) {
-    items.forEach((item) => {
-      this.$videoListContainer.insertAdjacentHTML(
-        'beforeend',
-        template.videoItems(item),
-      );
-    });
+      .then((items) => this.searchModalPresenter.renderResult(items))
+      .catch((err) => {
+        this.scrollHandler(true);
+        this.searchModalPresenter.renderNetworkError(err);
+      })
+      .finally(this.searchModalPresenter.removeSkeleton);
   }
 }
 

@@ -3,6 +3,7 @@ import {
   toggleWatchedToStorage,
 } from '../domain/localStorage.js';
 import { VideoStorage } from '../domain/VideoStorage.js';
+import { SearchModalPresenter } from '../presenter/SearchModalPresenter.js';
 import SearchModal from './searchModal.js';
 import template from './templates.js';
 
@@ -16,6 +17,7 @@ class MainPage {
     );
     this.$dimmer = document.querySelector('.dimmer');
     this.menuState = 'not-watched-tab-menu';
+    this.searchModalPresenter = new SearchModalPresenter();
   }
 
   init() {
@@ -31,11 +33,13 @@ class MainPage {
       .addEventListener('click', this.changeTab.bind(this));
     this.$searchModalButton.addEventListener(
       'click',
-      this.modalComponent.toggleModalContainerView.bind(this.modalComponent),
+      this.searchModalPresenter.toggleModalContainerView.bind(
+        this.searchModalPresenter,
+      ),
     );
     this.$dimmer.addEventListener(
       'click',
-      this.modalComponent.initModalState.bind(this.modalComponent),
+      this.searchModalPresenter.initModalState.bind(this.searchModalPresenter),
     );
     document
       .querySelector('.video-list-grid')
