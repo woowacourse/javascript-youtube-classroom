@@ -34,8 +34,13 @@ export default class ModalView {
     this.enabledScrollSearch = value;
   }
 
-  bindOnClickDimmer(callback) {
+  bindOnClickClose(callback) {
     this.$dimmer.addEventListener('click', callback);
+    this.$modalContainer.addEventListener('keyup', event => {
+      if (event.keyCode === KEY_CODE.ESC) {
+        callback();
+      }
+    });
   }
 
   bindOnClickSearchButton(callback) {

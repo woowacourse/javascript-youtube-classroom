@@ -13,6 +13,11 @@ export const SELECTOR = {
   WILL_SEE_VIDEO_LIST: '#will-see-video-list',
   SAW_VIDEO_LIST: '#saw-video-list',
   EMPTY_CONTAINER: '#empty-container',
+  VIDEO_ITEM_THUMBNAIL: '.video-item__thumbnail',
+  VIDEO_ITEM_TITLE: '.video-item__title',
+  VIDEO_ITEM_CHANNEL_NAGET_VIDEO_ITEM_TEMPLATEME: '.video-item__channel-nagetVideoItemTemplateme',
+  VIDEO_ITEM_PUBLISHED_DATE: '.video-item__published-date',
+  VIDEO_ITEM_SAVE_BUTTON: '.video-item__save-button',
 };
 
 export const DOM_STRING = {
@@ -54,4 +59,5 @@ export const SCROLL = {
 
 export const KEY_CODE = {
   ENTER: 13,
+  ESC: 27,
 };

@@ -20,7 +20,7 @@ export default class EventHandler {
     this.mainView.bindVideoItemButtons(this.onVideoItemButtonsClick.bind(this));
 
     this.modalView.bindOnClickSearchButton(this.onSearchButtonClick.bind(this));
-    this.modalView.bindOnClickDimmer(this.onDimmerClick.bind(this));
+    this.modalView.bindOnClickClose(this.onDimmerClose.bind(this));
     this.modalView.bindVideoListScroll(this.onVideoListScroll.bind(this));
     this.modalView.bindVideoListClickStoreButton(this.onStoreButtonClick.bind(this));
   }
@@ -29,7 +29,7 @@ export default class EventHandler {
     this.modalView.showModal();
   }
 
-  onDimmerClick() {
+  onDimmerClose() {
     this.modalView.hideModal();
     this.onStoreTypeButtonsClick(this.mainView.getCurrentStoreType());
   }
