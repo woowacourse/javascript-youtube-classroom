@@ -11,6 +11,7 @@ export default function getVideoObjectArray(items, savedVideos) {
       channelTitle: snippet.channelTitle,
       publishedAt: snippet.publishedAt,
       isSaved: savedVideos ? !!savedVideos.includes(id.videoId) : true,
+      watched: false,
     };
   });
 }

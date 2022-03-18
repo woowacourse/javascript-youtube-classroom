@@ -1,39 +1,42 @@
-import {
-  MAX_SAVE_AMOUNT,
-  ERROR_MESSAGES,
-  UNWATCHED_LIST_KEY,
-  WATCHED_LIST_KEY,
-} from '../constants/constants';
+import { MAX_SAVE_AMOUNT, ERROR_MESSAGES } from '../constants/constants';
 
-const keys = {
-  watched: WATCHED_LIST_KEY,
-  unwatched: UNWATCHED_LIST_KEY,
-};
+const key = 'videoObjects';
 
-export function getFromStorage(key) {
-  return JSON.parse(localStorage.getItem(keys[key])) || [];
+export function getAllFromStorage() {
+  return JSON.parse(localStorage.getItem(key)) || {};
 }
 
-export function saveToStorage(key, value) {
-  const idArray = getFromStorage(key);
-  const allIdArray = Object.keys(keys).reduce(
-    (array, storageKey) => [...array, ...getFromStorage(storageKey)],
-    []
+export function getOneFromStorage(id) {
+  return getAllFromStorage()[id];
+}
+
+export function getFilteredIdFromStorage(filterBy, value) {
+  const videoObjects = getAllFromStorage();
+
+  const filteredObjects = Object.keys(videoObjects).filter(
+    (id) => videoObjects[id][filterBy] === value
   );
-  if (allIdArray.length >= MAX_SAVE_AMOUNT) {
+
+  return filteredObjects;
+}
+
+export function saveToStorage(insertObject) {
+  const videoObjects = getAllFromStorage(key);
+  if (Object.keys(videoObjects).length >= MAX_SAVE_AMOUNT) {
     throw new Error(ERROR_MESSAGES.EXCEED_MAX_SAVE_AMOUNT);
   }
-  localStorage.setItem(keys[key], JSON.stringify([...new Set([...idArray, value])]));
+  videoObjects[insertObject.videoId] = insertObject;
+  localStorage.setItem(key, JSON.stringify(videoObjects));
 }
 
-export function removeFromStorage(key, value) {
-  const idArray = getFromStorage(key);
-  const index = idArray.indexOf(value);
-  if (index >= 0) idArray.splice(index, 1);
-  localStorage.setItem(keys[key], JSON.stringify(idArray));
+export function removeFromStorage(id) {
+  const videoObjects = getAllFromStorage(key);
+  delete videoObjects[id];
+  localStorage.setItem(key, JSON.stringify(videoObjects));
 }
 
-export function moveInStorage({ from, to, value }) {
-  removeFromStorage(from, value);
-  saveToStorage(to, value);
+export function toggleWatchStatus(id) {
+  const videoObject = getOneFromStorage(id);
+  videoObject.watched = !videoObject.watched;
+  saveToStorage(videoObject);
 }

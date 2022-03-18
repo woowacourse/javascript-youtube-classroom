@@ -24,6 +24,8 @@ class SearchModalView {
 
   #observer;
 
+  #errorImage;
+
   constructor() {
     this.#modalContainer = selectDom('.modal-container');
     this.#searchForm = selectDom('#search-form', this.#modalContainer);
@@ -36,7 +38,7 @@ class SearchModalView {
     this.#observer = this.#loadMoreObserver();
     this.#searchForm.addEventListener('submit', this.#handleSearch);
 
-    this.errorImage = errorImageTemplate();
+    this.#errorImage = errorImageTemplate();
   }
 
   toggleModal = (renderOnModalClose) => {
@@ -84,10 +86,10 @@ class SearchModalView {
     }
   }
 
-  #handleVideoSaveClick = ({ target }) => {
+  #handleVideoSaveClick = (event, item) => {
     try {
-      saveToStorage('unwatched', target.dataset.videoId);
-      target.disabled = true;
+      saveToStorage(item);
+      event.target.disabled = true;
     } catch (e) {
       alert(e.message);
     }
@@ -95,13 +97,10 @@ class SearchModalView {
 
   #renderSearchResult({ searchResultArray, hasNextPage }) {
     removeAllSkeletons(this.#videoList);
-
     const resultElementArray = searchResultArray.map((resultItem) => {
+      const saveHandler = (event) => this.#handleVideoSaveClick(event, resultItem);
       const videoElement = searchVideoElementTemplate(resultItem);
-      selectDom('.video-item__save-button', videoElement).addEventListener(
-        'click',
-        this.#handleVideoSaveClick
-      );
+      selectDom('.video-item__save-button', videoElement).addEventListener('click', saveHandler);
       return videoElement;
     });
 
@@ -112,7 +111,7 @@ class SearchModalView {
   #renderError(errorMessage) {
     removeAllSkeletons(this.#videoList);
     this.#searchResult.classList.add('search-result--no-result');
-    this.#videoList.append(errorTemplate(this.errorImage, errorMessage));
+    this.#videoList.append(errorTemplate(this.#errorImage, errorMessage));
   }
 
   #clearPreviousRender() {

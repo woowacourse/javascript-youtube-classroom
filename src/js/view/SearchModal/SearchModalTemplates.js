@@ -8,7 +8,6 @@ export function searchVideoElementTemplate(resultItem) {
     tag: 'button',
     className: 'video-item__save-button button',
     props: { disabled: resultItem.isSaved, type: 'button' },
-    dataset: { videoId: resultItem.videoId },
     children: '⬇ 저장',
   });
   videoElement.append(button);

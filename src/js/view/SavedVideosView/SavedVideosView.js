@@ -1,8 +1,11 @@
 import { DELETE_CONFIRM_MESSAGE } from '../../constants/constants';
-import { getFromStorage, moveInStorage, removeFromStorage } from '../../domain/storage';
-import getVideoList from '../../domain/videoList';
+import {
+  getOneFromStorage,
+  toggleWatchStatus,
+  removeFromStorage,
+  getFilteredIdFromStorage,
+} from '../../domain/storage';
 import { removeArrayIntersection, removeElementList, selectDom } from '../util/util';
-import { addSkeletonsToContainer, removeAllSkeletons } from '../shared/Skeleton';
 import {
   errorTemplate,
   noSavedVideosTemplate,
@@ -31,12 +34,14 @@ class SavedVideosView {
     this.#videoList = selectDom('.video-list', this.#savedVideos);
     this.#currentTabName = 'unwatched';
     this.#otherTabName = 'watched';
-    this.#unrenderedVideoIdArray = getFromStorage(this.#currentTabName);
+    this.#unrenderedVideoIdArray = getFilteredIdFromStorage(
+      'watched',
+      this.#currentTabName === 'watched'
+    );
     this.#renderedVideoIdArray = [];
     this.#endOfList = selectDom('.end-of-list');
     this.#observer = this.#loadMoreObserver();
     this.renderVideoList();
-
     this.#observer.observe(this.#endOfList);
   }
 
@@ -66,28 +71,31 @@ class SavedVideosView {
   };
 
   renderOnModalClose = async () => {
-    this.#unrenderedVideoIdArray = getFromStorage(this.#currentTabName);
+    this.#unrenderedVideoIdArray = getFilteredIdFromStorage(
+      'watched',
+      this.#currentTabName === 'watched'
+    );
     this.renderVideoList();
   };
 
   #clearAllVideos() {
     removeElementList([...this.#videoList.childNodes]);
-    this.#unrenderedVideoIdArray = getFromStorage(this.#currentTabName);
+    this.#unrenderedVideoIdArray = getFilteredIdFromStorage(
+      'watched',
+      this.#currentTabName === 'watched'
+    );
     this.#renderedVideoIdArray = [];
   }
 
   async #renderNewVideos(newVideoIdArray) {
     try {
       if (newVideoIdArray.length !== 0) {
-        addSkeletonsToContainer(this.#videoList, newVideoIdArray.length);
-        const videoObjectArray = await getVideoList(newVideoIdArray);
+        const videoObjectArray = newVideoIdArray.map((id) => getOneFromStorage(id));
         const videoElementList = this.#createVideoElements(videoObjectArray);
-        removeAllSkeletons(this.#videoList);
         this.#videoList.append(...videoElementList);
         this.#renderedVideoIdArray = [...this.#renderedVideoIdArray, ...newVideoIdArray];
       }
     } catch (e) {
-      removeAllSkeletons(this.#videoList);
       this.#renderErrorTemplate(e.message);
     }
   }
@@ -106,14 +114,14 @@ class SavedVideosView {
   }
 
   #removeDeletedVideos(videos) {
-    const videosIdArray = videos || getFromStorage(this.#currentTabName);
+    const videosIdArray =
+      videos || getFilteredIdFromStorage('watched', this.#currentTabName === 'watched');
 
     const deletedVideoIdArray = removeArrayIntersection(this.#renderedVideoIdArray, videosIdArray);
     const toDeleteArray = [...this.#videoList.childNodes].filter((child) =>
       deletedVideoIdArray.includes(child.dataset.videoId)
     );
     removeElementList(toDeleteArray);
-
     this.#renderedVideoIdArray = removeArrayIntersection(
       this.#renderedVideoIdArray,
       deletedVideoIdArray
@@ -155,14 +163,14 @@ class SavedVideosView {
 
   #moveToWatchedList(target) {
     const { videoId } = target.dataset;
-    moveInStorage({ from: this.#currentTabName, to: this.#otherTabName, value: videoId });
+    toggleWatchStatus(videoId);
     this.#removeDeletedVideos();
   }
 
   #unsaveVideo(target) {
     if (window.confirm(DELETE_CONFIRM_MESSAGE)) {
       const { videoId } = target.dataset;
-      removeFromStorage(this.#currentTabName, videoId);
+      removeFromStorage(videoId);
       this.#removeDeletedVideos();
     }
   }

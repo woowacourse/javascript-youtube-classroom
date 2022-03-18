@@ -1,6 +1,6 @@
 import { SEARCH_URL_BASE, MAX_SEARCH_RESULT, ERROR_MESSAGES } from '../constants/constants';
+import { getAllFromStorage } from './storage';
 import getVideoObjectArray from './utils/getVideoObjectArray';
-import { getFromStorage } from './storage';
 
 class Search {
   #keyword;
@@ -18,7 +18,7 @@ class Search {
       this.#keyword = keyword;
       this.#nextPageToken = nextPageToken;
 
-      const savedVideos = [...getFromStorage('watched'), ...getFromStorage('unwatched')];
+      const savedVideos = Object.keys(getAllFromStorage());
       const searchResultArray = getVideoObjectArray(items, savedVideos);
 
       return { searchResultArray, hasNextPage: !!nextPageToken };
