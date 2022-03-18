@@ -48,7 +48,7 @@ export default class SaveVideoManager {
   deleteVideo(e) {
     const videoId = e.detail.id;
     try {
-      this.storage.deleteVideoById(videoId);
+      Storage.deleteVideoById(videoId);
     } catch (err) {
       alert(err.message);
       return;
