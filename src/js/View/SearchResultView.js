@@ -4,8 +4,7 @@ import { template, MESSAGE } from './template';
 export default class SearchResultView {
   constructor() {
     this.isShownNoResult = false;
-    this.$searchModal = $('#search-modal');
-    this.$searchResultSection = $('#search-result-section', this.$searchModal);
+    this.$searchResultSection = $('#search-result-section');
     this.$searchResultVideoList = $('#search-result-video-list', this.$searchResultSection);
     this.$noResultContainer = $('#no-result-container', this.$searchResultSection);
     this.$noResultDescription = $('#no-result-description', this.$noResultContainer);
@@ -45,7 +44,7 @@ export default class SearchResultView {
   }
   
   updateOnLoading() {
-    this.changeSkeletonListItemVisibility();
+    this.toggleSkeletonListItemVisibility();
   }
 
   updateOnNewDataReceived(videos) {
@@ -58,16 +57,12 @@ export default class SearchResultView {
     }
     const listItems = videos.map((video) => template.searchResultListItem(video)).join('');
     this.$firstSkeletonListItem.insertAdjacentHTML('beforebegin', listItems);
-    this.changeSkeletonListItemVisibility();
+    this.toggleSkeletonListItemVisibility();
   }
 
-  changeSkeletonListItemVisibility() {
+  toggleSkeletonListItemVisibility() {
     $$('.skeleton', this.$searchResultVideoList).forEach((item) => {
-      if (!item.classList.contains('hide')) {
-        item.classList.add('hide');
-      } else {
-        item.classList.remove('hide');
-      }
+      item.classList.toggle('hide');
     });
   }
 
