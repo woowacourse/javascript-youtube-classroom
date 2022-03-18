@@ -48,3 +48,10 @@
     background-position: 320px;
   }
 }
+
+@media (max-width: 599px) {
+  .skeleton-item {
+    width: 240px;
+    justify-self: center;
+  }
+}

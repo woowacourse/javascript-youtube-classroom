@@ -64,3 +64,10 @@
 .video-item__button-item:hover {
   background: #efefef;
 }
+
+@media (max-width: 599px) {
+  .video-item {
+    width: 240px;
+    justify-self: center;
+  }
+}
