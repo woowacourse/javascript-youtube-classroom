@@ -39,6 +39,7 @@ class Save {
 
   subscribeWatchEvent(videoItem) {
     on('.video-item__state-button', '@watch', (e) => this.updateVideoState(e.detail.id), videoItem);
+    on('.video-item__state-button', '@remove', (e) => this.removeVideo(e.detail.id), videoItem);
   }
 
   saveVideo(videoId) {
@@ -76,6 +77,10 @@ class Save {
 
     currentVideo.isWatched = !currentVideo.isWatched;
     this.dispatch('watch', JSON.stringify([...this.#videos]));
+  }
+
+  removeVideo(videoId) {
+    this.dispatch('remove', JSON.stringify(this.#videos.filter((video) => video.id !== videoId)));
   }
 }
 

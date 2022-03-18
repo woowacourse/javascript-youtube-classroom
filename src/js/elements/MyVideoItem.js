@@ -14,13 +14,27 @@ class MyVideoItem extends CustomElement {
   }
 
   setEvent() {
-    addEvent(this, 'click', '.video-item__state-button', () => this.emitEvent());
+    addEvent(this, 'click', '.video-item__state-button', (e) => this.emitEvent(e));
   }
 
-  emitEvent() {
+  // eslint-disable-next-line max-lines-per-function
+  emitEvent(e) {
     const id = this.dataset.videoId;
 
-    emit('.video-item__state-button', '@watch', { id }, this);
+    switch (e.target.dataset.action) {
+      case 'watch':
+        emit('.video-item__state-button', '@watch', { id }, this);
+        break;
+
+      case 'remove':
+        if (window.confirm('해당 영상을 삭제하시겠습니까?')) {
+          emit('.video-item__state-button', '@remove', { id }, this);
+        }
+        break;
+
+      default:
+        break;
+    }
   }
 }
 
