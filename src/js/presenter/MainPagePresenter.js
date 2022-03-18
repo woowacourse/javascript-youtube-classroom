@@ -1,21 +1,21 @@
 import template from '../ui/templates';
 
-export default class MainPagePresenter {
+class MainPagePresenter {
   constructor() {
     this.$videoListContainer = document.querySelector('.video-list-grid');
+    this.menuState = 'not-watched-tab-menu';
   }
 
   renderVideoList(videos) {
-    this.removeNoVideoImg(); // render
+    this.removeNoVideoImg();
     this.$videoListContainer.insertAdjacentHTML(
       'beforeend',
       videos.map((item) => template.storageVideoItem(item)).join(''),
-    ); //  render
-    this.renderNoVideo(); //  render
+    );
+    this.renderNoVideo();
   }
 
   removeNoVideoImg() {
-    // render
     const noVideoImg = document.getElementById('no_video--img');
     if (noVideoImg) {
       noVideoImg.remove();
@@ -24,13 +24,12 @@ export default class MainPagePresenter {
 
   renderNoVideo() {
     if (this.$videoListContainer.children.length === 0)
-      document //  render
+      document
         .querySelector('#store-video-list')
         .insertAdjacentHTML('beforeend', template.noVideoList());
   }
 
   renderVideo(menuState, data) {
-    // render
     this.$videoListContainer.replaceChildren();
     if (menuState === 'not-watched-tab-menu') {
       this.renderVideoList(data.notWachedVideoList);
@@ -43,9 +42,10 @@ export default class MainPagePresenter {
   }
 
   toggleTabChoosed(menuState, data) {
+    this.menuState = menuState;
     document
       .querySelectorAll('.nav-tab__button')
-      .forEach((element) => element.classList.toggle('choosed')); // render
+      .forEach((element) => element.classList.toggle('choosed'));
     this.renderVideo(menuState, data);
   }
 
@@ -59,3 +59,5 @@ export default class MainPagePresenter {
     }
   }
 }
+
+export const mainPagePresenter = new MainPagePresenter();

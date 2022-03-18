@@ -1,10 +1,4 @@
-import {
-  removeLocalStorage,
-  toggleWatchedToStorage,
-} from '../domain/localStorage.js';
-import { VideoStorage } from '../domain/VideoStorage.js';
 import EventFactory from '../event/EventFactory.js';
-import MainPagePresenter from '../presenter/MainPagePresenter.js';
 import SearchModalPresenter from '../presenter/SearchModalPresenter.js';
 
 class MainPage {
@@ -13,9 +7,7 @@ class MainPage {
     this.$navTab = document.querySelector('.nav-tab');
     this.$dimmer = document.querySelector('.dimmer');
     this.$videoListContainer = document.querySelector('.video-list-grid');
-    this.videoStorage = new VideoStorage();
     this.searchModalPresenter = new SearchModalPresenter();
-    this.mainPagePresenter = new MainPagePresenter();
     this.menuState = 'not-watched-tab-menu';
   }
 
@@ -25,11 +17,11 @@ class MainPage {
   }
 
   bindEvent() {
-    this.$navTab.addEventListener('click', this.changeTab.bind(this)); //  event
+    this.$navTab.addEventListener('click', this.changeTab.bind(this));
     this.$searchModalButton.addEventListener(
       'click',
       this.searchModalPresenter.toggleModalContainerView.bind(
-        this.searchModalPresenter, // view
+        this.searchModalPresenter,
       ),
     );
     this.$dimmer.addEventListener(
@@ -39,7 +31,7 @@ class MainPage {
     this.$videoListContainer.addEventListener(
       'click',
       this.handleVideo.bind(this),
-    ); //  event
+    );
   }
 
   changeTab({ target: { id } }) {
@@ -50,22 +42,18 @@ class MainPage {
 
   handleVideo({ target }) {
     if (target.nodeName !== 'BUTTON') return;
-    const id = target.closest('li').dataset.videoId; // data
+    const id = target.closest('li').dataset.videoId;
     if (target.classList.contains('video-watched--btn')) {
       EventFactory.generate('CHANGE_VIDEO_STATUS', { target, id });
     }
     if (target.classList.contains('video-delete--btn')) {
       this.deleteVideo(target, id);
     }
-    this.mainPagePresenter.renderNoVideo(); // render
   }
 
   deleteVideo(target, id) {
     if (window.confirm('정말 삭제하시겠습니까?')) {
-      target.closest('li').remove(); // render
-      removeLocalStorage('save', id); // data
-      removeLocalStorage('watched', id); // data
-      this.videoStorage.removeVideo(id); // data
+      EventFactory.generate('DELETE_VIDEO', { target, id });
     }
   }
 }

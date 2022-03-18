@@ -1,5 +1,6 @@
 import { ChangeTab } from './ChangeTab';
 import ChangeVideoStatus from './ChangeVideoStatus';
+import DeleteVideo from './DeleteVideo';
 import LoadInitialVideoList from './LoadInitialVideoList';
 import SaveVideoEvent from './SaveVideoEvent';
 import SearchVideoEvent from './SearchVideoEvent';
@@ -22,6 +23,11 @@ export default class EventFactory {
       case 'CHANGE_TAB':
         new ChangeTab(data).action();
         break;
+      case 'DELETE_VIDEO':
+        new DeleteVideo(data).action();
+        break;
+      default:
+        alert('NO_EVENT');
     }
   }
 }

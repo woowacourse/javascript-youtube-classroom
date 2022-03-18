@@ -1,4 +1,7 @@
-import { toggleWatchedToStorage } from '../domain/localStorage';
+import {
+  removeLocalStorage,
+  toggleWatchedToStorage,
+} from '../domain/localStorage';
 import SearchMachine from '../domain/SearchMachine';
 import { VideoStorage } from '../domain/VideoStorage';
 
@@ -41,6 +44,15 @@ class VideoStore {
 
   toggleWatchedToStarge(id) {
     toggleWatchedToStorage(id);
+  }
+
+  removeLocalStorageVideo(id) {
+    removeLocalStorage('save', id);
+    removeLocalStorage('watched', id);
+  }
+
+  removeVideo(id) {
+    this.videoStorage.removeVideo(id);
   }
 }
 
