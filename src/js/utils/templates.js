@@ -1,9 +1,15 @@
 import { changeDateFormat } from "./common.js";
-import noImage from "../../assets/images/not_found.png";
+import emptyResult from "../../assets/images/not_found.png";
+import emptyClassroom from "../../assets/images/empty.png";
 
 export const getEmptyResultTemplate = `
-  <img src=${noImage} class="modal-result__empty-image" alt="empty-image" />
+  <img src=${emptyResult} class="modal-result__empty-image" alt="empty-result" />
   <p class="modal-result__empty-text">검색 결과가 없습니다<br/>다른 키워드로 검색해보세요</p>
+`;
+
+export const getEmptyClassroomTemplate = `
+  <img src=${emptyClassroom} class="classroom__empty-image" alt="empty-classroom" />
+  <p class="classroom__empty-text">저장된 동영상이 없습니다.</p>
 `;
 
 export const getThumnailTemplate = (video) => {
