@@ -7,19 +7,13 @@ const NO_RESULT_TEMPLATE = `
   <img src=${notFoundImage} alt="no result image" class="no-result__image">
 `;
 
-const getVideoItemTemplate = ({
-  thumbnails,
-  channelTitle,
-  publishTime,
-  title,
-  videoId,
-  isWatched,
-}) => `
+const getVideoItemTemplate = ({ channelTitle, publishTime, title, videoId, isWatched }) => `
   <li class="video-item" data-video-id=${videoId}>
     <div id="image-wrapper">
-      <img
-        src=${thumbnails} 
+      <iframe
+        src="https://www.youtube.com/embed/${videoId}"
         alt="video-item-thumbnail" class="video-item__thumbnail">
+      </iframe>
     </div>
     <h4 class="video-item__title">${title}</h4>
     <p class="video-item__channel-name">${channelTitle}</p>
