@@ -125,8 +125,9 @@ class SavedVideosView {
   #loadMoreObserver() {
     return new IntersectionObserver(
       async (entries) => {
-        if (this.#unrenderedVideoIdArray.length === 0) {
+        if (this.#unrenderedVideoIdArray.length === 0 || this.#renderedVideoIdArray.length < 10) {
           this.#observer.unobserve(this.#endOfList);
+          return;
         }
         if (entries[0].isIntersecting) {
           await this.renderVideoList();
