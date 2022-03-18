@@ -73,8 +73,8 @@ class SearchModalView {
       addSkeletonsToContainer(this.#videoList, MAX_SEARCH_RESULT);
       const { searchResultArray, hasNextPage } = await this.#search.handleSearchRequest(keyword);
       this.#renderSearchResult({ searchResultArray, keyword, hasNextPage });
-    } catch (error) {
-      this.#renderError(error.message, keyword);
+    } catch (e) {
+      this.#renderError(e.message, keyword);
     }
   }
 
@@ -82,8 +82,8 @@ class SearchModalView {
     try {
       saveToStorage('unwatched', target.dataset.videoId);
       target.disabled = true;
-    } catch (error) {
-      alert(error.message);
+    } catch (e) {
+      alert(e.message);
     }
   };
 

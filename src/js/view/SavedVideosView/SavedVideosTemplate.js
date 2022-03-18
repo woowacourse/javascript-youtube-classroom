@@ -49,3 +49,18 @@ export function noSavedVideosTemplate() {
     ],
   });
 }
+
+export function errorTemplate(error) {
+  return element({
+    tag: 'div',
+    className: 'no-saved-videos',
+    children: [
+      element({ tag: 'p', className: 'no-saved-videos__emoji', children: '(⊙_⊙;))' }),
+      element({
+        tag: 'p',
+        className: 'no-saved-videos__description',
+        children: error,
+      }),
+    ],
+  });
+}

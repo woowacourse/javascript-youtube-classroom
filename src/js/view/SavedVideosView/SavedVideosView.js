@@ -3,7 +3,11 @@ import { getFromStorage, moveInStorage, removeFromStorage } from '../../domain/s
 import getVideoList from '../../domain/videoList';
 import { removeArrayIntersection, removeElementList, selectDom } from '../util/util';
 import { addSkeletonsToContainer, removeAllSkeletons } from '../shared/Skeleton';
-import { noSavedVideosTemplate, savedVideoElementTemplate } from './SavedVideosTemplate';
+import {
+  errorTemplate,
+  noSavedVideosTemplate,
+  savedVideoElementTemplate,
+} from './SavedVideosTemplate';
 
 class SavedVideosView {
   #savedVideos;
@@ -73,17 +77,18 @@ class SavedVideosView {
   }
 
   async #renderNewVideos(newVideoIdArray) {
-    if (newVideoIdArray.length !== 0) {
-      addSkeletonsToContainer(this.#videoList, newVideoIdArray.length);
-
-      const videoObjectArray = await getVideoList(newVideoIdArray);
-      const videoElementList = this.#createVideoElements(videoObjectArray);
-
-      removeAllSkeletons(this.#videoList);
-
-      this.#videoList.append(...videoElementList);
-
-      this.#renderedVideoIdArray = [...this.#renderedVideoIdArray, ...newVideoIdArray];
+    try {
+      if (newVideoIdArray.length !== 0) {
+        addSkeletonsToContainer(this.#videoList, newVideoIdArray.length);
+        const videoObjectArray = await getVideoList(newVideoIdArray);
+        const videoElementList = this.#createVideoElements(videoObjectArray);
+        removeAllSkeletons(this.#videoList);
+        this.#videoList.append(...videoElementList);
+        this.#renderedVideoIdArray = [...this.#renderedVideoIdArray, ...newVideoIdArray];
+      }
+    } catch (e) {
+      this.#clearAllVideos();
+      this.#renderErrorTemplate(e.message);
     }
   }
 
@@ -91,6 +96,13 @@ class SavedVideosView {
     removeElementList([...this.#videoList.childNodes]);
     if (!selectDom('.no-saved-videos')) {
       this.#savedVideos.append(noSavedVideosTemplate());
+    }
+  }
+
+  #renderErrorTemplate(message) {
+    removeElementList([...this.#videoList.childNodes]);
+    if (!selectDom('.no-saved-videos')) {
+      this.#savedVideos.append(errorTemplate(message));
     }
   }
 
