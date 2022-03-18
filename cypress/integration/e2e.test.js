@@ -118,7 +118,7 @@ describe('저장한 영상 확인 /볼 영상 확인/ 본 영상 확인 / 영상
     it('볼 영상 필터 버튼을 클릭하여 볼 영상들을 확인할 수 있다', () => {
       cy.get('#videos-to-view-filter-button').click();
 
-      cy.get('.video-list').children('.video-item').should('have.length', 1);
+      cy.get('.my-video-list').children('.video-item').should('have.length', 1);
     });
   });
 

@@ -7,17 +7,22 @@ import { DELETE_VIDEO_CONFIRM_MESSAGE } from '../util/constants.js';
 export default class MyVideosScreen {
   #myVideoList;
   #storageEngine;
-  #viewedVideosFilterButton;
+  // #viewedVideosFilterButton;
+  // #videosToViewFilterButton;
+  #nav;
 
   constructor() {
     this.#myVideoList = $('.my-video-list');
-    this.#viewedVideosFilterButton = $('#viewed-videos-filter-button');
+    // this.#viewedVideosFilterButton = $('#viewed-videos-filter-button');
+    // this.#videosToViewFilterButton = $('#videos-to-view-filter-button');
+    this.#nav = $('nav');
 
     this.#storageEngine = StorageEngine.instance;
 
     this.#myVideoList.addEventListener('click', this.#handleCheckVideoViewed);
     this.#myVideoList.addEventListener('click', this.#handleDeleteVideo);
-    this.#viewedVideosFilterButton.addEventListener('click', this.#renderViewedVideos);
+    this.#myVideoList.addEventListener('click', this.#handleUncheckVideoViewed);
+    this.#nav.addEventListener('click', this.#renderFilteredVideos);
 
     const savedVideos = this.#storageEngine.getSavedVideos();
     this.#render(savedVideos);
@@ -40,19 +45,37 @@ export default class MyVideosScreen {
       const video = e.target.closest('.video-item');
       const { videoId } = video.dataset;
 
-      this.#storageEngine.checkVideoViewed(videoId);
+      this.#storageEngine.changeVideoViewed(videoId, true);
 
       this.#myVideoList.removeChild(video);
       this.#renderNoSavedVideosMessage();
     }
   };
 
-  #renderViewedVideos = () => {
-    this.#clear();
+  #handleUncheckVideoViewed = (e) => {
+    if (e.target.classList.contains('video-item__view-uncheck-button')) {
+      const video = e.target.closest('.video-item');
+      const { videoId } = video.dataset;
 
-    const viewedVideos = this.#storageEngine.getViewedVideos();
+      this.#storageEngine.changeVideoViewed(videoId, false);
 
-    this.#render(viewedVideos);
+      this.#myVideoList.removeChild(video);
+      this.#renderNoSavedVideosMessage();
+    }
+  };
+
+  #renderFilteredVideos = (e) => {
+    if (
+      e.target.id === 'videos-to-view-filter-button' ||
+      e.target.id === 'viewed-videos-filter-button'
+    ) {
+      this.#clear();
+
+      const viewStatus = e.target.id === 'viewed-videos-filter-button' ? true : false;
+      const filteredVideos = this.#storageEngine.getFilteredVideos(viewStatus);
+
+      this.#render(filteredVideos);
+    }
   };
 
   #clear() {

@@ -41,11 +41,11 @@ export default class StorageEngine {
     localStorage.setItem(STORAGE_KEY_SAVED_VIDEOS, JSON.stringify(restSavedVideos));
   }
 
-  checkVideoViewed(videoId) {
+  changeVideoViewed(videoId, viewStatus) {
     const savedVideos = this.getSavedVideos();
 
     const targetVideo = savedVideos.find((video) => video.videoId === videoId);
-    targetVideo.isViewed = true; // 여기서는 이미 복사한 object니까 이렇게 변경해도 다른 곳에 영향 안끼쳐서 괜찮아보임
+    targetVideo.isViewed = viewStatus; // 여기서는 이미 복사한 object니까 이렇게 변경해도 다른 곳에 영향 안끼쳐서 괜찮아보임
 
     localStorage.setItem(STORAGE_KEY_SAVED_VIDEOS, JSON.stringify(savedVideos));
   }
@@ -56,12 +56,8 @@ export default class StorageEngine {
     return savedVideos.find((video) => video.videoId === videoId);
   }
 
-  getVideosToView() {
-    return this.getSavedVideos().filter(({ isViewed }) => isViewed === false);
-  }
-
-  getViewedVideos() {
-    return this.getSavedVideos().filter(({ isViewed }) => isViewed === true);
+  getFilteredVideos(viewStatus) {
+    return this.getSavedVideos().filter(({ isViewed }) => isViewed === viewStatus);
   }
 
   init() {
