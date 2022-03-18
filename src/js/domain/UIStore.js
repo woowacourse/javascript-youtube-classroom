@@ -43,7 +43,7 @@ class UIStore {
     this.state = newState;
     this.subscribers.forEach(({ subscriber, dependedStates }) => {
       if (isStateChanged({ dependedStates, beforeState, newState })) {
-        subscriber(this.state);
+        subscriber();
       }
     });
   }

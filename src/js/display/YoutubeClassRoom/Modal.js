@@ -22,7 +22,8 @@ export default class Modal {
     UIStore.dispatch(UI_ACTION.CLOSE_MODAL);
   };
 
-  render = ({ isModalOpened }) => {
+  render = () => {
+    const { isModalOpened } = UIStore.getState();
     if (isModalOpened) {
       this.container.classList.remove('hide');
       this.$modal.classList.add('show');

@@ -42,7 +42,7 @@ const reducer = {
   [YOUTUBE_SEARCH_ACTION.UPDATE_SEARCH_RESULT_FAIL]: state => ({
     ...state,
     isLoading: false,
-    isLoaded: false,
+    isLoaded: true,
     error: true,
   }),
 };
