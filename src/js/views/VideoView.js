@@ -48,8 +48,6 @@ export default class VideoView {
       const videoData = this.#makeVideoDataObject(element, children);
 
       if (videoData.id) {
-        console.log('checkvideoID');
-        console.log(reRenderSavedVideoView);
         handler(videoData);
         reRenderSavedVideoView();
         e.target.classList.add('saved');

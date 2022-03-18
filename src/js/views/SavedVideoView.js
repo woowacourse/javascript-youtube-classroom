@@ -5,6 +5,7 @@ export default class SavedVideoView {
   #getSavedVideoData;
   #savedVideoData;
   #editVideoData;
+  #changeVideoWatchedStateBind;
   #$playlist;
   #$watched;
 
@@ -18,6 +19,7 @@ export default class SavedVideoView {
   }
 
   #bindSavedVideoList() {
+    this.#changeVideoWatchedStateBind = this.#changeVideoWatchedState.bind(this);
     $(SELECTOR.DISPLAY_PLAYLIST_SECTION).addEventListener('click', this.#changeVideoListContents.bind(this, 'add'));
     $(SELECTOR.DISPLAY_WATCHED_SECTION).addEventListener('click', this.#changeVideoListContents.bind(this, 'remove'));
   }
@@ -65,14 +67,16 @@ export default class SavedVideoView {
   }
 
   #bindButtonEvent() {
-    $('#saved-video-list').addEventListener('click', (e) => {
-      const element = e.target;
-      if (element.dataset.kind === 'checkWatched') {
-        const currentVideoIndex = this.#savedVideoData.findIndex((video) => video.id === element.dataset.videoId);
-        this.#savedVideoData[currentVideoIndex].watched = !this.#savedVideoData[currentVideoIndex].watched;
-        this.#editVideoData(this.#savedVideoData);
-        this.#renderVideo();
-      }
-    });
+    $('#saved-video-list').addEventListener('click', this.#changeVideoWatchedStateBind);
+  }
+
+  #changeVideoWatchedState(e) {
+    const element = e.target;
+    if (element.dataset.kind === 'checkWatched') {
+      const currentVideoIndex = this.#savedVideoData.findIndex((video) => video.id === element.dataset.videoId);
+      this.#savedVideoData[currentVideoIndex].watched = !this.#savedVideoData[currentVideoIndex].watched;
+      this.#editVideoData(this.#savedVideoData);
+      this.#renderVideo();
+    }
   }
 }
