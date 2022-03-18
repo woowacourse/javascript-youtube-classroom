@@ -1,16 +1,19 @@
 import { $ } from '../utils/dom';
-import YoutubeSearch from './YoutubeSearch';
+import { youtubeSearchForm } from './youtubeSearchForm';
+import { youtubeSearchResult } from './youtubeSearchResult';
 
 export default class YoutubeSearchModal {
   constructor() {
     this.addSearchModalButtonClickEvent();
     this.addModalCloseEvent();
-    this.search = new YoutubeSearch();
+    youtubeSearchForm.preventFormDeafultEvent();
+    youtubeSearchForm.addSearchEvent();
   }
 
   reset() {
     this.toggleShowSearchModal();
-    this.search.reset();
+    youtubeSearchResult.resetVideoList();
+    $('#search-input-keyword').value = '';
   }
 
   toggleShowSearchModal() {
@@ -20,7 +23,7 @@ export default class YoutubeSearchModal {
   addSearchModalButtonClickEvent() {
     $('#search-modal-button').addEventListener('click', () => {
       this.toggleShowSearchModal();
-      this.search.input.focus();
+      $('#search-input-keyword').focus();
     });
   }
 
