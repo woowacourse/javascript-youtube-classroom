@@ -59,6 +59,8 @@ export default class ModalView {
             this.$videoList.offsetHeight + SCROLL.ADDITIONAL_OFFSET &&
           this.enabledScrollSearch
         ) {
+          console.log('a');
+          this.controlScrollSearch(false);
           callback(this.searchInputValue);
         }
       });
