@@ -29,7 +29,7 @@ const videoTemplate = (
     data-publish-time="${publishTime}"
     data-thumbnails-url="${url}"
   > 
-    <img src="${url}" alt="video-item-thumbnail" class="video-item__thumbnail" />
+    <img src="${url}" alt="video-item-thumbnail" class="video-item__thumbnail" loading="lazy"/>
     <h4 class="video-item__title">${title}</h4>
     <p class="video-item__channel-name">${channelTitle}</p>
     <p class="video-item__published-date">${stringFormatToDate(publishTime)}</p>
@@ -53,7 +53,7 @@ const savedVideoTemplate = ({
     data-video-id="${videoId}"
     data-title="${title}"
   > 
-    <img src="${thumbnailsUrl}" alt="video-item-thumbnail" class="video-item__thumbnail" />
+    <img src="${thumbnailsUrl}" alt="video-item-thumbnail" class="video-item__thumbnail" loading="lazy"/>
     <h4 class="video-item__title">${title}</h4>
     <p class="video-item__channel-name">${channelTitle}</p>
     <p class="video-item__published-date">${stringFormatToDate(publishTime)}</p>
@@ -83,7 +83,7 @@ const videoNotFoundTemplate = `
   <section class="search-result search-result--no-result">
     <h3 hidden>검색 결과</h3>
     <div class="no-result">
-      <img src="${notFoundImage}" alt="no result image" class="no-result__image">
+      <img src="${notFoundImage}" alt="no result image" class="no-result__image"/>
       <p class="no-result__description">
         검색 결과가 없습니다<br />
         다른 키워드로 검색해보세요
@@ -96,7 +96,7 @@ const emptyVideoListTemplate = `
   <section class="save-result save-result--no-result">
     <h3 hidden>저장 목록</h3>
     <div class="no-result">
-      <img src="${emptyVideoListImage}" alt="no result image" class="no-result__image">
+      <img src="${emptyVideoListImage}" alt="no result image" class="no-result__image"/>
       <p class="no-result__description">
         저장된 비디오가 없습니다
       </p>
