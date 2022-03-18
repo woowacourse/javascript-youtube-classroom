@@ -24,6 +24,10 @@ class SearchedVideo {
     });
   }
 
+  getVideos() {
+    return this.#videos;
+  }
+
   findVideo(videoId) {
     return this.#videos.find((video) => video.id === videoId);
   }
