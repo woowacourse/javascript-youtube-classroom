@@ -17,7 +17,7 @@ class Search {
   }
 
   loading(type) {
-    $('ul', $('search-result')).insertSkeleton(type);
+    $('ul', $('search-result')).insertLoading(type);
   }
 
   debounceSearch(type, keyword = this.keyword) {

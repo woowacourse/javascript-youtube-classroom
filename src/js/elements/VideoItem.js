@@ -8,9 +8,7 @@ import Save from '../domains/Save';
 
 class VideoItem extends CustomElement {
   render() {
-    const video = SearchedVideo.instance.findVideo(this.dataset.id);
-
-    this.innerHTML = this.template(video);
+    this.innerHTML = this.template(SearchedVideo.instance.findVideo(this.dataset.id));
     Save.instance.subscribe(this);
   }
 
@@ -19,7 +17,7 @@ class VideoItem extends CustomElement {
   }
 
   setEvent() {
-    addEvent(this, 'click', '.video-item__save-button', (e) => this.emitEvent(e)); // TODO
+    addEvent(this, 'click', '.video-item__save-button', (e) => this.emitEvent(e));
   }
 
   emitEvent(e) {

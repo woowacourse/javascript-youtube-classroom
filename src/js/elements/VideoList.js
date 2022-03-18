@@ -9,7 +9,7 @@ class VideoList extends HTMLUListElement {
   constructor() {
     super();
     this.setEvent();
-    this.subscribe();
+    SearchedVideo.instance.subscribe(this);
   }
 
   setEvent() {
@@ -25,13 +25,15 @@ class VideoList extends HTMLUListElement {
     }
   }
 
-  subscribe() {
-    SearchedVideo.instance.subscribe(this);
+  render(videos) {
+    videos.forEach((video) => {
+      this.insertAdjacentHTML('beforeend', `<video-item data-id=${video.id}></video-item>`);
+    });
   }
 
   notify(_, data) {
-    this.removeSkeleton();
-    this.insertVideoItems(data);
+    this.removeLoading();
+    this.render(data);
     this.hideStoredVideoSaveButton(data);
   }
 
@@ -40,7 +42,7 @@ class VideoList extends HTMLUListElement {
     this.scrollTop = 0;
   }
 
-  insertSkeleton(type) {
+  insertLoading(type) {
     if (type === 'search') {
       this.resetResult();
     }
@@ -48,14 +50,8 @@ class VideoList extends HTMLUListElement {
     this.insertAdjacentHTML('beforeend', TEMPLATE.SKELETON.repeat(10));
   }
 
-  removeSkeleton() {
-    $$('.skeleton').forEach((e) => e.remove());
-  }
-
-  insertVideoItems(videos) {
-    videos.forEach((video) => {
-      this.insertAdjacentHTML('beforeend', `<video-item data-id=${video.id}></video-item>`);
-    });
+  removeLoading() {
+    $$('.skeleton', this).forEach((e) => e.remove());
   }
 
   hideStoredVideoSaveButton(videos) {
