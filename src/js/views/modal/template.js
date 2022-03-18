@@ -1,3 +1,5 @@
+import { formatDate } from '../../utils/formatDate';
+
 const template = {
   skeletonUI: `
   <li class="skeleton">
@@ -19,7 +21,7 @@ const template = {
         ></iframe>
         <h4 class="video-item__title">${item.snippet.title}</h4>
         <p class="video-item__channel-name">${item.snippet.channelTitle}</p>
-        <p class="video-item__published-date">${item.snippet.publishTime}</p>
+        <p class="video-item__published-date">${formatDate(item.snippet.publishTime)}</p>
         <button class="video-item__save-button button">⬇ 저장</button>
       </li>`;
   },
