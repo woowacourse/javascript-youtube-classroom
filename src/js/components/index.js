@@ -4,7 +4,7 @@ import { CUSTOM_EVENT_KEY } from '../constants/events';
 import { CURRENT_APP_SECTION_VALUE, STATE_STORE_KEY } from '../constants/stateStore';
 import { getState, subscribe } from '../modules/stateStore';
 import { VIDEO_COMPONENT_TYPE } from '../constants/components';
-import SavedVideoListComponent from './VIdeoListComponent/SavedVideoListComponent';
+import SavedVideoListComponent from './VideoListComponent/SavedVideoListComponent';
 
 class AppComponent {
   searchModalComponent = null;

@@ -2,7 +2,7 @@ import { VIDEO_COMPONENT_TYPE } from '../constants/components';
 import { STATE_STORE_KEY } from '../constants/stateStore';
 import { getState, subscribe } from '../modules/stateStore';
 import { isNullVideoList } from '../utils/validation';
-import SearchVideoListComponent from './VIdeoListComponent/SearchVideoListComponent';
+import SearchVideoListComponent from './VideoListComponent/SearchVideoListComponent';
 
 class SearchResultComponent {
   #parentElement = null;
