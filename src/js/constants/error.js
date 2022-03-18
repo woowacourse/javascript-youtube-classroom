@@ -5,5 +5,3 @@ export const ERROR = {
     OVER_MAX_SAVED_VIDEOS_NUMBER: '저장할 수 있는 동영상의 개수가 초과되었습니다.',
   },
 };
-
-export const MAX_SAVED_VIDEOS_NUMBER = 100;

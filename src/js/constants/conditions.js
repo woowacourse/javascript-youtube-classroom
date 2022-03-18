@@ -1,0 +1,1 @@
+export const MAX_SAVED_VIDEOS_NUMBER = 100;

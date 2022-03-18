@@ -1,4 +1,5 @@
-import { ERROR, MAX_SAVED_VIDEOS_NUMBER } from './constants/constants';
+import { ERROR } from '../constants/error.js';
+import { MAX_SAVED_VIDEOS_NUMBER } from '../constants/conditions.js';
 
 export const validateInput = input => {
   if (!input) {

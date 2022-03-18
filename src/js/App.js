@@ -4,8 +4,10 @@ import bindMainPageEvents from './views/mainPage/mainPageEvents.js';
 import bindModalEvents from './views/modal/modalEvents.js';
 
 export default function App() {
-  bindMainPageEvents();
-  bindModalEvents();
+  window.addEventListener('DOMContentLoaded', () => {
+    bindMainPageEvents();
+    bindModalEvents();
+  });
 
   const savedVideos = videoStorage.getSavedVideos();
   mainPageUI.renderSavedVideoItems(savedVideos);

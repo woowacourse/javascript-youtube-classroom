@@ -1,5 +1,5 @@
 import videoStorage from '../localStorage/videoStorage.js';
-import { validateAbleToSaveVideo } from '../validate.js';
+import { validateAbleToSaveVideo } from '../validates/validate.js';
 
 const getVideoObjectFromElement = element => {
   return {
