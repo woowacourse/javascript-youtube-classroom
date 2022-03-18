@@ -92,7 +92,7 @@ export default class YoutubeApp {
     if (!target.matches(".video-item__watched-button")) return;
 
     const videoData = getTargetVideoData(target, ".video-item");
-    this.videoStorage.setVideoStateWatched(videoData.videoId, true);
+    this.videoStorage.setVideoStateWatched(videoData.videoId);
 
     this.videoStorageView.hideElement(target.closest(".video-item"));
   };
