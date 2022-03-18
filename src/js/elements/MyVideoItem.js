@@ -2,11 +2,13 @@ import CustomElement from '../abstract/CustomElement';
 import TEMPLATE from '../templates';
 import { addEvent, emit } from '../utils';
 import SavedVideo from '../stores/SavedVideo';
+import State from '../domains/State';
 
 class MyVideoItem extends CustomElement {
   render() {
     this.innerHTML = this.template(SavedVideo.instance.findVideo(this.dataset.videoId));
-    SavedVideo.instance.subscribeWatchEvent(this);
+    // SavedVideo.instance.subscribeWatchEvent(this);
+    State.instance.subscribe(this);
   }
 
   template(video) {

@@ -11,7 +11,7 @@ class MyVideoList extends HTMLUListElement {
 
   // eslint-disable-next-line max-lines-per-function
   render() {
-    const videos = SavedVideo.instance.getFilteredVideos(!this.id.includes('unwatched'));
+    const videos = SavedVideo.instance.filterVideos(!this.id.includes('unwatched'));
 
     if (!videos.length) {
       this.innerHTML = TEMPLATE.generateNoVideo(

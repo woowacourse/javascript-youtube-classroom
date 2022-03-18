@@ -4,13 +4,14 @@ import { addEvent, emit } from '../utils';
 import TEMPLATE from '../templates';
 import { VIDEO } from '../constants';
 import SavedVideo from '../stores/SavedVideo';
+import Save from '../domains/Save';
 
 class VideoItem extends CustomElement {
   render() {
     const video = SearchedVideo.instance.findVideo(this.dataset.id);
 
     this.innerHTML = this.template(video);
-    SavedVideo.instance.subscribeEvents(this);
+    Save.instance.subscribe(this);
   }
 
   template(video) {
@@ -18,7 +19,7 @@ class VideoItem extends CustomElement {
   }
 
   setEvent() {
-    addEvent(this, 'click', '.video-item__save-button', (e) => this.emitEvent(e));
+    addEvent(this, 'click', '.video-item__save-button', (e) => this.emitEvent(e)); // TODO
   }
 
   emitEvent(e) {
