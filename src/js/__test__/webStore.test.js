@@ -20,7 +20,7 @@ describe('webStore 모듈 테스트', () => {
     global.localStorage = require('local-storage');
 
     const newVideoId = 'gadsgasdg';
-    webStore.setDataInArray('video', newVideoId);
+    webStore.setData('video', (prev) => [...prev, newVideoId]);
 
     const videoIdList = webStore.getArrayData('video');
 
