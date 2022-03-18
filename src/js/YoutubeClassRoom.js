@@ -1,5 +1,5 @@
 import SearchVideoManager from './Manager/SearchVideoManager';
-import SaveVideoManager from './Manager/SaveVideoManager';
+import { SaveVideoManager } from './Manager/SaveVideoManager';
 import HomeView from './View/HomeView';
 
 export default class YoutubeClassRoom {

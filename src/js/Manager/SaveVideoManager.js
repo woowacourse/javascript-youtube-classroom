@@ -2,10 +2,10 @@ import { ERROR_MESSAGE } from '../constants';
 import { isOverVideoSaveMaxCount } from '../validation';
 import { getVideoInfo } from '../util';
 
-const setData = (key, data) => localStorage.setItem(key, JSON.stringify(data));
+export const setData = (key, data) => localStorage.setItem(key, JSON.stringify(data));
 const getData = (key) => JSON.parse(localStorage.getItem(key));
 
-export default class SaveVideoManager {
+export class SaveVideoManager {
   constructor() {
     this.videoData = this.getVideoData();
   }
