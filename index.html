@@ -10,11 +10,21 @@
     <h1 class="classroom-container__title">👩🏻‍💻 나만의 유튜브 강의실 👨🏻‍💻</h1>
     <nav class="nav">
       <div class="left-nav">
-        <button type="button" id="will-see-video-button" class="button nav__button clicked">👁️ 볼 영상</button>
-        <button type="button" id="saw-video-button" class="button nav__button">✅ 본 영상</button>
+        <button type="button" id="will-see-button" class="button nav__button clicked">👁️ 볼 영상</button>
+        <button type="button" id="saw-button" class="button nav__button">✅ 본 영상</button>
       </div>
       <button type="button" id="search-modal-button" class="button nav__button">🔍 검색</button>
     </nav>
+    <div class="will-see-wrapper hide">
+      <ol id="will-see-list">
+        볼영상
+      </ol>
+    </div>
+    <div class="saw-wrapper hide">
+      <ol id="saw-list">
+        본영상
+      </ol>
+    </div>
   </main>
   <div class="modal-container hide">
     <div class="dimmer"></div>

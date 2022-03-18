@@ -41,13 +41,13 @@ body {
     background-color: var(--nav-hover);
 }
 
-#will-see-video-button {
+#will-see-button {
     width: 118px;
     border: 1px solid rgba(0, 0, 0, 0.12);
     border-radius: 4px 0px 0px 4px;
 }
 
-#saw-video-button {
+#saw-button {
     width: 118px;
     margin-left: -5px;
     border: 1px solid rgba(0, 0, 0, 0.12);
