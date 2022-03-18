@@ -1,5 +1,6 @@
 import {
   getStorageVideoIDs,
+  getStorageVideos,
   setStorageVideoIDs,
   checkVideoStorageFull,
   setStorageVideos
@@ -22,13 +23,12 @@ export default class VideoCardContainer {
   }
 
   bindEvents() {
-    this.parentElement.addEventListener(
-      'click',
-      this.storeIDHandler.bind(this)
-    );
+    this.parentElement.addEventListener('click', this.storeIDHandler);
+    this.parentElement.addEventListener('click', this.removeHandler);
+    this.parentElement.addEventListener('click', this.watchedHandler);
   }
 
-  storeIDHandler(e) {
+  storeIDHandler = (e) => {
     try {
       if (e.target.className.includes('video-item__save-button')) {
         const li = e.target.closest('li');
@@ -44,15 +44,39 @@ export default class VideoCardContainer {
 
         checkVideoStorageFull();
 
-        setStorageVideoIDs({ value: videoId });
-        setStorageVideos({ value: videoItem });
+        const newVideoIDs = [...getStorageVideoIDs(), videoId];
+        const newVideos = [...getStorageVideos(), videoItem];
+
+        setStorageVideoIDs({ value: newVideoIDs });
+        setStorageVideos({ value: newVideos });
 
         e.target.remove();
       }
     } catch (err) {
       toastPopup(err.message);
     }
-  }
+  };
+
+  removeHandler = (e) => {
+    if (e.target.className.includes('video-item__remove-button')) {
+      const li = e.target.closest('li');
+      const { videoId } = li.dataset;
+
+      const videoIds = getStorageVideoIDs();
+      const index = videoIds.indexOf(videoId);
+      // console.log(index);
+      // console.log(videoIds);
+      // console.log(li, videoId);
+      console.log('remove');
+      // li.remove();
+    }
+  };
+
+  watchedHandler = (e) => {
+    if (e.target.className.includes('video-item__watched-button')) {
+      console.log('watched');
+    }
+  };
 
   template() {
     const videoIds = getStorageVideoIDs();

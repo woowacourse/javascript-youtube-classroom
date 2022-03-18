@@ -12,8 +12,8 @@ const videoCardEmojiButtonsStyled = (props) => {
   return `${showHomePageButtons
     ? `
     <div class="video-item__buttons-wrapper">
-      <button class="video-item__home-page-button button">✅</button>
-      <button class="video-item__home-page-button button">🗑️</button>
+      <button class="video-item__watched-button button">✅</button>
+      <button class="video-item__remove-button button">🗑️</button>
     </div>
     `
     : storeButton}`;

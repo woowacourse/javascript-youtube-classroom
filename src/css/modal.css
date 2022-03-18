@@ -176,13 +176,15 @@
   justify-content: flex-end;
 }
 
-.video-item__home-page-button {
+.video-item__watched-button,
+.video-item__remove-button {
   width: 36px;
   height: 36px;
   background: var(--video-item-save-button-bg-color);
   margin-top: 4px;
 }
 
-.video-item__home-page-button:hover {
+.video-item__watched-button:hover,
+.video-item__remove-button:hover {
   background: var(--video-item-save-button-hover-bg-color);
 }
