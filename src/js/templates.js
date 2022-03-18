@@ -4,7 +4,7 @@ import { formatDate } from './utils';
 const TEMPLATE = {
   MY_CLASSROOM: `
     <main id="app" class="classroom-container">
-      <h1 class="classroom-container__title">👩🏻‍💻 나만의 유튜브 강의실 👨🏻‍💻</h1>
+      <h1 id="main-title" class="classroom-container__title">👩🏻‍💻 나만의 유튜브 강의실 👨🏻‍💻</h1>
       <nav class="nav">
         <div class="menu">
           <input id="watched-menu" type="radio" name="menu" value="watched-menu" checked>

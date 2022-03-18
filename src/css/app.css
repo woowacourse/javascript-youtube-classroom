@@ -40,15 +40,19 @@ body {
 
 @media (max-width: 600px) {
   #app {
-    max-width: 368px;
+    width: 368px;
   }
 
   .nav {
-    max-width: 368px;
+    width: 368px;
   }
 
   #app ul {
     justify-content: center;
+  }
+
+  #main-title {
+    font-size: 30px;
   }
 }
 
