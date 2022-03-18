@@ -1,11 +1,11 @@
 import { $ } from '../utils/dom';
-import Search from './Search';
+import YoutubeSearch from './YoutubeSearch';
 
 export default class YoutubeSearchModal {
   constructor() {
     this.addSearchModalButtonClickEvent();
     this.addModalCloseEvent();
-    this.search = new Search();
+    this.search = new YoutubeSearch();
   }
 
   reset() {

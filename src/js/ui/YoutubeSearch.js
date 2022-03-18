@@ -3,9 +3,9 @@ import { request } from '../domain/youtubeApi';
 import { debounce } from '../utils/common';
 import { $, showSnackBar } from '../utils/dom';
 import { skeleton } from './skeleton';
-import { result } from './Result';
+import { youtubeSearchResult } from './youtubeSearchResult';
 
-export default class Search {
+export default class YoutubeSearch {
   constructor() {
     this.input = $('#search-input-keyword');
     this.searchForm = $('#search-form');
@@ -27,8 +27,8 @@ export default class Search {
     $('.video-list').replaceChildren();
     skeleton.renderSkeletonUI();
     request(this.input.value)
-      .then(json => {
-        result.renderInitialVideoList(json);
+      .then(videoData => {
+        youtubeSearchResult.renderInitialVideoList(videoData);
       })
       .catch(({ message }) => {
         showSnackBar(message);
@@ -37,7 +37,7 @@ export default class Search {
   };
 
   reset() {
-    result.resetVideoList();
+    youtubeSearchResult.resetVideoList();
     this.input.value = '';
   }
 }

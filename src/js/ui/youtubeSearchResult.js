@@ -7,7 +7,7 @@ import { convertToKoreaLocaleDate } from '../utils/common';
 import { skeleton } from './skeleton';
 import { video } from '../domain/video';
 
-export const result = {
+export const youtubeSearchResult = {
   searchResultTemplate(items) {
     const saveDatas = store.getLocalStorage(STORAGE_KEY);
     const resultTemplate = items
@@ -94,10 +94,10 @@ export const result = {
 
   scrollObserver(nextPageToken) {
     const $li = $('li:last-child');
-    const io = new IntersectionObserver(
+    const intersectionObserver = new IntersectionObserver(
       entry => {
         if (entry[0].isIntersecting) {
-          io.unobserve($li);
+          intersectionObserver.unobserve($li);
           this.renderNextVideoList(nextPageToken);
         }
       },
@@ -106,7 +106,7 @@ export const result = {
       },
     );
 
-    io.observe($li);
+    intersectionObserver.observe($li);
   },
 
   resetVideoList() {
