@@ -7,7 +7,6 @@ import { handleModalClose } from '../../handlers/modalHandle.js';
 const bindModalEvents = () => {
   $('.search-input').addEventListener('submit', e => {
     e.preventDefault();
-    $('.suggestion').hidden = true;
     handleSearch();
   });
 

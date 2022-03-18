@@ -9,6 +9,7 @@ export const handleSearch = () => {
   try {
     youtubeSearchAPI.resetSearchResults();
     modalUI.resetVideoList();
+    $('.suggestion').hidden = true;
 
     modalUI.renderSkeletonUI();
 

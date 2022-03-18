@@ -9,6 +9,7 @@ export const handleModalClose = () => {
   $('.video-list').replaceChildren();
   $('#search-input-keyword').value = '';
   $('.no-result').hidden = true;
+  $('.suggestion').hidden = true;
 
   $('.saved-video-list').replaceChildren();
   const savedVideos = videoStorage.getSavedVideos();

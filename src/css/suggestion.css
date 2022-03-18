@@ -1,12 +1,13 @@
 .suggestion {
   position: absolute;
-  top: 163px;
-  left: 294px;
+  top: 37px;
+  left: 0px;
   width: 400px;
   background-color: white;
   z-index: 1;
   border: 1px solid black;
   border-radius: 5px;
+  overflow: hidden;
 }
 
 #suggestion-list > li {

@@ -36,8 +36,6 @@ export default class YoutubeSearchAPI {
     const URL = this.#searchResults
       ? this.getURL(searchKeyword, this.#searchResults.nextPageToken)
       : this.getURL(searchKeyword);
-    return fetch(URL).then(response => {
-      return response.json();
-    });
+    return fetch(URL).then(response => response.json());
   }
 }
