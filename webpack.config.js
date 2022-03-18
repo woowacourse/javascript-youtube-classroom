@@ -1,5 +1,5 @@
-const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const path = require('path');
 
 module.exports = {
   mode: 'development',
@@ -35,8 +35,16 @@ module.exports = {
         use: ['style-loader', 'css-loader'],
       },
       {
-        test: /\.(png|svg|jpg|jpeg|gif)$/i,
-        type: 'asset/resource',
+        test: /\.(png|jpg|jpeg|gif)$/,
+        exclude: /node_module/,
+        use: {
+          loader: 'url-loader',
+          options: {
+            name: 'assets/[name].[ext]',
+            fallback: 'file-loader',
+            limit: 5000,
+          },
+        },
       },
     ],
   },

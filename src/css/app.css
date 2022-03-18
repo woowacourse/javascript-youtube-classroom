@@ -19,6 +19,7 @@ body {
 .nav {
   display: flex;
   justify-content: space-between;
+  margin-bottom: 30px;
 }
 
 .button {
@@ -55,6 +56,6 @@ body {
 }
 
 .empty__video__image {
-  width: 50vw;
+  width: 45vw;
   height: 50vh;
 }
