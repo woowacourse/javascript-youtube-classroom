@@ -11,4 +11,17 @@ export const video = {
       showSnackBar(MESSAGE.SAVE_FAILURE);
     }
   },
+
+  check(videoId) {
+    console.log(videoId);
+    const savedVideoList = store.getLocalStorage(STORAGE_KEY);
+    const updatedVideoList = savedVideoList.map(savedVideo => {
+      if (savedVideo.videoId === videoId) {
+        savedVideo.watched = true;
+      }
+      return savedVideo;
+    });
+    localStorage.removeItem(STORAGE_KEY);
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(updatedVideoList));
+  },
 };

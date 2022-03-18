@@ -2,12 +2,14 @@ import { STORAGE_KEY } from '../constants';
 import { $ } from '../utils/dom';
 import { store } from '../domain/store';
 import { convertToKoreaLocaleDate } from '../utils/common';
+import { video } from '../domain/video';
 
 export default class YoutubeClassRoom {
   constructor() {
     this.renderVideoList(false, '.will-watch-video-list');
     this.addWillWatchVideoButtonEvent();
     this.addWatchedVideoButtonEvent();
+    this.addVideoCheckedButtonEvent();
   }
 
   reset() {
@@ -30,6 +32,16 @@ export default class YoutubeClassRoom {
       e.target.classList.add('highlight');
       $('#will-watch-video-button').classList.remove('highlight');
       this.renderVideoList(true, '.watched-video-list');
+    });
+  }
+
+  addVideoCheckedButtonEvent() {
+    $('.will-watch-video-list').addEventListener('click', e => {
+      if (e.target.classList.contains('video-item__check-button')) {
+        const videoId = e.target.dataset.videoId;
+        video.check(videoId);
+        // this.renderVideoList(false, '.will-watch-video-list');
+      }
     });
   }
 
@@ -56,8 +68,8 @@ export default class YoutubeClassRoom {
             <p class="video-item__published-date" data-published-date=${videoData.publishedDate}>
               ${convertToKoreaLocaleDate(videoData.publishedDate)}
             </p>
-            <button class="video-item__check-button button">✅</button>
-            <button class="video-item__remove-button button">🗑️</button>
+            <button class="video-item__check-button button" data-video-id="${videoData.videoId}">✅</button>
+            <button class="video-item__remove-button button" data-video-id="${videoData.videoId}">🗑️</button>
           </li>`;
       })
       .join('');
@@ -65,11 +77,11 @@ export default class YoutubeClassRoom {
 
   emptyVideoListTemplate() {
     return `
-    <div class="empty-result">
-      <div class="empty-result__description">
-        <p>저장된 동영상이 없습니다.</p>
+      <div class="empty-result">
+        <div class="empty-result__description">
+          <p>저장된 동영상이 없습니다.</p>
+        </div>
       </div>
-    </div>
     `;
   }
 
