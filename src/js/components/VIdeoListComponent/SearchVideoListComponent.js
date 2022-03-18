@@ -3,7 +3,7 @@ import { VIDEO_COMPONENT_TYPE } from '../../constants/components';
 import { CUSTOM_EVENT_KEY } from '../../constants/events';
 import { dispatch } from '../../modules/eventFactory';
 import { isFirstSearchByKeyword } from '../../utils/validation';
-import VideoComponent from '../VideoComponent';
+import SearchVideoComponent from '../VideoComponent/SearchVideoComponent';
 
 class SearchVideoListComponent extends VideoListComponent {
   #searchVideoObserver = null;
@@ -26,7 +26,6 @@ class SearchVideoListComponent extends VideoListComponent {
     }
 
     this.$videoList.classList.remove('hide');
-
     this.videoComponents = this.#generateVideoComponents(videoList, prevVideoListLength);
   }
 
@@ -59,7 +58,7 @@ class SearchVideoListComponent extends VideoListComponent {
       ...this.videoComponents,
       ...videoList.slice(prevVideoListLength).map(
         (video, idx, arr) =>
-          new VideoComponent(this.$videoList, {
+          new SearchVideoComponent(this.$videoList, {
             video,
             observer: idx === arr.length - 1 ? this.#searchVideoObserver : null,
             notLazyLoad: prevVideoListLength === 0,

@@ -2,7 +2,7 @@ import VideoListComponent from '.';
 import { VIDEO_COMPONENT_TYPE } from '../../constants/components';
 import { CUSTOM_EVENT_KEY } from '../../constants/events';
 import { dispatch } from '../../modules/eventFactory';
-import VideoComponent from '../VideoComponent';
+import SavedVideoComponent from '../VideoComponent/SavedVideoComponent';
 
 class SavedVideoListComponent extends VideoListComponent {
   /** 깜빡거림이 신경쓰인다. */
@@ -63,9 +63,8 @@ class SavedVideoListComponent extends VideoListComponent {
   #generateVideoComponents(savedVideoList) {
     return savedVideoList.map(
       (savedVideo, idx) =>
-        new VideoComponent(this.$videoList, {
+        new SavedVideoComponent(this.$videoList, {
           video: savedVideo,
-          observer: null,
           notLazyLoad: idx < 10,
           type: this.componentType,
         })
