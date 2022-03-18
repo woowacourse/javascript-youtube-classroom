@@ -106,10 +106,14 @@ const emptyVideoListTemplate = `
   </section>
 `;
 
+const saveButtonTemplate =
+  '<button type="button" class="video-item__save-button button">⬇ 저장</button>';
+
 export {
   videoTemplate,
   totalVideoSkeletonTemplate,
   videoNotFoundTemplate,
   savedVideoTemplate,
   emptyVideoListTemplate,
+  saveButtonTemplate,
 };

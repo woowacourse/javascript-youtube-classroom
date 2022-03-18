@@ -18,6 +18,7 @@ import {
   savedVideoTemplate,
   emptyVideoListTemplate,
   totalVideoSkeletonTemplate,
+  saveButtonTemplate,
 } from './template/videoTemplate.js';
 import { selectDom, addEvent, insertHtmlToElement, hideElement } from './utils/handleElement.js';
 
@@ -27,7 +28,7 @@ class RenderVideo {
     this.saveVideo = new SaveVideo();
 
     this.navSection = selectDom('.nav');
-    this.playlistTabButton = selectDom('#playlist-tab-button', this.navSection);
+    this.unwatchedTabButton = selectDom('#unwatched-tab-button', this.navSection);
     this.watchedTabButton = selectDom('#watched-tab-button', this.navSection);
     this.savedVideoListContainer = selectDom('.saved-video-list');
 
@@ -47,7 +48,7 @@ class RenderVideo {
     addEvent(this.videoListContainer, 'click', this.#onSaveButtonClick);
 
     this.#onTabButtonClick(
-      this.playlistTabButton,
+      this.unwatchedTabButton,
       this.watchedTabButton,
       this.#filterCheckedVideoFromSaveVideoList(false)
     );
@@ -56,9 +57,9 @@ class RenderVideo {
 
   #onNavButtonClick = ({ target: { id: targetId } }) => {
     const navClickHandler = {
-      [this.playlistTabButton.id]() {
+      [this.unwatchedTabButton.id]() {
         this.#onTabButtonClick(
-          this.playlistTabButton,
+          this.unwatchedTabButton,
           this.watchedTabButton,
           this.#filterCheckedVideoFromSaveVideoList(false)
         );
@@ -66,7 +67,7 @@ class RenderVideo {
       [this.watchedTabButton.id]() {
         this.#onTabButtonClick(
           this.watchedTabButton,
-          this.playlistTabButton,
+          this.unwatchedTabButton,
           this.#filterCheckedVideoFromSaveVideoList()
         );
       },
@@ -114,16 +115,14 @@ class RenderVideo {
       this.#renderUpdatedVideoList(targetVideo);
 
       if (!this.videoListContainer.children.length) return;
-      const deletedVideoButtonInSearchResult = selectDom(
+      const deletedVideoSaveButtonInSearchResult = selectDom(
         `[data-video-id="${targetVideo.dataset.videoId}"] > button`,
         this.videoListContainer
       );
-      deletedVideoButtonInSearchResult &&
-        deletedVideoButtonInSearchResult.replaceWith(
-          new DOMParser().parseFromString(
-            '<button type="button" class="video-item__save-button button">⬇ 저장</button>',
-            'text/html'
-          ).body.childNodes[0]
+      // eslint-disable-next-line no-unused-expressions
+      deletedVideoSaveButtonInSearchResult &&
+        deletedVideoSaveButtonInSearchResult.replaceWith(
+          new DOMParser().parseFromString(saveButtonTemplate, 'text/html').body.childNodes[0]
         );
     }
   };
@@ -131,9 +130,9 @@ class RenderVideo {
   #onCloseModal = () => {
     hideElement(this.modalContainer);
 
-    if (this.playlistTabButton.classList.contains(CLASSNAME.SELECTED_TAB_BUTTON)) {
+    if (this.unwatchedTabButton.classList.contains(CLASSNAME.SELECTED_TAB_BUTTON)) {
       this.#onTabButtonClick(
-        this.playlistTabButton,
+        this.unwatchedTabButton,
         this.watchedTabButton,
         this.#filterCheckedVideoFromSaveVideoList(false)
       );
