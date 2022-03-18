@@ -14,6 +14,7 @@ export default class MainView {
     this.$unwatchedTab = $('.unwatched-tab');
     this.$watchedTab = $('.watched-tab');
     this.$confirmModalContainer = $('.confirm-modal-container');
+    this.$toastWrapper = $('.toast-wrapper');
     this.#bindEvents();
   }
 
@@ -133,4 +134,19 @@ export default class MainView {
   #showConfirmModal() {
     this.$confirmModalContainer.classList.remove('hide');
   }
+
+  toastNotification = (state, message) => {
+    let hideTimeout = null;
+    const $toastModal = `
+      <div class="toast toast--visible toast--${state}">${message}</div>
+    `;
+    this.$toastWrapper.insertAdjacentHTML('beforeEnd', $toastModal);
+
+    clearTimeout(hideTimeout);
+
+    hideTimeout = setTimeout(() => {
+      $(`.toast--${state}`).classList.remove(`toast--visible`);
+      $(`.toast--${state}`).remove();
+    }, 3000);
+  };
 }

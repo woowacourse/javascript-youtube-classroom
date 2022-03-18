@@ -14,17 +14,17 @@
   border-radius: 5px;
 }
 
-.toast--success {
+.toast--visible {
   visibility: visible;
   -webkit-animation: fadein 0.5s, fadeout 0.5s 2.5s;
   animation: fadein 0.5s, fadeout 0.5s 2.5s;
+}
+
+.toast--success {
   background-color: var(--success);
 }
 
 .toast--error {
-  visibility: visible;
-  -webkit-animation: fadein 0.5s, fadeout 0.5s 2.5s;
-  animation: fadein 0.5s, fadeout 0.5s 2.5s;
   background-color: var(--error);
 }
 

@@ -2,13 +2,16 @@ import { $ } from './dom';
 
 const $toast = $('.toast');
 const toastNotification = (state, message) => {
+  let hideTimeout = null;
   $toast.textContent = message;
   $toast.classList.add(`toast--${state}`);
 
-  setTimeout(() => {
+  clearTimeout(hideTimeout);
+
+  hideTimeout = setTimeout(() => {
     $toast.classList.remove(`toast--${state}`);
     $toast.textContent = '';
-  }, 3000);
+  }, 2000);
 };
 
 export default toastNotification;
