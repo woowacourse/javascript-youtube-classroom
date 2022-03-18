@@ -5,6 +5,7 @@ import './MyVideoItem';
 class MyVideoList extends HTMLUListElement {
   connectedCallback() {
     this.render();
+    Save.instance.subscribe(this);
   }
 
   render() {
@@ -16,6 +17,11 @@ class MyVideoList extends HTMLUListElement {
         `<my-video-item data-video-id="${video.id}"></my-video-item>`
       );
     });
+  }
+
+  notify() {
+    this.textContent = '';
+    this.render();
   }
 }
 

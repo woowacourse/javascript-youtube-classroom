@@ -14,12 +14,31 @@ class Save {
 
   #videos;
 
+  #subscribers = [];
+
   constructor() {
     this.#videos = this.loadVideos();
   }
 
+  subscribe(element) {
+    this.#subscribers.push(element);
+  }
+
+  dispatch(action, data) {
+    localStorage.setItem('videos', data);
+    this.#videos = this.loadVideos();
+
+    this.#subscribers.forEach((subscriber) => {
+      subscriber.notify(action, data);
+    });
+  }
+
   subscribeEvents(videoItem) {
     on('.video-item__save-button', '@save', (e) => this.saveVideo(e.detail.videoId), videoItem);
+  }
+
+  subscribeWatchEvent(videoItem) {
+    on('.video-item__state-button', '@watch', (e) => this.updateVideoState(e.detail.id), videoItem);
   }
 
   saveVideo(videoId) {
@@ -27,12 +46,10 @@ class Save {
       if (this.#videos.length >= VIDEO.MAX_SAVABLE_COUNT) {
         throw new Error(ERROR_MESSAGE.EXCEED_MAX_SAVABLE_COUNT);
       }
+
       const videoInfo = VideoStore.instance.findVideo(videoId);
-      localStorage.setItem(
-        'videos',
-        JSON.stringify([...this.#videos, { ...videoInfo, isWatched: false }])
-      );
-      this.#videos = this.loadVideos();
+
+      this.dispatch('save', JSON.stringify([...this.#videos, { ...videoInfo, isWatched: false }]));
     } catch (error) {
       alert(error.message);
     }
@@ -52,6 +69,13 @@ class Save {
 
   findVideo(videoId) {
     return this.#videos.find((video) => video.id === videoId);
+  }
+
+  updateVideoState(videoId) {
+    const currentVideo = this.findVideo(videoId);
+
+    currentVideo.isWatched = !currentVideo.isWatched;
+    this.dispatch('watch', JSON.stringify([...this.#videos]));
   }
 }
 

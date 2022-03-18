@@ -81,6 +81,7 @@ const TEMPLATE = {
     <ul is="my-video-list" id="unwatched-video-list"></ul>
     <ul is="my-video-list" id="watched-video-list" class="hidden"></ul>
   `,
+  // eslint-disable-next-line max-lines-per-function
   generateMyVideoItem(video) {
     return `
     <li class="video-item" data-video-id="${video.id}">
@@ -91,8 +92,10 @@ const TEMPLATE = {
       <p class="video-item__channel-name">${decodeURI(video.channelTitle)}</p>
       <p class="video-item__published-date">${formatDate(video.publishedAt)}</p>
       <div class="video-item__state">
-        <button type="button" class="video-item__state-button button">✅</button>
-        <button type="button" class="video-item__state-button button">🗑️</button>
+        <button type="button" class="video-item__state-button button${
+          video.isWatched ? ' video-item__state-button--watched' : ''
+        }" data-action="watch">✅</button>
+        <button type="button" class="video-item__state-button button" data-action="remove">🗑️</button>
       <div>
     </li>`;
   },
