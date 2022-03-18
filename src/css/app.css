@@ -16,6 +16,28 @@ body {
   margin-bottom: 64px;
 }
 
+@media screen and (max-width: 1279px) {
+  #app {
+    max-width: 760px;
+  }
+}
+
+@media screen and (max-width: 959px) {
+  #app {
+    max-width: 500px;
+  }
+}
+
+@media screen and (max-width: 599px) {
+  #app {
+    max-width: 368px;
+  }
+
+  .classroom-container__title {
+    font-size: 24px;
+  }
+}
+
 .nav {
   display: flex;
   justify-content: space-between;
