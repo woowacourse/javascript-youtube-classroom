@@ -50,6 +50,11 @@
   margin-bottom: 40px;
 }
 
+.search-input-box {
+  display: inline;
+  position: relative;
+}
+
 .search-input__keyword {
   width: 400px;
   height: 36px;
@@ -62,6 +67,15 @@
 .search-input__keyword::placeholder {
   color: #8b8b8b;
   font-size: 16px;
+}
+
+.search-input__clear {
+  border: none;
+  background: none;
+  color: #8b8b8b;
+  position: absolute;
+  top: 10%;
+  left: 90%;
 }
 
 .search-input__search-button {

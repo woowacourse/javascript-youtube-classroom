@@ -49,12 +49,17 @@
         <section class="search-input">
           <h3 hidden>검색어 입력</h3>
           <form id="search-form">
-            <input
-              id="search-input-keyword"
-              type="text"
-              placeholder="검색"
-              class="search-input__keyword"
-            />
+            <div class="search-input-box">
+              <input
+                id="search-input-keyword"
+                type="text"
+                placeholder="검색"
+                class="search-input__keyword"
+              />
+              <button type="button" class="search-input__clear button">
+                ✕
+              </button>
+            </div>
             <button
               type="submit"
               id="search-button"

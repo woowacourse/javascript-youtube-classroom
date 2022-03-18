@@ -9,6 +9,7 @@ export default class Search {
     this.input = $('#search-input-keyword');
     this.result = new SearchResult();
     this.addSubmitEvent();
+    this.addClearButtonClickEvent();
   }
 
   addSubmitEvent() {
@@ -27,6 +28,13 @@ export default class Search {
       );
       skeletonUI.render();
       this.result.renderInitialVideoList(this.input.value);
+    });
+  }
+
+  addClearButtonClickEvent() {
+    $('.search-input__clear').addEventListener('click', () => {
+      this.input.value = '';
+      this.input.focus();
     });
   }
 
