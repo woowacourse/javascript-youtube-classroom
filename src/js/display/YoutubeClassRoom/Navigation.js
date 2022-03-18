@@ -5,8 +5,6 @@ import UIStore from '@Domain/UIStore';
 export default class Navigation {
   constructor() {
     this.container = $('#classroom-navigation');
-    // this.$modalContainer =
-    // this.$modal = $('#search-modal');
     this.bindEvents();
   }
 
