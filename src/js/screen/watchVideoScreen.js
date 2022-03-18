@@ -90,7 +90,11 @@ export default class WatchVideoScreen {
     }
 
     if (e.target.classList.contains('video-item__delete_button')) {
-      //TODO : 삭제하기
+      if (confirm('해당 영상을 영상 리스트에서 삭제하시겠습니까?')) {
+        const { videoId } = e.target.closest('.video-item').dataset;
+        this.#storageEngine.removeVideo(videoId);
+        this.renderVideoList();
+      }
     }
   };
 }

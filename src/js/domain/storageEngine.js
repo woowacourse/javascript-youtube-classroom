@@ -34,6 +34,15 @@ export default class StorageEngine {
     localStorage.setItem('savedVideos', JSON.stringify(savedVideos));
   }
 
+  removeVideo(videoId) {
+    const savedVideos = this.getSavedVideos();
+
+    const target = savedVideos.findIndex((video) => video.videoId === videoId);
+    savedVideos.splice(target, 1);
+
+    localStorage.setItem('savedVideos', JSON.stringify(savedVideos));
+  }
+
   isSavedVideo(videoId) {
     return this.getSavedVideos()
       .map(({ videoId }) => videoId)
