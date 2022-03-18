@@ -1,4 +1,3 @@
-import { MESSAGE } from '../constants';
 import { request } from '../domain/youtubeApi';
 import { debounce } from '../utils/common';
 import { $, showSnackBar } from '../utils/dom';
@@ -20,10 +19,6 @@ export default class YoutubeSearch {
   }
 
   handleSubmit = () => {
-    if (this.input.value === '') {
-      showSnackBar(MESSAGE.ERROR_BLANK_SEARCH_INPUT);
-      return;
-    }
     $('.video-list').replaceChildren();
     skeleton.renderSkeletonUI();
     request(this.input.value)
