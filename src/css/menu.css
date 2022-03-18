@@ -1,0 +1,28 @@
+.menu input[type='radio'] {
+  display: none;
+}
+
+.menu__button {
+  display: inline-block;
+  box-sizing: border-box;
+  text-align: center;
+  width: 117px;
+  height: 36px;
+  line-height: 36px;
+  margin-right: -4px;
+  background: #f5f5f5;
+  border: 1px solid rgba(0, 0, 0, 0.12);
+  cursor: pointer;
+}
+
+.menu input[type='radio']:checked + label {
+  background: #00bcd41f;
+}
+
+.menu__button--left {
+  border-radius: 4px 0 0 4px;
+}
+
+.menu__button--right {
+  border-radius: 0 4px 4px 0;
+}

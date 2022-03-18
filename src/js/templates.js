@@ -6,6 +6,12 @@ const TEMPLATE = {
     <main id="app" class="classroom-container">
       <h1 class="classroom-container__title">👩🏻‍💻 나만의 유튜브 강의실 👨🏻‍💻</h1>
       <nav class="nav">
+        <div class="menu">
+          <input id="watched-menu" type="radio" name="menu" value="watched-menu" checked>
+          <label class="menu__button menu__button--left" for="watched-menu">👁️ 볼 영상</label>
+          <input id="unwatched-menu" type="radio" name="menu" value="unwatched-menu">
+          <label class="menu__button menu__button--right" for="unwatched-menu">✅ 본 영상</label>
+        </div>
         <button id="search-modal-button" class="button nav__button" type="button">🔍 검색</button>
       </nav>
     </main>
