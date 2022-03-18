@@ -31,7 +31,7 @@ export const parseTimeStamp = (time) => {
   return `${year}년 ${month}월 ${day}일`;
 };
 
-export const createURL = (path, params) => {
+export const createUrl = (API_URL, path, params) => {
   const url = new URL(path, API_URL);
   url.search = new URLSearchParams(params).toString();
   return url;
