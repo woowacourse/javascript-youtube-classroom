@@ -5,6 +5,8 @@ import {
   MAX_SAVE_VIDEO_COUNT,
   GET_VIDEO_COUNT,
   VIDEO_ID_LIST_KEY,
+  ARE_YOU_REALLY_DELETE,
+  SAVE_VIDEO_TEXT,
 } from './constants/contants.js';
 import {
   videoTemplate,
@@ -39,6 +41,7 @@ class RenderVideo {
     this.willWatchVideoList = selectDom('.will-watch-video-list', this.watchVideoWrap);
     this.noWillWatchVideoText = selectDom('.no-will-watch-video', this.watchVideoWrap);
     this.watchedVideoList = selectDom('.watched-video-list', this.watchVideoWrap);
+    this.noWatchedVideoText = selectDom('.no-watched-video', this.watchVideoWrap);
 
     addEvent(this.searchModalButton, 'click', this.onClickVideoSearchModal);
     addEvent(this.willWatchSectionButton, 'click', this.onClickWillWatchSection);
@@ -61,14 +64,15 @@ class RenderVideo {
         target.closest('ul').classList
       );
       target.closest('li').remove();
+      this.emptyWatchVideo();
     } else if (target.classList.contains('delete-video-button')) {
-      if (window.confirm('정말 삭제하겠습니까?')) {
+      if (window.confirm(ARE_YOU_REALLY_DELETE)) {
         ControlVideo.setVideoIdListByDeleteButton(
           target.closest('li').dataset.videoId,
           target.closest('ul').classList
         );
         target.closest('li').remove();
-        this.noWatchVideos();
+        this.emptyWatchVideo();
       }
     }
   };
@@ -89,11 +93,13 @@ class RenderVideo {
         .map((watchVideoItem) => watchVideoTemplate(watchVideoItem, 'watched'))
         .join(' ')
     );
+
+    this.emptyWatchVideo();
   };
 
   renderWillWatchVideo = async () => {
     const willWatchVideoItems = [
-      ...(await this.searchVideo.getSaveVideoList(ControlVideo.getStorageVideoList())),
+      ...(await this.searchVideo.getSaveVideoList(ControlVideo.getStorageWillWatchVideoList())),
     ].filter(
       ({ id }) =>
         !Array.from(this.willWatchVideoList.children)
@@ -108,12 +114,19 @@ class RenderVideo {
         .join(' ')
     );
 
-    this.noWatchVideos();
+    this.emptyWatchVideo();
   };
 
-  noWatchVideos() {
+  emptyWatchVideo() {
     if (this.willWatchVideoList.children.length !== 0) {
       this.noWillWatchVideoText.classList.add('hide-element');
+    } else if (this.willWatchVideoList.children.length === 0) {
+      this.noWillWatchVideoText.classList.remove('hide-element');
+    }
+    if (this.watchedVideoList.children.length !== 0) {
+      this.noWatchedVideoText.classList.add('hide-element');
+    } else if (this.watchedVideoList.children.length === 0) {
+      this.noWatchedVideoText.classList.remove('hide-element');
     }
   }
 
@@ -139,10 +152,11 @@ class RenderVideo {
     this.watchedSectionButton.classList.remove('button-click');
     this.willWatchVideoWrap.classList.remove('hide-element');
     this.watchedVideoWrap.classList.add('hide-element');
+
     if (
       Array.from(this.willWatchVideoList.children).find(
         (willWatchVideo, index) =>
-          ControlVideo.getStorageVideoList()[index] === willWatchVideo.dataset.videoId
+          ControlVideo.getStorageWillWatchVideoList()[index] === willWatchVideo.dataset.videoId
       )
     ) {
       return;
@@ -166,10 +180,6 @@ class RenderVideo {
     }
   };
 
-  onClickVideoSearchModal = () => {
-    this.modalContainer.classList.remove('hide');
-  };
-
   onSubmitVideoSearch = (e) => {
     e.preventDefault();
     if (this.searchVideo.prevSearchKeyword === this.searchVideoInput.value.trim()) {
@@ -189,15 +199,15 @@ class RenderVideo {
     }
 
     if (
-      [...ControlVideo.getStorageVideoList(), ...ControlVideo.getStorageWatchedVideoList()]
+      [...ControlVideo.getStorageWillWatchVideoList(), ...ControlVideo.getStorageWatchedVideoList()]
         .length > MAX_SAVE_VIDEO_COUNT
     ) {
       alert(ERROR_MESSAGE.CANNOT_SAVE_VIDEO_ANYMORE);
       return;
     }
 
-    ControlVideo.addLocalStorageVideoList(
-      ControlVideo.getStorageVideoList(),
+    ControlVideo.addStorageVideoList(
+      ControlVideo.getStorageWillWatchVideoList(),
       target.closest('li').dataset.videoId,
       VIDEO_ID_LIST_KEY
     );
@@ -225,12 +235,31 @@ class RenderVideo {
           videoTemplate(
             video,
             [
-              ...ControlVideo.getStorageVideoList(),
+              ...ControlVideo.getStorageWillWatchVideoList(),
               ...ControlVideo.getStorageWatchedVideoList(),
             ].includes(video.id.videoId)
           ))
         .join(' ')
     );
+  }
+
+  onClickVideoSearchModal = () => {
+    this.modalContainer.classList.remove('hide');
+    if (this.renderVideoListWrap.children.length > 0) {
+      Array.from(this.renderVideoListWrap.children)
+        .map((video) => ([
+          ...ControlVideo.getStorageWillWatchVideoList(),
+          ...ControlVideo.getStorageWatchedVideoList(),
+        ].includes(video.dataset.videoId) ? '' : this.notDisabledVideo(video)));
+    }
+  };
+
+  notDisabledVideo(video) {
+    const saveButton = selectDom('.video-item__save-button', video);
+    if (saveButton.disabled === true) {
+      saveButton.textContent = SAVE_VIDEO_TEXT;
+      saveButton.disabled = false;
+    }
   }
 
   renderVideoSkeleton() {
@@ -248,9 +277,8 @@ class RenderVideo {
   async renderSearchScreen() {
     this.renderVideoSkeleton();
     try {
-      const searchResults = await this.searchVideo.handleSearchVideo(
-        this.searchVideoInput.value.trim()
-      );
+      const searchResults =
+        await this.searchVideo.handleSearchVideo(this.searchVideoInput.value.trim());
       this.renderSearchVideo(searchResults);
     } catch (error) {
       this.searchVideoInput.value = '';
