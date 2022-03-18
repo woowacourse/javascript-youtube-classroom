@@ -1,5 +1,6 @@
 import SearchEngine from '../domain/searchEngine';
 import StorageEngine from '../domain/storageEngine';
+import MessageBot from './messageBot';
 
 import notFoundImage from '../../assets/images/not_found.jpg';
 import serverErrorImage from '../../assets/images/server_error.jpg';
@@ -13,7 +14,7 @@ const NO_RESULT_TEMPLATE = `
   <img src=${notFoundImage} alt="no result image" class="no-result__image">
 `;
 
-const SERVER_ERROR_TEMPLATE = `
+const SERVER_ERROR_TEMPLATE = ` 
   <img src=${serverErrorImage} alt="no result image" class="no-result__error-image">
   <span>앗...현재는 서버 점검중입니다~ ∑(O_O;)</span>
 `;
@@ -122,7 +123,7 @@ export default class SearchVideoModal {
 
     if (this.#searchEngine.pageToken === null) {
       this.#modalVideoList.removeEventListener('scroll', this.#handleInfiniteScroll);
-      //TODO : 스낵바로 "더 이상의 검색결과는 존재하지 않습니다."
+      MessageBot.dispatchMessage('더 이상의 검색결과는 존재하지 않습니다.');
     }
   }
 
@@ -191,6 +192,7 @@ export default class SearchVideoModal {
       this.#storageEngine.saveVideo(data);
       e.target.classList.add('saved');
       e.target.textContent = '저장 됨';
+      MessageBot.dispatchMessage('영상이 정상적으로 저장되었습니다.');
     }
   };
 }

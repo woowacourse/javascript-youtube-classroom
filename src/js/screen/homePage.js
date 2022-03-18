@@ -1,4 +1,6 @@
 import StorageEngine from '../domain/storageEngine';
+import MessageBot from './messageBot';
+
 import { $ } from '../util/domHelper';
 import notFoundImage from '../../assets/images/not_found.jpg';
 
@@ -117,6 +119,7 @@ export default class HomePage {
       const { videoId } = e.target.closest('.video-item').dataset;
       this.#storageEngine.changeStatus(videoId, 'isWatched');
       this.renderVideoList();
+
       return;
     }
 
@@ -125,6 +128,7 @@ export default class HomePage {
         const { videoId } = e.target.closest('.video-item').dataset;
         this.#storageEngine.removeVideo(videoId);
         this.renderVideoList();
+        MessageBot.dispatchMessage('영상이 정상적으로 삭제되었습니다.');
       }
     }
   };

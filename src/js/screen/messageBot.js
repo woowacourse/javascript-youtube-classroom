@@ -6,10 +6,8 @@ const getMessageTemplate = (message) => `
 
 export default class MessageBot {
   #shortMessage = $('.short-message');
-  #shortMessageCount = $('#short-message-count');
   #longMessage = $('.long-message');
   #messageCloseButton = $('#message-close-button');
-  #messageList = $('.message-list');
 
   constructor() {
     this.#shortMessage.addEventListener('click', this.handleMessageModal);
@@ -25,10 +23,14 @@ export default class MessageBot {
     this.#longMessage.classList.toggle('hide');
   }
 
-  dispatchMessage(message) {
-    this.#messageList.isnertAdajacentHTML('beforeend', getMessageTemplate(message));
+  static dispatchMessage(message) {
+    const messageList = $('.message-list');
+    messageList.insertAdjacentHTML('beforeend', getMessageTemplate(message));
 
-    const shortMessageCount = parseInt(this.#shortMessageCount.textContext, 10);
-    this.#shortMessageCount.textContext = shortMessageCount + 1;
+    const shortMessageCount = $('#short-message-count');
+    shortMessageCount.textContent = Number(shortMessageCount.textContent) + 1;
+
+    const messageBox = $('.long-message-main');
+    messageBox.scrollTop = messageBox.scrollHeight;
   }
 }
