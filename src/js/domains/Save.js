@@ -27,10 +27,11 @@ class Save {
       if (this.#videos.length >= VIDEO.MAX_SAVABLE_COUNT) {
         throw new Error(ERROR_MESSAGE.EXCEED_MAX_SAVABLE_COUNT);
       }
-
       const videoInfo = VideoStore.instance.findVideo(videoId);
-
-      localStorage.setItem('videos', JSON.stringify([...this.#videos, videoInfo]));
+      localStorage.setItem(
+        'videos',
+        JSON.stringify([...this.#videos, { ...videoInfo, isWatched: false }])
+      );
       this.#videos = this.loadVideos();
     } catch (error) {
       alert(error.message);
@@ -43,6 +44,10 @@ class Save {
 
   loadVideos() {
     return JSON.parse(localStorage.getItem('videos')) ?? [];
+  }
+
+  findVideo(videoId) {
+    return this.#videos.find((video) => video.id === videoId);
   }
 }
 
