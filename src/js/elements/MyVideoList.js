@@ -28,7 +28,7 @@ class MyVideoList extends HTMLUListElement {
     });
   }
 
-  notify(data) {
+  notify() {
     this.render();
   }
 }

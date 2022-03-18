@@ -27,7 +27,7 @@ class MyVideoStore {
     this.#videos = newVideos;
 
     this.#subscribers.forEach((subscriber) => {
-      subscriber.notify(this.getVideos());
+      subscriber.notify();
     });
   }
 
