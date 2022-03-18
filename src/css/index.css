@@ -1,6 +1,8 @@
 @import './app.css';
 @import './modal.css';
 @import './snackbar.css';
+@import './classroomMain.css';
+@import './search.css';
 
 * {
     margin: 0;

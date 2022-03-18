@@ -111,16 +111,16 @@ export default class SearchResult {
           'video-publishTime': publishTime,
           'video-thumbnail': thumbnails.medium.url,
         },
-        className: 'video-item',
+        className: 'list-item',
         innerHTML: `<img
           src="${thumbnails.medium.url}"
-          alt="video-item-thumbnail" class="video-item__thumbnail"
+          alt="video-item-thumbnail" class="list-item__thumbnail"
           loading="lazy"
           >
-        <h4 class="video-item__title">${title}</h4>
-        <p class="video-item__channel-name">${channelTitle}</p>
-        <p class="video-item__published-date">${getParsedTime(publishTime)}</p>
-        ${isSaved ? '' : '<button class="video-item__save-button button">⬇ 나중에 보기</button>'}`,
+        <h4 class="list-item__title">${title}</h4>
+        <p class="list-item__channel-name">${channelTitle}</p>
+        <p class="list-item__published-date">${getParsedTime(publishTime)}</p>
+        ${isSaved ? '' : '<button class="list-item__save-button button">⬇ 나중에 보기</button>'}`,
       });
     });
   }

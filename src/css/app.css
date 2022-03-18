@@ -71,30 +71,3 @@ body {
     display: none !important;
 }
 
-.library__list{
-    width: 100%;
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    grid-gap: 10px;
-    justify-items: center;
-}
-
-.no-save__image{
-    max-width:100%;
-    max-height:100%;
-}
-
-.toggle-watched-button, .remove-video-button{
-    border :none;
-    cursor: pointer;
-    padding: 0.5rem;
-    background-color: transparent;
-}
-
-.toggle-watched-button:hover, .toggle-watched-button.watched{
-    background-color: var(--toggle-watch-button-hover-color);
-}
-
-.remove-video-button:hover{
-    background-color: var( --remove-button-hover-color);
-}

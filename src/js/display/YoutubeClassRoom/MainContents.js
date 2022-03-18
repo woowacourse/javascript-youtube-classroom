@@ -9,7 +9,10 @@ import SnackBar from '../Share/SnackBar';
 export default class MainContents {
   constructor() {
     this.container = $('#main-contents');
-    this.$videoList = createElement('UL', { className: 'library__list', id: 'saved-video-list' });
+    this.$videoList = createElement('UL', {
+      className: 'classroom-main__list',
+      id: 'saved-video-list',
+    });
     UIStore.addSubscriber(this.render, ['selectedPage']);
     YoutubeSaveStorage.addSubscriber(this.render);
     this.bindEvents();
@@ -30,7 +33,7 @@ export default class MainContents {
   }
 
   handleClickRemoveButton = ({ target: $target }) => {
-    const { videoId } = $target.closest('.video-item').dataset;
+    const { videoId } = $target.closest('.list-item').dataset;
     if (confirm(MESSAGE.CONFIRM_REMOVE_VIDEO)) {
       YoutubeSaveStorage.removeVideo(videoId);
       SnackBar.open(MESSAGE.REMOVE_COMPLETE, SNACKBAR_TYPE.ALERT);
@@ -38,7 +41,7 @@ export default class MainContents {
   };
 
   handleToggleWatched = ({ target: $target }) => {
-    const { videoId } = $target.closest('.video-item').dataset;
+    const { videoId } = $target.closest('.list-item').dataset;
     YoutubeSaveStorage.toggleVideoWatchStatus(videoId);
   };
 
@@ -65,19 +68,19 @@ export default class MainContents {
       const { videoTitle, videoChanneltitle, videoPublishtime, videoThumbnail } = videoData;
       return createElement('LI', {
         dataset: { 'video-id': id },
-        className: 'video-item',
+        className: 'list-item',
         innerHTML: `<img
         src="${videoThumbnail}"
-        alt="video-item-thumbnail" class="video-item__thumbnail"
+        alt="video-item-thumbnail" class="list-item__thumbnail"
         loading="lazy"
         >
-      <h4 class="video-item__title">${videoTitle}</h4>
-      <p class="video-item__channel-name">${videoChanneltitle}</p>
-      <p class="video-item__published-date">${getParsedTime(videoPublishtime)}</p>
-      <button id="toggle-watched-button" class="toggle-watched-button ${
+      <h4 class="list-item__title">${videoTitle}</h4>
+      <p class="list-item__channel-name">${videoChanneltitle}</p>
+      <p class="list-item__published-date">${getParsedTime(videoPublishtime)}</p>
+      <button id="toggle-watched-button" class="list-item__toggle-button ${
         watched ? 'watched' : ''
       }" type="button">✅</button>
-      <button id="remove-video-button" class="remove-video-button" type="button">🗑️</button>
+      <button id="remove-video-button" class="list-item__remove-button" type="button">🗑️</button>
      `,
       });
     });
