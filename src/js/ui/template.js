@@ -13,7 +13,7 @@ const skeletonTemplate = `
 `;
 
 const getFoundResultTemplate = items => {
-  const saveDatas = store.getLocalStorage(STORAGE_KEY) ?? [];
+  const saveDatas = store.getLocalStorage(STORAGE_KEY.VIDEO) ?? [];
   const resultTemplate = items
     .map(item => {
       const { publishedAt, channelId, title, thumbnails, channelTitle } =
@@ -33,10 +33,10 @@ const getFoundResultTemplate = items => {
           >
             <h4 class="video-item__title">${title}</h4>
           </a>
-          <a href="https://www.youtube.com/channel/${channelId}" target="_blank">
+          <a href="https://www.youtube.com/channel/${channelId}" data-channel-id=${channelId} target="_blank">
             <p class="video-item__channel-name">${channelTitle}</p>
           </a>
-          <p class="video-item__published-date">
+          <p class="video-item__published-date" data-publish-date=${publishedAt}>
             ${convertToKoreaLocaleDate(publishedAt)}
           </p>
           <button

@@ -11,12 +11,12 @@ const isSavedVideo = (saveVideos, videoId) => {
 
 const configureVideoData = item => {
   const data = {
-    videoId: item.id,
-    publishedAt: item.snippet.publishedAt,
-    channelId: item.snippet.channelId,
-    title: item.snippet.title,
-    thumbnailURL: item.snippet.thumbnails.high.url,
-    channelTitle: item.snippet.channelTitle,
+    videoId: item.dataset.videoId,
+    publishedAt: item.parentNode.children[3].dataset.publishDate,
+    channelId: item.parentNode.children[2].dataset.channelId,
+    title: item.parentNode.children[1].firstElementChild.textContent,
+    thumbnailURL: item.parentNode.children[0].firstElementChild.src,
+    channelTitle: item.parentNode.children[2].firstElementChild.textContent,
     watched: false,
   };
   return data;
