@@ -42,3 +42,19 @@
     grid: '.';
   }
 }
+
+#empty-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.empty-image {
+  width: 350px;
+  height: 350px;
+}
+
+#empty-container > p {
+  font-size: x-large;
+  font-weight: bold;
+}

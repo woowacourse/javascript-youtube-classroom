@@ -132,4 +132,10 @@ export default class MainView {
       this.$sawVideoList.classList.remove(DOM_STRING.HIDE);
     }
   }
+
+  showEmptyStorage(bool) {
+    bool
+      ? $('#empty-container').classList.remove(DOM_STRING.HIDE)
+      : $('#empty-container').classList.add(DOM_STRING.HIDE);
+  }
 }

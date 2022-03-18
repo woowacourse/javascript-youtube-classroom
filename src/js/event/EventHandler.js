@@ -32,7 +32,6 @@ export default class EventHandler {
 
   onDimmerClick() {
     this.modalView.hideModal();
-    this.mainView.clickWillSeeButton();
   }
 
   onStoreButtonClick(videoId) {
@@ -40,19 +39,6 @@ export default class EventHandler {
       videoStore.storeVideoWithVideoId(videoId);
     } catch (error) {
       alert(error.message);
-    }
-  }
-
-  onVideoItemButtonClick(buttonId, videoId) {
-    switch (buttonId) {
-      case DOM_STRING.CHECK_WILL_SEE_BUTTON:
-        videoStore.moveToWillSeeVideoList(videoId);
-        break;
-      case DOM_STRING.CHECK_SAW_BUTTON:
-        videoStore.moveToSawVideoList(videoId);
-        break;
-      case DOM_STRING.DELETE_STORE_BUTTON:
-        videoStore.deleteVideoWithId(videoId);
     }
   }
 
@@ -81,32 +67,46 @@ export default class EventHandler {
     }
   }
 
-  async onWillSeeButtonClick() {
+  onWillSeeButtonClick() {
     const videoList = videoStore.getWillSeeVideoList();
     if (videoList.length === 0) {
+      this.mainView.showEmptyStorage(true);
       return;
     }
+    this.mainView.showEmptyStorage(false);
     this.showStoredVideoItems(videoList);
   }
 
-  async onSawButtonClick() {
+  onSawButtonClick() {
     const videoList = videoStore.getSawVideoList();
     if (videoList.length === 0) {
+      this.mainView.showEmptyStorage(true);
       return;
     }
+    this.mainView.showEmptyStorage(false);
     this.showStoredVideoItems(videoList);
   }
 
   async showStoredVideoItems(videoList) {
     const videoIdList = videoList.map(video => video.id);
     const renderedVideoIdList = this.mainView.getRenderedVideoIdList();
-    console.log(renderedVideoIdList);
     const willRequestVideoIdList = videoIdList.filter(id => !renderedVideoIdList.includes(id));
-    console.log(willRequestVideoIdList);
 
     this.mainView.showSkeletonVideoList(willRequestVideoIdList);
     const videoData = await storeVideoAPICaller.getVideoListData(willRequestVideoIdList);
-    console.log(videoData);
     this.mainView.updateVideoItems(videoData);
+  }
+
+  onVideoItemButtonClick(buttonId, videoId) {
+    switch (buttonId) {
+      case DOM_STRING.CHECK_WILL_SEE_BUTTON:
+        videoStore.moveToWillSeeVideoList(videoId);
+        break;
+      case DOM_STRING.CHECK_SAW_BUTTON:
+        videoStore.moveToSawVideoList(videoId);
+        break;
+      case DOM_STRING.DELETE_STORE_BUTTON:
+        videoStore.deleteVideoWithId(videoId);
+    }
   }
 }
