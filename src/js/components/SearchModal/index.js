@@ -4,14 +4,14 @@ import SearchResult from "./SearchResult.js";
 import SearchManager from "../../manager/SearchManager.js";
 
 export default class SearchModal {
-  constructor({ saveVideoManager }) {
+  constructor({ videoManager }) {
     this.searchManager = new SearchManager();
     this.modalContainer = $(".modal");
     $(".search-modal__close-button").addEventListener("click", this.closeModal);
     $(".dimmer").addEventListener("click", this.closeModal);
 
     new SearchInput({ searchManager: this.searchManager });
-    new SearchResult({ searchManager: this.searchManager, saveVideoManager });
+    new SearchResult({ searchManager: this.searchManager, videoManager });
   }
 
   openModal() {

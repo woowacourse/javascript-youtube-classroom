@@ -6,7 +6,7 @@ import { verifySaveId } from "../../utils/validation.js";
 import { toastMessage } from "../../utils/common.js";
 
 export default class SearchResult {
-  constructor({ searchManager, saveVideoManager }) {
+  constructor({ searchManager, videoManager }) {
     this.videoList = $(".modal-result__list");
     this.noResultContainer = $(".modal-result__empty");
     this.resultLabel = $(".modal-result__label");
@@ -15,7 +15,7 @@ export default class SearchResult {
     this.searchManager = searchManager;
     this.searchManager.subscribe(this.#initResult);
     this.searchManager.subscribe(this.#getDataMatchKeyword);
-    this.saveVideoManager = saveVideoManager;
+    this.videoManager = videoManager;
 
     this.observer = new IntersectionObserver((entries) => {
       const [entry] = entries;
@@ -90,10 +90,10 @@ export default class SearchResult {
     }
 
     try {
-      const savedVideoArray = this.saveVideoManager.getSavedIds();
+      const savedVideoArray = this.videoManager.getSavedIds();
       const { id, title, channelTitle, date } = target.dataset;
       verifySaveId(savedVideoArray, id);
-      this.saveVideoManager.saveVideos({ id, title, channelTitle, date });
+      this.videoManager.saveVideos({ id, title, channelTitle, date });
       target.remove();
     } catch ({ message }) {
       toastMessage(message);

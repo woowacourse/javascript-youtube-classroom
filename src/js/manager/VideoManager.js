@@ -1,7 +1,7 @@
 import { LOCAL_DB } from "../utils/contants.js";
 import { getLocalStorage, saveLocalStorage } from "../utils/localStorage.js";
 
-export default class SaveVideoManager {
+export default class VideoManager {
   constructor() {
     this.handlers = new Map();
     this.handlerIndex = 0;
@@ -29,6 +29,18 @@ export default class SaveVideoManager {
 
   saveVideos(videoInfo) {
     this.#setState({ videos: [...this.state.videos, { ...videoInfo, watched: false }] });
+  }
+
+  toggleWatchVideo(id) {
+    const videos = [...this.state.videos];
+    const index = videos.findIndex((video) => video.id === id);
+    videos[index].watched = !videos[index].watched;
+    this.#setState({ videos });
+  }
+
+  removeVideo(id) {
+    const videos = this.state.videos.filter((video) => video.id !== id);
+    this.#setState({ videos });
   }
 
   #setState(newState) {
