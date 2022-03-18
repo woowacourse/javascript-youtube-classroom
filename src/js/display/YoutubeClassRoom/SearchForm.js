@@ -32,7 +32,7 @@ export default class SearchForm {
 
   handleSubmitForm = () => {
     const newKeyword = $(SELECTOR.ID.SEARCH_INPUT_KEYWORD, this.$container).value;
-    const { isLoading, keyword: beforeKeyword } = YoutubeSearchStore.getState();
+    const { isLoading, searchKeyword: beforeKeyword } = YoutubeSearchStore.getState();
 
     if (isEmptyString(newKeyword)) {
       alert(ERROR_MESSAGE.EMPTY_SEARCH_KEYWORD);
