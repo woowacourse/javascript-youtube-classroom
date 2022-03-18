@@ -25,4 +25,13 @@ export default class VideoStorage {
   getVideoIdArray() {
     return this.getStorage().map((item) => item.videoId);
   }
+
+  setVideoStateWatched(target, state) {
+    const targetIndex = this.getStorage().findIndex(
+      (item) => item.videoId === target
+    );
+
+    this.videos[targetIndex].isWatched = state;
+    localStorage.setItem("videos", JSON.stringify(this.videos));
+  }
 }

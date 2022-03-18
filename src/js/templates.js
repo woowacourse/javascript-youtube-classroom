@@ -78,18 +78,37 @@ const generateTemplate = {
     </div>
   </li>`;
   },
-  savedVideoItems(videoStorage) {
-    return videoStorage
-      .map((item) =>
-        this.savedVideoItem({
-          id: item.videoId,
-          channel: item.channel,
-          thumbnail: item.thumbnail,
-          title: item.title,
-          date: item.publishTime,
-          isWatched: item.isWatched,
+  savedVideoItems(videoStorage, watchedVideoOnly) {
+    if (watchedVideoOnly) {
+      return videoStorage
+        .map((item) => {
+          return item.isWatched
+            ? this.savedVideoItem({
+                id: item.videoId,
+                channel: item.channel,
+                thumbnail: item.thumbnail,
+                title: item.title,
+                date: item.publishTime,
+                isWatched: item.isWatched,
+              })
+            : "";
         })
-      )
+        .join("");
+    }
+
+    return videoStorage
+      .map((item) => {
+        return item.isWatched
+          ? ""
+          : this.savedVideoItem({
+              id: item.videoId,
+              channel: item.channel,
+              thumbnail: item.thumbnail,
+              title: item.title,
+              date: item.publishTime,
+              isWatched: item.isWatched,
+            });
+      })
       .join("");
   },
 };

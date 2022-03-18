@@ -9,12 +9,15 @@ import { bindEventListener, getTargetVideoData } from "./utils/dom";
 export default class YoutubeApp {
   constructor() {
     this.videoList = document.querySelector(".video-list");
+    this.savedVideoList = document.querySelector(".saved-video-list");
 
-    this.#bindEvents();
     this.videoStorage = new VideoStorage();
-    this.VideoStorageView = new VideoStorageView();
+    this.videoStorageView = new VideoStorageView();
     this.searchModalView = new SearchModalView();
 
+    this.isWatchedVideoOnly = false;
+
+    this.#bindEvents();
     this.#reloadStorageData();
   }
 
@@ -34,6 +37,7 @@ export default class YoutubeApp {
       "scroll",
       throttle(this.#onScrollVideoList, DELAY_TIME)
     );
+    bindEventListener(this.savedVideoList, "click", this.#onClickWatchedButton);
     bindEventListener(this.videoList, "click", this.#onClickSaveButton);
     bindEventListener(
       document.querySelector(".dimmer"),
@@ -45,11 +49,14 @@ export default class YoutubeApp {
   #reloadStorageData = () => {
     console.log(this.videoStorage.getStorage());
     if (!this.videoStorage.getStorage().length) {
-      this.VideoStorageView.renderEmptyStorage();
+      this.videoStorageView.renderEmptyStorage();
       return;
     }
 
-    this.VideoStorageView.renderSavedVideo(this.videoStorage.getStorage());
+    this.videoStorageView.renderSavedVideo(
+      this.videoStorage.getStorage(),
+      this.isWatchedVideoOnly
+    );
   };
 
   #onClickSearchModalButton = () => {
@@ -59,6 +66,15 @@ export default class YoutubeApp {
   #onClickDimmer = () => {
     this.searchModalView.closeSearchModal();
     this.#reloadStorageData();
+  };
+
+  #onClickWatchedButton = ({ target }) => {
+    if (!target.matches(".video-item__watched-button")) return;
+
+    const videoData = getTargetVideoData(target, ".video-item");
+    this.videoStorage.setVideoStateWatched(videoData.videoId, true);
+
+    this.videoStorageView.hideElement(target.closest(".video-item"));
   };
 
   #onClickSaveButton = ({ target }) => {

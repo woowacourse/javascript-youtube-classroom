@@ -13,7 +13,7 @@ export const getTargetVideoData = (target, parentSelector) => {
     title: parentElement.querySelector(".video-item__title").innerText,
     publishTime: parentElement.querySelector(".video-item__published-date")
       .innerText,
-    iswatched: false,
+    isWatched: false,
   };
 
   return videoDataObject;

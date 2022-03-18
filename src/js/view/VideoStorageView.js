@@ -18,8 +18,11 @@ export default class VideoStorageView {
     );
   };
 
-  renderSavedVideo = (videoData) => {
-    const videoItemTemplate = generateTemplate.savedVideoItems(videoData);
+  renderSavedVideo = (videoData, watchedVideoOnly) => {
+    const videoItemTemplate = generateTemplate.savedVideoItems(
+      videoData,
+      watchedVideoOnly
+    );
     const noResultDiv = document.querySelector(".no-result");
 
     this.savedVideoList.classList.remove("hide");
@@ -30,5 +33,9 @@ export default class VideoStorageView {
     }
 
     noResultDiv.classList.add("hide");
+  };
+
+  hideElement = (target) => {
+    target.classList.add("hide");
   };
 }
