@@ -3,7 +3,7 @@ import { getEmptyClassroomTemplate, getFrameTemplate } from "../utils/templates.
 
 export default class Classroom {
   constructor({ saveVideoManager }) {
-    this.classroom = $(".classroom");
+    this.classroomList = $(".classroom__list");
     this.emptyContainer = $(".classroom__empty");
 
     this.saveVideoManager = saveVideoManager;
@@ -18,8 +18,11 @@ export default class Classroom {
       this.renderEmptyClassroom();
       return;
     }
-    this.classroom.replaceChildren();
-    this.classroom.insertAdjacentHTML("beforeend", this.savedVideos.map((video) => getFrameTemplate(video)).join(""));
+    this.classroomList.replaceChildren();
+    this.classroomList.insertAdjacentHTML(
+      "beforeend",
+      this.savedVideos.map((video) => getFrameTemplate(video)).join(""),
+    );
   }
 
   renderEmptyClassroom() {
@@ -32,7 +35,7 @@ export default class Classroom {
       this.emptyContainer.replaceChildren();
     }
     const newVideo = updatedVideos.find((video) => !this.savedVideos.includes(video));
-    this.classroom.insertAdjacentHTML("beforeend", getFrameTemplate(newVideo));
+    this.classroomList.insertAdjacentHTML("beforeend", getFrameTemplate(newVideo));
     this.savedVideos = this.saveVideoManager.getSavedVideos();
   };
 }

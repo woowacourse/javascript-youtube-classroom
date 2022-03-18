@@ -6,9 +6,9 @@ import SearchModal from "./SearchModal/index.js";
 export default class App {
   constructor() {
     this.saveVideoManager = new SaveVideoManager();
-    this.menuBar = new MenuBar({ handleOpenModal: this.handleOpenModal });
     this.searchModal = new SearchModal({ saveVideoManager: this.saveVideoManager });
-    this.classroom = new Classroom({ saveVideoManager: this.saveVideoManager });
+    new MenuBar({ handleOpenModal: this.handleOpenModal });
+    new Classroom({ saveVideoManager: this.saveVideoManager });
   }
 
   handleOpenModal = () => {

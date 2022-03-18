@@ -1,5 +1,7 @@
+@import "./video.css";
 @import "./classroom.css";
 @import "./modal.css";
+@import "./header.css";
 
 * {
   margin: 0;
@@ -23,6 +25,26 @@ button,
 textarea,
 select {
   font: inherit;
+}
+
+body {
+  padding: 64px 0;
+  font-size: 16px;
+}
+
+#app {
+  max-width: 1020px;
+  margin: 0 auto;
+}
+
+.button {
+  cursor: pointer;
+  border-radius: 4px;
+  border: none;
+  font-style: normal;
+  font-weight: bold;
+  font-size: 14px;
+  letter-spacing: 1.25px;
 }
 
 .toast {
