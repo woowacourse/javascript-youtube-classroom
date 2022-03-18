@@ -55,6 +55,10 @@ body {
   display: none;
 }
 
+.video-list > img {
+  margin: 0 auto;
+}
+
 .button-list {
   display: flex;
   justify-content: flex-end;

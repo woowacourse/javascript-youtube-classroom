@@ -1,7 +1,12 @@
 import StorageEngine from '../domain/storageEngine';
 import { $ } from '../util/domHelper';
+import notFoundImage from '../../assets/images/not_found.jpg';
 
 //template
+const NO_RESULT_TEMPLATE = `
+  <img src=${notFoundImage} alt="no result image" class="no-result__image">
+`;
+
 const getVideoItemTemplate = ({
   thumbnails,
   channelTitle,
@@ -31,6 +36,7 @@ export default class WatchVideoScreen {
   #watchedTabMenuButton = $('#watched-tab-menu-button');
   #watchLaterContainer = $('.watch-later-container');
   #watchedContainer = $('.watched-container');
+
   #watchLaterVideoList = $('.watch-later-video-list');
   #watchedVideoList = $('.watched-video-list');
   #storageEngine = new StorageEngine();
@@ -68,6 +74,12 @@ export default class WatchVideoScreen {
     if (tabMenu === 'watch-later') {
       const watchLaterVideoList = this.#storageEngine.getWatchLaterVideos();
 
+      if (watchLaterVideoList.length === 0) {
+        this.#watchLaterVideoList.insertAdjacentHTML('beforeend', NO_RESULT_TEMPLATE);
+        this.toggleNoResultClassName();
+        return;
+      }
+
       this.#watchLaterVideoList.insertAdjacentHTML(
         'beforeend',
         watchLaterVideoList.map((video) => getVideoItemTemplate(video)).join('')
@@ -75,6 +87,11 @@ export default class WatchVideoScreen {
       return;
     }
     const watchedVideoList = this.#storageEngine.getWatchedVideos();
+    if (watchedVideoList.length === 0) {
+      this.#watchedVideoList.insertAdjacentHTML('beforeend', NO_RESULT_TEMPLATE);
+      return;
+    }
+
     this.#watchedVideoList.insertAdjacentHTML(
       'beforeend',
       watchedVideoList.map((video) => getVideoItemTemplate(video)).join('')
