@@ -33,6 +33,11 @@ export const ERROR_MESSAGE = {
   EMPTY_INPUT: '입력된 글자가 없습니다. 한 글자 이상의 검색어를 입력해주세요.',
 };
 
+export const CONFIRM_MESSAGE = {
+  DELETE_STORED_VIDEO: '저장된 영상를 삭제하시겠습니까?',
+  NOTHING_MORE: '더이상 불러올 영상이 없습니다.',
+};
+
 export const STORE = {
   VIDEO_LIST_MAX_LENGTH: 100,
   WILL_SEE: 'willSee',

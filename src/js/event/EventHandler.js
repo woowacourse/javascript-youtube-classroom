@@ -1,7 +1,7 @@
 import MainView from '../view/MainView.js';
 import ModalView from '../view/ModalView.js';
 import validator from '../utils/validator.js';
-import { DOM_STRING } from '../utils/constants.js';
+import { CONFIRM_MESSAGE, DOM_STRING } from '../utils/constants.js';
 import searchVideoAPICaller from '../api/searchVideoAPICaller.js';
 import storeVideoAPICaller from '../api/storeVideoAPICaller.js';
 import videoStore from '../storage/videoStore.js';
@@ -99,8 +99,10 @@ export default class EventHandler {
         videoStore.changeVideoStoreType(videoId, storeType);
         break;
       case DOM_STRING.DELETE_STORE_BUTTON:
-        videoStore.deleteVideoWithId(videoId);
-        this.onStoreTypeButtonsClick(this.mainView.getCurrentStoreType());
+        if (confirm(CONFIRM_MESSAGE.DELETE_STORED_VIDEO)) {
+          videoStore.deleteVideoWithId(videoId);
+          this.onStoreTypeButtonsClick(this.mainView.getCurrentStoreType());
+        }
     }
   }
 }
