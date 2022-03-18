@@ -104,14 +104,7 @@ export default class Template {
   }
 
   getSavedVideo(savedVideo) {
-    // channelId: "UC2XRTuTf0tnqcNBcWeaCVFg"
-    // channelTitle: "Hale In Ocean 정혜일"
-    // description: "ㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁ 오늘도 들어주셔서 감사합니다 Thank you for listening! #한글챌린지 #HaleinOcean ..."
-    // publishTime: "2021-12-05T08:00:35Z"
-    // saved: true
-    // thumbnailUrl: "https://i.ytimg.com/vi/-Kdl0tixpuk/hqdefault.jpg"
-    // title: "ㅁ만 나오는 노래"
-    // videoId: "-Kdl0tixpuk"
+    const [year, month, day] = savedVideo.publishTime.substr(0, 10).split('-');
     return `
       <li class="video-item" data-video-id="">
           <iframe 
@@ -123,7 +116,7 @@ export default class Template {
           </iframe>
           <h4 class="video-item__title">${savedVideo.title}</h4>
           <p class="video-item__channel-name">${savedVideo.channelTitle}</p>
-          <p class="video-item__published-date">${savedVideo.publishTime}</p>
+          <p class="video-item__published-date">${year}년 ${month}월 ${day}일</p>
           <div class="user-button-wrapper">
             <button class="user-saw-button">✅</button>
             <button class="user-delete-button">🗑️</button>
