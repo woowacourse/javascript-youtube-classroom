@@ -101,12 +101,16 @@
   background: #51cf66;
 }
 
-.message.no-result {
+.message.not-found {
   background: #22b8cf;
 }
 
 .message.store {
   background: #fcc419;
+}
+
+.message.error {
+  background: #cc5de8;
 }
 
 .long-message-footer {

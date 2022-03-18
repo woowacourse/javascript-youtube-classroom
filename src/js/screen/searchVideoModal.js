@@ -64,7 +64,10 @@ export default class SearchVideoModal {
         const data = await this.#searchEngine.searchKeyword(keyword);
         this.#renderSearchResult(data);
       } catch ({ message: status }) {
-        if (isServerError(status)) this.#renderServerErrorResult();
+        if (isServerError(status)) {
+          this.#renderServerErrorResult();
+          MessageBot.dispatchMessage('error', '현재는 서버 점검중입니다.');
+        }
       }
       this.#modalVideoList.addEventListener('scroll', this.#handleInfiniteScroll);
     }
@@ -88,6 +91,7 @@ export default class SearchVideoModal {
   #showNoResultView() {
     this.#searchResult.classList.add('search-result--no-result');
     this.#noResult.classList.remove('hide');
+    MessageBot.dispatchMessage('not-found', '검색결과, 데이터가 존재하지 않습니다.');
   }
 
   #allocatePreprocessedData(preprocessedData) {
@@ -123,7 +127,6 @@ export default class SearchVideoModal {
 
     if (this.#searchEngine.pageToken === null) {
       this.#modalVideoList.removeEventListener('scroll', this.#handleInfiniteScroll);
-      MessageBot.dispatchMessage('no-result', '더 이상의 검색결과는 존재하지 않습니다.');
     }
   }
 
@@ -145,7 +148,10 @@ export default class SearchVideoModal {
       const data = await this.#searchEngine.searchKeyword(keyword);
       this.#renderSearchResult(data, '@scroll');
     } catch ({ message: status }) {
-      if (isServerError(status)) this.#renderServerErrorResult();
+      if (isServerError(status)) {
+        this.#renderServerErrorResult();
+        MessageBot.dispatchMessage('error', '현재는 서버 점검중입니다.');
+      }
     }
   };
 
