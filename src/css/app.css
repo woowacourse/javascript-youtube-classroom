@@ -59,6 +59,8 @@ body {
 
 #store-video-list{
   width:100%;
+  display: flex;
+  justify-content: center;
 }
 .video-list-grid{
   display: grid;

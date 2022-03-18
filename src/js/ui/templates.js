@@ -1,6 +1,7 @@
 import not_found from '../../assets/images/not_found.png';
 import error_403 from '../../assets/images/error-background.png';
 import { convertDataToDateString } from '../util/converter.js';
+import no_video from '../../assets/images/no_video.png';
 
 const template = {
   videoItems: ({
@@ -85,6 +86,9 @@ const template = {
               <button type="button" class="button video-delete--btn">🗑️</button>
             </div>
         </li>`,
+  noVideoList: () => `
+    <img id="no_video--img" src=${no_video}>
+    `,
 };
 
 export default template;

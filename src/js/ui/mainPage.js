@@ -10,7 +10,10 @@ class MainPage {
   constructor() {
     this.$searchModalButton = document.querySelector('#search-modal-button');
     this.videoStorage = new VideoStorage();
-    this.modalComponent = new SearchModal(this.appendList, this.videoStorage);
+    this.modalComponent = new SearchModal(
+      this.appendList.bind(this),
+      this.videoStorage,
+    );
     this.$dimmer = document.querySelector('.dimmer');
     this.menuState = 'not-watched-tab-menu';
   }
@@ -44,15 +47,32 @@ class MainPage {
   }
 
   renderVideoList(videos) {
+    this.removeNoVideoImg();
     document
       .querySelector('.video-list-grid')
       .insertAdjacentHTML(
         'beforeend',
-        videos.map((item) => template.storageVideoItem(item)).join(' '),
+        videos.map((item) => template.storageVideoItem(item)).join(''),
       );
+    this.renderNoVideo();
+  }
+
+  removeNoVideoImg() {
+    const noVideoImg = document.getElementById('no_video--img');
+    if (noVideoImg) {
+      noVideoImg.remove();
+    }
+  }
+
+  renderNoVideo() {
+    if (document.querySelector('.video-list-grid').children.length === 0)
+      document
+        .querySelector('#store-video-list')
+        .insertAdjacentHTML('beforeend', template.noVideoList());
   }
 
   appendList(item) {
+    this.removeNoVideoImg();
     document
       .querySelector('.video-list-grid')
       .insertAdjacentHTML('beforeend', template.storageVideoItem(item));
@@ -94,6 +114,7 @@ class MainPage {
         this.videoStorage.removeVideo(id);
       }
     }
+    this.renderNoVideo();
   }
 }
 
