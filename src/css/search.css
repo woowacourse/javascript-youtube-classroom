@@ -78,8 +78,11 @@
 }
 
 .no-result__image {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
     width: 190px;
-    height: 140px;
+    height: 180px;
     margin-bottom: 32px;
 }
 
