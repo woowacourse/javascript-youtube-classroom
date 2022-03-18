@@ -15,6 +15,7 @@ export default class MainView {
     this.$watchedTab = $('.watched-tab');
     this.$confirmModalContainer = $('.confirm-modal-container');
     this.$toastWrapper = $('.toast-wrapper');
+    this.$darkToggle = $('.classroom__toggle');
     this.#bindEvents();
   }
 
@@ -24,6 +25,7 @@ export default class MainView {
     window.addEventListener('click', (event) => (event.target === this.$dimmer ? this.#closeModal() : false));
     on(this.$unwatchedButton, 'click', this.#handleUnwatchedButton.bind(this));
     on(this.$watchedButton, 'click', this.#handleWatchedButton.bind(this));
+    on(this.$darkToggle, 'click', this.toggleDarkMode);
   }
 
   #openSearchModal() {
@@ -149,4 +151,8 @@ export default class MainView {
       $(`.toast--${state}`).remove();
     }, 3000);
   };
+
+  toggleDarkMode() {
+    document.body.classList.toggle('dark-mode');
+  }
 }

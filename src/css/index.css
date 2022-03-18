@@ -4,6 +4,8 @@
 @import './skeleton.css';
 @import './confirmModal.css';
 @import './toast.css';
+@import './toggle.css';
+@import './darkMode.css';
 
 * {
   margin: 0;
