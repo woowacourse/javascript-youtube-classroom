@@ -15,6 +15,7 @@ export default class SearchModal {
 
   toggleShowSearchModal() {
     $('.modal-container').classList.toggle('hide');
+    $('body').classList.toggle('scroll-off');
   }
 
   addSearchButtonClickEvent() {

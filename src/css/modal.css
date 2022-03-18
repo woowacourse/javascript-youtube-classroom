@@ -13,6 +13,11 @@
   display: none;
 }
 
+.scroll-off {
+  overflow: hidden;
+  touch-action: none;
+}
+
 .dimmer {
   position: absolute;
   width: 100%;
