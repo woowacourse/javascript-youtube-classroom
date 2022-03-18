@@ -1,13 +1,12 @@
-import { LOCALSTORAGE_KEY_SAVE } from '../constant/index.js';
 import { getLocalStorage, setLocalStorage } from './localStorage.js';
 import { checkMaxStorageVolume } from '../util/validator.js';
 
 const saveMachine = {
-  saveVideoToLocalStorage(newVideo) {
+  saveToLocalStorage(key, newVideo) {
     checkMaxStorageVolume();
-    const savedVideos = getLocalStorage(LOCALSTORAGE_KEY_SAVE);
+    const savedVideos = getLocalStorage(key);
 
-    setLocalStorage(LOCALSTORAGE_KEY_SAVE, savedVideos.concat(newVideo));
+    setLocalStorage(key, savedVideos.concat(newVideo));
   },
 };
 

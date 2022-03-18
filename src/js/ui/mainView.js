@@ -1,3 +1,4 @@
+import { convertDOMToSaveObject } from '../util/converter';
 import { emit, on } from '../util/event';
 import template from './templates';
 
@@ -14,7 +15,12 @@ class MainView {
 
   onClick({ target }) {
     if (target.classList.contains('watch-video-button')) {
-      this.$watchedVideoList.append(target.closest('section'));
+      const parentTarget = target.closest('section');
+
+      this.$watchedVideoList.append(parentTarget);
+      emit(this.$afterWatchVideoList, '@watched', {
+        watchedVideo: convertDOMToSaveObject(parentTarget),
+      });
     }
 
     if (target.classList.contains('delete-watch-video-button')) {
