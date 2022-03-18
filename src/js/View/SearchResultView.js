@@ -5,7 +5,6 @@ import { template, MESSAGE } from './template';
 
 export default class SearchResultView {
   constructor() {
-    this.isShownNoResult = false;
     this.$searchResultSection = $('#search-result-section');
     this.$searchResultVideoList = $('#search-result-video-list', this.$searchResultSection);
     this.$noResultContainer = $('#no-result-container', this.$searchResultSection);
@@ -47,15 +46,16 @@ export default class SearchResultView {
   
   updateOnLoading() {
     this.toggleSkeletonListItemVisibility();
+    if (this.$searchResultVideoList.classList.contains('hide')) {
+      this.showSearchResultVideoList();
+    }
   }
 
   updateOnNewDataReceived(videos) {
     if (videos.length === 0) {
       this.showNoResult();
+      this.toggleSkeletonListItemVisibility();
       return;
-    }
-    if (this.isShownNoResult) {
-      this.showSearchResultVideoList();
     }
     const listItems = videos.map((video) => template.searchResultListItem(video)).join('');
     this.$firstSkeletonListItem.insertAdjacentHTML('beforebegin', listItems);
@@ -69,14 +69,12 @@ export default class SearchResultView {
   }
 
   showSearchResultVideoList() {
-    this.isShownNoResult = false;
     this.$noResultContainer.classList.add('hide');
     this.$searchResultVideoList.classList.remove('hide');
     this.$searchResultSection.classList.remove('search-result--no-result');
   }
 
   showNoResult() {
-    this.isShownNoResult = true;
     this.$noResultDescription.innerHTML = MESSAGE.NO_RESULT;
     this.$noResultContainer.classList.remove('hide');
     this.$searchResultVideoList.classList.add('hide');
@@ -84,7 +82,6 @@ export default class SearchResultView {
   }
 
   showErrorResult() {
-    this.isShownNoResult = true;
     this.$noResultDescription.innerHTML = MESSAGE.ERROR_RESULT;
     this.$noResultContainer.classList.remove('hide');
     this.$searchResultVideoList.classList.add('hide');
