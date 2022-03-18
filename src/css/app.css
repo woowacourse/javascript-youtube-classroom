@@ -1,5 +1,5 @@
 body {
-    padding: 64px 0;
+    padding: 64px 50px;
     font-size: 16px;
 }
 
@@ -18,7 +18,7 @@ body {
 
 .nav {
     display: flex;
-    justify-content: center;
+    justify-content: space-between;
 }
 
 .button {
@@ -39,6 +39,28 @@ body {
 
 .nav__button:hover {
     background-color: var(--nav-hover);
+}
+
+#will-see-video-button {
+    width: 118px;
+    border: 1px solid rgba(0, 0, 0, 0.12);
+    border-radius: 4px 0px 0px 4px;
+}
+
+#saw-video-button {
+    width: 118px;
+    margin-left: -5px;
+    border: 1px solid rgba(0, 0, 0, 0.12);
+    border-radius: 0px 4px 4px 0px;
+    border-collapse: collapse;
+}
+
+.clicked {
+    background-color: rgba(0, 188, 212, 0.12);
+}
+
+.clicked:hover {
+    background-color: rgba(0, 188, 212, 0.15);
 }
 
 .bottom-target {
