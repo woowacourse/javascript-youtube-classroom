@@ -81,7 +81,7 @@ const template = {
   `,
 
   noAfterWatchItem: () => `
-    <p>저장된 영상이 없습니다~</p>
+    <p class="no-saved-videos">저장된 영상이 없습니다~</p>
   `,
 };
 

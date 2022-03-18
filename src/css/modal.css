@@ -95,8 +95,8 @@
   flex-direction: row;
   flex-wrap: wrap;
   gap: 32px 20px;
-  place-items: center;
   overflow-y: scroll;
+  justify-content: center;
 }
 
 .video-item {
@@ -151,7 +151,4 @@
 
 .hide {
   display: none;
-}
-
-@media screen and (max-width: 600px) {
 }
