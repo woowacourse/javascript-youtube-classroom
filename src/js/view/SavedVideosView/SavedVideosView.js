@@ -1,112 +1,135 @@
+import { DELETE_CONFIRM_MESSAGE } from '../../constants/constants';
 import storage from '../../domain/storage';
-import getSearchResult from '../../domain/VideoListAPI';
-import { removeElementList, selectDom } from '../../util/util';
-import getSkeletonTemplateArray, { removeAllSkeletons } from '../Skeleton';
+import getVideoList from '../../domain/VideoListAPI';
+import { removeArrayIntersection, removeElementList, selectDom } from '../../util/util';
+import { addSkeletonsToContainer, removeAllSkeletons } from '../Skeleton';
 import { noSavedVideosTemplate, savedVideoElementTemplate } from './SavedVideosTemplate';
 
 class SavedVideosView {
+  #savedVideos;
+
+  #videoList;
+
+  #currentTabName;
+
+  #otherTabName;
+
+  #unrenderedVideoIdArray;
+
+  #renderedVideoIdArray;
+
+  #endOfList;
+
+  #observer;
+
   constructor() {
-    this.savedVideos = selectDom('.saved-videos');
-    this.videoList = selectDom('.video-list', this.savedVideos);
-    this.currentTabName = 'unwatched';
-    this.otherTabName = 'watched';
-    this.unrenderedVideoIdArray = storage.getFromStorage(this.currentTabName);
-    this.renderedVideoIdArray = [];
-    this.#addLoadMoreVideoObserver();
+    this.#savedVideos = selectDom('.saved-videos');
+    this.#videoList = selectDom('.video-list', this.#savedVideos);
+    this.#currentTabName = 'unwatched';
+    this.#otherTabName = 'watched';
+    this.#unrenderedVideoIdArray = storage.getFromStorage(this.#currentTabName);
+    this.#renderedVideoIdArray = [];
+    this.#endOfList = selectDom('.end-of-list');
+    this.#observer = this.#loadMoreObserver();
     this.renderVideoList();
+
+    this.#observer.observe(this.#endOfList);
   }
 
   async renderTab(tabName) {
-    if (tabName === this.currentTabName) return;
-    this.otherTabName = this.currentTabName;
-    this.currentTabName = tabName;
-    this.unrenderedVideoIdArray = storage.getFromStorage(this.currentTabName);
+    if (tabName === this.#currentTabName) return;
+
+    [this.#currentTabName, this.#otherTabName] = [this.#otherTabName, this.#currentTabName];
     this.#clearAllVideos();
-    this.#addLoadMoreVideoObserver();
+
     await this.renderVideoList();
+    this.#observer.observe(this.#endOfList);
   }
 
   renderVideoList = async () => {
-    const videos = this.unrenderedVideoIdArray.splice(0, 10);
-    if (videos.length === 0) {
+    const videos = this.#unrenderedVideoIdArray.splice(0, 10);
+
+    if (this.renderVideoList === 0 && videos.length === 0) {
       this.#renderNoSavedVideoTemplate();
       return;
     }
+
     const noSavedVideos = selectDom('.no-saved-videos');
     noSavedVideos?.remove();
-    const newVideoIdArray = videos.filter((id) => !this.renderedVideoIdArray.includes(id));
-    if (newVideoIdArray.length !== 0) {
-      await this.#renderNewVideos(newVideoIdArray);
-      this.renderedVideoIdArray = [...this.renderedVideoIdArray, ...newVideoIdArray];
-      this.#addLoadMoreVideoObserver();
-    }
+
+    const newVideoIdArray = removeArrayIntersection(videos, this.#renderedVideoIdArray);
+    await this.#renderNewVideos(newVideoIdArray);
   };
 
   renderOnModalClose = async () => {
-    this.unrenderedVideoIdArray = storage.getFromStorage(this.currentTabName);
-    this.#clearAllVideos();
+    this.#unrenderedVideoIdArray = storage.getFromStorage(this.#currentTabName);
     this.renderVideoList();
   };
 
-  async #renderNewVideos(newVideoIdArray) {
-    this.videoList.append(...getSkeletonTemplateArray(newVideoIdArray.length));
-    const videoObjectArray = await getSearchResult(newVideoIdArray);
-    const videoElementList = this.#createVideoElements(videoObjectArray);
-    removeAllSkeletons(this.videoList);
-    this.videoList.append(...videoElementList);
+  #clearAllVideos() {
+    removeElementList([...this.#videoList.childNodes]);
+    this.#unrenderedVideoIdArray = storage.getFromStorage(this.#currentTabName);
+    this.#renderedVideoIdArray = [];
   }
 
-  #clearAllVideos() {
-    [...this.videoList.childNodes].forEach((child) => {
-      child.remove();
-    });
-    this.renderedVideoIdArray = [];
+  async #renderNewVideos(newVideoIdArray) {
+    if (newVideoIdArray.length !== 0) {
+      addSkeletonsToContainer(this.#videoList, newVideoIdArray.length);
+
+      const videoObjectArray = await getVideoList(newVideoIdArray);
+      const videoElementList = this.#createVideoElements(videoObjectArray);
+
+      removeAllSkeletons(this.#videoList);
+
+      this.#videoList.append(...videoElementList);
+
+      this.#renderedVideoIdArray = [...this.#renderedVideoIdArray, ...newVideoIdArray];
+    }
+  }
+
+  #renderNoSavedVideoTemplate() {
+    removeElementList([...this.#videoList.childNodes]);
+    if (!selectDom('.no-saved-videos')) {
+      this.#savedVideos.append(noSavedVideosTemplate());
+    }
   }
 
   #removeDeletedVideos(videos) {
-    const videosIdArray = videos || storage.getFromStorage(this.currentTabName);
-    const deletedVideoIdArray = this.renderedVideoIdArray.filter(
-      (id) => !videosIdArray.includes(id)
-    );
-    const toDeleteArray = [...this.videoList.childNodes].filter((child) =>
+    const videosIdArray = videos || storage.getFromStorage(this.#currentTabName);
+
+    const deletedVideoIdArray = removeArrayIntersection(this.#renderedVideoIdArray, videosIdArray);
+    const toDeleteArray = [...this.#videoList.childNodes].filter((child) =>
       deletedVideoIdArray.includes(child.dataset.videoId)
     );
-    toDeleteArray.forEach((element) => element.remove());
+    removeElementList(toDeleteArray);
 
-    this.renderedVideoIdArray = this.renderedVideoIdArray.filter(
-      (id) => !deletedVideoIdArray.includes(id)
+    this.#renderedVideoIdArray = removeArrayIntersection(
+      this.#renderedVideoIdArray,
+      deletedVideoIdArray
     );
-    if (this.renderedVideoIdArray.length === 0) this.#renderNoSavedVideoTemplate();
+    if (this.#renderedVideoIdArray.length === 0) this.#renderNoSavedVideoTemplate();
   }
 
-  #addLoadMoreVideoObserver() {
-    const endOfList = selectDom('.end-of-list');
-    if (this.renderedVideoIdArray.length < 10) return;
-    const observer = new IntersectionObserver(
+  #loadMoreObserver() {
+    return new IntersectionObserver(
       async (entries) => {
-        if (this.unrenderedVideoIdArray.length === 0) observer.unobserve(endOfList);
+        if (this.#unrenderedVideoIdArray.length === 0) {
+          this.#observer.unobserve(this.#endOfList);
+        }
         if (entries[0].isIntersecting) {
-          this.renderVideoList();
+          await this.renderVideoList();
         }
       },
       { threshold: 1 }
     );
-    observer.observe(endOfList);
   }
 
   #createVideoElements(videoObjectArray) {
     return videoObjectArray.map((object) => {
-      const element = savedVideoElementTemplate(object, this.currentTabName);
+      const element = savedVideoElementTemplate(object, this.#currentTabName);
       element.addEventListener('click', this.#handleVideoItemButtons);
       return element;
     });
-  }
-
-  #renderNoSavedVideoTemplate() {
-    removeElementList(this.videoList.childNodes);
-    if (!selectDom('.no-saved-videos')) {
-      this.savedVideos.append(noSavedVideosTemplate());
-    }
   }
 
   #handleVideoItemButtons = ({ target }) => {
@@ -120,14 +143,14 @@ class SavedVideosView {
 
   #moveToWatchedList(target) {
     const { videoId } = target.dataset;
-    storage.moveVideo({ from: this.currentTabName, to: this.otherTabName, value: videoId });
+    storage.moveVideo({ from: this.#currentTabName, to: this.#otherTabName, value: videoId });
     this.#removeDeletedVideos();
   }
 
   #unsaveVideo(target) {
-    if (window.confirm('해당 영상의 저장을 취소합니다. 계속하시겠습니까?')) {
+    if (window.confirm(DELETE_CONFIRM_MESSAGE)) {
       const { videoId } = target.dataset;
-      storage.removeFromStorage(this.currentTabName, videoId);
+      storage.removeFromStorage(this.#currentTabName, videoId);
       this.#removeDeletedVideos();
     }
   }

@@ -13,8 +13,12 @@ function skeletonTemplate() {
   });
 }
 
-export default function getSkeletonTemplateArray(amount) {
+function createSkeletonTemplateArray(amount) {
   return Array.from({ length: amount }, () => skeletonTemplate());
+}
+
+export function addSkeletonsToContainer(container, length) {
+  container.append(...createSkeletonTemplateArray(length));
 }
 
 export function removeAllSkeletons(target) {

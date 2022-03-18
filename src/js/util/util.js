@@ -7,8 +7,8 @@ export function isBlankValue(value) {
   return value.trim() === '';
 }
 
-export function removeElementList(nodeList) {
-  nodeList.forEach((element) => element.remove());
+export function removeElementList(childNodesArray) {
+  childNodesArray.forEach((element) => element.remove());
 }
 
 export function selectDom(selector, baseElement = document) {
@@ -17,4 +17,8 @@ export function selectDom(selector, baseElement = document) {
 
 export function scrollToTop(element) {
   element.scrollTop = 0;
+}
+
+export function removeArrayIntersection(fromArray, compareArray) {
+  return fromArray.filter((element) => !compareArray.includes(element));
 }

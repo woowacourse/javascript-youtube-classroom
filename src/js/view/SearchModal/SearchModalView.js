@@ -3,24 +3,38 @@ import { isBlankValue, removeElementList, scrollToTop, selectDom } from '../../u
 import { errorTemplate, searchVideoElementTemplate } from './SearchModalTemplates';
 import Search from '../../domain/Search';
 import storage from '../../domain/storage';
-import getSkeletonTemplateArray, { removeAllSkeletons } from '../Skeleton';
+import { addSkeletonsToContainer, removeAllSkeletons } from '../Skeleton';
 
 class SearchModalView {
+  #modalContainer;
+
+  #searchForm;
+
+  #searchInputKeyword;
+
+  #searchResult;
+
+  #videoList;
+
+  #search;
+
+  #observer;
+
   constructor() {
-    this.modalContainer = selectDom('.modal-container');
-    this.searchForm = selectDom('#search-form', this.modalContainer);
-    this.searchInputKeyword = selectDom('#search-input-keyword', this.searchForm);
-    this.searchResult = selectDom('.search-result', this.modalContainer);
-    this.videoList = selectDom('.video-list', this.searchResult);
+    this.#modalContainer = selectDom('.modal-container');
+    this.#searchForm = selectDom('#search-form', this.#modalContainer);
+    this.#searchInputKeyword = selectDom('#search-input-keyword', this.#searchForm);
+    this.#searchResult = selectDom('.search-result', this.#modalContainer);
+    this.#videoList = selectDom('.video-list', this.#searchResult);
 
-    this.search = new Search();
-    this.sendSaveRequest = storage.saveToStorage;
+    this.#search = new Search();
 
-    this.#attachEventListeners();
+    this.#observer = this.#loadMoreObserver();
+    this.#searchForm.addEventListener('submit', this.#handleSearch);
   }
 
   toggleModal = (renderOnModalClose) => {
-    const { classList: modalClassList } = this.modalContainer;
+    const { classList: modalClassList } = this.#modalContainer;
     if (modalClassList.contains('hide')) {
       modalClassList.remove('hide');
       return;
@@ -29,20 +43,15 @@ class SearchModalView {
     if (renderOnModalClose) renderOnModalClose();
   };
 
-  #attachEventListeners() {
-    this.loadMoreResultObserver = this.#handleScrollToLastItem();
-    this.searchForm.addEventListener('submit', this.#handleSearch);
-  }
-
   #handleSearch = async (event) => {
     event.preventDefault();
-    const { value: keyword } = this.searchInputKeyword;
+    const { value: keyword } = this.#searchInputKeyword;
     if (isBlankValue(keyword)) {
       alert(ERROR_MESSAGES.NO_SEARCH_KEYWORD);
       return;
     }
 
-    const searchResultTitle = selectDom('.search-result-title', this.searchResult);
+    const searchResultTitle = selectDom('.search-result-title', this.#searchResult);
     searchResultTitle.textContent = `'${keyword}' 검색 결과입니다`;
 
     this.#clearPreviousRender();
@@ -50,11 +59,11 @@ class SearchModalView {
     this.#sendSearchRequest(keyword);
   };
 
-  #handleScrollToLastItem() {
+  #loadMoreObserver() {
     return new IntersectionObserver(
       async (entries) => {
         if (entries[0].isIntersecting) {
-          this.loadMoreResultObserver.unobserve(entries[0].target);
+          this.#observer.unobserve(entries[0].target);
           this.#sendSearchRequest();
         }
       },
@@ -64,8 +73,8 @@ class SearchModalView {
 
   async #sendSearchRequest(keyword) {
     try {
-      this.videoList.append(...getSkeletonTemplateArray(MAX_SEARCH_RESULT));
-      const { searchResultArray, hasNextPage } = await this.search.handleSearchRequest(keyword);
+      addSkeletonsToContainer(this.#videoList, MAX_SEARCH_RESULT);
+      const { searchResultArray, hasNextPage } = await this.#search.handleSearchRequest(keyword);
       this.#renderSearchResult({ searchResultArray, keyword, hasNextPage });
     } catch (error) {
       this.#renderError(error.message, keyword);
@@ -74,7 +83,7 @@ class SearchModalView {
 
   #handleVideoSaveClick = (event) => {
     try {
-      this.sendSaveRequest('unwatched', event.target.dataset.videoId);
+      storage.saveToStorage('unwatched', event.target.dataset.videoId);
       event.target.disabled = true;
     } catch (error) {
       alert(error.message);
@@ -82,7 +91,7 @@ class SearchModalView {
   };
 
   #renderSearchResult({ searchResultArray, hasNextPage }) {
-    removeAllSkeletons(this.videoList);
+    removeAllSkeletons(this.#videoList);
 
     const resultElementArray = searchResultArray.map((resultItem) => {
       const videoElement = searchVideoElementTemplate(resultItem);
@@ -92,27 +101,27 @@ class SearchModalView {
       );
       return videoElement;
     });
-    this.videoList.append(...resultElementArray);
-    if (hasNextPage) this.loadMoreResultObserver.observe(this.videoList.lastChild);
+    this.#videoList.append(...resultElementArray);
+    if (hasNextPage) this.#observer.observe(this.#videoList.lastChild);
   }
 
   #renderError(errorMessage) {
-    this.videoList.classList.add('hide');
-    this.searchResult.classList.add('search-result--no-result');
-    this.searchResult.append(errorTemplate(errorMessage));
+    this.#videoList.classList.add('hide');
+    this.#searchResult.classList.add('search-result--no-result');
+    this.#searchResult.append(errorTemplate(errorMessage));
   }
 
   #clearPreviousRender() {
     this.#clearNoResult();
-    scrollToTop(this.videoList);
-    removeElementList([...this.videoList.childNodes]);
+    scrollToTop(this.#videoList);
+    removeElementList([...this.#videoList.childNodes]);
   }
 
   #clearNoResult() {
     const noResult = selectDom('.no-result');
     if (noResult) {
-      this.videoList.classList.remove('hide');
-      this.searchResult.classList.remove('search-result--no-result');
+      this.#videoList.classList.remove('hide');
+      this.#searchResult.classList.remove('search-result--no-result');
       noResult.remove();
     }
   }

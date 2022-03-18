@@ -1,4 +1,5 @@
 /* eslint-disable max-lines-per-function */
+import { ERROR_MESSAGES } from '../../constants/constants';
 import element from '../../util/createElement';
 import videoElementTemplate from '../VideoElement';
 
@@ -43,7 +44,7 @@ export function noSavedVideosTemplate() {
       element({
         tag: 'p',
         className: 'no-saved-videos__description',
-        children: '저장된 영상이 없습니다!',
+        children: ERROR_MESSAGES.NO_SAVED_VIDEOS,
       }),
     ],
   });

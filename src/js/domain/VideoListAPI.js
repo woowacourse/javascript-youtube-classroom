@@ -11,7 +11,7 @@ function generateQueryString(idArray) {
   return query;
 }
 
-export default async function getSearchResult(idArray) {
+export default async function getVideoList(idArray) {
   const queryString = generateQueryString(idArray);
   try {
     const response = await fetch(`${VIDEO_LIST_URL_BASE}${queryString}`);
