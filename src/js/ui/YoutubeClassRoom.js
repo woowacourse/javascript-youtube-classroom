@@ -7,8 +7,7 @@ import { video } from '../domain/video';
 export default class YoutubeClassRoom {
   constructor() {
     this.renderVideoList(false, '.will-watch-video-list');
-    this.addWillWatchVideoButtonEvent();
-    this.addWatchedVideoButtonEvent();
+    this.addNavTabButtonEvent();
     this.addVideoCheckedButtonEvent();
     this.addVideoRemoveButtonEvent();
   }
@@ -18,19 +17,15 @@ export default class YoutubeClassRoom {
     $('.watched-video-list').replaceChildren();
   }
 
-  addWillWatchVideoButtonEvent() {
-    $('#will-watch-video-button').addEventListener('click', e => {
+  addNavTabButtonEvent() {
+    $('.nav__tab').addEventListener('click', e => {
       this.reset();
       e.target.classList.add('highlight');
-      $('#watched-video-button').classList.remove('highlight');
-      this.renderVideoList(false, '.will-watch-video-list');
-    });
-  }
-
-  addWatchedVideoButtonEvent() {
-    $('#watched-video-button').addEventListener('click', e => {
-      this.reset();
-      e.target.classList.add('highlight');
+      if (e.target === $('#will-watch-video-button')) {
+        $('#watched-video-button').classList.remove('highlight');
+        this.renderVideoList(false, '.will-watch-video-list');
+        return;
+      }
       $('#will-watch-video-button').classList.remove('highlight');
       this.renderVideoList(true, '.watched-video-list');
     });

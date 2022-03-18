@@ -8,6 +8,10 @@ const MESSAGE = {
   OTHER_KEYWORD: '다른 키워드로 검색해보세요.',
   SAVE_SUCCESS: '저장되었습니다.',
   SAVE_FAILURE: '저장에 실패하였습니다.',
+  CHECK_SUCCESS: '본 영상에 추가되었습니다.',
+  CHECK_FAILURE: '본 영상 추가에 실패하였습니다.',
+  REMOVE_SUCCESS: '삭제되었습니다.',
+  REMOVE_FAILURE: '삭제에 실패하였습니다.',
 };
 
 const STORAGE_KEY = 'savedVideoList';
