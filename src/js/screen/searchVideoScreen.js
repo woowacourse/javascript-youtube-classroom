@@ -47,6 +47,7 @@ export default class SearchVideoScreen {
   constructor() {
     this.#searchButton.addEventListener('click', this.#handleSearchVideos);
     this.#searchInputKeyword.addEventListener('keypress', this.#handleSearchVideos);
+    this.#searchResult.addEventListener('click', this.#handleSaveVideo);
 
     //초기 화면 렌더링
     this.#noResult.insertAdjacentHTML('beforeend', NO_RESULT_TEMPLATE);
@@ -92,19 +93,20 @@ export default class SearchVideoScreen {
     const skeletonList = $$('.skeleton');
 
     for (let i = 0; i < preprocessedData.length; i += 1) {
-      const element = skeletonList[i];
+      const parentNode = skeletonList[i];
       const { videoId, channelTitle, thumbnails, title, publishTime } = preprocessedData[i];
 
-      element.dataset.videoId = videoId;
-      $('.video-item__thumbnail', element).src = thumbnails;
-      $('.video-item__title', element).textContent = title;
-      $('.video-item__channel-name', element).textContent = channelTitle;
-      $('.video-item__published-date', element).textContent = publishTime;
+      parentNode.dataset.videoId = videoId;
+      $('.video-item__thumbnail', parentNode).src = thumbnails;
+      $('.video-item__title', parentNode).textContent = title;
+      $('.video-item__channel-name', parentNode).textContent = channelTitle;
+      $('.video-item__published-date', parentNode).textContent = publishTime;
 
       if (this.#storageEngine.isSavedVideo(videoId)) {
-        $('.video-item__save-button', element).classList.add('saved');
+        $('.video-item__save-button', parentNode).classList.add('saved');
       }
-      element.classList.remove('skeleton');
+
+      parentNode.classList.remove('skeleton');
     }
   }
 
@@ -163,4 +165,28 @@ export default class SearchVideoScreen {
     this.#noResult.replaceChildren('');
     this.#noResult.insertAdjacentHTML('beforeend', SERVER_ERROR_TEMPLATE);
   }
+
+  #handleSaveVideo = (e) => {
+    if (e.target.classList.contains('video-item__save-button')) {
+      const parentNode = e.target.closest('.video-item');
+
+      const { videoId } = parentNode.dataset;
+      const thumbnails = $('.video-item__thumbnail', parentNode).src;
+      const title = $('.video-item__title', parentNode).textContent;
+      const channelTitle = $('.video-item__channel-name', parentNode).textContent;
+      const publishTime = $('.video-item__published-date', parentNode).textContent;
+
+      const data = {
+        videoId,
+        thumbnails,
+        title,
+        channelTitle,
+        publishTime,
+        isWatched: false,
+      };
+
+      this.#storageEngine.saveVideo(data);
+      e.target.classList.add('saved');
+    }
+  };
 }

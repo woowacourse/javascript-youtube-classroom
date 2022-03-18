@@ -6,15 +6,17 @@ export default class StorageEngine {
   }
 
   isSavedVideo(videoId) {
-    return this.getSavedVideos().includes(videoId);
+    return this.getSavedVideos()
+      .map(({ videoId }) => videoId)
+      .includes(videoId);
   }
 
-  saveVideo(videoId) {
+  saveVideo(data) {
     const savedVideos = this.getSavedVideos();
 
-    if (this.isSavedVideo(videoId) && savedVideos.length >= MAX_SAVED_VIDEOS_LENGTH) return;
+    if (this.isSavedVideo(data.videoId) && savedVideos.length >= MAX_SAVED_VIDEOS_LENGTH) return;
 
-    savedVideos.push(videoId);
+    savedVideos.push(data);
     localStorage.setItem('savedVideos', JSON.stringify(savedVideos));
   }
 }
