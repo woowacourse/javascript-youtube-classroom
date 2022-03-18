@@ -128,7 +128,7 @@ export default class HomePage {
         const { videoId } = e.target.closest('.video-item').dataset;
         this.#storageEngine.removeVideo(videoId);
         this.renderVideoList();
-        MessageBot.dispatchMessage('영상이 정상적으로 삭제되었습니다.');
+        MessageBot.dispatchMessage('remove', '영상이 정상적으로 삭제되었습니다.');
       }
     }
   };

@@ -89,13 +89,24 @@
 }
 
 .message {
-  background: #51cf66;
   border-radius: 20px;
   padding: 10px 14px;
   margin-bottom: 12px;
   font-size: 13px;
   font-weight: bold;
   color: white;
+}
+
+.message.remove {
+  background: #51cf66;
+}
+
+.message.no-result {
+  background: #22b8cf;
+}
+
+.message.store {
+  background: #fcc419;
 }
 
 .long-message-footer {

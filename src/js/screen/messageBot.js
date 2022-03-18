@@ -1,7 +1,7 @@
 import { $ } from '../util/domHelper';
 
-const getMessageTemplate = (message) => `
-  <li class="message">${message}</li>
+const getMessageTemplate = (type, message) => `
+  <li class="message ${type}">${message}</li>
 `;
 
 export default class MessageBot {
@@ -23,9 +23,10 @@ export default class MessageBot {
     this.#longMessage.classList.toggle('hide');
   }
 
-  static dispatchMessage(message) {
+  static dispatchMessage(type, message) {
     const messageList = $('.message-list');
-    messageList.insertAdjacentHTML('beforeend', getMessageTemplate(message));
+
+    messageList.insertAdjacentHTML('beforeend', getMessageTemplate(type, message));
 
     const shortMessageCount = $('#short-message-count');
     shortMessageCount.textContent = Number(shortMessageCount.textContent) + 1;
