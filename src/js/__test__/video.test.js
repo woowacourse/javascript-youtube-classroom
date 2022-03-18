@@ -16,6 +16,7 @@ describe('비디오 모듈 테스트', () => {
       channelTitle: '승리자 빅터',
       publishTime: '12:30',
       thumbnail: '1.jpg',
+      isWatched: true,
     };
     const video = new Video(givenVideoInput);
 
