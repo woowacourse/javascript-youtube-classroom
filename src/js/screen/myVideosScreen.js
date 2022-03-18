@@ -2,6 +2,7 @@ import StorageEngine from '../domain/storageEngine.js';
 
 import { $ } from '../util/domHelper.js';
 import { myVideoTemplate } from '../util/template.js';
+import { DELETE_VIDEO_CONFIRM_MESSAGE } from '../util/constants.js';
 
 export default class MyVideosScreen {
   #myVideoList;
@@ -15,6 +16,7 @@ export default class MyVideosScreen {
     this.#storageEngine = StorageEngine.instance;
 
     this.#myVideoList.addEventListener('click', this.#handleCheckVideoViewed);
+    this.#myVideoList.addEventListener('click', this.#handleDeleteVideo);
     this.#viewedVideosFilterButton.addEventListener('click', this.#renderViewedVideos);
 
     const savedVideos = this.#storageEngine.getSavedVideos();
@@ -51,4 +53,20 @@ export default class MyVideosScreen {
   #clear() {
     this.#myVideoList.replaceChildren();
   }
+
+  #handleDeleteVideo = (e) => {
+    if (
+      e.target.classList.contains('video-item__delete-button') &&
+      confirm(DELETE_VIDEO_CONFIRM_MESSAGE)
+    ) {
+      const video = e.target.closest('.video-item');
+      const { videoId } = video.dataset;
+
+      this.#storageEngine.removeVideo(videoId);
+
+      this.#myVideoList.removeChild(video);
+
+      // console.log(e.target, e.currentTarget, videoId);
+    }
+  };
 }

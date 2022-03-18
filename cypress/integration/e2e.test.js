@@ -1,4 +1,4 @@
-import { VIDEO_COUNT } from '../../src/js/util/constants.js';
+import { DELETE_VIDEO_CONFIRM_MESSAGE, VIDEO_COUNT } from '../../src/js/util/constants.js';
 
 describe('유튜브 검색 및 비디오 저장 정상 작동 테스트', () => {
   before(() => {
@@ -110,10 +110,10 @@ describe('볼 영상 확인/ 본 영상 확인 / 영상 삭제 기능 테스트'
 
       cy.get('.my-video-list')
         .children('.video-item')
-        .find('.video-item__view-cancel-button')
+        .find('.video-item__delete-button')
         .click()
         .then(() => {
-          expect(stub.getCall()).to.be.calledWith('해당 영상을 삭제하시겠습니까?');
+          expect(stub.getCall(0)).to.be.calledWith(DELETE_VIDEO_CONFIRM_MESSAGE);
         });
 
       cy.get('.my-video-list').children().should('have.length', 0);
