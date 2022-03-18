@@ -7,7 +7,7 @@ const DUMMY_YOUTUBE_API_URL = 'https://elastic-goldstine-10f16a.netlify.app/dumm
 const YOUTUBE_API_URL = 'https://elastic-goldstine-10f16a.netlify.app/youtube/v3/search?';
 const WRONG_API_URL = 'https://elastic-goldstine-10f16a.netlify.appppp/search?';
 
-const FETCH_URL = (keyword, nextPageToken) => {
+const generateFetchURL = (keyword, nextPageToken) => {
   const searchParams = new URLSearchParams();
   searchParams.append('part', 'snippet');
   searchParams.append('q', keyword);
@@ -15,7 +15,7 @@ const FETCH_URL = (keyword, nextPageToken) => {
   if (nextPageToken) {
     searchParams.append('pageToken', nextPageToken);
   }
-  return YOUTUBE_API_URL + searchParams.toString();
+  return DUMMY_YOUTUBE_API_URL + searchParams.toString();
 }
 
 export default class SearchVideoManager {
@@ -69,7 +69,7 @@ export default class SearchVideoManager {
   }
 
   fetchYoutubeData() {
-    return fetch(FETCH_URL(this.#keyword, this.#nextPageToken))
+    return fetch(generateFetchURL(this.#keyword, this.#nextPageToken))
       .then((response) => {
         if (!response.ok) {
           throw new Error(response.status);
