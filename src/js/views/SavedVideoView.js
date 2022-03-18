@@ -31,9 +31,22 @@ export default class SavedVideoView {
     return false;
   }
 
+  #setEmptyListDesign(kind, setting) {
+    if (kind === 'playlist') {
+      this.#$playlist.classList[setting]('empty-savedList');
+      return;
+    }
+    this.#$watched.classList[setting]('empty-savedList');
+  }
+
   #makeSavedVideoListTemplate(kind, videos) {
-    return videos
-      .filter((video) => this.#isValidVideo(kind, video.watched))
+    const findSameKindVideos = videos.filter((video) => this.#isValidVideo(kind, video.watched));
+    if (findSameKindVideos.length === 0) {
+      this.#setEmptyListDesign(kind, 'add');
+      return `<li>해당 영상이 없습니다.</li>`;
+    }
+    this.#setEmptyListDesign(kind, 'remove');
+    return findSameKindVideos
       .map(
         (video) =>
           `<li class="video-item">

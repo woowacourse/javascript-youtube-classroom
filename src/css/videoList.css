@@ -22,3 +22,10 @@
 .watched {
   background: rgba(0, 188, 212, 0.12);
 }
+
+.empty-savedList {
+  text-align: center;
+  line-height: 400px;
+  font-size: xx-large;
+  grid-template-columns: repeat(1, 1fr) !important;
+}
