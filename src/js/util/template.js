@@ -1,6 +1,6 @@
 import notFoundImage from '../../assets/images/not_found.jpg';
 
-import { NO_SAVED_VIDEOS_MESSAGE, VIDEO_COUNT } from './constants.js';
+import { VIDEO_COUNT } from './constants.js';
 
 export const myVideoTemplate = ({
   videoId,

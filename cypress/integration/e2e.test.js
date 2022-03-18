@@ -37,18 +37,18 @@ describe('유튜브 검색 및 비디오 저장 정상 작동 테스트', () => 
         .and('not.have.class', 'skeleton');
     });
 
-    // it('결과물의 맨 밑까지 스크롤을 내리면 추가적인 결과물을 확인할 수 있다', () => {
-    //   cy.intercept('GET', 'https://www.googleapis.com/youtube/v3/search?*').as('getNextVideos');
+    it('결과물의 맨 밑까지 스크롤을 내리면 추가적인 결과물을 확인할 수 있다', () => {
+      cy.intercept('GET', 'https://www.googleapis.com/youtube/v3/search?*').as('getNextVideos');
 
-    //   // 스크롤 내리기
-    //   cy.get('.video-list').scrollTo('bottom');
+      // 스크롤 내리기
+      cy.get('.video-list').scrollTo('bottom');
 
-    //   // 무한스크롤에 의한 결과값 보여주기
-    //   cy.wait('@getNextVideos');
-    //   cy.get('.video-list')
-    //     .children('.video-item')
-    //     .should('have.length', VIDEO_COUNT * 2);
-    // });
+      // 무한스크롤에 의한 결과값 보여주기
+      cy.wait('@getNextVideos');
+      cy.get('.video-list')
+        .children('.video-item')
+        .should('have.length', VIDEO_COUNT * 2);
+    });
   });
 
   context('저장 버튼을 클릭하면, 비디오ID를 저장할 수 있다', () => {
@@ -74,8 +74,8 @@ describe('저장한 영상 확인 /볼 영상 확인/ 본 영상 확인 / 영상
     cy.saveLocalStorage();
   });
 
-  context('저장한 영상을 확인하고, 본 영상을 체크하고 확인할 수 있다', () => {
-    it('첫 화면에서 저장한 영상을 확인할 수 있다', () => {
+  context('볼 영상을 확인하고, 본 영상을 체크하고 확인할 수 있다', () => {
+    it('첫 화면에서 볼 영상을 확인할 수 있다', () => {
       cy.reload();
 
       cy.get('.my-video-list').children().should('have.length', 1);
@@ -146,24 +146,24 @@ describe('저장한 영상 확인 /볼 영상 확인/ 본 영상 확인 / 영상
   });
 });
 
-// describe('유튜브 검색 예외 사항 테스트', () => {
-//   before(() => {
-//     cy.visit('../../dist/index.html');
-//     cy.get('#search-modal-button').click();
-//   });
+describe('유튜브 검색 예외 사항 테스트', () => {
+  before(() => {
+    cy.visit('../../dist/index.html');
+    cy.get('#search-modal-button').click();
+  });
 
-//   it('검색 결과가 없는 경우 결과없음 페이지를 확인할 수 있다', () => {
-//     const noResultKeyword = '!@#!@$#$!#@!#';
+  it('검색 결과가 없는 경우 결과없음 페이지를 확인할 수 있다', () => {
+    const noResultKeyword = '!@#!@$#$!#@!#';
 
-//     cy.intercept('GET', `https://www.googleapis.com/youtube/v3/search?*`).as('getNoResult');
+    cy.intercept('GET', `https://www.googleapis.com/youtube/v3/search?*`).as('getNoResult');
 
-//     cy.get('#search-input-keyword').type(noResultKeyword);
-//     cy.get('#search-button').click();
+    cy.get('#search-input-keyword').type(noResultKeyword);
+    cy.get('#search-button').click();
 
-//     cy.wait('@getNoResult');
+    cy.wait('@getNoResult');
 
-//     cy.get('.search-result--no-result').within(() => {
-//       cy.get('img').should('have.attr', 'alt');
-//     });
-//   });
-// });
+    cy.get('.search-result--no-result').within(() => {
+      cy.get('img').should('have.attr', 'alt');
+    });
+  });
+});

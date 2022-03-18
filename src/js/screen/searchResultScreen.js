@@ -1,4 +1,4 @@
-import VideosScreen from './videosScreen.js';
+import SearchedVideosScreen from './searchedVideosScreen.js';
 
 import { $ } from '../util/domHelper.js';
 import { NO_RESULT_TEMPLATE, VIDEO_LIST_TEMPLATE } from '../util/template.js';
@@ -8,32 +8,33 @@ export default class SearchResultScreen {
   #throttle;
   #searchInputKeyword;
   #searchEngine;
-  #videos;
+  #searchedVideosScreen;
   #videoList;
+  #searchResult;
 
   constructor(searchInputKeyword, searchEngine) {
-    this.searchResult = $('.search-result');
+    this.#searchResult = $('.search-result');
     this.#searchInputKeyword = searchInputKeyword;
     this.#searchEngine = searchEngine;
 
-    this.#videos = new VideosScreen(this.searchResult);
+    this.#searchedVideosScreen = new SearchedVideosScreen(this.#searchResult);
   }
 
   init() {
-    this.searchResult.removeChild(this.searchResult.lastElementChild);
-    this.searchResult.classList.remove('search-result--no-result');
-    this.searchResult.insertAdjacentHTML('beforeend', VIDEO_LIST_TEMPLATE);
+    this.#searchResult.removeChild(this.#searchResult.lastElementChild);
+    this.#searchResult.classList.remove('search-result--no-result');
+    this.#searchResult.insertAdjacentHTML('beforeend', VIDEO_LIST_TEMPLATE);
   }
 
-  renderSearchResult(data) {
-    if (data === null) {
-      this.searchResult.removeChild(this.searchResult.lastElementChild);
-      this.searchResult.insertAdjacentHTML('beforeend', NO_RESULT_TEMPLATE);
-      this.searchResult.classList.add('search-result--no-result');
+  renderSearchResult(videosData) {
+    if (videosData === null) {
+      this.#searchResult.removeChild(this.#searchResult.lastElementChild);
+      this.#searchResult.insertAdjacentHTML('beforeend', NO_RESULT_TEMPLATE);
+      this.#searchResult.classList.add('search-result--no-result');
       return;
     }
 
-    this.#videos.allocate(data);
+    this.#searchedVideosScreen.allocate(videosData);
     this.#bindScrollEvent();
   }
 
@@ -51,23 +52,23 @@ export default class SearchResultScreen {
         this.renderSkeleton();
 
         const keyword = this.#searchInputKeyword.value;
-        const data = await this.#searchEngine.searchKeyword(keyword);
+        const videosData = await this.#searchEngine.searchKeyword(keyword);
 
-        this.#renderAdditionalVideos(data);
+        this.#renderAdditionalVideos(videosData);
       }, DELAY_MILISECOND_TIME);
     }
   }
 
-  #renderAdditionalVideos(data) {
-    if (data === null) {
-      this.searchResult.removeChild(this.searchResult.lastElementChild);
+  #renderAdditionalVideos(videosData) {
+    if (videosData === null) {
+      this.#searchResult.removeChild(this.#searchResult.lastElementChild);
       return;
     }
 
-    this.#videos.allocate(data);
+    this.#searchedVideosScreen.allocate(videosData);
   }
 
   renderSkeleton() {
-    this.#videos.renderSkeleton();
+    this.#searchedVideosScreen.renderSkeleton();
   }
 }

@@ -2,20 +2,20 @@ import StorageEngine from '../domain/storageEngine.js';
 
 import { $$, $ } from '../util/domHelper.js';
 import { SKELETON_TEMPLATE } from '../util/template.js';
-import { preprocessDate } from '../util/common.js';
+import { preprocessDate } from '../util/date.js';
 
-export default class VideosScreen {
+export default class SearchedVideosScreen {
   #storageEngine;
 
   constructor(parentElement) {
     this.#storageEngine = StorageEngine.instance;
 
-    parentElement.addEventListener('click', this.#handleSaveVideo.bind(this));
+    parentElement.addEventListener('click', this.#handleSaveVideo);
   }
 
-  #handleSaveVideo(e) {
+  #handleSaveVideo = (e) => {
     if (e.target.classList.contains('video-item__save-button')) {
-      const video = VideosScreen.extractDataForStorage(e);
+      const video = SearchedVideosScreen.extractDataForStorage(e);
 
       try {
         this.#storageEngine.saveVideo(video);
@@ -25,7 +25,7 @@ export default class VideosScreen {
         alert(error.message);
       }
     }
-  }
+  };
 
   renderSkeleton() {
     const videoList = $('.video-list');
@@ -34,7 +34,7 @@ export default class VideosScreen {
 
   allocate(data) {
     const skeletonList = $$('.skeleton');
-    const preprocessedData = VideosScreen.preprocessData(data);
+    const preprocessedData = SearchedVideosScreen.preprocessData(data);
 
     skeletonList.forEach((element, index) => {
       const { videoId, channelTitle, thumbnails, title, publishTime } = preprocessedData[index];

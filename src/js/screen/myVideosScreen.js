@@ -5,13 +5,13 @@ import { myVideoTemplate } from '../util/template.js';
 import { DELETE_VIDEO_CONFIRM_MESSAGE, NO_SAVED_VIDEOS_MESSAGE } from '../util/constants.js';
 
 export default class MyVideosScreen {
+  #nav;
   #myVideoList;
   #storageEngine;
-  #nav;
 
   constructor() {
-    this.#myVideoList = $('.my-video-list');
     this.#nav = $('nav');
+    this.#myVideoList = $('.my-video-list');
 
     this.#storageEngine = StorageEngine.instance;
 
@@ -50,7 +50,10 @@ export default class MyVideosScreen {
       this.#storageEngine.changeVideoViewed(videoId, viewStatus);
 
       this.#myVideoList.removeChild(video);
-      this.#renderNoSavedVideosMessage();
+
+      if (this.#myVideoList.children.length <= 0) {
+        this.#renderNoSavedVideosMessage();
+      }
     }
   };
 
@@ -59,7 +62,7 @@ export default class MyVideosScreen {
       e.target.id === 'videos-to-view-filter-button' ||
       e.target.id === 'viewed-videos-filter-button'
     ) {
-      this.#clear();
+      this.#myVideoList.replaceChildren();
 
       const viewStatus = e.target.id === 'viewed-videos-filter-button' ? true : false;
       const filteredVideos = this.#storageEngine.getFilteredVideos(viewStatus);
@@ -67,10 +70,6 @@ export default class MyVideosScreen {
       this.#render(filteredVideos);
     }
   };
-
-  #clear() {
-    this.#myVideoList.replaceChildren();
-  }
 
   #handleDeleteVideo = (e) => {
     if (
@@ -83,13 +82,14 @@ export default class MyVideosScreen {
       this.#storageEngine.removeVideo(videoId);
 
       this.#myVideoList.removeChild(video);
-      this.#renderNoSavedVideosMessage();
+
+      if (this.#myVideoList.children.length <= 0) {
+        this.#renderNoSavedVideosMessage();
+      }
     }
   };
 
   #renderNoSavedVideosMessage() {
-    if (this.#myVideoList.children.length <= 0) {
-      this.#myVideoList.textContent = NO_SAVED_VIDEOS_MESSAGE;
-    }
+    this.#myVideoList.textContent = NO_SAVED_VIDEOS_MESSAGE;
   }
 }
