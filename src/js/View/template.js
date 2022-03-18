@@ -42,6 +42,6 @@ export const template = {
 };
 
 export const MESSAGE = {
-  NO_RESULT: '검색 결과가 없습니다<br />다른 키워드로 검색해보세요',
+  NO_RESULT: '검색 결과가 없습니다.<br />다른 키워드로 검색해보세요.',
   ERROR_RESULT: '검색 결과를 가져오는데 실패했습니다.<br />관리자에게 문의하세요.',
 };
