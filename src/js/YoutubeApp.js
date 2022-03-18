@@ -2,7 +2,7 @@ import notFountImage from "../assets/images/not_found.png";
 import getSearchResult from "./api/getSearchResult";
 import { DELAY_TIME } from "./constants/constants";
 import generateTemplate from "./templates";
-import videoStorage from "./VideoStorage";
+import videoStorage from "./videoStorage";
 
 import { throttle } from "./utils/utils";
 import {
@@ -48,7 +48,58 @@ export default class YoutubeApp {
     document
       .querySelector(".save-video-container__video-list")
       .addEventListener("click", this.#onClickWatchedButton);
+    document
+      .querySelector(".nav__watched-video-button")
+      .addEventListener("click", this.#onClickWatchedVideoButton);
+    document
+      .querySelector(".nav__save-video-button")
+      .addEventListener("click", this.#onClickSaveVideoButton);
   }
+
+  #onClickWatchedVideoButton = ({ target }) => {
+    target.classList.add("nav__watched-video-button--focused");
+    document
+      .querySelector(".nav__save-video-button")
+      .classList.remove("nav__save-video-button--focused");
+
+    this.#renderCheckedVideo();
+  };
+
+  #renderCheckedVideo() {
+    const storage = videoStorage.getVideo();
+    const checkedData = storage.filter((data) => data.checked);
+
+    if (!checkedData.length) {
+      document
+        .querySelector(".save-video-container__no-video-list")
+        .classList.remove("hide");
+
+      document
+        .querySelector(".save-video-container__video-list")
+        .classList.add("hide");
+
+      return;
+    }
+
+    document
+      .querySelector(".save-video-container__video-list")
+      .classList.remove("hide");
+
+    document
+      .querySelector(".save-video-container__no-video-list")
+      .classList.add("hide");
+
+    document.querySelector(".save-video-container__video-list").innerHTML =
+      checkedData.map((data) => generateTemplate.saveVideoItem(data)).join("");
+  }
+
+  #onClickSaveVideoButton = ({ target }) => {
+    target.classList.add("nav__save-video-button--focused");
+    document
+      .querySelector(".nav__watched-video-button")
+      .classList.remove("nav__watched-video-button--focused");
+    this.#renderSavedVideo();
+  };
 
   #onClickWatchedButton = ({ target }) => {
     if (!target.matches(".video-item__watched-video-button")) return;
@@ -60,6 +111,16 @@ export default class YoutubeApp {
     ) {
       target.classList.remove("video-item__watched-video-button--focused");
       videoStorage.removeChecked(getTargetData(targetParentElement));
+
+      if (
+        document
+          .querySelector(".nav__watched-video-button")
+          .classList.contains("nav__watched-video-button--focused")
+      ) {
+        videoStorage.renderCheckedVideo(
+          document.querySelector(".save-video-container__video-list")
+        );
+      }
 
       return;
     }
