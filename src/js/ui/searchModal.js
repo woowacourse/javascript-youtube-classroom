@@ -1,5 +1,6 @@
 import throttle from '../util/throttle.js';
 import EventFactory from '../event/EventFactory.js';
+import { EVENT_TYPE } from '../constant/index.js';
 
 class SearchModal {
   constructor() {
@@ -39,7 +40,7 @@ class SearchModal {
       event.type === 'click'
     ) {
       try {
-        EventFactory.generate('SEARCH_VIDEO', {
+        EventFactory.generate(EVENT_TYPE.SEARCH_VIDEO, {
           keyword: this.$searchInputKeyword.value,
           errored: this.errored,
           initial: true,
@@ -55,7 +56,7 @@ class SearchModal {
       return;
     }
     try {
-      EventFactory.generate('SAVE_VIDEO', { target: target.dataset });
+      EventFactory.generate(EVENT_TYPE.SAVE_VIDEO, { target: target.dataset });
       target.classList.add('hide');
     } catch (err) {
       alert(err.message);
@@ -66,7 +67,7 @@ class SearchModal {
     const { offsetHeight, scrollHeight, scrollTop } = this.$videoListContainer;
     if (scrollTop === 0 || this.errored.isExisted) return;
     if (offsetHeight + scrollTop >= scrollHeight) {
-      EventFactory.generate('SEARCH_VIDEO', {
+      EventFactory.generate(EVENT_TYPE.SEARCH_VIDEO, {
         errored: this.errored,
         initial: false,
       });

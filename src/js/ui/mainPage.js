@@ -1,3 +1,4 @@
+import { EVENT_TYPE } from '../constant/index.js';
 import EventFactory from '../event/EventFactory.js';
 import SearchModalPresenter from '../presenter/SearchModalPresenter.js';
 
@@ -13,7 +14,7 @@ class MainPage {
 
   init() {
     this.bindEvent();
-    EventFactory.generate('INIT_VIDEO');
+    EventFactory.generate(EVENT_TYPE.LOAD_INITIAL_VIDEO);
   }
 
   bindEvent() {
@@ -37,14 +38,14 @@ class MainPage {
   changeTab({ target: { id } }) {
     if (this.menuState === id) return;
     this.menuState = id;
-    EventFactory.generate('CHANGE_TAB', { id });
+    EventFactory.generate(EVENT_TYPE.CHANGE_TAB, { id });
   }
 
   handleVideo({ target }) {
     if (target.nodeName !== 'BUTTON') return;
     const id = target.closest('li').dataset.videoId;
     if (target.classList.contains('video-watched--btn')) {
-      EventFactory.generate('CHANGE_VIDEO_STATUS', { target, id });
+      EventFactory.generate(EVENT_TYPE.CHANGE_VIDEO_STATUS, { target, id });
     }
     if (target.classList.contains('video-delete--btn')) {
       this.deleteVideo(target, id);
@@ -53,7 +54,7 @@ class MainPage {
 
   deleteVideo(target, id) {
     if (window.confirm('정말 삭제하시겠습니까?')) {
-      EventFactory.generate('DELETE_VIDEO', { target, id });
+      EventFactory.generate(EVENT_TYPE.DELETE_VIDEO, { target, id });
     }
   }
 }

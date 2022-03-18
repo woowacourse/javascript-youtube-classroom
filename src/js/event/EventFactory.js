@@ -1,3 +1,4 @@
+import { EVENT_TYPE } from '../constant';
 import { ChangeTab } from './ChangeTab';
 import ChangeVideoStatus from './ChangeVideoStatus';
 import DeleteVideo from './DeleteVideo';
@@ -8,22 +9,22 @@ import SearchVideoEvent from './SearchVideoEvent';
 export default class EventFactory {
   static generate(name, data) {
     switch (name) {
-      case 'SEARCH_VIDEO':
+      case EVENT_TYPE.SEARCH_VIDEO:
         new SearchVideoEvent(data).action();
         break;
-      case 'SAVE_VIDEO':
+      case EVENT_TYPE.SAVE_VIDEO:
         new SaveVideoEvent(data).action();
         break;
-      case 'INIT_VIDEO':
+      case EVENT_TYPE.LOAD_INITIAL_VIDEO:
         new LoadInitialVideoList().action();
         break;
-      case 'CHANGE_VIDEO_STATUS':
+      case EVENT_TYPE.CHANGE_VIDEO_STATUS:
         new ChangeVideoStatus(data).action();
         break;
-      case 'CHANGE_TAB':
+      case EVENT_TYPE.CHANGE_TAB:
         new ChangeTab(data).action();
         break;
-      case 'DELETE_VIDEO':
+      case EVENT_TYPE.DELETE_VIDEO:
         new DeleteVideo(data).action();
         break;
       default:

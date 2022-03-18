@@ -23,3 +23,12 @@ export const ERROR_MESSAGE = {
 
   NO_ID: '아이디가 존재하지 않습니다',
 };
+
+export const EVENT_TYPE = {
+  CHANGE_TAB: 'change-tab',
+  CHANGE_VIDEO_STATUS: 'change-video-status',
+  DELETE_VIDEO: 'delete-video',
+  LOAD_INITIAL_VIDEO: 'load-initial-video',
+  SAVE_VIDEO: 'save-video',
+  SEARCH_VIDEO: 'search-video',
+};
