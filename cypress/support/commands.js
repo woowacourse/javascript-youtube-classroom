@@ -33,5 +33,5 @@ Cypress.Commands.add('saveVideo', () => {
   cy.wait('@getSearchResult');
   cy.get('.video-item__save-button').first().click();
   cy.get('.dimmer').click({ force: true });
-  cy.wait('@getVideo');
+  // cy.wait('@getVideo');
 });

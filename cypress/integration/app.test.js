@@ -16,7 +16,7 @@ describe('핵심 기능 플로우 테스트', () => {
         method: 'GET',
         url: '**/youtube/v3/video?*',
       },
-      { fixture: './dummy' }
+      { fixture: './singleDummy' }
     ).as('getVideo');
 
     cy.on('window:confirm', () => true);
@@ -38,7 +38,7 @@ describe('핵심 기능 플로우 테스트', () => {
     cy.get('.video-item__watched-button').first().click();
 
     cy.get('#watched-list-button').click();
-    cy.wait('@getVideo');
+    // cy.wait('@getVideo');
 
     // then
     cy.get('.video-list').children().should('exist');

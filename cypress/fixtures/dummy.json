@@ -1,0 +1,361 @@
+{
+ "kind": "youtube#searchListResponse",
+ "etag": "9ysKSMUNGqqgykOhmzeunQ-wN-4",
+ "nextPageToken": "CCgQAA",
+ "prevPageToken": "CB4QAQ",
+ "regionCode": "KR",
+ "pageInfo": {
+  "totalResults": 1000000,
+  "resultsPerPage": 10
+ },
+ "items": [
+  {
+   "kind": "youtube#searchResult",
+   "etag": "Jk2hgByz9OJwjlSkFfmX5EkB1Zg",
+   "id": {
+    "kind": "youtube#video",
+    "videoId": "_X7AP6piRmU"
+   },
+   "snippet": {
+    "publishedAt": "2022-03-15T08:00:10Z",
+    "channelId": "UCr0adenI5KeQFJkMIGjq5qw",
+    "title": "아이유 닮은 첫사랑 VS 불도저 같은 직진녀, 당신의 선택은? [연애의 참견3] | KBS Joy 220301 방송",
+    "description": "아이유를 닮은 첫사랑과 불도저 같은 호감녀 사이에서 갈팡질팡 중인 고민남, 저 어떡하죠?ㅠㅠ 로맨스 파괴 토크쇼 #연애의참견3 ...",
+    "thumbnails": {
+     "default": {
+      "url": "https://i.ytimg.com/vi/_X7AP6piRmU/default.jpg",
+      "width": 120,
+      "height": 90
+     },
+     "medium": {
+      "url": "https://i.ytimg.com/vi/_X7AP6piRmU/mqdefault.jpg",
+      "width": 320,
+      "height": 180
+     },
+     "high": {
+      "url": "https://i.ytimg.com/vi/_X7AP6piRmU/hqdefault.jpg",
+      "width": 480,
+      "height": 360
+     }
+    },
+    "channelTitle": "KBS N",
+    "liveBroadcastContent": "none",
+    "publishTime": "2022-03-15T08:00:10Z"
+   }
+  },
+  {
+   "kind": "youtube#searchResult",
+   "etag": "f0etBvAoa-4aUkucav7cGRitm3U",
+   "id": {
+    "kind": "youtube#video",
+    "videoId": "cB1dGK8DCtw"
+   },
+   "snippet": {
+    "publishedAt": "2022-01-27T09:00:30Z",
+    "channelId": "UCweOkPb1wVVH0Q0Tlj4a5Pw",
+    "title": "[MV] IU(아이유),Kang Seungwon(강승원) _ Mother Nature (H₂O)",
+    "description": "[MV] IU(아이유),Kang Seungwon(강승원) _ Mother Nature (H₂O) K-POP Wonderland, 1theK K-POP의 모든 즐거움을 1theK(원더 ...",
+    "thumbnails": {
+     "default": {
+      "url": "https://i.ytimg.com/vi/cB1dGK8DCtw/default.jpg",
+      "width": 120,
+      "height": 90
+     },
+     "medium": {
+      "url": "https://i.ytimg.com/vi/cB1dGK8DCtw/mqdefault.jpg",
+      "width": 320,
+      "height": 180
+     },
+     "high": {
+      "url": "https://i.ytimg.com/vi/cB1dGK8DCtw/hqdefault.jpg",
+      "width": 480,
+      "height": 360
+     }
+    },
+    "channelTitle": "1theK (원더케이)",
+    "liveBroadcastContent": "none",
+    "publishTime": "2022-01-27T09:00:30Z"
+   }
+  },
+  {
+   "kind": "youtube#searchResult",
+   "etag": "AIdvVw-w2iQWRX2BvbqX7SlcCSg",
+   "id": {
+    "kind": "youtube#video",
+    "videoId": "FHUCoWp_CG8"
+   },
+   "snippet": {
+    "publishedAt": "2022-02-09T07:23:22Z",
+    "channelId": "UCuV63Rz4mE4YAagcIIxvbWw",
+    "title": "&quot;넷플릭스&quot;에서 지금 당장 봐야할 아이유 레전드 드라마",
+    "description": "여러분의 3시간을 순삭해 드리겠습니다~ 고려홍삼원 식물성 저분자 콜라겐 https://url.kr/ustwmd 비즈니스 문의: ...",
+    "thumbnails": {
+     "default": {
+      "url": "https://i.ytimg.com/vi/FHUCoWp_CG8/default.jpg",
+      "width": 120,
+      "height": 90
+     },
+     "medium": {
+      "url": "https://i.ytimg.com/vi/FHUCoWp_CG8/mqdefault.jpg",
+      "width": 320,
+      "height": 180
+     },
+     "high": {
+      "url": "https://i.ytimg.com/vi/FHUCoWp_CG8/hqdefault.jpg",
+      "width": 480,
+      "height": 360
+     }
+    },
+    "channelTitle": "목소리이쁜언니",
+    "liveBroadcastContent": "none",
+    "publishTime": "2022-02-09T07:23:22Z"
+   }
+  },
+  {
+   "kind": "youtube#searchResult",
+   "etag": "2-5U46WkF5l8KY6czr3G5rEJjKY",
+   "id": {
+    "kind": "youtube#video",
+    "videoId": "5jUFxcKP4lU"
+   },
+   "snippet": {
+    "publishedAt": "2021-12-04T14:32:33Z",
+    "channelId": "UCQfl3nNxtVPg8dg9sp-IrYA",
+    "title": "[MMA  2021_멜론뮤직어워드 2021] 아이유 (IU) - strawberry moon (첫 공식 무대)",
+    "description": "MMA 2021 #멜론뮤직어워드 #아이유 #IU #strawberrymoon #스트로베리문 아이유 (IU) - strawberry moon 첫 공식 무대.",
+    "thumbnails": {
+     "default": {
+      "url": "https://i.ytimg.com/vi/5jUFxcKP4lU/default.jpg",
+      "width": 120,
+      "height": 90
+     },
+     "medium": {
+      "url": "https://i.ytimg.com/vi/5jUFxcKP4lU/mqdefault.jpg",
+      "width": 320,
+      "height": 180
+     },
+     "high": {
+      "url": "https://i.ytimg.com/vi/5jUFxcKP4lU/hqdefault.jpg",
+      "width": 480,
+      "height": 360
+     }
+    },
+    "channelTitle": "요한",
+    "liveBroadcastContent": "none",
+    "publishTime": "2021-12-04T14:32:33Z"
+   }
+  },
+  {
+   "kind": "youtube#searchResult",
+   "etag": "X8dEOtjbLdY3AWYC1TyUYU29cDE",
+   "id": {
+    "kind": "youtube#video",
+    "videoId": "n8iOhuv05As"
+   },
+   "snippet": {
+    "publishedAt": "2021-12-29T09:34:46Z",
+    "channelId": "UCaZhnsQ36GIYYQ1sbxKeMDg",
+    "title": "아이유 - 겨울잠 / 가사",
+    "description": "'아이유(IU)' [조각집] 구태여 바깥에 내놓지 않았던 내 이십대의 그 사이사이 조각들 겨울잠 한 생명이 세상을 떠나가는 일과, 그런 ...",
+    "thumbnails": {
+     "default": {
+      "url": "https://i.ytimg.com/vi/n8iOhuv05As/default.jpg",
+      "width": 120,
+      "height": 90
+     },
+     "medium": {
+      "url": "https://i.ytimg.com/vi/n8iOhuv05As/mqdefault.jpg",
+      "width": 320,
+      "height": 180
+     },
+     "high": {
+      "url": "https://i.ytimg.com/vi/n8iOhuv05As/hqdefault.jpg",
+      "width": 480,
+      "height": 360
+     }
+    },
+    "channelTitle": "Music is my life",
+    "liveBroadcastContent": "none",
+    "publishTime": "2021-12-29T09:34:46Z"
+   }
+  },
+  {
+   "kind": "youtube#searchResult",
+   "etag": "hbyTRQdFs9ghBkhSuag31IByglU",
+   "id": {
+    "kind": "youtube#video",
+    "videoId": "tqB7Hr6mkDE"
+   },
+   "snippet": {
+    "publishedAt": "2022-03-11T09:22:58Z",
+    "channelId": "UCgIai7mkm7du--sVQ2Vtrqg",
+    "title": "아이유 박재범..내가 보고있는게 맞아?",
+    "description": "",
+    "thumbnails": {
+     "default": {
+      "url": "https://i.ytimg.com/vi/tqB7Hr6mkDE/default.jpg",
+      "width": 120,
+      "height": 90
+     },
+     "medium": {
+      "url": "https://i.ytimg.com/vi/tqB7Hr6mkDE/mqdefault.jpg",
+      "width": 320,
+      "height": 180
+     },
+     "high": {
+      "url": "https://i.ytimg.com/vi/tqB7Hr6mkDE/hqdefault.jpg",
+      "width": 480,
+      "height": 360
+     }
+    },
+    "channelTitle": "아이유를모아모아",
+    "liveBroadcastContent": "none",
+    "publishTime": "2022-03-11T09:22:58Z"
+   }
+  },
+  {
+   "kind": "youtube#searchResult",
+   "etag": "LRMSml6_8KiDKOuZ54sVBM3-VU4",
+   "id": {
+    "kind": "youtube#video",
+    "videoId": "kXPz_Xn4s2k"
+   },
+   "snippet": {
+    "publishedAt": "2022-03-16T16:52:24Z",
+    "channelId": "UCEEGx5rpyzmcukyZmqr-MnA",
+    "title": "💙박재범 (Jay Park) - Yacht  아이유 버전(IU Version)💙 [가사/Lyrics]",
+    "description": "아이유 #박재범 #Yacht 아이유의 팔레트에서 아이유님이 부른 박재범 - Yacht을 가사영상으로 편집했습니다.",
+    "thumbnails": {
+     "default": {
+      "url": "https://i.ytimg.com/vi/kXPz_Xn4s2k/default.jpg",
+      "width": 120,
+      "height": 90
+     },
+     "medium": {
+      "url": "https://i.ytimg.com/vi/kXPz_Xn4s2k/mqdefault.jpg",
+      "width": 320,
+      "height": 180
+     },
+     "high": {
+      "url": "https://i.ytimg.com/vi/kXPz_Xn4s2k/hqdefault.jpg",
+      "width": 480,
+      "height": 360
+     }
+    },
+    "channelTitle": "알앤비박사장",
+    "liveBroadcastContent": "none",
+    "publishTime": "2022-03-16T16:52:24Z"
+   }
+  },
+  {
+   "kind": "youtube#searchResult",
+   "etag": "8NTPD3pgswPjsRjR9qRl4tqeLpA",
+   "id": {
+    "kind": "youtube#video",
+    "videoId": "7iaBcHfjzZQ"
+   },
+   "snippet": {
+    "publishedAt": "2022-03-16T16:47:31Z",
+    "channelId": "UC-vHoV6-kNCG4TNMVxXjioQ",
+    "title": "아이유 - yacht 1시간 반복 (아이유의 팔레트 live ver.)",
+    "description": "박재범 #아이유 #yacht.",
+    "thumbnails": {
+     "default": {
+      "url": "https://i.ytimg.com/vi/7iaBcHfjzZQ/default.jpg",
+      "width": 120,
+      "height": 90
+     },
+     "medium": {
+      "url": "https://i.ytimg.com/vi/7iaBcHfjzZQ/mqdefault.jpg",
+      "width": 320,
+      "height": 180
+     },
+     "high": {
+      "url": "https://i.ytimg.com/vi/7iaBcHfjzZQ/hqdefault.jpg",
+      "width": 480,
+      "height": 360
+     }
+    },
+    "channelTitle": "잉뿌삐제",
+    "liveBroadcastContent": "none",
+    "publishTime": "2022-03-16T16:47:31Z"
+   }
+  },
+  {
+   "kind": "youtube#searchResult",
+   "etag": "dwcLw5bcqHUNtf0ruWjMmU72_6o",
+   "id": {
+    "kind": "youtube#video",
+    "videoId": "TyOwx0Okc1A"
+   },
+   "snippet": {
+    "publishedAt": "2021-12-22T09:00:16Z",
+    "channelId": "UC3SyT4_WLHzN7JmHQwKQZww",
+    "title": "[IU TV] 한 겨울의 라일락",
+    "description": "[IU TV] 한 겨울의 라일락 [IU TV] LILAC in the winter #IU #아이유 #dlwlrma.",
+    "thumbnails": {
+     "default": {
+      "url": "https://i.ytimg.com/vi/TyOwx0Okc1A/default.jpg",
+      "width": 120,
+      "height": 90
+     },
+     "medium": {
+      "url": "https://i.ytimg.com/vi/TyOwx0Okc1A/mqdefault.jpg",
+      "width": 320,
+      "height": 180
+     },
+     "high": {
+      "url": "https://i.ytimg.com/vi/TyOwx0Okc1A/hqdefault.jpg",
+      "width": 480,
+      "height": 360
+     }
+    },
+    "channelTitle": "이지금 [IU Official]",
+    "liveBroadcastContent": "none",
+    "publishTime": "2021-12-22T09:00:16Z"
+   }
+  },
+  {
+   "kind": "youtube#searchResult",
+   "etag": "P7D5Wnn-e9JuV2IJEI3nSLk4-rQ",
+   "id": {
+    "kind": "youtube#video",
+    "videoId": "Sg3p8ck80rs"
+   },
+   "snippet": {
+    "publishedAt": "2022-03-12T17:26:53Z",
+    "channelId": "UCPAz3hWHiBC-c1x4K0-atsg",
+    "title": "박재범 (Jay Park) - ‘GANADARA (Feat. 아이유 IU)’ Official MV| Waleska &amp; Efra Reaction/Review",
+    "description": "Sup people! Here's what we think of@JAY PARK with @이지금 [IU Official] on his latest release \"GANADARA\" Catch our latest ...",
+    "thumbnails": {
+     "default": {
+      "url": "https://i.ytimg.com/vi/Sg3p8ck80rs/default.jpg",
+      "width": 120,
+      "height": 90
+     },
+     "medium": {
+      "url": "https://i.ytimg.com/vi/Sg3p8ck80rs/mqdefault.jpg",
+      "width": 320,
+      "height": 180
+     },
+     "high": {
+      "url": "https://i.ytimg.com/vi/Sg3p8ck80rs/hqdefault.jpg",
+      "width": 480,
+      "height": 360
+     }
+    },
+    "channelTitle": "Waleska Herrera",
+    "liveBroadcastContent": "none",
+    "publishTime": "2022-03-12T17:26:53Z"
+   }
+  }
+ ],
+ "parameters": {
+  "maxResults": "10",
+  "pageToken": "CB4QAA",
+  "part": "snippet",
+  "q": "아이유",
+  "regionCode": "KR",
+  "type": "video"
+ }
+}

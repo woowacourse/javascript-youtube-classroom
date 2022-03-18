@@ -1,5 +1,5 @@
 import { selectDom } from '../util/util';
-import SavedVideosView from './SavedVideosView';
+import SavedVideosView from './SavedVideosView/SavedVideosView';
 import SearchModalView from './SearchModal/SearchModalView';
 
 class View {

@@ -1,7 +1,8 @@
-import storage from '../domain/storage';
-import getSearchResult from '../domain/VideoListAPI';
-import { formatDateString, selectDom } from '../util/util';
-import getSkeletonTemplateArray, { removeAllSkeletons } from './Skeleton';
+import storage from '../../domain/storage';
+import getSearchResult from '../../domain/VideoListAPI';
+import { removeElementList, selectDom } from '../../util/util';
+import getSkeletonTemplateArray, { removeAllSkeletons } from '../Skeleton';
+import { noSavedVideosTemplate, savedVideoElementTemplate } from './SavedVideosTemplate';
 
 class SavedVideosView {
   constructor() {
@@ -64,16 +65,18 @@ class SavedVideosView {
 
   #removeDeletedVideos(videos) {
     const videosIdArray = videos || storage.getFromStorage(this.currentTabName);
-
     const deletedVideoIdArray = this.renderedVideoIdArray.filter(
       (id) => !videosIdArray.includes(id)
     );
-
     const toDeleteArray = [...this.videoList.childNodes].filter((child) =>
       deletedVideoIdArray.includes(child.dataset.videoId)
     );
-
     toDeleteArray.forEach((element) => element.remove());
+
+    this.renderedVideoIdArray = this.renderedVideoIdArray.filter(
+      (id) => !deletedVideoIdArray.includes(id)
+    );
+    if (this.renderedVideoIdArray.length === 0) this.#renderNoSavedVideoTemplate();
   }
 
   #addLoadMoreVideoObserver() {
@@ -93,28 +96,16 @@ class SavedVideosView {
 
   #createVideoElements(videoObjectArray) {
     return videoObjectArray.map((object) => {
-      const element = document.createElement('li');
-      element.className = 'video-item';
-      element.dataset.videoId = object.videoId;
-      element.innerHTML = this.#videoElementTemplate(object);
+      const element = savedVideoElementTemplate(object, this.currentTabName);
       element.addEventListener('click', this.#handleVideoItemButtons);
       return element;
     });
   }
 
   #renderNoSavedVideoTemplate() {
-    this.videoList.innerHTML = '';
+    removeElementList(this.videoList.childNodes);
     if (!selectDom('.no-saved-videos')) {
-      this.savedVideos.insertAdjacentHTML(
-        'beforeend',
-        `<div class="no-saved-videos">
-        <p class="no-saved-videos__emoji">(⊙_⊙;))</p>
-        <p class="no-saved-videos__description">
-          저장된 영상이 없습니다! <br />
-          우측 상단의 검색 버튼을 통해 영상을 검색한 뒤 저장해보세요!
-        </p>
-      </div>`
-      );
+      this.savedVideos.append(noSavedVideosTemplate());
     }
   }
 
@@ -140,21 +131,6 @@ class SavedVideosView {
       this.#removeDeletedVideos();
     }
   }
-
-  #videoElementTemplate = ({ videoId, thumbnail, title, channelTitle, publishedAt }) => `
-  <img src="${thumbnail}" alt="video-item-thumbnail" class="video-item__thumbnail" />
-  <h4 class="video-item__title">${title}</h4>
-  <p class="video-item__channel-name">${channelTitle}</p>
-  <p class="video-item__published-date">${formatDateString(publishedAt)}</p>
-  <div class="video-item__button-wrapper">
-    <button type="button" class="video-item__watched-button button 
-    ${this.currentTabName === 'watched' && 'checked'}" data-video-id="${videoId}">
-      ✅
-    </button>
-    <button type="button" class="video-item__unsave-button button" data-video-id="${videoId}">
-      🗑
-    </button>
-  </div>`;
 }
 
 export default SavedVideosView;
