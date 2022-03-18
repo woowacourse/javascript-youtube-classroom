@@ -21,7 +21,7 @@ export default class SaveVideoManager {
   }
 
   saveVideo(e) {
-    const { video, target } = e.detail
+    const { video } = e.detail
     if ( !video ) return;
     try {
       Storage.saveVideo({ ...video, watched: false })
@@ -30,7 +30,6 @@ export default class SaveVideoManager {
       return;
     }
     this.updateSavedVideos();
-    event.dispatch('saveVideoReturn', { target });
   }
 
   changeWatchedInfo(e) {

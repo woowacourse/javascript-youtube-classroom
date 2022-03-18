@@ -13,7 +13,6 @@ export default class SearchResultView {
     this.$searchResultVideoList.addEventListener('scroll', debounce(this.onScrollVideoList.bind(this), 500));
     this.$searchResultVideoList.addEventListener('click', this.onClickVideoSaveButton.bind(this));
 
-    event.addListener('saveVideoReturn', this.updateOnSaveVideoSuccess.bind(this));
     event.addListener('updateSearchState', this.updateOnSearchState.bind(this));
   }
 
@@ -23,10 +22,11 @@ export default class SearchResultView {
     event.dispatch('searchOnScroll');
   }
 
-  onClickVideoSaveButton({ target }) {
-    if (target.tagName === 'BUTTON') {
-      const video = target.parentNode.dataset;
-      event.dispatch('saveVideo', { video, target });
+  onClickVideoSaveButton(e) {
+    if (e.target.id === 'save-button') {
+      const video = e.target.parentNode.dataset;
+      event.dispatch('saveVideo', { video });
+      e.target.remove();
     }
   }
 
@@ -59,11 +59,6 @@ export default class SearchResultView {
     const listItems = videos.map((video) => template.searchResultListItem(video)).join('');
     this.$firstSkeletonListItem.insertAdjacentHTML('beforebegin', listItems);
     this.changeSkeletonListItemVisibility();
-  }
-
-  updateOnSaveVideoSuccess(e) {
-    const { target: saveButton } = e.detail
-    saveButton.remove();
   }
 
   changeSkeletonListItemVisibility() {

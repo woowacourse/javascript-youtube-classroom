@@ -22,7 +22,7 @@ export const template = {
       <h4 class="video-item__title">${title}</h4>
       <p class="video-item__channel-name">${channelName}</p>
       <p class="video-item__published-date">${dateTemplate(publishedDate)}</p>
-      ${saved ? '' : '<button class="video-item__save-button button">⬇ 저장</button>'}
+      ${saved ? '' : '<button id="save-button" class="video-item__save-button button">⬇ 저장</button>'}
       </li>
     `,
   savedVideoListItem: ({ id, thumbnail, title, channelName, publishedDate, watched }) =>
