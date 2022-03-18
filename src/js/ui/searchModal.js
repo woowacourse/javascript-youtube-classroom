@@ -3,7 +3,6 @@ import EventFactory from '../event/EventFactory.js';
 
 class SearchModal {
   constructor() {
-    console.log('object');
     this.$searchInputKeyword = document.querySelector('#search-input-keyword');
     this.$searchButton = document.querySelector('#search-button');
     this.$videoListContainer = document.querySelector('.video-list');

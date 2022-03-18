@@ -25,6 +25,14 @@ class VideoStore {
   appendVideo(data) {
     this.videoStorage.appendVideo(data);
   }
+
+  async initVideoList() {
+    return await this.videoStorage.initVideoList();
+  }
+
+  get notWachedVideoList() {
+    return this.videoStorage.notWachedVideoList;
+  }
 }
 
 export const globalStore = new VideoStore();

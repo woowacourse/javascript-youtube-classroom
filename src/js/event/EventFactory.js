@@ -1,3 +1,4 @@
+import LoadInitialVideoList from './LoadInitialVideoList';
 import SaveVideoEvent from './SaveVideoEvent';
 import SearchVideoEvent from './SearchVideoEvent';
 
@@ -9,6 +10,9 @@ export default class EventFactory {
         break;
       case 'SAVE_VIDEO':
         new SaveVideoEvent(data).action();
+        break;
+      case 'INIT_VIDEO':
+        new LoadInitialVideoList().action();
         break;
     }
   }

@@ -3,9 +3,9 @@ import {
   toggleWatchedToStorage,
 } from '../domain/localStorage.js';
 import { VideoStorage } from '../domain/VideoStorage.js';
+import EventFactory from '../event/EventFactory.js';
 import MainPagePresenter from '../presenter/MainPagePresenter.js';
 import SearchModalPresenter from '../presenter/SearchModalPresenter.js';
-import template from './templates.js';
 
 class MainPage {
   constructor() {
@@ -21,9 +21,7 @@ class MainPage {
 
   init() {
     this.bindEvent();
-    this.videoStorage // data
-      .initVideoList()
-      .then((data) => this.initStorageView(data));
+    EventFactory.generate('INIT_VIDEO');
   }
 
   bindEvent() {
@@ -42,20 +40,6 @@ class MainPage {
       'click',
       this.handleVideo.bind(this),
     ); //  event
-  }
-
-  initStorageView() {
-    this.mainPagePresenter.renderVideoList(
-      this.videoStorage.notWachedVideoList,
-    ); // render + data
-  }
-
-  appendList(item) {
-    this.mainPagePresenter.removeNoVideoImg(); // render
-    this.$videoListContainer.insertAdjacentHTML(
-      'beforeend',
-      template.storageVideoItem(item),
-    );
   }
 
   changeTab({ target: { id } }) {
