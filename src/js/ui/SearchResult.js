@@ -65,6 +65,6 @@ export default class SearchResult {
   }
 
   resetVideoList() {
-    $('.video-list').replaceChildren();
+    $('.search-result').replaceChildren();
   }
 }
