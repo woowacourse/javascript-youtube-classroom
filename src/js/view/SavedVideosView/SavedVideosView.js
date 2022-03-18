@@ -34,10 +34,7 @@ class SavedVideosView {
     this.#videoList = selectDom('.video-list', this.#savedVideos);
     this.#currentTabName = 'unwatched';
     this.#otherTabName = 'watched';
-    this.#unrenderedVideoIdArray = getFilteredIdFromStorage(
-      'watched',
-      this.#currentTabName === 'watched'
-    );
+    this.#unrenderedVideoIdArray = this.#getCurrentTabIds();
     this.#renderedVideoIdArray = [];
     this.#endOfList = selectDom('.end-of-list');
     this.#observer = this.#loadMoreObserver();
@@ -49,7 +46,7 @@ class SavedVideosView {
     if (tabName === this.#currentTabName) return;
 
     [this.#currentTabName, this.#otherTabName] = [this.#otherTabName, this.#currentTabName];
-    this.#clearAllVideos();
+    this.#removeAllVideos();
 
     await this.renderVideoList();
     this.#observer.observe(this.#endOfList);
@@ -71,20 +68,23 @@ class SavedVideosView {
   };
 
   renderOnModalClose = async () => {
-    this.#unrenderedVideoIdArray = getFilteredIdFromStorage(
-      'watched',
-      this.#currentTabName === 'watched'
-    );
+    this.#unrenderedVideoIdArray = this.#getCurrentTabIds();
     this.renderVideoList();
   };
 
-  #clearAllVideos() {
-    removeElementList([...this.#videoList.childNodes]);
-    this.#unrenderedVideoIdArray = getFilteredIdFromStorage(
-      'watched',
-      this.#currentTabName === 'watched'
+  #loadMoreObserver() {
+    return new IntersectionObserver(
+      async (entries) => {
+        if (this.#unrenderedVideoIdArray.length === 0) {
+          this.#observer.unobserve(this.#endOfList);
+          return;
+        }
+        if (entries[0].isIntersecting) {
+          await this.renderVideoList();
+        }
+      },
+      { threshold: 1 }
     );
-    this.#renderedVideoIdArray = [];
   }
 
   async #renderNewVideos(newVideoIdArray) {
@@ -107,9 +107,14 @@ class SavedVideosView {
     }
   }
 
+  #removeAllVideos() {
+    removeElementList([...this.#videoList.childNodes]);
+    this.#unrenderedVideoIdArray = this.#getCurrentTabIds();
+    this.#renderedVideoIdArray = [];
+  }
+
   #removeDeletedVideos(videos) {
-    const videosIdArray =
-      videos || getFilteredIdFromStorage('watched', this.#currentTabName === 'watched');
+    const videosIdArray = videos || this.#getCurrentTabIds();
 
     const deletedVideoIdArray = removeArrayIntersection(this.#renderedVideoIdArray, videosIdArray);
     const toDeleteArray = [...this.#videoList.childNodes].filter((child) =>
@@ -121,21 +126,6 @@ class SavedVideosView {
       deletedVideoIdArray
     );
     if (this.#renderedVideoIdArray.length === 0) this.#renderNoSavedVideoTemplate();
-  }
-
-  #loadMoreObserver() {
-    return new IntersectionObserver(
-      async (entries) => {
-        if (this.#unrenderedVideoIdArray.length === 0) {
-          this.#observer.unobserve(this.#endOfList);
-          return;
-        }
-        if (entries[0].isIntersecting) {
-          await this.renderVideoList();
-        }
-      },
-      { threshold: 1 }
-    );
   }
 
   #createVideoElements(videoObjectArray) {
@@ -166,6 +156,10 @@ class SavedVideosView {
       removeFromStorage(videoId);
       this.#removeDeletedVideos();
     }
+  }
+
+  #getCurrentTabIds() {
+    return getFilteredIdFromStorage('watched', this.#currentTabName === 'watched');
   }
 }
 
