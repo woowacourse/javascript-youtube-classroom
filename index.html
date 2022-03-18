@@ -22,9 +22,11 @@
       </nav>
     </main>
     <section class="watch-later-container video-container">
+      <h2 hidden>볼 영상 리스트</h2>
       <ul class="video-list watch-later-video-list"></ul>
     </section>
     <section class="watched-container video-container hide">
+      <h2 hidden>본 영상 리스트</h2>
       <ul class="video-list watched-video-list"></ul>
     </section>
 
@@ -49,5 +51,23 @@
         </section>
       </div>
     </div>
+    <section class="message-bot-container">
+      <h2 hidden>메시지 알림 봇</h2>
+      <div class="short-message message-bot">
+        <span id="short-message-text">메시지 알림 봇</span>
+        <span id="short-message-img">📧</span>
+        <span id="short-message-count">0</span>
+      </div>
+      <div class="long-message message-bot hide">
+        <div class="long-message-header">
+          <div id="message-title">메시지 알림 봇</div>
+          <div id="message-close-button">❎</div>
+        </div>
+        <div class="long-message-main">
+          <ul class="message-list"></ul>
+        </div>
+        <div class="long-message-footer">문의사항 : evertree6031@gmail.com</div>
+      </div>
+    </section>
   </body>
 </html>
