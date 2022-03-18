@@ -18,3 +18,7 @@
 .delete-button:hover {
   background: #efefef;
 }
+
+.watched {
+  background: rgba(0, 188, 212, 0.12);
+}

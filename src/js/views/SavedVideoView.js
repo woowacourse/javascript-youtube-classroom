@@ -6,7 +6,6 @@ export default class SavedVideoView {
   #$watched;
 
   constructor(savedVideoIds) {
-    console.log(savedVideoIds);
     this.#$playlist = $('#playlist-video');
     this.#$watched = $('#watched-video');
     this.bindSavedVideoList();
@@ -18,9 +17,15 @@ export default class SavedVideoView {
     $(SELECTOR.WATCHED_VIDEO).addEventListener('click', this.#changeVideoListContents.bind(this, 'remove'));
   }
 
-  #appendVideos(videos) {
-    console.log(videos);
-    const html = videos
+  #isValidVideo(kind, watched) {
+    if (kind === 'playlist' && !watched) return true;
+    if (kind === 'watched' && watched) return true;
+    return false;
+  }
+
+  #makeSavedVideoListTemplate(kind, videos) {
+    return videos
+      .filter((video) => this.#isValidVideo(kind, video.watched))
       .map(
         (video) =>
           `<li class="video-item">
@@ -30,12 +35,16 @@ export default class SavedVideoView {
         <h4 class="video-item__title">[Playlist] ${video.title}</h4>
         <p class="video-item__channel-name">${video.channelTitle}</p>
         <p class="video-item__published-date">${video.date}</p>
-        <button class="check-watched-button video-list-button button" type="button">✅</button>
+        <button class="check-watched-button video-list-button button ${kind === 'watched' ? 'watched' : ''}" type="button">✅</button>
         <button data-video-id="${video.id}" class="delete-button video-list-button button" type="button">🗑️</button>
       </li>`
       )
       .join('');
-    this.#$playlist.insertAdjacentHTML('beforeend', html);
+  }
+
+  #appendVideos(videos) {
+    this.#$playlist.insertAdjacentHTML('beforeend', this.#makeSavedVideoListTemplate('playlist', videos));
+    this.#$watched.insertAdjacentHTML('beforeend', this.#makeSavedVideoListTemplate('watched', videos));
   }
 
   #changeVideoListContents(option) {
