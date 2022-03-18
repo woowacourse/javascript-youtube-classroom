@@ -67,6 +67,7 @@ body {
   background: var(--hover-button-background-color);
 }
 
+.nav__save-video-button:hover,
 .nav__watched-video-button:hover,
 .nav__save-video-button--focused:hover,
 .nav__watched-video-button--focused:hover {
