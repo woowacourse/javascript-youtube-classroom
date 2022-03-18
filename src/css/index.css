@@ -2,6 +2,7 @@
 @import './modal.css';
 @import './skeleton.css';
 @import './menu.css';
+@import './container.css';
 
 * {
   margin: 0;

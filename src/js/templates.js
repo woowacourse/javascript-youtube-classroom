@@ -14,6 +14,7 @@ const TEMPLATE = {
         </div>
         <button id="search-modal-button" class="button nav__button" type="button">🔍 검색</button>
       </nav>
+      <my-result></my-result>
     </main>
   `,
   SEARCH_MODAL: `
@@ -75,6 +76,9 @@ const TEMPLATE = {
       <p class="line"></p>
       <button></button>
     </div>
+  `,
+  MY_RESULT: `
+    <p>myresult</p>
   `,
 };
 

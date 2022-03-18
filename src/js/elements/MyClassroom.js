@@ -2,6 +2,8 @@ import CustomElement from '../abstract/CustomElement';
 import { addEvent, $ } from '../utils';
 import TEMPLATE from '../templates';
 
+import './MyResult';
+
 class MyClassroom extends CustomElement {
   template() {
     return TEMPLATE.MY_CLASSROOM;
