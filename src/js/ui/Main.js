@@ -1,5 +1,6 @@
 import { store } from '../domain/store';
 import { $ } from '../utils/dom';
+import { showExceptionSnackBar } from '../utils/snackBar';
 import { MESSAGE, STATE, STORAGE_KEY } from '../constants';
 import { getAllVideoTemplate, getVideoTemplate } from './template';
 
@@ -9,6 +10,8 @@ export default class Main {
     this.$videoContainer = $('.video-container');
     this.renderVideos(this.tab);
     this.addNavButtonClickEvent();
+    this.addAllCheckButtonClickEvent();
+    this.addAllDeleteButtonClickEvent();
   }
 
   renderNoSavedVideo() {
@@ -75,6 +78,44 @@ export default class Main {
         button.classList.toggle('clicked'),
       );
       this.tab = STATE.WATCHED;
+      this.renderVideos(this.tab);
+    });
+  }
+
+  addAllCheckButtonClickEvent() {
+    $('#all-check').addEventListener('click', () => {
+      if (!confirm(MESSAGE.ASK_ALL_CHECK)) return;
+
+      const saveVideos = store.getLocalStorage(STORAGE_KEY.VIDEO);
+
+      store.removeLocalStorage(STORAGE_KEY.VIDEO);
+      saveVideos.forEach(video => {
+        if (video.watched === this.tab) {
+          video.watched = !video.watched;
+        }
+        store.setLocalStorage(STORAGE_KEY.VIDEO, video);
+      });
+
+      showExceptionSnackBar(MESSAGE.MODIFY_COMPLETE);
+
+      this.renderVideos(this.tab);
+    });
+  }
+
+  addAllDeleteButtonClickEvent() {
+    $('#all-delete').addEventListener('click', () => {
+      if (!confirm(MESSAGE.ASK_ALL_DELETE)) return;
+
+      const saveVideos = store.getLocalStorage(STORAGE_KEY.VIDEO);
+
+      store.removeLocalStorage(STORAGE_KEY.VIDEO);
+      const newVideos = saveVideos.filter(video => video.watched !== this.tab);
+      newVideos.forEach(video => {
+        store.setLocalStorage(STORAGE_KEY.VIDEO, video);
+      });
+
+      showExceptionSnackBar(MESSAGE.MODIFY_COMPLETE);
+
       this.renderVideos(this.tab);
     });
   }
