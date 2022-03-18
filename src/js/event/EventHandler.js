@@ -1,10 +1,10 @@
 import MainView from '../view/MainView.js';
 import ModalView from '../view/ModalView.js';
 import validator from '../utils/validator.js';
-import searchVideoAPICaller from '../managers/searchVideoAPICaller.js';
-import videoStore from '../managers/videoStore.js';
-import storeVideoAPICaller from '../managers/storeVideoAPICaller.js';
 import { DOM_STRING } from '../utils/constants.js';
+import searchVideoAPICaller from '../api/searchVideoAPICaller.js';
+import storeVideoAPICaller from '../api/storeVideoAPICaller.js';
+import videoStore from '../storage/videoStore.js';
 
 export default class EventHandler {
   constructor() {

@@ -1,4 +1,4 @@
-import videoStore from '../managers/videoStore.js';
+import videoStore from '../storage/videoStore.js';
 import { DOM_STRING } from '../utils/constants.js';
 
 export default class VideoItemView {
