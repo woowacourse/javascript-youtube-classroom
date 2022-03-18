@@ -8,7 +8,7 @@ import notSavedImage from '@Images/not_saved.jpeg';
 export default class MainContents {
   constructor() {
     this.container = $('#main-contents');
-    this.$videoList = $('#saved-video-list', this.container);
+    this.$videoList = createElement('UL', { className: 'library__list', id: 'saved-video-list' });
     UIStore.addSubscriber(this.render, ['selectedPage']);
     YoutubeSaveStorage.addSubscriber(this.render);
     this.bindEvents();
@@ -41,7 +41,9 @@ export default class MainContents {
   };
 
   render = () => {
+    this.container.replaceChildren();
     this.$videoList.replaceChildren();
+
     const { selectedPage } = UIStore.getState();
     const list =
       selectedPage === PAGE_NAME.WATCH_LATER
@@ -51,12 +53,13 @@ export default class MainContents {
 
     list.length === 0
       ? $fragment.append(this.getNoResults())
-      : $fragment.append(...this.getVideoList(list));
-    this.$videoList.append($fragment);
+      : $fragment.append(this.getVideoList(list));
+
+    this.container.append($fragment);
   };
 
   getVideoList(videos) {
-    return videos.map(({ id, videoData }) => {
+    const $listElements = videos.map(({ id, videoData }) => {
       const { videoTitle, videoChanneltitle, videoPublishtime, videoThumbnail } = videoData;
       return createElement('LI', {
         dataset: { 'video-id': id },
@@ -74,12 +77,15 @@ export default class MainContents {
      `,
       });
     });
+    this.$videoList.append(...$listElements);
+    return this.$videoList;
   }
 
   getNoResults() {
-    return createElement('DIV', {
-      className: 'no-result',
-      innerHTML: `<img src="${notSavedImage}" alt="no save image" class="no-save__image">`,
+    return createElement('IMG', {
+      className: 'no-save__image',
+      alt: 'no save image',
+      src: notSavedImage,
     });
   }
 }

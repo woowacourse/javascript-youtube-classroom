@@ -11,7 +11,6 @@
     --input-placeholder-color:#8B8B8B;
     --save-button-bg-color:#F9F9F9;
     --save-button-hover-bg-color:#efefef;
-
 }
 
 body {
@@ -73,3 +72,8 @@ body {
     justify-items: center;
 }
 
+
+img{
+    max-width:100%;
+    max-height:100%;
+}
