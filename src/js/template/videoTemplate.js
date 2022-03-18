@@ -68,9 +68,9 @@ const savedVideoTemplate = ({
 
 const videoSkeletonTemplate = `
   <div class="skeleton">
-  <div class="image"></div>
-  <p class="line"></p>
-  <p class="line"></p>
+    <div class="image"></div>
+    <p class="line"></p>
+    <p class="line"></p>
   </div>
 `;
 

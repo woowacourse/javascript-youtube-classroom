@@ -1,10 +1,7 @@
 .video-list {
-  width: fit-content;
-  height: 31em;
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(4, minmax(15em, auto));
   gap: 2em 2em;
-  overflow-y: scroll;
 }
 
 .video-item {
@@ -94,6 +91,10 @@
   background: #efefef;
 }
 
+.saved-video-list {
+  overflow-y: scroll;
+}
+
 /* no Result Image */
 .save-result {
   margin: auto;
@@ -107,8 +108,10 @@
 
 .search-result {
   display: flex;
-  justify-content: center;
+  flex-direction: column;
   margin: auto;
+  overflow-y: scroll;
+  height: 31em;
 }
 
 .search-result.search-result--no-result {
@@ -132,13 +135,13 @@
 
 @media only screen and (max-width: 1280px) {
   .video-list {
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(3, minmax(15em, auto));
   }
 }
 
 @media only screen and (max-width: 960px) {
   .video-list {
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(2, minmax(15em, auto));
   }
 }
 
