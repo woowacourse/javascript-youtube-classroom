@@ -93,3 +93,7 @@ body {
 .button-active {
     background: #E0F8F9;
 }
+
+.delete {
+    display: none;
+}

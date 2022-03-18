@@ -31,6 +31,10 @@ export default class SearchModal extends StateController {
   renderVideoItems(videos) {
     const videoListTemplate = videos
       .map(video => {
+        let isDeleteButton = '';
+        if (JSON.parse(localStorage.getItem(SAVED_VIDEO_LIST_KEY)).includes(video.id)) {
+          isDeleteButton = 'delete';
+        }
         return `<li class="video-item" data-video-id="${video.id}">
           <img
             src="${video.thumbnailUrl}"
@@ -38,7 +42,7 @@ export default class SearchModal extends StateController {
           <h4 class="video-item__title">${video.title}</h4>
           <p class="video-item__channel-name">${video.channelTitle}</p>
           <p class="video-item__published-date">${video.publishedAt}</p>
-          <button class="video-item__save-button button">⬇ 저장</button>
+          <button class="video-item__save-button button ${isDeleteButton}">⬇ 저장</button>
         </li>`;
       })
       .join('\n');
@@ -96,12 +100,14 @@ export default class SearchModal extends StateController {
   }
 
   handleClickSaveButton(e) {
-    const { target } = e;
-    const $videoItem = target.closest('.video-item');
+    if (!e.target.classList.contains('video-item__save-button')) {
+      return;
+    }
+    const $videoItem = e.target.closest('.video-item');
     const videoId = $videoItem.getAttribute('data-video-id');
     const videoList = JSON.parse(localStorage.getItem(SAVED_VIDEO_LIST_KEY)) ?? [];
     if (this.isSaveVideo(videoId, videoList)) {
-      target.setAttribute('hidden', true);
+      e.target.setAttribute('hidden', true);
     }
   }
 
