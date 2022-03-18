@@ -14,10 +14,9 @@ export default function App() {
   const initSavedVideo = () => {
     const savedVideos = storage.getLocalStorage();
     if (savedVideos) {
+      $('.empty-video-image').classList.add('hide');
       searchResultView.renderSavedVideos(savedVideos);
     }
-    $('.video__container').innerHTML =
-      '<img class="empty__video__image" src="./assets/empty_storage.jpeg" alt="empty storage image"/>';
   };
 
   const renderHandler = async () => {
@@ -70,7 +69,22 @@ export default function App() {
       },
     ];
     storage.saveVideo(videoData);
+    $('.empty-video-image').classList.add('hide');
     searchResultView.renderSavedVideos(videoData);
+  };
+
+  const handleDeleteVideo = (selectedVideoId) => {
+    const deletedData = storage
+      .getLocalStorage()
+      .filter((video) => video.videoId !== selectedVideoId);
+    storage.setLocalStorage(deletedData);
+    $('.saved-video-list').replaceChildren();
+    if (deletedData.length !== 0) {
+      searchResultView.renderSavedVideos(deletedData);
+      return;
+    }
+    storage.resetLocalStorage();
+    $('.empty-video-image').classList.remove('hide');
   };
 
   // 이벤트 등록
@@ -79,6 +93,13 @@ export default function App() {
 
     $('.video-list').addEventListener('click', handleSaveVideos);
   };
+
+  $('.saved-video-list').addEventListener('click', (e) => {
+    if (e.target.classList.contains('video-remove-button')) {
+      const selectedVideoId = e.target.closest('li').dataset.videoId;
+      handleDeleteVideo(selectedVideoId);
+    }
+  });
 
   $('#search-modal-button').addEventListener('click', searchResultView.toggleModal);
 

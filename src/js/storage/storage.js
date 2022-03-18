@@ -13,7 +13,6 @@ const storage = {
       return;
     }
     if (savedVideoData.some((video) => video.videoId === videoData[0].videoId)) {
-      console.log('중복');
       return;
     }
     this.setLocalStorage([...savedVideoData, ...videoData]);
@@ -24,6 +23,9 @@ const storage = {
       return;
     }
     this.setLocalStorage(videoData);
+  },
+  resetLocalStorage() {
+    localStorage.clear();
   },
 };
 

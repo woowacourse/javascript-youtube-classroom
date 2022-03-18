@@ -42,20 +42,38 @@ body {
   background: #ebebeb;
 }
 
-.video__container {
+.video-container {
   display: flex;
   justify-content: center;
   align-items: center;
 }
 
-.saved__video__list {
+.saved-video-list {
   display: flex;
-  /* flex-direction: row; */
   flex-wrap: wrap;
   gap: 32px 20px;
 }
 
-.empty__video__image {
+.video-manage-button {
+  position: absolute;
+  right: 0;
+}
+
+.video-watched-button,
+.video-remove-button {
+  margin-right: 5px;
+  padding: 6px;
+  cursor: pointer;
+  border-radius: 4px;
+  border: none;
+  font-size: 16px;
+}
+
+.manage-button:hover {
+  background: #ebebeb;
+}
+
+.empty-video-image {
   width: 45vw;
   height: 50vh;
 }

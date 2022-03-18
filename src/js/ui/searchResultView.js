@@ -40,8 +40,10 @@ const template = {
         <h4 class="video-item__title">${item.title}</h4>
         <p class="video-item__channel-name">${item.channelTitle}</p>
         <p class="video-item__published-date">${item.publishTime}</p>
-        <button class="video-item__save-button button">✅</button>
-        <button class="video-item__save-button button">🗑</button>
+        <div class="video-manage-button">
+          <button class="video-watched-button">✅</button>
+          <button class="video-remove-button">🗑</button>
+        </div>
       </li>
 `;
   },
@@ -95,7 +97,7 @@ const searchResultView = {
   },
   renderSavedVideos(savedVideos) {
     savedVideos.forEach((video) =>
-      $('.saved__video__list').insertAdjacentHTML('beforeEnd', template.savedVideoItem(video))
+      $('.saved-video-list').insertAdjacentHTML('beforeEnd', template.savedVideoItem(video))
     );
   },
 };
