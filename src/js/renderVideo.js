@@ -1,8 +1,10 @@
+import ControlVideo from './controlVideo.js';
 import {
   ALREADY_SAVED_VIDEO,
   ERROR_MESSAGE,
   MAX_SAVE_VIDEO_COUNT,
   GET_VIDEO_COUNT,
+  VIDEO_ID_LIST_KEY,
 } from './constants/contants.js';
 import {
   videoTemplate,
@@ -14,9 +16,8 @@ import {
 import { selectDom, addEvent } from './utils/selectDom.js';
 
 class RenderVideo {
-  constructor(searchVideo, saveVideo) {
+  constructor(searchVideo) {
     this.searchVideo = searchVideo;
-    this.saveVideo = saveVideo;
 
     this.searchModalButton = selectDom('#search-modal-button');
     this.willWatchSectionButton = selectDom('#will-watch-section-button');
@@ -55,11 +56,14 @@ class RenderVideo {
 
   onClickWillWatchVideoButtons = ({ target }) => {
     if (target.classList.contains('watched-video-button')) {
-      this.saveVideo.setStorageWatchedVideoList(target.closest('li').dataset.videoId);
+      ControlVideo.setVideoIdListByClickWatchedButton(
+        target.closest('li').dataset.videoId,
+        target.closest('ul').classList
+      );
       target.closest('li').remove();
     } else if (target.classList.contains('delete-video-button')) {
       if (window.confirm('정말 삭제하겠습니까?')) {
-        this.saveVideo.deleteVideoList(
+        ControlVideo.setVideoIdListByDeleteButton(
           target.closest('li').dataset.videoId,
           target.closest('ul').classList
         );
@@ -71,7 +75,7 @@ class RenderVideo {
 
   renderWatchedVideo = async () => {
     const watchedVideoItems = [
-      ...(await this.saveVideo.getSaveVideoList(this.saveVideo.watchedVideoList)),
+      ...(await ControlVideo.getSaveVideoList(ControlVideo.getStorageWatchedVideoList())),
     ].filter(
       ({ id }) =>
         !Array.from(this.watchedVideoList.children)
@@ -89,7 +93,7 @@ class RenderVideo {
 
   renderWillWatchVideo = async () => {
     const willWatchVideoItems = [
-      ...(await this.saveVideo.getSaveVideoList(this.saveVideo.saveVideoIdList)),
+      ...(await ControlVideo.getSaveVideoList(ControlVideo.getStorageVideoList())),
     ].filter(
       ({ id }) =>
         !Array.from(this.willWatchVideoList.children)
@@ -121,7 +125,8 @@ class RenderVideo {
 
     if (
       Array.from(this.watchedVideoList.children).find(
-        (v, i) => this.saveVideo.watchedVideoList[i] === v.dataset.videoId
+        (watchedVideo, index) =>
+          ControlVideo.getStorageWatchedVideoList()[index] === watchedVideo.dataset.videoId
       )
     ) {
       return;
@@ -134,10 +139,10 @@ class RenderVideo {
     this.watchedSectionButton.classList.remove('button-click');
     this.willWatchVideoWrap.classList.remove('hide-element');
     this.watchedVideoWrap.classList.add('hide-element');
-
     if (
       Array.from(this.willWatchVideoList.children).find(
-        (v, i) => this.saveVideo.saveVideoIdList[i] === v.dataset.videoId
+        (willWatchVideo, index) =>
+          ControlVideo.getStorageVideoList()[index] === willWatchVideo.dataset.videoId
       )
     ) {
       return;
@@ -175,6 +180,7 @@ class RenderVideo {
     this.noSearchResultWrap.replaceChildren();
     this.renderVideoListWrap.replaceChildren();
     this.renderSearchScreen();
+    this.searchResultWrap.scrollTop = 0;
   };
 
   onSaveButtonClick = ({ target }) => {
@@ -183,14 +189,18 @@ class RenderVideo {
     }
 
     if (
-      [...this.saveVideo.saveVideoIdList, ...this.saveVideo.watchedVideoList].length >
-      MAX_SAVE_VIDEO_COUNT
+      [...ControlVideo.getStorageVideoList(), ...ControlVideo.getStorageWatchedVideoList()]
+        .length > MAX_SAVE_VIDEO_COUNT
     ) {
       alert(ERROR_MESSAGE.CANNOT_SAVE_VIDEO_ANYMORE);
       return;
     }
 
-    this.saveVideo.setStorageVideoList(target.closest('li').dataset.videoId);
+    ControlVideo.addLocalStorageVideoList(
+      ControlVideo.getStorageVideoList(),
+      target.closest('li').dataset.videoId,
+      VIDEO_ID_LIST_KEY
+    );
     target.textContent = ALREADY_SAVED_VIDEO;
     target.disabled = true;
   };
@@ -214,9 +224,10 @@ class RenderVideo {
         .map((video) =>
           videoTemplate(
             video,
-            [...this.saveVideo.saveVideoIdList, ...this.saveVideo.watchedVideoList].includes(
-              video.id.videoId
-            )
+            [
+              ...ControlVideo.getStorageVideoList(),
+              ...ControlVideo.getStorageWatchedVideoList(),
+            ].includes(video.id.videoId)
           ))
         .join(' ')
     );
@@ -224,7 +235,6 @@ class RenderVideo {
 
   renderVideoSkeleton() {
     if (this.renderSkeletonWrap.children.length === 0) {
-      this.searchResultWrap.scrollTop = 0;
       this.renderSkeletonWrap.insertAdjacentHTML(
         'afterbegin',
         Array.from({ length: GET_VIDEO_COUNT }, () => videoSkeletonTemplate).join(' ')
