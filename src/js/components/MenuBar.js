@@ -4,18 +4,18 @@ export default class MenuBar {
   constructor({ handleOpenModal, handleWatchState }) {
     this.handleOpenModal = handleOpenModal;
     this.handleWatchState = handleWatchState;
-    $(".header-nav__search").addEventListener("click", this.handleOpenModal);
-    $(".header-nav__watched").addEventListener("click", this.handleWatched);
-    $(".header-nav__watching").addEventListener("click", this.handleWatching);
-
     $(".header-nav").addEventListener("click", this.handleMenu);
   }
 
-  handleWatched = () => {
-    this.handleWatchState(true);
-  };
-
-  handleWatching = () => {
-    this.handleWatchState(false);
+  handleMenu = ({ target }) => {
+    if (target.classList.contains("header-nav__search")) {
+      this.handleOpenModal();
+    }
+    if (target.classList.contains("header-nav__watching")) {
+      this.handleWatchState(false);
+    }
+    if (target.classList.contains("header-nav__watched")) {
+      this.handleWatchState(true);
+    }
   };
 }
