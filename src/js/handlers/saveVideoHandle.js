@@ -33,6 +33,6 @@ export const handleSaveButtonClick = e => {
     alert(error.message);
   } finally {
     const saveVideoButton = e.target.closest('button');
-    saveVideoButton.remove();
+    saveVideoButton.disabled = true;
   }
 };

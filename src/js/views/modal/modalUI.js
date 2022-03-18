@@ -22,8 +22,9 @@ const modalUI = {
     const savedVideos = videoStorage.getSavedVideos();
     if (savedVideos) {
       savedVideos.forEach(video => {
-        if ($('.video-list').lastElementChild.dataset.videoId === video.id) {
-          $('.video-list').lastElementChild.lastElementChild.hidden = true;
+        const isSavedVideo = $('.video-list').lastElementChild.dataset.videoId === video.id;
+        if (isSavedVideo) {
+          $('.video-list').lastElementChild.lastElementChild.disabled = true;
         }
       });
     }
