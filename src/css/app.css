@@ -61,9 +61,11 @@ body {
   width:100%;
   display: flex;
   justify-content: center;
+  position: relative;
 }
 .video-list-grid{
   display: grid;
+  width: 100%;
   grid-template-columns: repeat(4, 1fr);
   margin-top: 40px;
   gap:10px;
@@ -77,6 +79,12 @@ body {
   justify-content: center;
   align-items: center;
   overflow: hidden;
+}
+
+#no_video--img{
+  position: absolute;
+  left:50%;
+  transform:translate(-50%);
 }
 
 .video-list-grid-item-btn--contianer{
