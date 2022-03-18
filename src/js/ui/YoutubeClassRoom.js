@@ -6,15 +6,14 @@ import { video } from '../domain/video';
 
 export default class YoutubeClassRoom {
   constructor() {
-    this.renderVideoList(false, '.will-watch-video-list');
+    this.renderVideoList(false);
     this.addNavTabButtonEvent();
-    this.addVideoCheckedButtonEvent();
+    this.addVideoCheckButtonEvent();
     this.addVideoRemoveButtonEvent();
   }
 
   reset() {
-    $('.will-watch-video-list').replaceChildren();
-    $('.watched-video-list').replaceChildren();
+    $('.classroom-video__list').replaceChildren();
   }
 
   addNavTabButtonEvent() {
@@ -23,41 +22,32 @@ export default class YoutubeClassRoom {
       e.target.classList.add('highlight');
       if (e.target === $('#will-watch-video-button')) {
         $('#watched-video-button').classList.remove('highlight');
-        this.renderVideoList(false, '.will-watch-video-list');
+        this.renderVideoList(false);
         return;
       }
       $('#will-watch-video-button').classList.remove('highlight');
-      this.renderVideoList(true, '.watched-video-list');
+      this.renderVideoList(true);
     });
   }
 
-  addVideoCheckedButtonEvent() {
-    $('.will-watch-video-list').addEventListener('click', e => {
+  addVideoCheckButtonEvent() {
+    $('.classroom-video__list').addEventListener('click', e => {
       if (e.target.classList.contains('video-item__check-button')) {
         const videoId = e.target.dataset.videoId;
         video.check(videoId);
-        this.reset();
-        this.renderVideoList(false, '.will-watch-video-list');
+        this.renderVideoList(false);
       }
     });
   }
 
   addVideoRemoveButtonEvent() {
-    $('.will-watch-video-list').addEventListener('click', e => {
+    $('.classroom-video__list').addEventListener('click', e => {
       if (e.target.classList.contains('video-item__remove-button') && confirm(MESSAGE.REMOVE_CONFIRM)) {
         const videoId = e.target.dataset.videoId;
         video.remove(videoId);
-        this.reset();
-        this.renderVideoList(false, '.will-watch-video-list');
-      }
-    });
-
-    $('.watched-video-list').addEventListener('click', e => {
-      if (e.target.classList.contains('video-item__remove-button') && confirm(MESSAGE.REMOVE_CONFIRM)) {
-        const videoId = e.target.dataset.videoId;
-        video.remove(videoId);
-        this.reset();
-        this.renderVideoList(true, '.watched-video-list');
+        $('#watched-video-button').classList.contains('highlight')
+          ? this.renderVideoList(true)
+          : this.renderVideoList(false);
       }
     });
   }
@@ -102,10 +92,12 @@ export default class YoutubeClassRoom {
     `;
   }
 
-  renderVideoList(boolean, selector) {
+  renderVideoList(boolean) {
+    const $classroomVideoList = $('.classroom-video__list');
+    this.reset();
     const savedVideos = store.getLocalStorage(STORAGE_KEY);
     const filteredVideoList = savedVideos.filter(savedVideo => savedVideo.watched === boolean);
-    $(selector).insertAdjacentHTML(
+    $classroomVideoList.insertAdjacentHTML(
       'afterbegin',
       filteredVideoList.length > 0 ? this.videoListTemplate(filteredVideoList) : this.emptyVideoListTemplate(),
     );
