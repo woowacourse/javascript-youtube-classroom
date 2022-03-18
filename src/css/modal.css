@@ -67,7 +67,6 @@
 }
 
 .no-result {
-  position: relative;
   width: 100%;
 }
 
@@ -75,7 +74,7 @@
   position: absolute;
   top: 35%;
   left: 50%;
-  transform: translate(-50%, -50%);
+  transform: translate(-50%, 50%);
   width: 190px;
   height: 140px;
   margin-bottom: 32px;
@@ -83,7 +82,7 @@
 
 .no-result__description {
   position: absolute;
-  top: 50%;
+  top: 63%;
   left: 50%;
   transform: translate(-50%, 50%);
   font-size: 16px;

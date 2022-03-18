@@ -19,7 +19,12 @@ export default class Search {
         return;
       }
 
-      $('.video-list').replaceChildren();
+      const $searchResult = $('.search-result');
+      $searchResult.replaceChildren();
+      $searchResult.insertAdjacentHTML(
+        'beforeend',
+        '<ul class="video-list"></ul>',
+      );
       skeletonUI.render();
       this.result.renderInitialVideoList(this.input.value);
     });

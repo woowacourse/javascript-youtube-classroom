@@ -7,9 +7,13 @@ import { showExceptionSnackBar } from '../utils/snackBar';
 
 export default class SearchResult {
   renderVideoList(json) {
+    if (!json.items.length) {
+      $('.search-result').insertAdjacentHTML('beforeend', notFoundTemplate);
+      return;
+    }
     $('.video-list').insertAdjacentHTML(
       'beforeend',
-      json.items.length ? getFoundResultTemplate(json.items) : notFoundTemplate,
+      getFoundResultTemplate(json.items),
     );
     if (json && json.nextPageToken) {
       this.scrollObserver(json.nextPageToken);
