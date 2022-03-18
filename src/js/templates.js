@@ -42,7 +42,7 @@ const TEMPLATE = {
   `,
   SEARCH_RESULT: `
     <h3 hidden>검색 결과</h3>
-    <ul is="video-list"></ul>
+    <ul is="video-list" id="searched-video-list"></ul>
     <section class="search-result search-result--no-result hidden">
       <h3 hidden>검색 결과</h3>
       <div class="no-result">

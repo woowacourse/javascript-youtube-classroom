@@ -4,7 +4,7 @@
     "es2022": true,
     "jest": true
   },
-  "extends": ["airbnb-base", "plugin:prettier/recommended"],
+  "extends": ["airbnb-base", "plugin:prettier/recommended", "plugin:cypress/recommended"],
   "parserOptions": {
     "sourceType": "module",
     "ecmaVersion": "latest"
