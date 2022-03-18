@@ -1,4 +1,4 @@
-import { STORAGE_KEY } from '../constants';
+import { MESSAGE, STORAGE_KEY } from '../constants';
 import { $ } from '../utils/dom';
 import { store } from '../domain/store';
 import { convertToKoreaLocaleDate } from '../utils/common';
@@ -44,7 +44,7 @@ export default class YoutubeClassRoom {
 
   addVideoRemoveButtonEvent() {
     $('.will-watch-video-list').addEventListener('click', e => {
-      if (e.target.classList.contains('video-item__remove-button') && confirm('정말 삭제하시겠습니까?')) {
+      if (e.target.classList.contains('video-item__remove-button') && confirm(MESSAGE.REMOVE_CONFIRM)) {
         const videoId = e.target.dataset.videoId;
         video.remove(videoId);
         this.reset();
@@ -53,7 +53,7 @@ export default class YoutubeClassRoom {
     });
 
     $('.watched-video-list').addEventListener('click', e => {
-      if (e.target.classList.contains('video-item__remove-button') && confirm('정말 삭제하시겠습니까?')) {
+      if (e.target.classList.contains('video-item__remove-button') && confirm(MESSAGE.REMOVE_CONFIRM)) {
         const videoId = e.target.dataset.videoId;
         video.remove(videoId);
         this.reset();
@@ -96,7 +96,7 @@ export default class YoutubeClassRoom {
     return `
       <div class="empty-result">
         <div class="empty-result__description">
-          <p>저장된 동영상이 없습니다.</p>
+          <p>${MESSAGE.EMPTY_SAVED_VIDEO}</p>
         </div>
       </div>
     `;

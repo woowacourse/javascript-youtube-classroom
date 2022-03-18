@@ -12,6 +12,8 @@ const MESSAGE = {
   CHECK_FAILURE: '본 영상 추가에 실패하였습니다.',
   REMOVE_SUCCESS: '삭제되었습니다.',
   REMOVE_FAILURE: '삭제에 실패하였습니다.',
+  EMPTY_SAVED_VIDEO: '저장된 동영상이 없습니다',
+  REMOVE_CONFIRM: '정말 삭제하시겠습니까?',
 };
 
 const STORAGE_KEY = 'savedVideoList';
