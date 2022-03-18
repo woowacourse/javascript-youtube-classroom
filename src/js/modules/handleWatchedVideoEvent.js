@@ -12,9 +12,11 @@ export class WatchedVideoEventHandler {
   toggleWatchedVideoContent = () => {
     if (!$('.watch-later-videos').classList.contains('hidden')) {
       $('.watch-later-videos').classList.toggle('hidden');
+      $('.watch-later-nav-button').classList.toggle('is-active');
     }
     if ($('.watched-videos').classList.contains('hidden')) {
       $('.watched-videos').classList.toggle('hidden');
+      $('.watched-nav-button').classList.toggle('is-active');
     }
   };
 
