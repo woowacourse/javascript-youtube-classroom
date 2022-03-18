@@ -9,6 +9,7 @@ import VIDEO from '../constants/video.js';
 import { checkExceedLimit } from './utils/validator.js';
 import { fetchYoutubeApi } from './utils/fetch.js';
 import { $, $$ } from './utils/dom.js';
+import toastNotification from './utils/toast.js';
 
 export default class Controller {
   constructor() {
@@ -42,7 +43,7 @@ export default class Controller {
     try {
       this.video.keyword = keyword;
     } catch (error) {
-      alert(error.message);
+      toastNotification(error.message, 'error');
       return;
     }
 
@@ -80,7 +81,7 @@ export default class Controller {
       this.video.setVideoInfo(fetchedVideos);
     } catch (error) {
       this.searchResultView.removeVideo();
-      alert(error.message);
+      toastNotification(error.message, 'error');
       return;
     }
 
@@ -103,7 +104,7 @@ export default class Controller {
     try {
       checkExceedLimit(this.video.savedVideoItems);
     } catch (error) {
-      alert(error.message);
+      toastNotification(error.message, 'error');
       return;
     }
     this.searchResultView.changeSaveButtonStyle(event.detail.buttonElement);

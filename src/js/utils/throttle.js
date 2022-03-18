@@ -1,5 +1,6 @@
 const throttle = (callback, delay) => {
   let timerId;
+
   return (event) => {
     if (timerId) return;
     timerId = setTimeout(

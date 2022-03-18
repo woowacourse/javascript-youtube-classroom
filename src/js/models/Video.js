@@ -139,7 +139,6 @@ export default class Video {
   }
 
   getVideoTitleBy(videoId) {
-    console.log(this.#savedVideoItems.find((item) => item.videoId === videoId).title);
     return this.#savedVideoItems.find((item) => item.videoId === videoId).title;
   }
 }

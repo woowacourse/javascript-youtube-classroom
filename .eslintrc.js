@@ -21,7 +21,6 @@ module.exports = {
     'no-underscore-dangle': 'off',
     // 'max-lines-per-function': ['error', 20],
     'max-depth': ['error', 2],
-    'no-alert': 'off',
     'consistent-return': 'off',
     'max-classes-per-file': ['error', { ignoreExpressions: true, max: 2 }],
     'no-restricted-syntax': ['error', 'ForInStatement', 'LabeledStatement', 'WithStatement'],

@@ -3,6 +3,7 @@
 @import './modal.css';
 @import './skeleton.css';
 @import './confirmModal.css';
+@import './toast.css';
 
 * {
   margin: 0;

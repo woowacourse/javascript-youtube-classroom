@@ -1,3 +1,4 @@
+import debounce from '../utils/debounce.js';
 import { $ } from '../utils/dom.js';
 import { emit, on } from '../utils/event.js';
 import throttle from '../utils/throttle.js';
@@ -10,8 +11,8 @@ export default class SearchInputView {
   }
 
   #bindEvents() {
-    on(this.$searchButton, 'click', throttle(this.#handleClick.bind(this), 2000));
-    on(this.$searchInputKeyword, 'keypress', throttle(this.#handleKeypress.bind(this), 500));
+    on(this.$searchButton, 'click', debounce(this.#handleClick.bind(this), 500));
+    on(this.$searchInputKeyword, 'keypress', debounce(this.#handleKeypress.bind(this), 500));
   }
 
   #handleKeypress(event) {

@@ -11,7 +11,6 @@ export default class SearchResultView {
 
     this.observer = new IntersectionObserver(
       ([lastEntry]) => {
-        console.log(lastEntry);
         if (lastEntry.isIntersecting) {
           emit(this.$searchTarget, '@scroll-bottom');
         }
