@@ -1,7 +1,7 @@
 import { $, $$ } from "../../utils/dom.js";
 import { NUM } from "../../utils/contants.js";
 import { fetchDataFromKeyword } from "../../utils/api.js";
-import { getVideoListTemplate, getSkeletonTemplate, getEmptyResultTemplate } from "../../utils/templates.js";
+import { getThumnailTemplate, getSkeletonTemplate, getEmptyResultTemplate } from "../../utils/templates.js";
 import { verifySaveId } from "../../utils/validation.js";
 import { toastMessage } from "../../utils/common.js";
 
@@ -58,7 +58,7 @@ export default class SearchResult {
 
     this.videoList.insertAdjacentHTML(
       "beforeend",
-      this.videos.items.map((video) => getVideoListTemplate(video)).join(""),
+      this.videos.items.map((video) => getThumnailTemplate(video)).join(""),
     );
     this.observer.observe(this.videoList.lastElementChild);
   }
@@ -91,9 +91,9 @@ export default class SearchResult {
 
     try {
       const savedVideoArray = this.saveVideoManager.getSavedIds();
-      const { videoId } = target.dataset;
-      verifySaveId(savedVideoArray, videoId);
-      this.saveVideoManager.saveVideos(videoId);
+      const { id, title, channelTitle, date } = target.dataset;
+      verifySaveId(savedVideoArray, id);
+      this.saveVideoManager.saveVideos({ id, title, channelTitle, date });
       target.remove();
     } catch ({ message }) {
       toastMessage(message);

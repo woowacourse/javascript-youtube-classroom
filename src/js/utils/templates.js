@@ -6,15 +6,19 @@ export const getEmptyResultTemplate = `
   <p class="modal-result__empty-text">검색 결과가 없습니다<br/>다른 키워드로 검색해보세요</p>
 `;
 
-export const getVideoListTemplate = (video) => {
+export const getThumnailTemplate = (video) => {
   return `
     <li class="video-item">
       <img src=${video.snippet.thumbnails.medium.url} class="video-item__thumbnail" alt="video-thumbnail">
       <h4 class="video-item__title">${video.snippet.title}</h4>
       <p class="video-item__channel-name">${video.snippet.channelTitle}</p>
       <p class="video-item__published-date">${changeDateFormat(video.snippet.publishedAt)}</p>
-      <button data-video-id="${video.id.videoId}" type="button" class="video-item__save-button button">⬇ 저장</button>
-  </li>`;
+      <button data-id="${video.id.videoId}" data-title="${video.snippet.title}"  
+      data-channel-title="${video.snippet.channelTitle}" data-date="${changeDateFormat(
+    video.snippet.publishedAt,
+  )}" type="button" class="video-item__save-button button">⬇ 저장</button>
+    </li>
+  `;
 };
 
 export const getSkeletonTemplate = `

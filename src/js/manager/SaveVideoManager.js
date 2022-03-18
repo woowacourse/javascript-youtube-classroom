@@ -27,8 +27,8 @@ export default class SaveVideoManager {
     return this.state.videos.map((video) => video.id);
   }
 
-  saveVideos(id) {
-    this.#setState({ videos: [...this.state.videos, { id, watched: false }] });
+  saveVideos(videoInfo) {
+    this.#setState({ videos: [...this.state.videos, { ...videoInfo, watched: false }] });
   }
 
   #setState(newState) {
