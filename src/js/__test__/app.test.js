@@ -1,14 +1,14 @@
-import VideoStore from '../VideoStore';
-import Save from '../domains/Save';
+import SearchVideoStore from '../stores/SearchVideoStore';
+import MyVideoStore from '../stores/MyVideoStore';
 
-import { ERROR_MESSAGE, VIDEO } from '../constants';
+import { VIDEO } from '../constants';
 import dummy from '../../dummy';
 
 describe('영상을 검색할 수 있다.', () => {
   test('영상 검색 결과를 확인할 수 있다.', () => {
     const videos = dummy;
 
-    VideoStore.instance.dispatch(
+    SearchVideoStore.instance.dispatch(
       'search',
       videos.items.map((item) => {
         return {
@@ -21,43 +21,42 @@ describe('영상을 검색할 수 있다.', () => {
       })
     );
 
-    expect(VideoStore.instance.getVideos()).toHaveLength(videos.items.length);
+    expect(SearchVideoStore.instance.getVideos()).toHaveLength(videos.items.length);
   });
 });
 
 describe('영상을 저장할 수 있다.', () => {
   const findVideo = (videoId) =>
-    JSON.parse(localStorage.getItem('videos')).find((video) => video.videoId === videoId);
+    JSON.parse(localStorage.getItem('videos')).find((video) => video.details.id === videoId);
 
   beforeEach(() => {
     localStorage.clear();
-    Save._instance = null;
+    MyVideoStore._instance = null;
   });
 
   test('영상을 저장하면 영상의 id를 로컬 스토리지에 저장할 수 있다.', () => {
-    const videoId = 'movie X tiger';
+    const video = {
+      details: {
+        id: 'movie X tiger',
+        thumbnail: 'https://i.ytimg.com/vi/slJclWck7lk/default.jpg',
+        title:
+          '%EB%B8%8C%EB%A1%A4%EC%97%90%EC%84%9C%20%EC%9E%84%ED%8F%AC%EC%8A%A4%ED%84%B0%EB%A5%BC%20%ED%95%98%EA%B2%8C%20%EB%90%A0%20%EC%A4%84%EC%9D%B4%EC%95%BC...%20%5B%EB%B8%8C%EB%A1%A4%EC%8A%A4%ED%83%80%EC%A6%88-Brawl%20Stars%5D%20%5BJune%5D',
+        channelTitle: 'JUNE',
+        publishedAt: '2021-03-07T08:51:56Z',
+      },
+      isWatched: false,
+    };
 
-    Save.instance.saveVideo(videoId);
+    MyVideoStore.instance.dispatch([video]);
 
-    expect(findVideo(videoId).videoId).toBe(videoId);
+    expect(findVideo(video.details.id).details.id).toBe(video.details.id);
   });
 
   test('최대 영상 저장 개수를 초과한 경우, 영상 저장이 불가능하다.', () => {
-    const videoId = 'tiger X movie';
+    const videos = Array.from({ length: VIDEO.MAX_SAVABLE_COUNT });
 
-    // when
-    for (let index = 0; index < VIDEO.MAX_SAVABLE_COUNT; index += 1) {
-      Save.instance.saveVideo(`${videoId}${index}`);
-    }
+    MyVideoStore.instance.dispatch(videos);
 
-    window.alert = jest.fn().mockReturnValue(ERROR_MESSAGE.EXCEED_MAX_SAVABLE_COUNT);
-    const spyFn = jest.spyOn(window, 'alert');
-
-    Save.instance.saveVideo(videoId);
-
-    // then
-    expect(spyFn).toBeCalledTimes(1);
-    expect(spyFn).toBeCalledWith(ERROR_MESSAGE.EXCEED_MAX_SAVABLE_COUNT);
-    expect(findVideo(videoId)).toBe(undefined);
+    expect(MyVideoStore.instance.canSaveVideo()).toBe(false);
   });
 });
