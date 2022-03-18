@@ -7,7 +7,7 @@ body {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  max-width: 70em;
+  width: fit-content;
   margin: 0 auto;
   padding: 0 1rem;
 }
@@ -64,8 +64,9 @@ body {
 }
 
 .saved-result-section {
+  display: flex;
+  justify-content: center;
   margin: 0 0 2.5em;
   padding: 1em 0;
-  width: 100%;
   box-shadow: 0 1em 1em -1em #00c8e246 inset;
 }
