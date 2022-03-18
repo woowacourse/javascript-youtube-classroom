@@ -23,7 +23,7 @@ class SavedVideo {
   }
 
   dispatch(action, data) {
-    localStorage.setItem('videos', data);
+    localStorage.setItem('videos', JSON.stringify(data));
     this.#videos = this.loadVideos();
 
     this.#subscribers.forEach((subscriber) => {

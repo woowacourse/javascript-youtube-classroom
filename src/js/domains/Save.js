@@ -1,6 +1,6 @@
 import SavedVideo from '../stores/SavedVideo';
 import SearchedVideo from '../stores/SearchedVideo';
-import { VIDEO, ERROR_MESSAGE } from '../constants';
+import { ERROR_MESSAGE } from '../constants';
 import { on } from '../utils';
 
 class Save {
@@ -21,21 +21,16 @@ class Save {
     on('.video-item__save-button', '@save', (e) => this.saveVideo(e.detail.videoId), videoItem);
   }
 
-  // eslint-disable-next-line max-lines-per-function
   saveVideo(videoId) {
-    const videos = SavedVideo.instance.getVideos();
-
     try {
-      if (videos.length >= VIDEO.MAX_SAVABLE_COUNT) {
+      if (!SavedVideo.instance.isStorable()) {
         throw new Error(ERROR_MESSAGE.EXCEED_MAX_SAVABLE_COUNT);
       }
 
       const videoInfo = SearchedVideo.instance.findVideo(videoId);
+      const videos = SavedVideo.instance.getVideos();
 
-      SavedVideo.instance.dispatch(
-        'save',
-        JSON.stringify([...videos, { ...videoInfo, isWatched: false }])
-      );
+      SavedVideo.instance.dispatch('save', [...videos, { ...videoInfo, isWatched: false }]);
     } catch (error) {
       alert(error.message);
     }

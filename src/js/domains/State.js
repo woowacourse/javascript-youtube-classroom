@@ -24,13 +24,13 @@ class State {
     const currentVideo = SavedVideo.instance.findVideo(videoId);
 
     currentVideo.isWatched = !currentVideo.isWatched;
-    SavedVideo.instance.dispatch('watch', JSON.stringify([...SavedVideo.instance.getVideos()]));
+    SavedVideo.instance.dispatch('watch', [...SavedVideo.instance.getVideos()]);
   }
 
   removeVideo(videoId) {
     SavedVideo.instance.dispatch(
       'remove',
-      JSON.stringify(SavedVideo.instance.getVideos().filter((video) => video.id !== videoId))
+      SavedVideo.instance.getVideos().filter((video) => video.id !== videoId)
     );
   }
 }
