@@ -20,6 +20,7 @@ export default class VideosScreen {
       try {
         this.#storageEngine.saveVideo(video);
         e.target.classList.add('hide');
+        this.#renderMyVideos();
       } catch (error) {
         alert(error.message);
       }
@@ -77,4 +78,6 @@ export default class VideosScreen {
 
     return { videoId, thumbnail, title, channelTitle, publishTime };
   }
+
+  #renderMyVideos() {}
 }

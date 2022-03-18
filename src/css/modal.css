@@ -22,7 +22,7 @@
 
 .search-modal {
   position: relative;
-  width: 1080px;
+  width: 1100px;
   height: 727px;
   background: #ffffff;
   border: 1px solid rgba(0, 0, 0, 0.12);
@@ -65,6 +65,11 @@
   color: #ffffff;
 }
 
+.search-result {
+  display: flex;
+  justify-content: center;
+}
+
 .search-result.search-result--no-result {
   justify-content: center;
   align-items: center;
@@ -83,12 +88,8 @@
 }
 
 .video-list {
-  width: 1040px;
+  max-width: 1040px;
   height: 493px;
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-  gap: 32px 20px;
   overflow-y: scroll;
 }
 
@@ -126,7 +127,8 @@
 
 .video-item {
   position: relative;
-  width: 240px;
+  max-width: 240px;
+  min-width: 240px;
   height: 255px;
 }
 

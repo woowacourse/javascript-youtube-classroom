@@ -16,12 +16,14 @@ export const myVideoTemplate = ({
     <h4 class="video-item__title">${title}</h4>
     <p class="video-item__channel-name">${channelTitle}</p>
     <p class="video-item__published-date">${publishTime}</p>
-    ${
-      isViewed
-        ? '<button type="button" class="video-item__view-uncheck-button button">✅</button>'
-        : '<button type="button" class="video-item__view-check-button button">✅</button>'
-    }
-    <button type="button" class="video-item__delete-button button">🗑️</button>
+    <div class="video-item__button-container">
+      ${
+        isViewed
+          ? '<button type="button" class="video-item__view-uncheck-button button">✅</button>'
+          : '<button type="button" class="video-item__view-check-button button">✅</button>'
+      }
+      <button type="button" class="video-item__delete-button button">🗑️</button>
+    </div>
   </li>
   `;
 };

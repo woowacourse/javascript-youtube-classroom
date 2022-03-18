@@ -7,14 +7,10 @@ import { DELETE_VIDEO_CONFIRM_MESSAGE } from '../util/constants.js';
 export default class MyVideosScreen {
   #myVideoList;
   #storageEngine;
-  // #viewedVideosFilterButton;
-  // #videosToViewFilterButton;
   #nav;
 
   constructor() {
     this.#myVideoList = $('.my-video-list');
-    // this.#viewedVideosFilterButton = $('#viewed-videos-filter-button');
-    // this.#videosToViewFilterButton = $('#videos-to-view-filter-button');
     this.#nav = $('nav');
 
     this.#storageEngine = StorageEngine.instance;

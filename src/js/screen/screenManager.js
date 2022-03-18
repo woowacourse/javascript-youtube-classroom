@@ -26,8 +26,8 @@ export default class ScreenManager {
     // 인스턴스 생성
     this.searchEngine = new SearchEngine();
     this.storageEngine = StorageEngine.instance;
-    this.#searchResultScreen = new SearchResultScreen(this.searchInputKeyword, this.searchEngine);
     this.#myVideosScreen = new MyVideosScreen();
+    this.#searchResultScreen = new SearchResultScreen(this.searchInputKeyword, this.searchEngine);
 
     // 이벤트 핸들러 등록
     this.#searchModalButton.addEventListener('click', this.#handleOpenModal.bind(this));
