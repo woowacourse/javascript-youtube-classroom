@@ -1,5 +1,5 @@
-import { isOverVideoSaveMaxCount, validateSearchKeyword } from '../src/js/validation';
-import { ERROR_MESSAGE, MAX_VIDEO_SAVE } from '../src/js/constants';
+import { isOverVideoSaveMaxCount, validateSearchKeyword } from '../validation';
+import { ERROR_MESSAGE, MAX_VIDEO_SAVE } from '../constants';
 
 const generateMaxSavedVideo = () => {
   const sample = 'kcAU3ZgraMA';
