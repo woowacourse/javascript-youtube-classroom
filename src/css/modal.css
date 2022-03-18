@@ -105,6 +105,12 @@
   display: none;
 }
 
+.skeleton .video-item__title::after,
+.skeleton .video-item__channel-name::after,
+.skeleton .video-item__published-date::after {
+  content: 'empty';
+}
+
 .skeleton .image-wrapper,
 .skeleton .video-item__title,
 .skeleton .video-item__channel-name,
