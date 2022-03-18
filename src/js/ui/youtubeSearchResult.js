@@ -1,7 +1,6 @@
 import { INTERSECTION_RATIO, MESSAGE, STORAGE_KEY } from '../constants';
 import { $, showSnackBar } from '../utils/dom';
 import NoResultImage from '../../assets/images/not_found.png';
-import { store } from '../domain/store';
 import { requestApi } from '../domain/requestApi';
 import { convertToKoreaLocaleDate } from '../utils/common';
 import { skeletonUI } from './skeletonUI';
@@ -11,7 +10,7 @@ export const youtubeSearchResult = {
   $videoList: $('.video-list'),
 
   searchResultTemplate(items) {
-    const saveDatas = store.getLocalStorage(STORAGE_KEY);
+    const savedVideoList = video.get();
     const resultTemplate = items
       .map(item => {
         const { publishedAt, title, thumbnails, channelTitle } = item.snippet;
@@ -35,7 +34,7 @@ export const youtubeSearchResult = {
               ${convertToKoreaLocaleDate(publishedAt)}
             </p>
             <button class="video-item__save-button button" data-video-id=${item.id.videoId} ${
-          saveDatas.includes(item.id.videoId) ? 'hidden' : ''
+          savedVideoList.includes(item.id.videoId) ? 'hidden' : ''
         }>⬇ 저장</button>
           </li>`;
       })

@@ -1,11 +1,11 @@
 import { MESSAGE, STORAGE_KEY } from '../constants';
 import { $ } from '../utils/dom';
-import { store } from '../domain/store';
 import { convertToKoreaLocaleDate } from '../utils/common';
 import { video } from '../domain/video';
 
 export default class YoutubeClassRoom {
   constructor() {
+    $('#will-watch-video-button').classList.add('highlight');
     this.renderVideoList(false);
     this.addNavTabButtonEvent();
     this.addVideoCheckButtonEvent();
@@ -95,8 +95,8 @@ export default class YoutubeClassRoom {
   renderVideoList(boolean) {
     const $classroomVideoList = $('.classroom-video__list');
     this.reset();
-    const savedVideos = store.getLocalStorage(STORAGE_KEY);
-    const filteredVideoList = savedVideos.filter(savedVideo => savedVideo.watched === boolean);
+    const savedVideoList = video.get();
+    const filteredVideoList = savedVideoList.filter(savedVideo => savedVideo.watched === boolean);
     $classroomVideoList.insertAdjacentHTML(
       'afterbegin',
       filteredVideoList.length > 0 ? this.videoListTemplate(filteredVideoList) : this.emptyVideoListTemplate(),
