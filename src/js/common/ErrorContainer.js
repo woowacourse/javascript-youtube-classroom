@@ -8,6 +8,10 @@ const STATUS_TEMPLATE = {
   `,
 };
 
+const DEFAULT_ERROR_TEMPLATE = `서버에 문제가 생겼습니다.<br/>
+잠시 뒤 다시 확인해 주세요.
+`;
+
 export default class ErrorContainer {
   #state;
 
@@ -16,7 +20,7 @@ export default class ErrorContainer {
   }
 
   render() {
-    this.element.innerHTML = STATUS_TEMPLATE[this.#state.status];
+    this.element.innerHTML = STATUS_TEMPLATE[this.#state.status] ?? DEFAULT_ERROR_TEMPLATE;
   }
 
   setState(newState) {

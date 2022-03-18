@@ -1,6 +1,9 @@
 import { timeFormatter } from '../utils';
 import { getStorageVideoIDs, LOCALSTORAGE_KEY } from '../utils/localStorage';
 
+const isStoredVideo = (videoIds, videoId) =>
+  Object.values(videoIds).some((currentVideoId) => videoId === Object.keys(currentVideoId)[0]);
+
 export default class VideoCard {
   constructor(props) {
     this.props = props;
@@ -18,8 +21,9 @@ export default class VideoCard {
       },
     } = snippet;
 
-    const videoIds = getStorageVideoIDs(LOCALSTORAGE_KEY);
-    const storeButton = videoIds.includes(videoId)
+    const videoIds = getStorageVideoIDs(LOCALSTORAGE_KEY.VIDEO_IDS);
+
+    const storeButton = isStoredVideo(videoIds, videoId)
       ? ''
       : '<button class="video-item__save-button button" type="button">⬇ 저장</button>';
 

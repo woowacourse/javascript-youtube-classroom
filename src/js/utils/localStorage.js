@@ -1,6 +1,9 @@
 import { ERROR } from '../constants';
 
-const LOCALSTORAGE_KEY = 'VIDEO_IDS';
+const LOCALSTORAGE_KEY = {
+  VIDEO_IDS: 'VIDEO_IDS',
+  VIDEO_INFO_LIST: 'VIDEO_INFO_LIST',
+};
 
 const getStorageVideoIDs = (key) => {
   try {
