@@ -70,13 +70,19 @@ describe("나만의 유튜브 강의실 전체 플로우 테스트", () => {
     cy.get(".video-item").should("be.visible");
   });
 
-  it("초기 화면에서 저장된 영상의 ✅ 버튼을 눌러 본 영상 섹션으로 옮길 수 있어야 한다.", () => {
+  it("볼 영상 섹션에서 저장된 영상의 ✅ 버튼을 눌러 본 영상 섹션으로 옮길 수 있어야 한다.", () => {
     cy.get(".video-item__watched-button").eq(0).click();
     cy.get(".video-item").should("be.not.visible");
   });
 
   it("초기 화면에서 본 영상 버튼을 눌러 본 영상 목록을 확인할 수 있어야 한다.", () => {
     cy.get("#watched-video-button").click();
+    cy.get(".video-item").should("be.visible");
+  });
+
+  it("본 영상 섹션에서 저장된 영상의 ✅ 버튼을 눌러 볼 영상 섹션으로 옮길 수 있어야 한다.", () => {
+    cy.get(".video-item__watched-button").eq(0).click();
+    cy.get("#watch-later-video-button").click();
     cy.get(".video-item").should("be.visible");
   });
 });
