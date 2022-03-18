@@ -109,7 +109,7 @@ export const youtubeSearchResult = {
   },
 
   scrollObserver(nextPageToken) {
-    const $li = $('li:last-child');
+    const $li = $('.video-list > li:last-child');
     const intersectionObserver = new IntersectionObserver(
       entry => {
         if (entry[0].isIntersecting) {
