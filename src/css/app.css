@@ -95,7 +95,7 @@ body {
   margin: 39px 0;
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  gap: 30px 10px;
+  gap: 30px 36px;
 }
 
 .active {
@@ -135,10 +135,10 @@ body {
 
 @media screen and (max-width: 600px) {
   .classroom-container {
-    width: 240px;
+    width: 225px;
   }
   .saved-list-container {
-    width: 240px;
+    width: 225px;
   }
   .video-grid {
     grid-template-columns: 1fr;

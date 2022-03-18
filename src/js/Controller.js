@@ -138,12 +138,14 @@ export default class Controller {
   }
 
   #checkDeleteVideo(event) {
-    this.mainView.confirmDelete(event);
+    const { videoId } = event.detail;
+    const title = this.video.getVideoTitleBy(videoId);
+    this.mainView.confirmDelete(videoId, title);
     this.mainView.$modalContainer.addEventListener('@delete-video', this.#deleteVideo, { once: true });
   }
 
-  #deleteVideo = (customEvent) => {
-    const deletedVideoId = customEvent.detail.videoId;
+  #deleteVideo = (event) => {
+    const deletedVideoId = event.detail.videoId;
     this.video.setDeletedVideoItem(deletedVideoId);
     this.mainView.removeVideo(deletedVideoId);
     this.mainView.hideConfirmModal();

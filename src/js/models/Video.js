@@ -137,4 +137,9 @@ export default class Video {
 
     this.#saveLocalStorage();
   }
+
+  getVideoTitleBy(videoId) {
+    console.log(this.#savedVideoItems.find((item) => item.videoId === videoId).title);
+    return this.#savedVideoItems.find((item) => item.videoId === videoId).title;
+  }
 }

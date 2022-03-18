@@ -216,6 +216,7 @@
 
   .video-list {
     grid-template-columns: 1fr;
+    gap: 0;
   }
 
   .search-modal__title {

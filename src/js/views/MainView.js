@@ -108,11 +108,11 @@ export default class MainView {
     document.getElementById(videoId).remove();
   }
 
-  confirmDelete(event) {
+  confirmDelete(videoId, title) {
     this.$confirmModalContainer.replaceChildren();
-    this.$confirmModalContainer.insertAdjacentHTML('beforeend', this.template.getConfirmModal());
+    this.$confirmModalContainer.insertAdjacentHTML('beforeend', this.template.getConfirmModal(title));
     $('.confirm-modal__cancel-button').addEventListener('click', () => this.#handleCancelButton(), { once: true });
-    $('.confirm-modal__delete-button').addEventListener('click', () => this.#handleDeleteButton(event), {
+    $('.confirm-modal__delete-button').addEventListener('click', () => this.#handleDeleteButton(videoId), {
       once: true,
     });
     this.#showConfirmModal();
@@ -126,8 +126,7 @@ export default class MainView {
     this.$confirmModalContainer.classList.add('hide');
   }
 
-  #handleDeleteButton(event) {
-    const { videoId } = event.detail;
+  #handleDeleteButton(videoId) {
     emit(this.$modalContainer, '@delete-video', { videoId });
   }
 
