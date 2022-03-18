@@ -1,4 +1,12 @@
 import '../css/index.css';
-import ScreenManager from './screen/screenManager.js';
+import HomePage from './screen/homePage';
+import SearchVideoModal from './screen/searchVideoModal';
 
-new ScreenManager();
+const DOM = {
+  render() {
+    const args = [...arguments];
+    args.map((arg) => new arg());
+  },
+};
+
+DOM.render(HomePage, SearchVideoModal);

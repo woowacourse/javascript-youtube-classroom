@@ -35,7 +35,7 @@ const SKELETON_TEMPLATE = `
 `.repeat(VIDEO_COUNT);
 
 //class
-export default class SearchVideoScreen {
+export default class SearchVideoModal {
   #searchEngine = new SearchEngine();
   #storageEngine = new StorageEngine();
   #searchButton = $('#search-button');

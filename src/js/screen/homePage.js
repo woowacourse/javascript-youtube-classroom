@@ -31,17 +31,25 @@ const getVideoItemTemplate = ({
   </li>`;
 
 //class
-export default class WatchVideoScreen {
-  #watchLaterTabMenuButton = $('#watch-later-tab-menu-button');
-  #watchedTabMenuButton = $('#watched-tab-menu-button');
+export default class HomePage {
+  #storageEngine = new StorageEngine();
+
+  #dimmer = $('.dimmer');
+
+  #modalContainer = $('.modal-container');
   #watchLaterContainer = $('.watch-later-container');
   #watchedContainer = $('.watched-container');
 
+  #searchModalButton = $('#search-modal-button');
+  #watchLaterTabMenuButton = $('#watch-later-tab-menu-button');
+  #watchedTabMenuButton = $('#watched-tab-menu-button');
+
   #watchLaterVideoList = $('.watch-later-video-list');
   #watchedVideoList = $('.watched-video-list');
-  #storageEngine = new StorageEngine();
 
   constructor() {
+    this.#dimmer.addEventListener('click', this.#handleCloseModal);
+    this.#searchModalButton.addEventListener('click', this.#handleOpenModal);
     this.#watchLaterTabMenuButton.addEventListener('click', this.handleTabMenu);
     this.#watchedTabMenuButton.addEventListener('click', this.handleTabMenu);
     this.#watchLaterVideoList.addEventListener('click', this.handleVideoButton);
@@ -49,6 +57,19 @@ export default class WatchVideoScreen {
 
     this.renderVideoList();
   }
+
+  #handleOpenModal = () => {
+    this.#modalContainer.classList.remove('hide');
+  };
+
+  #handleCloseModal = (e) => {
+    if (e.target.matches('#search-modal-button')) return;
+
+    if (!e.target.closest('.search-modal')) {
+      this.renderVideoList();
+      this.#modalContainer.classList.add('hide');
+    }
+  };
 
   handleTabMenu = (e) => {
     const tabMenu = e.target.id === 'watch-later-tab-menu-button' ? 'watch-later' : 'watched';
@@ -76,7 +97,6 @@ export default class WatchVideoScreen {
 
       if (watchLaterVideoList.length === 0) {
         this.#watchLaterVideoList.insertAdjacentHTML('beforeend', NO_RESULT_TEMPLATE);
-        this.toggleNoResultClassName();
         return;
       }
 
