@@ -4,13 +4,13 @@ import storage from '../domain/storage';
 class MainView {
   constructor() {
     this.savedVideosContainer = selectDom('.saved-videos-container');
+    this.noSavedVideos = selectDom('.no-saved-videos');
     this.renderSavedVideo();
   }
 
-  #savedVideoTemplate() {
+  #savedVideoTemplate(savedVideos) {
     return `
-      ${storage
-        .getSavedVideos()
+      ${savedVideos
         .map(
           (video) => `
         <li class=""video-item>
@@ -29,10 +29,19 @@ class MainView {
     `;
   }
 
+  #renderNoSavedVideo() {
+    this.noSavedVideos.classList.remove('hide');
+  }
+
   renderSavedVideo() {
+    const savedVideos = storage.getSavedVideos();
+    if (savedVideos.length === 0) {
+      this.#renderNoSavedVideo();
+      return;
+    }
     const videoList = document.createElement('ul');
     videoList.className = 'video-list';
-    videoList.insertAdjacentHTML('beforeend', this.#savedVideoTemplate());
+    videoList.insertAdjacentHTML('beforeend', this.#savedVideoTemplate(savedVideos));
     this.savedVideosContainer.append(videoList);
   }
 }
