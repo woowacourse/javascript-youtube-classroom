@@ -10,6 +10,8 @@ import { addSkeletonsToContainer, removeAllSkeletons } from '../shared/Skeleton'
 import { saveToStorage } from '../../domain/storage';
 
 class SearchModalView {
+  #body;
+
   #modalContainer;
 
   #searchForm;
@@ -27,6 +29,7 @@ class SearchModalView {
   #errorImage;
 
   constructor() {
+    this.#body = selectDom('body');
     this.#modalContainer = selectDom('.modal-container');
     this.#searchForm = selectDom('#search-form', this.#modalContainer);
     this.#searchInputKeyword = selectDom('#search-input-keyword', this.#searchForm);
@@ -42,6 +45,7 @@ class SearchModalView {
   }
 
   toggleModal = (renderOnModalClose) => {
+    this.#body.classList.toggle('modal-open');
     const modalClassList = this.#modalContainer.classList;
     modalClassList.toggle('hide');
 

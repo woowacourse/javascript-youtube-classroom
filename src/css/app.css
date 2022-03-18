@@ -3,6 +3,10 @@ body {
   font-size: 16px;
 }
 
+body.modal-open {
+  overflow-y: hidden;
+}
+
 #app {
   display: flex;
   flex-direction: column;
