@@ -1,7 +1,7 @@
 @import './app.css';
+@import './mainView.css';
 @import './modal.css';
 @import './skeleton.css';
-@import './mainView.css';
 
 * {
   margin: 0;

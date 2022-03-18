@@ -12,8 +12,7 @@ class Search {
       const { items, nextPageToken } = await this.#getSearchResult(keyword, pageToken);
       this.keyword = keyword;
       this.nextPageToken = nextPageToken;
-      const savedVideos = storage.getSavedVideos() || {};
-      return this.#getVideoObjectArray(items, savedVideos);
+      return this.#getVideoObjectArray(items);
     } catch (error) {
       throw new Error(error.message);
     }
@@ -51,7 +50,7 @@ class Search {
     );
   }
 
-  #getVideoObjectArray(items, savedVideos) {
+  #getVideoObjectArray(items) {
     return items.map((item) => {
       const { snippet, id } = item;
       return {
@@ -60,7 +59,7 @@ class Search {
         title: snippet.title,
         channelTitle: snippet.channelTitle,
         publishedAt: snippet.publishedAt,
-        isSaved: !!savedVideos[id.videoId],
+        isSaved: !!storage.isSavedVideo(id.videoId),
       };
     });
   }

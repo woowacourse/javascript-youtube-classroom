@@ -79,7 +79,7 @@ class View {
 
   #handleVideoSaveClick = (event) => {
     try {
-      storage.setSavedVideos(event.target.dataset.videoId);
+      storage.setSavedVideos(event.target.dataset);
       event.target.disabled = true;
     } catch (error) {
       alert(error.message);
@@ -133,7 +133,12 @@ class View {
       <button 
         ${isSaved && 'disabled'}
         class="video-item__save-button button"
+        data-thumbnail="${thumbnail}"
+        data-title="${title}"
+        data-channel-title="${channelTitle}"
+        data-published-at="${publishedAt}"
         data-video-id="${videoId}"
+        data-is-saved="${isSaved}"
       >
         ⬇ 저장
       </button>
