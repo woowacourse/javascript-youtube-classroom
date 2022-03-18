@@ -1,8 +1,8 @@
 import CustomElement from '../abstract/CustomElement';
 import TEMPLATE from '../templates';
-import { addEvent, emit, confirm } from '../utils';
 import SavedVideo from '../stores/SavedVideo';
 import State from '../domains/State';
+import { addEvent, emit, confirm } from '../utils';
 import { INFO_MESSAGE } from '../constants';
 
 class MyVideoItem extends CustomElement {

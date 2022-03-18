@@ -1,6 +1,6 @@
 import CustomElement from '../abstract/CustomElement';
-import { addEvent, $ } from '../utils';
 import TEMPLATE from '../templates';
+import { addEvent, $ } from '../utils';
 
 import './SearchForm';
 import './SearchResult';

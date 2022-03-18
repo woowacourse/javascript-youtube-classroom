@@ -1,7 +1,7 @@
 import SavedVideo from '../stores/SavedVideo';
 import SearchedVideo from '../stores/SearchedVideo';
-import { ERROR_MESSAGE } from '../constants';
 import { on } from '../utils';
+import { ERROR_MESSAGE } from '../constants';
 
 class Save {
   static _instance = null;

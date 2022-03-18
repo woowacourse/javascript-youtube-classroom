@@ -1,7 +1,7 @@
-import SearchedVideo from '../stores/SearchedVideo';
-import { addEvent, emit, $, $$ } from '../utils';
 import TEMPLATE from '../templates';
+import SearchedVideo from '../stores/SearchedVideo';
 import SavedVideo from '../stores/SavedVideo';
+import { addEvent, emit, $, $$ } from '../utils';
 
 import './VideoItem';
 

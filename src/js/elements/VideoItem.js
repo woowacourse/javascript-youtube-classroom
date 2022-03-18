@@ -1,9 +1,9 @@
-import SearchedVideo from '../stores/SearchedVideo';
 import CustomElement from '../abstract/CustomElement';
-import { addEvent, emit } from '../utils';
 import TEMPLATE from '../templates';
+import SearchedVideo from '../stores/SearchedVideo';
 import SavedVideo from '../stores/SavedVideo';
 import Save from '../domains/Save';
+import { addEvent, emit } from '../utils';
 
 class VideoItem extends CustomElement {
   render() {

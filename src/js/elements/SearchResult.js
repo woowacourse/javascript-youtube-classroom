@@ -1,7 +1,7 @@
-import SearchedVideo from '../stores/SearchedVideo';
 import CustomElement from '../abstract/CustomElement';
-import { $ } from '../utils';
 import TEMPLATE from '../templates';
+import SearchedVideo from '../stores/SearchedVideo';
+import { $ } from '../utils';
 
 import './VideoList';
 
