@@ -17,7 +17,7 @@ export const validate = (target, validator) => {
       });
     },
     subject,
-    process.env.NODE_ENV === 'production'
+    true
   );
 };
 

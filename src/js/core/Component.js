@@ -1,4 +1,4 @@
-import { observe } from '../store/rootStore.js';
+import { observe } from '../store/Store.js';
 
 export default class Component {
   target;

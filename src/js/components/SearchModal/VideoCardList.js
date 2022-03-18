@@ -1,7 +1,7 @@
 import Component from '../../core/Component.js';
 import VideoCard from './VideoCard.js';
 import SkeletonCard from './SkeletonCard.js';
-import api from '../../api/api.js';
+import videoService, { useStore } from '../../services/VideoService.js';
 import {
   INTERSECTION_OBSERVER,
   QUERY_OPTIONS,
@@ -22,7 +22,7 @@ export default class VideoCardList extends Component {
   }
 
   template() {
-    const { searchResult } = api.rootStore.state;
+    const searchResult = useStore((state) => state.searchResult);
     const { skeletonCount } = this.state;
 
     return `
@@ -37,7 +37,7 @@ export default class VideoCardList extends Component {
   }
 
   afterMounted() {
-    const { searchResult } = api.rootStore.state;
+    const searchResult = useStore((state) => state.searchResult);
     const skeletonCards = this.target.querySelectorAll('.skeleton-card');
     const videoCards = this.target.querySelectorAll('.video-card');
 
@@ -62,7 +62,7 @@ export default class VideoCardList extends Component {
       if (
         !entry.isIntersecting ||
         this.state.isLoading ||
-        !api.rootStore.state.searchResult.length
+        !videoService.rootStore.state.searchResult.length
       )
         return;
 
@@ -71,7 +71,7 @@ export default class VideoCardList extends Component {
       this.addSkeletons(QUERY_OPTIONS.SEARCH.maxResults);
 
       try {
-        await api.loadNextPage();
+        await videoService.loadNextPage();
         this.removeSkeletons();
       } catch (err) {
         alert(err);

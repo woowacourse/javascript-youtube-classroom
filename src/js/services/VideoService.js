@@ -1,47 +1,19 @@
-import { rootStore } from '../store/rootStore.js';
+import Store from '../store/Store.js';
 import WebStore from '../store/WebStore.js';
-import { REDIRECT_SERVER_HOST } from '../config/config.js';
+import { request, getSearchUrl } from '../utils/api.js';
 import { ERROR_MESSAGES, SAVED_VIDEO } from '../config/constants.js';
 
-const request = async (url) => {
-  const res = await fetch(url);
-  const body = await res.json();
+class VideoService {
+  constructor(initState) {
+    this.rootStore = new Store(initState);
+    this.webStore = new WebStore(SAVED_VIDEO.KEY);
+  }
 
-  if (!res.ok) throw new Error(body.error.message);
-
-  return body;
-};
-
-const getSearchUrl = (query, nextPageToken) => {
-  const url = new URL(
-    `${
-      process.env.NODE_ENV === 'development' ? 'dummy/' : ''
-    }youtube/v3/search`,
-    REDIRECT_SERVER_HOST
-  );
-
-  const parameters = new URLSearchParams({
-    part: 'snippet',
-    type: 'video',
-    maxResults: 10,
-    regionCode: 'kr',
-    safeSearch: 'strict',
-    pageToken: nextPageToken || '',
-    q: query,
-  });
-
-  url.search = parameters.toString();
-
-  return url;
-};
-
-const api = {
-  rootStore,
-  webStore: new WebStore(SAVED_VIDEO.KEY),
   clear() {
     this.rootStore.clear();
     this.webStore.clear();
-  },
+  }
+
   async searchVideos(query, nextPageToken = null, requestStrategy = request) {
     this.rootStore.setState({ isSearchQuerySubmitted: true });
 
@@ -58,7 +30,8 @@ const api = {
 
       throw err;
     }
-  },
+  }
+
   async loadNextPage(requestStrategy = request) {
     const { query, nextPageToken } = this.rootStore.state.searchOption;
 
@@ -69,7 +42,8 @@ const api = {
         query,
         nextPageToken: data.nextPageToken,
       });
-  },
+  }
+
   updateSearchResult(items, searchOption) {
     const savedVideos = this.webStore.load();
     const videos = items.map((item) => {
@@ -88,7 +62,8 @@ const api = {
       searchResult: videos,
       searchOption,
     });
-  },
+  }
+
   appendSearchResult(items, searchOption) {
     const savedVideos = this.webStore.load();
     const newVideos = items.map((item) => {
@@ -102,11 +77,12 @@ const api = {
       };
     });
 
-    rootStore.setState({
+    this.rootStore.setState({
       searchResult: [...this.rootStore.state.searchResult, ...newVideos],
       searchOption,
     });
-  },
+  }
+
   saveVideo(videoId) {
     const prevSavedVideos = this.webStore.load();
 
@@ -118,7 +94,23 @@ const api = {
     );
 
     this.webStore.save(duplicatedRemoved);
+  }
+}
+
+const initState = {
+  searchOption: {
+    query: '',
+    nextPageToken: null,
   },
+  isSearchQuerySubmitted: false,
+  searchResult: [],
+  isNoResult: null,
 };
 
-export default api;
+const videoService = new VideoService(initState);
+const useStore = (callback) => {
+  return callback(videoService.rootStore.state);
+};
+
+export default videoService;
+export { useStore };

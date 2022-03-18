@@ -1,5 +1,5 @@
 import Component from '../../core/Component.js';
-import api from '../../api/api.js';
+import videoService from '../../services/VideoService.js';
 import { throttle } from '../../utils/commons.js';
 import { SUBMIT_WAIT } from '../../config/constants.js';
 import { queryStringValidator, validate } from '../../utils/validator.js';
@@ -44,7 +44,7 @@ export default class SearchBar extends Component {
         log: process.env.NODE_ENV === 'development',
       });
 
-      await api.searchVideos(query);
+      await videoService.searchVideos(query);
     } catch (err) {
       alert(err);
     }
