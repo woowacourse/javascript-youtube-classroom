@@ -23,7 +23,20 @@
 //
 // -- This will overwrite an existing command --
 // Cypress.Commands.overwrite('visit', (originalFn, url, options) => { ... })
+import videoStorage from "../../src/js/videoStorage";
+
 Cypress.Commands.add("searchKeyword", (searchKeyword) => {
   cy.get("#search-input-keyword").clear().type(searchKeyword);
   cy.get("#search-button").click();
+});
+
+Cypress.Commands.add("addVideo", (videoId, boolean) => {
+  videoStorage.addVideo({
+    videoId,
+    thumbnailUrl: "https:",
+    title: "this is title",
+    channelName: "kkojae's channel",
+    publishDate: "2022년 3월 3일",
+    checked: boolean,
+  });
 });
