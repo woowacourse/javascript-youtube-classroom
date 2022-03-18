@@ -43,7 +43,7 @@ export default class SearchResult {
     });
     addEvent(this.container, {
       eventType: EVENT_TYPE.CLICK,
-      selector: '.video-item__save-button',
+      selector: '.list-item__save-button',
       handler: this.handleClickSaveButton,
     });
   }
@@ -51,7 +51,7 @@ export default class SearchResult {
   handleClickSaveButton = ({ target: $target }) => {
     try {
       const { videoId, videoTitle, videoChanneltitle, videoPublishtime, videoThumbnail } =
-        $target.closest('.video-item').dataset;
+        $target.closest('.list-item').dataset;
 
       YoutubeSaveStorage.addVideo(videoId, {
         videoTitle,
