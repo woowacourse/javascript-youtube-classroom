@@ -48,7 +48,7 @@ export default class Main {
   }
 
   renderVideos(watched) {
-    const saveVideos = store.getLocalStorage(STORAGE_KEY);
+    const saveVideos = store.getLocalStorage(STORAGE_KEY.VIDEO);
     const filteredVideos = saveVideos?.filter(
       video => video.watched === watched,
     );

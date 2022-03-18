@@ -45,8 +45,7 @@
 }
 
 .search-input {
-  display: flex;
-  justify-content: center;
+  text-align: center;
   margin-bottom: 40px;
 }
 
@@ -83,6 +82,21 @@
   height: 36px;
   background: var(--search-button-bg-color);
   color: var(--search-button-text-color);
+}
+
+.recent-search {
+  margin-top: 10px;
+}
+
+.recent-search__button {
+  background: var(--option-button-bg-color);
+  margin: 0 10px;
+  font-size: 17px;
+  font-weight: normal;
+}
+
+.recent-search__button:hover {
+  background: var(--option-button-hover-color);
 }
 
 .no-result {

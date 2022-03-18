@@ -1,10 +1,10 @@
-import { MAX_SAVE_COUNT, MESSAGE } from '../constants';
+import { MAX_VIDEO_SAVE_COUNT, MESSAGE } from '../constants';
 
 export const store = {
   setLocalStorage(key, value) {
     const saveDatas = store.getLocalStorage(key) ?? [];
 
-    if (saveDatas.length >= MAX_SAVE_COUNT) {
+    if (saveDatas.length >= MAX_VIDEO_SAVE_COUNT) {
       throw Error(MESSAGE.ERROR_EXCESS_SAVE_COUNT);
     }
 

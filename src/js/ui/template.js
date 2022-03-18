@@ -114,10 +114,24 @@ const getAllVideoTemplate = videos => {
   return template;
 };
 
+const getRecentSearchButtonTemplate = recentSearch => {
+  const template = recentSearch
+    .map(
+      text => `
+      <button type="button" class="recent-search__button button">
+        ${text}
+      </button>
+    `,
+    )
+    .join('');
+  return template;
+};
+
 export {
   skeletonTemplate,
   getFoundResultTemplate,
   notFoundTemplate,
   getAllVideoTemplate,
   getVideoTemplate,
+  getRecentSearchButtonTemplate,
 };

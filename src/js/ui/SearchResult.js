@@ -1,9 +1,9 @@
-import { getFoundResultTemplate, notFoundTemplate } from './template';
 import { skeletonUI } from './loading';
 import { searchVideos } from '../domain/youtubeApi';
 import { $ } from '../utils/dom';
 import { delay } from '../utils/common';
 import { showExceptionSnackBar } from '../utils/snackBar';
+import { getFoundResultTemplate, notFoundTemplate } from './template';
 
 export default class SearchResult {
   renderVideoList(json) {

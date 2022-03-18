@@ -18,7 +18,7 @@ class App {
     try {
       getVideoInfo(videoId).then(response => {
         const saveData = configureVideoData(response.items[0]);
-        store.setLocalStorage(STORAGE_KEY, saveData);
+        store.setLocalStorage(STORAGE_KEY.VIDEO, saveData);
         showExceptionSnackBar(MESSAGE.SAVE_COMPLETE);
         e.target.setAttribute('hidden', true);
         this.main.addVideo(saveData);
@@ -30,14 +30,14 @@ class App {
 
   watchVideoHandler(e) {
     const { videoId } = e.target.dataset;
-    const saveVideos = store.getLocalStorage(STORAGE_KEY);
+    const saveVideos = store.getLocalStorage(STORAGE_KEY.VIDEO);
 
-    store.removeLocalStorage(STORAGE_KEY);
+    store.removeLocalStorage(STORAGE_KEY.VIDEO);
     saveVideos.forEach(video => {
       if (video.videoId === videoId) {
         video.watched = !video.watched;
       }
-      store.setLocalStorage(STORAGE_KEY, video);
+      store.setLocalStorage(STORAGE_KEY.VIDEO, video);
     });
 
     showExceptionSnackBar(MESSAGE.MODIFY_COMPLETE);
@@ -48,12 +48,12 @@ class App {
   deleteVideoHandler(e) {
     if (!confirm(MESSAGE.ASK_DELETE)) return;
     const { videoId } = e.target.dataset;
-    const saveVideos = store.getLocalStorage(STORAGE_KEY);
+    const saveVideos = store.getLocalStorage(STORAGE_KEY.VIDEO);
 
-    store.removeLocalStorage(STORAGE_KEY);
+    store.removeLocalStorage(STORAGE_KEY.VIDEO);
     saveVideos.forEach(video => {
       if (video.videoId !== videoId) {
-        store.setLocalStorage(STORAGE_KEY, video);
+        store.setLocalStorage(STORAGE_KEY.VIDEO, video);
       }
     });
 
