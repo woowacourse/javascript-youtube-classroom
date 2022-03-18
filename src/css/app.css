@@ -11,6 +11,9 @@
     --input-placeholder-color:#8B8B8B;
     --save-button-bg-color:#F9F9F9;
     --save-button-hover-bg-color:#efefef;
+    --snackbar-primary-bg-color:#1CB1C3;
+    --snackbar-error-bg-color:#A4070A;
+    --snackbar-font-color:#ffff;
 }
 
 body {
