@@ -103,7 +103,10 @@ export default class SearchVideoModal {
       $('.video-item__published-date', parentNode).textContent = publishTime;
 
       if (this.#storageEngine.isSavedVideo(videoId)) {
-        $('.video-item__save-button', parentNode).classList.add('saved');
+        const saveButton = $('.video-item__save-button', parentNode);
+
+        saveButton.classList.add('saved');
+        saveButton.textContent = '저장 됨';
       }
 
       parentNode.classList.remove('skeleton');
@@ -187,6 +190,7 @@ export default class SearchVideoModal {
 
       this.#storageEngine.saveVideo(data);
       e.target.classList.add('saved');
+      e.target.textContent = '저장 됨';
     }
   };
 }
