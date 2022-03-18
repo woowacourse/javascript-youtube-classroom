@@ -41,7 +41,7 @@ export default class MainView {
   bindVideoItemButtons(callback) {
     [this.$willSeeVideoList, this.$sawVideoList].forEach(videoList =>
       videoList.addEventListener('click', event => {
-        if (event.target.classList.includes(DOM_STRING.VIDEO_ITEM_BUTTON)) {
+        if ([...event.target.classList].includes(DOM_STRING.VIDEO_ITEM_BUTTON)) {
           const videoId = event.target.closest(SELECTOR.VIDEO_ITEM).dataset.videoid;
           callback(event.target.id, videoId, this.currentStoreType);
           this.deleteVideoItem(event.target.closest(SELECTOR.VIDEO_ITEM));
