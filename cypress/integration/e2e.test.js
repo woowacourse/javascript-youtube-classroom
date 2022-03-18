@@ -89,6 +89,16 @@ describe('볼 영상 확인/ 본 영상 확인 / 영상 삭제 기능 테스트'
 
       cy.get('.my-video-list').children().should('have.length', 0);
     });
+
+    it('본 영상 탭을 클릭하여 본 영상들을 확인할 수 있다', () => {
+      cy.get('#viewed-videos-tab-button').click();
+      cy.get('.my-video-list').children().should('have.length', 1);
+
+      cy.get('.my-video-list')
+        .children('.video-item')
+        .find('.video-item__view-cancel-button')
+        .should('be.visible');
+    });
   });
 
   context('비디오를 삭제하고, 저장된 영상이 없을 경우 메시지를 통해 확인할 수 있다.', () => {
