@@ -1,29 +1,32 @@
 /* eslint-disable max-lines-per-function */
 import { SAVED_VIDEO_LIST_KEY, WATCHED_VIDEO_LIST_KEY } from '../constants/constant';
-import { getSaveVideoList } from '../utils/request';
+import { getSaveVideoList, testSaveRequest } from '../utils/request';
+import { checkSearchResult } from '../videoItem';
 
 export default class StateController {
-  constructor() {
-    this.initVideoLists();
-    this.printVideoLists();
-  }
-
   printVideoLists() {
     console.log('ToWatch: ', StateController.prototype.savedToWatchVideoList);
     console.log('Watched: ', StateController.prototype.savedWatchedVideoList);
+    console.log('Whole: ', StateController.prototype.wholeVideoList);
   }
 
-  initVideoLists() {
+  async initVideoLists() {
     if (localStorage.getItem(SAVED_VIDEO_LIST_KEY)) {
-      StateController.prototype.savedToWatchVideoList = getSaveVideoList(
-        JSON.parse(localStorage.getItem(SAVED_VIDEO_LIST_KEY))
+      StateController.prototype.savedToWatchVideoList = checkSearchResult(
+        await testSaveRequest(JSON.parse(localStorage.getItem(SAVED_VIDEO_LIST_KEY)))
       );
     }
     if (localStorage.getItem(WATCHED_VIDEO_LIST_KEY)) {
-      StateController.prototype.savedWatchedVideoList = getSaveVideoList(
-        JSON.parse(localStorage.getItem(WATCHED_VIDEO_LIST_KEY))
+      StateController.prototype.savedWatchedVideoList = checkSearchResult(
+        await testSaveRequest(JSON.parse(localStorage.getItem(WATCHED_VIDEO_LIST_KEY)))
       );
     }
+    StateController.prototype.wholeVideoList = [
+      ...this.savedToWatchVideoList,
+      ...this.savedWatchedVideoList,
+    ];
+    console.log(StateController.prototype.savedToWatchVideoList);
+    console.log(StateController.prototype.wholeVideoList);
   }
 
   updateWholeVideoList(videoList) {
@@ -37,8 +40,11 @@ export default class StateController {
     }
     const newToWatchVideos = [...oldLocalToWatchVideos, videoId];
     localStorage.setItem(SAVED_VIDEO_LIST_KEY, JSON.stringify(newToWatchVideos));
+    console.log(newToWatchVideos);
     StateController.prototype.savedToWatchVideoList =
       StateController.prototype.wholeVideoList.filter(video => newToWatchVideos.includes(video.id));
+    console.log(StateController.prototype.savedToWatchVideoList);
+    console.log(StateController.prototype.wholeVideoList);
   }
 
   watchVideo(videoId) {

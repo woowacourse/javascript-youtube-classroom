@@ -1,10 +1,10 @@
-class VideoItem {
+export class VideoItem {
   constructor(item) {
     const {
-      id: { videoId },
+      id,
       snippet: { publishedAt, title, thumbnails, channelTitle },
     } = item;
-    this.id = videoId;
+    this.id = id.videoId || id;
     this.publishedAt = this.conventPublishedAtFormat(publishedAt);
     this.title = title;
     this.thumbnailUrl = thumbnails.medium.url;
@@ -17,4 +17,10 @@ class VideoItem {
   }
 }
 
-export default VideoItem;
+export const checkSearchResult = searchResult => {
+  if (searchResult === null) {
+    return [];
+  }
+  const videos = searchResult.items.map(item => new VideoItem(item));
+  return videos;
+};

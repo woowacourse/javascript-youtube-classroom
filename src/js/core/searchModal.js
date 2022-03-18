@@ -5,10 +5,10 @@ import {
   MAX_RENDER_VIDEOS_COUNT,
   SAVED_VIDEO_LIST_KEY,
 } from '../constants/constant';
-import VideoItem from '../videoItem';
+import { VideoItem, checkSearchResult} from '../videoItem';
 import { isInputValueEmpty } from '../utils/checkvalue';
 import { renderSkeletonItems, removeSkeleton } from '../views/render';
-import { searchResultRequest } from '../utils/request';
+import { searchResultRequest, testRequest } from '../utils/request';
 import StateController from './stateController';
 
 export default class SearchModal extends StateController {
@@ -26,14 +26,6 @@ export default class SearchModal extends StateController {
   addEvent() {
     this.$button.addEventListener('click', this.handleClickButton.bind(this));
     this.$modalVideoList.addEventListener('scroll', this.handleScroll.bind(this));
-  }
-
-  checkSearchResult(searchResult) {
-    if (searchResult === null) {
-      return [];
-    }
-    const videos = searchResult.items.map(item => new VideoItem(item));
-    return videos;
   }
 
   renderVideoItems(videos) {
@@ -68,9 +60,10 @@ export default class SearchModal extends StateController {
     }
     this.$modalSearchResult.classList.remove('search-result--no-result');
     renderSkeletonItems(MAX_RENDER_VIDEOS_COUNT, this.$modalVideoList);
-    const searchResult = await searchResultRequest(searchKeyWord, this.nextPageToken);
+    const searchResult = await testRequest(searchKeyWord, this.nextPageToken);
+    //const searchResult = await searchResultRequest(searchKeyWord, this.nextPageToken);
     removeSkeleton(this.$modalVideoList);
-    const videos = this.checkSearchResult(searchResult);
+    const videos = checkSearchResult(searchResult);
 
     if (videos.length === 0) {
       this.$modalSearchResult.classList.add('search-result--no-result');
@@ -119,7 +112,6 @@ export default class SearchModal extends StateController {
     }
     console.log(this);
     this.saveVideo(videoId);
-    console.log(this.savedToWatchVideoList);
     return true;
   }
 }

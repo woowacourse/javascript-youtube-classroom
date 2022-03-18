@@ -1,9 +1,8 @@
 /* eslint-disable max-lines-per-function */
 import SearchModal from './searchModal';
 import { $ } from '../utils/dom';
-import VideoItem from '../videoItem';
+import { VideoItem, checkSearchResult } from '../videoItem';
 import StateController from './stateController';
-
 export default class MainPage extends StateController {
   constructor() {
     super();
@@ -16,6 +15,15 @@ export default class MainPage extends StateController {
     this.addEvent();
     const searchModal = new SearchModal();
     searchModal.init();
+  }
+
+  async init() {
+    await this.initVideoLists();
+    if (StateController.prototype.savedToWatchVideoList.length === 0) {
+      this.$mainSearchResult.classList.add('search-result--no-result');
+      return;
+    }
+    this.renderVideoItems(StateController.prototype.savedToWatchVideoList);
   }
 
   addEvent() {
@@ -57,14 +65,6 @@ export default class MainPage extends StateController {
     });
   }
 
-  checkSearchResult(searchResult) {
-    if (searchResult === null) {
-      return [];
-    }
-    const videos = searchResult.items.map(item => new VideoItem(item));
-    return videos;
-  }
-
   handleClickWatchedButton() {
     if (this.$mainVideoList.classList.contains('watched-video-list')) {
       return;
@@ -74,6 +74,7 @@ export default class MainPage extends StateController {
     this.$mainVideoList.classList.add('watched-video-list');
     this.$mainVideoList.replaceChildren();
     const videos = StateController.prototype.savedWatchedVideoList;
+
     if (videos.length === 0) {
       this.$mainSearchResult.classList.add('search-result--no-result');
       return;
@@ -91,6 +92,7 @@ export default class MainPage extends StateController {
     this.$mainVideoList.classList.remove('watched-video-list');
     this.$mainVideoList.replaceChildren();
     const videos = StateController.prototype.savedToWatchVideoList;
+
     if (videos.length === 0) {
       this.$mainSearchResult.classList.add('search-result--no-result');
       return;
@@ -112,4 +114,5 @@ export default class MainPage extends StateController {
   }
 }
 
-new MainPage();
+const mainPage = new MainPage();
+mainPage.init();
