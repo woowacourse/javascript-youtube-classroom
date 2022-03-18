@@ -1,6 +1,7 @@
 import Template from './Template.js';
 import { $, $$ } from '../utils/dom.js';
 import { emit } from '../utils/event.js';
+import getRelativeDate from '../utils/date.js';
 
 export default class SearchResultView {
   constructor() {
@@ -33,7 +34,7 @@ export default class SearchResultView {
       $item.classList.remove('skeleton');
       $('.video-item__title', $item).innerText = newVideoItems[idx].title;
       $('.video-item__channel-name', $item).innerText = newVideoItems[idx].channelTitle;
-      $('.video-item__published-date', $item).innerText = newVideoItems[idx].publishTime;
+      $('.video-item__published-date', $item).innerText = getRelativeDate(newVideoItems[idx].publishTime);
       const $savedButton = $('.video-item__save-button', $item);
       $savedButton.innerText = newVideoItems[idx].saved ? '저장됨' : '⬇ 저장';
       $savedButton.classList.add(newVideoItems[idx].saved ? 'saved-button' : 'button');

@@ -1,3 +1,5 @@
+import getRelativeDate from '../utils/date';
+
 export default class Template {
   getThumbnail(imgUrl, videoId) {
     return `
@@ -102,7 +104,7 @@ export default class Template {
         </iframe>
         <h4 class="video-item__title">${title}</h4>
         <p class="video-item__channel-name">${channelTitle}</p>
-        <p class="video-item__published-date">${publishTime}</p>
+        <p class="video-item__published-date">${getRelativeDate(publishTime)}</p>
         <button id="${videoId}" class="button video-item__button  video-item__button--watched">✅</button>
         <button id="${videoId}" class="button video-item__button video-item__button--delete">🗑️</button>
       </div>
