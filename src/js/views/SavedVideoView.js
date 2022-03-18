@@ -1,17 +1,14 @@
 import { $ } from './utils.js';
-import { SELECTOR } from '../constants/index.js';
+import { CONFIRM_MESSAGE, SELECTOR } from '../constants/index.js';
+import UserStorage from '../UserStorage/index.js';
 
 export default class SavedVideoView {
-  #getSavedVideoData;
   #savedVideoData;
-  #editVideoData;
   #changeVideoWatchedStateBind;
   #$playlist;
   #$watched;
 
-  constructor(getSavedVideoData, editVideoData) {
-    this.#getSavedVideoData = getSavedVideoData;
-    this.#editVideoData = editVideoData;
+  constructor() {
     this.#$playlist = $(SELECTOR.PLAYLIST_VIDEO);
     this.#$watched = $(SELECTOR.WATCHED_VIDEO);
     this.#bindSavedVideoList();
@@ -61,7 +58,7 @@ export default class SavedVideoView {
   }
 
   appendVideos() {
-    this.#savedVideoData = this.#getSavedVideoData();
+    this.#savedVideoData = UserStorage.getVideoData();
     this.#renderVideo();
     this.#bindButtonEvent();
   }
@@ -70,13 +67,24 @@ export default class SavedVideoView {
     $('#saved-video-list').addEventListener('click', this.#changeVideoWatchedStateBind);
   }
 
+  #updateSavedVideo() {
+    UserStorage.editVideoData(this.#savedVideoData);
+    this.#renderVideo();
+  }
+
   #changeVideoWatchedState(e) {
     const element = e.target;
+    const currentVideoIndex = this.#savedVideoData.findIndex((video) => video.id === element.dataset.videoId);
     if (element.dataset.kind === 'checkWatched') {
-      const currentVideoIndex = this.#savedVideoData.findIndex((video) => video.id === element.dataset.videoId);
       this.#savedVideoData[currentVideoIndex].watched = !this.#savedVideoData[currentVideoIndex].watched;
-      this.#editVideoData(this.#savedVideoData);
-      this.#renderVideo();
+      this.#updateSavedVideo();
+    }
+    if (element.dataset.kind === 'delete') {
+      let checkDelete = confirm(CONFIRM_MESSAGE.CHECK_DELETE);
+      if (checkDelete) {
+        this.#savedVideoData.splice(currentVideoIndex, 1);
+        this.#updateSavedVideo();
+      }
     }
   }
 }

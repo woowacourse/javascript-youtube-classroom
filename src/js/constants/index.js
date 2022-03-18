@@ -21,3 +21,7 @@ export const ERROR_MESSAGE = {
   EMPTY_KEYWORD: '검색어를 입력해주세요!',
   EXCEED_MAX_STORE_CAPACITY: '100개보다 많이 저장할 수 없습니다.',
 };
+
+export const CONFIRM_MESSAGE = {
+  CHECK_DELETE: '내 저장된 리스트에서 지우시겠습니까?',
+};
