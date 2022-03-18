@@ -39,7 +39,7 @@ class AppBusiness {
 
   onSubmitSearchKeyword = async ({ detail: { keyword } }) => {
     try {
-      const searchResult = await this.requestVideo(keyword);
+      const searchResult = await this.requestSearchVideoList(keyword);
 
       if (isNoneSearchResult(searchResult)) {
         setState(STATE_STORE_KEY.SEARCH_RESULT, {
@@ -67,7 +67,7 @@ class AppBusiness {
   onLoadNewVideoList = async () => {
     const { keyword, nextPageToken: currentPageToken } = getState(STATE_STORE_KEY.SEARCH_RESULT);
     try {
-      const searchResult = await this.requestVideo(keyword, currentPageToken);
+      const searchResult = await this.requestSearchVideoList(keyword, currentPageToken);
 
       const { nextPageToken, videoList } = this.extractSearchResult(searchResult);
 
@@ -168,7 +168,7 @@ class AppBusiness {
     );
   }
 
-  async requestVideo(keyword, pageToken) {
+  async requestSearchVideoList(keyword, pageToken) {
     setState(STATE_STORE_KEY.IS_SEARCH_VIDEO_WAITING, true);
 
     const alreadyData = getCacheData(`${keyword}-${pageToken}`);
