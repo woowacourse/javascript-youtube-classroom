@@ -20,8 +20,7 @@ class Watch {
       }
     });
 
-    localStorage.setItem('videos', JSON.stringify(videos));
-    MyVideoStore.instance.dispatch();
+    MyVideoStore.instance.dispatch(videos);
   }
 }
 

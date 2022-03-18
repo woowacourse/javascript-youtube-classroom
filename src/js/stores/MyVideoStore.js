@@ -20,7 +20,8 @@ class MyVideoStore {
     this.#subscribers.push(element);
   }
 
-  dispatch() {
+  dispatch(data) {
+    localStorage.setItem('videos', JSON.stringify(data));
     const newVideos = this.loadVideos();
 
     this.#videos = newVideos;

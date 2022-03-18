@@ -16,12 +16,9 @@ class Delete {
     if (!window.confirm(CONFIRM_MESSAGE.DELETE_VIDEO)) return;
 
     const videos = MyVideoStore.instance.getVideos();
+    const newVideos = videos.filter((video) => videoId !== video.details.id);
 
-    localStorage.setItem(
-      'videos',
-      JSON.stringify(videos.filter((video) => videoId !== video.details.id))
-    );
-    MyVideoStore.instance.dispatch();
+    MyVideoStore.instance.dispatch(newVideos);
   }
 }
 

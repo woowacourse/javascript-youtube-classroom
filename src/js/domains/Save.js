@@ -23,9 +23,9 @@ class Save {
       }
 
       const details = SearchVideoStore.instance.findVideo(videoId);
+      const newVideos = [...myVideos, { details, isWatched: false }];
 
-      localStorage.setItem('videos', JSON.stringify([...myVideos, { details, isWatched: false }]));
-      MyVideoStore.instance.dispatch();
+      MyVideoStore.instance.dispatch(newVideos);
     } catch (error) {
       alert(error.message);
     }
