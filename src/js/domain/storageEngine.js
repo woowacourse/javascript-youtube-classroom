@@ -17,6 +17,14 @@ export default class StorageEngine {
     return JSON.parse(localStorage.getItem('savedVideos')) ?? [];
   }
 
+  getWatchLaterVideos() {
+    return this.getSavedVideos().filter((video) => video.isWatched === false);
+  }
+
+  getWatchedVideos() {
+    return this.getSavedVideos().filter((video) => video.isWatched === true);
+  }
+
   isSavedVideo(videoId) {
     return this.getSavedVideos()
       .map(({ videoId }) => videoId)

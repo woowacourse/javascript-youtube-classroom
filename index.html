@@ -21,8 +21,12 @@
         </div>
       </nav>
     </main>
-    <section class="watch-later-container video-container"></section>
-    <section class="watched-container video-container"></section>
+    <section class="watch-later-container video-container">
+      <ul class="video-list watch-later-video-list"></ul>
+    </section>
+    <section class="watched-container video-container hide">
+      <ul class="video-list watched-video-list"></ul>
+    </section>
 
     <div class="modal-container hide">
       <div class="dimmer"></div>
@@ -41,7 +45,7 @@
         <section class="search-result">
           <h3 hidden>검색 결과</h3>
           <div class="no-result hide"></div>
-          <ul class="video-list"></ul>
+          <ul class="video-list modal-video-list"></ul>
         </section>
       </div>
     </div>

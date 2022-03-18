@@ -52,8 +52,8 @@ body {
   justify-content: center;
 }
 
-.video-container > ul {
-  justify-content: space-between;
+.video-container.hide {
+  display: none;
 }
 
 .button-list {

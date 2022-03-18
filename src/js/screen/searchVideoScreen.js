@@ -42,7 +42,7 @@ export default class SearchVideoScreen {
   #searchInputKeyword = $('#search-input-keyword');
   #searchResult = $('.search-result');
   #noResult = $('.no-result');
-  #videoList = $('.video-list');
+  #modalVideoList = $('.modal-video-list');
 
   constructor() {
     this.#searchButton.addEventListener('click', this.#handleSearchVideos);
@@ -65,18 +65,18 @@ export default class SearchVideoScreen {
       } catch ({ message: status }) {
         if (isServerError(status)) this.#renderServerErrorResult();
       }
-      this.#videoList.addEventListener('scroll', this.#handleInfiniteScroll);
+      this.#modalVideoList.addEventListener('scroll', this.#handleInfiniteScroll);
     }
   };
 
   #initSearchEnvironment() {
     this.#hideNoResultView();
-    this.#videoList.replaceChildren('');
+    this.#modalVideoList.replaceChildren('');
     this.#searchEngine.resetPageToken();
   }
 
   #renderSkeleton() {
-    this.#videoList.insertAdjacentHTML('beforeend', SKELETON_TEMPLATE);
+    this.#modalVideoList.insertAdjacentHTML('beforeend', SKELETON_TEMPLATE);
   }
 
   #hideNoResultView() {
@@ -114,11 +114,11 @@ export default class SearchVideoScreen {
     const remainedSkeletonCount = VIDEO_COUNT - preprocessedData.length;
 
     for (let i = 0; i < remainedSkeletonCount; i++) {
-      this.#videoList.removeChild(this.#videoList.lastElementChild);
+      this.#modalVideoList.removeChild(this.#modalVideoList.lastElementChild);
     }
 
     if (this.#searchEngine.pageToken === null) {
-      this.#videoList.removeEventListener('scroll', this.#handleInfiniteScroll);
+      this.#modalVideoList.removeEventListener('scroll', this.#handleInfiniteScroll);
       //TODO : 스낵바로 "더 이상의 검색결과는 존재하지 않습니다."
     }
   }
@@ -147,7 +147,7 @@ export default class SearchVideoScreen {
 
   #renderSearchResult(data, eventType) {
     if (data === null) {
-      this.#videoList.replaceChildren('');
+      this.#modalVideoList.replaceChildren('');
       if (eventType === '@scroll') return;
 
       this.#showNoResultView();
@@ -161,7 +161,7 @@ export default class SearchVideoScreen {
 
   #renderServerErrorResult() {
     this.#showNoResultView();
-    this.#videoList.replaceChildren('');
+    this.#modalVideoList.replaceChildren('');
     this.#noResult.replaceChildren('');
     this.#noResult.insertAdjacentHTML('beforeend', SERVER_ERROR_TEMPLATE);
   }
