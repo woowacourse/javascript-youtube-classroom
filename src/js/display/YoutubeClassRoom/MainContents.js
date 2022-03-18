@@ -79,8 +79,10 @@ export default class MainContents {
       <p class="list-item__published-date">${getParsedTime(videoPublishtime)}</p>
       <button id="toggle-watched-button" class="list-item__toggle-button ${
         watched ? 'watched' : ''
-      }" type="button">✅</button>
-      <button id="remove-video-button" class="list-item__remove-button" type="button">🗑️</button>
+      }" type="button"
+      aria-label="toggle watch status"
+      >✅</button>
+      <button id="remove-video-button" class="list-item__remove-button" type="button" aria-label="delete video">🗑️</button>
      `,
       });
     });

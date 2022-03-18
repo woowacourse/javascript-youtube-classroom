@@ -12,8 +12,8 @@
     <nav id="classroom-navigation" class="nav">
       <button id="search-modal-button" class="button nav__button" data-navigation="searchModal">🔍검색</button>
       <section class="nav__filter">
-        <button id="watch-later-list-button" class="button nav__button" data-navigation="watchLater">👀 볼 영상</button>
-        <button id="watched-list-button" class="button nav__button" data-navigation="watched">✨ 본 영상</button>
+        <button id="watch-later-list-button" class="button nav__button" data-navigation="watchLater" aria-label="select watch later navigation" type="button">👀 볼 영상</button>
+        <button id="watched-list-button" class="button nav__button" data-navigation="watched"  aria-label="select watched navigation" type="button">✨ 본 영상</button>
       </section>
     </nav>
     <section id="main-contents" class="classroom-main">
@@ -25,8 +25,8 @@
       <h2 id="search-modal-title" class="modal-content__title">🔍 보고싶은 영상 찾기 🔍</h2>
       <form id="search-form" class="search-input">
         <h3 hidden>검색어 입력</h3>
-        <input id="search-input-keyword" type="text" placeholder="검색" class="search-input__keyword">
-        <button id="search-button" class="search-input__search-button button" disabled>검색</button>
+        <input id="search-input-keyword" type="text" placeholder="검색" class="search-input__keyword"  aria-label="search keyword">
+        <button id="search-button" class="search-input__search-button button" aria-label="submit keyword" disabled>검색</button>
       </form>
       <section id="search-result" class="search-result">
         <h3 hidden>검색 결과</h3>

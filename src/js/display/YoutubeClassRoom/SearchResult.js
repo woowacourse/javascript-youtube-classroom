@@ -120,7 +120,11 @@ export default class SearchResult {
         <h4 class="list-item__title">${title}</h4>
         <p class="list-item__channel-name">${channelTitle}</p>
         <p class="list-item__published-date">${getParsedTime(publishTime)}</p>
-        ${isSaved ? '' : '<button class="list-item__save-button button">⬇ 나중에 보기</button>'}`,
+        ${
+          isSaved
+            ? ''
+            : '<button class="list-item__save-button button" type="button" aria-label="save video">⬇ 나중에 보기</button>'
+        }`,
       });
     });
   }
