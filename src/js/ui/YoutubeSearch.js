@@ -1,7 +1,7 @@
 import { request } from '../domain/youtubeApi';
 import { debounce } from '../utils/common';
 import { $, showSnackBar } from '../utils/dom';
-import { skeleton } from './skeleton';
+import { skeletonUI } from './skeletonUI';
 import { youtubeSearchResult } from './youtubeSearchResult';
 
 export default class YoutubeSearch {
@@ -20,14 +20,14 @@ export default class YoutubeSearch {
 
   handleSubmit = () => {
     $('.video-list').replaceChildren();
-    skeleton.renderSkeletonUI();
+    skeletonUI.render();
     request(this.input.value)
       .then(videoData => {
         youtubeSearchResult.renderInitialVideoList(videoData);
       })
       .catch(({ message }) => {
         showSnackBar(message);
-        skeleton.removeSkeletonUI();
+        skeletonUI.remove();
       });
   };
 

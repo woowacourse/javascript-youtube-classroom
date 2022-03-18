@@ -4,7 +4,7 @@ import NoResultImage from '../../assets/images/not_found.png';
 import { store } from '../domain/store';
 import { request } from '../domain/youtubeApi';
 import { convertToKoreaLocaleDate } from '../utils/common';
-import { skeleton } from './skeleton';
+import { skeletonUI } from './skeletonUI';
 import { video } from '../domain/video';
 
 export const youtubeSearchResult = {
@@ -69,11 +69,11 @@ export const youtubeSearchResult = {
   },
 
   renderNextVideoList(nextPageToken) {
-    skeleton.renderSkeletonUI();
+    skeletonUI.render();
 
     request($('#search-input-keyword').value, nextPageToken)
       .then(videoData => {
-        skeleton.removeSkeletonUI();
+        skeletonUI.remove();
         this.$videoList.insertAdjacentHTML('beforeend', this.searchResultTemplate(videoData.items));
 
         if (videoData && videoData.nextPageToken) {
