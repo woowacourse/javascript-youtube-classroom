@@ -6,15 +6,15 @@ export default class SavedVideoView {
   #$watched;
 
   constructor(savedVideoIds) {
-    this.#$playlist = $('#playlist-video');
-    this.#$watched = $('#watched-video');
-    this.bindSavedVideoList();
+    this.#$playlist = $(SELECTOR.PLAYLIST_VIDEO);
+    this.#$watched = $(SELECTOR.WATCHED_VIDEO);
+    this.#bindSavedVideoList();
     this.#appendVideos(savedVideoIds);
   }
 
-  bindSavedVideoList() {
-    $(SELECTOR.PLAYLIST_VIDEO).addEventListener('click', this.#changeVideoListContents.bind(this, 'add'));
-    $(SELECTOR.WATCHED_VIDEO).addEventListener('click', this.#changeVideoListContents.bind(this, 'remove'));
+  #bindSavedVideoList() {
+    $(SELECTOR.DISPLAY_PLAYLIST_SECTION).addEventListener('click', this.#changeVideoListContents.bind(this, 'add'));
+    $(SELECTOR.DISPLAY_WATCHED_SECTION).addEventListener('click', this.#changeVideoListContents.bind(this, 'remove'));
   }
 
   #isValidVideo(kind, watched) {
@@ -35,7 +35,9 @@ export default class SavedVideoView {
         <h4 class="video-item__title">[Playlist] ${video.title}</h4>
         <p class="video-item__channel-name">${video.channelTitle}</p>
         <p class="video-item__published-date">${video.date}</p>
-        <button class="check-watched-button video-list-button button ${kind === 'watched' ? 'watched' : ''}" type="button">✅</button>
+        <button data-video-id="${video.id}" class="check-watched-button video-list-button button ${
+            kind === 'watched' ? 'watched' : ''
+          }" type="button">✅</button>
         <button data-video-id="${video.id}" class="delete-button video-list-button button" type="button">🗑️</button>
       </li>`
       )

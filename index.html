@@ -12,23 +12,25 @@
       <h1 class="classroom-container__title">👩🏻‍💻 나만의 유튜브 강의실 👨🏻‍💻</h1>
       <nav class="nav">
         <div class="select_saved_video_option">
-          <input type="radio" id="playlist_video" name="select_saved_video" checked />
-          <label for="playlist_video" class="nav__button_border left_round_button button nav__button">👁️ 볼 영상</label>
+          <input type="radio" id="display-playlist-section" name="select_saved_video" checked />
+          <label for="display-playlist-section" class="nav__button_border left_round_button button nav__button">👁️ 볼 영상</label>
         </div>
         <div class="select_saved_video_option">
-          <input type="radio" id="watched_video" name="select_saved_video" />
-          <label for="watched_video" class="nav__button_border right_round_button button nav__button">✅ 본 영상</label>
+          <input type="radio" id="display-watched-section" name="select_saved_video" />
+          <label for="display-watched-section" class="nav__button_border right_round_button button nav__button">✅ 본 영상</label>
         </div>
         <button id="search-modal-button" class="margin_left_auto button nav__button" type="button">🔍 검색</button>
       </nav>
-      <section id="playlist" class="playlist_display">
-        <h3>볼 영상 리스트</h3>
-        <ul id="playlist-video" class="video-list"></ul>
-      </section>
-      <section id="watched" class="watched_display">
-        <h3>본 영상 리스트</h3>
-        <ul id="watched-video" class="video-list"></ul>
-      </section>
+      <div id="saved-video-list">
+        <section id="playlist" class="playlist_display">
+          <h3>볼 영상 리스트</h3>
+          <ul id="playlist-video" class="video-list"></ul>
+        </section>
+        <section id="watched" class="watched_display">
+          <h3>본 영상 리스트</h3>
+          <ul id="watched-video" class="video-list"></ul>
+        </section>
+      </div>
     </main>
     <div id="search-modal" class="modal-container hide">
       <div id="modal-background" class="dimmer"></div>

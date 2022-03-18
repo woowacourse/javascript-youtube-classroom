@@ -9,8 +9,10 @@ export const SELECTOR = {
   SEARCH_INPUT_KEYWORD: '#search-input-keyword',
   VIDEOS: '#videos',
   EMPTY_SCREEN: '#empty-screen',
-  PLAYLIST_VIDEO: '#playlist_video',
-  WATCHED_VIDEO: '#watched_video',
+  DISPLAY_PLAYLIST_SECTION: '#display-playlist-section',
+  DISPLAY_WATCHED_SECTION: '#display-watched-section',
+  PLAYLIST_VIDEO: '#playlist-video',
+  WATCHED_VIDEO: '#watched-video',
 };
 
 export const MAX_STORE_CAPACITY = 100;
