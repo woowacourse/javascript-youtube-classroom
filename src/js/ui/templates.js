@@ -54,7 +54,7 @@ const template = {
   </div>
   `,
 
-  afterWatchVideoItem: (savedItems) => `
+  afterWatchVideoItem: (savedItems, isWatched) => `
   ${savedItems
     .map(({ videoId, videoThumbnail, videoDate, videoTitle, videoChannelTitle }) => {
       return `
@@ -67,7 +67,11 @@ const template = {
       <p class="video-item__channel-name" >${videoChannelTitle}</p>
       <p class="video-item__published-date" >${videoDate}</p>
       <div class="video-watch-controller">
-        <button class="watch-video-button button">✅</button>
+        ${
+          isWatched
+            ? '<button class="after-watch-video-button button">👁️</button>'
+            : '<button class="watch-video-button button">✅</button>'
+        } 
         <button class="delete-watch-video-button button">🗑️</button>
       </div>
     </section>

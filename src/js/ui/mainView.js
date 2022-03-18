@@ -7,26 +7,33 @@ class MainView {
     this.$afterWatchVideoList = afterWatchVideoList;
     this.$watchedVideoList = watchedVideoList;
     this.$nav = nav;
+    this.isWatchedPage = false;
     this.bindEvents();
   }
 
   bindEvents() {
     on(this.$nav, 'click', this.onClickNavButton.bind(this));
     on(this.$afterWatchVideoList, 'click', this.onClickStatusButton.bind(this));
+    on(this.$watchedVideoList, 'click', this.onClickStatusButton.bind(this));
   }
 
   onClickNavButton({ target }) {
-    if (target.id !== 'after-watch-video-button' && target.id !== 'watched-video-button') {
+    if (target.id === 'after-watch-video-button') {
+      this.moveAfterWatchVideoPage();
+      emit(this.$nav, '@updatesaved', {});
       return;
     }
-    this.togglePage();
+    if (target.id === 'watched-video-button') {
+      this.moveWatchedVideoPage();
+      emit(this.$nav, '@updatewatched', {});
+    }
   }
 
   onClickStatusButton({ target }) {
     if (target.classList.contains('watch-video-button')) {
       const parentTarget = target.closest('section');
 
-      this.$watchedVideoList.append(parentTarget);
+      parentTarget.remove();
       emit(this.$afterWatchVideoList, '@watched', {
         watchedVideo: convertDOMToSaveObject(parentTarget),
       });
@@ -38,35 +45,56 @@ class MainView {
 
       const parentTarget = target.closest('section');
       parentTarget.remove();
-
+      if (this.isWatchedPage) {
+        emit(this.$watchedVideoList, '@delete', { id: parentTarget.dataset.videoId });
+        return;
+      }
       emit(this.$afterWatchVideoList, '@delete', { id: parentTarget.dataset.videoId });
+    }
+
+    if (target.classList.contains('after-watch-video-button')) {
+      const parentTarget = target.closest('section');
+
+      parentTarget.remove();
+
+      emit(this.$watchedVideoList, '@afterwatch', {
+        newVideo: convertDOMToSaveObject(parentTarget),
+      });
+      emit(this.$watchedVideoList, '@delete', { id: parentTarget.dataset.videoId });
     }
   }
 
-  renderItems(savedItems) {
-    this.$afterWatchVideoList.replaceChildren();
-    if (savedItems.length > 0) {
-      this.renderSavedItems(savedItems);
+  renderItems(element, items) {
+    element.replaceChildren();
+    if (items.length > 0) {
+      this.renderSavedItems(element, items);
       return;
     }
 
-    this.renderNoItems();
+    this.renderNoItems(element);
   }
 
-  renderSavedItems(savedItems) {
-    this.$afterWatchVideoList.insertAdjacentHTML(
+  renderSavedItems(element, items) {
+    element.insertAdjacentHTML(
       'beforeend',
-      template.afterWatchVideoItem(savedItems),
+      template.afterWatchVideoItem(items, this.isWatchedPage),
     );
   }
 
-  renderNoItems() {
-    this.$afterWatchVideoList.insertAdjacentHTML('beforeend', template.noAfterWatchItem());
+  renderNoItems(element) {
+    element.insertAdjacentHTML('beforeend', template.noAfterWatchItem());
   }
 
-  togglePage() {
-    this.$afterWatchVideoList.classList.toggle('hide');
-    this.$watchedVideoList.classList.toggle('hide');
+  moveAfterWatchVideoPage() {
+    this.$afterWatchVideoList.classList.remove('hide');
+    this.$watchedVideoList.classList.add('hide');
+    this.isWatchedPage = false;
+  }
+
+  moveWatchedVideoPage() {
+    this.$afterWatchVideoList.classList.add('hide');
+    this.$watchedVideoList.classList.remove('hide');
+    this.isWatchedPage = true;
   }
 }
 

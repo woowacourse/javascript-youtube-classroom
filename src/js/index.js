@@ -8,4 +8,4 @@ const modalInterferer = new ModalInterferer();
 
 saveInterferer.init();
 modalInterferer.init();
-mainInterferer.init();
+mainInterferer.initSavedItems();

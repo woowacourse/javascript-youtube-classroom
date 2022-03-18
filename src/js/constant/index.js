@@ -4,7 +4,7 @@ export const LOCALSTORAGE_KEY_WATCHED = 'watched';
 
 export const ERROR_403 = '403 Error';
 
-export const REQUEST_VIDEO_QUANTITY = 2;
+export const REQUEST_VIDEO_QUANTITY = 10;
 
 export const MAX_STOARGE_CAPACITY = 100;
 

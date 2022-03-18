@@ -8,6 +8,7 @@ class SaveInterferer {
   constructor(mainInterferer) {
     this.$videoListContainer = $('.video-list');
     this.$afterWatchVideoList = $('.after-watch-video-list');
+    this.$watchedVideoList = $('.watched-video-list');
     this.saveView = new SaveView(this.$videoListContainer);
     this.mainInterferer = mainInterferer;
   }
@@ -15,12 +16,13 @@ class SaveInterferer {
   init() {
     on(this.$videoListContainer, '@save', (e) => this.saveVideo(e.detail.newVideo));
     on(this.$afterWatchVideoList, '@watched', (e) => this.saveWatchedVideo(e.detail.watchedVideo));
+    on(this.$watchedVideoList, '@afterwatch', (e) => this.saveVideo(e.detail.newVideo));
   }
 
   saveVideo(newVideo) {
     try {
       saveMachine.saveToLocalStorage(LOCALSTORAGE_KEY_SAVE, newVideo);
-      this.mainInterferer.init();
+      this.mainInterferer.initSavedItems();
     } catch (err) {
       alert(err.message);
     }
