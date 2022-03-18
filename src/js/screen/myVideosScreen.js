@@ -19,8 +19,8 @@ export default class MyVideosScreen {
     this.#myVideoList.addEventListener('click', this.#handleDeleteVideo);
     this.#nav.addEventListener('click', this.#renderFilteredVideos);
 
-    const savedVideos = this.#storageEngine.getSavedVideos();
-    this.#render(savedVideos);
+    const videosToView = this.#storageEngine.getFilteredVideos(false);
+    this.#render(videosToView);
   }
 
   #render(videos) {
