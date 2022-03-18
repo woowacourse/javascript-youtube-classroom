@@ -11,7 +11,7 @@ const watchedVideoInterface = {
   renderEmptyImg() {
     const savedVideoData = storage.getLocalStorage();
     if (savedVideoData.length === 0) {
-      showEmptyImg('.watched-videos-container');
+      showEmptyImg('.watched-empty-img-container');
       return;
     }
     const watchedVideos = savedVideoData.filter(item => {
@@ -20,11 +20,11 @@ const watchedVideoInterface = {
       }
     });
     if (watchedVideos.length === 0) {
-      showEmptyImg('.watched-videos-container');
+      showEmptyImg('.watched-empty-img-container');
     }
   },
   renderWatchedVideos() {
-    removeEmptyImg('.watched-videos-container .empyt-img-container');
+    removeEmptyImg('.watched-empty-img-container');
     this.renderEmptyImg();
     clearVideoItems('.watched-video-item');
 

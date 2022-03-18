@@ -48,7 +48,7 @@ export const showEmptyImg = selector => {
 };
 
 export const removeEmptyImg = selector => {
-  if ($(selector)) {
-    $(selector).remove();
+  if ($(selector).hasChildNodes()) {
+    $(selector).removeChild($('.empty-img-container'));
   }
 };
