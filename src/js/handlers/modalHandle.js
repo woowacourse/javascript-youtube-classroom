@@ -4,6 +4,7 @@ import videoStorage from '../localStorage/videoStorage.js';
 
 export const handleModalClose = () => {
   $('.modal-container').classList.toggle('hide');
+  $('#app').classList.toggle('wrapper');
 
   // 모달 초기화
   $('.video-list').replaceChildren();

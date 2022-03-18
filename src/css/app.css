@@ -112,6 +112,10 @@ body {
   margin: 4px;
 }
 
+.video-item__watched-button:hover {
+  background: #ebebeb;
+}
+
 .video-item__watched-button:active {
   background-color: rgba(0, 188, 212, 0.12);
 }
@@ -121,6 +125,10 @@ body {
   height: 36px;
   padding: 6px 2px;
   margin: 4px;
+}
+
+.video-item__delete-button:hover {
+  background: #ebebeb;
 }
 
 .video-item__delete-button:active {

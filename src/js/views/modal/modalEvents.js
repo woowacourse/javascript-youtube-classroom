@@ -16,6 +16,7 @@ const bindModalEvents = () => {
 
   $('#search-modal-button').addEventListener('click', () => {
     $('.modal-container').classList.toggle('hide');
+    $('#app').classList.toggle('wrapper');
   });
 
   $('.dimmer').addEventListener('click', handleModalClose);

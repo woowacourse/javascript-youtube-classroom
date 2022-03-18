@@ -1,3 +1,5 @@
+import { ERROR } from '../constants/error';
+
 export default class YoutubeSearchAPI {
   #searchResults = {};
 
@@ -20,7 +22,7 @@ export default class YoutubeSearchAPI {
   }
 
   getURL(searchKeyword, nextPageToken) {
-    const url = new URL('youtube/v3/search', 'https://onstar.netlify.app');
+    const url = new URL('dummy/youtube/v3/search', 'https://onstar.netlify.app');
     const parameter = new URLSearchParams({
       part: 'snippet',
       maxResults: 10,
@@ -36,6 +38,13 @@ export default class YoutubeSearchAPI {
     const URL = this.#searchResults
       ? this.getURL(searchKeyword, this.#searchResults.nextPageToken)
       : this.getURL(searchKeyword);
-    return fetch(URL).then(response => response.json());
+    return fetch(URL).then(response => {
+      if (response.ok) {
+        return response.json();
+      }
+      if (response.status === ERROR.CODE.API_DISABLE) {
+        throw new Error(ERROR.MESSAGE.API_DISABLE);
+      }
+    });
   }
 }
