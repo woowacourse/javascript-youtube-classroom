@@ -146,3 +146,42 @@ search-result ul {
 .video-item__save-button:hover {
   background: #efefef;
 }
+
+@media screen and (max-width: 1279px) {
+  .search-modal {
+    width: 820px;
+  }
+
+  search-result ul {
+    width: 780px;
+  }
+}
+
+@media screen and (max-width: 959px) {
+  .search-modal {
+    width: 560px;
+  }
+
+  search-result ul {
+    width: 520px;
+  }
+}
+
+@media screen and (max-width: 599px) {
+  .search-modal {
+    max-width: 428px;
+  }
+
+  .search-input__keyword {
+    width: 280px;
+  }
+
+  .search-input__search-button {
+    width: 50px;
+  }
+
+  search-result ul {
+    width: 388px;
+    justify-content: center;
+  }
+}
