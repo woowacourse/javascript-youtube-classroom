@@ -18,5 +18,5 @@
     "no-new": "off",
     "no-underscore-dangle": "off"
   },
-  "ignorePatterns": ["**/*.test.*"]
+  "ignorePatterns": ["cypress/*", "**/*.test.*"]
 }
