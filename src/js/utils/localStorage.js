@@ -7,23 +7,23 @@ const getStorageVideoIDs = (key = LOCALSTORAGE_VIDEO_IDS_KEY) =>
   JSON.parse(window.localStorage.getItem(key)) || [];
 
 const setStorageVideoIDs = ({ key = LOCALSTORAGE_VIDEO_IDS_KEY, value }) => {
-  const newVideoIDs = [
-    ...getStorageVideoIDs(key),
-    value,
-  ];
+  // const newVideoIDs = [
+  //   ...getStorageVideoIDs(key),
+  //   value,
+  // ];
 
-  window.localStorage.setItem(key, JSON.stringify(newVideoIDs));
+  window.localStorage.setItem(key, JSON.stringify(value));
 };
 
 const getStorageVideos = (key = LOCALSTORAGE_KEY_VIDEOS) =>
   JSON.parse(window.localStorage.getItem(key)) || [];
 
 const setStorageVideos = ({ key = LOCALSTORAGE_KEY_VIDEOS, value }) => {
-  const newVideos = [
-    ...getStorageVideos(key),
-    value,
-  ];
-  window.localStorage.setItem(key, JSON.stringify(newVideos));
+  // const newVideos = [
+  //   ...getStorageVideos(key),
+  //   value,
+  // ];
+  window.localStorage.setItem(key, JSON.stringify(value));
 };
 
 const checkVideoStorageFull = (key = LOCALSTORAGE_VIDEO_IDS_KEY) => {
