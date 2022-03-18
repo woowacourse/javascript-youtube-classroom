@@ -68,7 +68,6 @@ export const testRequest = async (query, nextPageToken) => {
   url.search = parameters.toString();
   const response = await fetch(url);
   const body = await response.json();
-  console.log(body);
   return body;
 };
 
@@ -84,6 +83,5 @@ export const testSaveRequest = async videoIdList => {
   url.search = parameters.toString();
   const response = await fetch(url);
   const body = await response.json();
-  console.log(body);
   return body;
 };

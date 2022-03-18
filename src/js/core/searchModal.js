@@ -41,7 +41,7 @@ export default class SearchModal extends StateController {
           <button class="video-item__save-button button">⬇ 저장</button>
         </li>`;
       })
-      .join('\n'); // new line해주지 않으면 insertAdjacentHTML을 사용할때 element가 5개만 생성된다.
+      .join('\n');
 
     const template = document.createElement('template');
     template.insertAdjacentHTML('beforeend', videoListTemplate);
@@ -95,8 +95,8 @@ export default class SearchModal extends StateController {
     }
   }
 
-  handleClickSaveButton(event) {
-    const { target } = event;
+  handleClickSaveButton(e) {
+    const { target } = e;
     const $videoItem = target.closest('.video-item');
     const videoId = $videoItem.getAttribute('data-video-id');
     const videoList = JSON.parse(localStorage.getItem(SAVED_VIDEO_LIST_KEY)) ?? [];
@@ -110,7 +110,6 @@ export default class SearchModal extends StateController {
       alert(`비디오는 ${MAX_SAVABLE_VIDEOS_COUNT}개 이상 저장할 수 없습니다`);
       return false;
     }
-    console.log(this);
     this.saveVideo(videoId);
     return true;
   }

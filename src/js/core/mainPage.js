@@ -40,6 +40,14 @@ export default class MainPage extends StateController {
   }
 
   renderVideoItems(videos) {
+    let disabled = '';
+    if (this.$mainVideoList.classList.contains('watched-video-list')) {
+      disabled = 'disabled';
+    }
+    if (!videos) {
+      return;
+    }
+
     const videoListTemplate = videos
       .map(video => {
         return `<li class="video-item" data-video-id="${video.id}">
@@ -50,8 +58,8 @@ export default class MainPage extends StateController {
           <p class="video-item__channel-name">${video.channelTitle}</p>
           <p class="video-item__published-date">${video.publishedAt}</p>
           <p class="buttons-container">
-            <button class="button main-videos-button">✅</button>
-            <button class="button main-videos-button">🗑️</button>
+            <button id="check-button" ${disabled} class="button main-videos-button">✅</button>
+            <button id="delete-button" class="button main-videos-button">🗑️</button>
           </p>
         </li>`;
       })
@@ -61,8 +69,35 @@ export default class MainPage extends StateController {
     template.insertAdjacentHTML('beforeend', videoListTemplate);
 
     template.childNodes.forEach($el => {
+      $('#check-button', $el).addEventListener('click', this.handleClickCheckButton.bind(this));
+      $('#delete-button', $el).addEventListener('click', this.handleClickDeleteButton.bind(this));
       this.$mainVideoList.insertAdjacentElement('beforeend', $el);
     });
+  }
+
+  handleClickCheckButton(e) {
+    e.target.setAttribute('disabled', '');
+    const $videoItem = e.target.closest('.video-item');
+    const videoId = $videoItem.getAttribute('data-video-id');
+    this.watchVideo(videoId);
+    this.$mainVideoList.replaceChildren();
+    this.renderVideoItems(StateController.prototype.savedToWatchVideoList);
+  }
+
+  handleClickDeleteButton(e) {
+    const $videoItem = e.target.closest('.video-item');
+    const videoId = $videoItem.getAttribute('data-video-id');
+    const isDelete = confirm('정말 삭제하시겠습니까?');
+    if (!isDelete) {
+      return;
+    }
+    this.deleteVideo(videoId);
+    this.$mainVideoList.replaceChildren();
+    if (this.$mainVideoList.classList.contains('watched-video-list')) {
+      this.renderVideoItems(StateController.prototype.savedWatchedVideoList);
+      return;
+    }
+    this.renderVideoItems(StateController.prototype.savedToWatchVideoList);
   }
 
   handleClickWatchedButton() {
@@ -111,6 +146,16 @@ export default class MainPage extends StateController {
     this.$modalSearchResult.classList.remove('search-result--no-result');
     this.$modalVideoList.replaceChildren();
     $('.modal-container').classList.add('hide');
+    if (this.$mainVideoList.classList.contains('watched-video-list')) {
+      return;
+    }
+    if (StateController.prototype.savedToWatchVideoList.length === 0) {
+      this.$mainSearchResult.classList.add('search-result--no-result');
+      return;
+    }
+    this.$mainSearchResult.classList.remove('search-result--no-result');
+    this.$mainVideoList.replaceChildren();
+    this.renderVideoItems(StateController.prototype.savedToWatchVideoList);
   }
 }
 

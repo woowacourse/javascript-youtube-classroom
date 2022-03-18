@@ -25,8 +25,6 @@ export default class StateController {
       ...this.savedToWatchVideoList,
       ...this.savedWatchedVideoList,
     ];
-    console.log(StateController.prototype.savedToWatchVideoList);
-    console.log(StateController.prototype.wholeVideoList);
   }
 
   updateWholeVideoList(videoList) {
@@ -40,17 +38,14 @@ export default class StateController {
     }
     const newToWatchVideos = [...oldLocalToWatchVideos, videoId];
     localStorage.setItem(SAVED_VIDEO_LIST_KEY, JSON.stringify(newToWatchVideos));
-    console.log(newToWatchVideos);
     StateController.prototype.savedToWatchVideoList =
       StateController.prototype.wholeVideoList.filter(video => newToWatchVideos.includes(video.id));
-    console.log(StateController.prototype.savedToWatchVideoList);
-    console.log(StateController.prototype.wholeVideoList);
   }
 
   watchVideo(videoId) {
     const oldLocalToWatchVideos = JSON.parse(localStorage.getItem(SAVED_VIDEO_LIST_KEY)) || [];
     const oldLocalWatchedVideos = JSON.parse(localStorage.getItem(WATCHED_VIDEO_LIST_KEY)) || [];
-    const newToWatchVideos = oldLocalToWatchVideos.filter(video => video.id !== videoId);
+    const newToWatchVideos = oldLocalToWatchVideos.filter(id => id !== videoId);
     const newWatchedVideos = [...oldLocalWatchedVideos, videoId];
 
     localStorage.setItem(SAVED_VIDEO_LIST_KEY, JSON.stringify(newToWatchVideos));
@@ -62,10 +57,16 @@ export default class StateController {
   }
 
   deleteVideo(videoId) {
-    const oldLocalWatchedVideos = JSON.parse(localStorage.get(WATCHED_VIDEO_LIST_KEY)) || [];
-    const newWatchedVideos = oldLocalWatchedVideos.filter(video => video.id !== videoId);
+    const oldLocalWatchedVideos = JSON.parse(localStorage.getItem(WATCHED_VIDEO_LIST_KEY)) || [];
+    const oldLocalToWatchVideos = JSON.parse(localStorage.getItem(SAVED_VIDEO_LIST_KEY)) || [];
+    const newWatchedVideos = oldLocalWatchedVideos.filter(id => id !== videoId);
+    const newToWatchVideos = oldLocalToWatchVideos.filter(id => id !== videoId);
 
+    localStorage.setItem(SAVED_VIDEO_LIST_KEY, JSON.stringify(newToWatchVideos));
     localStorage.setItem(WATCHED_VIDEO_LIST_KEY, JSON.stringify(newWatchedVideos));
+
+    StateController.prototype.savedToWatchVideoList =
+      StateController.prototype.wholeVideoList.filter(video => newToWatchVideos.includes(video.id));
     StateController.prototype.savedWatchedVideoList =
       StateController.prototype.wholeVideoList.filter(video => newWatchedVideos.includes(video.id));
   }
