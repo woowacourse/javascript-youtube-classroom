@@ -7,15 +7,12 @@ const videoTemplate = (
       title,
       channelTitle,
       publishTime,
-      thumbnails: {
-        default: { url },
-      },
     },
   },
   isSaved
 ) => `
   <li class="video-item" data-video-id="${videoId}"> 
-    <img src="${url}" alt="video-item-thumbnail" class="video-item__thumbnail" />
+    <iframe src="https://www.youtube.com/embed/${videoId}" loading="lazy" alt="video-item-thumbnail" class="video-item__thumbnail" ></iframe>
     <h4 class="video-item__title">${title}</h4>
     <p class="video-item__channel-name">${channelTitle}</p>
     <p class="video-item__published-date">${publishTime}</p>
@@ -25,21 +22,17 @@ const videoTemplate = (
 
 const watchVideoTemplate = (
   {
-    // id: { videoId },
     id,
     snippet: {
       title,
       channelTitle,
       publishedAt,
-      thumbnails: {
-        default: { url },
-      },
     },
   },
   divisionSection
 ) => `
   <li class="video-item" data-video-id="${id}"> 
-    <img src="${url}" alt="video-item-thumbnail" class="video-item__thumbnail" />
+    <iframe src="https://www.youtube.com/embed/${id}" loading="lazy" alt="video-item-thumbnail" class="video-item__thumbnail" ></iframe>
     <h4 class="video-item__title">${title}</h4>
     <p class="video-item__channel-name">${channelTitle}</p>
     <p class="video-item__published-date">${publishedAt}</p>
