@@ -9,16 +9,12 @@ class MyVideoList extends HTMLUListElement {
     SavedVideo.instance.subscribe(this);
   }
 
-  // eslint-disable-next-line max-lines-per-function
   render() {
-    const videos = SavedVideo.instance.filterVideos(!this.id.includes('unwatched'));
+    const isWatchedList = !this.id.includes('unwatched');
+    const videos = SavedVideo.instance.filterVideos(isWatchedList);
 
     if (!videos.length) {
-      this.innerHTML = TEMPLATE.generateNoVideo(
-        !this.id.includes('unwatched')
-          ? '아직 시청한 영상이 없습니다.'
-          : '아직 저장된 영상이 없습니다.'
-      );
+      this.showNoVideo(isWatchedList);
     }
 
     videos.forEach((video) => {
@@ -32,6 +28,12 @@ class MyVideoList extends HTMLUListElement {
   notify() {
     this.textContent = '';
     this.render();
+  }
+
+  showNoVideo(isWatchedList) {
+    this.innerHTML = TEMPLATE.generateNoVideo(
+      isWatchedList ? '아직 시청한 영상이 없습니다.' : '아직 저장된 영상이 없습니다.'
+    );
   }
 }
 
