@@ -15,3 +15,7 @@ export const ERROR_MESSAGES = {
   CANNOT_CONNECT: "네트워크 에러가 발생했습니다. 나중에 다시 시도하세요.",
   CANNOT_PARSE_JSON: "저장된 데이터가 유효하지 않은 JSON 형식입니다.",
 };
+
+export const CONFIRM_MESSAGES = {
+  DELETE: "정말 삭제하시겠습니까?",
+};

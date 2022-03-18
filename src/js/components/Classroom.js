@@ -1,3 +1,4 @@
+import { CONFIRM_MESSAGES } from "../utils/contants.js";
 import { $ } from "../utils/dom.js";
 import { getEmptyClassroomTemplate, getFrameTemplate } from "../utils/templates.js";
 
@@ -21,10 +22,7 @@ export default class Classroom {
       this.videoManager.toggleWatchVideo(id);
     }
     if (target.classList.contains("delete-button")) {
-      if (confirm("정말 삭제하시겠습니까?")) {
-        this.videoManager.removeVideo(id);
-        console.log(this.videoManager.getSavedVideos());
-      }
+      confirm(CONFIRM_MESSAGES.DELETE) && this.videoManager.removeVideo(id);
     }
   };
 
