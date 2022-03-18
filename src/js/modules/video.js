@@ -30,6 +30,10 @@ class Video {
     };
   }
 
+  toggleWatchState() {
+    this.#isWatched = !this.#isWatched;
+  }
+
   #init({ videoId, videoTitle, channelTitle, publishTime, thumbnail, isWatched }) {
     this.#videoId = videoId;
     this.#videoTitle = videoTitle;

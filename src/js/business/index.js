@@ -18,6 +18,7 @@ class AppBusiness {
     bind(CUSTOM_EVENT_KEY.LOAD_NEW_VIDEO_LIST, this.onLoadNewVideoList);
     bind(CUSTOM_EVENT_KEY.CLICK_SAVE_BUTTON, this.onClickSaveButton);
     bind(CUSTOM_EVENT_KEY.CLICK_SAVED_VIDEO_FILTER_BUTTON, this.onClickSavedVideoFilterButton);
+    bind(CUSTOM_EVENT_KEY.CLICK_WATCHED_BUTTON, this.onClickWatchedButton);
   }
 
   onClickSearchModalButton = () => {
@@ -99,6 +100,14 @@ class AppBusiness {
     setState(STATE_STORE_KEY.SAVED_VIDEO_FILTER, savedVideoFilterType);
   };
 
+  onClickWatchedButton = ({ detail: { targetVideoId } }) => {
+    const updatedVideoList = this.updateWatchedState(targetVideoId);
+    const updatedVideoInfoList = this.convertToVideoInfoList(updatedVideoList);
+
+    webStore.setData(WEB_STORE_KEY.SAVED_VIDEO_LIST_KEY, updatedVideoInfoList);
+    setState(STATE_STORE_KEY.SAVED_VIDEO, updatedVideoList);
+  };
+
   async requestVideo(keyword, pageToken) {
     setState(STATE_STORE_KEY.IS_WAITING_RESPONSE, true);
 
@@ -125,6 +134,24 @@ class AppBusiness {
     const videoList = videoInfos.map((videoInfo) => Video.create(videoInfo));
 
     return { nextPageToken, videoList };
+  }
+
+  updateWatchedState(targetVideoId) {
+    const savedVideoList = getState(STATE_STORE_KEY.SAVED_VIDEO);
+
+    return savedVideoList.map((savedVideo) => {
+      const { videoId } = savedVideo.getVideoInfo();
+
+      if (videoId === targetVideoId) {
+        savedVideo.toggleWatchState();
+      }
+
+      return savedVideo;
+    });
+  }
+
+  convertToVideoInfoList(videoList) {
+    return videoList.map((video) => video.getVideoInfo());
   }
 }
 
