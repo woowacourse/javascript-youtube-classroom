@@ -6,7 +6,8 @@ const MESSAGE = {
   ERROR_EXCESS_SAVE_COUNT: `동영상은 최대 ${MAX_SAVE_COUNT}개까지만 저장이 가능합니다.`,
   NOT_FOUND: '검색 결과가 없습니다.',
   OTHER_KEYWORD: '다른 키워드로 검색해보세요.',
-  SAVE_COMPLETE: '저장되었습니다.',
+  SAVE_SUCCESS: '저장되었습니다.',
+  SAVE_FAILURE: '저장에 실패하였습니다.',
 };
 
 const STORAGE_KEY = 'videoId';
