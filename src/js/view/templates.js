@@ -1,4 +1,4 @@
-import { parsedDate } from "./utils/utils";
+import { parsedDate } from "../utils";
 
 const generateTemplate = {
   skeleton() {

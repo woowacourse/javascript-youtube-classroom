@@ -1,4 +1,4 @@
-import { ERROR_MESSAGE, STORAGE_MAX_COUNT } from "../constants/constants";
+import { ERROR_MESSAGE, STORAGE_MAX_COUNT } from "./constants";
 
 export const isDuplicate = (inputData, storeData) => {
   return storeData.some((store) => store.videoId === inputData.videoId);
@@ -30,6 +30,12 @@ export const throttle = (callback, delayTime) => {
 
 export const isEmptyString = (inputValue) => {
   return !inputValue.trim().length;
+};
+
+export const validateInput = (inputValue) => {
+  if (isEmptyString(inputValue)) {
+    throw new Error(ERROR_MESSAGE.SEARCH_INPUT_IS_EMPTY);
+  }
 };
 
 export const validateAddData = (data, storage) => {

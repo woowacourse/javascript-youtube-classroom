@@ -1,4 +1,4 @@
-import { ERROR_MESSAGE } from "../../src/js/constants/constants";
+import { ERROR_MESSAGE } from "../../src/js/constants";
 
 describe("보고싶은 영상 찾기 모달창 전체 로직 테스트", () => {
   const searchKeyword = "xooos";

@@ -1,4 +1,4 @@
-import { ITEMS_PER_REQUEST, ERROR_MESSAGE } from "../constants/constants";
+import { ITEMS_PER_REQUEST, ERROR_MESSAGE } from "../constants";
 
 function checkErrorCodeNumber(errorCode) {
   if (errorCode === 403) {

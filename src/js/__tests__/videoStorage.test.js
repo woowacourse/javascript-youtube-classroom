@@ -1,4 +1,4 @@
-import { ERROR_MESSAGE } from "../constants/constants";
+import { ERROR_MESSAGE } from "../constants";
 import videoStorage from "../videoStorage";
 
 describe("videoStorage에 동영상의 데이터가 적절히 저장되어야 한다.", () => {

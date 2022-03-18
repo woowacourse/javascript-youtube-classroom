@@ -1,4 +1,4 @@
-import { isDuplicate, parsedDate, isEmptyString } from "../utils/utils";
+import { isDuplicate, parsedDate, isEmptyString } from "../utils";
 
 describe("저장하려는 동영상의 Id값이 기존에 저장된 동영상의 Id값들과 중복되는지 확인한다.", () => {
   const storeData = [
