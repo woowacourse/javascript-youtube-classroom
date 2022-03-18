@@ -1,5 +1,4 @@
 import VideoComponent from '.';
-import { parseTimeStamp } from '../../utils/util';
 import { getState, subscribe } from '../../modules/stateStore';
 import { STATE_STORE_KEY } from '../../constants/stateStore';
 class SearchVideoComponent extends VideoComponent {
@@ -19,15 +18,11 @@ class SearchVideoComponent extends VideoComponent {
   }
 
   #mount() {
-    this.parentElement.insertAdjacentHTML('beforeend', this.#generateTemplate());
+    this.$videoItem.insertAdjacentHTML('beforeend', this.#generateButtonTemplate());
   }
 
   #initDOM() {
-    const { video } = this.props;
-    const { videoId } = video.getVideoInfo();
-    this.$videoItem = this.parentElement.querySelector(`[data-video-id="${videoId}"]`);
     this.$saveButton = this.$videoItem.querySelector('.video-item__save-button.button');
-    this.$videoImg = this.$videoItem.querySelector('img');
   }
 
   #subscribeStore() {
@@ -44,20 +39,9 @@ class SearchVideoComponent extends VideoComponent {
     }
   }
 
-  #generateTemplate() {
-    const { video } = this.props;
-    const { videoId, videoTitle, channelTitle, publishTime, thumbnail } = video.getVideoInfo();
+  #generateButtonTemplate() {
     return `
-    <li class="video-item" data-video-id="${videoId}">
-    <img
-      data-src="${thumbnail}" class="video-item__thumbnail" ${
-      this.props.notLazyLoad ? `src="${thumbnail}"` : ''
-    }>
-    <h4 class="video-item__title">${videoTitle}</h4>
-    <p class="video-item__channel-name">${channelTitle}</p>
-    <p class="video-item__published-date">${parseTimeStamp(publishTime)}</p>
     <button class="video-item__save-button button">⬇ 저장</button>
-  </li>
       `;
   }
 
