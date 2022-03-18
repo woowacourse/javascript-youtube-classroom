@@ -47,6 +47,6 @@ body {
   column-gap: 20px;
 }
 
-.video-item__view-cancel-button {
+.video-item__view-uncheck-button {
   filter: grayscale(1);
 }

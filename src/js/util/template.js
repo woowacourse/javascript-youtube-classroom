@@ -18,7 +18,7 @@ export const myVideoTemplate = ({
     <p class="video-item__published-date">${publishTime}</p>
     ${
       isViewed
-        ? '<button type="button" class="video-item__view-cancel-button button">✅</button>'
+        ? '<button type="button" class="video-item__view-uncheck-button button">✅</button>'
         : '<button type="button" class="video-item__view-check-button button">✅</button>'
     }
     <button type="button" class="video-item__delete-button button">🗑️</button>

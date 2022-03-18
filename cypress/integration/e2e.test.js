@@ -65,7 +65,7 @@ describe('유튜브 검색 및 비디오 저장 정상 작동 테스트', () => 
   });
 });
 
-describe('볼 영상 확인/ 본 영상 확인 / 영상 삭제 기능 테스트', () => {
+describe('저장한 영상 확인 /볼 영상 확인/ 본 영상 확인 / 영상 삭제 기능 테스트', () => {
   beforeEach(() => {
     cy.restoreLocalStorage();
   });
@@ -74,8 +74,8 @@ describe('볼 영상 확인/ 본 영상 확인 / 영상 삭제 기능 테스트'
     cy.saveLocalStorage();
   });
 
-  context('볼 영상을 확인하고, 본 영상으로 체크할 수 있다', () => {
-    it('첫 화면에서 볼 영상을 확인할 수 있다', () => {
+  context('저장한 영상을 확인하고, 본 영상을 체크하고 확인할 수 있다', () => {
+    it('첫 화면에서 저장한 영상을 확인할 수 있다', () => {
       cy.reload();
 
       cy.get('.my-video-list').children().should('have.length', 1);
@@ -85,7 +85,7 @@ describe('볼 영상 확인/ 본 영상 확인 / 영상 삭제 기능 테스트'
       cy.get('@myVideoItem').find('.video-item__delete-button').should('be.visible');
     });
 
-    it('봤다는 버튼을 클릭하여 본 영상으로 체크할 수 있다', () => {
+    it('체크 버튼을 클릭하여 본 영상을 체크할 수 있다', () => {
       cy.get('.my-video-list')
         .children('.video-item')
         .find('.video-item__view-check-button')
@@ -94,39 +94,56 @@ describe('볼 영상 확인/ 본 영상 확인 / 영상 삭제 기능 테스트'
       cy.get('.my-video-list > .video-item').should('not.exist');
     });
 
-    it('본 영상 탭을 클릭하여 본 영상들을 확인할 수 있다', () => {
+    it('본 영상 필터 버튼을 클릭하여 본 영상들을 확인할 수 있다', () => {
       cy.get('#viewed-videos-filter-button').click();
       cy.get('.my-video-list').children().should('have.length', 1);
 
       cy.get('.my-video-list')
         .children('.video-item')
-        .find('.video-item__view-cancel-button')
+        .find('.video-item__view-uncheck-button')
         .should('be.visible');
     });
   });
 
-  context('영상을 삭제하고, 저장된 영상이 없을 경우 메시지를 통해 확인할 수 있다.', () => {
-    it('삭제 버튼을 클릭하면, 삭제 확인창을 통해 영상을 삭제할 수 있다.', () => {
-      const stub = cy.stub();
-
-      cy.on('window:confirm', stub);
-      stub.onFirstCall().returns(true);
-
+  context('본 영상을 체크 해제하여, 볼 영상으로 바꾸고 볼 영상을 확인할 수 있다', () => {
+    it('체크 해제 버튼을 클릭하여 본 영상을 볼 영상으로 바꿀 수 있다', () => {
       cy.get('.my-video-list')
         .children('.video-item')
-        .find('.video-item__delete-button')
-        .click()
-        .then(() => {
-          expect(stub.getCall(0)).to.be.calledWith(DELETE_VIDEO_CONFIRM_MESSAGE);
-        });
+        .find('.video-item__view-uncheck-button')
+        .click();
 
       cy.get('.my-video-list > .video-item').should('not.exist');
     });
 
-    it('저장된 영상이 없을 경우 메시지를 확인할 수 있다.', () => {
-      cy.get('.no-saved-videos__content').should('have.text', NO_SAVED_VIDEOS_MESSAGE);
+    it('볼 영상 필터 버튼을 클릭하여 볼 영상들을 확인할 수 있다', () => {
+      cy.get('#videos-to-view-filter-button').click();
+
+      cy.get('.video-list').children('.video-item').should('have.length', 1);
     });
   });
+
+  // context('영상을 삭제하고, 저장된 영상이 없을 경우 메시지를 통해 확인할 수 있다.', () => {
+  //   it('삭제 버튼을 클릭하면, 삭제 확인창을 통해 영상을 삭제할 수 있다.', () => {
+  //     const stub = cy.stub();
+
+  //     cy.on('window:confirm', stub);
+  //     stub.onFirstCall().returns(true);
+
+  //     cy.get('.my-video-list')
+  //       .children('.video-item')
+  //       .find('.video-item__delete-button')
+  //       .click()
+  //       .then(() => {
+  //         expect(stub.getCall(0)).to.be.calledWith(DELETE_VIDEO_CONFIRM_MESSAGE);
+  //       });
+
+  //     cy.get('.my-video-list > .video-item').should('not.exist');
+  //   });
+
+  //   it('저장된 영상이 없을 경우 메시지를 확인할 수 있다.', () => {
+  //     cy.get('.no-saved-videos__content').should('have.text', NO_SAVED_VIDEOS_MESSAGE);
+  //   });
+  // });
 });
 
 // describe('유튜브 검색 예외 사항 테스트', () => {
