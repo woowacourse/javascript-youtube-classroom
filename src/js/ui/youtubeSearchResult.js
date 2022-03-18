@@ -80,7 +80,7 @@ export const youtubeSearchResult = {
           this.scrollObserver(videoData.nextPageToken);
         }
       })
-      .catch(async ({ message }) => {
+      .catch(({ message }) => {
         showSnackBar(message);
       });
   },
