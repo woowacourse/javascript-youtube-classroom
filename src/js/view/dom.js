@@ -1,24 +1,13 @@
-import { ALLOCATE_FOR_RENDER_PX, ERROR_MESSAGE } from "../constants/constants";
-import { isEmptyString } from "./utils";
+export const $ = (selector, target = document) =>
+  target.querySelector(selector);
+
+export const $$ = (selector, target = document) =>
+  target.querySelectorAll(selector);
 
 export const scrollToTop = (element = document.querySelector("body")) => {
   element.scrollTo({
     top: 0,
   });
-};
-
-export const removeChildElements = (parentElement, elements) => {
-  elements.forEach((element) => {
-    parentElement.removeChild(element);
-  });
-};
-
-export const renderSaveVideo = ({ element, template }) => {
-  element.innerHTML = template;
-};
-
-export const render = ({ element, position, template }) => {
-  element.insertAdjacentHTML(position, template);
 };
 
 export const getTotalScrollHeight = (element) => {
@@ -29,20 +18,9 @@ export const getCurrentScrollHeight = (element) => {
   return element.clientHeight + element.scrollTop;
 };
 
-export const validateInput = (inputValue) => {
-  if (isEmptyString(inputValue)) {
-    throw new Error(ERROR_MESSAGE.SEARCH_INPUT_IS_EMPTY);
-  }
-};
-
 export const clearModalContainer = (videoList) => {
-  console.log(videoList);
-  console.log(document.querySelectorAll(".video-item"));
   scrollToTop(videoList);
-
-  document
-    .querySelectorAll(".video-item")
-    .forEach((videoItem) => videoList.removeChild(videoItem));
+  $$(".video-item").forEach((videoItem) => videoList.removeChild(videoItem));
 };
 
 export const getTargetData = (element) => {
@@ -64,4 +42,10 @@ export const getTargetData = (element) => {
     publishDate,
     checked: false,
   };
+};
+
+export const confirmRemoveVideo = (element) => {
+  const videoTitle = $(".video-item__title", element).textContent.trim();
+
+  return !confirm(`${videoTitle}\n영상을 정말 삭제하시겠습니까?`);
 };

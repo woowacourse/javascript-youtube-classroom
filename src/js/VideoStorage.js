@@ -2,7 +2,7 @@ import {
   validateAddData,
   changeStorageChecked,
   removeStorageItem,
-} from "./utils/utils";
+} from "./utils";
 
 const videoStorage = {
   getVideo() {
@@ -10,12 +10,7 @@ const videoStorage = {
   },
   addVideo(data) {
     let storage = this.getVideo();
-
-    try {
-      validateAddData(data, storage);
-    } catch ({ message }) {
-      alert(message);
-    }
+    validateAddData(data, storage);
 
     storage = [...storage, data];
     localStorage.setItem("saveVideoData", JSON.stringify(storage));

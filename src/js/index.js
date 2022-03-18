@@ -1,6 +1,10 @@
 import "../css/index";
-import YoutubeApp from "./YoutubeApp";
+import YoutubeMainApp from "./app/YoutubeMainApp";
+import YoutubeModalApp from "./app/YoutubeModalApp";
+import Render from "./view/Render";
 
 (function main() {
-  new YoutubeApp();
+  const render = new Render();
+  new YoutubeMainApp(render);
+  new YoutubeModalApp(render);
 })();
