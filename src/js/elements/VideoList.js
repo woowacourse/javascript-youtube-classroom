@@ -55,10 +55,8 @@ class VideoList extends HTMLUListElement {
   }
 
   hideStoredVideoSaveButton(videos) {
-    const storedVideoIds = SavedVideo.instance.getVideos().map((video) => video.videoId);
-
     videos.forEach((video) => {
-      if (storedVideoIds.includes(video.id)) {
+      if (SavedVideo.instance.findVideo(video.id)) {
         $(`#${video.id}-save-button`).hidden = true;
       }
     });
