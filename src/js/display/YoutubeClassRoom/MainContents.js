@@ -30,7 +30,7 @@ export default class MainContents {
   }
 
   handleClickRemoveButton = ({ target: $target }) => {
-    const { videoId } = $target.closest('.saved-video-item').dataset;
+    const { videoId } = $target.closest('.video-item').dataset;
     if (confirm(MESSAGE.CONFIRM_REMOVE_VIDEO)) {
       YoutubeSaveStorage.removeVideo(videoId);
       SnackBar.open(MESSAGE.REMOVE_COMPLETE, SNACKBAR_TYPE.ALERT);
@@ -38,7 +38,7 @@ export default class MainContents {
   };
 
   handleToggleWatched = ({ target: $target }) => {
-    const { videoId } = $target.closest('.saved-video-item').dataset;
+    const { videoId } = $target.closest('.video-item').dataset;
     YoutubeSaveStorage.toggleVideoWatchStatus(videoId);
   };
 
@@ -55,17 +55,17 @@ export default class MainContents {
 
     list.length === 0
       ? $fragment.append(this.getNoResults())
-      : $fragment.append(this.getVideoList(list));
+      : $fragment.append(this.getVideoList(list, selectedPage === PAGE_NAME.WATCHED));
 
     this.container.append($fragment);
   };
 
-  getVideoList(videos) {
+  getVideoList(videos, watched) {
     const $listElements = videos.map(({ id, videoData }) => {
       const { videoTitle, videoChanneltitle, videoPublishtime, videoThumbnail } = videoData;
       return createElement('LI', {
         dataset: { 'video-id': id },
-        className: 'saved-video-item',
+        className: 'video-item',
         innerHTML: `<img
         src="${videoThumbnail}"
         alt="video-item-thumbnail" class="video-item__thumbnail"
@@ -74,8 +74,10 @@ export default class MainContents {
       <h4 class="video-item__title">${videoTitle}</h4>
       <p class="video-item__channel-name">${videoChanneltitle}</p>
       <p class="video-item__published-date">${getParsedTime(videoPublishtime)}</p>
-      <button id="toggle-watched-button">✅</button>
-      <button id="remove-video-button">🗑️</button>
+      <button id="toggle-watched-button" class="toggle-watched-button ${
+        watched ? 'watched' : ''
+      }" type="button">✅</button>
+      <button id="remove-video-button" class="remove-video-button" type="button">🗑️</button>
      `,
       });
     });
