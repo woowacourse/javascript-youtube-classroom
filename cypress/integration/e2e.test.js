@@ -74,7 +74,7 @@ describe('볼 영상 확인/ 본 영상 확인 / 영상 삭제 기능 테스트'
     it('첫 화면에서 볼 영상을 확인할 수 있다', () => {
       cy.reload();
 
-      cy.get('.my-video-list').children('.video-item').should('have.length', 1);
+      cy.get('.my-video-list').children().should('have.length', 1);
 
       cy.get('.my-video-list').children('.video-item').first().as('myVideoItem');
       cy.get('@myVideoItem').find('.video-item__view-check-button').should('be.visible');
@@ -82,10 +82,12 @@ describe('볼 영상 확인/ 본 영상 확인 / 영상 삭제 기능 테스트'
     });
 
     it('봤다는 버튼을 클릭하여 본 영상으로 체크할 수 있다', () => {
-      cy.get('.my-video-list').children('.video-item').first().as('myVideoItem');
+      cy.get('.my-video-list')
+        .children('.video-item')
+        .find('.video-item__view-check-button')
+        .click();
 
-      cy.get('@myVideoItem').find('.video-item__view-check-button').click();
-      cy.get('@myVideoItem').should('not.be.visible');
+      cy.get('.my-video-list').children().should('have.length', 0);
     });
   });
 

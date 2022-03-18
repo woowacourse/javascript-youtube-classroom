@@ -11,11 +11,13 @@ export default class MyVideosScreen {
     this.#myVideoList = $('.my-video-list');
     this.#storageEngine = StorageEngine.instance;
 
+    this.#myVideoList.addEventListener('click', this.#handleCheckVideoViewed);
+
     this.#render();
   }
 
   #render() {
-    const savedVideos = this.#storageEngine.getSavedVideos();
+    const savedVideos = this.#storageEngine.getViewableVideos();
 
     if (savedVideos.length > 0) {
       const myVideoListTemplate = savedVideos.map((datum) => myVideoTemplate(datum)).join('');
@@ -24,8 +26,14 @@ export default class MyVideosScreen {
     }
   }
 
-  // #renderMyVideos() {
-  //   const myVideos = this.storageEngine.getSavedVideos();
-  //   this.#searchResultScreen.render(myVideos);
-  // }
+  #handleCheckVideoViewed = (e) => {
+    if (e.target.classList.contains('video-item__view-check-button')) {
+      const video = e.target.closest('.video-item');
+      const { videoId } = video.dataset;
+
+      this.#storageEngine.checkVideoViewed(videoId);
+
+      this.#myVideoList.removeChild(video);
+    }
+  };
 }
