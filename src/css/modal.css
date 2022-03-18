@@ -75,12 +75,13 @@
 }
 
 .no-result {
-  height: 448px;
+  height: 300px;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   gap: 20px;
+  grid-column: span 4;
 }
 
 .no-result__image {

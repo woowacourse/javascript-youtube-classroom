@@ -1,6 +1,10 @@
 import { ERROR_MESSAGES, MAX_SEARCH_RESULT } from '../../constants/constants';
 import { isBlankValue, removeElementList, scrollToTop, selectDom } from '../util/util';
-import { errorTemplate, searchVideoElementTemplate } from './SearchModalTemplates';
+import {
+  errorImageTemplate,
+  errorTemplate,
+  searchVideoElementTemplate,
+} from './SearchModalTemplates';
 import Search from '../../domain/Search';
 import { addSkeletonsToContainer, removeAllSkeletons } from '../shared/Skeleton';
 import { saveToStorage } from '../../domain/storage';
@@ -31,6 +35,8 @@ class SearchModalView {
 
     this.#observer = this.#loadMoreObserver();
     this.#searchForm.addEventListener('submit', this.#handleSearch);
+
+    this.errorImage = errorImageTemplate();
   }
 
   toggleModal = (renderOnModalClose) => {
@@ -74,7 +80,7 @@ class SearchModalView {
       const { searchResultArray, hasNextPage } = await this.#search.handleSearchRequest(keyword);
       this.#renderSearchResult({ searchResultArray, keyword, hasNextPage });
     } catch (e) {
-      this.#renderError(e.message, keyword);
+      this.#renderError(e.message);
     }
   }
 
@@ -104,9 +110,9 @@ class SearchModalView {
   }
 
   #renderError(errorMessage) {
-    this.#videoList.classList.add('hide');
+    removeAllSkeletons(this.#videoList);
     this.#searchResult.classList.add('search-result--no-result');
-    this.#searchResult.append(errorTemplate(errorMessage));
+    this.#videoList.append(errorTemplate(this.errorImage, errorMessage));
   }
 
   #clearPreviousRender() {

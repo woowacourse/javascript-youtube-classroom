@@ -87,7 +87,7 @@ class SavedVideosView {
         this.#renderedVideoIdArray = [...this.#renderedVideoIdArray, ...newVideoIdArray];
       }
     } catch (e) {
-      this.#clearAllVideos();
+      removeAllSkeletons(this.#videoList);
       this.#renderErrorTemplate(e.message);
     }
   }
@@ -100,7 +100,6 @@ class SavedVideosView {
   }
 
   #renderErrorTemplate(message) {
-    removeElementList([...this.#videoList.childNodes]);
     if (!selectDom('.no-saved-videos')) {
       this.#savedVideos.append(errorTemplate(message));
     }
@@ -125,7 +124,7 @@ class SavedVideosView {
   #loadMoreObserver() {
     return new IntersectionObserver(
       async (entries) => {
-        if (this.#unrenderedVideoIdArray.length === 0 || this.#renderedVideoIdArray.length < 10) {
+        if (this.#unrenderedVideoIdArray.length === 0) {
           this.#observer.unobserve(this.#endOfList);
           return;
         }
