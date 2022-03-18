@@ -1,8 +1,8 @@
 import { OPTIONS, makeURLQuery, YOUTUBE_URL, fetchVideoList } from '../api';
 import { RULES, THROTTLE_PENDING_MILLISECOND } from '../constants';
-import VideoCardContainer from '../common/VideosCardContainer';
+import VideoCardContainer from '../common/SearchModal/ModalVideoCardContainer';
 import throttle from '../utils/throttle';
-import ErrorContainer from '../common/ErrorContainer';
+import ErrorContainer from '../common/SearchModal/ErrorContainer';
 import { timeFormatter } from '../utils';
 
 const isEmptyKeyword = (keyword) => keyword.trim().length === 0;

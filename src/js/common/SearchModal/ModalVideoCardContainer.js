@@ -1,7 +1,7 @@
-import { RULES } from '../constants';
-import { snakeCaseToCamelCase } from '../utils';
-import { getStorage, LOCALSTORAGE_KEY, setStorage } from '../utils/localStorage';
-import VideoCard from './VideoCard';
+import { RULES } from '../../constants';
+import { snakeCaseToCamelCase } from '../../utils';
+import { getStorage, LOCALSTORAGE_KEY, setStorage } from '../../utils/localStorage';
+import ModalVideoCard from './ModalVideoCard';
 
 const makeVideoInfo = (object, element) => {
   object[snakeCaseToCamelCase(element.className.replace('video-item__', ''))] =
@@ -9,7 +9,7 @@ const makeVideoInfo = (object, element) => {
   return object;
 };
 
-export default class VideoCardContainer {
+export default class ModalVideoCardContainer {
   #state;
 
   constructor(element, props) {
@@ -40,7 +40,7 @@ export default class VideoCardContainer {
   }
 
   template() {
-    return this.#state.videos.map((video) => new VideoCard(video).template()).join('');
+    return this.#state.videos.map((video) => new ModalVideoCard(video).template()).join('');
   }
 
   render() {

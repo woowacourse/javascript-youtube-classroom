@@ -1,5 +1,6 @@
 import { getStorage, LOCALSTORAGE_KEY } from '../utils/localStorage';
-import VideoCardContainer from '../common/VideosCardContainer';
+// import VideoCardContainer from '../common/VideoCardContainer';
+import MainVideoCardContainer from '../common/Main/MainVideoCardContainer';
 
 export default class Main {
   constructor(element) {
@@ -9,7 +10,7 @@ export default class Main {
 
     this.searchModalButton.addEventListener('click', this.openModalHandler.bind(this));
 
-    this.videosCardContainer = new VideoCardContainer(
+    this.videoCardContainer = new MainVideoCardContainer(
       document.querySelector('.watch-later-video-list'),
     );
     this.renderStoredVideoList();
@@ -20,7 +21,7 @@ export default class Main {
   }
 
   template(storedVideoList) {
-    this.videosCardContainer.setState({ videos: storedVideoList });
+    this.videoCardContainer.setState({ videos: storedVideoList });
   }
 
   openModalHandler() {

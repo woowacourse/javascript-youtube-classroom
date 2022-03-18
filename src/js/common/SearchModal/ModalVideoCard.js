@@ -1,9 +1,9 @@
-import { getStorage, LOCALSTORAGE_KEY } from '../utils/localStorage';
+import { getStorage, LOCALSTORAGE_KEY } from '../../utils/localStorage';
 
 const isStoredVideo = (storedVideos, videoId) =>
   storedVideos.some((video) => video.videoId === videoId);
 
-export default class VideoCard {
+export default class ModalVideoCard {
   constructor(props) {
     ({
       videoId: this.videoId,
@@ -27,8 +27,8 @@ export default class VideoCard {
           src="${this.thumbnail}"
           alt="video-item-thumbnail" class="video-item__thumbnail">
         <h4 class="video-item__title">${this.title}</h4>
-        <p class="video-item__channel-title">${this.channelTitle}</p>
-        <p class="video-item__publish-time">${this.publishTime}</p>
+        <p class="video-item__channel_title">${this.channelTitle}</p>
+        <p class="video-item__publish_time">${this.publishTime}</p>
         ${storeButton}
       </li>
       `;
