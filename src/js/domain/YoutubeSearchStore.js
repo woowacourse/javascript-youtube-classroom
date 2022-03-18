@@ -8,6 +8,7 @@ const initialState = {
   items: [],
   nextPageToken: '',
   error: false,
+  isEnded: false,
 };
 
 const reducer = {
@@ -26,10 +27,14 @@ const reducer = {
     isLoaded: false,
     error: false,
   }),
-  [YOUTUBE_SEARCH_ACTION.UPDATE_SEARCH_RESULT_SUCCESS]: (state, { items, nextPageToken }) => ({
+  [YOUTUBE_SEARCH_ACTION.UPDATE_SEARCH_RESULT_SUCCESS]: (
+    state,
+    { items, nextPageToken, pageInfo },
+  ) => ({
     ...state,
     items: [...state.items, ...items],
     nextPageToken,
+    isEnded: pageInfo.totalResults <= items.length || !nextPageToken,
     isLoading: false,
     isLoaded: true,
     error: false,
@@ -52,7 +57,6 @@ class YoutubeSearchStore {
 
   subscribers = [];
 
-  // eslint-disable-next-line no-shadow
   constructor({ initialState, reducer, middleware }) {
     this.state = initialState;
     this.reducer = reducer;
@@ -65,7 +69,7 @@ class YoutubeSearchStore {
 
   setState(newState) {
     this.state = newState;
-    this.subscribers.forEach(subscriber => subscriber(this.state));
+    this.subscribers.forEach(subscriber => subscriber());
   }
 
   dispatch(type, payload) {

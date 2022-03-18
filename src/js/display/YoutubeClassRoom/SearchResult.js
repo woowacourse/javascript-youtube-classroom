@@ -31,8 +31,8 @@ export default class SearchResult {
 
   bindEvents() {
     onObserveElement(this.$scrollObserver, () => {
-      const { isLoading } = YoutubeSearchStore.getState();
-      if (isLoading) return;
+      const { isLoading, isEnded } = YoutubeSearchStore.getState();
+      if (isLoading || isEnded) return;
       YoutubeSearchStore.dispatch(YOUTUBE_SEARCH_ACTION.UPDATE_SEARCH_RESULT_REQUEST);
     });
     addEvent(this.container, {
@@ -56,15 +56,14 @@ export default class SearchResult {
   };
 
   render = () => {
-    const { isLoading, isLoaded, items, error } = YoutubeSearchStore.getState();
+    const { isLoading, isLoaded, items, isEnded, error } = YoutubeSearchStore.getState();
     this.$videoList.replaceChildren();
-
     if (error) {
       this.$videoList.append(this.getResultServerError());
       return;
     }
 
-    if (items.length < 0 && isLoaded) {
+    if (items.length <= 0 && isLoaded) {
       this.$videoList.append(this.getResultNotFound());
       return;
     }
@@ -73,7 +72,7 @@ export default class SearchResult {
     if (items.length > 0) {
       $fragment.append(...this.getVideoList(items));
     }
-    if (isLoading) {
+    if (isLoading && !isEnded) {
       $fragment.append(...this.$skeleton);
     }
 
@@ -82,20 +81,18 @@ export default class SearchResult {
   };
 
   getResultNotFound() {
-    return createElement('DIV', {
-      className: 'no-result',
-      innerHTML: `
-        <img src="${notFoundImage}" alt="no result image" class="no-result__image">
-      `,
+    return createElement('IMG', {
+      className: 'no-result__image',
+      alt: 'no result image',
+      src: notFoundImage,
     });
   }
 
   getResultServerError() {
-    return createElement('DIV', {
-      className: 'no-result',
-      innerHTML: `
-        <img src="${serverErrorImage}" alt="no result image" class="no-result__image">
-      `,
+    return createElement('IMG', {
+      className: 'no-result__image',
+      alt: 'no result image',
+      src: serverErrorImage,
     });
   }
 
