@@ -23,4 +23,11 @@ export const video = {
     localStorage.removeItem(STORAGE_KEY);
     localStorage.setItem(STORAGE_KEY, JSON.stringify(updatedVideoList));
   },
+
+  remove(videoId) {
+    const savedVideoList = store.getLocalStorage(STORAGE_KEY);
+    const updatedVideoList = savedVideoList.filter(savedVideo => savedVideo.videoId !== videoId);
+    localStorage.removeItem(STORAGE_KEY);
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(updatedVideoList));
+  },
 };

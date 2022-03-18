@@ -6,7 +6,8 @@
   --button__highlighted-color: rgba(0, 188, 212, 0.12);
 }
 
-.will-watch-video-list {
+.will-watch-video-list,
+.watched-video-list {
   width: 1040px;
   display: flex;
   flex-direction: row;

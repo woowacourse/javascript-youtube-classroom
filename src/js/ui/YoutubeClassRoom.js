@@ -10,6 +10,7 @@ export default class YoutubeClassRoom {
     this.addWillWatchVideoButtonEvent();
     this.addWatchedVideoButtonEvent();
     this.addVideoCheckedButtonEvent();
+    this.addVideoRemoveButtonEvent();
   }
 
   reset() {
@@ -42,6 +43,26 @@ export default class YoutubeClassRoom {
         video.check(videoId);
         this.reset();
         this.renderVideoList(false, '.will-watch-video-list');
+      }
+    });
+  }
+
+  addVideoRemoveButtonEvent() {
+    $('.will-watch-video-list').addEventListener('click', e => {
+      if (e.target.classList.contains('video-item__remove-button') && confirm('정말 삭제하시겠습니까?')) {
+        const videoId = e.target.dataset.videoId;
+        video.remove(videoId);
+        this.reset();
+        this.renderVideoList(false, '.will-watch-video-list');
+      }
+    });
+
+    $('.watched-video-list').addEventListener('click', e => {
+      if (e.target.classList.contains('video-item__remove-button') && confirm('정말 삭제하시겠습니까?')) {
+        const videoId = e.target.dataset.videoId;
+        video.remove(videoId);
+        this.reset();
+        this.renderVideoList(true, '.watched-video-list');
       }
     });
   }
