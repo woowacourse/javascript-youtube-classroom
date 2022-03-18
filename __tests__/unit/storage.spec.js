@@ -1,5 +1,5 @@
-import { ERROR_MESSAGE } from '../src/js/constants';
-import Storage from '../src/js/Storage';
+import { ERROR_MESSAGE } from '../../src/js/constants';
+import Storage from '../../src/js/Storage';
 
 describe('Storage 기능 테스트', () => {
 

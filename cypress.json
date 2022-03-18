@@ -1,0 +1,8 @@
+{
+  "integrationFolder": "cypress/tests",
+  "testFiles": "*.spec.js",
+  "screenshotOnRunFailure": false,
+  "video": false,
+  "supportFile": false,
+  "blockHosts": ["cdn.jsdelivr.net"]
+}
