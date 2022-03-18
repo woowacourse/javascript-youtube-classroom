@@ -21,7 +21,7 @@
 }
 
 .video-item-button:hover {
-  background-color: #00bcd41f;
+  background-color: var(--color-button-hover-background);
 }
 
 @media screen and (min-width: 1280px) {
@@ -62,4 +62,12 @@
 #empty-container > p {
   font-size: x-large;
   font-weight: bold;
+}
+
+.check-will-see-button {
+  background-color: var(--color-button-clicked-background);
+}
+
+.check-will-see-button:hover {
+  background-color: var(--color-button-background);
 }

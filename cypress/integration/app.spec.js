@@ -1,6 +1,6 @@
 import 'cypress-localstorage-commands';
 import videoStore from '../../src/js/storage/videoStore';
-import { SELECTOR, STORE } from '../../src/js/utils/constants';
+import { SELECTOR } from '../../src/js/utils/constants';
 
 describe('검색어를 입력하여 관련된 영상을 볼 수 있고, 저장하여 볼/본 영상으로 이동 및 삭제할 수 있다.', () => {
   before(() => {
