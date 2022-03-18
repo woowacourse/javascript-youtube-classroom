@@ -90,7 +90,6 @@ export default class MainView {
   }
 
   deleteVideoItem(videoElement) {
-    console.log(videoElement);
     const targetIndex = this.videoItemViewLists[this.currentStoreType].findIndex(
       video => video.getElement() === videoElement
     );

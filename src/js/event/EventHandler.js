@@ -62,6 +62,7 @@ export default class EventHandler {
       const videoListData = await searchVideoAPICaller.getVideoListData(inputValue);
       this.modalView.updateVideoItems(videoListData);
       this.modalView.controlScrollSearch(!videoListData[0].isLastPage);
+      videoListData[0].isLastPage && confirm(CONFIRM_MESSAGE.NOTHING_MORE);
     } catch (error) {
       alert(error.message);
     }
