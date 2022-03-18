@@ -51,18 +51,12 @@ class MainPage {
     if (target.nodeName !== 'BUTTON') return;
     const id = target.closest('li').dataset.videoId; // data
     if (target.classList.contains('video-watched--btn')) {
-      this.changeStatusVideo(target, id);
+      EventFactory.generate('CHANGE_VIDEO_STATUS', { target, id });
     }
     if (target.classList.contains('video-delete--btn')) {
       this.deleteVideo(target, id);
     }
     this.mainPagePresenter.renderNoVideo(); // render
-  }
-
-  changeStatusVideo(target, id) {
-    target.closest('li').remove(); // render
-    this.videoStorage.toggleState(id); // data
-    toggleWatchedToStorage(id); // data
   }
 
   deleteVideo(target, id) {

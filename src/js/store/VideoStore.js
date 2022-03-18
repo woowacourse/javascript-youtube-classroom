@@ -1,3 +1,4 @@
+import { toggleWatchedToStorage } from '../domain/localStorage';
 import SearchMachine from '../domain/SearchMachine';
 import { VideoStorage } from '../domain/VideoStorage';
 
@@ -32,6 +33,14 @@ class VideoStore {
 
   get notWachedVideoList() {
     return this.videoStorage.notWachedVideoList;
+  }
+
+  toggleState(id) {
+    this.videoStorage.toggleState(id);
+  }
+
+  toggleWatchedToStarge(id) {
+    toggleWatchedToStorage(id);
   }
 }
 
