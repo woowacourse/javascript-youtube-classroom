@@ -11,7 +11,7 @@ const parameters = {
   pageToken: '',
 };
 
-const request = async (searchText, nextPageToken = '') => {
+const requestApi = async (searchText, nextPageToken = '') => {
   const url = new URL(BASE_URL);
   const searchParams = new URLSearchParams({
     ...parameters,
@@ -33,4 +33,4 @@ const request = async (searchText, nextPageToken = '') => {
   }
 };
 
-export { request };
+export { requestApi };

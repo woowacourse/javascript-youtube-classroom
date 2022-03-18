@@ -1,4 +1,4 @@
-import { request } from '../domain/youtubeApi';
+import { requestApi } from '../domain/requestApi';
 import { debounce } from '../utils/common';
 import { $, showSnackBar } from '../utils/dom';
 import { skeletonUI } from './skeletonUI';
@@ -21,7 +21,7 @@ export default class YoutubeSearch {
   handleSubmit = () => {
     $('.video-list').replaceChildren();
     skeletonUI.render();
-    request(this.input.value)
+    requestApi(this.input.value)
       .then(videoData => {
         youtubeSearchResult.renderInitialVideoList(videoData);
       })

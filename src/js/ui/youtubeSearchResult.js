@@ -2,7 +2,7 @@ import { INTERSECTION_RATIO, MESSAGE, STORAGE_KEY } from '../constants';
 import { $, showSnackBar } from '../utils/dom';
 import NoResultImage from '../../assets/images/not_found.png';
 import { store } from '../domain/store';
-import { request } from '../domain/youtubeApi';
+import { requestApi } from '../domain/requestApi';
 import { convertToKoreaLocaleDate } from '../utils/common';
 import { skeletonUI } from './skeletonUI';
 import { video } from '../domain/video';
@@ -71,7 +71,7 @@ export const youtubeSearchResult = {
   renderNextVideoList(nextPageToken) {
     skeletonUI.render();
 
-    request($('#search-input-keyword').value, nextPageToken)
+    requestApi($('#search-input-keyword').value, nextPageToken)
       .then(videoData => {
         skeletonUI.remove();
         this.$videoList.insertAdjacentHTML('beforeend', this.searchResultTemplate(videoData.items));
