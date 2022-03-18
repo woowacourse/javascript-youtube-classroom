@@ -11,6 +11,8 @@ export const ERROR_MESSAGE = {
 
 export const MAX_SAVED_VIDEOS_COUNT = 100;
 
+export const NO_SAVED_VIDEOS_MESSAGE = '저장된 영상이 없습니다';
+
 export const STORAGE_KEY_SAVED_VIDEOS = 'savedVideos';
 
 export const VIDEO_COUNT = 10;

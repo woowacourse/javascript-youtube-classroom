@@ -65,8 +65,6 @@ export default class MyVideosScreen {
       this.#storageEngine.removeVideo(videoId);
 
       this.#myVideoList.removeChild(video);
-
-      // console.log(e.target, e.currentTarget, videoId);
     }
   };
 }

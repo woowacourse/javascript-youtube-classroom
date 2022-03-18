@@ -1,4 +1,8 @@
-import { DELETE_VIDEO_CONFIRM_MESSAGE, VIDEO_COUNT } from '../../src/js/util/constants.js';
+import {
+  DELETE_VIDEO_CONFIRM_MESSAGE,
+  NO_SAVED_VIDEOS_MESSAGE,
+  VIDEO_COUNT,
+} from '../../src/js/util/constants.js';
 
 describe('유튜브 검색 및 비디오 저장 정상 작동 테스트', () => {
   before(() => {
@@ -119,7 +123,9 @@ describe('볼 영상 확인/ 본 영상 확인 / 영상 삭제 기능 테스트'
       cy.get('.my-video-list').children().should('have.length', 0);
     });
 
-    // it('저장된 영상이 없을 경우 메시지를 확인할 수 있다.', () => {});
+    it('저장된 영상이 없을 경우 메시지를 확인할 수 있다.', () => {
+      cy.get('.no-saved-videos__content').should('have.text', NO_SAVED_VIDEOS_MESSAGE);
+    });
   });
 });
 
