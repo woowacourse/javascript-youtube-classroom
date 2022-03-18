@@ -6,6 +6,7 @@ body {
 #app {
   max-width: 1020px;
   margin: 0 auto;
+  margin-bottom: 39px;
 }
 
 .classroom-container__title {
@@ -18,7 +19,7 @@ body {
 
 .nav {
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
 }
 
 .button {
@@ -32,11 +33,35 @@ body {
 }
 
 .nav__button {
-  width: 80px;
   height: 36px;
+  padding: 0 18px;
   background: var(--nav-btn-bg-color);
 }
 
 .nav__button:hover {
   background: var(--nav-btn-bg-hover-color);
+}
+
+.video-container {
+  display: flex;
+  justify-content: center;
+}
+
+.video-container > ul {
+  justify-content: space-between;
+}
+
+.button-list {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.button-list > button {
+  width: 36px;
+  height: 36px;
+  margin-left: 8px;
+}
+
+.button-list > button:hover {
+  background: #ced4da;
 }
