@@ -22,7 +22,7 @@ class SavedVideo {
 
   #generateTemplate() {
     const { savedVideo } = this.#props;
-    const { videoId, videoTitle, channelTitle, publishTime, thumbnail } = savedVideo;
+    const { videoId, videoTitle, channelTitle, publishTime, thumbnail } = savedVideo.getVideoInfo();
 
     return `
       <li class="video-item" data-video-id="${videoId}">

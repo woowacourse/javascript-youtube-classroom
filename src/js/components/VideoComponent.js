@@ -68,7 +68,11 @@ class Video {
   #isSavedVideo(currentVideoId) {
     const savedVideoList = getState(STATE_STORE_KEY.SAVED_VIDEO);
 
-    const savedVideo = savedVideoList.find((video) => video.videoId === currentVideoId);
+    const savedVideo = savedVideoList.find((video) => {
+      const { videoId } = video.getVideoInfo();
+
+      return videoId === currentVideoId;
+    });
 
     return savedVideo !== undefined;
   }

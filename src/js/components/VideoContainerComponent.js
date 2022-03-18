@@ -64,11 +64,11 @@ class VideoContainer {
           dataset: { videoId },
         } = e.target.closest('.video-item');
 
-        const savedVideo = this.#findVideoByVideoId(videoId);
+        const targetVideo = this.#findVideoByVideoId(videoId);
 
         dispatch(CUSTOM_EVENT_KEY.CLICK_SAVE_BUTTON, {
           detail: {
-            savedVideo,
+            targetVideo,
           },
         });
       }

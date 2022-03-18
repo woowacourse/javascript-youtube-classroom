@@ -73,18 +73,21 @@ class AppBusiness {
     }
   };
 
-  onClickSaveButton = ({ detail: { savedVideo } }) => {
+  onClickSaveButton = ({ detail: { targetVideo } }) => {
     try {
-      const savedVideoList = webStore.getData(WEB_STORE_KEY.SAVED_VIDEO_LIST_KEY) ?? [];
+      const savedVideoInfoList = webStore.getData(WEB_STORE_KEY.SAVED_VIDEO_LIST_KEY) ?? [];
+      const savedVideoList = savedVideoInfoList.map((videoInfo) => Video.create(videoInfo));
 
-      if (savedVideoList.length === 100) {
+      if (savedVideoInfoList.length === 100) {
         throw new Error(ERROR_MESSAGE.SAVE_VIDEO_COUNT_OVER);
       }
 
-      const savedVideoInfo = savedVideo.getVideoInfo();
-      const updatedVideoList = [...savedVideoList, savedVideoInfo];
+      const targetVideoInfo = targetVideo.getVideoInfo();
 
-      webStore.setData(WEB_STORE_KEY.SAVED_VIDEO_LIST_KEY, updatedVideoList);
+      const updatedVideoInfoList = [...savedVideoInfoList, targetVideoInfo];
+      const updatedVideoList = [...savedVideoList, targetVideo];
+
+      webStore.setData(WEB_STORE_KEY.SAVED_VIDEO_LIST_KEY, updatedVideoInfoList);
       setState(STATE_STORE_KEY.SAVED_VIDEO, updatedVideoList);
     } catch ({ message }) {
       alert(message);
