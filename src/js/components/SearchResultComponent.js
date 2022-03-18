@@ -1,7 +1,8 @@
+import { VIDEO_COMPONENT_TYPE } from '../constants/components';
 import { STATE_STORE_KEY } from '../constants/stateStore';
 import { getState, subscribe } from '../modules/stateStore';
 import { isNullVideoList } from '../utils/validation';
-import VideoListComponent from './VideoListComponent';
+import SearchVideoListComponent from './VIdeoListComponent/SearchVideoListComponent';
 
 class SearchResultComponent {
   #parentElement = null;
@@ -37,7 +38,10 @@ class SearchResultComponent {
   }
 
   #initChildrenComponent() {
-    this.#videoListComponent = new VideoListComponent(this.$searchResult);
+    this.#videoListComponent = new SearchVideoListComponent(
+      this.$searchResult,
+      VIDEO_COMPONENT_TYPE.SEARCH
+    );
   }
 
   #subscribeStore() {
@@ -59,7 +63,7 @@ class SearchResultComponent {
     }
     /** 검색 결과가 있다면 */
     this.$noResult.classList.add('hide');
-    this.#videoListComponent.renderSearchVideoList(searchResult);
+    this.#videoListComponent.render(searchResult);
   }
 
   #renderSkeletonVideoList(isWaitingResponse) {

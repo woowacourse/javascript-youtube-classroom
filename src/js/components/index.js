@@ -3,8 +3,8 @@ import { dispatch } from '../modules/eventFactory';
 import { CUSTOM_EVENT_KEY } from '../constants/events';
 import { CURRENT_APP_SECTION_VALUE, STATE_STORE_KEY } from '../constants/stateStore';
 import { getState, subscribe } from '../modules/stateStore';
-import VideoListComponent from './VideoListComponent';
 import { VIDEO_COMPONENT_TYPE } from '../constants/components';
+import SavedVideoListComponent from './VIdeoListComponent/SavedVideoListComponent';
 
 class AppComponent {
   searchModalComponent = null;
@@ -57,11 +57,11 @@ class AppComponent {
 
   #initChildrenComponent() {
     this.searchModalComponent = new SearchModalComponent(this.#parentElement);
-    this.watchVideoComponent = new VideoListComponent(
+    this.watchVideoComponent = new SavedVideoListComponent(
       this.$watchVideoSection,
       VIDEO_COMPONENT_TYPE.WATCH
     );
-    this.watchedVideoComponent = new VideoListComponent(
+    this.watchedVideoComponent = new SavedVideoListComponent(
       this.$watchedVideoSection,
       VIDEO_COMPONENT_TYPE.WATCHED
     );
@@ -99,8 +99,8 @@ class AppComponent {
   }
 
   #renderSavedVideo(savedVideoResult, initialWatchedVideoList) {
-    this.watchVideoComponent.renderSavedVideoList(savedVideoResult, initialWatchedVideoList);
-    this.watchedVideoComponent.renderSavedVideoList(savedVideoResult, initialWatchedVideoList);
+    this.watchVideoComponent.render(savedVideoResult, initialWatchedVideoList);
+    this.watchedVideoComponent.render(savedVideoResult, initialWatchedVideoList);
   }
 
   #renderSkeletonUI(initialIsSavedVideoWaiting) {
