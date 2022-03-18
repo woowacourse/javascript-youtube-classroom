@@ -14,10 +14,11 @@ class View {
 
     this.searchModalButton = selectDom('#search-modal-button');
     this.modalContainer = selectDom('.modal-container');
+    this.searchModal = selectDom('.search-modal', this.modalContainer);
     this.searchForm = selectDom('#search-form');
     this.searchInputKeyword = selectDom('#search-input-keyword', this.searchForm);
     this.searchButton = selectDom('#search-button', this.searchForm);
-    this.searchResult = selectDom('.search-result', this.modalContainer);
+    this.searchResult = selectDom('.search-result', this.searchModal);
     this.videoList = selectDom('.video-list', this.searchResult);
     this.observer = this.#handleScrollToLastItem();
 
@@ -30,8 +31,20 @@ class View {
     this.searchInputKeyword.addEventListener('keyup', this.#handleValidInput);
   };
 
-  #openModal = () => {
+  #closeModalHandler = (event) => {
+    if (!this.searchModal.contains(event.target)) {
+      this.#closeModal();
+    }
+  };
+
+  #openModal = (event) => {
+    event.stopPropagation();
     this.modalContainer.classList.remove('hide');
+    document.addEventListener('click', this.#closeModalHandler);
+  };
+
+  #closeModal = () => {
+    this.modalContainer.classList.add('hide');
   };
 
   #handleValidInput = (event) => {
