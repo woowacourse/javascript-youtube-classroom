@@ -12,17 +12,18 @@ const storage = {
     if (savedVideoData.length > MAX_VIDEO_COUNT) {
       return;
     }
-    if (savedVideoData.some((video) => video.videoId === videoData.videoId)) {
+    if (savedVideoData.some((video) => video.videoId === videoData[0].videoId)) {
+      console.log('중복');
       return;
     }
-    this.setLocalStorage([...savedVideoData, videoData]);
+    this.setLocalStorage([...savedVideoData, ...videoData]);
   },
   saveVideo(videoData) {
     if (this.getLocalStorage()) {
       this.updateLocalStorage(videoData);
       return;
     }
-    this.setLocalStorage([videoData]);
+    this.setLocalStorage(videoData);
   },
 };
 

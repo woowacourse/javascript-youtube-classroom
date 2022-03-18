@@ -1,5 +1,6 @@
 import '../css/index.css';
 import '../assets/images/not_found.png';
+import '../assets/images/empty_storage.jpeg';
 import { $ } from './util/dom.js';
 import { THROTTLE_DELAY } from './constants/constants.js';
 import { isEndOfScroll, throttle } from './util/general.js';
@@ -12,11 +13,11 @@ export default function App() {
 
   const initSavedVideo = () => {
     const savedVideos = storage.getLocalStorage();
-    console.log(savedVideos);
     if (savedVideos) {
-      $('.video__container').innerHTML = '<ul class="saved__video__list"></ul>';
       searchResultView.renderSavedVideos(savedVideos);
     }
+    $('.video__container').innerHTML =
+      '<img class="empty__video__image" src="./assets/empty_storage.jpeg" alt="empty storage image"/>';
   };
 
   const renderHandler = async () => {
@@ -54,19 +55,22 @@ export default function App() {
 
   const handleSaveVideos = (e) => {
     const isSaveButtonClick = e.target.classList.contains('video-item__save-button');
-    if (isSaveButtonClick) {
-      e.target.hidden = true;
-      const selectedVideo = e.target.closest('li');
-      const videoData = {
+    if (!isSaveButtonClick) {
+      return;
+    }
+    e.target.hidden = true;
+    const selectedVideo = e.target.closest('li');
+    const videoData = [
+      {
         videoId: selectedVideo.dataset.videoId,
         thumbnails: selectedVideo.querySelector('.video-item__thumbnail').src,
         title: selectedVideo.querySelector('.video-item__title').textContent,
         channelTitle: selectedVideo.querySelector('.video-item__channel-name').textContent,
         publishTime: selectedVideo.querySelector('.video-item__published-date').textContent,
-      };
-      storage.saveVideo(videoData);
-      searchResultView.renderSavedVideos(videoData);
-    }
+      },
+    ];
+    storage.saveVideo(videoData);
+    searchResultView.renderSavedVideos(videoData);
   };
 
   // 이벤트 등록
