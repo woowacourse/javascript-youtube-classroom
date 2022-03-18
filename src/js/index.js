@@ -2,7 +2,7 @@ import '../css/index.css';
 import '../assets/images/not_found.png';
 import '../assets/images/empty_storage.jpeg';
 import { $ } from './util/dom.js';
-import { THROTTLE_DELAY } from './constants/constants.js';
+import { MESSAGE, THROTTLE_DELAY } from './constants/constants.js';
 import { isEndOfScroll, throttle } from './util/general.js';
 import storage from './storage/storage.js';
 import YoutubeSearch from './domain/YoutubeSearch.js';
@@ -96,9 +96,14 @@ export default function App() {
 
   $('.saved-video-list').addEventListener('click', (e) => {
     if (e.target.classList.contains('video-remove-button')) {
-      const selectedVideoId = e.target.closest('li').dataset.videoId;
-      handleDeleteVideo(selectedVideoId);
+      if (window.confirm(MESSAGE.CONFIRM.CHECK_DELETE)) {
+        const selectedVideoId = e.target.closest('li').dataset.videoId;
+        handleDeleteVideo(selectedVideoId);
+      }
     }
+    // if (e.target.classList.contains('video-watched-button')) {
+
+    // }
   });
 
   $('#search-modal-button').addEventListener('click', searchResultView.toggleModal);
