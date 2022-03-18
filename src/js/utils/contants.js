@@ -5,7 +5,7 @@ export const NUM = {
 };
 
 export const LOCAL_DB = {
-  VIDEO_ID: "videoId",
+  VIDEOS: "videos",
 };
 
 export const ERROR_MESSAGES = {

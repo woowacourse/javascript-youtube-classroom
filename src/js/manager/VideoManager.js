@@ -6,7 +6,7 @@ export default class VideoManager {
     this.handlers = new Map();
     this.handlerIndex = 0;
     this.state = {
-      videos: getLocalStorage(LOCAL_DB.VIDEO_ID),
+      videos: getLocalStorage(LOCAL_DB.VIDEOS),
     };
   }
 
@@ -45,7 +45,7 @@ export default class VideoManager {
 
   #setState(newState) {
     this.state = { ...this.state, ...newState };
-    saveLocalStorage(LOCAL_DB.VIDEO_ID, this.state.videos);
+    saveLocalStorage(LOCAL_DB.VIDEOS, this.state.videos);
     this.#notify();
   }
 
