@@ -16,28 +16,6 @@ body {
   margin-bottom: 64px;
 }
 
-@media screen and (max-width: 1279px) {
-  #app {
-    max-width: 760px;
-  }
-}
-
-@media screen and (max-width: 959px) {
-  #app {
-    max-width: 500px;
-  }
-}
-
-@media screen and (max-width: 599px) {
-  #app {
-    max-width: 368px;
-  }
-
-  .classroom-container__title {
-    font-size: 24px;
-  }
-}
-
 .nav {
   display: flex;
   justify-content: space-between;
@@ -92,4 +70,42 @@ body {
 
 .nav__button:hover {
   background: #ebebeb;
+}
+
+my-videos section {
+  padding: 39px 0;
+}
+
+my-videos ul {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 32px 20px;
+}
+
+@media screen and (max-width: 1279px) {
+  #app {
+    max-width: 760px;
+  }
+}
+
+@media screen and (max-width: 959px) {
+  #app {
+    max-width: 500px;
+  }
+}
+
+@media screen and (max-width: 599px) {
+  #app {
+    max-width: 368px;
+  }
+
+  .classroom-container__title {
+    font-size: 24px;
+  }
+
+  my-videos ul {
+    justify-content: center;
+  }
 }
