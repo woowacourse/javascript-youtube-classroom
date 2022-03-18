@@ -6,8 +6,6 @@ import { isFirstSearchByKeyword } from '../../utils/validation';
 import VideoComponent from '../VideoComponent';
 
 class SearchVideoListComponent extends VideoListComponent {
-  componentType = VIDEO_COMPONENT_TYPE.SEARCH;
-
   #searchVideoObserver = null;
 
   constructor(parentElement, type = VIDEO_COMPONENT_TYPE.SEARCH) {
