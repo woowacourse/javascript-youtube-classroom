@@ -1,4 +1,3 @@
-import 'cypress-localstorage-commands';
 import videoStore from '../../src/js/storage/videoStore';
 import { SELECTOR } from '../../src/js/utils/constants';
 

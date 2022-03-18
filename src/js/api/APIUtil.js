@@ -1,5 +1,4 @@
 import { ERROR_MESSAGE } from '../utils/constants.js';
-import { videoData } from '../utils/mockData.js';
 
 const APIUtil = {
   async fetchData(requestURL) {
@@ -10,7 +9,6 @@ const APIUtil = {
       }
       const responseData = await response.json();
       return responseData;
-      // return videoData;
     } catch (error) {
       throw new Error(ERROR_MESSAGE.SEARCH_ERROR);
     }
