@@ -16,6 +16,7 @@ export const ERROR_MESSAGES = {
   CANNOT_PARSE_JSON: "저장된 데이터가 유효하지 않은 JSON 형식입니다.",
 };
 
-export const CONFIRM_MESSAGES = {
-  DELETE: "정말 삭제하시겠습니까?",
+export const INFOMATION_MESSAGES = {
+  ASK_DELETE: "정말 삭제하시겠습니까?",
+  SAVED: "저장되었습니다.",
 };

@@ -1,5 +1,5 @@
 import { $, $$ } from "../../utils/dom.js";
-import { NUM } from "../../utils/contants.js";
+import { INFOMATION_MESSAGES, NUM } from "../../utils/contants.js";
 import { fetchDataFromKeyword } from "../../utils/api.js";
 import { getThumnailTemplate, getSkeletonTemplate, getEmptyResultTemplate } from "../../utils/templates.js";
 import { verifySaveId } from "../../utils/validation.js";
@@ -96,6 +96,7 @@ export default class SearchResult {
       verifySaveId(savedVideoArray, id);
       this.videoManager.saveVideos({ id, title, channelTitle, date });
       target.remove();
+      toastMessage(INFOMATION_MESSAGES.SAVED);
     } catch ({ message }) {
       toastMessage(message);
     }

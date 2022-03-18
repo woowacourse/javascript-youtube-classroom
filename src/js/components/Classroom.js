@@ -1,5 +1,5 @@
 import { $ } from "../utils/dom.js";
-import { CONFIRM_MESSAGES } from "../utils/contants.js";
+import { INFOMATION_MESSAGES } from "../utils/contants.js";
 import { getEmptyClassroomTemplate, getFrameTemplate } from "../utils/templates.js";
 
 export default class Classroom {
@@ -13,6 +13,7 @@ export default class Classroom {
     this.videoManager.subscribe(this.#renderVideos);
 
     this.isWatched = false;
+
     this.#renderVideos();
   }
 
@@ -28,7 +29,7 @@ export default class Classroom {
       this.videoManager.toggleWatchVideo(id);
     }
     if (target.classList.contains("video-item__delete-button")) {
-      confirm(CONFIRM_MESSAGES.DELETE) && this.videoManager.removeVideo(id);
+      confirm(INFOMATION_MESSAGES.ASK_DELETE) && this.videoManager.removeVideo(id);
     }
   };
 
@@ -41,6 +42,7 @@ export default class Classroom {
     this.#initClassroom();
 
     const videos = this.videoManager.getSavedVideos().filter((video) => video.watched === this.isWatched);
+
     if (videos.length === 0) {
       this.#renderEmptyClassroom();
       return;
