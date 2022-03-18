@@ -1,4 +1,4 @@
-import { NUM } from "./contants";
+import { NUM } from "./contants.js";
 import { $ } from "./dom.js";
 
 export const changeDateFormat = (date) => {

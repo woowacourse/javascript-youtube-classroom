@@ -1,4 +1,4 @@
-import { $ } from "../../utils/dom";
+import { $ } from "../../utils/dom.js";
 
 export default class SearchInput {
   constructor({ searchManager }) {

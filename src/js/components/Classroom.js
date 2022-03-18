@@ -1,5 +1,5 @@
-import { CONFIRM_MESSAGES } from "../utils/contants.js";
 import { $ } from "../utils/dom.js";
+import { CONFIRM_MESSAGES } from "../utils/contants.js";
 import { getEmptyClassroomTemplate, getFrameTemplate } from "../utils/templates.js";
 
 export default class Classroom {
@@ -39,19 +39,13 @@ export default class Classroom {
   renderVideos = () => {
     this.initClassroom();
 
-    if (this.videoManager.getSavedVideos().filter((video) => video.watched === this.isWatched).length === 0) {
+    const videos = this.videoManager.getSavedVideos().filter((video) => video.watched === this.isWatched);
+    if (videos.length === 0) {
       this.renderEmptyClassroom();
       return;
     }
 
-    this.classroomList.insertAdjacentHTML(
-      "beforeend",
-      this.videoManager
-        .getSavedVideos()
-        .filter((video) => video.watched === this.isWatched)
-        .map((video) => getFrameTemplate(video))
-        .join(""),
-    );
+    this.classroomList.insertAdjacentHTML("beforeend", videos.map((video) => getFrameTemplate(video)).join(""));
   };
 
   renderEmptyClassroom() {
