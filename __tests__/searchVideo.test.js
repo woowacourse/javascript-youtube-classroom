@@ -3,16 +3,13 @@
  */
 
 import SearchVideoManager from '../src/js/Manager/SearchVideoManager';
-import Storage from '../src/js/Storage';
  
 describe('검색 결과 관련 기능 테스트', () => {
-  let storage;
   let searchVideoManager;
  
   beforeEach(() => {
     jest.clearAllMocks();
-    storage = new Storage();
-    searchVideoManager = new SearchVideoManager(storage);
+    searchVideoManager = new SearchVideoManager();
   });
  
   it('fetch 결과를 가공한 데이터에는, 검색 결과 제공에 필요한 비디오 정보가 모두 있다.', () => {
