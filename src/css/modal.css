@@ -168,3 +168,21 @@
 .video-item__save-button:hover {
   background: var(--video-item-save-button-hover-bg-color);
 }
+
+.video-item__buttons-wrapper {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0 8px;
+  justify-content: flex-end;
+}
+
+.video-item__home-page-button {
+  width: 36px;
+  height: 36px;
+  background: var(--video-item-save-button-bg-color);
+  margin-top: 4px;
+}
+
+.video-item__home-page-button:hover {
+  background: var(--video-item-save-button-hover-bg-color);
+}

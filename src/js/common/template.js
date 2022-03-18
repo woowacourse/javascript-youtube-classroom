@@ -6,6 +6,19 @@ const SKELETON_TEMPLATE = `
   </div>
 `;
 
+const videoCardEmojiButtonsStyled = (props) => {
+  const { showHomePageButtons, storeButton } = props;
+
+  return `${showHomePageButtons
+    ? `
+    <div class="video-item__buttons-wrapper">
+      <button class="video-item__home-page-button button">✅</button>
+      <button class="video-item__home-page-button button">🗑️</button>
+    </div>
+    `
+    : storeButton}`;
+};
+
 const videoCardStyled = (props) => {
   const {
     videoItem: {
@@ -15,7 +28,9 @@ const videoCardStyled = (props) => {
       channelTitle,
       publishedDate
     },
-    videoIds } = props;
+    videoIds,
+    showHomePageButtons
+  } = props;
 
   const storeButton = videoIds.includes(videoId)
     ? ''
@@ -29,7 +44,7 @@ const videoCardStyled = (props) => {
       <h4 class="video-item__title" data-video-title="${title}">${title}</h4>
       <p class="video-item__channel-name" data-video-channel-name="${channelTitle}">${channelTitle}</p>
       <p class="video-item__published-date" data-video-published-date="${publishedDate}">${publishedDate}</p>
-      ${storeButton}
+      ${videoCardEmojiButtonsStyled({ showHomePageButtons, storeButton })}
     </li>
     `;
 };

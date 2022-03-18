@@ -56,10 +56,15 @@ export default class VideoCardContainer {
 
   template() {
     const videoIds = getStorageVideoIDs();
-    const { videoList } = this.#state;
+    const { videoList, currentPage } = this.#state;
+    const showHomePageButtons = currentPage === 'Home';
 
     return videoList
-      .map((videoItem) => videoCardStyled({ videoItem, videoIds }))
+      .map((videoItem) => videoCardStyled({
+        videoItem,
+        videoIds,
+        showHomePageButtons
+      }))
       .join('');
   }
 

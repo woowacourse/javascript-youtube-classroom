@@ -7,17 +7,25 @@ export default class Home {
     this.element = element;
     this.configureDOMs();
     this.bindEvents();
-    this.VideoCardContainer = new VideoCardContainer(this.videoListWrapper);
+    this.VideoCardContainer = new VideoCardContainer(
+      this.videoListWrapper,
+      { currentPage: 'Home' }
+    );
     this.renderVideoList();
   }
 
   configureDOMs() {
+    this.storedVideoFilterButton = this.element.querySelector('#stored-video-filter-button');
+    this.watchedVideoFilterButton = this.element.querySelector('#watched-video-filter-button');
     this.searchModalButton = this.element.querySelector('#search-modal-button');
+    this.nav = this.element.querySelector('nav');
     this.element.insertAdjacentHTML('beforeend', storedResultStyled);
     this.videoListWrapper = this.element.querySelector('.video-list');
   }
 
   bindEvents() {
+    this.storedVideoFilterButton.addEventListener('click', this.filterButtonHandler);
+    this.watchedVideoFilterButton.addEventListener('click', this.filterButtonHandler);
     this.searchModalButton.addEventListener('click', this.openModalHandler);
   }
 
@@ -25,6 +33,10 @@ export default class Home {
     const videoList = getStorageVideos();
     this.VideoCardContainer.setState({ videoList });
   }
+
+  filterButtonHandler = () => {
+    console.log('click');
+  };
 
   openModalHandler = () => {
     const modalContainer = document.querySelector('.modal-container');

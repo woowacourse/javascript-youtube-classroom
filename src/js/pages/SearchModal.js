@@ -17,7 +17,10 @@ export default class SearchModal {
     this.bindEvents();
     this.VideoCardContainer = new VideoCardContainer(
       this.videoListWrapper,
-      { skeletonElement: this.skeletons[0] }
+      {
+        skeletonElement: this.skeletons[0],
+        currentPage: 'SearchModal',
+      }
     );
     this.pageToken = '';
   }
