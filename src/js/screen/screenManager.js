@@ -1,6 +1,8 @@
 import SearchEngine from '../domain/searchEngine.js';
+import StorageEngine from '../domain/storageEngine.js';
 
-import SearchResultScreen from './searchResult.js';
+import SearchResultScreen from './searchResultScreen.js';
+import MyVideosScreen from './myVideosScreen.js';
 
 import { $ } from '../util/domHelper.js';
 
@@ -10,6 +12,7 @@ export default class ScreenManager {
   #searchButton;
   #dimmer;
   #searchResultScreen;
+  #myVideosScreen;
 
   constructor() {
     // element 초기화
@@ -18,10 +21,13 @@ export default class ScreenManager {
     this.#searchButton = $('#search-button');
     this.#searchModalButton = $('#search-modal-button');
     this.searchInputKeyword = $('#search-input-keyword');
+    this.myVideoList = $('.my-video-list');
 
     // 인스턴스 생성
     this.searchEngine = new SearchEngine();
+    this.storageEngine = StorageEngine.instance;
     this.#searchResultScreen = new SearchResultScreen(this.searchInputKeyword, this.searchEngine);
+    this.#myVideosScreen = new MyVideosScreen();
 
     // 이벤트 핸들러 등록
     this.#searchModalButton.addEventListener('click', this.#handleOpenModal.bind(this));

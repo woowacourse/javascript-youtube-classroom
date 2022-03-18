@@ -1,4 +1,4 @@
-import { VIDEO_COUNT, STORAGE_KEY_SAVED_VIDEOS } from '../../src/js/util/constants.js';
+import { VIDEO_COUNT } from '../../src/js/util/constants.js';
 
 describe('유튜브 검색 및 비디오 저장 정상 작동 테스트', () => {
   before(() => {
@@ -33,24 +33,23 @@ describe('유튜브 검색 및 비디오 저장 정상 작동 테스트', () => 
         .and('not.have.class', 'skeleton');
     });
 
-    it('결과물의 맨 밑까지 스크롤을 내리면 추가적인 결과물을 확인할 수 있다', () => {
-      cy.intercept('GET', 'https://www.googleapis.com/youtube/v3/search?*').as('getNextVideos');
+    // it('결과물의 맨 밑까지 스크롤을 내리면 추가적인 결과물을 확인할 수 있다', () => {
+    //   cy.intercept('GET', 'https://www.googleapis.com/youtube/v3/search?*').as('getNextVideos');
 
-      // 스크롤 내리기
-      cy.get('.video-list').scrollTo('bottom');
+    //   // 스크롤 내리기
+    //   cy.get('.video-list').scrollTo('bottom');
 
-      // 무한스크롤에 의한 결과값 보여주기
-      cy.wait('@getNextVideos');
-      cy.get('.video-list')
-        .children('.video-item')
-        .should('have.length', VIDEO_COUNT * 2);
-    });
+    //   // 무한스크롤에 의한 결과값 보여주기
+    //   cy.wait('@getNextVideos');
+    //   cy.get('.video-list')
+    //     .children('.video-item')
+    //     .should('have.length', VIDEO_COUNT * 2);
+    // });
   });
 
   context('저장 버튼을 클릭하면, 비디오ID를 저장할 수 있다', () => {
-    it('저장소를 초기화해줘야한다', () => {
-      cy.clearLocalStorage();
-      expect(localStorage.getItem(STORAGE_KEY_SAVED_VIDEOS)).to.be.null;
+    after(() => {
+      cy.saveLocalStorage();
     });
 
     it('저장 버튼을 클릭해 비디오ID를 저장한 후 해당 비디오의 저장 버튼이 사라진다.', () => {
@@ -62,39 +61,53 @@ describe('유튜브 검색 및 비디오 저장 정상 작동 테스트', () => 
   });
 });
 
-describe('영상 삭제/ 본 영상 체크/ 볼 영상과 본 영상 확인 기능 정상 작동 테스트', () => {
-  before(() => {
-    cy.visit('../../dist/index.html');
+describe('볼 영상 확인/ 본 영상 확인 / 영상 삭제 기능 테스트', () => {
+  beforeEach(() => {
+    cy.restoreLocalStorage();
   });
 
-  it('저장된 영상이 있을 경우 저장된 영상들을 확인할 수 있다.', () => {
-    cy.get('.video-item__view-check-button').should('be.visible');
-    cy.get('.video-item__delete-button').should('be.visible');
+  afterEach(() => {
+    cy.saveLocalStorage();
   });
 
-  // it('삭제 버튼을 클릭하면, 비디오를 삭제할 수 있다', () => {});
+  context('볼 영상을 확인하고, 본 영상으로 체크할 수 있다', () => {
+    it('첫 화면에서 볼 영상을 확인할 수 있다', () => {
+      cy.reload();
 
-  // it('저장된 영상이 없을 경우 메시지를 확인할 수 있다.', () => {});
-});
+      cy.get('.my-video-list').children('.video-item').should('have.length', 1);
 
-describe('유튜브 검색 예외 사항 테스트', () => {
-  before(() => {
-    cy.visit('../../dist/index.html');
-    cy.get('#search-modal-button').click();
-  });
-
-  it('검색 결과가 없는 경우 결과없음 페이지를 확인할 수 있다', () => {
-    const noResultKeyword = '!@#!@$#$!#@!#';
-
-    cy.intercept('GET', `https://www.googleapis.com/youtube/v3/search?*`).as('getNoResult');
-
-    cy.get('#search-input-keyword').type(noResultKeyword);
-    cy.get('#search-button').click();
-
-    cy.wait('@getNoResult');
-
-    cy.get('.search-result--no-result').within(() => {
-      cy.get('img').should('have.attr', 'alt');
+      cy.get('.my-video-list').children('.video-item').first().as('myVideoItem');
+      cy.get('@myVideoItem').find('.video-item__view-check-button').should('be.visible');
+      cy.get('@myVideoItem').find('.video-item__delete-button').should('be.visible');
     });
+
+    it('봤다는 버튼을 클릭하여 볼 영상을 본 영상으로 바꿀 수 있다', () => {});
+  });
+
+  context('비디오를 삭제하고, 저장된 영상이 없을 경우 메시지를 통해 확인할 수 있다.', () => {
+    // it('삭제 버튼을 클릭하면, 비디오를 삭제할 수 있다', () => {});
+    // it('저장된 영상이 없을 경우 메시지를 확인할 수 있다.', () => {});
   });
 });
+
+// describe('유튜브 검색 예외 사항 테스트', () => {
+//   before(() => {
+//     cy.visit('../../dist/index.html');
+//     cy.get('#search-modal-button').click();
+//   });
+
+//   it('검색 결과가 없는 경우 결과없음 페이지를 확인할 수 있다', () => {
+//     const noResultKeyword = '!@#!@$#$!#@!#';
+
+//     cy.intercept('GET', `https://www.googleapis.com/youtube/v3/search?*`).as('getNoResult');
+
+//     cy.get('#search-input-keyword').type(noResultKeyword);
+//     cy.get('#search-button').click();
+
+//     cy.wait('@getNoResult');
+
+//     cy.get('.search-result--no-result').within(() => {
+//       cy.get('img').should('have.attr', 'alt');
+//     });
+//   });
+// });

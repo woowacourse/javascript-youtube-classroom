@@ -16,7 +16,7 @@ export default class StorageEngine {
   }
 
   getSavedVideos() {
-    return JSON.parse(localStorage.getItem(STORAGE_KEY_SAVED_VIDEOS));
+    return JSON.parse(localStorage.getItem(STORAGE_KEY_SAVED_VIDEOS)) ?? [];
   }
 
   saveVideo(video) {

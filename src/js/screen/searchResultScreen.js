@@ -1,4 +1,4 @@
-import VideosScreen from './videos.js';
+import VideosScreen from './videosScreen.js';
 
 import { $ } from '../util/domHelper.js';
 import { NO_RESULT_TEMPLATE, VIDEO_LIST_TEMPLATE } from '../util/template.js';
@@ -8,7 +8,7 @@ export default class SearchResultScreen {
   #throttle;
   #searchInputKeyword;
   #searchEngine;
-  #videosScreen;
+  #videos;
   #videoList;
 
   constructor(searchInputKeyword, searchEngine) {
@@ -16,7 +16,7 @@ export default class SearchResultScreen {
     this.#searchInputKeyword = searchInputKeyword;
     this.#searchEngine = searchEngine;
 
-    this.#videosScreen = new VideosScreen(this.searchResult);
+    this.#videos = new VideosScreen(this.searchResult);
   }
 
   init() {
@@ -33,7 +33,7 @@ export default class SearchResultScreen {
       return;
     }
 
-    this.#videosScreen.render(data);
+    this.#videos.allocate(data);
     this.#bindScrollEvent();
   }
 
@@ -64,10 +64,10 @@ export default class SearchResultScreen {
       return;
     }
 
-    this.#videosScreen.render(data);
+    this.#videos.allocate(data);
   }
 
   renderSkeleton() {
-    this.#videosScreen.renderSkeleton();
+    this.#videos.renderSkeleton();
   }
 }

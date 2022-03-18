@@ -1,7 +1,7 @@
 {
   "name": "javascript-youtube-classroom",
-  "version": "1.0.0",
-  "description": ">자바스크립트와 외부 API를 이용해 구현 하는 나만의 유튜브 강의실",
+  "version": "0.5.0",
+  "description": "자바스크립트와 외부 API를 이용해 구현 하는 나만의 유튜브 강의실",
   "main": "index.js",
   "scripts": {
     "build": "webpack",
@@ -30,6 +30,7 @@
     "commitizen": "^4.2.4",
     "css-loader": "^6.7.0",
     "cypress": "^9.5.2",
+    "cypress-localstorage-commands": "^1.7.0",
     "cz-customizable": "^6.3.0",
     "dotenv-webpack": "^7.1.0",
     "eslint": "^8.10.0",
