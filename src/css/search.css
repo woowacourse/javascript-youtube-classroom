@@ -156,19 +156,19 @@
 
 
 @media screen and (max-width:1279px){
-    .search-result__lis{
+    .search-result__list{
         grid-template-columns: repeat(3, 1fr);
     }
 }
 
 @media screen and (max-width:959px){
-    .search-result__lis{
+    .search-result__list{
         grid-template-columns: repeat(2, 1fr);
     }
 }
 
 @media screen and (max-width:599px){
-    .search-result__lis{
+    .search-result__list{
         grid-template-columns: repeat(1, 1fr);
     }
 }
