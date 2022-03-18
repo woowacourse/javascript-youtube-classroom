@@ -1,6 +1,18 @@
 import { MAX_SAVED_VIDEOS_LENGTH } from '../util/constants.js';
 
 export default class StorageEngine {
+  constructor() {
+    localStorage.setItem('currentTabMenu', 'watch-later');
+  }
+
+  setTabMenu(tabMenu) {
+    localStorage.setItem('currentTabMenu', tabMenu);
+  }
+
+  getTabMenu() {
+    return localStorage.getItem('currentTabMenu') ?? 'watch-later';
+  }
+
   getSavedVideos() {
     return JSON.parse(localStorage.getItem('savedVideos')) ?? [];
   }

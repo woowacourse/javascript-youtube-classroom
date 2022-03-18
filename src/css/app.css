@@ -40,6 +40,11 @@ body {
 
 .nav__button:hover {
   background: var(--nav-btn-bg-hover-color);
+  background: #e6fcf5;
+}
+
+.nav__button.clicked {
+  background: #e6fcf5;
 }
 
 .video-container {
