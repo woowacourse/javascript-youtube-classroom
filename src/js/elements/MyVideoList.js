@@ -1,5 +1,6 @@
 import TEMPLATE from '../templates';
 import SavedVideo from '../stores/SavedVideo';
+import { INFO_MESSAGE } from '../constants';
 
 import './MyVideoItem';
 
@@ -32,7 +33,7 @@ class MyVideoList extends HTMLUListElement {
 
   showNoVideo(isWatchedList) {
     this.innerHTML = TEMPLATE.generateNoVideo(
-      isWatchedList ? '아직 시청한 영상이 없습니다.' : '아직 저장된 영상이 없습니다.'
+      isWatchedList ? INFO_MESSAGE.NO_WATCHED_VIDEO : INFO_MESSAGE.NO_WATCHED_VIDEO
     );
   }
 }

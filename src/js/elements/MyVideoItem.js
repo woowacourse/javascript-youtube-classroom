@@ -3,6 +3,7 @@ import TEMPLATE from '../templates';
 import { addEvent, emit, confirm } from '../utils';
 import SavedVideo from '../stores/SavedVideo';
 import State from '../domains/State';
+import { INFO_MESSAGE } from '../constants';
 
 class MyVideoItem extends CustomElement {
   render() {
@@ -28,7 +29,7 @@ class MyVideoItem extends CustomElement {
     }
 
     if (action === 'remove') {
-      confirm('해당 영상을 삭제하시겠습니까?', () =>
+      confirm(INFO_MESSAGE.CONFIRM_REMOVE, () =>
         emit('.video-item__state-button', '@remove', { id }, this)
       );
     }
