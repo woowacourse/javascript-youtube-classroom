@@ -1,3 +1,5 @@
+import { YOUTUBE_SETTING, MESSAGE } from '@Constants';
+
 class YoutubeSaveStorage {
   #KEY = 'YOUTUBE_CLASSROOM_LIBRARY';
 
@@ -26,6 +28,10 @@ class YoutubeSaveStorage {
   }
 
   addVideo(id, videoData) {
+    const list = this.#get();
+    if (list.length >= YOUTUBE_SETTING.MAX_SAVE_NUMBER) {
+      throw new Error(MESSAGE.MAX_SAVE_VIDEO);
+    }
     this.#set([...this.#get(), { id, videoData, watched: false }]);
   }
 
