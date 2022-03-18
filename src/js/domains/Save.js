@@ -32,7 +32,10 @@ class Save {
         throw new Error(ERROR_MESSAGE.EXCEED_MAX_SAVABLE_COUNT);
       }
 
-      localStorage.setItem('videos', JSON.stringify([...this.#videos, { videoId }]));
+      localStorage.setItem(
+        'videos',
+        JSON.stringify([...this.#videos, { videoId, isWatched: false }])
+      );
       this.#videos = this.loadVideos();
     } catch (error) {
       alert(error.message);
