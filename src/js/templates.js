@@ -32,6 +32,7 @@ const TEMPLATE = {
       <h3 hidden>검색어 입력</h3>
       <input
         id="search-input-keyword"
+        name="keyword"
         placeholder="검색"
         class="search-input__keyword"
         required

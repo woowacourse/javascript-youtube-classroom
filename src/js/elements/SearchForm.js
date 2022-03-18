@@ -1,5 +1,5 @@
 import CustomElement from '../abstract/CustomElement';
-import { addEvent, emit, $ } from '../utils';
+import { addEvent, emit } from '../utils';
 import TEMPLATE from '../templates';
 
 class SearchForm extends CustomElement {
@@ -13,7 +13,7 @@ class SearchForm extends CustomElement {
 
   emitEvent(e) {
     e.preventDefault();
-    const keyword = $('#search-input-keyword').value;
+    const keyword = e.target.keyword.value;
 
     emit('form', '@search', { keyword }, this);
   }
