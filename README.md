@@ -15,6 +15,12 @@
 
 [나만의유튜브](https://nan-noo.github.io/javascript-youtube-classroom/)
 
+## 기능
+[구현 기능 목록](https://github.com/nan-noo/javascript-youtube-classroom/blob/taetae/step2/Docs/README.md)
+
+## 구조 설계
+![youtube-classroom-step2](https://user-images.githubusercontent.com/54002105/159017618-6b55835b-e72b-4b34-bcb5-7632b79c88d3.png)
+
 ## ⚙️ Before Started
 
 #### <img alt="Tip" src="https://img.shields.io/static/v1.svg?label=&message=Tip&style=flat-square&color=673ab8"> 로컬에서 서버 띄워서 손쉽게 static resources 변경 및 확인하는 방법
