@@ -8,8 +8,10 @@ import {
   DELETE_CONFIRM_MESSAGE,
   THROTTLE_TIME_INTERVAL,
 } from './constants/contants.js';
+
 import SaveVideo from './saveVideo.js';
 import SearchVideo from './searchVideo.js';
+
 import {
   videoTemplate,
   videoNotFoundTemplate,
@@ -79,8 +81,8 @@ class RenderVideo {
   };
 
   #onTabButtonClick = (clickedTabButton, anotherTabButton, videoList) => {
-    clickedTabButton.classList.add('selected');
-    anotherTabButton.classList.remove('selected');
+    clickedTabButton.classList.add(CLASSNAME.SELECTED_TAB_BUTTON);
+    anotherTabButton.classList.remove(CLASSNAME.SELECTED_TAB_BUTTON);
 
     this.savedVideoListContainer.replaceChildren();
     if (!videoList.length) {
@@ -120,7 +122,10 @@ class RenderVideo {
     e.preventDefault();
     this.searchResultSection.scrollTop = 0;
 
-    if (this.searchVideo.prevSearchKeyword === this.searchInput.value.trim()) {
+    if (
+      !!this.searchInput.value.trim() &&
+      this.searchVideo.prevSearchKeyword === this.searchInput.value.trim()
+    ) {
       return;
     }
     this.searchVideo.initSearchVideo();
@@ -154,7 +159,7 @@ class RenderVideo {
       target.textContent = BUTTON_SAVED_TEXT;
       target.disabled = true;
 
-      if (this.playlistTabButton.classList.contains('selected')) {
+      if (this.playlistTabButton.classList.contains(CLASSNAME.SELECTED_TAB_BUTTON)) {
         this.#onTabButtonClick(
           this.playlistTabButton,
           this.watchedTabButton,
@@ -212,9 +217,10 @@ class RenderVideo {
       this.searchInput.value = '';
       this.searchInput.focus();
       this.videoListContainer.replaceChildren();
+      this.skeletonListContainer.classList.add(CLASSNAME.HIDE_ELEMENT);
 
       this.searchVideo.initSearchVideo();
-      alert(`에러: '${error.message}'. 개발자에게 문의해주세요.`);
+      alert(error.message);
     }
   }
 }
