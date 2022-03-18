@@ -8,6 +8,7 @@ export default class YoutubeClassRoom {
     this.renderWillWatchVideoList();
 
     $('#will-watch-video-button').addEventListener('click', e => {
+      $('.will-watch-video-list').replaceChildren();
       e.target.classList.add('highlight');
       $('#watched-video-button').classList.remove('highlight');
       this.renderWillWatchVideoList();
@@ -19,8 +20,6 @@ export default class YoutubeClassRoom {
       this.renderWatchedVideoList();
     });
   }
-
-  renderInitial() {}
 
   renderWillWatchVideoList() {
     const savedVideos = store.getLocalStorage(STORAGE_KEY);
@@ -53,7 +52,10 @@ export default class YoutubeClassRoom {
       })
       .join('');
 
-    $('.will-watch-video-list').insertAdjacentHTML('afterbegin', template);
+    $('.will-watch-video-list').insertAdjacentHTML(
+      'afterbegin',
+      filterWillWatchVideoList.length > 0 ? template : this.emptyVideoListTemplate(),
+    );
   }
 
   renderWatchedVideoList() {
@@ -61,16 +63,11 @@ export default class YoutubeClassRoom {
     const filterWatchedVideoList = savedDatas.filter(savedData => savedData.watched === true);
   }
 
-  renderEmptyVideoList() {
+  emptyVideoListTemplate() {
     const template = `
-    <div class="no-result">
-      <img class="no-result__image"
-        src=${NoResultImage}
-        alt="no-result-image"
-      >
-      <div class="no-result__description">
-        <p>${MESSAGE.NOT_FOUND}</p>
-        <p>${MESSAGE.OTHER_KEYWORD}</p>
+    <div class="empty-result">
+      <div class="empty-result__description">
+        <p>저장된 동영상이 없습니다.</p>
       </div>
     </div>
     `;
