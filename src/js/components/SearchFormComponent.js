@@ -1,4 +1,4 @@
-import { ERROR_MESSAGE } from '../constants/errorMessage';
+import { ERROR_MESSAGE } from '../constants/message';
 import { CUSTOM_EVENT_KEY } from '../constants/events';
 import { dispatch } from '../modules/eventFactory';
 import { isEmptyKeyword } from '../utils/validation';

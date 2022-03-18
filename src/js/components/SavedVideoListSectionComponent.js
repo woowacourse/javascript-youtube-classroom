@@ -3,7 +3,7 @@ import { getState, subscribe } from '../modules/stateStore';
 import { STATE_STORE_KEY } from '../constants/stateStore';
 import { SAVED_VIDEO_FILTER_TYPE } from '../constants/video';
 import { CUSTOM_EVENT_KEY } from '../constants/events';
-import { DELETE_CHECK_MESSAGE } from '../constants/errorMessage';
+import { DELETE_CHECK_MESSAGE } from '../constants/message';
 import SavedVideo from './SavedVideoComponent';
 
 class SavedVideoListSection {

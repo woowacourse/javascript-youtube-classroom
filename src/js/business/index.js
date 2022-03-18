@@ -9,7 +9,7 @@ import webStore from '../modules/webStore';
 import { bind } from '../modules/eventFactory';
 import { CUSTOM_EVENT_KEY } from '../constants/events';
 import { WEB_STORE_KEY } from '../constants/webStore';
-import { ERROR_MESSAGE } from '../constants/errorMessage';
+import { ERROR_MESSAGE } from '../constants/message';
 class AppBusiness {
   constructor() {
     bind(CUSTOM_EVENT_KEY.CLICK_SEARCH_MODAL_BUTTON, this.onClickSearchModalButton);

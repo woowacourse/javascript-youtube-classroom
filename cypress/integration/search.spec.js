@@ -1,7 +1,7 @@
 /* eslint-disable no-undef */
 /* eslint-disable max-lines-per-function */
 
-import { ERROR_MESSAGE } from '../../src/js/constants/errorMessage.js';
+import { ERROR_MESSAGE } from '../../src/js/constants/message.js';
 
 const LOCAL_URL = 'http://localhost:9000/';
 const API_URL = 'https://practical-nightingale-c76b8a.netlify.app/youtube/v3/search?*';
