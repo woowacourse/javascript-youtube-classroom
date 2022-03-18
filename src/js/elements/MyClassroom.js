@@ -1,6 +1,8 @@
 import CustomElement from '../abstract/CustomElement';
 import { addEvent, $ } from '../utils';
 
+import './MyVideos';
+
 class MyClassroom extends CustomElement {
   // eslint-disable-next-line max-lines-per-function
   template() {
@@ -16,17 +18,41 @@ class MyClassroom extends CustomElement {
           </div>
           <button type="button" id="search-modal-button" class="button nav__button">🔍 검색</button>
         </nav>
+        <my-videos></my-videos>
       </main>
     `;
   }
 
+  // eslint-disable-next-line max-lines-per-function
   setEvent() {
+    addEvent({
+      component: this,
+      eventType: 'click',
+      selector: '#playlist-videos-menu',
+      callback: this.showPlaylistVideos,
+    });
+    addEvent({
+      component: this,
+      eventType: 'click',
+      selector: '#watched-videos-menu',
+      callback: this.showWatchedVideos,
+    });
     addEvent({
       component: this,
       eventType: 'click',
       selector: '#search-modal-button',
       callback: this.showSearchModal,
     });
+  }
+
+  showPlaylistVideos() {
+    $('.playlist-videos-container').classList.remove('hidden');
+    $('.watched-videos-container').classList.add('hidden');
+  }
+
+  showWatchedVideos() {
+    $('.playlist-videos-container').classList.add('hidden');
+    $('.watched-videos-container').classList.remove('hidden');
   }
 
   showSearchModal() {
