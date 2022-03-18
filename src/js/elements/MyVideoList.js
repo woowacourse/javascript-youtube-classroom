@@ -33,7 +33,7 @@ class MyVideoList extends HTMLUListElement {
 
   showNoVideo(isWatchedList) {
     this.innerHTML = TEMPLATE.generateNoVideo(
-      isWatchedList ? INFO_MESSAGE.NO_WATCHED_VIDEO : INFO_MESSAGE.NO_WATCHED_VIDEO
+      isWatchedList ? INFO_MESSAGE.NO_WATCHED_VIDEO : INFO_MESSAGE.NO_UNWATCHED_VIDEO
     );
   }
 }
