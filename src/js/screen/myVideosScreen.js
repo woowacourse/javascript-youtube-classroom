@@ -17,16 +17,15 @@ export default class MyVideosScreen {
     this.#myVideoList.addEventListener('click', this.#handleCheckVideoViewed);
     this.#viewedVideosTabButton.addEventListener('click', this.#changeToViewedVideosTab);
 
-    this.#render();
+    const viewableVideos = this.#storageEngine.getViewableVideos();
+    this.#render(viewableVideos);
   }
 
-  #render() {
-    const savedVideos = this.#storageEngine.getViewableVideos();
+  #render(videos) {
+    if (videos.length > 0) {
+      const myVideosTemplate = videos.map((datum) => myVideoTemplate(datum)).join('');
 
-    if (savedVideos.length > 0) {
-      const myVideoListTemplate = savedVideos.map((datum) => myVideoTemplate(datum)).join('');
-
-      this.#myVideoList.insertAdjacentHTML('beforeend', myVideoListTemplate);
+      this.#myVideoList.insertAdjacentHTML('beforeend', myVideosTemplate);
     }
   }
 
@@ -45,9 +44,8 @@ export default class MyVideosScreen {
     this.#clear();
 
     const viewedVideos = this.#storageEngine.getViewedVideos();
-    const viewedVideosTemplate = viewedVideos.map((video) => myVideoTemplate(video)).join('');
 
-    this.#myVideoList.insertAdjacentHTML('beforeend', viewedVideosTemplate);
+    this.#render(viewedVideos);
   };
 
   #clear() {

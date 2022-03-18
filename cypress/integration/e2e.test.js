@@ -101,8 +101,24 @@ describe('볼 영상 확인/ 본 영상 확인 / 영상 삭제 기능 테스트'
     });
   });
 
-  context('비디오를 삭제하고, 저장된 영상이 없을 경우 메시지를 통해 확인할 수 있다.', () => {
-    // it('삭제 버튼을 클릭하면, 비디오를 삭제할 수 있다', () => {});
+  context('영상을 삭제하고, 저장된 영상이 없을 경우 메시지를 통해 확인할 수 있다.', () => {
+    it('삭제 버튼을 클릭하면, 삭제 확인창을 확인할 수 있고 삭제 확인 버튼을 클릭하면, 영상을 삭제할 수 있다.', () => {
+      const stub = cy.stub();
+
+      cy.on('window:confirm', stub);
+      stub.onFirstCall().returns(true);
+
+      cy.get('.my-video-list')
+        .children('.video-item')
+        .find('.video-item__view-cancel-button')
+        .click()
+        .then(() => {
+          expect(stub.getCall()).to.be.calledWith('해당 영상을 삭제하시겠습니까?');
+        });
+
+      cy.get('.my-video-list').children().should('have.length', 0);
+    });
+
     // it('저장된 영상이 없을 경우 메시지를 확인할 수 있다.', () => {});
   });
 });
