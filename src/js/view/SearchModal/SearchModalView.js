@@ -34,13 +34,10 @@ class SearchModalView {
   }
 
   toggleModal = (renderOnModalClose) => {
-    const { classList: modalClassList } = this.#modalContainer;
-    if (modalClassList.contains('hide')) {
-      modalClassList.remove('hide');
-      return;
-    }
-    modalClassList.add('hide');
-    if (renderOnModalClose) renderOnModalClose();
+    const modalClassList = this.#modalContainer.classList;
+    modalClassList.toggle('hide');
+
+    if (modalClassList.contains('hide') && renderOnModalClose) renderOnModalClose();
   };
 
   #handleSearch = async (event) => {
@@ -81,10 +78,10 @@ class SearchModalView {
     }
   }
 
-  #handleVideoSaveClick = (event) => {
+  #handleVideoSaveClick = ({ target }) => {
     try {
-      saveToStorage('unwatched', event.target.dataset.videoId);
-      event.target.disabled = true;
+      saveToStorage('unwatched', target.dataset.videoId);
+      target.disabled = true;
     } catch (error) {
       alert(error.message);
     }
@@ -101,6 +98,7 @@ class SearchModalView {
       );
       return videoElement;
     });
+
     this.#videoList.append(...resultElementArray);
     if (hasNextPage) this.#observer.observe(this.#videoList.lastChild);
   }
