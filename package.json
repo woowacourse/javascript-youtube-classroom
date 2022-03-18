@@ -7,7 +7,8 @@
     "build": "webpack",
     "test": "jest --watch --no-cache",
     "start": "webpack serve --open",
-    "deploy": "gh-pages -d dist"
+    "deploy": "gh-pages -d dist",
+    "cypress:open": "cypress open"
   },
   "devDependencies": {
     "@babel/core": "^7.16.12",
@@ -15,6 +16,7 @@
     "babel-jest": "^27.4.6",
     "babel-loader": "^8.2.3",
     "css-loader": "^6.7.0",
+    "cypress": "^9.5.2",
     "eslint": "^8.10.0",
     "eslint-config-airbnb-base": "^15.0.0",
     "eslint-config-prettier": "^8.5.0",

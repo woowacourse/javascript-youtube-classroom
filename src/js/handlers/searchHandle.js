@@ -2,6 +2,7 @@ import { isEndOfScroll } from '../utils/scroll.js';
 import { $ } from '../utils/querySelector.js';
 import YoutubeSearchAPI from '../service/YoutubeSearchAPI.js';
 import modalUI from '../views/modal/modalUI.js';
+import { validateInput } from '../validates/validate.js';
 
 const youtubeSearchAPI = new YoutubeSearchAPI();
 
@@ -11,9 +12,11 @@ export const handleSearch = () => {
     modalUI.resetVideoList();
     $('.suggestion').hidden = true;
 
+    const searchKeyword = $('#search-input-keyword').value.trim();
+    validateInput(searchKeyword);
+
     modalUI.renderSkeletonUI();
 
-    const searchKeyword = $('#search-input-keyword').value.trim();
     const response = youtubeSearchAPI.callSearchAPI(searchKeyword);
     youtubeSearchAPI.updateSearchResults(response);
 
