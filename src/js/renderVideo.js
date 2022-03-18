@@ -111,6 +111,19 @@ class RenderVideo {
     ) {
       this.saveVideo.removeVideoFromStorage(targetVideo.dataset);
       this.#renderUpdatedVideoList(targetVideo);
+
+      if (!this.videoListContainer.children.length) return;
+      const deletedVideoButtonInSearchResult = selectDom(
+        `[data-video-id="${targetVideo.dataset.videoId}"] > button`,
+        this.videoListContainer
+      );
+      deletedVideoButtonInSearchResult &&
+        deletedVideoButtonInSearchResult.replaceWith(
+          new DOMParser().parseFromString(
+            '<button type="button" class="video-item__save-button button">⬇ 저장</button>',
+            'text/html'
+          ).body.childNodes[0]
+        );
     }
   };
 
