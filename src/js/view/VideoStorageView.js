@@ -25,14 +25,33 @@ export default class VideoStorageView {
     );
     const noResultDiv = document.querySelector(".no-result");
 
+    this.#renderNavButtonStateChanged(watchedVideoOnly);
+
     this.savedVideoList.classList.remove("hide");
-    this.savedVideoList.insertAdjacentHTML("beforeend", videoItemTemplate);
+    this.savedVideoList.innerHTML = videoItemTemplate;
 
     if (!noResultDiv) {
       return;
     }
 
     noResultDiv.classList.add("hide");
+  };
+
+  #renderNavButtonStateChanged = (watchedVideoOnly) => {
+    if (watchedVideoOnly) {
+      document
+        .querySelector("#watch-later-video-button")
+        .classList.remove("selected");
+      document.querySelector("#watched-video-button").classList.add("selected");
+      return;
+    }
+
+    document
+      .querySelector("#watch-later-video-button")
+      .classList.add("selected");
+    document
+      .querySelector("#watched-video-button")
+      .classList.remove("selected");
   };
 
   hideElement = (target) => {

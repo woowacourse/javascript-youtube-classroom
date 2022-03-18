@@ -23,6 +23,16 @@ export default class YoutubeApp {
 
   #bindEvents() {
     bindEventListener(
+      document.querySelector("#watch-later-video-button"),
+      "click",
+      this.#onClickWatchLaterVideoListButton
+    );
+    bindEventListener(
+      document.querySelector("#watched-video-button"),
+      "click",
+      this.#onClickWatchedVideoListButton
+    );
+    bindEventListener(
       document.querySelector("#search-modal-button"),
       "click",
       this.#onClickSearchModalButton
@@ -57,6 +67,16 @@ export default class YoutubeApp {
       this.videoStorage.getStorage(),
       this.isWatchedVideoOnly
     );
+  };
+
+  #onClickWatchLaterVideoListButton = () => {
+    this.isWatchedVideoOnly = false;
+    this.#reloadStorageData();
+  };
+
+  #onClickWatchedVideoListButton = () => {
+    this.isWatchedVideoOnly = true;
+    this.#reloadStorageData();
   };
 
   #onClickSearchModalButton = () => {
