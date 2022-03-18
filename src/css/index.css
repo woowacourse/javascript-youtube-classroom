@@ -2,6 +2,7 @@
 @import "./classroom.css";
 @import "./modal.css";
 @import "./header.css";
+@import "./skeleton.css";
 
 :root {
   --color-white: #fff;
