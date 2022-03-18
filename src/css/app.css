@@ -76,6 +76,13 @@ my-videos section {
   padding: 39px 0;
 }
 
+my-videos label {
+  width: 100%;
+  float: left;
+  text-align: center;
+  white-space: pre-line;
+}
+
 my-videos ul {
   width: 100%;
   display: flex;

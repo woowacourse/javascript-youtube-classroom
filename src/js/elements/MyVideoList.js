@@ -1,4 +1,5 @@
 import MyVideoStore from '../stores/MyVideoStore';
+import { EMPTY_MY_VIDEOS } from '../templates';
 
 import './MyVideoItem';
 
@@ -11,6 +12,12 @@ class MyVideoList extends HTMLUListElement {
 
   // eslint-disable-next-line max-lines-per-function
   render() {
+    if (MyVideoStore.instance.getVideos().length === 0) {
+      this.innerHTML = EMPTY_MY_VIDEOS;
+
+      return;
+    }
+
     const selectedMenu = this.dataset.menu;
     let videos = MyVideoStore.instance.getPlaylistVideos();
 
