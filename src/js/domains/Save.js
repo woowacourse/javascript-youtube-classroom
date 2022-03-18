@@ -1,7 +1,7 @@
 import SearchVideoStore from '../stores/SearchVideoStore';
 import MyVideoStore from '../stores/MyVideoStore';
 import { on } from '../utils';
-import { ERROR_MESSAGE, VIDEO } from '../constants';
+import { ERROR_MESSAGE } from '../constants';
 
 class Save {
   constructor(videoItem) {
@@ -18,7 +18,7 @@ class Save {
     const myVideos = MyVideoStore.instance.getVideos();
 
     try {
-      if (myVideos.length >= VIDEO.MAX_SAVABLE_COUNT) {
+      if (!MyVideoStore.instance.canSaveVideo()) {
         throw new Error(ERROR_MESSAGE.EXCEED_MAX_SAVABLE_COUNT);
       }
 

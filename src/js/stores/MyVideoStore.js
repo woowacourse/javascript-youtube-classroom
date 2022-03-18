@@ -1,3 +1,5 @@
+import { VIDEO } from '../constants';
+
 class MyVideoStore {
   static _instance = null;
 
@@ -29,6 +31,10 @@ class MyVideoStore {
     this.#subscribers.forEach((subscriber) => {
       subscriber.notify();
     });
+  }
+
+  canSaveVideo() {
+    return this.getVideos().length < VIDEO.MAX_SAVABLE_COUNT;
   }
 
   findVideo(videoId) {
