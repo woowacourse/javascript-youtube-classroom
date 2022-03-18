@@ -1,8 +1,8 @@
 import { DELETE_CONFIRM_MESSAGE } from '../../constants/constants';
 import { getFromStorage, moveInStorage, removeFromStorage } from '../../domain/storage';
 import getVideoList from '../../domain/videoList';
-import { removeArrayIntersection, removeElementList, selectDom } from '../../util/util';
-import { addSkeletonsToContainer, removeAllSkeletons } from '../Skeleton';
+import { removeArrayIntersection, removeElementList, selectDom } from '../util/util';
+import { addSkeletonsToContainer, removeAllSkeletons } from '../shared/Skeleton';
 import { noSavedVideosTemplate, savedVideoElementTemplate } from './SavedVideosTemplate';
 
 class SavedVideosView {

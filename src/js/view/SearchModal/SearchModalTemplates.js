@@ -1,5 +1,5 @@
-import element from '../../util/createElement';
-import videoElementTemplate from '../VideoElement';
+import element from '../util/createElement';
+import videoElementTemplate from '../shared/VideoElement';
 import '../../../assets/images/not_found.png';
 
 export function searchVideoElementTemplate(resultItem) {

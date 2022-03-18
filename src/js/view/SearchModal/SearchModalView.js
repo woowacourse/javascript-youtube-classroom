@@ -1,8 +1,8 @@
 import { ERROR_MESSAGES, MAX_SEARCH_RESULT } from '../../constants/constants';
-import { isBlankValue, removeElementList, scrollToTop, selectDom } from '../../util/util';
+import { isBlankValue, removeElementList, scrollToTop, selectDom } from '../util/util';
 import { errorTemplate, searchVideoElementTemplate } from './SearchModalTemplates';
 import Search from '../../domain/Search';
-import { addSkeletonsToContainer, removeAllSkeletons } from '../Skeleton';
+import { addSkeletonsToContainer, removeAllSkeletons } from '../shared/Skeleton';
 import { saveToStorage } from '../../domain/storage';
 
 class SearchModalView {

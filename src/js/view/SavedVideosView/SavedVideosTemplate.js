@@ -1,7 +1,7 @@
 /* eslint-disable max-lines-per-function */
 import { ERROR_MESSAGES } from '../../constants/constants';
-import element from '../../util/createElement';
-import videoElementTemplate from '../VideoElement';
+import element from '../util/createElement';
+import videoElementTemplate from '../shared/VideoElement';
 
 function savedVideoElementButtons(resultItem, currentTabName) {
   return element({
