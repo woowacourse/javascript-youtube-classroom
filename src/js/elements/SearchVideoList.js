@@ -1,5 +1,5 @@
 import SearchVideoStore from '../stores/SearchVideoStore';
-import Save from '../domains/Save';
+import MyVideoStore from '../stores/MyVideoStore';
 import { addEvent, emit, $, $$ } from '../utils';
 import SKELETONS from '../templates';
 
@@ -57,7 +57,7 @@ class SearchVideoList extends HTMLUListElement {
   }
 
   hideStoredVideoSaveButton(videos) {
-    const storedVideoIds = Save.instance.getVideos().map((video) => video.videoId);
+    const storedVideoIds = MyVideoStore.instance.getVideos().map((video) => video.videoId);
 
     videos.forEach((video) => {
       if (storedVideoIds.includes(video.id)) {
