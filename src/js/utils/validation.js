@@ -17,3 +17,8 @@ export const isMoreThanMaxVideoCount = (videoList) => videoList.length >= MAX_SA
 export const canLoadImage = (showingPX, showingCutline) => showingPX < showingCutline;
 
 export const hasNotSrcAttribute = (imgElement) => !imgElement.src;
+
+export const isCheckedVideo = (className) => className.includes('checked');
+
+export const isLoadableImage = (top, showingCutline, target) =>
+  canLoadImage(top, showingCutline) && hasNotSrcAttribute(target);

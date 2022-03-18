@@ -1,7 +1,7 @@
 import { STATE_STORE_KEY } from '../constants/stateStore';
 import { getState, setState } from '../modules/stateStore';
 import { youtubeAPIFetcher } from '../modules/fetcher';
-import { isMoreThanMaxVideoCount, isNoneSearchResult } from '../utils/validation';
+import { isCheckedVideo, isMoreThanMaxVideoCount, isNoneSearchResult } from '../utils/validation';
 import { parserVideos } from '../utils/util';
 import Video from '../modules/video';
 import { API_PATHS } from '../constants/fetcher';
@@ -151,7 +151,7 @@ class AppBusiness {
 
   onClickSavedCheckButton({ detail: { savedVideoId, element } }) {
     const { className } = element;
-    if (className.includes('checked')) {
+    if (isCheckedVideo(className)) {
       webStore.setData(WEB_STORE_KEY.WATCHED_VIDEO_LIST_KEY, (prev) =>
         prev.filter((videoId) => savedVideoId !== videoId)
       );
@@ -195,7 +195,6 @@ class AppBusiness {
 
     return searchResult;
   }
-  /** 한 가지일만 하도록 구현한다. */
 
   async requestVideoById(id) {
     const videoResult = await youtubeAPIFetcher({
@@ -212,8 +211,6 @@ class AppBusiness {
 
     return Video.create({ ...videoInfos, videoId: id });
   }
-
-  /** 검색 API 결과로 부터, videoList - nextPageToken 값을 추출한다. */
 
   extractSearchResult(searchResult) {
     const { items: videoInfos, nextPageToken } = parserVideos(searchResult);

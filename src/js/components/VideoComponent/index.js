@@ -1,6 +1,6 @@
 import { VIDEO_COMPONENT_TYPE } from '../../constants/components';
 import { parseTimeStamp } from '../../utils/util';
-import { canLoadImage, hasNotSrcAttribute } from '../../utils/validation';
+import { isLoadableImage } from '../../utils/validation';
 class VideoComponent {
   #parentElement = null;
 
@@ -48,7 +48,7 @@ class VideoComponent {
   loadImg(showingCutline) {
     const { top } = this.$videoImg.getBoundingClientRect();
 
-    if (canLoadImage(top, showingCutline) && hasNotSrcAttribute(this.$videoImg)) {
+    if (isLoadableImage(top, showingCutline, this.$videoImg)) {
       const {
         dataset: { src },
       } = this.$videoImg;

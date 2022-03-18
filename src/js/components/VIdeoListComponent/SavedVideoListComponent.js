@@ -14,23 +14,9 @@ class SavedVideoListComponent extends VideoListComponent {
   render({ videoList: savedVideoList }, watchedVideoIdList) {
     this.$videoList.innerHTML = '';
 
-    const { watchVideoList, watchedVideoList } = savedVideoList.reduce(
-      (prev, savedVideo) => {
-        const { videoId } = savedVideo.getVideoInfo();
-        const isWatched = watchedVideoIdList.includes(videoId);
-
-        return {
-          ...prev,
-          watchVideoList: isWatched ? prev.watchVideoList : [...prev.watchVideoList, savedVideo],
-          watchedVideoList: isWatched
-            ? [...prev.watchedVideoList, savedVideo]
-            : prev.watchedVideoList,
-        };
-      },
-      {
-        watchVideoList: [],
-        watchedVideoList: [],
-      }
+    const { watchVideoList, watchedVideoList } = this.#parseWatchAndWahtchedVideo(
+      savedVideoList,
+      watchedVideoIdList
     );
     this.videoComponents = this.#generateVideoComponents(
       this.componentType === VIDEO_COMPONENT_TYPE.WATCH ? watchVideoList : watchedVideoList
@@ -68,6 +54,27 @@ class SavedVideoListComponent extends VideoListComponent {
           notLazyLoad: idx < 10,
           type: this.componentType,
         })
+    );
+  }
+
+  #parseWatchAndWahtchedVideo(savedVideoList, watchedVideoIdList) {
+    return savedVideoList.reduce(
+      (prev, savedVideo) => {
+        const { videoId } = savedVideo.getVideoInfo();
+        const isWatched = watchedVideoIdList.includes(videoId);
+
+        return {
+          ...prev,
+          watchVideoList: isWatched ? prev.watchVideoList : [...prev.watchVideoList, savedVideo],
+          watchedVideoList: isWatched
+            ? [...prev.watchedVideoList, savedVideo]
+            : prev.watchedVideoList,
+        };
+      },
+      {
+        watchVideoList: [],
+        watchedVideoList: [],
+      }
     );
   }
 }
