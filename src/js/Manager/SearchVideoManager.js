@@ -23,16 +23,20 @@ export default class SearchVideoManager {
 
   #nextPageToken;
 
+  #searchState;
+
   constructor() {
     this.#keyword = '';
     this.#nextPageToken = '';
+    this.#searchState = 'READY';
 
     event.addListener('searchWithNewKeyword', this.searchWithNewKeyword.bind(this));
     event.addListener('searchOnScroll', this.searchOnScroll.bind(this));
   }
 
-  updateSearchState(state, data = {}) {
-    const detail = { state, ...data };
+  updateSearchState(newState, data = {}) {
+    this.#searchState = newState;
+    const detail = { searchState: newState, ...data };
     event.dispatch('updateSearchState', detail);
   }
 
@@ -58,6 +62,7 @@ export default class SearchVideoManager {
   }
 
   search() {
+    if ( this.#searchState === 'LOADING' ) return;
     this.updateSearchState('LOADING');
     this.fetchYoutubeData()
       .then((data) => this.processFetchedResult(data))

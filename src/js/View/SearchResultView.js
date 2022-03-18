@@ -30,11 +30,11 @@ export default class SearchResultView {
   }
 
   updateOnSearchState(e) {
-    const { state } = e.detail;
-    if (state === 'READY') { this.resetSearchResult(); };
-    if (state === 'LOADING') { this.updateOnLoading(); };
-    if (state === 'SUCCESS') { this.updateOnNewDataReceived(e.detail.videos); }
-    if (state === 'ERROR') { this.showErrorResult(); }
+    const { searchState } = e.detail;
+    if (searchState === 'READY') { this.resetSearchResult(); };
+    if (searchState === 'LOADING') { this.updateOnLoading(); };
+    if (searchState === 'SUCCESS') { this.updateOnNewDataReceived(e.detail.videos); }
+    if (searchState === 'ERROR') { this.showErrorResult(); }
   }
 
   resetSearchResult() {
