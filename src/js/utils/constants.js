@@ -1,4 +1,5 @@
 export const SELECTOR = {
+  APP: '#app',
   MODAL_CONTAINER: '.modal-container',
   DIMMER: '.dimmer',
   VIDEO_LIST: '.video-list',
@@ -18,6 +19,8 @@ export const SELECTOR = {
   VIDEO_ITEM_CHANNEL_NAGET_VIDEO_ITEM_TEMPLATEME: '.video-item__channel-nagetVideoItemTemplateme',
   VIDEO_ITEM_PUBLISHED_DATE: '.video-item__published-date',
   VIDEO_ITEM_SAVE_BUTTON: '.video-item__save-button',
+  CHECK_SAW_BUTTON: '#check-saw-button',
+  DELETE_STORE_BUTTON: '#delete-store-button',
 };
 
 export const DOM_STRING = {
