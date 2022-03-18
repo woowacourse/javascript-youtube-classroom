@@ -1,5 +1,7 @@
 import CustomElement from '../abstract/CustomElement';
 
+import './MyVideoList';
+
 class MyVideos extends CustomElement {
   template() {
     return `
