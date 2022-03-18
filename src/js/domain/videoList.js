@@ -1,5 +1,5 @@
 import { ERROR_MESSAGES, VIDEO_LIST_URL_BASE } from '../constants/constants';
-import getVideoObjectArray from './getVideoObjectArray';
+import getVideoObjectArray from './utils/getVideoObjectArray';
 
 function generateQueryString(idArray) {
   const query = new URLSearchParams({

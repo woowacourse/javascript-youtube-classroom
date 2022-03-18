@@ -1,6 +1,6 @@
 import { DELETE_CONFIRM_MESSAGE } from '../../constants/constants';
-import storage from '../../domain/storage';
-import getVideoList from '../../domain/VideoListAPI';
+import { getFromStorage, moveInStorage, removeFromStorage } from '../../domain/storage';
+import getVideoList from '../../domain/videoList';
 import { removeArrayIntersection, removeElementList, selectDom } from '../../util/util';
 import { addSkeletonsToContainer, removeAllSkeletons } from '../Skeleton';
 import { noSavedVideosTemplate, savedVideoElementTemplate } from './SavedVideosTemplate';
@@ -27,7 +27,7 @@ class SavedVideosView {
     this.#videoList = selectDom('.video-list', this.#savedVideos);
     this.#currentTabName = 'unwatched';
     this.#otherTabName = 'watched';
-    this.#unrenderedVideoIdArray = storage.getFromStorage(this.#currentTabName);
+    this.#unrenderedVideoIdArray = getFromStorage(this.#currentTabName);
     this.#renderedVideoIdArray = [];
     this.#endOfList = selectDom('.end-of-list');
     this.#observer = this.#loadMoreObserver();
@@ -62,13 +62,13 @@ class SavedVideosView {
   };
 
   renderOnModalClose = async () => {
-    this.#unrenderedVideoIdArray = storage.getFromStorage(this.#currentTabName);
+    this.#unrenderedVideoIdArray = getFromStorage(this.#currentTabName);
     this.renderVideoList();
   };
 
   #clearAllVideos() {
     removeElementList([...this.#videoList.childNodes]);
-    this.#unrenderedVideoIdArray = storage.getFromStorage(this.#currentTabName);
+    this.#unrenderedVideoIdArray = getFromStorage(this.#currentTabName);
     this.#renderedVideoIdArray = [];
   }
 
@@ -95,7 +95,7 @@ class SavedVideosView {
   }
 
   #removeDeletedVideos(videos) {
-    const videosIdArray = videos || storage.getFromStorage(this.#currentTabName);
+    const videosIdArray = videos || getFromStorage(this.#currentTabName);
 
     const deletedVideoIdArray = removeArrayIntersection(this.#renderedVideoIdArray, videosIdArray);
     const toDeleteArray = [...this.#videoList.childNodes].filter((child) =>
@@ -143,14 +143,14 @@ class SavedVideosView {
 
   #moveToWatchedList(target) {
     const { videoId } = target.dataset;
-    storage.moveVideo({ from: this.#currentTabName, to: this.#otherTabName, value: videoId });
+    moveInStorage({ from: this.#currentTabName, to: this.#otherTabName, value: videoId });
     this.#removeDeletedVideos();
   }
 
   #unsaveVideo(target) {
     if (window.confirm(DELETE_CONFIRM_MESSAGE)) {
       const { videoId } = target.dataset;
-      storage.removeFromStorage(this.#currentTabName, videoId);
+      removeFromStorage(this.#currentTabName, videoId);
       this.#removeDeletedVideos();
     }
   }

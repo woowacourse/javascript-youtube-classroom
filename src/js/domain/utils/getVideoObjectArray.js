@@ -1,4 +1,4 @@
-import { ERROR_MESSAGES } from '../constants/constants';
+import { ERROR_MESSAGES } from '../../constants/constants';
 
 export default function getVideoObjectArray(items, savedVideos) {
   if (items.length === 0) throw new Error(ERROR_MESSAGES.NO_RESULT);

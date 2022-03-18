@@ -10,11 +10,11 @@ const keys = {
   unwatched: UNWATCHED_LIST_KEY,
 };
 
-function getFromStorage(key) {
+export function getFromStorage(key) {
   return JSON.parse(localStorage.getItem(keys[key])) || [];
 }
 
-function saveToStorage(key, value) {
+export function saveToStorage(key, value) {
   const idArray = getFromStorage(key);
   const allIdArray = Object.keys(keys).reduce(
     (array, storageKey) => [...array, ...getFromStorage(storageKey)],
@@ -26,23 +26,14 @@ function saveToStorage(key, value) {
   localStorage.setItem(keys[key], JSON.stringify([...new Set([...idArray, value])]));
 }
 
-function removeFromStorage(key, value) {
+export function removeFromStorage(key, value) {
   const idArray = getFromStorage(key);
   const index = idArray.indexOf(value);
   if (index >= 0) idArray.splice(index, 1);
   localStorage.setItem(keys[key], JSON.stringify(idArray));
 }
 
-function moveVideo({ from, to, value }) {
+export function moveInStorage({ from, to, value }) {
   removeFromStorage(from, value);
   saveToStorage(to, value);
 }
-
-const storage = {
-  getFromStorage,
-  saveToStorage,
-  removeFromStorage,
-  moveVideo,
-};
-
-export default storage;

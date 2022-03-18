@@ -2,8 +2,8 @@ import { ERROR_MESSAGES, MAX_SEARCH_RESULT } from '../../constants/constants';
 import { isBlankValue, removeElementList, scrollToTop, selectDom } from '../../util/util';
 import { errorTemplate, searchVideoElementTemplate } from './SearchModalTemplates';
 import Search from '../../domain/Search';
-import storage from '../../domain/storage';
 import { addSkeletonsToContainer, removeAllSkeletons } from '../Skeleton';
+import { saveToStorage } from '../../domain/storage';
 
 class SearchModalView {
   #modalContainer;
@@ -83,7 +83,7 @@ class SearchModalView {
 
   #handleVideoSaveClick = (event) => {
     try {
-      storage.saveToStorage('unwatched', event.target.dataset.videoId);
+      saveToStorage('unwatched', event.target.dataset.videoId);
       event.target.disabled = true;
     } catch (error) {
       alert(error.message);
