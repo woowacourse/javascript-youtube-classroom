@@ -11,7 +11,6 @@ import {
 import YoutubeSearchStore from '@Domain/YoutubeSearchStore';
 import YoutubeSaveStorage from '@Domain/YoutubeSaveStorage';
 import notFoundImage from '@Images/not_found.jpeg';
-import serverErrorImage from '@Images/server_error.jpeg';
 import SnackBar from '../Share/SnackBar';
 
 export default class SearchResult {
@@ -96,14 +95,6 @@ export default class SearchResult {
       className: 'no-result__image',
       alt: 'no result image',
       src: notFoundImage,
-    });
-  }
-
-  getResultServerError() {
-    return createElement('IMG', {
-      className: 'no-result__image',
-      alt: 'no result image',
-      src: serverErrorImage,
     });
   }
 
