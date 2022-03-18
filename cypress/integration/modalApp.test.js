@@ -21,8 +21,7 @@ describe("보고싶은 영상 찾기 모달창 전체 로직 테스트", () => {
       }
     ).as("noSearch");
 
-    cy.get("#search-input-keyword").type(errorSearchKeyword);
-    cy.get("#search-button").click();
+    cy.searchKeyword(errorSearchKeyword);
     cy.get(".search-result--no-result").should("be.visible");
   });
 
@@ -45,8 +44,7 @@ describe("보고싶은 영상 찾기 모달창 전체 로직 테스트", () => {
         fixture: "search",
       }
     ).as("search");
-    cy.get("#search-input-keyword").clear().type(searchKeyword);
-    cy.get("#search-button").click();
+    cy.searchKeyword(searchKeyword);
     // cy.get(".skeleton").should("be.visible");
     cy.get(".video-item").should("be.visible");
   });
@@ -68,13 +66,25 @@ describe("보고싶은 영상 찾기 모달창 전체 로직 테스트", () => {
     cy.get(".video-list").children().should("have.length", 20);
   });
 
-  it("보고싶은 영상 찾기 모달창 안에서 검색된 영상이 이미 저장된 영상이라면 저장 버튼이 보이지 않아야 한다.", () => {
-    cy.get("#search-button").click();
-    cy.get(".video-item__save-button").eq(0).should("be.not.visible");
-  });
-
   it("보고싶은 영상 찾기 모달창이 열린 상태에서 모달창 뒤의 음영 된 부분을 누르면 모달창이 사라진다.", () => {
     cy.get(".dimmer").click({ force: true });
     cy.get(".modal-container").should("be.not.visible");
+  });
+
+  it("보고싶은 영상 찾기 모달창 안에서 검색된 영상이 이미 저장된 영상이라면 저장 버튼이 보이지 않아야 한다.", () => {
+    cy.intercept(
+      "https://clever-aryabhata-ff1fc1.netlify.app/youtube/v3/search?*",
+      {
+        fixture: "search",
+      }
+    ).as("search");
+
+    cy.get("#search-modal-button").click();
+    cy.searchKeyword(searchKeyword);
+    cy.get(".video-item__save-button").eq(0).click();
+    cy.get(".dimmer").click({ force: true });
+    cy.get("#search-modal-button").click();
+    cy.searchKeyword(searchKeyword);
+    cy.get(".video-item__save-button").eq(0).should("be.not.visible");
   });
 });
