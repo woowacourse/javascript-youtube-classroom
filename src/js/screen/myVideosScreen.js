@@ -8,8 +8,12 @@ export default class MyVideosScreen {
   #nav;
   #myVideoList;
   #storageEngine;
+  #currentFilter;
 
   constructor() {
+    // 상태
+    this.#currentFilter = 'videosToView';
+
     this.#nav = $('nav');
     this.#myVideoList = $('.my-video-list');
 
@@ -20,10 +24,14 @@ export default class MyVideosScreen {
     this.#nav.addEventListener('click', this.#renderFilteredVideos);
 
     const videosToView = this.#storageEngine.getFilteredVideos(false);
-    this.#render(videosToView);
+    this.render(videosToView);
   }
 
-  #render(videos) {
+  get currentFilter() {
+    return this.#currentFilter;
+  }
+
+  render(videos) {
     if (videos.length > 0) {
       const myVideosTemplate = videos.map((datum) => myVideoTemplate(datum)).join('');
 
@@ -62,12 +70,15 @@ export default class MyVideosScreen {
       e.target.id === 'videos-to-view-filter-button' ||
       e.target.id === 'viewed-videos-filter-button'
     ) {
-      this.#myVideoList.replaceChildren();
+      this.clear();
+
+      this.#currentFilter =
+        e.target.id === 'viewed-videos-filter-button' ? 'viewedVideos' : 'videosToView';
 
       const viewStatus = e.target.id === 'viewed-videos-filter-button' ? true : false;
       const filteredVideos = this.#storageEngine.getFilteredVideos(viewStatus);
 
-      this.#render(filteredVideos);
+      this.render(filteredVideos);
     }
   };
 
@@ -91,5 +102,9 @@ export default class MyVideosScreen {
 
   #renderNoSavedVideosMessage() {
     this.#myVideoList.textContent = NO_SAVED_VIDEOS_MESSAGE;
+  }
+
+  clear() {
+    this.#myVideoList.replaceChildren();
   }
 }

@@ -13,7 +13,7 @@ export default class SearchModalScreen {
   #searchEngine;
   #searchInputKeyword;
 
-  constructor() {
+  constructor(myVideosScreen) {
     // element 초기화
     this.#dimmer = $('.dimmer');
     this.#modalContainer = $('.modal-container');
@@ -23,7 +23,11 @@ export default class SearchModalScreen {
 
     // 인스턴스 생성
     this.#searchEngine = new SearchEngine();
-    this.#searchResultScreen = new SearchResultScreen(this.#searchInputKeyword, this.#searchEngine);
+    this.#searchResultScreen = new SearchResultScreen(
+      this.#searchInputKeyword,
+      this.#searchEngine,
+      myVideosScreen
+    );
 
     // 이벤트 핸들러 등록
     this.#searchModalButton.addEventListener('click', this.#handleOpenModal);

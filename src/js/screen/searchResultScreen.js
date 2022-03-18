@@ -12,12 +12,12 @@ export default class SearchResultScreen {
   #videoList;
   #searchResult;
 
-  constructor(searchInputKeyword, searchEngine) {
+  constructor(searchInputKeyword, searchEngine, myVideosScreen) {
     this.#searchResult = $('.search-result');
     this.#searchInputKeyword = searchInputKeyword;
     this.#searchEngine = searchEngine;
 
-    this.#searchedVideosScreen = new SearchedVideosScreen(this.#searchResult);
+    this.#searchedVideosScreen = new SearchedVideosScreen(this.#searchResult, myVideosScreen);
   }
 
   init() {

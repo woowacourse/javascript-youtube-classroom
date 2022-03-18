@@ -6,9 +6,11 @@ import { preprocessDate } from '../util/date.js';
 
 export default class SearchedVideosScreen {
   #storageEngine;
+  #myVideosScreen;
 
-  constructor(parentElement) {
+  constructor(parentElement, myVideosScreen) {
     this.#storageEngine = StorageEngine.instance;
+    this.#myVideosScreen = myVideosScreen;
 
     parentElement.addEventListener('click', this.#handleSaveVideo);
   }
@@ -79,5 +81,12 @@ export default class SearchedVideosScreen {
     return { videoId, thumbnail, title, channelTitle, publishTime };
   }
 
-  #renderMyVideos() {}
+  #renderMyVideos() {
+    if (this.#myVideosScreen.currentFilter === 'videosToView') {
+      const videosToView = this.#storageEngine.getFilteredVideos(false);
+
+      this.#myVideosScreen.clear();
+      this.#myVideosScreen.render(videosToView);
+    }
+  }
 }
