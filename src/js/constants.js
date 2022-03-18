@@ -42,3 +42,5 @@ export const SNACKBAR_TYPE = {
   ERROR: 'ERROR',
   ALERT: 'ALERT',
 };
+
+export const SNACKBAR_CONSIST_TIME = 4000;

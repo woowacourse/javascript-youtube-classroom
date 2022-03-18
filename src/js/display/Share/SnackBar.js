@@ -1,5 +1,5 @@
 import { $ } from '@Utils/dom';
-import { SNACKBAR_TYPE } from '@Constants';
+import { SNACKBAR_TYPE, SNACKBAR_CONSIST_TIME } from '@Constants';
 
 class SnackBar {
   constructor() {
@@ -17,7 +17,7 @@ class SnackBar {
 
     this.timer = setTimeout(() => {
       this.close();
-    }, 4000);
+    }, SNACKBAR_CONSIST_TIME);
   }
 
   close() {
