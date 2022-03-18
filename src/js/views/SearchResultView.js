@@ -10,8 +10,9 @@ export default class SearchResultView {
     this.$searchNoResult = $('.search-result--no-result');
 
     this.observer = new IntersectionObserver(
-      (entries) => {
-        if (entries[0].isIntersecting) {
+      ([lastEntry]) => {
+        console.log(lastEntry);
+        if (lastEntry.isIntersecting) {
           emit(this.$searchTarget, '@scroll-bottom');
         }
       },
