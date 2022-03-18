@@ -7,14 +7,20 @@ import { addEvent, emit, formatDate } from '../utils';
 class MyVideoItem extends CustomElement {
   render() {
     const { details } = MyVideoStore.instance.findVideo(this.dataset.id);
+    const targetMenu = this.dataset.menu;
 
-    this.innerHTML = this.template(details);
+    this.innerHTML = this.template(details, targetMenu);
     new Watch(this);
     new Delete(this);
   }
 
   // eslint-disable-next-line max-lines-per-function
-  template(video) {
+  template(video, menu) {
+    const watchButton =
+      menu === 'watched'
+        ? `<button type="button" id="${video.id}-watch-button" class="video-item__watch-button button selected-watch-button" disabled>✅</button>`
+        : `<button type="button" id="${video.id}-watch-button" class="video-item__watch-button button">✅</button>`;
+
     return `
       <li class="video-item" data-video-id="${video.id}">
         <img
@@ -23,12 +29,12 @@ class MyVideoItem extends CustomElement {
         <h4 class="video-item__title">${decodeURI(video.title)}</h4>
         <p class="video-item__channel-name">${decodeURI(video.channelTitle)}</p>
         <p class="video-item__published-date">${formatDate(video.publishedAt)}</p>
-        <button type="button" id="${
-          video.id
-        }-watch-button" class="video-item__watch-button button">✅</button>
-        <button type="button" id="${
-          video.id
-        }-delete-button" class="video-item__delete-button button">🗑️</button>
+        <div class="video-item__buttons">
+          ${watchButton}
+          <button type="button" id="${
+            video.id
+          }-delete-button" class="video-item__delete-button button">🗑️</button>
+        </div>
       </li>
     `;
   }

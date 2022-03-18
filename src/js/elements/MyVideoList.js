@@ -18,10 +18,10 @@ class MyVideoList extends HTMLUListElement {
       return;
     }
 
-    const selectedMenu = this.dataset.menu;
+    const targetMenu = this.dataset.menu;
     let videos = MyVideoStore.instance.getPlaylistVideos();
 
-    if (selectedMenu === 'watched') {
+    if (targetMenu === 'watched') {
       videos = MyVideoStore.instance.getWatchedVideos();
     }
 
@@ -30,7 +30,7 @@ class MyVideoList extends HTMLUListElement {
     videos.forEach((video) => {
       this.insertAdjacentHTML(
         'beforeend',
-        `<my-video-item data-id=${video.details.id}></my-video-item>`
+        `<my-video-item data-menu="${targetMenu}" data-id=${video.details.id}></my-video-item>`
       );
     });
   }

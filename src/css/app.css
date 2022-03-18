@@ -91,6 +91,28 @@ my-videos ul {
   gap: 32px 20px;
 }
 
+.video-item__buttons {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 4px;
+}
+
+my-video-item button {
+  width: 36px;
+  height: 36px;
+  margin-left: 8px;
+  background: #f9f9f9;
+  border-radius: 4px;
+}
+
+my-video-item button:hover {
+  background: rgba(0, 188, 212, 0.12);
+}
+
+.selected-watch-button {
+  background: rgba(0, 188, 212, 0.12);
+}
+
 @media screen and (max-width: 1279px) {
   #app {
     max-width: 760px;
