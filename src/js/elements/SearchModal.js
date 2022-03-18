@@ -1,6 +1,9 @@
 import CustomElement from '../abstract/CustomElement';
 import { addEvent, $ } from '../utils';
 
+import './SearchForm';
+import './SearchResult';
+
 class SearchModal extends CustomElement {
   template() {
     return `

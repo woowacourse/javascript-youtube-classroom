@@ -3,6 +3,8 @@ import Save from '../domains/Save';
 import { addEvent, emit, $, $$ } from '../utils';
 import SKELETONS from '../templates';
 
+import './SearchVideoItem';
+
 class SearchVideoList extends HTMLUListElement {
   constructor() {
     super();
