@@ -1,5 +1,5 @@
 import fetch from 'node-fetch';
-import { DUMMY_YOUTUBE_API_ENDPOINT } from '../youtubeApi';
+import { YOUTUBE_API_ENDPOINT } from '../youtubeApi';
 import { parseVideoInfo } from '../util';
 import { ERROR_MESSAGE } from '../constants';
 
@@ -31,7 +31,7 @@ export default class SearchVideoManager {
 
   async fetchYoutubeData(keyword) {
     try {
-      const response = await fetch(DUMMY_YOUTUBE_API_ENDPOINT(keyword, this.nextPageToken));
+      const response = await fetch(YOUTUBE_API_ENDPOINT(keyword, this.nextPageToken));
       if (!response.ok) {
         if (response.status === 403) {
           throw new Error(ERROR_MESSAGE.NO_MORE_API);
