@@ -78,7 +78,8 @@ const TEMPLATE = {
     </div>
   `,
   MY_RESULT: `
-    <p>myresult</p>
+    <ul is="my-video-list" id="unwatched-video-list"></ul>
+    <ul is="my-video-list" id="watched-video-list"></ul>
   `,
 };
 
