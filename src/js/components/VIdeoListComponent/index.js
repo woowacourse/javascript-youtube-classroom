@@ -5,6 +5,8 @@ class VideoListComponent {
 
   parentElement = null;
 
+  componentType = null;
+
   videoComponents = [];
 
   lazyLoadThrottleTimeout = null;
@@ -15,9 +17,9 @@ class VideoListComponent {
     this.parentElement = parentElement;
     this.componentType = type;
 
-    this.mount();
-    this.initDOM();
-    this.bindEventHandler();
+    this.#mount();
+    this.#initDOM();
+    this.#bindEventHandler();
   }
 
   renderSkeletonVideoList(isWaitingResponse) {
@@ -32,24 +34,24 @@ class VideoListComponent {
     this.$videoList.innerHTML = '';
   }
 
-  mount() {
-    const template = this.generateTemplate();
+  #mount() {
+    const template = this.#generateTemplate();
     this.parentElement.insertAdjacentHTML('beforeend', template);
   }
 
-  initDOM() {
+  #initDOM() {
     this.$videoList = this.parentElement.querySelector('.video-list');
   }
 
-  generateTemplate() {
+  #generateTemplate() {
     return `<ul class="video-list"></ul>`;
   }
 
-  bindEventHandler() {
-    this.$videoList.addEventListener('scroll', this.onScrollInVideoContainer);
+  #bindEventHandler() {
+    this.$videoList.addEventListener('scroll', this.#onScrollInVideoContainer);
   }
 
-  onScrollInVideoContainer = () => {
+  #onScrollInVideoContainer = () => {
     if (this.lazyLoadThrottleTimeout) {
       clearTimeout(this.lazyLoadThrottleTimeout);
     }

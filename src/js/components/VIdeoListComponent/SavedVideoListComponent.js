@@ -8,7 +8,7 @@ class SavedVideoListComponent extends VideoListComponent {
   /** 깜빡거림이 신경쓰인다. */
   constructor(parentElement, type) {
     super(parentElement, type);
-    this.$videoList.addEventListener('click', this.onClickVideoList);
+    this.$videoList.addEventListener('click', this.#onClickVideoList);
   }
 
   render({ videoList: savedVideoList }, watchedVideoIdList) {
@@ -32,12 +32,12 @@ class SavedVideoListComponent extends VideoListComponent {
         watchedVideoList: [],
       }
     );
-    this.videoComponents = this.generateVideoComponents(
+    this.videoComponents = this.#generateVideoComponents(
       this.componentType === VIDEO_COMPONENT_TYPE.WATCH ? watchVideoList : watchedVideoList
     );
   }
 
-  onClickVideoList = (e) => {
+  #onClickVideoList = (e) => {
     const {
       target: { className },
     } = e;
@@ -60,7 +60,7 @@ class SavedVideoListComponent extends VideoListComponent {
     }
   };
 
-  generateVideoComponents(savedVideoList) {
+  #generateVideoComponents(savedVideoList) {
     return savedVideoList.map(
       (savedVideo, idx) =>
         new VideoComponent(this.$videoList, {

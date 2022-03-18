@@ -8,13 +8,13 @@ import VideoComponent from '../VideoComponent';
 class SearchVideoListComponent extends VideoListComponent {
   componentType = VIDEO_COMPONENT_TYPE.SEARCH;
 
-  searchVideoObserver = null;
+  #searchVideoObserver = null;
 
   constructor(parentElement, type = VIDEO_COMPONENT_TYPE.SEARCH) {
     super(parentElement, type);
 
-    this.$videoList.addEventListener('click', this.onClickVideoList);
-    this.searchVideoObserver = new IntersectionObserver(this.observeEntries, {
+    this.$videoList.addEventListener('click', this.#onClickVideoList);
+    this.#searchVideoObserver = new IntersectionObserver(this.#observeEntries, {
       root: null,
       rootMargin: '0px',
       threshold: 0.3,
@@ -29,10 +29,10 @@ class SearchVideoListComponent extends VideoListComponent {
 
     this.$videoList.classList.remove('hide');
 
-    this.videoComponents = this.generateVideoComponents(videoList, prevVideoListLength);
+    this.videoComponents = this.#generateVideoComponents(videoList, prevVideoListLength);
   }
 
-  observeEntries(entries, observer) {
+  #observeEntries(entries, observer) {
     entries.forEach((entry) => {
       if (entry.isIntersecting) {
         observer.unobserve(entry.target);
@@ -41,7 +41,7 @@ class SearchVideoListComponent extends VideoListComponent {
     });
   }
 
-  onClickVideoList = (e) => {
+  #onClickVideoList = (e) => {
     const {
       target: { className },
     } = e;
@@ -56,14 +56,14 @@ class SearchVideoListComponent extends VideoListComponent {
     }
   };
 
-  generateVideoComponents(videoList, prevVideoListLength) {
+  #generateVideoComponents(videoList, prevVideoListLength) {
     return [
       ...this.videoComponents,
       ...videoList.slice(prevVideoListLength).map(
         (video, idx, arr) =>
           new VideoComponent(this.$videoList, {
             video,
-            observer: idx === arr.length - 1 ? this.searchVideoObserver : null,
+            observer: idx === arr.length - 1 ? this.#searchVideoObserver : null,
             notLazyLoad: prevVideoListLength === 0,
           })
       ),
