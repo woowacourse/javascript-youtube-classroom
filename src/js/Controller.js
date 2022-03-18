@@ -12,11 +12,13 @@ import dummyObject from './dummy/dummyObject.js';
 export default class Controller {
   constructor() {
     this.video = new VideoModel(dummyObject);
-    this.video.savedVideoItems = this.video.getItemsLocalStorage();
     this.appView = new AppView();
     this.searchInputView = new SearchInputView();
     this.searchResultView = new SearchResultView();
     this.SearchCloseView = new SearchCloseView();
+
+    this.video.savedVideoItems = this.video.getItemsLocalStorage();
+    this.appView.renderWillSeeVideo(this.video.getItemsLocalStorage());
     this.#subscribeViewEvents();
   }
 
@@ -89,13 +91,12 @@ export default class Controller {
     this.searchResultView.changeSaveButtonStyle(event.detail.buttonElement);
     const { savedId } = event.detail;
     this.video.setItemsLocalStorage(savedId);
-    // 볼 영상에 렌더링 (get한 것을 view에 넘겨줘)
-    this.appView.renderWillSeeVideo(this.video.getItemsLocalStorage());
   }
 
   #closeModal() {
     this.searchInputView.resetSearchInputKeyword();
     this.searchResultView.hideModal();
     this.searchResultView.removeVideo();
+    this.appView.renderWillSeeVideo(this.video.getItemsLocalStorage());
   }
 }

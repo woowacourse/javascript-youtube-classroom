@@ -10,6 +10,7 @@ export default class AppView {
     this.$willSeeButton = $('#will-see-button');
     this.$sawButton = $('#saw-button');
     this.$willSeeWrapper = $('.will-see-wrapper');
+    this.$isEmpty = $('.is-empty', this.$willSeeWrapper);
     this.$willSeeList = $('#will-see-list', this.$willSeeWrapper);
     this.$sawWrapper = $('.saw-wrapper');
 
@@ -43,7 +44,9 @@ export default class AppView {
   }
 
   renderWillSeeVideo(savedVideos) {
-    // savedVideos를 돌면서, li를 만들어서 will-see-list(ul태그)에 추가한다.
+    if (savedVideos.length === 0) {
+      this.$isEmpty.classList.remove('hide');
+    }
     savedVideos.forEach((savedVideo) => {
       this.$willSeeList.insertAdjacentHTML('beforeend', this.template.getSavedVideo(savedVideo));
     });
