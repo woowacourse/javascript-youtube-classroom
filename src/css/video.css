@@ -43,3 +43,22 @@
 .video-item__save-button:hover {
   background: #efefef;
 }
+
+.video-item__option {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.video-item__watched-button,
+.video-item__delete-button {
+  cursor: pointer;
+  border: none;
+  background-color: #f5f5f5;
+  border-radius: 5px;
+  padding: 10px;
+  margin-left: 5px;
+}
+.video-item__watched-button:hover,
+.video-item__delete-button:hover {
+  background: #ebebeb;
+}

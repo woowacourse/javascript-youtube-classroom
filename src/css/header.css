@@ -25,8 +25,11 @@
   background: #f5f5f5;
 }
 
-.header-nav__watching:hover,
-.header-nav__watched:hover,
 .header-nav__search:hover {
   background: #ebebeb;
+}
+
+.header-nav__watching:hover,
+.header-nav__watched:hover {
+  background: #c9e0e2;
 }

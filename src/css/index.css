@@ -47,6 +47,10 @@ body {
   letter-spacing: 1.25px;
 }
 
+.active {
+  background-color: #c9e0e2;
+}
+
 .toast {
   display: none;
 }

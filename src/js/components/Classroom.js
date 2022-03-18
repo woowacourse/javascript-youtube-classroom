@@ -19,10 +19,10 @@ export default class Classroom {
   handleVideoOption = ({ target }) => {
     const { id } = target.parentNode.dataset;
 
-    if (target.classList.contains("watched-button")) {
+    if (target.classList.contains("video-item__watched-button")) {
       this.videoManager.toggleWatchVideo(id);
     }
-    if (target.classList.contains("delete-button")) {
+    if (target.classList.contains("video-item__delete-button")) {
       confirm(CONFIRM_MESSAGES.DELETE) && this.videoManager.removeVideo(id);
     }
   };

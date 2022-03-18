@@ -41,8 +41,8 @@ export const getFrameTemplate = (video) => {
       <p class="video-item__channel-name">${video.channelTitle}</p>
       <p class="video-item__published-date">${video.date}</p>
       <div class="video-item__option" data-id=${video.id}>
-        ${video.watched ? "" : `<button type="button" class="watched-button">✅</button>`}
-        <button type="button" class="delete-button">🗑️</button>
+        <button type="button" class="video-item__watched-button ${video.watched ? "active" : ""}">✅</button>
+        <button type="button" class="video-item__delete-button">🗑️</button>
       </div>
     </li>
   `;
