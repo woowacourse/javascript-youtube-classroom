@@ -22,10 +22,11 @@ const request = async (searchText, nextPageToken = '') => {
 
   try {
     const response = await fetch(url);
-    if (response.ok) {
-      const videoData = await response.json();
-      return videoData;
+    if (!response.ok) {
+      throw new Error('');
     }
+    const videoData = await response.json();
+    return videoData;
   } catch {
     skeleton.removeSkeletonUI();
     throw new Error(MESSAGE.ERROR_GET_REQUEST);
