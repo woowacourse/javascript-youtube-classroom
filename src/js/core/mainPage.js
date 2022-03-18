@@ -1,14 +1,12 @@
 /* eslint-disable max-lines-per-function */
 import SearchModal from './searchModal';
-import { $ } from './utils/dom';
-import { renderSkeletonItems, removeSkeleton } from './views/render';
-import { MAX_RENDER_VIDEOS_COUNT } from './constants/constant';
-import searchResultRequest from './utils/request';
-import VideoItem from './videoItem';
-import dummyData from '../dummyData.js';
+import { $ } from '../utils/dom';
+import VideoItem from '../videoItem';
+import StateController from './stateController';
 
-export default class MainPage {
+export default class MainPage extends StateController {
   constructor() {
+    super();
     this.$nav = $('.nav');
     this.$searchKeyWordInput = $('#search-input-keyword', this.$modal);
     this.$modalSearchResult = $('.modal__search-result');
@@ -49,7 +47,7 @@ export default class MainPage {
           </p>
         </li>`;
       })
-      .join('\n'); // new line해주지 않으면 insertAdjacentHTML을 사용할때 element가 5개만 생성된다.
+      .join('\n');
 
     const template = document.createElement('template');
     template.insertAdjacentHTML('beforeend', videoListTemplate);
@@ -67,7 +65,7 @@ export default class MainPage {
     return videos;
   }
 
-  async handleClickWatchedButton() {
+  handleClickWatchedButton() {
     if (this.$mainVideoList.classList.contains('watched-video-list')) {
       return;
     }
@@ -75,11 +73,7 @@ export default class MainPage {
     $('.nav__watched-button').classList.add('button-active');
     this.$mainVideoList.classList.add('watched-video-list');
     this.$mainVideoList.replaceChildren();
-    renderSkeletonItems(MAX_RENDER_VIDEOS_COUNT, this.$mainVideoList);
-    // 비디오 가져오기
-    const searchResult = dummyData;
-    const videos = this.checkSearchResult(searchResult);
-    removeSkeleton(this.$mainVideoList);
+    const videos = StateController.prototype.savedWatchedVideoList;
     if (videos.length === 0) {
       this.$mainSearchResult.classList.add('search-result--no-result');
       return;
@@ -96,14 +90,12 @@ export default class MainPage {
     $('.nav__watched-button').classList.remove('button-active');
     this.$mainVideoList.classList.remove('watched-video-list');
     this.$mainVideoList.replaceChildren();
-    renderSkeletonItems(MAX_RENDER_VIDEOS_COUNT, this.$mainVideoList);
-    // 비디오 가져오기
-    removeSkeleton(this.$mainVideoList);
-    const videos = [];
+    const videos = StateController.prototype.savedToWatchVideoList;
     if (videos.length === 0) {
       this.$mainSearchResult.classList.add('search-result--no-result');
       return;
     }
+    this.renderVideoItems(videos);
     this.$mainSearchResult.classList.remove('search-result--no-result');
   }
 

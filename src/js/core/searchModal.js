@@ -1,16 +1,17 @@
 /* eslint-disable max-lines-per-function */
-import { $ } from './utils/dom';
+import { $ } from '../utils/dom';
 import {
   MAX_SAVABLE_VIDEOS_COUNT,
   MAX_RENDER_VIDEOS_COUNT,
-  LOCAL_STORAGE_VIDEO_LIST_KEY,
-} from './constants/constant';
-import VideoItem from './videoItem';
-import { isInputValueEmpty } from './utils/checkvalue';
-import { renderSkeletonItems, removeSkeleton } from './views/render';
-import searchResultRequest from './utils/request';
+  SAVED_VIDEO_LIST_KEY,
+} from '../constants/constant';
+import VideoItem from '../videoItem';
+import { isInputValueEmpty } from '../utils/checkvalue';
+import { renderSkeletonItems, removeSkeleton } from '../views/render';
+import { searchResultRequest } from '../utils/request';
+import StateController from './stateController';
 
-class SearchModal {
+export default class SearchModal extends StateController {
   nextPageToken = null;
 
   init() {
@@ -60,12 +61,12 @@ class SearchModal {
   }
 
   async handleClickButton() {
-    this.$modalSearchResult.classList.add('search-result--no-result');
     this.$modalVideoList.replaceChildren();
     const searchKeyWord = this.$searchKeyWordInput.value;
     if (isInputValueEmpty(searchKeyWord)) {
       return;
     }
+    this.$modalSearchResult.classList.remove('search-result--no-result');
     renderSkeletonItems(MAX_RENDER_VIDEOS_COUNT, this.$modalVideoList);
     const searchResult = await searchResultRequest(searchKeyWord, this.nextPageToken);
     removeSkeleton(this.$modalVideoList);
@@ -75,6 +76,7 @@ class SearchModal {
       this.$modalSearchResult.classList.add('search-result--no-result');
       return;
     }
+    this.updateWholeVideoList(videos);
     this.$modalSearchResult.classList.remove('search-result--no-result');
     this.renderVideoItems(videos);
     this.nextPageToken = searchResult.nextPageToken;
@@ -95,6 +97,7 @@ class SearchModal {
       }
       this.nextPageToken = searchResult.nextPageToken;
       const videos = searchResult.items.map(item => new VideoItem(item));
+      this.updateWholeVideoList(videos);
       this.renderVideoItems(videos);
     }
   }
@@ -103,7 +106,7 @@ class SearchModal {
     const { target } = event;
     const $videoItem = target.closest('.video-item');
     const videoId = $videoItem.getAttribute('data-video-id');
-    const videoList = JSON.parse(localStorage.getItem(LOCAL_STORAGE_VIDEO_LIST_KEY)) ?? [];
+    const videoList = JSON.parse(localStorage.getItem(SAVED_VIDEO_LIST_KEY)) ?? [];
     if (this.isSaveVideo(videoId, videoList)) {
       target.setAttribute('hidden', true);
     }
@@ -114,9 +117,9 @@ class SearchModal {
       alert(`비디오는 ${MAX_SAVABLE_VIDEOS_COUNT}개 이상 저장할 수 없습니다`);
       return false;
     }
-    localStorage.setItem(LOCAL_STORAGE_VIDEO_LIST_KEY, JSON.stringify([...videoList, videoId]));
+    console.log(this);
+    this.saveVideo(videoId);
+    console.log(this.savedToWatchVideoList);
     return true;
   }
 }
-
-export default SearchModal;
