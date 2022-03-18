@@ -16,9 +16,8 @@ export default class EventHandler {
 
   setBindEvents() {
     this.mainView.bindModalOpenButton(this.onModalOpenButtonClick.bind(this));
-    this.mainView.bindWillSeeButton(this.onWillSeeButtonClick.bind(this));
-    this.mainView.bindSawButton(this.onSawButtonClick.bind(this));
-    this.mainView.bindVideoItemButton(this.onVideoItemButtonClick.bind(this));
+    this.mainView.bindStoreTypeButtons(this.onStoreTypeButtonsClick.bind(this));
+    this.mainView.bindVideoItemButtons(this.onVideoItemButtonsClick.bind(this));
 
     this.modalView.bindOnClickSearchButton(this.onSearchButtonClick.bind(this));
     this.modalView.bindOnClickDimmer(this.onDimmerClick.bind(this));
@@ -67,18 +66,8 @@ export default class EventHandler {
     }
   }
 
-  onWillSeeButtonClick() {
-    const videoList = videoStore.getWillSeeVideoList();
-    if (videoList.length === 0) {
-      this.mainView.showEmptyStorage(true);
-      return;
-    }
-    this.mainView.showEmptyStorage(false);
-    this.showStoredVideoItems(videoList);
-  }
-
-  onSawButtonClick() {
-    const videoList = videoStore.getSawVideoList();
+  onStoreTypeButtonsClick(storeType) {
+    const videoList = videoStore.getVideoListWith(storeType);
     if (videoList.length === 0) {
       this.mainView.showEmptyStorage(true);
       return;
@@ -97,13 +86,13 @@ export default class EventHandler {
     this.mainView.updateVideoItems(videoData);
   }
 
-  onVideoItemButtonClick(buttonId, videoId) {
+  onVideoItemButtonsClick(buttonId, videoId, storeType) {
     switch (buttonId) {
       case DOM_STRING.CHECK_WILL_SEE_BUTTON:
-        videoStore.moveToWillSeeVideoList(videoId);
+        videoStore.changeVideoStoreType(videoId, storeType);
         break;
       case DOM_STRING.CHECK_SAW_BUTTON:
-        videoStore.moveToSawVideoList(videoId);
+        videoStore.changeVideoStoreType(videoId, storeType);
         break;
       case DOM_STRING.DELETE_STORE_BUTTON:
         videoStore.deleteVideoWithId(videoId);

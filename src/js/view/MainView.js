@@ -1,68 +1,84 @@
 import { SELECTOR } from '../utils/constants.js';
 import { $ } from '../utils/common.js';
-import { DOM_STRING } from '../utils/constants.js';
+import { DOM_STRING, STORE } from '../utils/constants.js';
 import VideoItemView from './VideoItemView.js';
 
 export default class MainView {
   constructor() {
     this.registerDOM();
-    this.$currentVideoList = this.$willSeeVideoList;
-    this.willSeeVideoList = [];
-    this.sawVideoList = [];
+    this.setProperties();
   }
 
   registerDOM() {
     this.$modalOpenButton = $(SELECTOR.MODAL_OPEN_BUTTON);
     this.$willSeeButton = $('#will-see-button');
     this.$sawButton = $('#saw-button');
+    this.$storeButtonsContainer = $('.stored-buttons-container');
     this.$willSeeVideoList = $('#will-see-video-list');
     this.$sawVideoList = $('#saw-video-list');
   }
 
+  setProperties() {
+    this.currentStoreType = STORE.WILL_SEE;
+    this.videoItemViewLists = {};
+    this.videoItemViewLists[STORE.WILL_SEE] = [];
+    this.videoItemViewLists[STORE.SAW] = [];
+  }
+
+  clickWillSeeButton() {
+    this.$willSeeButton.click();
+  }
+
+  clickSawButton() {
+    this.$sawButton.click();
+  }
+
+  showEmptyStorage(bool) {
+    bool
+      ? $('#empty-container').classList.remove(DOM_STRING.HIDE)
+      : $('#empty-container').classList.add(DOM_STRING.HIDE);
+  }
+
   getRenderedVideoIdList() {
-    return [...this.$currentVideoList.childNodes].map(videoItem => {
-      return videoItem.dataset.videoid;
-    });
+    const currentVideoListElement = this.#getCurrentVideoListElement();
+    return [...currentVideoListElement.childNodes].map(videoItem => videoItem.dataset.videoid);
   }
 
   showSkeletonVideoList(videoList) {
-    this.$currentVideoList.insertAdjacentHTML(
-      'beforeend',
-      `<li class=${DOM_STRING.VIDEO_ITEM}></li>`.repeat(videoList.length)
-    );
-    [...this.$currentVideoList.childNodes].slice(-videoList.length).forEach(li => {
-      if (this.$currentVideoList === this.$willSeeVideoList) {
-        this.willSeeVideoList.push(new VideoItemView(li));
-      } else {
-        this.sawVideoList.push(new VideoItemView(li));
-      }
-    });
-    if (this.$currentVideoList === this.$willSeeVideoList) {
-      this.willSeeVideoList
-        .slice(-videoList.length)
-        .forEach(videoItem => videoItem.renderSkeletonTemplate());
-    } else {
-      this.sawVideoList
-        .slice(-videoList.length)
-        .forEach(videoItem => videoItem.renderSkeletonTemplate());
-    }
+    this.#appendEmptyList(videoList);
+    this.#appendVideoItem(videoList);
+    this.#showSkeletonTemplate(videoList);
   }
 
   updateVideoItems(videoListData) {
-    if (this.$currentVideoList === this.$willSeeVideoList) {
-      this.willSeeVideoList
-        .slice(-videoListData.length)
-        .forEach((videoItem, index) =>
-          videoItem.renderWillSeeVideoItemTemplate(videoListData[index])
-        );
-    } else {
-      this.sawVideoList
-        .slice(-videoListData.length)
-        .forEach((videoItem, index) => videoItem.renderSawVideoItemTemplate(videoListData[index]));
+    if (this.currentStoreType === STORE.WILL_SEE) {
+      this.#renderWillSeeVideoItems(videoListData);
+      return;
     }
+    this.#renderSawVideoItems(videoListData);
   }
 
-  bindVideoItemButton(callback) {
+  deleteVideoItem(videoElement) {
+    const targetIndex = this.videoItemViewLists[this.currentStoreType].findIndex(
+      video => video.getElement() === videoElement
+    );
+    this.videoItemViewLists[this.currentStoreType].splice(targetIndex, 1);
+    videoElement.parentNode.removeChild(videoElement);
+  }
+
+  bindModalOpenButton(callback) {
+    this.$modalOpenButton.addEventListener('click', callback);
+  }
+
+  bindStoreTypeButtons(callback) {
+    this.$storeButtonsContainer.addEventListener('click', event => {
+      this.currentStoreType = event.target.id === 'saw-button' ? STORE.SAW : STORE.WILL_SEE;
+      this.#toggleStoreButtons(event.target);
+      callback(this.currentStoreType);
+    });
+  }
+
+  bindVideoItemButtons(callback) {
     [this.$willSeeVideoList, this.$sawVideoList].forEach(videoList =>
       videoList.addEventListener('click', event => {
         if (
@@ -73,51 +89,56 @@ export default class MainView {
           ].includes(event.target.id)
         ) {
           const videoId = event.target.closest(SELECTOR.VIDEO_ITEM).dataset.videoid;
-          callback(event.target.id, videoId);
+          callback(event.target.id, videoId, this.currentStoreType);
           this.deleteVideoItem(event.target.closest(SELECTOR.VIDEO_ITEM));
         }
       })
     );
   }
 
-  deleteVideoItem(videoElement) {
-    if (this.$currentVideoList === this.$willSeeVideoList) {
-      const targetIndex = this.willSeeVideoList.findIndex(
-        video => video.getElement() === videoElement
-      );
-      this.willSeeVideoList.splice(targetIndex, 1);
-    } else {
-      const targetIndex = this.sawVideoList.findIndex(video => video.getElement() === videoElement);
-      this.sawVideoList.splice(targetIndex, 1);
+  #getCurrentVideoListElement() {
+    if (this.currentStoreType === STORE.WILL_SEE) {
+      return this.$willSeeVideoList;
     }
-    videoElement.parentNode.removeChild(videoElement);
+    return this.$sawVideoList;
   }
 
-  bindModalOpenButton(callback) {
-    this.$modalOpenButton.addEventListener('click', callback);
+  #appendEmptyList(videoList) {
+    const currentVideoListElement = this.#getCurrentVideoListElement();
+    currentVideoListElement.insertAdjacentHTML(
+      'beforeend',
+      `<li class=${DOM_STRING.VIDEO_ITEM}></li>`.repeat(videoList.length)
+    );
   }
 
-  clickWillSeeButton() {
-    this.$willSeeButton.click();
-  }
-
-  bindWillSeeButton(callback) {
-    this.$willSeeButton.addEventListener('click', event => {
-      this.$currentVideoList = this.$willSeeVideoList;
-      this.toggleStoreButtons(event.target);
-      callback();
+  #appendVideoItem(videoList) {
+    const currentVideoListElement = this.#getCurrentVideoListElement();
+    [...currentVideoListElement.childNodes].slice(-videoList.length).forEach(li => {
+      this.videoItemViewLists[this.currentStoreType].push(new VideoItemView(li));
     });
   }
 
-  bindSawButton(callback) {
-    this.$sawButton.addEventListener('click', event => {
-      this.$currentVideoList = this.$sawVideoList;
-      this.toggleStoreButtons(event.target);
-      callback(event.target);
-    });
+  #showSkeletonTemplate(videoList) {
+    this.videoItemViewLists[this.currentStoreType]
+      .slice(-videoList.length)
+      .forEach(videoItem => videoItem.renderSkeletonTemplate());
   }
 
-  toggleStoreButtons(button) {
+  #renderWillSeeVideoItems(videoListData) {
+    this.videoItemViewLists[this.currentStoreType]
+      .slice(-videoListData.length)
+      .forEach((videoItem, index) =>
+        videoItem.renderWillSeeVideoItemTemplate(videoListData[index])
+      );
+  }
+
+  #renderSawVideoItems(videoListData) {
+    this.videoItemViewLists[this.currentStoreType]
+      .slice(-videoListData.length)
+      .forEach((videoItem, index) => videoItem.renderSawVideoItemTemplate(videoListData[index]));
+  }
+
+  #toggleStoreButtons(button) {
     button.disabled = true;
     button.classList.add('nav__button-clicked');
     if (button === this.$willSeeButton) {
@@ -131,11 +152,5 @@ export default class MainView {
       this.$willSeeVideoList.classList.add(DOM_STRING.HIDE);
       this.$sawVideoList.classList.remove(DOM_STRING.HIDE);
     }
-  }
-
-  showEmptyStorage(bool) {
-    bool
-      ? $('#empty-container').classList.remove(DOM_STRING.HIDE)
-      : $('#empty-container').classList.add(DOM_STRING.HIDE);
   }
 }

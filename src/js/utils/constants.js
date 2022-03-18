@@ -27,6 +27,8 @@ export const ERROR_MESSAGE = {
 
 export const STORE = {
   VIDEO_LIST_MAX_LENGTH: 100,
+  WILL_SEE: 'willSee',
+  SAW: 'saw',
 };
 
 export const VIDEO_LIST = {

@@ -1,5 +1,6 @@
 import validator from '../utils/validator.js';
 import storageUtil from './storageUtil.js';
+import { STORE } from '../utils/constants.js';
 
 const videoStore = {
   KEY: {
@@ -10,7 +11,7 @@ const videoStore = {
     try {
       const storedVideoList = this.getStoredVideoList();
       validator.checkStoredVideoListOverMaxLength(storedVideoList);
-      storedVideoList.push({ id: videoId, saw: false });
+      storedVideoList.push({ id: videoId, storeType: STORE.WILL_SEE });
       storageUtil.setItem(this.KEY.STORED_VIDEO_LIST, storedVideoList);
     } catch (error) {
       throw error;
@@ -26,25 +27,15 @@ const videoStore = {
     return storedVideoList.some(storedVideo => storedVideo.id === videoId);
   },
 
-  getWillSeeVideoList() {
+  getVideoListWith(storeType) {
     const storedVideoList = this.getStoredVideoList();
-    return storedVideoList.filter(videoData => !videoData.saw);
+    return storedVideoList.filter(videoData => videoData.storeType === storeType);
   },
 
-  getSawVideoList() {
+  changeVideoStoreType(videoId, storeType) {
     const storedVideoList = this.getStoredVideoList();
-    return storedVideoList.filter(videoData => videoData.saw);
-  },
-
-  moveToSawVideoList(videoId) {
-    const storedVideoList = this.getStoredVideoList();
-    storedVideoList.find(video => video.id === videoId).saw = true;
-    storageUtil.setItem(this.KEY.STORED_VIDEO_LIST, storedVideoList);
-  },
-
-  moveToWillSeeVideoList(videoId) {
-    const storedVideoList = this.getStoredVideoList();
-    storedVideoList.find(video => video.id === videoId).saw = false;
+    const changedStoreType = storeType === STORE.WILL_SEE ? STORE.SAW : STORE.WILL_SEE;
+    storedVideoList.find(video => video.id === videoId).storeType = changedStoreType;
     storageUtil.setItem(this.KEY.STORED_VIDEO_LIST, storedVideoList);
   },
 
