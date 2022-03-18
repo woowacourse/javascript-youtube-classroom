@@ -3,7 +3,7 @@ import {
   toggleWatchedToStorage,
 } from '../domain/localStorage.js';
 import { VideoStorage } from '../domain/VideoStorage.js';
-import { SearchModalPresenter } from '../presenter/SearchModalPresenter.js';
+import SearchModalPresenter from '../presenter/SearchModalPresenter.js';
 import SearchModal from './searchModal.js';
 import template from './templates.js';
 

@@ -1,22 +1,22 @@
 import throttle from '../util/throttle.js';
 import SearchMachine from '../domain/SearchMachine.js';
-import { SearchModalPresenter } from '../presenter/SearchModalPresenter.js';
+import SearchModalPresenter from '../presenter/SearchModalPresenter.js';
+import EventFactory from '../event/EventFactory.js';
 
 class SearchModal {
   constructor(appendList, storage) {
     this.$searchInputKeyword = document.querySelector('#search-input-keyword');
     this.$searchButton = document.querySelector('#search-button');
     this.$videoListContainer = document.querySelector('.video-list');
-    this.scrollHandler = this.scrollVideoContainerHandler();
-    this.requestAdditionalSearchResult = throttle(
-      this.scrollHandler.requestAdditionalSearchResult,
+    this.scrollVideoContainerHandler = throttle(
+      this.scrollVideoContainerHandler.bind(this),
       1000,
-    ).bind(this);
+    );
     this.machine = new SearchMachine();
     this.videoStorage = storage;
     this.appendList = appendList;
-    this.searchModalPresenter = new SearchModalPresenter();
     this.bindEvent();
+    this.errored = { isExisted: false };
   }
 
   bindEvent() {
@@ -34,7 +34,7 @@ class SearchModal {
     );
     this.$videoListContainer.addEventListener(
       'scroll',
-      this.requestAdditionalSearchResult.bind(this),
+      this.scrollVideoContainerHandler.bind(this),
     );
   }
 
@@ -44,26 +44,22 @@ class SearchModal {
       event.type === 'click'
     ) {
       try {
-        this.scrollHandler.setError(false);
-        this.machine.keyword = this.$searchInputKeyword.value;
-        this.initVideoState();
-        this.searchVideo();
+        EventFactory.generate('SEARCH_VIDEO', {
+          keyword: this.$searchInputKeyword.value,
+          errored: this.errored,
+          initial: true,
+        });
       } catch (err) {
+        console.log(err);
         alert(err);
       }
     }
-  }
-
-  initVideoState() {
-    this.searchModalPresenter.renderInitState();
-    this.machine.initPageToken();
   }
 
   saveVideo({ target }) {
     if (!target.classList.contains('video-item__save-button')) {
       return;
     }
-
     try {
       const newVideo = target.dataset.id;
       this.machine.saveVideoToLocalStorage(newVideo);
@@ -76,34 +72,14 @@ class SearchModal {
   }
 
   scrollVideoContainerHandler() {
-    let errored = false;
-
-    return {
-      requestAdditionalSearchResult: () => {
-        const { offsetHeight, scrollHeight, scrollTop } =
-          this.$videoListContainer;
-        if (scrollTop === 0 || errored) return;
-        if (offsetHeight + scrollTop >= scrollHeight) {
-          this.searchVideo();
-        }
-      },
-
-      setError: (isErrored) => {
-        errored = isErrored;
-      },
-    };
-  }
-
-  searchVideo() {
-    this.searchModalPresenter.renderSkeletonImage();
-    this.machine
-      .search()
-      .then((items) => this.searchModalPresenter.renderResult(items))
-      .catch((err) => {
-        this.scrollHandler(true);
-        this.searchModalPresenter.renderNetworkError(err);
-      })
-      .finally(this.searchModalPresenter.removeSkeleton);
+    const { offsetHeight, scrollHeight, scrollTop } = this.$videoListContainer;
+    if (scrollTop === 0 || this.errored.error) return;
+    if (offsetHeight + scrollTop >= scrollHeight) {
+      EventFactory.generate('SEARCH_VIDEO', {
+        errored: this.errored,
+        initial: false,
+      });
+    }
   }
 }
 

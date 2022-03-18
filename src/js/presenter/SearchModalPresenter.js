@@ -1,28 +1,26 @@
-import { REQUEST_VIDEO_QUANTITY } from '../constant';
+import { ERROR_403, REQUEST_VIDEO_QUANTITY } from '../constant';
 import template from '../ui/templates';
 
-export class SearchModalPresenter {
+export default class SearchModalPresenter {
   constructor() {
     this.$modalContainer = document.querySelector('.modal-container');
     this.$videoListContainer = document.querySelector('.video-list');
     this.$searchInputKeyword = document.querySelector('#search-input-keyword');
     this.$searchResult = document.querySelector('.search-result');
   }
+
   toggleModalContainerView() {
-    //render
     this.$modalContainer.classList.toggle('hide');
   }
 
   initModalState() {
-    //render
-    this.toggleModalContainerView(); //render
-    this.$videoListContainer.replaceChildren(); // render
-    this.$searchInputKeyword.value = ''; // render
-    this.removeNoResult(); //render
+    this.toggleModalContainerView();
+    this.$videoListContainer.replaceChildren();
+    this.$searchInputKeyword.value = '';
+    this.removeNoResult();
   }
 
   removeNoResult() {
-    //render
     const $noResultContainer = document.querySelector('.no-result');
     if ($noResultContainer) {
       $noResultContainer.remove();
@@ -31,7 +29,6 @@ export class SearchModalPresenter {
   }
 
   renderNoResultImage() {
-    // render
     this.$videoListContainer.classList.add('hide');
     this.$searchResult.insertAdjacentHTML(
       'beforeend',
@@ -41,25 +38,24 @@ export class SearchModalPresenter {
   }
 
   renderInitState() {
-    this.removeNoResult(); // render
-    this.$videoListContainer.replaceChildren(); // render
-    this.$searchInputKeyword.blur(); // render
-    this.$videoListContainer.classList.remove('hide'); // render
+    this.removeNoResult();
+    this.$videoListContainer.replaceChildren();
+    this.$searchInputKeyword.blur();
+    this.$videoListContainer.classList.remove('hide');
   }
 
   renderNetworkError(err) {
     if (err.name === ERROR_403) {
       this.$videoListContainer.insertAdjacentHTML(
         'beforeend',
-        template.exceedCapacityErrorImage(), // render
+        template.exceedCapacityErrorImage(),
       );
       return;
     }
-    alert(err);
+    console.log(err);
   }
 
   renderResult(items) {
-    // render
     if (items.length === 0) {
       this.renderNoResultImage();
       return;
@@ -68,7 +64,6 @@ export class SearchModalPresenter {
   }
 
   renderSkeletonImage() {
-    // render
     this.$videoListContainer.insertAdjacentHTML(
       'beforeend',
       Array(REQUEST_VIDEO_QUANTITY)
@@ -79,14 +74,12 @@ export class SearchModalPresenter {
   }
 
   removeSkeleton() {
-    // render
     document.querySelectorAll('.skeleton-container').forEach((element) => {
       element.remove();
     });
   }
 
   renderNoResultImage() {
-    // render
     this.$videoListContainer.classList.add('hide');
     this.$searchResult.insertAdjacentHTML(
       'beforeend',
@@ -96,7 +89,6 @@ export class SearchModalPresenter {
   }
 
   renderVideo(items) {
-    // render
     items.forEach((item) => {
       this.$videoListContainer.insertAdjacentHTML(
         'beforeend',

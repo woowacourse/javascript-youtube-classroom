@@ -17,6 +17,12 @@ export default class SearchMachine {
     this.#keyword = '';
   }
 
+  get keyword() {
+    return this.#keyword;
+  }
+  get pageToken() {
+    return this.#pageToken;
+  }
   set keyword(value) {
     checkValidSearchInput(value);
     this.#keyword = value;
@@ -30,7 +36,7 @@ export default class SearchMachine {
 
     if (data.nextPageToken === undefined) throw new Error();
     this.#pageToken = data.nextPageToken;
-
+    console.log(data.nextPageToken);
     return data.items.map((item) => VideoFactory.generate(item));
   }
 

@@ -8,7 +8,7 @@ export const MAX_STOARGE_CAPACITY = 100;
 
 export const HOST_URL = 'https://donkeykong.netlify.app/';
 
-export const REQUEST_PATH = 'dummy/youtube/v3/search';
+export const REQUEST_PATH = 'youtube/v3/search';
 
 export const SEARCH_VIDEO_REQUEST_PATH = 'youtube/v3/videos';
 
