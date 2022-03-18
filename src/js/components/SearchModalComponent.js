@@ -1,9 +1,9 @@
 import SearchForm from './SearchFormComponent';
 import VideoContainer from './VideoContainerComponent';
+import { dispatch } from '../modules/eventFactory';
 import { subscribe, getState } from '../modules/stateStore';
 import { STATE_STORE_KEY } from '../constants/stateStore';
 import { CUSTOM_EVENT_KEY } from '../constants/events';
-import { dispatch } from '../modules/eventFactory';
 
 class SearchModal {
   searchForm = null;
