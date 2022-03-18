@@ -14,7 +14,7 @@ export const youtubeSearchResult = {
       .map(item => {
         const { publishedAt, channelId, title, thumbnails, channelTitle } = item.snippet;
         return `
-          <li class="video-item" data-video-id=${item.id.videoId}>
+          <li class="video-item">
             <a href="https://www.youtube.com/watch?v=${item.id.videoId}" target="_blank">
               <img
                 src=${thumbnails.high.url}
@@ -27,9 +27,9 @@ export const youtubeSearchResult = {
             <p class="video-item__published-date">
               ${convertToKoreaLocaleDate(publishedAt)}
             </p>
-            <button class="video-item__save-button button" ${
-              saveDatas.includes(item.id.videoId) ? 'hidden' : ''
-            }>⬇ 저장</button>
+            <button class="video-item__save-button button" data-video-id=${item.id.videoId} ${
+          saveDatas.includes(item.id.videoId) ? 'hidden' : ''
+        }>⬇ 저장</button>
           </li>`;
       })
       .join('');
@@ -87,7 +87,9 @@ export const youtubeSearchResult = {
   addSaveButtonClickEvent() {
     $('.video-list').addEventListener('click', e => {
       if (e.target.classList.contains('video-item__save-button')) {
-        video.save(e);
+        const videoId = e.target.dataset.videoId;
+        video.save(videoId);
+        e.target.setAttribute('hidden', true);
       }
     });
   },
