@@ -7,10 +7,11 @@ import { SELECTOR, DOM_NAME } from '@Constants/Selector';
 import YoutubeSearchStore from '@Domain/YoutubeSearchStore';
 import YoutubeSaveStorage from '@Domain/YoutubeSaveStorage';
 import notFoundImage from '@Images/not_found.png';
+import YoutubeSaveListStore from '../../domain/YoutubeSaveListStore';
 
 export default class SearchResult {
   $container = $(SELECTOR.ID.SEARCH_RESULT_CONTAINER);
-  drawList = [];
+  #drawList = [];
 
   constructor() {
     this.setDefaultElements();
@@ -20,17 +21,17 @@ export default class SearchResult {
   }
 
   render(state) {
-    this.drawList.forEach(drawEvent => {
+    this.#drawList.forEach(drawEvent => {
       drawEvent(state);
     });
   }
 
-  setSubscribeStores() {
-    YoutubeSearchStore.addSubscriber(this.render.bind(this));
+  addDrawList(drawEvent) {
+    this.#drawList.push(drawEvent);
   }
 
-  addDrawList(drawEvent) {
-    this.drawList.push(drawEvent);
+  setSubscribeStores() {
+    YoutubeSearchStore.addSubscriber(this.render.bind(this));
   }
 
   setRenderList() {
@@ -59,9 +60,12 @@ export default class SearchResult {
   }
 
   handleToggleSaveButton = ({ target: $target }) => {
-    const { videoId } = $target.closest(SELECTOR.CLASS.VIDEO_ITEM).dataset;
+    const { items: videoList } = YoutubeSearchStore.getState();
+    const { videoId, primaryKey } = $target.closest(SELECTOR.CLASS.VIDEO_ITEM).dataset;
+
     if (YoutubeSaveStorage.has(videoId)) {
       YoutubeSaveStorage.remove(videoId);
+      YoutubeSaveListStore.dispatch('UPDATE_LIST');
       $target.textContent = '⬇ 저장';
       return;
     }
@@ -72,7 +76,8 @@ export default class SearchResult {
       return;
     }
 
-    YoutubeSaveStorage.add(videoId);
+    YoutubeSaveStorage.add(videoId, videoList[primaryKey]);
+    YoutubeSaveListStore.dispatch('UPDATE_LIST');
     $target.textContent = '🗑 저장 취소';
   };
 
@@ -124,10 +129,10 @@ export default class SearchResult {
   }
 
   #getVideoElementList(items) {
-    return items.reduce(($previous, video) => {
+    return items.reduce(($previous, video, index) => {
       const buttonText = YoutubeSaveStorage.has(video.id.videoId) ? '🗑 저장 취소' : '⬇ 저장';
       const $list = createElement('LI', {
-        dataset: { 'video-id': video.id.videoId },
+        dataset: { 'video-id': video.id.videoId, 'primary-key': index },
         className: DOM_NAME.CLASS.VIDEO_ITEM,
         insertAdjacentHTML: [
           'afterbegin',
@@ -135,7 +140,7 @@ export default class SearchResult {
               alt="${video.snippet.title} 썸네일" class="thumbnail">
             <h4 class="title">${video.snippet.title}</h4>
             <p class="channel-name">${video.snippet.channelTitle}</p>
-            <p class="published-date">${getParsedTime(video.snippet.publishTime)}</p>
+            <p class="published-date">${getParsedTime(video.snippet.publishedAt)}</p>
             <button class="save-button button">${buttonText}</button>`,
         ],
       });

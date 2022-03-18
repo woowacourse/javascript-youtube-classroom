@@ -29,3 +29,21 @@ export const requestYoutubeSearch = async (keyword = '', nextPageToken = '') => 
     return { error: true };
   }
 };
+
+export const requestYoutubeList = async (list = []) => {
+  try {
+    const url = getUrlSearchParams('https://www.googleapis.com/youtube/v3/videos', {
+      part: 'snippet',
+      id: list.join(','),
+      key: process.env.YOUTUBE_API_KEY,
+    });
+
+    const response = await request(url, {
+      method: 'GET',
+    });
+
+    return response;
+  } catch (error) {
+    return { error: true };
+  }
+};
