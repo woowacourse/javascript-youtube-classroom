@@ -13,6 +13,8 @@ class Video {
 
   #thumbnail = null;
 
+  #isWatched = false;
+
   constructor(videoInfo) {
     this.#init(videoInfo);
   }
@@ -24,15 +26,17 @@ class Video {
       channelTitle: this.#channelTitle,
       publishTime: this.#publishTime,
       thumbnail: this.#thumbnail,
+      isWatched: this.#isWatched,
     };
   }
 
-  #init({ videoId, videoTitle, channelTitle, publishTime, thumbnail }) {
+  #init({ videoId, videoTitle, channelTitle, publishTime, thumbnail, isWatched }) {
     this.#videoId = videoId;
     this.#videoTitle = videoTitle;
     this.#channelTitle = channelTitle;
     this.#publishTime = publishTime;
     this.#thumbnail = thumbnail;
+    this.#isWatched = isWatched ?? false;
   }
 
   static create(videoInfo) {
