@@ -13,3 +13,13 @@ export const GUIDE_MESSAGE = {
   NO_MORE_SEARCH_RESULT: '마지막 검색결과까지 모두 출력되었습니다.',
   CONFIRM_DELETE: '정말 삭제하시겠습니까?',
 };
+
+export const EVENT = {
+  UPDATE_SAVED_VIDEO_LIST: 'updateSavedVideoList',
+  CHANGE_VIDEO_WATCHED_INFO: 'changeVideoWatchedInfo',
+  SAVE_VIDEO: 'saveVideo',
+  DELETE_VIDEO: 'deleteVideo',
+  UPDATE_SEARCH_STATE: 'updateSearchState',
+  SEARCH_WITH_NEW_KEYWORD: 'searchWithNewKeyword',
+  SEARCH_ON_SCROLL: 'searchOnScroll',
+}

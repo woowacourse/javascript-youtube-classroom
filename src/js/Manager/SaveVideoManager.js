@@ -1,22 +1,21 @@
+import { EVENT } from '../constants';
 import Storage from '../Storage';
 import { event } from '../util';
 
 export default class SaveVideoManager {
-  #videos;
-
   constructor() {
-    event.addListener('saveVideo', this.saveVideo.bind(this));
-    event.addListener('changeWatchedInfo', this.changeWatchedInfo.bind(this));
-    event.addListener('deleteVideo', this.deleteVideo.bind(this));
+    event.addListener(EVENT.SAVE_VIDEO, this.saveVideo.bind(this));
+    event.addListener(EVENT.CHANGE_VIDEO_WATCHED_INFO, this.changeWatchedInfo.bind(this));
+    event.addListener(EVENT.DELETE_VIDEO, this.deleteVideo.bind(this));
 
     this.updateSavedVideos();
   }
 
   updateSavedVideos() {
-    this.#videos = Storage.getSavedVideos();
-    event.dispatch('updateSavedVideoList', { 
-      unwatchedVideos: this.#videos.filter((video) => video.watched === false ),
-      watchedVideos: this.#videos.filter((video) => video.watched === true ),
+    const videos = Storage.getSavedVideos();
+    event.dispatch(EVENT.UPDATE_SAVED_VIDEO_LIST, { 
+      unwatchedVideos: videos.filter((video) => video.watched === false ),
+      watchedVideos: videos.filter((video) => video.watched === true ),
     });
   }
 

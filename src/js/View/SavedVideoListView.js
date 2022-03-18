@@ -1,4 +1,4 @@
-import { GUIDE_MESSAGE } from '../constants';
+import { EVENT, GUIDE_MESSAGE } from '../constants';
 import { $, event } from '../util';
 import { template } from './template';
 
@@ -7,7 +7,7 @@ export default class SavedVideoListView {
     $('#unwatched-video-list').addEventListener('click', this.onClickIconButton.bind(this));
     $('#watched-video-list').addEventListener('click', this.onClickIconButton.bind(this));
 
-    event.addListener('updateSavedVideoList', this.updateOnSavedVideoList.bind(this));
+    event.addListener(EVENT.UPDATE_SAVED_VIDEO_LIST, this.updateOnSavedVideoList.bind(this));
   }
 
   onClickIconButton(e) {
@@ -21,13 +21,13 @@ export default class SavedVideoListView {
 
   onClickCheckWatchedButton(e) {
     const { id } = e.target.parentNode.dataset;
-    event.dispatch('changeWatchedInfo', { id });
+    event.dispatch(EVENT.CHANGE_VIDEO_WATCHED_INFO, { id });
   }
 
   onClickDeleteButton(e) {
     if (window.confirm(GUIDE_MESSAGE.CONFIRM_DELETE)) {
       const { id } = e.target.parentNode.dataset;
-      event.dispatch('deleteVideo', { id });
+      event.dispatch(EVENT.DELETE_VIDEO, { id });
     }
   }
   

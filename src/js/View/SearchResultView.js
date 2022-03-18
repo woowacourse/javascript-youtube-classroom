@@ -1,3 +1,4 @@
+import { EVENT } from '../constants';
 import { $, $$, debounce, event } from '../util';
 import { template, MESSAGE } from './template';
 
@@ -12,19 +13,19 @@ export default class SearchResultView {
     this.$searchResultVideoList.addEventListener('scroll', debounce(this.onScrollVideoList.bind(this), 500));
     this.$searchResultVideoList.addEventListener('click', this.onClickVideoSaveButton.bind(this));
 
-    event.addListener('updateSearchState', this.updateOnSearchState.bind(this));
+    event.addListener(EVENT.UPDATE_SEARCH_STATE, this.updateOnSearchState.bind(this));
   }
 
   onScrollVideoList() {
     const { scrollTop, clientHeight, scrollHeight } = this.$searchResultVideoList;
     if (scrollTop + clientHeight + 50 < scrollHeight) return;
-    event.dispatch('searchOnScroll');
+    event.dispatch(EVENT.SEARCH_ON_SCROLL);
   }
 
   onClickVideoSaveButton(e) {
     if (e.target.id === 'save-button') {
       const video = e.target.parentNode.dataset;
-      event.dispatch('saveVideo', { video });
+      event.dispatch(EVENT.SAVE_VIDEO, { video });
       e.target.remove();
     }
   }

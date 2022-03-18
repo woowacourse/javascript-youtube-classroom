@@ -1,4 +1,4 @@
-import { GUIDE_MESSAGE, MAX_DATA_FETCH_AT_ONCE } from '../constants';
+import { EVENT, GUIDE_MESSAGE, MAX_DATA_FETCH_AT_ONCE } from '../constants';
 import Storage from '../Storage';
 import { event } from '../util';
 import { validateSearchKeyword, checkNoUndefinedProperty } from './validation';
@@ -30,14 +30,14 @@ export default class SearchVideoManager {
     this.#nextPageToken = '';
     this.#searchState = 'READY';
 
-    event.addListener('searchWithNewKeyword', this.searchWithNewKeyword.bind(this));
-    event.addListener('searchOnScroll', this.searchOnScroll.bind(this));
+    event.addListener(EVENT.SEARCH_WITH_NEW_KEYWORD, this.searchWithNewKeyword.bind(this));
+    event.addListener(EVENT.SEARCH_ON_SCROLL, this.searchOnScroll.bind(this));
   }
 
   updateSearchState(newState, data = {}) {
     this.#searchState = newState;
     const detail = { searchState: newState, ...data };
-    event.dispatch('updateSearchState', detail);
+    event.dispatch(EVENT.UPDATE_SEARCH_STATE, detail);
   }
 
   searchWithNewKeyword(e) {
