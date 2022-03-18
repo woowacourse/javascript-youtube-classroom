@@ -5,18 +5,19 @@ import './MyVideoItem';
 class MyVideoList extends HTMLUListElement {
   constructor() {
     super();
+    this.render();
+    MyVideoStore.instance.subscribe(this);
+  }
+
+  // eslint-disable-next-line max-lines-per-function
+  render() {
     const selectedMenu = this.dataset.menu;
-    let videos = MyVideoStore.instance.getVideos();
+    let videos = MyVideoStore.instance.getPlaylistVideos();
 
     if (selectedMenu === 'watched') {
       videos = MyVideoStore.instance.getWatchedVideos();
     }
 
-    this.render(videos);
-    MyVideoStore.instance.subscribe(this);
-  }
-
-  render(videos) {
     this.innerHTML = '';
 
     videos.forEach((video) => {
@@ -28,7 +29,7 @@ class MyVideoList extends HTMLUListElement {
   }
 
   notify(data) {
-    this.render(data);
+    this.render();
   }
 }
 

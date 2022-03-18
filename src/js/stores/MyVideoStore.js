@@ -34,6 +34,10 @@ class MyVideoStore {
     return this.getVideos().find((video) => video.details.id === videoId);
   }
 
+  getPlaylistVideos() {
+    return this.getVideos().filter((video) => !video.isWatched);
+  }
+
   getWatchedVideos() {
     return this.getVideos().filter((video) => video.isWatched);
   }
