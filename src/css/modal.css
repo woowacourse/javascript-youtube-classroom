@@ -2,11 +2,17 @@
   .search-result {
     width: 1030px;
   }
+  .search-input {
+    display: flex;
+  }
 }
 
 @media (min-width: 960px) and (max-width: 1280px) {
   .search-result {
     width: 770px;
+  }
+  .search-input {
+    display: flex;
   }
 }
 
@@ -14,11 +20,17 @@
   .search-result {
     width: 510px;
   }
+  .search-input {
+    display: flex;
+  }
 }
 
 @media (max-width: 640px) {
   .search-result {
     width: 260px;
+  }
+  .search-input {
+    display: none;
   }
 }
 
@@ -68,7 +80,6 @@
 }
 
 .search-input {
-  display: flex;
   justify-content: center;
   margin-bottom: 40px;
 }

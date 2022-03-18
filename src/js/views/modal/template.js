@@ -9,11 +9,14 @@ const template = {
   videoItem: item => {
     return `
       <li class="video-item" data-video-id='${item.id.videoId}'>
-        <img
-          src='${item.snippet.thumbnails.high.url}'
-          alt="video-item-thumbnail"
-          class="video-item__thumbnail"
-        />
+        <iframe
+          width="100%"
+          height="118"
+          src="https://www.youtube.com/embed/${item.id.videoId}"
+          frameborder="0"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+          allowfullscreen
+        ></iframe>
         <h4 class="video-item__title">${item.snippet.title}</h4>
         <p class="video-item__channel-name">${item.snippet.channelTitle}</p>
         <p class="video-item__published-date">${item.snippet.publishTime}</p>
