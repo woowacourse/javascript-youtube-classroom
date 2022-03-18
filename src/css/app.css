@@ -19,6 +19,7 @@ body {
 .nav {
   display: flex;
   justify-content: center;
+  margin-bottom: 39px;
 }
 
 .button {
