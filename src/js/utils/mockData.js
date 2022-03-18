@@ -551,3 +551,139 @@ export const parseData = [
     isLastPage: false,
   },
 ];
+
+export const videoIdData = {
+  kind: 'youtube#videoListResponse',
+  etag: '2VzRieHgEyZaQqNwJIC8Tf3aMXs',
+  items: [
+    {
+      kind: 'youtube#video',
+      etag: 'zksvHxfK2lIf3hxvX74_Z6lLraM',
+      id: 'HxzKg7V6r00',
+      snippet: {
+        publishedAt: '2019-10-05T01:19:06Z',
+        channelId: 'UCipvQqo32UmHkAAwhn-MfbQ',
+        title: '우아한테크코스 1기 합격 노하우 전격 공개. 비전공자 크루가 직접 들려주는 이야기 2편',
+        description:
+          '우아한테크코스 후기를 기록한 영상입니다.\n\n이 영상에서는\n\n우아한테크코스의 선발과정에 대하여 다룹니다.\n\n1편\n우아한테크코스 2기? 지원하세요. 비전공자 크루가 직접 들려주는 이야기 1편 바로가기 - https://youtu.be/esHqxCKOO4E\n\n3편\n우아한테크코스에서는 무엇을 하나요 ? 비전공자 크루가 직접 들려주는 이야기 3편 바로가기 - https://youtu.be/0WCc1II7Guk\n\n우아한테크코스 1기 소개페이지 - https://woowacourse.github.io/\n\n개발왕 루피의 인스타그램 바로가기 - https://www.instagram.com/developer_luffy/\n[10분 테크토크] 루피의 도서관리시스템 바로가기 - https://www.youtube.com/watch?v=PCXlgnYekBg',
+        thumbnails: {
+          default: {
+            url: 'https://i.ytimg.com/vi/HxzKg7V6r00/default.jpg',
+            width: 120,
+            height: 90,
+          },
+          medium: {
+            url: 'https://i.ytimg.com/vi/HxzKg7V6r00/mqdefault.jpg',
+            width: 320,
+            height: 180,
+          },
+          high: {
+            url: 'https://i.ytimg.com/vi/HxzKg7V6r00/hqdefault.jpg',
+            width: 480,
+            height: 360,
+          },
+          standard: {
+            url: 'https://i.ytimg.com/vi/HxzKg7V6r00/sddefault.jpg',
+            width: 640,
+            height: 480,
+          },
+          maxres: {
+            url: 'https://i.ytimg.com/vi/HxzKg7V6r00/maxresdefault.jpg',
+            width: 1280,
+            height: 720,
+          },
+        },
+        channelTitle: '개발왕루피',
+        tags: [
+          '우아한테크코스2기',
+          '우아한테크코스',
+          '우아한형제들',
+          '개발자',
+          '자바',
+          '스프링',
+          'java',
+          'spring',
+          '스프링부트',
+          'springboot',
+          '백엔드',
+          '자바지기',
+          '코딩테스트',
+          '코딩',
+          '포비',
+          '박재성',
+          '토크',
+          '신입개발자',
+          'javajigi',
+        ],
+        categoryId: '28',
+        liveBroadcastContent: 'none',
+        localized: {
+          title:
+            '우아한테크코스 1기 합격 노하우 전격 공개. 비전공자 크루가 직접 들려주는 이야기 2편',
+          description:
+            '우아한테크코스 후기를 기록한 영상입니다.\n\n이 영상에서는\n\n우아한테크코스의 선발과정에 대하여 다룹니다.\n\n1편\n우아한테크코스 2기? 지원하세요. 비전공자 크루가 직접 들려주는 이야기 1편 바로가기 - https://youtu.be/esHqxCKOO4E\n\n3편\n우아한테크코스에서는 무엇을 하나요 ? 비전공자 크루가 직접 들려주는 이야기 3편 바로가기 - https://youtu.be/0WCc1II7Guk\n\n우아한테크코스 1기 소개페이지 - https://woowacourse.github.io/\n\n개발왕 루피의 인스타그램 바로가기 - https://www.instagram.com/developer_luffy/\n[10분 테크토크] 루피의 도서관리시스템 바로가기 - https://www.youtube.com/watch?v=PCXlgnYekBg',
+        },
+        defaultAudioLanguage: 'ko',
+      },
+    },
+    {
+      kind: 'youtube#video',
+      etag: '-uZbnrMd6qRupv1GHCS8pA6dr4g',
+      id: 'ZQklkmFlYQI',
+      snippet: {
+        publishedAt: '2021-07-28T05:20:22Z',
+        channelId: 'UC-mOekGSesms0agFntnQang',
+        title: '[우테코 🎬vlog] Ep.5 우테코 프로젝트 비하인드 🎞',
+        description:
+          '우테코로그 Ep.5 우테코 프로젝트 비하인드 🎞\n\n이번 우테코로그는 현재 크루들이 진행하고 있는 프로젝트 선정 비하인드 영상입니다 : ) 레벨 3~4기간 동안 진행되는 프로젝트는 크루들이 직접 기획한 주제들로 이루어지고 있는데요. 모든 크루가 각각 하나의 주제를 기획하고 발표한 후, 선정된 기획서를 바탕으로 프로젝트를 진행합니다.\n프로젝트 발표가 있던 날, 비하인드가 궁금하지 않으신가요? 확인해보시죠!\n\n☘️ 우테코로그는 우아한테크코스의  크루들이 직접 만드는 vlog로, 우테코에서의 생생한 일상과 크루들의 특별한 모습을 전합니다. 크루들이 우테코 내에서 어떻게 생활하고 있는지, 어떤 마음으로 우테코를 임하고 있는지 궁금하지 않으신가요? 살짝씩 공개합니다!\n\n🌕우아한테크코스란 🌕\n\n우아한테크코스는 일반 사용자용 서비스를 개발하는 회사가 필요로 하는 역량을 가진 프로그래머를 양성하기 위한 교육입니다. 우리의 목표는 자기 주도적으로 학습하고 성장하고 싶은 개발자를 위한 교육을 만드는 것입니다.',
+        thumbnails: {
+          default: {
+            url: 'https://i.ytimg.com/vi/ZQklkmFlYQI/default.jpg',
+            width: 120,
+            height: 90,
+          },
+          medium: {
+            url: 'https://i.ytimg.com/vi/ZQklkmFlYQI/mqdefault.jpg',
+            width: 320,
+            height: 180,
+          },
+          high: {
+            url: 'https://i.ytimg.com/vi/ZQklkmFlYQI/hqdefault.jpg',
+            width: 480,
+            height: 360,
+          },
+        },
+        channelTitle: '우아한Tech',
+        categoryId: '27',
+        liveBroadcastContent: 'none',
+        defaultLanguage: 'ko',
+        localized: {
+          title: '[우테코 🎬vlog] Ep.5 우테코 프로젝트 비하인드 🎞',
+          description:
+            '우테코로그 Ep.5 우테코 프로젝트 비하인드 🎞\n\n이번 우테코로그는 현재 크루들이 진행하고 있는 프로젝트 선정 비하인드 영상입니다 : ) 레벨 3~4기간 동안 진행되는 프로젝트는 크루들이 직접 기획한 주제들로 이루어지고 있는데요. 모든 크루가 각각 하나의 주제를 기획하고 발표한 후, 선정된 기획서를 바탕으로 프로젝트를 진행합니다.\n프로젝트 발표가 있던 날, 비하인드가 궁금하지 않으신가요? 확인해보시죠!\n\n☘️ 우테코로그는 우아한테크코스의  크루들이 직접 만드는 vlog로, 우테코에서의 생생한 일상과 크루들의 특별한 모습을 전합니다. 크루들이 우테코 내에서 어떻게 생활하고 있는지, 어떤 마음으로 우테코를 임하고 있는지 궁금하지 않으신가요? 살짝씩 공개합니다!\n\n🌕우아한테크코스란 🌕\n\n우아한테크코스는 일반 사용자용 서비스를 개발하는 회사가 필요로 하는 역량을 가진 프로그래머를 양성하기 위한 교육입니다. 우리의 목표는 자기 주도적으로 학습하고 성장하고 싶은 개발자를 위한 교육을 만드는 것입니다.',
+        },
+      },
+    },
+  ],
+  pageInfo: {
+    totalResults: 2,
+    resultsPerPage: 2,
+  },
+};
+
+export const videoIdParsedData = [
+  {
+    videoId: 'HxzKg7V6r00',
+    publishedAt: '2019-10-05T01:19:06Z',
+    title: '우아한테크코스 1기 합격 노하우 전격 공개. 비전공자 크루가 직접 들려주는 이야기 2편',
+    url: 'https://i.ytimg.com/vi/HxzKg7V6r00/mqdefault.jpg',
+    channelTitle: '개발왕루피',
+  },
+  {
+    videoId: 'ZQklkmFlYQI',
+    publishedAt: '2021-07-28T05:20:22Z',
+    title: '[우테코 🎬vlog] Ep.5 우테코 프로젝트 비하인드 🎞',
+    url: 'https://i.ytimg.com/vi/ZQklkmFlYQI/mqdefault.jpg',
+    channelTitle: '우아한Tech',
+  },
+];
