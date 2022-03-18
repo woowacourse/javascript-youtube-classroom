@@ -28,7 +28,7 @@ const polishVideos = (videos) => {
 };
 
 const keywordInputView = new KeywordInputView();
-const savedVideoView = new SavedVideoView(UserStorage.getVideoData());
+const savedVideoView = new SavedVideoView(UserStorage.getVideoData(), UserStorage.editVideoData);
 const searchModalView = new SearchModalView();
 const videoView = new VideoView(async () => polishVideos(await youtubeAPI.getVideosInfo()));
 

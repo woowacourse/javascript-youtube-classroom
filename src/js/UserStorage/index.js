@@ -12,6 +12,10 @@ const UserStorage = {
     if (videoDataList.length >= MAX_STORE_CAPACITY) throw new ValidationError(ERROR_MESSAGE.EXCEED_MAX_STORE_CAPACITY);
 
     videoDataList.push(videoData);
+    this.editVideoData(videoDataList);
+  },
+
+  editVideoData(videoDataList) {
     localStorage.setItem('video', JSON.stringify(videoDataList));
   },
 };

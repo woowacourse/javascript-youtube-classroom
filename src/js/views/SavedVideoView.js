@@ -3,11 +3,13 @@ import { SELECTOR } from '../constants/index.js';
 
 export default class SavedVideoView {
   #savedVideoData;
+  #editVideoData;
   #$playlist;
   #$watched;
 
-  constructor(savedVideoData) {
+  constructor(savedVideoData, editVideoData) {
     this.#savedVideoData = savedVideoData;
+    this.#editVideoData = editVideoData;
     this.#$playlist = $(SELECTOR.PLAYLIST_VIDEO);
     this.#$watched = $(SELECTOR.WATCHED_VIDEO);
     this.#bindSavedVideoList();
@@ -66,6 +68,7 @@ export default class SavedVideoView {
       if (element.dataset.kind === 'checkWatched') {
         const currentVideo = this.#savedVideoData.find((video) => video.id === element.dataset.videoId);
         currentVideo.watched = !currentVideo.watched;
+        this.#editVideoData(this.#savedVideoData);
         this.#renderVideo();
       }
     });
