@@ -1,9 +1,15 @@
 import StorageEngine from '../domain/storageEngine';
 import { $ } from '../util/domHelper';
-import notFoundImage from '../../assets/images/not_found.jpg';
 
 //template
-const getVideoItemTemplate = ({ thumbnails, channelTitle, publishTime, title, videoId }) => `
+const getVideoItemTemplate = ({
+  thumbnails,
+  channelTitle,
+  publishTime,
+  title,
+  videoId,
+  isWatched,
+}) => `
   <li class="video-item" data-video-id=${videoId}>
     <div id="image-wrapper">
       <img
@@ -14,7 +20,7 @@ const getVideoItemTemplate = ({ thumbnails, channelTitle, publishTime, title, vi
     <p class="video-item__channel-name">${channelTitle}</p>
     <p class="video-item__published-date">${publishTime}</p>
     <div class="button-list">
-      <button class="video-item__watch_button button">✅</button>
+      <button data-is-watched=${isWatched} class="video-item__watch_button button">✅</button>
       <button class="video-item__delete_button button">🗑</button>
     </div>
   </li>`;
@@ -32,6 +38,8 @@ export default class WatchVideoScreen {
   constructor() {
     this.#watchLaterTabMenuButton.addEventListener('click', this.handleTabMenu);
     this.#watchedTabMenuButton.addEventListener('click', this.handleTabMenu);
+    this.#watchLaterVideoList.addEventListener('click', this.handleVideoButton);
+    this.#watchedVideoList.addEventListener('click', this.handleVideoButton);
 
     this.renderVideoList();
   }
@@ -55,6 +63,7 @@ export default class WatchVideoScreen {
 
   renderVideoList() {
     this.#watchLaterVideoList.replaceChildren();
+    this.#watchedVideoList.replaceChildren();
     const tabMenu = this.#storageEngine.getTabMenu();
     if (tabMenu === 'watch-later') {
       const watchLaterVideoList = this.#storageEngine.getWatchLaterVideos();
@@ -71,4 +80,17 @@ export default class WatchVideoScreen {
       watchedVideoList.map((video) => getVideoItemTemplate(video)).join('')
     );
   }
+
+  handleVideoButton = (e) => {
+    if (e.target.classList.contains('video-item__watch_button')) {
+      const { videoId } = e.target.closest('.video-item').dataset;
+      this.#storageEngine.changeStatus(videoId, 'isWatched');
+      this.renderVideoList();
+      return;
+    }
+
+    if (e.target.classList.contains('video-item__delete_button')) {
+      //TODO : 삭제하기
+    }
+  };
 }

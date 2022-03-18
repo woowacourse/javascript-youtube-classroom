@@ -25,6 +25,15 @@ export default class StorageEngine {
     return this.getSavedVideos().filter((video) => video.isWatched === true);
   }
 
+  changeStatus(videoId, key) {
+    const savedVideos = this.getSavedVideos();
+
+    const target = savedVideos.find((video) => video.videoId === videoId);
+    target[key] = !target[key];
+
+    localStorage.setItem('savedVideos', JSON.stringify(savedVideos));
+  }
+
   isSavedVideo(videoId) {
     return this.getSavedVideos()
       .map(({ videoId }) => videoId)
