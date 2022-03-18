@@ -16,7 +16,7 @@ class Watch {
 
     videos.forEach((video) => {
       if (video.details.id === videoId) {
-        video.isWatched = true;
+        video.isWatched = !video.isWatched;
       }
     });
 

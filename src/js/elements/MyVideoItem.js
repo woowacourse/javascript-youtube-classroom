@@ -16,10 +16,7 @@ class MyVideoItem extends CustomElement {
 
   // eslint-disable-next-line max-lines-per-function
   template(video, menu) {
-    const watchButton =
-      menu === 'watched'
-        ? `<button type="button" id="${video.id}-watch-button" class="video-item__watch-button button selected-watch-button" disabled>✅</button>`
-        : `<button type="button" id="${video.id}-watch-button" class="video-item__watch-button button">✅</button>`;
+    const watchedMenuWatchButton = menu === 'watched' ? 'watched-menu-watch-button' : '';
 
     return `
       <li class="video-item" data-video-id="${video.id}">
@@ -30,7 +27,9 @@ class MyVideoItem extends CustomElement {
         <p class="video-item__channel-name">${decodeURI(video.channelTitle)}</p>
         <p class="video-item__published-date">${formatDate(video.publishedAt)}</p>
         <div class="video-item__buttons">
-          ${watchButton}
+          <button type="button" id="${
+            video.id
+          }-watch-button" class="video-item__watch-button button ${watchedMenuWatchButton}">✅</button>
           <button type="button" id="${
             video.id
           }-delete-button" class="video-item__delete-button button">🗑️</button>
