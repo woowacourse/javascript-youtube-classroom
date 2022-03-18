@@ -1,4 +1,5 @@
 import { parseDate } from '../util';
+import { MAX_DATA_FETCH_AT_ONCE } from '../constants';
 
 export const template = {
   videoListItem: ({ id, thumbnail, title, channelName, publishedDate, saved }) =>
@@ -15,7 +16,7 @@ export const template = {
       <div class="image"></div>
       <p class="line"></p>
       <p class="line"></p>
-    </li>`.repeat(10),
+    </li>`.repeat(MAX_DATA_FETCH_AT_ONCE),
   watchVideoListItem: ({ id, thumbnail, title, channelName, publishedDate, watched }) =>
     `<li class="video-item" data-video-id=${id}>
       <img src=${thumbnail} alt="video-item-thumbnail" class="video-item__thumbnail">

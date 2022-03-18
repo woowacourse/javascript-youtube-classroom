@@ -1,5 +1,6 @@
 import { $, $$ } from '../util';
 import { template, MESSAGE } from './template';
+import { hideElement, showElement } from '../dom';
 
 export default class SearchResultView {
   constructor() {
@@ -38,29 +39,31 @@ export default class SearchResultView {
 
   resetSearchResultVideoList() {
     this.searchResultVideoList.scrollTo(0, 0);
-    this.searchResultVideoList.innerHTML = '';
+    this.searchResultVideoList.innerHTML = template.skeletonListItem();
   }
 
   updateOnLoading() {
-    this.searchResultVideoList.insertAdjacentHTML('beforeend', template.skeletonListItem());
+    $$('.skeleton', this.searchResultVideoList).forEach((listItem) => {
+      showElement(listItem);
+    });
   }
 
   removeSkeletonListItem() {
     $$('.skeleton', this.searchResultVideoList).forEach((listItem) => {
-      listItem.remove();
+      hideElement(listItem);
     });
   }
 
   showSearchResultVideoList() {
-    this.noResultContainer.classList.add('hide');
-    this.searchResultVideoList.classList.remove('hide');
+    hideElement(this.noResultContainer);
+    showElement(this.searchResultVideoList);
     this.searchResultSection.classList.remove('search-result--no-result');
     this.isShownNoResult = false;
   }
 
   showErrorResult(message = MESSAGE.ERROR_RESULT) {
-    this.noResultContainer.classList.remove('hide');
-    this.searchResultVideoList.classList.add('hide');
+    hideElement(this.searchResultVideoList);
+    showElement(this.noResultContainer);
     this.searchResultSection.classList.add('search-result--no-result');
     this.noResultDescription.innerHTML = message;
     this.isShownNoResult = true;
@@ -77,7 +80,7 @@ export default class SearchResultView {
     const listItems = videos.map((video) => template.videoListItem(video)).join('');
 
     this.removeSkeletonListItem();
-    this.searchResultVideoList.insertAdjacentHTML('beforeend', listItems);
+    $('.skeleton').insertAdjacentHTML('beforebegin', listItems);
   }
 
   addSaveButton(id) {
