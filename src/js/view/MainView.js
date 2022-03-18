@@ -11,11 +11,11 @@ export default class MainView {
 
   registerDOM() {
     this.$modalOpenButton = $(SELECTOR.MODAL_OPEN_BUTTON);
-    this.$willSeeButton = $('#will-see-button');
-    this.$sawButton = $('#saw-button');
-    this.$storeButtonsContainer = $('.stored-buttons-container');
-    this.$willSeeVideoList = $('#will-see-video-list');
-    this.$sawVideoList = $('#saw-video-list');
+    this.$willSeeButton = $(SELECTOR.WILL_SEE_BUTTON);
+    this.$sawButton = $(SELECTOR.SAW_BUTTON);
+    this.$storeButtonsContainer = $(SELECTOR.STORE_BUTTONS_COTAINER);
+    this.$willSeeVideoList = $(SELECTOR.WILL_SEE_VIDEO_LIST);
+    this.$sawVideoList = $(SELECTOR.SAW_VIDEO_LIST);
   }
 
   setProperties() {
@@ -35,8 +35,8 @@ export default class MainView {
 
   showEmptyStorage(bool) {
     bool
-      ? $('#empty-container').classList.remove(DOM_STRING.HIDE)
-      : $('#empty-container').classList.add(DOM_STRING.HIDE);
+      ? $(SELECTOR.EMPTY_CONTAINER).classList.remove(DOM_STRING.HIDE)
+      : $(SELECTOR.EMPTY_CONTAINER).classList.add(DOM_STRING.HIDE);
   }
 
   getRenderedVideoIdList() {
@@ -72,7 +72,8 @@ export default class MainView {
 
   bindStoreTypeButtons(callback) {
     this.$storeButtonsContainer.addEventListener('click', event => {
-      this.currentStoreType = event.target.id === 'saw-button' ? STORE.SAW : STORE.WILL_SEE;
+      this.currentStoreType =
+        event.target.id === DOM_STRING.SAW_BUTTON ? STORE.SAW : STORE.WILL_SEE;
       this.#toggleStoreButtons(event.target);
       callback(this.currentStoreType);
     });
@@ -140,15 +141,15 @@ export default class MainView {
 
   #toggleStoreButtons(button) {
     button.disabled = true;
-    button.classList.add('nav__button-clicked');
+    button.classList.add(DOM_STRING.NAV_BUTTON_CLICKED);
     if (button === this.$willSeeButton) {
       this.$sawButton.disabled = false;
-      this.$sawButton.classList.remove('nav__button-clicked');
+      this.$sawButton.classList.remove(DOM_STRING.NAV_BUTTON_CLICKED);
       this.$willSeeVideoList.classList.remove(DOM_STRING.HIDE);
       this.$sawVideoList.classList.add(DOM_STRING.HIDE);
     } else {
       this.$willSeeButton.disabled = false;
-      this.$willSeeButton.classList.remove('nav__button-clicked');
+      this.$willSeeButton.classList.remove(DOM_STRING.NAV_BUTTON_CLICKED);
       this.$willSeeVideoList.classList.add(DOM_STRING.HIDE);
       this.$sawVideoList.classList.remove(DOM_STRING.HIDE);
     }

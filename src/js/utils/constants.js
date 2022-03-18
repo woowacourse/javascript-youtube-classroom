@@ -7,6 +7,12 @@ export const SELECTOR = {
   SEARCH_NO_RESULT: '.search-result.search-result--no-result',
   MODAL_OPEN_BUTTON: '#search-modal-button',
   VIDEO_ITEM: '.video-item',
+  WILL_SEE_BUTTON: '#will-see-button',
+  SAW_BUTTON: '#saw-button',
+  STORE_BUTTONS_COTAINER: '.store-buttons-container',
+  WILL_SEE_VIDEO_LIST: '#will-see-video-list',
+  SAW_VIDEO_LIST: '#saw-video-list',
+  EMPTY_CONTAINER: '#empty-container',
 };
 
 export const DOM_STRING = {
@@ -16,6 +22,8 @@ export const DOM_STRING = {
   CHECK_SAW_BUTTON: 'check-saw-button',
   CHECK_WILL_SEE_BUTTON: 'check-will-see-button',
   DELETE_STORE_BUTTON: 'delete-store-button',
+  SAW_BUTTON: 'saw-button',
+  NAV_BUTTON_CLICKED: 'nav__button-clicked',
 };
 
 export const ERROR_MESSAGE = {
