@@ -6,19 +6,19 @@ import { myVideoTemplate } from '../util/template.js';
 export default class MyVideosScreen {
   #myVideoList;
   #storageEngine;
-  #viewedVideosTabButton;
+  #viewedVideosFilterButton;
 
   constructor() {
     this.#myVideoList = $('.my-video-list');
-    this.#viewedVideosTabButton = $('#viewed-videos-tab-button');
+    this.#viewedVideosFilterButton = $('#viewed-videos-filter-button');
 
     this.#storageEngine = StorageEngine.instance;
 
     this.#myVideoList.addEventListener('click', this.#handleCheckVideoViewed);
-    this.#viewedVideosTabButton.addEventListener('click', this.#changeToViewedVideosTab);
+    this.#viewedVideosFilterButton.addEventListener('click', this.#renderViewedVideos);
 
-    const viewableVideos = this.#storageEngine.getViewableVideos();
-    this.#render(viewableVideos);
+    const savedVideos = this.#storageEngine.getSavedVideos();
+    this.#render(savedVideos);
   }
 
   #render(videos) {
@@ -40,7 +40,7 @@ export default class MyVideosScreen {
     }
   };
 
-  #changeToViewedVideosTab = () => {
+  #renderViewedVideos = () => {
     this.#clear();
 
     const viewedVideos = this.#storageEngine.getViewedVideos();

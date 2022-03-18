@@ -91,7 +91,7 @@ describe('볼 영상 확인/ 본 영상 확인 / 영상 삭제 기능 테스트'
     });
 
     it('본 영상 탭을 클릭하여 본 영상들을 확인할 수 있다', () => {
-      cy.get('#viewed-videos-tab-button').click();
+      cy.get('#viewed-videos-filter-button').click();
       cy.get('.my-video-list').children().should('have.length', 1);
 
       cy.get('.my-video-list')

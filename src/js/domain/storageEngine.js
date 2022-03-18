@@ -56,7 +56,7 @@ export default class StorageEngine {
     return savedVideos.find((video) => video.videoId === videoId);
   }
 
-  getViewableVideos() {
+  getVideosToView() {
     return this.getSavedVideos().filter(({ isViewed }) => isViewed === false);
   }
 
