@@ -1,3 +1,5 @@
+import { ERROR_MESSAGE, STORAGE_MAX_COUNT } from "../constants/constants";
+
 export const isDuplicate = (inputData, storeData) => {
   return storeData.some((store) => store.videoId === inputData.videoId);
 };
@@ -28,4 +30,34 @@ export const throttle = (callback, delayTime) => {
 
 export const isEmptyString = (inputValue) => {
   return !inputValue.trim().length;
+};
+
+export const validateAddData = (data, storage) => {
+  if (isDuplicate(data, storage)) {
+    throw new Error(ERROR_MESSAGE.DUPLICATED_VIDEO_ID);
+  }
+
+  if (storage.length >= STORAGE_MAX_COUNT) {
+    throw new Error(ERROR_MESSAGE.USER_STORAGE_OVERFLOW);
+  }
+};
+
+export const changeStorageChecked = (storage, changeData, boolean) => {
+  const changeIndex = storage.findIndex(
+    (data) => data.videoId === changeData.videoId
+  );
+
+  storage[changeIndex].checked = boolean;
+
+  return storage;
+};
+
+export const removeStorageItem = (storage, removeData) => {
+  const removeIndex = storage.findIndex(
+    (data) => data.videoId === removeData.videoId
+  );
+
+  storage.splice(removeIndex, 1);
+
+  return storage;
 };

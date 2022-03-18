@@ -1,5 +1,8 @@
-import { ERROR_MESSAGE, STORAGE_MAX_COUNT } from "./constants/constants";
-import { isDuplicate } from "./utils/utils";
+import {
+  validateAddData,
+  changeStorageChecked,
+  removeStorageItem,
+} from "./utils/utils";
 
 const videoStorage = {
   getVideo() {
@@ -8,12 +11,10 @@ const videoStorage = {
   addVideo(data) {
     let storage = this.getVideo();
 
-    if (isDuplicate(data, storage)) {
-      return;
-    }
-
-    if (storage.length >= STORAGE_MAX_COUNT) {
-      throw new Error(ERROR_MESSAGE.USER_STORAGE_OVERFLOW);
+    try {
+      validateAddData(data, storage);
+    } catch ({ message }) {
+      alert(message);
     }
 
     storage = [...storage, data];
@@ -22,31 +23,19 @@ const videoStorage = {
   removeVideo(removeData) {
     let storage = this.getVideo();
 
-    const removeIndex = storage.findIndex(
-      (data) => data.videoId === removeData.videoId
-    );
-
-    storage.splice(removeIndex, 1);
+    storage = removeStorageItem(storage, removeData);
     localStorage.setItem("saveVideoData", JSON.stringify(storage));
   },
   addChecked(addData) {
     let storage = this.getVideo();
 
-    const addIndex = storage.findIndex(
-      (data) => data.videoId === addData.videoId
-    );
-
-    storage[addIndex].checked = true;
+    storage = changeStorageChecked(storage, addData, true);
     localStorage.setItem("saveVideoData", JSON.stringify(storage));
   },
   removeChecked(removeData) {
     let storage = this.getVideo();
 
-    const removeIndex = storage.findIndex(
-      (data) => data.videoId === removeData.videoId
-    );
-
-    storage[removeIndex].checked = false;
+    storage = changeStorageChecked(storage, removeData, false);
     localStorage.setItem("saveVideoData", JSON.stringify(storage));
   },
 };
