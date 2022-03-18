@@ -1,5 +1,5 @@
 import { $, addEvent } from '@Utils/dom';
-import { EVENT_TYPE, UI_ACTION } from '@Constants';
+import { EVENT_TYPE, UI_ACTION, NAVIGATION } from '@Constants';
 import UIStore from '@Domain/UIStore';
 
 export default class Navigation {
@@ -21,7 +21,7 @@ export default class Navigation {
   handleClickNavigation = ({ target: $target }) => {
     const { navigation } = $target.dataset;
     if (!navigation) return;
-    if (navigation === 'searchModal') {
+    if (navigation === NAVIGATION.SEARCH_MODAL) {
       UIStore.dispatch(UI_ACTION.OPEN_MODAL);
       return;
     }
@@ -30,7 +30,7 @@ export default class Navigation {
   };
 
   selectNavigation(navigation) {
-    if (navigation === 'watchLater') {
+    if (navigation === NAVIGATION.WATCH_LATER) {
       this.$watchedNavigation.classList.remove('selected');
       this.$watchLaterNavigation.classList.add('selected');
       return;

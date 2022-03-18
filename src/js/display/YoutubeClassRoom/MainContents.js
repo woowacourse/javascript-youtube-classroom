@@ -1,6 +1,6 @@
 import { $, addEvent, createElement } from '@Utils/dom';
 import { getParsedTime } from '@Utils/dataManager';
-import { EVENT_TYPE, PAGE_NAME, MESSAGE, SNACKBAR_TYPE } from '@Constants';
+import { EVENT_TYPE, NAVIGATION, MESSAGE, SNACKBAR_TYPE } from '@Constants';
 import YoutubeSaveStorage from '@Domain/YoutubeSaveStorage';
 import UIStore from '@Domain/UIStore';
 import notSavedImage from '@Images/not_saved.jpeg';
@@ -51,14 +51,14 @@ export default class MainContents {
 
     const { selectedPage } = UIStore.getState();
     const list =
-      selectedPage === PAGE_NAME.WATCH_LATER
+      selectedPage === NAVIGATION.WATCH_LATER
         ? YoutubeSaveStorage.getWatchLaterList()
         : YoutubeSaveStorage.getWatchedList();
     const $fragment = document.createDocumentFragment();
 
     list.length === 0
       ? $fragment.append(this.getNoResults())
-      : $fragment.append(this.getVideoList(list, selectedPage === PAGE_NAME.WATCHED));
+      : $fragment.append(this.getVideoList(list, selectedPage === NAVIGATION.WATCHED));
 
     this.container.append($fragment);
   };

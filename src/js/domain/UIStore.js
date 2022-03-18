@@ -1,8 +1,8 @@
-import { UI_ACTION, PAGE_NAME } from '@Constants';
+import { UI_ACTION, NAVIGATION } from '@Constants';
 
 const initialState = {
   isModalOpened: false,
-  selectedPage: PAGE_NAME.WATCH_LATER,
+  selectedPage: NAVIGATION.WATCH_LATER,
 };
 
 const reducer = {

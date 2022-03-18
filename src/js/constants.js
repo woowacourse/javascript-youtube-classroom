@@ -11,9 +11,10 @@ export const UI_ACTION = {
   SELECT_PAGE: 'SELECT_PAGE',
 };
 
-export const PAGE_NAME = {
+export const NAVIGATION = {
   WATCH_LATER: 'watchLater',
   WATCHED: 'watched',
+  SEARCH_MODAL: 'searchModal',
 };
 
 export const MESSAGE = {
