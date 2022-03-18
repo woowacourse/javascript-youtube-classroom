@@ -40,6 +40,7 @@ const getFoundResultTemplate = items => {
             ${convertToKoreaLocaleDate(publishedAt)}
           </p>
           <button
+            type="button"
             class="video-item__save-button button"
             onclick="saveVideo(event);"
             data-video-id=${item.id.videoId}
