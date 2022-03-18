@@ -1,10 +1,10 @@
 
-@keyframes fadein {
+@keyframes fadeIn {
     from {bottom: 0; opacity: 0;}
     to {bottom: 30px; opacity: 1;}
   }
 
-  @keyframes fadeout {
+  @keyframes fadeOut {
     from {bottom: 30px; opacity: 1;}
     to {bottom: 0; opacity: 0;}
   }
@@ -28,7 +28,7 @@
 
 .snackbar-container.show {
     visibility: visible;
-    animation: fadein 0.5s, fadeout 0.5s 4.0s;
+    animation: fadeIn 0.6s, fadeOut 0.6s 3.5s;
 }
 
 .snackbar-container.error{
