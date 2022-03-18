@@ -8,6 +8,8 @@ import { skeleton } from './skeleton';
 import { video } from '../domain/video';
 
 export const youtubeSearchResult = {
+  $videoList: $('.video-list'),
+
   searchResultTemplate(items) {
     const saveDatas = store.getLocalStorage(STORAGE_KEY);
     const resultTemplate = items
@@ -54,10 +56,9 @@ export const youtubeSearchResult = {
 
   renderInitialVideoList(videoData) {
     this.addSaveButtonClickEvent();
-    const $videoList = $('.video-list');
 
-    $videoList.replaceChildren();
-    $videoList.insertAdjacentHTML(
+    this.$videoList.replaceChildren();
+    this.$videoList.insertAdjacentHTML(
       'beforeend',
       videoData.items.length ? this.searchResultTemplate(videoData.items) : this.noSearchResultTemplate(),
     );
@@ -73,7 +74,7 @@ export const youtubeSearchResult = {
     request($('#search-input-keyword').value, nextPageToken)
       .then(videoData => {
         skeleton.removeSkeletonUI();
-        $('.video-list').insertAdjacentHTML('beforeend', this.searchResultTemplate(videoData.items));
+        this.$videoList.insertAdjacentHTML('beforeend', this.searchResultTemplate(videoData.items));
 
         if (videoData && videoData.nextPageToken) {
           this.scrollObserver(videoData.nextPageToken);
@@ -85,7 +86,7 @@ export const youtubeSearchResult = {
   },
 
   addSaveButtonClickEvent() {
-    $('.video-list').addEventListener('click', e => {
+    this.$videoList.addEventListener('click', e => {
       if (e.target.classList.contains('video-item__save-button')) {
         const videoId = e.target.dataset.videoId;
         video.save(videoId);
@@ -112,6 +113,6 @@ export const youtubeSearchResult = {
   },
 
   resetVideoList() {
-    $('.video-list').replaceChildren();
+    this.$videoList.replaceChildren();
   },
 };
