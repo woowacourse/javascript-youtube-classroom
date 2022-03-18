@@ -1,6 +1,6 @@
 .video-list {
   display: grid;
-  grid-template-columns: repeat(4, minmax(15em, auto));
+  grid-template-columns: repeat(4, 15em);
   gap: 2em 2em;
 }
 
@@ -103,7 +103,7 @@
 .save-result.save-result--no-result {
   justify-content: center;
   align-items: center;
-  grid-column: 1 / span 4;
+  grid-column: 1 / -1;
 }
 
 .search-result {
@@ -117,7 +117,7 @@
 .search-result.search-result--no-result {
   justify-content: center;
   align-items: center;
-  grid-column: 1 / span 4;
+  grid-column: 1 / -1;
   overflow: hidden;
 }
 
@@ -136,13 +136,13 @@
 
 @media only screen and (max-width: 1280px) {
   .video-list {
-    grid-template-columns: repeat(3, minmax(15em, auto));
+    grid-template-columns: repeat(3, 15em);
   }
 }
 
 @media only screen and (max-width: 960px) {
   .video-list {
-    grid-template-columns: repeat(2, minmax(15em, auto));
+    grid-template-columns: repeat(2, 15em);
   }
 }
 

@@ -1,6 +1,6 @@
 .skeleton-list {
   display: grid;
-  grid-template-columns: repeat(4, minmax(15em, auto));
+  grid-template-columns: repeat(4, 15em);
   gap: 2em 2em;
 }
 
@@ -52,13 +52,13 @@
 
 @media only screen and (max-width: 1280px) {
   .skeleton-list {
-    grid-template-columns: repeat(3, minmax(15em, auto));
+    grid-template-columns: repeat(3, 15em);
   }
 }
 
 @media only screen and (max-width: 960px) {
   .skeleton-list {
-    grid-template-columns: repeat(2, minmax(15em, auto));
+    grid-template-columns: repeat(2, 15em);
   }
 }
 
