@@ -1,4 +1,4 @@
-import { ERROR_MESSAGE, SEARCH_KEYWORD_MIN_LENGTH } from '../../src/js/constants';
+import { ERROR_MESSAGE, SEARCH_KEYWORD_MIN_LENGTH, REQUEST_PATH, HOST_URL } from '../../src/js/constants';
 
 describe('검색 버튼을 누르면 검색 모달이 띄어진다.', () => {
   it('초기 화면에서 검색 버튼을 누르면 검색 모달이 나온다.', () => {
@@ -32,7 +32,7 @@ describe('검색 모달에서 검색어를 입력한다.', () => {
   });
 
   it('모달 창에 검색어를 입력하면 결과가 나온다.', () => {
-    cy.intercept('https://brave-lichterman-77e301.netlify.app/youtube/v3/search/*', {
+    cy.intercept(`${HOST_URL}${REQUEST_PATH}/*`, {
       fixture: 'searchResult',
     });
     cy.get('#search-input-keyword').type(keyword);
@@ -41,7 +41,7 @@ describe('검색 모달에서 검색어를 입력한다.', () => {
   });
 
   it('검색 결과가 없다면 결과 없음 화면을 보여준다.', () => {
-    cy.intercept('https://brave-lichterman-77e301.netlify.app/youtube/v3/search/*', {
+    cy.intercept(`${HOST_URL}${REQUEST_PATH}/*`, {
       fixture: 'noSearchResult',
     });
     cy.get('#search-input-keyword').type(noResultKeyword);
@@ -58,7 +58,7 @@ describe('검색어 입력 후 저장 버튼으로 동영상을 저장할 수 �
   });
 
   it('저장 버튼을 누르면 저장 버튼이 사라진다.', () => {
-    cy.intercept('https://brave-lichterman-77e301.netlify.app/youtube/v3/search/*', {
+    cy.intercept(`${HOST_URL}${REQUEST_PATH}/*`, {
       fixture: 'searchResult',
     });
     cy.get('#search-input-keyword').type(keyword);

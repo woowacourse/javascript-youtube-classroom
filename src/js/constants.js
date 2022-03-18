@@ -14,6 +14,9 @@ export const ALERT_MESSAGE = {
   NO_MORE_SEARCH_RESULT: '마지막 검색결과까지 모두 출력되었습니다.',
 };
 
+export const REQUEST_PATH = 'youtube/v3/search';
+export const HOST_URL = 'https://brave-lichterman-77e301.netlify.app/';
+
 export const FAKE_DATA = [
   {
     id: '3iM_06QeZi8',
