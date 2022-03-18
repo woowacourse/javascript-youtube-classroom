@@ -6,13 +6,13 @@ export default class MenuBar {
     this.nav = $(".header-nav", this.header);
     this.navWatching = $(".header-nav__watching", this.nav);
     this.navWatched = $(".header-nav__watched", this.nav);
-    this.nav.addEventListener("click", this.handleMenu);
+    this.nav.addEventListener("click", this.#handleMenu);
 
     this.handleOpenModal = handleOpenModal;
     this.handleWatchState = handleWatchState;
   }
 
-  handleMenu = ({ target }) => {
+  #handleMenu = ({ target }) => {
     if (target.classList.contains("header-nav__search")) {
       this.handleOpenModal();
     }

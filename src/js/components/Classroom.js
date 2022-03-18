@@ -7,16 +7,21 @@ export default class Classroom {
     this.classroom = $(".classroom");
     this.classroomList = $(".classroom__list", this.classroom);
     this.emptyContainer = $(".classroom__empty", this.classroom);
-    this.classroomList.addEventListener("click", this.handleVideoOption);
+    this.classroomList.addEventListener("click", this.#handleVideoOption);
 
     this.videoManager = videoManager;
-    this.videoManager.subscribe(this.renderVideos);
+    this.videoManager.subscribe(this.#renderVideos);
 
     this.isWatched = false;
-    this.renderVideos();
+    this.#renderVideos();
   }
 
-  handleVideoOption = ({ target }) => {
+  setWatchState(state) {
+    this.isWatched = state;
+    this.#renderVideos();
+  }
+
+  #handleVideoOption = ({ target }) => {
     const { id } = target.parentNode.dataset;
 
     if (target.classList.contains("video-item__watched-button")) {
@@ -27,29 +32,24 @@ export default class Classroom {
     }
   };
 
-  setWatchState(state) {
-    this.isWatched = state;
-    this.renderVideos();
-  }
-
-  initClassroom() {
+  #initClassroom() {
     this.classroomList.replaceChildren();
     this.emptyContainer.replaceChildren();
   }
 
-  renderVideos = () => {
-    this.initClassroom();
+  #renderVideos = () => {
+    this.#initClassroom();
 
     const videos = this.videoManager.getSavedVideos().filter((video) => video.watched === this.isWatched);
     if (videos.length === 0) {
-      this.renderEmptyClassroom();
+      this.#renderEmptyClassroom();
       return;
     }
 
     this.classroomList.insertAdjacentHTML("beforeend", videos.map((video) => getFrameTemplate(video)).join(""));
   };
 
-  renderEmptyClassroom() {
+  #renderEmptyClassroom() {
     this.emptyContainer.insertAdjacentHTML("beforeend", getEmptyClassroomTemplate);
   }
 }
