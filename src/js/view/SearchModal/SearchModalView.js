@@ -52,10 +52,10 @@ class SearchModalView {
     }
 
     const searchResultTitle = selectDom('.search-result-title', this.#searchResult);
-    searchResultTitle.textContent = `'${keyword}' 검색 결과입니다`;
+    const formattedKeyword = keyword.length > 15 ? `${keyword.slice(0, 12)}...` : keyword;
+    searchResultTitle.textContent = `'${formattedKeyword}' 검색 결과입니다`;
 
     this.#clearPreviousRender();
-
     this.#sendSearchRequest(keyword);
   };
 
