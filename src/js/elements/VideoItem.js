@@ -1,16 +1,16 @@
-import VideoStore from '../VideoStore';
+import SearchedVideo from '../stores/SearchedVideo';
 import CustomElement from '../abstract/CustomElement';
-import Save from '../domains/Save';
 import { addEvent, emit } from '../utils';
 import TEMPLATE from '../templates';
 import { VIDEO } from '../constants';
+import SavedVideo from '../stores/SavedVideo';
 
 class VideoItem extends CustomElement {
   render() {
-    const video = VideoStore.instance.findVideo(this.dataset.id);
+    const video = SearchedVideo.instance.findVideo(this.dataset.id);
 
     this.innerHTML = this.template(video);
-    Save.instance.subscribeEvents(this);
+    SavedVideo.instance.subscribeEvents(this);
   }
 
   template(video) {
@@ -30,7 +30,7 @@ class VideoItem extends CustomElement {
   }
 
   hideSaveButton(e) {
-    const videos = Save.instance.getVideos();
+    const videos = SavedVideo.instance.getVideos();
 
     if (videos.length >= VIDEO.MAX_SAVABLE_COUNT) return;
 

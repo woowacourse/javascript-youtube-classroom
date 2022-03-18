@@ -1,4 +1,4 @@
-import VideoStore from '../VideoStore';
+import SearchedVideo from '../stores/SearchedVideo';
 import CustomElement from '../abstract/CustomElement';
 import { $ } from '../utils';
 import TEMPLATE from '../templates';
@@ -16,7 +16,7 @@ class SearchResult extends CustomElement {
   }
 
   subscribe() {
-    VideoStore.instance.subscribe(this);
+    SearchedVideo.instance.subscribe(this);
   }
 
   notify(type, data) {

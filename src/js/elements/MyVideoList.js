@@ -1,17 +1,17 @@
-import Save from '../domains/Save';
 import TEMPLATE from '../templates';
+import SavedVideo from '../stores/SavedVideo';
 
 import './MyVideoItem';
 
 class MyVideoList extends HTMLUListElement {
   connectedCallback() {
     this.render();
-    Save.instance.subscribe(this);
+    SavedVideo.instance.subscribe(this);
   }
 
   // eslint-disable-next-line max-lines-per-function
   render() {
-    const videos = Save.instance.getFilteredVideos(!this.id.includes('unwatched'));
+    const videos = SavedVideo.instance.getFilteredVideos(!this.id.includes('unwatched'));
 
     if (!videos.length) {
       this.innerHTML = TEMPLATE.generateNoVideo(

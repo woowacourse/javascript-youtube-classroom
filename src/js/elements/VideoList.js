@@ -1,7 +1,7 @@
-import VideoStore from '../VideoStore';
-import Save from '../domains/Save';
+import SearchedVideo from '../stores/SearchedVideo';
 import { addEvent, emit, $, $$ } from '../utils';
 import TEMPLATE from '../templates';
+import SavedVideo from '../stores/SavedVideo';
 
 import './VideoItem';
 
@@ -26,7 +26,7 @@ class VideoList extends HTMLUListElement {
   }
 
   subscribe() {
-    VideoStore.instance.subscribe(this);
+    SearchedVideo.instance.subscribe(this);
   }
 
   notify(_, data) {
@@ -59,7 +59,7 @@ class VideoList extends HTMLUListElement {
   }
 
   hideStoredVideoSaveButton(videos) {
-    const storedVideoIds = Save.instance.getVideos().map((video) => video.videoId);
+    const storedVideoIds = SavedVideo.instance.getVideos().map((video) => video.videoId);
 
     videos.forEach((video) => {
       if (storedVideoIds.includes(video.id)) {
