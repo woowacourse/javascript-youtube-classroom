@@ -11,7 +11,8 @@ class MainInterferer {
     this.#savedItems = [];
     this.$afterWatchVideoList = $('.after-watch-video-list');
     this.$watchedVideoList = $('.watched-video-list');
-    this.mainView = new MainView(this.$afterWatchVideoList, this.$watchedVideoList);
+    this.$nav = $('.nav');
+    this.mainView = new MainView(this.$afterWatchVideoList, this.$watchedVideoList, this.$nav);
     on(this.$afterWatchVideoList, '@delete', (e) => this.requestDeleteAfterWatchItem(e.detail.id));
   }
 

@@ -51,15 +51,13 @@ body {
   gap: 15px;
 }
 
-.watch-video-button {
-  font-size: 20px;
-}
-
+.watch-video-button,
 .delete-watch-video-button {
   font-size: 20px;
 }
 
-.after-watch-video-list {
+.after-watch-video-list,
+.watched-video-list {
   display: grid;
   grid-template-columns: 1fr 1fr 1fr 1fr;
   row-gap: 50px;

@@ -3,17 +3,26 @@ import { emit, on } from '../util/event';
 import template from './templates';
 
 class MainView {
-  constructor(afterWatchVideoList, watchedVideoList) {
+  constructor(afterWatchVideoList, watchedVideoList, nav) {
     this.$afterWatchVideoList = afterWatchVideoList;
     this.$watchedVideoList = watchedVideoList;
+    this.$nav = nav;
     this.bindEvents();
   }
 
   bindEvents() {
-    on(this.$afterWatchVideoList, 'click', this.onClick.bind(this));
+    on(this.$nav, 'click', this.onClickNavButton.bind(this));
+    on(this.$afterWatchVideoList, 'click', this.onClickStatusButton.bind(this));
   }
 
-  onClick({ target }) {
+  onClickNavButton({ target }) {
+    if (target.id !== 'after-watch-video-button' && target.id !== 'watched-video-button') {
+      return;
+    }
+    this.togglePage();
+  }
+
+  onClickStatusButton({ target }) {
     if (target.classList.contains('watch-video-button')) {
       const parentTarget = target.closest('section');
 
@@ -21,6 +30,7 @@ class MainView {
       emit(this.$afterWatchVideoList, '@watched', {
         watchedVideo: convertDOMToSaveObject(parentTarget),
       });
+      emit(this.$afterWatchVideoList, '@delete', { id: parentTarget.dataset.videoId });
     }
 
     if (target.classList.contains('delete-watch-video-button')) {
@@ -52,6 +62,11 @@ class MainView {
 
   renderNoItems() {
     this.$afterWatchVideoList.insertAdjacentHTML('beforeend', template.noAfterWatchItem());
+  }
+
+  togglePage() {
+    this.$afterWatchVideoList.classList.toggle('hide');
+    this.$watchedVideoList.classList.toggle('hide');
   }
 }
 
