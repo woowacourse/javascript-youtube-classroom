@@ -53,7 +53,7 @@ class SavedVideosView {
   renderVideoList = async () => {
     const videos = this.#unrenderedVideoIdArray.splice(0, 10);
 
-    if (this.renderVideoList === 0 && videos.length === 0) {
+    if (this.#renderedVideoIdArray.length === 0 && videos.length === 0) {
       this.#renderNoSavedVideoTemplate();
       return;
     }
