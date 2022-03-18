@@ -1,5 +1,6 @@
 import MyVideoStore from '../stores/MyVideoStore';
 import CustomElement from '../abstract/CustomElement';
+import Delete from '../domains/Delete';
 import { addEvent, emit, formatDate } from '../utils';
 
 class MyVideoItem extends CustomElement {
@@ -7,6 +8,7 @@ class MyVideoItem extends CustomElement {
     const { details } = MyVideoStore.instance.findVideo(this.dataset.id);
 
     this.innerHTML = this.template(details);
+    new Delete(this);
   }
 
   // eslint-disable-next-line max-lines-per-function
