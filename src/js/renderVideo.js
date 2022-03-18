@@ -6,15 +6,16 @@ import {
   SEARCH_MODAL_BUTTON_ID,
   CLASSNAME,
   DELETE_CONFIRM_MESSAGE,
+  THROTTLE_TIME_INTERVAL,
 } from './constants/contants.js';
 import SaveVideo from './saveVideo.js';
 import SearchVideo from './searchVideo.js';
 import {
   videoTemplate,
-  totalVideoSkeletonTemplate,
   videoNotFoundTemplate,
   savedVideoTemplate,
   emptyVideoListTemplate,
+  totalVideoSkeletonTemplate,
 } from './template/videoTemplate.js';
 import { selectDom, addEvent } from './utils/handleElement.js';
 
@@ -32,14 +33,15 @@ class RenderVideo {
     this.modalOutside = selectDom('.dimmer', this.modalContainer);
     this.searchForm = selectDom('#search-form', this.modalContainer);
     this.searchInput = selectDom('#search-input-keyword', this.searchForm);
-    this.videoListContainer = selectDom('.video-list', this.modalContainer);
     this.searchResultSection = selectDom('.search-result', this.modalContainer);
+    this.videoListContainer = selectDom('.video-list', this.searchResultSection);
+    this.skeletonListContainer = selectDom('.skeleton-list', this.searchResultSection);
 
     addEvent(this.navSection, 'click', this.#onNavButtonClick);
     addEvent(this.savedVideoListContainer, 'click', this.#onCheckAndDeleteButtonClick);
     addEvent(this.modalOutside, 'click', this.#onCloseModal);
     addEvent(this.searchForm, 'submit', this.#onSearchFormSubmit);
-    addEvent(this.videoListContainer, 'scroll', this.#onScrollVideoList);
+    addEvent(this.searchResultSection, 'scroll', this.#onScrollVideoList);
     addEvent(this.videoListContainer, 'click', this.#onSaveButtonClick);
 
     this.#onTabButtonClick(
@@ -47,6 +49,7 @@ class RenderVideo {
       this.watchedTabButton,
       this.saveVideo.saveVideoList.filter((video) => !video.isChecked)
     );
+    this.throttle = null;
   }
 
   #onNavButtonClick = ({ target: { id: targetId } }) => {
@@ -93,11 +96,13 @@ class RenderVideo {
   #onCheckAndDeleteButtonClick = ({ target }) => {
     const targetVideo = target.closest('li');
     if (!targetVideo) return;
+
     if (target.classList.contains(CLASSNAME.VIDEO_CHECK_BUTTON)) {
       this.saveVideo.toggleVideoIsCheckedFromStorage(targetVideo.dataset);
       this.#renderUpdatedVideoList(targetVideo);
       return;
     }
+
     if (
       target.classList.contains(CLASSNAME.VIDEO_DELETE_BUTTON) &&
       confirm(DELETE_CONFIRM_MESSAGE(targetVideo.dataset.title))
@@ -113,25 +118,32 @@ class RenderVideo {
 
   #onSearchFormSubmit = (e) => {
     e.preventDefault();
-    this.videoListContainer.scrollTop = 0;
+    this.searchResultSection.scrollTop = 0;
 
     if (this.searchVideo.prevSearchKeyword === this.searchInput.value.trim()) {
       return;
     }
     this.searchVideo.initSearchVideo();
     this.videoListContainer.replaceChildren();
-    this.videoListContainer.insertAdjacentHTML('afterbegin', totalVideoSkeletonTemplate);
     this.#loadVideo();
   };
 
   #onScrollVideoList = () => {
-    const { scrollHeight, offsetHeight, scrollTop, children: videoList } = this.videoListContainer;
     if (
-      scrollHeight - offsetHeight === scrollTop &&
-      Array.from(videoList).length < MAX_VIDEO_LIST_LENGTH &&
-      this.searchVideo.nextPageToken !== ''
+      !this.searchVideo.nextPageToken ||
+      Array.from(this.videoListContainer.children).length >= MAX_VIDEO_LIST_LENGTH
     ) {
-      this.#loadVideo();
+      return;
+    }
+
+    if (!this.throttle) {
+      this.throttle = setTimeout(() => {
+        this.throttle = null;
+        const { scrollHeight, offsetHeight, scrollTop } = this.searchResultSection;
+        if (scrollHeight - offsetHeight === scrollTop) {
+          this.#loadVideo();
+        }
+      }, THROTTLE_TIME_INTERVAL);
     }
   };
 
@@ -170,14 +182,8 @@ class RenderVideo {
       return;
     }
 
-    Array.from(this.videoListContainer.children).forEach((videoLi) => {
-      if (videoLi.classList.contains(CLASSNAME.SKELETON_ELEMENT)) {
-        videoLi.classList.add(CLASSNAME.HIDE_ELEMENT);
-      }
-    });
-
-    selectDom('.skeleton', this.videoListContainer).insertAdjacentHTML(
-      'beforebegin',
+    this.videoListContainer.insertAdjacentHTML(
+      'beforeend',
       searchVideo
         .map((video) =>
           videoTemplate(
@@ -187,14 +193,14 @@ class RenderVideo {
         )
         .join(' ')
     );
+    this.skeletonListContainer.classList.add(CLASSNAME.HIDE_ELEMENT);
   }
 
   #renderVideoSkeleton() {
-    Array.from(this.videoListContainer.children).forEach((videoLi) => {
-      if (videoLi.classList.contains(CLASSNAME.SKELETON_ELEMENT)) {
-        videoLi.classList.remove(CLASSNAME.HIDE_ELEMENT);
-      }
-    });
+    this.skeletonListContainer.classList.remove(CLASSNAME.HIDE_ELEMENT);
+    if (this.skeletonListContainer.children.length > 0) return;
+
+    this.skeletonListContainer.insertAdjacentHTML('afterbegin', totalVideoSkeletonTemplate);
   }
 
   async #loadVideo() {
