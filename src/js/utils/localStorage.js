@@ -5,7 +5,7 @@ const LOCALSTORAGE_KEY = {
   VIDEO_INFO_LIST: 'VIDEO_INFO_LIST',
 };
 
-const getStorageVideoIDs = (key) => {
+const getStorage = (key) => {
   try {
     return JSON.parse(localStorage.getItem(key)) ?? [];
   } catch (error) {
@@ -13,8 +13,8 @@ const getStorageVideoIDs = (key) => {
   }
 };
 
-const setStorageVideoIDs = (key, value) => {
+const setStorage = (key, value) => {
   localStorage.setItem(key, JSON.stringify(value));
 };
 
-export { getStorageVideoIDs, setStorageVideoIDs, LOCALSTORAGE_KEY };
+export { getStorage, setStorage, LOCALSTORAGE_KEY };

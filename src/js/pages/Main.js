@@ -1,4 +1,4 @@
-import { getStorageVideoIDs, LOCALSTORAGE_KEY } from '../utils/localStorage';
+import { getStorage, LOCALSTORAGE_KEY } from '../utils/localStorage';
 import VideoCardContainer from '../common/VideosCardContainer';
 
 export default class Main {
@@ -9,15 +9,19 @@ export default class Main {
 
     this.searchModalButton.addEventListener('click', this.openModalHandler.bind(this));
 
-    // this.videosCardContainer = new VideoCardContainer();
-    // this.renderStoredVideoList();
+    this.videosCardContainer = new VideoCardContainer(
+      document.querySelector('.watch-later-video-list'),
+    );
+    this.renderStoredVideoList();
   }
 
   renderStoredVideoList() {
-    this.template(getStorageVideoIDs(LOCALSTORAGE_KEY.VIDEO_IDS));
+    this.template(getStorage(LOCALSTORAGE_KEY.VIDEO_IDS));
   }
 
-  template(storedVideoList) {}
+  template(storedVideoList) {
+    this.videosCardContainer.setState({ videos: storedVideoList });
+  }
 
   openModalHandler() {
     const modalContainer = document.querySelector('.modal-container');

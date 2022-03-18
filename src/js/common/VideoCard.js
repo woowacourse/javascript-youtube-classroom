@@ -1,42 +1,34 @@
-import { timeFormatter } from '../utils';
-import { getStorageVideoIDs, LOCALSTORAGE_KEY } from '../utils/localStorage';
+import { getStorage, LOCALSTORAGE_KEY } from '../utils/localStorage';
 
-const isStoredVideo = (videoIds, videoId) =>
-  Object.values(videoIds).some((currentVideoId) => videoId === Object.keys(currentVideoId)[0]);
+const isStoredVideo = (storedVideos, videoId) =>
+  storedVideos.some((video) => video.videoId === videoId);
 
 export default class VideoCard {
   constructor(props) {
-    this.props = props;
+    ({
+      videoId: this.videoId,
+      channelTitle: this.channelTitle,
+      publishTime: this.publishTime,
+      title: this.title,
+      thumbnail: this.thumbnail,
+    } = props);
   }
 
   template() {
-    const { id, snippet } = this.props;
-    const { videoId } = id;
-    const {
-      publishTime,
-      channelTitle,
-      title,
-      thumbnails: {
-        medium: { url },
-      },
-    } = snippet;
+    const videoIds = getStorage(LOCALSTORAGE_KEY.VIDEO_IDS);
 
-    const videoIds = getStorageVideoIDs(LOCALSTORAGE_KEY.VIDEO_IDS);
-
-    const storeButton = isStoredVideo(videoIds, videoId)
+    const storeButton = isStoredVideo(videoIds, this.videoId)
       ? ''
       : '<button class="video-item__save-button button" type="button">⬇ 저장</button>';
 
-    const time = timeFormatter(publishTime);
-
     return `
-      <li class="video-item" data-video-id="${videoId}">
+      <li class="video-item" data-video-id="${this.videoId}">
         <img
-          src="${url}"
+          src="${this.thumbnail}"
           alt="video-item-thumbnail" class="video-item__thumbnail">
-        <h4 class="video-item__title">${title}</h4>
-        <p class="video-item__channel-name">${channelTitle}</p>
-        <p class="video-item__published-date">${time}</p>
+        <h4 class="video-item__title">${this.title}</h4>
+        <p class="video-item__channel-title">${this.channelTitle}</p>
+        <p class="video-item__publish-time">${this.publishTime}</p>
         ${storeButton}
       </li>
       `;
