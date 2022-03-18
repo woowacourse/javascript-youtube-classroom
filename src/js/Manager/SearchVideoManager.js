@@ -1,4 +1,5 @@
 import { GUIDE_MESSAGE, MAX_DATA_FETCH_AT_ONCE } from '../constants';
+import Storage from '../Storage';
 import { event } from '../util';
 import { validateSearchKeyword, checkNoUndefinedProperty } from './validation';
 
@@ -24,9 +25,7 @@ export default class SearchVideoManager {
 
   #isLastPage;
 
-  constructor(storage) {
-    this.storage = storage;
-
+  constructor() {
     this.#keyword = '';
     this.#nextPageToken = '';
     this.#isLastPage = false;
@@ -97,7 +96,7 @@ export default class SearchVideoManager {
       title: item.snippet.title,
       channelName: item.snippet.channelTitle,
       publishedDate: item.snippet.publishedAt,
-      saved: !!this.storage.findVideoById(item.id.videoId),
+      saved: !!Storage.findVideoById(item.id.videoId),
     })).filter((item) => checkNoUndefinedProperty(item));
   }
 }

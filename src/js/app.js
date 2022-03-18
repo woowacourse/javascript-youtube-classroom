@@ -9,8 +9,7 @@ import SearchModalView from './View/SearchModalView';
 const homeView = new HomeView();
 const searchModalView = new SearchModalView();
 
-const storage = new Storage();
 
-const searchVideoManager = new SearchVideoManager(storage);
-const saveVideoManager = new SaveVideoManager(storage);
+const searchVideoManager = new SearchVideoManager();
+const saveVideoManager = new SaveVideoManager();
 

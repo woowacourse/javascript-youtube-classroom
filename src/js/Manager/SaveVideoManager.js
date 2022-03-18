@@ -1,11 +1,10 @@
+import Storage from '../Storage';
 import { event } from '../util';
 
 export default class SaveVideoManager {
   #videos;
 
-  constructor(storage) {
-    this.storage = storage;
-
+  constructor() {
     event.addListener('saveVideo', this.saveVideo.bind(this));
     event.addListener('changeWatchedInfo', this.changeWatchedInfo.bind(this));
     event.addListener('deleteVideo', this.deleteVideo.bind(this));
@@ -13,15 +12,11 @@ export default class SaveVideoManager {
     this.updateSavedVideos();
   }
 
-  get watchedVideos() { return this.#videos.filter((video) => video.watched === true )}
-
-  get unwatchedVideos() { return this.#videos.filter((video) => video.watched === false )}
-
   updateSavedVideos() {
-    this.#videos = this.storage.videos;
+    this.#videos = Storage.getSavedVideos();
     event.dispatch('updateSavedVideoList', { 
-      unwatchedVideos: this.unwatchedVideos,
-      watchedVideos: this.watchedVideos,
+      unwatchedVideos: this.#videos.filter((video) => video.watched === false ),
+      watchedVideos: this.#videos.filter((video) => video.watched === true ),
     });
   }
 
@@ -29,7 +24,7 @@ export default class SaveVideoManager {
     const { video, target } = e.detail
     if ( !video ) return;
     try {
-      this.storage.saveVideo({ ...video, watched: false })
+      Storage.saveVideo({ ...video, watched: false })
     } catch (err) {
       alert(err.message);
       return;
@@ -40,9 +35,9 @@ export default class SaveVideoManager {
 
   changeWatchedInfo(e) {
     const videoId = e.detail.id;
-    const video = this.storage.findVideoById(videoId);
+    const video = Storage.findVideoById(videoId);
     try {
-      this.storage.updateVideo({ ...video, watched: !video.watched });
+      Storage.updateVideo({ ...video, watched: !video.watched });
     } catch (err) {
       alert(err.message);
       return;
