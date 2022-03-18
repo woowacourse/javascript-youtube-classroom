@@ -3,6 +3,7 @@
   --video-item__check-button-hover-color: #efefef;
   --video-item__remove-button-background-color: #f9f9f9;
   --video-item__remove-button-hover-color: #efefef;
+  --button__highlighted-color: rgba(0, 188, 212, 0.12);
 }
 
 .will-watch-video-list {
@@ -56,4 +57,13 @@
   line-height: 150%;
   text-align: center;
   letter-spacing: 0.5px;
+}
+
+.highlight {
+  background: var(--button__highlighted-color);
+}
+
+#will-watch-video-button:hover,
+#watched-video-button:hover {
+  background: var(--button__highlighted-color);
 }
