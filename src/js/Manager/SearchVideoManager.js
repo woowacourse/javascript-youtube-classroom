@@ -15,7 +15,7 @@ const FETCH_URL = (keyword, nextPageToken) => {
   if (nextPageToken) {
     searchParams.append('pageToken', nextPageToken);
   }
-  return DUMMY_YOUTUBE_API_URL + searchParams.toString();
+  return YOUTUBE_API_URL + searchParams.toString();
 }
 
 export default class SearchVideoManager {
@@ -23,12 +23,9 @@ export default class SearchVideoManager {
 
   #nextPageToken;
 
-  #isLastPage;
-
   constructor() {
     this.#keyword = '';
     this.#nextPageToken = '';
-    this.#isLastPage = false;
 
     event.addListener('searchWithNewKeyword', this.searchWithNewKeyword.bind(this));
     event.addListener('searchOnScroll', this.searchOnScroll.bind(this));
@@ -49,12 +46,11 @@ export default class SearchVideoManager {
     }
     this.#keyword = keyword;
     this.updateSearchState('READY');
-    this.resetNextPageToken();
     this.search();
   }
 
   searchOnScroll() {
-    if (this.#isLastPage) {
+    if (!this.#nextPageToken) {
       alert(GUIDE_MESSAGE.NO_MORE_SEARCH_RESULT);
       return;
     }
@@ -72,11 +68,6 @@ export default class SearchVideoManager {
       });
   }
 
-  resetNextPageToken() {
-    this.#nextPageToken = '';
-    this.#isLastPage = false;
-  }
-
   fetchYoutubeData() {
     return fetch(FETCH_URL(this.#keyword, this.#nextPageToken))
       .then((response) => {
@@ -88,7 +79,6 @@ export default class SearchVideoManager {
   }
 
   processFetchedResult(result) {
-    if (!result.nextPageToken) this.#isLastPage = true;
     this.#nextPageToken = result.nextPageToken;
     return result.items.map((item) => ({
       id: item.id.videoId,
