@@ -1,11 +1,18 @@
 import { $, addEvent, createElement } from '@Utils/dom';
 import { getParsedTime } from '@Utils/dataManager';
 import { onObserveElement } from '@Utils/elementController';
-import { YOUTUBE_SETTING, YOUTUBE_SEARCH_ACTION, ERROR_MESSAGE, EVENT_TYPE } from '@Constants';
+import {
+  YOUTUBE_SETTING,
+  YOUTUBE_SEARCH_ACTION,
+  MESSAGE,
+  EVENT_TYPE,
+  SNACKBAR_TYPE,
+} from '@Constants';
 import YoutubeSearchStore from '@Domain/YoutubeSearchStore';
 import YoutubeSaveStorage from '@Domain/YoutubeSaveStorage';
 import notFoundImage from '@Images/not_found.jpeg';
 import serverErrorImage from '@Images/server_error.jpeg';
+import SnackBar from '../Share/SnackBar';
 
 export default class SearchResult {
   constructor() {
@@ -31,8 +38,8 @@ export default class SearchResult {
 
   bindEvents() {
     onObserveElement(this.$scrollObserver, () => {
-      const { isLoading, isEnded } = YoutubeSearchStore.getState();
-      if (isLoading || isEnded) return;
+      const { isLoading, isEnded, error } = YoutubeSearchStore.getState();
+      if (isLoading || isEnded || error) return;
       YoutubeSearchStore.dispatch(YOUTUBE_SEARCH_ACTION.UPDATE_SEARCH_RESULT_REQUEST);
     });
     addEvent(this.container, {
@@ -43,24 +50,28 @@ export default class SearchResult {
   }
 
   handleClickSaveButton = ({ target: $target }) => {
-    const { videoId, videoTitle, videoChanneltitle, videoPublishtime, videoThumbnail } =
-      $target.closest('.video-item').dataset;
+    try {
+      const { videoId, videoTitle, videoChanneltitle, videoPublishtime, videoThumbnail } =
+        $target.closest('.video-item').dataset;
 
-    YoutubeSaveStorage.addVideo(videoId, {
-      videoTitle,
-      videoChanneltitle,
-      videoPublishtime,
-      videoThumbnail,
-    });
-    $target.classList.add('hide');
+      YoutubeSaveStorage.addVideo(videoId, {
+        videoTitle,
+        videoChanneltitle,
+        videoPublishtime,
+        videoThumbnail,
+      });
+      $target.classList.add('hide');
+      SnackBar.open(MESSAGE.SAVE_COMPLETE, SNACKBAR_TYPE.ALERT);
+    } catch (error) {
+      SnackBar.open(error, SNACKBAR_TYPE.ERROR);
+    }
   };
 
   render = () => {
     const { isLoading, isLoaded, items, isEnded, error } = YoutubeSearchStore.getState();
     this.$videoList.replaceChildren();
     if (error) {
-      this.$videoList.append(this.getResultServerError());
-      return;
+      SnackBar.open(MESSAGE.SERVER_ERROR, SNACKBAR_TYPE.ERROR);
     }
 
     if (items.length <= 0 && isLoaded) {
@@ -72,7 +83,7 @@ export default class SearchResult {
     if (items.length > 0) {
       $fragment.append(...this.getVideoList(items));
     }
-    if (isLoading && !isEnded) {
+    if (isLoading && !isEnded && !error) {
       $fragment.append(...this.$skeleton);
     }
 

@@ -1,9 +1,10 @@
 import { $, addEvent, createElement } from '@Utils/dom';
 import { getParsedTime } from '@Utils/dataManager';
-import { EVENT_TYPE, PAGE_NAME } from '@Constants';
+import { EVENT_TYPE, PAGE_NAME, MESSAGE, SNACKBAR_TYPE } from '@Constants';
 import YoutubeSaveStorage from '@Domain/YoutubeSaveStorage';
 import UIStore from '@Domain/UIStore';
 import notSavedImage from '@Images/not_saved.jpeg';
+import SnackBar from '../Share/SnackBar';
 
 export default class MainContents {
   constructor() {
@@ -30,8 +31,9 @@ export default class MainContents {
 
   handleClickRemoveButton = ({ target: $target }) => {
     const { videoId } = $target.closest('.saved-video-item').dataset;
-    if (confirm('정말 지우시겠습니까?')) {
+    if (confirm(MESSAGE.CONFIRM_REMOVE_VIDEO)) {
       YoutubeSaveStorage.removeVideo(videoId);
+      SnackBar.open(MESSAGE.REMOVE_COMPLETE, SNACKBAR_TYPE.ALERT);
     }
   };
 
