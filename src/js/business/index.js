@@ -19,6 +19,7 @@ class AppBusiness {
     bind(CUSTOM_EVENT_KEY.CLICK_SAVE_BUTTON, this.onClickSaveButton);
     bind(CUSTOM_EVENT_KEY.CLICK_SAVED_VIDEO_FILTER_BUTTON, this.onClickSavedVideoFilterButton);
     bind(CUSTOM_EVENT_KEY.CLICK_WATCHED_BUTTON, this.onClickWatchedButton);
+    bind(CUSTOM_EVENT_KEY.CLICK_DELETE_BUTTON, this.onClickDeleteButton);
   }
 
   onClickSearchModalButton = () => {
@@ -108,6 +109,14 @@ class AppBusiness {
     setState(STATE_STORE_KEY.SAVED_VIDEO, updatedVideoList);
   };
 
+  onClickDeleteButton = ({ detail: { targetVideoId } }) => {
+    const updatedVideoList = this.deleteVideo(targetVideoId);
+    const updatedVideoInfoList = this.convertToVideoInfoList(updatedVideoList);
+
+    webStore.setData(WEB_STORE_KEY.SAVED_VIDEO_LIST_KEY, updatedVideoInfoList);
+    setState(STATE_STORE_KEY.SAVED_VIDEO, updatedVideoList);
+  };
+
   async requestVideo(keyword, pageToken) {
     setState(STATE_STORE_KEY.IS_WAITING_RESPONSE, true);
 
@@ -152,6 +161,16 @@ class AppBusiness {
 
   convertToVideoInfoList(videoList) {
     return videoList.map((video) => video.getVideoInfo());
+  }
+
+  deleteVideo(targetVideoId) {
+    const savedVideoList = getState(STATE_STORE_KEY.SAVED_VIDEO);
+
+    return savedVideoList.filter((savedVideo) => {
+      const { videoId } = savedVideo.getVideoInfo();
+
+      return videoId !== targetVideoId;
+    });
   }
 }
 

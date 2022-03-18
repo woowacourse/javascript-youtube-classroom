@@ -3,6 +3,7 @@ import { getState, subscribe } from '../modules/stateStore';
 import { STATE_STORE_KEY } from '../constants/stateStore';
 import { SAVED_VIDEO_FILTER_TYPE } from '../constants/video';
 import { CUSTOM_EVENT_KEY } from '../constants/events';
+import { DELETE_CHECK_MESSAGE } from '../constants/errorMessage';
 import SavedVideo from './SavedVideoComponent';
 
 class SavedVideoListSection {
@@ -76,8 +77,13 @@ class SavedVideoListSection {
           },
         });
       } else if (e.target.classList.contains('video-item__delete-button')) {
-        // TODO: 해당 영상을 저장된 영상 리스트에서 제거하기
-        console.log('삭제 버튼 클릭됨', videoId);
+        if (this.#checkDelete()) {
+          dispatch(CUSTOM_EVENT_KEY.CLICK_DELETE_BUTTON, {
+            detail: {
+              targetVideoId: videoId,
+            },
+          });
+        }
       }
     });
   }
@@ -115,6 +121,10 @@ class SavedVideoListSection {
     });
 
     return filteredVideoList;
+  }
+
+  #checkDelete() {
+    return confirm(DELETE_CHECK_MESSAGE);
   }
 }
 

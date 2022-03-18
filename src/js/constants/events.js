@@ -6,4 +6,5 @@ export const CUSTOM_EVENT_KEY = {
   CLICK_SAVE_BUTTON: 'click-save-button',
   CLICK_SAVED_VIDEO_FILTER_BUTTON: 'click-saved-video-filter-button',
   CLICK_WATCHED_BUTTON: 'click-watched-button',
+  CLICK_DELETE_BUTTON: 'click-delete-button',
 };
