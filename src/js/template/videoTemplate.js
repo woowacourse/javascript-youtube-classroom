@@ -5,7 +5,9 @@ import { MAX_VIDEO_REQUEST_COUNT } from '../constants/contants';
 
 const stringFormatToDate = (dateString) => {
   const date = new Date(dateString);
-  return `${date.getFullYear()}년 ${date.getMonth()}월 ${date.getDay()}일`;
+  return `${date.getFullYear() ?? '0000'}년 ${date.getMonth() ?? '00'}월 ${
+    date.getDay() ?? '00'
+  }일`;
 };
 
 const videoTemplate = (
@@ -30,8 +32,8 @@ const videoTemplate = (
     data-thumbnails-url="${url}"
   > 
     <img src="${url}" alt="video-item-thumbnail" class="video-item__thumbnail" loading="lazy"/>
-    <h4 class="video-item__title">${title}</h4>
-    <p class="video-item__channel-name">${channelTitle}</p>
+    <h4 class="video-item__title">${title ?? '제목 없음'}</h4>
+    <p class="video-item__channel-name">${channelTitle ?? '채널명 없음'}</p>
     <p class="video-item__published-date">${stringFormatToDate(publishTime)}</p>
     ${
       isSaved
@@ -54,8 +56,8 @@ const savedVideoTemplate = ({
     data-title="${title}"
   > 
     <img src="${thumbnailsUrl}" alt="video-item-thumbnail" class="video-item__thumbnail" loading="lazy"/>
-    <h4 class="video-item__title">${title}</h4>
-    <p class="video-item__channel-name">${channelTitle}</p>
+    <h4 class="video-item__title">${title ?? '제목 없음'}</h4>
+    <p class="video-item__channel-name">${channelTitle ?? '채널명 없음'}</p>
     <p class="video-item__published-date">${stringFormatToDate(publishTime)}</p>
     ${
       isChecked
