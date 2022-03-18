@@ -5,9 +5,8 @@ const searchSuggestionUI = {
     suggestions.forEach(suggestion => {
       $('#suggestion-list').insertAdjacentHTML('beforeend', `<li>${suggestion}</li>`);
     });
-    if ($('.video-list').children.length === 0) {
-      $('.suggestion').hidden = false;
-    }
+
+    $('.suggestion').hidden = false;
   },
 };
 

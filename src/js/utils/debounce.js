@@ -1,4 +1,4 @@
-export const SUGGESTION_DEBOUNCE_DELAY = 150;
+export const SUGGESTION_DEBOUNCE_DELAY = 200;
 
 const debounce = (callBack, delay) => {
   let timeout;
