@@ -5,7 +5,9 @@
     "> 1%"
   ],
   "scripts": {
-    "test": "jest --watch --no-cache",
+    "jest:test": "jest --watch --no-cache",
+    "cypress:open": "cypress open",
+    "cypress:run": "cypress run --browser chrome",
     "start": "webpack serve --open",
     "build": "webpack --mode=production",
     "predeploy": "npm run build",
@@ -21,6 +23,7 @@
     "babel-loader": "^8.2.3",
     "clean-webpack-plugin": "^4.0.0",
     "css-loader": "^6.6.0",
+    "cypress": "^9.5.2",
     "eslint": "^8.9.0",
     "eslint-config-airbnb-base": "^15.0.0",
     "eslint-config-prettier": "^8.4.0",
@@ -41,6 +44,9 @@
   "jest": {
     "transform": {
       "^.+\\.js$": "babel-jest"
-    }
+    },
+    "testPathIgnorePatterns": [
+      "<rootDir>/cypress/"
+    ]
   }
 }
