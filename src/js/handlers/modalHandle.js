@@ -8,6 +8,7 @@ export const handleModalClose = () => {
   // 모달 초기화
   $('.video-list').replaceChildren();
   $('#search-input-keyword').value = '';
+  $('.no-result').hidden = true;
 
   $('.saved-video-list').replaceChildren();
   const savedVideos = videoStorage.getSavedVideos();

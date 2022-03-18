@@ -20,6 +20,13 @@ const template = {
         <button class="video-item__save-button button">⬇ 저장</button>
       </li>`;
   },
+
+  nothingFoundImage: `
+  <img src="./assets/not_found.png" alt="no result image" class="no-result__image" />
+  <p class="no-result__description">
+    검색 결과가 없습니다<br />
+    다른 키워드로 검색해보세요
+  </p>`,
 };
 
 export default template;

@@ -40,8 +40,11 @@ const modalUI = {
   renderNoResult() {
     this.removeSkeletonUI();
     $('.search-result').classList.add('search-result--no-result');
-    $('.no-result').hidden = false;
     $('.video-list').classList.add('hide');
+    $('.no-result').hidden = false;
+    if ($('.no-result').childElementCount === 0) {
+      $('.no-result').insertAdjacentHTML('beforeEnd', template.nothingFoundImage);
+    }
   },
 
   renderSearchResult(response) {
