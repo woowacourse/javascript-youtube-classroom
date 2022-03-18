@@ -16,13 +16,13 @@ class MyResult extends CustomElement {
   }
 
   showWatchedVideoList() {
-    $('#unwatched-video-list').classList.add('hidden');
-    $('#watched-video-list').classList.remove('hidden');
+    $('#unwatched-video-list', this).classList.add('hidden');
+    $('#watched-video-list', this).classList.remove('hidden');
   }
 
   showUnwatchedVideoList() {
-    $('#watched-video-list').classList.add('hidden');
-    $('#unwatched-video-list').classList.remove('hidden');
+    $('#watched-video-list', this).classList.add('hidden');
+    $('#unwatched-video-list', this).classList.remove('hidden');
   }
 }
 
