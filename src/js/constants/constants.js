@@ -13,6 +13,7 @@ export const ERROR_MESSAGES = Object.freeze({
   NO_RESULT: '검색 결과가 없습니다! 다른 키워드로 검색해보세요.',
   NO_SEARCH_KEYWORD: '검색어를 입력해주세요!',
   NO_SAVED_VIDEOS: '저장된 영상이 없습니다!',
+  DEFAULT: '오류가 발생했습니다. 잠시 후 다시 시도해주세요.',
 });
 
 export const DELETE_CONFIRM_MESSAGE = '해당 영상의 저장을 취소합니다. 계속하시겠습니까?';

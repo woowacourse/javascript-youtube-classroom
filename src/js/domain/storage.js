@@ -6,10 +6,6 @@ export function getAllFromStorage() {
   return JSON.parse(localStorage.getItem(key)) || {};
 }
 
-export function getOneFromStorage(id) {
-  return getAllFromStorage()[id];
-}
-
 export function getFilteredIdFromStorage(filterBy, value) {
   const videoObjects = getAllFromStorage();
 
@@ -36,7 +32,7 @@ export function removeFromStorage(id) {
 }
 
 export function toggleWatchStatus(id) {
-  const videoObject = getOneFromStorage(id);
+  const videoObject = getAllFromStorage()[id];
   videoObject.watched = !videoObject.watched;
   saveToStorage(videoObject);
 }

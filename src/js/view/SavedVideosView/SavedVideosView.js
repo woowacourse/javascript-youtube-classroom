@@ -1,9 +1,9 @@
 import { DELETE_CONFIRM_MESSAGE } from '../../constants/constants';
 import {
-  getOneFromStorage,
   toggleWatchStatus,
   removeFromStorage,
   getFilteredIdFromStorage,
+  getAllFromStorage,
 } from '../../domain/storage';
 import { removeArrayIntersection, removeElementList, selectDom } from '../util/util';
 import {
@@ -90,13 +90,15 @@ class SavedVideosView {
   async #renderNewVideos(newVideoIdArray) {
     try {
       if (newVideoIdArray.length !== 0) {
-        const videoObjectArray = newVideoIdArray.map((id) => getOneFromStorage(id));
+        const videoObjectArray = newVideoIdArray.map((id) => getAllFromStorage()[id]);
         const videoElementList = this.#createVideoElements(videoObjectArray);
         this.#videoList.append(...videoElementList);
         this.#renderedVideoIdArray = [...this.#renderedVideoIdArray, ...newVideoIdArray];
       }
     } catch (e) {
-      this.#renderErrorTemplate(e.message);
+      if (!selectDom('.no-saved-videos')) {
+        this.#savedVideos.append(errorTemplate());
+      }
     }
   }
 
@@ -104,12 +106,6 @@ class SavedVideosView {
     removeElementList([...this.#videoList.childNodes]);
     if (!selectDom('.no-saved-videos')) {
       this.#savedVideos.append(noSavedVideosTemplate());
-    }
-  }
-
-  #renderErrorTemplate(message) {
-    if (!selectDom('.no-saved-videos')) {
-      this.#savedVideos.append(errorTemplate(message));
     }
   }
 
@@ -147,29 +143,28 @@ class SavedVideosView {
   #createVideoElements(videoObjectArray) {
     return videoObjectArray.map((object) => {
       const element = savedVideoElementTemplate(object, this.#currentTabName);
-      element.addEventListener('click', this.#handleVideoItemButtons);
+      const videoButtonHandler = (e) => this.#handleVideoItemButtons(e, object.videoId);
+      element.addEventListener('click', videoButtonHandler);
       return element;
     });
   }
 
-  #handleVideoItemButtons = ({ target }) => {
+  #handleVideoItemButtons = ({ target }, videoId) => {
     if (target.classList.contains('video-item__watched-button')) {
-      this.#moveToWatchedList(target);
+      this.#moveToWatchedList(videoId);
     }
     if (target.classList.contains('video-item__unsave-button')) {
-      this.#unsaveVideo(target);
+      this.#unsaveVideo(videoId);
     }
   };
 
-  #moveToWatchedList(target) {
-    const { videoId } = target.dataset;
+  #moveToWatchedList(videoId) {
     toggleWatchStatus(videoId);
     this.#removeDeletedVideos();
   }
 
-  #unsaveVideo(target) {
+  #unsaveVideo(videoId) {
     if (window.confirm(DELETE_CONFIRM_MESSAGE)) {
-      const { videoId } = target.dataset;
       removeFromStorage(videoId);
       this.#removeDeletedVideos();
     }

@@ -11,14 +11,12 @@ function savedVideoElementButtons(resultItem, currentTabName) {
       element({
         tag: 'button',
         className: `video-item__watched-button button ${currentTabName === 'watched' && 'checked'}`,
-        dataset: { videoId: resultItem.videoId },
         props: { type: 'button' },
         children: '✅',
       }),
       element({
         tag: 'button',
         className: 'video-item__unsave-button button',
-        dataset: { videoId: resultItem.videoId },
         props: { type: 'button' },
         children: '🗑',
       }),
@@ -50,7 +48,7 @@ export function noSavedVideosTemplate() {
   });
 }
 
-export function errorTemplate(error) {
+export function errorTemplate() {
   return element({
     tag: 'div',
     className: 'no-saved-videos',
@@ -59,7 +57,7 @@ export function errorTemplate(error) {
       element({
         tag: 'p',
         className: 'no-saved-videos__description',
-        children: error,
+        children: ERROR_MESSAGES.DEFAULT,
       }),
     ],
   });
