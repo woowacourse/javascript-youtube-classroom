@@ -58,22 +58,6 @@ class ControlVideo {
   static getStorageWatchedVideoList() {
     return JSON.parse(localStorage.getItem(WATCHED_ID_LIST_KEY)) || [];
   }
-
-  static getSaveVideoList = async (videoIdList) => {
-    const url = new URL('youtube/v3/search', REDIRECT_SERVER_HOST);
-    const params = new URLSearchParams({
-      part: 'snippet',
-      regionCode: 'kr',
-      id: [...videoIdList],
-    });
-    url.search = params.toString();
-    const response = await fetch(url);
-    if (!response.ok) {
-      throw new Error(ERROR_MESSAGE.CANNOT_GET_YOUTUBE_VIDEO);
-    }
-    const { items } = await response.json();
-    return items;
-  };
 }
 
 export default ControlVideo;

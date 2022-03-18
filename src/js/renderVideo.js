@@ -75,7 +75,7 @@ class RenderVideo {
 
   renderWatchedVideo = async () => {
     const watchedVideoItems = [
-      ...(await ControlVideo.getSaveVideoList(ControlVideo.getStorageWatchedVideoList())),
+      ...(await this.searchVideo.getSaveVideoList(ControlVideo.getStorageWatchedVideoList())),
     ].filter(
       ({ id }) =>
         !Array.from(this.watchedVideoList.children)
@@ -93,7 +93,7 @@ class RenderVideo {
 
   renderWillWatchVideo = async () => {
     const willWatchVideoItems = [
-      ...(await ControlVideo.getSaveVideoList(ControlVideo.getStorageVideoList())),
+      ...(await this.searchVideo.getSaveVideoList(ControlVideo.getStorageVideoList())),
     ].filter(
       ({ id }) =>
         !Array.from(this.willWatchVideoList.children)
