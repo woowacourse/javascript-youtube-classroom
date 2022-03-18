@@ -10,7 +10,7 @@ const MESSAGE = {
   SAVE_FAILURE: '저장에 실패하였습니다.',
 };
 
-const STORAGE_KEY = 'videoId';
+const STORAGE_KEY = 'savedVideoList';
 
 const SNACK_BAR_SHOWING_TIME_IN_MS = 2000;
 

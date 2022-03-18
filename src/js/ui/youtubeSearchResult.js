@@ -14,19 +14,24 @@ export const youtubeSearchResult = {
     const saveDatas = store.getLocalStorage(STORAGE_KEY);
     const resultTemplate = items
       .map(item => {
-        const { publishedAt, channelId, title, thumbnails, channelTitle } = item.snippet;
+        const { publishedAt, title, thumbnails, channelTitle } = item.snippet;
         return `
           <li class="video-item">
-            <a href="https://www.youtube.com/watch?v=${item.id.videoId}" target="_blank">
+            <a href="https://www.youtube.com/watch?v=${item.id.videoId}" target="_blank" 
+            data-thumbnails-high-url=${thumbnails.high.url}>
               <img
                 src=${thumbnails.high.url}
-                alt="video-item-thumbnail" class="video-item__thumbnail">
+                alt="video-item-thumbnail" class="video-item__thumbnail"
+                >
             </a>
-            <a href="https://www.youtube.com/watch?v=${item.id.videoId}" target="_blank">
+            <a href="https://www.youtube.com/watch?v=${
+              item.id.videoId
+            }" target="_blank" data-title=${encodeURIComponent(title)}>
               <h4 class="video-item__title">${title}</h4>
             </a>
-            <a href="https://www.youtube.com/channel/${channelId}" target="_blank"><p class="video-item__channel-name">${channelTitle}</p></a>
-            <p class="video-item__published-date">
+            <p class="video-item__channel-name" data-channel-title=${encodeURIComponent(channelTitle)} >${channelTitle}
+            </p>
+            <p class="video-item__published-date" data-published-date=${publishedAt}>
               ${convertToKoreaLocaleDate(publishedAt)}
             </p>
             <button class="video-item__save-button button" data-video-id=${item.id.videoId} ${
@@ -55,8 +60,6 @@ export const youtubeSearchResult = {
   },
 
   renderInitialVideoList(videoData) {
-    this.addSaveButtonClickEvent();
-
     this.$videoList.replaceChildren();
     this.$videoList.insertAdjacentHTML(
       'beforeend',
@@ -88,8 +91,18 @@ export const youtubeSearchResult = {
   addSaveButtonClickEvent() {
     this.$videoList.addEventListener('click', e => {
       if (e.target.classList.contains('video-item__save-button')) {
-        const videoId = e.target.dataset.videoId;
-        video.save(videoId);
+        const datasetElementsArray = [...e.target.closest('.video-item').children].map(element => ({
+          ...element.dataset,
+        }));
+        const videoData = {
+          ...datasetElementsArray[0],
+          ...datasetElementsArray[1],
+          ...datasetElementsArray[2],
+          ...datasetElementsArray[3],
+          ...datasetElementsArray[4],
+          watched: false,
+        };
+        video.save(videoData);
         e.target.setAttribute('hidden', true);
       }
     });

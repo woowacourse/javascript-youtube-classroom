@@ -49,3 +49,7 @@ body {
 .nav__tab .nav__button {
   width: 100px;
 }
+
+.highlight {
+  background: rgba(0, 188, 212, 0.12);
+}

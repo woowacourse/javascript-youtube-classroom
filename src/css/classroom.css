@@ -1,0 +1,42 @@
+:root {
+  --video-item__check-button-background-color: #f9f9f9;
+  --video-item__check-button-hover-color: #efefef;
+  --video-item__remove-button-background-color: #f9f9f9;
+  --video-item__remove-button-hover-color: #efefef;
+}
+
+.will-watch-video-list {
+  width: 1040px;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 32px 20px;
+  margin-top: 30px;
+  overflow-y: scroll;
+}
+
+.video-item__check-button {
+  position: absolute;
+  right: 40px;
+  width: 36px;
+  height: 36px;
+  background: var(--video-item__check-button-background-color);
+  margin-top: 4px;
+}
+
+.video-item__check-button:hover {
+  background: var(--video-item__check-button-hover-color);
+}
+
+.video-item__remove-button {
+  position: absolute;
+  right: 0;
+  width: 36px;
+  height: 36px;
+  background: var(--video-item__remove-button-background-color);
+  margin-top: 4px;
+}
+
+.video-item__remove-button:hover {
+  background: var(--video-item__remove-button-hover-color);
+}

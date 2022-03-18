@@ -8,6 +8,7 @@ export default class YoutubeSearchModal {
     this.addModalCloseEvent();
     youtubeSearchForm.preventFormDeafultEvent();
     youtubeSearchForm.addSearchEvent();
+    youtubeSearchResult.addSaveButtonClickEvent();
   }
 
   reset() {
