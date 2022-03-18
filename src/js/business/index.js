@@ -94,7 +94,7 @@ class AppBusiness {
     try {
       const savedVideo = await this.requestVideoById(saveVideoId);
       /** webStore, stateStore에 정보를 set해준다. */
-      webStore.setDataInArray(WEB_STORE_KEY.SAVED_VIDEO_LIST_KEY, saveVideoId);
+      webStore.setData(WEB_STORE_KEY.SAVED_VIDEO_LIST_KEY, (prev) => [...prev, saveVideoId]);
       setState(STATE_STORE_KEY.SAVED_VIDEO, (prevState) => ({
         ...prevState,
         videoList: [...prevState.videoList, savedVideo],
@@ -108,9 +108,13 @@ class AppBusiness {
   onLoadTopLevelComponent = async () => {
     const savedVideoIdList = webStore.getArrayData(WEB_STORE_KEY.SAVED_VIDEO_LIST_KEY) ?? [];
     try {
+      setState(STATE_STORE_KEY.IS_SAVED_VIDEO_WAITING, true);
+
       const savedVideoList = await Promise.all(
         savedVideoIdList.map((savedVideoId) => this.requestVideoById(savedVideoId))
       );
+      setState(STATE_STORE_KEY.IS_SAVED_VIDEO_WAITING, false);
+
       setState(STATE_STORE_KEY.SAVED_VIDEO, (prevState) => ({
         ...prevState,
         videoList: savedVideoList,
@@ -194,8 +198,6 @@ class AppBusiness {
   /** 한 가지일만 하도록 구현한다. */
 
   async requestVideoById(id) {
-    setState(STATE_STORE_KEY.IS_SAVED_VIDEO_WAITING, true);
-
     const videoResult = await youtubeAPIFetcher({
       path: API_PATHS.GET_VIDEO,
       params: {
@@ -203,8 +205,6 @@ class AppBusiness {
         part: 'snippet',
       },
     });
-
-    setState(STATE_STORE_KEY.IS_SAVED_VIDEO_WAITING, false);
 
     const {
       items: [videoInfos],
