@@ -46,3 +46,7 @@ body {
   display: none;
   visibility: hidden;
 }
+
+.videos-button-container button {
+  width: 117px;
+}

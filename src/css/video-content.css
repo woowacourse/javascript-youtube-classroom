@@ -7,6 +7,19 @@
   margin-top: 40px;
 }
 
+.watched-videos-container {
+  margin-top: 40px;
+  width: 100%;
+}
+
+.watch-later-video-item {
+  margin-bottom: 20px;
+}
+
+.watched-video-item {
+  margin-bottom: 20px;
+}
+
 .button-container {
   display: flex;
   justify-content: end;
