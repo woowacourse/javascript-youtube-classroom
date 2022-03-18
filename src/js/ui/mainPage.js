@@ -3,122 +3,91 @@ import {
   toggleWatchedToStorage,
 } from '../domain/localStorage.js';
 import { VideoStorage } from '../domain/VideoStorage.js';
+import MainPagePresenter from '../presenter/MainPagePresenter.js';
 import SearchModalPresenter from '../presenter/SearchModalPresenter.js';
-import SearchModal from './searchModal.js';
 import template from './templates.js';
 
 class MainPage {
   constructor() {
     this.$searchModalButton = document.querySelector('#search-modal-button');
-    this.videoStorage = new VideoStorage();
-    this.modalComponent = new SearchModal(
-      this.appendList.bind(this),
-      this.videoStorage,
-    );
+    this.$navTab = document.querySelector('.nav-tab');
     this.$dimmer = document.querySelector('.dimmer');
-    this.menuState = 'not-watched-tab-menu';
+    this.$videoListContainer = document.querySelector('.video-list-grid');
+    this.videoStorage = new VideoStorage();
     this.searchModalPresenter = new SearchModalPresenter();
+    this.mainPagePresenter = new MainPagePresenter();
+    this.menuState = 'not-watched-tab-menu';
   }
 
   init() {
     this.bindEvent();
-    this.videoStorage
+    this.videoStorage // data
       .initVideoList()
       .then((data) => this.initStorageView(data));
   }
 
   bindEvent() {
-    document
-      .querySelector('.nav-tab')
-      .addEventListener('click', this.changeTab.bind(this));
+    this.$navTab.addEventListener('click', this.changeTab.bind(this)); //  event
     this.$searchModalButton.addEventListener(
       'click',
       this.searchModalPresenter.toggleModalContainerView.bind(
-        this.searchModalPresenter,
+        this.searchModalPresenter, // view
       ),
     );
     this.$dimmer.addEventListener(
       'click',
-      this.searchModalPresenter.initModalState.bind(this.searchModalPresenter),
+      this.searchModalPresenter.initModalState.bind(this.searchModalPresenter), // view
     );
-    document
-      .querySelector('.video-list-grid')
-      .addEventListener('click', this.handleVideo.bind(this));
+    this.$videoListContainer.addEventListener(
+      'click',
+      this.handleVideo.bind(this),
+    ); //  event
   }
 
   initStorageView() {
-    this.renderVideoList(this.videoStorage.notWachedVideoList);
-  }
-
-  renderVideoList(videos) {
-    this.removeNoVideoImg();
-    document
-      .querySelector('.video-list-grid')
-      .insertAdjacentHTML(
-        'beforeend',
-        videos.map((item) => template.storageVideoItem(item)).join(''),
-      );
-    this.renderNoVideo();
-  }
-
-  removeNoVideoImg() {
-    const noVideoImg = document.getElementById('no_video--img');
-    if (noVideoImg) {
-      noVideoImg.remove();
-    }
-  }
-
-  renderNoVideo() {
-    if (document.querySelector('.video-list-grid').children.length === 0)
-      document
-        .querySelector('#store-video-list')
-        .insertAdjacentHTML('beforeend', template.noVideoList());
+    this.mainPagePresenter.renderVideoList(
+      this.videoStorage.notWachedVideoList,
+    ); // render + data
   }
 
   appendList(item) {
-    this.removeNoVideoImg();
-    document
-      .querySelector('.video-list-grid')
-      .insertAdjacentHTML('beforeend', template.storageVideoItem(item));
+    this.mainPagePresenter.removeNoVideoImg(); // render
+    this.$videoListContainer.insertAdjacentHTML(
+      'beforeend',
+      template.storageVideoItem(item),
+    );
   }
 
-  changeTab(e) {
-    if (e.target.id === this.menuState) return;
-    this.menuState = e.target.id;
-    document
-      .querySelectorAll('.nav-tab__button')
-      .forEach((element) => element.classList.toggle('choosed'));
-    this.renderVideo();
+  changeTab({ target: { id } }) {
+    this.mainPagePresenter.toggleTabChoosed();
+    this.mainPagePresenter.renderVideo(id, this.videoStorage); // render
   }
-  renderVideo() {
-    document.querySelector('.video-list-grid').replaceChildren();
-    if (this.menuState === 'not-watched-tab-menu') {
-      this.renderVideoList(this.videoStorage.notWachedVideoList);
-      return;
+
+  handleVideo({ target }) {
+    if (target.nodeName !== 'BUTTON') return;
+    const id = target.closest('li').dataset.videoId; // data
+    if (target.classList.contains('video-watched--btn')) {
+      this.changeStatusVideo(target, id);
     }
-    if (this.menuState === 'watched-tab-menu') {
-      this.renderVideoList(this.videoStorage.wachedVideoList);
-      return;
+    if (target.classList.contains('video-delete--btn')) {
+      this.deleteVideo(target, id);
     }
+    this.mainPagePresenter.renderNoVideo(); // render
   }
-  handleVideo(e) {
-    if (e.target.nodeName !== 'BUTTON') return;
-    if (e.target.classList.contains('video-watched--btn')) {
-      const id = e.target.closest('li').dataset.videoId;
-      e.target.closest('li').remove();
-      this.videoStorage.toggleState(id);
-      toggleWatchedToStorage(id);
+
+  changeStatusVideo(target, id) {
+    target.closest('li').remove(); // render
+    this.videoStorage.toggleState(id); // data
+    toggleWatchedToStorage(id); // data
+  }
+
+  deleteVideo(target, id) {
+    if (window.confirm('정말 삭제하시겠습니까?')) {
+      target.closest('li').remove(); // render
+      removeLocalStorage('save', id); // data
+      removeLocalStorage('watched', id); // data
+      this.videoStorage.removeVideo(id); // data
     }
-    if (e.target.classList.contains('video-delete--btn')) {
-      if (window.confirm('정말 삭제하실거에요??')) {
-        const id = e.target.closest('li').dataset.videoId;
-        e.target.closest('li').remove();
-        removeLocalStorage('save', id);
-        removeLocalStorage('watched', id);
-        this.videoStorage.removeVideo(id);
-      }
-    }
-    this.renderNoVideo();
   }
 }
 

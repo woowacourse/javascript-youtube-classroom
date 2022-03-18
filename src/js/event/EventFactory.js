@@ -1,3 +1,4 @@
+import SaveVideoEvent from './SaveVideoEvent';
 import SearchVideoEvent from './SearchVideoEvent';
 
 export default class EventFactory {
@@ -5,6 +6,10 @@ export default class EventFactory {
     switch (name) {
       case 'SEARCH_VIDEO':
         new SearchVideoEvent(data).action();
+        break;
+      case 'SAVE_VIDEO':
+        new SaveVideoEvent(data).action();
+        break;
     }
   }
 }

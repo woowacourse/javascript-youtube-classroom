@@ -1,10 +1,9 @@
 import throttle from '../util/throttle.js';
-import SearchMachine from '../domain/SearchMachine.js';
-import SearchModalPresenter from '../presenter/SearchModalPresenter.js';
 import EventFactory from '../event/EventFactory.js';
 
 class SearchModal {
-  constructor(appendList, storage) {
+  constructor() {
+    console.log('object');
     this.$searchInputKeyword = document.querySelector('#search-input-keyword');
     this.$searchButton = document.querySelector('#search-button');
     this.$videoListContainer = document.querySelector('.video-list');
@@ -12,9 +11,6 @@ class SearchModal {
       this.scrollVideoContainerHandler.bind(this),
       1000,
     );
-    this.machine = new SearchMachine();
-    this.videoStorage = storage;
-    this.appendList = appendList;
     this.bindEvent();
     this.errored = { isExisted: false };
   }
@@ -51,7 +47,6 @@ class SearchModal {
         });
       } catch (err) {
         console.log(err);
-        alert(err);
       }
     }
   }
@@ -61,10 +56,7 @@ class SearchModal {
       return;
     }
     try {
-      const newVideo = target.dataset.id;
-      this.machine.saveVideoToLocalStorage(newVideo);
-      this.appendList(target.dataset);
-      this.videoStorage.appendVideo(target.dataset);
+      EventFactory.generate('SAVE_VIDEO', { target: target.dataset });
       target.classList.add('hide');
     } catch (err) {
       alert(err.message);
@@ -73,7 +65,7 @@ class SearchModal {
 
   scrollVideoContainerHandler() {
     const { offsetHeight, scrollHeight, scrollTop } = this.$videoListContainer;
-    if (scrollTop === 0 || this.errored.error) return;
+    if (scrollTop === 0 || this.errored.isExisted) return;
     if (offsetHeight + scrollTop >= scrollHeight) {
       EventFactory.generate('SEARCH_VIDEO', {
         errored: this.errored,

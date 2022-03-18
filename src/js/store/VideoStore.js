@@ -11,12 +11,19 @@ class VideoStore {
   }
 
   async search() {
-    console.log(this.videoMachine);
     return await this.videoMachine.search();
   }
 
   initPageToken() {
     this.videoMachine.initPageToken();
+  }
+
+  saveVideoToLocalStorage(id) {
+    this.videoMachine.saveVideoToLocalStorage(id);
+  }
+
+  appendVideo(data) {
+    this.videoStorage.appendVideo(data);
   }
 }
 
