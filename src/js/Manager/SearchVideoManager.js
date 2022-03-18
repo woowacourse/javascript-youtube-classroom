@@ -1,6 +1,6 @@
 import { EVENT, GUIDE_MESSAGE, MAX_DATA_FETCH_AT_ONCE } from '../constants';
 import Storage from '../Storage';
-import { event } from '../util';
+import { addListener, dispatch } from '../util/event';
 import { validateSearchKeyword, checkNoUndefinedProperty } from './validation';
 
 const DUMMY_YOUTUBE_API_URL = 'https://elastic-goldstine-10f16a.netlify.app/dummy/youtube/v3/search?';
@@ -30,14 +30,14 @@ export default class SearchVideoManager {
     this.#nextPageToken = '';
     this.#searchState = 'READY';
 
-    event.addListener(EVENT.SEARCH_WITH_NEW_KEYWORD, this.searchWithNewKeyword.bind(this));
-    event.addListener(EVENT.SEARCH_ON_SCROLL, this.searchOnScroll.bind(this));
+    addListener(EVENT.SEARCH_WITH_NEW_KEYWORD, this.searchWithNewKeyword.bind(this));
+    addListener(EVENT.SEARCH_ON_SCROLL, this.searchOnScroll.bind(this));
   }
 
   updateSearchState(newState, data = {}) {
     this.#searchState = newState;
     const detail = { searchState: newState, ...data };
-    event.dispatch(EVENT.UPDATE_SEARCH_STATE, detail);
+    dispatch(EVENT.UPDATE_SEARCH_STATE, detail);
   }
 
   searchWithNewKeyword(e) {
