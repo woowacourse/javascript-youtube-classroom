@@ -89,6 +89,8 @@ export default class Controller {
     this.searchResultView.changeSaveButtonStyle(event.detail.buttonElement);
     const { savedId } = event.detail;
     this.video.setItemsLocalStorage(savedId);
+    // 볼 영상에 렌더링 (get한 것을 view에 넘겨줘)
+    this.appView.renderWillSeeVideo(this.video.getItemsLocalStorage());
   }
 
   #closeModal() {

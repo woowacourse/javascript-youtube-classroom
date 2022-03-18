@@ -102,4 +102,33 @@ export default class Template {
       </section>
     `;
   }
+
+  getSavedVideo(savedVideo) {
+    // channelId: "UC2XRTuTf0tnqcNBcWeaCVFg"
+    // channelTitle: "Hale In Ocean 정혜일"
+    // description: "ㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁ 오늘도 들어주셔서 감사합니다 Thank you for listening! #한글챌린지 #HaleinOcean ..."
+    // publishTime: "2021-12-05T08:00:35Z"
+    // saved: true
+    // thumbnailUrl: "https://i.ytimg.com/vi/-Kdl0tixpuk/hqdefault.jpg"
+    // title: "ㅁ만 나오는 노래"
+    // videoId: "-Kdl0tixpuk"
+    return `
+      <li class="video-item" data-video-id="">
+          <iframe 
+            class="video-item__thumbnail" 
+            srcdoc="${this.getThumbnail(savedVideo.thumbnailUrl, savedVideo.videoId)}"
+            frameborder="0"
+            allow="autoplay"
+            allowfullscreen>
+          </iframe>
+          <h4 class="video-item__title">${savedVideo.title}</h4>
+          <p class="video-item__channel-name">${savedVideo.channelTitle}</p>
+          <p class="video-item__published-date">${savedVideo.publishTime}</p>
+          <div class="user-button-wrapper">
+            <button class="user-saw-button">✅</button>
+            <button class="user-delete-button">🗑️</button>
+          </div>
+      </li>
+    `;
+  }
 }
