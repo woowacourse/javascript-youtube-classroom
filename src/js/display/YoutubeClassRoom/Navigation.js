@@ -33,7 +33,7 @@ export default class Navigation {
     const $filterButton = $target.closest('#classroom-watched-filter-button');
     $filterButton.dataset.focus = listType;
 
-    YoutubeSaveListStore.dispatch(ACTION_TYPE.UPDATE_SAVE_LIST_FILTER);
+    YoutubeSaveListStore.dispatch(ACTION_TYPE.UPDATE_SAVE_LIST_FILTER, listType);
     YoutubeSaveListStore.dispatch(ACTION_TYPE.UPDATE_SAVE_LIST);
   };
 
