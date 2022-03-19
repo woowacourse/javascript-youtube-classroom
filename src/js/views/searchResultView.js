@@ -29,24 +29,7 @@ const template = {
       </li>
   `;
   },
-  savedVideoItem: (item) => {
-    return `
-      <li class="video-item" data-video-id='${item.videoId}'>
-        <img
-          src='${item.thumbnails}'
-          alt="video-item-thumbnail"
-          class="video-item__thumbnail"
-        />
-        <h4 class="video-item__title">${item.title}</h4>
-        <p class="video-item__channel-name">${item.channelTitle}</p>
-        <p class="video-item__published-date">${item.publishTime}</p>
-        <div class="video-manage-button">
-          <button class="video-watched-button">✅</button>
-          <button class="video-remove-button">🗑</button>
-        </div>
-      </li>
-`;
-  },
+
   noResult: `
     <h3 hidden>검색 결과</h3>
     <div class="no-result">
@@ -94,21 +77,6 @@ const searchResultView = {
       return;
     }
     this.renderVideoItems(videoData);
-  },
-  rendersavedVideo(videoData) {
-    $('.saved-video-list').insertAdjacentHTML('beforeEnd', template.savedVideoItem(videoData));
-  },
-  renderSavedVideos(content, savedVideos) {
-    $('.saved-video-list').replaceChildren();
-    savedVideos.forEach((video) => {
-      if (video.state === content) {
-        $('.saved-video-list').insertAdjacentHTML('beforeEnd', template.savedVideoItem(video));
-      }
-    });
-
-    if (!$('.saved-video-list').hasChildNodes()) {
-      $('.empty-video-image').classList.remove('hide');
-    }
   },
 };
 
