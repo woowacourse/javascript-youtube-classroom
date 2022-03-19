@@ -126,4 +126,3 @@
 - [ ] Controller 분리 
 - [ ] 엔터키에 대한 debounce 처리 
 - [ ] observer 리팩터링 
-

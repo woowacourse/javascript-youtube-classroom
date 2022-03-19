@@ -112,7 +112,7 @@ export default class Controller {
   }
 
   #checkSawVideo(event) {
-    this.video.updateSaw(event.detail.sawVideoId);
+    this.video.updateSawAttribute(event.detail.sawVideoId);
     this.video.updateItemsLocalStorage();
     this.appView.renderSavedVideo(this.video.getItemsLocalStorage());
   }
