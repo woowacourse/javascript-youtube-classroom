@@ -1,4 +1,4 @@
-import { INTERSECTION_RATIO, MESSAGE, STORAGE_KEY } from '../constants';
+import { INTERSECTION_RATIO, MESSAGE } from '../constants';
 import { $, showSnackBar } from '../utils/dom';
 import NoResultImage from '../../assets/images/not_found.png';
 import { requestApi } from '../domain/requestApi';
