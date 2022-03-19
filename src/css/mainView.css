@@ -23,7 +23,11 @@
   letter-spacing: 0.5px;
 }
 
-#videos-to-watch-label {
+.tab-button[type='radio']:checked + label {
+  background: rgba(0, 188, 212, 0.12);
+}
+
+#to-watch-label {
   border-right: 1px solid rgba(0, 0, 0, 0.12);
   border-radius: 4px 0 0 4px;
 }

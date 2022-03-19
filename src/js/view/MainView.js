@@ -6,37 +6,44 @@ class MainView {
     this.savedVideosContainer = selectDom('.saved-videos-container');
     this.noSavedVideos = selectDom('.no-saved-videos');
     this.renderSavedVideo(false);
+
+    selectDom('#to-watch-tab').addEventListener('click', () => this.renderSavedVideo(false));
+    selectDom('#watched-tab').addEventListener('click', () => this.renderSavedVideo(true));
   }
 
   #renderNoSavedVideo() {
-    this.noSavedVideos.classList.remove('hide');
+    if (this.noSavedVideos) {
+      this.noSavedVideos.classList.remove('hide');
+    }
   }
 
   #handleCheck = (event) => {
-    const savedVideos = storage
-      .getSavedVideos()
-      .filter((video) => String(video.isWatched) === event.target.dataset.isWatched);
+    const savedVideos = storage.getSavedVideos();
     const watchedVideo = savedVideos.find(
       (video) => video.videoId === event.target.dataset.videoId
     );
     watchedVideo.isWatched = true;
     storage.setSavedVideos(savedVideos);
     event.target.parentNode.parentNode.remove();
-    if (savedVideos.length === 1) {
+    if (
+      savedVideos.filter((video) => String(video.isWatched) === event.target.dataset.isWatched)
+        .length === 0
+    ) {
       this.#renderNoSavedVideo();
     }
   };
 
   #handleDelete = (event) => {
-    const savedVideos = storage
-      .getSavedVideos()
-      .filter((video) => String(video.isWatched) === event.target.dataset.isWatched);
+    const savedVideos = storage.getSavedVideos();
     const newVideoList = savedVideos.filter(
       (video) => video.videoId !== event.target.dataset.videoId
     );
     storage.setSavedVideos(newVideoList);
     event.target.parentNode.parentNode.remove();
-    if (savedVideos.length === 1) {
+    if (
+      savedVideos.filter((video) => String(video.isWatched) === event.target.dataset.isWatched)
+        .length === 1
+    ) {
       this.#renderNoSavedVideo();
     }
   };
@@ -67,8 +74,16 @@ class MainView {
     return videoElement;
   };
 
+  #removeVideoList = () => {
+    const videoListElement = selectDom('.saved-video-list');
+    if (videoListElement) {
+      videoListElement.remove();
+    }
+  };
+
   renderSavedVideo(isWatched) {
-    //아마도 엘리먼트를 다 지우는게 있어야 할 것 같음
+    this.#removeVideoList();
+    this.noSavedVideos.classList.add('hide');
     const videoList = storage.getSavedVideos().filter((video) => video.isWatched === isWatched);
     if (videoList.length === 0) {
       this.#renderNoSavedVideo();
