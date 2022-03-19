@@ -2,6 +2,7 @@ const BUTTON_TEMPLATE = {
   SEARCHED_VIDEOS: `
     <button class="video-item__save-button button" type="button">⬇ 저장</button>
   `,
+  STORED_SEARCHED_VIDEO: '',
   WATCHED_VIDEOS: `<div class="video-item__button_wrapper">
     <button class="video-item__watch_button button focus" type="button">✅</button>
     <button class="video-item__delete_button button" type="button">🗑️</button>

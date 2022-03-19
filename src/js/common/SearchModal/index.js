@@ -40,11 +40,18 @@ export default class ModalVideoCardContainer {
   }
 
   template() {
-    // const storeButton = isStoredVideo(videoIds, this.videoId)
-    // ? ''
-    // : '<button class="video-item__save-button button" type="button">⬇ 저장</button>';
+    const storedVideoIds = getStorage(STORAGE_KEY.VIDEO_IDS).map((video) => video.videoId);
+    const watchedVideoIds = getStorage(STORAGE_KEY.WATCHED_VIDEO_LIST).map(
+      (video) => video.videoId,
+    );
     return this.#state.videos
-      .map((video) => new VideoCard(video).template('SEARCHED_VIDEOS'))
+      .map((video) => {
+        const isStoredVideo = storedVideoIds.includes(video.videoId);
+        const isWatchedVideo = watchedVideoIds.includes(video.videoId);
+        return new VideoCard(video).template(
+          isStoredVideo || isWatchedVideo ? 'STORED_SEARCHED_VIDEO' : 'SEARCHED_VIDEOS',
+        );
+      })
       .join('');
   }
 
