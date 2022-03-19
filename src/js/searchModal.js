@@ -2,6 +2,7 @@
 import { MAX_RENDER_VIDEOS_COUNT, SERVER_URL, VALIDATION_ERROR_NAME } from './constants/constant';
 import VideoItem from './videoItem';
 import { consoleErrorWithConditionalAlert, $, hasProperty } from './utils';
+import { requestYoutubeVideos } from './utils/api';
 
 class SearchModal {
   nextPageToken = null;
@@ -69,26 +70,16 @@ class SearchModal {
     this.observer.observe(lastVideoItem);
   }
 
-  checkSearchResult(searchResult) {
-    if (searchResult === null) {
-      return [];
-    }
-    const videos = searchResult.items.map(item => new VideoItem(item));
-    return videos;
-  }
-
   handleClickSearchButton = async () => {
     this.resetSearchResult();
     this.nextPageToken = null; // 같은 검색어로 또 검색했을때 첫페이지가 보여지도록 한다
     const searchKeyWord = this.$searchKeyWordInput.value;
-    const searchResult = await this.requestYoutubeVideos(searchKeyWord);
-    if (searchResult === null) {
+    const videos = await this.requestVideos(searchKeyWord);
+    if (videos === null) {
       this.$searchResult.classList.add('search-result--no-result');
       return;
     }
-    const videos = this.checkSearchResult(searchResult);
     this.renderVideoItems(videos);
-    this.nextPageToken = searchResult.nextPageToken;
   };
 
   handleClickSaveButton = event => {
@@ -142,34 +133,21 @@ class SearchModal {
     );
   }
 
-  async requestYoutubeVideos(query) {
+  async requestVideos(query) {
     this.$searchResult.classList.add('loading');
-    try {
-      const url = new URL(`${SERVER_URL}/youtube-search`);
-      const parameters = new URLSearchParams({
-        part: 'snippet',
-        type: 'video',
-        maxResults: MAX_RENDER_VIDEOS_COUNT,
-        regionCode: 'kr',
-        safeSearch: 'strict',
-        pageToken: this.nextPageToken ?? '',
-        q: query,
-      });
-      url.search = parameters.toString();
-
-      const response = await fetch(url);
-      const body = await response.json();
-
-      if (!response.ok) {
-        throw new Error(body.error.message);
-      }
-      return body;
-    } catch (error) {
-      console.error(error);
-      return null;
-    } finally {
-      this.$searchResult.classList.remove('loading');
-    }
+    const result = await requestYoutubeVideos(`${SERVER_URL}/youtube-search`, {
+      q: query,
+      ...(this.nextPageToken && { pageToken: this.nextPageToken }),
+    });
+    this.$searchResult.classList.remove('loading');
+    if (result === null) return null;
+    this.nextPageToken = result.nextPageToken;
+    const videos = result.items.map(item => {
+      const { id } = item;
+      const isWatched = hasProperty(this.storage.cache[id], 'watched');
+      return new VideoItem(item, isWatched);
+    });
+    return videos;
   }
 }
 

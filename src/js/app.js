@@ -3,12 +3,12 @@ import { $, hasProperty } from './utils';
 import NotFoundImage from '../assets/images/not_found.png';
 import {
   LOCAL_STORAGE_VIDEO_LIST_KEY,
-  MAX_RENDER_VIDEOS_COUNT,
   MAX_SAVABLE_VIDEOS_COUNT,
   SERVER_URL,
 } from './constants/constant';
 import VideoStorage from './storage/videoStorage';
 import VideoItem from './videoItem';
+import { requestYoutubeVideos } from './utils/api';
 
 export default class App {
   constructor() {
@@ -75,34 +75,16 @@ export default class App {
   }
 
   async requestVideos(ids) {
-    const idsWithComma = ids.join(',');
-    const url = new URL(`${SERVER_URL}/youtube-videos`);
-    const parameters = new URLSearchParams({
-      part: 'snippet',
-      type: 'video',
-      maxResults: MAX_RENDER_VIDEOS_COUNT,
-      regionCode: 'kr',
-      safeSearch: 'strict',
-      id: idsWithComma,
+    const result = await requestYoutubeVideos(`${SERVER_URL}/youtube-videos`, {
+      id: ids.join(','),
     });
-    url.search = parameters.toString();
-
-    try {
-      const response = await fetch(url);
-      const body = await response.json();
-      if (!response.ok) {
-        throw new Error(body.error.message);
-      }
-      const videos = body.items.map(item => {
-        const { id } = item;
-        const isWatched = hasProperty(this.storage.cache[id], 'watched');
-        return new VideoItem(item, isWatched);
-      });
-      return videos;
-    } catch (e) {
-      console.error(e);
-      return null;
-    }
+    if (result === null) return null;
+    const videos = result.items.map(item => {
+      const { id } = item;
+      const isWatched = hasProperty(this.storage.cache[id], 'watched');
+      return new VideoItem(item, isWatched);
+    });
+    return videos;
   }
 
   closeModal = () => {
