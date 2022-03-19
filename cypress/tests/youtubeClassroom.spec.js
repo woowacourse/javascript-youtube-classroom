@@ -5,7 +5,33 @@ describe('구현 결과가 요구사항과 일치해야 한다.', () => {
     cy.visit(baseURL);
   });
 
-  context('검색 모달창 열고 닫기 테스트', () => {
+  context('홈 화면에 대한 테스트', () => {
+    it('가장 처음 페이지 방문 시, 볼 영상 리스트가 보여야 한다.', () => {
+      cy.get('#unwatched-video-list').should('be.visible');
+      cy.get('#watched-video-list').should('not.be.visible');
+    });
+
+    
+    it('볼 영상 버튼을 클릭하면, 볼 영상 리스트가 보여야 한다.', () => {
+      // when
+      cy.get('#unwatched-video-list-button').click();
+
+      // then
+      cy.get('#unwatched-video-list').should('be.visible');
+      cy.get('#watched-video-list').should('not.be.visible');
+    });
+
+    it('본 영상 버튼을 클릭하면, 본 영상 리스트가 보여야 한다.', () => {
+      // when
+      cy.get('#watched-video-list-button').click();
+
+      // then
+      cy.get('#unwatched-video-list').should('not.be.visible');
+      cy.get('#watched-video-list').should('be.visible');
+    });
+  });
+
+  context('검색 모달창에 대한 테스트', () => {
     it('메인 화면에서 검색 버튼을 누르면, 검색 모달창이 보여야 한다.', () => {
       // given
       cy.get('#modal-container').should('not.be.visible');
@@ -28,9 +54,9 @@ describe('구현 결과가 요구사항과 일치해야 한다.', () => {
       // then
       cy.get('#modal-container').should('not.be.visible');
     });
-  })
+  });
 
-  context('검색 과정과 결과에 대한 테스트', () => {
+  context('검색에 대한 테스트', () => {
     const submitSearchKeywordCorrectly = () => {
       cy.get('#search-modal-button').click();
       cy.get('#search-input-keyword').type('가나다');
@@ -124,6 +150,6 @@ describe('구현 결과가 요구사항과 일치해야 한다.', () => {
       // then
       cy.get('#no-result-description').should('have.text', '검색 결과가 없습니다.다른 키워드로 검색해보세요.');
     });
-  })
+  });
 
 });
