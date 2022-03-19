@@ -9,6 +9,7 @@ import {
 import VideoStorage from './storage/videoStorage';
 import VideoItem from './videoItem';
 import { requestYoutubeVideos } from './utils/api';
+import randomErrorEmoji from './utils/error-emoji';
 
 export default class App {
   constructor() {
@@ -18,6 +19,8 @@ export default class App {
     this.$videoListContainer = $('#app > .saved-video-list-container');
     this.$videoList = $('.video-list', this.$videoListContainer);
     this.$videoListFilters = $('#app .video-list-filters');
+    this.$noSavedVideo = $('#app > .no-saved-video');
+    this.$errorEmoji = $('.error-emoji', this.$noSavedVideo);
 
     $('.search-modal').insertAdjacentHTML('beforeend', this.searchResultTemplate());
     $('#search-modal-button').addEventListener('click', this.openModal);
@@ -27,6 +30,9 @@ export default class App {
 
     const searchModal = new SearchModal(this.storage, this);
     searchModal.init();
+
+    this.$errorEmoji.innerText = randomErrorEmoji();
+    this.observeVideoListContainerForErrorEmoji();
 
     (async () => {
       const ids = Object.keys(this.storage.cache);
@@ -144,6 +150,39 @@ export default class App {
     const videoList = await this.requestVideos([videoId]);
     videoList && this.renderVideoItems(videoList);
   };
+
+  showErrorEmoji = () => {
+    this.$errorEmoji.innerText = randomErrorEmoji();
+    this.$noSavedVideo.removeAttribute('hidden');
+  };
+
+  observeVideoListContainerForErrorEmoji() {
+    const observer = new MutationObserver(() => {
+      this.$noSavedVideo.setAttribute('hidden', true);
+      if (this.$videoList.children.length === 0) {
+        return this.showErrorEmoji();
+      }
+
+      const noWatchedVideo = !!(
+        this.$videoListContainer.classList.contains('visible-watched') &&
+        !$('.video-item.video-item--watched', this.$videoList)
+      );
+      if (noWatchedVideo) {
+        return this.showErrorEmoji();
+      }
+
+      const noWatchLaterVideo = !!(
+        this.$videoListContainer.classList.contains('visible-watch-later') &&
+        !$('.video-item.video-item--watch-later', this.$videoList)
+      );
+      return noWatchLaterVideo && this.showErrorEmoji();
+    });
+    observer.observe(this.$videoListContainer, {
+      attributes: true,
+      childList: true,
+      subtree: true,
+    });
+  }
 }
 
 new App();

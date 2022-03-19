@@ -5,6 +5,7 @@ body {
 
 #app {
   margin: 0 auto;
+  width: calc(240px * 4 + var(--gutter-xl) * 3);
 }
 
 header > h1 {
@@ -87,4 +88,16 @@ header > h1 {
 }
 #app > .saved-video-list-container.visible-watched .video-item--watch-later {
   display: none;
+}
+
+.no-saved-video {
+  text-align: center;
+}
+
+.no-saved-video .error-emoji {
+  font-size: 200px;
+}
+
+.no-saved-video .message {
+  font-size: 50px;
 }
