@@ -27,7 +27,7 @@ class SavedVideo {
     const savedVideoFilter = getState(STATE_STORE_KEY.SAVED_VIDEO_FILTER);
 
     return `
-      <li class="video-item" data-video-id="${videoId}">
+      <li class="video-item" data-video-id="${videoId}" loading="lazy">
         <img
           src="${thumbnail}" class="video-item__thumbnail">
         <h4 class="video-item__title">${videoTitle}</h4>

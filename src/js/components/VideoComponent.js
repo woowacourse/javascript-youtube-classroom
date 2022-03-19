@@ -56,7 +56,7 @@ class Video {
     return `
       <li class="video-item" data-video-id="${videoId}">
         <img
-          src="${thumbnail}" class="video-item__thumbnail">
+          src="${thumbnail}" class="video-item__thumbnail" loading="lazy">
         <h4 class="video-item__title">${videoTitle}</h4>
         <p class="video-item__channel-name">${channelTitle}</p>
         <p class="video-item__published-date">${parseTimeStamp(publishTime)}</p>
