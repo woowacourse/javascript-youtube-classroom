@@ -103,6 +103,8 @@ class VideoService {
     this.rootStore.setState({
       savedVideos: duplicatedRemoved,
     });
+
+    console.log(this.rootStore.state.savedVideos);
   }
 
   removeSavedVideo(videoId) {
@@ -131,6 +133,24 @@ class VideoService {
     });
   }
 
+  toggleSavedVideosFilter(filterLabel) {
+    if (
+      !Object.prototype.hasOwnProperty.call(
+        this.rootStore.state.savedVideosFilter,
+        filterLabel
+      )
+    )
+      return;
+
+    const currentFilter = JSON.parse(
+      JSON.stringify(this.rootStore.state.savedVideosFilter)
+    );
+
+    currentFilter[filterLabel] = !currentFilter[filterLabel];
+
+    this.rootStore.setState({ savedVideosFilter: currentFilter });
+  }
+
   toggleSearchModal() {
     this.rootStore.setState({
       isSearchModalOpened: !this.rootStore.state.isSearchModalOpened,
@@ -147,6 +167,10 @@ const initState = {
   searchResult: [],
   isNoResult: null,
   savedVideos: [],
+  savedVideosFilter: {
+    watching: true,
+    watched: false,
+  },
   isSearchModalOpened: false,
 };
 

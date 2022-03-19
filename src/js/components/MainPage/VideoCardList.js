@@ -23,6 +23,12 @@ export default class VideoCardList extends Component {
 
   template() {
     const savedVideos = useStore((state) => state.savedVideos);
+    const savedVideosFilter = useStore((state) => state.savedVideosFilter);
+    const filteredVideos = savedVideos.filter(
+      (video) =>
+        (!!video.watched && video.watched === savedVideosFilter.watched) ||
+        (!video.watched && !video.watched === savedVideosFilter.watching)
+    );
     const { skeletonCount } = this.state;
 
     return `
@@ -31,13 +37,19 @@ export default class VideoCardList extends Component {
           ? '<div class="skeleton-card"></div>'.repeat(10)
           : ''
       }
-      ${savedVideos.map(() => '<div class="video-card"></div>').join('')}
+      ${filteredVideos.map(() => '<div class="video-card"></div>').join('')}
       ${'<div class="skeleton-card"></div>'.repeat(skeletonCount)}
     `;
   }
 
   afterMounted() {
     const savedVideos = useStore((state) => state.savedVideos);
+    const savedVideosFilter = useStore((state) => state.savedVideosFilter);
+    const filteredVideos = savedVideos.filter(
+      (video) =>
+        (!!video.watched && video.watched === savedVideosFilter.watched) ||
+        (!video.watched && !video.watched === savedVideosFilter.watching)
+    );
     const skeletonCards = this.target.querySelectorAll('.skeleton-card');
     const videoCards = this.target.querySelectorAll('.video-card');
 
@@ -45,7 +57,7 @@ export default class VideoCardList extends Component {
       new SkeletonCard(videoCard);
     });
     videoCards.forEach((videoCard, index) => {
-      new VideoCard(videoCard, { video: savedVideos[index] });
+      new VideoCard(videoCard, { video: filteredVideos[index] });
     });
 
     // this.observeLastChild();
