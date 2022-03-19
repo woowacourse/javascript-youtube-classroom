@@ -8,6 +8,7 @@ import { on } from './utils/event.js';
 import VIDEO from '../constants/video.js';
 import { checkExceedLimit } from './utils/validator.js';
 import { fetchYoutubeApi } from './utils/fetch.js';
+import SUCCESS_MESSAGE from '../constants/successMessages.js';
 
 export default class Controller {
   constructor() {
@@ -107,7 +108,7 @@ export default class Controller {
     this.searchResultView.changeSaveButtonStyle(event.detail.buttonElement);
     const { savedId } = event.detail;
     this.video.setItemsLocalStorage(savedId);
-    this.mainView.toastNotification('success', '선택한 영상을 저장하였습니다');
+    this.mainView.toastNotification('success', SUCCESS_MESSAGE.SAVED);
   }
 
   #renderUnwatchedTab() {
@@ -128,14 +129,14 @@ export default class Controller {
     const watchedVideoId = event.detail.videoId;
     this.video.setWatchedVideoItem(watchedVideoId);
     this.mainView.removeVideo(watchedVideoId);
-    this.mainView.toastNotification('success', '선택한 영상을 본 영상 목록으로 이동하였습니다');
+    this.mainView.toastNotification('success', SUCCESS_MESSAGE.MOVED_TO_WATCHED);
   };
 
   #checkUnwatchedVideo(event) {
     const unwatchedVideoId = event.detail.videoId;
     this.video.setUnwatchedVideoItem(unwatchedVideoId);
     this.mainView.removeVideo(unwatchedVideoId);
-    this.mainView.toastNotification('success', '선택한 영상을 볼 영상 목록으로 이동하였습니다');
+    this.mainView.toastNotification('success', SUCCESS_MESSAGE.MOVED_TO_UNWATCHED);
   }
 
   #checkDeleteVideo(event) {
@@ -150,6 +151,6 @@ export default class Controller {
     this.video.setDeletedVideoItem(deletedVideoId);
     this.mainView.removeVideo(deletedVideoId);
     this.mainView.hideConfirmModal();
-    this.mainView.toastNotification('success', '선택한 영상을 삭제하였습니다');
+    this.mainView.toastNotification('success', SUCCESS_MESSAGE.DELETED);
   };
 }

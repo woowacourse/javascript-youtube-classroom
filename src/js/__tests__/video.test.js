@@ -1,6 +1,6 @@
 import dummyObject from '../dummy/dummyObject.js';
 import Video from '../models/Video.js';
-import EXCEPTION from '../../constants/exception.js';
+import ERROR_MESSAGES from '../../constants/errorMessages.js';
 import invalidDummyObject from '../dummy/invalidDummyObject.js';
 
 describe('검색어를 정상적으로 입력해야 한다.', () => {
@@ -11,7 +11,7 @@ describe('검색어를 정상적으로 입력해야 한다.', () => {
 
     expect(() => {
       video.keyword = input;
-    }).toThrowError(EXCEPTION.EMPTY_ERROR_MESSAGE);
+    }).toThrowError(ERROR_MESSAGES.EMPTY);
   });
 });
 
@@ -51,6 +51,6 @@ describe('API에서 데이터가 불러졌을 경우(또는 dummy), 입력된 �
 
     expect(() => {
       video.setVideoInfo(invalidDummyObject);
-    }).toThrowError(EXCEPTION.NOT_FOUND_ERROR_MESSAGE);
+    }).toThrowError(ERROR_MESSAGES.NOT_FOUND);
   });
 });

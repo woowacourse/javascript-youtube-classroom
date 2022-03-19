@@ -1,9 +1,9 @@
+import { REDIRECT_SERVER_HOST, YOUTUBE_SEARCH_PATH } from '../../constants/youtubeApi';
+
 // eslint-disable-next-line import/prefer-default-export
 export const fetchYoutubeApi = async (query, nextPageToken) => {
   try {
-    const REDIRECT_SERVER_HOST = 'https://zealous-swartz-f699df.netlify.app/';
-
-    const url = new URL('youtube/v3/search', REDIRECT_SERVER_HOST);
+    const url = new URL(YOUTUBE_SEARCH_PATH, REDIRECT_SERVER_HOST);
     const parameters = new URLSearchParams({
       part: 'snippet',
       type: 'video',
