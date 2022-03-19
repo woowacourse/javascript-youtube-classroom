@@ -39,11 +39,27 @@ describe('localStorage', () => {
       requestMockData.success
     );
     const video = makeCardData(data.items, webStore.load())[0];
-    webStore.saveVideo(video);
 
+    webStore.saveVideo(video);
     expect(webStore.load()[0].watched).toBeFalsy();
+
     webStore.changeWatchedInLocalStorage(video.videoId);
     expect(webStore.load()[0].watched).toBeTruthy();
+  });
+
+  it('저장된 영상을 삭제할 수 있다.', async () => {
+    const [error, data] = await getSearchAPI(
+      'something',
+      null,
+      requestMockData.success
+    );
+    const video = makeCardData(data.items, webStore.load())[0];
+
+    webStore.saveVideo(video);
+    expect(webStore.load()).toHaveLength(1);
+
+    webStore.deleteVideoInLocalStorage(video.videoId);
+    expect(webStore.load()).toHaveLength(0);
   });
 });
 
