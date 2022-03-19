@@ -95,13 +95,26 @@ export default class SaveList {
     }, document.createDocumentFragment());
   }
 
-  drawVideoList({ items, listType }) {
-    const $videoList = this.#getVideoElementList(items, listType);
-    this.$videoResult.replaceChildren($videoList);
+  #getEmptyVideoList(listType) {
+    const listText = listType === 'unwatched' ? '볼 영상' : '이미 본 영상';
+    return createElement('DIV', {
+      className: 'empty-content',
+      insertAdjacentHTML: [
+        'afterbegin',
+        ` <i class="fa-solid fa-video-slash"></i>
+          <p class="title">${listText}으로 저장된 동영상이 없어요!</p>
+          <p class="description">화면 우측 상단의 검색 버튼을 눌러 동영상을 추가해주세요.</p>`,
+      ],
+    });
   }
 
-  drawLoadingStatus({ searchKeyword, isLoading }) {
-    this.$scrollObserver.classList.toggle('enable', !!searchKeyword);
-    this.$container.classList.toggle('loading', isLoading);
+  drawVideoList({ items, listType }) {
+    if (items.length === 0) {
+      this.$videoResult.replaceChildren(this.#getEmptyVideoList(listType));
+      return;
+    }
+
+    const $videoList = this.#getVideoElementList(items, listType);
+    this.$videoResult.replaceChildren($videoList);
   }
 }

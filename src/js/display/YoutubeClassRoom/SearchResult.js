@@ -6,7 +6,6 @@ import { ERROR_MESSAGE, ACTION_TYPE } from '@Constants/String';
 import { SELECTOR, DOM_NAME } from '@Constants/Selector';
 import YoutubeSearchStore from '@Domain/YoutubeSearchStore';
 import YoutubeSaveStorage from '@Domain/YoutubeSaveStorage';
-import notFoundImage from '@Images/not_found.png';
 import YoutubeSaveListStore from '../../domain/YoutubeSaveListStore';
 
 export default class SearchResult {
@@ -99,31 +98,26 @@ export default class SearchResult {
     this.$skeletonList.replaceChildren($fragment);
   }
 
-  #getResultNotFound() {
+  #getResultNotFound(searchKeyword) {
     return createElement('DIV', {
-      className: DOM_NAME.CLASS.SEARCH_RESULT_NOT_FOUND,
+      className: 'empty-content',
       insertAdjacentHTML: [
         'afterbegin',
-        ` <img src="${notFoundImage}" alt="no result image" class="image">
-          <p class="description">
-            검색 결과가 없습니다<br />
-            다른 키워드로 검색해보세요
-          </p>`,
+        ` <i class="fa-solid fa-face-rolling-eyes"></i>
+          <p class="title">검색 결과가 없어요!</p>
+          <p class="description">${searchKeyword} 키워드의 검색 결과가 없습니다. 다른 키워드로 검색해보아주세요!</p>`,
       ],
     });
   }
 
   #getResultServerError() {
     return createElement('DIV', {
-      className: DOM_NAME.CLASS.SEARCH_RESULT_NOT_FOUND,
-      src: notFoundImage,
+      className: 'empty-content',
       insertAdjacentHTML: [
         'afterbegin',
-        ` <img src="${notFoundImage}" alt="no result image" class="image">
-          <p class="description">
-            서버에서 오류가 발생하였습니다.<br />
-            잠시 후 다시 시도해주세요.
-          </p>`,
+        ` <i class="fa-solid fa-face-sad-tear"></i>
+          <p class="title">엇! 서버 오류가 발생했어요!</p>
+          <p class="description">네트워크 환경을 확인하시거나, 잠시 후 다시 시도해주세요.</p>`,
       ],
     });
   }
@@ -150,14 +144,14 @@ export default class SearchResult {
     }, document.createDocumentFragment());
   }
 
-  drawVideoList({ items, isLoaded, error }) {
+  drawVideoList({ items, searchKeyword, isLoaded, error }) {
     if (error) {
       this.$videoResult.replaceChildren(this.#getResultServerError());
       return;
     }
 
     if (items.length === 0 && isLoaded === true) {
-      this.$videoResult.replaceChildren(this.#getResultNotFound());
+      this.$videoResult.replaceChildren(this.#getResultNotFound(searchKeyword));
       return;
     }
 
