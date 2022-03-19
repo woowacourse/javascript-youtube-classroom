@@ -1,6 +1,7 @@
 import { $, createElement } from '@Utils/Dom';
 import { getParsedTime } from '@Utils/ManageData';
-import { onObserveElement, addEventDelegate } from '@Utils/ElementControl';
+import { onObserveElement } from '@Utils/ElementControl';
+import { addEventDelegate } from '@Utils/CustomEvent';
 import { CLASS_ROOM_SETTING } from '@Constants/Setting';
 import { ERROR_MESSAGE, ACTION_TYPE } from '@Constants/String';
 import { SELECTOR, DOM_NAME } from '@Constants/Selector';

@@ -1,6 +1,6 @@
 import { $, createElement } from '@Utils/Dom';
 import { getParsedTime } from '@Utils/ManageData';
-import { addEventDelegate } from '@Utils/ElementControl';
+import { addEventDelegate } from '@Utils/CustomEvent';
 import { CLASS_ROOM_SETTING } from '@Constants/Setting';
 import { ERROR_MESSAGE, ACTION_TYPE } from '@Constants/String';
 import { SELECTOR, DOM_NAME } from '@Constants/Selector';
@@ -62,6 +62,9 @@ export default class SaveList {
   };
 
   handleRemoveItem = ({ target: $target }) => {
+    if (!confirm('정말 해당 영상을 제거하시겠습니까?')) {
+      return;
+    }
     const { videoId } = $target.closest(SELECTOR.CLASS.VIDEO_ITEM).dataset;
 
     YoutubeSaveStorage.remove(videoId);

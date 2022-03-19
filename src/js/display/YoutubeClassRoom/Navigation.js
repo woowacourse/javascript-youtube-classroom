@@ -1,6 +1,6 @@
 import { $ } from '@Utils/Dom';
 import { SELECTOR } from '@Constants/Selector';
-import { addEventDelegate } from '@Utils/ElementControl';
+import { addEventDelegate } from '@Utils/CustomEvent';
 import YoutubeSaveListStore from '../../domain/YoutubeSaveListStore';
 
 export default class Navigation {

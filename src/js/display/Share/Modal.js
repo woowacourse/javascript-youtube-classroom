@@ -1,5 +1,5 @@
 import { $ } from '@Utils/Dom';
-import { addEventDelegate } from '@Utils/ElementControl';
+import { addEventDelegate } from '@Utils/CustomEvent';
 
 export default class Modal {
   $container = $('#modal');
