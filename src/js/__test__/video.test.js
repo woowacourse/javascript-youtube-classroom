@@ -5,6 +5,23 @@ import * as validator from '../util/validator';
 validator.checkSavedVideo = jest.fn().mockImplementation(() => {
   return true;
 });
+const localStorage = {
+  save: [],
+  watched: [],
+};
+const localStorageMock = {
+  getItem: jest.fn().mockImplementation((key) => {
+    return localStorage[key];
+  }),
+  setItem: jest.fn().mockImplementation((key, item) => {
+    localStorage[key] = item;
+  }),
+  clear: jest.fn(),
+};
+JSON.parse = jest.fn().mockImplementation((item) => {
+  return item;
+});
+global.localStorage = localStorageMock;
 describe('video생성 테스트', () => {
   describe('올바르게 video가 생성되었는지 테스트', () => {
     let video;
