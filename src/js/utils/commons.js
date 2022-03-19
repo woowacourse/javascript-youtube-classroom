@@ -40,3 +40,16 @@ export const grouper = (callback, label, avoid = false) => {
     console.groupEnd();
   }
 };
+
+export const removeDuplicatedElements = (array, key) => {
+  const uniqueMap = array.reduce((map, obj) => {
+    if (!Object.prototype.hasOwnProperty.call(obj, key))
+      throw new Error('invalid key');
+
+    map.set(obj[key], obj);
+
+    return map;
+  }, new Map());
+
+  return Array.from(uniqueMap.values());
+};

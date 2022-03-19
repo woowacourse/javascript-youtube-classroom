@@ -1,16 +1,13 @@
 import Component from '../../core/Component.js';
-import videoService from '../../services/VideoService.js';
+import videoService, { useStore } from '../../services/VideoService.js';
 import { convertTime } from '../../utils/customDate.js';
 
 export default class VideoCard extends Component {
-  setup() {
-    this.state = { saved: this.props.video.saved };
-  }
-
   template() {
     const { videoId, thumbnailUrl, title, channelTitle, publishTime } =
       this.props.video;
-    const { saved } = this.state;
+    const savedVideos = useStore((state) => state.savedVideos);
+    const isSaved = savedVideos.map((video) => video.videoId).includes(videoId);
 
     return `
       <li class="video-item" data-video-id="${videoId}">
@@ -26,7 +23,7 @@ export default class VideoCard extends Component {
         )}</p>
         <div class="video-item__button-menu">
           ${
-            saved
+            isSaved
               ? ''
               : '<button class="video-item__save-button button">⬇ 저장</button>'
           }
@@ -39,8 +36,6 @@ export default class VideoCard extends Component {
     this.addEvent('click', '.video-item__save-button', () => {
       try {
         videoService.saveVideo(this.props.video);
-
-        this.setState({ saved: true });
       } catch (err) {
         alert(err);
       }

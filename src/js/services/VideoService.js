@@ -1,6 +1,7 @@
 import Store from '../store/Store.js';
 import WebStore from '../store/WebStore.js';
 import { request, getSearchUrl } from '../utils/api.js';
+import { removeDuplicatedElements } from '../utils/commons.js';
 import { ERROR_MESSAGES, SAVED_VIDEO } from '../config/constants.js';
 
 class VideoService {
@@ -61,7 +62,6 @@ class VideoService {
         title: item.snippet.title,
         channelTitle: item.snippet.channelTitle,
         publishTime: item.snippet.publishTime,
-        saved: savedVideos.includes(item.id.videoId),
       };
     });
 
@@ -81,7 +81,6 @@ class VideoService {
         title: item.snippet.title,
         channelTitle: item.snippet.channelTitle,
         publishTime: item.snippet.publishTime,
-        saved: savedVideos.includes(item.id.videoId),
       };
     });
 
@@ -97,14 +96,15 @@ class VideoService {
     if (prevSavedVideos.length >= SAVED_VIDEO.SAVE_LIMIT)
       throw new Error(ERROR_MESSAGES.SAVED_VIDEOS_OUT_OF_LIMIT);
 
-    const duplicatedRemoved = Array.from(new Set([...prevSavedVideos, video]));
+    const duplicatedRemoved = removeDuplicatedElements(
+      [...prevSavedVideos, video],
+      'videoId'
+    );
 
     this.webStore.save(duplicatedRemoved);
     this.rootStore.setState({
       savedVideos: duplicatedRemoved,
     });
-
-    console.log(this.rootStore.state.savedVideos);
   }
 
   removeSavedVideo(videoId) {
@@ -166,7 +166,7 @@ const initState = {
   isSearchQuerySubmitted: false,
   searchResult: [],
   isNoResult: null,
-  savedVideos: [],
+  savedVideos: new Map(),
   savedVideosFilter: {
     watching: true,
     watched: false,
