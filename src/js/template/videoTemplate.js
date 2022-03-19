@@ -15,12 +15,13 @@ const videoTemplate = (
       title,
       channelTitle,
       publishTime,
+      thumbnails: { high: { url } },
     },
   },
   isSaved
 ) => `
   <li class="video-item" data-video-id="${videoId}"> 
-    <iframe src="https://www.youtube.com/embed/${videoId}" loading="lazy" alt="video-item-thumbnail" class="video-item__thumbnail" ></iframe>
+    <img src="${url}" loading="lazy" alt="video-item-thumbnail" class="video-item__thumbnail" ></img>
     <h4 class="video-item__title">${title}</h4>
     <p class="video-item__channel-name">${channelTitle}</p>
     <p class="video-item__published-date">${parseTime(publishTime)}</p>
@@ -49,14 +50,6 @@ const watchVideoTemplate = (
   </li>
 `;
 
-const videoSkeletonTemplate = `
-  <li class="skeleton">
-    <div class="image"></div>
-    <p class="line"></p>
-    <p class="line"></p>
-  </li>
-`;
-
 const videoNotFoundTemplate = `
     <h3 hidden>검색 결과</h3>
     <div class="no-result">
@@ -72,7 +65,6 @@ const videoNoMoreTemplate = '<p class="video-no-more">결과가 더 이상 없�
 
 export {
   videoTemplate,
-  videoSkeletonTemplate,
   videoNotFoundTemplate,
   videoNoMoreTemplate,
   watchVideoTemplate,

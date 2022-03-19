@@ -1,16 +1,12 @@
-import ControlVideo from './controlVideo.js';
 import {
   ALREADY_SAVED_VIDEO,
   ERROR_MESSAGE,
   MAX_SAVE_VIDEO_COUNT,
-  GET_VIDEO_COUNT,
-  VIDEO_ID_LIST_KEY,
   ARE_YOU_REALLY_DELETE,
   SAVE_VIDEO_TEXT,
 } from './constants/contants.js';
 import {
   videoTemplate,
-  videoSkeletonTemplate,
   videoNotFoundTemplate,
   videoNoMoreTemplate,
   watchVideoTemplate,
@@ -18,9 +14,10 @@ import {
 import { selectDom, addEvent } from './utils/selectDom.js';
 
 class RenderVideo {
-  constructor(searchVideo) {
+  constructor(searchVideo, controlVideo) {
     this.searchVideo = searchVideo;
-    this.scrollThrottle = true;
+    this.controlVideo = controlVideo;
+    this.canScroll = true;
 
     this.searchModalButton = selectDom('#search-modal-button');
     this.willWatchSectionButton = selectDom('#will-watch-section-button');
@@ -60,42 +57,62 @@ class RenderVideo {
 
   onClickWillWatchVideoButtons = ({ target }) => {
     if (target.classList.contains('watched-video-button')) {
-      ControlVideo.setVideoIdListByClickWatchedButton(
+      this.controlVideo.setVideoIdListByClickWatchedButton(
         target.closest('li').dataset.videoId,
-        target.closest('ul').classList
+        target.closest('ul').dataset.video
       );
       target.closest('li').remove();
-      this.emptyWatchVideo();
+      this.emptyWillWatchVideo();
     } else if (target.classList.contains('delete-video-button')) {
       if (window.confirm(ARE_YOU_REALLY_DELETE)) {
-        ControlVideo.setVideoIdListByDeleteButton(
+        this.controlVideo.setVideoIdListByDeleteButton(
           target.closest('li').dataset.videoId,
-          target.closest('ul').classList
+          target.closest('ul').dataset.video
         );
         target.closest('li').remove();
-        this.emptyWatchVideo();
+        this.emptyWatchedVideo();
       }
     }
   };
 
-  renderWatchedVideo = async () => {
-    const watchedVideoItems = [
-      ...(await this.searchVideo.getSaveVideoList(ControlVideo.getStorageWatchedVideoList())),
-    ].filter(
-      ({ id }) =>
-        !Array.from(this.watchedVideoList.children)
-          .map((watchedVideo) => watchedVideo.dataset.videoId)
-          .includes(id)
+  renderWillWatchVideo = async () => {
+    this.controlVideo.setWillWatchVideoIdList();
+
+    const willWatchVideoElementIdList = Array.from(
+      this.willWatchVideoList.children,
+      (willWatchVideo) => willWatchVideo.dataset.videoId
     );
+    const willWatchVideoItems =
+      await this.searchVideo.getSaveVideoList(this.controlVideo.willWatchVideoIdList);
+
+    this.willWatchVideoList.insertAdjacentHTML(
+      'afterbegin',
+      willWatchVideoItems.filter(({ id }) => ![...willWatchVideoElementIdList].includes(id))
+        .map((willWatchVideoItem) => watchVideoTemplate(willWatchVideoItem))
+        .join(' ')
+    );
+
+    this.emptyWillWatchVideo();
+  };
+
+  renderWatchedVideo = async () => {
+    this.controlVideo.setWatchedVideoIdList();
+
+    const watchedVideoElementIdList = Array.from(
+      this.watchedVideoList.children,
+      (watchedVideo) => watchedVideo.dataset.videoId
+    );
+    const watchedVideoItems =
+      await this.searchVideo.getSaveVideoList(this.controlVideo.getStorageWatchedVideoList());
 
     this.watchedVideoList.insertAdjacentHTML(
       'afterbegin',
-      watchedVideoItems
+      watchedVideoItems.filter(({ id }) => ![...watchedVideoElementIdList].includes(id))
         .map((watchVideoItem) => watchVideoTemplate(watchVideoItem, 'watched'))
         .join(' ')
     );
 
-    this.emptyWatchVideo();
+    this.emptyWatchedVideo();
   };
 
   renderSearchVideo(searchVideo) {
@@ -111,43 +128,39 @@ class RenderVideo {
       return;
     }
 
+    const videoIdList =
+      [...this.controlVideo.willWatchVideoIdList, ...this.controlVideo.watchedVideoIdList];
+
     this.renderVideoListWrap.insertAdjacentHTML(
       'beforeend',
       searchVideo
         .map((video) =>
           videoTemplate(
             video,
-            [
-              ...ControlVideo.getStorageWillWatchVideoList(),
-              ...ControlVideo.getStorageWatchedVideoList(),
-            ].includes(video.id.videoId)
+            [...videoIdList].includes(video.id.videoId)
           ))
         .join(' ')
     );
+
+    this.canScroll = true;
   }
 
   renderVideoSkeleton() {
-    if (this.renderSkeletonWrap.children.length === 0) {
-      this.renderSkeletonWrap.insertAdjacentHTML(
-        'afterbegin',
-        Array.from({ length: GET_VIDEO_COUNT }, () => videoSkeletonTemplate).join(' ')
-      );
-      return;
-    }
-
     this.handleSketonUi(this.renderSkeletonWrap, 'show');
   }
 
   async renderSearchScreen() {
     this.renderVideoSkeleton();
     try {
-      const searchResults =
-        await this.searchVideo.handleSearchVideo(this.searchVideoInput.value.trim());
+      const searchResults = await this.searchVideo.handleSearchVideo(
+        this.searchVideoInput.value.trim()
+      );
       this.renderSearchVideo(searchResults);
     } catch (error) {
       this.searchVideoInput.value = '';
       this.searchVideoInput.focus();
       this.renderVideoListWrap.replaceChildren();
+      this.canScroll = true;
       return alert(error);
     }
   }
@@ -156,37 +169,12 @@ class RenderVideo {
     skeletonWrap.classList.toggle('hide-element', event === 'hide');
   }
 
-  renderWillWatchVideo = async () => {
-    const willWatchVideoItems = [
-      ...(await this.searchVideo.getSaveVideoList(ControlVideo.getStorageWillWatchVideoList())),
-    ].filter(
-      ({ id }) =>
-        !Array.from(this.willWatchVideoList.children)
-          .map((willWatchVideo) => willWatchVideo.dataset.videoId)
-          .includes(id)
-    );
+  emptyWillWatchVideo() {
+    this.noWillWatchVideoText.classList.toggle('hide-element', this.willWatchVideoList.children.length !== 0);
+  }
 
-    this.willWatchVideoList.insertAdjacentHTML(
-      'afterbegin',
-      willWatchVideoItems
-        .map((willWatchVideoItem) => watchVideoTemplate(willWatchVideoItem))
-        .join(' ')
-    );
-
-    this.emptyWatchVideo();
-  };
-
-  emptyWatchVideo() {
-    if (this.willWatchVideoList.children.length !== 0) {
-      this.noWillWatchVideoText.classList.add('hide-element');
-    } else if (this.willWatchVideoList.children.length === 0) {
-      this.noWillWatchVideoText.classList.remove('hide-element');
-    }
-    if (this.watchedVideoList.children.length !== 0) {
-      this.noWatchedVideoText.classList.add('hide-element');
-    } else if (this.watchedVideoList.children.length === 0) {
-      this.noWatchedVideoText.classList.remove('hide-element');
-    }
+  emptyWatchedVideo() {
+    this.noWatchedVideoText.classList.toggle('hide-element', this.watchedVideoList.children.length !== 0);
   }
 
   onClickWatchedSection = () => {
@@ -198,7 +186,7 @@ class RenderVideo {
     if (
       Array.from(this.watchedVideoList.children).find(
         (watchedVideo, index) =>
-          ControlVideo.getStorageWatchedVideoList()[index] === watchedVideo.dataset.videoId
+          this.controlVideo.watchedVideoIdList[index] === watchedVideo.dataset.videoId
       )
     ) {
       return;
@@ -215,7 +203,7 @@ class RenderVideo {
     if (
       Array.from(this.willWatchVideoList.children).find(
         (willWatchVideo, index) =>
-          ControlVideo.getStorageWillWatchVideoList()[index] === willWatchVideo.dataset.videoId
+          this.controlVideo.willWatchVideoIdList[index] === willWatchVideo.dataset.videoId
       )
     ) {
       return;
@@ -234,12 +222,9 @@ class RenderVideo {
     }
 
     const { scrollHeight, offsetHeight, scrollTop } = this.searchResultWrap;
-    if (scrollHeight - offsetHeight - 180 <= scrollTop && this.scrollThrottle) {
+    if (scrollHeight - offsetHeight - 180 <= scrollTop && this.canScroll) {
       this.renderSearchScreen();
-      this.scrollThrottle = false;
-      setTimeout(() => {
-        this.scrollThrottle = true;
-      }, 500);
+      this.canScroll = false;
     }
   };
 
@@ -262,18 +247,14 @@ class RenderVideo {
     }
 
     if (
-      [...ControlVideo.getStorageWillWatchVideoList(), ...ControlVideo.getStorageWatchedVideoList()]
-        .length > MAX_SAVE_VIDEO_COUNT
+      this.controlVideo.willWatchVideoIdList.length + this.controlVideo.watchedVideoIdList.length >
+      MAX_SAVE_VIDEO_COUNT
     ) {
       alert(ERROR_MESSAGE.CANNOT_SAVE_VIDEO_ANYMORE);
       return;
     }
 
-    ControlVideo.addStorageVideoList(
-      ControlVideo.getStorageWillWatchVideoList(),
-      target.closest('li').dataset.videoId,
-      VIDEO_ID_LIST_KEY
-    );
+    this.controlVideo.addStorageVideoList(target.closest('li').dataset.videoId);
     target.textContent = ALREADY_SAVED_VIDEO;
     target.disabled = true;
   };
@@ -281,11 +262,12 @@ class RenderVideo {
   onClickVideoSearchModal = () => {
     this.modalContainer.classList.remove('hide');
     if (this.renderVideoListWrap.children.length > 0) {
-      Array.from(this.renderVideoListWrap.children)
-        .map((video) => ([
-          ...ControlVideo.getStorageWillWatchVideoList(),
-          ...ControlVideo.getStorageWatchedVideoList(),
-        ].includes(video.dataset.videoId) ? '' : this.notDisabledVideo(video)));
+      const videoIdList =
+        [...this.controlVideo.willWatchVideoIdList, ...this.controlVideo.watchedVideoIdList];
+      Array.from(this.renderVideoListWrap.children, (video) =>
+        (videoIdList.includes(video.dataset.videoId)
+          ? ''
+          : this.notDisabledVideo(video)));
     }
   };
 

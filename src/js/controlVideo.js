@@ -2,60 +2,50 @@ import { REDIRECT_SERVER_HOST, VIDEO_ID_LIST_KEY, WATCHED_ID_LIST_KEY } from './
 import mockDatas from './utils/mock.js';
 
 class ControlVideo {
-  static setVideoIdListByDeleteButton(deleteVideoId, divisionSection) {
-    if (divisionSection.contains('will-watch-video-list')) {
-      this.changeStorageVideoList(
-        this.getStorageWillWatchVideoList(),
-        deleteVideoId,
-        VIDEO_ID_LIST_KEY
-      );
-    } else if (divisionSection.contains('watched-video-list')) {
-      this.changeStorageVideoList(
-        this.getStorageWatchedVideoList(),
-        deleteVideoId,
-        WATCHED_ID_LIST_KEY
-      );
+  constructor() {
+    this.willWatchVideoIdList = this.getStorageWillWatchVideoList();
+    this.watchedVideoIdList = this.getStorageWatchedVideoList();
+  }
+
+  setVideoIdListByDeleteButton(deleteVideoId, divisionSection) {
+    if (divisionSection === 'will-watch') {
+      this.willWatchVideoIdList =
+        this.willWatchVideoIdList.filter((willWatchVideoId) => willWatchVideoId !== deleteVideoId);
+    } else if (divisionSection === 'watched') {
+      this.watchedVideoIdList =
+        this.watchedVideoIdList.filter((watchedVideoId) => watchedVideoId !== deleteVideoId);
     }
   }
 
-  static setVideoIdListByClickWatchedButton(videoId, divisionSection) {
-    if (divisionSection.contains('will-watch-video-list')) {
-      this.changeStorageVideoList(
-        this.getStorageWillWatchVideoList(),
-        videoId,
-        VIDEO_ID_LIST_KEY
-      );
-      this.addStorageVideoList(
-        this.getStorageWatchedVideoList(),
-        videoId,
-        WATCHED_ID_LIST_KEY
-      );
-    } else if (divisionSection.contains('watched-video-list')) {
-      this.changeStorageVideoList(
-        this.getStorageWatchedVideoList(),
-        videoId,
-        WATCHED_ID_LIST_KEY
-      );
-      this.addStorageVideoList(this.getStorageWillWatchVideoList(), videoId, VIDEO_ID_LIST_KEY);
+  setWillWatchVideoIdList() {
+    localStorage.setItem(VIDEO_ID_LIST_KEY, JSON.stringify(this.willWatchVideoIdList));
+  }
+
+  setWatchedVideoIdList() {
+    localStorage.setItem(WATCHED_ID_LIST_KEY, JSON.stringify(this.watchedVideoIdList));
+  }
+
+  setVideoIdListByClickWatchedButton(videoId, divisionSection) {
+    if (divisionSection === 'will-watch') {
+      this.willWatchVideoIdList =
+        this.willWatchVideoIdList.filter((willWatchVideoId) => willWatchVideoId !== videoId);
+      this.watchedVideoIdList = [videoId, ...this.watchedVideoIdList];
+    } else if (divisionSection === 'watched') {
+      this.watchedVideoIdList =
+        this.watchedVideoIdList.filter((watchedVideoId) => watchedVideoId !== videoId);
+      this.willWatchVideoIdList = [videoId, ...this.willWatchVideoIdList];
     }
   }
 
-  static changeStorageVideoList(videoList, clickVideoId, localStorageKeyName) {
-    localStorage.setItem(
-      localStorageKeyName,
-      JSON.stringify(videoList.filter((videoId) => videoId !== clickVideoId))
-    );
+  addStorageVideoList(videoId) {
+    this.willWatchVideoIdList = [videoId, ...this.willWatchVideoIdList];
   }
 
-  static addStorageVideoList(videoList, videoId, localStorageKeyName) {
-    localStorage.setItem(localStorageKeyName, JSON.stringify([videoId, ...videoList]));
-  }
-
-  static getStorageWillWatchVideoList() {
+  getStorageWillWatchVideoList() {
     return JSON.parse(localStorage.getItem(VIDEO_ID_LIST_KEY)) || [];
   }
 
-  static getStorageWatchedVideoList() {
+  getStorageWatchedVideoList() {
     return JSON.parse(localStorage.getItem(WATCHED_ID_LIST_KEY)) || [];
   }
 }

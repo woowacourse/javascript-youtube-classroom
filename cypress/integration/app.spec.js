@@ -14,13 +14,16 @@ describe('비디오 관련 액션 테스트', () => {
           .then((text1) => {
             cy.get('.video-item__save-button').first().click();
             cy.get('.dimmer').click({ force: true });
-            const saveVideoTitle = cy.get('.video-item').get('h4').first();
+            const videoItem = cy.get('.video-item');
+            const saveVideoTitle = videoItem.get('h4').first();
             saveVideoTitle.should('have.text', text1);
-            cy.get('.video-item').get('.watched-video-button').eq(0).click();
+
+            videoItem.get('.watched-video-button').eq(0).click();
             cy.get('#watched-section-button').click();
-            const watchedVideoTitle = cy.get('.video-item').get('h4').eq(0);
+            const watchedVideoTitle = videoItem.get('h4').eq(0);
             watchedVideoTitle.should('have.text', text1);
-            cy.get('.video-item').get('.delete-video-button').eq(0).click();
+
+            videoItem.get('.delete-video-button').eq(0).click();
             cy.on('window.confirm', () => {
               returns(true);
             })
