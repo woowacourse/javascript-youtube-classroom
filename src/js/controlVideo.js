@@ -1,6 +1,5 @@
 import { REDIRECT_SERVER_HOST, VIDEO_ID_LIST_KEY, WATCHED_ID_LIST_KEY } from './constants/contants.js';
 import mockDatas from './utils/mock.js';
-
 class ControlVideo {
   constructor() {
     this.willWatchVideoIdList = this.getStorageWillWatchVideoList();
@@ -11,9 +10,11 @@ class ControlVideo {
     if (divisionSection === 'will-watch') {
       this.willWatchVideoIdList =
         this.willWatchVideoIdList.filter((willWatchVideoId) => willWatchVideoId !== deleteVideoId);
+      this.setWillWatchVideoIdList();
     } else if (divisionSection === 'watched') {
       this.watchedVideoIdList =
         this.watchedVideoIdList.filter((watchedVideoId) => watchedVideoId !== deleteVideoId);
+      this.setWatchedVideoIdList();
     }
   }
 
@@ -29,16 +30,21 @@ class ControlVideo {
     if (divisionSection === 'will-watch') {
       this.willWatchVideoIdList =
         this.willWatchVideoIdList.filter((willWatchVideoId) => willWatchVideoId !== videoId);
+      this.setWillWatchVideoIdList();
       this.watchedVideoIdList = [videoId, ...this.watchedVideoIdList];
+      this.setWatchedVideoIdList();
     } else if (divisionSection === 'watched') {
       this.watchedVideoIdList =
         this.watchedVideoIdList.filter((watchedVideoId) => watchedVideoId !== videoId);
+      this.setWatchedVideoIdList();
       this.willWatchVideoIdList = [videoId, ...this.willWatchVideoIdList];
+      this.setWillWatchVideoIdList();
     }
   }
 
   addStorageVideoList(videoId) {
     this.willWatchVideoIdList = [videoId, ...this.willWatchVideoIdList];
+    this.setWillWatchVideoIdList();
   }
 
   getStorageWillWatchVideoList() {

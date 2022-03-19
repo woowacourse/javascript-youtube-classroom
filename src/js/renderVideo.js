@@ -76,8 +76,6 @@ class RenderVideo {
   };
 
   renderWillWatchVideo = async () => {
-    this.controlVideo.setWillWatchVideoIdList();
-
     const willWatchVideoElementIdList = Array.from(
       this.willWatchVideoList.children,
       (willWatchVideo) => willWatchVideo.dataset.videoId
@@ -96,8 +94,6 @@ class RenderVideo {
   };
 
   renderWatchedVideo = async () => {
-    this.controlVideo.setWatchedVideoIdList();
-
     const watchedVideoElementIdList = Array.from(
       this.watchedVideoList.children,
       (watchedVideo) => watchedVideo.dataset.videoId
