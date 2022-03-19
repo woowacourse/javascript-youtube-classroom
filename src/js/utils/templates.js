@@ -12,36 +12,40 @@ export const getEmptyClassroomTemplate = `
   <p class="classroom__empty-text">저장된 동영상이 없습니다.</p>
 `;
 
-export const getThumnailTemplate = (video) => {
+const getVideoInfoTemplate = (url, title, channelTitle, date) => {
+  return `
+      <img src=${url} class="video-item__thumbnail" alt="video-thumbnail">
+      <h4 class="video-item__title">${title}</h4>
+      <p class="video-item__channel-name">${channelTitle}</p>
+      <p class="video-item__published-date">${date}</p>
+  `;
+};
+
+export const getSearchVideoTemplate = (video) => {
+  const id = video.id.videoId;
+  const { url } = video.snippet.thumbnails.medium;
+  const { title } = video.snippet;
+  const { channelTitle } = video.snippet;
+  const date = changeDateFormat(video.snippet.publishedAt);
+
   return `
     <li class="video-item">
-      <img src=${video.snippet.thumbnails.medium.url} class="video-item__thumbnail" alt="video-thumbnail">
-      <h4 class="video-item__title">${video.snippet.title}</h4>
-      <p class="video-item__channel-name">${video.snippet.channelTitle}</p>
-      <p class="video-item__published-date">${changeDateFormat(video.snippet.publishedAt)}</p>
-      <button data-id="${video.id.videoId}" data-title="${video.snippet.title}"  
-      data-channel-title="${video.snippet.channelTitle}" data-date="${changeDateFormat(
-    video.snippet.publishedAt,
-  )}" type="button" class="video-item__save-button button">⬇ 저장</button>
+      ${getVideoInfoTemplate(url, title, channelTitle, date)}
+      <button data-id="${id}" data-title="${title}"  
+        data-channel-title="${channelTitle}" data-date="${date}" data-url="${url}" type="button"
+        class="video-item__save-button button">⬇ 저장</button>
     </li>
   `;
 };
 
-export const getFrameTemplate = (video) => {
+export const getClassroomVideoTemplate = (video) => {
+  const { id, url, title, channelTitle, date, watched } = video;
+
   return `
     <li class="video-item">
-      <iframe
-      class="video-item__iframe"
-      type="text/html"
-      src="https://www.youtube.com/embed/${video.id}"
-      frameborder="0"
-      allowfullscreen="allowfullscreen"
-      ></iframe>
-      <h4 class="video-item__title">${video.title}</h4>
-      <p class="video-item__channel-name">${video.channelTitle}</p>
-      <p class="video-item__published-date">${video.date}</p>
-      <div class="video-item__option" data-id=${video.id}>
-        <button type="button" class="video-item__watched-button ${video.watched ? "active" : ""}">✅</button>
+      ${getVideoInfoTemplate(url, title, channelTitle, date)}
+      <div class="video-item__option" data-id=${id}>
+        <button type="button" class="video-item__watched-button ${watched ? "active" : ""}">✅</button>
         <button type="button" class="video-item__delete-button">🗑️</button>
       </div>
     </li>

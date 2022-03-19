@@ -1,7 +1,12 @@
 import { $, $$ } from "../../utils/dom.js";
 import { INFOMATION_MESSAGES, NUM } from "../../utils/contants.js";
 import { fetchDataFromKeyword } from "../../utils/api.js";
-import { getThumnailTemplate, getSkeletonTemplate, getEmptyResultTemplate } from "../../utils/templates.js";
+import {
+  getThumnailTemplate,
+  getSkeletonTemplate,
+  getEmptyResultTemplate,
+  getSearchVideoTemplate,
+} from "../../utils/templates.js";
 import { verifySaveId } from "../../utils/validation.js";
 import { toastMessage } from "../../utils/common.js";
 
@@ -59,7 +64,7 @@ export default class SearchResult {
 
     this.videoList.insertAdjacentHTML(
       "beforeend",
-      this.videos.items.map((video) => getThumnailTemplate(video)).join(""),
+      this.videos.items.map((video) => getSearchVideoTemplate(video)).join(""),
     );
     this.observer.observe(this.videoList.lastElementChild);
   }
@@ -94,9 +99,9 @@ export default class SearchResult {
 
     try {
       const savedVideoArray = this.videoManager.getSavedIds();
-      const { id, title, channelTitle, date } = target.dataset;
+      const { id, url, title, channelTitle, date } = target.dataset;
       verifySaveId(savedVideoArray, id);
-      this.videoManager.saveVideos({ id, title, channelTitle, date });
+      this.videoManager.saveVideos({ id, url, title, channelTitle, date });
       target.remove();
       toastMessage(INFOMATION_MESSAGES.SAVED);
     } catch ({ message }) {

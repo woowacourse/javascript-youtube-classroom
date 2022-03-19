@@ -1,6 +1,6 @@
 import { $ } from "../utils/dom.js";
 import { INFOMATION_MESSAGES } from "../utils/contants.js";
-import { getEmptyClassroomTemplate, getFrameTemplate } from "../utils/templates.js";
+import { getClassroomVideoTemplate, getEmptyClassroomTemplate, getFrameTemplate } from "../utils/templates.js";
 
 export default class Classroom {
   constructor({ videoManager }) {
@@ -48,7 +48,10 @@ export default class Classroom {
       return;
     }
 
-    this.classroomList.insertAdjacentHTML("beforeend", videos.map((video) => getFrameTemplate(video)).join(""));
+    this.classroomList.insertAdjacentHTML(
+      "beforeend",
+      videos.map((video) => getClassroomVideoTemplate(video)).join(""),
+    );
   };
 
   #renderEmptyClassroom() {
