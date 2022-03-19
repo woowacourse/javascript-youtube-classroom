@@ -18,8 +18,8 @@ export default class Home {
     this.modalContainer = document.querySelector('.modal-container');
 
     // bindEvents
-    this.storedVideoFilterButton.addEventListener('click', this.showStoredVideos);
-    this.watchedVideoFilterButton.addEventListener('click', this.showWatchedVideos);
+    this.storedVideoFilterButton.addEventListener('click', this.showStoredVideosHandler);
+    this.watchedVideoFilterButton.addEventListener('click', this.showWatchedVideosHandler);
     this.searchModalButton.addEventListener('click', this.openModalHandler);
     this.dimmer.addEventListener('click', this.closeModalHandler);
 
@@ -32,10 +32,10 @@ export default class Home {
 
   renderVideoList() {
     const storedVideoList = Object.values(getStorageVideos({ filter: this.currentFilter }));
-    this.VideoCardContainer.setState({ videoList: storedVideoList });
+    this.VideoCardContainer.setState({ videoList: storedVideoList, filter: this.currentFilter });
   }
 
-  showStoredVideos = () => {
+  showStoredVideosHandler = () => {
     if (this.currentFilter === 'stored') return;
 
     this.currentFilter = 'stored';
@@ -44,7 +44,7 @@ export default class Home {
     this.renderVideoList();
   };
 
-  showWatchedVideos = () => {
+  showWatchedVideosHandler = () => {
     if (this.currentFilter === 'watched') return;
 
     this.currentFilter = 'watched';

@@ -62,33 +62,43 @@ export default class VideoCardContainer {
     }
   };
 
-  removeHandler = (e) => {
-    if (e.target.className.includes('video-item__remove-button')) {
-      const li = e.target.closest('li');
-      const { videoId } = li.dataset;
-
-      const videoIds = getStorageVideoIDs();
-      const index = videoIds.indexOf(videoId);
-      removeStorageVideoID(index);
-      removeStorageVideo(videoId);
-
-      li.remove();
-    }
-  };
-
   watchedHandler = (e) => {
     if (e.target.className.includes('video-item__watched-button')) {
       const li = e.target.closest('li');
       const { videoId } = li.dataset;
+      const { filter } = this.#state;
 
       const { stored, watched } = getStorageVideos({});
 
-      const videoItem = stored[`${videoId}`];
-      delete stored[`${videoId}`];
-      watched[`${videoId}`] = videoItem;
+      if (filter === 'stored') {
+        const videoItem = stored[`${videoId}`];
+        delete stored[`${videoId}`];
+        watched[`${videoId}`] = videoItem;
+      }
+
+      if (filter === 'watched') {
+        const videoItem = watched[`${videoId}`];
+        delete watched[`${videoId}`];
+        stored[`${videoId}`] = videoItem;
+      }
 
       const newVideos = { stored, watched };
       setStorageVideos({ value: newVideos });
+      li.remove();
+    }
+  };
+
+  removeHandler = (e) => {
+    if (e.target.className.includes('video-item__remove-button')) {
+      const li = e.target.closest('li');
+      const { videoId } = li.dataset;
+      const { filter } = this.#state;
+
+      const videoIds = getStorageVideoIDs();
+      const index = videoIds.indexOf(videoId);
+      removeStorageVideoID(index);
+      removeStorageVideo({ videoId, filter });
+
       li.remove();
     }
   };

@@ -24,11 +24,18 @@ const removeStorageVideoID = (index) => {
   setStorageVideoIDs({ value: newVideoIDs });
 };
 
-const removeStorageVideo = (videoId) => {
-  const newStoredVideos = getStorageVideos({ filter: 'stored' });
-  delete newStoredVideos[`${videoId}`];
-  const newVideos = { ...getStorageVideos({}), stored: newStoredVideos };
+const removeStorageVideo = ({ videoId, filter }) => {
+  const { stored, watched } = getStorageVideos({});
 
+  if (filter === 'stored') {
+    delete stored[`${videoId}`];
+  }
+
+  if (filter === 'watched') {
+    delete watched[`${videoId}`];
+  }
+
+  const newVideos = { stored, watched };
   setStorageVideos({ value: newVideos });
 };
 const checkVideoStorageFull = (key = LOCALSTORAGE_VIDEO_IDS_KEY) => {
