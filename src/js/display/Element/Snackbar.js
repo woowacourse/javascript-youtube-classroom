@@ -1,9 +1,10 @@
+import { SELECTOR, DOM_NAME } from '@Constants/Selector';
 import { $, createElement } from '@Utils/Dom';
 import { addEventOnce, runAnimation } from '@Utils/CustomEvent';
 import { getTimeDiffToPercent } from '@Utils/ManageData';
 
 const Snackbar = (message, delay = 2500) => {
-  if (!!$('#snackbar')) return;
+  if (!!$(SELECTOR.ID.SNACKBAR)) return;
 
   let isProgressDone = false;
 
@@ -19,8 +20,8 @@ const Snackbar = (message, delay = 2500) => {
 
   const createSnackbar = () => {
     $snackbarContainer = createElement('DIV', {
-      id: 'snackbar',
-      className: 'snackbar',
+      id: DOM_NAME.ID.SNACKBAR,
+      className: DOM_NAME.CLASS.SNACKBAR_CONTAINER,
       insertAdjacentHTML: [
         'afterbegin',
         ` <div class="message"><i class="fa-solid fa-circle-check"></i> ${message}</div>

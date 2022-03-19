@@ -182,7 +182,7 @@ input {
   }
 }
 
-.snackbar {
+.snackbar-container {
   position: fixed;
   width: 22rem;
   background-image: linear-gradient(to right, $color-purple-heart 0%, $color-dodger-blue 100%);

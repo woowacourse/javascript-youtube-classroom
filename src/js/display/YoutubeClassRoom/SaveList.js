@@ -8,11 +8,10 @@ import YoutubeSaveStorage from '@Domain/YoutubeSaveStorage';
 import Snackbar from '@Display/Element/Snackbar';
 
 export default class SaveList {
-  $container = $('#save-video-result');
+  $container = $(SELECTOR.ID.SAVE_LIST_CONTENT);
   #drawList = [];
 
   constructor() {
-    this.setDefaultElements();
     this.setBindEvents();
     this.setRenderList();
     this.setSubscribeStores();
@@ -37,17 +36,13 @@ export default class SaveList {
     this.addDrawList(this.drawVideoList.bind(this));
   }
 
-  setDefaultElements() {
-    this.$videoResult = $('#save-video-result');
-  }
-
   setBindEvents() {
-    addEventDelegate(this.$container, '.save-item-watched-button', {
+    addEventDelegate(this.$container, SELECTOR.CLASS.SAVE_LIST_WATCHED_BUTTON, {
       eventType: 'click',
       handler: this.handleToggleWatched,
     });
 
-    addEventDelegate(this.$container, '.save-item-remove-button', {
+    addEventDelegate(this.$container, SELECTOR.CLASS.SAVE_LIST_REMOVE_BUTTON, {
       eventType: 'click',
       handler: this.handleRemoveItem,
     });
@@ -73,7 +68,7 @@ export default class SaveList {
   };
 
   #getVideoElementList(items, listType) {
-    return items.reduce(($previous, video, index) => {
+    return items.reduce(($previous, video) => {
       const watchedText = listType === 'watched' ? '추가' : '완료';
 
       const { id: videoId, content } = video;
@@ -102,7 +97,7 @@ export default class SaveList {
   #getEmptyVideoList(listType) {
     const listText = listType === 'unwatched' ? '볼 영상' : '이미 본 영상';
     return createElement('DIV', {
-      className: 'empty-content',
+      className: DOM_NAME.CLASS.EMPTY_CONTENT,
       insertAdjacentHTML: [
         'afterbegin',
         ` <i class="fa-solid fa-video-slash"></i>
@@ -114,11 +109,11 @@ export default class SaveList {
 
   drawVideoList({ items, listType }) {
     if (items.length === 0) {
-      this.$videoResult.replaceChildren(this.#getEmptyVideoList(listType));
+      this.$container.replaceChildren(this.#getEmptyVideoList(listType));
       return;
     }
 
     const $videoList = this.#getVideoElementList(items, listType);
-    this.$videoResult.replaceChildren($videoList);
+    this.$container.replaceChildren($videoList);
   }
 }

@@ -1,11 +1,12 @@
+import { SELECTOR } from '@Constants/Selector';
 import { $ } from '@Utils/Dom';
 import { addEventDelegate, addEventOnce } from '@Utils/CustomEvent';
 
 class Modal {
   $activeModal;
   $container;
-  $modal = $('#modal');
-  $modalDimmer = $('.dimmer');
+  $modal = $(SELECTOR.ID.MODAL_CONTAINER);
+  $modalDimmer = $(SELECTOR.CLASS.MODAL_DIMMER);
 
   enable(container) {
     this.$container = $(container);
@@ -13,7 +14,7 @@ class Modal {
   }
 
   setBindEvents() {
-    addEventDelegate(this.$modal, '.dimmer', {
+    addEventDelegate(this.$modal, SELECTOR.CLASS.MODAL_DIMMER, {
       eventType: 'click',
       handler: this.handleCloseModal,
     });

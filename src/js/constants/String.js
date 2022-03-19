@@ -4,10 +4,10 @@ export const ERROR_MESSAGE = {
 };
 
 export const ALERT_MESSAGE = {
-  SAVE_LIST_CONFIRM_REMOVE: '정말 해당 영상을 제거하시겠습니까?',
-  SAVE_LIST_REMOVE: '볼 영상 목록에서 제거되었습니다.',
-  SAVE_LIST_ADD: '볼 영상 목록에 저장되었습니다',
-  SAVE_LIST_STATE_UPDATE: '영상의 상태를 변경하였습니다.',
+  SAVE_LIST_CONFIRM_REMOVE: '정말 해당 동영상을 제거하시겠습니까?',
+  SAVE_LIST_REMOVE: '볼 동영상 목록에서 제거되었습니다.',
+  SAVE_LIST_ADD: '볼 동영상 목록에 저장되었습니다',
+  SAVE_LIST_STATE_UPDATE: '동영상의 상태를 변경하였습니다.',
 };
 
 export const ACTION_TYPE = {

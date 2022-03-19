@@ -44,7 +44,7 @@ export default class SearchResult {
     this.$videoResult = $(SELECTOR.ID.VIDEO_RESULT, this.$container);
     this.$scrollObserver = $(SELECTOR.ID.SEARCH_RESULT_SCROLL_OBSERVER, this.$container);
 
-    this.$skeletonList = $('#skeleton-list', this.$container);
+    this.$skeletonList = $(SELECTOR.ID.SKELETON_LIST, this.$container);
     this.drawSkeletonList();
   }
 
@@ -106,7 +106,7 @@ export default class SearchResult {
 
   #getResultNotFound(searchKeyword) {
     return createElement('DIV', {
-      className: 'empty-content',
+      className: DOM_NAME.CLASS.EMPTY_CONTENT,
       insertAdjacentHTML: [
         'afterbegin',
         ` <i class="fa-solid fa-face-rolling-eyes"></i>
@@ -118,7 +118,7 @@ export default class SearchResult {
 
   #getResultServerError() {
     return createElement('DIV', {
-      className: 'empty-content',
+      className: DOM_NAME.CLASS.EMPTY_CONTENT,
       insertAdjacentHTML: [
         'afterbegin',
         ` <i class="fa-solid fa-face-sad-tear"></i>
