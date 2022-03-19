@@ -31,7 +31,7 @@ class MainView {
     }
   }
 
-  checkClickWatchedVideoNavbarButton() {
+  checkClickWatchedVideoNavbarButton(target) {
     if (target.id === 'watched-video-button') {
       this.moveWatchedVideoPage();
       emit(this.$nav, '@updatewatched', {});
