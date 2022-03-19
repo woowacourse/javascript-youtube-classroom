@@ -55,7 +55,8 @@
 }
 
 .search-input__keyword {
-  width: 400px;
+  max-width: 400px;
+  width: 70%;
   height: 36px;
   margin-right: 20px;
   padding: 4px 8px;
@@ -69,12 +70,11 @@
 }
 
 .search-input__clear {
-  border: none;
   background: none;
   color: #8b8b8b;
   position: absolute;
   top: 10%;
-  left: 90%;
+  left: 89%;
 }
 
 .search-input__search-button {
