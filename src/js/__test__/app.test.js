@@ -5,7 +5,7 @@
 import { getSearchAPI } from '../api/api.js';
 import { makeCardData } from '../components/SearchModal/SearchBar.js';
 import { ALERT_MESSAGE, MAX_SAVE_COUNT } from '../constant.js';
-import WebStore, { webStore } from '../store/WebStore.js';
+import WebStore from '../store/WebStore.js';
 import { requestMockData } from '../__mocks__/request.js';
 import { expect } from '@jest/globals';
 
@@ -64,6 +64,8 @@ describe('localStorage', () => {
 });
 
 describe('데이터 가공', () => {
+  const webStore = new WebStore('saved');
+
   it('API 데이터를 받아오고, saved를 저장한다.', async () => {
     const [error, data] = await getSearchAPI(
       'something',
