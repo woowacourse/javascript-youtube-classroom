@@ -44,6 +44,14 @@ class YoutubeSaveStorage {
     updateList[videoIndex].updateTime = getTimeStamp();
     localStorage.setItem(this.#STORAGE_NAME, JSON.stringify(updateList));
   }
+
+  watched(videoId, isWatched) {
+    const videoIndex = this.#getVideoIdToIndex(videoId);
+    const updateList = this.get();
+
+    updateList[videoIndex].watched = isWatched;
+    localStorage.setItem(this.#STORAGE_NAME, JSON.stringify(updateList));
+  }
 }
 
 export default new YoutubeSaveStorage();

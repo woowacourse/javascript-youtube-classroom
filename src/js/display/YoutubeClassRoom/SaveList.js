@@ -1,13 +1,14 @@
 import { $, createElement } from '@Utils/Dom';
 import { getParsedTime } from '@Utils/ManageData';
-import { onObserveElement, addEventDelegate } from '@Utils/ElementControl';
+import { addEventDelegate } from '@Utils/ElementControl';
 import { CLASS_ROOM_SETTING } from '@Constants/Setting';
 import { ERROR_MESSAGE, ACTION_TYPE } from '@Constants/String';
 import { SELECTOR, DOM_NAME } from '@Constants/Selector';
 import YoutubeSaveListStore from '@Domain/YoutubeSaveListStore';
+import YoutubeSaveStorage from '../../domain/YoutubeSaveStorage';
 
 export default class SaveList {
-  $container = $(SELECTOR.ID.SEARCH_RESULT_CONTAINER);
+  $container = $('#save-video-result');
   #drawList = [];
 
   constructor() {
@@ -40,13 +41,40 @@ export default class SaveList {
     this.$videoResult = $('#save-video-result');
   }
 
-  setBindEvents() {}
+  setBindEvents() {
+    addEventDelegate(this.$container, '.save-item-watched-button', {
+      eventType: 'click',
+      handler: this.handleToggleWatched,
+    });
 
-  #getVideoElementList(items) {
+    addEventDelegate(this.$container, '.save-item-remove-button', {
+      eventType: 'click',
+      handler: this.handleRemoveItem,
+    });
+  }
+
+  handleToggleWatched = ({ target: $target }) => {
+    const { videoId, state } = $target.closest(SELECTOR.CLASS.VIDEO_ITEM).dataset;
+    const isUpdateState = state === 'unwatched';
+
+    YoutubeSaveStorage.watched(videoId, isUpdateState);
+    YoutubeSaveListStore.dispatch('UPDATE_LIST');
+  };
+
+  handleRemoveItem = ({ target: $target }) => {
+    const { videoId } = $target.closest(SELECTOR.CLASS.VIDEO_ITEM).dataset;
+
+    YoutubeSaveStorage.remove(videoId);
+    YoutubeSaveListStore.dispatch('UPDATE_LIST');
+  };
+
+  #getVideoElementList(items, listType) {
     return items.reduce(($previous, video, index) => {
+      const watchedText = listType === 'watched' ? '추가' : '완료';
+
       const { id: videoId, content } = video;
       const $list = createElement('LI', {
-        dataset: { 'video-id': videoId, 'primary-key': index },
+        dataset: { 'video-id': videoId, 'primary-key': index, state: listType },
         className: DOM_NAME.CLASS.VIDEO_ITEM,
         insertAdjacentHTML: [
           'afterbegin',
@@ -54,7 +82,11 @@ export default class SaveList {
               alt="${content.snippet.title} 썸네일" class="thumbnail">
             <h4 class="title">${content.snippet.title}</h4>
             <p class="channel-name">${content.snippet.channelTitle}</p>
-            <p class="published-date">${getParsedTime(content.snippet.publishedAt)}</p>`,
+            <p class="published-date">${getParsedTime(content.snippet.publishedAt)}</p>
+            <div class="button-group">
+              <button class="button save-item-watched-button ${listType}">${watchedText}</button>
+              <button class="button save-item-remove-button">제거</button>
+            </div>`,
         ],
       });
 
@@ -63,8 +95,8 @@ export default class SaveList {
     }, document.createDocumentFragment());
   }
 
-  drawVideoList({ items }) {
-    const $videoList = this.#getVideoElementList(items);
+  drawVideoList({ items, listType }) {
+    const $videoList = this.#getVideoElementList(items, listType);
     this.$videoResult.replaceChildren($videoList);
   }
 
