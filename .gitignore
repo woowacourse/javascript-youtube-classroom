@@ -111,3 +111,5 @@ src/.DS_Store
 /cypress/screenshots
 /cypress/videos
 /cypress/plugins
+/cypress/support
+/cypress/fixtures
