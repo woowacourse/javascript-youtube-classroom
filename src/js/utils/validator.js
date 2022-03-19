@@ -29,3 +29,7 @@ export const checkVideoIsNone = () => {
     throw new Error(EXCEPTION.VIDEO_IS_NONE_ERROR_MESSAGE);
   }
 };
+
+export const checkAnswerYes = () => {
+  return window.confirm(EXCEPTION.DELETE_CONFIRM_MESSAGE);
+};

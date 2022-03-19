@@ -1,5 +1,5 @@
 import { on } from './utils/event.js';
-import { checkExceedLimit, checkVideoIsNone } from './utils/validator.js';
+import { checkAnswerYes, checkExceedLimit, checkVideoIsNone } from './utils/validator.js';
 
 import AppView from './views/AppView.js';
 import SearchInputView from './views/SearchInputView.js';
@@ -23,6 +23,8 @@ export default class Controller {
   }
 
   #subscribeViewEvents() {
+    on(this.appView.$willSeeWrapper, '@delete-video', this.#deleteVideo.bind(this));
+
     on(this.searchInputView.$searchButton, '@search', this.#searchVideo.bind(this));
 
     on(this.searchResultView.$searchTarget, '@scroll-bottom', this.#scrollNextVideos.bind(this));
@@ -94,9 +96,17 @@ export default class Controller {
   }
 
   #closeModal() {
+    this.video.resetAllVideoItems();
     this.searchInputView.resetSearchInputKeyword();
     this.searchResultView.hideModal();
     this.searchResultView.removeVideo();
     this.appView.renderWillSeeVideo(this.video.getItemsLocalStorage());
+  }
+
+  #deleteVideo(event) {
+    if (checkAnswerYes()) {
+      this.video.deleteVideo(event.detail.deleteVideoId);
+      this.appView.renderWillSeeVideo(this.video.getItemsLocalStorage());
+    }
   }
 }

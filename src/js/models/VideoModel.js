@@ -1,4 +1,4 @@
-import { checkLengthExist, checkEmpty } from '../utils/validator';
+import { checkLengthExist, checkEmpty, checkAnswerYes } from '../utils/validator';
 
 export default class VideoModel {
   #keyword;
@@ -45,6 +45,10 @@ export default class VideoModel {
     this.#savedVideoItems = items;
   }
 
+  resetAllVideoItems() {
+    this.#allVideoItems = [];
+  }
+
   accumulateVideoItems() {
     this.#allVideoItems = [...this.#allVideoItems, ...this.#newVideoItems];
   }
@@ -63,6 +67,20 @@ export default class VideoModel {
 
   getItemsLocalStorage() {
     return JSON.parse(localStorage.getItem('saved-video')) ?? [];
+  }
+
+  updateItemsLocalStorage() {
+    localStorage.setItem('saved-video', JSON.stringify(this.#savedVideoItems));
+  }
+
+  deleteVideo(deleteVideoId) {
+    for (let idx = 0; idx < this.#savedVideoItems.length; idx += 1) {
+      if (this.#savedVideoItems[idx].videoId === deleteVideoId) {
+        this.#savedVideoItems.splice(idx, 1);
+        this.updateItemsLocalStorage();
+        return;
+      }
+    }
   }
 
   IsIncludedSavedItem(newItem) {

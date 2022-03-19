@@ -1,4 +1,6 @@
+import { emit } from '../utils/event.js';
 import { $ } from '../utils/dom.js';
+
 import Template from './Template.js';
 
 export default class AppView {
@@ -21,6 +23,7 @@ export default class AppView {
     this.$searchModalButton.addEventListener('click', this.#handleClickSearchButton.bind(this));
     this.$willSeeButton.addEventListener('click', this.#handleClickWillSeeButton.bind(this));
     this.$sawButton.addEventListener('click', this.#handleClickSawButton.bind(this));
+    this.$willSeeWrapper.addEventListener('click', this.#handleClickUserButton.bind(this));
   }
 
   #handleClickSearchButton() {
@@ -41,6 +44,17 @@ export default class AppView {
 
     this.$willSeeWrapper.classList.add('hide');
     this.$sawWrapper.classList.remove('hide');
+  }
+
+  #handleClickUserButton({ target }) {
+    if (target.className === 'user-delete-button') {
+      const deleteVideoId = target.closest('li').dataset.videoId;
+
+      emit(this.$willSeeWrapper, '@delete-video', { deleteVideoId });
+    }
+    if (target.className === 'user-saw-button') {
+      console.log('saw-button');
+    }
   }
 
   renderWillSeeVideo(savedVideos) {

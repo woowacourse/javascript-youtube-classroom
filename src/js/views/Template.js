@@ -106,7 +106,7 @@ export default class Template {
   getSavedVideo(savedVideo) {
     const [year, month, day] = savedVideo.publishTime.substr(0, 10).split('-');
     return `
-      <li class="video-item" data-video-id="">
+      <li class="video-item" data-video-id=${savedVideo.videoId}>
           <iframe 
             class="video-item__thumbnail" 
             srcdoc="${this.getThumbnail(savedVideo.thumbnailUrl, savedVideo.videoId)}"
