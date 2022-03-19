@@ -1,4 +1,5 @@
 import Component from '../../core/Component.js';
+import videoService from '../../services/VideoService.js';
 
 export default class MainPage extends Component {
   template() {
@@ -13,8 +14,8 @@ export default class MainPage extends Component {
   }
 
   setEvent() {
-    const { showSearchModal } = this.props;
-
-    this.addEvent('click', '#search-modal-button', showSearchModal);
+    this.addEvent('click', '#search-modal-button', () => {
+      videoService.toggleSearchModal();
+    });
   }
 }

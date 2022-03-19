@@ -83,17 +83,24 @@ class VideoService {
     });
   }
 
-  saveVideo(videoId) {
+  saveVideo(video) {
     const prevSavedVideos = this.webStore.load();
 
     if (prevSavedVideos.length >= SAVED_VIDEO.SAVE_LIMIT)
       throw new Error(ERROR_MESSAGES.SAVED_VIDEOS_OUT_OF_LIMIT);
 
-    const duplicatedRemoved = Array.from(
-      new Set([...prevSavedVideos, videoId])
-    );
+    const duplicatedRemoved = Array.from(new Set([...prevSavedVideos, video]));
 
     this.webStore.save(duplicatedRemoved);
+    this.rootStore.setState({
+      savedVideos: duplicatedRemoved,
+    });
+  }
+
+  toggleSearchModal() {
+    this.rootStore.setState({
+      isSearchModalOpened: !this.rootStore.state.isSearchModalOpened,
+    });
   }
 }
 
@@ -105,6 +112,8 @@ const initState = {
   isSearchQuerySubmitted: false,
   searchResult: [],
   isNoResult: null,
+  savedVideos: [],
+  isSearchModalOpened: false,
 };
 
 const videoService = new VideoService(initState);
