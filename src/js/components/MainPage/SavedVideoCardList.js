@@ -41,11 +41,9 @@ export default class SavedVideoCardList extends Component {
         new VideoCard(videoCard, { video: this.renderedVideos[index] });
     });
 
-    // 10개 이하로 fetching 해오는 경우, 더 이상 observe 하지 않는다.
-    if (this.renderedVideos.length % 10 !== 0) {
-      this.observer.disconnect();
-      return;
-    }
+    // 저장된 비디오 개수만큼, pagination이 이루어졌다면
+    if (this.videos.length <= this.state.pagination * LOAD_VIDEOS_COUNT) return;
+
     this.observeLastChild();
   }
 
@@ -60,9 +58,6 @@ export default class SavedVideoCardList extends Component {
       if (!entry.isIntersecting) return;
 
       observer.disconnect();
-
-      if (this.videos.length <= this.state.pagination * LOAD_VIDEOS_COUNT)
-        return;
 
       this.setState({ pagination: this.state.pagination + 1 });
     });
