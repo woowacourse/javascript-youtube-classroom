@@ -10,8 +10,10 @@ const setStorageVideoIDs = ({ key = LOCALSTORAGE_VIDEO_IDS_KEY, value }) => {
   window.localStorage.setItem(key, JSON.stringify(value));
 };
 
-const getStorageVideos = (key = LOCALSTORAGE_KEY_VIDEOS) =>
-  JSON.parse(window.localStorage.getItem(key)) || [];
+const getStorageVideos = ({ key = LOCALSTORAGE_KEY_VIDEOS, filter = 'all' }) => {
+  const videos = JSON.parse(window.localStorage.getItem(key)) || { stored: {}, watched: {} };
+  return filter === 'all' ? videos : videos[filter];
+};
 
 const setStorageVideos = ({ key = LOCALSTORAGE_KEY_VIDEOS, value }) => {
   window.localStorage.setItem(key, JSON.stringify(value));
@@ -21,8 +23,12 @@ const removeStorageVideoID = (index) => {
   const newVideoIDs = getStorageVideoIDs().filter((_, idx) => idx !== index);
   setStorageVideoIDs({ value: newVideoIDs });
 };
-const removeStorageVideo = (index) => {
-  const newVideos = getStorageVideos().filter((_, idx) => idx !== index);
+
+const removeStorageVideo = (videoId) => {
+  const newStoredVideos = getStorageVideos({ filter: 'stored' });
+  delete newStoredVideos[`${videoId}`];
+  const newVideos = { ...getStorageVideos({}), stored: newStoredVideos };
+
   setStorageVideos({ value: newVideos });
 };
 const checkVideoStorageFull = (key = LOCALSTORAGE_VIDEO_IDS_KEY) => {

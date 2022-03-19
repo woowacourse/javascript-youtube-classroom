@@ -47,7 +47,9 @@ export default class VideoCardContainer {
         checkVideoStorageFull();
 
         const newVideoIDs = [...getStorageVideoIDs(), videoId];
-        const newVideos = [...getStorageVideos(), videoItem];
+        const newStoredVideos = getStorageVideos({ filter: 'stored' });
+        newStoredVideos[`${videoId}`] = videoItem;
+        const newVideos = { ...getStorageVideos({}), stored: newStoredVideos };
 
         setStorageVideoIDs({ value: newVideoIDs });
         setStorageVideos({ value: newVideos });
@@ -67,7 +69,7 @@ export default class VideoCardContainer {
       const videoIds = getStorageVideoIDs();
       const index = videoIds.indexOf(videoId);
       removeStorageVideoID(index);
-      removeStorageVideo(index);
+      removeStorageVideo(videoId);
 
       li.remove();
     }

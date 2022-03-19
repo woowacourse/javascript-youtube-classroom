@@ -30,8 +30,8 @@ export default class Home {
   }
 
   renderVideoList() {
-    const videoList = getStorageVideos();
-    this.VideoCardContainer.setState({ videoList });
+    const storedVideoList = Object.values(getStorageVideos({ filter: 'stored' }));
+    this.VideoCardContainer.setState({ videoList: storedVideoList });
   }
 
   filterButtonHandler = () => {
