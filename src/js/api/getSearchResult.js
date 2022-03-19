@@ -1,5 +1,6 @@
 import { ITEMS_PER_REQUEST, DEVELOP_MODE } from "../constants/constants";
 import mockObject from "../mockObject";
+import handleError from "../utils/handleError";
 
 export default async function getSearchResult(
   searchKeyword,
@@ -32,12 +33,14 @@ export default async function getSearchResult(
     const data = await response.json();
 
     if (!response.ok) {
+      console.log(data.error.name);
+      console.log(data.error.message);
       throw new Error(data.error.message);
     }
 
     return data;
   } catch (error) {
-    // TODO: 에러 메시지 핸들링 객체 만들어서 붙여주기
+    handleError(error.message);
     return null;
   }
 }

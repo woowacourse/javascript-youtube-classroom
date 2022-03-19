@@ -166,32 +166,40 @@ export default class YoutubeApp {
 
     this.keyword = keyword;
 
-    const responseData = await getSearchResult(this.keyword);
-    this.nextPageToken = responseData.nextPageToken;
+    try {
+      const responseData = await getSearchResult(this.keyword);
+      this.nextPageToken = responseData.nextPageToken;
 
-    if (responseData.items.length === 0) {
-      this.searchModalView.renderNoResultPage();
-      return;
+      if (responseData.items.length === 0) {
+        this.searchModalView.renderNoResultPage();
+        return;
+      }
+
+      this.searchModalView.renderSearchResult(
+        responseData,
+        this.videoStorage.getVideoIdArray()
+      );
+    } catch {
+      this.searchModalView.unrenderSkeleton();
     }
-
-    this.searchModalView.renderSearchResult(
-      responseData,
-      this.videoStorage.getVideoIdArray()
-    );
   }
 
   async searchNextPage() {
     this.searchModalView.renderSkeleton();
 
-    const responseData = await getSearchResult(
-      this.keyword,
-      this.nextPageToken
-    );
+    try {
+      const responseData = await getSearchResult(
+        this.keyword,
+        this.nextPageToken
+      );
 
-    this.nextPageToken = responseData.nextPageToken;
-    this.searchModalView.renderSearchResult(
-      responseData,
-      this.videoStorage.getVideoIdArray()
-    );
+      this.nextPageToken = responseData.nextPageToken;
+      this.searchModalView.renderSearchResult(
+        responseData,
+        this.videoStorage.getVideoIdArray()
+      );
+    } catch {
+      this.searchModalView.unrenderSkeleton();
+    }
   }
 }
