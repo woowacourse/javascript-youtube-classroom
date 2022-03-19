@@ -2,14 +2,21 @@ import { on, emit } from '../util/event';
 import { $ } from '../util/selector';
 
 class ModalView {
-  constructor(target, modalContainer, searchInput, searchModalButton, searchButton, resetNoResult) {
+  constructor({
+    target,
+    modalContainer,
+    searchInput,
+    searchModalButton,
+    searchButton,
+    resetEmptyResult,
+  }) {
     this.$dimmer = $('.dimmer');
     this.$searchModalButton = searchModalButton;
     this.$target = target;
     this.$modalContainer = modalContainer;
     this.$searchInputKeyword = searchInput;
     this.$searchButton = searchButton;
-    this.resetNoResult = resetNoResult;
+    this.resetEmptyResult = resetEmptyResult;
 
     this.bindEvents();
   }
@@ -35,7 +42,7 @@ class ModalView {
     this.toggleModalContainerView();
     this.$target.replaceChildren();
     this.$searchInputKeyword.value = '';
-    this.resetNoResult();
+    this.resetEmptyResult();
   }
 }
 

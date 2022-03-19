@@ -7,9 +7,9 @@ export const convertDataToDateString = (publishTime) => {
 export const convertDOMToSaveObject = (parentTarget) => {
   return {
     videoId: parentTarget.dataset.videoId,
-    videoThumbnail: parentTarget.querySelector('.video-item__thumbnail').src,
-    videoChannelTitle: parentTarget.querySelector('.video-item__channel-name').innerText,
-    videoTitle: parentTarget.querySelector('.video-item__title').innerText,
-    videoDate: parentTarget.querySelector('.video-item__published-date').innerText,
+    videoThumbnail: parentTarget.children[0].src,
+    videoChannelTitle: parentTarget.children[1].innerText,
+    videoTitle: parentTarget.children[2].innerText,
+    videoDate: parentTarget.children[3].innerText,
   };
 };

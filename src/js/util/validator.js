@@ -1,4 +1,4 @@
-import { getLocalStorage } from '../domain/localStorage';
+import { getLocalStorage } from '../store/localStorage';
 import { ERROR_MESSAGE, LOCALSTORAGE_KEY_SAVE, MAX_STOARGE_CAPACITY } from '../constant';
 
 const validator = {

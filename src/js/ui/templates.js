@@ -15,7 +15,7 @@ const template = {
   </li>
   `,
 
-  noSearchResult: () => `
+  emptySearchResult: () => `
     <div class="no-result">
       <img src="https://hwangstar156.github.io/javascript-youtube-classroom/not_found.png" alt="no result image" class="no-result__image" alt="검색결과 없음">
       <p class="no-result__description">
@@ -54,12 +54,11 @@ const template = {
   </div>
   `,
 
-  afterWatchVideoItem: (savedItems, isWatched) => `
+  watchLaterVideoItem: (savedItems, isWatched) => `
   ${savedItems
     .map(({ videoId, videoThumbnail, videoDate, videoTitle, videoChannelTitle }) => {
       return `
     <section class="video-item" data-video-id=${videoId}>
-      <h2 hidden>본 영상</h2>
       <img
         src=${videoThumbnail}
         alt="video-item-thumbnail" class="video-item__thumbnail" />
@@ -69,7 +68,7 @@ const template = {
       <div class="video-watch-controller">
         ${
           isWatched
-            ? '<button class="after-watch-video-button button">👁️</button>'
+            ? '<button class="watch-later-video-button button">👁️</button>'
             : '<button class="watch-video-button button">✅</button>'
         } 
         <button class="delete-watch-video-button button">🗑️</button>
@@ -80,8 +79,12 @@ const template = {
     .join('')}
   `,
 
-  noAfterWatchItem: () => `
-    <p class="no-saved-videos">저장된 영상이 없습니다~</p>
+  emptyItem: (isWatched) => `
+  ${
+    isWatched
+      ? '<p class="no-watched-videos">아직 본 영상이 없습니다~</P>'
+      : '<p class="no-saved-videos">저장된 영상이 없습니다~</p>'
+  }
   `,
 };
 

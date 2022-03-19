@@ -4,44 +4,48 @@ import { emit, on } from '../util/event';
 import template from './templates';
 
 class MainView {
-  constructor(afterWatchVideoList, watchedVideoList, nav) {
-    this.$afterWatchVideoList = afterWatchVideoList;
+  constructor({ watchLaterVideoList, watchedVideoList, nav }) {
+    this.$watchLaterVideoList = watchLaterVideoList;
     this.$watchedVideoList = watchedVideoList;
     this.$nav = nav;
+    this.$nav.children[0].classList.add('selected');
     this.isWatchedPage = false;
     this.bindEvents();
   }
 
   bindEvents() {
     on(this.$nav, 'click', this.onClickNavButton.bind(this));
-    on(this.$afterWatchVideoList, 'click', this.onClickStatusButton.bind(this));
+    on(this.$watchLaterVideoList, 'click', this.onClickStatusButton.bind(this));
     on(this.$watchedVideoList, 'click', this.onClickStatusButton.bind(this));
   }
 
   onClickNavButton({ target }) {
-    this.checkClickAfterWatchNavbarButton(target);
+    this.checkClickwatchLaterNavbarButton(target);
     this.checkClickWatchedVideoNavbarButton(target);
   }
 
-  checkClickAfterWatchNavbarButton(target) {
-    if (target.id === 'after-watch-video-button') {
-      this.moveAfterWatchVideoPage();
-      emit(this.$nav, '@updatesaved', {});
-      return;
+  checkClickwatchLaterNavbarButton(target) {
+    if (target.id === 'watch-later-video-button') {
+      this.showWatchLaterVideoPage();
+      target.classList.add('selected');
+      this.$nav.children[1].classList.remove('selected');
+      emit(this.$nav, '@updatesaved');
     }
   }
 
   checkClickWatchedVideoNavbarButton(target) {
     if (target.id === 'watched-video-button') {
-      this.moveWatchedVideoPage();
-      emit(this.$nav, '@updatewatched', {});
+      this.showWatchedVideoPage();
+      target.classList.add('selected');
+      this.$nav.children[0].classList.remove('selected');
+      emit(this.$nav, '@updatewatched');
     }
   }
 
   onClickStatusButton({ target }) {
     this.checkClickWatchVideoButton(target);
     this.checkClickDeleteVideoButton(target);
-    this.checkClickAfterWatchVideoButton(target);
+    this.checkClickWatchLaterVideoButton(target);
   }
 
   checkClickWatchVideoButton(target) {
@@ -49,10 +53,10 @@ class MainView {
       const parentTarget = target.closest('section');
 
       parentTarget.remove();
-      emit(this.$afterWatchVideoList, '@watched', {
+      emit(this.$watchLaterVideoList, '@watched', {
         watchedVideo: convertDOMToSaveObject(parentTarget),
       });
-      emit(this.$afterWatchVideoList, '@delete', { id: parentTarget.dataset.videoId });
+      emit(this.$watchLaterVideoList, '@delete', { id: parentTarget.dataset.videoId });
     }
   }
 
@@ -66,52 +70,59 @@ class MainView {
         emit(this.$watchedVideoList, '@delete', { id: parentTarget.dataset.videoId });
         return;
       }
-      emit(this.$afterWatchVideoList, '@delete', { id: parentTarget.dataset.videoId });
+      emit(this.$watchLaterVideoList, '@delete', { id: parentTarget.dataset.videoId });
     }
   }
 
-  checkClickAfterWatchVideoButton(target) {
-    if (target.classList.contains('after-watch-video-button')) {
+  checkClickWatchLaterVideoButton(target) {
+    if (target.classList.contains('watch-later-video-button')) {
       const parentTarget = target.closest('section');
 
       parentTarget.remove();
 
-      emit(this.$watchedVideoList, '@afterwatch', {
+      emit(this.$watchedVideoList, '@watchlater', {
         newVideo: convertDOMToSaveObject(parentTarget),
       });
       emit(this.$watchedVideoList, '@delete', { id: parentTarget.dataset.videoId });
     }
   }
 
-  renderItems(element, items) {
+  renderItems(items) {
+    const element = this.isWatchedPage ? this.$watchedVideoList : this.$watchLaterVideoList;
     element.replaceChildren();
-    if (items.length > 0) {
+
+    if (items.length <= 0) {
+      this.renderEmptyItems(element);
+      return;
+    }
+
+    if (this.isWatchedPage) {
       this.renderSavedItems(element, items);
       return;
     }
 
-    this.renderNoItems(element);
+    this.renderSavedItems(element, items);
   }
 
   renderSavedItems(element, items) {
     element.insertAdjacentHTML(
       'beforeend',
-      template.afterWatchVideoItem(items, this.isWatchedPage),
+      template.watchLaterVideoItem(items, this.isWatchedPage),
     );
   }
 
-  renderNoItems(element) {
-    element.insertAdjacentHTML('beforeend', template.noAfterWatchItem());
+  renderEmptyItems(element) {
+    element.insertAdjacentHTML('beforeend', template.emptyItem(this.isWatchedPage));
   }
 
-  moveAfterWatchVideoPage() {
-    this.$afterWatchVideoList.classList.remove('hide');
+  showWatchLaterVideoPage() {
+    this.$watchLaterVideoList.classList.remove('hide');
     this.$watchedVideoList.classList.add('hide');
     this.isWatchedPage = false;
   }
 
-  moveWatchedVideoPage() {
-    this.$afterWatchVideoList.classList.add('hide');
+  showWatchedVideoPage() {
+    this.$watchLaterVideoList.classList.add('hide');
     this.$watchedVideoList.classList.remove('hide');
     this.isWatchedPage = true;
   }

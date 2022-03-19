@@ -1,4 +1,4 @@
-import { getLocalStorage, setLocalStorage } from './localStorage.js';
+import { getLocalStorage, setLocalStorage } from '../store/localStorage';
 import { checkMaxStorageVolume } from '../util/validator.js';
 
 const saveMachine = {

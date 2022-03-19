@@ -1,6 +1,3 @@
-import { LOCALSTORAGE_KEY_SAVE } from '../../src/js/constant';
-import { setLocalStorage } from '../../src/js/domain/localStorage';
-
 describe('메인페이지 테스트', () => {
   beforeEach(() => {
     cy.visit('dist/index.html');
@@ -26,7 +23,7 @@ describe('메인페이지 테스트', () => {
     cy.get('#watched-video-button')
       .click()
       .then(() => {
-        cy.get('.after-watch-video-list').should('be.hidden');
+        cy.get('.watch-later-video-list').should('be.hidden');
         cy.get('.watched-video-list').should('be.visible');
       });
   });
@@ -86,10 +83,10 @@ describe('메인페이지 테스트', () => {
     cy.get('.watch-video-button').click();
     cy.get('#watched-video-button').click();
 
-    cy.get('.after-watch-video-button')
+    cy.get('.watch-later-video-button')
       .click()
       .then(() => {
-        cy.get('.after-watch-video-list').should(($item) => expect($item).to.have.length(1));
+        cy.get('.watch-later-video-list').should(($item) => expect($item).to.have.length(1));
       });
   });
 });

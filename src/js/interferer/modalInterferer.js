@@ -49,14 +49,14 @@ class ModalInterferer {
     );
     this.errorView = new ErrorView(this.$videoListContainer);
     this.skeletonView = new SkeletonView(this.$videoListContainer);
-    this.mainView = new ModalView(
-      this.$videoListContainer,
-      this.$modalContainer,
-      this.$searchInputKeyword,
-      this.$searchModalButton,
-      this.$searchButton,
-      this.searchResultView.resetNoResult.bind(this),
-    );
+    this.mainView = new ModalView({
+      target: this.$videoListContainer,
+      modalContainer: this.$modalContainer,
+      searchInput: this.$searchInputKeyword,
+      searchModalButton: this.$searchModalButton,
+      searchButton: this.$searchButton,
+      resetEmptyResult: this.searchResultView.resetEmptyResult.bind(this),
+    });
   }
 
   requestKeywordChange(data) {
@@ -95,7 +95,6 @@ class ModalInterferer {
 
     return {
       requestAdditionalSearchResult: (offsetHeight, scrollHeight, scrollTop) => {
-        console.log(offsetHeight, scrollHeight, scrollTop);
         if (scrollTop === 0 || requestErrored) return;
         if (offsetHeight + scrollTop >= scrollHeight) {
           this.searchVideo();

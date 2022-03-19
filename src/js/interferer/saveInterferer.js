@@ -7,7 +7,7 @@ import { LOCALSTORAGE_KEY_SAVE, LOCALSTORAGE_KEY_WATCHED } from '../constant/ind
 class SaveInterferer {
   constructor(mainInterferer) {
     this.$videoListContainer = $('.video-list');
-    this.$afterWatchVideoList = $('.after-watch-video-list');
+    this.$watchLaterVideoList = $('.watch-later-video-list');
     this.$watchedVideoList = $('.watched-video-list');
     this.saveView = new SaveView(this.$videoListContainer);
     this.mainInterferer = mainInterferer;
@@ -15,14 +15,14 @@ class SaveInterferer {
 
   init() {
     on(this.$videoListContainer, '@save', (e) => this.saveVideo(e.detail.newVideo));
-    on(this.$afterWatchVideoList, '@watched', (e) => this.saveWatchedVideo(e.detail.watchedVideo));
-    on(this.$watchedVideoList, '@afterwatch', (e) => this.saveVideo(e.detail.newVideo));
+    on(this.$watchLaterVideoList, '@watched', (e) => this.saveWatchedVideo(e.detail.watchedVideo));
+    on(this.$watchedVideoList, '@watchlater', (e) => this.saveVideo(e.detail.newVideo));
   }
 
   saveVideo(newVideo) {
     try {
       saveMachine.saveToLocalStorage(LOCALSTORAGE_KEY_SAVE, newVideo);
-      this.mainInterferer.initSavedItems();
+      this.mainInterferer.loadSavedItemsPage();
     } catch (err) {
       alert(err.message);
     }

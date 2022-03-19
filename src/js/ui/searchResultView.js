@@ -24,17 +24,17 @@ class SearchResultView {
 
   reset() {
     this.resetSearchResult();
-    this.resetNoResult();
+    this.resetEmptyResult();
   }
 
   resetSearchResult() {
-    this.resetNoResult();
+    this.resetEmptyResult();
     this.$target.replaceChildren();
     this.$target.classList.remove('hide');
     this.$searchInputKeyword.blur();
   }
 
-  resetNoResult() {
+  resetEmptyResult() {
     const $noResultContainer = $('.no-result');
     if ($noResultContainer) {
       $noResultContainer.remove();
@@ -44,7 +44,7 @@ class SearchResultView {
 
   renderSearchResult(items) {
     if (items.length === 0) {
-      this.renderNoResultImage();
+      this.renderEmptyResultImage();
       return;
     }
     this.renderVideo(items);
@@ -56,9 +56,9 @@ class SearchResultView {
     });
   }
 
-  renderNoResultImage() {
+  renderEmptyResultImage() {
     this.$target.classList.add('hide');
-    this.$searchResult.insertAdjacentHTML('beforeend', template.noSearchResult());
+    this.$searchResult.insertAdjacentHTML('beforeend', template.emptySearchResult());
     this.$searchResult.classList.add('search-result--no-result');
   }
 }
