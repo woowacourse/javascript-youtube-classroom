@@ -25,6 +25,33 @@ export default class WebStore {
     this.#cache(data);
     localStorage.setItem(this.#key, JSON.stringify(data));
   }
+
+  getWatchedVideo() {
+    return this.#cached.filter(video => video.watched === true);
+  }
+
+  getWatchedVideoLength() {
+    return this.getWatchedVideo().length;
+  }
+
+  getWatchingVideoLength() {
+    return this.#cached.length - this.getWatchedVideoLength();
+  }
+
+  changeWatchedInLocalStorage(videoId) {
+    const payload = this.#cached.map(video => {
+      if (video.videoId === videoId) {
+        video.watched = !video.watched;
+      }
+      return video;
+    });
+    this.save(payload);
+  }
+
+  deleteVideoInLocalStorage(videoId) {
+    const payload = this.#cached.filter(video => video.videoId !== videoId);
+    this.save(payload);
+  }
 }
 
 export const webStore = new WebStore('savedVideos');

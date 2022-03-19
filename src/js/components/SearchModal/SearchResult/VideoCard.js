@@ -61,21 +61,14 @@ export default class VideoCard extends Component {
 
   handleDelete() {
     if (window.confirm('삭제하시겠습니까?')) {
-      const { videoId } = this.props.video;
-      const prevSavedVideos = webStore.load();
-      const payload = prevSavedVideos.filter(
-        video => video.videoId !== videoId
-      );
-      webStore.save(payload);
+      webStore.deleteVideoInLocalStorage(this.props.video.videoId);
       this.target.remove();
 
-      const watchedVideo = payload.filter(video => video.watched === true);
-
-      if (watchedVideo.length === 0) {
+      if (webStore.getWatchedVideoLength() === 0) {
         rootStore.setState({ hasWatchedVideo: false });
       }
 
-      if (payload.length - watchedVideo.length === 0) {
+      if (webStore.getWatchingVideoLength() === 0) {
         rootStore.setState({ hasWatchingVideo: false });
       }
 
@@ -88,21 +81,12 @@ export default class VideoCard extends Component {
   }
 
   handleWatched() {
-    const { videoId } = this.props.video;
-    const prevSavedVideos = webStore.load();
-    const payload = prevSavedVideos.map(video => {
-      if (video.videoId === videoId) {
-        video.watched = !video.watched;
-      }
-      return video;
-    });
-    webStore.save(payload);
+    webStore.changeWatchedInLocalStorage(this.props.video.videoId);
     this.target.remove();
-    const watchedVideo = payload.filter(video => video.watched === true);
 
     rootStore.setState({
-      hasWatchedVideo: watchedVideo.length !== 0,
-      hasWatchingVideo: payload.length - watchedVideo.length !== 0,
+      hasWatchedVideo: webStore.getWatchedVideoLength() !== 0,
+      hasWatchingVideo: webStore.getWatchingVideoLength() !== 0,
     });
   }
 
