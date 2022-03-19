@@ -35,66 +35,61 @@ export default class Controller {
   async #searchVideo(event) {
     this.searchResultView.removeVideo();
     const { keyword } = event.detail;
-
-    try {
-      this.video.keyword = keyword;
-    } catch (error) {
-      this.mainView.toastNotification('error', error.message);
-      return;
-    }
+    this.#saveKeyword(keyword);
 
     this.searchResultView.showSkeleton();
+
     const fetchedVideos = await fetchYoutubeApi(keyword);
+    this.#setVideoInfo(fetchedVideos);
 
-    try {
-      this.video.setVideoInfo(fetchedVideos);
-    } catch (error) {
-      this.searchResultView.removeVideo();
-      this.searchResultView.showNotFound();
-      this.mainView.toastNotification('error', error.message);
-      return;
-    }
+    const newVideoItems = [...this.video.newVideoItems];
+    this.#renderVideo(newVideoItems);
 
-    this.video.accumulateVideoItems();
-    this.video.updateNewVideoItems();
-    this.searchResultView.hideNotFound();
-
-    try {
-      this.searchResultView.renderVideo(this.video.newVideoItems);
-    } catch (error) {
-      this.searchResultView.hideSkeleton();
-    }
     this.searchResultView.startObserve();
   }
 
   // (이미 검색버튼을 눌러진 상태) 스크롤 내림으로써 발생하는 추가 fetch, render
   async #scrollNextVideos() {
     this.searchResultView.stopObserve();
+
     this.searchResultView.showSkeleton();
 
     const fetchedVideos = await fetchYoutubeApi(this.video.keyword, this.video.nextPageToken);
+    this.#setVideoInfo(fetchedVideos);
 
+    const newVideoItems = [...this.video.newVideoItems];
+    this.#renderVideo(newVideoItems);
+
+    this.searchResultView.startObserve();
+  }
+
+  #saveKeyword(keyword) {
+    try {
+      this.video.keyword = keyword;
+    } catch (error) {
+      this.mainView.toastNotification('error', error.message);
+    }
+  }
+
+  #setVideoInfo(fetchedVideos) {
     try {
       this.video.setVideoInfo(fetchedVideos);
     } catch (error) {
       this.searchResultView.removeVideo();
+      this.searchResultView.showNotFound();
       this.mainView.toastNotification('error', error.message);
-      return;
     }
-
     this.video.accumulateVideoItems();
     this.video.updateNewVideoItems();
+    this.searchResultView.hideNotFound();
+  }
 
-    if (this.video.newVideoItems.length < VIDEO.MINIMUM_FETCHED_VIDEO_COUNT) {
-      return;
-    }
-
+  #renderVideo(newVideoItems) {
     try {
-      this.searchResultView.renderVideo(this.video.newVideoItems);
+      this.searchResultView.renderVideo(newVideoItems);
     } catch (error) {
       this.searchResultView.hideSkeleton();
     }
-    this.searchResultView.startObserve();
   }
 
   #saveVideo(event) {

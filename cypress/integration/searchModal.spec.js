@@ -1,7 +1,6 @@
 import { REDIRECT_SERVER_HOST, YOUTUBE_SEARCH_PATH } from '../../src/constants/youtubeApi';
 import ERROR_MESSAGES from '../../src/constants/errorMessages';
 
-// const  = './index.html';
 describe("[API를 fixture로 대체] 1. [영상 검색 모달 화면]에서 '영상 검색, 렌더링, 저장' 테스트", () => {
   const inputKeyword = '우아한테크코스';
 
