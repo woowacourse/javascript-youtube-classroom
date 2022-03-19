@@ -71,7 +71,7 @@ export default class SearchVideoManager {
   }
 
   fetchYoutubeData() {
-    fetch(generateFetchURL(this.#keyword, this.#nextPageToken))
+    return fetch(generateFetchURL(this.#keyword, this.#nextPageToken))
       .then((response) => {
         if (!response.ok) {
           throw new Error(response.status);
