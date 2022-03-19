@@ -92,7 +92,7 @@ input {
     backdrop-filter: blur(0.2rem);
     -webkit-backdrop-filter: blur(0.2rem);
 
-    @include animate(0.5s ease) {
+    @include animate(0.3s ease) {
       from {
         opacity: 0;
         backdrop-filter: blur(0rem);
