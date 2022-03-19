@@ -98,6 +98,8 @@ export const youtubeSearchResult = {
         video.save(videoData);
         e.target.setAttribute('hidden', true);
         youtubeClassRoomVideo.renderVideoList(false);
+        $('#will-watch-video-button').classList.add('highlight');
+        $('#watched-video-button').classList.remove('highlight');
       }
     });
   },
