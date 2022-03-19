@@ -25,7 +25,7 @@ export default class SearchEngine {
       const json = await response.json();
 
       if (this.#isDataExist(json)) {
-        this.#pageToken = json.nextPageToken;
+        this.#pageToken = json.nextPageToken ?? null;
         return json.items;
       }
 
