@@ -33,13 +33,6 @@ export default class SearchResultView {
     }
   }
 
-  onResponseSaveVideo = (e) => {
-    const { result, target } = e.detail;
-    if ( result === 'SUCCESS' ) {
-      target.remove();
-    }
-  }
-
   updateOnSearchState = (e) => {
     const { searchState } = e.detail;
     if (searchState === 'READY') { this.resetSearchResult(); };
