@@ -17,8 +17,9 @@ export default class App {
   searchResultTemplate() {
     return `
       <section class="search-result">
-        <ul class="video-list">
-        </ul>
+        <div class="container">
+          <ul class="video-list grid col-sm-1 col-md-2 col-lg-3 col-xl-4"></ul>
+        </div>
         <div class="no-result">
           <img src="${NotFoundImage}" alt="no result image" class="no-result__image">
           <p class="no-result__description">

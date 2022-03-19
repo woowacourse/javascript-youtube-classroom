@@ -1,3 +1,4 @@
+@import "./grid.css";
 @import "./button.css";
 
 body {
@@ -5,12 +6,7 @@ body {
     font-size: 16px;
 }
 
-#app {
-    max-width: 1020px;
-    margin: 0 auto;
-}
-
-.classroom-container__title {
+header > h1 {
     text-align: center;
     font-weight: bold;
     font-size: 34px;
