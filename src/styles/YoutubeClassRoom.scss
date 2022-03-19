@@ -16,11 +16,11 @@ h1.classroom-title {
 .navigation {
   display: grid;
 
-  > #search-modal-button {
+  > .button {
     grid-column: 20 / 1 span;
   }
 
-  > #classroom-watched-filter-button {
+  > .button-group {
     grid-column: 1 / 5;
 
     .button {
@@ -259,7 +259,12 @@ h1.classroom-title {
 
         > .image,
         .line {
-          background-image: linear-gradient(90deg, #e0e0e0 0px, #ededed 30px, #e0e0e0 60px);
+          background-image: linear-gradient(
+            90deg,
+            $color-alto 0px,
+            $color-gallery 30px,
+            $color-alto 60px
+          );
           margin-bottom: 0.8rem;
 
           @include animate(2s infinite ease-out) {
