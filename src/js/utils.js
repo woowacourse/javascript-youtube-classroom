@@ -14,3 +14,12 @@ export const consoleErrorWithConditionalAlert = (error, errorNameForAlert) => {
     alert(error.message);
   }
 };
+
+export const parseJSON = (str, fallback) => {
+  try {
+    return JSON.parse(str) ?? fallback;
+  } catch (e) {
+    console.error(e);
+    return fallback;
+  }
+};

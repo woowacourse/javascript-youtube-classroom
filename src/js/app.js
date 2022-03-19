@@ -1,16 +1,20 @@
 import SearchModal from './searchModal';
 import { $ } from './utils';
 import NotFoundImage from '../assets/images/not_found.png';
+import { LOCAL_STORAGE_VIDEO_LIST_KEY, MAX_SAVABLE_VIDEOS_COUNT } from './constants/constant';
+import VideoStorage from './storage/videoStorage';
 
 export default class App {
   constructor() {
+    this.storage = new VideoStorage(LOCAL_STORAGE_VIDEO_LIST_KEY, MAX_SAVABLE_VIDEOS_COUNT);
+
     this.$modalContainer = $('.modal-container');
 
     $('.search-modal').insertAdjacentHTML('beforeend', this.searchResultTemplate());
     $('#search-modal-button').addEventListener('click', this.openModal);
     $('.dimmer').addEventListener('click', this.closeModal);
 
-    const searchModal = new SearchModal();
+    const searchModal = new SearchModal(this.storage);
     searchModal.init();
   }
 

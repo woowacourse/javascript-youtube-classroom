@@ -1,4 +1,4 @@
-import { parseJSON } from '../js/utils';
+import { parseJSON } from '../utils';
 
 class LocalStorage {
   constructor(key) {

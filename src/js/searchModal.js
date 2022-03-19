@@ -1,9 +1,7 @@
 /* eslint-disable max-lines-per-function */
 import { MAX_RENDER_VIDEOS_COUNT, VALIDATION_ERROR_NAME } from './constants/constant';
 import VideoItem from './videoItem';
-import checkVideoListFull from './validation/validators';
-import ValidationError from './validation/validation-error';
-import { consoleErrorWithConditionalAlert, arrayToMap, $ } from './utils';
+import { consoleErrorWithConditionalAlert, $ } from './utils';
 
 class SearchModal {
   serverUrl = 'https://silly-volhard-192918.netlify.app/.netlify/functions/youtube';
@@ -25,9 +23,6 @@ class SearchModal {
     this.$searchButton.addEventListener('click', this.handleClickSearchButton);
     this.$videoList.addEventListener('click', this.handleClickVideoList);
     this.$videoList.addEventListener('scroll', this.handleScrollVideoList);
-
-    const videoList = this.storage.load();
-    this.savedVideoMap = arrayToMap(videoList);
   }
 
   templateSkeletons(videoCount) {
@@ -52,7 +47,7 @@ class SearchModal {
   renderVideoItems(videos) {
     const videoListTemplate = videos
       .map(video => {
-        const isSavedVideo = Object.prototype.hasOwnProperty.call(this.savedVideoMap, video.id);
+        const isSavedVideo = Object.prototype.hasOwnProperty.call(this.storage.cache, video.id);
         const button = !isSavedVideo
           ? '<button class="btn video-item__save-button">⬇ 저장</button>'
           : '';
@@ -119,7 +114,7 @@ class SearchModal {
     const $videoItem = target.closest('.video-item');
     const videoId = $videoItem.getAttribute('data-video-id');
     try {
-      this.saveVideo(videoId);
+      this.storage.saveVideo(videoId);
       target.setAttribute('hidden', true);
     } catch (error) {
       consoleErrorWithConditionalAlert(error, VALIDATION_ERROR_NAME);
@@ -132,17 +127,6 @@ class SearchModal {
       this.handleClickSaveButton(event);
     }
   };
-
-  saveVideo(videoId) {
-    const videoList = this.storage.load();
-    const { hasError, errorMessage } = checkVideoListFull(videoList);
-    if (hasError) {
-      throw new ValidationError(errorMessage);
-    }
-    const newVideoList = [...videoList, videoId];
-    this.savedVideoMap = arrayToMap(newVideoList);
-    this.storage.save(newVideoList);
-  }
 
   resetSearchResult() {
     this.$videoList.replaceChildren(); // 내용물을 모두 비워준다
