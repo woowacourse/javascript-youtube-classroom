@@ -87,7 +87,7 @@
 .video-list {
   display: grid;
   grid-gap: 20px;
-  max-width: 1040px;
+  width: 72vw;
   height: 493px;
   overflow-y: scroll;
 }
