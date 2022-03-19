@@ -111,7 +111,13 @@ export default class YoutubeApp {
   };
 
   #onClickDeleteButton = ({ target }) => {
-    if (!target.matches(".video-item__delete-button")) return;
+    if (!target.matches(".video-item__delete-button")) {
+      return;
+    }
+
+    if (!window.confirm("정말로 삭제하시겠습니까?")) {
+      return;
+    }
 
     const videoData = getTargetVideoData(target, ".video-item");
     this.videoStorage.deleteVideo(videoData.videoId);

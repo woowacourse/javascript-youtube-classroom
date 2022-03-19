@@ -91,7 +91,7 @@ describe("나만의 유튜브 강의실 전체 플로우 테스트", () => {
 
     cy.on("window:confirm", (text) => {
       console.log(text);
-      expect(text).to.be.calledWith("정말로 삭제하시겠습니까?");
+      expect(text).to.contains("정말로 삭제하시겠습니까?");
       return false;
     });
 
@@ -103,7 +103,7 @@ describe("나만의 유튜브 강의실 전체 플로우 테스트", () => {
 
     cy.on("window:confirm", (text) => {
       console.log(text);
-      expect(text).to.be.calledWith("정말로 삭제하시겠습니까?");
+      expect(text).to.contains("정말로 삭제하시겠습니까?");
       return true;
     });
 
