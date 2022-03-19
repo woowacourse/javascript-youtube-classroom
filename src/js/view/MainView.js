@@ -70,7 +70,7 @@ class MainView {
 
   #createSavedVideoElement = (video, isWatched) => {
     const videoElement = document.createElement('li');
-    videoElement.className = 'video-item';
+    videoElement.className = 'saved-video-item';
     videoElement.insertAdjacentHTML('beforeend', this.#savedVideoElementTemplate(video, isWatched));
     selectDom('.check-button', videoElement).addEventListener('click', this.#handleCheck);
     selectDom('.delete-button', videoElement).addEventListener('click', this.#handleDelete);
