@@ -2,16 +2,24 @@ import { ITEMS_PER_REQUEST, DEVELOP_MODE } from "../constants/constants";
 import mockObject from "../mockObject";
 import handleError from "../utils/handleError";
 
+let isProgressing = false;
+
 export default async function getSearchResult(
   searchKeyword,
   nextPageToken = ""
 ) {
+  if (isProgressing) {
+    return null;
+  }
+
   if (DEVELOP_MODE) {
     return {
       items: mockObject(),
       nextPageToken: "ABCDEF",
     };
   }
+
+  isProgressing = true;
 
   const REDIRECT_SERVER_HOST = "https://unruffled-turing-aacdf7.netlify.app";
 
@@ -38,9 +46,11 @@ export default async function getSearchResult(
       throw new Error(data.error.message);
     }
 
+    isProgressing = false;
     return data;
   } catch (error) {
     handleError(error.message);
+    isProgressing = false;
     return null;
   }
 }

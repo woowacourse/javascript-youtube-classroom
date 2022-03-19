@@ -168,8 +168,13 @@ export default class YoutubeApp {
 
     try {
       const responseData = await getSearchResult(this.keyword);
-      this.nextPageToken = responseData.nextPageToken;
 
+      if (responseData === null) {
+        this.searchModalView.unrenderSkeleton();
+        return;
+      }
+
+      this.nextPageToken = responseData.nextPageToken;
       if (responseData.items.length === 0) {
         this.searchModalView.renderNoResultPage();
         return;
@@ -192,6 +197,11 @@ export default class YoutubeApp {
         this.keyword,
         this.nextPageToken
       );
+
+      if (responseData === null) {
+        this.searchModalView.unrenderSkeleton();
+        return;
+      }
 
       this.nextPageToken = responseData.nextPageToken;
       this.searchModalView.renderSearchResult(
