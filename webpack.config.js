@@ -12,7 +12,7 @@ module.exports = () => {
     mode: 'development',
     entry: './src/js/index.js',
     resolve: {
-      extensions: ['.js', '.css'],
+      extensions: ['.js', '.css', '.scss'],
       alias: {
         '@Display': path.resolve(__dirname, 'src/js/display/'),
         '@Domain': path.resolve(__dirname, 'src/js/domain/'),

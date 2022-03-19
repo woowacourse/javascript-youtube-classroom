@@ -58,6 +58,31 @@ h1.classroom-title {
   gap: 1rem;
   width: 100%;
 
+  .empty-content {
+    padding: 5rem 0;
+    grid-column: 4 span;
+    font-weight: bold;
+    text-align: center;
+
+    > i {
+      font-size: 10rem;
+      margin-bottom: 3rem;
+      color: $color-gray;
+      opacity: 0.2;
+    }
+
+    .title {
+      font-size: 1.3rem;
+      margin-bottom: 0.3rem;
+      color: $color-mine-shaft;
+    }
+
+    .description {
+      font-size: 0.9rem;
+      color: $color-black-30;
+    }
+  }
+
   .no-result {
     grid-column: 4 span;
     text-align: center;
