@@ -8,3 +8,6 @@ export const getTimeStamp = (targetDate = new Date()) => Math.round(targetDate.g
 
 export const getUrlSearchParams = (url, params) =>
   `${url}?${new URLSearchParams(params).toString()}`;
+
+export const getTimeDiffToPercent = (startTime, currentTime, totalTime = 1000) =>
+  Math.ceil((currentTime - startTime) * (100 / totalTime));

@@ -27,6 +27,8 @@
         "operator-linebreak":"off",
         "lines-between-class-members":"off",
         "array-callback-return":"off",
-        "no-extra-boolean-cast":"off"
+        "no-extra-boolean-cast":"off",
+        "no-await-in-loop":"off",
+        "no-restricted-globals": "off"
     }
 }

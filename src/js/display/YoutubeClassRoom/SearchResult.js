@@ -7,7 +7,8 @@ import { ERROR_MESSAGE, ACTION_TYPE } from '@Constants/String';
 import { SELECTOR, DOM_NAME } from '@Constants/Selector';
 import YoutubeSearchStore from '@Domain/YoutubeSearchStore';
 import YoutubeSaveStorage from '@Domain/YoutubeSaveStorage';
-import YoutubeSaveListStore from '../../domain/YoutubeSaveListStore';
+import YoutubeSaveListStore from '@Domain/YoutubeSaveListStore';
+import Snackbar from '@Display/Element/Snackbar';
 
 export default class SearchResult {
   $container = $(SELECTOR.ID.SEARCH_RESULT_CONTAINER);
@@ -67,6 +68,8 @@ export default class SearchResult {
       YoutubeSaveStorage.remove(videoId);
       YoutubeSaveListStore.dispatch('UPDATE_LIST');
       $target.textContent = '⬇ 저장';
+
+      new Snackbar('볼 영상 목록에서 제거되었습니다.');
       return;
     }
 
@@ -79,6 +82,8 @@ export default class SearchResult {
     YoutubeSaveStorage.add(videoId, videoList[primaryKey]);
     YoutubeSaveListStore.dispatch('UPDATE_LIST');
     $target.textContent = '🗑 저장 취소';
+
+    new Snackbar('볼 영상 목록에 저장되었습니다.');
   };
 
   drawSkeletonList() {

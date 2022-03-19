@@ -5,7 +5,8 @@ import { CLASS_ROOM_SETTING } from '@Constants/Setting';
 import { ERROR_MESSAGE, ACTION_TYPE } from '@Constants/String';
 import { SELECTOR, DOM_NAME } from '@Constants/Selector';
 import YoutubeSaveListStore from '@Domain/YoutubeSaveListStore';
-import YoutubeSaveStorage from '../../domain/YoutubeSaveStorage';
+import YoutubeSaveStorage from '@Domain/YoutubeSaveStorage';
+import Snackbar from '@Display/Element/Snackbar';
 
 export default class SaveList {
   $container = $('#save-video-result');
@@ -59,6 +60,7 @@ export default class SaveList {
 
     YoutubeSaveStorage.watched(videoId, isUpdateState);
     YoutubeSaveListStore.dispatch('UPDATE_LIST');
+    new Snackbar('영상의 상태를 변경하였습니다.');
   };
 
   handleRemoveItem = ({ target: $target }) => {
@@ -77,7 +79,7 @@ export default class SaveList {
 
       const { id: videoId, content } = video;
       const $list = createElement('LI', {
-        dataset: { 'video-id': videoId, 'primary-key': index, state: listType },
+        dataset: { 'video-id': videoId, state: listType },
         className: DOM_NAME.CLASS.VIDEO_ITEM,
         insertAdjacentHTML: [
           'afterbegin',
