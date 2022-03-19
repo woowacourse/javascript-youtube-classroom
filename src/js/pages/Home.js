@@ -1,6 +1,10 @@
 import { storedResultStyled } from '../common/template';
 import VideoCardContainer from '../common/VideosCardContainer';
 import { getStorageVideos } from '../utils/localStorage';
+import toast from '../common/toast';
+import { EMPTY_VIDEO_MESSAGE } from '../constants';
+
+const toastPopup = toast();
 
 export default class Home {
   constructor(element) {
@@ -30,9 +34,16 @@ export default class Home {
     this.renderVideoList();
   }
 
+  emptyVideoList(videoList) {
+    if (videoList.length === 0) {
+      toastPopup(EMPTY_VIDEO_MESSAGE);
+    }
+  }
+
   renderVideoList() {
-    const storedVideoList = Object.values(getStorageVideos({ filter: this.currentFilter }));
-    this.VideoCardContainer.setState({ videoList: storedVideoList, filter: this.currentFilter });
+    const videoList = Object.values(getStorageVideos({ filter: this.currentFilter }));
+    this.emptyVideoList(videoList);
+    this.VideoCardContainer.setState({ videoList, filter: this.currentFilter });
   }
 
   showStoredVideosHandler = () => {
