@@ -1,9 +1,5 @@
 /* eslint-disable max-lines-per-function */
-import {
-  MAX_RENDER_VIDEOS_COUNT,
-  LOCAL_STORAGE_VIDEO_LIST_KEY,
-  VALIDATION_ERROR_NAME,
-} from './constants/constant';
+import { MAX_RENDER_VIDEOS_COUNT, VALIDATION_ERROR_NAME } from './constants/constant';
 import VideoItem from './videoItem';
 import checkVideoListFull from './validation/validators';
 import ValidationError from './validation/validation-error';
@@ -13,6 +9,10 @@ class SearchModal {
   serverUrl = 'https://silly-volhard-192918.netlify.app/.netlify/functions/youtube';
 
   nextPageToken = null;
+
+  constructor(storage) {
+    this.storage = storage;
+  }
 
   init() {
     this.$modal = $('.search-modal');
@@ -26,7 +26,7 @@ class SearchModal {
     this.$videoList.addEventListener('click', this.handleClickVideoList);
     this.$videoList.addEventListener('scroll', this.handleScrollVideoList);
 
-    const videoList = this.getVideoListFromLocalStorage();
+    const videoList = this.storage.load();
     this.savedVideoMap = arrayToMap(videoList);
   }
 
@@ -134,14 +134,14 @@ class SearchModal {
   };
 
   saveVideo(videoId) {
-    const videoList = this.getVideoListFromLocalStorage();
+    const videoList = this.storage.load();
     const { hasError, errorMessage } = checkVideoListFull(videoList);
     if (hasError) {
       throw new ValidationError(errorMessage);
     }
     const newVideoList = [...videoList, videoId];
     this.savedVideoMap = arrayToMap(newVideoList);
-    this.saveVideoListToLocalStorage(newVideoList);
+    this.storage.save(newVideoList);
   }
 
   resetSearchResult() {
@@ -182,14 +182,6 @@ class SearchModal {
     } finally {
       this.$searchResult.classList.remove('loading');
     }
-  }
-
-  getVideoListFromLocalStorage() {
-    return JSON.parse(localStorage.getItem(LOCAL_STORAGE_VIDEO_LIST_KEY)) ?? [];
-  }
-
-  saveVideoListToLocalStorage(videoList) {
-    localStorage.setItem(LOCAL_STORAGE_VIDEO_LIST_KEY, JSON.stringify(videoList));
   }
 }
 
