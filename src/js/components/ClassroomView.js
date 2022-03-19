@@ -1,9 +1,11 @@
 import { getVideoItemsFromLocalStorage, saveVideoItemToLocalStorage } from '../utils/localStorage.js';
 import { makeThumbnailTemplate, noClassroomContentsTemplate } from '../utils/templates.js';
+import { Classroom } from '../model/Classroom.js';
 
-export class Classroom {
+export class ClassroomView {
   constructor(props) {
     this.props = props;
+    this.classroom = new Classroom();
 
     this.openModalButton = document.getElementById('search-modal-button');
     this.openModalButton.addEventListener('click', this.props.openModal);
@@ -30,10 +32,10 @@ export class Classroom {
     this.alreadyWatchedVideoButton.classList.remove('clicked');
     this.willSeeVideoButton.classList.add('clicked');
 
-    this.videoList = getVideoItemsFromLocalStorage();
+    this.classroom.videoList = getVideoItemsFromLocalStorage();
     this.contentsContainer.insertAdjacentHTML(
       'beforeend',
-      this.videoList
+      this.classroom.videoList
         .map((video) => {
           if (video.watchLater === true) {
             return makeThumbnailTemplate(video);
@@ -53,21 +55,21 @@ export class Classroom {
 
   handleContentsButton = (e) => {
     if (e.target.classList.contains('already-watch-button')) {
-      this.videoList.forEach((video) => {
+      this.classroom.videoList.forEach((video) => {
         if (e.target.id === video.id) {
           video.watchLater = false;
           e.target.parentNode.parentNode.remove();
         }
       });
-      saveVideoItemToLocalStorage(this.videoList);
+      saveVideoItemToLocalStorage(this.classroom.videoList);
     }
 
     if (e.target.classList.contains('discard-button')) {
       if (window.confirm('진짜 지우실?')) {
-        this.videoList = this.videoList.filter((video) => video.id !== e.target.id);
+        this.classroom.videoList = this.classroom.videoList.filter((video) => video.id !== e.target.id);
         e.target.parentNode.parentNode.remove();
 
-        saveVideoItemToLocalStorage(this.videoList);
+        saveVideoItemToLocalStorage(this.classroom.videoList);
       }
     }
   };
@@ -78,10 +80,10 @@ export class Classroom {
     this.willSeeVideoButton.classList.remove('clicked');
     this.alreadyWatchedVideoButton.classList.add('clicked');
 
-    this.videoList = getVideoItemsFromLocalStorage();
+    this.classroom.videoList = getVideoItemsFromLocalStorage();
     this.contentsContainer.insertAdjacentHTML(
       'beforeend',
-      this.videoList
+      this.classroom.videoList
         .map((video) => {
           if (video.watchLater === false) {
             return makeThumbnailTemplate(video);
