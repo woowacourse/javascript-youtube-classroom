@@ -1,6 +1,5 @@
 import notFoundImage from '../../assets/images/not_found.jpg';
 import serverErrorImage from '../../assets/images/server_error.jpg';
-
 import { VIDEO_COUNT } from '../util/constants';
 
 export const NO_RESULT_TEMPLATE = `
@@ -28,20 +27,13 @@ export const SKELETON_TEMPLATE = `
   </li>
 `.repeat(VIDEO_COUNT);
 
-export const getVideoItemTemplate = ({
-  channelTitle,
-  publishTime,
-  title,
-  videoId,
-  isWatched,
-  thumbnails,
-}) => `
+export const getVideoItemTemplate = ({ channelTitle, publishTime, title, videoId, isWatched }) => `
   <li class="video-item" data-video-id=${videoId}>
     <div id="image-wrapper">
-      <img
-        src=${thumbnails}
+      <iframe
+        src="https://www.youtube.com/embed/${videoId}"
         alt="video-item-thumbnail" class="video-item__thumbnail">
-      </img>
+      </iframe>
     </div>
     <h4 class="video-item__title">${title}</h4>
     <p class="video-item__channel-name">${channelTitle}</p>
