@@ -1,5 +1,6 @@
 @import './utils/Variables.scss';
-@import './utils/fontawesome.css';
+@import './utils/Responsive.scss';
+@import './utils/Fontawesome.css';
 @import './layout/Font.scss';
 @import './layout/Layout.scss';
 
@@ -17,6 +18,10 @@ ul {
 
 html {
   font-size: 15px;
+
+  @include mobile {
+    font-size: 3vw;
+  }
 }
 
 html,

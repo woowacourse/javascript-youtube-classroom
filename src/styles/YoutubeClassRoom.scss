@@ -1,4 +1,6 @@
 @import './utils/Variables.scss';
+@import './utils/Responsive.scss';
+@import './utils/Animation.scss';
 
 h1.classroom-title {
   text-align: center;
@@ -53,16 +55,32 @@ h1.classroom-title {
 
 .video-result {
   display: grid;
+  width: 100%;
   grid-template-columns: repeat(4, 1fr);
   grid-auto-rows: max-content;
   gap: 1rem;
-  width: 100%;
+
+  @include notebook {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  @include tablet {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  @include mobile {
+    grid-template-columns: repeat(1, 1fr);
+  }
 
   .empty-content {
     padding: 5rem 0;
     grid-column: 4 span;
     font-weight: bold;
     text-align: center;
+
+    @include mobile {
+      padding: 2rem 1rem;
+    }
 
     > i {
       font-size: 10rem;
@@ -80,24 +98,6 @@ h1.classroom-title {
     .description {
       font-size: 0.9rem;
       color: $color-black-30;
-    }
-  }
-
-  .no-result {
-    grid-column: 4 span;
-    text-align: center;
-    padding: 4rem 0 0;
-
-    > .image {
-      width: 25%;
-      margin-bottom: 2rem;
-    }
-
-    > .description {
-      color: $color-gray;
-      font-size: 1.1rem;
-      text-align: center;
-      letter-spacing: 0.5px;
     }
   }
 
@@ -181,8 +181,18 @@ h1.classroom-title {
     gap: 1rem;
     margin-bottom: 3.5rem;
 
+    @include mobile {
+      display: grid;
+      grid-template-columns: repeat(6, 1fr);
+    }
+
     > .search-input-keyword {
       width: 50%;
+
+      @include mobile {
+        width: 100%;
+        grid-column: 4 span;
+      }
     }
 
     > .search-button {
@@ -190,22 +200,56 @@ h1.classroom-title {
       border: none;
       background-color: $brand-accent-color;
       color: $brand-accent-color-font;
+
+      @include mobile {
+        width: 100%;
+        grid-column: 2 span;
+      }
     }
   }
 
   .search-result {
     width: 100%;
+
+    @include mobile {
+      position: absolute;
+      width: unset;
+      top: 11rem;
+      bottom: 0px;
+      left: 0px;
+      right: 0px;
+      padding: 1rem;
+    }
+
     .video-list {
       overflow-y: scroll;
       height: 30rem;
       padding: 0 0.5rem;
+
+      @include mobile {
+        height: 100%;
+        padding: 0;
+      }
     }
+
     #skeleton-list {
       display: none;
       grid-template-columns: repeat(4, 1fr);
       grid-auto-rows: max-content;
       gap: 1rem;
       width: 100%;
+
+      @include notebook {
+        grid-template-columns: repeat(3, 1fr);
+      }
+
+      @include tablet {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      @include mobile {
+        grid-template-columns: repeat(1, 1fr);
+      }
 
       .skeleton {
         overflow: hidden;
@@ -216,8 +260,18 @@ h1.classroom-title {
         > .image,
         .line {
           background-image: linear-gradient(90deg, #e0e0e0 0px, #ededed 30px, #e0e0e0 60px);
-          animation: refresh 2s infinite ease-out;
           margin-bottom: 0.8rem;
+
+          @include animate(2s infinite ease-out) {
+            0% {
+              background-position: calc(-100px);
+            }
+
+            40%,
+            100% {
+              background-position: 320px;
+            }
+          }
         }
 
         > .image {
@@ -229,17 +283,6 @@ h1.classroom-title {
 
           &:last-child {
             width: 80%;
-          }
-        }
-
-        @keyframes refresh {
-          0% {
-            background-position: calc(-100px);
-          }
-
-          40%,
-          100% {
-            background-position: 320px;
           }
         }
       }
