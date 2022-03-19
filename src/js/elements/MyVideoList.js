@@ -19,11 +19,10 @@ class MyVideoList extends HTMLUListElement {
     }
 
     const targetMenu = this.dataset.menu;
-    let videos = MyVideoStore.instance.getPlaylistVideos();
-
-    if (targetMenu === 'watched') {
-      videos = MyVideoStore.instance.getWatchedVideos();
-    }
+    const videos =
+      targetMenu === 'watched'
+        ? MyVideoStore.instance.getWatchedVideos()
+        : MyVideoStore.instance.getPlaylistVideos();
 
     this.innerHTML = '';
 
