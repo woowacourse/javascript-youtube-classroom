@@ -16,11 +16,6 @@ export default class Navigation {
       eventType: 'click',
       handler: this.handleFilterChange,
     });
-
-    addEventDelegate(this.$container, SELECTOR.ID.SEARCH_MODAL_BUTTON, {
-      eventType: 'click',
-      handler: this.handleOpenModal,
-    });
   }
 
   handleFilterChange = ({ target: $target }) => {
@@ -35,13 +30,5 @@ export default class Navigation {
 
     YoutubeSaveListStore.dispatch(ACTION_TYPE.UPDATE_SAVE_LIST_FILTER, listType);
     YoutubeSaveListStore.dispatch(ACTION_TYPE.UPDATE_SAVE_LIST);
-  };
-
-  handleOpenModal = ({ target: $target }) => {
-    const modalId = $target.dataset.modal;
-    const $modalContainer = $(SELECTOR.ID.MODAL_CONTAINER);
-
-    $modalContainer.classList.remove('hide');
-    $(`#${modalId}`, $modalContainer).classList.add('show');
   };
 }
