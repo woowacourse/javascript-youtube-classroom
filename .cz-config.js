@@ -46,6 +46,7 @@ module.exports = {
     { name: 'naming' },
     { name: 'cleanup' },
     { name: 'logic' },
+    { name: 'storage' },
   ],
 
   scopeOverrides: {
