@@ -3,6 +3,7 @@ import { $, hasProperty } from './utils';
 import NotFoundImage from '../assets/images/not_found.png';
 import {
   LOCAL_STORAGE_VIDEO_LIST_KEY,
+  MAX_RENDER_VIDEOS_COUNT,
   MAX_SAVABLE_VIDEOS_COUNT,
   SERVER_URL,
 } from './constants/constant';
@@ -27,10 +28,8 @@ export default class App {
     const searchModal = new SearchModal(this.storage, this);
     searchModal.init();
 
-    const videoSet = this.storage.cache;
-    const ids = Object.keys(videoSet);
-
     (async () => {
+      const ids = Object.keys(this.storage.cache);
       const videoList = await this.requestVideos(ids);
       videoList && this.renderVideoItems(videoList);
     })();
@@ -39,9 +38,7 @@ export default class App {
   searchResultTemplate() {
     return `
       <section class="search-result">
-        <div class="container">
-          <ul class="video-list grid col-sm-1 col-md-2 col-lg-3 col-xl-4"></ul>
-        </div>
+        <ul class="video-list grid col-sm-1 col-md-2 col-lg-3 col-xl-4"></ul>
         <div class="no-result">
           <img src="${NotFoundImage}" alt="no result image" class="no-result__image">
           <p class="no-result__description">
@@ -83,7 +80,7 @@ export default class App {
     const parameters = new URLSearchParams({
       part: 'snippet',
       type: 'video',
-      maxResults: 2,
+      maxResults: MAX_RENDER_VIDEOS_COUNT,
       regionCode: 'kr',
       safeSearch: 'strict',
       id: idsWithComma,
