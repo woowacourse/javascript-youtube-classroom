@@ -82,19 +82,10 @@ export default class VideoCard extends Component {
       webStore.deleteVideoInLocalStorage(this.props.video.videoId);
       this.target.remove();
 
-      if (webStore.getWatchedVideoLength() === 0) {
-        rootStore.setState({ hasWatchedVideo: false });
-      }
-
-      if (webStore.getWatchingVideoLength() === 0) {
-        rootStore.setState({ hasWatchingVideo: false });
-      }
-
-      // @TODO: 밑에 방식으로 안 되는 이유
-      // rootStore.setState({
-      //   hasWatchedVideo: watchedVideo.length !== 0,
-      //   hasWatchingVideo: payload.length - watchedVideo.length !== 0,
-      // });
+      rootStore.setState({
+        hasWatchedVideo: webStore.getWatchedVideoLength() !== 0,
+        hasWatchingVideo: webStore.getWatchingVideoLength() !== 0,
+      });
     }
   }
 
