@@ -15,8 +15,8 @@ export const searchResultRequest = async (query, nextPageToken) => {
     });
     url.search = parameters.toString();
     const response = await fetch(url);
+    console.log(response);
     const body = await response.json();
-
     if (!response.ok) {
       throw new Error(body.error.message);
     }
@@ -40,6 +40,7 @@ export const getSaveVideoList = async videoIdList => {
     });
     url.search = parameters.toString();
     const response = await fetch(url);
+    console.log(response);
     const body = await response.json();
 
     if (!response.ok) {
@@ -52,8 +53,7 @@ export const getSaveVideoList = async videoIdList => {
   }
 };
 
-// 실험용 리퀘스트
-
+// 실험용 리퀘스트 
 export const testRequest = async (query, nextPageToken) => {
   const url = new URL('https://www.googleapis.com/youtube/v3/search?');
   const parameters = new URLSearchParams({

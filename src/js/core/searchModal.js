@@ -17,7 +17,7 @@ import { VideoItem, checkSearchResult } from '../videoItem';
 import { isInputValueEmpty } from '../utils/checkvalue';
 import { renderSkeletonItems, removeSkeleton } from '../views/skeleton';
 import { renderVideoItems } from '../views/renderVideoItems';
-import { searchResultRequest, testRequest } from '../utils/request';
+import { searchResultRequest , testRequest} from '../utils/request';
 import StateController from './stateController';
 
 export default class SearchModal extends StateController {
@@ -61,7 +61,7 @@ export default class SearchModal extends StateController {
     $modalSearchResult.classList.remove('search-result--no-result');
     renderSkeletonItems(MAX_RENDER_VIDEOS_COUNT, $modalVideoList);
     const searchResult = await testRequest(searchKeyWord, this.nextPageToken);
-    // const searchResult = await searchResultRequest(searchKeyWord, this.nextPageToken);
+    //const searchResult = await searchResultRequest(searchKeyWord, this.nextPageToken);
     removeSkeleton($modalVideoList);
     const videos = checkSearchResult(searchResult);
 

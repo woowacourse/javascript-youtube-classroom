@@ -10,6 +10,8 @@
     "start": "webpack serve --open",
     "build": "webpack",
     "cm": "cz",
+    "wbuild": "webpack --mode=production",
+    "predeploy": "npm run build",
     "deploy": "gh-pages -d dist"
   },
   "repository": {
