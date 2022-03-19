@@ -1,4 +1,4 @@
-import { DOM_STRING } from '../utils/constants.js';
+import { DOM_STRING, VIDEO_TYPE } from '../utils/constants.js';
 import { $ } from '../utils/common.js';
 import videoStorage from '../videoStorage.js';
 import emptyImage from '../../assets/images/empty.png';
@@ -7,7 +7,7 @@ export default class MainView {
   constructor() {
     this.registerDOM();
     this.renderStoredVideoList();
-    this.showType = 'watch-later';
+    this.showType = VIDEO_TYPE.WATCH_LATER;
     this.bindOnClickWatchLaterButton();
     this.onClickWatchLaterButton();
     this.bindOnClickWatchedButton();
@@ -76,7 +76,7 @@ export default class MainView {
           <p class="video-item__channel-name">${videoData.channelTitle}</p>
           <p class="video-item__published-date">${videoData.publishedAt}</p>
           <button data-videoid=${videoData.videoId} class="switch-show-type button ${
-        videoData.type === 'watch-later' ? '' : 'clicked'
+        videoData.type === VIDEO_TYPE.WATCH_LATER ? '' : 'clicked'
       }">✅</button>
           <button data-videoid=${videoData.videoId} class="delete-button button">🗑️</button>
         </li>`;
@@ -86,36 +86,42 @@ export default class MainView {
   }
 
   onClickWatchLaterButton() {
-    this.showType = 'watch-later';
+    this.showType = VIDEO_TYPE.WATCH_LATER;
     this.$watchLaterButton.classList.add('selected__button');
     this.$watchedButton.classList.remove('selected__button');
+
     [...this.$storedVideoList.children].forEach(el => {
-      if ([...el.classList].includes('watch-later')) {
-        el.classList.remove('hide');
+      if ([...el.classList].includes(VIDEO_TYPE.WATCH_LATER)) {
+        el.classList.remove(DOM_STRING.HIDE);
         return;
       }
-      el.classList.add('hide');
+      el.classList.add(DOM_STRING.HIDE);
     });
+
     this.decideRenderEmptyImage();
   }
 
   onClickWatchedButton() {
-    this.showType = 'watched';
+    this.showType = VIDEO_TYPE.WATCHED;
     this.$watchedButton.classList.add('selected__button');
     this.$watchLaterButton.classList.remove('selected__button');
+
     [...this.$storedVideoList.children].forEach(el => {
-      if ([...el.classList].includes('watched')) {
-        el.classList.remove('hide');
+      if ([...el.classList].includes(VIDEO_TYPE.WATCHED)) {
+        el.classList.remove(DOM_STRING.HIDE);
         return;
       }
-      el.classList.add('hide');
+      el.classList.add(DOM_STRING.HIDE);
     });
+
     this.decideRenderEmptyImage();
   }
 
   renderAddedVideoData(videoData) {
     const template = `
-    <li class="video-item ${videoData.type} ${this.showType === 'watch-later' ? '' : 'hide'}">
+    <li class="video-item ${videoData.type} ${
+      this.showType === VIDEO_TYPE.WATCH_LATER ? '' : DOM_STRING.HIDE
+    }">
       <img
         src=${videoData.url}
         alt="video-item-thumbnail" class="video-item__thumbnail"
@@ -124,7 +130,7 @@ export default class MainView {
       <p class="video-item__channel-name">${videoData.channelTitle}</p>
       <p class="video-item__published-date">${videoData.publishedAt}</p>
       <button data-videoid=${videoData.videoId} class="button switch-show-type ${
-      videoData.type === 'watch-later' ? '' : 'clicked'
+      videoData.type === VIDEO_TYPE.WATCH_LATER ? '' : 'clicked'
     }">✅</button>
       <button data-videoid=${videoData.videoId} class="delete-button button">🗑️</button>
     </li>`;
@@ -143,7 +149,7 @@ export default class MainView {
       <p class="video-item__channel-name">${videoData.channelTitle}</p>
       <p class="video-item__published-date">${videoData.publishedAt}</p>
       <button data-videoid=${videoData.videoId} class="button switch-show-type ${
-      videoData.type === 'watch-later' ? '' : 'clicked'
+      videoData.type === VIDEO_TYPE.WATCH_LATER ? '' : 'clicked'
     }">✅</button>
       <button data-videoid=${videoData.videoId} class="delete-button button">🗑️</button>
     </li>`;
@@ -153,13 +159,13 @@ export default class MainView {
 
   decideRenderEmptyImage() {
     const checkRendering = [...this.$storedVideoList.children].every(el =>
-      [...el.classList].includes('hide')
+      [...el.classList].includes(DOM_STRING.HIDE)
     );
 
     if (checkRendering) {
-      this.$emptyListImage.classList.remove('hide');
+      this.$emptyListImage.classList.remove(DOM_STRING.HIDE);
       return;
     }
-    this.$emptyListImage.classList.add('hide');
+    this.$emptyListImage.classList.add(DOM_STRING.HIDE);
   }
 }
