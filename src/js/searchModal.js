@@ -1,11 +1,9 @@
 /* eslint-disable max-lines-per-function */
-import { MAX_RENDER_VIDEOS_COUNT, VALIDATION_ERROR_NAME } from './constants/constant';
+import { MAX_RENDER_VIDEOS_COUNT, SERVER_URL, VALIDATION_ERROR_NAME } from './constants/constant';
 import VideoItem from './videoItem';
-import { consoleErrorWithConditionalAlert, $ } from './utils';
+import { consoleErrorWithConditionalAlert, $, hasProperty } from './utils';
 
 class SearchModal {
-  serverUrl = 'https://silly-volhard-192918.netlify.app/.netlify/functions/youtube';
-
   nextPageToken = null;
 
   constructor(storage) {
@@ -47,7 +45,7 @@ class SearchModal {
   renderVideoItems(videos) {
     const videoListTemplate = videos
       .map(video => {
-        const isSavedVideo = Object.prototype.hasOwnProperty.call(this.storage.cache, video.id);
+        const isSavedVideo = hasProperty(this.storage.cache, video.id);
         const button = !isSavedVideo
           ? '<button class="btn video-item__save-button">⬇ 저장</button>'
           : '';
@@ -123,9 +121,8 @@ class SearchModal {
 
   handleClickVideoList = event => {
     const { target } = event;
-    if (target.classList.contains('video-item__save-button')) {
-      this.handleClickSaveButton(event);
-    }
+    if (target.tagName.toLowerCase() !== 'button') return;
+    this.handleClickSaveButton(event);
   };
 
   resetSearchResult() {
@@ -141,7 +138,7 @@ class SearchModal {
   async requestYoutubeVideos(query) {
     this.$searchResult.classList.add('loading');
     try {
-      const url = new URL(this.serverUrl);
+      const url = new URL(`${SERVER_URL}/youtube-search`);
       const parameters = new URLSearchParams({
         part: 'snippet',
         type: 'video',

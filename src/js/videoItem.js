@@ -1,5 +1,5 @@
 class VideoItem {
-  constructor(item) {
+  constructor(item, isWatched = false) {
     const {
       id: { videoId },
       snippet: { publishedAt, title, thumbnails, channelTitle },
@@ -10,6 +10,7 @@ class VideoItem {
     this.title = title;
     this.thumbnailUrl = thumbnails.medium.url;
     this.channelTitle = channelTitle;
+    this.isWatched = isWatched;
   }
 }
 

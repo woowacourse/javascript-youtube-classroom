@@ -5,3 +5,4 @@ export const VALIDATION_ERROR_NAME = 'ValidationError';
 export const ERROR_MESSAGE = {
   OVER_MAX_SAVABLE_VIDEO_COUNT: `비디오는 ${MAX_SAVABLE_VIDEOS_COUNT}개 이상 저장할 수 없습니다`,
 };
+export const SERVER_URL = 'https://silly-volhard-192918.netlify.app/.netlify/functions';

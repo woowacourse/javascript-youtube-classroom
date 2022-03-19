@@ -17,6 +17,7 @@ header > h1 {
 .nav {
     display: flex;
     justify-content: space-between;
+    margin-bottom: 39px;
 }
 
 .nav > .btn-group > .btn {
@@ -25,3 +26,14 @@ header > h1 {
   font-weight: 500;
 }
 
+.video-item__management {
+  display: flex;
+  justify-content: flex-end;
+}
+.video-item__management .btn {
+  margin-left: 10px;
+}
+
+#app > .video-list-container > .video-list {
+
+}

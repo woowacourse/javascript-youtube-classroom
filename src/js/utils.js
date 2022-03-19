@@ -23,3 +23,7 @@ export const parseJSON = (str, fallback) => {
     return fallback;
   }
 };
+
+export const hasProperty = (obj, key) => {
+  return Object.prototype.hasOwnProperty.call(obj, key);
+};

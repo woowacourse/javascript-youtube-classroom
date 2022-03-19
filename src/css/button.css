@@ -37,6 +37,11 @@ button:not(:disabled) {
   background-color: #00bcd4c2;
 }
 
+.btn-square {
+  width: 36px;
+  height: 36px;
+}
+
 .btn-group {
   position: relative;
   display: inline-flex;
