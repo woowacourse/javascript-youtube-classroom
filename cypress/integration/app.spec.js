@@ -54,10 +54,7 @@ describe('검색어를 입력하여 관련된 영상을 볼 수 있고, 저장�
       });
 
     cy.wait(2000);
-    cy.get(SELECTOR.SAW_VIDEO_LIST).find(SELECTOR.DELETE_STORE_BUTTON).eq(0).click({
-      multiple: true,
-      force: true,
-    });
+    cy.get(SELECTOR.SAW_VIDEO_LIST).find(SELECTOR.DELETE_STORE_BUTTON).eq(0).click();
     cy.get(SELECTOR.APP).find(SELECTOR.EMPTY_CONTAINER);
   });
 });
