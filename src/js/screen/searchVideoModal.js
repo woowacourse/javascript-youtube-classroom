@@ -38,6 +38,7 @@ export default class SearchVideoModal {
         if (isServerError(status)) {
           this.#renderServerErrorResult();
           MessageBot.dispatchMessage('error', '현재는 서버 점검중입니다.');
+          return;
         }
       }
       this.#modalVideoList.addEventListener('scroll', this.#handleInfiniteScroll);
@@ -64,7 +65,6 @@ export default class SearchVideoModal {
     this.#searchResult.classList.add('search-result--no-result');
     this.#noResult.classList.remove('hide');
     this.#modalVideoList.classList.add('hide');
-    MessageBot.dispatchMessage('not-found', '검색결과, 데이터가 존재하지 않습니다.');
   }
 
   #allocatePreprocessedData(preprocessedData) {
@@ -130,6 +130,7 @@ export default class SearchVideoModal {
 
   #renderSearchResult(data, eventType) {
     if (data === null) {
+      MessageBot.dispatchMessage('not-found', '검색결과, 데이터가 존재하지 않습니다.');
       this.#modalVideoList.replaceChildren('');
       if (eventType === '@scroll') return;
 
