@@ -24,12 +24,16 @@ export default class App {
     this.$videoList.addEventListener('click', this.handleClickVideoList);
     this.$videoListFilters.addEventListener('click', this.handleFilterClick);
 
-    const searchModal = new SearchModal(this.storage);
+    const searchModal = new SearchModal(this.storage, this);
     searchModal.init();
 
     const videoSet = this.storage.cache;
-    const keys = Object.keys(videoSet);
-    this.requestVideos(keys);
+    const ids = Object.keys(videoSet);
+
+    (async () => {
+      const videoList = await this.requestVideos(ids);
+      videoList && this.renderVideoItems(videoList);
+    })();
   }
 
   searchResultTemplate() {
@@ -71,7 +75,6 @@ export default class App {
   renderVideoItems(videos) {
     const videoListTemplate = videos.map(video => this.videoItemTemplate(video)).join('');
     this.$videoList.insertAdjacentHTML('beforeend', videoListTemplate);
-    return videoListTemplate;
   }
 
   async requestVideos(ids) {
@@ -98,9 +101,10 @@ export default class App {
         const isWatched = hasProperty(this.storage.cache[id], 'watched');
         return new VideoItem(item, isWatched);
       });
-      this.renderVideoItems(videos);
+      return videos;
     } catch (e) {
       console.error(e);
+      return null;
     }
   }
 
@@ -149,7 +153,17 @@ export default class App {
         $videoItem.classList.add('video-item--watched');
       }
       this.storage.toggleWatchStatus(videoId);
+    } else if (purpose === 'delete') {
+      const result = window.confirm('해당 영상을 삭제하시겠습니까?');
+      if (!result) return;
+      this.storage.removeVideo(videoId);
+      $videoItem.remove();
     }
+  };
+
+  handleSaveVideo = async videoId => {
+    const videoList = await this.requestVideos([videoId]);
+    videoList && this.renderVideoItems(videoList);
   };
 }
 

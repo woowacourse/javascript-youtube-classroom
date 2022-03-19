@@ -25,6 +25,13 @@ class VideoStorage extends LocalStorage {
     this.save(videoSet);
     this.cache = videoSet;
   }
+
+  removeVideo(videoId) {
+    const videoSet = this.load({});
+    delete videoSet[videoId];
+    this.save(videoSet);
+    this.cache = videoSet;
+  }
 }
 
 export default VideoStorage;

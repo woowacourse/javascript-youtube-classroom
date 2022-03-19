@@ -6,8 +6,9 @@ import { consoleErrorWithConditionalAlert, $, hasProperty } from './utils';
 class SearchModal {
   nextPageToken = null;
 
-  constructor(storage) {
+  constructor(storage, delegate) {
     this.storage = storage;
+    this.delegate = delegate;
   }
 
   init() {
@@ -114,6 +115,7 @@ class SearchModal {
     try {
       this.storage.saveVideo(videoId);
       target.setAttribute('hidden', true);
+      this.delegate.handleSaveVideo(videoId);
     } catch (error) {
       consoleErrorWithConditionalAlert(error, VALIDATION_ERROR_NAME);
     }
