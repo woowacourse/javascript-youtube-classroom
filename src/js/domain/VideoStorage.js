@@ -21,6 +21,8 @@ export class VideoStorage {
   }
 
   appendVideo({ id, thumbnails, title, channelTitle, publishTime }) {
+    if (this.videoList.some(({ id }) => id === id))
+      throw new Error('동일 ID는 존재할 수 없습니다.');
     this.videoList.push(
       Video.Builder()
         .setId(id)
