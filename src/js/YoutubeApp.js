@@ -71,12 +71,24 @@ export default class YoutubeApp {
   };
 
   #onClickWatchLaterVideoListButton = () => {
+    if (!this.isWatchedVideoOnly) {
+      return;
+    }
+
     this.isWatchedVideoOnly = false;
+    this.videoStorageView.renderNavButtonStateChanged(this.isWatchedVideoOnly);
+
     this.#reloadStorageData();
   };
 
   #onClickWatchedVideoListButton = () => {
+    if (this.isWatchedVideoOnly) {
+      return;
+    }
+
     this.isWatchedVideoOnly = true;
+    this.videoStorageView.renderNavButtonStateChanged(this.isWatchedVideoOnly);
+
     this.#reloadStorageData();
   };
 

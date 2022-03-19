@@ -5,17 +5,13 @@ export default class VideoStorageView {
   constructor() {
     this.savedVideoSection = document.querySelector(".saved-video__section");
     this.savedVideoList = document.querySelector(".saved-video-list");
+    this.noResultDiv = document.querySelector(".no-result");
   }
 
   renderEmptyStorage = () => {
-    const message =
-      "저장된 영상이 없습니다<br />나만의 영상을 검색하여 저장해보세요";
-
     this.savedVideoList.classList.add("hide");
-    this.savedVideoSection.insertAdjacentHTML(
-      "beforeend",
-      generateTemplate.noResult(notFountImage, message)
-    );
+    this.noResultDiv.classList.remove("hide");
+    document.querySelector(".no-result__image").src = notFountImage;
   };
 
   renderSavedVideo = (videoData, watchedVideoOnly) => {
@@ -23,21 +19,18 @@ export default class VideoStorageView {
       videoData,
       watchedVideoOnly
     );
-    const noResultDiv = document.querySelector(".no-result");
-
-    this.#renderNavButtonStateChanged(watchedVideoOnly);
 
     this.savedVideoList.classList.remove("hide");
     this.savedVideoList.innerHTML = videoItemTemplate;
 
-    if (!noResultDiv) {
+    if (!this.noResultDiv) {
       return;
     }
 
-    noResultDiv.classList.add("hide");
+    this.noResultDiv.classList.add("hide");
   };
 
-  #renderNavButtonStateChanged = (watchedVideoOnly) => {
+  renderNavButtonStateChanged = (watchedVideoOnly) => {
     if (watchedVideoOnly) {
       document
         .querySelector("#watch-later-video-button")
