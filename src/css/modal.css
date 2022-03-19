@@ -103,20 +103,41 @@
   justify-content: center;
 }
 
+/* saved-video-list 반응형 */
 @media screen and (max-width: 1280px) {
-  .video-list {
+  #saved-video-list {
     grid-template-columns: repeat(3, minmax(290px, 393px));
   }
 }
 
 @media screen and (max-width: 960px) {
-  .video-list {
+  #saved-video-list {
     grid-template-columns: repeat(2, minmax(290px, 393px));
   }
 }
 
 @media screen and (max-width: 600px) {
-  .video-list {
+  #saved-video-list {
+    grid-template-columns: repeat(1, minmax(290px, 393px));
+  }
+}
+
+/* video-list 반응형 */
+/* modal은 전체의 85%를 차지하기 떄문에, 100/85 를 곱해준다. */
+@media screen and (max-width: calc(1280 * 100 / 85 * 1px)) {
+  #video-list {
+    grid-template-columns: repeat(3, minmax(290px, 393px));
+  }
+}
+
+@media screen and (max-width: calc(960 * 100 / 85 * 1px)) {
+  #video-list {
+    grid-template-columns: repeat(2, minmax(290px, 393px));
+  }
+}
+
+@media screen and (max-width: calc(600 * 100 / 85 * 1px)) {
+  #video-list {
     grid-template-columns: repeat(1, minmax(290px, 393px));
   }
 }
