@@ -19,14 +19,14 @@ export default class SearchResultView {
   onScrollVideoList() {
     const { scrollTop, clientHeight, scrollHeight } = this.$searchResultVideoList;
     if (scrollTop + clientHeight + 50 < scrollHeight) return;
-    dispatch(EVENT.SEARCH_ON_SCROLL);
+    dispatch(EVENT.REQUEST_SEARCH_ON_SCROLL);
   }
 
   onClickVideoSaveButton(e) {
-    if (e.target.id === 'save-button') {
-      const video = e.target.parentNode.dataset;
-      dispatch(EVENT.SAVE_VIDEO, { video });
-      e.target.remove();
+    const { target } = e
+    if (target.id === 'save-button') {
+      const video = target.parentNode.dataset;
+      dispatch(EVENT.REQUEST_SAVE_VIDEO, { video, target });
     }
   }
 

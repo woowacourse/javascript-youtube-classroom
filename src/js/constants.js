@@ -15,11 +15,12 @@ export const GUIDE_MESSAGE = {
 };
 
 export const EVENT = {
-  UPDATE_SAVED_VIDEO_LIST: 'updateSavedVideoList',
-  CHANGE_VIDEO_WATCHED_INFO: 'changeVideoWatchedInfo',
-  SAVE_VIDEO: 'saveVideo',
-  DELETE_VIDEO: 'deleteVideo',
+  REQUEST_SEARCH_WITH_NEW_KEYWORD: 'searchWithNewKeyword',
+  REQUEST_SEARCH_ON_SCROLL: 'searchOnScroll',
+  REQUEST_SAVE_VIDEO: 'saveVideo',
+  RESPONSE_SAVE_VIDEO: 'responseSaveVideo',
+  REQUEST_CHANGE_VIDEO_WATCHED_INFO: 'changeVideoWatchedInfo',
+  REQUEST_DELETE_VIDEO: 'deleteVideo',
   UPDATE_SEARCH_STATE: 'updateSearchState',
-  SEARCH_WITH_NEW_KEYWORD: 'searchWithNewKeyword',
-  SEARCH_ON_SCROLL: 'searchOnScroll',
+  UPDATE_SAVED_VIDEO_LIST: 'updateSavedVideoList',
 }

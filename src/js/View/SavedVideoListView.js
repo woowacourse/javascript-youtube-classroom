@@ -21,13 +21,13 @@ export default class SavedVideoListView {
 
   onClickCheckWatchedButton(e) {
     const { id } = e.target.parentNode.dataset;
-    dispatch(EVENT.CHANGE_VIDEO_WATCHED_INFO, { id });
+    dispatch(EVENT.REQUEST_CHANGE_VIDEO_WATCHED_INFO, { id });
   }
 
   onClickDeleteButton(e) {
     if (window.confirm(GUIDE_MESSAGE.CONFIRM_DELETE)) {
       const { id } = e.target.parentNode.dataset;
-      dispatch(EVENT.DELETE_VIDEO, { id });
+      dispatch(EVENT.REQUEST_DELETE_VIDEO, { id });
     }
   }
   

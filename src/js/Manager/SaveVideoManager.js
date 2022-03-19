@@ -4,9 +4,9 @@ import { addListener, dispatch } from '../util/event';
 
 export default class SaveVideoManager {
   constructor() {
-    addListener(EVENT.SAVE_VIDEO, this.saveVideo.bind(this));
-    addListener(EVENT.CHANGE_VIDEO_WATCHED_INFO, this.changeWatchedInfo.bind(this));
-    addListener(EVENT.DELETE_VIDEO, this.deleteVideo.bind(this));
+    addListener(EVENT.REQUEST_SAVE_VIDEO, this.saveVideo.bind(this));
+    addListener(EVENT.REQUEST_CHANGE_VIDEO_WATCHED_INFO, this.changeWatchedInfo.bind(this));
+    addListener(EVENT.REQUEST_DELETE_VIDEO, this.deleteVideo.bind(this));
 
     this.updateSavedVideos();
   }
@@ -20,7 +20,7 @@ export default class SaveVideoManager {
   }
 
   saveVideo(e) {
-    const { video } = e.detail
+    const { video, target } = e.detail
     if ( !video ) return;
     try {
       Storage.saveVideo({ ...video, watched: false })
@@ -29,6 +29,7 @@ export default class SaveVideoManager {
       return;
     }
     this.updateSavedVideos();
+    dispatch(EVENT.RESPONSE_SAVE_VIDEO, { result: 'SUCCESS', target });
   }
 
   changeWatchedInfo(e) {

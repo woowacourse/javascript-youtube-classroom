@@ -30,8 +30,8 @@ export default class SearchVideoManager {
     this.#nextPageToken = '';
     this.#searchState = 'READY';
 
-    addListener(EVENT.SEARCH_WITH_NEW_KEYWORD, this.searchWithNewKeyword.bind(this));
-    addListener(EVENT.SEARCH_ON_SCROLL, this.searchOnScroll.bind(this));
+    addListener(EVENT.REQUEST_SEARCH_WITH_NEW_KEYWORD, this.searchWithNewKeyword.bind(this));
+    addListener(EVENT.REQUEST_SEARCH_ON_SCROLL, this.searchOnScroll.bind(this));
   }
 
   updateSearchState(newState, data = {}) {
