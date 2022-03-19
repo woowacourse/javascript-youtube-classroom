@@ -22,7 +22,7 @@ class MainView {
     const watchedVideo = savedVideos.find(
       (video) => video.videoId === event.target.dataset.videoId
     );
-    watchedVideo.isWatched = true;
+    watchedVideo.isWatched = !watchedVideo.isWatched;
     storage.setSavedVideos(savedVideos);
     event.target.parentNode.parentNode.remove();
     if (
