@@ -111,6 +111,10 @@
   overflow-y: scroll;
 }
 
+.modal-video-list.hide {
+  display: none;
+}
+
 .skeleton {
   width: 236px;
 }
@@ -207,11 +211,6 @@
 @media (max-width: 960px) {
   .search-modal {
     width: 580px;
-    height: 680px;
-  }
-
-  .modal-video-list {
-    height: 460px;
   }
 
   .search-modal__title {

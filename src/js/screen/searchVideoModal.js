@@ -57,11 +57,13 @@ export default class SearchVideoModal {
   #hideNoResultView() {
     this.#searchResult.classList.remove('search-result--no-result');
     this.#noResult.classList.add('hide');
+    this.#modalVideoList.classList.remove('hide');
   }
 
   #showNoResultView() {
     this.#searchResult.classList.add('search-result--no-result');
     this.#noResult.classList.remove('hide');
+    this.#modalVideoList.classList.add('hide');
     MessageBot.dispatchMessage('not-found', '검색결과, 데이터가 존재하지 않습니다.');
   }
 
