@@ -1,7 +1,6 @@
 import videoAPI from '../videoAPI.js';
 import validator from '../utils/validator.js';
 import videoStorage from '../videoStorage.js';
-import { parseData } from '../utils/mockData.js';
 import { USER_MESSAGE } from '../utils/constants.js';
 
 export default class EventHandler {
@@ -72,7 +71,6 @@ export default class EventHandler {
       this.modalView.appendVideoItem();
       this.modalView.renderSkeletonUI();
       const videoListData = await videoAPI.getVideoListData(searchInput);
-      // const videoListData = parseData;
       this.modalView.renderVideoList(videoListData);
     } catch (error) {
       alert(error.message);
@@ -86,7 +84,6 @@ export default class EventHandler {
       this.modalView.appendVideoItem();
       this.modalView.renderSkeletonUI();
       const videoListData = await videoAPI.getVideoListData(searchInput);
-      // const videoListData = parseData;
       this.modalView.renderVideoList(videoListData);
     } catch (error) {
       alert(error.message);
