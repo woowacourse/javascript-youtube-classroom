@@ -1,7 +1,8 @@
-import { MESSAGE, STORAGE_KEY } from '../constants';
+import { MESSAGE } from '../constants';
 import { $ } from '../utils/dom';
 import { convertToKoreaLocaleDate } from '../utils/common';
 import { video } from '../domain/video';
+import emptyImage from '../../assets/images/empty.png';
 
 export default class YoutubeClassRoom {
   constructor() {
@@ -86,7 +87,7 @@ export default class YoutubeClassRoom {
     return `
       <div class="empty-result">
         <div class="empty-result__description">
-          <p>${MESSAGE.EMPTY_SAVED_VIDEO}</p>
+          <img src=${emptyImage}>
         </div>
       </div>
     `;
