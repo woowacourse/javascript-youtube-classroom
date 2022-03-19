@@ -5,6 +5,7 @@ import { requestApi } from '../domain/requestApi';
 import { convertToKoreaLocaleDate } from '../utils/common';
 import { skeletonUI } from './skeletonUI';
 import { video } from '../domain/video';
+import { youtubeClassRoomVideo } from './youtubeClassRoomVideo';
 
 export const youtubeSearchResult = {
   $videoList: $('.video-list'),
@@ -103,6 +104,7 @@ export const youtubeSearchResult = {
         };
         video.save(videoData);
         e.target.setAttribute('hidden', true);
+        youtubeClassRoomVideo.renderVideoList(false);
       }
     });
   },
