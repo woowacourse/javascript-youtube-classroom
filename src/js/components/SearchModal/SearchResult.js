@@ -5,11 +5,11 @@ export default class SearchResult extends Component {
   template() {
     return `
       <h3 hidden>검색 결과</h3>
-      <ul id="video-list" class="video-list"></ul>
+      <ul id="search-video-list" class="video-list"></ul>
     `;
   }
 
   afterMounted() {
-    new VideoCardList(this.$('#video-list'));
+    new VideoCardList(this.$('#search-video-list'));
   }
 }

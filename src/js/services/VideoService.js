@@ -7,6 +7,14 @@ class VideoService {
   constructor(initState) {
     this.rootStore = new Store(initState);
     this.webStore = new WebStore(SAVED_VIDEO.KEY);
+
+    this.init();
+  }
+
+  init() {
+    const savedVideos = this.webStore.load();
+
+    this.rootStore.setState({ savedVideos });
   }
 
   clear() {

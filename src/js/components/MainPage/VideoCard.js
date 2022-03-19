@@ -1,16 +1,14 @@
 import Component from '../../core/Component.js';
-import videoService from '../../services/VideoService.js';
 import { convertTime } from '../../utils/customDate.js';
 
 export default class VideoCard extends Component {
   setup() {
-    this.state = { saved: this.props.video.saved };
+    this.state = { saved: true, watched: this.props.video.watched ?? false };
   }
 
   template() {
     const { videoId, thumbnailUrl, title, channelTitle, publishTime } =
       this.props.video;
-    const { saved } = this.state;
 
     return `
       <li class="video-item" data-video-id="${videoId}">
@@ -24,24 +22,9 @@ export default class VideoCard extends Component {
         <p class="video-item__published-date line">${convertTime(
           publishTime
         )}</p>
-        ${
-          saved
-            ? ''
-            : '<button class="video-item__save-button button">⬇ 저장</button>'
-        }
+        <button class="video-item__watched-button button">✅</button>
+        <button class="video-item__remove-button button">🗑️</button>
       </li>
     `;
-  }
-
-  setEvent() {
-    this.addEvent('click', '.video-item__save-button', () => {
-      try {
-        videoService.saveVideo(this.props.video);
-
-        this.setState({ saved: true });
-      } catch (err) {
-        alert(err);
-      }
-    });
   }
 }
