@@ -103,7 +103,11 @@ dist
 # TernJS port file
 .tern-port
 
+# os
 .DS_Store
 src/.DS_Store
 
-src/js/domain/key.js
+# cypress
+/cypress/screenshots
+/cypress/videos
+/cypress/plugins
