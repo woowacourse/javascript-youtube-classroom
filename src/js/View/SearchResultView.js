@@ -14,6 +14,7 @@ export default class SearchResultView {
     this.$searchResultVideoList.addEventListener('click', this.onClickVideoSaveButton.bind(this));
 
     addListener(EVENT.UPDATE_SEARCH_STATE, this.updateOnSearchState.bind(this));
+    addListener(EVENT.RESPONSE_SAVE_VIDEO, this.onResponseSaveVideo.bind(this));
   }
 
   onScrollVideoList() {
@@ -27,6 +28,13 @@ export default class SearchResultView {
     if (target.id === 'save-button') {
       const video = target.parentNode.dataset;
       dispatch(EVENT.REQUEST_SAVE_VIDEO, { video, target });
+    }
+  }
+
+  onResponseSaveVideo(e) {
+    const { result, target } = e.detail;
+    if ( result === 'SUCCESS' ) {
+      target.remove();
     }
   }
 
