@@ -58,42 +58,28 @@ describe("나만의 유튜브 강의실 전체 플로우 테스트", () => {
   });
 
   it("볼 영상 섹션에서 저장된 영상의 ✅ 버튼을 눌러 본 영상 섹션으로 옮길 수 있어야 한다.", () => {
-    cy.get(".video-item__watched-button").eq(0).click();
+    cy.clickVideoWatchButton();
     cy.get(".video-item").should("be.not.visible");
   });
 
   it("초기 화면에서 본 영상 버튼을 눌러 본 영상 목록을 확인할 수 있어야 한다.", () => {
-    cy.get("#watched-video-button").click();
+    cy.clickWatchedVideoListTab();
     cy.get(".video-item").should("be.visible");
   });
 
   it("본 영상 섹션에서 저장된 영상의 ✅ 버튼을 눌러 볼 영상 섹션으로 옮길 수 있어야 한다.", () => {
-    cy.get(".video-item__watched-button").eq(0).click();
-    cy.get("#watch-later-video-button").click();
+    cy.clickVideoWatchButton();
+    cy.clickWatchLaterVideoListTab();
     cy.get(".video-item").should("be.visible");
   });
 
   it("초기 화면에서 저장된 영상의 🗑️ 버튼을 눌러 영상을 삭제할지 확인할 수 있어야 한다.", () => {
-    cy.get(".video-item__delete-button").eq(0).click();
-
-    cy.on("window:confirm", (text) => {
-      console.log(text);
-      expect(text).to.contains("정말로 삭제하시겠습니까?");
-      return false;
-    });
-
+    cy.clickVideoDeleteButton(false);
     cy.get(".video-item").should("be.visible");
   });
 
   it("영상을 삭제할지 확인하는 화면에서 확인을 눌러 삭제할 수 있어야 한다.", () => {
-    cy.get(".video-item__delete-button").eq(0).click();
-
-    cy.on("window:confirm", (text) => {
-      console.log(text);
-      expect(text).to.contains("정말로 삭제하시겠습니까?");
-      return true;
-    });
-
+    cy.clickVideoDeleteButton(true);
     cy.get(".video-item").should("be.not.visible");
   });
 });
