@@ -1,3 +1,5 @@
+@import "./button.css";
+
 body {
     padding: 64px 0;
     font-size: 16px;
@@ -18,25 +20,12 @@ body {
 
 .nav {
     display: flex;
-    justify-content: center;
+    justify-content: space-between;
 }
 
-.button {
-    cursor: pointer;
-    border-radius: 4px;
-    border: none;
-    font-style: normal;
-    font-weight: bold;
-    font-size: 14px;
-    letter-spacing: 1.25px;
+.nav > .btn-group > .btn {
+  padding-left: 23px;
+  padding-right: 23px;
+  font-weight: 500;
 }
 
-.nav__button {
-    width: 80px;
-    height: 36px;
-    background: #F5F5F5;
-}
-
-.nav__button:hover {
-    background: #ebebeb;
-}
