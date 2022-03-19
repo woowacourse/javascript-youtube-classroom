@@ -2,6 +2,17 @@ import { showSnackBar } from '../utils/dom';
 import { STORAGE_KEY, MESSAGE, MAX_SAVE_COUNT } from '../constants';
 
 export const video = {
+  formatter(datasetElementsArray) {
+    return {
+      ...datasetElementsArray[0],
+      ...datasetElementsArray[1],
+      ...datasetElementsArray[2],
+      ...datasetElementsArray[3],
+      ...datasetElementsArray[4],
+      watched: false,
+    };
+  },
+
   save(videoData) {
     try {
       const savedVideoList = this.get();

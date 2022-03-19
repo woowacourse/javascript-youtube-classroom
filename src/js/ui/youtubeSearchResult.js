@@ -94,14 +94,7 @@ export const youtubeSearchResult = {
         const datasetElementsArray = [...e.target.closest('.video-item').children].map(element => ({
           ...element.dataset,
         }));
-        const videoData = {
-          ...datasetElementsArray[0],
-          ...datasetElementsArray[1],
-          ...datasetElementsArray[2],
-          ...datasetElementsArray[3],
-          ...datasetElementsArray[4],
-          watched: false,
-        };
+        const videoData = video.formatter(datasetElementsArray);
         video.save(videoData);
         e.target.setAttribute('hidden', true);
         youtubeClassRoomVideo.renderVideoList(false);
