@@ -27,6 +27,7 @@ class RenderVideo {
     this.modalContainer = selectDom('.modal-container');
     this.searchVideoForm = selectDom('#search-form', this.modalContainer);
     this.searchVideoInput = selectDom('#search-input-keyword', this.searchVideoForm);
+    
     this.renderVideoListWrap = selectDom('.video-list', this.modalContainer);
     this.renderSkeletonWrap = selectDom('.skeleton-list', this.modalContainer);
     this.searchModalBackground = selectDom('.dimmer', this.modalContainer);
