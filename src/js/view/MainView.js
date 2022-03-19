@@ -119,7 +119,7 @@ export default class MainView {
       <h4 class="video-item__title">${videoData.title}</h4>
       <p class="video-item__channel-name">${videoData.channelTitle}</p>
       <p class="video-item__published-date">${videoData.publishedAt}</p>
-      <button data-videoid=${videoData.videoId} class="button switch-show-type ${
+      <button data-videoid=${videoData.videoId} class="switch-show-type button ${
       videoData.type === VIDEO_TYPE.WATCH_LATER ? '' : 'clicked'
     }">✅</button>
       <button data-videoid=${videoData.videoId} class="delete-button button">🗑️</button>

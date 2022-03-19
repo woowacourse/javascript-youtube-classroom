@@ -12,8 +12,8 @@
     "build": "webpack",
     "start": "webpack serve --open",
     "deploy": "npm run build&&gh-pages -d dist",
-    "cypress:open": "cypress open",
-    "cypress:run": "cypress run --browser chrome"
+    "cypress:open": "webpack&&cypress open",
+    "cypress:run": "webpack&&cypress run --browser chrome"
   },
   "repository": {
     "type": "git",
