@@ -41,7 +41,7 @@ export default class EventHandler {
 
   clickDeleteButton(e) {
     if ([...e.target.classList].includes('delete-button')) {
-      if (confirm(USER_MESSAGE.WANT_DELETE)) {
+      if (window.confirm(USER_MESSAGE.WANT_DELETE)) {
         const videoId = e.target.dataset.videoid;
         videoStorage.deleteVideoData(videoId);
         this.mainView.deleteSelectedVideo(e);

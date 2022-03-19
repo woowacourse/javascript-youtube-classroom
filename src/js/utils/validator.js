@@ -1,5 +1,9 @@
 import { ERROR_MESSAGE } from './constants.js';
 
+function isEmptyInput(searchInput) {
+  return searchInput.trim() === '';
+}
+
 const validator = {
   validateSearchInput: searchInput => {
     if (isEmptyInput(searchInput)) {
@@ -7,9 +11,5 @@ const validator = {
     }
   },
 };
-
-function isEmptyInput(searchInput) {
-  return searchInput.trim() === '';
-}
 
 export default validator;

@@ -1,6 +1,6 @@
 import VideoItemView from './VideoItemView.js';
 import videoStorage from '../videoStorage.js';
-import { DOM_STRING, EVENT, VIDEO_LIST } from '../utils/constants.js';
+import { DOM_STRING, EVENT, VIDEO_LIST, VIDEO_TYPE } from '../utils/constants.js';
 import { $, throttleFunc } from '../utils/common.js';
 import notFoundImage from '../../assets/images/not_found.png';
 
@@ -150,7 +150,7 @@ export default class ModalView {
       title: clickedVideo.children[1].textContent,
       url: clickedVideo.children[0].src,
       channelTitle: clickedVideo.children[2].textContent,
-      type: 'watch-later',
+      type: VIDEO_TYPE.WATCH_LATER,
     };
   }
 }
