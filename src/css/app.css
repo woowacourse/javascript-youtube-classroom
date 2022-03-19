@@ -26,6 +26,44 @@ header > h1 {
   font-weight: 500;
 }
 
+.video-item {
+  overflow: hidden;
+}
+
+.video-item__thumbnail {
+  width: 100%;
+}
+
+.video-item__title {
+  font-weight: bold;
+  font-size: 16px;
+  line-height: 24px;
+  letter-spacing: 0.5px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin: 4px 0;
+}
+
+.video-item__channel-name {
+  font-size: 16px;
+  line-height: 24px;
+  letter-spacing: 0.5px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.video-item__published-date {
+  font-size: 12px;
+  line-height: 24px;
+  letter-spacing: 0.5px;
+}
+
+.video-item__save-button {
+  float: right;
+}
+
 .video-item__management {
   display: flex;
   justify-content: flex-end;
