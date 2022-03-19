@@ -12,7 +12,7 @@ const Snackbar = (message, delay = 2500) => {
 
   const close = () => {
     $snackbarContainer.classList.add('disappear');
-    addEventOnce('transitionend', $snackbarContainer, () => {
+    addEventOnce('animationend', $snackbarContainer, () => {
       $snackbarContainer.remove();
     });
   };
