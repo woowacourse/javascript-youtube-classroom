@@ -64,26 +64,21 @@ class SavedVideoListSection {
 
   #bindEventHandler() {
     this.$savedVideoListContainer.addEventListener('click', (e) => {
-      if (!e.target.classList.contains('button')) {
-        return;
-      }
+      const { target } = e;
+      const { videoId } = target.closest('.video-item').dataset;
 
-      const { videoId } = e.target.closest('.video-item').dataset;
-
-      if (e.target.classList.contains('video-item__watched-button')) {
+      if (this.#isWatchedButton(target)) {
         dispatch(CUSTOM_EVENT_KEY.CLICK_WATCHED_BUTTON, {
           detail: {
             targetVideoId: videoId,
           },
         });
-      } else if (e.target.classList.contains('video-item__delete-button')) {
-        if (this.#checkDelete()) {
-          dispatch(CUSTOM_EVENT_KEY.CLICK_DELETE_BUTTON, {
-            detail: {
-              targetVideoId: videoId,
-            },
-          });
-        }
+      } else if (this.#isDeleteButton(target) && this.#checkDelete()) {
+        dispatch(CUSTOM_EVENT_KEY.CLICK_DELETE_BUTTON, {
+          detail: {
+            targetVideoId: videoId,
+          },
+        });
       }
     });
   }
@@ -121,6 +116,14 @@ class SavedVideoListSection {
     });
 
     return filteredVideoList;
+  }
+
+  #isWatchedButton(targetButton) {
+    return targetButton.classList.contains('video-item__watched-button');
+  }
+
+  #isDeleteButton(targetButton) {
+    return targetButton.classList.contains('video-item__delete-button');
   }
 
   #checkDelete() {
