@@ -32,7 +32,7 @@
 
 .search-modal__title {
   font-weight: bold;
-  font-size: 34px;
+  font-size: max(2.5vw, 24px);
   line-height: 36px;
   text-align: center;
   margin-bottom: 40px;
@@ -45,7 +45,7 @@
 }
 
 .search-input__keyword {
-  width: 400px;
+  width: 30vw;
   height: 36px;
   margin-right: 20px;
   padding: 4px 8px;
