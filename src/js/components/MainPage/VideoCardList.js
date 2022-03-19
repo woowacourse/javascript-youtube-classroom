@@ -14,11 +14,6 @@ export default class VideoCardList extends Component {
     );
 
     return `
-      ${
-        !savedVideos.length
-          ? '<div class="skeleton-card"></div>'.repeat(10)
-          : ''
-      }
       ${filteredVideos.map(() => '<div class="video-card"></div>').join('')}
     `;
   }
@@ -31,12 +26,8 @@ export default class VideoCardList extends Component {
         (!!video.watched && video.watched === savedVideosFilter.watched) ||
         (!video.watched && !video.watched === savedVideosFilter.watching)
     );
-    const skeletonCards = this.target.querySelectorAll('.skeleton-card');
     const videoCards = this.target.querySelectorAll('.video-card');
 
-    skeletonCards.forEach((videoCard) => {
-      new SkeletonCard(videoCard);
-    });
     videoCards.forEach((videoCard, index) => {
       new VideoCard(videoCard, { video: filteredVideos[index] });
     });
