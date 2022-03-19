@@ -1,8 +1,7 @@
 import { $, createElement } from '@Utils/Dom';
 import { getParsedTime } from '@Utils/ManageData';
 import { addEventDelegate } from '@Utils/CustomEvent';
-import { CLASS_ROOM_SETTING } from '@Constants/Setting';
-import { ERROR_MESSAGE, ACTION_TYPE } from '@Constants/String';
+import { ACTION_TYPE } from '@Constants/String';
 import { SELECTOR, DOM_NAME } from '@Constants/Selector';
 import YoutubeSaveListStore from '@Domain/YoutubeSaveListStore';
 import YoutubeSaveStorage from '@Domain/YoutubeSaveStorage';
