@@ -42,17 +42,17 @@ class SavedVideosView {
     this.#observer.observe(this.#endOfList);
   }
 
-  async renderTab(tabName) {
+  renderTab(tabName) {
     if (tabName === this.#currentTabName) return;
 
     [this.#currentTabName, this.#otherTabName] = [this.#otherTabName, this.#currentTabName];
     this.#removeAllVideos();
 
-    await this.renderVideoList();
+    this.renderVideoList();
     this.#observer.observe(this.#endOfList);
   }
 
-  renderVideoList = async () => {
+  renderVideoList = () => {
     const videos = this.#unrenderedVideoIdArray.splice(0, 10);
 
     if (this.#renderedVideoIdArray.length === 0 && videos.length === 0) {
@@ -64,30 +64,30 @@ class SavedVideosView {
     noSavedVideos?.remove();
 
     const newVideoIdArray = removeArrayIntersection(videos, this.#renderedVideoIdArray);
-    await this.#renderNewVideos(newVideoIdArray);
+    this.#renderNewVideos(newVideoIdArray);
   };
 
-  renderOnModalClose = async () => {
+  renderOnModalClose = () => {
     this.#unrenderedVideoIdArray = this.#getCurrentTabIds();
     this.renderVideoList();
   };
 
   #loadMoreObserver() {
     return new IntersectionObserver(
-      async (entries) => {
+      (entries) => {
         if (this.#unrenderedVideoIdArray.length === 0) {
           this.#observer.unobserve(this.#endOfList);
           return;
         }
         if (entries[0].isIntersecting) {
-          await this.renderVideoList();
+          this.renderVideoList();
         }
       },
       { threshold: 1 }
     );
   }
 
-  async #renderNewVideos(newVideoIdArray) {
+  #renderNewVideos(newVideoIdArray) {
     try {
       if (newVideoIdArray.length !== 0) {
         const videoObjectArray = newVideoIdArray.map((id) => getAllFromStorage()[id]);

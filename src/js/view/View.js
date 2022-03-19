@@ -18,7 +18,7 @@ class View {
     this.searchModalView.toggleModal(this.savedVideosView.renderOnModalClose);
   };
 
-  handleTabSwitch = async ({ target }) => {
+  handleTabSwitch = ({ target }) => {
     const { dataset } = target;
 
     this.tabButtons.forEach((button) => {
@@ -26,7 +26,7 @@ class View {
       button.disabled = true;
     });
 
-    await this.savedVideosView.renderTab(dataset.tabName);
+    this.savedVideosView.renderTab(dataset.tabName);
     target.classList.add('current');
 
     this.tabButtons.forEach((button) => {
