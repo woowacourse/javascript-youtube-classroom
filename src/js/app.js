@@ -3,5 +3,5 @@ import Search from './domain/Search';
 import MainView from './view/MainView';
 
 const search = new Search();
-new MainView();
-new View(search);
+const mainView = new MainView();
+new View(search, mainView);

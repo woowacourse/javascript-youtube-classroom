@@ -9,9 +9,9 @@ import { MAX_SEARCH_RESULT } from '../constants/constants';
 import storage from '../domain/storage';
 
 class View {
-  constructor(search) {
+  constructor(search, mainView) {
     this.search = search;
-
+    this.mainView = mainView;
     this.searchModalButton = selectDom('#search-modal-button');
     this.modalContainer = selectDom('.modal-container');
     this.searchModal = selectDom('.search-modal', this.modalContainer);
@@ -34,6 +34,8 @@ class View {
   #closeModalHandler = (event) => {
     if (!this.searchModal.contains(event.target)) {
       this.#closeModal();
+      this.mainView.renderSavedVideo(false);
+      document.removeEventListener('click', this.#closeModalHandler);
     }
   };
 

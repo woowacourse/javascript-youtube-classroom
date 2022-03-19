@@ -23,6 +23,10 @@
   letter-spacing: 0.5px;
 }
 
+.tab-label:hover {
+  cursor: pointer;
+}
+
 .tab-button[type='radio']:checked + label {
   background: rgba(0, 188, 212, 0.12);
 }
