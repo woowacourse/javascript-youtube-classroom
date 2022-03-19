@@ -55,6 +55,9 @@
     "node-fetch": "^2.6.7"
   },
   "jest": {
+    "testPathIgnorePatterns": [
+      "<rootDir>/cypress/"
+    ],
     "testEnvironment": "jsdom"
   }
 }
