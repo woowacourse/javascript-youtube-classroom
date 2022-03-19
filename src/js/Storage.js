@@ -9,6 +9,9 @@ const Storage = {
 
   saveVideo(video) {
     const videos = this.getSavedVideos();
+    if (this.findVideoById(video.id)) {
+      throw new Error(ERROR_MESSAGE.ALREADY_SAVED_VIDEO);
+    }
     if (videos.length >= MAX_VIDEO_SAVE) {
       throw new Error(ERROR_MESSAGE.MAX_VIDEO_SAVE);
     }
