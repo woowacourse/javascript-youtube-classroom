@@ -41,10 +41,13 @@ export default class SavedVideoCardList extends Component {
         new VideoCard(videoCard, { video: this.renderedVideos[index] });
     });
 
-    // 저장된 비디오 개수만큼, pagination이 이루어졌다면
-    if (this.videos.length <= this.state.pagination * LOAD_VIDEOS_COUNT) return;
+    if (this.didRenderAllVideos()) return;
 
     this.observeLastChild();
+  }
+
+  didRenderAllVideos() {
+    return this.videos.length <= this.state.pagination * LOAD_VIDEOS_COUNT;
   }
 
   observeLastChild() {

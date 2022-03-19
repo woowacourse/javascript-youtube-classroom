@@ -55,19 +55,9 @@ export default class MainPage extends Component {
     `;
   }
 
-  shouldShowNotFound() {
-    const { hasWatchedVideo, hasWatchingVideo } = rootStore.state;
-    const { watchedMode } = this.state;
-
-    return (
-      (watchedMode && !hasWatchedVideo) || (!watchedMode && !hasWatchingVideo)
-    );
-  }
-
   afterMounted() {
     const { watchedMode } = this.state;
 
-    // 본 영상을 클릭했고, 본 영상이 없을 때
     if (this.shouldShowNotFound()) {
       new NotFound(this.$('#not-found'), {
         message: watchedMode
@@ -80,6 +70,15 @@ export default class MainPage extends Component {
     new SavedVideoCardList(this.$('#saved-video-list'), {
       watchedMode,
     });
+  }
+
+  shouldShowNotFound() {
+    const { hasWatchedVideo, hasWatchingVideo } = rootStore.state;
+    const { watchedMode } = this.state;
+
+    return (
+      (watchedMode && !hasWatchedVideo) || (!watchedMode && !hasWatchingVideo)
+    );
   }
 
   setEvent() {
