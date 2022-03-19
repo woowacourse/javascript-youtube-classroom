@@ -41,8 +41,6 @@ export default async function getSearchResult(
     const data = await response.json();
 
     if (!response.ok) {
-      console.log(data.error.name);
-      console.log(data.error.message);
       throw new Error(data.error.message);
     }
 
