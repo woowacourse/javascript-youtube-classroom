@@ -22,8 +22,6 @@ describe('나만의 유튜브 강의실을 사용할 수 있다.', () => {
     cy.get('search-video-item').should('be.visible');
   });
 
-  let videoId;
-
   it('영상을 저장할 수 있어야 한다.', () => {
     const targetSaveButton = cy.get('.video-item__save-button').first();
 
