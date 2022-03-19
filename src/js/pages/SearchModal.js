@@ -1,6 +1,6 @@
 import { OPTIONS, makeURLQuery, YOUTUBE_URL, fetchVideoList } from '../api';
 import { RULES, THROTTLE_PENDING_MILLISECOND } from '../constants';
-import VideoCardContainer from '../common/SearchModal/ModalVideoCardContainer';
+import VideoCardContainer from '../common/SearchModal';
 import throttle from '../utils/throttle';
 import ErrorContainer from '../common/SearchModal/ErrorContainer';
 import { timeFormatter } from '../utils';

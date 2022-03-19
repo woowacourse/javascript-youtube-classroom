@@ -37,6 +37,10 @@ body {
   background: #f5f5f5;
 }
 
+.button.focus {
+  background-color: #00bbd427;
+}
+
 .nav__button:hover {
   background: #00bbd427;
 }

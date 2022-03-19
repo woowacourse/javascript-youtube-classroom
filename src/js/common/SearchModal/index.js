@@ -1,7 +1,7 @@
 import { RULES } from '../../constants';
 import { snakeCaseToCamelCase } from '../../utils';
 import { getStorage, STORAGE_KEY, setStorage } from '../../utils/localStorage';
-import ModalVideoCard from './ModalVideoCard';
+import VideoCard from '../VideoCard';
 
 const makeVideoInfo = (object, element) => {
   object[snakeCaseToCamelCase(element.className.replace('video-item__', ''))] =
@@ -40,7 +40,12 @@ export default class ModalVideoCardContainer {
   }
 
   template() {
-    return this.#state.videos.map((video) => new ModalVideoCard(video).template()).join('');
+    // const storeButton = isStoredVideo(videoIds, this.videoId)
+    // ? ''
+    // : '<button class="video-item__save-button button" type="button">⬇ 저장</button>';
+    return this.#state.videos
+      .map((video) => new VideoCard(video).template('SEARCHED_VIDEOS'))
+      .join('');
   }
 
   render() {
