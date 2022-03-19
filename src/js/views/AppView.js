@@ -44,6 +44,8 @@ export default class AppView {
   }
 
   renderWillSeeVideo(savedVideos) {
+    this.$willSeeList.replaceChildren();
+
     if (savedVideos.length === 0) {
       this.$isEmpty.classList.remove('hide');
     }
