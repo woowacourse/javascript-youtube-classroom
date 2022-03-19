@@ -8,11 +8,7 @@ export default class MainView {
     this.registerDOM();
     this.renderStoredVideoList();
     this.showType = VIDEO_TYPE.WATCH_LATER;
-    this.bindOnClickWatchLaterButton();
-    this.onClickWatchLaterButton();
-    this.bindOnClickWatchedButton();
-    this.bindOnClickSwitchButton();
-    this.bindOnClickDeleteButton();
+    this.renderWatchLaterVideos();
     this.decideRenderEmptyImage();
   }
 
@@ -29,38 +25,20 @@ export default class MainView {
     this.$modalOpenButton.addEventListener('click', callback);
   }
 
-  bindOnClickWatchLaterButton() {
-    this.$watchLaterButton.addEventListener('click', this.onClickWatchLaterButton.bind(this));
+  bindOnClickWatchLaterButton(callback) {
+    this.$watchLaterButton.addEventListener('click', callback);
   }
 
-  bindOnClickWatchedButton() {
-    this.$watchedButton.addEventListener('click', this.onClickWatchedButton.bind(this));
+  bindOnClickWatchedButton(callback) {
+    this.$watchedButton.addEventListener('click', callback);
   }
 
-  bindOnClickSwitchButton() {
-    this.$storedVideoList.addEventListener('click', e => {
-      if ([...e.target.classList].includes('switch-show-type')) {
-        const videoId = e.target.dataset.videoid;
-        videoStorage.switchType(videoId);
-        e.target.parentElement.remove();
-        const storedList = videoStorage.getVideoDataList();
-        this.renderSwitchedVideoData(storedList[storedList.length - 1]);
-        this.decideRenderEmptyImage();
-      }
-    });
+  bindOnClickSwitchButton(callback) {
+    this.$storedVideoList.addEventListener('click', callback);
   }
 
-  bindOnClickDeleteButton() {
-    this.$storedVideoList.addEventListener('click', e => {
-      if ([...e.target.classList].includes('delete-button')) {
-        if (confirm('삭제 하시겠습니까?')) {
-          const videoId = e.target.dataset.videoid;
-          videoStorage.deleteVideoData(videoId);
-          e.target.parentElement.remove();
-          this.decideRenderEmptyImage();
-        }
-      }
-    });
+  bindOnClickDeleteButton(callback) {
+    this.$storedVideoList.addEventListener('click', callback);
   }
 
   renderStoredVideoList() {
@@ -85,7 +63,7 @@ export default class MainView {
     });
   }
 
-  onClickWatchLaterButton() {
+  renderWatchLaterVideos() {
     this.showType = VIDEO_TYPE.WATCH_LATER;
     this.$watchLaterButton.classList.add('selected__button');
     this.$watchedButton.classList.remove('selected__button');
@@ -101,7 +79,7 @@ export default class MainView {
     this.decideRenderEmptyImage();
   }
 
-  onClickWatchedButton() {
+  renderWatchedVideos() {
     this.showType = VIDEO_TYPE.WATCHED;
     this.$watchedButton.classList.add('selected__button');
     this.$watchLaterButton.classList.remove('selected__button');
@@ -114,6 +92,18 @@ export default class MainView {
       el.classList.add(DOM_STRING.HIDE);
     });
 
+    this.decideRenderEmptyImage();
+  }
+
+  switchRenderingType(e) {
+    e.target.parentElement.remove();
+    const storedList = videoStorage.getVideoDataList();
+    this.renderSwitchedVideoData(storedList[storedList.length - 1]);
+    this.decideRenderEmptyImage();
+  }
+
+  deleteSelectedVideo(e) {
+    e.target.parentElement.remove();
     this.decideRenderEmptyImage();
   }
 
