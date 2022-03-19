@@ -20,6 +20,9 @@ button:not(:disabled) {
 .btn.active {
   background-color: rgba(0, 188, 212, 0.12);
 }
+.btn.active:hover {
+  background-color: rgba(0, 188, 212, 0.10);
+}
 
 .btn:hover {
   background: #ebebeb;
