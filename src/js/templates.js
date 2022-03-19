@@ -27,16 +27,18 @@ const generateTemplate = {
   },
   videoItem({ id, channel, thumbnail, title, date }, videoIdArray) {
     return `<li class="video-item" data-video-id="${id}">
-    <img
-    src="${thumbnail}"
-    alt="video-item-thumbnail"
-    class="video-item__thumbnail"
-    />
-    <h4 class="video-item__title">
-      ${title}
-    </h4>
-    <p class="video-item__channel-name ">${channel}</p>
-    <p class="video-item__published-date ">${date}</p>
+    <a href="https://www.youtube.com/watch?v=${id}" target="_blank">
+      <img
+      src="${thumbnail}"
+      alt="video-item-thumbnail"
+      class="video-item__thumbnail"
+      />
+      <h4 class="video-item__title">
+        ${title}
+      </h4>
+      <p class="video-item__channel-name ">${channel}</p>
+      <p class="video-item__published-date ">${date}</p>
+    </a>
     <button class="video-item__save-button button ${
       videoIdArray.includes(String(id)) ? "hide" : ""
     } ">
@@ -62,14 +64,16 @@ const generateTemplate = {
   },
   savedVideoItem({ id, channel, thumbnail, title, date, isWatched }) {
     return `<li class="video-item" data-video-id="${id}">
-    <img
-      src="${thumbnail}"
-      alt="video-item-thumbnail"
-      class="video-item__thumbnail"
-    />
-    <h4 class="video-item__title">${title}</h4>
-    <p class="video-item__channel-name">${channel}</p>
-    <p class="video-item__published-date">${date}</p>
+    <a href="https://www.youtube.com/watch?v=${id}" target="_blank">
+      <img
+        src="${thumbnail}"
+        alt="video-item-thumbnail"
+        class="video-item__thumbnail"
+      />
+      <h4 class="video-item__title">${title}</h4>
+      <p class="video-item__channel-name">${channel}</p>
+      <p class="video-item__published-date">${date}</p>
+    </a>
     <div class="video-button__wrapper">
       <button class="video-item__watched-button button ${
         isWatched ? "selected" : ""
