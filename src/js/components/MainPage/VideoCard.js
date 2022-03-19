@@ -1,4 +1,5 @@
 import Component from '../../core/Component.js';
+import videoService from '../../services/VideoService.js';
 import { convertTime } from '../../utils/customDate.js';
 
 export default class VideoCard extends Component {
@@ -26,5 +27,13 @@ export default class VideoCard extends Component {
         <button class="video-item__remove-button button">🗑️</button>
       </li>
     `;
+  }
+
+  setEvent() {
+    const { videoId } = this.props.video;
+
+    this.addEvent('click', '.video-item__remove-button', () => {
+      videoService.removeSavedVideo(videoId);
+    });
   }
 }

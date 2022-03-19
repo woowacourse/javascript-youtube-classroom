@@ -105,6 +105,17 @@ class VideoService {
     });
   }
 
+  removeSavedVideo(videoId) {
+    const afterRemoved = this.rootStore.state.savedVideos.filter(
+      (video) => video.videoId !== videoId
+    );
+
+    this.webStore.save(afterRemoved);
+    this.rootStore.setState({
+      savedVideos: afterRemoved,
+    });
+  }
+
   toggleSearchModal() {
     this.rootStore.setState({
       isSearchModalOpened: !this.rootStore.state.isSearchModalOpened,
