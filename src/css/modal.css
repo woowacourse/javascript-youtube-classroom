@@ -25,8 +25,8 @@
   flex-direction: column;
   align-items: center;
   position: relative;
-  width: 1080px;
-  height: 727px;
+  width: 85%;
+  height: 95%;
   background: #ffffff;
   border: 1px solid rgba(0, 0, 0, 0.12);
   border-radius: 4px;
@@ -97,9 +97,28 @@
 .video-list {
   height: 493px;
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  grid-template-columns: repeat(4, minmax(290px, 393px));
   grid-gap: 16px;
   overflow-y: scroll;
+  justify-content: center;
+}
+
+@media screen and (max-width: 1280px) {
+  .video-list {
+    grid-template-columns: repeat(3, minmax(290px, 393px));
+  }
+}
+
+@media screen and (max-width: 960px) {
+  .video-list {
+    grid-template-columns: repeat(2, minmax(290px, 393px));
+  }
+}
+
+@media screen and (max-width: 600px) {
+  .video-list {
+    grid-template-columns: repeat(1, minmax(290px, 393px));
+  }
 }
 
 .video-item__thumbnail {
