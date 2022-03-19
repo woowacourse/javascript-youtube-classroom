@@ -76,24 +76,19 @@
   color: #ffffff;
 }
 
-.no-result {
-  position: relative;
-  width: 100%;
-}
-
 .no-result__image {
   position: absolute;
-  top: 35%;
+  top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
   width: 190px;
-  height: 140px;
+  height: 156px;
   margin-bottom: 32px;
 }
 
 .no-result__description {
   position: absolute;
-  top: 50%;
+  top: 62%;
   left: 50%;
   transform: translate(-50%, 50%);
   font-size: 16px;

@@ -71,11 +71,6 @@
   overflow-y: scroll;
 }
 
-.no-result {
-  position: relative;
-  width: 100%;
-}
-
 .empty-result {
   position: absolute;
   top: 0%;
