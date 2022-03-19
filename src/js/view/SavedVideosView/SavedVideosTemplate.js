@@ -3,7 +3,7 @@ import { ERROR_MESSAGES } from '../../constants/constants';
 import element from '../util/createElement';
 import videoElementTemplate from '../shared/VideoElement';
 
-function savedVideoElementButtons(resultItem, currentTabName) {
+function savedVideoElementButtons(currentTabName) {
   return element({
     tag: 'div',
     className: 'video-item__button-wrapper',
@@ -28,7 +28,7 @@ export function savedVideoElementTemplate(resultItem, currentTabName) {
   const videoElement = videoElementTemplate(resultItem);
   videoElement.dataset.videoId = resultItem.videoId;
 
-  const buttonDiv = savedVideoElementButtons(resultItem, currentTabName);
+  const buttonDiv = savedVideoElementButtons(currentTabName);
   videoElement.append(buttonDiv);
   return videoElement;
 }
