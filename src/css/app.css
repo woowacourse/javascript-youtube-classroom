@@ -47,6 +47,12 @@ body {
   border: 1px solid rgba(0, 0, 0, 0.12);
 }
 
+@media screen and (max-width: 600px) {
+  .nav-left__button {
+    width: 100px;
+  }
+}
+
 .nav-left__button.active {
   background: rgba(0, 188, 212, 0.12);
 }
