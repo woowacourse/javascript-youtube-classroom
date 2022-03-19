@@ -84,16 +84,8 @@ export default class ModalView {
         if ([...event.target.classList].includes(DOM_STRING.VIDEO_ITEM_SAVE_BUTTON)) {
           videoStorage.checkOverMaxLength();
           const clickedVideo = event.target.parentElement;
-          const clickedData = {
-            videoId: clickedVideo.children[4].dataset.videoid,
-            publishedAt: clickedVideo.children[3].textContent,
-            title: clickedVideo.children[1].textContent,
-            url: clickedVideo.children[0].src,
-            channelTitle: clickedVideo.children[2].textContent,
-            type: 'watch-later',
-          };
           event.target.classList.add(DOM_STRING.HIDE);
-          callback(clickedData);
+          callback(this.parseClickedData(clickedVideo));
         }
       } catch (error) {
         alert(error.message);
@@ -149,5 +141,16 @@ export default class ModalView {
 
   focusSearch() {
     this.$searchInput.focus();
+  }
+
+  parseClickedData(clickedVideo) {
+    return {
+      videoId: clickedVideo.children[4].dataset.videoid,
+      publishedAt: clickedVideo.children[3].textContent,
+      title: clickedVideo.children[1].textContent,
+      url: clickedVideo.children[0].src,
+      channelTitle: clickedVideo.children[2].textContent,
+      type: 'watch-later',
+    };
   }
 }
