@@ -1,0 +1,18 @@
+export const SELECTOR = {
+  WATCH_LATER_VIDEOS: '.watch-later-videos',
+  WATCHED_VIDEOS: '.watched-videos',
+  WATCHED_NAV_BUTTON: '.watched-nav-button',
+  WATCH_LATER_NAV_BUTTON: '.watch-later-nav-button',
+  SEARCH_MODAL_BUTTON: '#search-modal-button',
+  SEARCH_MODAL_CONTAINER: '.modal-container',
+  SEARCH_OUTER_CONTAINER: '.dimmer',
+  SEARCH_INPUT: '.search-input__keyword',
+  SEARCH_BUTTON: '#search-button',
+  EMPTY_IMG_CONTAINER: '.empty-img-container',
+  VIDEO_ITEM: '.video-item',
+  VIDEO_SAVE_BUTTON: '.video-item__save-button',
+  VIDEO_DELETE_BUTTON: '.video-item__delete-button',
+  VIDEO_WATCH_BUTTON: '.video-item__watched-button',
+  WATCH_LATER_VIDEOS_ITEMS: '.watch-later-videos-container ul li',
+  WATCHED_VIDEOS_ITEMS: '.watched-videos-container ul li',
+};
