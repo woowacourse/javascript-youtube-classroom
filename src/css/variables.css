@@ -25,4 +25,6 @@
   --not-found-message-bg-color: #22b8cf;
   --store-message-bg-color: #fcc419;
   --error-message-bg-color: #cc5de8;
+  --full-storage-message-bg-color: #ff6b6b;
+  --already-stored-message-bg-color: #845ef7;
 }

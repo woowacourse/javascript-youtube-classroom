@@ -123,6 +123,14 @@
   background: var(--error-message-bg-color);
 }
 
+.message.full-storage {
+  background: var(--full-storage-message-bg-color);
+}
+
+.message.already-stored {
+  background: var(--already-stored-message-bg-color);
+}
+
 .long-message-footer {
   text-align: center;
   font-size: 13px;
