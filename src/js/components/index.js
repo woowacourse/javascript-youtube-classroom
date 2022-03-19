@@ -95,29 +95,37 @@ class App {
   #handleOnClickWatchLaterFilterButton = () => {
     const savedVideoFilter = getState(STATE_STORE_KEY.SAVED_VIDEO_FILTER);
 
-    if (savedVideoFilter !== SAVED_VIDEO_FILTER_TYPE.WATCH_LATER) {
-      dispatch(CUSTOM_EVENT_KEY.CLICK_SAVED_VIDEO_FILTER_BUTTON, {
-        detail: {
-          savedVideoFilterType: SAVED_VIDEO_FILTER_TYPE.WATCH_LATER,
-        },
-      });
+    if (this.#isAlreadySelected(savedVideoFilter, SAVED_VIDEO_FILTER_TYPE.WATCH_LATER)) {
+      return;
     }
+
+    dispatch(CUSTOM_EVENT_KEY.CLICK_SAVED_VIDEO_FILTER_BUTTON, {
+      detail: {
+        savedVideoFilterType: SAVED_VIDEO_FILTER_TYPE.WATCH_LATER,
+      },
+    });
   };
 
   #handleOnClickWatchedFilterButton = () => {
     const savedVideoFilter = getState(STATE_STORE_KEY.SAVED_VIDEO_FILTER);
 
-    if (savedVideoFilter !== SAVED_VIDEO_FILTER_TYPE.WATCHED) {
-      dispatch(CUSTOM_EVENT_KEY.CLICK_SAVED_VIDEO_FILTER_BUTTON, {
-        detail: {
-          savedVideoFilterType: SAVED_VIDEO_FILTER_TYPE.WATCHED,
-        },
-      });
+    if (this.#isAlreadySelected(savedVideoFilter, SAVED_VIDEO_FILTER_TYPE.WATCHED)) {
+      return;
     }
+
+    dispatch(CUSTOM_EVENT_KEY.CLICK_SAVED_VIDEO_FILTER_BUTTON, {
+      detail: {
+        savedVideoFilterType: SAVED_VIDEO_FILTER_TYPE.WATCHED,
+      },
+    });
   };
 
   #handleOnClickSearchModalButton = () => {
     dispatch(CUSTOM_EVENT_KEY.CLICK_SEARCH_MODAL_BUTTON);
   };
+
+  #isAlreadySelected(currentSavedVideoFilter, targetSavedVideoFilter) {
+    return currentSavedVideoFilter === targetSavedVideoFilter;
+  }
 }
 export default App;
