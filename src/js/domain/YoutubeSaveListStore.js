@@ -1,5 +1,6 @@
 import Store from '@Core/Store';
 import { ACTION_TYPE } from '@Constants/String';
+import { CLASS_ROOM_SETTING } from '@Constants/Setting';
 import { getTimeStamp } from '@Utils/ManageData';
 import { requestYoutubeList } from '../api';
 import YoutubeSaveStorage from './YoutubeSaveStorage';
@@ -12,7 +13,6 @@ class YoutubeSaveListStore extends Store {
 
   setReducers() {
     this.addReducer(ACTION_TYPE.UPDATE_SAVE_LIST, async () => {
-      // 첫 로드, 저장하기, 저장 취소를 클릭할 시 업데이트
       const expireVideoList = this.#getExpireVideoList(YoutubeSaveStorage.get());
       this.#updateVideoData(expireVideoList);
 
@@ -36,7 +36,7 @@ class YoutubeSaveListStore extends Store {
   }
 
   #getExpireVideoList(videoList) {
-    const expireTime = getTimeStamp() - 86400; // 상수 분리
+    const expireTime = getTimeStamp() - CLASS_ROOM_SETTING.VIDEO_DATA_CACHE_EXPIRE_TIME;
     return videoList.reduce((previous, value, index) => {
       if (value.updateTime < expireTime) {
         previous.push({ primaryKey: index, videoId: value.id });
