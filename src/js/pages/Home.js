@@ -5,6 +5,7 @@ import { getStorageVideos } from '../utils/localStorage';
 export default class Home {
   constructor(element) {
     this.element = element;
+    this.currentFilter = 'stored';
 
     // configureDOMs
     this.storedVideoFilterButton = this.element.querySelector('#stored-video-filter-button');
@@ -17,8 +18,8 @@ export default class Home {
     this.modalContainer = document.querySelector('.modal-container');
 
     // bindEvents
-    this.storedVideoFilterButton.addEventListener('click', this.filterButtonHandler);
-    this.watchedVideoFilterButton.addEventListener('click', this.filterButtonHandler);
+    this.storedVideoFilterButton.addEventListener('click', this.showStoredVideos);
+    this.watchedVideoFilterButton.addEventListener('click', this.showWatchedVideos);
     this.searchModalButton.addEventListener('click', this.openModalHandler);
     this.dimmer.addEventListener('click', this.closeModalHandler);
 
@@ -30,12 +31,26 @@ export default class Home {
   }
 
   renderVideoList() {
-    const storedVideoList = Object.values(getStorageVideos({ filter: 'stored' }));
+    const storedVideoList = Object.values(getStorageVideos({ filter: this.currentFilter }));
     this.VideoCardContainer.setState({ videoList: storedVideoList });
   }
 
-  filterButtonHandler = () => {
-    console.log('click');
+  showStoredVideos = () => {
+    if (this.currentFilter === 'stored') return;
+
+    this.currentFilter = 'stored';
+
+    this.viewClear();
+    this.renderVideoList();
+  };
+
+  showWatchedVideos = () => {
+    if (this.currentFilter === 'watched') return;
+
+    this.currentFilter = 'watched';
+
+    this.viewClear();
+    this.renderVideoList();
   };
 
   openModalHandler = () => {
@@ -47,6 +62,7 @@ export default class Home {
     this.modalContainer.classList.add('hide');
     this.dimmer.classList.add('hide');
 
+    this.currentFilter = 'stored';
     this.viewClear();
     this.renderVideoList();
   };
