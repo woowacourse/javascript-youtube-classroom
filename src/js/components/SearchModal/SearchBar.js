@@ -2,7 +2,6 @@ import { getSearchAPI } from '../../api/api.js';
 import Component from '../../core/Component.js';
 import { rootStore } from '../../store/rootStore.js';
 import { webStore } from '../../store/WebStore.js';
-import { requestMockData } from '../../__mocks__/request.js';
 
 export default class SearchBar extends Component {
   template() {
@@ -38,12 +37,8 @@ export default class SearchBar extends Component {
 
       rootStore.setState({ isLoading: true });
 
-      // const [error, data] = await getSearchAPI(query);
-      const [error, data] = await getSearchAPI(
-        query,
-        null,
-        requestMockData.success
-      );
+      const [error, data] = await getSearchAPI(query);
+
       if (error) {
         rootStore.setState({
           isLoading: false,
