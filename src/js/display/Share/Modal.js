@@ -1,21 +1,23 @@
 import { $ } from '@Utils/Dom';
 import { addEventDelegate } from '@Utils/CustomEvent';
 
-export default class Modal {
+class Modal {
   $activeModal;
-  $container = $('#modal');
+  $container;
+  $modal = $('#modal');
 
-  constructor() {
+  enable(container) {
+    this.$container = $(container);
     this.setBindEvents();
   }
 
   setBindEvents() {
-    addEventDelegate(this.$container, '.dimmer', {
+    addEventDelegate(this.$modal, '.dimmer', {
       eventType: 'click',
       handler: this.handleCloseModal,
     });
 
-    addEventDelegate($('#app'), '*[data-modal]', {
+    addEventDelegate(this.$container, '*[data-modal]', {
       eventType: 'click',
       handler: this.handleOpenModal,
     });
@@ -25,7 +27,7 @@ export default class Modal {
     const modalId = $target.dataset.modal;
     const beforeModal = this.$activeModal;
 
-    this.$container.classList.remove('hide');
+    this.$modal.classList.remove('hide');
 
     !!beforeModal && beforeModal.classList.remove('show');
     this.$activeModal = $(`#${modalId}`);
@@ -33,8 +35,10 @@ export default class Modal {
   };
 
   handleCloseModal = () => {
-    this.$container.classList.add('hide');
+    this.$modal.classList.add('hide');
     this.$activeModal.classList.remove('show');
     this.$activeModal = null;
   };
 }
+
+export default new Modal();
