@@ -72,8 +72,3 @@ body {
 .manage-button:hover {
   background: #ebebeb;
 }
-
-.empty-video-image {
-  width: 45vw;
-  height: 50vh;
-}

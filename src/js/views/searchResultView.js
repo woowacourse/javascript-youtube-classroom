@@ -1,12 +1,8 @@
 import { $, $$ } from '../util/dom.js';
 import storage from '../storage/storage.js';
-import { VIDEO } from '../constants/constants.js';
+import { ELEMENTS, VIDEO } from '../constants/constants.js';
 
 const template = {
-  videoList: `
-    <h3 hidden>검색 결과</h3>
-    <ul class="video-list"></ul>
-  `,
   skeletonUI: `
     <li class="skeleton">
       <div class="image"></div>
@@ -29,7 +25,6 @@ const template = {
       </li>
   `;
   },
-
   noResult: `
     <h3 hidden>검색 결과</h3>
     <div class="no-result">
@@ -47,10 +42,10 @@ const searchResultView = {
     $('.modal-container').classList.toggle('hide');
   },
   resetVideoList() {
-    $('.search-result').innerHTML = template.videoList;
+    ELEMENTS.VIDEO_LIST.replaceChildren();
   },
   renderSkeletonUI() {
-    $('.video-list').insertAdjacentHTML(
+    ELEMENTS.VIDEO_LIST.insertAdjacentHTML(
       'beforeEnd',
       template.skeletonUI.repeat(VIDEO.SEARCH_RESULT_COUNT)
     );
@@ -59,12 +54,12 @@ const searchResultView = {
     $$('.skeleton').forEach((element) => element.remove());
   },
   removeSavedVideoButton() {
-    $('.video-list').lastElementChild.lastElementChild.hidden = true;
+    ELEMENTS.VIDEO_LIST.lastElementChild.lastElementChild.hidden = true;
   },
   renderVideoItems({ items }) {
     const savedStorage = storage.getLocalStorage();
     items.forEach((item) => {
-      $('.video-list').insertAdjacentHTML('beforeEnd', template.videoItem(item));
+      ELEMENTS.VIDEO_LIST.insertAdjacentHTML('beforeEnd', template.videoItem(item));
       if (savedStorage && savedStorage.find((data) => data.videoId === item.id.videoId)) {
         this.removeSavedVideoButton();
       }
@@ -73,7 +68,7 @@ const searchResultView = {
   renderSearchResult(videoData) {
     this.removeSkeletonUI();
     if (videoData.items.length === 0) {
-      $('.search-result').innerHTML = template.noResult;
+      ELEMENTS.VIDEO_LIST.innerHTML = template.noResult;
       return;
     }
     this.renderVideoItems(videoData);

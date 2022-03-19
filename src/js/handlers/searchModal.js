@@ -1,8 +1,8 @@
 import { $ } from '../util/dom.js';
-import YoutubeSearch from '../domain/YoutubeSearch.js';
+import YoutubeSearch from '../models/YoutubeSearch.js';
 import searchResultView from '../views/searchResultView.js';
 import { isEndOfScroll, throttle } from '../util/general.js';
-import { VIDEO } from '../constants/constants.js';
+import { ELEMENTS, VIDEO } from '../constants/constants.js';
 
 const youtubeSearch = new YoutubeSearch();
 
@@ -12,7 +12,7 @@ const renderHandler = async () => {
   searchResultView.renderSearchResult(response);
   const isLastVideos = response.items.length !== 0 && !response.nextPageToken;
   if (isLastVideos) {
-    $('.video-list').removeEventListener(
+    ELEMENTS.VIDEO_LIST.removeEventListener(
       'scroll',
       throttle(handleVideoListScroll, VIDEO.THROTTLE_DELAY)
     );
@@ -32,7 +32,7 @@ export const handleSearch = () => {
 };
 
 export const handleVideoListScroll = () => {
-  if (isEndOfScroll($('.search-result'))) {
+  if (isEndOfScroll(ELEMENTS.VIDEO_LIST)) {
     renderHandler();
   }
 };

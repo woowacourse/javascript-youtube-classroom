@@ -20,11 +20,6 @@
       </nav>
       <div class="video-container">
         <ul class="saved-video-list"></ul>
-        <img
-          class="empty-video-image"
-          src="./assets/empty_storage.jpeg"
-          alt="empty storage image"
-        />
       </div>
     </main>
     <div class="modal-container hide">
@@ -41,7 +36,10 @@
           />
           <button id="search-button" class="search-input__search-button button">검색</button>
         </section>
-        <section class="search-result"></section>
+        <section class="search-result">
+          <h3 hidden>검색 결과</h3>
+          <ul class="video-list"></ul>
+        </section>
       </div>
     </div>
   </body>

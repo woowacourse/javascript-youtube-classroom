@@ -1,7 +1,8 @@
 import { $ } from '../util/dom.js';
 
 export const ELEMENTS = {
-  EMPTY_VIDEO_IMAGE: $('.empty-video-image'),
+  SEARCH_RESULT: $('.search-result'),
+  VIDEO_LIST: $('.video-list'),
   SAVED_VIDEO_LIST: $('.saved-video-list'),
 };
 
