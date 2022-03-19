@@ -1,8 +1,8 @@
 import { ERROR } from '../constants';
 
 const STORAGE_KEY = {
-  VIDEO_IDS: 'VIDEO_IDS',
-  WATCHED_VIDEO_LIST: 'WATCHED_VIDEO_LIST',
+  WATCH_LATER_VIDEOS: 'WATCH_LATER_VIDEOS',
+  WATCHED_VIDEOS: 'WATCHED_VIDEOS',
 };
 
 const getStorage = (key) => {

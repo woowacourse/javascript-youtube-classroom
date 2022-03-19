@@ -1,5 +1,4 @@
-import WatchedVideos from '../common/Main/WatchedVideos';
-import WatchLaterVideos from '../common/Main/WatchLaterVideos';
+import MainVideoCardContainer from '../common/Main';
 
 export default class Main {
   constructor(element) {
@@ -11,9 +10,8 @@ export default class Main {
     this.searchModalButton.addEventListener('click', this.openModalHandler);
     this.tabs.addEventListener('click', this.changeTab);
 
-    this.watchedVideos = new WatchedVideos(this.videoList);
-    this.watchLaterVideos = new WatchLaterVideos(this.videoList);
-    this.focusedTab = 'watch-later';
+    this.mainVideoCardContainer = new MainVideoCardContainer(this.videoList);
+    this.focusedTab = 'watch-later-videos';
     this.renderStoredVideoList();
   }
 
@@ -31,16 +29,7 @@ export default class Main {
   };
 
   renderStoredVideoList() {
-    switch (this.focusedTab) {
-      case 'watch-later':
-        this.watchLaterVideos.render();
-        break;
-      case 'watched':
-        this.watchedVideos.render();
-        break;
-      default:
-        break;
-    }
+    this.mainVideoCardContainer.setState({ focusedTab: this.focusedTab });
   }
 
   openModalHandler = () => {

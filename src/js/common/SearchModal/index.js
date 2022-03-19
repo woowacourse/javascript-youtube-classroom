@@ -20,7 +20,7 @@ export default class ModalVideoCardContainer {
 
   storeVideoIDHandler(e) {
     if (e.target.className.includes('video-item__save-button')) {
-      const storedVideoIDs = getStorage(STORAGE_KEY.VIDEO_IDS);
+      const storedVideoIDs = getStorage(STORAGE_KEY.WATCH_LATER_VIDEOS);
 
       if (storedVideoIDs.length >= RULES.MAX_STORED_IDS_AMOUNT) {
         alert('저장할 수 있는 영상 한도를 초과했습니다.');
@@ -33,23 +33,23 @@ export default class ModalVideoCardContainer {
         .filter((element) => element.tagName !== 'BUTTON')
         .reduce((acc, element) => makeVideoInfo(acc, element), { videoId });
 
-      setStorage(STORAGE_KEY.VIDEO_IDS, storedVideoIDs.concat(videoInfo));
+      setStorage(STORAGE_KEY.WATCH_LATER_VIDEOS, storedVideoIDs.concat(videoInfo));
 
       e.target.remove();
     }
   }
 
   template() {
-    const storedVideoIds = getStorage(STORAGE_KEY.VIDEO_IDS).map((video) => video.videoId);
-    const watchedVideoIds = getStorage(STORAGE_KEY.WATCHED_VIDEO_LIST).map(
-      (video) => video.videoId,
-    );
+    const storedVideoIds = getStorage(STORAGE_KEY.WATCH_LATER_VIDEOS).map((video) => video.videoId);
+    const watchedVideoIds = getStorage(STORAGE_KEY.WATCHED_VIDEOS).map((video) => video.videoId);
+
     return this.#state.videos
       .map((video) => {
         const isStoredVideo = storedVideoIds.includes(video.videoId);
         const isWatchedVideo = watchedVideoIds.includes(video.videoId);
+
         return new VideoCard(video).template(
-          isStoredVideo || isWatchedVideo ? 'STORED_SEARCHED_VIDEO' : 'SEARCHED_VIDEOS',
+          isStoredVideo || isWatchedVideo ? 'STORED_SEARCHED_VIDEOS' : 'SEARCHED_VIDEOS',
         );
       })
       .join('');
