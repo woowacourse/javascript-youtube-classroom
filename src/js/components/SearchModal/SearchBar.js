@@ -2,7 +2,7 @@ import { getSearchAPI } from '../../api/api.js';
 import Component from '../../core/Component.js';
 import { rootStore } from '../../store/rootStore.js';
 import { webStore } from '../../store/WebStore.js';
-import request from '../../__mocks__/request.js';
+import { requestMockData } from '../../__mocks__/request.js';
 
 export default class SearchBar extends Component {
   template() {
@@ -39,7 +39,11 @@ export default class SearchBar extends Component {
       rootStore.setState({ isLoading: true });
 
       // const [error, data] = await getSearchAPI(query);
-      const [error, data] = await request();
+      const [error, data] = await getSearchAPI(
+        query,
+        null,
+        requestMockData.success
+      );
       if (error) {
         rootStore.setState({
           isLoading: false,
@@ -63,7 +67,7 @@ export default class SearchBar extends Component {
           query,
           pageToken: nextPageToken,
         },
-        videos: makeCardData(items),
+        videos: makeCardData(items, webStore.load()),
         status: { notFound: false, statusCode: 200 },
         isLoading: false,
       });
@@ -72,13 +76,11 @@ export default class SearchBar extends Component {
 }
 
 // TODO: test
-export function makeCardData(rawVideos) {
-  return addSavedToVideos(extractCardData(rawVideos));
+export function makeCardData(rawVideos, savedVideos) {
+  return addSavedToVideos(extractCardData(rawVideos), savedVideos);
 }
 
-function addSavedToVideos(videos) {
-  const savedVideos = webStore.load();
-
+function addSavedToVideos(videos, savedVideos) {
   // TODO: 이중 for문 해결
   return videos.map(video => {
     const saved = !!savedVideos.find(

@@ -5,7 +5,7 @@ import { getSearchAPI } from '../../../api/api.js';
 import { makeCardData } from '../SearchBar.js';
 import SkeletonCard from './SkeletonCard.js';
 import { LOAD_VIDEOS_COUNT } from '../../../constant.js';
-import request from '../../../__mocks__/request.js';
+import { requestMockData } from '../../../__mocks__/request.js';
 
 export default class VideoCardList extends Component {
   setup() {
@@ -84,7 +84,11 @@ export default class VideoCardList extends Component {
     const { query, pageToken: prevPageToken } = rootStore.state.searchOption;
 
     // const [error, data] = await getSearchAPI(query, prevPageToken);
-    const [error, data] = await request();
+    const [error, data] = await getSearchAPI(
+      query,
+      prevPageToken,
+      requestMockData.success
+    );
     if (error) {
       alert(`${error.message}, status: ${error.statusCode}`);
 
@@ -100,6 +104,6 @@ export default class VideoCardList extends Component {
       },
     });
 
-    return makeCardData(items);
+    return makeCardData(items, webStore.load());
   }
 }
