@@ -45,8 +45,10 @@ body {
 }
 
 #app {
-  max-width: 1020px;
+  display: flex;
+  flex-direction: column;
   margin: 0 auto;
+  width: fit-content;
 }
 
 .button {

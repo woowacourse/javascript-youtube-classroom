@@ -1,6 +1,8 @@
 .classroom {
   margin: 30px;
-  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .classroom__empty {
@@ -14,13 +16,4 @@
   width: 100%;
   height: 80%;
   margin-bottom: 20px;
-}
-
-.classroom__list {
-  width: 1040px;
-  height: 100%;
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-  gap: 32px 20px;
 }

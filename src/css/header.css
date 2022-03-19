@@ -14,7 +14,7 @@
 
 .header-nav__watching,
 .header-nav__watched {
-  width: 117px;
+  width: 100px;
   height: 36px;
   background: var(--color-white-gray);
 }
