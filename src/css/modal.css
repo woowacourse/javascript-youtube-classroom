@@ -28,6 +28,8 @@
   background: #FFFFFF;
   border: 1px solid rgba(0, 0, 0, 0.12);
   border-radius: 4px;
+  width: calc(240px * 4 + 20px * 3 + 30px * 2 + 2px);
+  padding: 50px 30px 32px 30px;
 }
 
 .search-modal__title {

@@ -2,4 +2,5 @@
   display: grid;
   width: 100%;
   gap: 32px 20px;
+  grid-template-columns: repeat(4, 1fr);
 }
