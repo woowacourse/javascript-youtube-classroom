@@ -53,12 +53,6 @@ body {
   align-items: center;
 }
 
-.saved-video-list {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 32px 20px;
-}
-
 .video-manage-button {
   position: absolute;
   right: 0;
@@ -76,4 +70,9 @@ body {
 
 .manage-button:hover {
   background: #ebebeb;
+}
+
+.saved-video-list {
+  display: grid;
+  grid-gap: 20px;
 }
