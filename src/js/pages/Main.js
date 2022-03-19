@@ -1,5 +1,7 @@
 import MainVideoCardContainer from '../common/Main';
 
+const TAB_BASE_CLASSLIST = 'button nav__button';
+
 export default class Main {
   constructor(element) {
     this.element = element;
@@ -21,8 +23,8 @@ export default class Main {
       Array.from(this.tabs.children).forEach((tab) => {
         tab.className =
           tab.dataset.tab === e.target.dataset.tab
-            ? 'button nav__button focus'
-            : 'button nav__button';
+            ? `${TAB_BASE_CLASSLIST} focus`
+            : TAB_BASE_CLASSLIST;
       });
       this.renderStoredVideoList();
     }

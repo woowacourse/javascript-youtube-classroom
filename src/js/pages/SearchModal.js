@@ -57,9 +57,7 @@ export default class SearchModal {
       throttle(this.scrollHandler, THROTTLE_PENDING_MILLISECOND),
     );
 
-    this.VideoCardContainer = new VideoCardContainer(this.videoList, {
-      items: [],
-    });
+    this.VideoCardContainer = new VideoCardContainer(this.videoList);
     this.ErrorContainer = new ErrorContainer(this.noResultDescription);
 
     this.pageToken = '';
@@ -145,6 +143,11 @@ export default class SearchModal {
   }
 
   async renderVideoList(options) {
+    console.log(this.pageToken);
+    if (this.pageToken === 'NO_NEXT_PAGE') {
+      return;
+    }
+
     this.renderSkeletonUI(this.videoList);
 
     const URLquery = makeURLQuery({
@@ -159,7 +162,7 @@ export default class SearchModal {
 
       this.showSearchResult(videos);
 
-      this.pageToken = videos.nextPageToken || '';
+      this.pageToken = videosRawInfo.nextPageToken ?? 'NO_NEXT_PAGE';
     } catch ({ message }) {
       this.ErrorContainer.setState({ status: message });
       this.showNoResultContainer();
