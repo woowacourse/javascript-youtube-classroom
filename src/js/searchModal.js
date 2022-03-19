@@ -21,7 +21,8 @@ class SearchModal {
 
     this.$searchButton.addEventListener('click', this.handleClickSearchButton);
     this.$videoList.addEventListener('click', this.handleClickVideoList);
-    this.$videoList.addEventListener('scroll', this.handleScrollVideoList);
+
+    this.observer = this.loadMoreObserver();
   }
 
   templateSkeletons(videoCount) {
@@ -63,6 +64,9 @@ class SearchModal {
       .join('');
     const $firstSkeleton = this.$videoList.querySelector('.skeleton');
     $firstSkeleton.insertAdjacentHTML('beforebegin', videoListTemplate);
+
+    const lastVideoItem = $('.video-item.skeleton', this.$videoList).previousSibling;
+    this.observer.observe(lastVideoItem);
   }
 
   checkSearchResult(searchResult) {
@@ -85,27 +89,6 @@ class SearchModal {
     const videos = this.checkSearchResult(searchResult);
     this.renderVideoItems(videos);
     this.nextPageToken = searchResult.nextPageToken;
-  };
-
-  handleScrollVideoList = async () => {
-    const title = this.$searchKeyWordInput.value;
-    const isScrollEnd =
-      this.$videoList.scrollHeight - this.$videoList.scrollTop === this.$videoList.clientHeight;
-
-    if (
-      isScrollEnd &&
-      this.$videoList.scrollTop !== 0 &&
-      !this.$searchResult.classList.contains('loading') &&
-      this.nextPageToken !== null
-    ) {
-      const jsonResult = await this.requestYoutubeVideos(title);
-      if (jsonResult === null) {
-        return;
-      }
-      this.nextPageToken = jsonResult.nextPageToken;
-      const videos = jsonResult.items.map(item => new VideoItem(item));
-      this.renderVideoItems(videos);
-    }
   };
 
   handleClickSaveButton = event => {
@@ -135,6 +118,28 @@ class SearchModal {
 
   removeSkeleton() {
     [...this.$videoList.querySelectorAll('.skeleton')].forEach($el => $el.remove());
+  }
+
+  loadMoreObserver() {
+    return new IntersectionObserver(
+      async entries => {
+        if (entries[0].isIntersecting && this.nextPageToken !== null) {
+          this.observer.unobserve(entries[0].target);
+          const title = this.$searchKeyWordInput.value;
+          const jsonResult = await this.requestYoutubeVideos(title);
+          if (jsonResult === null) {
+            return;
+          }
+          this.nextPageToken = jsonResult.nextPageToken;
+          const videos = jsonResult.items.map(item => new VideoItem(item));
+          this.renderVideoItems(videos);
+        }
+      },
+      {
+        root: this.$videoList,
+        threshold: 0.8,
+      }
+    );
   }
 
   async requestYoutubeVideos(query) {
