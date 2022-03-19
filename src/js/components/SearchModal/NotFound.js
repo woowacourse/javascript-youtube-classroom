@@ -1,6 +1,4 @@
-import { EXCEPTION_MESSAGE } from '../../constant.js';
 import Component from '../../core/Component.js';
-import { rootStore } from '../../store/rootStore.js';
 import notFoundImage from '../../../assets/images/not_found.png';
 
 export default class NotFound extends Component {

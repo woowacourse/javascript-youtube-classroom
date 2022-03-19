@@ -40,34 +40,46 @@ export default class MainPage extends Component {
           🔍 검색
         </button>
       </nav>
-      <ul id="saved-video-list" class="video-list"></ul>
+      ${
+        this.shouldShowNotFound()
+          ? `
+          <section
+            id="not-found"
+            class="search-result search-result--no-result"
+          ></section>
+        `
+          : `
+          <ul id="saved-video-list" class="video-list"></ul>
+        `
+      }
     `;
   }
 
-  afterMounted() {
+  shouldShowNotFound() {
     const { hasWatchedVideo, hasWatchingVideo } = rootStore.state;
     const { watchedMode } = this.state;
-    if (watchedMode) {
-      if (hasWatchedVideo) {
-        new SavedVideoCardList(this.$('#saved-video-list'), {
-          watchedMode,
-        });
-      } else {
-        new NotFound(this.$('#saved-video-list'), {
-          message: EXCEPTION_MESSAGE.NO_WATCHED_VIDEO,
-        });
-      }
-    } else {
-      if (hasWatchingVideo) {
-        new SavedVideoCardList(this.$('#saved-video-list'), {
-          watchedMode,
-        });
-      } else {
-        new NotFound(this.$('#saved-video-list'), {
-          message: EXCEPTION_MESSAGE.NO_WATCHING_VIDEO,
-        });
-      }
+
+    return (
+      (watchedMode && !hasWatchedVideo) || (!watchedMode && !hasWatchingVideo)
+    );
+  }
+
+  afterMounted() {
+    const { watchedMode } = this.state;
+
+    // 본 영상을 클릭했고, 본 영상이 없을 때
+    if (this.shouldShowNotFound()) {
+      new NotFound(this.$('#not-found'), {
+        message: watchedMode
+          ? EXCEPTION_MESSAGE.NO_WATCHED_VIDEO
+          : EXCEPTION_MESSAGE.NO_WATCHING_VIDEO,
+      });
+      return;
     }
+
+    new SavedVideoCardList(this.$('#saved-video-list'), {
+      watchedMode,
+    });
   }
 
   setEvent() {
