@@ -2,6 +2,7 @@ import videoAPI from '../videoAPI.js';
 import validator from '../utils/validator.js';
 import videoStorage from '../videoStorage.js';
 import { parseData } from '../utils/mockData.js';
+import { USER_MESSAGE } from '../utils/constants.js';
 
 export default class EventHandler {
   constructor(mainView, modalView) {
@@ -41,7 +42,7 @@ export default class EventHandler {
 
   clickDeleteButton(e) {
     if ([...e.target.classList].includes('delete-button')) {
-      if (confirm('삭제 하시겠습니까?')) {
+      if (confirm(USER_MESSAGE.WANT_DELETE)) {
         const videoId = e.target.dataset.videoid;
         videoStorage.deleteVideoData(videoId);
         this.mainView.deleteSelectedVideo(e);

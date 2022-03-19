@@ -45,3 +45,7 @@ export const VIDEO_TYPE = {
   WATCH_LATER: 'watch-later',
   WATCHED: 'watched',
 };
+
+export const USER_MESSAGE = {
+  WANT_DELETE: '정말 삭제 하시겠습니까?',
+};
