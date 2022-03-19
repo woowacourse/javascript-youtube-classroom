@@ -4,12 +4,13 @@ import { convertTime } from '../../utils/customDate.js';
 
 export default class VideoCard extends Component {
   setup() {
-    this.state = { saved: true, watched: this.props.video.watched ?? false };
+    this.state = { watched: this.props.video.watched ?? false };
   }
 
   template() {
     const { videoId, thumbnailUrl, title, channelTitle, publishTime } =
       this.props.video;
+    const { watched } = this.state;
 
     return `
       <li class="video-item" data-video-id="${videoId}">
@@ -23,7 +24,9 @@ export default class VideoCard extends Component {
         <p class="video-item__published-date line">${convertTime(
           publishTime
         )}</p>
-        <button class="video-item__watched-button button">✅</button>
+        <button class="video-item__watched-button button ${
+          watched ? 'watched' : ''
+        }">✅</button>
         <button class="video-item__remove-button button">🗑️</button>
       </li>
     `;
@@ -31,6 +34,12 @@ export default class VideoCard extends Component {
 
   setEvent() {
     const { videoId } = this.props.video;
+
+    this.addEvent('click', '.video-item__watched-button', () => {
+      videoService.toggleVideoWatched(videoId);
+
+      this.setState({ watched: !this.state.watched });
+    });
 
     this.addEvent('click', '.video-item__remove-button', () => {
       videoService.removeSavedVideo(videoId);

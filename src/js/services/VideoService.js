@@ -106,13 +106,28 @@ class VideoService {
   }
 
   removeSavedVideo(videoId) {
-    const afterRemoved = this.rootStore.state.savedVideos.filter(
+    const updated = this.rootStore.state.savedVideos.filter(
       (video) => video.videoId !== videoId
     );
 
-    this.webStore.save(afterRemoved);
+    this.webStore.save(updated);
     this.rootStore.setState({
-      savedVideos: afterRemoved,
+      savedVideos: updated,
+    });
+  }
+
+  toggleVideoWatched(videoId) {
+    const updated = this.rootStore.state.savedVideos.map((video) => {
+      if (video.videoId === videoId) {
+        return { ...video, watched: !video.watched ?? true };
+      }
+
+      return video;
+    });
+
+    this.webStore.save(updated);
+    this.rootStore.setState({
+      savedVideos: updated,
     });
   }
 
