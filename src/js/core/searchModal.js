@@ -40,7 +40,8 @@ export default class SearchModal extends StateController {
 
     if (isScrollEnd && $modalVideoList.scrollTop !== 0) {
       renderSkeletonItems(MAX_RENDER_VIDEOS_COUNT, $modalVideoList);
-      const searchResult = await searchResultRequest(title, this.nextPageToken);
+      const searchResult = await testRequest(title, this.nextPageToken);
+     //const searchResult = await searchResultRequest(title, this.nextPageToken);
       removeSkeleton($modalSearchResult);
       if (searchResult === null) {
         return;
