@@ -50,6 +50,24 @@
   overflow-y: scroll;
 }
 
+@media all and (max-width: 960px) {
+  .saved-video-list {
+    width: 760px;
+  }
+}
+
+@media all and (max-width: 600px) {
+  .saved-video-list {
+    width: 500px;
+  }
+}
+
+@media all and (max-width: 0px) {
+  .saved-video-list {
+    width: 240px;
+  }
+}
+
 .saved-item-button-container {
   display: flex;
   justify-content: flex-end;
