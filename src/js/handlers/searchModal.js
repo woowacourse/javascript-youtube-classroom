@@ -1,4 +1,3 @@
-import { $ } from '../util/dom.js';
 import YoutubeSearch from '../models/YoutubeSearch.js';
 import searchResultView from '../views/searchResultView.js';
 import { isEndOfScroll, throttle } from '../util/general.js';
@@ -21,7 +20,7 @@ const renderHandler = async () => {
 
 export const handleSearch = () => {
   try {
-    const searchInput = $('#search-input-keyword').value.trim();
+    const searchInput = ELEMENTS.SEARCH_INPUT_KEYWORD.value.trim();
     youtubeSearch.searchTarget = searchInput;
     youtubeSearch.pageToken = '';
     searchResultView.resetVideoList();

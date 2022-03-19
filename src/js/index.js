@@ -17,9 +17,9 @@ import {
 export default function App() {
   initSavedVideos();
 
-  $('#unseen-video-button').addEventListener('click', handleUnseenContent);
+  ELEMENTS.UNSEEN_VIDEO_BUTTON.addEventListener('click', handleUnseenContent);
 
-  $('#watched-video-button').addEventListener('click', handleWatchedContent);
+  ELEMENTS.WATCHED_VIDEO_BUTTON.addEventListener('click', handleWatchedContent);
 
   ELEMENTS.SAVED_VIDEO_LIST.addEventListener('click', (e) => {
     if (e.target.classList.contains('video-remove-button')) {
@@ -47,7 +47,7 @@ export default function App() {
 
   $('#search-button').addEventListener('click', handleSearch);
 
-  $('#search-input-keyword').addEventListener('keypress', (e) => {
+  ELEMENTS.SEARCH_INPUT_KEYWORD.addEventListener('keypress', (e) => {
     if (e.key === 'Enter') handleSearch();
   });
 }

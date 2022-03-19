@@ -1,7 +1,7 @@
+import { ELEMENTS } from '../constants/constants.js';
+import ContentTarget from '../models/ContentTarget.js';
 import storage from '../storage/storage.js';
 import { renderSavedVideos, renderNotSaved } from '../views/savedVideoList.js';
-import ContentTarget from '../models/ContentTarget.js';
-import { $ } from '../util/dom.js';
 
 const contentTarget = new ContentTarget();
 
@@ -62,15 +62,15 @@ export const handleWatchedVideo = (selectedVideoId) => {
 };
 
 export const handleWatchedContent = () => {
-  $('#unseen-video-button').classList.remove('target');
-  $('#watched-video-button').classList.add('target');
+  ELEMENTS.UNSEEN_VIDEO_BUTTON.classList.remove('target');
+  ELEMENTS.WATCHED_VIDEO_BUTTON.classList.add('target');
   contentTarget.currentTarget = 'watched';
   initSavedVideos();
 };
 
 export const handleUnseenContent = () => {
-  $('#unseen-video-button').classList.add('target');
-  $('#watched-video-button').classList.remove('target');
+  ELEMENTS.UNSEEN_VIDEO_BUTTON.classList.add('target');
+  ELEMENTS.WATCHED_VIDEO_BUTTON.classList.remove('target');
   contentTarget.currentTarget = 'unseen';
   initSavedVideos();
 };

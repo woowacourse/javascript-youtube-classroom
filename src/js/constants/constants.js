@@ -1,6 +1,9 @@
 import { $ } from '../util/dom.js';
 
 export const ELEMENTS = {
+  UNSEEN_VIDEO_BUTTON: $('#unseen-video-button'),
+  WATCHED_VIDEO_BUTTON: $('#watched-video-button'),
+  SEARCH_INPUT_KEYWORD: $('#search-input-keyword'),
   SEARCH_RESULT: $('.search-result'),
   VIDEO_LIST: $('.video-list'),
   SAVED_VIDEO_LIST: $('.saved-video-list'),
@@ -18,7 +21,7 @@ export const MESSAGE = {
 export const VIDEO = {
   MAX_SAVE_COUNT: 100,
   SEARCH_RESULT_COUNT: 10,
-  THROTTLE_DELAY: 1000,
+  THROTTLE_DELAY: 700,
 };
 
 export const STORAGE_KEY = 'data';
