@@ -95,12 +95,20 @@ const searchResultView = {
     }
     this.renderVideoItems(videoData);
   },
+  rendersavedVideo(videoData) {
+    $('.saved-video-list').insertAdjacentHTML('beforeEnd', template.savedVideoItem(videoData));
+  },
   renderSavedVideos(content, savedVideos) {
+    $('.saved-video-list').replaceChildren();
     savedVideos.forEach((video) => {
       if (video.state === content) {
         $('.saved-video-list').insertAdjacentHTML('beforeEnd', template.savedVideoItem(video));
       }
     });
+
+    if (!$('.saved-video-list').hasChildNodes()) {
+      $('.empty-video-image').classList.remove('hide');
+    }
   },
 };
 

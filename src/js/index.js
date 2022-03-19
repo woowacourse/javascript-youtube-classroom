@@ -53,16 +53,14 @@ export default function App() {
   };
 
   const selectedVideoData = (videoItem) => {
-    const videoData = [
-      {
-        videoId: videoItem.dataset.videoId,
-        thumbnails: videoItem.querySelector('.video-item__thumbnail').src,
-        title: videoItem.querySelector('.video-item__title').textContent,
-        channelTitle: videoItem.querySelector('.video-item__channel-name').textContent,
-        publishTime: videoItem.querySelector('.video-item__published-date').textContent,
-        state: 'unseen',
-      },
-    ];
+    const videoData = {
+      videoId: videoItem.dataset.videoId,
+      thumbnails: videoItem.querySelector('.video-item__thumbnail').src,
+      title: videoItem.querySelector('.video-item__title').textContent,
+      channelTitle: videoItem.querySelector('.video-item__channel-name').textContent,
+      publishTime: videoItem.querySelector('.video-item__published-date').textContent,
+      state: 'unseen',
+    };
     return videoData;
   };
 
@@ -75,22 +73,22 @@ export default function App() {
     const videoData = selectedVideoData(e.target.closest('li'));
     storage.saveVideo(videoData);
     $('.empty-video-image').classList.add('hide');
-    searchResultView.renderSavedVideos(content, videoData);
+    searchResultView.rendersavedVideo(videoData);
+  };
+
+  const changedVideoList = (changedData) => {
+    storage.setLocalStorage(changedData);
+    searchResultView.renderSavedVideos(content, changedData);
+    if (changedData.length === 0) {
+      storage.resetLocalStorage();
+    }
   };
 
   const handleDeleteVideo = (selectedVideoId) => {
-    $('.saved-video-list').replaceChildren();
     const deletedData = storage
       .getLocalStorage()
       .filter((video) => video.videoId !== selectedVideoId);
-    storage.setLocalStorage(deletedData);
-
-    if (deletedData.length === 0) {
-      storage.resetLocalStorage();
-      $('.empty-video-image').classList.remove('hide');
-      return;
-    }
-    searchResultView.renderSavedVideos(content, deletedData);
+    changedVideoList(deletedData);
   };
 
   const addVideoListEvents = () => {
@@ -118,8 +116,7 @@ export default function App() {
           video.state = 'watched';
         }
       });
-      storage.setLocalStorage(savedVideos);
-      searchResultView.renderSavedVideos(content, savedVideos);
+      changedVideoList(savedVideos);
     }
   });
 
