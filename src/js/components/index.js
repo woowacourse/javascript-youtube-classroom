@@ -25,11 +25,9 @@ class App {
     const savedVideoFilter = getState(STATE_STORE_KEY.SAVED_VIDEO_FILTER);
 
     if (savedVideoFilter === SAVED_VIDEO_FILTER_TYPE.WATCH_LATER) {
-      this.$watchLaterVideoButton.classList.add('focused');
-      this.$watchedVideoButton.classList.remove('focused');
+      this.#selectWatchLaterVideoButton();
     } else if (savedVideoFilter === SAVED_VIDEO_FILTER_TYPE.WATCHED) {
-      this.$watchLaterVideoButton.classList.remove('focused');
-      this.$watchedVideoButton.classList.add('focused');
+      this.#selectWatchedVideoButton();
     }
   }
 
@@ -69,16 +67,26 @@ class App {
         <h1 class="classroom-container__title">👩🏻‍💻 나만의 유튜브 강의실 👨🏻‍💻</h1>
         <nav class="nav">
           <button id="watch-later-filter-button" class="button nav__filter-button ${
-            savedVideoFilter === SAVED_VIDEO_FILTER_TYPE.WATCH_LATER ? 'focused' : ''
+            savedVideoFilter === SAVED_VIDEO_FILTER_TYPE.WATCH_LATER ? 'selected' : ''
           }">👁 볼 영상</button>
           <button id="watched-filter-button" class="button nav__filter-button ${
-            savedVideoFilter === SAVED_VIDEO_FILTER_TYPE.WATCHED ? 'focused' : ''
+            savedVideoFilter === SAVED_VIDEO_FILTER_TYPE.WATCHED ? 'selected' : ''
           }">✅ 본 영상</button>
           <button id="search-modal-button" class="button nav__button">🔍 검색</button>
         </nav>
         <section id="saved-video-list-section" class="saved-video-list__section"></section>
       </main>
     `;
+  }
+
+  #selectWatchLaterVideoButton() {
+    this.$watchLaterVideoButton.classList.add('selected');
+    this.$watchedVideoButton.classList.remove('selected');
+  }
+
+  #selectWatchedVideoButton() {
+    this.$watchLaterVideoButton.classList.remove('selected');
+    this.$watchedVideoButton.classList.add('selected');
   }
 
   #handleOnClickWatchLaterButton = () => {

@@ -53,11 +53,11 @@ body {
   background: #ebebeb;
 }
 
-.nav__filter-button.focused {
+.nav__filter-button.selected {
   background: rgba(0, 188, 212, 0.12);
 }
 
-.nav__filter-button.focused:hover {
+.nav__filter-button.selected:hover {
   background: rgba(0, 188, 212, 0.24);
 }
 
