@@ -2,26 +2,17 @@
   .search-result {
     width: 1030px;
   }
-  .search-input {
-    display: flex;
-  }
 }
 
 @media (min-width: 960px) and (max-width: 1280px) {
   .search-result {
     width: 770px;
   }
-  .search-input {
-    display: flex;
-  }
 }
 
 @media (min-width: 640px) and (max-width: 960px) {
   .search-result {
     width: 510px;
-  }
-  .search-input {
-    display: flex;
   }
 }
 
@@ -80,13 +71,20 @@
 }
 
 .search-input {
-  position: relative;
+  display: flex;
   justify-content: center;
   margin-bottom: 40px;
+  width: 60%;
+  max-width: 500px;
+}
+
+.search-input-container {
+  position: relative;
+  width: 100%;
 }
 
 .search-input__keyword {
-  width: 400px;
+  width: 95%;
   height: 36px;
   margin-right: 20px;
   padding: 4px 8px;

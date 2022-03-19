@@ -31,15 +31,17 @@
         <h2 id="search-modal-title" class="search-modal__title">🔍 보고싶은 영상 찾기 🔍</h2>
         <form class="search-input">
           <h3 hidden>검색어 입력</h3>
-          <input
-            id="search-input-keyword"
-            type="text"
-            placeholder="검색"
-            class="search-input__keyword"
-            autocomplete="off"
-          />
-          <div class="suggestion" hidden>
-            <ul id="suggestion-list"></ul>
+          <div class="search-input-container">
+            <input
+              id="search-input-keyword"
+              type="text"
+              placeholder="검색"
+              class="search-input__keyword"
+              autocomplete="off"
+            />
+            <div class="suggestion" hidden>
+              <ul id="suggestion-list"></ul>
+            </div>
           </div>
           <button id="search-button" class="search-input__search-button button">검색</button>
         </form>
