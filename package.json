@@ -8,7 +8,7 @@
     "start": "webpack serve --open --mode=development",
     "test": "jest --setupFiles dotenv/config",
     "cypress:open": "cypress open",
-    "cypress:run ": "cypress run"
+    "cypress:run": "cypress run --browser chrome"
   },
   "repository": {
     "type": "git",
