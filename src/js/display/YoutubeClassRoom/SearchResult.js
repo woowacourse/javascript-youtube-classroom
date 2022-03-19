@@ -66,7 +66,7 @@ export default class SearchResult {
 
     if (YoutubeSaveStorage.has(videoId)) {
       YoutubeSaveStorage.remove(videoId);
-      YoutubeSaveListStore.dispatch('UPDATE_LIST');
+      YoutubeSaveListStore.dispatch(ACTION_TYPE.UPDATE_SAVE_LIST);
       $target.textContent = '⬇ 저장';
 
       Snackbar('볼 영상 목록에서 제거되었습니다.');
@@ -80,7 +80,7 @@ export default class SearchResult {
     }
 
     YoutubeSaveStorage.add(videoId, videoList[primaryKey]);
-    YoutubeSaveListStore.dispatch('UPDATE_LIST');
+    YoutubeSaveListStore.dispatch(ACTION_TYPE.UPDATE_SAVE_LIST);
     $target.textContent = '🗑 저장 취소';
 
     Snackbar('볼 영상 목록에 저장되었습니다.');

@@ -17,7 +17,7 @@ export default class SaveList {
     this.setBindEvents();
     this.setRenderList();
     this.setSubscribeStores();
-    YoutubeSaveListStore.dispatch('UPDATE_LIST');
+    YoutubeSaveListStore.dispatch(ACTION_TYPE.UPDATE_SAVE_LIST);
   }
 
   render(state) {
@@ -59,7 +59,7 @@ export default class SaveList {
     const isUpdateState = state === 'unwatched';
 
     YoutubeSaveStorage.watched(videoId, isUpdateState);
-    YoutubeSaveListStore.dispatch('UPDATE_LIST');
+    YoutubeSaveListStore.dispatch(ACTION_TYPE.UPDATE_SAVE_LIST);
     Snackbar('영상의 상태를 변경하였습니다.');
   };
 
@@ -70,7 +70,7 @@ export default class SaveList {
     const { videoId } = $target.closest(SELECTOR.CLASS.VIDEO_ITEM).dataset;
 
     YoutubeSaveStorage.remove(videoId);
-    YoutubeSaveListStore.dispatch('UPDATE_LIST');
+    YoutubeSaveListStore.dispatch(ACTION_TYPE.UPDATE_SAVE_LIST);
   };
 
   #getVideoElementList(items, listType) {
