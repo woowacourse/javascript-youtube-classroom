@@ -24,11 +24,13 @@ export default class VideoCard extends Component {
         <p class="video-item__published-date line">${convertTime(
           publishTime
         )}</p>
-        ${
-          saved
-            ? ''
-            : '<button class="video-item__save-button button">⬇ 저장</button>'
-        }
+        <div class="video-item__button-menu">
+          ${
+            saved
+              ? ''
+              : '<button class="video-item__save-button button">⬇ 저장</button>'
+          }
+        </div>
       </li>
     `;
   }

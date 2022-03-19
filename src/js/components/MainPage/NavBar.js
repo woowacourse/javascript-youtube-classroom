@@ -5,7 +5,7 @@ import videoService from '../../services/VideoService.js';
 export default class NavBar extends Component {
   template() {
     return `
-      <div id="filter-menu"></div>
+      <div id="filter-menu" class="filter-menu"></div>
       <button id="search-modal-button" class="button nav__button">
         🔍 검색
       </button>

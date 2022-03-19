@@ -9,12 +9,12 @@ export default class FilterMenu extends Component {
     }));
 
     return `
-      <button id="filter-watching-button" class="button nav__button ${
+      <button id="filter-watching-button" class="button filter-menu__button ${
         watching ? 'selected' : ''
-      }">볼 영상</button>
-      <button id="filter-watched-button" class="button nav__button ${
+      }">👁️ 볼 영상</button>
+      <button id="filter-watched-button" class="button filter-menu__button ${
         watched ? 'selected' : ''
-      }">본 영상</button>
+      }">✅ 본 영상</button>
     `;
   }
 

@@ -1,0 +1,126 @@
+.video-list {
+  height: 100%;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  grid-auto-rows: max-content;
+  gap: 16px;
+  overflow-y: auto;
+}
+
+@media only screen and (min-width: 600px) {
+  .video-list {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+@media only screen and (min-width: 960px) {
+  .video-list {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+@media only screen and (min-width: 1280px) {
+  .video-list {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+
+.video-item__thumbnail {
+  display: block;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+}
+
+.video-item__title {
+  font-weight: bold;
+  font-size: 16px;
+  line-height: 24px;
+  letter-spacing: 0.5px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin: 4px 0;
+}
+
+.video-item__channel-name {
+  font-size: 16px;
+  line-height: 24px;
+  letter-spacing: 0.5px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.video-item__published-date {
+  font-size: 12px;
+  line-height: 24px;
+  letter-spacing: 0.5px;
+}
+
+.video-item__button-menu {
+  height: 36px;
+  display: flex;
+  flex-direction: row;
+  gap: 8px;
+  float: right;
+  margin-top: 4px;
+}
+
+.video-item__save-button {
+  width: 80px;
+  height: 36px;
+  background: #f9f9f9;
+}
+
+.video-item__save-button:hover {
+  background: #efefef;
+}
+
+.video-item__watched-button {
+  float: right;
+  width: 36px;
+  height: 36px;
+}
+
+.video-item__watched-button.watched {
+  background: #8be9ed;
+}
+
+.video-item__remove-button {
+  float: right;
+  width: 36px;
+  height: 36px;
+}
+
+.skeleton .video-item__thumbnail,
+.skeleton .line,
+.skeleton .video-item__save-button {
+  background-image: linear-gradient(
+    90deg,
+    #e0e0e0 0px,
+    #ededed 30px,
+    #e0e0e0 60px
+  );
+  animation: refresh 2s infinite ease-out;
+}
+
+.skeleton .line {
+  height: 24px;
+  line-height: 24px;
+}
+
+.skeleton .line:first-child {
+  width: 50%;
+}
+
+.skeleton .line:last-child {
+  width: 80%;
+}
+
+@keyframes refresh {
+  0% {
+    background-position: calc(-100px);
+  }
+  40%,
+  100% {
+    background-position: 320px;
+  }
+}

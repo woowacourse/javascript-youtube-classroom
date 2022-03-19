@@ -7,7 +7,9 @@ export default class MainPage extends Component {
     return `
       <h1 class="classroom-container__title">👩🏻‍💻 나만의 유튜브 강의실 👨🏻‍💻</h1>
       <nav id="nav-bar" class="nav"></nav>
-      <ul id="saved-video-list" class="video-list"></ul>
+      <section class="saved-video-wrapper">
+        <ul id="saved-video-list" class="video-list"></ul>
+      </section>
     `;
   }
 

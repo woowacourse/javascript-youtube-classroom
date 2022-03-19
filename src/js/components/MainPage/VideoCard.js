@@ -24,10 +24,12 @@ export default class VideoCard extends Component {
         <p class="video-item__published-date line">${convertTime(
           publishTime
         )}</p>
-        <button class="video-item__watched-button button ${
-          watched ? 'watched' : ''
-        }">✅</button>
-        <button class="video-item__remove-button button">🗑️</button>
+        <div class="video-item__button-menu">
+          <button class="video-item__watched-button button ${
+            watched ? 'watched' : ''
+          }">✅</button>
+          <button class="video-item__remove-button button">🗑️</button>
+        </div>
       </li>
     `;
   }

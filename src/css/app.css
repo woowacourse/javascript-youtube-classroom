@@ -18,20 +18,23 @@ body {
 
 .nav {
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
+  margin-bottom: 40px;
 }
 
 .button {
   cursor: pointer;
-  border-radius: 4px;
-  border: none;
   font-style: normal;
   font-weight: bold;
   font-size: 14px;
   letter-spacing: 1.25px;
+  border-radius: 4px;
+  border: none;
 }
 
 .nav__button {
+  border-radius: 4px;
+  border: none;
   width: 80px;
   height: 36px;
   background: #f5f5f5;
@@ -39,4 +42,33 @@ body {
 
 .nav__button:hover {
   background: #ebebeb;
+}
+
+.filter-menu {
+  display: flex;
+  flex-direction: row;
+}
+
+.filter-menu__button {
+  border: 1px solid rgba(0, 0, 0, 0.12);
+  width: 117px;
+  height: 36px;
+  margin-left: -1px;
+  background: #f5f5f5;
+}
+
+.filter-menu__button.selected {
+  background: #8be9ed;
+}
+
+.filter-menu__button:first-of-type {
+  margin-left: 0;
+  border-radius: 4px 0px 0px 4px;
+}
+.filter-menu__button:last-of-type {
+  border-radius: 0px 4px 4px 0px;
+}
+
+.saved-video-wrapper {
+  height: calc(100vh - 300px);
 }

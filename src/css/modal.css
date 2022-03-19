@@ -70,6 +70,7 @@
 
 .search-result {
   width: 100%;
+  height: calc(100% - 160px);
 }
 
 .search-result.search-result--no-result {
@@ -91,56 +92,4 @@
   line-height: 150%;
   text-align: center;
   letter-spacing: 0.5px;
-}
-
-.video-list {
-  height: 493px;
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
-  grid-gap: 16px;
-  overflow-y: scroll;
-}
-
-.video-item__thumbnail {
-  display: block;
-  width: 100%;
-  aspect-ratio: 16 / 9;
-}
-
-.video-item__title {
-  font-weight: bold;
-  font-size: 16px;
-  line-height: 24px;
-  letter-spacing: 0.5px;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  margin: 4px 0;
-}
-
-.video-item__channel-name {
-  font-size: 16px;
-  line-height: 24px;
-  letter-spacing: 0.5px;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.video-item__published-date {
-  font-size: 12px;
-  line-height: 24px;
-  letter-spacing: 0.5px;
-}
-
-.video-item__save-button {
-  float: right;
-  width: 80px;
-  height: 36px;
-  background: #f9f9f9;
-  margin-top: 4px;
-}
-
-.video-item__save-button:hover {
-  background: #efefef;
 }
