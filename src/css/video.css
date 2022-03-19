@@ -74,7 +74,8 @@
 }
 
 .video-item__watched-button,
-.video-item__delete-button {
+.video-item__delete-button,
+.video-item__start-button {
   cursor: pointer;
   border: none;
   background-color: var(--color-white-gray);
@@ -82,7 +83,9 @@
   padding: 10px;
   margin-left: 5px;
 }
+
 .video-item__watched-button:hover,
-.video-item__delete-button:hover {
+.video-item__delete-button:hover,
+.video-item__start-button:hover {
   background: var(--color-light-gray);
 }

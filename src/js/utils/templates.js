@@ -31,8 +31,8 @@ export const getSearchVideoTemplate = (video) => {
   return `
     <li class="video-item">
       ${getVideoInfoTemplate(url, title, channelTitle, date)}
-      <button data-id="${id}" data-title="${title}"  
-        data-channel-title="${channelTitle}" data-date="${date}" data-url="${url}" type="button"
+      <button data-id=${id} data-title=${title}  
+        data-channel-title=${channelTitle} data-date=${date} data-url=${url} type="button"
         class="video-item__save-button button">⬇ 저장</button>
     </li>
   `;
@@ -45,11 +45,23 @@ export const getClassroomVideoTemplate = (video) => {
     <li class="video-item">
       ${getVideoInfoTemplate(url, title, channelTitle, date)}
       <div class="video-item__option" data-id=${id}>
+        ${watched ? "" : `<button type="button" class="video-item__start-button">📺</button>`}
         <button type="button" class="video-item__watched-button ${watched ? "active" : ""}">✅</button>
         <button type="button" class="video-item__delete-button">🗑️</button>
       </div>
     </li>
   `;
+};
+
+export const getIframeTemplate = (id) => {
+  return `
+    <iframe
+    class="video-item__iframe"
+    type="text/html"
+    src="https://www.youtube.com/embed/${id}"
+    frameborder="0"
+    allowfullscreen="allowfullscreen"
+    ></iframe>`;
 };
 
 export const getSkeletonTemplate = `

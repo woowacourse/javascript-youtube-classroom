@@ -1,6 +1,6 @@
 import { $ } from "../utils/dom.js";
 import { INFOMATION_MESSAGES } from "../utils/contants.js";
-import { getClassroomVideoTemplate, getEmptyClassroomTemplate, getFrameTemplate } from "../utils/templates.js";
+import { getClassroomVideoTemplate, getEmptyClassroomTemplate, getIframeTemplate } from "../utils/templates.js";
 
 export default class Classroom {
   constructor({ videoManager }) {
@@ -25,6 +25,12 @@ export default class Classroom {
   #handleVideoOption = ({ target }) => {
     const { id } = target.parentNode.dataset;
 
+    if (target.classList.contains("video-item__start-button")) {
+      const videoItem = target.parentNode.parentNode;
+      const thumnail = videoItem.firstElementChild;
+      thumnail.remove();
+      videoItem.insertAdjacentHTML("afterbegin", getIframeTemplate(id));
+    }
     if (target.classList.contains("video-item__watched-button")) {
       this.videoManager.toggleWatchVideo(id);
     }
