@@ -16,6 +16,7 @@
     "no-new": 0,
     "no-var": "error",
     "max-depth": ["error", 2],
+    "no-alert": 0,
     "no-console": "warn",
     "no-param-reassign": "error",
     "no-undefined": 0,
