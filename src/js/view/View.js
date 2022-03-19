@@ -92,7 +92,7 @@ class View {
 
   #handleVideoSaveClick = (event) => {
     try {
-      storage.setSavedVideos(event.target.dataset);
+      storage.addSavedVideos(event.target.dataset);
       event.target.disabled = true;
     } catch (error) {
       alert(error.message);

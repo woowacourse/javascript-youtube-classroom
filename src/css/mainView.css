@@ -32,6 +32,16 @@
   margin-top: 39px;
 }
 
+.saved-video-list {
+  width: 1040px;
+  height: 493px;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 32px 20px;
+  overflow-y: scroll;
+}
+
 .saved-item-button-container {
   display: flex;
   justify-content: flex-end;
@@ -62,6 +72,6 @@
   background: #ebebeb;
 }
 
-#check-button {
+.check-button {
   margin-right: 8px;
 }
