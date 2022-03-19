@@ -92,12 +92,13 @@
 }
 
 .video-list {
-  height: 493px;
+  height: 60vh;
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
   gap: 32px 20px;
   overflow-y: scroll;
+  margin-bottom: 10vh;
 }
 
 .video-item {
