@@ -37,8 +37,8 @@ class App {
   }
 
   #initDOM() {
-    this.$watchLaterVideoButton = document.querySelector('#watch-later-filter-button');
-    this.$watchedVideoButton = document.querySelector('#watched-filter-button');
+    this.$watchLaterFilterButton = document.querySelector('#watch-later-filter-button');
+    this.$watchedFilterButton = document.querySelector('#watched-filter-button');
     this.$searchModalButton = document.querySelector('#search-modal-button');
     this.$savedVideoListSection = document.querySelector('#saved-video-list-section');
   }
@@ -49,8 +49,11 @@ class App {
   }
 
   #bindEventHandler() {
-    this.$watchLaterVideoButton.addEventListener('click', this.#handleOnClickWatchLaterButton);
-    this.$watchedVideoButton.addEventListener('click', this.#handleOnClickWatchedButton);
+    this.$watchLaterFilterButton.addEventListener(
+      'click',
+      this.#handleOnClickWatchLaterFilterButton
+    );
+    this.$watchedFilterButton.addEventListener('click', this.#handleOnClickWatchedFilterButton);
     this.$searchModalButton.addEventListener('click', this.#handleOnClickSearchModalButton);
   }
 
@@ -80,16 +83,16 @@ class App {
   }
 
   #selectWatchLaterVideoButton() {
-    this.$watchLaterVideoButton.classList.add('selected');
-    this.$watchedVideoButton.classList.remove('selected');
+    this.$watchLaterFilterButton.classList.add('selected');
+    this.$watchedFilterButton.classList.remove('selected');
   }
 
   #selectWatchedVideoButton() {
-    this.$watchLaterVideoButton.classList.remove('selected');
-    this.$watchedVideoButton.classList.add('selected');
+    this.$watchLaterFilterButton.classList.remove('selected');
+    this.$watchedFilterButton.classList.add('selected');
   }
 
-  #handleOnClickWatchLaterButton = () => {
+  #handleOnClickWatchLaterFilterButton = () => {
     const savedVideoFilter = getState(STATE_STORE_KEY.SAVED_VIDEO_FILTER);
 
     if (savedVideoFilter !== SAVED_VIDEO_FILTER_TYPE.WATCH_LATER) {
@@ -101,7 +104,7 @@ class App {
     }
   };
 
-  #handleOnClickWatchedButton = () => {
+  #handleOnClickWatchedFilterButton = () => {
     const savedVideoFilter = getState(STATE_STORE_KEY.SAVED_VIDEO_FILTER);
 
     if (savedVideoFilter !== SAVED_VIDEO_FILTER_TYPE.WATCHED) {
