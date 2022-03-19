@@ -13,21 +13,19 @@ export default class SearchResultView {
     this.$searchResultVideoList.addEventListener('scroll', debounce(this.onScrollVideoList.bind(this), 500));
     this.$searchResultVideoList.addEventListener('click', this.onClickVideoSaveButton.bind(this));
 
-    addListener(EVENT.UPDATE_SEARCH_STATE, this.updateOnSearchState.bind(this));
-    addListener(EVENT.RESPONSE_SAVE_VIDEO, this.onResponseSaveVideo.bind(this));
   }
 
   onScrollVideoList() {
     const { scrollTop, clientHeight, scrollHeight } = this.$searchResultVideoList;
     if (scrollTop + clientHeight + 50 < scrollHeight) return;
-    dispatch(EVENT.REQUEST_SEARCH_ON_SCROLL);
+    dispatch(EVENT.REQUEST_SEARCH_ON_SCROLL, {}, $('#modal-container'));
   }
 
   onClickVideoSaveButton(e) {
     const { target } = e
     if (target.id === 'save-button') {
       const video = target.parentNode.dataset;
-      dispatch(EVENT.REQUEST_SAVE_VIDEO, { video, target });
+      dispatch(EVENT.REQUEST_SAVE_VIDEO, { video, target }, $('#modal-container'));
     }
   }
 

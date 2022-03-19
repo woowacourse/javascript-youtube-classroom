@@ -7,7 +7,6 @@ export default class SavedVideoListView {
   constructor() {
     $('#unwatched-video-list').addEventListener('click', this.onClickIconButton.bind(this));
     $('#watched-video-list').addEventListener('click', this.onClickIconButton.bind(this));
-    addListener(EVENT.UPDATE_SAVED_VIDEO_LIST, this.updateOnSavedVideoList.bind(this));
   }
 
   onClickIconButton(e) {
@@ -21,13 +20,13 @@ export default class SavedVideoListView {
 
   onClickCheckWatchedButton(e) {
     const { id } = e.target.parentNode.dataset;
-    dispatch(EVENT.REQUEST_CHANGE_VIDEO_WATCHED_INFO, { id });
+    dispatch(EVENT.REQUEST_CHANGE_VIDEO_WATCHED_INFO, { id }, $('#app'));
   }
 
   onClickDeleteButton(e) {
     if (window.confirm(GUIDE_MESSAGE.CONFIRM_DELETE)) {
       const { id } = e.target.parentNode.dataset;
-      dispatch(EVENT.REQUEST_DELETE_VIDEO, { id });
+      dispatch(EVENT.REQUEST_DELETE_VIDEO, { id }, $('#app'));
     }
   }
   

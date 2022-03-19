@@ -1,5 +1,6 @@
 import { EVENT, GUIDE_MESSAGE, MAX_DATA_FETCH_AT_ONCE } from '../constants';
 import Storage from '../Storage';
+import { $ } from '../util';
 import { addListener, dispatch } from '../util/event';
 import { validateSearchKeyword, checkNoUndefinedProperty } from './validation';
 
@@ -29,15 +30,12 @@ export default class SearchVideoManager {
     this.#keyword = '';
     this.#nextPageToken = '';
     this.#searchState = 'READY';
-
-    addListener(EVENT.REQUEST_SEARCH_WITH_NEW_KEYWORD, this.searchWithNewKeyword.bind(this));
-    addListener(EVENT.REQUEST_SEARCH_ON_SCROLL, this.searchOnScroll.bind(this));
   }
 
   updateSearchState(newState, data = {}) {
     this.#searchState = newState;
     const detail = { searchState: newState, ...data };
-    dispatch(EVENT.UPDATE_SEARCH_STATE, detail);
+    dispatch(EVENT.UPDATE_SEARCH_STATE, detail, $('#modal-container'));
   }
 
   searchWithNewKeyword(e) {

@@ -10,6 +10,6 @@ export default class SearchKeywordFormView {
   onSubmitSearchForm(e) {
     e.preventDefault();
     const keyword = $('#search-input-keyword').value;
-    dispatch(EVENT.REQUEST_SEARCH_WITH_NEW_KEYWORD, { keyword });
+    dispatch(EVENT.REQUEST_SEARCH_WITH_NEW_KEYWORD, { keyword }, $('#modal-container'));
   }
 }
