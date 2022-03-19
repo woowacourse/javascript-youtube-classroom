@@ -40,3 +40,8 @@ export const EVENT = {
     OFFSET: 50,
   },
 };
+
+export const VIDEO_TYPE = {
+  WATCH_LATER: 'watch-later',
+  WATCHED: 'watched',
+};

@@ -1,4 +1,4 @@
-import { ERROR_MESSAGE, STORE } from './utils/constants.js';
+import { ERROR_MESSAGE, STORE, VIDEO_TYPE } from './utils/constants.js';
 
 const videoStorage = {
   KEYS: {
@@ -39,8 +39,7 @@ const videoStorage = {
 
   getDataIndexInList(videoId) {
     let dataIndex = 0;
-    const videoList = this.getVideoDataList();
-    videoList.forEach((videoData, idx) => {
+    this.getVideoDataList().forEach((videoData, idx) => {
       if (videoData.videoId === videoId) {
         dataIndex = idx;
       }
@@ -49,13 +48,15 @@ const videoStorage = {
   },
 
   switchType(videoId) {
-    const switchedList = this.getVideoDataList();
-    const cutVideo = switchedList[this.getDataIndexInList(videoId)];
-    cutVideo.type = cutVideo.type === 'watch-later' ? 'watched' : 'watch-later';
+    const selectedVideo = this.getVideoDataList()[this.getDataIndexInList(videoId)];
+    selectedVideo.type =
+      selectedVideo.type === VIDEO_TYPE.WATCH_LATER ? VIDEO_TYPE.WATCHED : VIDEO_TYPE.WATCH_LATER;
+
     this.deleteVideoData(videoId);
+
     localStorage.setItem(
       this.KEYS.VIDEO_LIST,
-      JSON.stringify([...this.getVideoDataList(), cutVideo])
+      JSON.stringify([...this.getVideoDataList(), selectedVideo])
     );
   },
 };
