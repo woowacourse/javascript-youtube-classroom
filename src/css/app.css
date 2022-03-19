@@ -1,9 +1,10 @@
-@import "./grid.css";
-@import "./button.css";
-
 body {
     padding: 64px 0;
     font-size: 16px;
+}
+
+#app {
+  margin: 0 auto;
 }
 
 header > h1 {
@@ -72,18 +73,18 @@ header > h1 {
   margin-left: 10px;
 }
 
-#app > .video-list-container {
+#app > .saved-video-list-container {
   max-height: calc(100vh - 200px);
   overflow-y: scroll;
   scroll-behavior: smooth;
 }
-#app > .video-list-container .video-item {
+#app > .saved-video-list-container .video-item {
   display: block;
 }
 
-#app > .video-list-container.visible-watch-later .video-item--watched {
+#app > .saved-video-list-container.visible-watch-later .video-item--watched {
   display: none;
 }
-#app > .video-list-container.visible-watched .video-item--watch-later {
+#app > .saved-video-list-container.visible-watched .video-item--watch-later {
   display: none;
 }

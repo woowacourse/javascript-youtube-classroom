@@ -14,7 +14,7 @@ export default class App {
     this.storage = new VideoStorage(LOCAL_STORAGE_VIDEO_LIST_KEY, MAX_SAVABLE_VIDEOS_COUNT);
 
     this.$modalContainer = $('.modal-container');
-    this.$videoListContainer = $('#app > .video-list-container');
+    this.$videoListContainer = $('#app > .saved-video-list-container');
     this.$videoList = $('.video-list', this.$videoListContainer);
     this.$videoListFilters = $('#app .video-list-filters');
 

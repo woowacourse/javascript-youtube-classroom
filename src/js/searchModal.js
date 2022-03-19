@@ -28,11 +28,11 @@ class SearchModal {
     const skeletonListHtmlString = [...Array(videoCount).keys()]
       .map(
         () => `
-          <div class="skeleton">
+          <li class="video-item skeleton">
             <div class="image"></div>
             <p class="line"></p>
             <p class="line"></p>
-          </div>
+          </li>
         `
       )
       .join('');
