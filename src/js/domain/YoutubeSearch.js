@@ -1,4 +1,4 @@
-import { SEARCH_RESULT_COUNT } from '../constants/constants.js';
+import { VIDEO } from '../constants/constants.js';
 import { validateInput } from '../util/general.js';
 
 export default class YoutubeSearch {
@@ -28,7 +28,7 @@ export default class YoutubeSearch {
     const url = new URL(REDIRECT_SERVER_HOST);
     const parameter = new URLSearchParams({
       part: 'snippet',
-      maxResults: SEARCH_RESULT_COUNT,
+      maxResults: VIDEO.SEARCH_RESULT_COUNT,
       q: this.#searchTarget,
       regionCode: 'kr',
       pageToken: this.#pageToken || '',

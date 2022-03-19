@@ -2,7 +2,7 @@ import '../css/index.css';
 import '../assets/images/not_found.png';
 import '../assets/images/empty_storage.jpeg';
 import { $ } from './util/dom.js';
-import { MESSAGE, THROTTLE_DELAY } from './constants/constants.js';
+import { MESSAGE, VIDEO } from './constants/constants.js';
 import { isEndOfScroll, throttle } from './util/general.js';
 import storage from './storage/storage.js';
 import YoutubeSearch from './domain/YoutubeSearch.js';
@@ -10,12 +10,13 @@ import searchResultView from './ui/searchResultView.js';
 
 export default function App() {
   const youtubeSearch = new YoutubeSearch();
+  const content = 'unseen';
 
   const initSavedVideo = () => {
     const savedVideos = storage.getLocalStorage();
     if (savedVideos) {
       $('.empty-video-image').classList.add('hide');
-      searchResultView.renderSavedVideos(savedVideos);
+      searchResultView.renderSavedVideos(content, savedVideos);
     }
   };
 
@@ -27,12 +28,11 @@ export default function App() {
     if (isLastVideos) {
       $('.video-list').removeEventListener(
         'scroll',
-        throttle(handleVideoListScroll, THROTTLE_DELAY)
+        throttle(handleVideoListScroll, VIDEO.THROTTLE_DELAY)
       );
     }
   };
 
-  // 핸들러
   const handleSearch = () => {
     try {
       const searchInput = $('#search-input-keyword').value.trim();
@@ -52,44 +52,52 @@ export default function App() {
     }
   };
 
+  const selectedVideoData = (videoItem) => {
+    const videoData = [
+      {
+        videoId: videoItem.dataset.videoId,
+        thumbnails: videoItem.querySelector('.video-item__thumbnail').src,
+        title: videoItem.querySelector('.video-item__title').textContent,
+        channelTitle: videoItem.querySelector('.video-item__channel-name').textContent,
+        publishTime: videoItem.querySelector('.video-item__published-date').textContent,
+        state: 'unseen',
+      },
+    ];
+    return videoData;
+  };
+
   const handleSaveVideos = (e) => {
     const isSaveButtonClick = e.target.classList.contains('video-item__save-button');
     if (!isSaveButtonClick) {
       return;
     }
     e.target.hidden = true;
-    const selectedVideo = e.target.closest('li');
-    const videoData = [
-      {
-        videoId: selectedVideo.dataset.videoId,
-        thumbnails: selectedVideo.querySelector('.video-item__thumbnail').src,
-        title: selectedVideo.querySelector('.video-item__title').textContent,
-        channelTitle: selectedVideo.querySelector('.video-item__channel-name').textContent,
-        publishTime: selectedVideo.querySelector('.video-item__published-date').textContent,
-      },
-    ];
+    const videoData = selectedVideoData(e.target.closest('li'));
     storage.saveVideo(videoData);
     $('.empty-video-image').classList.add('hide');
-    searchResultView.renderSavedVideos(videoData);
+    searchResultView.renderSavedVideos(content, videoData);
   };
 
   const handleDeleteVideo = (selectedVideoId) => {
+    $('.saved-video-list').replaceChildren();
     const deletedData = storage
       .getLocalStorage()
       .filter((video) => video.videoId !== selectedVideoId);
     storage.setLocalStorage(deletedData);
-    $('.saved-video-list').replaceChildren();
-    if (deletedData.length !== 0) {
-      searchResultView.renderSavedVideos(deletedData);
+
+    if (deletedData.length === 0) {
+      storage.resetLocalStorage();
+      $('.empty-video-image').classList.remove('hide');
       return;
     }
-    storage.resetLocalStorage();
-    $('.empty-video-image').classList.remove('hide');
+    searchResultView.renderSavedVideos(content, deletedData);
   };
 
-  // 이벤트 등록
   const addVideoListEvents = () => {
-    $('.video-list').addEventListener('scroll', throttle(handleVideoListScroll, THROTTLE_DELAY));
+    $('.video-list').addEventListener(
+      'scroll',
+      throttle(handleVideoListScroll, VIDEO.THROTTLE_DELAY)
+    );
 
     $('.video-list').addEventListener('click', handleSaveVideos);
   };
@@ -101,9 +109,18 @@ export default function App() {
         handleDeleteVideo(selectedVideoId);
       }
     }
-    // if (e.target.classList.contains('video-watched-button')) {
-
-    // }
+    if (e.target.classList.contains('video-watched-button')) {
+      const selectedVideoId = e.target.closest('li').dataset.videoId;
+      const savedVideos = storage.getLocalStorage();
+      savedVideos.forEach((video) => {
+        if (video.videoId === selectedVideoId) {
+          // eslint-disable-next-line no-param-reassign
+          video.state = 'watched';
+        }
+      });
+      storage.setLocalStorage(savedVideos);
+      searchResultView.renderSavedVideos(content, savedVideos);
+    }
   });
 
   $('#search-modal-button').addEventListener('click', searchResultView.toggleModal);

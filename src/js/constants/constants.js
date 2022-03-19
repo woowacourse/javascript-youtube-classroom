@@ -7,8 +7,10 @@ export const MESSAGE = {
   },
 };
 
-export const THROTTLE_DELAY = 500;
+export const VIDEO = {
+  MAX_SAVE_COUNT: 100,
+  SEARCH_RESULT_COUNT: 10,
+  THROTTLE_DELAY: 500,
+};
 
-export const MAX_VIDEO_COUNT = 100;
-
-export const SEARCH_RESULT_COUNT = 10;
+export const STORAGE_KEY = 'data';

@@ -1,6 +1,6 @@
 import { $, $$ } from '../util/dom.js';
 import storage from '../storage/storage.js';
-import { SEARCH_RESULT_COUNT } from '../constants/constants.js';
+import { VIDEO } from '../constants/constants.js';
 
 const template = {
   videoList: `
@@ -69,7 +69,7 @@ const searchResultView = {
   renderSkeletonUI() {
     $('.video-list').insertAdjacentHTML(
       'beforeEnd',
-      template.skeletonUI.repeat(SEARCH_RESULT_COUNT)
+      template.skeletonUI.repeat(VIDEO.SEARCH_RESULT_COUNT)
     );
   },
   removeSkeletonUI() {
@@ -95,10 +95,12 @@ const searchResultView = {
     }
     this.renderVideoItems(videoData);
   },
-  renderSavedVideos(savedVideos) {
-    savedVideos.forEach((video) =>
-      $('.saved-video-list').insertAdjacentHTML('beforeEnd', template.savedVideoItem(video))
-    );
+  renderSavedVideos(content, savedVideos) {
+    savedVideos.forEach((video) => {
+      if (video.state === content) {
+        $('.saved-video-list').insertAdjacentHTML('beforeEnd', template.savedVideoItem(video));
+      }
+    });
   },
 };
 
