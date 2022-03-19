@@ -1,6 +1,6 @@
 // 비디오관련 갯수 상숭
 export const MAX_SAVABLE_VIDEOS_COUNT = 100;
-export const MAX_RENDER_VIDEOS_COUNT = 1;
+export const MAX_RENDER_VIDEOS_COUNT = 10;
 
 // 로컬 스토리지 키
 export const SAVED_VIDEO_LIST_KEY = 'saved-video-list-key';
