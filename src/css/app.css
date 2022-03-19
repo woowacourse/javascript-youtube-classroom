@@ -55,3 +55,16 @@ body {
 .nav__button:hover {
   background: var(--nav-button-hover-bg-color);
 }
+
+.dimmer {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background: var(--dimmer-bg-color);
+  top: 0;
+  left: 0;
+}
+
+.hide {
+  display: none;
+}

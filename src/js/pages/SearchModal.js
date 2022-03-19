@@ -13,8 +13,20 @@ const toastPopup = toast();
 export default class SearchModal {
   constructor(element) {
     this.element = element;
-    this.configureDOMs();
-    this.bindEvents();
+
+    // configureDOMs
+    this.searchInputKeyword = this.element.querySelector('#search-input-keyword');
+    this.searchErrorMessage = this.element.querySelector('#search-error-message');
+    this.videoListWrapper = this.element.querySelector('.video-list');
+    this.searchForm = this.element.querySelector('#search-form');
+    [this.resultContainer, this.noResultContainer] = this.element.querySelectorAll('.search-result');
+    this.renderSkeletonUI(this.videoListWrapper);
+    this.skeletons = this.videoListWrapper.querySelectorAll('.skeleton');
+
+    // bindEvents
+    this.searchForm.addEventListener('submit', this.searchHandler);
+    this.videoListWrapper.addEventListener('scroll', throttle(this.scrollHandler, THROTTLE_PENDING_MILLISECOND));
+
     this.VideoCardContainer = new VideoCardContainer(
       this.videoListWrapper,
       {
@@ -25,29 +37,7 @@ export default class SearchModal {
     this.pageToken = '';
   }
 
-  configureDOMs() {
-    this.searchInputKeyword = this.element.querySelector('#search-input-keyword');
-    this.searchErrorMessage = this.element.querySelector('#search-error-message');
-    this.videoListWrapper = this.element.querySelector('.video-list');
-    this.dimmer = this.element.querySelector('.dimmer');
-    this.searchForm = this.element.querySelector('#search-form');
-    [this.resultContainer, this.noResultContainer] = this.element.querySelectorAll('.search-result');
-
-    this.renderSkeletonUI(this.videoListWrapper);
-    this.skeletons = this.videoListWrapper.querySelectorAll('.skeleton');
-  }
-
-  bindEvents() {
-    this.dimmer.addEventListener('click', this.closeModalHandler.bind(this));
-    this.searchForm.addEventListener('submit', this.searchHandler.bind(this));
-    this.videoListWrapper.addEventListener('scroll', throttle(this.scrollHandler.bind(this), THROTTLE_PENDING_MILLISECOND));
-  }
-
-  closeModalHandler() {
-    this.element.classList.add('hide');
-  }
-
-  scrollHandler(e) {
+  scrollHandler = (e) => {
     const { scrollTop, offsetHeight, scrollHeight } = e.target;
     const isNextScroll = scrollTop + offsetHeight >= scrollHeight;
     const isNotEndPage = this.pageToken !== null;
@@ -58,7 +48,7 @@ export default class SearchModal {
         pageToken: this.pageToken,
       });
     }
-  }
+  };
 
   reSearch() {
     this.videoListWrapper.scrollTo({ top: 0 });
@@ -66,7 +56,7 @@ export default class SearchModal {
     this.pageToken = '';
   }
 
-  searchHandler(e) {
+  searchHandler = (e) => {
     e.preventDefault();
 
     try {
@@ -83,7 +73,7 @@ export default class SearchModal {
     } catch (error) {
       this.searchErrorMessage.textContent = ERROR_MESSAGE.EMPTY_KEYWORD;
     }
-  }
+  };
 
   renderSkeletonUI(element) {
     element.insertAdjacentHTML(
