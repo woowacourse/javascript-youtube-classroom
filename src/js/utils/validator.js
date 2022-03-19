@@ -24,6 +24,6 @@ export const checkLengthExist = (value) => {
 
 export const checkExceedLimit = (items) => {
   if (items.length >= VIDEO.LIMIT_SAVE_VIDEO_COUNT) {
-    throw new Error(ERROR_MESSAGES.EXCEED_LIMIT_ERROR_MESSAGE);
+    throw new Error(ERROR_MESSAGES.EXCEED_LIMIT);
   }
 };

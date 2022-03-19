@@ -53,6 +53,7 @@ export default class Controller {
     } catch (error) {
       this.searchResultView.removeVideo();
       this.searchResultView.showNotFound();
+      this.mainView.toastNotification('error', error.message);
       return;
     }
 
