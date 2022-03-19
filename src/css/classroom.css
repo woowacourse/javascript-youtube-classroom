@@ -6,16 +6,6 @@
   --button__highlighted-color: rgba(0, 188, 212, 0.12);
 }
 
-.classroom-video__list {
-  width: 1040px;
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-  gap: 32px 20px;
-  margin-top: 30px;
-  overflow-y: scroll;
-}
-
 .video-item__check-button {
   position: absolute;
   right: 40px;
@@ -66,4 +56,17 @@
 #will-watch-video-button:hover,
 #watched-video-button:hover {
   background: var(--button__highlighted-color);
+}
+
+.classroom-video {
+  margin-top: 40px;
+}
+
+.classroom-video__list {
+  width: 100%;
+  height: 493px;
+  display: grid;
+  gap: 32px 0px;
+  justify-items: center;
+  overflow-y: scroll;
 }
