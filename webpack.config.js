@@ -20,7 +20,7 @@ module.exports = () => {
         '@Core': path.resolve(__dirname, 'src/js/core/'),
         '@Constants': path.resolve(__dirname, 'src/js/constants/'),
         '@Images': path.resolve(__dirname, 'src/assets/images'),
-        '@Style': path.resolve(__dirname, 'src/scss'),
+        '@Style': path.resolve(__dirname, 'src/styles'),
       },
     },
     devServer: {
