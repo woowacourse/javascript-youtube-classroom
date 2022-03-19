@@ -34,4 +34,13 @@ export default class VideoStorage {
     this.videos[targetIndex].isWatched = !this.videos[targetIndex].isWatched;
     localStorage.setItem("videos", JSON.stringify(this.videos));
   }
+
+  deleteVideo(target) {
+    const targetIndex = this.getStorage().findIndex(
+      (item) => item.videoId === target
+    );
+
+    this.videos.splice(targetIndex, 1);
+    localStorage.setItem("videos", JSON.stringify(this.videos));
+  }
 }

@@ -48,6 +48,7 @@ export default class YoutubeApp {
       throttle(this.#onScrollVideoList, DELAY_TIME)
     );
     bindEventListener(this.savedVideoList, "click", this.#onClickWatchedButton);
+    bindEventListener(this.savedVideoList, "click", this.#onClickDeleteButton);
     bindEventListener(this.videoList, "click", this.#onClickSaveButton);
     bindEventListener(
       document.querySelector(".dimmer"),
@@ -93,6 +94,15 @@ export default class YoutubeApp {
 
     const videoData = getTargetVideoData(target, ".video-item");
     this.videoStorage.setVideoStateWatched(videoData.videoId);
+
+    this.videoStorageView.hideElement(target.closest(".video-item"));
+  };
+
+  #onClickDeleteButton = ({ target }) => {
+    if (!target.matches(".video-item__delete-button")) return;
+
+    const videoData = getTargetVideoData(target, ".video-item");
+    this.videoStorage.deleteVideo(videoData.videoId);
 
     this.videoStorageView.hideElement(target.closest(".video-item"));
   };
