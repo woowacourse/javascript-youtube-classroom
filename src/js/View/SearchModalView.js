@@ -3,9 +3,9 @@ import SearchKeywordFormView from './SearchKeywordFormView';
 import SearchResultView from './SearchResultView';
 
 export default class SearchModalView {
-  constructor() {
-    this.searchKeywordFormView = new SearchKeywordFormView();
-    this.searchResultView = new SearchResultView();
+  constructor({ searchVideoManager, saveVideoManager }) {
+    this.searchKeywordFormView = new SearchKeywordFormView({ searchVideoManager });
+    this.searchResultView = new SearchResultView({ searchVideoManager, saveVideoManager });
 
     $('.dimmer').addEventListener('click', this.closeModal);
     window.addEventListener('keydown', this.onKeyDown);
@@ -13,7 +13,7 @@ export default class SearchModalView {
 
   onKeyDown = (e) => {
     if (e.key === 'Escape' && !$('#modal-container').classList.contains('hide')) {
-      $('#modal-container').classList.add('hide');
+      this.closeModal();
     }
   }
 

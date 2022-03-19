@@ -1,10 +1,12 @@
 import { EVENT } from '../constants';
 import { $, $$, debounce } from '../util';
-import { dispatch } from '../util/event';
 import { template, MESSAGE } from './template';
 
 export default class SearchResultView {
-  constructor() {
+  constructor({ searchVideoManager, saveVideoManager }) {
+    this.searchVideoManager = searchVideoManager;
+    this.saveVideoManager = saveVideoManager;
+
     this.$searchResultSection = $('#search-result-section');
     this.$searchResultVideoList = $('#search-result-video-list', this.$searchResultSection);
     this.$noResultContainer = $('#no-result-container', this.$searchResultSection);
@@ -12,20 +14,22 @@ export default class SearchResultView {
 
     this.$searchResultVideoList.addEventListener('scroll', debounce(this.onScrollVideoList, 500));
     this.$searchResultVideoList.addEventListener('click', this.onClickVideoSaveButton);
-
+    $('#modal-container').addEventListener(EVENT.UPDATE_SEARCH_STATE, this.updateOnSearchState);
   }
 
   onScrollVideoList = () => {
     const { scrollTop, clientHeight, scrollHeight } = this.$searchResultVideoList;
     if (scrollTop + clientHeight + 50 < scrollHeight) return;
-    dispatch(EVENT.REQUEST_SEARCH_ON_SCROLL, {}, $('#modal-container'));
+    this.searchVideoManager.searchOnScroll();
   }
 
   onClickVideoSaveButton = (e) => {
     const { target } = e
     if (target.id === 'save-button') {
       const video = target.parentNode.dataset;
-      dispatch(EVENT.REQUEST_SAVE_VIDEO, { video, target }, $('#modal-container'));
+      if ( this.saveVideoManager.saveVideo(video) === 'SUCCESS' ) {
+        target.remove();
+      }
     }
   }
 

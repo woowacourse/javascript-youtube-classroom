@@ -1,12 +1,14 @@
 import { EVENT, GUIDE_MESSAGE } from '../constants';
 import { $ } from '../util';
-import { dispatch } from '../util/event';
 import { template } from './template';
 
 export default class SavedVideoListView {
-  constructor() {
+  constructor({ saveVideoManager }) {
+    this.saveVideoManager = saveVideoManager;
+
     $('#unwatched-video-list').addEventListener('click', this.onClickIconButton);
     $('#watched-video-list').addEventListener('click', this.onClickIconButton);
+    $('#app').addEventListener(EVENT.UPDATE_SAVED_VIDEO_LIST, this.updateOnSavedVideoList);
   }
 
   onClickIconButton = (e) => {
@@ -20,13 +22,13 @@ export default class SavedVideoListView {
 
   onClickCheckWatchedButton = (e) => {
     const { id } = e.target.parentNode.dataset;
-    dispatch(EVENT.REQUEST_CHANGE_VIDEO_WATCHED_INFO, { id }, $('#app'));
+    this.saveVideoManager.changeWatched(id);
   }
 
   onClickDeleteButton = (e) => {
     if (window.confirm(GUIDE_MESSAGE.CONFIRM_DELETE)) {
       const { id } = e.target.parentNode.dataset;
-      dispatch(EVENT.REQUEST_DELETE_VIDEO, { id }, $('#app'));
+      this.saveVideoManager.deleteVideo(id);
     }
   }
   

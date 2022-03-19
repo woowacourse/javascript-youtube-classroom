@@ -2,8 +2,8 @@ import { $ } from '../util';
 import SavedVideoListView from './SavedVideoListView';
 
 export default class HomeView {
-  constructor() {
-    this.savedVideoListView = new SavedVideoListView();
+  constructor({ saveVideoManager }) {
+    this.savedVideoListView = new SavedVideoListView({ saveVideoManager });
 
     $('#unwatched-video-list-button').addEventListener('click', this.onClickUnwatchedVideoListButton);
     $('#watched-video-list-button').addEventListener('click', this.onClickWatchedVideoListButton);

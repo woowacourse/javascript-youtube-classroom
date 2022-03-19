@@ -1,36 +1,33 @@
 import { EVENT } from '../constants';
 import { $ } from '../util';
-import { addListener, dispatch } from '../util/event';
+import { dispatch } from '../util/event';
 
 export default class SaveVideoManager {
   constructor({ storage }) {
     this.storage = storage;
-    this.updateSavedVideos();
   }
 
-  updateSavedVideos = () => {
+  updateSavedVideos() {
     const { videos } = this.storage;
     dispatch(EVENT.UPDATE_SAVED_VIDEO_LIST, {
-      unwatchedVideos: videos.filter((video) => video.watched === false ),
-      watchedVideos: videos.filter((video) => video.watched === true ),
+      unwatchedVideos: videos.filter((video) => video.watched === false),
+      watchedVideos: videos.filter((video) => video.watched === true),
     }, $('#app'));
   }
 
-  saveVideo = (e) => {
-    const { video, target } = e.detail
-    if ( !video ) return;
+  saveVideo(video) {
+    if ( !video ) return 'FAIL';
     try {
       this.storage.saveVideo({ ...video, watched: false })
     } catch (err) {
       alert(err.message);
-      return;
+      return 'FAIL';
     }
     this.updateSavedVideos();
-    dispatch(EVENT.RESPONSE_SAVE_VIDEO, { result: 'SUCCESS', target }, $('#modal-container'));
+    return 'SUCCESS';
   }
 
-  changeWatchedInfo = (e) => {
-    const videoId = e.detail.id;
+  changeWatched(videoId) {
     const video = this.storage.findVideoById(videoId);
     try {
       this.storage.updateVideo({ ...video, watched: !video.watched });
@@ -41,8 +38,7 @@ export default class SaveVideoManager {
     this.updateSavedVideos();
   }
 
-  deleteVideo = (e) => {
-    const videoId = e.detail.id;
+  deleteVideo(videoId) {
     try {
       this.storage.deleteVideoById(videoId);
     } catch (err) {

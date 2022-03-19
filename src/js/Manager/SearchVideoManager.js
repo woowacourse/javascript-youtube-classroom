@@ -1,6 +1,6 @@
 import { EVENT, GUIDE_MESSAGE, MAX_DATA_FETCH_AT_ONCE } from '../constants';
 import { $ } from '../util';
-import { addListener, dispatch } from '../util/event';
+import { dispatch } from '../util/event';
 import { validateSearchKeyword, checkNoUndefinedProperty } from './validation';
 
 const DUMMY_YOUTUBE_API_URL = 'https://elastic-goldstine-10f16a.netlify.app/dummy/youtube/v3/search?';
@@ -32,14 +32,13 @@ export default class SearchVideoManager {
     this.#searchState = 'READY';
   }
 
-  updateSearchState = (newState, data = {}) => {
+  updateSearchState (newState, data = {}) {
     this.#searchState = newState;
     const detail = { searchState: newState, ...data };
     dispatch(EVENT.UPDATE_SEARCH_STATE, detail, $('#modal-container'));
   }
 
-  searchWithNewKeyword = (e) => {
-    const { keyword } = e.detail;
+  searchWithKeyword(keyword) {
     try {
       validateSearchKeyword(keyword);
     } catch (err) {
@@ -51,7 +50,7 @@ export default class SearchVideoManager {
     this.search();
   }
 
-  searchOnScroll = () => {
+  searchOnScroll() {
     if (!this.#nextPageToken) {
       alert(GUIDE_MESSAGE.NO_MORE_SEARCH_RESULT);
       return;
@@ -59,7 +58,7 @@ export default class SearchVideoManager {
     this.search();
   }
 
-  search = () => {
+  search() {
     if ( this.#searchState === 'LOADING' ) return;
     this.updateSearchState('LOADING');
     this.fetchYoutubeData()
@@ -71,15 +70,17 @@ export default class SearchVideoManager {
       });
   }
 
-  fetchYoutubeData = () => fetch(generateFetchURL(this.#keyword, this.#nextPageToken))
-    .then((response) => {
-      if (!response.ok) {
-        throw new Error(response.status);
-      }
-      return response.json();
-    })
+  fetchYoutubeData() {
+    fetch(generateFetchURL(this.#keyword, this.#nextPageToken))
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error(response.status);
+        }
+        return response.json();
+      })
+  }
 
-  processFetchedResult = (result) => {
+  processFetchedResult(result) {
     this.#nextPageToken = result.nextPageToken;
     return result.items.map((item) => ({
       id: item.id.videoId,
