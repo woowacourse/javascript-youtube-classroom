@@ -1,11 +1,12 @@
 import SearchEngine from '../domain/searchEngine';
 import StorageEngine from '../domain/storageEngine';
-import MessageBot from './messageBot';
+import MessageBot from './messageModal';
 
-import { isServerError, throttle } from '../util/common';
-import { DELAY_MILISECOND_TIME, VIDEO_COUNT } from '../util/constants';
-import { $, $$ } from '../util/domHelper';
 import { NO_RESULT_TEMPLATE, SERVER_ERROR_TEMPLATE, SKELETON_TEMPLATE } from './template';
+
+import { isNull, isServerError, throttle } from '../util/common';
+import { DELAY_MILISECOND_TIME, MESSAGE, MESSAGE_TYPE, VIDEO_COUNT } from '../util/constants';
+import { $, $$ } from '../util/domHelper';
 
 export default class SearchVideoModal {
   #searchEngine = new SearchEngine();
@@ -35,11 +36,8 @@ export default class SearchVideoModal {
         const data = await this.#searchEngine.searchKeyword(keyword);
         this.#renderSearchResult(data);
       } catch ({ message: status }) {
-        if (isServerError(status)) {
-          this.#renderServerErrorResult();
-          MessageBot.dispatchMessage('error', '현재는 서버 점검중입니다.');
-          return;
-        }
+        this.handleError(status);
+        return;
       }
       this.#modalVideoList.addEventListener('scroll', this.#handleInfiniteScroll);
     }
@@ -47,7 +45,7 @@ export default class SearchVideoModal {
 
   #initSearchEnvironment() {
     this.#hideNoResultView();
-    this.#modalVideoList.replaceChildren('');
+    this.#modalVideoList.replaceChildren();
     this.#searchEngine.resetPageToken();
   }
 
@@ -67,10 +65,25 @@ export default class SearchVideoModal {
     this.#modalVideoList.classList.add('hide');
   }
 
+  #renderSearchResult(data, eventType) {
+    if (isNull(data)) {
+      this.#modalVideoList.replaceChildren();
+      if (eventType === '@scroll') return;
+
+      this.#showNoResultView();
+      MessageBot.dispatchMessage(MESSAGE_TYPE.NOT_FOUND, MESSAGE.NOT_FOUND);
+      return;
+    }
+
+    const preprocessedData = this.#searchEngine.preprocessData(data);
+    this.#allocatePreprocessedData(preprocessedData);
+    this.#removeRemainedSkeleton(preprocessedData);
+  }
+
   #allocatePreprocessedData(preprocessedData) {
     const skeletonList = $$('.skeleton');
 
-    for (let i = 0; i < preprocessedData.length; i += 1) {
+    for (let i = 0; i < preprocessedData.length; i++) {
       const parentNode = skeletonList[i];
       const { videoId, channelTitle, thumbnails, title, publishTime } = preprocessedData[i];
 
@@ -82,11 +95,9 @@ export default class SearchVideoModal {
 
       if (this.#storageEngine.isSavedVideo(videoId)) {
         const saveButton = $('.video-item__save-button', parentNode);
-
         saveButton.classList.add('saved');
         saveButton.textContent = '저장 됨';
       }
-
       parentNode.classList.remove('skeleton');
     }
   }
@@ -98,7 +109,7 @@ export default class SearchVideoModal {
       this.#modalVideoList.removeChild(this.#modalVideoList.lastElementChild);
     }
 
-    if (this.#searchEngine.pageToken === null) {
+    if (isNull(this.#searchEngine.pageToken)) {
       this.#modalVideoList.removeEventListener('scroll', this.#handleInfiniteScroll);
     }
   }
@@ -121,58 +132,61 @@ export default class SearchVideoModal {
       const data = await this.#searchEngine.searchKeyword(keyword);
       this.#renderSearchResult(data, '@scroll');
     } catch ({ message: status }) {
-      if (isServerError(status)) {
-        this.#renderServerErrorResult();
-        MessageBot.dispatchMessage('error', '현재는 서버 점검중입니다.');
-      }
+      this.handleError(status);
     }
   };
 
-  #renderSearchResult(data, eventType) {
-    if (data === null) {
-      MessageBot.dispatchMessage('not-found', '검색결과, 데이터가 존재하지 않습니다.');
-      this.#modalVideoList.replaceChildren('');
-      if (eventType === '@scroll') return;
-
-      this.#showNoResultView();
-      return;
+  handleError(status) {
+    if (isServerError(status)) {
+      this.#renderServerErrorResult();
+      MessageBot.dispatchMessage(MESSAGE_TYPE.ERROR, MESSAGE.ERROR);
     }
-
-    const preprocessedData = this.#searchEngine.preprocessData(data);
-    this.#allocatePreprocessedData(preprocessedData);
-    this.#removeRemainedSkeleton(preprocessedData);
   }
 
   #renderServerErrorResult() {
     this.#showNoResultView();
-    this.#modalVideoList.replaceChildren('');
-    this.#noResult.replaceChildren('');
+    this.#modalVideoList.replaceChildren();
+    this.#noResult.replaceChildren();
     this.#noResult.insertAdjacentHTML('beforeend', SERVER_ERROR_TEMPLATE);
   }
 
   #handleSaveVideo = (e) => {
     if (e.target.classList.contains('video-item__save-button')) {
-      const parentNode = e.target.closest('.video-item');
+      const $saveButton = e.target;
+      const parentNode = $saveButton.closest('.video-item');
+      const data = this.getVideoData(parentNode);
 
-      const { videoId } = parentNode.dataset;
-      const thumbnails = $('.video-item__thumbnail', parentNode).src;
-      const title = $('.video-item__title', parentNode).textContent;
-      const channelTitle = $('.video-item__channel-name', parentNode).textContent;
-      const publishTime = $('.video-item__published-date', parentNode).textContent;
+      try {
+        this.#storageEngine.saveVideo(data);
+      } catch (error) {
+        if (error.name === MESSAGE_TYPE.ALREADY_STORED) {
+          MessageBot.dispatchMessage(MESSAGE_TYPE.ALREADY_STORED, error.message);
+          return;
+        }
+        MessageBot.dispatchMessage(MESSAGE_TYPE.FULL_STORAGE, error.message);
+        return;
+      }
 
-      const data = {
-        videoId,
-        thumbnails,
-        title,
-        channelTitle,
-        publishTime,
-        isWatched: false,
-      };
-
-      this.#storageEngine.saveVideo(data);
-      e.target.classList.add('saved');
-      e.target.textContent = '저장 됨';
-      MessageBot.dispatchMessage('store', '영상이 정상적으로 저장되었습니다.');
+      $saveButton.classList.add('saved');
+      $saveButton.textContent = '저장 됨';
+      MessageBot.dispatchMessage(MESSAGE_TYPE.STORE, MESSAGE.STORE);
     }
   };
+
+  getVideoData(parentNode) {
+    const { videoId } = parentNode.dataset;
+    const thumbnails = $('.video-item__thumbnail', parentNode).src;
+    const title = $('.video-item__title', parentNode).textContent;
+    const channelTitle = $('.video-item__channel-name', parentNode).textContent;
+    const publishTime = $('.video-item__published-date', parentNode).textContent;
+
+    return {
+      videoId,
+      thumbnails,
+      title,
+      channelTitle,
+      publishTime,
+      isWatched: false,
+    };
+  }
 }

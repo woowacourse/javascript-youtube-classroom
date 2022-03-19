@@ -1,5 +1,6 @@
-import { $ } from '../util/domHelper';
 import { getMessageTemplate } from './template';
+
+import { $ } from '../util/domHelper';
 
 export default class MessageBot {
   #shortMessage = $('.short-message');
@@ -12,23 +13,18 @@ export default class MessageBot {
   }
 
   handleMessageModal = () => {
-    this.toggleMessageClassName();
-  };
-
-  toggleMessageClassName() {
     this.#shortMessage.classList.toggle('hide');
     this.#longMessage.classList.toggle('hide');
-  }
+  };
 
   static dispatchMessage(type, message) {
-    const messageList = $('.message-list');
+    const $messageList = $('.message-list');
+    $messageList.insertAdjacentHTML('beforeend', getMessageTemplate(type, message));
 
-    messageList.insertAdjacentHTML('beforeend', getMessageTemplate(type, message));
+    const $shortMessageCount = $('#short-message-count');
+    $shortMessageCount.textContent = Number($shortMessageCount.textContent) + 1;
 
-    const shortMessageCount = $('#short-message-count');
-    shortMessageCount.textContent = Number(shortMessageCount.textContent) + 1;
-
-    const messageBox = $('.long-message-main');
-    messageBox.scrollTop = messageBox.scrollHeight;
+    const $messageBox = $('.long-message-main');
+    $messageBox.scrollTop = $messageBox.scrollHeight;
   }
 }

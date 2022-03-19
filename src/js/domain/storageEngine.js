@@ -1,8 +1,8 @@
-import { MAX_SAVED_VIDEOS_LENGTH } from '../util/constants.js';
+import { MAX_SAVED_VIDEOS_LENGTH, MESSAGE, MESSAGE_TYPE, TAB_MENU } from '../util/constants.js';
 
 export default class StorageEngine {
   constructor() {
-    localStorage.setItem('currentTabMenu', 'watch-later');
+    localStorage.setItem('currentTabMenu', TAB_MENU.WATCH_LATER);
   }
 
   setTabMenu(tabMenu) {
@@ -10,7 +10,7 @@ export default class StorageEngine {
   }
 
   getTabMenu() {
-    return localStorage.getItem('currentTabMenu') ?? 'watch-later';
+    return localStorage.getItem('currentTabMenu') ?? TAB_MENU.WATCH_LATER;
   }
 
   getSavedVideos() {
@@ -25,11 +25,11 @@ export default class StorageEngine {
     return this.getSavedVideos().filter((video) => video.isWatched === true);
   }
 
-  changeStatus(videoId, key) {
+  changeStatus(videoId, status) {
     const savedVideos = this.getSavedVideos();
 
     const target = savedVideos.find((video) => video.videoId === videoId);
-    target[key] = !target[key];
+    target[status] = !target[status];
 
     localStorage.setItem('savedVideos', JSON.stringify(savedVideos));
   }
@@ -44,15 +44,23 @@ export default class StorageEngine {
   }
 
   isSavedVideo(videoId) {
-    return this.getSavedVideos()
-      .map(({ videoId }) => videoId)
-      .includes(videoId);
+    return this.getSavedVideos().some((video) => video.videoId === videoId);
   }
 
   saveVideo(data) {
     const savedVideos = this.getSavedVideos();
 
-    if (this.isSavedVideo(data.videoId) && savedVideos.length >= MAX_SAVED_VIDEOS_LENGTH) return;
+    if (this.isSavedVideo(data.videoId)) {
+      const error = new Error(MESSAGE.ALREADY_STORED);
+      error.name = MESSAGE_TYPE.ALREADY_STORED;
+      throw error;
+    }
+
+    if (savedVideos.length >= MAX_SAVED_VIDEOS_LENGTH) {
+      const error = new Error(MESSAGE.FULL_STORAGE);
+      error.name = MESSAGE_TYPE.FULL_STORAGE;
+      throw error;
+    }
 
     savedVideos.push(data);
     localStorage.setItem('savedVideos', JSON.stringify(savedVideos));

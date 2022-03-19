@@ -1,6 +1,6 @@
 import '../css/index.css';
 import HomePage from './screen/homePage';
-import MessageBot from './screen/messageBot';
+import MessageBot from './screen/messageModal';
 import SearchVideoModal from './screen/searchVideoModal';
 
 const DOM = {

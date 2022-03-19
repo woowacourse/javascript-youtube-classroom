@@ -1,17 +1,19 @@
 import StorageEngine from '../domain/storageEngine';
-import MessageBot from './messageBot';
+import MessageBot from './messageModal';
 
-import { $ } from '../util/domHelper';
 import { getVideoItemTemplate, NO_RESULT_TEMPLATE } from './template';
+
+import { MESSAGE, MESSAGE_TYPE, TAB_MENU } from '../util/constants';
+import { $ } from '../util/domHelper';
 
 export default class HomePage {
   #storageEngine = new StorageEngine();
 
-  #dimmer = $('.dimmer');
-
   #modalContainer = $('.modal-container');
   #watchLaterContainer = $('.watch-later-container');
   #watchedContainer = $('.watched-container');
+
+  #dimmer = $('.dimmer');
 
   #searchModalButton = $('#search-modal-button');
   #watchLaterTabMenuButton = $('#watch-later-tab-menu-button');
@@ -45,7 +47,8 @@ export default class HomePage {
   };
 
   handleTabMenu = (e) => {
-    const tabMenu = e.target.id === 'watch-later-tab-menu-button' ? 'watch-later' : 'watched';
+    const tabMenu =
+      e.target.id === 'watch-later-tab-menu-button' ? TAB_MENU.WATCH_LATER : TAB_MENU.WATCHED;
 
     if (tabMenu === this.#storageEngine.getTabMenu()) return;
 
@@ -64,22 +67,33 @@ export default class HomePage {
   renderVideoList() {
     this.#watchLaterVideoList.replaceChildren();
     this.#watchedVideoList.replaceChildren();
+
     const tabMenu = this.#storageEngine.getTabMenu();
-    if (tabMenu === 'watch-later') {
-      const watchLaterVideoList = this.#storageEngine.getWatchLaterVideos();
-
-      if (watchLaterVideoList.length === 0) {
-        this.#watchLaterVideoList.insertAdjacentHTML('beforeend', NO_RESULT_TEMPLATE);
-        return;
-      }
-
-      this.#watchLaterVideoList.insertAdjacentHTML(
-        'beforeend',
-        watchLaterVideoList.map((video) => getVideoItemTemplate(video)).join('')
-      );
+    if (tabMenu === TAB_MENU.WATCH_LATER) {
+      this.renderWatchLaterVideoList();
       return;
     }
+
+    this.renderWatchedVideoList();
+  }
+
+  renderWatchLaterVideoList() {
+    const watchLaterVideoList = this.#storageEngine.getWatchLaterVideos();
+
+    if (watchLaterVideoList.length === 0) {
+      this.#watchLaterVideoList.insertAdjacentHTML('beforeend', NO_RESULT_TEMPLATE);
+      return;
+    }
+
+    this.#watchLaterVideoList.insertAdjacentHTML(
+      'beforeend',
+      watchLaterVideoList.map((video) => getVideoItemTemplate(video)).join('')
+    );
+  }
+
+  renderWatchedVideoList() {
     const watchedVideoList = this.#storageEngine.getWatchedVideos();
+
     if (watchedVideoList.length === 0) {
       this.#watchedVideoList.insertAdjacentHTML('beforeend', NO_RESULT_TEMPLATE);
       return;
@@ -96,16 +110,15 @@ export default class HomePage {
       const { videoId } = e.target.closest('.video-item').dataset;
       this.#storageEngine.changeStatus(videoId, 'isWatched');
       this.renderVideoList();
-
       return;
     }
 
     if (e.target.classList.contains('video-item__delete_button')) {
-      if (confirm('해당 영상을 영상 리스트에서 삭제하시겠습니까?')) {
+      if (confirm(MESSAGE.CONFIRM)) {
         const { videoId } = e.target.closest('.video-item').dataset;
         this.#storageEngine.removeVideo(videoId);
         this.renderVideoList();
-        MessageBot.dispatchMessage('remove', '영상이 정상적으로 삭제되었습니다.');
+        MessageBot.dispatchMessage(MESSAGE_TYPE.REMOVE, MESSAGE.REMOVE);
       }
     }
   };
