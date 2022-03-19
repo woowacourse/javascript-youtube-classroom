@@ -2,7 +2,7 @@ import { transformDate } from './utils/common.js';
 import { ERROR_MESSAGE, VIDEO_LIST } from './utils/constants.js';
 
 const videoAPI = {
-  baseURL: 'https://hardcore-williams-b69905.netlify.app/youtube/v3/search',
+  baseURL: 'https://keen-lamport-feb29e.netlify.app/youtube/v3/search',
   pageToken: '',
   part: 'snippet',
   maxResults: VIDEO_LIST.RENDER_SIZE,

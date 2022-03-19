@@ -1,14 +1,4 @@
-Cypress.Commands.add('search', keyword => {
-  cy.get('#search-modal-button').click();
-  cy.get('#search-input-keyword').type(keyword);
-  cy.get('#search-button').click();
-});
-
-Cypress.Commands.add('save', idx => {
-  cy.wait(2000).then(() => {
-    cy.get('.video-item__save-button').eq(idx).click();
-  });
-});
+import '../support/commands.js';
 
 describe('영상 리스트를 확인합니다.', () => {
   before(() => {
@@ -20,7 +10,7 @@ describe('영상 리스트를 확인합니다.', () => {
   });
 
   it('저장된 영상이 있다면 영상을 보여줍니다.', () => {
-    cy.search('슬기');
+    cy.search('우테코');
     cy.save(0);
     cy.get('.dimmer').click({ force: true });
     cy.get('.video-item').should('be.visible');
