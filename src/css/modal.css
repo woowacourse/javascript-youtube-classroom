@@ -35,7 +35,6 @@
 
 .search-modal__title {
   font-weight: bold;
-  font-size: 34px;
   line-height: 36px;
   text-align: center;
   margin-bottom: 40px;
@@ -82,7 +81,7 @@
 }
 
 .video-list {
-  width: 1040px;
+  width: 102%;
   height: 493px;
   display: flex;
   flex-direction: row;

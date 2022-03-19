@@ -26,7 +26,66 @@ select {
 
 button {
   height: 36px;
-  font: inherit;
+  cursor: pointer;
+  font-style: normal;
+  font-weight: bold;
   padding: 0 10px;
+  border-radius: 4px;
+  border: none;
   background: #f5f5f5;
+  font-size: 14px;
+  letter-spacing: 1.25px;
+}
+
+h1 {
+  font-size: 34px;
+}
+
+h2 {
+  font-size: 34px;
+}
+
+@media (max-width: 1279px) {
+  #app {
+    max-width: 760px;
+  }
+
+  .search-modal {
+    max-width: 860px;
+  }
+}
+
+@media (max-width: 959px) {
+  #app {
+    max-width: 500px;
+  }
+
+  .search-modal {
+    max-width: 600px;
+  }
+}
+
+@media (max-width: 599px) {
+  #app {
+    max-width: 300px;
+  }
+
+  .search-modal {
+    max-width: 360px;
+  }
+
+  h1,
+  h2 {
+    font-size: 22px;
+  }
+
+  button {
+    height: 28px;
+    font-size: 12px;
+  }
+
+  .search-input__keyword {
+    width: 200px;
+    font-size: 10px;
+  }
 }
