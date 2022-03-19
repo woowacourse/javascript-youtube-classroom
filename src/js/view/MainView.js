@@ -74,16 +74,16 @@ class MainView {
     return videoElement;
   };
 
-  #removeVideoList = () => {
+  #removeFormerView = () => {
     const videoListElement = selectDom('.saved-video-list');
     if (videoListElement) {
       videoListElement.remove();
     }
+    this.noSavedVideos.classList.add('hide');
   };
 
   renderSavedVideo(isWatched) {
-    this.#removeVideoList();
-    this.noSavedVideos.classList.add('hide');
+    this.#removeFormerView();
     const videoList = storage.getSavedVideos().filter((video) => video.isWatched === isWatched);
     if (videoList.length === 0) {
       this.#renderNoSavedVideo();
