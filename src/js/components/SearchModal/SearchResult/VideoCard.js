@@ -4,14 +4,11 @@ import { webStore } from '../../../store/WebStore.js';
 import { convertTime } from '../../../utils/customDate.js';
 
 export default class VideoCard extends Component {
-  setup() {
-    this.state = { watched: this.props.video.watched };
-  }
-
   template() {
     const { videoId, thumbnailUrl, title, channelTitle, publishTime, saved } =
       this.props.video;
-    const { watched } = this.state;
+
+    const watched = this.props.video.watched;
 
     return `
       <li class="video-item" data-video-id="${videoId}">
@@ -59,6 +56,27 @@ export default class VideoCard extends Component {
     );
   }
 
+  handleSave() {
+    const { video } = this.props;
+
+    try {
+      webStore.saveVideo(video);
+      this.changeSaved(video.videoId);
+    } catch ({ message }) {
+      alert(message);
+    }
+  }
+
+  handleWatched() {
+    webStore.changeWatchedInLocalStorage(this.props.video.videoId);
+    this.target.remove();
+
+    rootStore.setState({
+      hasWatchedVideo: webStore.getWatchedVideoLength() !== 0,
+      hasWatchingVideo: webStore.getWatchingVideoLength() !== 0,
+    });
+  }
+
   handleDelete() {
     if (window.confirm('삭제하시겠습니까?')) {
       webStore.deleteVideoInLocalStorage(this.props.video.videoId);
@@ -80,44 +98,20 @@ export default class VideoCard extends Component {
     }
   }
 
-  handleWatched() {
-    webStore.changeWatchedInLocalStorage(this.props.video.videoId);
-    this.target.remove();
+  changeSaved(videoId) {
+    const { videos } = rootStore.state;
+    const newVideos = [...videos].map(video => {
+      if (video.videoId === videoId) {
+        return { ...video, saved: true };
+      }
+
+      return video;
+    });
 
     rootStore.setState({
-      hasWatchedVideo: webStore.getWatchedVideoLength() !== 0,
-      hasWatchingVideo: webStore.getWatchingVideoLength() !== 0,
+      videos: newVideos, // 저장 버튼이 사라지도록 하기
+      savedVideos: webStore.load(), // 저장된 영상이 바로 MainPage에 반영되게 하기
+      hasWatchedVideo: true, // @TODO: 처음에만 true로 바꿔주고, 나중에는 동작하지 않게 하기
     });
-  }
-
-  handleSave() {
-    const { video } = this.props;
-    const { videoId } = video;
-    const prevSavedVideos = webStore.load();
-    const newSavedVideos = [
-      ...prevSavedVideos,
-      { ...video, saved: true, watched: false },
-    ];
-
-    try {
-      webStore.save(newSavedVideos);
-
-      const { videos } = rootStore.state;
-      const newVideos = [...videos].map(video => {
-        if (video.videoId === videoId) {
-          return { ...video, saved: true };
-        }
-
-        return video;
-      });
-
-      rootStore.setState({
-        videos: newVideos,
-        savedVideos: newSavedVideos,
-        hasWatchedVideo: true, // @TODO: 처음에만 true로 바꿔주고, 나중에는 동작하지 않게 하기
-      });
-    } catch ({ message }) {
-      alert(message);
-    }
   }
 }

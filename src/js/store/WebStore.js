@@ -19,11 +19,17 @@ export default class WebStore {
   }
 
   save(data) {
+    console.log('data', data);
     if (this.#cached.length >= MAX_SAVE_COUNT) {
       throw new Error(ALERT_MESSAGE.EXCEED_MAX_SAVE_VOLUME);
     }
     this.#cache(data);
     localStorage.setItem(this.#key, JSON.stringify(data));
+  }
+
+  saveVideo(video) {
+    console.log('video', video);
+    this.save([...this.#cached, { ...video, saved: true, watched: false }]);
   }
 
   getWatchedVideo() {
