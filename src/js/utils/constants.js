@@ -14,6 +14,7 @@ export const DOM_STRING = {
   WATCH_LATER_BUTTON: '#watch-later-button',
   WATCHED_BUTTON: '#watched-button',
   STORED_VIDEO_LIST: '.stored-video-list',
+  EMPTY_LIST_IMAGE: '.empty-list-image',
 };
 
 export const ERROR_MESSAGE = {

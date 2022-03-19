@@ -1,6 +1,7 @@
 import { DOM_STRING } from '../utils/constants.js';
 import { $ } from '../utils/common.js';
 import videoStorage from '../videoStorage.js';
+import emptyImage from '../../assets/images/empty.png';
 
 export default class MainView {
   constructor() {
@@ -12,6 +13,7 @@ export default class MainView {
     this.bindOnClickWatchedButton();
     this.bindOnClickSwitchButton();
     this.bindOnClickDeleteButton();
+    this.decideRenderEmptyImage();
   }
 
   registerDOM() {
@@ -19,6 +21,8 @@ export default class MainView {
     this.$watchLaterButton = $(DOM_STRING.WATCH_LATER_BUTTON);
     this.$watchedButton = $(DOM_STRING.WATCHED_BUTTON);
     this.$storedVideoList = $(DOM_STRING.STORED_VIDEO_LIST);
+    this.$emptyListImage = $(DOM_STRING.EMPTY_LIST_IMAGE);
+    this.$emptyListImage.src = emptyImage;
   }
 
   bindModalOpenButton(callback) {
@@ -41,6 +45,7 @@ export default class MainView {
         e.target.parentElement.remove();
         const storedList = videoStorage.getVideoDataList();
         this.renderSwitchedVideoData(storedList[storedList.length - 1]);
+        this.decideRenderEmptyImage();
       }
     });
   }
@@ -52,6 +57,7 @@ export default class MainView {
           const videoId = e.target.dataset.videoid;
           videoStorage.deleteVideoData(videoId);
           e.target.parentElement.remove();
+          this.decideRenderEmptyImage();
         }
       }
     });
@@ -90,6 +96,7 @@ export default class MainView {
       }
       el.classList.add('hide');
     });
+    this.decideRenderEmptyImage();
   }
 
   onClickWatchedButton() {
@@ -103,6 +110,7 @@ export default class MainView {
       }
       el.classList.add('hide');
     });
+    this.decideRenderEmptyImage();
   }
 
   renderAddedVideoData(videoData) {
@@ -141,5 +149,17 @@ export default class MainView {
     </li>`;
 
     this.$storedVideoList.insertAdjacentHTML('beforeend', template);
+  }
+
+  decideRenderEmptyImage() {
+    const checkRendering = [...this.$storedVideoList.children].every(el =>
+      [...el.classList].includes('hide')
+    );
+
+    if (checkRendering) {
+      this.$emptyListImage.classList.remove('hide');
+      return;
+    }
+    this.$emptyListImage.classList.add('hide');
   }
 }
