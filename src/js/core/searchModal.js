@@ -56,7 +56,7 @@ export default class SearchModal extends StateController {
     $modalVideoList.replaceChildren();
     const searchKeyWord = $searchKeyWordInput.value;
     if (isInputValueEmpty(searchKeyWord)) {
-      return;
+      return true;
     }
     $modalSearchResult.classList.remove('search-result--no-result');
     renderSkeletonItems(MAX_RENDER_VIDEOS_COUNT, $modalVideoList);

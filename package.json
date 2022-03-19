@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "jest --watch --no-cache",
+    "cypress:run": "cypress run --browser chrome",
     "prepare": "husky install",
     "start": "webpack serve --open",
     "build": "webpack",
@@ -33,6 +34,7 @@
     "commitizen": "^4.2.4",
     "commitlint-config-gitmoji": "^2.2.5",
     "css-loader": "^6.7.0",
+    "cypress": "^9.5.2",
     "cz-customizable": "^6.3.0",
     "eslint": "^8.10.0",
     "eslint-config-airbnb-base": "^15.0.0",
