@@ -5,9 +5,9 @@ import { $ } from './util/dom.js';
 import storage from './storage/storage.js';
 import searchResultView from './views/searchResultView.js';
 import { handleSearch, handleVideoListScroll } from './handlers/searchModal.js';
-import { handleDeleteVideo, handleWatchedVideo } from './handlers/manageSavedVideo.js';
-import { handleSaveVideos } from './handlers/saveVideo.js';
-import { MESSAGE, VIDEO } from './constants/constants.js';
+import { handleSaveVideo, handleDeleteVideo, handleWatchedVideo } from './handlers/manageVideo.js';
+import { renderSavedVideos } from './views/savedVideoList.js';
+import { ELEMENTS, MESSAGE, VIDEO } from './constants/constants.js';
 import { throttle } from './util/general.js';
 
 export default function App() {
@@ -16,8 +16,8 @@ export default function App() {
   const initSavedVideo = () => {
     const savedVideos = storage.getLocalStorage();
     if (savedVideos) {
-      $('.empty-video-image').classList.add('hide');
-      searchResultView.renderSavedVideos(content, savedVideos);
+      ELEMENTS.EMPTY_VIDEO_IMAGE.classList.add('hide');
+      renderSavedVideos(content, savedVideos);
     }
   };
 
@@ -26,9 +26,9 @@ export default function App() {
     throttle(handleVideoListScroll, VIDEO.THROTTLE_DELAY)
   );
 
-  $('.search-result').addEventListener('click', handleSaveVideos);
+  $('.search-result').addEventListener('click', handleSaveVideo);
 
-  $('.saved-video-list').addEventListener('click', (e) => {
+  ELEMENTS.SAVED_VIDEO_LIST.addEventListener('click', (e) => {
     if (e.target.classList.contains('video-remove-button')) {
       if (window.confirm(MESSAGE.CONFIRM.CHECK_DELETE)) {
         const selectedVideoId = e.target.closest('li').dataset.videoId;

@@ -1,3 +1,10 @@
+import { $ } from '../util/dom.js';
+
+export const ELEMENTS = {
+  EMPTY_VIDEO_IMAGE: $('.empty-video-image'),
+  SAVED_VIDEO_LIST: $('.saved-video-list'),
+};
+
 export const MESSAGE = {
   ERROR: {
     EMPTY_INPUT: '빈값을 입력할 수 없습니다. 다시 입력해 주세요.',
