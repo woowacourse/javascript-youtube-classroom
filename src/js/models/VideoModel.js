@@ -121,10 +121,10 @@ export default class VideoModel {
     this.#nextPageToken = this.#fetchedVideos.nextPageToken;
   }
 
-  updateSawTrue(sawVideoId) {
+  updateSaw(sawVideoId) {
     for (const video of this.#savedVideoItems) {
       if (video.videoId === sawVideoId) {
-        video.saw = true;
+        video.saw = !video.saw;
         return;
       }
     }

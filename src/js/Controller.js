@@ -112,12 +112,8 @@ export default class Controller {
   }
 
   #checkSawVideo(event) {
-    // savedVideoItems를 업데이트
-    this.video.updateSawTrue(event.detail.sawVideoId);
-    // localStorage에 업데이트
+    this.video.updateSaw(event.detail.sawVideoId);
     this.video.updateItemsLocalStorage();
-
-    // 다시 렌더링한다.
     this.appView.renderSavedVideo(this.video.getItemsLocalStorage());
   }
 }
