@@ -33,7 +33,7 @@ export default class App {
   closeModal = () => {
     $('#search-input-keyword').value = '';
     $('.search-result').classList.remove('search-result--no-result');
-    $('.video-list').replaceChildren();
+    $('.search-result .video-list').replaceChildren();
     this.$modalContainer.classList.add('hide');
   };
 
