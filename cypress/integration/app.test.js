@@ -86,8 +86,27 @@ describe("나만의 유튜브 강의실 전체 플로우 테스트", () => {
     cy.get(".video-item").should("be.visible");
   });
 
-  it("초기 화면에서 저장된 영상의 🗑️ 버튼을 눌러 영상을 삭제할 수 있어야 한다.", () => {
+  it("초기 화면에서 저장된 영상의 🗑️ 버튼을 눌러 영상을 삭제할지 확인할 수 있어야 한다.", () => {
     cy.get(".video-item__delete-button").eq(0).click();
+
+    cy.on("window:confirm", (text) => {
+      console.log(text);
+      expect(text).to.be.calledWith("정말로 삭제하시겠습니까?");
+      return false;
+    });
+
+    cy.get(".video-item").should("be.visible");
+  });
+
+  it("영상을 삭제할지 확인하는 화면에서 확인을 눌러 삭제할 수 있어야 한다.", () => {
+    cy.get(".video-item__delete-button").eq(0).click();
+
+    cy.on("window:confirm", (text) => {
+      console.log(text);
+      expect(text).to.be.calledWith("정말로 삭제하시겠습니까?");
+      return true;
+    });
+
     cy.get(".video-item").should("be.not.visible");
   });
 });
