@@ -57,6 +57,7 @@ export default class VideoCardContainer {
         e.target.remove();
       }
     } catch (err) {
+      console.log(err);
       toastPopup(err.message);
     }
   };
@@ -77,7 +78,18 @@ export default class VideoCardContainer {
 
   watchedHandler = (e) => {
     if (e.target.className.includes('video-item__watched-button')) {
-      console.log('watched');
+      const li = e.target.closest('li');
+      const { videoId } = li.dataset;
+
+      const { stored, watched } = getStorageVideos({});
+
+      const videoItem = stored[`${videoId}`];
+      delete stored[`${videoId}`];
+      watched[`${videoId}`] = videoItem;
+
+      const newVideos = { stored, watched };
+      setStorageVideos({ value: newVideos });
+      li.remove();
     }
   };
 
