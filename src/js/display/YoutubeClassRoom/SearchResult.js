@@ -69,7 +69,7 @@ export default class SearchResult {
       YoutubeSaveListStore.dispatch('UPDATE_LIST');
       $target.textContent = '⬇ 저장';
 
-      new Snackbar('볼 영상 목록에서 제거되었습니다.');
+      Snackbar('볼 영상 목록에서 제거되었습니다.');
       return;
     }
 
@@ -83,7 +83,7 @@ export default class SearchResult {
     YoutubeSaveListStore.dispatch('UPDATE_LIST');
     $target.textContent = '🗑 저장 취소';
 
-    new Snackbar('볼 영상 목록에 저장되었습니다.');
+    Snackbar('볼 영상 목록에 저장되었습니다.');
   };
 
   drawSkeletonList() {

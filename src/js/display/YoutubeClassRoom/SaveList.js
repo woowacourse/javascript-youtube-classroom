@@ -60,7 +60,7 @@ export default class SaveList {
 
     YoutubeSaveStorage.watched(videoId, isUpdateState);
     YoutubeSaveListStore.dispatch('UPDATE_LIST');
-    new Snackbar('영상의 상태를 변경하였습니다.');
+    Snackbar('영상의 상태를 변경하였습니다.');
   };
 
   handleRemoveItem = ({ target: $target }) => {
