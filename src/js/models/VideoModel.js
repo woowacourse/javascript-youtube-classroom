@@ -114,10 +114,20 @@ export default class VideoModel {
       publishTime: item.snippet.publishTime,
       thumbnailUrl: item.snippet.thumbnails.high.url,
       saved: false,
+      saw: false,
     }));
     checkLengthExist(this.#newVideoItems);
 
     this.#nextPageToken = this.#fetchedVideos.nextPageToken;
+  }
+
+  updateSawTrue(sawVideoId) {
+    for (const video of this.#savedVideoItems) {
+      if (video.videoId === sawVideoId) {
+        video.saw = true;
+        return;
+      }
+    }
   }
 
   async fetchYoutubeApi(query, nextPageToken) {

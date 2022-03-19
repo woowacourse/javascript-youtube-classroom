@@ -18,12 +18,13 @@ export default class Controller {
     this.SearchCloseView = new SearchCloseView();
 
     this.video.savedVideoItems = this.video.getItemsLocalStorage();
-    this.appView.renderWillSeeVideo(this.video.getItemsLocalStorage());
+    this.appView.renderSavedVideo(this.video.getItemsLocalStorage());
     this.#subscribeViewEvents();
   }
 
   #subscribeViewEvents() {
     on(this.appView.$willSeeWrapper, '@delete-video', this.#deleteVideo.bind(this));
+    on(this.appView.$willSeeWrapper, '@check-saw-video', this.#checkSawVideo.bind(this));
 
     on(this.searchInputView.$searchButton, '@search', this.#searchVideo.bind(this));
 
@@ -100,13 +101,23 @@ export default class Controller {
     this.searchInputView.resetSearchInputKeyword();
     this.searchResultView.hideModal();
     this.searchResultView.removeVideo();
-    this.appView.renderWillSeeVideo(this.video.getItemsLocalStorage());
+    this.appView.renderSavedVideo(this.video.getItemsLocalStorage());
   }
 
   #deleteVideo(event) {
     if (checkAnswerYes()) {
       this.video.deleteVideo(event.detail.deleteVideoId);
-      this.appView.renderWillSeeVideo(this.video.getItemsLocalStorage());
+      this.appView.renderSavedVideo(this.video.getItemsLocalStorage());
     }
+  }
+
+  #checkSawVideo(event) {
+    // savedVideoItems를 업데이트
+    this.video.updateSawTrue(event.detail.sawVideoId);
+    // localStorage에 업데이트
+    this.video.updateItemsLocalStorage();
+
+    // 다시 렌더링한다.
+    this.appView.renderSavedVideo(this.video.getItemsLocalStorage());
   }
 }

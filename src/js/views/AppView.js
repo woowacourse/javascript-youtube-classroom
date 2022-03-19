@@ -1,5 +1,5 @@
 import { emit } from '../utils/event.js';
-import { $ } from '../utils/dom.js';
+import { $, $$ } from '../utils/dom.js';
 
 import Template from './Template.js';
 
@@ -15,6 +15,7 @@ export default class AppView {
     this.$isEmpty = $('.is-empty', this.$willSeeWrapper);
     this.$willSeeList = $('#will-see-list', this.$willSeeWrapper);
     this.$sawWrapper = $('.saw-wrapper');
+    this.$sawList = $('#saw-list', this.$sawWrapper);
 
     this.#bindEvents();
   }
@@ -24,6 +25,7 @@ export default class AppView {
     this.$willSeeButton.addEventListener('click', this.#handleClickWillSeeButton.bind(this));
     this.$sawButton.addEventListener('click', this.#handleClickSawButton.bind(this));
     this.$willSeeWrapper.addEventListener('click', this.#handleClickUserButton.bind(this));
+    this.$sawWrapper.addEventListener('click', this.#handleClickUserButton.bind(this));
   }
 
   #handleClickSearchButton() {
@@ -53,18 +55,26 @@ export default class AppView {
       emit(this.$willSeeWrapper, '@delete-video', { deleteVideoId });
     }
     if (target.className === 'user-saw-button') {
-      console.log('saw-button');
+      const sawVideoId = target.closest('li').dataset.videoId;
+
+      emit(this.$willSeeWrapper, '@check-saw-video', { sawVideoId });
     }
   }
 
-  renderWillSeeVideo(savedVideos) {
-    this.$willSeeList.replaceChildren();
-
+  renderSavedVideo(savedVideos) {
     if (savedVideos.length === 0) {
       this.$isEmpty.classList.remove('hide');
     }
-    savedVideos.forEach((savedVideo) => {
-      this.$willSeeList.insertAdjacentHTML('beforeend', this.template.getSavedVideo(savedVideo));
-    });
+
+    this.$willSeeList.replaceChildren();
+    this.$sawList.replaceChildren();
+
+    for (const video of savedVideos) {
+      if (video.saw) {
+        this.$sawList.insertAdjacentHTML('beforeend', this.template.getSavedVideo(video));
+        continue;
+      }
+      this.$willSeeList.insertAdjacentHTML('beforeend', this.template.getSavedVideo(video));
+    }
   }
 }
