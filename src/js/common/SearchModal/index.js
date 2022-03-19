@@ -15,10 +15,10 @@ export default class ModalVideoCardContainer {
   constructor(element, props) {
     this.element = element;
     this.#state = props;
-    this.element.addEventListener('click', this.storeVideoIDHandler.bind(this));
+    this.element.addEventListener('click', this.storeVideoIdHandler);
   }
 
-  storeVideoIDHandler(e) {
+  storeVideoIdHandler = (e) => {
     if (e.target.className.includes('video-item__save-button')) {
       const storedVideoIDs = getStorage(STORAGE_KEY.WATCH_LATER_VIDEOS);
 
@@ -37,7 +37,7 @@ export default class ModalVideoCardContainer {
 
       e.target.remove();
     }
-  }
+  };
 
   template() {
     const storedVideoIds = getStorage(STORAGE_KEY.WATCH_LATER_VIDEOS).map((video) => video.videoId);
