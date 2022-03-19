@@ -58,7 +58,6 @@ export default class YoutubeApp {
   }
 
   #reloadStorageData = () => {
-    console.log(this.videoStorage.getStorage());
     if (this.videoStorage.checkTypeVideoEmpty(this.isWatchedVideoOnly)) {
       this.videoStorageView.renderEmptyStorage();
       return;

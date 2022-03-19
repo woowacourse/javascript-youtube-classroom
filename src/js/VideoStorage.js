@@ -10,9 +10,6 @@ export default class VideoStorage {
   }
 
   checkTypeVideoEmpty(isWatchedVideoOnly) {
-    console.log(
-      !this.getStorage().some((item) => item.isWatched === isWatchedVideoOnly)
-    );
     return !this.getStorage().some(
       (item) => item.isWatched === isWatchedVideoOnly
     );
