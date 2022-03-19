@@ -13,10 +13,9 @@ export default class Video {
 
   #savedVideoItems; // length:미상(최대100), type:array,저장된 비디오 items, localStorage 상호작용
 
-  constructor(dummyObject = {}) {
-    this.#fetchedVideos = dummyObject; // API 사용량 초과될 경우, 데모 확인을 위해 dummyObject가 기본으로 할당된다.
+  constructor() {
     this.savedIdList = [];
-    this.#savedVideoItems = [];
+    this.#savedVideoItems = this.getItemsLocalStorage();
   }
 
   set keyword(value) {

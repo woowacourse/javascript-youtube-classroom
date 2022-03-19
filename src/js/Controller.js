@@ -1,8 +1,6 @@
 import MainView from './views/MainView.js';
 import SearchInputView from './views/SearchInputView.js';
 import SearchResultView from './views/SearchResultView.js';
-
-import dummyObject from './dummy/dummyObject.js';
 import Video from './models/Video.js';
 import { on } from './utils/event.js';
 import VIDEO from '../constants/video.js';
@@ -12,8 +10,8 @@ import SUCCESS_MESSAGE from '../constants/successMessages.js';
 
 export default class Controller {
   constructor() {
-    this.video = new Video(dummyObject);
-    this.video.savedVideoItems = this.video.getItemsLocalStorage();
+    this.video = new Video();
+    // this.video.savedVideoItems = this.video.getItemsLocalStorage();
     this.mainView = new MainView();
     this.searchInputView = new SearchInputView();
     this.searchResultView = new SearchResultView();
