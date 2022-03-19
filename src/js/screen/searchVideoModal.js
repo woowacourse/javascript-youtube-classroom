@@ -2,40 +2,11 @@ import SearchEngine from '../domain/searchEngine';
 import StorageEngine from '../domain/storageEngine';
 import MessageBot from './messageBot';
 
-import notFoundImage from '../../assets/images/not_found.jpg';
-import serverErrorImage from '../../assets/images/server_error.jpg';
-
 import { isServerError, throttle } from '../util/common';
 import { DELAY_MILISECOND_TIME, VIDEO_COUNT } from '../util/constants';
 import { $, $$ } from '../util/domHelper';
+import { NO_RESULT_TEMPLATE, SERVER_ERROR_TEMPLATE, SKELETON_TEMPLATE } from './template';
 
-//template
-const NO_RESULT_TEMPLATE = `
-  <img src=${notFoundImage} alt="no result image" class="no-result__image">
-`;
-
-const SERVER_ERROR_TEMPLATE = ` 
-  <img src=${serverErrorImage} alt="no result image" class="no-result__error-image">
-  <span>앗...현재는 서버 점검중입니다~ ∑(O_O;)</span>
-`;
-
-const PLAIN_TEXT = '---------';
-
-const SKELETON_TEMPLATE = `
-  <li class="video-item skeleton" data-video-id="">
-    <div id="image-wrapper">
-      <img
-        src=${notFoundImage}
-        alt="video-item-thumbnail" class="video-item__thumbnail">
-    </div>
-    <h4 class="video-item__title">${PLAIN_TEXT}</h4>
-    <p class="video-item__channel-name">${PLAIN_TEXT}</p>
-    <p class="video-item__published-date">${PLAIN_TEXT}</p>
-    <button class="video-item__save-button button">⬇ 저장</button>
-  </li>
-`.repeat(VIDEO_COUNT);
-
-//class
 export default class SearchVideoModal {
   #searchEngine = new SearchEngine();
   #storageEngine = new StorageEngine();

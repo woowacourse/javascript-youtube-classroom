@@ -1,8 +1,5 @@
 import { $ } from '../util/domHelper';
-
-const getMessageTemplate = (type, message) => `
-  <li class="message ${type}">${message}</li>
-`;
+import { getMessageTemplate } from './template';
 
 export default class MessageBot {
   #shortMessage = $('.short-message');

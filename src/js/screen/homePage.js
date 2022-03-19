@@ -2,31 +2,8 @@ import StorageEngine from '../domain/storageEngine';
 import MessageBot from './messageBot';
 
 import { $ } from '../util/domHelper';
-import notFoundImage from '../../assets/images/not_found.jpg';
+import { getVideoItemTemplate, NO_RESULT_TEMPLATE } from './template';
 
-//template
-const NO_RESULT_TEMPLATE = `
-  <img src=${notFoundImage} alt="no result image" class="no-result__image">
-`;
-
-const getVideoItemTemplate = ({ channelTitle, publishTime, title, videoId, isWatched }) => `
-  <li class="video-item" data-video-id=${videoId}>
-    <div id="image-wrapper">
-      <iframe
-        src="https://www.youtube.com/embed/${videoId}"
-        alt="video-item-thumbnail" class="video-item__thumbnail">
-      </iframe>
-    </div>
-    <h4 class="video-item__title">${title}</h4>
-    <p class="video-item__channel-name">${channelTitle}</p>
-    <p class="video-item__published-date">${publishTime}</p>
-    <div class="button-list">
-      <button data-is-watched=${isWatched} class="video-item__watch_button button">✅</button>
-      <button class="video-item__delete_button button">🗑</button>
-    </div>
-  </li>`;
-
-//class
 export default class HomePage {
   #storageEngine = new StorageEngine();
 
