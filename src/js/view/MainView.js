@@ -1,5 +1,6 @@
 import { selectDom, formatDateString } from '../util/util';
 import storage from '../domain/storage';
+import { DELETE_CONFIRM_MESSAGE } from '../constants/constants';
 
 class MainView {
   constructor() {
@@ -34,17 +35,19 @@ class MainView {
   };
 
   #handleDelete = (event) => {
-    const savedVideos = storage.getSavedVideos();
-    const newVideoList = savedVideos.filter(
-      (video) => video.videoId !== event.target.dataset.videoId
-    );
-    storage.setSavedVideos(newVideoList);
-    event.target.parentNode.parentNode.remove();
-    if (
-      savedVideos.filter((video) => String(video.isWatched) === event.target.dataset.isWatched)
-        .length === 1
-    ) {
-      this.#renderNoSavedVideo();
+    if (window.confirm(DELETE_CONFIRM_MESSAGE)) {
+      const savedVideos = storage.getSavedVideos();
+      const newVideoList = savedVideos.filter(
+        (video) => video.videoId !== event.target.dataset.videoId
+      );
+      storage.setSavedVideos(newVideoList);
+      event.target.parentNode.parentNode.remove();
+      if (
+        savedVideos.filter((video) => String(video.isWatched) === event.target.dataset.isWatched)
+          .length === 1
+      ) {
+        this.#renderNoSavedVideo();
+      }
     }
   };
 
