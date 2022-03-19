@@ -11,12 +11,15 @@ import {
   handleDeleteVideo,
   handleWatchedVideo,
   handleWatchedContent,
+  handleUnseenContent,
 } from './handlers/manageVideo.js';
 
 export default function App() {
   initSavedVideos();
 
-  $('#watched-video').addEventListener('click', handleWatchedContent);
+  $('#unseen-video-button').addEventListener('click', handleUnseenContent);
+
+  $('#watched-video-button').addEventListener('click', handleWatchedContent);
 
   ELEMENTS.SAVED_VIDEO_LIST.addEventListener('click', (e) => {
     if (e.target.classList.contains('video-remove-button')) {

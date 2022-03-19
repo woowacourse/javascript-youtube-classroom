@@ -42,6 +42,11 @@ body {
   background: #ebebeb;
 }
 
+.target {
+  pointer-events: none;
+  background: rgba(0, 188, 212, 0.12);
+}
+
 .video-container {
   display: flex;
   justify-content: center;
