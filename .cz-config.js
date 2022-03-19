@@ -39,7 +39,6 @@ module.exports = {
     { name: 'ui' },
     { name: 'settings' },
     { name: 'todo' },
-    { name: 'flux' },
     { name: 'validation' },
     { name: 'util' },
     { name: 'unit' },
@@ -47,6 +46,7 @@ module.exports = {
     { name: 'cleanup' },
     { name: 'logic' },
     { name: 'storage' },
+    { name: 'api' },
   ],
 
   scopeOverrides: {
