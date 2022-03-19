@@ -57,48 +57,50 @@ describe('구현 결과가 요구사항과 일치해야 한다.', () => {
       submitSearchKeywordCorrectly();
 
       // then
-      cy.get('#search-result-video-list').within(() => {
-        cy.get('.skeleton').should('have.length', 10);
-      })
+      cy.get('.skeleton').should('have.length', 10);
     });
 
     it('정상적으로 검색이 끝나면, 검색 결과 리스트에 결과 아이템이 나타난다.', () => {
+      // given
+      cy.intercept('GET', '**/search*').as('getSearchResult');
+
       // when
       submitSearchKeywordCorrectly();
+      cy.wait('@getSearchResult');
 
       // then
-      cy.get('#search-result-video-list').within(() => {
-        cy.get('.video-item').should('have.length', 10).and('be.visible');
-      });
+      cy.get('.video-item').should('have.length', 10).and('be.visible');
     });
 
     it('키워드 검색이 끝난 후, 검색 결과 리스트를 끝까지 스크롤하면 추가 로딩이 시작되며 스켈레톤 아이템이 나타난다.', () => {
+      // given
+      cy.intercept('GET', '**/search*').as('getSearchResult');
+
       // when
       submitSearchKeywordCorrectly();
-      cy.get('#search-result-video-list').within(() => {
-        cy.get('.video-item').should('have.length', 10);
-      })
+      cy.wait('@getSearchResult');
+      cy.get('.video-item').should('have.length', 10);
+      cy.get('#search-result-video-list').scrollTo('bottom');
 
       // then
-      cy.get('#search-result-video-list').scrollTo('bottom');
-      cy.get('#search-result-video-list').within(() => {
-        cy.get('.skeleton').should('have.length', 10).and('be.visible');
-      });
+      cy.get('.skeleton').should('have.length', 10).and('be.visible');
     });
 
     it('스크롤에 의한 검색 결과 추가 로딩에 성공하면, 검색 결과 리스트에 결과 아이템이 추가된다.', () => {
+      // given
+      cy.intercept('GET', '**/search*').as('getSearchResult');
+
       // when
       submitSearchKeywordCorrectly();
+      cy.wait('@getSearchResult');
       cy.get('#search-result-video-list').within(() => {
         cy.get('.video-item').should('have.length', 10);
-      })
+      });
+      cy.get('#search-result-video-list').scrollTo('bottom');
+      cy.wait('@getSearchResult');
 
       // then
-      cy.get('#search-result-video-list').scrollTo('bottom');
-      cy.get('#search-result-video-list').within(() => {
-        cy.get('.skeleton').should('have.length', 10).and('be.visible');
-        cy.get('.video-item').should('have.length', 20);
-      });
+      cy.get('.video-item').should('have.length', 20).and('be.visible');
     });
 
     it('검색 과정에서 에러가 발생하면, 에러 안내 화면이 나온다.', () => {
@@ -106,9 +108,7 @@ describe('구현 결과가 요구사항과 일치해야 한다.', () => {
       cy.intercept('GET', '**/search*', { statusCode: 404 });
 
       // when
-      cy.get('#search-modal-button').click();
-      cy.get('#search-input-keyword').type('가나다');
-      cy.get('#search-form').submit();
+      submitSearchKeywordCorrectly();
 
       // then
       cy.get('#no-result-description').should('have.text', '검색 결과를 가져오는데 실패했습니다.관리자에게 문의하세요.');
@@ -119,9 +119,7 @@ describe('구현 결과가 요구사항과 일치해야 한다.', () => {
       cy.intercept('GET', '**/search*', { items: [] });
 
       // when
-      cy.get('#search-modal-button').click();
-      cy.get('#search-input-keyword').type('가나다');
-      cy.get('#search-form').submit();
+      submitSearchKeywordCorrectly();
 
       // then
       cy.get('#no-result-description').should('have.text', '검색 결과가 없습니다.다른 키워드로 검색해보세요.');
