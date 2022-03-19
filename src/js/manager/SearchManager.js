@@ -1,19 +1,11 @@
-export default class SearchManager {
+import Observer from "./Observer.js";
+
+export default class SearchManager extends Observer {
   constructor() {
-    this.handlers = new Map();
-    this.handlerIndex = 0;
+    super();
     this.state = {
       keyword: "",
     };
-  }
-
-  subscribe(handler) {
-    this.handlers.set(++this.handlerIndex, handler);
-    return this.handlerIndex;
-  }
-
-  unsubscribe(index) {
-    this.handlers.delete(index);
   }
 
   getKeyword() {
@@ -26,10 +18,6 @@ export default class SearchManager {
 
   #setState(newState) {
     this.state = { ...this.state, ...newState };
-    this.#notify();
-  }
-
-  #notify() {
-    this.handlers.forEach((handler) => handler());
+    this.notify();
   }
 }
