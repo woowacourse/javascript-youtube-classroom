@@ -1,5 +1,11 @@
 ### 기능 구현 목록
 
+### 데모 페이지
+[데모 페이지](https://jhy979.github.io/javascript-youtube-classroom/)
+
+- Youtube 검색이 안 될 경우 연락 주세요.
+- 보통 원인은 API 키 할당량 때문일 확률이 높습니다. (매일 오후 5시에 갱신되니 기다리셔도 좋습니다.)
+
 ### 도메인
 
 - [x] 보고싶은 영상을 검색할 수 있다.
@@ -64,3 +70,6 @@
   - [x] 960px이상~1280px 미만: 3개
   - [x] 600px이상~960px 미만: 2개
   - [x] 600px 미만: 1개
+
+### 다이어그램
+![image](https://user-images.githubusercontent.com/32920566/159117070-d4933637-8b99-470d-ad8c-052bcb3d0fae.png)
