@@ -21,9 +21,14 @@ class YoutubeSaveListStore extends Store {
       const expireVideoList = this.#getExpireVideoList(saveVideoList);
       this.#updateVideoData(expireVideoList);
 
+      const isWatched = this.state.listType === 'watched';
+      const filterItems = YoutubeSaveStorage.get().filter(
+        videoState => videoState.watched === isWatched,
+      );
+
       this.setState({
         ...this.state,
-        items: YoutubeSaveStorage.get(),
+        items: filterItems,
       });
     });
 
