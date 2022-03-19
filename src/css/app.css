@@ -59,6 +59,10 @@ body {
   .search-input__keyword {
     max-width: 300px;
   }
+
+  .nav {
+    justify-content: space-around;
+  }
 }
 
 @media (min-width: 600px) and (max-width: 959px) {
@@ -66,12 +70,20 @@ body {
   .classroom-video__list {
     grid-template-columns: repeat(2, 1fr);
   }
+
+  #app {
+    width: 550px;
+  }
 }
 
 @media (min-width: 960px) and (max-width: 1279px) {
   .video-list,
   .classroom-video__list {
     grid-template-columns: repeat(3, 1fr);
+  }
+
+  #app {
+    width: 800px;
   }
 }
 
