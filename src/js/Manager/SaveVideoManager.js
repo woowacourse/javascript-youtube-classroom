@@ -8,7 +8,7 @@ export default class SaveVideoManager {
     this.updateSavedVideos();
   }
 
-  updateSavedVideos() {
+  updateSavedVideos = () => {
     const videos = Storage.getSavedVideos();
     dispatch(EVENT.UPDATE_SAVED_VIDEO_LIST, {
       unwatchedVideos: videos.filter((video) => video.watched === false ),
@@ -16,7 +16,7 @@ export default class SaveVideoManager {
     }, $('#app'));
   }
 
-  saveVideo(e) {
+  saveVideo = (e) => {
     const { video, target } = e.detail
     if ( !video ) return;
     try {
@@ -29,7 +29,7 @@ export default class SaveVideoManager {
     dispatch(EVENT.RESPONSE_SAVE_VIDEO, { result: 'SUCCESS', target }, $('#modal-container'));
   }
 
-  changeWatchedInfo(e) {
+  changeWatchedInfo = (e) => {
     const videoId = e.detail.id;
     const video = Storage.findVideoById(videoId);
     try {
@@ -41,7 +41,7 @@ export default class SaveVideoManager {
     this.updateSavedVideos();
   }
 
-  deleteVideo(e) {
+  deleteVideo = (e) => {
     const videoId = e.detail.id;
     try {
       Storage.deleteVideoById(videoId);

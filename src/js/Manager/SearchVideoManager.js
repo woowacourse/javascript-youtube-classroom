@@ -32,13 +32,13 @@ export default class SearchVideoManager {
     this.#searchState = 'READY';
   }
 
-  updateSearchState(newState, data = {}) {
+  updateSearchState = (newState, data = {}) => {
     this.#searchState = newState;
     const detail = { searchState: newState, ...data };
     dispatch(EVENT.UPDATE_SEARCH_STATE, detail, $('#modal-container'));
   }
 
-  searchWithNewKeyword(e) {
+  searchWithNewKeyword = (e) => {
     const { keyword } = e.detail;
     try {
       validateSearchKeyword(keyword);
@@ -51,7 +51,7 @@ export default class SearchVideoManager {
     this.search();
   }
 
-  searchOnScroll() {
+  searchOnScroll = () => {
     if (!this.#nextPageToken) {
       alert(GUIDE_MESSAGE.NO_MORE_SEARCH_RESULT);
       return;
@@ -59,7 +59,7 @@ export default class SearchVideoManager {
     this.search();
   }
 
-  search() {
+  search = () => {
     if ( this.#searchState === 'LOADING' ) return;
     this.updateSearchState('LOADING');
     this.fetchYoutubeData()
@@ -71,17 +71,15 @@ export default class SearchVideoManager {
       });
   }
 
-  fetchYoutubeData() {
-    return fetch(generateFetchURL(this.#keyword, this.#nextPageToken))
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error(response.status);
-        }
-        return response.json();
-      });
-  }
+  fetchYoutubeData = () => fetch(generateFetchURL(this.#keyword, this.#nextPageToken))
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error(response.status);
+      }
+      return response.json();
+    })
 
-  processFetchedResult(result) {
+  processFetchedResult = (result) => {
     this.#nextPageToken = result.nextPageToken;
     return result.items.map((item) => ({
       id: item.id.videoId,

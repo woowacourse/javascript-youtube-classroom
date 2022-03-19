@@ -1,6 +1,6 @@
 import { EVENT } from '../constants';
 import { $, $$, debounce } from '../util';
-import { addListener, dispatch } from '../util/event';
+import { dispatch } from '../util/event';
 import { template, MESSAGE } from './template';
 
 export default class SearchResultView {
@@ -10,18 +10,18 @@ export default class SearchResultView {
     this.$noResultContainer = $('#no-result-container', this.$searchResultSection);
     this.$noResultDescription = $('#no-result-description', this.$noResultContainer);
 
-    this.$searchResultVideoList.addEventListener('scroll', debounce(this.onScrollVideoList.bind(this), 500));
-    this.$searchResultVideoList.addEventListener('click', this.onClickVideoSaveButton.bind(this));
+    this.$searchResultVideoList.addEventListener('scroll', debounce(this.onScrollVideoList, 500));
+    this.$searchResultVideoList.addEventListener('click', this.onClickVideoSaveButton);
 
   }
 
-  onScrollVideoList() {
+  onScrollVideoList = () => {
     const { scrollTop, clientHeight, scrollHeight } = this.$searchResultVideoList;
     if (scrollTop + clientHeight + 50 < scrollHeight) return;
     dispatch(EVENT.REQUEST_SEARCH_ON_SCROLL, {}, $('#modal-container'));
   }
 
-  onClickVideoSaveButton(e) {
+  onClickVideoSaveButton = (e) => {
     const { target } = e
     if (target.id === 'save-button') {
       const video = target.parentNode.dataset;
@@ -29,14 +29,14 @@ export default class SearchResultView {
     }
   }
 
-  onResponseSaveVideo(e) {
+  onResponseSaveVideo = (e) => {
     const { result, target } = e.detail;
     if ( result === 'SUCCESS' ) {
       target.remove();
     }
   }
 
-  updateOnSearchState(e) {
+  updateOnSearchState = (e) => {
     const { searchState } = e.detail;
     if (searchState === 'READY') { this.resetSearchResult(); };
     if (searchState === 'LOADING') { this.updateOnLoading(); };
@@ -44,20 +44,20 @@ export default class SearchResultView {
     if (searchState === 'ERROR') { this.showErrorResult(); }
   }
 
-  resetSearchResult() {
+  resetSearchResult = () => {
     this.$searchResultVideoList.scrollTo(0, 0);
     this.$searchResultVideoList.innerHTML = template.skeletonListItem();
     this.$firstSkeletonListItem = $('.skeleton', this.$searchResultVideoList);
   }
   
-  updateOnLoading() {
+  updateOnLoading = () => {
     this.toggleSkeletonListItemVisibility();
     if (this.$searchResultVideoList.classList.contains('hide')) {
       this.showSearchResultVideoList();
     }
   }
 
-  updateOnNewDataReceived(videos) {
+  updateOnNewDataReceived = (videos) => {
     if (videos.length === 0) {
       this.showNoResult();
       this.toggleSkeletonListItemVisibility();
@@ -68,26 +68,26 @@ export default class SearchResultView {
     this.toggleSkeletonListItemVisibility();
   }
 
-  toggleSkeletonListItemVisibility() {
+  toggleSkeletonListItemVisibility = () => {
     $$('.skeleton', this.$searchResultVideoList).forEach((item) => {
       item.classList.toggle('hide');
     });
   }
 
-  showSearchResultVideoList() {
+  showSearchResultVideoList = () => {
     this.$noResultContainer.classList.add('hide');
     this.$searchResultVideoList.classList.remove('hide');
     this.$searchResultSection.classList.remove('search-result--no-result');
   }
 
-  showNoResult() {
+  showNoResult = () => {
     this.$noResultDescription.innerHTML = MESSAGE.NO_RESULT;
     this.$noResultContainer.classList.remove('hide');
     this.$searchResultVideoList.classList.add('hide');
     this.$searchResultSection.classList.add('search-result--no-result');
   }
 
-  showErrorResult() {
+  showErrorResult = () => {
     this.$noResultDescription.innerHTML = MESSAGE.ERROR_RESULT;
     this.$noResultContainer.classList.remove('hide');
     this.$searchResultVideoList.classList.add('hide');

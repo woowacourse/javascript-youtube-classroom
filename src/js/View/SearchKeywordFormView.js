@@ -4,10 +4,10 @@ import { dispatch } from '../util/event';
 
 export default class SearchKeywordFormView {
   constructor() {
-    $('#search-form').addEventListener('submit', this.onSubmitSearchForm.bind(this));
+    $('#search-form').addEventListener('submit', this.onSubmitSearchForm);
   }
 
-  onSubmitSearchForm(e) {
+  onSubmitSearchForm = (e) => {
     e.preventDefault();
     const keyword = $('#search-input-keyword').value;
     dispatch(EVENT.REQUEST_SEARCH_WITH_NEW_KEYWORD, { keyword }, $('#modal-container'));
