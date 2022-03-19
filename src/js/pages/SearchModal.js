@@ -31,6 +31,8 @@ const makeVideoCardProps = (videosRawInfo) =>
     publishTime: timeFormatter(item.snippet.publishTime),
   }));
 
+const KEYCODE_ESC = 27;
+
 export default class SearchModal {
   constructor(element) {
     this.element = element;
@@ -48,6 +50,7 @@ export default class SearchModal {
     //bindEvent
     document.querySelector('#app').addEventListener('keyup', this.escHandler);
     this.dimmer.addEventListener('click', this.closeModalHandler);
+
     this.searchForm.addEventListener('submit', this.searchHandler);
     this.videoList.addEventListener(
       'scroll',
@@ -68,7 +71,7 @@ export default class SearchModal {
   };
 
   escHandler = (e) => {
-    if (e.keyCode === 27) {
+    if (e.keyCode === KEYCODE_ESC) {
       this.closeModalHandler();
     }
   };

@@ -17,6 +17,11 @@ const removeCurrentTabVideoId = (storageKey, videoId) => {
   setStorage(storageKey, filteredVideos);
 };
 
+const EMPTY_VIDEOS_TEMPLATE = `
+  아직 저장된 영상이 없습니다.<br>
+  영상을 검색 후 저장해 보세요!
+`;
+
 export default class MainVideoCardContainer {
   #state;
 
@@ -63,6 +68,11 @@ export default class MainVideoCardContainer {
 
   template() {
     const videos = getStorage(TAB_TO_STORAGE_KEY[this.#state.focusedTab]);
+
+    if (!videos.length) {
+      return EMPTY_VIDEOS_TEMPLATE;
+    }
+
     return videos
       .map((video) => new VideoCard(video).template(TAB_TO_STORAGE_KEY[this.#state.focusedTab]))
       .join('');
