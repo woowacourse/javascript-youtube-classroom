@@ -54,7 +54,7 @@ class SearchModal {
       .map(video => {
         const isSavedVideo = Object.prototype.hasOwnProperty.call(this.savedVideoMap, video.id);
         const button = !isSavedVideo
-          ? '<button class="video-item__save-button button">⬇ 저장</button>'
+          ? '<button class="btn video-item__save-button">⬇ 저장</button>'
           : '';
         return `<li class="video-item" data-video-id="${video.id}">
           <img

@@ -20,8 +20,8 @@ header > h1 {
 }
 
 .nav > .btn-group > .btn {
-  padding-left: 23px;
-  padding-right: 23px;
+  width: 117px;
+  height: 36px;
   font-weight: 500;
 }
 
