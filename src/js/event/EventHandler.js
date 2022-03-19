@@ -39,8 +39,8 @@ export default class EventHandler {
       this.modalView.appendEmptyList();
       this.modalView.appendVideoItem();
       this.modalView.renderSkeletonUI();
-      // const videoListData = await this.getVideoListData(searchInput);
-      const videoListData = parseData;
+      const videoListData = await videoAPI.getVideoListData(searchInput);
+      // const videoListData = parseData;
       this.modalView.renderVideoList(videoListData);
     } catch (error) {
       alert(error.message);
@@ -53,20 +53,11 @@ export default class EventHandler {
       this.modalView.appendEmptyList();
       this.modalView.appendVideoItem();
       this.modalView.renderSkeletonUI();
-      // const videoListData = await this.getVideoListData(searchInput);
-      const videoListData = parseData;
+      const videoListData = await videoAPI.getVideoListData(searchInput);
+      // const videoListData = parseData;
       this.modalView.renderVideoList(videoListData);
     } catch (error) {
       alert(error.message);
-    }
-  }
-
-  async getVideoListData(searchInput) {
-    try {
-      const rawData = await videoAPI.fetchData(searchInput);
-      return videoAPI.parsingVideoData(rawData);
-    } catch (error) {
-      throw new Error(error);
     }
   }
 }

@@ -49,6 +49,15 @@ const videoAPI = {
       throw new Error(error);
     }
   },
+
+  getVideoListData: async function (searchInput) {
+    try {
+      const rawData = await this.fetchData(searchInput);
+      return this.parsingVideoData(rawData);
+    } catch (error) {
+      throw new Error(error);
+    }
+  },
 };
 
 export default videoAPI;
