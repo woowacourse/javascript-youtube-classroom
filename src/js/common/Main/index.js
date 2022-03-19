@@ -31,9 +31,7 @@ export default class MainVideoCardContainer {
       return;
     }
     if (e.target.classList.contains('video-item__delete_button')) {
-      const { videoId } = e.target.closest('.video-item').dataset;
-      removeCurrentTabVideoId(TAB_TO_STORAGE_KEY[this.#state.focusedTab], videoId);
-      e.target.closest('.video-item').remove();
+      this.clickDeleteButtonHandler(e.target.closest('.video-item'));
     }
   };
 
@@ -53,6 +51,14 @@ export default class MainVideoCardContainer {
     removeCurrentTabVideoId(TAB_TO_STORAGE_KEY[this.#state.focusedTab], videoId);
 
     videoElement.remove();
+  }
+
+  clickDeleteButtonHandler(videoElement) {
+    if (confirm('정말 삭제하시겠습니까?')) {
+      const { videoId } = videoElement.dataset;
+      removeCurrentTabVideoId(TAB_TO_STORAGE_KEY[this.#state.focusedTab], videoId);
+      videoElement.remove();
+    }
   }
 
   template() {
