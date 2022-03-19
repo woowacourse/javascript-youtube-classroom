@@ -12,9 +12,9 @@
     <header>
       <h1 class="classroom-title">👩🏻‍💻 나만의 유튜브 강의실 👨🏻‍💻</h1>
       <nav id="classroom-navigation" class="navigation">
-        <div id="classroom-watched-filter-button" class="button-group">
-          <button class="button focus" data-watched="false">볼 영상</button>
-          <button class="button" data-watched="true">본 영상</button>
+        <div id="classroom-watched-filter-button" class="button-group" data-focus="unwatched">
+          <button class="button focus" data-filter="unwatched">볼 영상</button>
+          <button class="button" data-filter="watched">본 영상</button>
         </div>
 
         <button id="search-modal-button" class="button" data-modal="search-modal">🔍 검색</button>
@@ -23,14 +23,14 @@
   
     <main class="classroom-container">
       <ul id="save-video-result" class="video-result">
-        
+
       </ul>
     </main>
 
     <div id="modal" class="modal-container hide">
       <div class="dimmer"></div>
 
-      <div id="search-modal" class="modal-content show" role="dialog" aria-labelledby="modal-content-title">
+      <div id="search-modal" class="modal-content modal-video-search show" role="dialog" aria-labelledby="modal-content-title">
         <h2 id="search-modal-title" class="modal-content-title">🔍 보고싶은 영상 찾기 🔍</h2>
         <form id="search-form" class="search-input-form">
           <h3 hidden>검색어 입력</h3>

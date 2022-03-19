@@ -18,8 +18,8 @@ input {
   cursor: pointer;
   border: 1px solid $color-alto;
   border-radius: $border-radius;
-  background-color: $brand-accent-color;
-  color: $brand-accent-color-font;
+  background-color: $brand-interaction-color;
+  color: $brand-interaction-color-font;
   font-style: normal;
   font-weight: bold;
   font-size: 1rem;
@@ -30,8 +30,9 @@ input {
   }
 
   &:disabled {
-    color: $brand-disabled-color;
-    background-color: $brand-disabled-color-font;
+    cursor: default;
+    color: $brand-disabled-color !important;
+    background-color: $brand-disabled-color-font !important;
   }
 }
 

@@ -14,15 +14,6 @@ h1.classroom-title {
 .navigation {
   display: grid;
 
-  .button {
-    background-color: $brand-interaction-color;
-    color: $brand-interaction-color-font;
-
-    &.focus {
-      background-color: $color-robins-egg-blue-12;
-    }
-  }
-
   > #search-modal-button {
     grid-column: 20 / 1 span;
   }
@@ -31,18 +22,30 @@ h1.classroom-title {
     grid-column: 1 / 5;
 
     .button {
-      &[data-watched]::before {
+      &[data-filter]::before {
         font-size: 0.7rem;
         margin-right: 0.3rem;
         vertical-align: middle;
       }
 
-      &[data-watched='false']::before {
+      &[data-filter='unwatched']::before {
         content: '👁️';
       }
 
-      &[data-watched='true']::before {
+      &[data-filter='watched']::before {
         content: '✅';
+      }
+    }
+
+    &[data-focus='unwatched'] {
+      .button[data-filter='unwatched'] {
+        background-color: $color-robins-egg-blue-12;
+      }
+    }
+
+    &[data-focus='watched'] {
+      .button[data-filter='watched'] {
+        background-color: $color-robins-egg-blue-12;
       }
     }
   }
@@ -103,20 +106,50 @@ h1.classroom-title {
     > .published-date {
       font-size: 0.8rem;
       color: $color-black-50;
+      margin-bottom: 0.4rem;
     }
 
     > .save-button {
       font-size: 0.9rem;
-      margin-top: 0.4rem;
-      background-color: $brand-interaction-color;
-      color: $brand-interaction-color-font;
-      padding: 0.3rem 0.6rem;
+      font-weight: normal;
+      padding: 0.25rem 0.5rem;
+      color: $color-mine-shaft;
       float: right;
+    }
+
+    > .button-group {
+      width: 52%;
+      float: right;
+
+      > .button {
+        font-size: 0.8rem;
+        font-weight: normal;
+        padding: 0.25rem;
+        color: $color-mine-shaft;
+
+        &.save-item-watched-button.unwatched::before {
+          content: '✅';
+        }
+
+        &.save-item-watched-button.watched::before {
+          content: '👁️';
+        }
+
+        &.save-item-remove-button::before {
+          content: '🗑️';
+        }
+
+        &::before {
+          font-size: 0.6rem;
+          margin-right: 0.3rem;
+          vertical-align: middle;
+        }
+      }
     }
   }
 }
 
-#search-modal {
+.modal-video-search {
   .search-input-form {
     display: flex;
     justify-content: center;
@@ -130,6 +163,8 @@ h1.classroom-title {
     > .search-button {
       width: 10%;
       border: none;
+      background-color: $brand-accent-color;
+      color: $brand-accent-color-font;
     }
   }
 
