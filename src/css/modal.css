@@ -44,11 +44,19 @@
 .search-input {
   display: flex;
   justify-content: center;
+  width: 100%;
   margin-bottom: 40px;
 }
 
+#search-form {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
 .search-input__keyword {
-  width: 400px;
+  max-width: 400px;
+  flex: 1;
   height: 36px;
   margin-right: 20px;
   padding: 4px 8px;
