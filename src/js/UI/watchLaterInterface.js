@@ -11,7 +11,6 @@ const watchLaterInterface = {
   renderEmptyImg() {
     const savedVideoData = storage.getLocalStorage();
     if (!savedVideoData) {
-      console.log(!savedVideoData);
       showEmptyImg('.watch-later-empty-img-container');
       return;
     }
