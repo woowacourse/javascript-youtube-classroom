@@ -46,8 +46,4 @@ export default class VideoStorageView {
       .querySelector("#watched-video-button")
       .classList.remove("selected");
   };
-
-  hideElement = (target) => {
-    target.classList.add("hide");
-  };
 }

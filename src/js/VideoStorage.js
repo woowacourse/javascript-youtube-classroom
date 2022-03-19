@@ -9,6 +9,15 @@ export default class VideoStorage {
     return this.videos.includes(responseId);
   }
 
+  checkTypeVideoEmpty(isWatchedVideoOnly) {
+    console.log(
+      !this.getStorage().some((item) => item.isWatched === isWatchedVideoOnly)
+    );
+    return !this.getStorage().some(
+      (item) => item.isWatched === isWatchedVideoOnly
+    );
+  }
+
   addVideoData(data) {
     if (this.videos.length >= STORAGE_MAX_COUNT) {
       throw new Error(ERROR_MESSAGE.VIDEO_STORAGE_OVERFLOW);

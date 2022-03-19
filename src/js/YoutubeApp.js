@@ -59,7 +59,7 @@ export default class YoutubeApp {
 
   #reloadStorageData = () => {
     console.log(this.videoStorage.getStorage());
-    if (!this.videoStorage.getStorage().length) {
+    if (this.videoStorage.checkTypeVideoEmpty(this.isWatchedVideoOnly)) {
       this.videoStorageView.renderEmptyStorage();
       return;
     }
@@ -107,7 +107,7 @@ export default class YoutubeApp {
     const videoData = getTargetVideoData(target, ".video-item");
     this.videoStorage.setVideoStateWatched(videoData.videoId);
 
-    this.videoStorageView.hideElement(target.closest(".video-item"));
+    this.#reloadStorageData();
   };
 
   #onClickDeleteButton = ({ target }) => {
@@ -116,7 +116,7 @@ export default class YoutubeApp {
     const videoData = getTargetVideoData(target, ".video-item");
     this.videoStorage.deleteVideo(videoData.videoId);
 
-    this.videoStorageView.hideElement(target.closest(".video-item"));
+    this.#reloadStorageData();
   };
 
   #onClickSaveButton = ({ target }) => {
