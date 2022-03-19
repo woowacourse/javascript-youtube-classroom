@@ -1,15 +1,17 @@
-import { ELEMENTS } from '../constants/constants.js';
 import storage from '../storage/storage.js';
-import { rendersavedVideo, renderSavedVideos } from '../views/savedVideoList.js';
+import { renderSavedVideos, renderNotSaved } from '../views/savedVideoList.js';
+import ContentTarget from '../models/ContentTarget.js';
 
-const content = 'unseen';
+const contentTarget = new ContentTarget();
 
 const changedVideoList = (changedData) => {
   storage.setLocalStorage(changedData);
-  renderSavedVideos(content, changedData);
   if (changedData.length === 0) {
+    renderNotSaved();
     storage.resetLocalStorage();
+    return;
   }
+  renderSavedVideos(contentTarget.currentTarget, changedData);
 };
 
 const selectedVideoData = (videoItem) => {
@@ -32,8 +34,7 @@ export const handleSaveVideo = (e) => {
   e.target.hidden = true;
   const videoData = selectedVideoData(e.target.closest('li'));
   storage.saveVideo(videoData);
-  ELEMENTS.EMPTY_VIDEO_IMAGE.classList.add('hide');
-  rendersavedVideo(videoData);
+  renderSavedVideos(contentTarget.currentTarget, storage.getLocalStorage());
 };
 
 export const handleDeleteVideo = (selectedVideoId) => {
@@ -47,9 +48,28 @@ export const handleWatchedVideo = (selectedVideoId) => {
   const savedVideos = storage.getLocalStorage();
   savedVideos.forEach((video) => {
     if (video.videoId === selectedVideoId) {
-      // eslint-disable-next-line no-param-reassign
-      video.state = 'watched';
+      if (video.state === 'watched') {
+        // eslint-disable-next-line no-param-reassign
+        video.state = 'unseen';
+      } else {
+        // eslint-disable-next-line no-param-reassign
+        video.state = 'watched';
+      }
     }
   });
   changedVideoList(savedVideos);
+};
+
+export const handleWatchedContent = () => {
+  contentTarget.currentTarget = 'watched';
+  initSavedVideos();
+};
+
+export const initSavedVideos = () => {
+  const savedVideos = storage.getLocalStorage();
+  if (!savedVideos) {
+    renderNotSaved();
+    return;
+  }
+  renderSavedVideos(contentTarget.currentTarget, savedVideos);
 };

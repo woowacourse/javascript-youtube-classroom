@@ -1,32 +1,22 @@
 import '../css/index.css';
 import '../assets/images/not_found.png';
-import '../assets/images/empty_storage.jpeg';
 import { $ } from './util/dom.js';
-import storage from './storage/storage.js';
-import searchResultView from './views/searchResultView.js';
-import { handleSearch, handleVideoListScroll } from './handlers/searchModal.js';
-import { handleSaveVideo, handleDeleteVideo, handleWatchedVideo } from './handlers/manageVideo.js';
-import { renderSavedVideos } from './views/savedVideoList.js';
 import { ELEMENTS, MESSAGE, VIDEO } from './constants/constants.js';
 import { throttle } from './util/general.js';
+import searchResultView from './views/searchResultView.js';
+import { handleSearch, handleVideoListScroll } from './handlers/searchModal.js';
+import {
+  initSavedVideos,
+  handleSaveVideo,
+  handleDeleteVideo,
+  handleWatchedVideo,
+  handleWatchedContent,
+} from './handlers/manageVideo.js';
 
 export default function App() {
-  const content = 'unseen';
+  initSavedVideos();
 
-  const initSavedVideo = () => {
-    const savedVideos = storage.getLocalStorage();
-    if (savedVideos) {
-      ELEMENTS.EMPTY_VIDEO_IMAGE.classList.add('hide');
-      renderSavedVideos(content, savedVideos);
-    }
-  };
-
-  $('.search-result').addEventListener(
-    'scroll',
-    throttle(handleVideoListScroll, VIDEO.THROTTLE_DELAY)
-  );
-
-  $('.search-result').addEventListener('click', handleSaveVideo);
+  $('#watched-video').addEventListener('click', handleWatchedContent);
 
   ELEMENTS.SAVED_VIDEO_LIST.addEventListener('click', (e) => {
     if (e.target.classList.contains('video-remove-button')) {
@@ -41,6 +31,13 @@ export default function App() {
     }
   });
 
+  ELEMENTS.VIDEO_LIST.addEventListener(
+    'scroll',
+    throttle(handleVideoListScroll, VIDEO.THROTTLE_DELAY)
+  );
+
+  ELEMENTS.VIDEO_LIST.addEventListener('click', handleSaveVideo);
+
   $('#search-modal-button').addEventListener('click', searchResultView.toggleModal);
 
   $('.dimmer').addEventListener('click', searchResultView.toggleModal);
@@ -50,8 +47,6 @@ export default function App() {
   $('#search-input-keyword').addEventListener('keypress', (e) => {
     if (e.key === 'Enter') handleSearch();
   });
-
-  initSavedVideo();
 }
 
 App();

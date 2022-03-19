@@ -19,8 +19,8 @@ const savedVideoTemplate = (item) => {
 `;
 };
 
-export const rendersavedVideo = (videoData) => {
-  ELEMENTS.SAVED_VIDEO_LIST.insertAdjacentHTML('beforeEnd', savedVideoTemplate(videoData));
+export const renderNotSaved = () => {
+  ELEMENTS.SAVED_VIDEO_LIST.innerText = '저장된 동영상이 없습니다.';
 };
 
 export const renderSavedVideos = (content, savedVideos) => {
@@ -30,8 +30,7 @@ export const renderSavedVideos = (content, savedVideos) => {
       ELEMENTS.SAVED_VIDEO_LIST.insertAdjacentHTML('beforeEnd', savedVideoTemplate(video));
     }
   });
-
   if (!ELEMENTS.SAVED_VIDEO_LIST.hasChildNodes()) {
-    ELEMENTS.EMPTY_VIDEO_IMAGE.classList.remove('hide');
+    renderNotSaved();
   }
 };
