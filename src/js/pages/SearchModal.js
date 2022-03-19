@@ -46,6 +46,7 @@ export default class SearchModal {
       this.element.querySelectorAll('.search-result');
 
     //bindEvent
+    document.querySelector('#app').addEventListener('keyup', this.escHandler);
     this.dimmer.addEventListener('click', this.closeModalHandler);
     this.searchForm.addEventListener('submit', this.searchHandler);
     this.videoList.addEventListener(
@@ -64,6 +65,12 @@ export default class SearchModal {
 
   closeModalHandler = () => {
     this.element.classList.add('hide');
+  };
+
+  escHandler = (e) => {
+    if (e.keyCode === 27) {
+      this.closeModalHandler();
+    }
   };
 
   scrollHandler = (e) => {

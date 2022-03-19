@@ -1,6 +1,6 @@
 import { ERROR } from '../constants';
 
-const LOCALSTORAGE_KEY = {
+const STORAGE_KEY = {
   VIDEO_IDS: 'VIDEO_IDS',
   VIDEO_INFO_LIST: 'VIDEO_INFO_LIST',
 };
@@ -17,4 +17,4 @@ const setStorage = (key, value) => {
   localStorage.setItem(key, JSON.stringify(value));
 };
 
-export { getStorage, setStorage, LOCALSTORAGE_KEY };
+export { getStorage, setStorage, STORAGE_KEY };

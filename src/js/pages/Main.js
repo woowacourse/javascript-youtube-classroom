@@ -1,5 +1,4 @@
-import { getStorage, LOCALSTORAGE_KEY } from '../utils/localStorage';
-// import VideoCardContainer from '../common/VideoCardContainer';
+import { getStorage, STORAGE_KEY } from '../utils/localStorage';
 import MainVideoCardContainer from '../common/Main/MainVideoCardContainer';
 
 export default class Main {
@@ -17,7 +16,7 @@ export default class Main {
   }
 
   renderStoredVideoList() {
-    this.template(getStorage(LOCALSTORAGE_KEY.VIDEO_IDS));
+    this.template(getStorage(STORAGE_KEY.VIDEO_IDS));
   }
 
   template(storedVideoList) {

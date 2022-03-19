@@ -1,4 +1,4 @@
-// import { getStorage, LOCALSTORAGE_KEY } from '../../utils/localStorage';
+// import { getStorage, STORAGE_KEY } from '../../utils/localStorage';
 
 export default class MainVideoCard {
   constructor(props) {
@@ -12,8 +12,6 @@ export default class MainVideoCard {
   }
 
   template() {
-    // const videoIds = getStorage(LOCALSTORAGE_KEY.VIDEO_IDS);
-
     return `
       <li class="video-item" data-video-id="${this.videoId}">
         <img
@@ -22,7 +20,10 @@ export default class MainVideoCard {
         <h4 class="video-item__title">${this.title}</h4>
         <p class="video-item__channel_title">${this.channelTitle}</p>
         <p class="video-item__publish_time">${this.publishTime}</p>
-        잘나오나?
+        <div class="video-item__button_wrapper">
+          <button class="video-item__watch_button button" type="button">✅</button>
+          <button class="video-item__delete_button button" type="button">🗑️</button>
+        </div>
       </li>
       `;
   }

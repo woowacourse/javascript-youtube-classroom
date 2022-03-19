@@ -1,4 +1,4 @@
-import { getStorage, LOCALSTORAGE_KEY } from '../../utils/localStorage';
+import { getStorage, STORAGE_KEY } from '../../utils/localStorage';
 
 const isStoredVideo = (storedVideos, videoId) =>
   storedVideos.some((video) => video.videoId === videoId);
@@ -15,7 +15,7 @@ export default class ModalVideoCard {
   }
 
   template() {
-    const videoIds = getStorage(LOCALSTORAGE_KEY.VIDEO_IDS);
+    const videoIds = getStorage(STORAGE_KEY.VIDEO_IDS);
 
     const storeButton = isStoredVideo(videoIds, this.videoId)
       ? ''
