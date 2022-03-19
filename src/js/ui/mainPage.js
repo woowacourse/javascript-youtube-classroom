@@ -29,10 +29,17 @@ class MainPage {
       'click',
       this.searchModalPresenter.initModalState.bind(this.searchModalPresenter), // view
     );
+    document.addEventListener('keydown', this.initModalState.bind(this));
     this.$videoListContainer.addEventListener(
       'click',
       this.handleVideo.bind(this),
     );
+  }
+
+  initModalState(event) {
+    if (event.key === 'Escape') {
+      this.searchModalPresenter.initModalState();
+    }
   }
 
   changeTab({ target: { id } }) {
