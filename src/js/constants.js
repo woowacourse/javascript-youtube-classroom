@@ -22,6 +22,7 @@ export const ALERT_MESSAGE = {
 
 export const REQUEST_PATH = 'youtube/v3/search';
 export const HOST_URL = 'https://brave-lichterman-77e301.netlify.app/';
+export const SECOND_HOST_URL = 'https://distracted-ritchie-97635e.netlify.app/';
 
 export const FAKE_DATA = [
   {

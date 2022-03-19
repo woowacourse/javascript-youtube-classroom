@@ -7,7 +7,7 @@ describe('youtube 검색 기능 테스트', () => {
     const searchVideoManager = new SearchVideoManager();
 
     searchVideoManager.search(keyword).then((data) => {
-      expect(data).not.toBe(null);
+      expect(data.length).toBeGreaterThan(0);
     });
   });
 
