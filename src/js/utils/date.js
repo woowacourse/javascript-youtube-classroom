@@ -21,7 +21,6 @@ const getRelativeDate = (date) => {
       return '방금';
     }
     if (seconds < format[0]) {
-      console.log(seconds, format[0]);
       return `${Math.floor(seconds / format[2])}${format[1]} ${token}`;
     }
   }

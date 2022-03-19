@@ -1,15 +1,13 @@
 import { REDIRECT_SERVER_HOST, YOUTUBE_SEARCH_PATH } from '../../src/constants/youtubeApi';
 import ERROR_MESSAGES from '../../src/constants/errorMessages';
-const baseUrl = 'http://localhost:9000/';
 
-// const baseUrl = './index.html';
+// const  = './index.html';
 describe("[API를 fixture로 대체] 1. [영상 검색 모달 화면]에서 '영상 검색, 렌더링, 저장' 테스트", () => {
   const inputKeyword = '우아한테크코스';
 
   beforeEach(() => {
-    cy.visit(baseUrl);
-    cy.get('.nav-right__button').click();
-    // API 할당량 초과되지 않는다면, 아래 cy.intercept 라인을 주석 처리하고 테스트를 실행해도 가능하다.
+    cy.openSearchModal();
+
     cy.intercept('GET', `${REDIRECT_SERVER_HOST}/${YOUTUBE_SEARCH_PATH}*`, { fixture: 'videoItems' });
   });
 
@@ -42,8 +40,7 @@ describe("[API를 fixture로 대체] 1. [영상 검색 모달 화면]에서 '영
     cy.get('.video-item__save-button')
       .first()
       .invoke('data', 'id')
-      .then((id) => {
-        let savedVideoId = id;
+      .then((savedVideoId) => {
         cy.wrap(savedVideoId).as('savedVideoId');
       });
     cy.get('.dimmer').click({ force: true });
@@ -75,8 +72,8 @@ describe("[API를 fixture로 대체] 1. [영상 검색 모달 화면]에서 '영
 
 describe("[API 사용] 1. [영상 검색 모달 화면]에서 '영상 검색, 렌더링, 저장' 테스트", () => {
   it("1-7. 검색결과가 없을 검색어를 입력하고 '검색' 버튼을 누르면, 영상들이 표시되지 않고 에러 Toast 팝업이 표시되어야 한다.", () => {
-    cy.visit(baseUrl);
-    cy.get('.nav-right__button').click();
+    cy.openSearchModal();
+
     const invalidInput =
       "!@#!@$!#%@$^#%&$^*%!@#!$!#%&(^*#%$!@#!@$#$!#@!#)_)&_%^_)&%_^)&_@!@#!#$@#$%$@#^%&$%^&#$@$^#%&$%^$^%*$^&^@#$@#$@#%@#$^#%&^**#^#$%@#$@#$^@#$!$@#%@#$%#$^#$%^$%@#$!@#!@#%)^_&)%_^$%#$%#$^#%^#%^#^&_%^_)&_#$)%_)#_$)%#_$%!@#!@$#$!#@!#)_)&_%^_)&%_^)&_%)^_&)%_^&_%^_)&_#$)%_)#_$)%#_$%'";
 

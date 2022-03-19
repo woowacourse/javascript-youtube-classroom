@@ -17,3 +17,9 @@ Cypress.Commands.add('searchKeyword', (inputKeyword, waitTime = 0) => {
   cy.get('.search-input__keyword').type(inputKeyword);
   cy.get('.search-input__search-button').click().wait(waitTime);
 });
+
+Cypress.Commands.add('openSearchModal', () => {
+  const baseUrl = 'http://localhost:9000/';
+  cy.visit(baseUrl);
+  cy.get('.nav-right__button').click();
+});
