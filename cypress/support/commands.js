@@ -23,3 +23,9 @@
 //
 // -- This will overwrite an existing command --
 // Cypress.Commands.overwrite('visit', (originalFn, url, options) => { ... })
+
+Cypress.Commands.add("searchKeyword", (keyword) => {
+  cy.get(".header-nav__search").click();
+  cy.get(".modal-input__keyword").type(keyword);
+  cy.get(".modal-input__button").click();
+});
