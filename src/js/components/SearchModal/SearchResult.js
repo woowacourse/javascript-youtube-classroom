@@ -81,7 +81,9 @@ export default class SearchResult {
       return;
     }
 
+    this.#renderSkeleton();
     this.videos = await fetchDataFromKeyword(this.searchManager.getKeyword(), this.videos.nextPageToken);
+    this.#removeSkeleton();
     this.#renderVideoList();
   }
 
