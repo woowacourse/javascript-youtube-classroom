@@ -1,48 +1,48 @@
 import { ERROR_MESSAGE, MAX_VIDEO_SAVE } from './constants';
 
-const Storage = {
-  setData(key, data) { localStorage.setItem(key, JSON.stringify(data)) },
+const setData = (key, data) => { localStorage.setItem(key, JSON.stringify(data)) };
+const getData = (key) => JSON.parse(localStorage.getItem(key));
 
-  getData(key) { return JSON.parse(localStorage.getItem(key)) },
+export default class Storage {
+  #videos;
 
-  getSavedVideos() { return this.getData('videos') || [] },
+  constructor() {
+    this.#videos = getData('videos') || [];
+  }
+
+  get videos() { return this.#videos; }
 
   saveVideo(video) {
-    const videos = this.getSavedVideos();
     if (this.findVideoById(video.id)) {
       throw new Error(ERROR_MESSAGE.ALREADY_SAVED_VIDEO);
     }
-    if (videos.length >= MAX_VIDEO_SAVE) {
+    if (this.#videos.length >= MAX_VIDEO_SAVE) {
       throw new Error(ERROR_MESSAGE.MAX_VIDEO_SAVE);
     }
-    videos.push(video);
-    this.setData('videos', videos);
-  },
+    this.#videos.push(video);
+    setData('videos', this.#videos);
+  }
   
   findVideoById(id) {
-    const videos = this.getSavedVideos();
-    return videos.find((video) => video.id === id);
-  },
+    return this.#videos.find((video) => video.id === id);
+  }
 
   updateVideo(newVideo) {
-    const videos = this.getSavedVideos();
-    const index = videos.findIndex((video) => video.id === newVideo.id);
+    const index = this.#videos.findIndex((video) => video.id === newVideo.id);
     if (index === -1) {
       throw new Error(ERROR_MESSAGE.CAN_NOT_UPDATE_ON_NOT_SAVED_VIDEO);
     }
-    videos.splice(index, 1, newVideo);
-    this.setData('videos', videos);
-  },
+    this.#videos.splice(index, 1, newVideo);
+    setData('videos', this.#videos);
+  }
   
   deleteVideoById(id) {
-    const videos = this.getSavedVideos();
-    const index = videos.findIndex((video) => video.id === id);
+    const index = this.#videos.findIndex((video) => video.id === id);
     if (index === -1) {
       throw new Error(ERROR_MESSAGE.CAN_NOT_DELETE_ON_NOT_SAVED_VIDEO);
     }
-    videos.splice(index, 1);
-    this.setData('videos', videos);
+    this.#videos.splice(index, 1);
+    setData('videos', this.#videos);
   }
 }
 
-export default Storage;
