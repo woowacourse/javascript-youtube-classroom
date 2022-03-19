@@ -143,7 +143,6 @@ export default class SearchModal {
   }
 
   async renderVideoList(options) {
-    console.log(this.pageToken);
     if (this.pageToken === 'NO_NEXT_PAGE') {
       return;
     }

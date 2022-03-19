@@ -27,4 +27,19 @@ describe('Youtube ClassRoom Test', () => {
         cy.get('.search-modal .video-item').should('have.length', 0);
       });
   });
+
+  it('결과가 없는 키워드 입력에 대해 결과가 없음을 보여줘야 한다.', () => {
+    const noResultKeyword =
+      '!@#!@$!#%@$^#%&$^%!@#!$!#%&(^#%$!@#!@$#$!#@!#))&%^)&%^)&@!@#!#$@#$%$@#^%&$%^&#$@$^#%&$%^$^%*$^&^@#$@#$@#%@#$^#%&^**#^#$%@#$@#$^@#$!$@#%@#$%#$^#$%^$%@#$!@#!@#%)^&)%^$%#$%#$^#%^#%^#^&%^)&#$)%)#$)%#$%!@#!@$#$!#@!#))&%^)&%^)&%)^&)%^&%^)&#$)%)#$)%#$%';
+    const noResultMessage = `검색 결과가 없습니다\n  다른 키워드로 검색해보세요`;
+
+    cy.get('#search-modal-button').click();
+    cy.get('#search-input-keyword')
+      .type(`${noResultKeyword}{enter}`)
+      .then(() => {
+        cy.get('.no-result__description').should('have.text', noResultMessage);
+      });
+  });
+
+  it('영상의 저장 버튼을 클릭하면, 저장 버튼이 사라진다.', () => {});
 });
