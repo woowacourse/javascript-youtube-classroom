@@ -14,11 +14,15 @@ export default class App {
     this.storage = new VideoStorage(LOCAL_STORAGE_VIDEO_LIST_KEY, MAX_SAVABLE_VIDEOS_COUNT);
 
     this.$modalContainer = $('.modal-container');
-    this.$videoList = $('#app .video-list');
+    this.$videoListContainer = $('#app > .video-list-container');
+    this.$videoList = $('.video-list', this.$videoListContainer);
+    this.$videoListFilters = $('#app .video-list-filters');
 
     $('.search-modal').insertAdjacentHTML('beforeend', this.searchResultTemplate());
     $('#search-modal-button').addEventListener('click', this.openModal);
     $('.dimmer').addEventListener('click', this.closeModal);
+    this.$videoList.addEventListener('click', this.handleClickVideoList);
+    this.$videoListFilters.addEventListener('click', this.handleFilterClick);
 
     const searchModal = new SearchModal(this.storage);
     searchModal.init();
@@ -45,8 +49,10 @@ export default class App {
   }
 
   videoItemTemplate(video) {
+    const isWatched = this.storage.cache[video.id].watched;
+    const className = isWatched ? 'video-item--watched' : 'video-item--watch-later';
     return `
-      <li class="video-item" data-video-id="${video.id}">
+      <li class="video-item ${className}" data-video-id="${video.id}">
         <img
           src="${video.thumbnailUrl}"
           alt="video-item-thumbnail" class="video-item__thumbnail" />
@@ -54,7 +60,9 @@ export default class App {
         <p class="video-item__channel-name">${video.channelTitle}</p>
         <p class="video-item__published-date">${video.publishedAt}</p>
         <div class="video-item__management">
-          <button type="button" class="btn btn-square" for="status-change">✅</button>
+          <button type="button" class="btn btn-square ${
+            isWatched ? 'active' : ''
+          }" for="status-change">✅</button>
           <button type="button" class="btn btn-square" for="delete">🗑️</button>
         </div>
       </li>`;
@@ -105,6 +113,43 @@ export default class App {
 
   openModal = () => {
     this.$modalContainer.classList.toggle('hide');
+  };
+
+  handleFilterClick = ({ target }) => {
+    if (target.tagName.toLowerCase() !== 'button') return;
+    if (target.classList.contains('active')) {
+      target.classList.remove('active');
+      const filter = target.getAttribute('for');
+      this.$videoListContainer.classList.remove(`visible-${filter}`);
+      return;
+    }
+    [...target.parentElement.children].forEach(e => {
+      const filter = e.getAttribute('for');
+      this.$videoListContainer.classList.remove(`visible-${filter}`);
+      e.classList.remove('active');
+    });
+    target.classList.add('active');
+    const filter = target.getAttribute('for');
+    this.$videoListContainer.classList.add(`visible-${filter}`);
+  };
+
+  handleClickVideoList = ({ target }) => {
+    if (target.tagName.toLowerCase() !== 'button') return;
+    const purpose = target.getAttribute('for');
+    const $videoItem = target.closest('.video-item');
+    const videoId = $videoItem.getAttribute('data-video-id');
+    if (purpose === 'status-change') {
+      target.classList.toggle('active');
+      const isWatched = this.storage.cache[videoId].watched;
+      if (isWatched) {
+        $videoItem.classList.remove('video-item--watched');
+        $videoItem.classList.add('video-item--watch-later');
+      } else {
+        $videoItem.classList.remove('video-item--watch-later');
+        $videoItem.classList.add('video-item--watched');
+      }
+      this.storage.toggleWatchStatus(videoId);
+    }
   };
 }
 

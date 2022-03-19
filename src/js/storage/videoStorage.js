@@ -18,6 +18,13 @@ class VideoStorage extends LocalStorage {
     this.save(videoSet);
     this.cache = videoSet;
   }
+
+  toggleWatchStatus(videoId) {
+    const videoSet = this.load({});
+    videoSet[videoId] = { watched: !videoSet[videoId].watched };
+    this.save(videoSet);
+    this.cache = videoSet;
+  }
 }
 
 export default VideoStorage;

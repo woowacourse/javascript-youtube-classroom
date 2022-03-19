@@ -4,7 +4,7 @@ class VideoItem {
       id: { videoId },
       snippet: { publishedAt, title, thumbnails, channelTitle },
     } = item;
-    this.id = videoId;
+    this.id = videoId ?? item.id;
     const [year, month, day] = publishedAt.split('T')[0].trim().split('-');
     this.publishedAt = `${year}년 ${month}월 ${day}일`;
     this.title = title;
