@@ -3,7 +3,7 @@ import { getParsedTime } from '@Utils/ManageData';
 import { onObserveElement } from '@Utils/ElementControl';
 import { addEventDelegate } from '@Utils/CustomEvent';
 import { CLASS_ROOM_SETTING } from '@Constants/Setting';
-import { ERROR_MESSAGE, ACTION_TYPE } from '@Constants/String';
+import { ERROR_MESSAGE, ALERT_MESSAGE, ACTION_TYPE } from '@Constants/String';
 import { SELECTOR, DOM_NAME } from '@Constants/Selector';
 import YoutubeSearchStore from '@Domain/YoutubeSearchStore';
 import YoutubeSaveStorage from '@Domain/YoutubeSaveStorage';
@@ -69,7 +69,7 @@ export default class SearchResult {
       YoutubeSaveListStore.dispatch(ACTION_TYPE.UPDATE_SAVE_LIST);
       $target.textContent = '⬇ 저장';
 
-      Snackbar('볼 영상 목록에서 제거되었습니다.');
+      Snackbar(ALERT_MESSAGE.SAVE_LIST_REMOVE);
       return;
     }
 
@@ -83,7 +83,7 @@ export default class SearchResult {
     YoutubeSaveListStore.dispatch(ACTION_TYPE.UPDATE_SAVE_LIST);
     $target.textContent = '🗑 저장 취소';
 
-    Snackbar('볼 영상 목록에 저장되었습니다.');
+    Snackbar(ALERT_MESSAGE.SAVE_LIST_ADD);
   };
 
   drawSkeletonList() {

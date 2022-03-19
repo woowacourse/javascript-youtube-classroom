@@ -1,7 +1,7 @@
 import { $, createElement } from '@Utils/Dom';
 import { getParsedTime } from '@Utils/ManageData';
 import { addEventDelegate } from '@Utils/CustomEvent';
-import { ACTION_TYPE } from '@Constants/String';
+import { ACTION_TYPE, ALERT_MESSAGE } from '@Constants/String';
 import { SELECTOR, DOM_NAME } from '@Constants/Selector';
 import YoutubeSaveListStore from '@Domain/YoutubeSaveListStore';
 import YoutubeSaveStorage from '@Domain/YoutubeSaveStorage';
@@ -59,11 +59,11 @@ export default class SaveList {
 
     YoutubeSaveStorage.watched(videoId, isUpdateState);
     YoutubeSaveListStore.dispatch(ACTION_TYPE.UPDATE_SAVE_LIST);
-    Snackbar('영상의 상태를 변경하였습니다.');
+    Snackbar(ALERT_MESSAGE.SAVE_LIST_STATE_UPDATE);
   };
 
   handleRemoveItem = ({ target: $target }) => {
-    if (!confirm('정말 해당 영상을 제거하시겠습니까?')) {
+    if (!confirm(ALERT_MESSAGE.SAVE_LIST_CONFIRM_REMOVE)) {
       return;
     }
     const { videoId } = $target.closest(SELECTOR.CLASS.VIDEO_ITEM).dataset;
