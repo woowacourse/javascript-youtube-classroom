@@ -1,7 +1,7 @@
-@import './app.css';
-@import './modal.css';
+@import './home-page.css';
+@import './search-video-modal.css';
 @import './variables.css';
-@import './message.css';
+@import './message-bot.css';
 
 * {
   margin: 0;

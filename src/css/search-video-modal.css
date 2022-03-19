@@ -26,8 +26,7 @@
   position: relative;
   width: 1140px;
   height: 727px;
-
-  background: var(--modal-bg-color);
+  background: var(--white-color);
   border: 1px solid rgba(0, 0, 0, 0.12);
   border-radius: 4px;
   padding: 50px 30px 32px 30px;
@@ -65,7 +64,7 @@
   width: 72px;
   height: 36px;
   background: var(--search-btn-bg-color);
-  color: var(--search-btn-text-color);
+  color: var(--white-color);
 }
 
 .search-result {
@@ -84,7 +83,6 @@
   justify-content: center;
   align-items: center;
   margin-top: 50px;
-
   font-size: 25px;
   font-weight: bold;
 }
@@ -106,7 +104,6 @@
 .modal-video-list {
   width: 1040px;
   height: 493px;
-
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
@@ -189,7 +186,6 @@
   width: 80px;
   height: 36px;
   background: var(--save-btn-bg-color);
-  color: var(--save-btn-text-color);
   margin-top: 4px;
 }
 
@@ -199,7 +195,6 @@
 
 .video-item__save-button.saved {
   background: var(--save-btn-bg-hide-color);
-  color: var(--save-btn-text-color);
   cursor: not-allowed;
 }
 

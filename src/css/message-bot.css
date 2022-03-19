@@ -8,7 +8,6 @@
 .short-message {
   display: flex;
   align-items: center;
-  border: 1px solid#51cf66;
   border-radius: 30px;
   cursor: pointer;
 }
@@ -16,8 +15,9 @@
 #short-message-text {
   font-size: 16px;
   font-weight: 600;
-  padding: 12px 45px 12px 20px;
+  background: var(--short-message-bg-color);
   border-radius: 30px;
+  padding: 12px 45px 12px 20px;
 }
 
 #short-message-img {
@@ -28,7 +28,7 @@
   right: 10px;
   width: 50px;
   height: 50px;
-  background: #40c057;
+  background: var(--short-message-img-bg-color);
   border-radius: 50%;
   font-size: 26px;
 }
@@ -37,13 +37,13 @@
   position: absolute;
   right: 3px;
   top: 4px;
-  background: red;
+  background: var(--short-message-count-bg-color);
   border-radius: 50%;
   padding: 3px 6px;
   text-align: center;
   font-weight: bold;
   font-size: 14px;
-  color: white;
+  color: var(--white-color);
 }
 
 .message-bot.hide {
@@ -53,7 +53,7 @@
 .long-message {
   width: 300px;
   height: 400px;
-  background: #f8f9fa;
+  background: var(--long-message-bg-color);
   border-radius: 30px;
   padding: 20px;
   animation: fade-in 1s;
@@ -79,7 +79,6 @@
 .long-message-main {
   height: 290px;
   overflow-y: scroll;
-  background: white;
   box-shadow: rgb(0 0 0 / 10%) 0px 2px 16px 1px;
   border-radius: 20px;
   margin-bottom: 15px;
@@ -95,30 +94,8 @@
   margin-bottom: 12px;
   font-size: 13px;
   font-weight: bold;
-  color: white;
+  color: var(--white-color);
   animation: fade-in 1s;
-}
-
-.message.remove {
-  background: #51cf66;
-}
-
-.message.not-found {
-  background: #22b8cf;
-}
-
-.message.store {
-  background: #fcc419;
-}
-
-.message.error {
-  background: #cc5de8;
-}
-
-.long-message-footer {
-  text-align: center;
-  font-size: 13px;
-  color: #495057;
 }
 
 @keyframes fade-in {
@@ -128,4 +105,26 @@
   to {
     opacity: 1;
   }
+}
+
+.message.remove {
+  background: var(--remove-message-bg-color);
+}
+
+.message.not-found {
+  background: var(--not-found-message-bg-color);
+}
+
+.message.store {
+  background: var(--store-message-bg-color);
+}
+
+.message.error {
+  background: var(--error-message-bg-color);
+}
+
+.long-message-footer {
+  text-align: center;
+  font-size: 13px;
+  color: var(--long-message-footer-text-color);
 }
