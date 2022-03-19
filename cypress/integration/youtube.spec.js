@@ -2,7 +2,7 @@ import { RULES } from '../../src/js/constants';
 
 const baseUrl = 'http://localhost:9000/';
 
-describe('Youtube ClassRoom Test', () => {
+describe('유튜브 검색 기능 테스트', () => {
   beforeEach(() => {
     cy.visit(baseUrl);
   });
@@ -33,7 +33,12 @@ describe('Youtube ClassRoom Test', () => {
     });
   });
 
-  // it('영상의 저장 버튼을 클릭하면, 저장 버튼이 사라진다.', () => {
+  it('영상의 저장 버튼을 클릭하면, 저장 버튼이 사라진다.', () => {
+    const keyword = '후이{enter}';
 
-  // });
+    cy.searchKeyword(keyword).then(() => {
+      cy.get('.video-item .video-item__save-button').first().click();
+      cy.get('.video-item').first().children('.video-item__save-button').should('not.to.exist');
+    });
+  });
 });
