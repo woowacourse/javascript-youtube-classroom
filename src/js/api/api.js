@@ -10,7 +10,16 @@ const OPTIONS = {
   pageToken: '',
 };
 
-export const getSearchAPI = async (query, pageToken = '') => {
+export const getSearchAPI = async (
+  query,
+  pageToken = '',
+  requestMockData = null
+) => {
+  if (requestMockData) {
+    const mockData = await requestMockData;
+    return [null, mockData];
+  }
+
   const url = new URL(BASE_URL);
   const parameters = new URLSearchParams({
     ...OPTIONS,
