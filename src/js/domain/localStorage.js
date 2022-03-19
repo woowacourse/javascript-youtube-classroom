@@ -1,3 +1,5 @@
+import { LOCALSTORAGE_KEY_WATCHED } from '../constant';
+
 export const setLocalStorage = (key, item) => {
   localStorage.setItem(key, JSON.stringify(item));
 };
@@ -6,14 +8,14 @@ export const getLocalStorage = (key) =>
   JSON.parse(localStorage.getItem(key)) ?? [];
 
 export const setWatchedToStorage = (id) => {
-  const item = getLocalStorage('watched').concat(id);
-  localStorage.setItem('watched', JSON.stringify(item));
+  const item = getLocalStorage(LOCALSTORAGE_KEY_WATCHED).concat(id);
+  localStorage.setItem(LOCALSTORAGE_KEY_WATCHED, JSON.stringify(item));
 };
 
 export const toggleWatchedToStorage = (id) => {
-  const items = getLocalStorage('watched');
+  const items = getLocalStorage(LOCALSTORAGE_KEY_WATCHED);
   if (items.includes(id)) {
-    removeLocalStorage('watched', id);
+    removeLocalStorage(LOCALSTORAGE_KEY_WATCHED, id);
     return;
   }
   if (!items.includes(id)) {

@@ -1,11 +1,11 @@
 import SearchMachine from '../domain/SearchMachine';
-import SearchModalPresenter from '../presenter/SearchModalPresenter';
+import { searchModalPresenter } from '../presenter/SearchModalPresenter';
 import { globalStore } from '../store/VideoStore';
 
 export default class SearchVideoEvent {
   constructor(data) {
     this.data = data;
-    this.searchModalPresenter = new SearchModalPresenter();
+    this.searchModalPresenter = searchModalPresenter;
     this.searchMachine = new SearchMachine();
   }
 

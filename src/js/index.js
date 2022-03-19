@@ -1,6 +1,3 @@
-import MainPage from './ui/mainPage.js';
-import SearchModal from './ui/searchModal';
+import initEventCatcher from './catcher/index.js';
 
-const mainPage = new MainPage();
-mainPage.init();
-const searchModal = new SearchModal();
+initEventCatcher();

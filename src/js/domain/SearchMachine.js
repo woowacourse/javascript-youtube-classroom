@@ -37,7 +37,6 @@ export default class SearchMachine {
     if (this.#pageToken !== '' && data.nextPageToken === undefined)
       throw new Error('더이상 비디오가 없습니다');
     this.#pageToken = data.nextPageToken;
-    console.log(data.nextPageToken);
     return data.items.map((item) => VideoFactory.generate(item));
   }
 

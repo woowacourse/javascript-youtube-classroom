@@ -1,6 +1,6 @@
 import { EVENT_TYPE, MENU_STATE } from '../constant/index.js';
 import EventFactory from '../event/EventFactory.js';
-import SearchModalPresenter from '../presenter/SearchModalPresenter.js';
+import { searchModalPresenter } from '../presenter/SearchModalPresenter.js';
 
 class MainPage {
   constructor() {
@@ -8,7 +8,7 @@ class MainPage {
     this.$navTab = document.querySelector('.nav-tab');
     this.$dimmer = document.querySelector('.dimmer');
     this.$videoListContainer = document.querySelector('.video-list-grid');
-    this.searchModalPresenter = new SearchModalPresenter();
+    this.searchModalPresenter = searchModalPresenter;
     this.menuState = MENU_STATE.NOT_WATCHED_MENU;
   }
 

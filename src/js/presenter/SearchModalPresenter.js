@@ -1,7 +1,7 @@
 import { ERROR_403, REQUEST_VIDEO_QUANTITY } from '../constant';
-import template from '../ui/templates';
+import template from './templates';
 
-export default class SearchModalPresenter {
+class SearchModalPresenter {
   constructor() {
     this.$modalContainer = document.querySelector('.modal-container');
     this.$videoListContainer = document.querySelector('.video-list');
@@ -97,3 +97,5 @@ export default class SearchModalPresenter {
     });
   }
 }
+
+export const searchModalPresenter = new SearchModalPresenter();

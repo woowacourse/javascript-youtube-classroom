@@ -1,3 +1,4 @@
+import { LOCALSTORAGE_KEY_SAVE, LOCALSTORAGE_KEY_WATCHED } from '../constant';
 import {
   removeLocalStorage,
   toggleWatchedToStorage,
@@ -47,8 +48,8 @@ class VideoStore {
   }
 
   removeLocalStorageVideo(id) {
-    removeLocalStorage('save', id);
-    removeLocalStorage('watched', id);
+    removeLocalStorage(LOCALSTORAGE_KEY_SAVE, id);
+    removeLocalStorage(LOCALSTORAGE_KEY_WATCHED, id);
   }
 
   removeVideo(id) {

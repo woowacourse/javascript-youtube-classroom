@@ -1,5 +1,5 @@
 import { MENU_STATE } from '../constant';
-import template from '../ui/templates';
+import template from './templates';
 
 class MainPagePresenter {
   constructor() {
