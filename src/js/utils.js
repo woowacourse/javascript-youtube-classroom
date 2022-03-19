@@ -50,8 +50,18 @@ export const formatDate = (dateString) => {
   return `${year}년 ${month}월 ${day}일`;
 };
 
+export const debounce = (callback, delay = 500) => {
+  let timerId;
+
+  return (event) => {
+    if (timerId) clearTimeout(timerId);
+
+    timerId = setTimeout(callback, delay, event);
+  };
+};
+
 // eslint-disable-next-line max-lines-per-function
-export const throttle = (callback, delay = 100) => {
+export const throttle = (callback, delay = 500) => {
   let timerId;
 
   return (event) => {

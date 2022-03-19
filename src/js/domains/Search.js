@@ -1,5 +1,5 @@
 import SearchVideoStore from '../stores/SearchVideoStore';
-import { fetchData, on, throttle, $ } from '../utils';
+import { debounce, fetchData, on, throttle, $ } from '../utils';
 import { ERROR_MESSAGE, SEARCH_API } from '../constants';
 
 class Search {
@@ -11,7 +11,7 @@ class Search {
     on({
       selector: '.search-form',
       eventName: '@search',
-      handler: throttle((e) => this.search('search', e.detail.keyword), 500),
+      handler: debounce((e) => this.search('search', e.detail.keyword)),
       component: $('search-form'),
     });
     on({
