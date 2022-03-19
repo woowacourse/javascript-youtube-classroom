@@ -13,12 +13,7 @@ class YoutubeSaveListStore extends Store {
   setReducers() {
     this.addReducer('UPDATE_LIST', async () => {
       // 첫 로드, 저장하기, 저장 취소를 클릭할 시 업데이트
-      const saveVideoList = YoutubeSaveStorage.get();
-      if (saveVideoList.length === 0) {
-        return;
-      }
-
-      const expireVideoList = this.#getExpireVideoList(saveVideoList);
+      const expireVideoList = this.#getExpireVideoList(YoutubeSaveStorage.get());
       this.#updateVideoData(expireVideoList);
 
       const isWatched = this.state.listType === 'watched';
