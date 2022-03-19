@@ -4,31 +4,31 @@ import { getSaveVideoList, testSaveRequest } from '../utils/request';
 import { checkSearchResult } from '../videoItem';
 
 export default class StateController {
-  printVideoLists() {
-    console.log('ToWatch: ', StateController.prototype.savedToWatchVideoList);
-    console.log('Watched: ', StateController.prototype.savedWatchedVideoList);
-    console.log('Whole: ', StateController.prototype.wholeVideoList);
-  }
-
   async initVideoLists() {
+    if (!localStorage.getItem(SAVED_VIDEO_LIST_KEY)) {
+      localStorage.setItem(SAVED_VIDEO_LIST_KEY, '[]');
+    }
+    if (!localStorage.getItem(WATCHED_VIDEO_LIST_KEY)) {
+      localStorage.setItem(WATCHED_VIDEO_LIST_KEY, '[]');
+    }
     if (localStorage.getItem(SAVED_VIDEO_LIST_KEY)) {
-      StateController.prototype.savedToWatchVideoList = checkSearchResult(
+      StateController.savedToWatchVideoList = checkSearchResult(
         await testSaveRequest(JSON.parse(localStorage.getItem(SAVED_VIDEO_LIST_KEY)))
       );
     }
     if (localStorage.getItem(WATCHED_VIDEO_LIST_KEY)) {
-      StateController.prototype.savedWatchedVideoList = checkSearchResult(
+      StateController.savedWatchedVideoList = checkSearchResult(
         await testSaveRequest(JSON.parse(localStorage.getItem(WATCHED_VIDEO_LIST_KEY)))
       );
     }
-    StateController.prototype.wholeVideoList = [
-      ...this.savedToWatchVideoList,
-      ...this.savedWatchedVideoList,
+    StateController.wholeVideoList = [
+      ...StateController.savedToWatchVideoList,
+      ...StateController.savedWatchedVideoList,
     ];
   }
 
   updateWholeVideoList(videoList) {
-    StateController.prototype.wholeVideoList.push(...videoList);
+    StateController.wholeVideoList.push(...videoList);
   }
 
   saveVideo(videoId) {
@@ -38,8 +38,9 @@ export default class StateController {
     }
     const newToWatchVideos = [...oldLocalToWatchVideos, videoId];
     localStorage.setItem(SAVED_VIDEO_LIST_KEY, JSON.stringify(newToWatchVideos));
-    StateController.prototype.savedToWatchVideoList =
-      StateController.prototype.wholeVideoList.filter(video => newToWatchVideos.includes(video.id));
+    StateController.savedToWatchVideoList = StateController.wholeVideoList.filter(video =>
+      newToWatchVideos.includes(video.id)
+    );
   }
 
   watchVideo(videoId) {
@@ -50,10 +51,12 @@ export default class StateController {
 
     localStorage.setItem(SAVED_VIDEO_LIST_KEY, JSON.stringify(newToWatchVideos));
     localStorage.setItem(WATCHED_VIDEO_LIST_KEY, JSON.stringify(newWatchedVideos));
-    StateController.prototype.savedToWatchVideoList =
-      StateController.prototype.wholeVideoList.filter(video => newToWatchVideos.includes(video.id));
-    StateController.prototype.savedWatchedVideoList =
-      StateController.prototype.wholeVideoList.filter(video => newWatchedVideos.includes(video.id));
+    StateController.savedToWatchVideoList = StateController.wholeVideoList.filter(video =>
+      newToWatchVideos.includes(video.id)
+    );
+    StateController.savedWatchedVideoList = StateController.wholeVideoList.filter(video =>
+      newWatchedVideos.includes(video.id)
+    );
   }
 
   deleteVideo(videoId) {
@@ -65,10 +68,12 @@ export default class StateController {
     localStorage.setItem(SAVED_VIDEO_LIST_KEY, JSON.stringify(newToWatchVideos));
     localStorage.setItem(WATCHED_VIDEO_LIST_KEY, JSON.stringify(newWatchedVideos));
 
-    StateController.prototype.savedToWatchVideoList =
-      StateController.prototype.wholeVideoList.filter(video => newToWatchVideos.includes(video.id));
-    StateController.prototype.savedWatchedVideoList =
-      StateController.prototype.wholeVideoList.filter(video => newWatchedVideos.includes(video.id));
+    StateController.savedToWatchVideoList = StateController.wholeVideoList.filter(video =>
+      newToWatchVideos.includes(video.id)
+    );
+    StateController.savedWatchedVideoList = StateController.wholeVideoList.filter(video =>
+      newWatchedVideos.includes(video.id)
+    );
   }
 }
 
