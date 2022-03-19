@@ -2,7 +2,7 @@ import { transformDate } from './utils/common.js';
 import { ERROR_MESSAGE, VIDEO_LIST } from './utils/constants.js';
 
 const videoAPI = {
-  baseURL: 'https://keen-lamport-feb29e.netlify.app/youtube/v3/search',
+  baseURL: 'https://hardcore-williams-b69905.netlify.app/youtube/v3/search',
   pageToken: '',
   part: 'snippet',
   maxResults: VIDEO_LIST.RENDER_SIZE,
@@ -36,14 +36,7 @@ const videoAPI = {
       this.checkResponseError(responseData);
       this.pageToken = responseData.nextPageToken;
       return responseData.items.map(item => {
-        return {
-          videoId: item.id.videoId,
-          publishedAt: transformDate(item.snippet.publishedAt),
-          title: item.snippet.title,
-          url: item.snippet.thumbnails.medium.url,
-          channelTitle: item.snippet.channelTitle,
-          type: 'watch-later',
-        };
+        return this.parseTemplate(item);
       });
     } catch (error) {
       throw new Error(error);
@@ -57,6 +50,17 @@ const videoAPI = {
     } catch (error) {
       throw new Error(error);
     }
+  },
+
+  parseTemplate(item) {
+    return {
+      videoId: item.id.videoId,
+      publishedAt: transformDate(item.snippet.publishedAt),
+      title: item.snippet.title,
+      url: item.snippet.thumbnails.medium.url,
+      channelTitle: item.snippet.channelTitle,
+      type: 'watch-later',
+    };
   },
 };
 
