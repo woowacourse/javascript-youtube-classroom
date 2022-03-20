@@ -1,13 +1,6 @@
 import { STORAGE_KEY, MESSAGE, MAX_SAVE_COUNT } from '../constants';
 
 export const video = {
-  formatter(datasetElementsArray) {
-    const datasetObject = datasetElementsArray.reduce((acc, val) => ({ ...acc, ...val }), {});
-    const formattedObject = { ...datasetObject, watched: false };
-
-    return formattedObject;
-  },
-
   save(videoData) {
     try {
       const savedVideoList = this.getVideoList();
@@ -42,5 +35,19 @@ export const video = {
 
   getVideoList() {
     return JSON.parse(localStorage.getItem(STORAGE_KEY)) ?? [];
+  },
+
+  formatter(datasetElementsArray) {
+    const datasetObject = datasetElementsArray.reduce((acc, val) => ({ ...acc, ...val }), {});
+    const formattedObject = { ...datasetObject, watched: false };
+
+    return formattedObject;
+  },
+
+  getFilteredVideoList(isWatched) {
+    const savedVideoList = this.getVideoList();
+    const filteredVideoList = savedVideoList.filter(savedVideo => savedVideo.watched === isWatched);
+
+    return filteredVideoList;
   },
 };

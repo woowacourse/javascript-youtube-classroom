@@ -7,6 +7,7 @@ import { showSnackBar } from '../utils/dom';
 export default class YoutubeClassRoom {
   constructor() {
     $('#will-watch-video-button').classList.add('highlight');
+    youtubeClassRoomVideo.resetVideoList();
     youtubeClassRoomVideo.renderVideoList(false);
     this.addNavTabButtonEvent();
     this.addVideoCheckButtonEvent();
@@ -15,14 +16,16 @@ export default class YoutubeClassRoom {
 
   addNavTabButtonEvent() {
     $('.nav__tab').addEventListener('click', e => {
-      youtubeClassRoomVideo.reset();
+      youtubeClassRoomVideo.resetVideoList();
       e.target.classList.add('highlight');
       if (e.target === $('#will-watch-video-button')) {
         $('#watched-video-button').classList.remove('highlight');
+        youtubeClassRoomVideo.resetVideoList();
         youtubeClassRoomVideo.renderVideoList(false);
         return;
       }
       $('#will-watch-video-button').classList.remove('highlight');
+      youtubeClassRoomVideo.resetVideoList();
       youtubeClassRoomVideo.renderVideoList(true);
     });
   }
@@ -33,6 +36,7 @@ export default class YoutubeClassRoom {
         try {
           const videoId = e.target.dataset.videoId;
           video.check(videoId);
+          youtubeClassRoomVideo.resetVideoList();
           youtubeClassRoomVideo.renderVideoList(false);
           showSnackBar(MESSAGE.CHECK_SUCCESS);
         } catch {
@@ -48,6 +52,7 @@ export default class YoutubeClassRoom {
         try {
           const videoId = e.target.dataset.videoId;
           video.remove(videoId);
+          youtubeClassRoomVideo.resetVideoList();
           $('#watched-video-button').classList.contains('highlight')
             ? youtubeClassRoomVideo.renderVideoList(true)
             : youtubeClassRoomVideo.renderVideoList(false);

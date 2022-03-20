@@ -99,6 +99,7 @@ export const youtubeSearchResult = {
           const videoData = video.formatter(datasetElementsArray);
           video.save(videoData);
           e.target.setAttribute('hidden', true);
+          youtubeClassRoomVideo.resetVideoList();
           youtubeClassRoomVideo.renderVideoList(false);
           $('#will-watch-video-button').classList.add('highlight');
           $('#watched-video-button').classList.remove('highlight');

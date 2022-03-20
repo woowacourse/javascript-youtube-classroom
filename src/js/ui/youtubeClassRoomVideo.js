@@ -4,7 +4,7 @@ import { convertToKoreaLocaleDate } from '../utils/common';
 import emptyImage from '../../assets/images/empty.png';
 
 export const youtubeClassRoomVideo = {
-  reset() {
+  resetVideoList() {
     $('.classroom-video__list').replaceChildren();
   },
 
@@ -50,9 +50,7 @@ export const youtubeClassRoomVideo = {
 
   renderVideoList(isWatched) {
     const $classroomVideoList = $('.classroom-video__list');
-    this.reset();
-    const savedVideoList = video.getVideoList();
-    const filteredVideoList = savedVideoList.filter(savedVideo => savedVideo.watched === isWatched);
+    const filteredVideoList = video.getFilteredVideoList(isWatched);
     $classroomVideoList.insertAdjacentHTML(
       'afterbegin',
       filteredVideoList.length > 0 ? this.videoListTemplate(filteredVideoList) : this.emptyVideoListTemplate(),
