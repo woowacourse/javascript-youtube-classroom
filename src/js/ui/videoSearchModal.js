@@ -9,38 +9,30 @@ export default class VideoSearchModal {
     this.$searchModalButton = $('#search-modal-button');
     this.$dimmer = $('.dimmer');
 
-    this.addSearchModalButtonClickEvent();
-    this.addModalCloseEvent();
+    this.$searchModalButton.addEventListener('click', this.handleSearchModalButtonClick);
+    this.$dimmer.addEventListener('click', this.reset);
+    this.$modalContainer.addEventListener('keydown', this.handleESCKeyDown);
     videoSearchForm.preventFormDeafultEvent();
     videoSearchForm.addSearchEvent();
     videoSearchResult.addSaveButtonClickEvent();
-  }
-
-  reset() {
-    this.toggleShowSearchModal();
-    videoSearchResult.resetVideoList();
-    this.$searchInputKeyword.value = '';
   }
 
   toggleShowSearchModal() {
     this.$modalContainer.classList.toggle('hide');
   }
 
-  addSearchModalButtonClickEvent() {
-    this.$searchModalButton.addEventListener('click', () => {
-      this.toggleShowSearchModal();
-      this.$searchInputKeyword.focus();
-    });
-  }
+  handleSearchModalButtonClick = () => {
+    this.toggleShowSearchModal();
+    this.$searchInputKeyword.focus();
+  };
 
-  addModalCloseEvent() {
-    this.$dimmer.addEventListener('click', e => {
-      this.reset();
-    });
-    this.$modalContainer.addEventListener('keydown', e => {
-      if (e.key === 'Escape') {
-        this.reset();
-      }
-    });
-  }
+  reset = () => {
+    this.toggleShowSearchModal();
+    videoSearchResult.resetVideoList();
+    this.$searchInputKeyword.value = '';
+  };
+
+  handleESCKeyDown = e => {
+    if (e.key === 'Escape') this.reset(e);
+  };
 }
