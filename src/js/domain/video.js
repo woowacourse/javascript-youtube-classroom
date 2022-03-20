@@ -10,7 +10,7 @@ export const video = {
 
   save(videoData) {
     try {
-      const savedVideoList = this.get();
+      const savedVideoList = this.getVideoList();
       if (savedVideoList.length >= MAX_SAVE_COUNT) {
         throw new Error(MESSAGE.ERROR_EXCESS_SAVE_COUNT);
       }
@@ -22,7 +22,7 @@ export const video = {
   },
 
   check(videoId) {
-    const savedVideoList = this.get();
+    const savedVideoList = this.getVideoList();
     const updatedVideoList = savedVideoList.map(savedVideo => {
       if (savedVideo.videoId === videoId) {
         savedVideo.watched = true;
@@ -34,13 +34,13 @@ export const video = {
   },
 
   remove(videoId) {
-    const savedVideoList = this.get();
+    const savedVideoList = this.getVideoList();
     const updatedVideoList = savedVideoList.filter(savedVideo => savedVideo.videoId !== videoId);
     localStorage.removeItem(STORAGE_KEY);
     localStorage.setItem(STORAGE_KEY, JSON.stringify(updatedVideoList));
   },
 
-  get() {
+  getVideoList() {
     return JSON.parse(localStorage.getItem(STORAGE_KEY)) ?? [];
   },
 };

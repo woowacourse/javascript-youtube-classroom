@@ -11,7 +11,7 @@ export const youtubeSearchResult = {
   $videoList: $('.video-list'),
 
   searchResultTemplate(items) {
-    const savedVideoList = video.get();
+    const savedVideoList = video.getVideoList();
     const resultTemplate = items
       .map(item => {
         const { publishedAt, title, thumbnails, channelTitle } = item.snippet;

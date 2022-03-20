@@ -51,7 +51,7 @@ export const youtubeClassRoomVideo = {
   renderVideoList(boolean) {
     const $classroomVideoList = $('.classroom-video__list');
     this.reset();
-    const savedVideoList = video.get();
+    const savedVideoList = video.getVideoList();
     const filteredVideoList = savedVideoList.filter(savedVideo => savedVideo.watched === boolean);
     $classroomVideoList.insertAdjacentHTML(
       'afterbegin',
