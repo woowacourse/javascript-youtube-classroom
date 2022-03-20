@@ -1,9 +1,8 @@
-import { ELEMENTS, VIDEO } from '../constants/constants.js';
-import ContentTarget from '../models/ContentTarget.js';
+import { ELEMENTS } from '../constants/constants.js';
 import storage from '../storage/storage.js';
 import { renderSavedVideos, renderNoSaved } from '../views/savedVideoList.js';
 
-const contentTarget = new ContentTarget();
+let isVideoState = true;
 
 const changedVideoList = (changedData) => {
   storage.setLocalStorage(changedData);
@@ -12,7 +11,7 @@ const changedVideoList = (changedData) => {
     storage.resetLocalStorage();
     return;
   }
-  renderSavedVideos(contentTarget.currentTarget, changedData);
+  renderSavedVideos(isVideoState, changedData);
 };
 
 const selectedVideoData = (videoItem) => {
@@ -22,7 +21,7 @@ const selectedVideoData = (videoItem) => {
     title: videoItem.querySelector('.video-item__title').textContent,
     channelTitle: videoItem.querySelector('.video-item__channel-name').textContent,
     publishTime: videoItem.querySelector('.video-item__published-date').textContent,
-    state: VIDEO.STATE.UNSEEN,
+    unseen: true,
   };
   return videoData;
 };
@@ -35,7 +34,7 @@ export const handleSaveVideo = (e) => {
   e.target.hidden = true;
   const videoData = selectedVideoData(e.target.closest('li'));
   storage.saveVideo(videoData);
-  renderSavedVideos(contentTarget.currentTarget, storage.getLocalStorage());
+  renderSavedVideos(isVideoState, storage.getLocalStorage());
 };
 
 export const handleDeleteVideo = (selectedVideoId) => {
@@ -49,11 +48,7 @@ export const handleWatchedVideo = (selectedVideoId) => {
   const savedVideos = storage.getLocalStorage();
   savedVideos.forEach((video) => {
     if (video.videoId === selectedVideoId) {
-      if (video.state === VIDEO.STATE.WATCHED) {
-        video.state = VIDEO.STATE.UNSEEN;
-      } else {
-        video.state = VIDEO.STATE.WATCHED;
-      }
+      video.unseen = !video.unseen;
     }
   });
   changedVideoList(savedVideos);
@@ -62,14 +57,14 @@ export const handleWatchedVideo = (selectedVideoId) => {
 export const handleWatchedContent = () => {
   ELEMENTS.UNSEEN_VIDEO_BUTTON.classList.remove('target');
   ELEMENTS.WATCHED_VIDEO_BUTTON.classList.add('target');
-  contentTarget.currentTarget = VIDEO.STATE.WATCHED;
+  isVideoState = false;
   initSavedVideos();
 };
 
 export const handleUnseenContent = () => {
   ELEMENTS.UNSEEN_VIDEO_BUTTON.classList.add('target');
   ELEMENTS.WATCHED_VIDEO_BUTTON.classList.remove('target');
-  contentTarget.currentTarget = VIDEO.STATE.UNSEEN;
+  isVideoState = true;
   initSavedVideos();
 };
 
@@ -79,5 +74,5 @@ export const initSavedVideos = () => {
     renderNoSaved();
     return;
   }
-  renderSavedVideos(contentTarget.currentTarget, savedVideos);
+  renderSavedVideos(isVideoState, savedVideos);
 };

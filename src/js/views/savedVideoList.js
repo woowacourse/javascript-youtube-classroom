@@ -27,10 +27,10 @@ export const renderNoSaved = () => {
   ELEMENTS.SAVED_VIDEO_LIST.innerHTML = savedVideoTemplate.noSaved;
 };
 
-export const renderSavedVideos = (content, savedVideos) => {
+export const renderSavedVideos = (state, savedVideos) => {
   ELEMENTS.SAVED_VIDEO_LIST.replaceChildren();
   savedVideos.forEach((video) => {
-    if (video.state === content) {
+    if (video.unseen === state) {
       ELEMENTS.SAVED_VIDEO_LIST.insertAdjacentHTML(
         'beforeEnd',
         savedVideoTemplate.VideoItem(video)
