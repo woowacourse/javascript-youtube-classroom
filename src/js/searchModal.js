@@ -115,7 +115,6 @@ class SearchModal {
   loadMoreObserver() {
     return new IntersectionObserver(
       async entries => {
-        console.log(entries[0].isIntersecting, entries[0].intersectionRatio);
         if (entries[0].isIntersecting && this.nextPageToken !== null) {
           this.observer.unobserve(entries[0].target);
           const title = this.$searchKeyWordInput.value;
@@ -131,7 +130,7 @@ class SearchModal {
 
   async requestVideos(query) {
     this.$searchResult.classList.add('loading');
-    const result = await requestYoutubeVideos(`${SERVER_URL}/dummy`, {
+    const result = await requestYoutubeVideos(`${SERVER_URL}/youtube-search`, {
       q: query,
       ...(this.nextPageToken && { pageToken: this.nextPageToken }),
     });
