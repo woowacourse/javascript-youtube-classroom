@@ -28,6 +28,8 @@ const Helper = {
   },
 
   saveVideo: (video) => Database.save(DATABASE_VIDEO_KEY, video),
+
+  loadVideo: () => Database.load(DATABASE_VIDEO_KEY),
 };
 
 export default Helper;

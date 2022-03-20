@@ -10,6 +10,11 @@ export const SELECTOR = {
   SEARCH_INPUT_KEYWORD: '#search-input-keyword',
   VIDEOS: '#videos',
   EMPTY_SCREEN: '#empty-screen',
+  APP: '#app',
+  SEEN_BUTTON: '#seen-button',
+  UNSEEN_BUTTON: '#unseen-button',
+  UNSEEN_EMPTY_SCREEN: '#unseen-empty-screen',
+  UNSEEN_VIDEOS: '#unseen-videos',
 };
 
 export const ERROR_MESSAGE = {

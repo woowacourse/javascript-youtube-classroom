@@ -13,8 +13,8 @@
 
       <nav class="nav">
         <div class="nav__button-wrap">
-          <button type="button" class="switch-button button nav__button" data-tab="unseen">👁️ 볼 영상</button>
-          <button type="button" class="switch-button button nav__button" data-tab="seen">✅ 본 영상</button>
+          <button type="button" id="seen-button" class="switch-button button nav__button" data-tab="unseen">👁️ 볼 영상</button>
+          <button type="button" id="unseen-button" class="switch-button button nav__button" data-tab="seen">✅ 본 영상</button>
         </div>
 
         <div class="nav__button-wrap">
@@ -23,20 +23,10 @@
       </nav>
 
       <section class="save-video-list unseen">
-        <div class="no-result">
+        <div id="unseen-empty-screen" class="no-result">
           <p class="no-result__message">볼 영상이 없습니다.</p>
         </div>
-        <ul class="video-list">
-          <li class="video-item">
-            <img src="https://i.ytimg.com/vi/JucV43KbvQk/default.jpg" alt="video-item-thumbnail" class="video-item__thumbnail">
-            <h4 class="video-item__title">[Playlist] 콜린(Choline)영양소에 대해서~~~! 계란에 함유되어 있다? 치매, 치매예방(기능의학,영양의학)</h4>
-            <p class="video-item__channel-name">닥터덕 Dr Duk</p>
-            <p class="video-item__published-date">2019년 10월 12일</p>
-            <div class="video-item__button-wrap">
-              <button class="video-item__check-button button">✅</button>
-              <button class="video-item__delete-button button">🗑️</button>
-            </div>
-          </li>
+        <ul id="unseen-videos" class="video-list">
         </ul>
       </section>
 
