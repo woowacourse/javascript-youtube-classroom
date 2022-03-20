@@ -48,9 +48,7 @@ class SearchModal {
     const videoListTemplate = videos
       .map(video => {
         const isSavedVideo = hasProperty(this.storage.cache, video.id);
-        const button = !isSavedVideo
-          ? '<button class="btn video-item__save-button">⬇ 저장</button>'
-          : '';
+        const disabled = isSavedVideo ? 'disabled' : '';
         return `<li class="video-item" data-video-id="${video.id}">
           <img
             src="${video.thumbnailUrl}"
@@ -58,7 +56,7 @@ class SearchModal {
           <h4 class="video-item__title">${video.title}</h4>
           <p class="video-item__channel-name">${video.channelTitle}</p>
           <p class="video-item__published-date">${video.publishedAt}</p>
-          ${button}
+          '<button ${disabled} class="btn video-item__save-button">⬇ 저장</button>'
         </li>`;
       })
       .join('');
@@ -89,7 +87,7 @@ class SearchModal {
     const videoId = $videoItem.getAttribute('data-video-id');
     try {
       this.storage.saveVideo(videoId);
-      target.setAttribute('hidden', true);
+      target.setAttribute('disabled', true);
       this.delegate.handleSaveVideo(videoId);
     } catch (error) {
       consoleErrorWithConditionalAlert(error, VALIDATION_ERROR_NAME);
