@@ -5,12 +5,12 @@ import UserStorage from '../UserStorage/index.js';
 export default class SavedVideoView {
   #savedVideoData;
   #changeVideoWatchedStateBind;
-  #$playlist;
-  #$watched;
+  #$playList;
+  #$watchedList;
 
   constructor() {
-    this.#$playlist = $(SELECTOR.PLAYLIST_VIDEO);
-    this.#$watched = $(SELECTOR.WATCHED_VIDEO);
+    this.#$playList = $(SELECTOR.PLAYLIST_VIDEO);
+    this.#$watchedList = $(SELECTOR.WATCHED_VIDEO);
     this.#bindSavedVideoList();
     this.appendVideos();
   }
@@ -32,17 +32,17 @@ export default class SavedVideoView {
   }
 
   #isValidVideo(kind, watched) {
-    if (kind === 'playlist' && !watched) return true;
-    if (kind === 'watched' && watched) return true;
+    if (kind === 'playList' && !watched) return true;
+    if (kind === 'watchedList' && watched) return true;
     return false;
   }
 
   #setEmptyListDesign(kind, setting) {
-    if (kind === 'playlist') {
-      this.#$playlist.classList[setting]('empty-savedList');
+    if (kind === 'playList') {
+      this.#$playList.classList[setting]('empty-savedList');
       return;
     }
-    this.#$watched.classList[setting]('empty-savedList');
+    this.#$watchedList.classList[setting]('empty-savedList');
   }
 
   #makeSavedVideoListTemplate(kind, videos) {
@@ -63,7 +63,7 @@ export default class SavedVideoView {
         <p class="video-item__channel-name">${video.channelTitle}</p>
         <p class="video-item__published-date">${video.date}</p>
         <button data-kind="checkWatched" data-video-id="${video.id}" class="check-watched-button video-list-button button ${
-            kind === 'watched' ? 'watched' : ''
+            kind === 'watchedList' ? 'watched' : ''
           }" type="button">✅</button>
         <button data-kind="delete" data-video-id="${video.id}" class="delete-button video-list-button button" type="button">🗑️</button>
       </li>`
@@ -72,8 +72,8 @@ export default class SavedVideoView {
   }
 
   #renderVideo() {
-    this.#$playlist.innerHTML = this.#makeSavedVideoListTemplate('playlist', this.#savedVideoData);
-    this.#$watched.innerHTML = this.#makeSavedVideoListTemplate('watched', this.#savedVideoData);
+    this.#$playList.innerHTML = this.#makeSavedVideoListTemplate('playList', this.#savedVideoData);
+    this.#$watchedList.innerHTML = this.#makeSavedVideoListTemplate('watchedList', this.#savedVideoData);
   }
 
   #bindButtonEvent() {
