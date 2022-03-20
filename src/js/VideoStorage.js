@@ -3,10 +3,6 @@ import { ERROR_MESSAGE, STORAGE_MAX_COUNT } from "./constants/constants";
 export default class VideoStorage {
   #videos = JSON.parse(localStorage.getItem("videos")) || [];
 
-  isSavedVideoId(responseId) {
-    return this.#videos.includes(responseId);
-  }
-
   checkTypeVideoEmpty(isWatchedVideoOnly) {
     return !this.getVideos().some(
       (item) => item.isWatched === isWatchedVideoOnly
