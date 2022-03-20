@@ -24,4 +24,4 @@ export const VIDEO = {
   THROTTLE_DELAY: 700,
 };
 
-export const STORAGE_KEY = 'data';
+export const STORAGE_KEY = 'video';
