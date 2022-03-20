@@ -60,4 +60,18 @@ describe('구현 결과가 요구사항과 일치해야 한다.', () => {
         cy.get(SELECTOR.SEEN_VIDEOS).children().should('have.length', 1);
       });
   });
+
+  it('비디오 삭제 버튼을 누르면, 확인 메세지를 확인하고 예 버튼을 누르면 비어있다는 문구를 보여줘야 한다.', () => {
+    submitKeywordCorrectly();
+    cy.get('.video-item__save-button').first().click();
+    cy.get(SELECTOR.MODAL_BACKGROUND).click({ force: true });
+
+    cy.get(`${SELECTOR.UNSEEN_VIDEOS} .video-item__delete-button`)
+      .first()
+      .click()
+      .then(() => {
+        cy.on('window:confirm', () => true);
+        cy.get(SELECTOR.UNSEEN_EMPTY_SCREEN).should('be.visible');
+      });
+  });
 });
