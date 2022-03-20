@@ -1,15 +1,15 @@
 import YoutubeAPI from '../YoutubeAPI/index.js';
-import ValidationError from '../ValidationError/index.js';
 
 import KeywordInputView from '../views/KeywordInputView.js';
-import VideoView from '../views/VideoView.js';
+import SavedVideoView from '../views/SavedVideoView.js';
 import SearchModalView from '../views/SearchModalView.js';
+import VideoView from '../views/VideoView.js';
+
 import UserStorage from '../UserStorage/index.js';
 
 import { checkKeyword } from '../Validator/index.js';
 
 import { formatDate } from '../utils/index.js';
-import SavedVideoView from '../views/SavedVideoView.js';
 
 const youtubeAPI = new YoutubeAPI();
 
