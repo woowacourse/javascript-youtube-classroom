@@ -1,7 +1,7 @@
 import { RULES } from '../../constants';
 import { snakeCaseToCamelCase } from '../../utils';
 import { getStorage, STORAGE_KEY, setStorage } from '../../utils/localStorage';
-import VideoCard from '../VideoCard';
+import VideoCard from '../VideoCard/VideoCard';
 
 const extractInnerHTML = (object, element) => {
   object[snakeCaseToCamelCase(element.className.replace('video-item__', ''))] =

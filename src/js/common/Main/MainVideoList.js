@@ -1,5 +1,5 @@
 import { getStorage, setStorage, STORAGE_KEY } from '../../utils/localStorage';
-import VideoCard from '../VideoCard';
+import VideoCard from '../VideoCard/VideoCard';
 
 const TAB_TO_STORAGE_KEY = {
   'watch-later-videos': STORAGE_KEY.WATCH_LATER_VIDEOS,
