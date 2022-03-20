@@ -1,6 +1,6 @@
 {
   "integrationFolder": "cypress/tests",
-  "testFiles": "*.spec.js",
+  "testFiles": "*.test.js",
   "screenshotOnRunFailure": false,
   "video": false,
   "pluginsFile": false,
