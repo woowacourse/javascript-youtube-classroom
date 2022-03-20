@@ -20,7 +20,7 @@ const Helper = {
     saved: Helper.findVideoById(id.videoId) !== undefined,
   }),
 
-  fetchVideo: (host = REDIRECT_SERVER_HOST.DUMMY) =>
+  fetchVideo: (host = REDIRECT_SERVER_HOST.REAL) =>
     _.go(YoutubeAPI.getVideos(host), _.map(Helper.convertVideoToItem)).catch(() =>
       Helper.fetchVideo(REDIRECT_SERVER_HOST.DUMMY),
     ),
