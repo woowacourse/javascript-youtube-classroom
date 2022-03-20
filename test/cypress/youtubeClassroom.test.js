@@ -5,6 +5,30 @@ describe('구현 결과가 요구사항과 일치해야 한다.', () => {
     cy.visit('/');
   });
 
+  const submitSearchKeywordCorrectly = () => {
+    cy.get('#search-modal-button').click();
+    cy.get('#search-input-keyword').type('가나다');
+    cy.get('#search-form').submit();
+  }
+
+  const saveFirstVideoInSearchResult = () => {
+    cy.intercept('GET', '**/search*').as('getSearchResult');
+
+    // when
+    submitSearchKeywordCorrectly();
+    cy.wait('@getSearchResult');
+
+    cy.get('#search-result-video-list').within(() => {
+      cy.get('.video-item').first().as('firstVideo');
+    })
+    cy.get('@firstVideo').within(() => {
+      cy.get('.video-item__save-button').click();
+    });
+    cy.get('.dimmer').click({force: true});
+
+    return cy.get('@firstVideo');
+  }
+
   context('홈 화면에 대한 테스트', () => {
     it('가장 처음 페이지 방문 시, 볼 영상 리스트가 보여야 한다.', () => {
       cy.get('#unwatched-video-list').should('be.visible');
@@ -57,11 +81,6 @@ describe('구현 결과가 요구사항과 일치해야 한다.', () => {
   });
 
   context('검색에 대한 테스트', () => {
-    const submitSearchKeywordCorrectly = () => {
-      cy.get('#search-modal-button').click();
-      cy.get('#search-input-keyword').type('가나다');
-      cy.get('#search-form').submit();
-    }
 
     it('2글자 미만의 검색어 입력 후 제출하면, 검색어 최소 글자 수에 대한 안내 메세지가 나온다. ', () => {
       // given
@@ -150,6 +169,104 @@ describe('구현 결과가 요구사항과 일치해야 한다.', () => {
       // then
       cy.get('#no-result-description').should('have.text', '검색 결과가 없습니다.다른 키워드로 검색해보세요.');
     });
+
+  });
+  
+  context('영상 카드의 저장 버튼과 아이콘 버튼에 대한 테스트', () => {
+
+    it('검색 결과의 영상 카드에서 저장 버튼을 누르면, 저장 버튼이 사라진다.', () => {
+      // given
+      cy.intercept('GET', '**/search*').as('getSearchResult');
+
+      // when
+      submitSearchKeywordCorrectly();
+      cy.wait('@getSearchResult');
+      cy.get('.video-item').first().within(() => {
+        cy.get('.video-item__save-button').click();
+        // then
+        cy.get('.video-item__save-button').should('not.exist');
+      })
+    });
+
+    it('검색 결과의 영상 카드에서 저장 버튼을 누르면, 해당 영상이 볼 영상에 추가된다.', () => {
+      // when
+      const savedFirstVideo = saveFirstVideoInSearchResult();
+      savedFirstVideo.invoke('attr', 'data-id').then((savedVideoID) => {
+        cy.get('#unwatched-video-list').within(() => {
+
+          // then
+          cy.get('.video-item').should('have.length', 1);
+          cy.get('.video-item').invoke('attr', 'data-id').should('eq', savedVideoID);
+        })
+      })
+    });
+
+    it('볼 영상의 영상 카드에서 ✅ 버튼을 클릭하면, 해당 영상 카드가 본 영상으로 이동한다.', () => {
+      // when
+      saveFirstVideoInSearchResult();
+
+      cy.get('#unwatched-video-list').within(() => {
+        cy.get('.video-item').as('unwatchedVideo');
+        cy.get('@unwatchedVideo').within(() => {
+          cy.get('.check-watched-button').click();
+        })
+      });
+
+      cy.get('#watched-video-list-button').click();
+      cy.get('#watched-video-list').within(() => {
+        cy.get('@unwatchedVideo').invoke('attr', 'data-id').then((checkedVideoID) => {
+
+          // then
+          cy.get(`[data-id=${checkedVideoID}]`).should('exist').and('be.visible');
+        })
+      })
+    })
+
+    it('본 영상의 영상 카드에서 ✅ 버튼을 클릭하면, 해당 영상 카드가 볼 영상으로 이동한다.', () => {
+      // when
+      saveFirstVideoInSearchResult();
+
+      cy.get('#unwatched-video-list').within(() => {
+        cy.get('.video-item').within(() => {
+          cy.get('.check-watched-button').click();
+        })
+      });
+      cy.get('#watched-video-list-button').click();
+      cy.get('#watched-video-list').within(() => {
+        cy.get('.video-item').as('watchedVideo');
+        cy.get('@watchedVideo').within(() => {
+          cy.get('.check-watched-button').click();
+        })
+      })
+
+      cy.get('#unwatched-video-list-button').click();
+      cy.get('#unwatched-video-list').within(() => {
+        cy.get('@watchedVideo').invoke('attr', 'data-id').then((checkedVideoID) => {
+
+          // then
+          cy.get(`[data-id=${checkedVideoID}]`).should('exist').and('be.visible');
+        })
+      })
+    })
+
+    it('저장된 영상 카드에서 🗑️ 버튼을 클릭하면, 삭제 재확인 안내 메세지가 나온다.', () => {
+      // given
+      const confirmStub = cy.stub();
+      cy.on('window:confirm', confirmStub);
+
+      // when
+      saveFirstVideoInSearchResult();
+      cy.get('#unwatched-video-list').within(() => {
+        cy.get('.video-item').within(() => {
+          cy.get('.delete-button').click().then(() => { 
+
+            // then
+            expect(confirmStub).to.be.calledWith(GUIDE_MESSAGE.CONFIRM_DELETE);
+          });
+        })
+      });
+    })
+
   });
 
 });
