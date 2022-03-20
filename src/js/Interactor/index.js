@@ -39,13 +39,13 @@ const handleSearchModalButtonClick = () => {
 
 const handleSwitchUnseenButtonClick = _.pipe(
   Helper.loadVideo,
-  _.filter((video) => !video.checked),
+  _.filter(({ checked }) => !checked),
   unseenVideoListView.renderScreenByVideos.bind(unseenVideoListView),
 );
 
 const handleSwitchSeenButtonClick = _.pipe(
   Helper.loadVideo,
-  _.filter((video) => video.checked),
+  _.filter(({ checked }) => checked),
   seenVideoListView.renderScreenByVideos.bind(seenVideoListView),
 );
 
