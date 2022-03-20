@@ -1,6 +1,7 @@
 import Component from '../../core/Component.js';
 import videoService from '../../services/VideoService.js';
 import { convertTime } from '../../utils/customDate.js';
+import { COMMON_MESSAGES } from '../../config/constants.js';
 
 export default class VideoCard extends Component {
   setup() {
@@ -44,7 +45,7 @@ export default class VideoCard extends Component {
     });
 
     this.addEvent('click', '.video-item__remove-button', () => {
-      if (window.confirm('정말 삭제하시겠습니까?'))
+      if (window.confirm(COMMON_MESSAGES.REMOVE_SAVED_VIDEO))
         videoService.removeSavedVideo(videoId);
     });
   }
