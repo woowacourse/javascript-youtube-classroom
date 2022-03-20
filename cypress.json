@@ -1,9 +1,11 @@
 {
+  "baseUrl": "http://localhost:9000/",
   "integrationFolder": "cypress/tests",
   "testFiles": "*.test.js",
   "screenshotOnRunFailure": false,
   "video": false,
   "pluginsFile": false,
   "supportFile": false,
+  "fixturesFolder": false,
   "blockHosts": ["cdn.jsdelivr.net"]
 }

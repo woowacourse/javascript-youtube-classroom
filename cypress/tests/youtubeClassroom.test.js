@@ -1,8 +1,6 @@
 describe('구현 결과가 요구사항과 일치해야 한다.', () => {
-  const baseURL = 'http://localhost:9000/';
-
   beforeEach(() => {
-    cy.visit(baseURL);
+    cy.visit('/');
   });
 
   context('홈 화면에 대한 테스트', () => {
