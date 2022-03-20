@@ -1,6 +1,5 @@
 import { $ } from './util/dom.js';
-import { ELEMENTS, MESSAGE, VIDEO } from './constants/constants.js';
-import { throttle } from './util/general.js';
+import { ELEMENTS, MESSAGE } from './constants/constants.js';
 import searchResultView from './views/searchResultView.js';
 import { handleSearch, handleVideoListScroll } from './handlers/searchModal.js';
 import {
@@ -29,10 +28,7 @@ export default function bindEvents() {
     }
   });
 
-  ELEMENTS.VIDEO_LIST.addEventListener(
-    'scroll',
-    throttle(handleVideoListScroll, VIDEO.THROTTLE_DELAY)
-  );
+  ELEMENTS.VIDEO_LIST.addEventListener('scroll', handleVideoListScroll);
 
   ELEMENTS.VIDEO_LIST.addEventListener('click', handleSaveVideo);
 

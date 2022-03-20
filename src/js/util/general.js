@@ -8,15 +8,3 @@ export const validateInput = (input) => {
     throw new Error(MESSAGE.ERROR.EMPTY_INPUT);
   }
 };
-
-export const throttle = (callback, delayTime) => {
-  let timer;
-  return () => {
-    if (timer) return;
-
-    timer = setTimeout(() => {
-      timer = null;
-      callback();
-    }, delayTime);
-  };
-};
