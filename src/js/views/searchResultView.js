@@ -21,7 +21,7 @@ const template = {
         <h4 class="video-item__title">${item.snippet.title}</h4>
         <p class="video-item__channel-name">${item.snippet.channelTitle}</p>
         <p class="video-item__published-date">${item.snippet.publishTime}</p>
-        <button class="video-item__save-button button">⬇ 저장</button>
+        <button class="video-item__save-button button ${item.saved ? 'hide' : ''}">⬇ 저장</button>
       </li>
   `;
   },
@@ -41,17 +41,13 @@ const removeSkeletonUI = () => {
   $$('.skeleton').forEach((element) => element.remove());
 };
 
-const removeSavedVideoButton = () => {
-  ELEMENTS.VIDEO_LIST.lastElementChild.lastElementChild.hidden = true;
-};
-
 const renderVideoItems = ({ items }) => {
   const savedStorage = storage.getLocalStorage();
   items.forEach((item) => {
-    ELEMENTS.VIDEO_LIST.insertAdjacentHTML('beforeEnd', template.videoItem(item));
     if (savedStorage && savedStorage.find((data) => data.videoId === item.id.videoId)) {
-      removeSavedVideoButton();
+      item.saved = true;
     }
+    ELEMENTS.VIDEO_LIST.insertAdjacentHTML('beforeEnd', template.videoItem(item));
   });
 };
 
