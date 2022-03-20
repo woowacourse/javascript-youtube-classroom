@@ -9,9 +9,11 @@ Cypress.Commands.add("searchWithNoKeyword", () => {
 
   cy.on("window:alert", alertStub);
   cy.get("#search-input-keyword").clear().type(" ");
-  cy.get("#search-button").click(() => {
-    expect(alertStub).to.be.calledWith(ERROR_MESSAGE.SEARCH_INPUT_IS_EMPTY);
-  });
+  cy.get("#search-button")
+    .click()
+    .then(() => {
+      expect(alertStub).to.be.calledWith(ERROR_MESSAGE.SEARCH_INPUT_IS_EMPTY);
+    });
 });
 
 Cypress.Commands.add("searchWithKeyword", (keyword) => {
