@@ -18,7 +18,6 @@ export default class SavedVideoView {
   appendVideos() {
     this.#savedVideoData = UserStorage.getVideoData();
     this.#renderVideo();
-    this.#bindButtonEvent();
   }
 
   #bindSavedVideoList() {
@@ -74,14 +73,12 @@ export default class SavedVideoView {
   #renderVideo() {
     this.#$playList.innerHTML = this.#makeSavedVideoListTemplate('playList', this.#savedVideoData);
     this.#$watchedList.innerHTML = this.#makeSavedVideoListTemplate('watchedList', this.#savedVideoData);
-  }
-
-  #bindButtonEvent() {
     $(SELECTOR.SAVED_VIDEO_LIST).addEventListener('click', this.#changeVideoWatchedStateBind);
   }
 
   #updateSavedVideo() {
     UserStorage.editVideoData(this.#savedVideoData);
+    $(SELECTOR.SAVED_VIDEO_LIST).removeEventListener('click', this.#changeVideoWatchedStateBind);
     this.#renderVideo();
   }
 
