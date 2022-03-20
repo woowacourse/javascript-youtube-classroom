@@ -44,7 +44,8 @@ export default class VideoCard extends Component {
     });
 
     this.addEvent('click', '.video-item__remove-button', () => {
-      videoService.removeSavedVideo(videoId);
+      if (window.confirm('정말 삭제하시겠습니까?'))
+        videoService.removeSavedVideo(videoId);
     });
   }
 }
