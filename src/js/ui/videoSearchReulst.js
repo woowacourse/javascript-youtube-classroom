@@ -19,7 +19,7 @@ export const videoSearchResult = {
       .map(item => {
         const { publishedAt, title, thumbnails, channelTitle } = item.snippet;
         return `
-          <li class="video-item">
+          <li class="video-item modal-video-item">
             <a href="https://www.youtube.com/watch?v=${item.id.videoId}" target="_blank" 
             data-thumbnail-url=${thumbnails.medium.url}>
               <img
@@ -115,11 +115,11 @@ export const videoSearchResult = {
   },
 
   scrollObserver(nextPageToken) {
-    const $li = $('.video-list > li:last-child');
+    const $currentLastChildLiElement = $('.modal-video-item:last-child');
     const intersectionObserver = new IntersectionObserver(
       entry => {
         if (entry[0].isIntersecting) {
-          intersectionObserver.unobserve($li);
+          intersectionObserver.unobserve($currentLastChildLiElement);
           this.renderNextVideoList(nextPageToken);
         }
       },
@@ -128,7 +128,7 @@ export const videoSearchResult = {
       },
     );
 
-    intersectionObserver.observe($li);
+    intersectionObserver.observe($currentLastChildLiElement);
   },
 
   resetVideoList() {
