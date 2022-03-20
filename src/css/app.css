@@ -12,7 +12,7 @@ body {
 }
 
 #app {
-  max-width: 1020px;
+  max-width: 1100px;
   margin: 0 auto;
 }
 
@@ -79,7 +79,7 @@ body {
 }
 
 .save-video-list {
-  width: 1040px;
+  width: 100%;
   height: 493px;
 }
 
@@ -125,4 +125,34 @@ body {
 
 .video-item__check-button.checked {
   background-color: var(--video-item-checked-button-color);
+}
+
+@media only screen and (max-width: 1279px) {
+  #app {
+    max-width: 800px;
+  }
+
+  .classroom-container__title {
+    font-size: 31px;
+  }
+}
+
+@media only screen and (max-width: 959px) {
+  #app {
+    max-width: 560px;
+  }
+
+  .classroom-container__title {
+    font-size: 28px;
+  }
+}
+
+@media only screen and (max-width: 599px) {
+  #app {
+    max-width: 320px;
+  }
+
+  .classroom-container__title {
+    font-size: 22px;
+  }
 }
