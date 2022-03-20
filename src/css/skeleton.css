@@ -4,7 +4,12 @@
 
 .skeleton .image,
 .skeleton .line {
-  background-image: linear-gradient(90deg, #e0e0e0 0px, #ededed 30px, #e0e0e0 60px);
+  background-image: linear-gradient(
+    90deg,
+    var(--color-dark-white) 0px,
+    var(--color-light-white) 30px,
+    var(--color-dark-white) 60px
+  );
   animation: refresh 2s infinite ease-out;
 }
 
