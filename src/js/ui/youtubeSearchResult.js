@@ -84,6 +84,7 @@ export const youtubeSearchResult = {
         }
       })
       .catch(({ message }) => {
+        skeletonUI.remove();
         showSnackBar(message);
       });
   },

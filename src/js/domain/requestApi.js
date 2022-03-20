@@ -1,6 +1,5 @@
 import 'regenerator-runtime';
 import { MESSAGE } from '../constants';
-import { skeletonUI } from '../ui/skeletonUI';
 
 const BASE_URL = 'https://mincho-youtube.netlify.app/youtube/v3/search';
 const parameters = {
@@ -28,7 +27,6 @@ const requestApi = async (searchText, nextPageToken = '') => {
     const videoData = await response.json();
     return videoData;
   } catch {
-    skeletonUI.remove();
     throw new Error(MESSAGE.ERROR_GET_REQUEST);
   }
 };
