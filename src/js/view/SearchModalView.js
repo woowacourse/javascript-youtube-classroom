@@ -8,7 +8,7 @@ export default class SearchModalView {
     this.modalContainer = document.querySelector(".modal-container");
     this.searchInputKeyword = document.querySelector("#search-input-keyword");
     this.searchResult = document.querySelector(".search-result");
-    this.videoList = document.querySelector(".video-list");
+    this.videoList = document.querySelector(".search-result .video-list");
     this.noResultDiv = document.querySelector(".search-result .no-result");
     this.noResultImage = document.querySelector(
       "#search-modal-no-result__image"
@@ -22,13 +22,17 @@ export default class SearchModalView {
   closeSearchModal() {
     this.searchInputKeyword.value = "";
     scrollToTop(this.videoList);
-    this.videoList.innerHTML = "";
+    document
+      .querySelectorAll(".search-result .video-item")
+      .forEach((element) => element.remove());
     this.modalContainer.classList.add("hide");
   }
 
   clearVideoList() {
     scrollToTop(this.videoList);
-    this.videoList.innerHTML = "";
+    document
+      .querySelectorAll(".search-result .video-item")
+      .forEach((element) => element.remove());
   }
 
   renderSkeleton() {

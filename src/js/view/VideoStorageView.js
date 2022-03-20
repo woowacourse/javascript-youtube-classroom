@@ -4,7 +4,9 @@ export default class VideoStorageView {
   constructor() {
     this.savedVideoSection = document.querySelector(".saved-video__section");
     this.savedVideoList = document.querySelector(".saved-video-list");
-    this.noResultDiv = document.querySelector(".no-result");
+    this.noResultDiv = document.querySelector(
+      ".saved-video__section .no-result"
+    );
   }
 
   savedVideoItem = ({ id, channel, thumbnail, title, date, isWatched }) => {
@@ -74,8 +76,12 @@ export default class VideoStorageView {
       watchedVideoOnly
     );
 
+    document
+      .querySelectorAll(".saved-video-list .video-item")
+      .forEach((element) => element.remove());
+
     this.savedVideoList.classList.remove("hide");
-    this.savedVideoList.innerHTML = videoItemTemplate;
+    this.savedVideoList.insertAdjacentHTML("beforeend", videoItemTemplate);
 
     if (!this.noResultDiv) {
       return;
