@@ -92,26 +92,27 @@ export const videoSearchResult = {
   },
 
   addSaveButtonClickEvent() {
-    this.$videoList.addEventListener('click', e => {
-      if (e.target.classList.contains('video-item__save-button')) {
+    this.$videoList.addEventListener('click', this.handleSaveButtonClick.bind(this));
+  },
+
+  handleSaveButtonClick(e) {
+    if (e.target.classList.contains('video-item__save-button')) {
+      try {
         const datasetElementsArray = [...e.target.closest('.video-item').children].map(element => ({
           ...element.dataset,
         }));
-
-        try {
-          const videoData = video.formatter(datasetElementsArray);
-          video.save(videoData);
-          e.target.setAttribute('hidden', true);
-          classRoomVideo.resetVideoList();
-          classRoomVideo.renderVideoList(false);
-          this.$willWatchVideoButton.classList.add('highlight');
-          this.$watchedVideoButton.classList.remove('highlight');
-          showSnackBar(MESSAGE.SAVE_SUCCESS);
-        } catch ({ message }) {
-          showSnackBar(message);
-        }
+        const videoData = video.formatter(datasetElementsArray);
+        video.save(videoData);
+        e.target.setAttribute('hidden', true);
+        classRoomVideo.resetVideoList();
+        classRoomVideo.renderVideoList(false);
+        this.$willWatchVideoButton.classList.add('highlight');
+        this.$watchedVideoButton.classList.remove('highlight');
+        showSnackBar(MESSAGE.SAVE_SUCCESS);
+      } catch ({ message }) {
+        showSnackBar(message);
       }
-    });
+    }
   },
 
   scrollObserver(nextPageToken) {
