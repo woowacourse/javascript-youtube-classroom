@@ -3,7 +3,8 @@ body {
   font-size: 16px;
 }
 
-main-page {
+.classroom-container {
+  display: block;
   max-width: 1020px;
   margin: 0 auto;
 }
