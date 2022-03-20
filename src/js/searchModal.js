@@ -66,7 +66,9 @@ class SearchModal {
     $firstSkeleton.insertAdjacentHTML('beforebegin', videoListTemplate);
 
     const lastVideoItem = $('.video-item.skeleton', this.$videoList).previousSibling;
-    this.observer.observe(lastVideoItem);
+    setTimeout(() => {
+      this.observer.observe(lastVideoItem);
+    }, 800);
   }
 
   handleClickSearchButton = async () => {
@@ -113,6 +115,7 @@ class SearchModal {
   loadMoreObserver() {
     return new IntersectionObserver(
       async entries => {
+        console.log(entries[0].isIntersecting, entries[0].intersectionRatio);
         if (entries[0].isIntersecting && this.nextPageToken !== null) {
           this.observer.unobserve(entries[0].target);
           const title = this.$searchKeyWordInput.value;
@@ -128,7 +131,7 @@ class SearchModal {
 
   async requestVideos(query) {
     this.$searchResult.classList.add('loading');
-    const result = await requestYoutubeVideos(`${SERVER_URL}/youtube-search`, {
+    const result = await requestYoutubeVideos(`${SERVER_URL}/dummy`, {
       q: query,
       ...(this.nextPageToken && { pageToken: this.nextPageToken }),
     });
