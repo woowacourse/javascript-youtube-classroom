@@ -51,6 +51,7 @@ export default class HomeView {
       }
     });
 
+    $(`#${this.tab}`).classList.add('selected', 'block-toggle');
     this.openPage(`${this.tab}-video-list`);
   }
 
