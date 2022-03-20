@@ -1,4 +1,4 @@
-import { ELEMENTS } from '../constants/constants.js';
+import { ELEMENTS, VIDEO } from '../constants/constants.js';
 import ContentTarget from '../models/ContentTarget.js';
 import storage from '../storage/storage.js';
 import { renderSavedVideos, renderNoSaved } from '../views/savedVideoList.js';
@@ -22,7 +22,7 @@ const selectedVideoData = (videoItem) => {
     title: videoItem.querySelector('.video-item__title').textContent,
     channelTitle: videoItem.querySelector('.video-item__channel-name').textContent,
     publishTime: videoItem.querySelector('.video-item__published-date').textContent,
-    state: 'unseen',
+    state: VIDEO.STATE.UNSEEN,
   };
   return videoData;
 };
@@ -49,10 +49,10 @@ export const handleWatchedVideo = (selectedVideoId) => {
   const savedVideos = storage.getLocalStorage();
   savedVideos.forEach((video) => {
     if (video.videoId === selectedVideoId) {
-      if (video.state === 'watched') {
-        video.state = 'unseen';
+      if (video.state === VIDEO.STATE.WATCHED) {
+        video.state = VIDEO.STATE.UNSEEN;
       } else {
-        video.state = 'watched';
+        video.state = VIDEO.STATE.WATCHED;
       }
     }
   });
@@ -62,14 +62,14 @@ export const handleWatchedVideo = (selectedVideoId) => {
 export const handleWatchedContent = () => {
   ELEMENTS.UNSEEN_VIDEO_BUTTON.classList.remove('target');
   ELEMENTS.WATCHED_VIDEO_BUTTON.classList.add('target');
-  contentTarget.currentTarget = 'watched';
+  contentTarget.currentTarget = VIDEO.STATE.WATCHED;
   initSavedVideos();
 };
 
 export const handleUnseenContent = () => {
   ELEMENTS.UNSEEN_VIDEO_BUTTON.classList.add('target');
   ELEMENTS.WATCHED_VIDEO_BUTTON.classList.remove('target');
-  contentTarget.currentTarget = 'unseen';
+  contentTarget.currentTarget = VIDEO.STATE.UNSEEN;
   initSavedVideos();
 };
 

@@ -1,5 +1,7 @@
+import { VIDEO } from '../constants/constants.js';
+
 export default class ContentTarget {
-  #currentTarget = 'unseen';
+  #currentTarget = VIDEO.STATE.UNSEEN;
 
   set currentTarget(target) {
     this.#currentTarget = target;

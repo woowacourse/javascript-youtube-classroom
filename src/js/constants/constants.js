@@ -22,6 +22,10 @@ export const VIDEO = {
   MAX_SAVE_COUNT: 100,
   SEARCH_RESULT_COUNT: 10,
   THROTTLE_DELAY: 700,
+  STATE: {
+    UNSEEN: 'unseen',
+    WATCHED: 'watched',
+  },
 };
 
 export const STORAGE_KEY = 'data';
