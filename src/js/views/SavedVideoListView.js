@@ -8,6 +8,13 @@ export default class SavedVideoListView {
     this.#$container = $container;
   }
 
+  bindClickButtons(checkButtonHandler) {
+    this.#$container.addEventListener('click', (e) => {
+      if (e.target.classList[0] === 'video-item__check-button')
+        checkButtonHandler(e.target.dataset.videoId);
+    });
+  }
+
   renderScreenByVideos(videos) {
     if (videos.length > 0) {
       this.render(videos);

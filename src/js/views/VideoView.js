@@ -31,7 +31,7 @@ export default class VideoView {
   }
 
   refreshVideoScreen() {
-    while (this.#$container.firstChild.classList.value === 'video-item') {
+    while (this.#$container.firstChild.classList[0] === 'video-item') {
       this.#$container.firstChild.remove();
     }
   }

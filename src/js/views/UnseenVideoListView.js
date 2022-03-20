@@ -18,8 +18,8 @@ export default class UnseenVideoListView extends SavedVideoListView {
           <p class="video-item__channel-name">${video.channeltitle}</p>
           <p class="video-item__published-date">${video.date}</p>
           <div class="video-item__button-wrap">
-            <button class="video-item__check-button button" data-id="${video.id}">✅</button>
-            <button class="video-item__delete-button button" data-id="${video.id}">🗑️</button>
+            <button class="video-item__check-button button" data-video-id="${video.videoId}">✅</button>
+            <button class="video-item__delete-button button" data-video-id="${video.videoId}">🗑️</button>
           </div>
         </li>`,
       ),

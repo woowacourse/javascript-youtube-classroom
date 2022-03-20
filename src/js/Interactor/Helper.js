@@ -5,7 +5,8 @@ import { REDIRECT_SERVER_HOST, DATABASE_VIDEO_KEY } from '../constants/index.js'
 import { _ } from '../utils/fx.js';
 
 const Helper = {
-  findVideoById: (id) => _.find(({ videoId }) => videoId === id, Database.load(DATABASE_VIDEO_KEY)),
+  findVideoById: (id, videos = Database.load(DATABASE_VIDEO_KEY)) =>
+    _.find(({ videoId }) => videoId === id, videos),
 
   convertVideoToItem: ({ id, snippet }) => ({
     id: id.videoId,
@@ -30,6 +31,8 @@ const Helper = {
   saveVideo: (video) => Database.save(DATABASE_VIDEO_KEY, { ...video, checked: false }),
 
   loadVideo: () => Database.load(DATABASE_VIDEO_KEY),
+
+  overiteVideos: (videos) => Database.overwrite(DATABASE_VIDEO_KEY, videos),
 };
 
 export default Helper;
