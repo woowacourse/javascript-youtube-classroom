@@ -1,10 +1,10 @@
 import notFoundImage from "../../assets/images/not_found.png";
 
 import videoStorage from "../videoStorage";
-import { $ } from "./dom";
+import { $, $$, scrollToTop } from "./dom";
 import generateTemplate from "./templates";
 
-export default class Render {
+export default class View {
   #saveVideoContainerVideoList = $(".save-video-container__video-list");
   #saveVideoContainerNoVideoList = $(".save-video-container__no-video-list");
   #searchResult = $(".search-result");
@@ -26,7 +26,7 @@ export default class Render {
       .join("");
   }
 
-  checkedVideo() {
+  renderCheckedVideo() {
     const storage = videoStorage.getVideo();
     const checkedData = storage.filter((data) => data.checked);
 
@@ -37,7 +37,7 @@ export default class Render {
     );
   }
 
-  savedVideo() {
+  renderSavedVideo() {
     const storage = videoStorage.getVideo();
 
     this.#renderSaveVideoContainer(
@@ -47,7 +47,7 @@ export default class Render {
     );
   }
 
-  searchResult({ element, position, template }) {
+  renderSearchResult({ element, position, template }) {
     element.insertAdjacentHTML(position, template);
   }
 
@@ -57,7 +57,7 @@ export default class Render {
     this.#noResult.classList.add("hide");
   }
 
-  notFoundImage(videoList) {
+  showNotFoundImage(videoList) {
     videoList.classList.add("hide");
     this.#searchResult.classList.add("search-result--no-result");
     this.#noResult.classList.remove("hide");
@@ -69,5 +69,10 @@ export default class Render {
     elements.forEach((element) => {
       parentElement.removeChild(element);
     });
+  }
+
+  clearModalContainer(videoList) {
+    scrollToTop(videoList);
+    $$(".video-item").forEach((videoItem) => videoList.removeChild(videoItem));
   }
 }

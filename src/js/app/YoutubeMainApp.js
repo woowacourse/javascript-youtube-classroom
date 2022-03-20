@@ -1,10 +1,5 @@
 import videoStorage from "../videoStorage";
-import {
-  clearModalContainer,
-  getTargetData,
-  confirmRemoveVideo,
-  $,
-} from "../view/dom";
+import { getTargetData, confirmRemoveVideo, $ } from "../view/dom";
 
 export default class YoutubeMainApp {
   #navSaveVideoButton = $(".nav__save-video-button");
@@ -13,11 +8,11 @@ export default class YoutubeMainApp {
   #searchInputKeyword = $("#search-input-keyword");
   #navWatchedVideoButton = $(".nav__watched-video-button");
   #saveVideoContainerVideoList = $(".save-video-container__video-list");
-  #render;
+  #view;
 
-  constructor(render) {
-    this.#render = render;
-    this.#render.savedVideo();
+  constructor(view) {
+    this.#view = view;
+    this.#view.renderSavedVideo();
 
     this.#saveVideoContainerVideoList.addEventListener(
       "click",
@@ -47,7 +42,7 @@ export default class YoutubeMainApp {
       "nav__save-video-button--focused"
     );
 
-    this.#render.checkedVideo();
+    this.#view.renderCheckedVideo();
   };
 
   #onClickSaveVideoButton = ({ target }) => {
@@ -56,7 +51,7 @@ export default class YoutubeMainApp {
       "nav__watched-video-button--focused"
     );
 
-    this.#render.savedVideo();
+    this.#view.renderSavedVideo();
   };
 
   #onClickWatchedButton = ({ target }) => {
@@ -75,7 +70,7 @@ export default class YoutubeMainApp {
           "nav__watched-video-button--focused"
         )
       ) {
-        this.#render.checkedVideo();
+        this.#view.renderCheckedVideo();
       }
 
       return;
@@ -103,7 +98,7 @@ export default class YoutubeMainApp {
 
   #onClickSearchModalButton = () => {
     this.#modalContainer.classList.remove("hide");
-    clearModalContainer(this.#videoList);
+    this.#view.clearModalContainer(this.#videoList);
     this.#searchInputKeyword.focus();
   };
 }

@@ -4,7 +4,6 @@ import generateTemplate from "../view/templates";
 import videoStorage from "../videoStorage";
 import { throttle, validateInput } from "../utils";
 import {
-  clearModalContainer,
   getTotalScrollHeight,
   getCurrentScrollHeight,
   getTargetData,
@@ -19,10 +18,10 @@ export default class YoutubeModalApp {
   #navWatchedVideoButton = $(".nav__watched-video-button");
   #nextPageToken = "";
   #keyword = "";
-  #render;
+  #view;
 
-  constructor(render) {
-    this.#render = render;
+  constructor(view) {
+    this.#view = view;
     this.#videoList.addEventListener("click", this.#onClickSaveButton);
     this.#videoList.addEventListener(
       "scroll",
@@ -34,7 +33,7 @@ export default class YoutubeModalApp {
 
   #onClickDimmer = () => {
     this.#searchInputKeyword.value = "";
-    clearModalContainer(this.#videoList);
+    this.#view.clearModalContainer(this.#videoList);
     this.#modalContainer.classList.add("hide");
 
     if (
@@ -42,11 +41,11 @@ export default class YoutubeModalApp {
         "nav__watched-video-button--focused"
       )
     ) {
-      this.#render.checkedVideo();
+      this.#view.renderCheckedVideo();
       return;
     }
 
-    this.#render.savedVideo();
+    this.#view.renderSavedVideo();
   };
 
   #onClickSaveButton = ({ target }) => {
@@ -63,7 +62,7 @@ export default class YoutubeModalApp {
 
   #onSubmitSearchButton = (e) => {
     e.preventDefault();
-    this.#render.hideNotFoundImage(this.#videoList);
+    this.#view.hideNotFoundImage(this.#videoList);
 
     try {
       validateInput(this.#searchInputKeyword.value);
@@ -73,9 +72,9 @@ export default class YoutubeModalApp {
       return;
     }
 
-    clearModalContainer(this.#videoList);
+    this.#view.clearModalContainer(this.#videoList);
 
-    this.#render.searchResult({
+    this.#view.renderSearchResult({
       element: this.#videoList,
       position: "beforeend",
       template: generateTemplate.skeleton(),
@@ -93,7 +92,7 @@ export default class YoutubeModalApp {
       return;
     }
 
-    this.#render.searchResult({
+    this.#view.renderSearchResult({
       element: this.#videoList,
       position: "beforeend",
       template: generateTemplate.skeleton(),
@@ -106,7 +105,7 @@ export default class YoutubeModalApp {
 
     // 중복된 요청을 보냈을 경우
     if (this.#nextPageToken === responseData.nextPageToken) {
-      this.#render.removeChildElements(this.#videoList, $$(".skeleton"));
+      this.#view.removeChildElements(this.#videoList, $$(".skeleton"));
 
       return;
     }
@@ -118,9 +117,8 @@ export default class YoutubeModalApp {
       videoStorage.getVideo()
     );
 
-    this.#render.removeChildElements(this.#videoList, $$(".skeleton"));
-
-    this.#render.searchResult({
+    this.#view.removeChildElements(this.#videoList, $$(".skeleton"));
+    this.#view.renderSearchResult({
       element: this.#videoList,
       position: "beforeend",
       template: videoItemTemplate,
@@ -134,19 +132,18 @@ export default class YoutubeModalApp {
 
     // 검색 결과가 없을 경우
     if (responseData.items.length === 0) {
-      this.#render.notFoundImage(this.#videoList);
+      this.#view.showNotFoundImage(this.#videoList);
 
       return;
     }
-
-    this.#render.removeChildElements(this.#videoList, $$(".skeleton"));
 
     const videoItemTemplate = generateTemplate.videoItems(
       responseData.items,
       videoStorage.getVideo()
     );
 
-    this.#render.searchResult({
+    this.#view.removeChildElements(this.#videoList, $$(".skeleton"));
+    this.#view.renderSearchResult({
       element: this.#videoList,
       position: "beforeend",
       template: videoItemTemplate,

@@ -18,11 +18,6 @@ export const getCurrentScrollHeight = (element) => {
   return element.clientHeight + element.scrollTop;
 };
 
-export const clearModalContainer = (videoList) => {
-  scrollToTop(videoList);
-  $$(".video-item").forEach((videoItem) => videoList.removeChild(videoItem));
-};
-
 export const getTargetData = (element) => {
   const { videoId } = element.dataset;
   const thumbnailUrl = element.querySelector(".video-item__thumbnail").src;
