@@ -5,9 +5,9 @@ import { requestVideoSearchApi } from '../domain/requestVideoSearchApi';
 import { convertToKoreaLocaleDate } from '../utils/common';
 import { skeletonUI } from './skeletonUI';
 import { video } from '../domain/video';
-import { youtubeClassRoomVideo } from './youtubeClassRoomVideo';
+import { classRoomVideo } from './classRoomVideo';
 
-export const youtubeSearchResult = {
+export const videoSearchResult = {
   $videoList: $('.video-list'),
 
   searchResultTemplate(items) {
@@ -99,8 +99,8 @@ export const youtubeSearchResult = {
           const videoData = video.formatter(datasetElementsArray);
           video.save(videoData);
           e.target.setAttribute('hidden', true);
-          youtubeClassRoomVideo.resetVideoList();
-          youtubeClassRoomVideo.renderVideoList(false);
+          classRoomVideo.resetVideoList();
+          classRoomVideo.renderVideoList(false);
           $('#will-watch-video-button').classList.add('highlight');
           $('#watched-video-button').classList.remove('highlight');
           showSnackBar(MESSAGE.SAVE_SUCCESS);

@@ -2,9 +2,9 @@ import { requestVideoSearchApi } from '../domain/requestVideoSearchApi';
 import { debounce } from '../utils/common';
 import { $, showSnackBar } from '../utils/dom';
 import { skeletonUI } from './skeletonUI';
-import { youtubeSearchResult } from './youtubeSearchResult';
+import { videoSearchResult } from './videoSearchReulst';
 
-export const youtubeSearchForm = {
+export const videoSearchForm = {
   $searchForm: $('#search-form'),
 
   preventFormDeafultEvent() {
@@ -18,11 +18,11 @@ export const youtubeSearchForm = {
   },
 
   handleSubmit() {
-    youtubeSearchResult.resetVideoList();
+    videoSearchResult.resetVideoList();
     skeletonUI.render();
     requestVideoSearchApi($('#search-input-keyword').value)
       .then(videoData => {
-        youtubeSearchResult.renderInitialVideoList(videoData);
+        videoSearchResult.renderInitialVideoList(videoData);
       })
       .catch(({ message }) => {
         showSnackBar(message);

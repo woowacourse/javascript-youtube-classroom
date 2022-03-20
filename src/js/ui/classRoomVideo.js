@@ -3,7 +3,7 @@ import { video } from '../domain/video';
 import { convertToKoreaLocaleDate } from '../utils/common';
 import emptyImage from '../../assets/images/empty.png';
 
-export const youtubeClassRoomVideo = {
+export const classRoomVideo = {
   resetVideoList() {
     $('.classroom-video__list').replaceChildren();
   },

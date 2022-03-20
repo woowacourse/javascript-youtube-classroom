@@ -1,14 +1,14 @@
 import { MESSAGE } from '../constants';
 import { $ } from '../utils/dom';
 import { video } from '../domain/video';
-import { youtubeClassRoomVideo } from './youtubeClassRoomVideo';
+import { classRoomVideo } from './classRoomVideo';
 import { showSnackBar } from '../utils/dom';
 
-export default class YoutubeClassRoom {
+export default class ClassRoom {
   constructor() {
     $('#will-watch-video-button').classList.add('highlight');
-    youtubeClassRoomVideo.resetVideoList();
-    youtubeClassRoomVideo.renderVideoList(false);
+    classRoomVideo.resetVideoList();
+    classRoomVideo.renderVideoList(false);
     this.addNavTabButtonEvent();
     this.addVideoCheckButtonEvent();
     this.addVideoRemoveButtonEvent();
@@ -16,17 +16,17 @@ export default class YoutubeClassRoom {
 
   addNavTabButtonEvent() {
     $('.nav__tab').addEventListener('click', e => {
-      youtubeClassRoomVideo.resetVideoList();
+      classRoomVideo.resetVideoList();
       e.target.classList.add('highlight');
       if (e.target === $('#will-watch-video-button')) {
         $('#watched-video-button').classList.remove('highlight');
-        youtubeClassRoomVideo.resetVideoList();
-        youtubeClassRoomVideo.renderVideoList(false);
+        classRoomVideo.resetVideoList();
+        classRoomVideo.renderVideoList(false);
         return;
       }
       $('#will-watch-video-button').classList.remove('highlight');
-      youtubeClassRoomVideo.resetVideoList();
-      youtubeClassRoomVideo.renderVideoList(true);
+      classRoomVideo.resetVideoList();
+      classRoomVideo.renderVideoList(true);
     });
   }
 
@@ -36,8 +36,8 @@ export default class YoutubeClassRoom {
         try {
           const videoId = e.target.dataset.videoId;
           video.check(videoId);
-          youtubeClassRoomVideo.resetVideoList();
-          youtubeClassRoomVideo.renderVideoList(false);
+          classRoomVideo.resetVideoList();
+          classRoomVideo.renderVideoList(false);
           showSnackBar(MESSAGE.CHECK_SUCCESS);
         } catch {
           showSnackBar(MESSAGE.CHECK_FAILURE);
@@ -52,10 +52,10 @@ export default class YoutubeClassRoom {
         try {
           const videoId = e.target.dataset.videoId;
           video.remove(videoId);
-          youtubeClassRoomVideo.resetVideoList();
+          classRoomVideo.resetVideoList();
           $('#watched-video-button').classList.contains('highlight')
-            ? youtubeClassRoomVideo.renderVideoList(true)
-            : youtubeClassRoomVideo.renderVideoList(false);
+            ? classRoomVideo.renderVideoList(true)
+            : classRoomVideo.renderVideoList(false);
           showSnackBar(MESSAGE.REMOVE_SUCCESS);
         } catch {
           showSnackBar(MESSAGE.REMOVE_FAILURE);
