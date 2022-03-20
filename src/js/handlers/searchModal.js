@@ -1,6 +1,6 @@
 import YoutubeSearch from '../models/YoutubeSearch.js';
 import { resetVideoList, renderSkeletonUI, renderSearchResult } from '../views/searchResultView.js';
-import { isEndOfScroll } from '../util/general.js';
+import { scrollToTop, isEndOfScroll } from '../util/general.js';
 import { ELEMENTS, VIDEO } from '../constants/constants.js';
 
 const youtubeSearch = new YoutubeSearch();
@@ -16,6 +16,7 @@ export const handleSearch = async () => {
     const searchInput = ELEMENTS.SEARCH_INPUT_KEYWORD.value.trim();
     youtubeSearch.searchTarget = searchInput;
     youtubeSearch.pageToken = '';
+    scrollToTop(ELEMENTS.VIDEO_LIST);
     resetVideoList();
     renderSkeletonUI();
     const response = await youtubeSearch.fetchYoutubeAPI();
