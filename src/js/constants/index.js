@@ -14,6 +14,7 @@ const MESSAGE = {
   REMOVE_FAILURE: '삭제에 실패하였습니다.',
   EMPTY_SAVED_VIDEO: '저장된 동영상이 없습니다',
   REMOVE_CONFIRM: '정말 삭제하시겠습니까?',
+  NOT_RESPONSE_OK: `정상적인 응답을 받지 못했습니다. status code: `,
 };
 
 const STORAGE_KEY = 'savedVideoList';

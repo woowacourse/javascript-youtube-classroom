@@ -22,11 +22,12 @@ const requestVideoSearchApi = async (searchText, nextPageToken = '') => {
   try {
     const response = await fetch(url);
     if (!response.ok) {
-      throw new Error('');
+      throw new Error(MESSAGE.NOT_RESPONSE_OK + response.status);
     }
     const videoData = await response.json();
     return videoData;
-  } catch {
+  } catch (error) {
+    console.error(error);
     throw new Error(MESSAGE.ERROR_GET_REQUEST);
   }
 };
