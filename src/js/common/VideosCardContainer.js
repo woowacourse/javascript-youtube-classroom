@@ -1,4 +1,4 @@
-import { DELETE_MESSAGE } from '../constants';
+import { DELETE_CONFIRM_MESSAGE } from '../constants';
 import {
   getStorageVideoIDs,
   getStorageVideos,
@@ -89,7 +89,7 @@ export default class VideoCardContainer {
   };
 
   removeHandler = (e) => {
-    if (e.target.className.includes('video-item__remove-button') && confirm(DELETE_MESSAGE)) {
+    if (e.target.className.includes('video-item__remove-button') && confirm(DELETE_CONFIRM_MESSAGE)) {
       const li = e.target.closest('li');
       const { videoId } = li.dataset;
       const { filter } = this.#state;
