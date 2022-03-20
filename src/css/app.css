@@ -43,7 +43,6 @@ body {
 }
 
 .target {
-  pointer-events: none;
   background: rgba(0, 188, 212, 0.12);
 }
 
@@ -75,6 +74,11 @@ body {
 .saved-video-list {
   display: grid;
   grid-gap: 20px;
+}
+
+.no-saved-video {
+  position: absolute;
+  transform: translate(-50%, -50%);
 }
 
 @media (max-width: 599px) {
