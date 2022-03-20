@@ -1,7 +1,7 @@
 import { fetchData } from '../api';
 import { ERROR_MESSAGE, RULES, THROTTLE_PENDING_MILLISECOND } from '../constants';
 
-import { SKELETON_TEMPLATE } from '../common/template';
+import TEMPLATE from '../common/template';
 import toast from '../common/toast';
 import VideoCardContainer from '../common/VideosCardContainer';
 
@@ -78,7 +78,7 @@ export default class SearchModal {
   renderSkeletonUI(element) {
     element.insertAdjacentHTML(
       'beforeend',
-      SKELETON_TEMPLATE.repeat(RULES.MAX_VIDEO_AMOUNT_PER_REQUEST)
+      TEMPLATE.SKELETON.repeat(RULES.MAX_VIDEO_AMOUNT_PER_REQUEST)
     );
   }
 

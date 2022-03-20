@@ -8,7 +8,7 @@ import {
   removeStorageVideoID,
   removeStorageVideo
 } from '../utils/localStorage';
-import { videoCardStyled } from './template';
+import TEMPLATE from './template';
 import toast from './toast';
 
 const toastPopup = toast();
@@ -109,7 +109,7 @@ export default class VideoCardContainer {
     const showHomePageButtons = currentPage === 'Home';
 
     return videoList
-      .map((videoItem) => videoCardStyled({
+      .map((videoItem) => TEMPLATE.VIDEO_CARD({
         videoItem,
         videoIds,
         showHomePageButtons

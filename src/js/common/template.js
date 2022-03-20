@@ -1,4 +1,4 @@
-const SKELETON_TEMPLATE = `
+const SKELETON = `
   <div class="skeleton hidden">
     <div class="image"></div>
     <p class="line"></p>
@@ -6,7 +6,7 @@ const SKELETON_TEMPLATE = `
   </div>
 `;
 
-const videoCardEmojiButtonsStyled = (props) => {
+const EMOJI_BUTTONS = (props) => {
   const { showHomePageButtons, storeButton } = props;
 
   return `${showHomePageButtons
@@ -19,7 +19,7 @@ const videoCardEmojiButtonsStyled = (props) => {
     : storeButton}`;
 };
 
-const videoCardStyled = (props) => {
+const VIDEO_CARD = (props) => {
   const {
     videoItem: {
       videoId,
@@ -44,16 +44,14 @@ const videoCardStyled = (props) => {
       <h4 class="video-item__title" data-video-title="${title}">${title}</h4>
       <p class="video-item__channel-name" data-video-channel-name="${channelTitle}">${channelTitle}</p>
       <p class="video-item__published-date" data-video-published-date="${publishedDate}">${publishedDate}</p>
-      ${videoCardEmojiButtonsStyled({ showHomePageButtons, storeButton })}
+      ${EMOJI_BUTTONS({ showHomePageButtons, storeButton })}
     </li>
     `;
 };
 
-const storedResultStyled = `
-    <section class="stored-result">
-      <h3 hidden>저장된 영상</h3>
-      <ul class="video-list"></ul>
-    </section>
-  `;
+const TEMPLATE = {
+  SKELETON,
+  VIDEO_CARD
+};
 
-export { SKELETON_TEMPLATE, videoCardStyled, storedResultStyled };
+export default TEMPLATE;

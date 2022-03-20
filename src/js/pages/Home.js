@@ -1,4 +1,3 @@
-import { storedResultStyled } from '../common/template';
 import VideoCardContainer from '../common/VideosCardContainer';
 import { getStorageVideos } from '../utils/localStorage';
 import toast from '../common/toast';
@@ -16,7 +15,6 @@ export default class Home {
     this.watchedVideoFilterButton = this.element.querySelector('#watched-video-filter-button');
     this.searchModalButton = this.element.querySelector('#search-modal-button');
     this.nav = this.element.querySelector('nav');
-    this.element.insertAdjacentHTML('beforeend', storedResultStyled);
     this.videoListWrapper = this.element.querySelector('.video-list');
     this.dimmer = document.querySelector('.dimmer');
     this.modalContainer = document.querySelector('.modal-container');
