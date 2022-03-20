@@ -1,4 +1,4 @@
-import { observe } from '../store/Store.js';
+import { observe } from '../store/AppStore.js';
 
 export default class Component extends HTMLElement {
   constructor(target) {

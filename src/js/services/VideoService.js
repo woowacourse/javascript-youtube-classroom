@@ -1,4 +1,4 @@
-import Store, { observe } from '../store/Store.js';
+import AppStore from '../store/AppStore.js';
 import WebStore from '../store/WebStore.js';
 import { request, getSearchUrl } from '../utils/api.js';
 import { removeDuplicatedElements } from '../utils/commons.js';
@@ -6,16 +6,16 @@ import { ERROR_MESSAGES, SAVED_VIDEO } from '../config/constants.js';
 
 class VideoService {
   constructor(initState) {
-    this.rootStore = new Store(initState);
-    this.webStore = new WebStore(SAVED_VIDEO.KEY);
+    this.rootStore = new AppStore(null, initState.rootStore);
+    this.webStore = new WebStore(SAVED_VIDEO.KEY, initState.webStore);
 
     this.init();
   }
 
   init() {
-    const savedVideos = this.webStore.load();
+    const savedVideos = this.webStore.load((state) => state.savedVideos);
 
-    this.rootStore.setState({ savedVideos });
+    this.rootStore.update({ savedVideos });
   }
 
   clear() {
@@ -24,7 +24,7 @@ class VideoService {
   }
 
   async searchVideos(query, nextPageToken = null, requestStrategy = request) {
-    this.rootStore.setState({ isSearchQuerySubmitted: true });
+    this.rootStore.update({ isSearchQuerySubmitted: true });
 
     try {
       const data = await requestStrategy(getSearchUrl(query, nextPageToken));
@@ -35,14 +35,16 @@ class VideoService {
           nextPageToken: data.nextPageToken,
         });
     } catch (err) {
-      this.rootStore.setState({ isSearchQuerySubmitted: false });
+      this.rootStore.update({ isSearchQuerySubmitted: false });
 
       throw err;
     }
   }
 
   async loadNextPage(requestStrategy = request) {
-    const { query, nextPageToken } = this.rootStore.state.searchOption;
+    const { query, nextPageToken } = this.rootStore.load(
+      (state) => state.searchOption
+    );
 
     const data = await requestStrategy(getSearchUrl(query, nextPageToken));
 
@@ -54,7 +56,6 @@ class VideoService {
   }
 
   updateSearchResult(items, searchOption) {
-    const savedVideos = this.webStore.load();
     const videos = items.map((item) => {
       return {
         videoId: item.id.videoId,
@@ -65,7 +66,7 @@ class VideoService {
       };
     });
 
-    this.rootStore.setState({
+    this.rootStore.update({
       isNoResult: !items.length,
       searchResult: videos,
       searchOption,
@@ -73,7 +74,7 @@ class VideoService {
   }
 
   appendSearchResult(items, searchOption) {
-    const savedVideos = this.webStore.load();
+    const prevVideos = this.rootStore.load((state) => state.searchResult);
     const newVideos = items.map((item) => {
       return {
         videoId: item.id.videoId,
@@ -84,14 +85,14 @@ class VideoService {
       };
     });
 
-    this.rootStore.setState({
-      searchResult: [...this.rootStore.state.searchResult, ...newVideos],
+    this.rootStore.update({
+      searchResult: [...prevVideos, ...newVideos],
       searchOption,
     });
   }
 
   saveVideo(video) {
-    const prevSavedVideos = this.webStore.load();
+    const prevSavedVideos = this.webStore.load((state) => state.savedVideos);
 
     if (prevSavedVideos.length >= SAVED_VIDEO.SAVE_LIMIT)
       throw new Error(ERROR_MESSAGES.SAVED_VIDEOS_OUT_OF_LIMIT);
@@ -101,82 +102,89 @@ class VideoService {
       'videoId'
     );
 
-    this.webStore.save(duplicatedRemoved);
-    this.rootStore.setState({
+    this.webStore.update({
+      savedVideos: duplicatedRemoved,
+    });
+    this.rootStore.update({
       savedVideos: duplicatedRemoved,
     });
   }
 
   removeSavedVideo(videoId) {
-    const updated = this.rootStore.state.savedVideos.filter(
-      (video) => video.videoId !== videoId
-    );
+    const updated = this.rootStore
+      .load((state) => state.savedVideos)
+      .filter((video) => video.videoId !== videoId);
 
-    this.webStore.save(updated);
-    this.rootStore.setState({
+    this.webStore.update({
+      savedVideos: updated,
+    });
+    this.rootStore.update({
       savedVideos: updated,
     });
   }
 
   toggleVideoWatched(videoId) {
-    const updated = this.rootStore.state.savedVideos.map((video) => {
-      if (video.videoId === videoId) {
-        return { ...video, watched: !video.watched ?? true };
-      }
+    const updated = this.rootStore
+      .load((state) => state.savedVideos)
+      .map((video) => {
+        if (video.videoId === videoId) {
+          return { ...video, watched: !video.watched ?? true };
+        }
 
-      return video;
+        return video;
+      });
+
+    this.webStore.update({
+      savedVideos: updated,
     });
-
-    this.webStore.save(updated);
-    this.rootStore.setState({
+    this.rootStore.update({
       savedVideos: updated,
     });
   }
 
   toggleSavedVideosFilter(filterLabel) {
-    if (
-      !Object.prototype.hasOwnProperty.call(
-        this.rootStore.state.savedVideosFilter,
-        filterLabel
-      )
-    )
-      return;
-
     const currentFilter = JSON.parse(
-      JSON.stringify(this.rootStore.state.savedVideosFilter)
+      JSON.stringify(this.rootStore.load((state) => state.savedVideosFilter))
     );
+
+    if (!Object.prototype.hasOwnProperty.call(currentFilter, filterLabel))
+      return;
 
     currentFilter[filterLabel] = !currentFilter[filterLabel];
 
-    this.rootStore.setState({ savedVideosFilter: currentFilter });
+    this.rootStore.update({ savedVideosFilter: currentFilter });
   }
 
   toggleSearchModal() {
-    this.rootStore.setState({
+    this.rootStore.update({
       isSearchModalOpened: !this.rootStore.state.isSearchModalOpened,
     });
   }
 }
 
 const initState = {
-  searchOption: {
-    query: '',
-    nextPageToken: null,
+  rootStore: {
+    searchOption: {
+      query: '',
+      nextPageToken: null,
+    },
+    isSearchQuerySubmitted: false,
+    searchResult: [],
+    isNoResult: null,
+    savedVideos: new Map(),
+    savedVideosFilter: {
+      watching: true,
+      watched: false,
+    },
+    isSearchModalOpened: false,
   },
-  isSearchQuerySubmitted: false,
-  searchResult: [],
-  isNoResult: null,
-  savedVideos: new Map(),
-  savedVideosFilter: {
-    watching: true,
-    watched: false,
+  webStore: {
+    savedVideos: [],
   },
-  isSearchModalOpened: false,
 };
-
 const videoService = new VideoService(initState);
 const useStore = (callback) => {
-  return callback(videoService.rootStore.state);
+  return callback(videoService.rootStore.load((state) => state));
 };
 
 export default videoService;
