@@ -67,22 +67,22 @@ export default class Video {
   updateNewVideoItems() {
     const updatedNewVideoItems = [];
     for (const newItem of this.#newVideoItems) {
-      let isFindSavedItem = false;
-      for (const savedItem of this.#savedVideoItems) {
-        if (newItem.videoId === savedItem.videoId) {
-          isFindSavedItem = true;
-          updatedNewVideoItems.push(savedItem);
-          break;
-        }
-      }
-      if (isFindSavedItem === false) {
-        updatedNewVideoItems.push(newItem);
-      }
+      const savedNewItem = this.#getSavedNewItem(newItem);
+      updatedNewVideoItems.push(savedNewItem);
     }
 
     if (updatedNewVideoItems.length) {
       this.#newVideoItems = updatedNewVideoItems;
     }
+  }
+
+  #getSavedNewItem(newItem) {
+    for (const savedItem of this.#savedVideoItems) {
+      if (newItem.videoId === savedItem.videoId) {
+        return savedItem;
+      }
+    }
+    return newItem;
   }
 
   setVideoInfo(fetchedVideos) {

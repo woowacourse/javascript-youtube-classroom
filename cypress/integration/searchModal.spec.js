@@ -27,7 +27,7 @@ describe("[API를 fixture로 대체] 1. [영상 검색 모달 화면]에서 '영
   it("1-3. '저장' 버튼을 누르면, 선택한 영상의 '저장' 버튼이 '저장됨'으로 변경되어 표시되어야 한다.", () => {
     cy.searchKeyword(inputKeyword, 100);
 
-    cy.get('.video-item__save-button').first().click();
+    cy.get('.video-item__save-button').first().click().wait(500);
 
     cy.get('.video-item__save-button').first().should('have.class', 'saved-button');
   });
