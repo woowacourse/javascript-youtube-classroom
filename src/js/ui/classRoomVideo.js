@@ -11,33 +11,36 @@ export const classRoomVideo = {
   },
 
   videoListTemplate(videoList) {
-    return videoList
+    const template = videoList
       .map(videoData => {
+        const { videoId, title, channelTitle, publishedDate, thumbnailsHighUrl } = videoData;
         return `
           <li class="video-item">
-            <a href="https://www.youtube.com/watch?v=${videoData.videoId}" target="_blank" 
-            data-thumbnails-high-url=${videoData.thumbnailsHighUrl}>
+            <a href="https://www.youtube.com/watch?v=${videoId}" target="_blank" 
+            data-thumbnails-high-url=${thumbnailsHighUrl}>
               <img
-                src=${videoData.thumbnailsHighUrl}
+                src=${thumbnailsHighUrl}
                 alt="video-item-thumbnail" class="video-item__thumbnail"
                 >
             </a>
-            <a href="https://www.youtube.com/watch?v=${
-              videoData.videoId
-            }" target="_blank" data-title=${encodeURIComponent(videoData.title)}>
-              <h4 class="video-item__title">${decodeURIComponent(videoData.title)}</h4>
+            <a href="https://www.youtube.com/watch?v=${videoId}" target="_blank" data-title=${encodeURIComponent(
+          title,
+        )}>
+              <h4 class="video-item__title">${decodeURIComponent(title)}</h4>
             </a>
-            <p class="video-item__channel-name" data-channel-title=${videoData.channelTitle}>
-            ${decodeURIComponent(videoData.channelTitle)}
+            <p class="video-item__channel-name" data-channel-title=${channelTitle}>
+            ${decodeURIComponent(channelTitle)}
             </p>
-            <p class="video-item__published-date" data-published-date=${videoData.publishedDate}>
-              ${convertToKoreaLocaleDate(videoData.publishedDate)}
+            <p class="video-item__published-date" data-published-date=${publishedDate}>
+              ${convertToKoreaLocaleDate(publishedDate)}
             </p>
-            <button class="video-item__check-button button" data-video-id="${videoData.videoId}">✅</button>
-            <button class="video-item__remove-button button" data-video-id="${videoData.videoId}">🗑️</button>
+            <button class="video-item__check-button button" data-video-id="${videoId}">✅</button>
+            <button class="video-item__remove-button button" data-video-id="${videoId}">🗑️</button>
           </li>`;
       })
       .join('');
+
+    return template;
   },
 
   emptyVideoListTemplate() {

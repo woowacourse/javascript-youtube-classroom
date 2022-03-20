@@ -15,7 +15,7 @@ export const videoSearchResult = {
 
   searchResultTemplate(items) {
     const savedVideoList = video.getVideoList();
-    const resultTemplate = items
+    const template = items
       .map(item => {
         const { publishedAt, title, thumbnails, channelTitle } = item.snippet;
         return `
@@ -44,7 +44,7 @@ export const videoSearchResult = {
       })
       .join('');
 
-    return resultTemplate;
+    return template;
   },
 
   noSearchResultTemplate() {
