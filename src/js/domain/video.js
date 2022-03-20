@@ -2,14 +2,10 @@ import { STORAGE_KEY, MESSAGE, MAX_SAVE_COUNT } from '../constants';
 
 export const video = {
   formatter(datasetElementsArray) {
-    return {
-      ...datasetElementsArray[0],
-      ...datasetElementsArray[1],
-      ...datasetElementsArray[2],
-      ...datasetElementsArray[3],
-      ...datasetElementsArray[4],
-      watched: false,
-    };
+    const datasetObject = datasetElementsArray.reduce((acc, val) => ({ ...acc, ...val }), {});
+    const formattedObject = { ...datasetObject, watched: false };
+
+    return formattedObject;
   },
 
   save(videoData) {

@@ -94,6 +94,7 @@ export const youtubeSearchResult = {
         const datasetElementsArray = [...e.target.closest('.video-item').children].map(element => ({
           ...element.dataset,
         }));
+
         try {
           const videoData = video.formatter(datasetElementsArray);
           video.save(videoData);
