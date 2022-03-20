@@ -68,7 +68,7 @@ export default class App {
           <button type="button" class="btn btn-square ${
             isWatched ? 'active' : ''
           }" for="status-change" data-testid="video-status-change-button">✅</button>
-          <button type="button" class="btn btn-square" for="delete">🗑️</button>
+          <button type="button" class="btn btn-square" for="delete" data-testid="delete-video-button">🗑️</button>
         </div>
       </li>`;
   }

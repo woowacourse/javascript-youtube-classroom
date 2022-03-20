@@ -89,7 +89,7 @@ describe('저장된 동영상을 필터링한다', () => {
     });
   });
 
-  it('영상의 상태를 변경했을때 버튼의 황성 상태가 바뀌고 localStorage에도 반영된다', () => {
+  it('영상의 상태를 변경했을때 버튼의 활성 상태가 바뀌고 localStorage에도 반영된다', () => {
     // active로 변경 되는지 확인한다
     cy.get(`${testid`video-status-change-button`}:not(.active)`)
       .first()
@@ -138,5 +138,31 @@ describe('저장된 동영상을 필터링한다', () => {
     // 볼 영상 리스트에서 보이게 된다
     cy.get(testid`filter-for-watch-later-video`).click();
     cy.get('@button').closest(testid`saved-video-item`).should('not.have.css', 'display', 'none');
+  });
+});
+
+describe('영상을 저장 목록에서 삭제한다', () => {
+  before(() => {
+    cy.restoreLocalStorage();
+    cy.intercept('GET', `${SERVER_URL}/youtube-videos?*`, {
+      fixture: 'youtube-video-results',
+    }).as('request-video');
+    cy.visit('http://localhost:9000/');
+  });
+
+  it('비디오를 삭제 했을때 비디오 목록에서도 삭제되고 localStorage에서도 삭제된다', () => {
+    cy.get(testid`delete-video-button`).first().then($button => {
+      const id = $button.closest(testid`saved-video-item`).attr('data-video-id');
+      cy.wrap($button).click();
+      cy.on('window:confirm', () => true);
+
+      // 현제 비디오 목록(view)에 없어야 한다
+      cy.get(`[data-video-id="${id}"]`).should('not.exist').then(() => {
+        // localStorage에도 없어야 한다
+        const videoSet = storage.load({});
+        const isInSavedVideoSet = hasProperty(videoSet, id);
+        expect(isInSavedVideoSet).to.be.false;
+      });
+    });
   });
 });
