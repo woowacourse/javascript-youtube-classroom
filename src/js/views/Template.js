@@ -27,7 +27,7 @@ export default class Template {
           background: gray;
           border-radius: 50% / 10%;
           color: #FFFFFF;
-          font-size: 1em; /* change this to change size */
+          font-size: 1em;
           height: 3em;
           padding: 0;
           text-align: center;

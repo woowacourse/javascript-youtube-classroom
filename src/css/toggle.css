@@ -1,5 +1,6 @@
 .switch {
   float: right;
+  top: 11px;
   position: relative;
   width: 34px;
   height: 14px;

@@ -113,6 +113,10 @@ body {
     grid-template-columns: repeat(3, 1fr);
     gap: 30px 20px;
   }
+
+  .video-item {
+    width: 100%;
+  }
   .classroom-container__title {
     font-size: 32px;
   }
@@ -135,13 +139,18 @@ body {
 
 @media screen and (max-width: 600px) {
   .classroom-container {
-    width: 225px;
+    width: 340px;
   }
   .saved-list-container {
-    width: 225px;
+    width: 340px;
+  }
+  .video-item {
+    width: 340px !important;
+    margin: 0 0 30px 0;
   }
   .video-grid {
     grid-template-columns: 1fr;
+    gap: 0;
   }
   .nav {
     flex-direction: column;
@@ -154,6 +163,6 @@ body {
     width: 100%;
   }
   .classroom-container__title {
-    font-size: 26px;
+    font-size: 22px;
   }
 }
