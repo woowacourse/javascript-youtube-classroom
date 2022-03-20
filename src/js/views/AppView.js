@@ -1,5 +1,5 @@
 import { emit } from '../utils/event.js';
-import { $, $$ } from '../utils/dom.js';
+import { $ } from '../utils/dom.js';
 
 import Template from './Template.js';
 
