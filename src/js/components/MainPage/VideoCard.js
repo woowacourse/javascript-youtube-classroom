@@ -5,7 +5,7 @@ import { COMMON_MESSAGES } from '../../config/constants.js';
 
 class VideoCard extends Component {
   setup() {
-    this.state = { watched: Boolean(this.getAttribute('watched')) ?? false };
+    this.state = { watched: this.getAttribute('watched') === 'true' };
   }
 
   template() {
