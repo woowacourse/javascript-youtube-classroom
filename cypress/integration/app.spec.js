@@ -2,7 +2,7 @@ import { INFOMATION_MESSAGES } from "../../src/js/utils/contants.js";
 
 describe("유튜브 강의실 테스트", () => {
   beforeEach(() => {
-    cy.visit("http://localhost:9000/");
+    cy.visit("/");
   });
 
   it("검색 버튼을 클릭하면 모달 검색창이 나타난다.", () => {
