@@ -144,7 +144,7 @@ class SearchModal {
     this.nextPageToken = result.nextPageToken;
     const videos = result.items.map(item => {
       const { id } = item;
-      const isWatched = hasProperty(this.storage.cache[id], 'watched');
+      const isWatched = hasProperty(this.storage.cache, id) && this.storage.cache[id].watched;
       return new VideoItem(item, isWatched);
     });
     return videos;
