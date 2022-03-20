@@ -33,9 +33,10 @@ export default class SaveVideoManager {
       this.storage.updateVideo({ ...video, watched: !video.watched });
     } catch (err) {
       alert(err.message);
-      return;
+      return RESULT.FAIL;
     }
     this.updateSavedVideos();
+    return RESULT.SUCCESS;
   }
 
   deleteVideo(videoId) {
@@ -43,8 +44,9 @@ export default class SaveVideoManager {
       this.storage.deleteVideoById(videoId);
     } catch (err) {
       alert(err.message);
-      return;
+      return RESULT.FAIL;
     }
     this.updateSavedVideos();
+    return RESULT.SUCCESS;
   }
 }
