@@ -1,6 +1,6 @@
-import VideoCardContainer from '../common/VideosCardContainer';
+import VideoCardContainer from './common/VideosCardContainer';
 import { getStorageVideos } from '../utils/localStorage';
-import toast from '../common/toast';
+import toast from './common/toast';
 import { EMPTY_VIDEO_MESSAGE } from '../constants';
 
 const toastPopup = toast();

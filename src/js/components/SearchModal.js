@@ -1,9 +1,9 @@
 import { fetchData } from '../api';
 import { ERROR_MESSAGE, RULES, THROTTLE_PENDING_MILLISECOND } from '../constants';
 
-import TEMPLATE from '../common/template';
-import toast from '../common/toast';
-import VideoCardContainer from '../common/VideosCardContainer';
+import TEMPLATE from './common/template';
+import toast from './common/toast';
+import VideoCardContainer from './common/VideosCardContainer';
 
 import { throttle } from '../utils/throttle';
 import { validateKeyword } from '../utils/validator';

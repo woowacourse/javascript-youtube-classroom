@@ -1,6 +1,6 @@
 import '../css/index.css';
-import Home from './pages/Home';
-import SearchModal from './pages/SearchModal';
+import Home from './components/Home';
+import SearchModal from './components/SearchModal';
 
 class App {
   constructor() {
