@@ -1,6 +1,6 @@
 {
-    "baseUrl": "http://localhost:9000",
-    "video": false,
-    "screenshotOnRunFailure": false
-  }
+  "baseUrl": "http://localhost:9000",
+  "video": false,
+  "screenshotOnRunFailure": false
+}
   

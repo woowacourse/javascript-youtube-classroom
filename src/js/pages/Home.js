@@ -51,7 +51,7 @@ export default class Home {
     this.watchedVideoFilterButton.classList.toggle('clicked');
   }
 
-  showStoredVideosHandler = (e) => {
+  showStoredVideosHandler = () => {
     if (this.currentFilter === 'stored') return;
 
     this.clickedFilterButton();
