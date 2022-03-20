@@ -18,7 +18,7 @@ export default class SearchModalView {
   }
 
   bindEvents() {
-    $('.dimmer').addEventListener('click', this.closeModal);
+    $('#modal-dimmer').addEventListener('click', this.closeModal);
     $('#search-form').addEventListener('submit', this.onSubmitSearchKeyword.bind(this));
     this.#modal.addEventListener('searchOnScroll', debounce(this.searchOnScroll.bind(this), SCROLL_BUFFER_SECOND));
   }

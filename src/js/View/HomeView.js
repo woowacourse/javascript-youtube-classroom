@@ -1,4 +1,4 @@
-import { $, $$, hideElement, showElement, showSnackbar } from '../dom';
+import { $, hideElement, showElement, showSnackbar } from '../dom';
 import SearchModalView from './SearchModalView';
 import { template } from './template';
 import { ALERT_MESSAGE } from '../constants';
@@ -17,10 +17,12 @@ export default class HomeView {
   }
 
   bindEvents() {
-    $('#search-modal-button').addEventListener('click', this.openModal.bind(this));
+    $('#search-modal-button').addEventListener('click', this.openModal);
     $('#will-watch-button').addEventListener('click', this.openWillWatchPage.bind(this));
     $('#watched-button').addEventListener('click', this.openWatchedPage.bind(this));
     $('#search-modal').addEventListener('saveVideo', this.saveVideo.bind(this));
+    this.willWatchVideoList.addEventListener('click', this.tabButtonHandler.bind(this));
+    this.watchedVideoList.addEventListener('click', this.tabButtonHandler.bind(this));
     window.addEventListener('offline', () => {
       showSnackbar(ALERT_MESSAGE.OFFLINE);
     });
@@ -28,6 +30,15 @@ export default class HomeView {
 
   openModal() {
     showElement($('#modal-container'));
+  }
+
+  tabButtonHandler(e) {
+    if (e.target.tagName === 'BUTTON') {
+      const { action } = e.target.dataset;
+      if (action) {
+        this[action](e);
+      }
+    }
   }
 
   initializeHomepage() {
@@ -41,14 +52,6 @@ export default class HomeView {
       }
     });
 
-    $$('.watch-delete-button').forEach((element) => {
-      element.addEventListener('click', (e) => {
-        const { action } = e.target.dataset;
-        if (action) {
-          this[action](e);
-        }
-      });
-    });
     this.openWillWatchPage();
   }
 
@@ -92,12 +95,6 @@ export default class HomeView {
     showSnackbar(ALERT_MESSAGE.SAVED);
     const savedVideo = this.saveVideoManager.getVideoData();
     this.addWillWatchVideo(savedVideo[savedVideo.length - 1]);
-    this.willWatchVideoList.firstChild.lastElementChild.addEventListener('click', (e) => {
-      const { action } = e.target.dataset;
-      if (action) {
-        this[action](e);
-      }
-    });
     hideElement(target);
     if (this.tab === 'willWatch') {
       this.showWillWatchVideo();
