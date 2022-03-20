@@ -58,7 +58,6 @@ export default class VideoCardContainer {
         e.target.remove();
       }
     } catch (err) {
-      console.log(err);
       toastPopup(err.message);
     }
   };
