@@ -3,6 +3,14 @@ import { SELECTOR, ERROR_MESSAGE, YOUTUBE_API_REQUEST_COUNT } from '../js/consta
 describe('구현 결과가 요구사항과 일치해야 한다.', () => {
   const baseURL = 'index.html';
 
+  const submitKeywordCorrectly = () => {
+    const keyword = '아놀드';
+
+    cy.get(SELECTOR.SEARCH_MODAL_BUTTON).click();
+    cy.get(SELECTOR.SEARCH_INPUT_KEYWORD).type(keyword);
+    cy.get(SELECTOR.SEARCH_FORM).submit();
+  };
+
   beforeEach(() => {
     cy.visit(baseURL);
   });
@@ -21,11 +29,7 @@ describe('구현 결과가 요구사항과 일치해야 한다.', () => {
   });
 
   it('모달에서 올바르게 검색 후, 모달을 껏다가 키면 검색어와 결과 내용이 비어있어야 한다.', () => {
-    const keyword = '아놀드';
-
-    cy.get(SELECTOR.SEARCH_MODAL_BUTTON).click();
-    cy.get(SELECTOR.SEARCH_INPUT_KEYWORD).type(keyword);
-    cy.get(SELECTOR.SEARCH_FORM).submit();
+    submitKeywordCorrectly();
     cy.get(SELECTOR.MODAL_BACKGROUND).click({ force: true });
 
     cy.get(SELECTOR.SEARCH_MODAL_BUTTON)
@@ -37,14 +41,23 @@ describe('구현 결과가 요구사항과 일치해야 한다.', () => {
   });
 
   it('모달에서 영상을 저장하면, 볼 영상 목록을 업데이트 할 수 있어야 한다.', () => {
-    const keyword = '아놀드';
-
-    cy.get(SELECTOR.SEARCH_MODAL_BUTTON).click();
-    cy.get(SELECTOR.SEARCH_INPUT_KEYWORD).type(keyword);
-    cy.get(SELECTOR.SEARCH_FORM).submit();
+    submitKeywordCorrectly();
     cy.get('.video-item__save-button').first().click();
     cy.get(SELECTOR.MODAL_BACKGROUND).click({ force: true });
 
     cy.get(SELECTOR.UNSEEN_VIDEOS).children().should('have.length', 1);
+  });
+
+  it('볼 비디오의 체크 버튼을 누르면, 본 비디오 탭으로 이동해야 한다.', () => {
+    submitKeywordCorrectly();
+    cy.get('.video-item__save-button').first().click();
+    cy.get(SELECTOR.MODAL_BACKGROUND).click({ force: true });
+    cy.get(`${SELECTOR.UNSEEN_VIDEOS} .video-item__check-button`).first().click();
+
+    cy.get(SELECTOR.SEEN_BUTTON)
+      .click()
+      .then(() => {
+        cy.get(SELECTOR.SEEN_VIDEOS).children().should('have.length', 1);
+      });
   });
 });
