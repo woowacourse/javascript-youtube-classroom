@@ -13,14 +13,15 @@ class Watch {
 
   watchVideo(videoId) {
     const videos = MyVideoStore.instance.getVideos();
-
-    videos.forEach((video) => {
+    const newVideos = videos.map((video) => {
       if (video.details.id === videoId) {
         video.isWatched = !video.isWatched;
       }
+
+      return video;
     });
 
-    MyVideoStore.instance.dispatch(videos);
+    MyVideoStore.instance.dispatch(newVideos);
   }
 }
 
