@@ -12,6 +12,8 @@ export const SELECTOR = {
   EMPTY_SCREEN: '#empty-screen',
   APP: '#app',
   SEEN_BUTTON: '#seen-button',
+  SEEN_EMPTY_SCREEN: '#seen-empty-sceen',
+  SEEN_VIDEOS: '#seen-videos',
   UNSEEN_BUTTON: '#unseen-button',
   UNSEEN_EMPTY_SCREEN: '#unseen-empty-screen',
   UNSEEN_VIDEOS: '#unseen-videos',

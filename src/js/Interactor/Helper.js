@@ -27,7 +27,7 @@ const Helper = {
     return Helper.fetchVideo();
   },
 
-  saveVideo: (video) => Database.save(DATABASE_VIDEO_KEY, video),
+  saveVideo: (video) => Database.save(DATABASE_VIDEO_KEY, { ...video, checked: false }),
 
   loadVideo: () => Database.load(DATABASE_VIDEO_KEY),
 };

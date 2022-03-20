@@ -13,8 +13,8 @@
 
       <nav class="nav">
         <div class="nav__button-wrap">
-          <button type="button" id="seen-button" class="switch-button button nav__button" data-tab="unseen">👁️ 볼 영상</button>
-          <button type="button" id="unseen-button" class="switch-button button nav__button" data-tab="seen">✅ 본 영상</button>
+          <button type="button" id="unseen-button" class="switch-button button nav__button" data-tab="unseen">👁️ 볼 영상</button>
+          <button type="button" id="seen-button" class="switch-button button nav__button" data-tab="seen">✅ 본 영상</button>
         </div>
 
         <div class="nav__button-wrap">
@@ -31,10 +31,10 @@
       </section>
 
       <section class="save-video-list seen">
-        <div class="no-result">
+        <div id="seen-empty-sceen" class="no-result">
           <p class="no-result__message">본 영상이 없습니다.</p>
         </div>
-        <ul class="video-list"></ul>
+        <ul id="seen-videos" class="video-list"></ul>
       </section>
     </main>
 

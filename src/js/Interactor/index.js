@@ -6,6 +6,7 @@ import VideoView from '../Views/VideoView.js';
 import SearchModalView from '../Views/SearchModalView.js';
 import SwitchVideoView from '../Views/SwitchVideoView.js';
 import UnseenVideoListView from '../Views/UnseenVideoListView.js';
+import SeenVideoListView from '../Views/SeenVideoListView.js';
 
 import { _ } from '../utils/fx.js';
 
@@ -14,6 +15,7 @@ const searchModalView = new SearchModalView();
 const videoView = new VideoView(Helper.fetchVideo);
 const switchVideoView = new SwitchVideoView();
 const unseenVideoListView = new UnseenVideoListView();
+const seenVideoListView = new SeenVideoListView();
 
 const handleKeywordInputSubmit = (keyword) => {
   try {
@@ -40,9 +42,16 @@ const handleSaveVideoButtonClick = (video) => {
   }
 };
 
+const handleSwitchUnseenButtonClick = _.pipe(
+  Helper.loadVideo,
+  _.filter((video) => !video.checked),
+  unseenVideoListView.renderScreenByVideos.bind(unseenVideoListView),
+);
+
 const handleSwitchSeenButtonClick = _.pipe(
   Helper.loadVideo,
-  unseenVideoListView.renderScreenByVideos.bind(unseenVideoListView),
+  _.filter((video) => video.checked),
+  seenVideoListView.renderScreenByVideos.bind(seenVideoListView),
 );
 
 const runApp = () => {
@@ -50,8 +59,9 @@ const runApp = () => {
   searchModalView.bindShowModal();
   searchModalView.bindCloseModal();
   videoView.bindSaveVideo(handleSaveVideoButtonClick);
-  switchVideoView.bindSwitchToUnseenScreen(handleSwitchSeenButtonClick);
-  handleSwitchSeenButtonClick();
+  switchVideoView.bindSwitchToSeenScreen(handleSwitchSeenButtonClick);
+  switchVideoView.bindSwitchToUnseenScreen(handleSwitchUnseenButtonClick);
+  handleSwitchUnseenButtonClick();
 };
 
 export default runApp;

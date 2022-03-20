@@ -8,6 +8,15 @@ export default class SavedVideoListView {
     this.#$container = $container;
   }
 
+  renderScreenByVideos(videos) {
+    if (videos.length > 0) {
+      this.render(videos);
+      this.videoScreen();
+    } else {
+      this.emptyScreen();
+    }
+  }
+
   renderHTML(html) {
     this.#$container.replaceChildren();
     this.#$container.insertAdjacentHTML('beforeend', html);
