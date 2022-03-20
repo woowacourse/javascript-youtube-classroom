@@ -1,5 +1,5 @@
 import SearchModal from './searchModal';
-import { $, hasProperty } from './utils';
+import { $, hasProperty, randomErrorEmoji, requestYoutubeVideos } from './utils';
 import NotFoundImage from '../assets/images/not_found.png';
 import {
   LOCAL_STORAGE_VIDEO_LIST_KEY,
@@ -8,8 +8,6 @@ import {
 } from './constants/constant';
 import VideoStorage from './storage/videoStorage';
 import VideoItem from './videoItem';
-import { requestYoutubeVideos } from './utils/api';
-import randomErrorEmoji from './utils/error-emoji';
 
 export default class App {
   constructor() {

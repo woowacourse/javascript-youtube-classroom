@@ -1,8 +1,7 @@
 /* eslint-disable max-lines-per-function */
 import { MAX_RENDER_VIDEOS_COUNT, SERVER_URL, VALIDATION_ERROR_NAME } from './constants/constant';
 import VideoItem from './videoItem';
-import { consoleErrorWithConditionalAlert, $, hasProperty } from './utils';
-import { requestYoutubeVideos } from './utils/api';
+import { consoleErrorWithConditionalAlert, $, hasProperty, requestYoutubeVideos } from './utils';
 
 class SearchModal {
   nextPageToken = null;
