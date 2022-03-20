@@ -94,12 +94,17 @@ export const youtubeSearchResult = {
         const datasetElementsArray = [...e.target.closest('.video-item').children].map(element => ({
           ...element.dataset,
         }));
-        const videoData = video.formatter(datasetElementsArray);
-        video.save(videoData);
-        e.target.setAttribute('hidden', true);
-        youtubeClassRoomVideo.renderVideoList(false);
-        $('#will-watch-video-button').classList.add('highlight');
-        $('#watched-video-button').classList.remove('highlight');
+        try {
+          const videoData = video.formatter(datasetElementsArray);
+          video.save(videoData);
+          e.target.setAttribute('hidden', true);
+          youtubeClassRoomVideo.renderVideoList(false);
+          $('#will-watch-video-button').classList.add('highlight');
+          $('#watched-video-button').classList.remove('highlight');
+          showSnackBar(MESSAGE.SAVE_SUCCESS);
+        } catch ({ message }) {
+          showSnackBar(message);
+        }
       }
     });
   },
