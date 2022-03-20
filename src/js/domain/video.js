@@ -1,12 +1,13 @@
 import { STORAGE_KEY, MESSAGE, MAX_SAVE_COUNT } from '../constants';
 
 export const video = {
-  save(videoData) {
+  save(datasetElementsArray) {
     try {
       const savedVideoList = this.getVideoList();
       if (savedVideoList.length >= MAX_SAVE_COUNT) {
         throw new Error(MESSAGE.ERROR_EXCESS_SAVE_COUNT);
       }
+      const videoData = this.formatter(datasetElementsArray);
       savedVideoList.push(videoData);
       localStorage.setItem(STORAGE_KEY, JSON.stringify(savedVideoList));
     } catch (error) {

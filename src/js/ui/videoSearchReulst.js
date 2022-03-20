@@ -101,8 +101,7 @@ export const videoSearchResult = {
         const datasetElementsArray = [...e.target.closest('.video-item').children].map(element => ({
           ...element.dataset,
         }));
-        const videoData = video.formatter(datasetElementsArray);
-        video.save(videoData);
+        video.save(datasetElementsArray);
         e.target.setAttribute('hidden', true);
         classRoomVideo.resetVideoList();
         classRoomVideo.renderVideoList(false);
