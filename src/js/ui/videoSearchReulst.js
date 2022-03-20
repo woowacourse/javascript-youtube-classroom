@@ -21,9 +21,9 @@ export const videoSearchResult = {
         return `
           <li class="video-item">
             <a href="https://www.youtube.com/watch?v=${item.id.videoId}" target="_blank" 
-            data-thumbnails-high-url=${thumbnails.high.url}>
+            data-thumbnail-url=${thumbnails.medium.url}>
               <img
-                src=${thumbnails.high.url}
+                src=${thumbnails.medium.url}
                 alt="video-item-thumbnail" class="video-item__thumbnail"
                 >
             </a>

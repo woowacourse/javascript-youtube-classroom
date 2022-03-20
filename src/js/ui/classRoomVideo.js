@@ -13,13 +13,13 @@ export const classRoomVideo = {
   videoListTemplate(videoList) {
     const template = videoList
       .map(videoData => {
-        const { videoId, title, channelTitle, publishedDate, thumbnailsHighUrl } = videoData;
+        const { videoId, title, channelTitle, publishedDate, thumbnailUrl } = videoData;
         return `
           <li class="video-item">
             <a href="https://www.youtube.com/watch?v=${videoId}" target="_blank" 
-            data-thumbnails-high-url=${thumbnailsHighUrl}>
+            data-thumbnail-url=${thumbnailUrl}>
               <img
-                src=${thumbnailsHighUrl}
+                src=${thumbnailUrl}
                 alt="video-item-thumbnail" class="video-item__thumbnail"
                 >
             </a>
