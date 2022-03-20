@@ -1,38 +1,35 @@
-import {
-  validateAddData,
-  changeStorageChecked,
-  removeStorageItem,
-} from "./utils";
+import { validateAddData, changeVideoChecked, removeVideoItem } from "./utils";
 
-const videoStorage = {
+export default class VideoStorage {
+  #videos = JSON.parse(localStorage.getItem("saveVideoData")) || [];
+
   getVideo() {
-    return JSON.parse(localStorage.getItem("saveVideoData")) || [];
-  },
+    return this.#videos;
+  }
+
+  setVideo() {
+    localStorage.setItem("saveVideoData", JSON.stringify(this.#videos));
+  }
+
   addVideo(data) {
-    let storage = this.getVideo();
-    validateAddData(data, storage);
+    validateAddData(data, this.#videos);
 
-    storage = [...storage, data];
-    localStorage.setItem("saveVideoData", JSON.stringify(storage));
-  },
+    this.#videos = [...this.#videos, data];
+    this.setVideo();
+  }
+
   removeVideo(removeData) {
-    let storage = this.getVideo();
+    this.#videos = removeVideoItem(this.#videos, removeData);
+    this.setVideo();
+  }
 
-    storage = removeStorageItem(storage, removeData);
-    localStorage.setItem("saveVideoData", JSON.stringify(storage));
-  },
   addChecked(addData) {
-    let storage = this.getVideo();
+    this.#videos = changeVideoChecked(this.#videos, addData, true);
+    this.setVideo();
+  }
 
-    storage = changeStorageChecked(storage, addData, true);
-    localStorage.setItem("saveVideoData", JSON.stringify(storage));
-  },
   removeChecked(removeData) {
-    let storage = this.getVideo();
-
-    storage = changeStorageChecked(storage, removeData, false);
-    localStorage.setItem("saveVideoData", JSON.stringify(storage));
-  },
-};
-
-export default videoStorage;
+    this.#videos = changeVideoChecked(this.#videos, removeData, false);
+    this.setVideo();
+  }
+}

@@ -1,6 +1,5 @@
 import notFoundImage from "../../assets/images/not_found.png";
 
-import videoStorage from "../videoStorage";
 import { $, $$, scrollToTop } from "./dom";
 import generateTemplate from "./templates";
 
@@ -9,6 +8,11 @@ export default class View {
   #saveVideoContainerNoVideoList = $(".save-video-container__no-video-list");
   #searchResult = $(".search-result");
   #noResult = $(".no-result");
+  #videoStorage;
+
+  constructor(videoStorage) {
+    this.#videoStorage = videoStorage;
+  }
 
   #renderSaveVideoContainer(renderData, videoList, noVideoList) {
     if (!renderData.length) {
@@ -27,7 +31,7 @@ export default class View {
   }
 
   renderCheckedVideo() {
-    const storage = videoStorage.getVideo();
+    const storage = this.#videoStorage.getVideo();
     const checkedData = storage.filter((data) => data.checked);
 
     this.#renderSaveVideoContainer(
@@ -38,7 +42,7 @@ export default class View {
   }
 
   renderSavedVideo() {
-    const storage = videoStorage.getVideo();
+    const storage = this.#videoStorage.getVideo();
 
     this.#renderSaveVideoContainer(
       storage,

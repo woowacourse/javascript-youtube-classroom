@@ -1,7 +1,6 @@
 import getSearchResult from "../api/getSearchResult";
 import { DELAY_TIME } from "../constants";
 import generateTemplate from "../view/templates";
-import videoStorage from "../videoStorage";
 import { throttle, validateInput } from "../utils";
 import {
   getTotalScrollHeight,
@@ -16,10 +15,13 @@ export default class YoutubeModalApp {
   #searchInputKeyword = $("#search-input-keyword");
   #nextPageToken = "";
   #keyword = "";
+  #videoStorage;
   #view;
 
-  constructor(view) {
+  constructor(view, videoStorage) {
     this.#view = view;
+    this.#videoStorage = videoStorage;
+
     this.#videoList.addEventListener("click", this.#onClickSaveButton);
     this.#videoList.addEventListener(
       "scroll",
@@ -32,7 +34,7 @@ export default class YoutubeModalApp {
     if (!target.matches(".video-item__save-button")) return;
 
     try {
-      videoStorage.addVideo(getTargetData(target.closest(".video-item")));
+      this.#videoStorage.addVideo(getTargetData(target.closest(".video-item")));
     } catch ({ message }) {
       alert(message);
     }
@@ -94,7 +96,7 @@ export default class YoutubeModalApp {
 
     const videoItemTemplate = generateTemplate.videoItems(
       responseData.items,
-      videoStorage.getVideo()
+      this.#videoStorage.getVideo()
     );
 
     this.#view.renderSearchResult({
@@ -118,7 +120,7 @@ export default class YoutubeModalApp {
 
     const videoItemTemplate = generateTemplate.videoItems(
       responseData.items,
-      videoStorage.getVideo()
+      this.#videoStorage.getVideo()
     );
 
     this.#view.renderSearchResult({

@@ -1,5 +1,5 @@
 import { ERROR_MESSAGE } from "../constants";
-import videoStorage from "../videoStorage";
+import VideoStorage from "../VideoStorage";
 
 describe("videoStorage에 동영상의 데이터가 적절히 저장되어야 한다.", () => {
   const kkojaeData = {
@@ -15,6 +15,7 @@ describe("videoStorage에 동영상의 데이터가 적절히 저장되어야 �
   });
 
   test("videoStorage에 101개 이상의 데이터가 저장되면 에러 메시지를 반환한다.", () => {
+    const videoStorage = new VideoStorage();
     const videoData = Array.from({ length: 100 }, (_, index) => ({
       videoId: index,
       thumbnailUrl: "https:",
@@ -33,6 +34,7 @@ describe("videoStorage에 동영상의 데이터가 적절히 저장되어야 �
   });
 
   test("이미 저장된 videoData를 다시 저장할 경우 에러 메시지를 반환한다.", () => {
+    const videoStorage = new VideoStorage();
     videoStorage.addVideo(kkojaeData);
 
     expect(() => {

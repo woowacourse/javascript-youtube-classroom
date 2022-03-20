@@ -38,32 +38,32 @@ export const validateInput = (inputValue) => {
   }
 };
 
-export const validateAddData = (data, storage) => {
-  if (isDuplicate(data, storage)) {
+export const validateAddData = (data, videos) => {
+  if (isDuplicate(data, videos)) {
     throw new Error(ERROR_MESSAGE.DUPLICATED_VIDEO_ID);
   }
 
-  if (storage.length >= STORAGE_MAX_COUNT) {
+  if (videos.length >= STORAGE_MAX_COUNT) {
     throw new Error(ERROR_MESSAGE.USER_STORAGE_OVERFLOW);
   }
 };
 
-export const changeStorageChecked = (storage, changeData, boolean) => {
-  const changeIndex = storage.findIndex(
+export const changeVideoChecked = (videos, changeData, boolean) => {
+  const changeIndex = videos.findIndex(
     (data) => data.videoId === changeData.videoId
   );
 
-  storage[changeIndex].checked = boolean;
+  videos[changeIndex].checked = boolean;
 
-  return storage;
+  return videos;
 };
 
-export const removeStorageItem = (storage, removeData) => {
-  const removeIndex = storage.findIndex(
+export const removeVideoItem = (videos, removeData) => {
+  const removeIndex = videos.findIndex(
     (data) => data.videoId === removeData.videoId
   );
 
-  storage.splice(removeIndex, 1);
+  videos.splice(removeIndex, 1);
 
-  return storage;
+  return videos;
 };

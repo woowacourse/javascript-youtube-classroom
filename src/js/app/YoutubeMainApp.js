@@ -1,5 +1,5 @@
-import videoStorage from "../videoStorage";
 import { getTargetData, confirmRemoveVideo, $ } from "../view/dom";
+import generateTemplate from "../view/templates";
 
 export default class YoutubeMainApp {
   #navSaveVideoButton = $(".nav__save-video-button");
@@ -8,10 +8,13 @@ export default class YoutubeMainApp {
   #searchInputKeyword = $("#search-input-keyword");
   #navWatchedVideoButton = $(".nav__watched-video-button");
   #saveVideoContainerVideoList = $(".save-video-container__video-list");
+  #dimmer = $(".dimmer");
+  #videoStorage;
   #view;
 
-  constructor(view) {
+  constructor(view, videoStorage) {
     this.#view = view;
+    this.#videoStorage = videoStorage;
     this.#view.renderSavedVideo();
 
     this.#saveVideoContainerVideoList.addEventListener(
@@ -34,13 +37,14 @@ export default class YoutubeMainApp {
       "click",
       this.#onClickSearchModalButton
     );
-    $(".dimmer").addEventListener("click", this.#onClickDimmer);
+    this.#dimmer.addEventListener("click", this.#onClickDimmer);
   }
 
   #onClickDimmer = () => {
     this.#searchInputKeyword.value = "";
     this.#view.clearModalContainer(this.#videoList);
     this.#modalContainer.classList.add("hide");
+    window.removeEventListener("keyup", this.#onKeyUpEscape);
 
     if (
       this.#navWatchedVideoButton.classList.contains(
@@ -81,7 +85,7 @@ export default class YoutubeMainApp {
       target.classList.contains("video-item__watched-video-button--focused")
     ) {
       target.classList.remove("video-item__watched-video-button--focused");
-      videoStorage.removeChecked(getTargetData(targetParentElement));
+      this.#videoStorage.removeChecked(getTargetData(targetParentElement));
 
       if (
         this.#navWatchedVideoButton.classList.contains(
@@ -94,7 +98,7 @@ export default class YoutubeMainApp {
       return;
     }
 
-    videoStorage.addChecked(getTargetData(targetParentElement));
+    this.#videoStorage.addChecked(getTargetData(targetParentElement));
     target.classList.add("video-item__watched-video-button--focused");
   };
 
@@ -110,13 +114,20 @@ export default class YoutubeMainApp {
       return;
     }
 
-    videoStorage.removeVideo(getTargetData(targetParentElement));
+    this.#videoStorage.removeVideo(getTargetData(targetParentElement));
     targetGrandParentElement.removeChild(targetParentElement);
+  };
+
+  #onKeyUpEscape = (event) => {
+    if (event.key !== "Escape") return;
+
+    this.#onClickDimmer();
   };
 
   #onClickSearchModalButton = () => {
     this.#modalContainer.classList.remove("hide");
     this.#view.clearModalContainer(this.#videoList);
     this.#searchInputKeyword.focus();
+    window.addEventListener("keyup", this.#onKeyUpEscape);
   };
 }
