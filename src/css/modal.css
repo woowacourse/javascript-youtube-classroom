@@ -83,6 +83,11 @@
   color: var(--search-button-font-color);
 }
 
+.search-result {
+  width: 1040px;
+  height: 493px;
+}
+
 .search-result.search-result--no-result {
   justify-content: center;
   align-items: center;
@@ -104,8 +109,8 @@
 }
 
 .video-list {
-  width: 1040px;
-  height: 493px;
+  width: 100%;
+  height: 100%;
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
