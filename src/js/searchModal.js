@@ -116,18 +116,12 @@ class SearchModal {
         if (entries[0].isIntersecting && this.nextPageToken !== null) {
           this.observer.unobserve(entries[0].target);
           const title = this.$searchKeyWordInput.value;
-          const jsonResult = await this.requestYoutubeVideos(title);
-          if (jsonResult === null) {
-            return;
-          }
-          this.nextPageToken = jsonResult.nextPageToken;
-          const videos = jsonResult.items.map(item => new VideoItem(item));
-          this.renderVideoItems(videos);
+          const videos = await this.requestVideos(title);
+          videos && this.renderVideoItems(videos);
         }
       },
       {
-        root: this.$videoList,
-        threshold: 0.8,
+        threshold: 0.95,
       }
     );
   }
