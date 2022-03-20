@@ -1,14 +1,6 @@
 import { ERROR_MESSAGE, RULES } from '../constants';
 
-const LOCALSTORAGE_VIDEO_IDS_KEY = 'VIDEO_IDS';
 const LOCALSTORAGE_KEY_VIDEOS = 'VIDEOS';
-
-const getStorageVideoIDs = (key = LOCALSTORAGE_VIDEO_IDS_KEY) =>
-  JSON.parse(window.localStorage.getItem(key)) || [];
-
-const setStorageVideoIDs = ({ key = LOCALSTORAGE_VIDEO_IDS_KEY, value }) => {
-  window.localStorage.setItem(key, JSON.stringify(value));
-};
 
 const getStorageVideos = ({ key = LOCALSTORAGE_KEY_VIDEOS, filter = 'all' }) => {
   const videos = JSON.parse(window.localStorage.getItem(key)) || { stored: {}, watched: {} };
@@ -17,11 +9,6 @@ const getStorageVideos = ({ key = LOCALSTORAGE_KEY_VIDEOS, filter = 'all' }) => 
 
 const setStorageVideos = ({ key = LOCALSTORAGE_KEY_VIDEOS, value }) => {
   window.localStorage.setItem(key, JSON.stringify(value));
-};
-
-const removeStorageVideoID = (index) => {
-  const newVideoIDs = getStorageVideoIDs().filter((_, idx) => idx !== index);
-  setStorageVideoIDs({ value: newVideoIDs });
 };
 
 const removeStorageVideo = ({ videoId, filter }) => {
@@ -38,20 +25,20 @@ const removeStorageVideo = ({ videoId, filter }) => {
   const newVideos = { stored, watched };
   setStorageVideos({ value: newVideos });
 };
-const checkVideoStorageFull = (key = LOCALSTORAGE_VIDEO_IDS_KEY) => {
-  if (getStorageVideoIDs(key).length >= RULES.MAX_STORED_IDS_AMOUNT) {
+
+const checkVideoStorageFull = () => {
+  const storageVideos = getStorageVideos({});
+  const videos = Object.values(storageVideos)
+    .reduce((storedAmount, video) => storedAmount + Object.values(video).length, 0);
+
+  if (videos >= RULES.MAX_STORED_VIDEO_AMOUNT) {
     throw new Error(ERROR_MESSAGE.FULL_STORAGE);
   }
 };
 
 export {
-  getStorageVideoIDs,
-  setStorageVideoIDs,
-  LOCALSTORAGE_VIDEO_IDS_KEY,
-  LOCALSTORAGE_KEY_VIDEOS,
   checkVideoStorageFull,
   getStorageVideos,
   setStorageVideos,
-  removeStorageVideoID,
   removeStorageVideo
 };

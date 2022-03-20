@@ -1,11 +1,8 @@
 import { DELETE_CONFIRM_MESSAGE } from '../constants';
 import {
-  getStorageVideoIDs,
   getStorageVideos,
-  setStorageVideoIDs,
   checkVideoStorageFull,
   setStorageVideos,
-  removeStorageVideoID,
   removeStorageVideo
 } from '../utils/localStorage';
 import TEMPLATE from './template';
@@ -47,12 +44,10 @@ export default class VideoCardContainer {
 
         checkVideoStorageFull();
 
-        const newVideoIDs = [...getStorageVideoIDs(), videoId];
         const newStoredVideos = getStorageVideos({ filter: 'stored' });
         newStoredVideos[`${videoId}`] = videoItem;
         const newVideos = { ...getStorageVideos({}), stored: newStoredVideos };
 
-        setStorageVideoIDs({ value: newVideoIDs });
         setStorageVideos({ value: newVideos });
 
         e.target.remove();
@@ -95,9 +90,6 @@ export default class VideoCardContainer {
       const { videoId } = li.dataset;
       const { filter } = this.#state;
 
-      const videoIds = getStorageVideoIDs();
-      const index = videoIds.indexOf(videoId);
-      removeStorageVideoID(index);
       removeStorageVideo({ videoId, filter });
 
       li.remove();
@@ -105,7 +97,9 @@ export default class VideoCardContainer {
   };
 
   template() {
-    const videoIds = getStorageVideoIDs();
+    const { stored, watched } = getStorageVideos({});
+
+    const videoIds = [...Object.keys(stored), ...Object.keys(watched)];
     const { videoList, currentPage } = this.#state;
     const showHomePageButtons = currentPage === 'Home';
 
