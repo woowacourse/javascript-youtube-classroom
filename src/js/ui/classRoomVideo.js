@@ -13,7 +13,7 @@ export const classRoomVideo = {
   videoListTemplate(videoList) {
     const template = videoList
       .map(videoData => {
-        const { videoId, title, channelTitle, publishedDate, thumbnailUrl } = videoData;
+        const { videoId, title, channelTitle, publishedDate, thumbnailUrl, watched } = videoData;
         return `
           <li class="video-item">
             <a href="https://www.youtube.com/watch?v=${videoId}" target="_blank" 
@@ -34,7 +34,9 @@ export const classRoomVideo = {
             <p class="video-item__published-date" data-published-date=${publishedDate}>
               ${convertToKoreaLocaleDate(publishedDate)}
             </p>
-            <button class="video-item__check-button button" data-video-id="${videoId}">✅</button>
+            <button class="video-item__check-button button ${watched ? 'highlight' : ''}" data-video-id="${videoId}" ${
+          watched ? 'disabled' : ''
+        }>✅</button>
             <button class="video-item__remove-button button" data-video-id="${videoId}">🗑️</button>
           </li>`;
       })
