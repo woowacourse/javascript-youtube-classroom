@@ -8,7 +8,6 @@ export default class Component extends HTMLElement {
   }
 
   connectedCallback() {
-    this.render();
     this.setEvent();
     observe(this);
   }

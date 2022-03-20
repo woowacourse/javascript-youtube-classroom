@@ -1,4 +1,4 @@
-import Store from '../store/Store.js';
+import Store, { observe } from '../store/Store.js';
 import WebStore from '../store/WebStore.js';
 import { request, getSearchUrl } from '../utils/api.js';
 import { removeDuplicatedElements } from '../utils/commons.js';
