@@ -8,21 +8,20 @@ export default class HomeView {
     this.saveVideoManager = saveVideoManager;
     this.modalView = new SearchModalView(searchVideoManager, this.saveVideoManager);
 
-    this.tab = 'willWatch';
+    this.tab = 'will-watch';
     this.willWatchVideoList = $('#will-watch-video-list');
     this.watchedVideoList = $('#watched-video-list');
 
     this.bindEvents();
-    this.initializeHomepage();
+    this.sortSavedVideo();
   }
 
   bindEvents() {
     $('#search-modal-button').addEventListener('click', this.openModal);
-    $('#will-watch-button').addEventListener('click', this.openWillWatchPage.bind(this));
-    $('#watched-button').addEventListener('click', this.openWatchedPage.bind(this));
+    $('.button-group').addEventListener('click', this.changePageTo.bind(this));
     $('#search-modal').addEventListener('saveVideo', this.saveVideo.bind(this));
-    this.willWatchVideoList.addEventListener('click', this.tabButtonHandler.bind(this));
-    this.watchedVideoList.addEventListener('click', this.tabButtonHandler.bind(this));
+    this.willWatchVideoList.addEventListener('click', this.watchDeleteButtonHandler.bind(this));
+    this.watchedVideoList.addEventListener('click', this.watchDeleteButtonHandler.bind(this));
     window.addEventListener('offline', () => {
       showSnackbar(ALERT_MESSAGE.OFFLINE);
     });
@@ -32,7 +31,7 @@ export default class HomeView {
     showElement($('#modal-container'));
   }
 
-  tabButtonHandler(e) {
+  watchDeleteButtonHandler(e) {
     if (e.target.tagName === 'BUTTON') {
       const { action } = e.target.dataset;
       if (action) {
@@ -41,7 +40,7 @@ export default class HomeView {
     }
   }
 
-  initializeHomepage() {
+  sortSavedVideo() {
     const savedVideo = this.saveVideoManager.getVideoData();
 
     savedVideo.forEach((video) => {
@@ -52,40 +51,32 @@ export default class HomeView {
       }
     });
 
-    this.openWillWatchPage();
+    this.openPage(`${this.tab}-video-list`);
   }
 
-  openWillWatchPage() {
-    this.tab = 'willWatch';
-    $('#will-watch-button').classList.add('selected', 'block-toggle');
-    $('#watched-button').classList.remove('selected', 'block-toggle');
+  changePageTo(event) {
+    $(`#${this.tab}`).classList.remove('selected', 'block-toggle');
+    this.tab = event.target.id;
+    $(`#${this.tab}`).classList.add('selected', 'block-toggle');
 
-    this.watchedVideoList.classList.add('hide');
-    $('.no-watched-video__image').classList.add('hide');
-    if ($('#will-watch-video-list').children.length === 0) {
-      this.emptyWillWatchVideo();
-      return;
-    }
-    this.showWillWatchVideo();
+    const tabListId = event.target.dataset.toggleId;
+    this.openPage(tabListId);
   }
 
-  openWatchedPage() {
-    this.tab = 'watched';
-    $('#will-watch-button').classList.remove('selected', 'block-toggle');
-    $('#watched-button').classList.add('selected', 'block-toggle');
-
-    hideElement(this.willWatchVideoList);
-    hideElement($('.no-saved-video__image'));
-    if (this.watchedVideoList.children.length === 0) {
-      this.emptyWatchedVideo();
-      return;
+  openPage(tabListId) {
+    for (const element of $('#main-page').children) {
+      hideElement(element);
     }
-    showElement(this.watchedVideoList);
+
+    if ($(`#${tabListId}`).children.length === 0) {
+      const noImageClassName = $(`#${tabListId}`).dataset.noImageClass;
+      return showElement($(`.${noImageClassName}`));
+    }
+    $(`#${tabListId}`).classList.remove('hide');
   }
 
   saveVideo(e) {
     const { target } = e.detail;
-
     try {
       this.saveVideoManager.saveVideo(target.parentNode);
     } catch ({ message }) {
@@ -96,9 +87,7 @@ export default class HomeView {
     const savedVideo = this.saveVideoManager.getVideoData();
     this.addWillWatchVideo(savedVideo[savedVideo.length - 1]);
     hideElement(target);
-    if (this.tab === 'willWatch') {
-      this.showWillWatchVideo();
-    }
+    this.openPage(`${this.tab}-video-list`);
   }
 
   changeWatchState(e) {
@@ -108,12 +97,12 @@ export default class HomeView {
     if (this.tab === 'watched') {
       showSnackbar(ALERT_MESSAGE.CHANGED_TO_WILL_WATCH);
       this.willWatchVideoList.insertAdjacentElement('afterbegin', target);
-      this.isWatchedVideoEmpty();
+      this.openPage(`${this.tab}-video-list`);
     }
-    if (this.tab === 'willWatch') {
+    if (this.tab === 'will-watch') {
       showSnackbar(ALERT_MESSAGE.CHANGED_TO_WATCHED);
       this.watchedVideoList.insertAdjacentElement('afterbegin', target);
-      this.isWillWatchVideoEmpty();
+      this.openPage(`${this.tab}-video-list`);
     }
   }
 
@@ -131,8 +120,11 @@ export default class HomeView {
 
     target.remove();
 
-    this.isWatchedVideoEmpty();
-    this.isWillWatchVideoEmpty();
+    this.openPage(`${this.tab}-video-list`);
+    hideElement($('#confirm-container'));
+  }
+
+  closeConfirmModal() {
     hideElement($('#confirm-container'));
   }
 
@@ -142,36 +134,5 @@ export default class HomeView {
 
   addWatchedVideo(video) {
     this.watchedVideoList.insertAdjacentHTML('afterbegin', template.watchVideoListItem(video));
-  }
-
-  closeConfirmModal() {
-    hideElement($('#confirm-container'));
-  }
-
-  showWillWatchVideo() {
-    hideElement($('.no-saved-video__image'));
-    showElement(this.willWatchVideoList);
-  }
-
-  emptyWillWatchVideo() {
-    hideElement(this.willWatchVideoList);
-    showElement($('.no-saved-video__image'));
-  }
-
-  emptyWatchedVideo() {
-    hideElement(this.watchedVideoList);
-    showElement($('.no-watched-video__image'));
-  }
-
-  isWillWatchVideoEmpty() {
-    if (this.willWatchVideoList.children.length === 0 && this.tab === 'willWatch') {
-      this.emptyWillWatchVideo();
-    }
-  }
-
-  isWatchedVideoEmpty() {
-    if (this.watchedVideoList.children.length === 0 && this.tab === 'watched') {
-      this.emptyWatchedVideo();
-    }
   }
 }

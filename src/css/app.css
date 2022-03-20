@@ -50,13 +50,13 @@ body {
     width: 70%;
 }
 
-#will-watch-button{
+#will-watch{
     width: 117px;
     border: 1px solid var(--border-color);
     border-radius: 4px 0px 0px 4px;
 }
 
-#watched-button {
+#watched {
     width: 117px;
     border: 1px solid var(--border-color);
     border-radius: 0px 4px 4px 0px;
@@ -71,6 +71,11 @@ body {
 }
 
 #main-homepage-body {
+    display: flex;
+    justify-content: center;
+}
+
+#main-page {
     display: flex;
     justify-content: center;
 }
