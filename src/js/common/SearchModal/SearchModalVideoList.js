@@ -1,7 +1,7 @@
 import { RULES } from '../../constants';
 import { snakeCaseToCamelCase } from '../../utils';
 import { getStorage, STORAGE_KEY, setStorage } from '../../utils/localStorage';
-import VideoCard from '../VideoCard/VideoCard';
+import VideoCardTemplate from '../VideoCard/VideoCard';
 
 const extractInnerHTML = (object, element) => {
   object[snakeCaseToCamelCase(element.className.replace('video-item__', ''))] =
@@ -29,10 +29,10 @@ export default class SearchModalVideoList {
       }
 
       const clickedVideo = e.target.closest('.video-item');
-      const { videoId } = clickedVideo.dataset;
+      const { videoId: clickedVideoId } = clickedVideo.dataset;
       const videoInfo = Array.from(clickedVideo.children)
         .filter((element) => element.tagName !== 'BUTTON')
-        .reduce((info, element) => extractInnerHTML(info, element), { videoId });
+        .reduce((info, element) => extractInnerHTML(info, element), { clickedVideoId });
 
       setStorage(STORAGE_KEY.WATCH_LATER_VIDEOS, storedVideoIDs.concat(videoInfo));
 
@@ -49,7 +49,8 @@ export default class SearchModalVideoList {
         const isStoredVideo = storedVideoIds.includes(video.videoId);
         const isWatchedVideo = watchedVideoIds.includes(video.videoId);
 
-        return new VideoCard(video).template(
+        return VideoCardTemplate(
+          video,
           isStoredVideo || isWatchedVideo ? 'STORED_SEARCHED_VIDEOS' : 'SEARCHED_VIDEOS',
         );
       })

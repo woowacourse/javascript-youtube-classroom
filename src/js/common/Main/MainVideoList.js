@@ -1,5 +1,5 @@
 import { getStorage, setStorage, STORAGE_KEY } from '../../utils/localStorage';
-import VideoCard from '../VideoCard/VideoCard';
+import VideoCardTemplate from '../VideoCard/VideoCard';
 
 const TAB_TO_STORAGE_KEY = {
   'watch-later-videos': STORAGE_KEY.WATCH_LATER_VIDEOS,
@@ -41,19 +41,19 @@ export default class MainVideoList {
   };
 
   clickWatchedButtonHandler(videoElement) {
-    const { videoId } = videoElement.dataset;
-    const currentTabStorageKey = TAB_TO_STORAGE_KEY[this.#state.focusedTab];
+    const { videoId: clickedVideoId } = videoElement.dataset;
+    const activeTabStorageKey = TAB_TO_STORAGE_KEY[this.#state.activeTab];
 
-    const clickedVideoInfo = getStorage(currentTabStorageKey).find(
-      (video) => video.videoId === videoId,
+    const clickedVideoInfo = getStorage(activeTabStorageKey).find(
+      (video) => video.videoId === clickedVideoId,
     );
-    const destinationTabVideos = getStorage(DESTINATION_STORAGE[this.#state.focusedTab]);
+    const destinationTabVideos = getStorage(DESTINATION_STORAGE[this.#state.activeTab]);
     setStorage(
-      DESTINATION_STORAGE[this.#state.focusedTab],
+      DESTINATION_STORAGE[this.#state.activeTab],
       destinationTabVideos.concat(clickedVideoInfo),
     );
 
-    removeCurrentTabVideoId(TAB_TO_STORAGE_KEY[this.#state.focusedTab], videoId);
+    removeCurrentTabVideoId(TAB_TO_STORAGE_KEY[this.#state.activeTab], clickedVideoId);
 
     videoElement.remove();
   }
@@ -61,20 +61,20 @@ export default class MainVideoList {
   clickDeleteButtonHandler(videoElement) {
     if (confirm('정말 삭제하시겠습니까?')) {
       const { videoId } = videoElement.dataset;
-      removeCurrentTabVideoId(TAB_TO_STORAGE_KEY[this.#state.focusedTab], videoId);
+      removeCurrentTabVideoId(TAB_TO_STORAGE_KEY[this.#state.activeTab], videoId);
       videoElement.remove();
     }
   }
 
   template() {
-    const videos = getStorage(TAB_TO_STORAGE_KEY[this.#state.focusedTab]);
+    const videos = getStorage(TAB_TO_STORAGE_KEY[this.#state.activeTab]);
 
     if (!videos.length) {
       return EMPTY_VIDEOS_TEMPLATE;
     }
 
     return videos
-      .map((video) => new VideoCard(video).template(TAB_TO_STORAGE_KEY[this.#state.focusedTab]))
+      .map((video) => VideoCardTemplate(video, TAB_TO_STORAGE_KEY[this.#state.activeTab]))
       .join('');
   }
 

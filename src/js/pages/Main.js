@@ -13,25 +13,23 @@ export default class Main {
     this.tabs.addEventListener('click', this.changeTab);
 
     this.MainVideoList = new MainVideoList(this.videoList);
-    this.focusedTab = 'watch-later-videos';
+    this.activeTab = 'watch-later-videos';
     this.renderStoredVideoList();
   }
 
   changeTab = (e) => {
     if (e.target.classList.contains('button')) {
-      this.focusedTab = e.target.dataset.tab;
+      this.activeTab = e.target.dataset.tab;
       Array.from(this.tabs.children).forEach((tab) => {
         tab.className =
-          tab.dataset.tab === e.target.dataset.tab
-            ? `${TAB_BASE_CLASSLIST} focus`
-            : TAB_BASE_CLASSLIST;
+          tab.dataset.tab === this.activeTab ? `${TAB_BASE_CLASSLIST} focus` : TAB_BASE_CLASSLIST;
       });
       this.renderStoredVideoList();
     }
   };
 
   renderStoredVideoList() {
-    this.MainVideoList.setState({ focusedTab: this.focusedTab });
+    this.MainVideoList.setState({ activeTab: this.activeTab });
   }
 
   openModalHandler = () => {

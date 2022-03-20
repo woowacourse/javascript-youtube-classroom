@@ -12,28 +12,20 @@ const BUTTON_TEMPLATE = {
   </div>`,
 };
 
-export default class VideoCard {
-  constructor(props) {
-    ({
-      videoId: this.videoId,
-      channelTitle: this.channelTitle,
-      publishTime: this.publishTime,
-      title: this.title,
-      thumbnail: this.thumbnail,
-    } = props);
-  }
+const VideoCardTemplate = (video, page) => {
+  const { videoId, channelTitle, publishTime, title, thumbnail } = video;
 
-  template(page) {
-    return `
-    <li class="video-item" data-video-id="${this.videoId}">
+  return `
+    <li class="video-item" data-video-id="${videoId}">
       <img
-        src="${this.thumbnail}"
+        src="${thumbnail}"
         alt="video-item-thumbnail" class="video-item__thumbnail">
-      <h4 class="video-item__title">${this.title}</h4>
-      <p class="video-item__channel_title">${this.channelTitle}</p>
-      <p class="video-item__publish_time">${this.publishTime}</p>
+      <h4 class="video-item__title">${title}</h4>
+      <p class="video-item__channel_title">${channelTitle}</p>
+      <p class="video-item__publish_time">${publishTime}</p>
       ${BUTTON_TEMPLATE[page] ?? ''}
     </li>
     `;
-  }
-}
+};
+
+export default VideoCardTemplate;
