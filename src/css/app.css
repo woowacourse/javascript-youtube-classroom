@@ -67,28 +67,6 @@ body {
   margin-left: auto;
 }
 
-.check-watched-button {
-  margin-left: 160px;
-}
-
-.icon-button {
-  width: 36px;
-  height: 36px;
-  background: #f5f5f5;
-}
-
-.icon-button:hover {
-  background: #ebebeb;
-}
-
-.icon-button.selected {
-  background: rgba(0, 188, 212, 0.12);
-}
-
-.icon-button.selected:hover {
-  background: rgba(0, 188, 212, 0.2);
-}
-
 .align-center {
   margin-left: auto;
   margin-right: auto;
@@ -161,6 +139,28 @@ body {
 
 .video-item__save-button:hover {
   background: #efefef;
+}
+
+.icon-button {
+  width: 36px;
+  height: 36px;
+  background: #f5f5f5;
+}
+
+.icon-button:hover {
+  background: #ebebeb;
+}
+
+.icon-button.selected {
+  background: rgba(0, 188, 212, 0.12);
+}
+
+.icon-button.selected:hover {
+  background: rgba(0, 188, 212, 0.2);
+}
+
+.check-watched-button {
+  margin-left: 160px;
 }
 
 @media only screen and (min-width: 400px) {

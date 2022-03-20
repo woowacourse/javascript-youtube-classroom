@@ -90,6 +90,8 @@
 
 .skeleton {
   width: 240px;
+  align-self: center;
+  justify-self: center;
 }
 
 .skeleton .image,
