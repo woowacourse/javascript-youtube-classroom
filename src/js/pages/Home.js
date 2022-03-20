@@ -14,7 +14,6 @@ export default class Home {
     this.storedVideoFilterButton = this.element.querySelector('#stored-video-filter-button');
     this.watchedVideoFilterButton = this.element.querySelector('#watched-video-filter-button');
     this.searchModalButton = this.element.querySelector('#search-modal-button');
-    this.nav = this.element.querySelector('nav');
     this.videoListWrapper = this.element.querySelector('.video-list');
     this.dimmer = document.querySelector('.dimmer');
     this.modalContainer = document.querySelector('.modal-container');
@@ -39,34 +38,39 @@ export default class Home {
   }
 
   renderVideoList() {
-    const videoList = Object.values(getStorageVideos({ filter: this.currentFilter }));
+    let videoList = Object.values(getStorageVideos({ filter: 'watched' }));
+    this.VideoCardContainer.setState({ videoList, filter: 'watched' });
+    this.hideToggleVideoList();
+
+    videoList = Object.values(getStorageVideos({ filter: 'stored' }));
+    this.VideoCardContainer.setState({ videoList, filter: 'stored' });
     this.emptyVideoList(videoList);
-    this.VideoCardContainer.setState({ videoList, filter: this.currentFilter });
   }
 
-  clickedFilterButton() {
+  toggleFilterButton() {
     this.storedVideoFilterButton.classList.toggle('clicked');
     this.watchedVideoFilterButton.classList.toggle('clicked');
+  }
+
+  hideToggleVideoList() {
+    this.videoListWrapper.querySelectorAll('li')
+      .forEach((videoItem) => videoItem.classList.toggle('hide'));
   }
 
   showStoredVideosHandler = () => {
     if (this.currentFilter === 'stored') return;
 
-    this.clickedFilterButton();
+    this.toggleFilterButton();
+    this.hideToggleVideoList();
     this.currentFilter = 'stored';
-
-    this.viewClear();
-    this.renderVideoList();
   };
 
   showWatchedVideosHandler = () => {
     if (this.currentFilter === 'watched') return;
 
-    this.clickedFilterButton();
+    this.toggleFilterButton();
+    this.hideToggleVideoList();
     this.currentFilter = 'watched';
-
-    this.viewClear();
-    this.renderVideoList();
   };
 
   openModalHandler = () => {
@@ -78,12 +82,19 @@ export default class Home {
     this.modalContainer.classList.add('hide');
     this.dimmer.classList.add('hide');
 
-    this.currentFilter = 'stored';
-    this.viewClear();
-    this.renderVideoList();
+    this.reset();
   };
 
   viewClear() {
     this.videoListWrapper.replaceChildren();
+  }
+
+  reset() {
+    this.storedVideoFilterButton.classList.add('clicked');
+    this.watchedVideoFilterButton.classList.remove('clicked');
+    this.currentFilter = 'stored';
+
+    this.viewClear();
+    this.renderVideoList();
   }
 }

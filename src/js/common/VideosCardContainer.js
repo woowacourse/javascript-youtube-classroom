@@ -84,7 +84,8 @@ export default class VideoCardContainer {
 
       const newVideos = { stored, watched };
       setStorageVideos({ value: newVideos });
-      li.remove();
+
+      li.classList.toggle('hide');
     }
   };
 
