@@ -55,13 +55,11 @@ class SearchResultComponent {
   #renderSearchResult(searchResult) {
     const { videoList } = searchResult;
 
-    /** 검색 결과가 없다면 */
     if (isNullVideoList(videoList)) {
       this.$noResult.classList.remove('hide');
       this.#videoListComponent.unmount();
       return;
     }
-    /** 검색 결과가 있다면 */
     this.$noResult.classList.add('hide');
     this.#videoListComponent.render(searchResult);
   }
