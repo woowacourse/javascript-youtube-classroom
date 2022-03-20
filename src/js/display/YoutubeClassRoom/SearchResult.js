@@ -103,9 +103,7 @@ export default class SearchResult {
   }
 
   getVideoList(items) {
-    return items.map(video => {
-      const { videoId } = video.id;
-      const { title, channelTitle, publishTime, thumbnails } = video.snippet;
+    return items.map(({ videoId, title, channelTitle, publishTime, thumbnails }) => {
       const { videoList } = LibraryStore.getState();
       const isSaved = videoList.some(({ id }) => id === videoId);
 
@@ -115,11 +113,11 @@ export default class SearchResult {
           'video-title': title,
           'video-channelTitle': channelTitle,
           'video-publishTime': publishTime,
-          'video-thumbnail': thumbnails.medium.url,
+          'video-thumbnail': thumbnails,
         },
         className: 'list-item',
         innerHTML: `<img
-          src="${thumbnails.medium.url}"
+          src="${thumbnails}"
           alt="video-item-thumbnail" class="list-item__thumbnail"
           loading="lazy"
           >

@@ -1,4 +1,5 @@
 import { YOUTUBE_SEARCH_ACTION } from '@Constants';
+import { getParsedVideoItems } from '@Utils/dataManager';
 import { requestYoutubeSearch } from '@Api';
 
 const initialState = {
@@ -32,7 +33,7 @@ const reducer = {
     { items, nextPageToken, pageInfo },
   ) => ({
     ...state,
-    items: [...state.items, ...items],
+    items: [...state.items, ...getParsedVideoItems(items)],
     nextPageToken,
     isEnded: pageInfo.totalResults <= items.length || !nextPageToken,
     isLoading: false,
