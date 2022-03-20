@@ -99,10 +99,12 @@ export default class VideoCard extends Component {
       return video;
     });
 
+    console.log('webStore.load()', webStore.load());
+
     rootStore.setState({
       videos: newVideos, // 저장 버튼이 사라지도록 하기
       savedVideos: webStore.load(), // 저장된 영상이 바로 MainPage에 반영되게 하기
-      hasWatchedVideo: true, // @TODO: 처음에만 true로 바꿔주고, 나중에는 동작하지 않게 하기
+      hasWatchingVideo: true, // @TODO: 처음에만 true로 바꿔주고, 나중에는 동작하지 않게 하기
     });
   }
 }
