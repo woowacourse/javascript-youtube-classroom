@@ -37,16 +37,6 @@ const handleSearchModalButtonClick = () => {
   videoView.refreshVideoScreen();
 };
 
-const handleSaveVideoButtonClick = (video) => {
-  try {
-    Validator.checkFullOfDatabase();
-
-    Helper.saveVideo(video);
-  } catch ({ message }) {
-    alert(message);
-  }
-};
-
 const handleSwitchUnseenButtonClick = _.pipe(
   Helper.loadVideo,
   _.filter((video) => !video.checked),
@@ -58,6 +48,17 @@ const handleSwitchSeenButtonClick = _.pipe(
   _.filter((video) => video.checked),
   seenVideoListView.renderScreenByVideos.bind(seenVideoListView),
 );
+
+const handleSaveVideoButtonClick = (video) => {
+  try {
+    Validator.checkFullOfDatabase();
+
+    Helper.saveVideo(video);
+    handleSwitchUnseenButtonClick();
+  } catch ({ message }) {
+    alert(message);
+  }
+};
 
 const runApp = () => {
   keywordInputView.bindSubmitKeyword(handleKeywordInputSubmit);
