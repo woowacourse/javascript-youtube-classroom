@@ -123,7 +123,7 @@ export default class HomeView {
   deleteVideo(e) {
     const target = e.target.parentNode.parentNode;
     showElement($('#confirm-container'));
-    $('.confirm-dimmer').addEventListener('click', this.closeConfirmModal);
+    $('#confirm-dimmer').addEventListener('click', this.closeConfirmModal);
     $('#yes-button').addEventListener('click', () => this.onClickYesButton(target));
     $('#no-button').addEventListener('click', this.closeConfirmModal);
   }
