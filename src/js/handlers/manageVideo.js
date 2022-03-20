@@ -4,14 +4,14 @@ import { renderSavedVideos, renderNoSaved } from '../views/savedVideoList.js';
 
 let isVideoState = true;
 
-const changedVideoList = (changedData) => {
-  storage.setLocalStorage(changedData);
-  if (changedData.length === 0) {
+const changedVideoList = (videoList) => {
+  storage.setLocalStorage(videoList);
+  if (videoList.length === 0) {
     renderNoSaved();
     storage.resetLocalStorage();
     return;
   }
-  renderSavedVideos(isVideoState, changedData);
+  renderSavedVideos(isVideoState, videoList);
 };
 
 const selectedVideoData = (videoItem) => {
@@ -34,20 +34,20 @@ export const handleSaveVideo = (selectedButton) => {
 };
 
 export const handleDeleteVideo = (selectedVideoId) => {
-  const deletedData = storage
+  const deletedVideoList = storage
     .getLocalStorage()
     .filter((video) => video.videoId !== selectedVideoId);
-  changedVideoList(deletedData);
+  changedVideoList(deletedVideoList);
 };
 
 export const handleWatchedVideo = (selectedVideoId) => {
-  const savedVideos = storage.getLocalStorage();
-  savedVideos.forEach((video) => {
+  const changedVideosState = storage.getLocalStorage().map((video) => {
     if (video.videoId === selectedVideoId) {
       video.unseen = !video.unseen;
     }
+    return video;
   });
-  changedVideoList(savedVideos);
+  changedVideoList(changedVideosState);
 };
 
 export const handleWatchedContent = () => {
