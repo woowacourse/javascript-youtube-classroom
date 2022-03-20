@@ -74,10 +74,19 @@ export default class AppView {
 
     for (const video of savedVideos) {
       if (video.saw) {
+        this.$isEmptySaw.classList.add('hide');
         this.$sawList.insertAdjacentHTML('beforeend', this.template.getSavedVideo(video));
         continue;
       }
+      this.$isEmptyWillSee.classList.add('hide');
       this.$willSeeList.insertAdjacentHTML('beforeend', this.template.getSavedVideo(video));
+    }
+
+    if (this.$willSeeList.childElementCount === 0) {
+      this.$isEmptyWillSee.classList.remove('hide');
+    }
+    if (this.$sawList.childElementCount === 0) {
+      this.$isEmptySaw.classList.remove('hide');
     }
   }
 }
