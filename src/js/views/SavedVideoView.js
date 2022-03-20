@@ -46,13 +46,13 @@ export default class SavedVideoView {
   }
 
   #makeSavedVideoListTemplate(kind, videos) {
-    const findSameKindVideos = videos.filter((video) => this.#isValidVideo(kind, video.watched));
-    if (findSameKindVideos.length === 0) {
+    const sameKindVideos = videos.filter((video) => this.#isValidVideo(kind, video.watched));
+    if (sameKindVideos.length === 0) {
       this.#setEmptyListDesign(kind, 'add');
       return `<li>해당 영상이 없습니다.</li>`;
     }
     this.#setEmptyListDesign(kind, 'remove');
-    return findSameKindVideos
+    return sameKindVideos
       .map(
         (video) =>
           `<li class="video-item">
