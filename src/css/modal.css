@@ -67,6 +67,7 @@
   height: 36px;
   background: #00bcd4;
   color: #ffffff;
+<<<<<<< HEAD
 }
 #search-input-clear-button {
   position: absolute;
@@ -88,6 +89,10 @@
   border-radius: 50%;
 }
 
+=======
+}
+
+>>>>>>> kangyunho1221
 #no-result {
   display: flex;
   flex-direction: column;
@@ -158,10 +163,13 @@
   font-size: 12px;
   line-height: 23px;
   letter-spacing: 0.5px;
+<<<<<<< HEAD
 }
 
 .button-container {
   float: right;
+=======
+>>>>>>> kangyunho1221
 }
 
 .video-item__save-button {
@@ -169,6 +177,10 @@
   width: 70px;
   height: 30px;
   background: #f9f9f9;
+<<<<<<< HEAD
+=======
+  float: right;
+>>>>>>> kangyunho1221
 }
 
 .video-item__save-button:hover {
@@ -196,18 +208,26 @@
 }
 
 .skeleton .line {
+<<<<<<< HEAD
   height: 12px;
   margin-top: 2px;
 }
 
 .skeleton .pblsh-date {
   width: 80%;
+=======
+  height: 20px;
+  margin: 2px;
+>>>>>>> kangyunho1221
 }
 
 .skeleton .skeleton-button {
   width: 25%;
   height: 25px;
+<<<<<<< HEAD
   margin-top: 5px;
+=======
+>>>>>>> kangyunho1221
   float: right;
 }
 
