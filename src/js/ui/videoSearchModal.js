@@ -4,6 +4,11 @@ import { videoSearchResult } from './videoSearchReulst';
 
 export default class VideoSearchModal {
   constructor() {
+    this.$searchInputKeyword = $('#search-input-keyword');
+    this.$modalContainer = $('.modal-container');
+    this.$searchModalButton = $('#search-modal-button');
+    this.$dimmer = $('.dimmer');
+
     this.addSearchModalButtonClickEvent();
     this.addModalCloseEvent();
     videoSearchForm.preventFormDeafultEvent();
@@ -14,25 +19,25 @@ export default class VideoSearchModal {
   reset() {
     this.toggleShowSearchModal();
     videoSearchResult.resetVideoList();
-    $('#search-input-keyword').value = '';
+    this.$searchInputKeyword.value = '';
   }
 
   toggleShowSearchModal() {
-    $('.modal-container').classList.toggle('hide');
+    this.$modalContainer.classList.toggle('hide');
   }
 
   addSearchModalButtonClickEvent() {
-    $('#search-modal-button').addEventListener('click', () => {
+    this.$searchModalButton.addEventListener('click', () => {
       this.toggleShowSearchModal();
-      $('#search-input-keyword').focus();
+      this.$searchInputKeyword.focus();
     });
   }
 
   addModalCloseEvent() {
-    $('.dimmer').addEventListener('click', e => {
+    this.$dimmer.addEventListener('click', e => {
       this.reset();
     });
-    $('.modal-container').addEventListener('keydown', e => {
+    this.$modalContainer.addEventListener('keydown', e => {
       if (e.key === 'Escape') {
         this.reset();
       }

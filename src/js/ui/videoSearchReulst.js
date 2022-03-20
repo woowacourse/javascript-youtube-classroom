@@ -9,6 +9,9 @@ import { classRoomVideo } from './classRoomVideo';
 
 export const videoSearchResult = {
   $videoList: $('.video-list'),
+  $searchInputKeyword: $('#search-input-keyword'),
+  $willWatchVideoButton: $('#will-watch-video-button'),
+  $watchedVideoButton: $('#watched-video-button'),
 
   searchResultTemplate(items) {
     const savedVideoList = video.getVideoList();
@@ -73,7 +76,7 @@ export const videoSearchResult = {
 
   renderNextVideoList(nextPageToken) {
     skeletonUI.render();
-    requestVideoSearchApi($('#search-input-keyword').value, nextPageToken)
+    requestVideoSearchApi(this.$searchInputKeyword.value, nextPageToken)
       .then(videoData => {
         skeletonUI.remove();
         this.$videoList.insertAdjacentHTML('beforeend', this.searchResultTemplate(videoData.items));
@@ -101,8 +104,8 @@ export const videoSearchResult = {
           e.target.setAttribute('hidden', true);
           classRoomVideo.resetVideoList();
           classRoomVideo.renderVideoList(false);
-          $('#will-watch-video-button').classList.add('highlight');
-          $('#watched-video-button').classList.remove('highlight');
+          this.$willWatchVideoButton.classList.add('highlight');
+          this.$watchedVideoButton.classList.remove('highlight');
           showSnackBar(MESSAGE.SAVE_SUCCESS);
         } catch ({ message }) {
           showSnackBar(message);

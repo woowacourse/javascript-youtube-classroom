@@ -6,8 +6,12 @@ import { showSnackBar } from '../utils/dom';
 
 export default class ClassRoom {
   constructor() {
-    $('#will-watch-video-button').classList.add('highlight');
-    classRoomVideo.resetVideoList();
+    this.$navTab = $('.nav__tab');
+    this.$willWatchVideoButton = $('#will-watch-video-button');
+    this.$watchedVideoButton = $('#watched-video-button');
+    this.$classroomVideoList = $('.classroom-video__list');
+
+    this.$willWatchVideoButton.classList.add('highlight');
     classRoomVideo.renderVideoList(false);
     this.addNavTabButtonEvent();
     this.addVideoCheckButtonEvent();
@@ -15,23 +19,23 @@ export default class ClassRoom {
   }
 
   addNavTabButtonEvent() {
-    $('.nav__tab').addEventListener('click', e => {
+    this.$navTab.addEventListener('click', e => {
       classRoomVideo.resetVideoList();
       e.target.classList.add('highlight');
-      if (e.target === $('#will-watch-video-button')) {
-        $('#watched-video-button').classList.remove('highlight');
+      if (e.target === this.$willWatchVideoButton) {
+        this.$watchedVideoButton.classList.remove('highlight');
         classRoomVideo.resetVideoList();
         classRoomVideo.renderVideoList(false);
         return;
       }
-      $('#will-watch-video-button').classList.remove('highlight');
+      this.$willWatchVideoButton.classList.remove('highlight');
       classRoomVideo.resetVideoList();
       classRoomVideo.renderVideoList(true);
     });
   }
 
   addVideoCheckButtonEvent() {
-    $('.classroom-video__list').addEventListener('click', e => {
+    this.$classroomVideoList.addEventListener('click', e => {
       if (e.target.classList.contains('video-item__check-button')) {
         try {
           const videoId = e.target.dataset.videoId;
@@ -47,13 +51,13 @@ export default class ClassRoom {
   }
 
   addVideoRemoveButtonEvent() {
-    $('.classroom-video__list').addEventListener('click', e => {
+    this.$classroomVideoList.addEventListener('click', e => {
       if (e.target.classList.contains('video-item__remove-button') && confirm(MESSAGE.REMOVE_CONFIRM)) {
         try {
           const videoId = e.target.dataset.videoId;
           video.remove(videoId);
           classRoomVideo.resetVideoList();
-          $('#watched-video-button').classList.contains('highlight')
+          this.$watchedVideoButton.classList.contains('highlight')
             ? classRoomVideo.renderVideoList(true)
             : classRoomVideo.renderVideoList(false);
           showSnackBar(MESSAGE.REMOVE_SUCCESS);

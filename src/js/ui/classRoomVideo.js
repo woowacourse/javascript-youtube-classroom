@@ -4,8 +4,10 @@ import { convertToKoreaLocaleDate } from '../utils/common';
 import emptyImage from '../../assets/images/empty.png';
 
 export const classRoomVideo = {
+  $classroomVideoList: $('.classroom-video__list'),
+
   resetVideoList() {
-    $('.classroom-video__list').replaceChildren();
+    this.$classroomVideoList.replaceChildren();
   },
 
   videoListTemplate(videoList) {
@@ -49,9 +51,8 @@ export const classRoomVideo = {
   },
 
   renderVideoList(isWatched) {
-    const $classroomVideoList = $('.classroom-video__list');
     const filteredVideoList = video.getFilteredVideoList(isWatched);
-    $classroomVideoList.insertAdjacentHTML(
+    this.$classroomVideoList.insertAdjacentHTML(
       'afterbegin',
       filteredVideoList.length > 0 ? this.videoListTemplate(filteredVideoList) : this.emptyVideoListTemplate(),
     );

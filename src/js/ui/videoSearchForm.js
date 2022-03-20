@@ -6,6 +6,7 @@ import { videoSearchResult } from './videoSearchReulst';
 
 export const videoSearchForm = {
   $searchForm: $('#search-form'),
+  $searchInputKeyword: $('#search-input-keyword'),
 
   preventFormDeafultEvent() {
     this.$searchForm.addEventListener('submit', e => {
@@ -14,13 +15,13 @@ export const videoSearchForm = {
   },
 
   addSearchEvent() {
-    this.$searchForm.addEventListener('submit', debounce(this.handleSubmit, 300));
+    this.$searchForm.addEventListener('submit', debounce(this.handleSubmit.bind(this), 300));
   },
 
   handleSubmit() {
     videoSearchResult.resetVideoList();
     skeletonUI.render();
-    requestVideoSearchApi($('#search-input-keyword').value)
+    requestVideoSearchApi(this.$searchInputKeyword.value)
       .then(videoData => {
         videoSearchResult.renderInitialVideoList(videoData);
       })
