@@ -55,6 +55,9 @@
     "resetMocks": false,
     "setupFiles": [
       "jest-localstorage-mock"
+    ],
+    "testPathIgnorePatterns": [
+      "<rootDir>/cypress/"
     ]
   },
   "dependencies": {
