@@ -70,6 +70,14 @@ body {
   border-radius: 0px 4px 4px 0px;
 }
 
-.saved-video-wrapper {
+.saved-video-section {
   height: calc(100vh - 300px);
+}
+
+.saved-videos-result--no-result {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
 }
