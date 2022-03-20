@@ -56,10 +56,8 @@ export default class VideoView {
 
   bindSaveVideo(handler) {
     this.#$container.addEventListener('click', (e) => {
-      const { videoId } = e.target.dataset;
-
-      if (videoId) {
-        handler(videoId);
+      if (e.target.dataset.videoId) {
+        handler({ ...e.target.dataset });
         e.target.classList.add('saved');
       }
     });
@@ -81,9 +79,13 @@ export default class VideoView {
             <h4 class="video-item__title">[Playlist] ${video.title}</h4>
             <p class="video-item__channel-name">${video.channelTitle}</p>
             <p class="video-item__published-date">${video.date}</p>
-            <button data-video-id="${video.id}" class="video-item__save-button button ${
-            video.saved ? 'saved' : ''
-          }">⬇ 저장</button>
+            <button 
+              data-video-id="${video.id}" 
+              data-thumbnail="${video.thumbnail}"
+              data-title="${video.title}"
+              data-channelTitle="${video.channelTitle}"
+              data-date="${video.date}"
+              class="video-item__save-button button ${video.saved ? 'saved' : ''}">⬇ 저장</button>
           </li>`,
       ),
       _.join(''),

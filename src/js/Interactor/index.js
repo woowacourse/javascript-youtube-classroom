@@ -26,11 +26,11 @@ const handleKeywordInputSubmit = (keyword) => {
   }
 };
 
-const handleSaveVideoButtonClick = (videoId) => {
+const handleSaveVideoButtonClick = (video) => {
   try {
     Validator.checkFullOfDatabase();
 
-    Helper.saveVideo(videoId);
+    Helper.saveVideo(video);
   } catch ({ message }) {
     alert(message);
   }
