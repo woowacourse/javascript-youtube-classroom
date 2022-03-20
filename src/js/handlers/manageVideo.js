@@ -50,10 +50,8 @@ export const handleWatchedVideo = (selectedVideoId) => {
   savedVideos.forEach((video) => {
     if (video.videoId === selectedVideoId) {
       if (video.state === 'watched') {
-        // eslint-disable-next-line no-param-reassign
         video.state = 'unseen';
       } else {
-        // eslint-disable-next-line no-param-reassign
         video.state = 'watched';
       }
     }
