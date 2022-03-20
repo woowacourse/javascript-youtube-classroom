@@ -1,12 +1,12 @@
 import { CURRENT_APP_SECTION_VALUE, STATE_STORE_KEY } from '../constants/stateStore';
-import { LOCAL_STORAGE_UTIL_KEY } from '../constants/localStorageUtil';
+import { LOCAL_STORAGE_UTIL_KEYS } from '../constants/localStorageUtil';
 import localStorageUtil from './localStorageUtil';
 
 const getInitialState = () => {
   let initialWatchedVideo = [];
   try {
     initialWatchedVideo = localStorageUtil.getArrayData(
-      LOCAL_STORAGE_UTIL_KEY.WATCHED_VIDEO_LIST_KEY
+      LOCAL_STORAGE_UTIL_KEYS.WATCHED_VIDEO_LIST_KEY
     );
   } catch ({ message }) {
     initialWatchedVideo = [];

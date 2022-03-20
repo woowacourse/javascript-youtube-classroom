@@ -8,7 +8,7 @@ import { API_PATHS } from '../constants/fetcher';
 import localStorageUtil from '../modules/localStorageUtil';
 import { bind } from '../modules/eventFactory';
 import { CUSTOM_EVENT_KEY } from '../constants/events';
-import { LOCAL_STORAGE_UTIL_KEY } from '../constants/localStorageUtil';
+import { LOCAL_STORAGE_UTIL_KEYS } from '../constants/localStorageUtil';
 import { ERROR_MESSAGE } from '../constants/errorMessage';
 import { getCacheData, setCacheData } from '../modules/cacheStore';
 class AppBusiness {
@@ -86,7 +86,7 @@ class AppBusiness {
   onClickSaveButton = async ({ detail: { saveVideoId } }) => {
     try {
       const videoIdList = localStorageUtil.getArrayData(
-        LOCAL_STORAGE_UTIL_KEY.SAVED_VIDEO_LIST_KEY
+        LOCAL_STORAGE_UTIL_KEYS.SAVED_VIDEO_LIST_KEY
       );
 
       if (isMoreThanMaxVideoCount(videoIdList)) {
@@ -96,7 +96,7 @@ class AppBusiness {
 
       const savedVideo = await this.requestVideoById(saveVideoId);
       /** localStorageUtil, stateStore에 정보를 set해준다. */
-      localStorageUtil.setData(LOCAL_STORAGE_UTIL_KEY.SAVED_VIDEO_LIST_KEY, (prev) => [
+      localStorageUtil.setData(LOCAL_STORAGE_UTIL_KEYS.SAVED_VIDEO_LIST_KEY, (prev) => [
         ...prev,
         saveVideoId,
       ]);
@@ -113,7 +113,7 @@ class AppBusiness {
   onLoadTopLevelComponent = async () => {
     try {
       const savedVideoIdList =
-        localStorageUtil.getArrayData(LOCAL_STORAGE_UTIL_KEY.SAVED_VIDEO_LIST_KEY) ?? [];
+        localStorageUtil.getArrayData(LOCAL_STORAGE_UTIL_KEYS.SAVED_VIDEO_LIST_KEY) ?? [];
       setState(STATE_STORE_KEY.IS_SAVED_VIDEO_WAITING, true);
 
       const savedVideoList = await Promise.all(
@@ -148,12 +148,12 @@ class AppBusiness {
       }));
       try {
         const savedVideoIdList = localStorageUtil.getArrayData(
-          LOCAL_STORAGE_UTIL_KEY.SAVED_VIDEO_LIST_KEY
+          LOCAL_STORAGE_UTIL_KEYS.SAVED_VIDEO_LIST_KEY
         );
 
         const newSavedVideoIdList = savedVideoIdList.filter((videoId) => videoId !== savedVideoId);
 
-        localStorageUtil.setData(LOCAL_STORAGE_UTIL_KEY.SAVED_VIDEO_LIST_KEY, newSavedVideoIdList);
+        localStorageUtil.setData(LOCAL_STORAGE_UTIL_KEYS.SAVED_VIDEO_LIST_KEY, newSavedVideoIdList);
       } catch ({ message }) {
         alert(message);
       }
@@ -164,22 +164,22 @@ class AppBusiness {
     const { className } = element;
     try {
       if (isCheckedVideo(className)) {
-        localStorageUtil.setData(LOCAL_STORAGE_UTIL_KEY.WATCHED_VIDEO_LIST_KEY, (prev) =>
+        localStorageUtil.setData(LOCAL_STORAGE_UTIL_KEYS.WATCHED_VIDEO_LIST_KEY, (prev) =>
           prev.filter((videoId) => savedVideoId !== videoId)
         );
         setState(
           STATE_STORE_KEY.WATCHED_VIDEO,
-          localStorageUtil.getArrayData(LOCAL_STORAGE_UTIL_KEY.WATCHED_VIDEO_LIST_KEY)
+          localStorageUtil.getArrayData(LOCAL_STORAGE_UTIL_KEYS.WATCHED_VIDEO_LIST_KEY)
         );
         return;
       }
-      localStorageUtil.setData(LOCAL_STORAGE_UTIL_KEY.WATCHED_VIDEO_LIST_KEY, (prev) => [
+      localStorageUtil.setData(LOCAL_STORAGE_UTIL_KEYS.WATCHED_VIDEO_LIST_KEY, (prev) => [
         ...prev,
         savedVideoId,
       ]);
       setState(
         STATE_STORE_KEY.WATCHED_VIDEO,
-        localStorageUtil.getArrayData(LOCAL_STORAGE_UTIL_KEY.WATCHED_VIDEO_LIST_KEY)
+        localStorageUtil.getArrayData(LOCAL_STORAGE_UTIL_KEYS.WATCHED_VIDEO_LIST_KEY)
       );
     } catch ({ message }) {
       alert(message);
