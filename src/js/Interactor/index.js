@@ -68,6 +68,14 @@ const handleUnseenCheckButtonClick = (id) => {
   handleSwitchUnseenButtonClick();
 };
 
+const handleVideoDeleteButtonClick = (id) => {
+  const videos = Helper.loadVideo();
+
+  videos.splice(Helper.findVideoIndexById(id), 1);
+  Helper.overiteVideos(videos);
+  handleSwitchUnseenButtonClick();
+};
+
 const runApp = () => {
   keywordInputView.bindSubmitKeyword(handleKeywordInputSubmit);
   searchModalView.bindShowModal(handleSearchModalButtonClick);
@@ -75,7 +83,7 @@ const runApp = () => {
   videoView.bindSaveVideo(handleSaveVideoButtonClick);
   switchVideoView.bindSwitchToSeenScreen(handleSwitchSeenButtonClick);
   switchVideoView.bindSwitchToUnseenScreen(handleSwitchUnseenButtonClick);
-  unseenVideoListView.bindClickButtons(handleUnseenCheckButtonClick);
+  unseenVideoListView.bindClickButtons(handleUnseenCheckButtonClick, handleVideoDeleteButtonClick);
   handleSwitchUnseenButtonClick();
 };
 

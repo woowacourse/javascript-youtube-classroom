@@ -8,6 +8,9 @@ const Helper = {
   findVideoById: (id, videos = Database.load(DATABASE_VIDEO_KEY)) =>
     _.find(({ videoId }) => videoId === id, videos),
 
+  findVideoIndexById: (id, videos = Database.load(DATABASE_VIDEO_KEY)) =>
+    videos.findIndex(({ videoId }) => videoId === id),
+
   convertVideoToItem: ({ id, snippet }) => ({
     id: id.videoId,
     thumbnail: snippet.thumbnails.default.url,

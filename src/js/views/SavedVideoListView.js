@@ -1,3 +1,5 @@
+import { CONFIRM_DELETE_MESSAGE } from '../constants/index.js';
+
 export default class SavedVideoListView {
   #$emptyScreen;
 
@@ -8,10 +10,15 @@ export default class SavedVideoListView {
     this.#$container = $container;
   }
 
-  bindClickButtons(checkButtonHandler) {
+  bindClickButtons(checkButtonHandler, deleteButtonHandler) {
     this.#$container.addEventListener('click', (e) => {
       if (e.target.classList[0] === 'video-item__check-button')
         checkButtonHandler(e.target.dataset.videoId);
+      else if (
+        e.target.classList[0] === 'video-item__delete-button' &&
+        confirm(CONFIRM_DELETE_MESSAGE)
+      )
+        deleteButtonHandler(e.target.dataset.videoId);
     });
   }
 

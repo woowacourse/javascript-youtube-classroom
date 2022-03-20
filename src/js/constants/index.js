@@ -24,6 +24,8 @@ export const ERROR_MESSAGE = {
   FULL_OF_DATABASE: `${MAX_DATABASE_CAPACITY}개보다 많이 저장할 수 없습니다.`,
 };
 
+export const CONFIRM_DELETE_MESSAGE = '정말 삭제하시겠습니까?';
+
 export const REDIRECT_SERVER_HOST = {
   REAL: 'https://sad-mcclintock-e1eeea.netlify.app/youtube/v3/search',
   DUMMY: 'https://sad-mcclintock-e1eeea.netlify.app/dummy/youtube/v3/search',
