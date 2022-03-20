@@ -1,6 +1,5 @@
 import { ITEMS_PER_REQUEST, DEVELOP_MODE } from "../constants/constants";
 import mockObject from "../mockObject";
-import handleError from "../utils/handleError";
 
 let isProgressing = false;
 
@@ -47,7 +46,14 @@ export default async function getSearchResult(
     isProgressing = false;
     return data;
   } catch (error) {
-    handleError(error.message);
+    switch (error.message) {
+      case "Failed to fetch":
+        alert("인터넷 연결이 원활하지 않습니다. 잠시 후 다시 시도해주세요.");
+        break;
+      case "":
+        break;
+    }
+
     isProgressing = false;
     return null;
   }
