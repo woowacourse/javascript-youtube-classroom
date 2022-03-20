@@ -44,7 +44,6 @@ describe("나만의 유튜브 강의실 전체 플로우 테스트", () => {
   });
 
   it("보고싶은 영상 찾기 모달창 안에서 검색된 영상이 이미 저장된 영상이라면 저장 버튼이 보이지 않아야 한다.", () => {
-    cy.searchWithKeyword(searchKeyword);
     cy.get(".video-item__save-button").eq(0).should("be.not.visible");
   });
 
