@@ -30,7 +30,12 @@ export default function bindEvents() {
 
   ELEMENTS.VIDEO_LIST.addEventListener('scroll', handleVideoListScroll);
 
-  ELEMENTS.VIDEO_LIST.addEventListener('click', handleSaveVideo);
+  ELEMENTS.VIDEO_LIST.addEventListener('click', (e) => {
+    const isSaveButtonClick = e.target.classList.contains('video-item__save-button');
+    if (isSaveButtonClick) {
+      handleSaveVideo(e.target);
+    }
+  });
 
   $('#search-modal-button').addEventListener('click', toggleModal);
 

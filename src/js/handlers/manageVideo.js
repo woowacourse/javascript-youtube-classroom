@@ -26,13 +26,9 @@ const selectedVideoData = (videoItem) => {
   return videoData;
 };
 
-export const handleSaveVideo = (e) => {
-  const isSaveButtonClick = e.target.classList.contains('video-item__save-button');
-  if (!isSaveButtonClick) {
-    return;
-  }
-  e.target.hidden = true;
-  const videoData = selectedVideoData(e.target.closest('li'));
+export const handleSaveVideo = (selectedButton) => {
+  selectedButton.hidden = true;
+  const videoData = selectedVideoData(selectedButton.closest('li'));
   storage.saveVideo(videoData);
   renderSavedVideos(isVideoState, storage.getLocalStorage());
 };
