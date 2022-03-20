@@ -2,6 +2,8 @@ export const _ = {};
 
 _.nop = Symbol('nop');
 
+_.noop = () => {};
+
 _.curry =
   (f) =>
   (a, ...args) =>

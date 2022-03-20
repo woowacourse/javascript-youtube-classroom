@@ -68,13 +68,13 @@ const handleUnseenCheckButtonClick = (id) => {
   handleSwitchUnseenButtonClick();
 };
 
-const handleVideoDeleteButtonClick = (id) => {
+const handleVideoDeleteButtonClick = _.curry((render, id) => {
   const videos = Helper.loadVideo();
 
   videos.splice(Helper.findVideoIndexById(id), 1);
   Helper.overiteVideos(videos);
-  handleSwitchUnseenButtonClick();
-};
+  render();
+});
 
 const runApp = () => {
   keywordInputView.bindSubmitKeyword(handleKeywordInputSubmit);
@@ -83,7 +83,14 @@ const runApp = () => {
   videoView.bindSaveVideo(handleSaveVideoButtonClick);
   switchVideoView.bindSwitchToSeenScreen(handleSwitchSeenButtonClick);
   switchVideoView.bindSwitchToUnseenScreen(handleSwitchUnseenButtonClick);
-  unseenVideoListView.bindClickButtons(handleUnseenCheckButtonClick, handleVideoDeleteButtonClick);
+  unseenVideoListView.bindClickButtons(
+    handleUnseenCheckButtonClick,
+    handleVideoDeleteButtonClick(handleSwitchUnseenButtonClick),
+  );
+  seenVideoListView.bindClickButtons(
+    _.noop,
+    handleVideoDeleteButtonClick(handleSwitchSeenButtonClick),
+  );
   handleSwitchUnseenButtonClick();
 };
 
