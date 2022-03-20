@@ -113,6 +113,14 @@
   overflow-y: scroll;
 }
 
+.video-list .skeleton {
+  display: none;
+}
+
+.video-list.loading .skeleton {
+  display: block;
+}
+
 .video-item {
   position: relative;
   width: 240px;

@@ -9,23 +9,31 @@ export default class VideoView {
 
   #$emptyScreen;
 
+  #$firstSkeleton;
+
   constructor(videoAPI) {
     this.#$container = $(SELECTOR.VIDEOS);
-    this.#io = intersectionObserver(() => {
-      this.onSkeleton();
+    this.#io = intersectionObserver(
+      () => {
+        this.onSkeleton();
 
-      return _.go(videoAPI(), (videos) => {
-        this.offSkeleton();
-        this.#appendVideos(videos);
+        return _.go(videoAPI(), (videos) => {
+          this.#appendVideos(videos);
+          this.offSkeleton();
 
-        return videos.length ? this.#lastVideoItem() : null;
-      });
-    });
+          return this.#lastVideoItem();
+        });
+      },
+      { root: this.#$container },
+    );
     this.#$emptyScreen = $(SELECTOR.EMPTY_SCREEN);
+    this.#initializeFirstSkeleton();
   }
 
   refreshVideoScreen() {
-    this.#$container.replaceChildren();
+    while (this.#$container.firstChild.classList.value === 'video-item') {
+      this.#$container.firstChild.remove();
+    }
   }
 
   renderScreenByVideos(videos) {
@@ -39,16 +47,11 @@ export default class VideoView {
   }
 
   onSkeleton() {
-    const html = `<div class="skeleton">
-        <div class="image"></div>
-        <p class="line"></p>
-        <p class="line"></p>
-      </div>`.repeat(YOUTUBE_API_REQUEST_COUNT);
-    this.#$container.insertAdjacentHTML('beforeend', html);
+    this.#controllSkeleton('add');
   }
 
   offSkeleton() {
-    this.#$container.querySelectorAll('.skeleton').forEach((node) => node.remove());
+    this.#controllSkeleton('remove');
   }
 
   bindSaveVideo(handler) {
@@ -60,6 +63,10 @@ export default class VideoView {
         e.target.classList.add('saved');
       }
     });
+  }
+
+  #controllSkeleton(order) {
+    this.#$container.classList[order]('loading');
   }
 
   #appendVideos(videos) {
@@ -80,7 +87,7 @@ export default class VideoView {
           </li>`,
       ),
       _.join(''),
-      (html) => this.#$container.insertAdjacentHTML('beforeend', html),
+      (html) => this.#$firstSkeleton.insertAdjacentHTML('beforebegin', html),
     );
   }
 
@@ -89,6 +96,21 @@ export default class VideoView {
   }
 
   #lastVideoItem() {
-    return this.#$container.lastChild;
+    return this.#$container.childNodes[
+      this.#$container.childNodes.length - YOUTUBE_API_REQUEST_COUNT - 1
+    ];
+  }
+
+  #initializeFirstSkeleton() {
+    _.go(
+      `<div class="skeleton">
+        <div class="image"></div>
+        <p class="line"></p>
+        <p class="line"></p>
+      </div>`.repeat(YOUTUBE_API_REQUEST_COUNT),
+      (skeletonsHTML) => this.#$container.insertAdjacentHTML('beforeend', skeletonsHTML),
+    );
+
+    this.#$firstSkeleton = $('.skeleton', this.#$container);
   }
 }

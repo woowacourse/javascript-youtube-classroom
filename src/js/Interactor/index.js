@@ -18,8 +18,8 @@ const handleKeywordInputSubmit = (keyword) => {
     videoView.refreshVideoScreen();
     videoView.onSkeleton();
     _.go(keyword, Helper.searchVideo, (videos) => {
-      videoView.offSkeleton();
       videoView.renderScreenByVideos(videos);
+      videoView.offSkeleton();
     });
   } catch ({ message }) {
     alert(message);
