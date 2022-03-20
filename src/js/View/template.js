@@ -35,8 +35,8 @@ export const template = {
       <h4 class="video-item__title">${title}</h4>
       <p class="video-item__channel-name">${channelName}</p>
       <p class="video-item__published-date">${dateTemplate(publishedDate)}</p>
-      <button id="check-watched-button" class="button icon-button check-icon-button ${watched ? 'selected' : ''}">✅</button>
-      <button id="delete-button" class="button icon-button">🗑️</button>
+      <button class="button icon-button check-watched-button ${watched ? 'selected' : ''}">✅</button>
+      <button class="button icon-button delete-button">🗑️</button>
       </li>
     `,
   failToReadSavedVideo: `<li class="align-center">${ERROR_MESSAGE.FAIL_TO_READ_SAVED_VIDEO_INFO}</li>`,

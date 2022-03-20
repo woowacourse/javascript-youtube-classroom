@@ -12,10 +12,10 @@ export default class SavedVideoListView {
   }
 
   onClickIconButton = (e) => {
-    if (e.target.id === 'check-watched-button') {
+    if (e.target.classList.contains('check-watched-button')) {
       this.onClickCheckWatchedButton(e);
     }
-    if (e.target.id === 'delete-button') {
+    if (e.target.classList.contains('delete-button')) {
       this.onClickDeleteButton(e);
     }
   }
