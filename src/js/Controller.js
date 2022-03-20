@@ -11,14 +11,14 @@ import dummyObject from './dummy/dummyObject.js';
 
 export default class Controller {
   constructor() {
-    this.video = new VideoModel(dummyObject);
+    this.videoModel = new VideoModel(dummyObject);
     this.appView = new AppView();
     this.searchInputView = new SearchInputView();
     this.searchResultView = new SearchResultView();
     this.SearchCloseView = new SearchCloseView();
 
-    this.video.savedVideoItems = this.video.getItemsLocalStorage();
-    this.appView.renderSavedVideo(this.video.getItemsLocalStorage());
+    this.videoModel.savedVideoItems = this.videoModel.getItemsLocalStorage();
+    this.appView.renderSavedVideo(this.videoModel.getItemsLocalStorage());
     this.#subscribeViewEvents();
   }
 
@@ -40,27 +40,27 @@ export default class Controller {
     const { keyword } = event.detail;
 
     try {
-      this.video.keyword = keyword;
+      this.videoModel.keyword = keyword;
     } catch (error) {
       alert(error.message);
       return;
     }
 
     this.searchResultView.showSkeleton();
-    await this.video.fetchYoutubeApi(keyword);
+    await this.videoModel.fetchYoutubeApi(keyword);
 
     try {
-      this.video.setVideoInfo();
+      this.videoModel.setVideoInfo();
     } catch (error) {
       this.searchResultView.removeVideo();
       this.searchResultView.showNotFound();
       return;
     }
 
-    this.video.updateNewVideoItems();
-    this.video.accumulateVideoItems();
+    this.videoModel.updateNewVideoItems();
+    this.videoModel.accumulateVideoItems();
     this.searchResultView.startObserve();
-    this.searchResultView.renderVideo(this.video.newVideoItems);
+    this.searchResultView.renderVideo(this.videoModel.newVideoItems);
   }
 
   async #scrollNextVideos() {
@@ -71,50 +71,50 @@ export default class Controller {
       return;
     }
     this.searchResultView.showSkeleton();
-    await this.video.fetchYoutubeApi(this.video.keyword, this.video.nextPageToken);
+    await this.videoModel.fetchYoutubeApi(this.videoModel.keyword, this.videoModel.nextPageToken);
 
     try {
-      this.video.setVideoInfo();
+      this.videoModel.setVideoInfo();
     } catch (error) {
       return;
     }
-    this.video.updateNewVideoItems();
-    this.video.accumulateVideoItems();
+    this.videoModel.updateNewVideoItems();
+    this.videoModel.accumulateVideoItems();
     this.searchResultView.startObserve();
-    this.searchResultView.renderVideo(this.video.newVideoItems);
+    this.searchResultView.renderVideo(this.videoModel.newVideoItems);
   }
 
   #saveVideo(event) {
     try {
-      checkExceedLimit(this.video.savedVideoItems);
+      checkExceedLimit(this.videoModel.savedVideoItems);
     } catch (error) {
       alert(error.message);
       return;
     }
     this.searchResultView.changeSaveButtonStyle(event.detail.buttonElement);
     const { savedId } = event.detail;
-    this.video.setItemsLocalStorage(savedId);
+    this.videoModel.setItemsLocalStorage(savedId);
   }
 
   #closeModal() {
-    this.video.resetAllVideoItems();
+    this.videoModel.resetAllVideoItems();
     this.searchInputView.resetSearchInputKeyword();
     this.searchResultView.hideModal();
     this.searchResultView.removeVideo();
-    this.appView.renderSavedVideo(this.video.getItemsLocalStorage());
+    this.appView.renderSavedVideo(this.videoModel.getItemsLocalStorage());
   }
 
   #deleteVideo(event) {
     if (checkAnswerYes()) {
-      this.video.deleteVideo(event.detail.deleteVideoId);
-      this.video.updateItemsLocalStorage();
-      this.appView.renderSavedVideo(this.video.getItemsLocalStorage());
+      this.videoModel.deleteVideo(event.detail.deleteVideoId);
+      this.videoModel.updateItemsLocalStorage();
+      this.appView.renderSavedVideo(this.videoModel.getItemsLocalStorage());
     }
   }
 
   #checkSawVideo(event) {
-    this.video.updateSawAttribute(event.detail.sawVideoId);
-    this.video.updateItemsLocalStorage();
-    this.appView.renderSavedVideo(this.video.getItemsLocalStorage());
+    this.videoModel.updateSawAttribute(event.detail.sawVideoId);
+    this.videoModel.updateItemsLocalStorage();
+    this.appView.renderSavedVideo(this.videoModel.getItemsLocalStorage());
   }
 }
