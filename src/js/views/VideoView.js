@@ -25,7 +25,7 @@ export default class VideoView {
   }
 
   refreshVideoScreen() {
-    this.#$container.innerHTML = '';
+    this.#$container.replaceChildren();
   }
 
   renderScreenByVideos(videos) {
