@@ -1,6 +1,6 @@
 import { $ } from './util/dom.js';
 import { ELEMENTS, MESSAGE } from './constants/constants.js';
-import searchResultView from './views/searchResultView.js';
+import { toggleModal } from './views/searchResultView.js';
 import { handleSearch, handleVideoListScroll } from './handlers/searchModal.js';
 import {
   handleSaveVideo,
@@ -32,9 +32,9 @@ export default function bindEvents() {
 
   ELEMENTS.VIDEO_LIST.addEventListener('click', handleSaveVideo);
 
-  $('#search-modal-button').addEventListener('click', searchResultView.toggleModal);
+  $('#search-modal-button').addEventListener('click', toggleModal);
 
-  $('.dimmer').addEventListener('click', searchResultView.toggleModal);
+  $('.dimmer').addEventListener('click', toggleModal);
 
   $('#search-button').addEventListener('click', handleSearch);
 

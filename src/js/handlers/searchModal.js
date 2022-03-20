@@ -1,5 +1,5 @@
 import YoutubeSearch from '../models/YoutubeSearch.js';
-import searchResultView from '../views/searchResultView.js';
+import { resetVideoList, renderSkeletonUI, renderSearchResult } from '../views/searchResultView.js';
 import { isEndOfScroll } from '../util/general.js';
 import { ELEMENTS, VIDEO } from '../constants/constants.js';
 
@@ -16,10 +16,10 @@ export const handleSearch = async () => {
     const searchInput = ELEMENTS.SEARCH_INPUT_KEYWORD.value.trim();
     youtubeSearch.searchTarget = searchInput;
     youtubeSearch.pageToken = '';
-    searchResultView.resetVideoList();
-    searchResultView.renderSkeletonUI();
+    resetVideoList();
+    renderSkeletonUI();
     const response = await youtubeSearch.fetchYoutubeAPI();
-    searchResultView.renderSearchResult(response);
+    renderSearchResult(response);
   } catch (error) {
     alert(error.message);
   }
@@ -27,9 +27,9 @@ export const handleSearch = async () => {
 
 export const handleVideoListScroll = async (e) => {
   if (isEndOfScroll(e.target) && !throttle) {
-    searchResultView.renderSkeletonUI();
+    renderSkeletonUI();
     const response = await youtubeSearch.fetchYoutubeAPI();
-    searchResultView.renderSearchResult(response);
+    renderSearchResult(response);
     const isLastVideos = response.items.length !== 0 && !response.nextPageToken;
     if (isLastVideos) {
       removeScrollEvent();

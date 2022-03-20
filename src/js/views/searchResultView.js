@@ -37,42 +37,44 @@ const template = {
   `,
 };
 
-const searchResultView = {
-  toggleModal() {
-    $('.modal-container').classList.toggle('hide');
-  },
-  resetVideoList() {
-    ELEMENTS.VIDEO_LIST.replaceChildren();
-  },
-  renderSkeletonUI() {
-    ELEMENTS.VIDEO_LIST.insertAdjacentHTML(
-      'beforeEnd',
-      template.skeletonUI.repeat(VIDEO.SEARCH_RESULT_COUNT)
-    );
-  },
-  removeSkeletonUI() {
-    $$('.skeleton').forEach((element) => element.remove());
-  },
-  removeSavedVideoButton() {
-    ELEMENTS.VIDEO_LIST.lastElementChild.lastElementChild.hidden = true;
-  },
-  renderVideoItems({ items }) {
-    const savedStorage = storage.getLocalStorage();
-    items.forEach((item) => {
-      ELEMENTS.VIDEO_LIST.insertAdjacentHTML('beforeEnd', template.videoItem(item));
-      if (savedStorage && savedStorage.find((data) => data.videoId === item.id.videoId)) {
-        this.removeSavedVideoButton();
-      }
-    });
-  },
-  renderSearchResult(videoData) {
-    this.removeSkeletonUI();
-    if (videoData.items.length === 0) {
-      ELEMENTS.VIDEO_LIST.innerHTML = template.noResult;
-      return;
-    }
-    this.renderVideoItems(videoData);
-  },
+const removeSkeletonUI = () => {
+  $$('.skeleton').forEach((element) => element.remove());
 };
 
-export default searchResultView;
+const removeSavedVideoButton = () => {
+  ELEMENTS.VIDEO_LIST.lastElementChild.lastElementChild.hidden = true;
+};
+
+const renderVideoItems = ({ items }) => {
+  const savedStorage = storage.getLocalStorage();
+  items.forEach((item) => {
+    ELEMENTS.VIDEO_LIST.insertAdjacentHTML('beforeEnd', template.videoItem(item));
+    if (savedStorage && savedStorage.find((data) => data.videoId === item.id.videoId)) {
+      removeSavedVideoButton();
+    }
+  });
+};
+
+export const renderSearchResult = (videoData) => {
+  removeSkeletonUI();
+  if (videoData.items.length === 0) {
+    ELEMENTS.VIDEO_LIST.innerHTML = template.noResult;
+    return;
+  }
+  renderVideoItems(videoData);
+};
+
+export const toggleModal = () => {
+  $('.modal-container').classList.toggle('hide');
+};
+
+export const resetVideoList = () => {
+  ELEMENTS.VIDEO_LIST.replaceChildren();
+};
+
+export const renderSkeletonUI = () => {
+  ELEMENTS.VIDEO_LIST.insertAdjacentHTML(
+    'beforeEnd',
+    template.skeletonUI.repeat(VIDEO.SEARCH_RESULT_COUNT)
+  );
+};
