@@ -1,4 +1,4 @@
-import { requestApi } from '../domain/requestApi';
+import { requestVideoSearchApi } from '../domain/requestVideoSearchApi';
 import { debounce } from '../utils/common';
 import { $, showSnackBar } from '../utils/dom';
 import { skeletonUI } from './skeletonUI';
@@ -20,7 +20,7 @@ export const youtubeSearchForm = {
   handleSubmit() {
     youtubeSearchResult.resetVideoList();
     skeletonUI.render();
-    requestApi($('#search-input-keyword').value)
+    requestVideoSearchApi($('#search-input-keyword').value)
       .then(videoData => {
         youtubeSearchResult.renderInitialVideoList(videoData);
       })

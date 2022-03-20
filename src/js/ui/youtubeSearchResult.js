@@ -1,7 +1,7 @@
 import { INTERSECTION_RATIO, MESSAGE } from '../constants';
 import { $, showSnackBar } from '../utils/dom';
-import NoResultImage from '../../assets/images/not_found.png';
-import { requestApi } from '../domain/requestApi';
+import noResultImage from '../../assets/images/not_found.png';
+import { requestVideoSearchApi } from '../domain/requestVideoSearchApi';
 import { convertToKoreaLocaleDate } from '../utils/common';
 import { skeletonUI } from './skeletonUI';
 import { video } from '../domain/video';
@@ -48,7 +48,7 @@ export const youtubeSearchResult = {
     return `
       <div class="no-result">
         <img class="no-result__image"
-          src=${NoResultImage}
+          src=${noResultImage}
           alt="no-result-image"
         >
         <div class="no-result__description">
@@ -73,8 +73,7 @@ export const youtubeSearchResult = {
 
   renderNextVideoList(nextPageToken) {
     skeletonUI.render();
-
-    requestApi($('#search-input-keyword').value, nextPageToken)
+    requestVideoSearchApi($('#search-input-keyword').value, nextPageToken)
       .then(videoData => {
         skeletonUI.remove();
         this.$videoList.insertAdjacentHTML('beforeend', this.searchResultTemplate(videoData.items));
