@@ -93,7 +93,7 @@ export default class SavedVideoView {
       this.#updateSavedVideo();
     }
     if (element.dataset.kind === 'delete') {
-      let checkDelete = confirm(CONFIRM_MESSAGE.CHECK_DELETE);
+      const checkDelete = confirm(CONFIRM_MESSAGE.CHECK_DELETE);
       if (checkDelete) {
         this.#savedVideoData.splice(currentVideoIndex, 1);
         this.#updateSavedVideo();
