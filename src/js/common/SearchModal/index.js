@@ -3,9 +3,10 @@ import { snakeCaseToCamelCase } from '../../utils';
 import { getStorage, STORAGE_KEY, setStorage } from '../../utils/localStorage';
 import VideoCard from '../VideoCard';
 
-const makeVideoInfo = (object, element) => {
+const extractInnerHTML = (object, element) => {
   object[snakeCaseToCamelCase(element.className.replace('video-item__', ''))] =
     element.src ?? element.innerHTML;
+
   return object;
 };
 
@@ -31,7 +32,7 @@ export default class ModalVideoCardContainer {
       const { videoId } = clickedVideo.dataset;
       const videoInfo = Array.from(clickedVideo.children)
         .filter((element) => element.tagName !== 'BUTTON')
-        .reduce((acc, element) => makeVideoInfo(acc, element), { videoId });
+        .reduce((acc, element) => extractInnerHTML(acc, element), { videoId });
 
       setStorage(STORAGE_KEY.WATCH_LATER_VIDEOS, storedVideoIDs.concat(videoInfo));
 
