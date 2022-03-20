@@ -65,6 +65,22 @@
   margin-top: 4px;
 }
 
+.watch-later-video-list {
+  width: 1020px;
+  list-style: none;
+  margin-top: 100px;
+}
+
+.video-item__button_wrapper {
+  text-align: right;
+}
+.video-item__button_wrapper > .button {
+  padding: 5px;
+}
+.video-item__button_wrapper > .button:hover {
+  background-color: #00bbd427;
+}
+
 .video-item__save-button:hover {
   background: #efefef;
 }

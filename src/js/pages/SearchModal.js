@@ -1,6 +1,6 @@
 import { OPTIONS, makeURLQuery, YOUTUBE_URL, fetchVideoList } from '../api';
 import { RULES, THROTTLE_PENDING_MILLISECOND } from '../constants';
-import VideoCardContainer from '../common/SearchModal';
+import SearchModalVideoList from '../common/SearchModal/SearchModalVideoList';
 import throttle from '../utils/throttle';
 import ErrorContainer from '../common/SearchModal/ErrorContainer';
 import { timeFormatter } from '../utils';
@@ -57,7 +57,7 @@ export default class SearchModal {
       throttle(this.scrollHandler, THROTTLE_PENDING_MILLISECOND),
     );
 
-    this.VideoCardContainer = new VideoCardContainer(this.videoList);
+    this.SearchModalVideoList = new SearchModalVideoList(this.videoList);
     this.ErrorContainer = new ErrorContainer(this.noResultDescription);
 
     this.pageToken = '';
@@ -157,7 +157,7 @@ export default class SearchModal {
       const videosRawInfo = await fetchVideoList(URLquery);
       const videos = makeVideoCardProps(videosRawInfo);
 
-      this.VideoCardContainer.setState({ videos });
+      this.SearchModalVideoList.setState({ videos });
 
       this.showSearchResult(videos);
 

@@ -1,4 +1,4 @@
-import MainVideoCardContainer from '../common/Main';
+import MainVideoList from '../common/Main/MainVideoList';
 
 const TAB_BASE_CLASSLIST = 'button nav__button';
 
@@ -12,7 +12,7 @@ export default class Main {
     this.searchModalButton.addEventListener('click', this.openModalHandler);
     this.tabs.addEventListener('click', this.changeTab);
 
-    this.mainVideoCardContainer = new MainVideoCardContainer(this.videoList);
+    this.MainVideoList = new MainVideoList(this.videoList);
     this.focusedTab = 'watch-later-videos';
     this.renderStoredVideoList();
   }
@@ -31,7 +31,7 @@ export default class Main {
   };
 
   renderStoredVideoList() {
-    this.mainVideoCardContainer.setState({ focusedTab: this.focusedTab });
+    this.MainVideoList.setState({ focusedTab: this.focusedTab });
   }
 
   openModalHandler = () => {

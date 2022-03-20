@@ -22,7 +22,7 @@ const EMPTY_VIDEOS_TEMPLATE = `
   영상을 검색 후 저장해 보세요!
 `;
 
-export default class MainVideoCardContainer {
+export default class MainVideoList {
   #state;
 
   constructor(element) {

@@ -10,7 +10,7 @@ const extractInnerHTML = (object, element) => {
   return object;
 };
 
-export default class ModalVideoCardContainer {
+export default class SearchModalVideoList {
   #state;
 
   constructor(element, props) {
@@ -32,7 +32,7 @@ export default class ModalVideoCardContainer {
       const { videoId } = clickedVideo.dataset;
       const videoInfo = Array.from(clickedVideo.children)
         .filter((element) => element.tagName !== 'BUTTON')
-        .reduce((acc, element) => extractInnerHTML(acc, element), { videoId });
+        .reduce((info, element) => extractInnerHTML(info, element), { videoId });
 
       setStorage(STORAGE_KEY.WATCH_LATER_VIDEOS, storedVideoIDs.concat(videoInfo));
 
