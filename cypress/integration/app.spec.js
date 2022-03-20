@@ -47,14 +47,14 @@ describe('e2e test', () => {
       });
   });
 
-  it('사용자가 삭제를 confirm하면 저장된 영상에서 지워져야 한다.', () => {
+  it('사용자가 삭제를 confirm하면 영상이 삭제되고 저장한 영상 없음 화면이 보여야 한다.', () => {
     cy.get('saved-list')
       .find('.video-item__remove-button')
       .first()
       .click()
       .then(() => {
         cy.on('window:confirm', () => true);
-        cy.get('saved-list').find('.video-card').should('have.length', 0);
+        cy.get('no-videos').should('exist');
       });
   });
 });
