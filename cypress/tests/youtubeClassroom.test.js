@@ -1,3 +1,5 @@
+import { ERROR_MESSAGE, GUIDE_MESSAGE } from '../../src/js/constants';
+
 describe('구현 결과가 요구사항과 일치해야 한다.', () => {
   beforeEach(() => {
     cy.visit('/');
@@ -72,7 +74,7 @@ describe('구현 결과가 요구사항과 일치해야 한다.', () => {
 
       // then
       cy.get('#search-form').submit().then(() => {
-        expect(alertStub).to.be.called;
+        expect(alertStub).to.be.calledWith(ERROR_MESSAGE.SEARCH_KEYWORD_MIN_LENGTH);
       });
     });
 
