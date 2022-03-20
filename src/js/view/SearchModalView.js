@@ -9,6 +9,10 @@ export default class SearchModalView {
     this.searchInputKeyword = document.querySelector("#search-input-keyword");
     this.searchResult = document.querySelector(".search-result");
     this.videoList = document.querySelector(".video-list");
+    this.noResultDiv = document.querySelector(".search-result .no-result");
+    this.noResultImage = document.querySelector(
+      "#search-modal-no-result__image"
+    );
   }
 
   openSearchModal() {
@@ -38,18 +42,15 @@ export default class SearchModalView {
   }
 
   renderNoResultPage() {
-    const message = "검색 결과가 없습니다<br />다른 키워드로 검색해보세요";
-
     this.searchResult.removeChild(this.videoList);
     this.searchResult.classList.add("search-result--no-result");
-    this.searchResult.insertAdjacentHTML(
-      "beforeend",
-      this.#noResult(notFountImage, message)
-    );
+    this.noResultDiv.classList.remove("hide");
+    this.noResultImage.src = notFountImage;
   }
 
   renderSearchResult(responseData, videoIdArray) {
     this.unrenderSkeleton();
+    this.noResultDiv.classList.add("hide");
     const videoItemTemplate = this.#videoItems(
       responseData.items,
       videoIdArray
