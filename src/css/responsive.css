@@ -29,6 +29,8 @@
   }
   .search-input__keyword {
     height: 32px;
+    width: 158px;
+    margin-right: 10px;
   }
   .search-modal .search-modal__title {
     font-size: 24px;

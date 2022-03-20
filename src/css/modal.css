@@ -41,28 +41,29 @@
 }
 
 .search-input {
-    display: flex;
-    justify-content: center;
-    margin-bottom: 40px;
+  display: flex;
+  justify-content: center;
+  max-width: 470px;
+  margin: 0px auto 40px auto;
 }
 
 .search-input__keyword {
-    width: 400px;
-    height: 36px;
-    margin-right: 20px;
-    padding: 4px 8px;
-    border: 1px solid #B4B4B4;
-    border-radius: 4px;
+  flex: 1;
+  height: 36px;
+  margin-right: 20px;
+  padding: 4px 8px;
+  border: 1px solid #B4B4B4;
+  border-radius: 4px;
 }
 
 .search-input__keyword::placeholder {
-    color: #8B8B8B;
-    font-size: 16px;
+  color: #8B8B8B;
+  font-size: 16px;
 }
 
 .search-input__search-button {
-    width: 72px;
-    height: 36px;
+  width: 72px;
+  height: 36px;
 }
 
 .search-result {
