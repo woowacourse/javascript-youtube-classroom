@@ -1,6 +1,6 @@
 .video-list {
   width: 100%;
-  height: 380px;
+  height: 340px;
   display: grid;
   grid-template-columns: repeat(1, 250px);
   overflow-y: scroll;
