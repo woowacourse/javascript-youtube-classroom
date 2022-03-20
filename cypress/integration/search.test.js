@@ -1,11 +1,9 @@
 import { API_PATHS } from '../../src/js/constants/fetcher';
 
 describe('사용자는 검색을 통해 영상을 확인할 수 있다.', () => {
-  const baseURL = './index.html';
+  const baseURL = 'http://localhost:9000/';
   beforeEach(() => {
     cy.visit(baseURL);
-
-    console.log('check');
     cy.showModal();
   });
 
