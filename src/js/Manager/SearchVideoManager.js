@@ -1,22 +1,8 @@
-import { EVENT, GUIDE_MESSAGE, MAX_DATA_FETCH_AT_ONCE } from '../constants';
+import { EVENT, GUIDE_MESSAGE } from '../constants';
 import { $ } from '../util';
 import { dispatch } from '../util/event';
+import fetchYoutubeData from '../util/youtubeAPI';
 import { validateSearchKeyword, checkNoUndefinedProperty } from './validation';
-
-const DUMMY_YOUTUBE_API_URL = 'https://elastic-goldstine-10f16a.netlify.app/dummy/youtube/v3/search?';
-const YOUTUBE_API_URL = 'https://elastic-goldstine-10f16a.netlify.app/youtube/v3/search?';
-const WRONG_API_URL = 'https://elastic-goldstine-10f16a.netlify.appppp/search?';
-
-const generateFetchURL = (keyword, nextPageToken) => {
-  const searchParams = new URLSearchParams();
-  searchParams.append('part', 'snippet');
-  searchParams.append('q', keyword);
-  searchParams.append('maxResults', MAX_DATA_FETCH_AT_ONCE);
-  if (nextPageToken) {
-    searchParams.append('pageToken', nextPageToken);
-  }
-  return DUMMY_YOUTUBE_API_URL + searchParams.toString();
-}
 
 export default class SearchVideoManager {
   #keyword;
@@ -61,23 +47,13 @@ export default class SearchVideoManager {
   search() {
     if ( this.#searchState === 'LOADING' ) return;
     this.updateSearchState('LOADING');
-    this.fetchYoutubeData()
+    fetchYoutubeData(this.#keyword, this.#nextPageToken)
       .then((data) => this.processFetchedResult(data))
       .then((fetchedData) => { 
         this.updateSearchState('SUCCESS', { videos: fetchedData });
       }).catch(() => {
         this.updateSearchState('ERROR');
       });
-  }
-
-  fetchYoutubeData() {
-    return fetch(generateFetchURL(this.#keyword, this.#nextPageToken))
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error(response.status);
-        }
-        return response.json();
-      })
   }
 
   processFetchedResult(result) {
