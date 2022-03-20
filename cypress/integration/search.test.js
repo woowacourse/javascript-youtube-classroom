@@ -17,21 +17,4 @@ describe('사용자는 검색을 통해 영상을 확인할 수 있다.', () => 
 
     cy.get('.video-item').should('exist');
   });
-
-  it('빈 검색어를 입력하면 경고창을 확인하게 된다.', () => {
-    const inValidKeyword = ' ';
-
-    const stub = cy.stub();
-
-    cy.interceptAPIRequest(API_PATHS.SEARCH);
-
-    cy.on('window:alert', stub);
-
-    cy.get('#search-input-keyword').type(inValidKeyword);
-    cy.get('#search-button')
-      .click()
-      .then(() => {
-        expect(stub).to.be.called;
-      });
-  });
 });
