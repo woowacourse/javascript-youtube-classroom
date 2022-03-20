@@ -109,13 +109,13 @@
 
   max-width: 1080px;
   max-height: 493px;
-  overflow-y: auto;
+  overflow-y: scroll;
   overflow-x: hidden;
   padding: 0 5px;
 }
 
 .video-list::-webkit-scrollbar {
-  width: 7px;
+  width: 5px;
 }
 .video-list::-webkit-scrollbar-thumb {
   border-radius: 10px;
