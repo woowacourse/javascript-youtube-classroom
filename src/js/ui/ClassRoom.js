@@ -13,58 +13,53 @@ export default class ClassRoom {
 
     this.$willWatchVideoButton.classList.add('highlight');
     classRoomVideo.renderVideoList(false);
-    this.addNavTabButtonEvent();
-    this.addVideoCheckButtonEvent();
-    this.addVideoRemoveButtonEvent();
+
+    this.$navTab.addEventListener('click', this.handleNavTabButtonClick);
+    this.$classroomVideoList.addEventListener('click', this.handleVideoCheckButtonClick);
+    this.$classroomVideoList.addEventListener('click', this.handleVideoRemoveButtonClick);
   }
 
-  addNavTabButtonEvent() {
-    this.$navTab.addEventListener('click', e => {
+  handleNavTabButtonClick = e => {
+    classRoomVideo.resetVideoList();
+    e.target.classList.add('highlight');
+    if (e.target === this.$willWatchVideoButton) {
+      this.$watchedVideoButton.classList.remove('highlight');
       classRoomVideo.resetVideoList();
-      e.target.classList.add('highlight');
-      if (e.target === this.$willWatchVideoButton) {
-        this.$watchedVideoButton.classList.remove('highlight');
+      classRoomVideo.renderVideoList(false);
+      return;
+    }
+    this.$willWatchVideoButton.classList.remove('highlight');
+    classRoomVideo.resetVideoList();
+    classRoomVideo.renderVideoList(true);
+  };
+
+  handleVideoCheckButtonClick = e => {
+    if (e.target.classList.contains('video-item__check-button')) {
+      try {
+        const videoId = e.target.dataset.videoId;
+        video.check(videoId);
         classRoomVideo.resetVideoList();
         classRoomVideo.renderVideoList(false);
-        return;
+        showSnackBar(MESSAGE.CHECK_SUCCESS);
+      } catch {
+        showSnackBar(MESSAGE.CHECK_FAILURE);
       }
-      this.$willWatchVideoButton.classList.remove('highlight');
-      classRoomVideo.resetVideoList();
-      classRoomVideo.renderVideoList(true);
-    });
-  }
+    }
+  };
 
-  addVideoCheckButtonEvent() {
-    this.$classroomVideoList.addEventListener('click', e => {
-      if (e.target.classList.contains('video-item__check-button')) {
-        try {
-          const videoId = e.target.dataset.videoId;
-          video.check(videoId);
-          classRoomVideo.resetVideoList();
-          classRoomVideo.renderVideoList(false);
-          showSnackBar(MESSAGE.CHECK_SUCCESS);
-        } catch {
-          showSnackBar(MESSAGE.CHECK_FAILURE);
-        }
+  handleVideoRemoveButtonClick = e => {
+    if (e.target.classList.contains('video-item__remove-button') && confirm(MESSAGE.REMOVE_CONFIRM)) {
+      try {
+        const videoId = e.target.dataset.videoId;
+        video.remove(videoId);
+        classRoomVideo.resetVideoList();
+        this.$watchedVideoButton.classList.contains('highlight')
+          ? classRoomVideo.renderVideoList(true)
+          : classRoomVideo.renderVideoList(false);
+        showSnackBar(MESSAGE.REMOVE_SUCCESS);
+      } catch {
+        showSnackBar(MESSAGE.REMOVE_FAILURE);
       }
-    });
-  }
-
-  addVideoRemoveButtonEvent() {
-    this.$classroomVideoList.addEventListener('click', e => {
-      if (e.target.classList.contains('video-item__remove-button') && confirm(MESSAGE.REMOVE_CONFIRM)) {
-        try {
-          const videoId = e.target.dataset.videoId;
-          video.remove(videoId);
-          classRoomVideo.resetVideoList();
-          this.$watchedVideoButton.classList.contains('highlight')
-            ? classRoomVideo.renderVideoList(true)
-            : classRoomVideo.renderVideoList(false);
-          showSnackBar(MESSAGE.REMOVE_SUCCESS);
-        } catch {
-          showSnackBar(MESSAGE.REMOVE_FAILURE);
-        }
-      }
-    });
-  }
+    }
+  };
 }
