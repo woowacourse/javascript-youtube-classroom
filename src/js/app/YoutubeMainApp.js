@@ -34,7 +34,25 @@ export default class YoutubeMainApp {
       "click",
       this.#onClickSearchModalButton
     );
+    $(".dimmer").addEventListener("click", this.#onClickDimmer);
   }
+
+  #onClickDimmer = () => {
+    this.#searchInputKeyword.value = "";
+    this.#view.clearModalContainer(this.#videoList);
+    this.#modalContainer.classList.add("hide");
+
+    if (
+      this.#navWatchedVideoButton.classList.contains(
+        "nav__watched-video-button--focused"
+      )
+    ) {
+      this.#view.renderCheckedVideo();
+      return;
+    }
+
+    this.#view.renderSavedVideo();
+  };
 
   #onClickWatchedVideoButton = ({ target }) => {
     target.classList.add("nav__watched-video-button--focused");

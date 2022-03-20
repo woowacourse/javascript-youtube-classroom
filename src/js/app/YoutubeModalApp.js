@@ -12,10 +12,8 @@ import {
 } from "../view/dom";
 
 export default class YoutubeModalApp {
-  #modalContainer = $(".modal-container");
   #videoList = $(".video-list");
   #searchInputKeyword = $("#search-input-keyword");
-  #navWatchedVideoButton = $(".nav__watched-video-button");
   #nextPageToken = "";
   #keyword = "";
   #view;
@@ -28,25 +26,7 @@ export default class YoutubeModalApp {
       throttle(this.#onScrollVideoList, DELAY_TIME)
     );
     $("#search-button").addEventListener("click", this.#onSubmitSearchButton);
-    $(".dimmer").addEventListener("click", this.#onClickDimmer);
   }
-
-  #onClickDimmer = () => {
-    this.#searchInputKeyword.value = "";
-    this.#view.clearModalContainer(this.#videoList);
-    this.#modalContainer.classList.add("hide");
-
-    if (
-      this.#navWatchedVideoButton.classList.contains(
-        "nav__watched-video-button--focused"
-      )
-    ) {
-      this.#view.renderCheckedVideo();
-      return;
-    }
-
-    this.#view.renderSavedVideo();
-  };
 
   #onClickSaveButton = ({ target }) => {
     if (!target.matches(".video-item__save-button")) return;
@@ -74,7 +54,7 @@ export default class YoutubeModalApp {
 
     this.#view.clearModalContainer(this.#videoList);
 
-    this.#view.renderSearchResult({
+    this.#view.renderSkeleton({
       element: this.#videoList,
       position: "beforeend",
       template: generateTemplate.skeleton(),
@@ -92,7 +72,7 @@ export default class YoutubeModalApp {
       return;
     }
 
-    this.#view.renderSearchResult({
+    this.#view.renderSkeleton({
       element: this.#videoList,
       position: "beforeend",
       template: generateTemplate.skeleton(),
@@ -117,7 +97,6 @@ export default class YoutubeModalApp {
       videoStorage.getVideo()
     );
 
-    this.#view.removeChildElements(this.#videoList, $$(".skeleton"));
     this.#view.renderSearchResult({
       element: this.#videoList,
       position: "beforeend",
@@ -142,7 +121,6 @@ export default class YoutubeModalApp {
       videoStorage.getVideo()
     );
 
-    this.#view.removeChildElements(this.#videoList, $$(".skeleton"));
     this.#view.renderSearchResult({
       element: this.#videoList,
       position: "beforeend",

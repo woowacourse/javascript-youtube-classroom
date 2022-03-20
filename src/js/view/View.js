@@ -47,7 +47,12 @@ export default class View {
     );
   }
 
+  renderSkeleton({ element, position, template }) {
+    element.insertAdjacentHTML(position, template);
+  }
+
   renderSearchResult({ element, position, template }) {
+    this.removeChildElements(element, $$(".skeleton"));
     element.insertAdjacentHTML(position, template);
   }
 
