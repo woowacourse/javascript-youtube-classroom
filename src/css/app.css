@@ -128,7 +128,7 @@ body {
   letter-spacing: 0.5px;
 }
 
-.video-item__save-button {
+.video-save-button {
   position: absolute;
   right: 0;
   width: 80px;
@@ -137,7 +137,7 @@ body {
   margin-top: 4px;
 }
 
-.video-item__save-button:hover {
+.video-save-button:hover {
   background: #efefef;
 }
 

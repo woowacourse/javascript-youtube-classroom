@@ -25,7 +25,7 @@ export default class SearchResultView {
 
   onClickVideoSaveButton = (e) => {
     const { target } = e
-    if (target.id === 'save-button') {
+    if (target.classList.contains('video-save-button')) {
       const video = target.parentNode.dataset;
       if ( this.saveVideoManager.saveVideo(video) === RESULT.SUCCESS ) {
         target.remove();

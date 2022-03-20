@@ -22,7 +22,7 @@ describe('구현 결과가 요구사항과 일치해야 한다.', () => {
       cy.get('.video-item').first().as('firstVideo');
     })
     cy.get('@firstVideo').within(() => {
-      cy.get('.video-item__save-button').click();
+      cy.get('.video-save-button').click();
     });
     cy.get('.dimmer').click({force: true});
 
@@ -182,9 +182,9 @@ describe('구현 결과가 요구사항과 일치해야 한다.', () => {
       submitSearchKeywordCorrectly();
       cy.wait('@getSearchResult');
       cy.get('.video-item').first().within(() => {
-        cy.get('.video-item__save-button').click();
+        cy.get('.video-save-button').click();
         // then
-        cy.get('.video-item__save-button').should('not.exist');
+        cy.get('.video-save-button').should('not.exist');
       })
     });
 
