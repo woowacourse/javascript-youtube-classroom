@@ -2,7 +2,7 @@ import { $, $$ } from '../util/dom.js';
 import storage from '../storage/storage.js';
 import { ELEMENTS, VIDEO } from '../constants/constants.js';
 
-const template = {
+const searchTemplate = {
   skeletonUI: `
     <li class="skeleton">
       <div class="image"></div>
@@ -47,14 +47,14 @@ const renderVideoItems = ({ items }) => {
     if (savedStorage && savedStorage.find((data) => data.videoId === item.id.videoId)) {
       item.saved = true;
     }
-    ELEMENTS.VIDEO_LIST.insertAdjacentHTML('beforeEnd', template.videoItem(item));
+    ELEMENTS.VIDEO_LIST.insertAdjacentHTML('beforeEnd', searchTemplate.videoItem(item));
   });
 };
 
 export const renderSearchResult = (videoData) => {
   removeSkeletonUI();
   if (videoData.items.length === 0) {
-    ELEMENTS.VIDEO_LIST.innerHTML = template.noResult;
+    ELEMENTS.VIDEO_LIST.innerHTML = searchTemplate.noResult;
     return;
   }
   renderVideoItems(videoData);
@@ -71,6 +71,6 @@ export const resetVideoList = () => {
 export const renderSkeletonUI = () => {
   ELEMENTS.VIDEO_LIST.insertAdjacentHTML(
     'beforeEnd',
-    template.skeletonUI.repeat(VIDEO.SEARCH_RESULT_COUNT)
+    searchTemplate.skeletonUI.repeat(VIDEO.SEARCH_RESULT_COUNT)
   );
 };

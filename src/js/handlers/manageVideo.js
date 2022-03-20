@@ -1,14 +1,14 @@
 import { ELEMENTS } from '../constants/constants.js';
 import ContentTarget from '../models/ContentTarget.js';
 import storage from '../storage/storage.js';
-import { renderSavedVideos, renderNotSaved } from '../views/savedVideoList.js';
+import { renderSavedVideos, renderNoSaved } from '../views/savedVideoList.js';
 
 const contentTarget = new ContentTarget();
 
 const changedVideoList = (changedData) => {
   storage.setLocalStorage(changedData);
   if (changedData.length === 0) {
-    renderNotSaved();
+    renderNoSaved();
     storage.resetLocalStorage();
     return;
   }
@@ -76,7 +76,7 @@ export const handleUnseenContent = () => {
 export const initSavedVideos = () => {
   const savedVideos = storage.getLocalStorage();
   if (!savedVideos) {
-    renderNotSaved();
+    renderNoSaved();
     return;
   }
   renderSavedVideos(contentTarget.currentTarget, savedVideos);
