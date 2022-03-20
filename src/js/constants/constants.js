@@ -10,4 +10,4 @@ export const ITEMS_PER_REQUEST = 10;
 export const ALLOCATE_FOR_RENDER_PX = 40;
 export const STORAGE_MAX_COUNT = 100;
 
-export const DEVELOP_MODE = false;
+export const DEVELOP_MODE = true;

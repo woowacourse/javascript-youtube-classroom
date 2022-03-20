@@ -1,4 +1,3 @@
-import generateTemplate from "../templates";
 import notFountImage from "../../assets/images/not_found.png";
 
 export default class VideoStorageView {
@@ -8,6 +7,61 @@ export default class VideoStorageView {
     this.noResultDiv = document.querySelector(".no-result");
   }
 
+  savedVideoItem = ({ id, channel, thumbnail, title, date, isWatched }) => {
+    return `<li class="video-item" data-video-id="${id}">
+    <a href="https://www.youtube.com/watch?v=${id}" target="_blank">
+      <img
+        src="${thumbnail}"
+        alt="video-item-thumbnail"
+        class="video-item__thumbnail"
+      />
+      <h4 class="video-item__title">${title}</h4>
+      <p class="video-item__channel-name">${channel}</p>
+      <p class="video-item__published-date">${date}</p>
+    </a>
+    <div class="video-button__wrapper">
+      <button class="video-item__watched-button button ${
+        isWatched ? "selected" : ""
+      }">✅</button>
+      <button class="video-item__delete-button button">🗑️</button>
+    </div>
+  </li>`;
+  };
+
+  #savedVideoItems = (videoStorage, watchedVideoOnly) => {
+    if (watchedVideoOnly) {
+      return videoStorage
+        .map((item) => {
+          return item.isWatched
+            ? this.savedVideoItem({
+                id: item.videoId,
+                channel: item.channel,
+                thumbnail: item.thumbnail,
+                title: item.title,
+                date: item.publishTime,
+                isWatched: item.isWatched,
+              })
+            : "";
+        })
+        .join("");
+    }
+
+    return videoStorage
+      .map((item) => {
+        return item.isWatched
+          ? ""
+          : this.savedVideoItem({
+              id: item.videoId,
+              channel: item.channel,
+              thumbnail: item.thumbnail,
+              title: item.title,
+              date: item.publishTime,
+              isWatched: item.isWatched,
+            });
+      })
+      .join("");
+  };
+
   renderEmptyStorage = () => {
     this.savedVideoList.classList.add("hide");
     this.noResultDiv.classList.remove("hide");
@@ -15,7 +69,7 @@ export default class VideoStorageView {
   };
 
   renderSavedVideo = (videoData, watchedVideoOnly) => {
-    const videoItemTemplate = generateTemplate.savedVideoItems(
+    const videoItemTemplate = this.#savedVideoItems(
       videoData,
       watchedVideoOnly
     );
