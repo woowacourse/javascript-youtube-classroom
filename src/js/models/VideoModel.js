@@ -77,7 +77,6 @@ export default class VideoModel {
     for (let idx = 0; idx < this.#savedVideoItems.length; idx += 1) {
       if (this.#savedVideoItems[idx].videoId === deleteVideoId) {
         this.#savedVideoItems.splice(idx, 1);
-        this.updateItemsLocalStorage();
         return;
       }
     }

@@ -42,6 +42,17 @@ body {
     background-color: var(--nav-hover);
 }
 
+.empty-img {
+    width: 300px;
+    display: block;
+    margin: 0 auto;
+}
+
+h2  {
+    text-align: center;
+    margin-top: 20px;
+}
+
 #will-see-button {
     width: 118px;
     border: 1px solid rgba(0, 0, 0, 0.12);

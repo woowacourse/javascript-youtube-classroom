@@ -12,9 +12,10 @@ export default class AppView {
     this.$willSeeButton = $('#will-see-button');
     this.$sawButton = $('#saw-button');
     this.$willSeeWrapper = $('.will-see-wrapper');
-    this.$isEmpty = $('.is-empty', this.$willSeeWrapper);
+    this.$isEmptyWillSee = $('.is-empty-will-see', this.$willSeeWrapper);
     this.$willSeeList = $('#will-see-list', this.$willSeeWrapper);
     this.$sawWrapper = $('.saw-wrapper');
+    this.$isEmptySaw = $('.is-empty-saw', this.$sawWrapper);
     this.$sawList = $('#saw-list', this.$sawWrapper);
 
     this.#bindEvents();
@@ -62,12 +63,14 @@ export default class AppView {
   }
 
   renderSavedVideo(savedVideos) {
-    if (savedVideos.length === 0) {
-      this.$isEmpty.classList.remove('hide');
-    }
-
     this.$willSeeList.replaceChildren();
     this.$sawList.replaceChildren();
+
+    if (savedVideos.length === 0) {
+      this.$isEmptyWillSee.classList.remove('hide');
+      this.$isEmptySaw.classList.remove('hide');
+      return;
+    }
 
     for (const video of savedVideos) {
       if (video.saw) {

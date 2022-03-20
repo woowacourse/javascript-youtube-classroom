@@ -95,10 +95,13 @@
 - [ ] 실행 가능한 페이지에 접근할 수 있도록 github page 기능을 이용하고, 해당 링크를 PR과 README에 작성한다.
 ## 리팩터링 (issue)
 ### level2 
+- [x] 볼 영상이 아무것도 없을 때 이미지 
+- [ ] 영상 렌더링 되면, 메시지 없애기 + 영상이 하나도 없으면 메시지 생기게 하기 
+- [ ] 테스트 
+
 - [ ] css 변수 지정 
 - [ ] blind
 - [ ] nav 내 li? 
-- [ ] 볼 영상이 아무것도 없을 때 이미지 
 - [ ] handleClickUserButton 리팩터링 
 - [ ] this.video => this.videoModel
 

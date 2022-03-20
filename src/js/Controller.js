@@ -107,6 +107,7 @@ export default class Controller {
   #deleteVideo(event) {
     if (checkAnswerYes()) {
       this.video.deleteVideo(event.detail.deleteVideoId);
+      this.video.updateItemsLocalStorage();
       this.appView.renderSavedVideo(this.video.getItemsLocalStorage());
     }
   }
