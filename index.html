@@ -15,13 +15,13 @@
     </header>
     <nav class="nav">
       <div class="btn-group video-list-filters">
-        <button class="btn btn-outline" for="watch-later">👁️ 볼 영상</button>
-        <button class="btn btn-outline" for="watched">✅ 본 영상</button>
+        <button class="btn btn-outline" for="watch-later" data-testid="filter-for-watch-later-video">👁️ 볼 영상</button>
+        <button class="btn btn-outline" for="watched" data-testid="filter-for-watched-video">✅ 본 영상</button>
       </div>
       <button id="search-modal-button" data-testid="open-search-modal-button" class="btn">🔍 검색</button>
     </nav>
     <div class="saved-video-list-container">
-      <ul class="video-list grid col-sm-1 col-md-2 col-lg-3"></ul>
+      <ul class="video-list grid col-sm-1 col-md-2 col-lg-3" data-testid="saved-video-list"></ul>
     </div>
     <div class="no-saved-video">
       <div class="error-emoji"></div>

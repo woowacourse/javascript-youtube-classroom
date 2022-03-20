@@ -57,7 +57,7 @@ export default class App {
     const isWatched = this.storage.cache[video.id].watched;
     const className = isWatched ? 'video-item--watched' : 'video-item--watch-later';
     return `
-      <li class="video-item ${className}" data-video-id="${video.id}">
+      <li class="video-item ${className}" data-video-id="${video.id}" data-testid="saved-video-item">
         <img
           src="${video.thumbnailUrl}"
           alt="video-item-thumbnail" class="video-item__thumbnail" />
@@ -67,7 +67,7 @@ export default class App {
         <div class="video-item__management">
           <button type="button" class="btn btn-square ${
             isWatched ? 'active' : ''
-          }" for="status-change">✅</button>
+          }" for="status-change" data-testid="video-status-change-button">✅</button>
           <button type="button" class="btn btn-square" for="delete">🗑️</button>
         </div>
       </li>`;
