@@ -64,7 +64,7 @@ export default class YoutubeApp {
     }
 
     this.videoStorageView.renderSavedVideo(
-      this.videoStorage.getStorage(),
+      this.videoStorage.getVideos(),
       this.isWatchedVideoOnly
     );
   };
