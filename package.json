@@ -10,6 +10,11 @@
     "build": "webpack",
     "cypress:open": "cypress open"
   },
+  "jest": {
+    "testPathIgnorePatterns": [
+      "cypress"
+    ]
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/KangYunHo1221/javascript-youtube-classroom.git"

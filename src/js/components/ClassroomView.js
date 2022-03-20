@@ -1,4 +1,3 @@
-import { getVideoItemsFromLocalStorage, saveVideoItemToLocalStorage } from '../utils/localStorage.js';
 import { makeThumbnailTemplate, noClassroomContentsTemplate } from '../utils/templates.js';
 import { Classroom } from '../model/Classroom.js';
 
@@ -18,13 +17,15 @@ export class ClassroomView {
     this.contentsContainer.addEventListener('click', this.handleContentsButton);
     this.willSeeVideoButton.addEventListener('click', this.handleWillSeeVideoNav);
     this.alreadyWatchedVideoButton.addEventListener('click', this.handleAlreadyWatchedVideoNav);
+
+    this.handleWillSeeVideoNav();
   }
 
   handleWillSeeVideoNav = async () => {
     this.clearClassroomContentsContainer();
     this.highlightNavButtons(this.willSeeVideoButton);
 
-    this.classroom.videoList = getVideoItemsFromLocalStorage();
+    this.classroom.getVideoItems();
     this.renderContents('watchLater');
     if (this.classroom.hasNoWillSeeVideo()) {
       this.contentsContainer.insertAdjacentHTML('beforeend', noClassroomContentsTemplate());
@@ -35,7 +36,7 @@ export class ClassroomView {
     this.clearClassroomContentsContainer();
     this.highlightNavButtons(this.alreadyWatchedVideoButton);
 
-    this.classroom.videoList = getVideoItemsFromLocalStorage();
+    this.classroom.getVideoItems();
     this.renderContents('alreadyWatched');
     if (this.classroom.hasNoAlreadyWatchVideo()) {
       this.contentsContainer.insertAdjacentHTML('beforeend', noClassroomContentsTemplate());
@@ -62,7 +63,7 @@ export class ClassroomView {
 
   handleContentsButton = (e) => {
     if (e.target.classList.contains('already-watch-button')) {
-      this.moveVideoCardToAlreadyWatchVideo(e);
+      this.toggleAlreadyWatchButton(e);
     }
 
     if (e.target.classList.contains('discard-button')) {
@@ -70,22 +71,28 @@ export class ClassroomView {
     }
   };
 
+  toggleAlreadyWatchButton(e) {
+    if (e.target.classList.contains('clicked')) {
+      this.moveVideoCardToWillSeeVideo(e);
+      return;
+    }
+    this.moveVideoCardToAlreadyWatchVideo(e);
+  }
+
+  moveVideoCardToWillSeeVideo(e) {
+    this.classroom.moveVideoToWillSeeVideoById(e.target.id);
+    e.target.parentNode.parentNode.remove();
+  }
+
   moveVideoCardToAlreadyWatchVideo(e) {
-    this.classroom.videoList.forEach((video) => {
-      if (e.target.id === video.id) {
-        video.watchLater = false;
-        e.target.parentNode.parentNode.remove();
-      }
-    });
-    saveVideoItemToLocalStorage(this.classroom.videoList);
+    this.classroom.moveVideoToAlreadyWatchedVideoById(e.target.id);
+    e.target.parentNode.parentNode.remove();
   }
 
   discardVideoCard(e) {
     if (window.confirm('진짜 지우실?')) {
-      this.classroom.videoList = this.classroom.videoList.filter((video) => video.id !== e.target.id);
+      this.classroom.removeVideoItemByVideoId(e.target.id);
       e.target.parentNode.parentNode.remove();
-
-      saveVideoItemToLocalStorage(this.classroom.videoList);
     }
   }
 

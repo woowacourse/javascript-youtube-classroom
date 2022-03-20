@@ -36,8 +36,8 @@ export class SearchModalView {
 
   handleSearchButton = () => {
     this.initVideoList();
-    this.searchModal.keyword = this.searchInputKeyword.value;
-    this.getDataMatchKeyword(this.searchModal.keyword);
+    this.searchModal.setKeyword(this.searchInputKeyword.value);
+    this.getDataMatchKeyword();
   };
 
   initVideoList() {
@@ -45,9 +45,9 @@ export class SearchModalView {
     this.noResultContainer.replaceChildren();
   }
 
-  async getDataMatchKeyword(keyword) {
+  async getDataMatchKeyword() {
     this.renderSkeleton();
-    this.searchModal.videos = await fetchDataFromKeyword(keyword);
+    await this.searchModal.searchVideos();
     this.removeSkeleton();
 
     if (this.searchModal.hasNoVideoItems()) {
@@ -105,10 +105,7 @@ export class SearchModalView {
   async renderNextPage() {
     this.removePreviousObserver();
     this.renderSkeleton();
-    this.searchModal.videos = await fetchDataFromKeyword(
-      this.searchModal.keyword,
-      this.searchModal.videos.nextPageToken,
-    );
+    await this.searchModal.searchNextPageVideos();
     this.removeSkeleton();
     this.renderThumbnail(this.searchModal.videoItemObjects());
     this.createObserver();

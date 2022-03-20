@@ -1,10 +1,3 @@
-/* https://www.daleseo.com/jest-fn-spy-on/#jestspyon-%EC%82%AC%EC%9A%A9%EB%B2%95 참조
-
-
-spyOn()으로 makeTemplate함수 list items 개수만큼 불러왓는지 확인하기
-alreadyWatch시 watchLater = false로 잘 바꾸는지 확인
-*/
-
 import { dummyData, dummyDataObject, emptyData } from '../mockData.js';
 import { SearchModal } from '../js/model/SearchModal.js';
 
