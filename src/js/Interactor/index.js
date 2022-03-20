@@ -32,6 +32,11 @@ const handleKeywordInputSubmit = (keyword) => {
   }
 };
 
+const handleSearchModalButtonClick = () => {
+  keywordInputView.refreshInput();
+  videoView.refreshVideoScreen();
+};
+
 const handleSaveVideoButtonClick = (video) => {
   try {
     Validator.checkFullOfDatabase();
@@ -56,7 +61,7 @@ const handleSwitchSeenButtonClick = _.pipe(
 
 const runApp = () => {
   keywordInputView.bindSubmitKeyword(handleKeywordInputSubmit);
-  searchModalView.bindShowModal();
+  searchModalView.bindShowModal(handleSearchModalButtonClick);
   searchModalView.bindCloseModal();
   videoView.bindSaveVideo(handleSaveVideoButtonClick);
   switchVideoView.bindSwitchToSeenScreen(handleSwitchSeenButtonClick);

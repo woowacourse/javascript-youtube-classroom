@@ -11,6 +11,10 @@ export default class KeywordInputView {
     this.#$searchForm = $(SELECTOR.SEARCH_FORM);
   }
 
+  refreshInput() {
+    this.#$keywordInput.value = '';
+  }
+
   bindSubmitKeyword(handler) {
     this.#$searchForm.addEventListener('submit', (e) => {
       e.preventDefault();
