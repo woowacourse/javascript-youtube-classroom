@@ -11,6 +11,12 @@ export const UI_ACTION = {
   SELECT_PAGE: 'SELECT_PAGE',
 };
 
+export const LIBRARY_ACTION = {
+  TOGGLE_WATCH_STATUS: 'TOGGLE_WATCH_STATUS',
+  SAVE_VIDEO: 'SAVE_VIDEO',
+  REMOVE_VIDEO: 'REMOVE_VIDEO',
+};
+
 export const NAVIGATION = {
   WATCH_LATER: 'watchLater',
   WATCHED: 'watched',

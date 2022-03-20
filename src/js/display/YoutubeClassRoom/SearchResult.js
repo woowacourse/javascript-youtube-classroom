@@ -7,9 +7,10 @@ import {
   MESSAGE,
   EVENT_TYPE,
   SNACKBAR_TYPE,
+  LIBRARY_ACTION,
 } from '@Constants';
 import YoutubeSearchStore from '@Domain/YoutubeSearchStore';
-import YoutubeSaveStorage from '@Domain/YoutubeSaveStorage';
+import LibraryStore from '@Domain/LibraryStore';
 import notFoundImage from '@Images/not_found.jpeg';
 import SnackBar from '../Share/SnackBar';
 
@@ -52,12 +53,15 @@ export default class SearchResult {
     try {
       const { videoId, videoTitle, videoChanneltitle, videoPublishtime, videoThumbnail } =
         $target.closest('.list-item').dataset;
-
-      YoutubeSaveStorage.addVideo(videoId, {
-        videoTitle,
-        videoChanneltitle,
-        videoPublishtime,
-        videoThumbnail,
+      LibraryStore.dispatch(LIBRARY_ACTION.SAVE_VIDEO, {
+        id: videoId,
+        videoData: {
+          videoTitle,
+          videoChanneltitle,
+          videoPublishtime,
+          videoThumbnail,
+        },
+        watched: false,
       });
       $target.classList.add('hide');
       SnackBar.open(MESSAGE.SAVE_COMPLETE, SNACKBAR_TYPE.ALERT);
@@ -102,7 +106,9 @@ export default class SearchResult {
     return items.map(video => {
       const { videoId } = video.id;
       const { title, channelTitle, publishTime, thumbnails } = video.snippet;
-      const isSaved = YoutubeSaveStorage.hasVideo(videoId);
+      const { videoList } = LibraryStore.getState();
+      const isSaved = videoList.some(({ id }) => id === videoId);
+
       return createElement('LI', {
         dataset: {
           'video-id': videoId,

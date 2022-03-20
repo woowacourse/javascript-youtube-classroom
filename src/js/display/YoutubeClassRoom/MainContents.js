@@ -1,7 +1,7 @@
 import { $, addEvent, createElement } from '@Utils/dom';
-import { getParsedTime } from '@Utils/dataManager';
-import { EVENT_TYPE, NAVIGATION, MESSAGE, SNACKBAR_TYPE } from '@Constants';
-import YoutubeSaveStorage from '@Domain/YoutubeSaveStorage';
+import { getParsedTime, filterVideoByStatus } from '@Utils/dataManager';
+import { EVENT_TYPE, NAVIGATION, MESSAGE, SNACKBAR_TYPE, LIBRARY_ACTION } from '@Constants';
+import LibraryStore from '@Domain/LibraryStore';
 import UIStore from '@Domain/UIStore';
 import notSavedImage from '@Images/not_saved.jpeg';
 import SnackBar from '../Share/SnackBar';
@@ -14,7 +14,7 @@ export default class MainContents {
       id: 'saved-video-list',
     });
     UIStore.addSubscriber(this.render, ['selectedPage']);
-    YoutubeSaveStorage.addSubscriber(this.render);
+    LibraryStore.addSubscriber(this.render);
     this.bindEvents();
     this.render();
   }
@@ -35,14 +35,14 @@ export default class MainContents {
   handleClickRemoveButton = ({ target: $target }) => {
     const { videoId } = $target.closest('.list-item').dataset;
     if (confirm(MESSAGE.CONFIRM_REMOVE_VIDEO)) {
-      YoutubeSaveStorage.removeVideo(videoId);
+      LibraryStore.dispatch(LIBRARY_ACTION.REMOVE_VIDEO, videoId);
       SnackBar.open(MESSAGE.REMOVE_COMPLETE, SNACKBAR_TYPE.ALERT);
     }
   };
 
   handleToggleWatched = ({ target: $target }) => {
     const { videoId } = $target.closest('.list-item').dataset;
-    YoutubeSaveStorage.toggleVideoWatchStatus(videoId);
+    LibraryStore.dispatch(LIBRARY_ACTION.TOGGLE_WATCH_STATUS, videoId);
   };
 
   render = () => {
@@ -50,20 +50,19 @@ export default class MainContents {
     this.$videoList.replaceChildren();
 
     const { selectedPage } = UIStore.getState();
-    const list =
-      selectedPage === NAVIGATION.WATCH_LATER
-        ? YoutubeSaveStorage.getWatchLaterList()
-        : YoutubeSaveStorage.getWatchedList();
+    const { videoList } = LibraryStore.getState();
+    const isWatched = selectedPage === NAVIGATION.WATCHED;
+    const filteredVideoList = filterVideoByStatus(videoList, isWatched);
     const $fragment = document.createDocumentFragment();
 
-    list.length === 0
+    filteredVideoList.length === 0
       ? $fragment.append(this.getNoResults())
-      : $fragment.append(this.getVideoList(list, selectedPage === NAVIGATION.WATCHED));
+      : $fragment.append(this.getVideoList(filteredVideoList, isWatched));
 
     this.container.append($fragment);
   };
 
-  getVideoList(videos, watched) {
+  getVideoList(videos, isWatched) {
     const $listElements = videos.map(({ id, videoData }) => {
       const { videoTitle, videoChanneltitle, videoPublishtime, videoThumbnail } = videoData;
       return createElement('LI', {
@@ -78,7 +77,7 @@ export default class MainContents {
       <p class="list-item__channel-name">${videoChanneltitle}</p>
       <p class="list-item__published-date">${getParsedTime(videoPublishtime)}</p>
       <button id="toggle-watched-button" class="list-item__toggle-button ${
-        watched ? 'watched' : ''
+        isWatched ? 'watched' : ''
       }" type="button"
       aria-label="toggle watch status"
       >✅</button>

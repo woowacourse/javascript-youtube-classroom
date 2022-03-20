@@ -6,3 +6,6 @@ export const getParsedTime = timeString => {
 
 export const uriBuilder = (endPoint, params) =>
   `${endPoint}?${new URLSearchParams(params).toString()}`;
+
+export const filterVideoByStatus = (videos, status) =>
+  videos.filter(({ watched }) => watched === status);
