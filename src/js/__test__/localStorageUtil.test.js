@@ -1,6 +1,6 @@
-import webStore from '../modules/webStore';
+import localStorageUtil from '../modules/localStorageUtil';
 
-describe('webStore 모듈 테스트', () => {
+describe('localStorageUtil 모듈 테스트', () => {
   jest.mock(
     'local-storage',
     () => {
@@ -20,9 +20,9 @@ describe('webStore 모듈 테스트', () => {
     global.localStorage = require('local-storage');
 
     const newVideoId = 'gadsgasdg';
-    webStore.setData('video', (prev) => [...prev, newVideoId]);
+    localStorageUtil.setData('video', (prev) => [...prev, newVideoId]);
 
-    const videoIdList = webStore.getArrayData('video');
+    const videoIdList = localStorageUtil.getArrayData('video');
 
     expect(videoIdList.includes(newVideoId)).toBe(true);
   });
