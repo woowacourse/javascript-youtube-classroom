@@ -15,7 +15,7 @@ module.exports = () => {
       extensions: ['.js', '.css'],
       alias: {
         '@Display': path.resolve(__dirname, 'src/js/display/'),
-        '@Domain': path.resolve(__dirname, 'src/js/domain/'),
+        '@Store': path.resolve(__dirname, 'src/js/Store/'),
         '@Utils': path.resolve(__dirname, 'src/js/utils/'),
         '@Constants': path.resolve(__dirname, 'src/js/constants.js'),
         '@Storage': path.resolve(__dirname, 'src/js/storage/'),

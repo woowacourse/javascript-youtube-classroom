@@ -15,7 +15,7 @@ const reducer = {
     return { ...state, videoList: libraryStorage.read() };
   },
   [LIBRARY_ACTION.SAVE_VIDEO]: (state, item) => {
-    if (this.state.videoList.length >= YOUTUBE_SETTING.MAX_SAVE_NUMBER) {
+    if (state.videoList.length >= YOUTUBE_SETTING.MAX_SAVE_NUMBER) {
       throw new Error(MESSAGE.MAX_SAVE_VIDEO);
     }
     libraryStorage.create(item);

@@ -1,8 +1,8 @@
 import { $, addEvent, createElement } from '@Utils/dom';
 import { getParsedTime, filterVideoByStatus } from '@Utils/dataManager';
 import { EVENT_TYPE, NAVIGATION, MESSAGE, SNACKBAR_TYPE, LIBRARY_ACTION } from '@Constants';
-import LibraryStore from '@Domain/LibraryStore';
-import UIStore from '@Domain/UIStore';
+import LibraryStore from '@Store/LibraryStore';
+import UIStore from '@Store/UIStore';
 import notSavedImage from '@Images/not_saved.jpeg';
 import SnackBar from '../Share/SnackBar';
 

@@ -9,8 +9,8 @@ import {
   SNACKBAR_TYPE,
   LIBRARY_ACTION,
 } from '@Constants';
-import YoutubeSearchStore from '@Domain/YoutubeSearchStore';
-import LibraryStore from '@Domain/LibraryStore';
+import YoutubeSearchStore from '@Store/YoutubeSearchStore';
+import LibraryStore from '@Store/LibraryStore';
 import notFoundImage from '@Images/not_found.jpeg';
 import SnackBar from '../Share/SnackBar';
 

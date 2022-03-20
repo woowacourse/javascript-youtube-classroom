@@ -14,9 +14,9 @@
   },
   "jest": {
     "moduleNameMapper": {
-      "^@Core(.*)$": "<rootDir>/src/js/core$1",
       "^@Constants(.*)$": "<rootDir>/src/js/constants.js",
-      "^@Domain(.*)$": "<rootDir>/src/js/domain$1",
+      "^@Store(.*)$": "<rootDir>/src/js/store$1",
+      "^@Storage(.*)$": "<rootDir>/src/js/storage$1",
       "^@Utils(.*)$": "<rootDir>/src/js/utils$1",
       "^@Images(.*)$": "<rootDir>/src/assets/image$1",
       "^@Api(.*)$": "<rootDir>/src/js/api.js"

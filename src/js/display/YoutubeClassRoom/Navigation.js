@@ -1,6 +1,6 @@
 import { $, addEvent } from '@Utils/dom';
 import { EVENT_TYPE, UI_ACTION, NAVIGATION } from '@Constants';
-import UIStore from '@Domain/UIStore';
+import UIStore from '@Store/UIStore';
 
 export default class Navigation {
   constructor() {
