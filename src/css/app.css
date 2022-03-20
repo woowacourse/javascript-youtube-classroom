@@ -4,8 +4,13 @@ body {
 }
 
 #app {
-  max-width: 1020px;
-  margin: 0 auto;
+  display: absolute;
+  align-items: center;
+  justify-content: center;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }
 
 .classroom-container__title {
@@ -14,6 +19,8 @@ body {
   font-size: 34px;
   line-height: 36px;
   margin-bottom: 64px;
+  width: 100%;
+  white-space: nowrap;
 }
 
 .nav {
@@ -63,6 +70,7 @@ body {
   background: var(--dimmer-bg-color);
   top: 0;
   left: 0;
+  z-index: 98;
 }
 
 .hide {

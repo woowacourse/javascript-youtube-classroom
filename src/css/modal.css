@@ -21,6 +21,7 @@
   border: 1px solid var(--search-modal-border-color);
   border-radius: 4px;
   padding: 50px 30px 32px 30px;
+  min-width: 420px;
 }
 
 .search-modal__title {
@@ -37,6 +38,13 @@
   width: fit-content;
   margin: 0 auto;
   margin-bottom: 45px;
+  width: 100%;
+}
+
+#search-form {
+  width: 100%;
+  display: flex;
+  justify-content: center;
 }
 
 #search-error-message {
@@ -47,7 +55,8 @@
 }
 
 .search-input__keyword {
-  width: 400px;
+  width: 100%;
+  max-width: 420px;
   height: 36px;
   margin-right: 20px;
   padding: 4px 8px;
@@ -94,14 +103,15 @@
 .video-list {
   display: grid;
   grid-template-columns: repeat(auto-fill, 240px);
-  grid-row-gap: 10px;
-  grid-column-gap: 4px;
+  grid-row-gap: 32px;
+  grid-column-gap: 20px;
   justify-content: center;
 
-  max-width: 1040px;
+  max-width: 1080px;
   max-height: 493px;
   overflow-y: auto;
   overflow-x: hidden;
+  padding: 0 5px;
 }
 
 .video-list::-webkit-scrollbar {
@@ -187,23 +197,17 @@
 
 @media only screen and (max-width: 1280px) {
   .video-list {
-    grid-template-columns: repeat(4, 240px);
+    grid-template-columns: repeat(3, 240px);
   }
 }
 
 @media only screen and (max-width: 960px) {
   .video-list {
-    grid-template-columns: repeat(3, 240px);
-  }
-}
-
-@media only screen and (max-width: 600px) {
-  .video-list {
     grid-template-columns: repeat(2, 240px);
   }
 }
 
-@media only screen and (max-width: 400px) {
+@media only screen and (max-width: 600px) {
   .video-list {
     grid-template-columns: repeat(1, 240px);
   }
