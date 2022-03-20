@@ -63,6 +63,7 @@ export default class Home {
     this.toggleFilterButton();
     this.hideToggleVideoList();
     this.currentFilter = 'stored';
+    this.VideoCardContainer.setFilter(this.currentFilter);
   };
 
   showWatchedVideosHandler = () => {
@@ -71,6 +72,7 @@ export default class Home {
     this.toggleFilterButton();
     this.hideToggleVideoList();
     this.currentFilter = 'watched';
+    this.VideoCardContainer.setFilter(this.currentFilter);
   };
 
   openModalHandler = () => {
@@ -93,6 +95,7 @@ export default class Home {
     this.storedVideoFilterButton.classList.add('clicked');
     this.watchedVideoFilterButton.classList.remove('clicked');
     this.currentFilter = 'stored';
+    this.VideoCardContainer.setFilter(this.currentFilter);
 
     this.viewClear();
     this.renderVideoList();

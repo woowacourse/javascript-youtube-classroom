@@ -65,6 +65,23 @@ export default class VideoCardContainer {
 
       const { stored, watched } = getStorageVideos({});
 
+      // switch (filter) {
+      //   case 'stored': {
+      //     const videoItem = stored[`${videoId}`];
+      //     delete stored[`${videoId}`];
+      //     watched[`${videoId}`] = videoItem;
+      //     break;
+      //   }
+      //   case 'watched': {
+      //     const videoItem = watched[`${videoId}`];
+      //     delete watched[`${videoId}`];
+      //     stored[`${videoId}`] = videoItem;
+      //     break;
+      //   }
+      //   default:
+      //     break;
+      // }
+
       if (filter === 'stored') {
         const videoItem = stored[`${videoId}`];
         delete stored[`${videoId}`];
@@ -123,5 +140,9 @@ export default class VideoCardContainer {
   setState(newState) {
     this.#state = { ...this.#state, ...newState };
     this.render();
+  }
+
+  setFilter(filter) {
+    this.#state = { ...this.#state, filter };
   }
 }
