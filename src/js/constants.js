@@ -8,6 +8,7 @@ export const ERROR_MESSAGE = {
   ALREADY_SAVED_VIDEO: '이미 저장된 비디오 입니다.',
   CAN_NOT_UPDATE_ON_NOT_SAVED_VIDEO: '저장된 비디오가 아닙니다. 정보를 업데이트 할 수 없습니다.',
   CAN_NOT_DELETE_ON_NOT_SAVED_VIDEO: '저장된 비디오가 아닙니다. 삭제할 수 없습니다.',
+  FAIL_TO_READ_SAVED_VIDEO_INFO: '저장된 영상 정보를 가져오는데 실패했습니다.',
 };
 
 export const GUIDE_MESSAGE = {

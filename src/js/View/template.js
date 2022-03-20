@@ -1,3 +1,5 @@
+import { ERROR_MESSAGE } from '../constants';
+
 const dateTemplate = (stringDate) => {
   const date = new Date(stringDate);
   return `${date.getFullYear()}년 ${date.getMonth()+1}월 ${date.getDate()}일`;
@@ -37,6 +39,7 @@ export const template = {
       <button id="delete-button" class="button icon-button">🗑️</button>
       </li>
     `,
+  failToReadSavedVideo: `<li class="align-center">${ERROR_MESSAGE.FAIL_TO_READ_SAVED_VIDEO_INFO}</li>`,
   noUnwatchedVideo: '<li class="align-center">볼 영상이 없습니다.</li>',
   noWatchedVideo: '<li class="align-center">본 영상이 없습니다.</li>',
 };

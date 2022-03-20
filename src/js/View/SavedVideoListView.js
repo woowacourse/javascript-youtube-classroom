@@ -1,4 +1,4 @@
-import { EVENT, GUIDE_MESSAGE } from '../constants';
+import { EVENT, GUIDE_MESSAGE, RESULT } from '../constants';
 import { $ } from '../util';
 import { template } from './template';
 
@@ -38,7 +38,11 @@ export default class SavedVideoListView {
   }
 
   updateOnUnwatchedVideoList = (e) => {
-    const { unwatchedVideos } = e.detail;
+    const { response, unwatchedVideos } = e.detail;
+    if ( response !== RESULT.SUCCESS ) {
+      $('#unwatched-video-list').innerHTML = template.failToReadSavedVideo;
+      return;
+    }
     if (unwatchedVideos.length === 0) {
       $('#unwatched-video-list').innerHTML = template.noUnwatchedVideo;
       return;
@@ -48,7 +52,11 @@ export default class SavedVideoListView {
   }
 
   updateOnWatchedVideoList = (e) => {
-    const { watchedVideos } = e.detail;
+    const { response, watchedVideos } = e.detail;
+    if ( response !== RESULT.SUCCESS ) {
+      $('#watched-video-list').innerHTML = template.failToReadSavedVideo;
+      return;
+    }
     if (watchedVideos.length === 0) {
       $('#watched-video-list').innerHTML = template.noWatchedVideo;
       return;

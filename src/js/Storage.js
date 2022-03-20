@@ -7,10 +7,24 @@ export default class Storage {
   #videos;
 
   constructor() {
-    this.#videos = getData('videos') || [];
+    this.#videos = this.#getLocalStorageVideos();
   }
 
   get videos() { return this.#videos; }
+
+  #getLocalStorageVideos() {
+    let videos;
+    try {
+      videos = getData('videos') || [];
+    } catch (err) {
+      videos = 'ERROR';
+    }
+    return videos;
+  }
+
+  #setLocalStorageVideos(videos) {
+    setData('videos', videos);
+  }
 
   saveVideo(video) {
     if (this.findVideoById(video.id)) {
@@ -20,7 +34,7 @@ export default class Storage {
       throw new Error(ERROR_MESSAGE.MAX_VIDEO_SAVE);
     }
     this.#videos.push(video);
-    setData('videos', this.#videos);
+    this.#setLocalStorageVideos(this.#videos);
   }
   
   findVideoById(id) {
@@ -33,7 +47,7 @@ export default class Storage {
       throw new Error(ERROR_MESSAGE.CAN_NOT_UPDATE_ON_NOT_SAVED_VIDEO);
     }
     this.#videos.splice(index, 1, newVideo);
-    setData('videos', this.#videos);
+    this.#setLocalStorageVideos(this.#videos);
   }
   
   deleteVideoById(id) {
@@ -42,7 +56,7 @@ export default class Storage {
       throw new Error(ERROR_MESSAGE.CAN_NOT_DELETE_ON_NOT_SAVED_VIDEO);
     }
     this.#videos.splice(index, 1);
-    setData('videos', this.#videos);
+    this.#setLocalStorageVideos(this.#videos);
   }
 }
 
