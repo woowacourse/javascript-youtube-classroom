@@ -79,7 +79,6 @@
 }
 
 .video-item__watched-button {
-  float: right;
   width: 36px;
   height: 36px;
 }
@@ -89,7 +88,6 @@
 }
 
 .video-item__remove-button {
-  float: right;
   width: 36px;
   height: 36px;
 }
