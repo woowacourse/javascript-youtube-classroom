@@ -18,7 +18,7 @@
         <button class="btn btn-outline" for="watch-later">👁️ 볼 영상</button>
         <button class="btn btn-outline" for="watched">✅ 본 영상</button>
       </div>
-      <button id="search-modal-button" class="btn">🔍 검색</button>
+      <button id="search-modal-button" data-testid="open-search-modal-button" class="btn">🔍 검색</button>
     </nav>
     <div class="saved-video-list-container">
       <ul class="video-list grid col-sm-1 col-md-2 col-lg-3"></ul>
@@ -29,14 +29,14 @@
     </div>
   </main>
   <!-- 1 검색 버튼을 누르면 아래와 같은 검색 모달을 보여줍니다.-->
-  <div class="modal-container hide">
+  <div class="modal-container hide" data-testid="search-modal">
     <div class="dimmer"></div>
     <div class="search-modal" role="dialog" aria-labelledby="search-modal-title">
       <h2 id="search-modal-title" class="search-modal__title">🔍 보고싶은 영상 찾기 🔍</h2>
       <section class="search-input">
         <h3 hidden>검색어 입력</h3>
-        <input id="search-input-keyword" type="text" placeholder="검색" class="search-input__keyword">
-        <button id="search-button" class="btn btn-cyan search-input__search-button">검색</button>
+        <input id="search-input-keyword" data-testid="search-input" type="text" placeholder="검색" class="search-input__keyword">
+        <button id="search-button" data-testid="search-button" class="btn btn-cyan search-input__search-button">검색</button>
       </section>
     </div>
   </div>

@@ -1,4 +1,4 @@
-export const MAX_SAVABLE_VIDEOS_COUNT = 5;
+export const MAX_SAVABLE_VIDEOS_COUNT = 100;
 export const MAX_RENDER_VIDEOS_COUNT = 10;
 export const LOCAL_STORAGE_VIDEO_LIST_KEY = 'local-storage-video-list-key';
 export const VALIDATION_ERROR_NAME = 'ValidationError';

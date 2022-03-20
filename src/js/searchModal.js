@@ -49,14 +49,14 @@ class SearchModal {
       .map(video => {
         const isSavedVideo = hasProperty(this.storage.cache, video.id);
         const disabled = isSavedVideo ? 'disabled' : '';
-        return `<li class="video-item" data-video-id="${video.id}">
+        return `<li class="video-item" data-video-id="${video.id}" data-testid="search-result-video-item">
           <img
             src="${video.thumbnailUrl}"
             alt="video-item-thumbnail" class="video-item__thumbnail" />
           <h4 class="video-item__title">${video.title}</h4>
           <p class="video-item__channel-name">${video.channelTitle}</p>
           <p class="video-item__published-date">${video.publishedAt}</p>
-          '<button ${disabled} class="btn video-item__save-button">⬇ 저장</button>'
+          '<button ${disabled} class="btn video-item__save-button" data-testid="save-video-button">⬇ 저장</button>'
         </li>`;
       })
       .join('');
@@ -128,7 +128,7 @@ class SearchModal {
 
   async requestVideos(query) {
     this.$searchResult.classList.add('loading');
-    const result = await requestYoutubeVideos(`${SERVER_URL}/youtube-search`, {
+    const result = await requestYoutubeVideos(`${SERVER_URL}/dummy`, {
       q: query,
       ...(this.nextPageToken && { pageToken: this.nextPageToken }),
     });

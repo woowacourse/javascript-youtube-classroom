@@ -1,0 +1,8 @@
+{
+  "testFiles": "**/*.spec.js",
+  "screenshotOnRunFailure": false,
+  "video": false,
+  "pluginsFile": false,
+  "supportFile": "./cypress/support",
+  "fixturesFolder": "./cypress/fixtures"
+}
