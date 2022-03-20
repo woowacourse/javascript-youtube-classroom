@@ -4,7 +4,6 @@ describe('구현 결과가 요구사항과 일치해야 한다.', () => {
   const baseURL = 'index.html';
 
   beforeEach(() => {
-    cy.viewport(1500, 1200);
     cy.visit(baseURL);
   });
 
@@ -13,6 +12,7 @@ describe('구현 결과가 요구사항과 일치해야 한다.', () => {
 
     cy.on('window:alert', alertStub);
     cy.get(SELECTOR.SEARCH_MODAL_BUTTON).click();
+
     cy.get(SELECTOR.SEARCH_FORM)
       .submit()
       .then(() => {
@@ -27,11 +27,24 @@ describe('구현 결과가 요구사항과 일치해야 한다.', () => {
     cy.get(SELECTOR.SEARCH_INPUT_KEYWORD).type(keyword);
     cy.get(SELECTOR.SEARCH_FORM).submit();
     cy.get(SELECTOR.MODAL_BACKGROUND).click({ force: true });
+
     cy.get(SELECTOR.SEARCH_MODAL_BUTTON)
       .click()
       .then(() => {
         cy.get(SELECTOR.SEARCH_INPUT_KEYWORD).should('have.value', '');
         cy.get(SELECTOR.VIDEOS).children().should('have.length', YOUTUBE_API_REQUEST_COUNT);
       });
+  });
+
+  it('모달에서 영상을 저장하면, 볼 영상 목록을 업데이트 할 수 있어야 한다.', () => {
+    const keyword = '아놀드';
+
+    cy.get(SELECTOR.SEARCH_MODAL_BUTTON).click();
+    cy.get(SELECTOR.SEARCH_INPUT_KEYWORD).type(keyword);
+    cy.get(SELECTOR.SEARCH_FORM).submit();
+    cy.get('.video-item__save-button').first().click();
+    cy.get(SELECTOR.MODAL_BACKGROUND).click({ force: true });
+
+    cy.get(SELECTOR.UNSEEN_VIDEOS).children().should('have.length', 1);
   });
 });
