@@ -46,9 +46,15 @@ export default class Home {
     this.VideoCardContainer.setState({ videoList, filter: this.currentFilter });
   }
 
-  showStoredVideosHandler = () => {
+  clickedFilterButton() {
+    this.storedVideoFilterButton.classList.toggle('clicked');
+    this.watchedVideoFilterButton.classList.toggle('clicked');
+  }
+
+  showStoredVideosHandler = (e) => {
     if (this.currentFilter === 'stored') return;
 
+    this.clickedFilterButton();
     this.currentFilter = 'stored';
 
     this.viewClear();
@@ -58,6 +64,7 @@ export default class Home {
   showWatchedVideosHandler = () => {
     if (this.currentFilter === 'watched') return;
 
+    this.clickedFilterButton();
     this.currentFilter = 'watched';
 
     this.viewClear();

@@ -40,6 +40,11 @@ body {
   width: 120px;
 }
 
+.clicked {
+  background: var(--nav-clicked-filter-button-bg-color) !important;
+  color: var(--nav-clicked-filter-button-text-color);
+}
+
 #search-modal-button {
   margin-left: auto;
 }

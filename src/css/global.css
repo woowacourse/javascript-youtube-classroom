@@ -17,4 +17,6 @@
   --toast-bg-color: rgba(0, 188, 212);
   --toast-text-color: #ffffff;
   --nav-filter-button-border-color: rgba(0, 0, 0, 0.12);
+  --nav-clicked-filter-button-bg-color: RGB(68, 216, 240);
+  --nav-clicked-filter-button-text-color: #ffffff;
 }
