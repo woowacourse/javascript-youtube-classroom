@@ -1,9 +1,8 @@
 import Component from '../../core/Component.js';
-import VideoCard from './VideoCard.js';
-import SkeletonCard from './SkeletonCard.js';
+import './VideoCard.js';
 import { useStore } from '../../services/VideoService.js';
 
-export default class VideoCardList extends Component {
+class VideoCardList extends Component {
   template() {
     const savedVideos = useStore((state) => state.savedVideos);
     const savedVideosFilter = useStore((state) => state.savedVideosFilter);
@@ -14,22 +13,25 @@ export default class VideoCardList extends Component {
     );
 
     return `
-      ${filteredVideos.map(() => '<div class="video-card"></div>').join('')}
+      ${filteredVideos
+        .map(
+          (video) =>
+            `<saved-card
+              class="video-card"
+              videoId="${video.videoId}"
+              thumbnailUrl="${video.thumbnailUrl}"
+              title="${video.title}"
+              channelTitle="${video.channelTitle}"
+              publishTime="${video.videpublishTimeoId}"
+              watched="${video.watched ?? 'false'}"
+            >
+            </saved-card>`
+        )
+        .join('')}
     `;
   }
-
-  afterMounted() {
-    const savedVideos = useStore((state) => state.savedVideos);
-    const savedVideosFilter = useStore((state) => state.savedVideosFilter);
-    const filteredVideos = savedVideos.filter(
-      (video) =>
-        (!!video.watched && video.watched === savedVideosFilter.watched) ||
-        (!video.watched && !video.watched === savedVideosFilter.watching)
-    );
-    const videoCards = this.target.querySelectorAll('.video-card');
-
-    videoCards.forEach((videoCard, index) => {
-      new VideoCard(videoCard, { video: filteredVideos[index] });
-    });
-  }
 }
+
+customElements.define('saved-list', VideoCardList);
+
+export default VideoCardList;

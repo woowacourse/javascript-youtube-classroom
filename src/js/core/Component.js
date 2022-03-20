@@ -1,14 +1,15 @@
 import { observe } from '../store/Store.js';
 
-export default class Component {
-  target;
+export default class Component extends HTMLElement {
+  constructor(target) {
+    super();
 
-  constructor(target, props) {
-    this.target = target;
-    this.props = props;
     this.setup();
-    this.setEvent();
+  }
 
+  connectedCallback() {
+    this.render();
+    this.setEvent();
     observe(this);
   }
 
@@ -24,7 +25,7 @@ export default class Component {
 
   render() {
     this.beforeMounted();
-    this.target.innerHTML = this.template();
+    this.innerHTML = this.template();
     this.afterMounted();
   }
 
@@ -42,7 +43,7 @@ export default class Component {
   addEvent(eventType, selector, callback) {
     const isTarget = (target) => target.closest(selector);
 
-    this.target.addEventListener(eventType, (event) => {
+    this.addEventListener(eventType, (event) => {
       if (!isTarget(event.target)) return;
 
       event.preventDefault();
@@ -55,6 +56,6 @@ export default class Component {
   }
 
   $(selector) {
-    return this.target.querySelector(selector);
+    return this.querySelector(selector);
   }
 }

@@ -4,7 +4,7 @@ import { throttle } from '../../utils/commons.js';
 import { SUBMIT_WAIT } from '../../config/constants.js';
 import { queryStringValidator, validate } from '../../utils/validator.js';
 
-export default class SearchBar extends Component {
+class SearchBar extends Component {
   template() {
     return `
       <form id="search-form" >
@@ -50,3 +50,7 @@ export default class SearchBar extends Component {
     }
   }
 }
+
+customElements.define('search-bar', SearchBar);
+
+export default SearchBar;

@@ -1,7 +1,7 @@
 import Component from '../../core/Component.js';
 import videoService, { useStore } from '../../services/VideoService.js';
 
-export default class FilterMenu extends Component {
+class FilterMenu extends Component {
   template() {
     const { watching, watched } = useStore((state) => ({
       watching: state.savedVideosFilter.watching,
@@ -28,3 +28,7 @@ export default class FilterMenu extends Component {
     });
   }
 }
+
+customElements.define('filter-menu', FilterMenu);
+
+export default FilterMenu;

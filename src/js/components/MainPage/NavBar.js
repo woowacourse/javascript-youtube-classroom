@@ -1,19 +1,18 @@
 import Component from '../../core/Component.js';
-import FilterMenu from './FilterMenu.js';
+import './FilterMenu.js';
 import videoService from '../../services/VideoService.js';
 
-export default class NavBar extends Component {
+class NavBar extends Component {
   template() {
     return `
-      <div id="filter-menu" class="filter-menu"></div>
-      <button id="search-modal-button" class="button nav__button">
+      <filter-menu class="filter-menu"></filter-menu>
+      <button 
+        id="search-modal-button" 
+        class="button nav__button"
+      >
         🔍 검색
       </button>
     `;
-  }
-
-  afterMounted() {
-    new FilterMenu(this.$('#filter-menu'));
   }
 
   setEvent() {
@@ -22,3 +21,7 @@ export default class NavBar extends Component {
     });
   }
 }
+
+customElements.define('nav-bar', NavBar);
+
+export default NavBar;

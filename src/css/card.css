@@ -23,6 +23,10 @@
   }
 }
 
+.video-item {
+  list-style: none;
+}
+
 .video-item__thumbnail {
   display: block;
   width: 100%;

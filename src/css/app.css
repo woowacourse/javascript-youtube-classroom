@@ -3,7 +3,7 @@ body {
   font-size: 16px;
 }
 
-#main-page {
+main-page {
   max-width: 1020px;
   margin: 0 auto;
 }

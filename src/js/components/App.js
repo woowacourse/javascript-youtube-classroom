@@ -1,22 +1,23 @@
 import Component from '../core/Component.js';
 import { useStore } from '../services/VideoService.js';
-import MainPage from './MainPage/MainPage.js';
-import SearchModal from './SearchModal/SearchModal.js';
+import './MainPage/MainPage.js';
+import './SearchModal/SearchModal.js';
 
-export default class App extends Component {
+class App extends Component {
   template() {
     const isSearchModalOpened = useStore((state) => state.isSearchModalOpened);
 
     return `
-      <main id="main-page" class="classroom-container"></main>
-      <div id="search-modal" class="modal-container ${
-        isSearchModalOpened ? '' : 'hide'
-      }"></div>
+      <main-page class="classroom-container"></main-page>
+      <search-modal
+        class="modal-container
+        ${isSearchModalOpened ? '' : 'hide'}"
+      >
+      </search-modal>
     `;
   }
-
-  afterMounted() {
-    new MainPage(document.querySelector('#main-page'));
-    new SearchModal(document.querySelector('#search-modal'));
-  }
 }
+
+customElements.define('app-wrapper', App);
+
+export default App;

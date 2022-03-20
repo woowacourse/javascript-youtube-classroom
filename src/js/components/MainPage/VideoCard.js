@@ -3,14 +3,17 @@ import videoService from '../../services/VideoService.js';
 import { convertTime } from '../../utils/customDate.js';
 import { COMMON_MESSAGES } from '../../config/constants.js';
 
-export default class VideoCard extends Component {
+class VideoCard extends Component {
   setup() {
-    this.state = { watched: this.props.video.watched ?? false };
+    this.state = { watched: Boolean(this.getAttribute('watched')) ?? false };
   }
 
   template() {
-    const { videoId, thumbnailUrl, title, channelTitle, publishTime } =
-      this.props.video;
+    const videoId = this.getAttribute('videoId');
+    const thumbnailUrl = this.getAttribute('thumbnailUrl');
+    const title = this.getAttribute('title');
+    const channelTitle = this.getAttribute('channelTitle');
+    const publishTime = this.getAttribute('publishTime');
     const { watched } = this.state;
 
     return `
@@ -36,7 +39,7 @@ export default class VideoCard extends Component {
   }
 
   setEvent() {
-    const { videoId } = this.props.video;
+    const videoId = this.getAttribute('videoId');
 
     this.addEvent('click', '.video-item__watched-button', () => {
       videoService.toggleVideoWatched(videoId);
@@ -50,3 +53,7 @@ export default class VideoCard extends Component {
     });
   }
 }
+
+customElements.define('saved-card', VideoCard);
+
+export default VideoCard;

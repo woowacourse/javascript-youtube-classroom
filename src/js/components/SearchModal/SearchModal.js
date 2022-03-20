@@ -1,10 +1,10 @@
 import Component from '../../core/Component.js';
-import SearchBar from './SearchBar.js';
-import SearchResult from './SearchResult.js';
-import NotFound from './NotFound.js';
+import './SearchBar.js';
+import './SearchResult.js';
+import './NotFound.js';
 import videoService, { useStore } from '../../services/VideoService.js';
 
-export default class SearchModal extends Component {
+class SearchModal extends Component {
   template() {
     const { isSearchQuerySubmitted, isNoResult } = useStore((state) => ({
       isSearchQuerySubmitted: state.isSearchQuerySubmitted,
@@ -21,26 +21,16 @@ export default class SearchModal extends Component {
         <h2 id="search-modal-title" class="search-modal__title">
           🔍 보고싶은 영상 찾기 🔍
         </h2>
-        <section id="search-input" class="search-input"></section>
+        <search-bar class="search-input"></search-bar>
         ${
           (isSearchQuerySubmitted &&
             (isNoResult
-              ? '<section id="not-found" class="search-result search-result--no-result"></section>'
-              : '<section id="search-result" class="search-result"></section>')) ||
+              ? '<not-found class="search-result search-result--no-result"></not-found>'
+              : '<search-result class="search-result"></search-result>')) ||
           ''
         }
       </div>
     `;
-  }
-
-  afterMounted() {
-    const { isSearchQuerySubmitted, isNoResult } = videoService.rootStore.state;
-
-    new SearchBar(this.$('#search-input'));
-    isSearchQuerySubmitted &&
-      (isNoResult
-        ? new NotFound(this.$('#not-found'))
-        : new SearchResult(this.$('#search-result')));
   }
 
   setEvent() {
@@ -49,3 +39,7 @@ export default class SearchModal extends Component {
     });
   }
 }
+
+customElements.define('search-modal', SearchModal);
+
+export default SearchModal;

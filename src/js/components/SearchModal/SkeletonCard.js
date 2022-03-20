@@ -1,6 +1,6 @@
 import Component from '../../core/Component.js';
 
-export default class SkeletonCard extends Component {
+class SkeletonCard extends Component {
   template() {
     return `
         <li class="video-item skeleton">
@@ -13,3 +13,7 @@ export default class SkeletonCard extends Component {
       `;
   }
 }
+
+customElements.define('skeleton-card', SkeletonCard);
+
+export default SkeletonCard;

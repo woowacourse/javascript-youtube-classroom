@@ -1,20 +1,19 @@
 import Component from '../../core/Component.js';
-import NavBar from './NavBar.js';
-import VideoCardList from './VideoCardList.js';
+import './NavBar.js';
+import './VideoCardList.js';
 
-export default class MainPage extends Component {
+class MainPage extends Component {
   template() {
     return `
       <h1 class="classroom-container__title">👩🏻‍💻 나만의 유튜브 강의실 👨🏻‍💻</h1>
-      <nav id="nav-bar" class="nav"></nav>
+      <nav-bar class="nav"></nav-bar>
       <section class="saved-video-wrapper">
-        <ul id="saved-video-list" class="video-list"></ul>
+        <saved-list class="video-list"></saved-list>
       </section>
     `;
   }
-
-  afterMounted() {
-    new NavBar(this.$('#nav-bar'));
-    new VideoCardList(this.$('#saved-video-list'));
-  }
 }
+
+customElements.define('main-page', MainPage);
+
+export default MainPage;

@@ -1,7 +1,7 @@
 import Component from '../../core/Component.js';
 import NotFoundImage from '../../../assets/images/not_found.png';
 
-export default class NotFound extends Component {
+class NotFound extends Component {
   template() {
     return `
       <h3 hidden>검색 결과</h3>
@@ -14,3 +14,7 @@ export default class NotFound extends Component {
     `;
   }
 }
+
+customElements.define('not-found', NotFound);
+
+export default NotFound;

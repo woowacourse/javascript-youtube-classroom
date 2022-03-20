@@ -2,10 +2,13 @@ import Component from '../../core/Component.js';
 import videoService, { useStore } from '../../services/VideoService.js';
 import { convertTime } from '../../utils/customDate.js';
 
-export default class VideoCard extends Component {
+class VideoCard extends Component {
   template() {
-    const { videoId, thumbnailUrl, title, channelTitle, publishTime } =
-      this.props.video;
+    const videoId = this.getAttribute('videoId');
+    const thumbnailUrl = this.getAttribute('thumbnailUrl');
+    const title = this.getAttribute('title');
+    const channelTitle = this.getAttribute('channelTitle');
+    const publishTime = this.getAttribute('publishTime');
     const savedVideos = useStore((state) => state.savedVideos);
     const isSaved = savedVideos.map((video) => video.videoId).includes(videoId);
 
@@ -33,12 +36,28 @@ export default class VideoCard extends Component {
   }
 
   setEvent() {
+    const videoId = this.getAttribute('videoId');
+    const thumbnailUrl = this.getAttribute('thumbnailUrl');
+    const title = this.getAttribute('title');
+    const channelTitle = this.getAttribute('channelTitle');
+    const publishTime = this.getAttribute('publishTime');
+
     this.addEvent('click', '.video-item__save-button', () => {
       try {
-        videoService.saveVideo(this.props.video);
+        videoService.saveVideo({
+          videoId,
+          thumbnailUrl,
+          title,
+          channelTitle,
+          publishTime,
+        });
       } catch (err) {
         alert(err);
       }
     });
   }
 }
+
+customElements.define('video-card', VideoCard);
+
+export default VideoCard;
