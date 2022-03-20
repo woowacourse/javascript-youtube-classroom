@@ -84,14 +84,16 @@ class AppBusiness {
   };
 
   onClickSaveButton = async ({ detail: { saveVideoId } }) => {
-    const videoIdList = localStorageUtil.getArrayData(LOCAL_STORAGE_UTIL_KEY.SAVED_VIDEO_LIST_KEY);
-
-    if (isMoreThanMaxVideoCount(videoIdList)) {
-      alert(ERROR_MESSAGE.SAVE_VIDEO_COUNT_OVER);
-      return;
-    }
-
     try {
+      const videoIdList = localStorageUtil.getArrayData(
+        LOCAL_STORAGE_UTIL_KEY.SAVED_VIDEO_LIST_KEY
+      );
+
+      if (isMoreThanMaxVideoCount(videoIdList)) {
+        alert(ERROR_MESSAGE.SAVE_VIDEO_COUNT_OVER);
+        return;
+      }
+
       const savedVideo = await this.requestVideoById(saveVideoId);
       /** localStorageUtil, stateStore에 정보를 set해준다. */
       localStorageUtil.setData(LOCAL_STORAGE_UTIL_KEY.SAVED_VIDEO_LIST_KEY, (prev) => [
@@ -109,9 +111,9 @@ class AppBusiness {
   };
 
   onLoadTopLevelComponent = async () => {
-    const savedVideoIdList =
-      localStorageUtil.getArrayData(LOCAL_STORAGE_UTIL_KEY.SAVED_VIDEO_LIST_KEY) ?? [];
     try {
+      const savedVideoIdList =
+        localStorageUtil.getArrayData(LOCAL_STORAGE_UTIL_KEY.SAVED_VIDEO_LIST_KEY) ?? [];
       setState(STATE_STORE_KEY.IS_SAVED_VIDEO_WAITING, true);
 
       const savedVideoList = await Promise.all(
@@ -144,37 +146,44 @@ class AppBusiness {
         videoList: newSavedVideoList,
         prevVideoListLength: 0,
       }));
+      try {
+        const savedVideoIdList = localStorageUtil.getArrayData(
+          LOCAL_STORAGE_UTIL_KEY.SAVED_VIDEO_LIST_KEY
+        );
 
-      const savedVideoIdList = localStorageUtil.getArrayData(
-        LOCAL_STORAGE_UTIL_KEY.SAVED_VIDEO_LIST_KEY
-      );
+        const newSavedVideoIdList = savedVideoIdList.filter((videoId) => videoId !== savedVideoId);
 
-      const newSavedVideoIdList = savedVideoIdList.filter((videoId) => videoId !== savedVideoId);
-
-      localStorageUtil.setData(LOCAL_STORAGE_UTIL_KEY.SAVED_VIDEO_LIST_KEY, newSavedVideoIdList);
+        localStorageUtil.setData(LOCAL_STORAGE_UTIL_KEY.SAVED_VIDEO_LIST_KEY, newSavedVideoIdList);
+      } catch ({ message }) {
+        alert(message);
+      }
     }
   }
 
   onClickSavedCheckButton({ detail: { savedVideoId, element } }) {
     const { className } = element;
-    if (isCheckedVideo(className)) {
-      localStorageUtil.setData(LOCAL_STORAGE_UTIL_KEY.WATCHED_VIDEO_LIST_KEY, (prev) =>
-        prev.filter((videoId) => savedVideoId !== videoId)
-      );
+    try {
+      if (isCheckedVideo(className)) {
+        localStorageUtil.setData(LOCAL_STORAGE_UTIL_KEY.WATCHED_VIDEO_LIST_KEY, (prev) =>
+          prev.filter((videoId) => savedVideoId !== videoId)
+        );
+        setState(
+          STATE_STORE_KEY.WATCHED_VIDEO,
+          localStorageUtil.getArrayData(LOCAL_STORAGE_UTIL_KEY.WATCHED_VIDEO_LIST_KEY)
+        );
+        return;
+      }
+      localStorageUtil.setData(LOCAL_STORAGE_UTIL_KEY.WATCHED_VIDEO_LIST_KEY, (prev) => [
+        ...prev,
+        savedVideoId,
+      ]);
       setState(
         STATE_STORE_KEY.WATCHED_VIDEO,
         localStorageUtil.getArrayData(LOCAL_STORAGE_UTIL_KEY.WATCHED_VIDEO_LIST_KEY)
       );
-      return;
+    } catch ({ message }) {
+      alert(message);
     }
-    localStorageUtil.setData(LOCAL_STORAGE_UTIL_KEY.WATCHED_VIDEO_LIST_KEY, (prev) => [
-      ...prev,
-      savedVideoId,
-    ]);
-    setState(
-      STATE_STORE_KEY.WATCHED_VIDEO,
-      localStorageUtil.getArrayData(LOCAL_STORAGE_UTIL_KEY.WATCHED_VIDEO_LIST_KEY)
-    );
   }
 
   async requestSearchVideoList(keyword, pageToken) {

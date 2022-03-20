@@ -26,4 +26,12 @@ describe('localStorageUtil 모듈 테스트', () => {
 
     expect(videoIdList.includes(newVideoId)).toBe(true);
   });
+
+  test('data가 JSON.parse가 불가능하다면, 오류를 발생시킨다.', () => {
+    global.localStorage = require('local-storage');
+    localStorage.setItem('testData', 'fdasfasdfsad');
+    expect(() => {
+      localStorageUtil.getArrayData('testData');
+    }).toThrow();
+  });
 });

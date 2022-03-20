@@ -2,25 +2,34 @@ import { CURRENT_APP_SECTION_VALUE, STATE_STORE_KEY } from '../constants/stateSt
 import { LOCAL_STORAGE_UTIL_KEY } from '../constants/localStorageUtil';
 import localStorageUtil from './localStorageUtil';
 
-const getInitialState = () => ({
-  [STATE_STORE_KEY.IS_MODAL_SHOW]: false,
-  [STATE_STORE_KEY.SEARCH_RESULT]: {
-    videoList: [],
-    keyword: null,
-    prevVideoListLength: 0,
-    nextPageToken: null,
-  },
-  [STATE_STORE_KEY.IS_SEARCH_VIDEO_WAITING]: false,
-  [STATE_STORE_KEY.SAVED_VIDEO]: {
-    videoList: [],
-    prevVideoListLength: 0,
-  },
-  [STATE_STORE_KEY.CURRENT_APP_SECTION]: CURRENT_APP_SECTION_VALUE.WATCH,
-  [STATE_STORE_KEY.IS_SAVED_VIDEO_WAITING]: false,
-  [STATE_STORE_KEY.WATCHED_VIDEO]: localStorageUtil.getArrayData(
-    LOCAL_STORAGE_UTIL_KEY.WATCHED_VIDEO_LIST_KEY
-  ),
-});
+const getInitialState = () => {
+  let initialWatchedVideo = [];
+  try {
+    initialWatchedVideo = localStorageUtil.getArrayData(
+      LOCAL_STORAGE_UTIL_KEY.WATCHED_VIDEO_LIST_KEY
+    );
+  } catch ({ message }) {
+    initialWatchedVideo = [];
+    alert(message);
+  }
+  return {
+    [STATE_STORE_KEY.IS_MODAL_SHOW]: false,
+    [STATE_STORE_KEY.SEARCH_RESULT]: {
+      videoList: [],
+      keyword: null,
+      prevVideoListLength: 0,
+      nextPageToken: null,
+    },
+    [STATE_STORE_KEY.IS_SEARCH_VIDEO_WAITING]: false,
+    [STATE_STORE_KEY.SAVED_VIDEO]: {
+      videoList: [],
+      prevVideoListLength: 0,
+    },
+    [STATE_STORE_KEY.CURRENT_APP_SECTION]: CURRENT_APP_SECTION_VALUE.WATCH,
+    [STATE_STORE_KEY.IS_SAVED_VIDEO_WAITING]: false,
+    [STATE_STORE_KEY.WATCHED_VIDEO]: initialWatchedVideo,
+  };
+};
 const getInitialSubcribeList = () => ({
   [STATE_STORE_KEY.IS_MODAL_SHOW]: new Set(),
   [STATE_STORE_KEY.SEARCH_RESULT]: new Set(),
