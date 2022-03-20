@@ -154,7 +154,7 @@ export default class VideoModel {
 
       this.#fetchedVideos = body;
     } catch (error) {
-      console.error(error);
+      return error;
     }
   }
 }
