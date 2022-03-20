@@ -9,13 +9,15 @@ export const videoSearchForm = {
   $searchInputKeyword: $('#search-input-keyword'),
 
   preventFormDeafultEvent() {
-    this.$searchForm.addEventListener('submit', e => {
-      e.preventDefault();
-    });
+    this.$searchForm.addEventListener('submit', this.handleFormDefaultEvent);
   },
 
   addSearchEvent() {
     this.$searchForm.addEventListener('submit', debounce(this.handleSubmit.bind(this), 300));
+  },
+
+  handleFormDefaultEvent(e) {
+    e.preventDefault();
   },
 
   handleSubmit() {
