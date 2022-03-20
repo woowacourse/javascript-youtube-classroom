@@ -28,7 +28,7 @@ describe('검색 모달을 열어 검색하고 동영상을 저장하는 프로�
 
   it('검색어를 입력하고 검색 버튼을 누르면 동영상 리스트가 출력된다', () => {
     cy.fixture('youtube-search-results').then(videos => {
-      cy.intercept('GET', `${SERVER_URL}/dummy?*`, {
+      cy.intercept('GET', `${SERVER_URL}/youtube-search?*`, {
         statusCode: 200,
         body: videos,
       }).as('search-video');

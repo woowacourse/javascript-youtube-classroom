@@ -128,7 +128,7 @@ class SearchModal {
 
   async requestVideos(query) {
     this.$searchResult.classList.add('loading');
-    const result = await requestYoutubeVideos(`${SERVER_URL}/dummy`, {
+    const result = await requestYoutubeVideos(`${SERVER_URL}/youtube-search`, {
       q: query,
       ...(this.nextPageToken && { pageToken: this.nextPageToken }),
     });
