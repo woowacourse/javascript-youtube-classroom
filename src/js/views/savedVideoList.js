@@ -20,7 +20,7 @@ const savedVideoTemplate = (item) => {
 };
 
 export const renderNotSaved = () => {
-  ELEMENTS.SAVED_VIDEO_LIST.innerText = '저장된 동영상이 없습니다.';
+  ELEMENTS.SAVED_VIDEO_LIST.innerHTML = '<li class="no-saved-video">저장된 동영상이 없습니다.<li>';
 };
 
 export const renderSavedVideos = (content, savedVideos) => {
