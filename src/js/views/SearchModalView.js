@@ -1,4 +1,4 @@
-import { $ } from './utils.js';
+import { $ } from '../utils/index.js';
 import { SELECTOR } from '../constants/index.js';
 
 export default class SearchModalView {

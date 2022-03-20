@@ -1,5 +1,6 @@
-import { $, intersectionObserver } from './utils.js';
+import { $, intersectionObserver } from '../utils/index.js';
 import { YOUTUBE_API_REQUEST_COUNT, SELECTOR } from '../constants/index.js';
+import { _ } from '../utils/fx.js';
 
 export default class VideoView {
   #$container;
@@ -10,16 +11,16 @@ export default class VideoView {
 
   constructor(videoAPI) {
     this.#$container = $(SELECTOR.VIDEOS);
-    this.#io = intersectionObserver(
-      async () => {
-        this.onSkeleton();
-        const videos = await videoAPI();
+    this.#io = intersectionObserver(() => {
+      this.onSkeleton();
+
+      return _.go(videoAPI(), (videos) => {
         this.offSkeleton();
         this.#appendVideos(videos);
+
         return videos.length ? this.#lastVideoItem() : null;
-      },
-      { root: this.#$container },
-    );
+      });
+    });
     this.#$emptyScreen = $(SELECTOR.EMPTY_SCREEN);
   }
 
@@ -62,23 +63,25 @@ export default class VideoView {
   }
 
   #appendVideos(videos) {
-    const html = videos
-      .map(
+    _.go(
+      videos,
+      _.map(
         (video) =>
           `<li class="video-item">
-          <img
-            src="${video.thumbnail}"
-            alt="video-item-thumbnail" class="video-item__thumbnail">
-          <h4 class="video-item__title">[Playlist] ${video.title}</h4>
-          <p class="video-item__channel-name">${video.channelTitle}</p>
-          <p class="video-item__published-date">${video.date}</p>
-          <button data-video-id="${video.id}" class="video-item__save-button button ${
+            <img
+              src="${video.thumbnail}"
+              alt="video-item-thumbnail" class="video-item__thumbnail">
+            <h4 class="video-item__title">[Playlist] ${video.title}</h4>
+            <p class="video-item__channel-name">${video.channelTitle}</p>
+            <p class="video-item__published-date">${video.date}</p>
+            <button data-video-id="${video.id}" class="video-item__save-button button ${
             video.saved ? 'saved' : ''
           }">⬇ 저장</button>
-        </li>`,
-      )
-      .join('');
-    this.#$container.insertAdjacentHTML('beforeend', html);
+          </li>`,
+      ),
+      _.join(''),
+      (html) => this.#$container.insertAdjacentHTML('beforeend', html),
+    );
   }
 
   #controllScreen(order) {

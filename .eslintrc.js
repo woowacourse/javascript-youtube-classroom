@@ -10,15 +10,20 @@ module.exports = {
     'prettier/prettier': [
       'error',
       {
-        endOfLine: 'auto', // prettier delete cr 설정 끄기
+        endOfLine: 'auto',
       },
     ],
     'import/extensions': [
       'off',
       {
-        extensions: ['.js'], // import ... from ..js 가능하게 하기
+        extensions: ['.js'],
       },
     ],
+    'no-cond-assign': 'off',
+    'no-return-assign': 'off',
+    'no-param-reassign': 'off',
+    'func-names': 'off',
+    'default-param-last': 'off',
   },
   parserOptions: {
     ecmaVersion: 13,
