@@ -1,12 +1,14 @@
 {
   "scripts": {
-    "test": "jest --watch --no-cache"
+    "test": "jest --watch --no-cache",
+    "cypress:run": "cypress run --browser chrome"
   },
   "devDependencies": {
     "@babel/core": "^7.17.7",
     "@babel/preset-env": "^7.16.11",
     "@babel/preset-typescript": "^7.16.7",
     "babel-jest": "^27.5.1",
+    "cypress": "^9.5.2",
     "eslint": "^8.11.0",
     "eslint-config-airbnb-base": "^15.0.0",
     "eslint-config-prettier": "^8.5.0",
