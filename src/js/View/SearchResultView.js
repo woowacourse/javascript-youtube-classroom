@@ -1,4 +1,4 @@
-import { EVENT } from '../constants';
+import { EVENT, RESULT } from '../constants';
 import { $, $$, debounce } from '../util';
 import { template, MESSAGE } from './template';
 
@@ -27,7 +27,7 @@ export default class SearchResultView {
     const { target } = e
     if (target.id === 'save-button') {
       const video = target.parentNode.dataset;
-      if ( this.saveVideoManager.saveVideo(video) === 'SUCCESS' ) {
+      if ( this.saveVideoManager.saveVideo(video) === RESULT.SUCCESS ) {
         target.remove();
       }
     }

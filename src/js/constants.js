@@ -15,6 +15,11 @@ export const GUIDE_MESSAGE = {
   CONFIRM_DELETE: '정말 삭제하시겠습니까?',
 };
 
+export const RESULT = {
+  SUCCESS: 'SUCCESS',
+  FAIL: 'FAIL',
+}
+
 export const EVENT = {
   UPDATE_SEARCH_STATE: 'updateSearchState',
   UPDATE_SAVED_VIDEO_LIST: 'updateSavedVideoList',

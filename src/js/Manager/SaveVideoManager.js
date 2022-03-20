@@ -1,4 +1,4 @@
-import { EVENT } from '../constants';
+import { EVENT, RESULT } from '../constants';
 import { $ } from '../util';
 import { dispatch } from '../util/event';
 
@@ -16,15 +16,15 @@ export default class SaveVideoManager {
   }
 
   saveVideo(video) {
-    if ( !video ) return 'FAIL';
+    if ( !video ) return RESULT.FAIL;
     try {
       this.storage.saveVideo({ ...video, watched: false })
     } catch (err) {
       alert(err.message);
-      return 'FAIL';
+      return RESULT.FAIL;
     }
     this.updateSavedVideos();
-    return 'SUCCESS';
+    return RESULT.SUCCESS;
   }
 
   changeWatched(videoId) {
