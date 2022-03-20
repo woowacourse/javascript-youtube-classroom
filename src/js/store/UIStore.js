@@ -2,7 +2,7 @@ import { UI_ACTION, NAVIGATION } from '@Constants';
 
 const initialState = {
   isModalOpened: false,
-  selectedPage: NAVIGATION.WATCH_LATER,
+  selectedTab: NAVIGATION.WATCH_LATER,
 };
 
 const reducer = {
@@ -16,7 +16,7 @@ const reducer = {
   }),
   [UI_ACTION.SELECT_PAGE]: (state, page) => ({
     ...state,
-    selectedPage: page,
+    selectedTab: page,
   }),
 };
 

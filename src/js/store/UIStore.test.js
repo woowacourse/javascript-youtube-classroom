@@ -6,7 +6,7 @@ describe('UI 상태 테스트', () => {
     UIStore.dispatch(UI_ACTION.OPEN_MODAL);
     expect(UIStore.getState()).toStrictEqual({
       isModalOpened: true,
-      selectedPage: NAVIGATION.WATCH_LATER,
+      selectedTab: NAVIGATION.WATCH_LATER,
     });
   });
 
@@ -14,7 +14,7 @@ describe('UI 상태 테스트', () => {
     UIStore.dispatch(UI_ACTION.CLOSE_MODAL);
     expect(UIStore.getState()).toStrictEqual({
       isModalOpened: false,
-      selectedPage: NAVIGATION.WATCH_LATER,
+      selectedTab: NAVIGATION.WATCH_LATER,
     });
   });
 
@@ -22,7 +22,7 @@ describe('UI 상태 테스트', () => {
     UIStore.dispatch(UI_ACTION.SELECT_PAGE, NAVIGATION.WATCHED);
     expect(UIStore.getState()).toStrictEqual({
       isModalOpened: false,
-      selectedPage: NAVIGATION.WATCHED,
+      selectedTab: NAVIGATION.WATCHED,
     });
   });
 });

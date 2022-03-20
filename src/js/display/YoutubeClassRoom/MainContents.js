@@ -13,7 +13,7 @@ export default class MainContents {
       className: 'classroom-main__list',
       id: 'saved-video-list',
     });
-    UIStore.addSubscriber(this.render, ['selectedPage']);
+    UIStore.addSubscriber(this.render, ['selectedTab']);
     LibraryStore.addSubscriber(this.render);
     this.bindEvents();
     this.render();
@@ -49,9 +49,9 @@ export default class MainContents {
     this.container.replaceChildren();
     this.$videoList.replaceChildren();
 
-    const { selectedPage } = UIStore.getState();
+    const { selectedTab } = UIStore.getState();
     const { videoList } = LibraryStore.getState();
-    const isWatched = selectedPage === NAVIGATION.WATCHED;
+    const isWatched = selectedTab === NAVIGATION.WATCHED;
     const filteredVideoList = filterVideoByStatus(videoList, isWatched);
     const $fragment = document.createDocumentFragment();
 
