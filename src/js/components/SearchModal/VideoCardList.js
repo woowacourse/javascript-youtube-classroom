@@ -39,7 +39,7 @@ class VideoCardList extends Component {
               thumbnailUrl="${video.thumbnailUrl}"
               title="${video.title}"
               channelTitle="${video.channelTitle}"
-              publishTime="${video.videpublishTimeoId}"
+              publishTime="${video.publishTime}"
             >
             </video-card>`
         )
