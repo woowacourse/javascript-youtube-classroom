@@ -55,28 +55,27 @@ h2  {
 
 #will-see-button {
     width: 118px;
-    border: 1px solid rgba(0, 0, 0, 0.12);
+    border: 1px solid var(--gray-border);
     border-radius: 4px 0px 0px 4px;
 }
 
 #saw-button {
     width: 118px;
     margin-left: -5px;
-    border: 1px solid rgba(0, 0, 0, 0.12);
+    border: 1px solid var(--gray-border);;
     border-radius: 0px 4px 4px 0px;
     border-collapse: collapse;
 }
 
 .clicked {
-    background-color: rgba(0, 188, 212, 0.12);
+    background-color: var( --nav-clicked);
 }
 
 .clicked:hover {
-    background-color: rgba(0, 188, 212, 0.15);
+    background-color: var(--nav-clicked-hover);
 }
 
 .bottom-target {
-    /* visibility: hidden; */
     margin-top: 100px;
     height: 100px;       
 }
@@ -91,7 +90,7 @@ h2  {
     width: 36px;
     height: 36px;
     padding: 6px 2px;
-    background: #F9F9F9;
+    background: var(--user-button);
     border: none;
     border-radius: 4px;
     cursor: pointer;
@@ -100,7 +99,7 @@ h2  {
 
 .user-saw-button:hover, 
 .user-delete-button:hover {
-    background: #F0F0F0;
+    background: var(--user-button-hover);
     animation: shake 0.6s infinite;
 }
 
