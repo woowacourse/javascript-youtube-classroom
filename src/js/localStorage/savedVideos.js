@@ -20,7 +20,7 @@ export default class SavedVideos extends RootLocalStorage {
   }
 
   getWatchedVideo() {
-    return this.cached.filter(video => video.watched === true);
+    return this.cached.filter(video => video.watched);
   }
 
   getWatchedVideoLength() {

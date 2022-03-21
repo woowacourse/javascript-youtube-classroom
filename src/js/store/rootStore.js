@@ -27,11 +27,10 @@ const observable = target => {
   return target;
 };
 
-// flux - 하나의 상태가 변경되면, 모든 컴포넌트를 리렌더링 시켜준다.
 export const rootStore = {
   state: observable({
-    isSearchModalOpened: false, //
-    isLoading: false, // SearchBar, VideoCardList
+    isSearchModalOpened: false,
+    isLoading: false,
     searchOption: {
       query: '',
       pageToken: null,
