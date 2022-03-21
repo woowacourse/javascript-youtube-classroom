@@ -4,7 +4,6 @@ import { addEvent, $ } from '../utils';
 import './MyVideos';
 
 class MyClassroom extends CustomElement {
-  // eslint-disable-next-line max-lines-per-function
   template() {
     return `
       <main id="app" class="classroom-container">
@@ -23,7 +22,6 @@ class MyClassroom extends CustomElement {
     `;
   }
 
-  // eslint-disable-next-line max-lines-per-function
   setEvent() {
     addEvent({
       component: this,

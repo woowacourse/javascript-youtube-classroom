@@ -11,7 +11,6 @@ class SearchResult extends CustomElement {
     SearchVideoStore.instance.subscribe(this);
   }
 
-  // eslint-disable-next-line max-lines-per-function
   template() {
     return `
       <h3 hidden>검색 결과</h3>

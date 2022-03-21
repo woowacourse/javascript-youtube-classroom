@@ -60,7 +60,6 @@ export const debounce = (callback, delay = 500) => {
   };
 };
 
-// eslint-disable-next-line max-lines-per-function
 export const throttle = (callback, delay = 500) => {
   let timerId;
 

@@ -3,7 +3,6 @@ import { debounce, fetchData, on, throttle, $ } from '../utils';
 import { ERROR_MESSAGE, SEARCH_API } from '../constants';
 
 class Search {
-  // eslint-disable-next-line max-lines-per-function
   constructor() {
     this.keyword = '';
     this.nextPageToken = '';
@@ -36,7 +35,6 @@ class Search {
     SearchVideoStore.instance.dispatch(type, this.preprocessor(videos));
   }
 
-  // eslint-disable-next-line max-lines-per-function
   async fetchVideo(keyword) {
     try {
       SEARCH_API.URL.search = this.#generateSearchParams(keyword);

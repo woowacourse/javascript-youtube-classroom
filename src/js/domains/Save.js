@@ -13,7 +13,6 @@ class Save {
     });
   }
 
-  // eslint-disable-next-line max-lines-per-function
   saveVideo(videoId) {
     const myVideos = MyVideoStore.instance.getVideos();
 
