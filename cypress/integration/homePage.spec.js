@@ -13,7 +13,7 @@ describe('홈 화면 기능 테스트', () => {
     cy.get('.no-result__image').should('be.visible');
   });
 
-  it('키워드롤 검색한 영상을 저장하기 버튼을 클릭하면, 👁볼 영상 리스트에 렌더링된다', () => {
+  it('키워드롤 검색한 영상을 저장하기 버튼을 클릭하면, 👁볼 영상 리스트에 렌더링된다.', () => {
     const keyword = '지피티 구독자';
 
     cy.get('#search-modal-button').click();
@@ -25,8 +25,19 @@ describe('홈 화면 기능 테스트', () => {
         cy.get('.video-item__save-button').eq(0).click();
         cy.get('.video-item__save-button').eq(0).should('have.text', '저장 됨');
       });
-    cy.get('.dimmer').click({ force: true });
-    cy.get('.video-item').should('be.visible');
+
+    cy.get('.modal-video-list > .video-item')
+      .eq(0)
+      .invoke('attr', 'data-video-id')
+      .then((videoId) => {
+        const modalVideoId = videoId;
+
+        cy.get('.dimmer').click({ force: true });
+
+        cy.get('.watch-later-video-list > .video-item')
+          .invoke('attr', 'data-video-id')
+          .should('eq', modalVideoId);
+      });
   });
 
   it('👁볼 영상 리스트에서 렌더링 된 영상을 ✅버튼 클릭시, ✅본 영상 리스트로 옮겨진다.', () => {
@@ -43,10 +54,19 @@ describe('홈 화면 기능 테스트', () => {
       });
     cy.get('.dimmer').click({ force: true });
 
-    cy.get('.video-item__watch_button').eq(0).click();
+    cy.get('.watch-later-video-list > .video-item')
+      .eq(0)
+      .invoke('attr', 'data-video-id')
+      .then((videoId) => {
+        const watchLaterVideoId = videoId;
 
-    cy.get('#watched-tab-menu-button').click();
-    cy.get('.watched-video-list').should((list) => expect(list).to.have.length(1));
+        cy.get('.video-item__watch_button').eq(0).click();
+        cy.get('#watched-tab-menu-button').click();
+
+        cy.get('.watched-video-list > .video-item')
+          .invoke('attr', 'data-video-id')
+          .should('eq', watchLaterVideoId);
+      });
   });
 
   it('✅본 영상 리스트에서 렌더링 된 영상을 ✅버튼 클릭시, 👁볼 영상 리스트로 옮겨진다.', () => {
@@ -66,10 +86,21 @@ describe('홈 화면 기능 테스트', () => {
     cy.get('.video-item__watch_button').eq(0).click();
 
     cy.get('#watched-tab-menu-button').click();
-    cy.get('.video-item__watch_button').eq(0).click();
 
-    cy.get('#watch-later-tab-menu-button').click();
-    cy.get('.watch-later-video-list').should((list) => expect(list).to.have.length(1));
+    cy.get('.watched-video-list > .video-item')
+      .eq(0)
+      .invoke('attr', 'data-video-id')
+      .then((videoId) => {
+        const watchedVideoId = videoId;
+
+        cy.get('.video-item__watch_button').eq(0).click();
+        cy.get('#watch-later-tab-menu-button').click();
+
+        cy.get('.watch-later-video-list > .video-item')
+          .eq(0)
+          .invoke('attr', 'data-video-id')
+          .should('eq', watchedVideoId);
+      });
   });
 
   it('영상 리스트에서 렌더링 된 영상을 🗑버튼 클릭시, 해당 영상을 삭제할 수 있다.', () => {
@@ -88,6 +119,7 @@ describe('홈 화면 기능 테스트', () => {
 
     cy.get('.video-item__delete_button').eq(0).click();
     cy.on('window:confirm', () => true);
+
     cy.get('.video-item').should('not.be.visible');
   });
 });
