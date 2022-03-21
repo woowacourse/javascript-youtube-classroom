@@ -70,7 +70,6 @@ class SearchModal {
       .join('');
     const $firstSkeleton = this.$videoList.querySelector('.skeleton');
     $firstSkeleton.insertAdjacentHTML('beforebegin', videoListTemplate);
-
     const lastVideoItem = $('.video-item.skeleton', this.$videoList).previousSibling;
     setTimeout(() => {
       this.observer.observe(lastVideoItem);
@@ -141,7 +140,7 @@ class SearchModal {
       ...(this.nextPageToken && { pageToken: this.nextPageToken }),
     });
     this.$searchResult.classList.remove('loading');
-    if (result === null) return null;
+    if (result === null || result.items.length === 0) return null;
     this.nextPageToken = result.nextPageToken ?? null;
     const videos = result.items.map(item => {
       const { id } = item;
