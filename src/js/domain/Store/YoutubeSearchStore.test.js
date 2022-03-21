@@ -1,5 +1,5 @@
-import YoutubeSearchStore from '../domain/YoutubeSearchStore';
-import { ACTION_TYPE } from '../constants/String';
+import YoutubeSearchStore from './YoutubeSearchStore';
+import { ACTION_TYPE } from '../../constants/String';
 
 const defaultState = {
   searchKeyword: '',
