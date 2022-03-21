@@ -1,6 +1,7 @@
+import { SNACK_BAR } from '../constants/constants.js';
 import storage from '../storage/storage.js';
 import watchLaterInterface from '../ui/watchLaterInterface.js';
-import { $, confrimVideoDelete } from '../util/general.js';
+import { $, confrimVideoDelete, toggleSnackBar } from '../util/general.js';
 import { removeCheckedVideoItem, removeDeleteVideoItem } from '../util/render.js';
 
 export class WatchLaterVideoEventHandler {
@@ -29,6 +30,7 @@ export class WatchLaterVideoEventHandler {
       e.target.parentElement.parentElement.dataset.videoId,
     );
     watchLaterInterface.renderEmptyImg();
+    toggleSnackBar(SNACK_BAR.WATCHED_MESSAGE);
   };
   handleDeleteButtonClick = e => {
     if (!e.target.classList.contains('video-item__delete-button')) {
@@ -41,6 +43,7 @@ export class WatchLaterVideoEventHandler {
         e.target.parentElement.parentElement.dataset.videoId,
       );
       watchLaterInterface.renderEmptyImg();
+      toggleSnackBar(SNACK_BAR.DELETE_MESSAGE);
     }
   };
 }

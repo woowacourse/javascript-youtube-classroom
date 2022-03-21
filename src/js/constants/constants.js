@@ -16,7 +16,10 @@ export const API = {
 };
 
 export const SNACK_BAR = {
-  SAVE_MESSAGE: '영상이 저장되었습니다✅',
+  SAVE_MESSAGE: '영상이 저장되었습니다 ✅',
+  WATCHED_MESSAGE: '영상이 본 영상으로 이동하였습니다 🚚',
+  WATCH_LATER_MESSAGE: '영상이 볼 영상으로 이동하였습니다 🚚',
+  DELETE_MESSAGE: '영상이 삭제 되었습니다:)',
 };
 export const THROTTLE_DELAY = 1000;
 
