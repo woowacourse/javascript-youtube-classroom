@@ -57,3 +57,49 @@ export const removeDuplicatedElements = (array, key) => {
 export const deepClone = (obj) => {
   return JSON.parse(JSON.stringify(obj));
 };
+
+export const deepEqual = (a, b) => {
+  if (a === b) return true;
+
+  // eslint-disable-next-line eqeqeq
+  if (a && b && typeof a == 'object' && typeof b == 'object') {
+    if (Array.isArray(a)) {
+      return (
+        a.length === b.length &&
+        a.every((elem, index) => deepEqual(elem, b[index]))
+      );
+    }
+
+    if (a instanceof Set && b instanceof Set) {
+      return (
+        a.size === b.size &&
+        Array.from(a.entries()).every(([key]) => b.has(key))
+      );
+    }
+
+    if (a instanceof Map && b instanceof Map) {
+      return (
+        a.size === b.size &&
+        Array.from(a.entries()).every(([key, value]) => {
+          return b.has(key) && deepEqual(value, b.get(key));
+        })
+      );
+    }
+
+    const keys = {
+      a: Object.keys(a),
+      b: Object.keys(b),
+    };
+
+    return (
+      a.constructor === b.constructor &&
+      keys.a.length === keys.b.length &&
+      keys.a.some((key) => Object.prototype.hasOwnProperty.call(b, key)) &&
+      keys.a.every((key) => deepEqual(a[key], b[key]))
+    );
+  }
+
+  // 둘 다 NaN이면 true, 아니면 false
+  // eslint-disable-next-line no-self-compare
+  return a !== a && b !== b;
+};

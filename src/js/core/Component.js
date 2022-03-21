@@ -1,4 +1,5 @@
 import { observe } from '../store/AppStore.js';
+import { deepEqual } from '../utils/commons.js';
 
 export default class Component extends HTMLElement {
   constructor(target) {
@@ -31,7 +32,7 @@ export default class Component extends HTMLElement {
   setState(newState) {
     const updatedState = { ...this.state, ...newState };
 
-    if (JSON.stringify(updatedState) === JSON.stringify(this.state)) return;
+    if (deepEqual(updatedState, this.state)) return;
 
     this.state = updatedState;
     this.render();
