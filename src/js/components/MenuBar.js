@@ -17,14 +17,22 @@ export default class MenuBar {
       this.handleOpenModal();
     }
     if (target.classList.contains("header-nav__watching")) {
-      this.handleWatchState(false);
-      this.navWatching.classList.add("active");
-      this.navWatched.classList.remove("active");
+      this.#convertWatching();
     }
     if (target.classList.contains("header-nav__watched")) {
-      this.handleWatchState(true);
-      this.navWatched.classList.add("active");
-      this.navWatching.classList.remove("active");
+      this.#convertWatched();
     }
   };
+
+  #convertWatching() {
+    this.handleWatchState(false);
+    this.navWatching.classList.add("active");
+    this.navWatched.classList.remove("active");
+  }
+
+  #convertWatched() {
+    this.handleWatchState(true);
+    this.navWatched.classList.add("active");
+    this.navWatching.classList.remove("active");
+  }
 }
