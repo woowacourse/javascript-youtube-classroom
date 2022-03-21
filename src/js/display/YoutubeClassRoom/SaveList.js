@@ -5,7 +5,7 @@ import { ACTION_TYPE, ALERT_MESSAGE } from '@Constants/String';
 import { SELECTOR, DOM_NAME } from '@Constants/Selector';
 import YoutubeSaveStorage from '@Domain/YoutubeSaveStorage';
 import YoutubeSaveListStore from '@Domain/Store/YoutubeSaveListStore';
-import Snackbar from '@Display/Element/Snackbar';
+import Snackbar from '@Display/Share/Snackbar';
 
 export default class SaveList {
   $container = $(SELECTOR.ID.SAVE_LIST_CONTENT);

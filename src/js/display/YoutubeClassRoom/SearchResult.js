@@ -8,7 +8,7 @@ import { SELECTOR, DOM_NAME } from '@Constants/Selector';
 import YoutubeSearchStore from '@Domain/Store/YoutubeSearchStore';
 import YoutubeSaveListStore from '@Domain/Store/YoutubeSaveListStore';
 import YoutubeSaveStorage from '@Domain/YoutubeSaveStorage';
-import Snackbar from '@Display/Element/Snackbar';
+import Snackbar from '@Display/Share/Snackbar';
 
 export default class SearchResult {
   $container = $(SELECTOR.ID.SEARCH_RESULT_CONTAINER);
