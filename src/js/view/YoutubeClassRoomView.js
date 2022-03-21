@@ -1,10 +1,12 @@
+import ManageVideoStorage from '../domain/ManageVideoStorage';
 import SavedVideosView from './SavedVideosView/SavedVideosView';
 import SearchModalView from './SearchModal/SearchModalView';
 
 class YoutubeClassRoomView {
   constructor() {
-    this.savedVideosView = new SavedVideosView();
-    this.searchModalView = new SearchModalView(this.renderOnModalClose);
+    this.manageVideoStorage = new ManageVideoStorage();
+    this.savedVideosView = new SavedVideosView(this.manageVideoStorage);
+    this.searchModalView = new SearchModalView(this.renderOnModalClose, this.manageVideoStorage);
   }
 
   renderOnModalClose = () => {

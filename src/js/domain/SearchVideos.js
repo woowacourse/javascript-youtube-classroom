@@ -1,5 +1,4 @@
 import { SEARCH_URL_BASE, MAX_SEARCH_RESULT, ERROR_MESSAGES } from '../constants/constants';
-import { getAllFromStorage } from './storeVideos';
 import getVideoObjectArray from './utils/getVideoObjectArray';
 
 class SearchVideos {
@@ -7,9 +6,12 @@ class SearchVideos {
 
   #nextPageToken;
 
-  constructor() {
+  #manageVideoStorage;
+
+  constructor(manageVideoStorage) {
     this.#keyword = null;
     this.#nextPageToken = null;
+    this.#manageVideoStorage = manageVideoStorage;
   }
 
   async handleSearchRequest(keyword = this.#keyword) {
@@ -18,7 +20,7 @@ class SearchVideos {
       this.#keyword = keyword;
       this.#nextPageToken = nextPageToken;
 
-      const savedVideos = Object.keys(getAllFromStorage());
+      const savedVideos = Object.keys(this.#manageVideoStorage.getCachedVideoObjects());
       const searchResultArray = getVideoObjectArray(items, savedVideos);
 
       return { searchResultArray, hasNextPage: !!nextPageToken };

@@ -7,14 +7,11 @@ import {
 } from './SearchModalTemplates';
 import SearchVideos from '../../domain/SearchVideos';
 import { addSkeletonsToContainer, removeAllSkeletons } from '../shared/Skeleton';
-import { saveToStorage } from '../../domain/storeVideos';
 
 class SearchModalView {
   #body;
 
   #modalContainer;
-
-  #searchForm;
 
   #searchInputKeyword;
 
@@ -30,16 +27,16 @@ class SearchModalView {
 
   #renderOnModalClose;
 
-  constructor(renderOnModalClose) {
+  constructor(renderOnModalClose, manageVideoStorage) {
     this.#body = selectDom('body');
     this.#modalContainer = selectDom('.modal-container');
     this.#searchInputKeyword = selectDom('#search-input-keyword');
     this.#searchResult = selectDom('.search-result', this.#modalContainer);
     this.#videoList = selectDom('.video-list', this.#searchResult);
-    this.#search = new SearchVideos();
     this.#errorImage = errorImageTemplate();
     this.#renderOnModalClose = renderOnModalClose;
-
+    this.manageVideoStorage = manageVideoStorage;
+    this.#search = new SearchVideos(this.manageVideoStorage);
     this.#observer = this.#loadMoreObserver();
     selectDom('#search-form', this.#modalContainer).addEventListener('submit', this.#handleSearch);
     selectDom('#search-modal-button').addEventListener('click', this.#toggleModal);
@@ -93,7 +90,7 @@ class SearchModalView {
 
   #handleVideoSaveClick = (target, item) => {
     try {
-      saveToStorage(item);
+      this.manageVideoStorage.saveToStorage(item);
       target.disabled = true;
     } catch (e) {
       alert(e.message);

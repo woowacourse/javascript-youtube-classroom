@@ -3,12 +3,7 @@ import {
   SAVED_VIDEO_PAGINATION_COUNT,
   TAB_NAMES,
 } from '../../constants/constants';
-import {
-  toggleWatchStatus,
-  removeFromStorage,
-  getFilteredIdFromStorage,
-  getAllFromStorage,
-} from '../../domain/storeVideos';
+
 import { removeCommonElements, removeElementList, selectDom } from '../util/util';
 import { noSavedVideosTemplate, savedVideoElementTemplate } from './SavedVideosTemplate';
 
@@ -31,7 +26,10 @@ class SavedVideosView {
 
   #tabButtons;
 
-  constructor() {
+  #manageVideoStorage;
+
+  constructor(manageVideoStorage) {
+    this.#manageVideoStorage = manageVideoStorage;
     this.#savedVideos = selectDom('.saved-videos');
     this.#videoList = selectDom('.video-list', this.#savedVideos);
     [this.#currentTabName, this.#otherTabName] = TAB_NAMES;
@@ -109,7 +107,10 @@ class SavedVideosView {
   #renderNewVideos(newVideoIdArray) {
     if (newVideoIdArray.length === 0) return;
 
-    const videoObjectArray = newVideoIdArray.map((id) => getAllFromStorage()[id]);
+    const videoObjectArray = newVideoIdArray.map((id) => {
+      const videoObjects = this.#manageVideoStorage.getCachedVideoObjects();
+      return videoObjects[id];
+    });
     const videoElementList = this.#createVideoElements(videoObjectArray);
     this.#videoList.append(...videoElementList);
     this.#renderedVideoIdArray = [...this.#renderedVideoIdArray, ...newVideoIdArray];
@@ -163,19 +164,22 @@ class SavedVideosView {
   };
 
   #moveToWatchedList(videoId) {
-    toggleWatchStatus(videoId);
+    this.#manageVideoStorage.toggleWatchStatus(videoId);
     this.#removeDeletedVideos();
   }
 
   #unsaveVideo(videoId) {
     if (window.confirm(DELETE_CONFIRM_MESSAGE)) {
-      removeFromStorage(videoId);
+      this.#manageVideoStorage.removeFromStorage(videoId);
       this.#removeDeletedVideos();
     }
   }
 
   #getCurrentTabIds() {
-    return getFilteredIdFromStorage('watched', this.#currentTabName === 'watched');
+    return this.#manageVideoStorage.getFilteredIdFromStorage(
+      'watched',
+      this.#currentTabName === 'watched'
+    );
   }
 }
 
