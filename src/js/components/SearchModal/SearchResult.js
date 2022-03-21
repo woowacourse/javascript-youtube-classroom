@@ -1,12 +1,7 @@
 import { $, $$ } from "../../utils/dom.js";
 import { INFOMATION_MESSAGES, NUM } from "../../utils/contants.js";
 import { fetchDataFromKeyword } from "../../utils/api.js";
-import {
-  getThumnailTemplate,
-  getSkeletonTemplate,
-  getEmptyResultTemplate,
-  getSearchVideoTemplate,
-} from "../../utils/templates.js";
+import { getSkeletonTemplate, getEmptyResultTemplate, getSearchVideoTemplate } from "../../utils/templates.js";
 import { verifySaveId } from "../../utils/validation.js";
 import { toastMessage } from "../../utils/common.js";
 

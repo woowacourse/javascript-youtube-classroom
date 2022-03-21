@@ -1,13 +1,22 @@
 import { LOCAL_DB } from "../utils/contants.js";
 import { getLocalStorage, saveLocalStorage } from "../utils/localStorage.js";
-import Observer from "./Observer.js";
 
-export default class VideoManager extends Observer {
+export default class VideoManager {
   constructor() {
-    super();
+    this.handlers = new Map();
+    this.handlerIndex = 0;
     this.state = {
       videos: getLocalStorage(LOCAL_DB.VIDEOS),
     };
+  }
+
+  subscribe(handler) {
+    this.handlers.set(++this.handlerIndex, handler);
+    return this.handlerIndex;
+  }
+
+  unsubscribe(index) {
+    this.handlers.delete(index);
   }
 
   getSavedVideos() {
@@ -37,6 +46,10 @@ export default class VideoManager extends Observer {
   #setState(newState) {
     this.state = { ...this.state, ...newState };
     saveLocalStorage(LOCAL_DB.VIDEOS, this.state.videos);
-    this.notify();
+    this.#notify();
+  }
+
+  #notify() {
+    this.handlers.forEach((handler) => handler());
   }
 }
