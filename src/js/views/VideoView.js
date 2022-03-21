@@ -1,6 +1,8 @@
 import { $, intersectionObserver } from './utils.js';
 import { YOUTUBE_API_REQUEST_COUNT, SELECTOR } from '../constants/index.js';
 
+import notFoundImg from '../../assets/images/not_found.png';
+
 export default class VideoView {
   #io;
   #videoAPI;
@@ -12,6 +14,7 @@ export default class VideoView {
     this.#videoAPI = videoAPI;
     this.#io = intersectionObserver(this.#findObserverElement.bind(this), { root: this.#$container });
     this.#$emptyScreen = $(SELECTOR.EMPTY_SCREEN);
+    this.#connectEmptyImg();
   }
 
   refreshVideoScreen() {
@@ -99,5 +102,10 @@ export default class VideoView {
 
   #lastVideoItem() {
     return this.#$container.lastChild;
+  }
+
+  #connectEmptyImg() {
+    const html = `<img src=${notFoundImg} alt="no result image" class="no-result__image" />`;
+    $('#no-result-div').insertAdjacentHTML('afterbegin', html);
   }
 }

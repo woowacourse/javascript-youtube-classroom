@@ -1,6 +1,6 @@
 describe('유튜브 강의실 저장된 영상 테스트', () => {
   beforeEach(() => {
-    cy.visit('index.html');
+    cy.visit('dist/index.html');
     cy.saveVideo();
   });
 
