@@ -1,8 +1,8 @@
 import { SEARCH_URL_BASE, MAX_SEARCH_RESULT, ERROR_MESSAGES } from '../constants/constants';
-import { getAllFromStorage } from './storage';
+import { getAllFromStorage } from './storeVideos';
 import getVideoObjectArray from './utils/getVideoObjectArray';
 
-class Search {
+class SearchVideos {
   #keyword;
 
   #nextPageToken;
@@ -57,4 +57,4 @@ class Search {
   }
 }
 
-export default Search;
+export default SearchVideos;

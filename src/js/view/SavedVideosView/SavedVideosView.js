@@ -4,7 +4,7 @@ import {
   removeFromStorage,
   getFilteredIdFromStorage,
   getAllFromStorage,
-} from '../../domain/storage';
+} from '../../domain/storeVideos';
 import { removeCommonElements, removeElementList, selectDom } from '../util/util';
 import {
   errorTemplate,

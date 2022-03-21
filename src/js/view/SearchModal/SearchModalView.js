@@ -5,9 +5,9 @@ import {
   errorTemplate,
   searchVideoElementTemplate,
 } from './SearchModalTemplates';
-import Search from '../../domain/Search';
+import SearchVideos from '../../domain/SearchVideos';
 import { addSkeletonsToContainer, removeAllSkeletons } from '../shared/Skeleton';
-import { saveToStorage } from '../../domain/storage';
+import { saveToStorage } from '../../domain/storeVideos';
 
 class SearchModalView {
   #body;
@@ -36,7 +36,7 @@ class SearchModalView {
     this.#searchResult = selectDom('.search-result', this.#modalContainer);
     this.#videoList = selectDom('.video-list', this.#searchResult);
 
-    this.#search = new Search();
+    this.#search = new SearchVideos();
 
     this.#observer = this.#loadMoreObserver();
     this.#searchForm.addEventListener('submit', this.#handleSearch);
