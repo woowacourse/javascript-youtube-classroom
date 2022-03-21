@@ -7,8 +7,8 @@ export const ALERT_MESSAGE = {
 };
 
 export const EXCEPTION_MESSAGE = {
-  403: 'Youtube API 할당량을 모두 사용했습니다.<br/>매일 17시에 초기화됩니다.',
-  200: '검색 결과가 없습니다.<br/>다른 키워드로 검색해보세요',
+  403: 'Youtube API 할당량을 모두 사용했습니다.<br>매일 17시에 초기화됩니다.',
+  200: '검색 결과가 없습니다.<br>다른 키워드로 검색해보세요',
   OTHERS: 'Sorry, Something went wrong',
   NO_WATCHED_VIDEO: '본 영상이 없어요!',
   NO_WATCHING_VIDEO: '볼 영상이 없어요!',
