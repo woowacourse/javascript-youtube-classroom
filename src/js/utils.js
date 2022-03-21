@@ -55,3 +55,9 @@ export const confirm = (text, callback) => {
     callback();
   }
 };
+
+export const deduplicate = (array) => {
+  return array.filter(
+    (element, index, array) => array.findIndex((target) => target.id === element.id) === index
+  );
+};

@@ -1,3 +1,4 @@
+import { deduplicate } from '../utils';
 import { VIDEO } from '../constants';
 
 class SavedVideo {
@@ -23,7 +24,7 @@ class SavedVideo {
   }
 
   dispatch(action, data, target) {
-    localStorage.setItem('videos', JSON.stringify(data));
+    localStorage.setItem('videos', JSON.stringify(deduplicate(data)));
     this.#videos = this.loadVideos();
 
     this.#subscribers.forEach((subscriber) => {
