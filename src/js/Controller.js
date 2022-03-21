@@ -118,14 +118,14 @@ export default class Controller {
   }
 
   #renderUnwatchedTab() {
-    const unwatchedVideoItems = this.video.savedVideoItems.filter((item) => item.watched === false);
+    const unwatchedVideoItems = this.video.savedVideoItems.filter((item) => !item.watched);
 
     this.mainView.renderUnwatchedVideoItems(unwatchedVideoItems);
     this.mainView.showUnwatchedTab();
   }
 
   #renderWatchedTab() {
-    const watchedVideoItems = this.video.savedVideoItems.filter((item) => item.watched === true);
+    const watchedVideoItems = this.video.savedVideoItems.filter((item) => item.watched);
 
     this.mainView.renderWatchedVideoItems(watchedVideoItems, this.mainView.$watchedTab);
     this.mainView.showWatchedTab();
