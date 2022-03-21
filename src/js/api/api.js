@@ -1,11 +1,12 @@
 import 'regenerator-runtime/runtime.js';
+import { LOAD_VIDEOS_COUNT } from '../constant';
 
-const BASE_URL =
+export const BASE_URL =
   'https://trusting-bardeen-f1fc38.netlify.app/youtube/v3/search';
-const OPTIONS = {
+export const OPTIONS = {
   part: 'snippet',
   type: 'video',
-  maxResults: 10,
+  maxResults: `${LOAD_VIDEOS_COUNT}`,
   q: null,
   pageToken: '',
 };
@@ -29,8 +30,12 @@ export const getSearchAPI = async (
   url.search = parameters.toString();
 
   const response = await fetch(url);
+
+  console.log('response', response);
   const data = await response.json();
 
+  console.log('data', data);
+  console.log('data.stringify()', JSON.stringify(data));
   if (response.ok) {
     return [null, data];
   }

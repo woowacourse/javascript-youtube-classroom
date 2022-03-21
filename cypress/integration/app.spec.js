@@ -1,10 +1,17 @@
-import { LOAD_VIDEOS_COUNT } from '../../src/js/constant';
+import { BASE_URL, OPTIONS } from '../../src/js/api/api';
 
 const $ = (selector, target = document) => target.querySelector(selector);
 const $$ = (selector, target = document) => target.querySelectorAll(selector);
 
 describe('유튜브 App 태스트', () => {
   beforeEach(() => {
+    cy.intercept(
+      {
+        url: BASE_URL + '*',
+        query: { ...OPTIONS, q: '우테코' },
+      },
+      { fixture: 'searchResult.json' }
+    );
     cy.visit('http://localhost:8080/');
   });
 
