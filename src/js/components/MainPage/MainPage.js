@@ -8,7 +8,7 @@ import { savedVideosStorage } from '../../localStorage/savedVideos';
 export default class MainPage extends Component {
   setup() {
     const savedVideos = savedVideosStorage.load();
-    const watchedVideos = savedVideos.filter(video => video.watched === true);
+    const watchedVideos = savedVideos.filter(video => video.watched);
 
     this.state = { watchedMode: false };
 
