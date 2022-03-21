@@ -27,13 +27,20 @@ export const SKELETON_TEMPLATE = `
   </li>
 `.repeat(VIDEO_COUNT);
 
-export const getVideoItemTemplate = ({ channelTitle, publishTime, title, videoId, isWatched }) => `
+export const getVideoItemTemplate = ({
+  channelTitle,
+  publishTime,
+  title,
+  videoId,
+  isWatched,
+  thumbnails,
+}) => `
   <li class="video-item" data-video-id=${videoId}>
     <div id="image-wrapper">
-      <iframe
-        src="https://www.youtube.com/embed/${videoId}"
+      <img
+        src=${thumbnails}
         alt="video-item-thumbnail" class="video-item__thumbnail">
-      </iframe>
+      </img>
     </div>
     <h4 class="video-item__title">${title}</h4>
     <p class="video-item__channel-name">${channelTitle}</p>
