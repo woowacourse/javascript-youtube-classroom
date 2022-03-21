@@ -2,8 +2,7 @@ import MainView from '../view/MainView.js';
 import ModalView from '../view/ModalView.js';
 import validator from '../utils/validator.js';
 import { CONFIRM_MESSAGE, DOM_STRING } from '../utils/constants.js';
-import searchVideoAPICaller from '../api/searchVideoAPICaller.js';
-import storeVideoAPICaller from '../api/storeVideoAPICaller.js';
+import videoApiCaller from '../api/videoApiCaller.js';
 import videoStore from '../storage/videoStore.js';
 
 export default class EventHandler {
@@ -47,7 +46,8 @@ export default class EventHandler {
       validator.checkSearchInput(inputValue);
       this.modalView.resetVideoList();
       this.modalView.showLoadingVideoItems();
-      const videoListData = await searchVideoAPICaller.getVideoListData(inputValue);
+      const videoListData = await videoApiCaller.getSearchVideoListData(inputValue);
+
       this.modalView.updateVideoItems(videoListData);
       this.modalView.controlScrollSearch(!videoListData[0].isLastPage);
     } catch (error) {
@@ -59,7 +59,8 @@ export default class EventHandler {
   async onVideoListScroll(inputValue) {
     try {
       this.modalView.showLoadingVideoItems();
-      const videoListData = await searchVideoAPICaller.getVideoListData(inputValue);
+      const videoListData = await videoApiCaller.getSearchVideoListData(inputValue);
+
       this.modalView.updateVideoItems(videoListData);
       this.modalView.controlScrollSearch(!videoListData[0].isLastPage);
       videoListData[0].isLastPage && confirm(CONFIRM_MESSAGE.NOTHING_MORE);
@@ -74,6 +75,7 @@ export default class EventHandler {
       this.mainView.showEmptyStorage(true);
       return;
     }
+
     this.mainView.showEmptyStorage(false);
     this.showStoredVideoItems(videoList);
   }
@@ -87,7 +89,7 @@ export default class EventHandler {
     }
 
     this.mainView.showSkeletonVideoList(willRequestVideoIdList);
-    const videoData = await storeVideoAPICaller.getVideoListData(willRequestVideoIdList);
+    const videoData = await videoApiCaller.getStoreVideoListData(willRequestVideoIdList);
     this.mainView.updateVideoItems(videoData);
   }
 

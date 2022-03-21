@@ -1,6 +1,6 @@
 import { ERROR_MESSAGE } from '../utils/constants.js';
 
-const APIUtil = {
+const ApiUtil = {
   async fetchData(requestURL) {
     try {
       const response = await fetch(requestURL);
@@ -25,4 +25,4 @@ const APIUtil = {
   },
 };
 
-export default APIUtil;
+export default ApiUtil;
