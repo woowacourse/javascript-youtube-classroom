@@ -159,7 +159,10 @@ body {
   #app {
       width: var(--small-list-size);
   }
-  #will-watch-button, #watched-button{
+  .classroom-container__title{
+      font-size: 23px;
+  }
+  #will-watch, #watched{
       width: 90px;
   }
   .nav__button {
