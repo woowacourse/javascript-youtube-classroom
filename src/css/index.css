@@ -1,5 +1,19 @@
-@import "./app.css";
+@import "./video.css";
+@import "./classroom.css";
 @import "./modal.css";
+@import "./header.css";
+@import "./skeleton.css";
+
+:root {
+  --color-white: #fff;
+  --color-light-black: rgb(47, 47, 47);
+  --color-dark-black: rgba(0, 0, 0, 0.5);
+  --color-light-skyblue: #c9e0e2;
+  --color-middle-skyblue: #00bcd4;
+  --color-white-gray: #f5f5f5;
+  --color-light-gray: #ebebeb;
+  --color-middle-gray: #8b8b8b;
+}
 
 * {
   margin: 0;
@@ -23,4 +37,58 @@ button,
 textarea,
 select {
   font: inherit;
+}
+
+body {
+  padding: 64px 0;
+  font-size: 16px;
+}
+
+#app {
+  display: flex;
+  flex-direction: column;
+  margin: 0 auto;
+  width: fit-content;
+}
+
+.button {
+  cursor: pointer;
+  border-radius: 4px;
+  border: none;
+  font-style: normal;
+  font-weight: bold;
+  font-size: 14px;
+  letter-spacing: 1.25px;
+}
+
+.active {
+  background-color: var(--color-light-skyblue);
+}
+
+.toast {
+  display: none;
+}
+
+.toast.show {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: fixed;
+  bottom: 10px;
+  right: 10px;
+  border-radius: 5px;
+  padding: 15px;
+  background-color: var(--color-light-black);
+  color: var(--color-white);
+  text-align: center;
+  animation: slide 0.1s;
+}
+
+@keyframes slide {
+  0% {
+    right: -200px;
+  }
+  100% {
+    right: 10px;
+  }
 }

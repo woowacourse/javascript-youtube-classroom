@@ -1,0 +1,41 @@
+.classroom {
+  margin-top: 30px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.classroom__empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.classroom__empty-image {
+  width: 100%;
+  margin-bottom: 20px;
+}
+
+.classroom__empty-text {
+  font-size: 20px;
+}
+
+@media screen and (max-width: 1279px) {
+  .classroom__empty {
+    width: 750px;
+  }
+}
+
+@media screen and (max-width: 959px) {
+  .classroom__empty {
+    width: 490px;
+  }
+}
+
+@media screen and (max-width: 599px) {
+  .classroom__empty {
+    width: 230px;
+  }
+}

@@ -1,4 +1,4 @@
-import { NUM } from "./contants.js";
+import { ERROR_MESSAGES, NUM } from "./contants.js";
 
 const BASE_URL = "https://serverless-youtube-api.netlify.app/youtube/v3/";
 
@@ -18,11 +18,11 @@ export const fetchDataFromKeyword = async (keyword, pageToken = "") => {
     const data = await res.json();
 
     if (!res.ok) {
-      throw new Error(`에러코드: ${res.status}, ${data.error.message}`);
+      return { errorMessage: ERROR_MESSAGES.CANNOT_USE_API };
     }
 
     return data;
-  } catch (e) {
-    console.error(e);
+  } catch {
+    return { errorMessage: ERROR_MESSAGES.CANNOT_CONNECT };
   }
 };

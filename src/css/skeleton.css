@@ -1,0 +1,45 @@
+.skeleton {
+  width: 230px;
+  height: 255px;
+}
+
+.skeleton .image,
+.skeleton .line,
+.skeleton .button {
+  background-image: linear-gradient(90deg, #e0e0e0 0px, #ededed 30px, #e0e0e0 60px);
+  animation: refresh 2s infinite ease-out;
+}
+
+.skeleton .image {
+  height: 135px;
+  margin-bottom: 8px;
+}
+
+.skeleton .line {
+  height: 16px;
+  margin-bottom: 8px;
+}
+
+.skeleton .half {
+  width: 60%;
+}
+
+.skeleton .button-container {
+  display: flex;
+  justify-content: flex-end;
+  height: 36px;
+}
+
+.skeleton .button {
+  width: 80px;
+}
+
+@keyframes refresh {
+  0% {
+    background-position: calc(-100px);
+  }
+  40%,
+  100% {
+    background-position: 320px;
+  }
+}

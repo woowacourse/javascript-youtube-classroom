@@ -1,0 +1,34 @@
+.header-title {
+  text-align: center;
+  font-weight: bold;
+  font-size: 34px;
+  line-height: 36px;
+  margin-bottom: 64px;
+}
+
+.header-nav {
+  display: flex;
+  justify-content: space-between;
+}
+
+.header-nav__watching,
+.header-nav__watched {
+  width: 100px;
+  height: 36px;
+  background: var(--color-white-gray);
+}
+
+.header-nav__search {
+  width: 80px;
+  height: 36px;
+  background: var(--color-white-gray);
+}
+
+.header-nav__search:hover {
+  background: var(--color-light-gray);
+}
+
+.header-nav__watching:hover,
+.header-nav__watched:hover {
+  background: var(--color-light-skyblue);
+}
