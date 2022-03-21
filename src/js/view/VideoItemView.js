@@ -16,7 +16,7 @@ export default class VideoItemView {
         <h4 class="video-item__title">${parseData.title}</h4>
         <p class="video-item__channel-name">${parseData.channelTitle}</p>
         <p class="video-item__published-date">${parseData.publishedAt}</p>
-        <button data-videoid=${parseData.videoId} class="video-item__save-button button ${
+        <button data-video-id=${parseData.videoId} class="video-item__save-button button ${
       videoStorage.hasVideoData(parseData.videoId) ? `${DOM_STRING.HIDE}` : ''
     }">⬇ 저장</button>
       </li>

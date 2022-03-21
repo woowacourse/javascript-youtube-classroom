@@ -149,7 +149,7 @@ export default class ModalView {
 
   parseVideoInfo(videoInfo) {
     return {
-      videoId: videoInfo.children[4].dataset.videoid,
+      videoId: videoInfo.children[4].dataset.videoId,
       publishedAt: videoInfo.children[3].textContent,
       title: videoInfo.children[1].textContent,
       url: videoInfo.children[0].src,

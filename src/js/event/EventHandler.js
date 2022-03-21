@@ -2,6 +2,7 @@ import videoAPI from '../videoAPI.js';
 import validator from '../utils/validator.js';
 import videoStorage from '../videoStorage.js';
 import { USER_MESSAGE } from '../utils/constants.js';
+import { PARSE_DATA } from '../utils/mockData.js';
 
 export default class EventHandler {
   constructor(mainView, modalView) {
@@ -33,7 +34,7 @@ export default class EventHandler {
 
   clickSwitchButton(e) {
     if ([...e.target.classList].includes('switch-show-type')) {
-      const videoId = e.target.dataset.videoid;
+      const { videoId } = e.target.dataset;
       videoStorage.switchType(videoId);
       this.mainView.switchRenderingType(e);
     }
@@ -42,7 +43,7 @@ export default class EventHandler {
   clickDeleteButton(e) {
     if ([...e.target.classList].includes('delete-button')) {
       if (window.confirm(USER_MESSAGE.WANT_DELETE)) {
-        const videoId = e.target.dataset.videoid;
+        const { videoId } = e.target.dataset;
         videoStorage.deleteVideoData(videoId);
         this.mainView.deleteSelectedVideo(e);
       }
