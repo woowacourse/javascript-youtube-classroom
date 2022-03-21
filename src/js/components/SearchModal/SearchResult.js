@@ -3,10 +3,12 @@ import { INFOMATION_MESSAGES, NUM } from "../../utils/contants.js";
 import { fetchDataFromKeyword } from "../../utils/api.js";
 import { getSkeletonTemplate, getEmptyResultTemplate, getSearchVideoTemplate } from "../../utils/templates.js";
 import { verifySaveId } from "../../utils/validation.js";
-import { toastMessage } from "../../utils/common.js";
+import Toast from "../Toast.js";
 
 export default class SearchResult {
   constructor({ searchManager, videoManager }) {
+    this.toast = new Toast();
+
     this.modalResult = $(".modal-result");
     this.videoList = $(".modal-result__list", this.modalResult);
     this.emptyContainer = $(".modal-result__empty", this.modalResult);
@@ -39,7 +41,7 @@ export default class SearchResult {
     this.#removeSkeleton();
 
     if (this.videos.errorMessage) {
-      toastMessage(this.videos.errorMessage);
+      this.toast.showMessage(this.videos.errorMessage);
       return;
     }
 
@@ -98,9 +100,9 @@ export default class SearchResult {
       verifySaveId(savedVideoArray, id);
       this.videoManager.saveVideos({ id, url, title, channelTitle, date });
       target.remove();
-      toastMessage(INFOMATION_MESSAGES.SAVED);
+      this.toast.showMessage(INFOMATION_MESSAGES.SAVED);
     } catch ({ message }) {
-      toastMessage(message);
+      this.toast.showMessage(message);
     }
   };
 }
