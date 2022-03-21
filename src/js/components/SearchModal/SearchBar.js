@@ -2,6 +2,7 @@ import { getSearchAPI } from '../../api/api.js';
 import Component from '../../core/Component.js';
 import { savedVideosStorage } from '../../localStorage/savedVideos.js';
 import { rootStore } from '../../store/rootStore.js';
+import throttle from '../../utils/throttle.js';
 
 export default class SearchBar extends Component {
   template() {
@@ -31,41 +32,48 @@ export default class SearchBar extends Component {
   }
 
   setEvent() {
-    this.addEvent('submit', '#search-form', async e => {
-      const query = e.target.elements.searchInput.value;
-      if (!query) return;
+    this.addEvent(
+      'submit',
+      '#search-form',
+      throttle(this.handleSubmit.bind(this), 300)
+    );
+  }
 
-      rootStore.setState({ isLoading: true });
+  async handleSubmit(e) {
+    e.preventDefault();
+    const query = e.target.elements.searchInput.value;
+    if (!query) return;
 
-      const [error, data] = await getSearchAPI(query);
+    rootStore.setState({ isLoading: true });
 
-      if (error) {
-        rootStore.setState({
-          isLoading: false,
-          status: { notFound: true, statusCode: error.statusCode },
-        });
+    const [error, data] = await getSearchAPI(query);
 
-        return;
-      }
-
-      const { items, nextPageToken } = data;
-      if (!items.length) {
-        rootStore.setState({
-          status: { notFound: true, statusCode: 200 },
-        });
-
-        return;
-      }
-
+    if (error) {
       rootStore.setState({
-        searchOption: {
-          query,
-          pageToken: nextPageToken,
-        },
-        videos: makeCardData(items, savedVideosStorage.load()),
-        status: { notFound: false, statusCode: 200 },
         isLoading: false,
+        status: { notFound: true, statusCode: error.statusCode },
       });
+
+      return;
+    }
+
+    const { items, nextPageToken } = data;
+    if (!items.length) {
+      rootStore.setState({
+        status: { notFound: true, statusCode: 200 },
+      });
+
+      return;
+    }
+
+    rootStore.setState({
+      searchOption: {
+        query,
+        pageToken: nextPageToken,
+      },
+      videos: makeCardData(items, savedVideosStorage.load()),
+      status: { notFound: false, statusCode: 200 },
+      isLoading: false,
     });
   }
 }
