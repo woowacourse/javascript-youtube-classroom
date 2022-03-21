@@ -11,14 +11,13 @@ class SearchVideo {
 
   initSearchVideo() {
     this.prevSearchKeyword = '';
-    this.searchResults = [];
     this.nextPageToken = '';
   }
 
   async handleSearchVideo(searchKeyword) {
     this.#validateSearchInput(searchKeyword);
-    this.searchResults = await this.#getYoutubeVideos(searchKeyword);
     this.prevSearchKeyword = searchKeyword;
+    return this.#getYoutubeVideos(searchKeyword);
   }
 
   #getYoutubeVideos = async (searchKeyword) => {

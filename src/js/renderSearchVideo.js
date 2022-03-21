@@ -127,8 +127,9 @@ class RenderSearchVideo extends RenderVideo {
   async #loadVideo() {
     this.#renderVideoSkeleton();
     try {
-      await this.searchVideo.handleSearchVideo(this.searchInput.value.trim());
-      this.#renderSearchVideo(this.searchVideo.searchResults);
+      this.#renderSearchVideo(
+        await this.searchVideo.handleSearchVideo(this.searchInput.value.trim())
+      );
     } catch (error) {
       this.searchInput.value = '';
       this.searchInput.focus();
