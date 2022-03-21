@@ -13,6 +13,6 @@ export const SELECTOR = {
   VIDEO_SAVE_BUTTON: '.video-item__save-button',
   VIDEO_DELETE_BUTTON: '.video-item__delete-button',
   VIDEO_WATCH_BUTTON: '.video-item__watched-button',
-  WATCH_LATER_VIDEOS_ITEMS: '.watch-later-videos-container ul li',
-  WATCHED_VIDEOS_ITEMS: '.watched-videos-container ul li',
+  WATCH_LATER_VIDEOS_ITEMS: '.watch-later-video-item',
+  WATCHED_VIDEOS_ITEMS: '.watched-video-item',
 };

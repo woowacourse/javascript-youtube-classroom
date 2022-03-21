@@ -38,20 +38,20 @@ export default function App() {
   $('.watch-later-nav-button').addEventListener('click', handleWatchLaterEvent.handleWatchLater);
   $('.watched-nav-button').addEventListener('click', handleWatchedVideoEvent.handleWatchedVideo);
 
-  $('.watch-later-videos-container ul').addEventListener(
+  $('.watch-later-video__list').addEventListener(
     'click',
     handleWatchLaterEvent.handleWatchedButtonClick,
   );
-  $('.watch-later-videos-container ul').addEventListener(
+  $('.watch-later-video__list').addEventListener(
     'click',
     handleWatchLaterEvent.handleDeleteButtonClick,
   );
 
-  $('.watched-videos-container ul').addEventListener(
+  $('.watched-video__list').addEventListener(
     'click',
     handleWatchedVideoEvent.handledWatchedButtonClick,
   );
-  $('.watched-videos-container ul').addEventListener(
+  $('.watched-video__list').addEventListener(
     'click',
     handleWatchedVideoEvent.handleDeleteButtonClick,
   );

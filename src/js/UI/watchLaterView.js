@@ -41,7 +41,7 @@ const watchLaterView = {
     });
 
     watchLaterVideos.forEach(item => {
-      $('.watch-later-videos-container ul').insertAdjacentHTML(
+      $('.watch-later-video__list').insertAdjacentHTML(
         'beforeEnd',
         videoItemTemplate.videoItem('watch-later-video-item', item),
       );

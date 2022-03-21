@@ -38,7 +38,7 @@ const watchedVideoView = {
       }
     });
     watchedVideos.forEach(item => {
-      $('.watched-videos-container ul').insertAdjacentHTML(
+      $('.watched-video__list').insertAdjacentHTML(
         'beforeEnd',
         videoItemTemplate.videoItem('watched-video-item', item),
       );

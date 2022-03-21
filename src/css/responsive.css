@@ -3,13 +3,13 @@
  col: 240px (- video item의 대략적인 width) 
 */
 
-.watch-later-videos-container ul {
+.watch-later-video__list {
   display: grid;
   justify-content: center;
   align-items: center;
   align-content: center;
 }
-.watched-videos-container ul {
+.watched-video__list {
   display: grid;
   justify-content: center;
   align-items: center;
@@ -23,12 +23,12 @@
   .nav {
     max-width: 567px;
   }
-  .watch-later-videos-container ul {
+  .watch-later-video__list {
     width: 100%;
     grid-template-columns: repeat(1, 240px);
     column-gap: 10px;
   }
-  .watched-videos-container ul {
+  .watched-video__list {
     width: 100%;
     grid-template-columns: repeat(1, 240px);
     column-gap: 10px;
@@ -39,12 +39,12 @@
   .classroom-container {
     margin: 0 45px !important;
   }
-  .watch-later-videos-container ul {
+  .watch-later-video__list {
     width: 100%;
     grid-template-columns: repeat(2, 240px);
     column-gap: 10px;
   }
-  .watched-videos-container ul {
+  .watched-video__list {
     width: 100%;
     grid-template-columns: repeat(2, 240px);
     column-gap: 10px;
@@ -55,12 +55,12 @@
   .classroom-container {
     margin: 0 94px !important;
   }
-  .watch-later-videos-container ul {
+  .watch-later-video__list {
     width: 100%;
     grid-template-columns: repeat(3, 240px);
     column-gap: 10px;
   }
-  .watched-videos-container ul {
+  .watched-video__list {
     width: 100%;
     grid-template-columns: repeat(3, 240px);
     column-gap: 10px;
@@ -68,11 +68,11 @@
 }
 
 @media screen and (min-width: 1280px) {
-  .watch-later-videos-container ul {
+  .watch-later-video__list {
     grid-template-columns: repeat(4, 1fr);
     column-gap: 10px;
   }
-  .watched-videos-container ul {
+  .watched-video__list {
     grid-template-columns: repeat(4, 1fr);
     column-gap: 10px;
   }
