@@ -41,8 +41,8 @@ const watchVideoTemplate = (
   divisionSection
 ) => `
   <li class="video-item" data-video-id="${id}"> 
-    <iframe src="https://www.youtube.com/embed/${id}" loading="lazy" alt="video-item-thumbnail" class="video-item__thumbnail" ></iframe>
-    <h4 class="video-item__title">${title}</h4>
+    <iframe src="https://www.youtube.com/embed/${id}" loading="lazy" title="video-item-thumbnail" class="video-item__thumbnail" ></iframe>
+    <h1 class="video-item__title">${title}</h1>
     <p class="video-item__channel-name">${channelTitle}</p>
     <p class="video-item__published-date">${parseTime(publishedAt)}</p>
     <button class="delete-video-button">🗑️</button>
@@ -50,22 +50,10 @@ const watchVideoTemplate = (
   </li>
 `;
 
-const videoNotFoundTemplate = `
-    <h3 hidden>검색 결과</h3>
-    <div class="no-result">
-      <img src="${notFoundImage}" alt="no result image" class="no-result__image">
-      <p class="no-result__description">
-        검색 결과가 없습니다<br />
-        다른 키워드로 검색해보세요
-      </p>
-    </div>
-`;
-
 const videoNoMoreTemplate = '<p class="video-no-more">결과가 더 이상 없습니다</p>';
 
 export {
   videoTemplate,
-  videoNotFoundTemplate,
   videoNoMoreTemplate,
   watchVideoTemplate,
 };
