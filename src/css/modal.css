@@ -77,7 +77,7 @@
 }
 
 .search-result-keyword {
-  width: 300px;
+  max-width: 300px;
   text-overflow: ellipsis;
   overflow: hidden;
   white-space: nowrap;
@@ -120,6 +120,18 @@
   height: 36px;
   background: #f9f9f9;
   margin-top: 4px;
+}
+
+.video-item__save-button:hover {
+  background-color: #efefef;
+}
+
+.video-item__save-button:disabled:hover {
+  background-color: #f9f9f9;
+}
+
+.video-item__save-button:disabled {
+  cursor: not-allowed;
 }
 
 .hide {
