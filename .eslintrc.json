@@ -12,7 +12,6 @@
   "rules": {
     "no-alert": "off",
     "max-depth": ["error", 2],
-    "max-lines-per-function": ["error", 15],
     "no-unused-expressions": ["error", { "allowShortCircuit": true }],
     "class-methods-use-this": "off"
   },

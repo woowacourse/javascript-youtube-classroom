@@ -4,11 +4,11 @@ body {
 }
 
 #app {
-    max-width: 1020px;
-    margin: 0 auto;
+  margin: 0 auto;
+  width: calc(240px * 4 + var(--gutter-xl) * 3);
 }
 
-.classroom-container__title {
+header > h1 {
     text-align: center;
     font-weight: bold;
     font-size: 34px;
@@ -18,25 +18,108 @@ body {
 
 .nav {
     display: flex;
-    justify-content: center;
+    justify-content: space-between;
+    margin-bottom: 39px;
 }
 
-.button {
-    cursor: pointer;
-    border-radius: 4px;
-    border: none;
-    font-style: normal;
-    font-weight: bold;
-    font-size: 14px;
-    letter-spacing: 1.25px;
+.nav > .btn-group > .btn {
+  width: 117px;
+  height: 36px;
+  font-weight: 500;
 }
 
-.nav__button {
-    width: 80px;
-    height: 36px;
-    background: #F5F5F5;
+.video-item {
+  overflow: hidden;
 }
 
-.nav__button:hover {
-    background: #ebebeb;
+.video-item > .video-container {
+  position: relative;
+  padding-bottom: 56.25%;
+  padding-top: 30px;
+  height: 0;
+  overflow: hidden;
+}
+
+.video-item > .video-container iframe,
+.video-item > .video-container object,
+.video-item > .video-container embed { 
+  position: absolute; 
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.video-item__thumbnail {
+  width: 100%;
+}
+
+.video-item__title {
+  font-weight: bold;
+  font-size: 16px;
+  line-height: 24px;
+  letter-spacing: 0.5px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin: 4px 0;
+}
+
+.video-item__channel-name {
+  font-size: 16px;
+  line-height: 24px;
+  letter-spacing: 0.5px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.video-item__published-date {
+  font-size: 12px;
+  line-height: 24px;
+  letter-spacing: 0.5px;
+}
+
+.video-item__save-button {
+  float: right;
+}
+
+.video-item__management {
+  display: flex;
+  justify-content: flex-end;
+}
+.video-item__management .btn {
+  margin-left: 10px;
+}
+
+#app > .saved-video-list-container {
+  max-height: calc(100vh - 200px);
+  overflow-y: scroll;
+  scroll-behavior: smooth;
+}
+#app > .saved-video-list-container .video-item {
+  display: block;
+}
+
+#app > .saved-video-list-container.visible-watch-later .video-item--watched {
+  display: none;
+}
+#app > .saved-video-list-container.visible-watched .video-item--watch-later {
+  display: none;
+}
+
+.no-saved-video {
+  text-align: center;
+}
+
+.no-saved-video.hide {
+  display: none;
+}
+
+.no-saved-video .error-emoji {
+  font-size: 200px;
+}
+
+.no-saved-video .message {
+  font-size: 50px;
 }

@@ -39,13 +39,14 @@ module.exports = {
     { name: 'ui' },
     { name: 'settings' },
     { name: 'todo' },
-    { name: 'flux' },
     { name: 'validation' },
     { name: 'util' },
     { name: 'unit' },
     { name: 'naming' },
     { name: 'cleanup' },
     { name: 'logic' },
+    { name: 'storage' },
+    { name: 'api' },
   ],
 
   scopeOverrides: {
