@@ -20,12 +20,25 @@ describe('볼 동영상에서 본 동영상으로 변환할 수 있다.', () => 
   it('체크 이모지 버튼을 누르면 본 동영상으로 전환된다.', () => {
     setData(SAVE_KEY, FAKE_DATA);
     cy.visit('/index.html');
-    cy.get(`.video-item[data-video-id=${videoId}] > div > button.video-item__watched-button.button`).click();
+    cy.get(`.video-item[data-video-id=${videoId}] .video-item__watched-button.button`).click();
     cy.get(`.video-item[data-video-id=${videoId}]`).should('be.not.visible');
   });
 
   it('본 동영상으로 탭을 전환하면 본 동영상을 확인할 수 있다.', () => {
-    cy.get('#watched-button').click();
+    cy.get('#watched').click();
+    cy.get(`.video-item[data-video-id=${videoId}]`).should('exist');
+  });
+});
+
+describe('본 동영상에서 볼 동영상으로 변환할 수 있다.', () => {
+  it('본 동영상에서 체크 이모지를 누르면 볼 동영상으로 전환된다.', () => {
+    const videoId = '3iM_06QeZi8';
+    setData(SAVE_KEY, FAKE_DATA);
+    cy.visit('/index.html');
+    cy.get(`.video-item[data-video-id=${videoId}] .video-item__watched-button`).click();
+    cy.get('#watched').click();
+    cy.get(`.video-item[data-video-id=${videoId}] .video-item__watched-button`).click();
+    cy.get('#will-watch').click();
     cy.get(`.video-item[data-video-id=${videoId}]`).should('exist');
   });
 });

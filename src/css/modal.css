@@ -156,6 +156,10 @@
     background: var(--video-save-button-hover-color);
 }
 
+.homepage-list{
+    height: 500px;
+}
+
 .skeleton {
     width: 240px;
 }
