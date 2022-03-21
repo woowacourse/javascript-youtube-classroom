@@ -25,9 +25,6 @@ const searchVideoTemplate = {
 };
 
 const searchModalInterface = {
-  resetSearchInput() {
-    $('#search-input-keyword').value = '';
-  },
   resetVideoList() {
     $('.video-list').replaceChildren();
   },
@@ -36,7 +33,6 @@ const searchModalInterface = {
     $('.no-result').hidden = true;
     $('.video-list').classList.remove('hide');
     $('.video-list').insertAdjacentHTML('beforeEnd', searchVideoTemplate.skeletonUI.repeat(10));
-    this.resetSearchInput();
   },
   removeSkeletonUI() {
     $$('.skeleton').forEach(element => element.remove());
