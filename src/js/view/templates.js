@@ -1,4 +1,4 @@
-import { parsedDate } from "./utils/utils";
+import { parsedDate } from "../utils";
 
 const generateTemplate = {
   skeleton() {
@@ -38,7 +38,7 @@ const generateTemplate = {
     <p class="video-item__channel-name ">${channel}</p>
     <p class="video-item__published-date ">${date}</p>
     <button class="video-item__save-button button ${
-      storage.includes(String(id)) ? "hide" : ""
+      storage.some((data) => data.videoId === id) ? "hide" : ""
     } ">
       ⬇ 저장
     </button>
@@ -59,6 +59,35 @@ const generateTemplate = {
         )
       )
       .join("");
+  },
+  saveVideoItem(data) {
+    return `<li class="save-video-item" data-video-id="${data.videoId}">
+    <img
+    src="${data.thumbnailUrl}"
+    alt="video-item-thumbnail"
+    class="video-item__thumbnail"
+    />
+    <h4 class="video-item__title">
+      ${data.title}
+    </h4>
+    <p class="video-item__channel-name ">${data.channelName}</p>
+    <p class="video-item__published-date ">${data.publishDate}</p>
+    <div class="video-item-button-container">
+      <button class="video-item__watched-video-button button${
+        data.checked ? " video-item__watched-video-button--focused" : ""
+      }">
+        ✅
+      </button>
+      <button class="video-item__delete-video-button button">🗑</button>
+    </div>
+  </li>`;
+  },
+  snackBar(message) {
+    return `
+    <div class="snack-bar-container__snack-bar">
+      <p class="snack-bar-container__message">${message}</p>
+    </div>
+    `;
   },
 };
 

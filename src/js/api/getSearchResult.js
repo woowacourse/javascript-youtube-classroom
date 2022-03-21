@@ -1,4 +1,4 @@
-import { ITEMS_PER_REQUEST, ERROR_MESSAGE } from "../constants/constants";
+import { ITEMS_PER_REQUEST, ERROR_MESSAGE } from "../constants";
 
 function checkErrorCodeNumber(errorCode) {
   if (errorCode === 403) {
@@ -6,10 +6,7 @@ function checkErrorCodeNumber(errorCode) {
   }
 }
 
-export default async function getSearchResult(
-  searchKeyword,
-  nextPageToken = ""
-) {
+function getUrl(searchKeyword, nextPageToken = "") {
   const REDIRECT_SERVER_HOST =
     "https://clever-aryabhata-ff1fc1.netlify.app/youtube/v3/search";
   const DUMMY_REDIRECT_SERVER_HOST =
@@ -30,6 +27,15 @@ export default async function getSearchResult(
 
   url.search = parameters.toString();
   dummyUrl.search = parameters.toString();
+
+  return url;
+}
+
+export default async function getSearchResult(
+  searchKeyword,
+  nextPageToken = ""
+) {
+  const url = getUrl(searchKeyword, nextPageToken);
 
   try {
     const response = await fetch(url, { method: "GET" });

@@ -1,18 +1,38 @@
-import { isDuplicate, parsedDate, isEmptyString } from "../utils/utils";
+import { isDuplicate, parsedDate, isEmptyString } from "../utils";
 
 describe("저장하려는 동영상의 Id값이 기존에 저장된 동영상의 Id값들과 중복되는지 확인한다.", () => {
-  const storeData = [{ id: "abc" }];
+  const storeData = [
+    {
+      videoId: "kkojaeId",
+      thumbnailUrl: "https:",
+      title: "this is title",
+      channelName: "kkojae's channel",
+      publishDate: "2022년 3월 3일",
+    },
+  ];
+
+  const kkojaeData = {
+    videoId: "kkojaeId",
+    thumbnailUrl: "https:",
+    title: "this is title",
+    channelName: "kkojae's channel",
+    publishDate: "2022년 3월 3일",
+  };
+
+  const usageData = {
+    videoId: "usageId",
+    thumbnailUrl: "https:",
+    title: "this is title",
+    channelName: "usage's channel",
+    publishDate: "2022년 3월 3일",
+  };
 
   test("동영상의 Id값이 중복되면 true를 반환한다.", () => {
-    const selectedData = { id: "abc" };
-
-    expect(isDuplicate(selectedData, storeData)).toBe(true);
+    expect(isDuplicate(kkojaeData, storeData)).toBe(true);
   });
 
   test("동영상의 Id값이 중복되지 않으면 false를 반환한다.", () => {
-    const selectedData = { id: "bcd" };
-
-    expect(isDuplicate(selectedData, storeData)).toBe(false);
+    expect(isDuplicate(usageData, storeData)).toBe(false);
   });
 });
 

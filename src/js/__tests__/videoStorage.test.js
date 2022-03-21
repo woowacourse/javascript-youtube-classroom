@@ -1,41 +1,44 @@
-import { ERROR_MESSAGE } from "../constants/constants";
-import videoStorage from "../videoStorage";
+import { ERROR_MESSAGE } from "../constants";
+import VideoStorage from "../VideoStorage";
 
-describe("userStorage에 동영상의 데이터가 적절히 저장되어야 한다.", () => {
-  test("userStorage에 동영상의 Id값이 저장되어야 한다.", () => {
-    const testId = 123;
-
-    videoStorage.addVideo(testId);
-    expect(videoStorage.getVideo().includes(testId)).toBe(true);
-  });
-
-  test("userStorage에 101개 이상의 데이터가 저장되면 에러 메시지를 반환한다.", () => {
-    const userIds = Array.from({ length: 101 }, (_, index) => index);
-
-    expect(() =>
-      userIds.forEach((userId) => {
-        videoStorage.addVideo(userId);
-      })
-    ).toThrowError(ERROR_MESSAGE.USER_STORAGE_OVERFLOW);
-  });
-});
-
-describe("이미 저장된 videoId는 다시 저장될 수 없다.", () => {
-  const responseId = "kkojaeId";
+describe("videoStorage에 동영상의 데이터가 적절히 저장되어야 한다.", () => {
+  const kkojaeData = {
+    videoId: "kkojaeId",
+    thumbnailUrl: "https:",
+    title: "this is title",
+    channelName: "kkojae's channel",
+    publishDate: "2022년 3월 3일",
+  };
 
   beforeEach(() => {
     localStorage.clear();
   });
 
-  test("이미 저장된 videoId이면 true를 반환한다.", () => {
-    videoStorage.addVideo("kkojaeId");
+  test("videoStorage에 101개 이상의 데이터가 저장되면 에러 메시지를 반환한다.", () => {
+    const videoStorage = new VideoStorage();
+    const videoData = Array.from({ length: 100 }, (_, index) => ({
+      videoId: index,
+      thumbnailUrl: "https:",
+      title: "this is title",
+      channelName: "kkojae's channel",
+      publishDate: "2022년 3월 3일",
+    }));
 
-    expect(videoStorage.isSavedVideoId(responseId)).toBe(true);
+    videoData.forEach((data) => {
+      videoStorage.addVideo(data);
+    });
+
+    expect(() => {
+      videoStorage.addVideo(kkojaeData);
+    }).toThrowError(ERROR_MESSAGE.USER_STORAGE_OVERFLOW);
   });
 
-  test("저장되지 않은 videoId이면 false를 반환한다.", () => {
-    videoStorage.addVideo("usageId");
+  test("이미 저장된 videoData를 다시 저장할 경우 에러 메시지를 반환한다.", () => {
+    const videoStorage = new VideoStorage();
+    videoStorage.addVideo(kkojaeData);
 
-    expect(videoStorage.isSavedVideoId(responseId)).toBe(false);
+    expect(() => {
+      videoStorage.addVideo(kkojaeData);
+    }).toThrowError(ERROR_MESSAGE.DUPLICATED_VIDEO_ID);
   });
 });

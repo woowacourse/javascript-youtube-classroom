@@ -1,22 +1,35 @@
-import { ERROR_MESSAGE, STORAGE_MAX_COUNT } from "./constants/constants";
+import { validateAddData, changeVideoChecked, removeVideoItem } from "./utils";
 
-const videoStorage = {
+export default class VideoStorage {
+  #videos = JSON.parse(localStorage.getItem("saveVideoData")) || [];
+
   getVideo() {
-    return JSON.parse(localStorage.getItem("videos")) || [];
-  },
+    return this.#videos;
+  }
+
+  setVideo() {
+    localStorage.setItem("saveVideoData", JSON.stringify(this.#videos));
+  }
+
   addVideo(data) {
-    let storage = this.getVideo();
+    validateAddData(data, this.#videos);
 
-    if (storage.length >= STORAGE_MAX_COUNT) {
-      throw new Error(ERROR_MESSAGE.USER_STORAGE_OVERFLOW);
-    }
+    this.#videos = [...this.#videos, data];
+    this.setVideo();
+  }
 
-    storage = [...storage, data];
-    localStorage.setItem("videos", JSON.stringify(storage));
-  },
-  isSavedVideoId(responseId) {
-    return this.getVideo().includes(responseId);
-  },
-};
+  removeVideo(removeData) {
+    this.#videos = removeVideoItem(this.#videos, removeData);
+    this.setVideo();
+  }
 
-export default videoStorage;
+  addChecked(addData) {
+    this.#videos = changeVideoChecked(this.#videos, addData, true);
+    this.setVideo();
+  }
+
+  removeChecked(removeData) {
+    this.#videos = changeVideoChecked(this.#videos, removeData, false);
+    this.setVideo();
+  }
+}

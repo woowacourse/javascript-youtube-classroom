@@ -3,6 +3,58 @@ body {
   font-size: 16px;
 }
 
+.snack-bar-container {
+  position: fixed;
+  bottom: 0;
+  left: 50%;
+  margin-bottom: 30px;
+  transform: translate(-50%);
+  z-index: 1;
+}
+
+.snack-bar-container__snack-bar {
+  min-width: 300px;
+  background-color: rgba(0, 188, 212);
+  padding: 15px;
+  margin-top: 3px;
+  border-radius: 4px;
+  opacity: 1;
+  animation: fadein 0.5s fadeout 0.5s 2.5s;
+  -webkit-animation: fadein 0.5s, fadeout 0.5s 2.5s;
+}
+
+.snack-bar-container__message {
+  font-weight: 600;
+  text-align: center;
+  color: #fff;
+}
+
+.snack-bar-container__snack-bar.hide {
+  display: none;
+}
+
+@keyframes fadein {
+  from {
+    bottom: 0;
+    opacity: 0;
+  }
+  to {
+    bottom: 30px;
+    opacity: 1;
+  }
+}
+
+@keyframes fadeout {
+  from {
+    bottom: 30px;
+    opacity: 1;
+  }
+  to {
+    bottom: 0;
+    opacity: 0;
+  }
+}
+
 #app {
   max-width: 1020px;
   margin: 0 auto;
@@ -18,7 +70,7 @@ body {
 
 .nav {
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
 }
 
 .button {
@@ -31,21 +83,120 @@ body {
   letter-spacing: 1.25px;
 }
 
-.nav__button {
-  width: 80px;
-  height: 36px;
-  background: #f5f5f5;
+.video-button-container {
+  display: flex;
+  margin-bottom: 39px;
 }
 
-.nav__button:hover {
-  background: #ebebeb;
+.nav__save-video-button,
+.nav__watched-video-button {
+  /* display: block; */
+  width: 117px;
+  height: 36px;
+  background-color: var(--default-button-background-color);
+}
+
+.nav__save-video-button--focused,
+.nav__watched-video-button--focused {
+  background-color: var(--fouces-button-background-color);
+}
+
+.nav__save-video-button {
+  border-radius: 4px 0 0 4px;
+}
+
+.nav__watched-video-button {
+  border-radius: 0 4px 4px 0;
+}
+
+.nav__button--search {
+  width: 80px;
+  height: 36px;
+  background: var(--default-button-background-color);
+}
+
+.nav__button--search:hover {
+  background: var(--hover-button-background-color);
+}
+
+.nav__save-video-button:hover,
+.nav__watched-video-button:hover,
+.nav__save-video-button--focused:hover,
+.nav__watched-video-button--focused:hover {
+  background-color: var(--checkbox-hover-background-color);
+}
+
+/* ******************** */
+/* save-video-container */
+/* ******************** */
+.save-video-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.save-video-container__no-video-list.hide,
+.save-video-container__video-list.hide {
+  display: none;
+}
+
+.save-video-container__video-list {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+}
+
+.video-list__video-item {
+  width: 240px;
+  height: 255px;
+}
+
+.save-video-container__video-list .video-item__thumbnail {
+  width: 240px;
+  height: 135px;
+}
+
+.video-item-button-container {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.video-item__watched-video-button {
+  margin-right: 8px;
+}
+
+.video-item__watched-video-button,
+.video-item__delete-video-button {
+  text-align: center;
+  width: 36px;
+  height: 36px;
+  padding: 6px 2px;
+  background-color: var(--default-button-background-color);
+}
+
+.video-item__watched-video-button:hover,
+.video-item__delete-video-button:hover {
+  background-color: var(--checkbox-hover-background-color);
+}
+
+.video-item__watched-video-button--focused,
+.video-item__delete-video-button--focused {
+  background-color: var(--fouces-button-background-color);
+}
+
+.save-video-item {
+  position: relative;
+  width: 240px;
+  height: 255px;
+  margin: 0;
+  padding: 0;
 }
 
 /* ******** */
 /* skeleton */
 /* ******** */
 .skeleton {
-  width: 236px;
+  width: 240px;
 }
 
 .skeleton .button,
@@ -93,5 +244,32 @@ body {
   40%,
   100% {
     background-position: 320px;
+  }
+}
+
+@media (min-width: 960px) and (max-width: 1279px) {
+  #app {
+    max-width: 760px;
+  }
+  .save-video-container__video-list {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (min-width: 600px) and (max-width: 959px) {
+  #app {
+    max-width: 500px;
+  }
+  .save-video-container__video-list {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 599px) {
+  #app {
+    max-width: 400px;
+  }
+  .save-video-container__video-list {
+    grid-template-columns: repeat(1, 1fr);
   }
 }
