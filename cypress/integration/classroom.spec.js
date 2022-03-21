@@ -17,8 +17,6 @@ describe('나만의 유튜브 강의실을 사용할 수 있다.', () => {
   });
 
   it('영상을 검색하면 검색 결과를 확인할 수 있어야 한다.', () => {
-    cy.clock();
-    cy.tick(3000);
     cy.get('search-video-item').should('be.visible');
   });
 
