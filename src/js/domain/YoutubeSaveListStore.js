@@ -11,28 +11,32 @@ class YoutubeSaveListStore extends Store {
     items: [],
   };
 
-  setReducers() {
-    this.addReducer(ACTION_TYPE.UPDATE_SAVE_LIST, async () => {
-      const expireVideoList = this.#getExpireVideoList(YoutubeSaveStorage.get());
-      this.#updateVideoData(expireVideoList);
+  constructor(initialState) {
+    super(initialState);
 
-      const isWatched = this.state.listType === 'watched';
-      const filterItems = YoutubeSaveStorage.get().filter(
-        videoState => videoState.watched === isWatched,
-      );
+    this.reducers = {
+      [ACTION_TYPE.UPDATE_SAVE_LIST]: async () => {
+        const expireVideoList = this.#getExpireVideoList(YoutubeSaveStorage.get());
+        this.#updateVideoData(expireVideoList);
 
-      this.setState({
-        ...this.state,
-        items: filterItems,
-      });
-    });
+        const isWatched = this.state.listType === 'watched';
+        const filterItems = YoutubeSaveStorage.get().filter(
+          videoState => videoState.watched === isWatched,
+        );
 
-    this.addReducer(ACTION_TYPE.UPDATE_SAVE_LIST_FILTER, listType => {
-      this.setState({
-        ...this.state,
-        listType,
-      });
-    });
+        this.setState({
+          ...this.state,
+          items: filterItems,
+        });
+      },
+
+      [ACTION_TYPE.UPDATE_SAVE_LIST_FILTER]: listType => {
+        this.setState({
+          ...this.state,
+          listType,
+        });
+      },
+    };
   }
 
   #getExpireVideoList(videoList) {

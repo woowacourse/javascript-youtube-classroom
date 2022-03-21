@@ -10,11 +10,6 @@ export default class Store {
     }
 
     this.state = initialState;
-    this.setReducers();
-  }
-
-  addReducer(key, event) {
-    this.reducers[key] = event;
   }
 
   getState() {
@@ -29,8 +24,6 @@ export default class Store {
   getReducer(type) {
     return this.reducers[type];
   }
-
-  setReducers() {}
 
   dispatch(type, data) {
     this.getReducer(type)(data);
