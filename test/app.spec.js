@@ -22,7 +22,7 @@ describe('기본 사용 순서 체크 (E2E)', () => {
 
   it('검색 버튼을 클릭하여 검색 화면을 볼 수 있어야 한다.', () => {
     cy.get(SELECTOR.ID.SEARCH_MODAL_BUTTON).click();
-    cy.get(SELECTOR.ID.MODAL_CONTAINER).should('not.have.class', 'hide');
+    cy.get(SELECTOR.ID.MODAL_CONTAINER).should('be.visible');
   });
 
   it('검색어를 입력한 후 검색 버튼을 누를 시 검색 결과가 출력되어야 한다.', () => {
@@ -50,13 +50,14 @@ describe('기본 사용 순서 체크 (E2E)', () => {
     cy.get(SELECTOR.ID.MODAL_CONTAINER).should('have.class', 'hide');
   });
 
-  it('저장된 동영상 목록에 추가된 동영상을 시청 완료로 누를 시 본 영상으로 변경되어야 한다.', () => {
+  it('저장된 동영상 목록에 추가된 동영상을 시청 완료로 누를 시 상태가 변경되었음을 사용자에게 알려주어야 한다.', () => {
     cy.wait(2500);
     cy.get(SELECTOR.CLASS.SAVE_LIST_WATCHED_BUTTON).click();
+    cy.get(SELECTOR.ID.SAVE_LIST_CONTENT).should('not.include.text', testSetting.targetVideoName);
     cy.get(SELECTOR.ID.SNACKBAR).should('include.text', ALERT_MESSAGE.SAVE_LIST_STATE_UPDATE);
   });
 
-  it('메뉴의 본 영상 목록을 눌러 본 영상들을 확인할 수 있어야 한다.', () => {
+  it('메뉴의 본 영상 목록을 눌러 추가한 본 영상들을 확인할 수 있어야 한다.', () => {
     cy.get(`${SELECTOR.ID.NAVIGATION_FILTER_BUTTON} .button:last-child`).click();
     cy.get(SELECTOR.ID.SAVE_LIST_CONTENT).should('include.text', testSetting.targetVideoName);
   });
