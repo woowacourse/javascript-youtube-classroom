@@ -38,13 +38,7 @@ const videoStorage = {
   },
 
   getDataIndexInList(videoId) {
-    let dataIndex = 0;
-    this.getVideoDataList().forEach((videoData, idx) => {
-      if (videoData.videoId === videoId) {
-        dataIndex = idx;
-      }
-    });
-    return dataIndex;
+    return this.getVideoDataList().findIndex(videoData => videoData.videoId === videoId);
   },
 
   switchType(videoId) {
