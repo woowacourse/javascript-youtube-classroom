@@ -15,8 +15,8 @@ export const validateInput = input => {
 export const quickModalElement = e => {
   e.preventDefault();
 
-  if (!$('.modal-container').classList.contains('hide')) {
-    $('.modal-container').classList.toggle('hide');
+  if (!$('.modal-container').classList.contains('hidden')) {
+    $('.modal-container').classList.toggle('hidden');
     if ($('.watch-later-videos').classList.contains('hidden')) {
       watchedVideoInterface.renderWatchedVideos();
     }

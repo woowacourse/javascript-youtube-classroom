@@ -31,7 +31,7 @@ const searchModalInterface = {
   renderSkeletonUI() {
     $('.search-result').classList.remove('search-result--no-result');
     $('.no-result').hidden = true;
-    $('.video-list').classList.remove('hide');
+    $('.video-list').classList.remove('hidden');
     $('.video-list').insertAdjacentHTML('beforeEnd', searchVideoTemplate.skeletonUI.repeat(10));
   },
   removeSkeletonUI() {
@@ -58,7 +58,7 @@ const searchModalInterface = {
     this.removeSkeletonUI();
     $('.search-result').classList.add('search-result--no-result');
     $('.no-result').hidden = false;
-    $('.video-list').classList.add('hide');
+    $('.video-list').classList.add('hidden');
   },
   renderSearchResult(response) {
     if (response.items.length === 0) {

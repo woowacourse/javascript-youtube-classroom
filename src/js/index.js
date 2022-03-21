@@ -17,7 +17,7 @@ export default function App() {
 
   watchLaterInterface.renderWatchLaterVideos();
   $('#search-modal-button').addEventListener('click', () => {
-    $('.modal-container').classList.toggle('hide');
+    $('.modal-container').classList.toggle('hidden');
   });
 
   $('#search-button').addEventListener('click', handleSearchEvent.handleSearch);

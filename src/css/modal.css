@@ -10,10 +10,6 @@
   left: 0;
 }
 
-.modal-container.hide {
-  display: none;
-}
-
 .dimmer {
   position: absolute;
   width: 100%;
@@ -102,10 +98,6 @@
   position: relative;
   width: 240px;
   height: 255px;
-}
-
-.video-list.hide {
-  display: none;
 }
 
 .video-item__thumbnail {
