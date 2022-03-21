@@ -11,7 +11,7 @@ const OPTIONS = {
 };
 
 const stringQuery = (props) => {
-  const { url = TEST_URL, keyword, pageToken, options = OPTIONS } = props;
+  const { url = HOME_URL, keyword, pageToken, options = OPTIONS } = props;
   const query = Object.entries(options).reduce(
     (acc, [key, value]) => (acc += `${key}=${value}&`),
     `${url}q=${keyword}&`
