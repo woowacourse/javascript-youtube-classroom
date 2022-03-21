@@ -35,15 +35,6 @@ class YoutubeSearchStore extends Store {
       },
 
       [ACTION_TYPE.UPDATE_SEARCH_RESULT]: async () => {
-        if (this.#isLastItem() === true) {
-          this.setState({
-            ...this.state,
-            isLoading: false,
-            isLoaded: true,
-          });
-          return;
-        }
-
         const {
           items = [],
           pageInfo = { totalResults: 0 },

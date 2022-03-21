@@ -50,6 +50,9 @@ export default class SearchResult {
 
   setBindEvents() {
     onObserveElement(this.$scrollObserver, () => {
+      const { nextPageToken: previousNextPageToken } = YoutubeSearchStore.getState();
+      if (!previousNextPageToken) return;
+
       YoutubeSearchStore.dispatch(ACTION_TYPE.UPDATE_SEARCH_LOADING_STATUS);
       YoutubeSearchStore.dispatch(ACTION_TYPE.UPDATE_SEARCH_RESULT);
     });
