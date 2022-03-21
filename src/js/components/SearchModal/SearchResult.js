@@ -2,7 +2,7 @@ import { $, $$ } from "../../utils/dom.js";
 import { INFOMATION_MESSAGES, NUM } from "../../utils/contants.js";
 import { fetchDataFromKeyword } from "../../utils/api.js";
 import { getSkeletonTemplate, getEmptyResultTemplate, getSearchVideoTemplate } from "../../utils/templates.js";
-import { verifySaveId } from "../../utils/validation.js";
+import { verifyCanSave } from "../../utils/validation.js";
 import Toast from "../Toast.js";
 
 export default class SearchResult {
@@ -95,9 +95,9 @@ export default class SearchResult {
     }
 
     try {
-      const savedVideoArray = this.videoManager.getSavedIds();
+      const savedVideoIds = this.videoManager.getSavedIds();
       const { id, url, title, channelTitle, date } = target.dataset;
-      verifySaveId(savedVideoArray, id);
+      verifyCanSave(savedVideoIds, id);
       this.videoManager.saveVideos({ id, url, title, channelTitle, date });
       target.remove();
       this.toast.show(INFOMATION_MESSAGES.SAVED);
