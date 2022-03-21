@@ -21,7 +21,7 @@ export default class App {
     $('.dimmer').addEventListener('click', this.closeModal);
     this.$videoList.addEventListener('click', this.handleClickVideoList);
     this.$videoListFilters.addEventListener('click', this.handleFilterClick);
-    $('#app').addEventListener('keyup', this.handleKeyupEvent);
+    window.addEventListener('keyup', this.handleKeyupEvent);
 
     const searchModal = new SearchModal(this.storage, this);
     searchModal.init();
