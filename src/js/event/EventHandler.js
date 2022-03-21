@@ -33,7 +33,7 @@ export default class EventHandler {
   }
 
   clickSwitchButton(e) {
-    if ([...e.target.classList].includes('switch-show-type')) {
+    if (e.target.classList.contains('switch-show-type')) {
       const { videoId } = e.target.dataset;
       videoStorage.swtichVideoType(videoId);
       this.mainView.switchRenderingType(e);
@@ -41,7 +41,7 @@ export default class EventHandler {
   }
 
   clickDeleteButton(e) {
-    if ([...e.target.classList].includes('delete-button')) {
+    if (e.target.classList.contains('delete-button')) {
       if (window.confirm(USER_MESSAGE.WANT_DELETE)) {
         const { videoId } = e.target.dataset;
         videoStorage.deleteVideo(videoId);

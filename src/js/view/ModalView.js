@@ -85,7 +85,7 @@ export default class ModalView {
   bindVideoListClickStoreButton(callback) {
     this.$videoList.addEventListener('click', event => {
       try {
-        if ([...event.target.classList].includes(DOM_STRING.VIDEO_ITEM_SAVE_BUTTON)) {
+        if (event.target.classList.contains(DOM_STRING.VIDEO_ITEM_SAVE_BUTTON)) {
           videoStorage.checkOverMaxLength();
           const clickedVideo = event.target.parentElement;
           event.target.classList.add(DOM_STRING.HIDE);

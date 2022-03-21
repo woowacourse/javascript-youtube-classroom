@@ -68,7 +68,7 @@ export default class MainView {
     this.$watchedButton.classList.remove('selected__button');
 
     [...this.$storedVideoList.children].forEach(el => {
-      if ([...el.classList].includes(VIDEO_TYPE.WATCH_LATER)) {
+      if (el.classList.contains(VIDEO_TYPE.WATCH_LATER)) {
         el.classList.remove(DOM_STRING.HIDE);
         return;
       }
@@ -84,7 +84,7 @@ export default class MainView {
     this.$watchLaterButton.classList.remove('selected__button');
 
     [...this.$storedVideoList.children].forEach(el => {
-      if ([...el.classList].includes(VIDEO_TYPE.WATCHED)) {
+      if (el.classList.contains(VIDEO_TYPE.WATCHED)) {
         el.classList.remove(DOM_STRING.HIDE);
         return;
       }
