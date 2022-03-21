@@ -88,17 +88,18 @@ export function makeCardData(rawVideos, savedVideos) {
 }
 
 function addSavedToVideos(videos, savedVideos) {
-  // TODO: 이중 for문 해결
-  return videos.map(video => {
+  const result = videos.map(video => {
     const saved = savedVideos.some(
       savedVideo => savedVideo.videoId === video.videoId
     );
     return { ...video, saved };
   });
+
+  return result;
 }
 
 function extractCardData(rawVideos) {
-  return rawVideos.map(({ id, snippet }) => {
+  const result = rawVideos.map(({ id, snippet }) => {
     return {
       videoId: id.videoId,
       thumbnailUrl: snippet.thumbnails.default.url,
@@ -107,4 +108,6 @@ function extractCardData(rawVideos) {
       publishTime: snippet.publishTime,
     };
   });
+
+  return result;
 }
