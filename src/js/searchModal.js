@@ -104,7 +104,7 @@ class SearchModal {
 
   handleClickVideoList = event => {
     const { target } = event;
-    if (target.tagName.toLowerCase() !== 'button') return;
+    if (target.localName !== 'button') return;
     this.handleClickSaveButton(event);
   };
 

@@ -108,7 +108,7 @@ export default class App {
   };
 
   handleFilterClick = ({ target }) => {
-    if (target.tagName.toLowerCase() !== 'button') return;
+    if (target.localName !== 'button') return;
     if (target.classList.contains('active')) {
       target.classList.remove('active');
       const filter = target.getAttribute('for');
@@ -126,7 +126,7 @@ export default class App {
   };
 
   handleClickVideoList = ({ target }) => {
-    if (target.tagName.toLowerCase() !== 'button') return;
+    if (target.localName !== 'button') return;
     const purpose = target.getAttribute('for');
     const $videoItem = target.closest('.video-item');
     const videoId = $videoItem.getAttribute('data-video-id');
