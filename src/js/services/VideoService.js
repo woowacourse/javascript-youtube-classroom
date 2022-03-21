@@ -127,11 +127,9 @@ class VideoService {
     const updated = this.rootStore
       .load((state) => state.savedVideos)
       .map((video) => {
-        if (video.videoId === videoId) {
-          return { ...video, watched: !video.watched ?? true };
-        }
-
-        return video;
+        return video.videoId === videoId
+          ? { ...video, watched: !video.watched ?? true }
+          : video;
       });
 
     this.webStore.update({
