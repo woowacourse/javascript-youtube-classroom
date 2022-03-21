@@ -1,4 +1,5 @@
-import { ERROR_MESSAGE } from '../constant';
+import { ERROR_MESSAGE, LOCALSTORAGE_KEY_WATCHED } from '../constant';
+import { getLocalStorage } from './localStorage';
 
 export default class Video {
   #id;
@@ -13,6 +14,8 @@ export default class Video {
 
   #isSaved;
 
+  #isWatched;
+
   constructor(builder) {
     this.#id = builder.id;
     this.#thumbnails = builder.thumbnails;
@@ -20,6 +23,9 @@ export default class Video {
     this.#title = builder.title;
     this.#publishTime = builder.publishTime;
     this.#isSaved = builder.isSaved;
+    this.#isWatched = getLocalStorage(LOCALSTORAGE_KEY_WATCHED).includes(
+      this.#id,
+    );
   }
 
   get id() {
@@ -44,6 +50,14 @@ export default class Video {
 
   get isSaved() {
     return this.#isSaved;
+  }
+
+  get isWatched() {
+    return this.#isWatched;
+  }
+
+  toggleIsWatched() {
+    this.#isWatched = !this.#isWatched;
   }
 
   static Builder() {

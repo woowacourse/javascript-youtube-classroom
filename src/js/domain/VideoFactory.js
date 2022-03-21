@@ -22,4 +22,24 @@ export default class VideoFactory {
       .setIsSaved(isSaved)
       .build();
   }
+
+  static generateById(item) {
+    const { id } = item;
+    const {
+      thumbnails: {
+        high: { url },
+      },
+      channelTitle,
+      title,
+      publishedAt,
+    } = item.snippet;
+    return Video.Builder()
+      .setId(id)
+      .setThumbnails(url)
+      .setTitle(title)
+      .setChannelTitle(channelTitle)
+      .setPublishTime(publishedAt)
+      .setIsSaved(true)
+      .build();
+  }
 }

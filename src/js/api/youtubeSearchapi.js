@@ -4,12 +4,13 @@ import {
   REQUEST_PATH,
   HOST_URL,
   ERROR_MESSAGE,
+  SEARCH_VIDEO_REQUEST_PATH,
 } from '../constant';
 
 const youtubeSearchAPI = {
   REDIRECT_SERVER_HOST: HOST_URL,
   async searchByPage(value, pageToken) {
-    const url = this.createURL(value, pageToken);
+    const url = this.createURLByPage(value, pageToken);
     const response = await fetch(url, { method: 'GET' });
 
     this.checkExceedCapacity(response);
@@ -19,7 +20,22 @@ const youtubeSearchAPI = {
     return response.json();
   },
 
-  createURL(value, pageToken) {
+  async searchById(id) {
+    const url = new URL(SEARCH_VIDEO_REQUEST_PATH, this.REDIRECT_SERVER_HOST);
+    const parameter = new URLSearchParams({
+      part: 'snippet',
+      id: id,
+    });
+    url.search = parameter.toString();
+    const response = await fetch(url, { method: 'GET' });
+    if (!response.ok) {
+      console.log('error');
+      return;
+    }
+    return response.json();
+  },
+
+  createURLByPage(value, pageToken) {
     const url = new URL(REQUEST_PATH, this.REDIRECT_SERVER_HOST);
     const parameter = new URLSearchParams({
       part: 'snippet',

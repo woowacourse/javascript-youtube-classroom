@@ -10,7 +10,9 @@
     "test": "jest --watch --no-cache",
     "start": "webpack serve --open",
     "build": "webpack",
-    "deploy": "gh-pages -d dist"
+    "deploy": "gh-pages -d dist",
+    "cy:open": "cypress open",
+    "cy:run":"cypress run --browser chrome"
   },
   "repository": {
     "type": "git",
@@ -31,6 +33,7 @@
     "babel-loader": "^8.2.3",
     "clean-webpack-plugin": "^4.0.0",
     "css-loader": "^6.7.1",
+    "cypress": "^9.5.2",
     "file-loader": "^6.2.0",
     "html-webpack-plugin": "^5.5.0",
     "jest": "^27.5.1",

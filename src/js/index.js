@@ -1,4 +1,3 @@
-import MainPage from './ui/mainPage.js';
+import initEventCatcher from './catcher/index.js';
 
-const mainPage = new MainPage();
-mainPage.init();
+initEventCatcher();
