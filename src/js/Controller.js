@@ -150,6 +150,7 @@ export default class Controller {
     this.video.setWatchedVideoItem(watchedVideoId);
     this.tabView.removeVideo(watchedVideoId);
     this.mainView.toastNotification('success', SUCCESS_MESSAGE.MOVED_TO_WATCHED);
+    this.#showEmpty();
   };
 
   #checkUnwatchedVideo(event) {
@@ -157,6 +158,7 @@ export default class Controller {
     this.video.setUnwatchedVideoItem(unwatchedVideoId);
     this.tabView.removeVideo(unwatchedVideoId);
     this.mainView.toastNotification('success', SUCCESS_MESSAGE.MOVED_TO_UNWATCHED);
+    this.#showEmpty();
   }
 
   #checkDeleteVideo(event) {
@@ -172,6 +174,17 @@ export default class Controller {
     this.tabView.removeVideo(deletedVideoId);
     this.tabView.hideConfirmModal();
     this.mainView.toastNotification('success', SUCCESS_MESSAGE.DELETED);
-    this.#renderUnwatchedTab();
+    this.#showEmpty();
   };
+
+  #showEmpty() {
+    const unwatchedVideoItems = this.video.savedVideoItems.filter((item) => !item.watched);
+    const watchedVideoItems = this.video.savedVideoItems.filter((item) => item.watched);
+
+    if (unwatchedVideoItems.length !== 0 && watchedVideoItems.length !== 0) {
+      this.tabView.hideEmptyTab();
+    } else {
+      this.tabView.showEmptyTab();
+    }
+  }
 }
