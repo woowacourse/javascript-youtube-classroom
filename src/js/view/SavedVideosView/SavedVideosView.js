@@ -1,4 +1,4 @@
-import { DELETE_CONFIRM_MESSAGE } from '../../constants/constants';
+import { DELETE_CONFIRM_MESSAGE, TAB_NAMES } from '../../constants/constants';
 import {
   toggleWatchStatus,
   removeFromStorage,
@@ -32,8 +32,7 @@ class SavedVideosView {
   constructor() {
     this.#savedVideos = selectDom('.saved-videos');
     this.#videoList = selectDom('.video-list', this.#savedVideos);
-    this.#currentTabName = 'unwatched';
-    this.#otherTabName = 'watched';
+    [this.#currentTabName, this.#otherTabName] = TAB_NAMES;
     this.#unrenderedVideoIdArray = this.#getCurrentTabIds();
     this.#renderedVideoIdArray = [];
     this.#endOfList = selectDom('.end-of-list');
