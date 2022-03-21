@@ -1,7 +1,7 @@
 /* eslint-disable max-lines-per-function */
 import { SAVED_VIDEO_LIST_KEY, WATCHED_VIDEO_LIST_KEY } from '../constants/constant';
-import { getSaveVideoList, testSaveRequest } from '../utils/request';
-import { checkSearchResult } from '../videoItem';
+import { getSaveVideoList } from '../utils/request';
+import { searchResultToVideoList } from '../videoItem';
 
 export default class StateController {
   async initVideoLists() {
@@ -12,13 +12,13 @@ export default class StateController {
       localStorage.setItem(WATCHED_VIDEO_LIST_KEY, '[]');
     }
     if (localStorage.getItem(SAVED_VIDEO_LIST_KEY)) {
-      StateController.savedToWatchVideoList = checkSearchResult(
-        await testSaveRequest(JSON.parse(localStorage.getItem(SAVED_VIDEO_LIST_KEY)))
+      StateController.savedToWatchVideoList = searchResultToVideoList(
+        await getSaveVideoList(JSON.parse(localStorage.getItem(SAVED_VIDEO_LIST_KEY)))
       );
     }
     if (localStorage.getItem(WATCHED_VIDEO_LIST_KEY)) {
-      StateController.savedWatchedVideoList = checkSearchResult(
-        await testSaveRequest(JSON.parse(localStorage.getItem(WATCHED_VIDEO_LIST_KEY)))
+      StateController.savedWatchedVideoList = searchResultToVideoList(
+        await getSaveVideoList(JSON.parse(localStorage.getItem(WATCHED_VIDEO_LIST_KEY)))
       );
     }
     StateController.wholeVideoList = [
@@ -76,7 +76,3 @@ export default class StateController {
     );
   }
 }
-
-StateController.prototype.savedToWatchVideoList = [];
-StateController.prototype.savedWatchedVideoList = [];
-StateController.prototype.wholeVideoList = [];

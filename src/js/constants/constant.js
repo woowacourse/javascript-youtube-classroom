@@ -14,7 +14,6 @@ export const MAIN_TO_WATCH_BUTTONS = `
 <button id="check-button" class="button main-videos-button">✅</button>
 <button id="delete-button" class="button main-videos-button">🗑️</button>`;
 export const MAIN_WATCHED_BUTTONS = `
-<button id="check-button" disabled class="button main-videos-button">✅</button>
 <button id="delete-button" class="button main-videos-button">🗑️</button>`;
 export const MODAL_SAVE_BUTTON = `
 <button class="video-item__save-button button">⬇ 저장</button>`;

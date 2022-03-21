@@ -17,7 +17,7 @@ export class VideoItem {
   }
 }
 
-export const checkSearchResult = searchResult => {
+export const searchResultToVideoList = searchResult => {
   if (searchResult === null) {
     return [];
   }

@@ -41,16 +41,15 @@ export default class MainPage extends StateController {
   }
 
   handleClickVideoButtons(e) {
-    if (e.target === $('#check-button', $mainVideoList)) {
+    if (e.target.id === 'check-button') {
       this.handleClickCheckButton(e);
     }
-    if (e.target === $('#delete-button', $mainVideoList)) {
+    if (e.target.id === 'delete-button') {
       this.handleClickDeleteButton(e);
     }
   }
 
   handleClickCheckButton(e) {
-    e.target.setAttribute('disabled', '');
     const $videoItem = e.target.closest('.video-item');
     const videoId = $videoItem.getAttribute('data-video-id');
     this.watchVideo(videoId);
