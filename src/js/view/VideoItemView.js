@@ -5,7 +5,7 @@ export default class VideoItemView {
     this.$element = $element;
   }
 
-  renderVideoList(parseData) {
+  renderSearchVideoList(parseData) {
     const template = videoListTemplate(parseData);
 
     this.$element.textContent = '';
