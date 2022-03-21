@@ -2,7 +2,7 @@ import { requestVideoSearchApi } from '../domain/requestVideoSearchApi';
 import { debounce } from '../utils/common';
 import { $, showSnackBar } from '../utils/dom';
 import { skeletonUI } from './skeletonUI';
-import { videoSearchResult } from './videoSearchReulst';
+import { videoSearchResult } from './videoSearchResult';
 
 export const videoSearchForm = {
   $searchForm: $('#search-form'),

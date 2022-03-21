@@ -1,6 +1,6 @@
 import { $ } from '../utils/dom';
 import { videoSearchForm } from './videoSearchForm';
-import { videoSearchResult } from './videoSearchReulst';
+import { videoSearchResult } from './videoSearchResult';
 
 export default class VideoSearchModal {
   constructor() {
