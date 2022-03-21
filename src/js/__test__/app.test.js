@@ -50,18 +50,20 @@ describe('영상을 저장할 수 있다.', () => {
   });
 
   test('최대 영상 저장 개수를 초과한 경우, 영상 저장이 불가능하다.', () => {
-    const video = {
-      id: 'movie X tiger',
-      title: '테스트 코드를 짜보자.',
-      thumbnail: '',
-      channelTitle: 'movie X tiger',
-      publishedAt: '2022-03-18T17:57:25Z',
-      isWatched: false,
-    };
+    class Video {
+      constructor() {
+        this.id = Math.random().toString(36).substring(2, 9);
+        this.title = '테스트 코드를 짜보자.';
+        this.thumbnail = '';
+        this.channelTitle = 'movie X tiger';
+        this.publishedAt = '2022-03-18T17:57:25Z';
+        this.isWatched = false;
+      }
+    }
 
     SavedVideo.instance.dispatch(
       'save',
-      Array.from({ length: 100 }).map(() => video)
+      Array.from({ length: 100 }).map(() => new Video())
     );
 
     expect(SavedVideo.instance.isStorable()).toBe(false);
