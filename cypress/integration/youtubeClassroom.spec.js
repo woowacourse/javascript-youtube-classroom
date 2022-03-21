@@ -11,12 +11,11 @@ Cypress.Commands.add('normalSearchKeyword', (keyword, nextActionCallback) => {
 });
 
 describe('비디오 저장, 체크, 삭제 테스트', () => {
-  const baseUrl = 'http://localhost:9000/';
   const keyword = 'playlist';
 
   beforeEach(() => {
     cy.viewport(1500, 1200);
-    cy.visit(baseUrl);
+    cy.visit('/');
   });
 
   it('검색 버튼을 눌러 모달창이 떠서 키워드를 검색하면, 저장 버튼을 눌러 검색한 비디오를 저장할 수 있다.', () => {
