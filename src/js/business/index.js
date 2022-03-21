@@ -1,14 +1,16 @@
 import { STATE_STORE_KEY } from '../constants/stateStore';
 import { getState, setState } from '../modules/stateStore';
 import { youtubeAPIFetcher } from '../modules/fetcher';
-import { isNoneSearchResult } from '../utils/validation';
+import { isCheckedVideo, isMoreThanMaxVideoCount, isNoneSearchResult } from '../utils/validation';
 import { parserVideos } from '../utils/util';
 import Video from '../modules/video';
 import { API_PATHS } from '../constants/fetcher';
-import webStore from '../modules/webStore';
+import localStorageUtil from '../modules/localStorageUtil';
 import { bind } from '../modules/eventFactory';
 import { CUSTOM_EVENT_KEY } from '../constants/events';
-import { WEB_STORE_KEY } from '../constants/webStore';
+import { LOCAL_STORAGE_UTIL_KEYS } from '../constants/localStorageUtil';
+import { ERROR_MESSAGE } from '../constants/errorMessage';
+import { getCacheData, setCacheData } from '../modules/cacheStore';
 class AppBusiness {
   constructor() {
     bind(CUSTOM_EVENT_KEY.CLICK_SEARCH_MODAL_BUTTON, this.onClickSearchModalButton);
@@ -16,10 +18,19 @@ class AppBusiness {
     bind(CUSTOM_EVENT_KEY.SUBMIT_SEARCH_KEYWORD, this.onSubmitSearchKeyword);
     bind(CUSTOM_EVENT_KEY.LOAD_NEW_VIDEO_LIST, this.onLoadNewVideoList);
     bind(CUSTOM_EVENT_KEY.CLICK_SAVE_BUTTON, this.onClickSaveButton);
+    bind(CUSTOM_EVENT_KEY.CLICK_SAVED_DELETE_BUTTON, this.onClickSavedDeleteButton);
+    bind(CUSTOM_EVENT_KEY.CLICK_SAVED_CHECK_BUTTON, this.onClickSavedCheckButton);
+    bind(CUSTOM_EVENT_KEY.INITIALIZE_SAVED_VIDEO_STATE, this.onLoadTopLevelComponent);
   }
 
-  onClickSearchModalButton = () => {
-    setState(STATE_STORE_KEY.IS_MODAL_SHOW, true);
+  onClickSearchModalButton = ({ detail: { targetId } }) => {
+    if (targetId === 'search-modal-button') {
+      setState(STATE_STORE_KEY.IS_MODAL_SHOW, true);
+      return;
+    }
+    if (targetId === 'watch-video-section-button' || targetId === 'watched-video-section-button') {
+      setState(STATE_STORE_KEY.CURRENT_APP_SECTION, targetId);
+    }
   };
 
   onClickOutsideModal = () => {
@@ -28,7 +39,7 @@ class AppBusiness {
 
   onSubmitSearchKeyword = async ({ detail: { keyword } }) => {
     try {
-      const searchResult = await this.requestVideo(keyword);
+      const searchResult = await this.requestSearchVideoList(keyword);
 
       if (isNoneSearchResult(searchResult)) {
         setState(STATE_STORE_KEY.SEARCH_RESULT, {
@@ -56,7 +67,7 @@ class AppBusiness {
   onLoadNewVideoList = async () => {
     const { keyword, nextPageToken: currentPageToken } = getState(STATE_STORE_KEY.SEARCH_RESULT);
     try {
-      const searchResult = await this.requestVideo(keyword, currentPageToken);
+      const searchResult = await this.requestSearchVideoList(keyword, currentPageToken);
 
       const { nextPageToken, videoList } = this.extractSearchResult(searchResult);
 
@@ -72,17 +83,118 @@ class AppBusiness {
     }
   };
 
-  onClickSaveButton = ({ detail: { saveVideoId } }) => {
+  onClickSaveButton = async ({ detail: { saveVideoId } }) => {
     try {
-      webStore.setSavedVideoList(saveVideoId);
-      setState(STATE_STORE_KEY.SAVED_VIDEO, webStore.getData(WEB_STORE_KEY.SAVED_VIDEO_LIST_KEY));
+      const videoIdList = localStorageUtil.getArrayData(
+        LOCAL_STORAGE_UTIL_KEYS.SAVED_VIDEO_LIST_KEY
+      );
+
+      if (isMoreThanMaxVideoCount(videoIdList)) {
+        alert(ERROR_MESSAGE.SAVE_VIDEO_COUNT_OVER);
+        return;
+      }
+
+      const savedVideo = await this.requestVideoById(saveVideoId);
+      /** localStorageUtil, stateStore에 정보를 set해준다. */
+      localStorageUtil.setData(LOCAL_STORAGE_UTIL_KEYS.SAVED_VIDEO_LIST_KEY, (prev) => [
+        ...prev,
+        saveVideoId,
+      ]);
+      setState(STATE_STORE_KEY.SAVED_VIDEO, (prevState) => ({
+        ...prevState,
+        videoList: [...prevState.videoList, savedVideo],
+        prevVideoListLength: prevState.videoList.length,
+      }));
     } catch ({ message }) {
       alert(message);
     }
   };
 
-  async requestVideo(keyword, pageToken) {
-    setState(STATE_STORE_KEY.IS_WAITING_RESPONSE, true);
+  onLoadTopLevelComponent = async () => {
+    try {
+      const savedVideoIdList =
+        localStorageUtil.getArrayData(LOCAL_STORAGE_UTIL_KEYS.SAVED_VIDEO_LIST_KEY) ?? [];
+      setState(STATE_STORE_KEY.IS_SAVED_VIDEO_WAITING, true);
+
+      const savedVideoList = await Promise.all(
+        savedVideoIdList.map((savedVideoId) => this.requestVideoById(savedVideoId))
+      );
+      setState(STATE_STORE_KEY.IS_SAVED_VIDEO_WAITING, false);
+
+      setState(STATE_STORE_KEY.SAVED_VIDEO, (prevState) => ({
+        ...prevState,
+        videoList: savedVideoList,
+        prevVideoListLength: 0,
+      }));
+    } catch ({ message }) {
+      alert(message);
+    }
+  };
+
+  onClickSavedDeleteButton({ detail: { savedVideoId } }) {
+    if (confirm('정말로 삭제하시겠습니까?')) {
+      const { videoList: savedVideoList } = getState(STATE_STORE_KEY.SAVED_VIDEO);
+
+      const newSavedVideoList = savedVideoList.filter((video) => {
+        const { videoId } = video.getVideoInfo();
+
+        return videoId !== savedVideoId;
+      });
+
+      setState(STATE_STORE_KEY.SAVED_VIDEO, (prevState) => ({
+        ...prevState,
+        videoList: newSavedVideoList,
+        prevVideoListLength: 0,
+      }));
+      try {
+        const savedVideoIdList = localStorageUtil.getArrayData(
+          LOCAL_STORAGE_UTIL_KEYS.SAVED_VIDEO_LIST_KEY
+        );
+
+        const newSavedVideoIdList = savedVideoIdList.filter((videoId) => videoId !== savedVideoId);
+
+        localStorageUtil.setData(LOCAL_STORAGE_UTIL_KEYS.SAVED_VIDEO_LIST_KEY, newSavedVideoIdList);
+      } catch ({ message }) {
+        alert(message);
+      }
+    }
+  }
+
+  onClickSavedCheckButton({ detail: { savedVideoId, element } }) {
+    const { className } = element;
+    try {
+      if (isCheckedVideo(className)) {
+        localStorageUtil.setData(LOCAL_STORAGE_UTIL_KEYS.WATCHED_VIDEO_LIST_KEY, (prev) =>
+          prev.filter((videoId) => savedVideoId !== videoId)
+        );
+        setState(
+          STATE_STORE_KEY.WATCHED_VIDEO,
+          localStorageUtil.getArrayData(LOCAL_STORAGE_UTIL_KEYS.WATCHED_VIDEO_LIST_KEY)
+        );
+        return;
+      }
+      localStorageUtil.setData(LOCAL_STORAGE_UTIL_KEYS.WATCHED_VIDEO_LIST_KEY, (prev) => [
+        ...prev,
+        savedVideoId,
+      ]);
+      setState(
+        STATE_STORE_KEY.WATCHED_VIDEO,
+        localStorageUtil.getArrayData(LOCAL_STORAGE_UTIL_KEYS.WATCHED_VIDEO_LIST_KEY)
+      );
+    } catch ({ message }) {
+      alert(message);
+    }
+  }
+
+  async requestSearchVideoList(keyword, pageToken) {
+    setState(STATE_STORE_KEY.IS_SEARCH_VIDEO_WAITING, true);
+
+    const alreadyData = getCacheData(`${keyword}-${pageToken}`);
+
+    if (alreadyData) {
+      setState(STATE_STORE_KEY.IS_SEARCH_VIDEO_WAITING, false);
+      return alreadyData;
+    }
 
     const searchResult = await youtubeAPIFetcher({
       path: API_PATHS.SEARCH,
@@ -95,12 +207,28 @@ class AppBusiness {
       },
     });
 
-    setState(STATE_STORE_KEY.IS_WAITING_RESPONSE, false);
+    setCacheData(`${keyword}-${pageToken}`, searchResult);
+
+    setState(STATE_STORE_KEY.IS_SEARCH_VIDEO_WAITING, false);
 
     return searchResult;
   }
 
-  /** 검색 API 결과로 부터, videoList - nextPageToken 값을 추출한다. */
+  async requestVideoById(id) {
+    const videoResult = await youtubeAPIFetcher({
+      path: API_PATHS.GET_VIDEO,
+      params: {
+        id,
+        part: 'snippet',
+      },
+    });
+
+    const {
+      items: [videoInfos],
+    } = parserVideos(videoResult);
+
+    return Video.create({ ...videoInfos, videoId: id });
+  }
 
   extractSearchResult(searchResult) {
     const { items: videoInfos, nextPageToken } = parserVideos(searchResult);

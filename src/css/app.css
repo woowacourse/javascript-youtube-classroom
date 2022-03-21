@@ -5,7 +5,9 @@ body {
 
 #app {
   max-width: 1020px;
+  min-width: 390px;
   margin: 0 auto;
+  padding: 0 10px;
 }
 
 .classroom-container__title {
@@ -18,7 +20,7 @@ body {
 
 .nav {
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
 }
 
 .button {
@@ -39,4 +41,12 @@ body {
 
 .nav__button:hover {
   background: #ebebeb;
+}
+
+.button.checked {
+  background-color: rgba(0, 188, 212, 0.36);
+}
+
+.saved-video-section.hide {
+  display: none;
 }

@@ -16,7 +16,7 @@ export const parserVideos = (data) => {
     items: items.map((item) => ({
       videoId: item.id?.videoId,
       thumbnail: item.snippet?.thumbnails['default'].url,
-      publishTime: item.snippet?.publishTime,
+      publishTime: item.snippet?.publishTime ?? item.snippet?.publishedAt,
       channelTitle: item.snippet?.channelTitle,
       videoTitle: item.snippet?.title,
     })),
@@ -31,7 +31,7 @@ export const parseTimeStamp = (time) => {
   return `${year}년 ${month}월 ${day}일`;
 };
 
-export const createURL = (path, params) => {
+export const createUrl = (API_URL, path, params) => {
   const url = new URL(path, API_URL);
   url.search = new URLSearchParams(params).toString();
   return url;
