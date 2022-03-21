@@ -143,8 +143,8 @@ class VideoService {
   }
 
   toggleSavedVideosFilter(filterLabel) {
-    const currentFilter = JSON.parse(
-      JSON.stringify(this.rootStore.load((state) => state.savedVideosFilter))
+    const currentFilter = this.rootStore.load(
+      (state) => state.savedVideosFilter
     );
 
     if (!Object.prototype.hasOwnProperty.call(currentFilter, filterLabel))
@@ -184,7 +184,7 @@ const initState = {
 };
 const videoService = new VideoService(initState);
 const useStore = (callback) => {
-  return callback(videoService.rootStore.load((state) => state));
+  return videoService.rootStore.load(callback);
 };
 
 export default videoService;

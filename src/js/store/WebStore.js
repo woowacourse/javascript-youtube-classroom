@@ -1,10 +1,10 @@
 import Store from '../core/Store.js';
+import { deepClone } from '../utils/commons.js';
 
 export default class WebStore extends Store {
   init() {
     this.state =
-      JSON.parse(localStorage.getItem(this.key)) ||
-      JSON.parse(JSON.stringify(this.initState));
+      JSON.parse(localStorage.getItem(this.key)) || deepClone(this.initState);
 
     Object.seal();
   }

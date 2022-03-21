@@ -1,3 +1,5 @@
+import { deepClone } from '../utils/commons';
+
 export default class Store {
   state;
 
@@ -13,7 +15,7 @@ export default class Store {
   }
 
   load(callback) {
-    return callback(this.state);
+    return deepClone(callback(this.state));
   }
 
   update(newState) {

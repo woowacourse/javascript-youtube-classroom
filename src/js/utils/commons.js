@@ -53,3 +53,7 @@ export const removeDuplicatedElements = (array, key) => {
 
   return Array.from(uniqueMap.values());
 };
+
+export const deepClone = (obj) => {
+  return JSON.parse(JSON.stringify(obj));
+};
