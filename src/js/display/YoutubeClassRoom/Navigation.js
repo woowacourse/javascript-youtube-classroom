@@ -2,7 +2,7 @@ import { SELECTOR } from '@Constants/Selector';
 import { ACTION_TYPE } from '@Constants/String';
 import { $ } from '@Utils/Dom';
 import { addEventDelegate } from '@Utils/CustomEvent';
-import YoutubeSaveListStore from '@Domain/YoutubeSaveListStore';
+import YoutubeSaveListStore from '@Domain/Store/YoutubeSaveListStore';
 
 export default class Navigation {
   $container = $(SELECTOR.ID.CLASSROOM_NAVIGATION);

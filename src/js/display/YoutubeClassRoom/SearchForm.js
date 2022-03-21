@@ -3,7 +3,7 @@ import { SELECTOR } from '@Constants/Selector';
 import { ERROR_MESSAGE, ACTION_TYPE } from '@Constants/String';
 import { onEnableButton } from '@Utils/ElementControl';
 import { addEventDelegate } from '@Utils/CustomEvent';
-import YoutubeSearchStore from '@Domain/YoutubeSearchStore';
+import YoutubeSearchStore from '@Domain/Store/YoutubeSearchStore';
 import { isEmptyString, isSameKeyword } from '@Utils/Validator';
 
 export default class SearchForm {

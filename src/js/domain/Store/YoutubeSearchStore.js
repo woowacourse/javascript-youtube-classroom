@@ -1,6 +1,6 @@
-import Store from '@Core/Store';
 import { ACTION_TYPE } from '@Constants/String';
-import { requestYoutubeSearch } from '../api';
+import { requestYoutubeSearch } from '../../api';
+import Store from './Abstract';
 
 class YoutubeSearchStore extends Store {
   state = {
@@ -16,7 +16,7 @@ class YoutubeSearchStore extends Store {
   constructor(initialState) {
     super(initialState);
 
-    this.reducer = {
+    this.reducers = {
       [ACTION_TYPE.UPDATE_SEARCH_KEYWORD]: keyword => {
         this.setState({
           ...this.state,

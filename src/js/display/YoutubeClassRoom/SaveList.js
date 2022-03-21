@@ -3,8 +3,8 @@ import { getParsedTime } from '@Utils/ManageData';
 import { addEventDelegate } from '@Utils/CustomEvent';
 import { ACTION_TYPE, ALERT_MESSAGE } from '@Constants/String';
 import { SELECTOR, DOM_NAME } from '@Constants/Selector';
-import YoutubeSaveListStore from '@Domain/YoutubeSaveListStore';
 import YoutubeSaveStorage from '@Domain/YoutubeSaveStorage';
+import YoutubeSaveListStore from '@Domain/Store/YoutubeSaveListStore';
 import Snackbar from '@Display/Element/Snackbar';
 
 export default class SaveList {

@@ -5,9 +5,9 @@ import { addEventDelegate } from '@Utils/CustomEvent';
 import { CLASS_ROOM_SETTING } from '@Constants/Setting';
 import { ERROR_MESSAGE, ALERT_MESSAGE, ACTION_TYPE } from '@Constants/String';
 import { SELECTOR, DOM_NAME } from '@Constants/Selector';
-import YoutubeSearchStore from '@Domain/YoutubeSearchStore';
+import YoutubeSearchStore from '@Domain/Store/YoutubeSearchStore';
+import YoutubeSaveListStore from '@Domain/Store/YoutubeSaveListStore';
 import YoutubeSaveStorage from '@Domain/YoutubeSaveStorage';
-import YoutubeSaveListStore from '@Domain/YoutubeSaveListStore';
 import Snackbar from '@Display/Element/Snackbar';
 
 export default class SearchResult {

@@ -10,10 +10,7 @@ class Modal {
 
   enable(container) {
     this.$container = $(container);
-    this.setBindEvents();
-  }
 
-  setBindEvents() {
     addEventDelegate(this.$modal, SELECTOR.CLASS.MODAL_DIMMER, {
       eventType: 'click',
       handler: this.handleCloseModal,
