@@ -50,15 +50,13 @@ class RenderSearchVideo extends RenderVideo {
     e.preventDefault();
     this.searchResultSection.scrollTop = 0;
 
-    if (
-      !!this.searchInput.value.trim() &&
-      this.searchVideo.prevSearchKeyword === this.searchInput.value.trim()
-    ) {
+    const searchKeyword = this.searchInput.value.trim();
+    if (!!searchKeyword && this.searchVideo.prevSearchKeyword === searchKeyword) {
       return;
     }
     this.searchVideo.initSearchVideo();
     this.videoListContainer.replaceChildren();
-    this.#loadVideo();
+    this.#loadVideo(searchKeyword);
   };
 
   #onScrollVideoList = () => {
@@ -74,7 +72,7 @@ class RenderSearchVideo extends RenderVideo {
         this.scrollThrottle = null;
         const { scrollHeight, offsetHeight, scrollTop } = this.searchResultSection;
         if (scrollHeight - offsetHeight === scrollTop) {
-          this.#loadVideo();
+          this.#loadVideo(this.searchVideo.prevSearchKeyword);
         }
       }, THROTTLE_TIME_INTERVAL);
     }
@@ -123,12 +121,10 @@ class RenderSearchVideo extends RenderVideo {
     insertHtmlToElement(this.skeletonListContainer, totalVideoSkeletonTemplate);
   }
 
-  async #loadVideo() {
+  async #loadVideo(searchKeyword) {
     this.#renderVideoSkeleton();
     try {
-      this.#renderSearchVideo(
-        await this.searchVideo.handleSearchVideo(this.searchInput.value.trim())
-      );
+      this.#renderSearchVideo(await this.searchVideo.handleSearchVideo(searchKeyword));
     } catch (error) {
       this.searchInput.value = '';
       this.searchInput.focus();
