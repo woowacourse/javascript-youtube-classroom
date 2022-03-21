@@ -54,6 +54,14 @@ export default class SavedVideos extends RootLocalStorage {
     });
     rootStore.setState({ videos: newVideos });
   }
+
+  hasWatchedVideo() {
+    return this.getWatchedVideoLength() !== 0;
+  }
+
+  hasWatchingVideo() {
+    return this.getWatchingVideoLength() !== 0;
+  }
 }
 
 export const savedVideosStorage = new SavedVideos('savedVideos');

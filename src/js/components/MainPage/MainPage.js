@@ -7,15 +7,12 @@ import { savedVideosStorage } from '../../localStorage/savedVideos';
 
 export default class MainPage extends Component {
   setup() {
-    const savedVideos = savedVideosStorage.load();
-    const watchedVideos = savedVideos.filter(video => video.watched);
-
     this.state = { watchedMode: false };
 
     rootStore.setState({
-      savedVideos,
-      hasWatchedVideo: watchedVideos.length !== 0,
-      hasWatchingVideo: savedVideos.length - watchedVideos.length !== 0,
+      savedVideos: savedVideosStorage.load(),
+      hasWatchedVideo: savedVideosStorage.hasWatchedVideo(),
+      hasWatchingVideo: savedVideosStorage.hasWatchedVideo(),
     });
   }
 

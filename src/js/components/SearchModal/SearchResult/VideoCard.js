@@ -72,8 +72,8 @@ export default class VideoCard extends Component {
     this.target.remove();
 
     rootStore.setState({
-      hasWatchedVideo: savedVideosStorage.getWatchedVideoLength() !== 0,
-      hasWatchingVideo: savedVideosStorage.getWatchingVideoLength() !== 0,
+      hasWatchedVideo: savedVideosStorage.hasWatchedVideo(),
+      hasWatchingVideo: savedVideosStorage.hasWatchingVideo(),
     });
   }
 
@@ -83,8 +83,8 @@ export default class VideoCard extends Component {
       this.target.remove();
 
       rootStore.setState({
-        hasWatchedVideo: savedVideosStorage.getWatchedVideoLength() !== 0,
-        hasWatchingVideo: savedVideosStorage.getWatchingVideoLength() !== 0,
+        hasWatchedVideo: savedVideosStorage.hasWatchedVideo(),
+        hasWatchingVideo: savedVideosStorage.hasWatchingVideo(),
       });
     }
   }
