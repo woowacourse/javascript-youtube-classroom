@@ -76,7 +76,7 @@ export default class ModalView {
     this.$videoList.addEventListener('scroll', throttle(this.scrollToBottom.bind(this, callback)));
   }
 
-  bindVideoListClickStoreButton(callback) {
+  bindOnClickStoreButton(callback) {
     this.$videoList.addEventListener('click', event => {
       try {
         if (event.target.classList.contains(DOM_STRING.VIDEO_ITEM_SAVE_BUTTON)) {
@@ -142,12 +142,13 @@ export default class ModalView {
   }
 
   parseVideoInfo(videoInfo) {
+    const [thumbnailImg, title, channelTitle, publishedAt, videoId] = videoInfo.children;
     return {
-      videoId: videoInfo.children[4].dataset.videoId,
-      publishedAt: videoInfo.children[3].textContent,
-      title: videoInfo.children[1].textContent,
-      url: videoInfo.children[0].src,
-      channelTitle: videoInfo.children[2].textContent,
+      videoId: videoId.dataset.videoId,
+      publishedAt: publishedAt.textContent,
+      title: title.textContent,
+      url: thumbnailImg.src,
+      channelTitle: channelTitle.textContent,
       type: VIDEO_TYPE.WATCH_LATER,
     };
   }
