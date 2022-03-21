@@ -9,7 +9,7 @@ export const throttle = (callback, delayTime = 1000) => {
   let throttleTimer = null;
   return function (...parameters) {
     if (!throttleTimer) {
-      throttleTimer = setTimeout(async () => {
+      throttleTimer = setTimeout(() => {
         throttleTimer = null;
         callback(...parameters);
       }, delayTime);
