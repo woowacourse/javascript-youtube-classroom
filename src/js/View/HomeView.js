@@ -5,6 +5,10 @@ export default class HomeView {
   constructor({ saveVideoManager }) {
     this.savedVideoListView = new SavedVideoListView({ saveVideoManager });
 
+    this.bindEvents();
+  }
+
+  bindEvents() {
     $('#unwatched-video-list-button').addEventListener('click', this.onClickUnwatchedVideoListButton);
     $('#watched-video-list-button').addEventListener('click', this.onClickWatchedVideoListButton);
     $('#search-modal-button').addEventListener('click', this.openModal);

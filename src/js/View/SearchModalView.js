@@ -7,6 +7,10 @@ export default class SearchModalView {
     this.searchKeywordFormView = new SearchKeywordFormView({ searchVideoManager });
     this.searchResultView = new SearchResultView({ searchVideoManager, saveVideoManager });
 
+    this.bindEvents();
+  }
+
+  bindEvents() {
     $('.dimmer').addEventListener('click', this.closeModal);
     window.addEventListener('keydown', this.onKeyDown);
   }

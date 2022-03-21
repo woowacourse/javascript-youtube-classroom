@@ -12,6 +12,10 @@ export default class SearchResultView {
     this.$noResultContainer = $('#no-result-container', this.$searchResultSection);
     this.$noResultDescription = $('#no-result-description', this.$noResultContainer);
 
+    this.bindEvents();
+  }
+
+  bindEvents() {
     this.$searchResultVideoList.addEventListener('scroll', debounce(this.onScrollVideoList, 500));
     this.$searchResultVideoList.addEventListener('click', this.onClickVideoSaveButton);
     $('#modal-container').addEventListener(EVENT.UPDATE_SEARCH_STATE, this.updateOnSearchState);

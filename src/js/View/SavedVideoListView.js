@@ -6,6 +6,10 @@ export default class SavedVideoListView {
   constructor({ saveVideoManager }) {
     this.saveVideoManager = saveVideoManager;
 
+    this.bindEvents();
+  }
+
+  bindEvents() {
     $('#unwatched-video-list').addEventListener('click', this.onClickIconButton);
     $('#watched-video-list').addEventListener('click', this.onClickIconButton);
     $('#app').addEventListener(EVENT.UPDATE_SAVED_VIDEO_LIST, this.updateOnSavedVideoList);
