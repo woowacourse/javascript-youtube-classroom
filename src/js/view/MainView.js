@@ -12,11 +12,11 @@ class MainView {
     selectDom('#watched-tab').addEventListener('click', () => this.renderSavedVideo(true));
   }
 
-  #renderNoSavedVideo() {
+  #renderNoSavedVideo = () => {
     if (this.noSavedVideo) {
       this.noSavedVideo.classList.remove('hide');
     }
-  }
+  };
 
   #handleCheck = (event) => {
     const savedVideoArray = storage.getSavedVideoArray();
@@ -86,7 +86,7 @@ class MainView {
     this.noSavedVideo.classList.add('hide');
   };
 
-  renderSavedVideo(isWatched) {
+  renderSavedVideo = (isWatched) => {
     this.#removeFormerView();
     const videoArray = storage
       .getSavedVideoArray()
@@ -102,7 +102,7 @@ class MainView {
     );
     savedVideoList.append(...videoElementArray);
     this.savedVideosContainer.append(savedVideoList);
-  }
+  };
 }
 
 export default MainView;

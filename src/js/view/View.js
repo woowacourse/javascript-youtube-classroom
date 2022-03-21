@@ -74,7 +74,7 @@ class View {
     }
   };
 
-  #handleScrollToLastItem() {
+  #handleScrollToLastItem = () => {
     return new IntersectionObserver(
       async (entries) => {
         if (entries[0].isIntersecting) {
@@ -90,7 +90,7 @@ class View {
       },
       { threshold: 0.5 }
     );
-  }
+  };
 
   #handleVideoSaveClick = (event) => {
     try {
@@ -101,7 +101,7 @@ class View {
     }
   };
 
-  #renderSearchResult(searchResultArray) {
+  #renderSearchResult = (searchResultArray) => {
     const skeletonList = this.videoList.querySelectorAll('.skeleton');
     removeElementList(skeletonList);
 
@@ -114,21 +114,16 @@ class View {
     const resultElementArray = this.#createElementFromObject(searchResultArray);
     this.videoList.append(...resultElementArray);
     this.observer.observe(this.videoList.lastChild);
-  }
+  };
 
-  #isEndOfResult(searchResultArray) {
-    return searchResultArray === null;
-  }
+  #isEndOfResult = (searchResultArray) => searchResultArray === null;
 
-  #isNoResult(searchResultArray) {
-    return searchResultArray.length === 0;
-  }
+  #isNoResult = (searchResultArray) => searchResultArray.length === 0;
 
-  #createElementFromObject(searchResultArray) {
-    return searchResultArray.map((resultItem) => this.#createVideoElement(resultItem));
-  }
+  #createElementFromObject = (searchResultArray) =>
+    searchResultArray.map((resultItem) => this.#createVideoElement(resultItem));
 
-  #createVideoElement(resultItem) {
+  #createVideoElement = (resultItem) => {
     const videoElement = document.createElement('li');
     videoElement.className = 'video-item';
     videoElement.insertAdjacentHTML('beforeend', this.#videoElementTemplate(resultItem));
@@ -137,9 +132,9 @@ class View {
       this.#handleVideoSaveClick
     );
     return videoElement;
-  }
+  };
 
-  #videoElementTemplate({ thumbnail, title, channelTitle, publishedAt, videoId, isSaved }) {
+  #videoElementTemplate = ({ thumbnail, title, channelTitle, publishedAt, videoId, isSaved }) => {
     return `
       <img src="${thumbnail}" alt="video-item-thumbnail" class="video-item__thumbnail">
       <h4 class="video-item__title">${title}</h4>
@@ -158,23 +153,22 @@ class View {
         ⬇ 저장
       </button>
     `;
-  }
+  };
 
-  #loadSkeleton() {
+  #loadSkeleton = () => {
     this.videoList.insertAdjacentHTML('beforeend', this.#skeletonTemplate());
-  }
+  };
 
-  #skeletonTemplate() {
-    return `
+  #skeletonTemplate = () =>
+    `
       <div class="skeleton">
         <div class="image"></div>
         <p class="line"></p>
         <p class="line"></p>
       </div>
     `.repeat(MAX_SEARCH_RESULT);
-  }
 
-  #renderNoResult() {
+  #renderNoResult = () => {
     this.videoList.classList.add('hide');
     this.searchResult.classList.add('search-result--no-result');
     this.searchResult.insertAdjacentHTML(
@@ -187,16 +181,16 @@ class View {
         </p>
       </div>`
     );
-  }
+  };
 
-  #clearNoResult() {
+  #clearNoResult = () => {
     const noResult = selectDom('.no-result');
     if (noResult) {
       this.videoList.classList.remove('hide');
       this.searchResult.classList.remove('search-result--no-result');
       noResult.remove();
     }
-  }
+  };
 }
 
 export default View;

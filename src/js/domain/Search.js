@@ -7,7 +7,7 @@ class Search {
     this.nextPageToken = null;
   }
 
-  async getSearchResultArray(keyword, pageToken = undefined) {
+  getSearchResultArray = async (keyword, pageToken = undefined) => {
     try {
       const { items, nextPageToken } = await this.#getSearchResult(keyword, pageToken);
       this.keyword = keyword;
@@ -16,15 +16,15 @@ class Search {
     } catch (error) {
       throw new Error(error.message);
     }
-  }
+  };
 
-  async getLoadMoreResultArray() {
+  getLoadMoreResultArray = async () => {
     const searchResultArray = await this.getSearchResultArray(this.keyword, this.nextPageToken);
     if (this.nextPageToken === undefined) return null;
     return searchResultArray;
-  }
+  };
 
-  async #getSearchResult(keyword, pageToken) {
+  #getSearchResult = async (keyword, pageToken) => {
     const query = {
       q: keyword,
       maxResults: MAX_SEARCH_RESULT,
@@ -41,17 +41,16 @@ class Search {
     } catch (error) {
       throw new Error(ERROR_MESSAGES.SERVER_MALFUNCTION);
     }
-  }
+  };
 
-  #generateQueryString(query) {
-    return Object.keys(query).reduce(
+  #generateQueryString = (query) =>
+    Object.keys(query).reduce(
       (str, key) => (query[key] ? `${str}&${key}=${query[key]}` : `${str}`),
       ''
     );
-  }
 
-  #getVideoObjectArray(itemArray) {
-    return itemArray.map((item) => {
+  #getVideoObjectArray = (itemArray) =>
+    itemArray.map((item) => {
       const { snippet, id } = item;
       return {
         videoId: id.videoId,
@@ -62,7 +61,6 @@ class Search {
         isSaved: !!storage.isSavedVideo(id.videoId),
       };
     });
-  }
 }
 
 export default Search;

@@ -7,17 +7,17 @@ class LocalStorageMock {
     this.store = {};
   }
 
-  getItem(key) {
+  getItem = (key) => {
     return this.store[key] || null;
-  }
+  };
 
-  setItem(key, value) {
+  setItem = (key, value) => {
     this.store[key] = String(value);
-  }
+  };
 
-  removeItem(key) {
+  removeItem = (key) => {
     delete this.store[key];
-  }
+  };
 }
 
 export default LocalStorageMock;
