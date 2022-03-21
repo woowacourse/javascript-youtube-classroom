@@ -51,26 +51,44 @@ export default class SavedVideoListView {
   updateOnUnwatchedVideoList = (e) => {
     const { response, unwatchedVideos } = e.detail;
     if ( response !== RESULT.SUCCESS ) {
-      this.$unwatchedVideoList .innerHTML = template.failToReadSavedVideo;
+      this.$unwatchedVideoList.classList.add('description');
+      this.$unwatchedVideoList.innerHTML = template.failToReadSavedVideo;
       return;
     }
     if (unwatchedVideos.length === 0) {
-      this.$unwatchedVideoList .innerHTML = template.noUnwatchedVideo;
+      this.$unwatchedVideoList.classList.add('description');
+      this.$unwatchedVideoList.innerHTML = template.noUnwatchedVideo;
       return;
     }
-    const unwatchedVideoListItems = unwatchedVideos.map((video) => template.savedVideoListItem(video)).join('');
-    this.$unwatchedVideoList .innerHTML = unwatchedVideoListItems;
+    this.updateUnwatchedVideoItems(unwatchedVideos);
   }
 
   updateOnWatchedVideoList = (e) => {
     const { response, watchedVideos } = e.detail;
     if ( response !== RESULT.SUCCESS ) {
+      this.$watchedVideoList.classList.add('description');
       this.$watchedVideoList.innerHTML = template.failToReadSavedVideo;
       return;
     }
     if (watchedVideos.length === 0) {
+      this.$watchedVideoList.classList.add('description');
       this.$watchedVideoList.innerHTML = template.noWatchedVideo;
       return;
+    }
+    this.updateWatchedVideoItems(watchedVideos);
+  }
+  
+  updateUnwatchedVideoItems = (unwatchedVideos) => {
+    if (this.$unwatchedVideoList.classList.contains('description')) {
+      this.$unwatchedVideoList.classList.remove('description')
+    }
+    const unwatchedVideoListItems = unwatchedVideos.map((video) => template.savedVideoListItem(video)).join('');
+    this.$unwatchedVideoList.innerHTML = unwatchedVideoListItems;
+  }
+
+  updateWatchedVideoItems = (watchedVideos) => {
+    if (this.$watchedVideoList.classList.contains('description')) {
+      this.$watchedVideoList.classList.remove('description')
     }
     const watchedVideoListItems = watchedVideos.map((video) => template.savedVideoListItem(video)).join('');
     this.$watchedVideoList.innerHTML = watchedVideoListItems;
