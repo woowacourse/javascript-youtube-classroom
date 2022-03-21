@@ -42,9 +42,8 @@ export default class MainView {
   }
 
   renderStoredVideoList() {
-    const storedVideoList = videoStorage.getVideoDataList();
-    storedVideoList.forEach(videoData => {
-      const template = `
+    const template = videoStorage.getVideoDataList().map(videoData => {
+      return `
         <li class="video-item ${videoData.type}">
           <img
             src=${videoData.url}
@@ -58,9 +57,9 @@ export default class MainView {
       }">✅</button>
           <button data-videoid=${videoData.videoId} class="delete-button button">🗑️</button>
         </li>`;
-
-      this.$storedVideoList.insertAdjacentHTML('beforeend', template);
     });
+
+    this.$storedVideoList.insertAdjacentHTML('beforeend', template.join(''));
   }
 
   renderWatchLaterVideos() {
