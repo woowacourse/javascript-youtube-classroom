@@ -12,15 +12,18 @@ export const validateInput = input => {
   }
 };
 
+export const checkHasHiddenClass = selector => {
+  return $(selector).classList.contains('hidden');
+};
+
 export const quickModalElement = e => {
   e.preventDefault();
-
-  if (!$('.modal-container').classList.contains('hidden')) {
+  if (!checkHasHiddenClass('.modal-container')) {
     $('.modal-container').classList.toggle('hidden');
-    if ($('.watch-later-videos').classList.contains('hidden')) {
+    if (checkHasHiddenClass('.watch-later-videos')) {
       watchedVideoInterface.renderWatchedVideos();
     }
-    if ($('.watched-videos').classList.contains('hidden')) {
+    if (checkHasHiddenClass('.watched-videos')) {
       watchLaterInterface.renderWatchLaterVideos();
     }
   }

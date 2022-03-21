@@ -1,7 +1,7 @@
 import { SNACK_BAR } from '../constants/constants.js';
 import storage from '../storage/storage.js';
 import watchLaterInterface from '../ui/watchLaterInterface.js';
-import { $, confrimVideoDelete, toggleSnackBar } from '../util/general.js';
+import { $, checkHasHiddenClass, confrimVideoDelete, toggleSnackBar } from '../util/general.js';
 import { removeCheckedVideoItem, removeDeleteVideoItem } from '../util/render.js';
 
 export class WatchLaterVideoEventHandler {
@@ -11,11 +11,11 @@ export class WatchLaterVideoEventHandler {
     watchLaterInterface.renderWatchLaterVideos();
   };
   toggleWatchLaterContent = () => {
-    if ($('.watch-later-videos').classList.contains('hidden')) {
+    if (checkHasHiddenClass('.watch-later-videos')) {
       $('.watch-later-videos').classList.toggle('hidden');
       $('.watch-later-nav-button').classList.toggle('is-active');
     }
-    if (!$('.watched-videos').classList.contains('hidden')) {
+    if (!checkHasHiddenClass('.watched-videos')) {
       $('.watched-videos').classList.toggle('hidden');
       $('.watched-nav-button').classList.toggle('is-active');
     }
