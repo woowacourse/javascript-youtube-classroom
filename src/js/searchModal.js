@@ -142,7 +142,7 @@ class SearchModal {
     });
     this.$searchResult.classList.remove('loading');
     if (result === null) return null;
-    this.nextPageToken = result.nextPageToken;
+    this.nextPageToken = result.nextPageToken ?? null;
     const videos = result.items.map(item => {
       const { id } = item;
       const isWatched = hasProperty(this.storage.cache, id) && this.storage.cache[id].watched;
