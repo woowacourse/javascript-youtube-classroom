@@ -1,17 +1,13 @@
 import SearchModal from './searchModal';
 import { $, hasProperty, randomErrorEmoji, requestYoutubeVideos } from './utils';
 import NotFoundImage from '../assets/images/not_found.png';
-import {
-  LOCAL_STORAGE_VIDEO_LIST_KEY,
-  MAX_SAVABLE_VIDEOS_COUNT,
-  SERVER_URL,
-} from './constants/constant';
+import { SERVER_URL } from './constants/constant';
 import VideoStorage from './storage/videoStorage';
 import VideoItem from './videoItem';
 
 export default class App {
   constructor() {
-    this.storage = new VideoStorage(LOCAL_STORAGE_VIDEO_LIST_KEY, MAX_SAVABLE_VIDEOS_COUNT);
+    this.storage = new VideoStorage();
 
     this.$modalContainer = $('.modal-container');
     this.$videoListContainer = $('#app > .saved-video-list-container');
