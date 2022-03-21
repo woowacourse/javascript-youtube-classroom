@@ -68,40 +68,27 @@ export default class HomePage {
     this.#watchLaterVideoList.replaceChildren();
     this.#watchedVideoList.replaceChildren();
 
+    const videoListType = {
+      [TAB_MENU.WATCH_LATER]: {
+        videoList: this.#storageEngine.getWatchLaterVideos(),
+        $videoList: this.#watchLaterVideoList,
+      },
+      [TAB_MENU.WATCHED]: {
+        videoList: this.#storageEngine.getWatchedVideos(),
+        $videoList: this.#watchedVideoList,
+      },
+    };
     const tabMenu = this.#storageEngine.getTabMenu();
-    if (tabMenu === TAB_MENU.WATCH_LATER) {
-      this.renderWatchLaterVideoList();
+    const { videoList, $videoList } = videoListType[tabMenu];
+
+    if (videoList.length === 0) {
+      $videoList.insertAdjacentHTML('beforeend', NO_RESULT_TEMPLATE);
       return;
     }
 
-    this.renderWatchedVideoList();
-  }
-
-  renderWatchLaterVideoList() {
-    const watchLaterVideoList = this.#storageEngine.getWatchLaterVideos();
-
-    if (watchLaterVideoList.length === 0) {
-      this.#watchLaterVideoList.insertAdjacentHTML('beforeend', NO_RESULT_TEMPLATE);
-      return;
-    }
-
-    this.#watchLaterVideoList.insertAdjacentHTML(
+    $videoList.insertAdjacentHTML(
       'beforeend',
-      watchLaterVideoList.map((video) => getVideoItemTemplate(video)).join('')
-    );
-  }
-
-  renderWatchedVideoList() {
-    const watchedVideoList = this.#storageEngine.getWatchedVideos();
-
-    if (watchedVideoList.length === 0) {
-      this.#watchedVideoList.insertAdjacentHTML('beforeend', NO_RESULT_TEMPLATE);
-      return;
-    }
-
-    this.#watchedVideoList.insertAdjacentHTML(
-      'beforeend',
-      watchedVideoList.map((video) => getVideoItemTemplate(video)).join('')
+      videoList.map((video) => getVideoItemTemplate(video)).join('')
     );
   }
 
@@ -113,13 +100,11 @@ export default class HomePage {
       return;
     }
 
-    if (e.target.classList.contains('video-item__delete_button')) {
-      if (confirm(MESSAGE.CONFIRM)) {
-        const { videoId } = e.target.closest('.video-item').dataset;
-        this.#storageEngine.removeVideo(videoId);
-        this.renderVideoList();
-        MessageBot.dispatchMessage(MESSAGE_TYPE.REMOVE, MESSAGE.REMOVE);
-      }
+    if (e.target.classList.contains('video-item__delete_button') && confirm(MESSAGE.CONFIRM)) {
+      const { videoId } = e.target.closest('.video-item').dataset;
+      this.#storageEngine.removeVideo(videoId);
+      this.renderVideoList();
+      MessageBot.dispatchMessage(MESSAGE_TYPE.REMOVE, MESSAGE.REMOVE);
     }
   };
 }
