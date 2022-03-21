@@ -11,6 +11,11 @@ const validator = {
       throw new Error(ERROR_MESSAGE.OVER_MAX_STORE_LENGTH);
     }
   },
+  checkParamsEmpty: params => {
+    if (isEmptyParams(params)) {
+      throw new Error(ERROR_MESSAGE.REQUEST_ERROR);
+    }
+  },
 };
 
 function isEmptyInput(searchInput) {
@@ -19,6 +24,10 @@ function isEmptyInput(searchInput) {
 
 function isOverVideoListMaxLength(videoList) {
   return videoList.length >= STORE.VIDEO_LIST_MAX_LENGTH;
+}
+
+function isEmptyParams(params) {
+  return Object.keys(params).length === 0;
 }
 
 export default validator;

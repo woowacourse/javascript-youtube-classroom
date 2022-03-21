@@ -40,6 +40,7 @@ export const ERROR_MESSAGE = {
   SEARCH_ERROR: '검색 중 오류가 발생했습니다.',
   OVER_MAX_STORE_LENGTH: '최대 100개까지만 저장 가능합니다.',
   EMPTY_INPUT: '입력된 글자가 없습니다. 한 글자 이상의 검색어를 입력해주세요.',
+  REQUEST_ERROR: '영상을 요청하는 중 오류가 발생했습니다.',
 };
 
 export const CONFIRM_MESSAGE = {
