@@ -41,12 +41,12 @@ export default class SavedVideoCardList extends Component {
         new VideoCard(videoCard, { video: this.renderedVideos[index] });
     });
 
-    if (this.didRenderAllVideos()) return;
+    if (this.checkRenderAllVideos()) return;
 
     this.observeLastChild();
   }
 
-  didRenderAllVideos() {
+  checkRenderAllVideos() {
     return this.videos.length <= this.state.pagination * LOAD_VIDEOS_COUNT;
   }
 
