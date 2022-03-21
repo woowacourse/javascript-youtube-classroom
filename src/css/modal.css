@@ -29,7 +29,7 @@
   padding: 50px 30px 32px 30px;
 }
 
-@media (min-width: 1080px) {
+@media (min-width: 1280px) {
   .search-modal {
     width: 1080px;
   }
@@ -39,7 +39,7 @@
   }
 }
 
-@media (min-width: 940px) and (max-width: 1080px) {
+@media (min-width: 960px) and (max-width: 1280px) {
   .search-modal {
     width: 820px;
   }
@@ -49,7 +49,7 @@
   }
 }
 
-@media (min-width: 700px) and (max-width: 940px) {
+@media (min-width: 600px) and (max-width: 960px) {
   .search-modal {
     width: 560px;
   }
@@ -59,7 +59,7 @@
   }
 }
 
-@media (max-width: 700px) {
+@media (max-width: 600px) {
   .search-modal {
     width: 300px;
   }
