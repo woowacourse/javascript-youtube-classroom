@@ -12,9 +12,9 @@ export const parseVideoInfo = (videoList) =>
 
 export const getVideoInfo = (video) => ({
   id: video.dataset.videoId,
-  thumbnail: video.children[0].currentSrc,
-  title: video.children[1].textContent,
-  channelName: video.children[2].textContent,
-  publishedDate: video.children[3].textContent,
+  thumbnail: video.querySelector('.video-item__thumbnail').currentSrc,
+  title: video.querySelector('.video-item__title').textContent,
+  channelName: video.querySelector('.video-item__channel-name').textContent,
+  publishedDate: video.querySelector('.video-item__published-date').textContent,
   watched: false,
 });

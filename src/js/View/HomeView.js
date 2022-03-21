@@ -92,7 +92,7 @@ export default class HomeView {
   }
 
   changeWatchState(e) {
-    const target = e.target.parentNode.parentNode;
+    const target = e.target.closest('.video-item');
     e.target.classList.toggle('selected');
     this.saveVideoManager.changeWatchState(target.dataset.videoId);
     if (this.tab === 'watched') {
