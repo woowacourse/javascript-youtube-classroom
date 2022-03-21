@@ -20,9 +20,9 @@ export const makeThumbnailTemplate = (video, exist) => {
       <p class="video-item__published-date">${video.publishedDate}</p>
       <div class = 'button-container'>
         <button id="${video.id}" class=" already-watch-button button ${video.watchLater ? '' : 'clicked'}" 
-        ${video.watchLater !== 'undefined' ? '' : 'hidden'}>✅</button>
+        ${typeof video.watchLater === 'undefined' ? 'hidden' : ''}>✅</button>
         <button id="${video.id}" class="discard-button button" 
-        ${typeof video.watchLater !== 'undefined' ? '' : 'hidden'}>🗑️</button>
+        ${typeof video.watchLater === 'undefined' ? 'hidden' : ''}>🗑️</button>
         <button id="${video.id}" class="video-item__save-button button" 
           ${exist === 'exist' ? 'hidden' : ''} 
           ${typeof video.watchLater === 'undefined' ? '' : 'hidden'}>⬇ 저장</button>
