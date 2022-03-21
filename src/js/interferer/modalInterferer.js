@@ -87,7 +87,6 @@ class ModalInterferer {
         this.#pageToken = nextPageToken;
       })
       .catch((err) => {
-        console.log(err);
         this.scrollHandler.setError(true);
         this.errorView.renderNetworkError(err);
       })

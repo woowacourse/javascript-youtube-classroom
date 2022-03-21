@@ -32,8 +32,11 @@ class MainInterferer {
     on(this.$nav, '@updatesaved', () => this.loadSavedItemsPage());
   }
 
-  loadSavedItemsPage() {
+  loadSavedItemsPage(isCallByModal) {
     this.#savedItems = saveMachine.getItemsById(getLocalStorage(LOCALSTORAGE_KEY_SAVE));
+    if (isCallByModal) {
+      this.mainView.turnOffWatched();
+    }
     this.mainView.renderItems(this.#savedItems);
   }
 

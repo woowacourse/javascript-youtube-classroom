@@ -125,6 +125,10 @@ class MainView {
     this.$watchedVideoList.classList.remove('hide');
     this.isWatchedPage = true;
   }
+
+  turnOffWatched() {
+    this.isWatchedPage = false;
+  }
 }
 
 export default MainView;

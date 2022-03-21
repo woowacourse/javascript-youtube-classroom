@@ -18,4 +18,4 @@ export const checkMaxStorageVolume = () => {
 };
 
 export const checkSavedVideo = (id) =>
-  getLocalStorage(LOCALSTORAGE_KEY_SAVE).some((item) => item.videoId === id);
+  getLocalStorage(LOCALSTORAGE_KEY_SAVE).some((videoId) => videoId === id);

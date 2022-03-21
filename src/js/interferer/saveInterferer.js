@@ -22,7 +22,7 @@ class SaveInterferer {
   saveVideo(id) {
     try {
       this.saveWatchLaterVideo(id);
-      this.mainInterferer.loadSavedItemsPage();
+      this.mainInterferer.loadSavedItemsPage(true);
     } catch (err) {
       alert(err.message);
     }
