@@ -3,6 +3,8 @@ import { INFOMATION_MESSAGES } from "../utils/contants.js";
 import { getClassroomVideoTemplate, getEmptyClassroomTemplate, getIframeTemplate } from "../utils/templates.js";
 
 export default class Classroom {
+  #isWatched = false;
+
   constructor({ videoManager }) {
     this.classroom = $(".classroom");
     this.classroomList = $(".classroom__list", this.classroom);
@@ -12,13 +14,11 @@ export default class Classroom {
     this.videoManager = videoManager;
     this.videoManager.subscribe(this.#renderVideos);
 
-    this.isWatched = false;
-
     this.#renderVideos();
   }
 
   setWatchState(state) {
-    this.isWatched = state;
+    this.#isWatched = state;
     this.#renderVideos();
   }
 
@@ -47,7 +47,7 @@ export default class Classroom {
   #renderVideos = () => {
     this.#initClassroom();
 
-    const videos = this.videoManager.getSavedVideos().filter((video) => video.watched === this.isWatched);
+    const videos = this.videoManager.getSavedVideos().filter((video) => video.watched === this.#isWatched);
 
     if (videos.length === 0) {
       this.#renderEmptyClassroom();

@@ -6,6 +6,9 @@ import { verifyCanSave } from "../../utils/validation.js";
 import Toast from "../Toast.js";
 
 export default class SearchResult {
+  #videos = [];
+  #observer;
+
   constructor({ searchManager, videoManager }) {
     this.toast = new Toast();
 
@@ -20,14 +23,12 @@ export default class SearchResult {
     this.searchManager.subscribe(this.#getDataMatchKeyword);
     this.videoManager = videoManager;
 
-    this.observer = new IntersectionObserver((entries) => {
+    this.#observer = new IntersectionObserver((entries) => {
       const [entry] = entries;
       if (entry.isIntersecting) {
         this.#renderNextPage();
       }
     });
-
-    this.videos = [];
   }
 
   #initResult = () => {
@@ -37,11 +38,11 @@ export default class SearchResult {
 
   #getDataMatchKeyword = async () => {
     this.#renderSkeleton();
-    this.videos = await fetchDataFromKeyword(this.searchManager.getKeyword());
+    this.#videos = await fetchDataFromKeyword(this.searchManager.getKeyword());
     this.#removeSkeleton();
 
-    if (this.videos.errorMessage) {
-      this.toast.show(this.videos.errorMessage);
+    if (this.#videos.errorMessage) {
+      this.toast.show(this.#videos.errorMessage);
       return;
     }
 
@@ -54,16 +55,16 @@ export default class SearchResult {
   }
 
   #renderVideoList() {
-    if (this.videos.items.length === 0) {
+    if (this.#videos.items.length === 0) {
       this.#renderNoVideosImg();
       return;
     }
 
     this.videoList.insertAdjacentHTML(
       "beforeend",
-      this.videos.items.map((video) => getSearchVideoTemplate(video)).join(""),
+      this.#videos.items.map((video) => getSearchVideoTemplate(video)).join(""),
     );
-    this.observer.observe(this.videoList.lastElementChild);
+    this.#observer.observe(this.videoList.lastElementChild);
   }
 
   #renderSkeleton() {
@@ -79,12 +80,12 @@ export default class SearchResult {
   }
 
   async #renderNextPage() {
-    if (this.videos.nextPageToken === undefined) {
+    if (this.#videos.nextPageToken === undefined) {
       return;
     }
 
     this.#renderSkeleton();
-    this.videos = await fetchDataFromKeyword(this.searchManager.getKeyword(), this.videos.nextPageToken);
+    this.#videos = await fetchDataFromKeyword(this.searchManager.getKeyword(), this.#videos.nextPageToken);
     this.#removeSkeleton();
     this.#renderVideoList();
   }
