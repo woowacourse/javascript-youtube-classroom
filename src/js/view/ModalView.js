@@ -89,7 +89,7 @@ export default class ModalView {
           videoStorage.checkOverMaxLength();
           const clickedVideo = event.target.parentElement;
           event.target.classList.add(DOM_STRING.HIDE);
-          callback(this.parseClickedData(clickedVideo));
+          callback(this.parseVideoInfo(clickedVideo));
         }
       } catch (error) {
         alert(error.message);
@@ -147,13 +147,13 @@ export default class ModalView {
     this.$searchInput.focus();
   }
 
-  parseClickedData(clickedVideo) {
+  parseVideoInfo(videoInfo) {
     return {
-      videoId: clickedVideo.children[4].dataset.videoid,
-      publishedAt: clickedVideo.children[3].textContent,
-      title: clickedVideo.children[1].textContent,
-      url: clickedVideo.children[0].src,
-      channelTitle: clickedVideo.children[2].textContent,
+      videoId: videoInfo.children[4].dataset.videoid,
+      publishedAt: videoInfo.children[3].textContent,
+      title: videoInfo.children[1].textContent,
+      url: videoInfo.children[0].src,
+      channelTitle: videoInfo.children[2].textContent,
       type: VIDEO_TYPE.WATCH_LATER,
     };
   }
