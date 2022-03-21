@@ -6,14 +6,14 @@ function createConfirmStub(bool) {
   return stub;
 }
 
-describe('e2e test', () => {
-  before(() => {
-    cy.visit('index.html');
-    cy.intercept('GET', 'https://trusting-mcnulty-63c936.netlify.app/**').as(
-      'get'
-    );
-  });
+before(() => {
+  cy.visit('index.html');
+  cy.intercept('GET', 'https://trusting-mcnulty-63c936.netlify.app/**').as(
+    'get'
+  );
+});
 
+describe('영상 저장 테스트', () => {
   it('모달창을 열고 검색을 하면 10개의 영상이 보여야 한다.', () => {
     cy.get('#search-modal-button').click();
     cy.get('#search-input-keyword').type('TDD');
@@ -34,13 +34,20 @@ describe('e2e test', () => {
     cy.get('#filter-watched-button').click();
     cy.get('saved-list').find('.video-card').should('have.length', 1);
   });
+});
+
+describe('영상 삭제 테스트', () => {
+  beforeEach(() => {
+    cy.get('saved-list')
+      .find('.video-item__remove-button')
+      .first()
+      .as('first-video-remove-button');
+  });
 
   it('삭제 버튼을 클릭하면 사용자에게 삭제할 것인지 물어야 한다.', () => {
     const confirmStub = createConfirmStub(false);
 
-    cy.get('saved-list')
-      .find('.video-item__remove-button')
-      .first()
+    cy.get('@first-video-remove-button')
       .click()
       .then(() => {
         expect(confirmStub).to.be.called;
@@ -48,9 +55,7 @@ describe('e2e test', () => {
   });
 
   it('사용자가 삭제를 confirm하면 영상이 삭제되고 저장한 영상 없음 화면이 보여야 한다.', () => {
-    cy.get('saved-list')
-      .find('.video-item__remove-button')
-      .first()
+    cy.get('@first-video-remove-button')
       .click()
       .then(() => {
         cy.on('window:confirm', () => true);
