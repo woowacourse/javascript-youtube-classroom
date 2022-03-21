@@ -62,11 +62,15 @@ export default class ModalView {
     });
   }
 
-  doWhencScrollBottom(callback) {
-    if (
+  checkScrollBottom() {
+    return (
       this.$videoList.scrollHeight - this.$videoList.scrollTop <=
       this.$videoList.offsetHeight + EVENT.SCROLL.OFFSET
-    ) {
+    );
+  }
+
+  doWhencScrollBottom(callback) {
+    if (this.checkScrollBottom) {
       callback(this.$searchInput.value);
     }
   }
