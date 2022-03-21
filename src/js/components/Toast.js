@@ -6,7 +6,7 @@ export default class Toast {
     this.toast = $(".toast");
   }
 
-  showMessage(message) {
+  show(message) {
     this.toast.innerText = message;
     this.toast.classList.add("show");
     this.timer = setTimeout(() => this.toast.classList.remove("show"), NUM.TOAST_DELAY);

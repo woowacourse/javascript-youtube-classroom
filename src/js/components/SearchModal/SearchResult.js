@@ -41,7 +41,7 @@ export default class SearchResult {
     this.#removeSkeleton();
 
     if (this.videos.errorMessage) {
-      this.toast.showMessage(this.videos.errorMessage);
+      this.toast.show(this.videos.errorMessage);
       return;
     }
 
@@ -100,9 +100,9 @@ export default class SearchResult {
       verifySaveId(savedVideoArray, id);
       this.videoManager.saveVideos({ id, url, title, channelTitle, date });
       target.remove();
-      this.toast.showMessage(INFOMATION_MESSAGES.SAVED);
+      this.toast.show(INFOMATION_MESSAGES.SAVED);
     } catch ({ message }) {
-      this.toast.showMessage(message);
+      this.toast.show(message);
     }
   };
 }
