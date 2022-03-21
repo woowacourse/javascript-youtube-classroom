@@ -19,12 +19,12 @@ class MainView {
   }
 
   #handleCheck = (event) => {
-    const savedVideoArray = storage.getSavedVideos();
+    const savedVideoArray = storage.getSavedVideoArray();
     const watchedVideo = savedVideoArray.find(
       (video) => video.videoId === event.target.dataset.videoId
     );
     watchedVideo.isWatched = !watchedVideo.isWatched;
-    storage.setSavedVideos(savedVideoArray);
+    storage.setSavedVideoArray(savedVideoArray);
     event.target.parentNode.parentNode.remove();
     if (
       savedVideoArray.filter((video) => String(video.isWatched) === event.target.dataset.isWatched)
@@ -36,11 +36,11 @@ class MainView {
 
   #handleDelete = (event) => {
     if (window.confirm(DELETE_CONFIRM_MESSAGE)) {
-      const savedVideoArray = storage.getSavedVideos();
+      const savedVideoArray = storage.getSavedVideoArray();
       const newVideoList = savedVideoArray.filter(
         (video) => video.videoId !== event.target.dataset.videoId
       );
-      storage.setSavedVideos(newVideoList);
+      storage.setSavedVideoArray(newVideoList);
       event.target.parentNode.parentNode.remove();
       if (
         savedVideoArray.filter(
@@ -88,7 +88,9 @@ class MainView {
 
   renderSavedVideo(isWatched) {
     this.#removeFormerView();
-    const videoArray = storage.getSavedVideos().filter((video) => video.isWatched === isWatched);
+    const videoArray = storage
+      .getSavedVideoArray()
+      .filter((video) => video.isWatched === isWatched);
     if (videoArray.length === 0) {
       this.#renderNoSavedVideo();
       return;

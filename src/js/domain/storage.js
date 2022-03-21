@@ -8,7 +8,7 @@ function setSavedVideoArray(videoArray) {
   localStorage.setItem(STORAGE_KEY, JSON.stringify(videoArray));
 }
 
-function addSavedVideos(video) {
+function addSavedVideo(video) {
   const savedVideos = getSavedVideoArray();
   if (savedVideos.length >= MAX_SAVE_AMOUNT) {
     throw new Error(ERROR_MESSAGES.EXCEED_MAX_SAVE_AMOUNT);
@@ -24,7 +24,7 @@ function isSavedVideo(id) {
 
 const storage = {
   getSavedVideoArray,
-  addSavedVideos,
+  addSavedVideo,
   isSavedVideo,
   setSavedVideoArray,
 };

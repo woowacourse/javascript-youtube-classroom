@@ -79,13 +79,13 @@
   justify-content: flex-end;
 }
 
-.no-saved-videos {
+.no-saved-video {
   display: flex;
   justify-content: center;
   margin-top: 100px;
 }
 
-.no-saved-videos > p {
+.no-saved-video > p {
   color: rgb(190, 190, 190);
   font-size: 20px;
   font-weight: bold;
