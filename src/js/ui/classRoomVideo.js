@@ -34,9 +34,9 @@ export const classRoomVideo = {
             <p class="video-item__published-date" data-published-date=${publishedDate}>
               ${convertToKoreaLocaleDate(publishedDate)}
             </p>
-            <button class="video-item__check-button button ${watched ? 'highlight' : ''}" data-video-id="${videoId}" ${
-          watched ? 'disabled' : ''
-        }>✅</button>
+            <button class="video-item__check-button button ${
+              watched === 'watched' ? 'highlight' : ''
+            }" data-video-id="${videoId}" ${watched === 'watched' ? 'disabled' : ''}>✅</button>
             <button class="video-item__remove-button button" data-video-id="${videoId}">🗑️</button>
           </li>`;
       })

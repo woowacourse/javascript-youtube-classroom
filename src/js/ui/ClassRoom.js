@@ -12,7 +12,7 @@ export default class ClassRoom {
     this.$classroomVideoList = $('.classroom-video__list');
 
     this.$willWatchVideoButton.classList.add('highlight');
-    classRoomVideo.renderVideoList(false);
+    classRoomVideo.renderVideoList('notWatched');
 
     this.$navTab.addEventListener('click', this.handleNavTabButtonClick);
     this.$classroomVideoList.addEventListener('click', this.handleVideoCheckButtonClick);
@@ -25,12 +25,12 @@ export default class ClassRoom {
     if (e.target === this.$willWatchVideoButton) {
       this.$watchedVideoButton.classList.remove('highlight');
       classRoomVideo.resetVideoList();
-      classRoomVideo.renderVideoList(false);
+      classRoomVideo.renderVideoList('notWatched');
       return;
     }
     this.$willWatchVideoButton.classList.remove('highlight');
     classRoomVideo.resetVideoList();
-    classRoomVideo.renderVideoList(true);
+    classRoomVideo.renderVideoList('watched');
   };
 
   handleVideoCheckButtonClick = e => {
@@ -39,7 +39,7 @@ export default class ClassRoom {
         const videoId = e.target.dataset.videoId;
         video.check(videoId);
         classRoomVideo.resetVideoList();
-        classRoomVideo.renderVideoList(false);
+        classRoomVideo.renderVideoList('notWatched');
         showSnackBar(MESSAGE.CHECK_SUCCESS);
       } catch {
         showSnackBar(MESSAGE.CHECK_FAILURE);
@@ -54,8 +54,8 @@ export default class ClassRoom {
         video.remove(videoId);
         classRoomVideo.resetVideoList();
         this.$watchedVideoButton.classList.contains('highlight')
-          ? classRoomVideo.renderVideoList(true)
-          : classRoomVideo.renderVideoList(false);
+          ? classRoomVideo.renderVideoList('watched')
+          : classRoomVideo.renderVideoList('notWatched');
         showSnackBar(MESSAGE.REMOVE_SUCCESS);
       } catch {
         showSnackBar(MESSAGE.REMOVE_FAILURE);

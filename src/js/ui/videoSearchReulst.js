@@ -104,7 +104,7 @@ export const videoSearchResult = {
         video.save(datasetElementsArray);
         e.target.setAttribute('hidden', true);
         classRoomVideo.resetVideoList();
-        classRoomVideo.renderVideoList(false);
+        classRoomVideo.renderVideoList('notWatched');
         this.$willWatchVideoButton.classList.add('highlight');
         this.$watchedVideoButton.classList.remove('highlight');
         showSnackBar(MESSAGE.SAVE_SUCCESS);

@@ -19,7 +19,7 @@ export const video = {
     const savedVideoList = this.getVideoList();
     const updatedVideoList = savedVideoList.map(savedVideo => {
       if (savedVideo.videoId === videoId) {
-        savedVideo.watched = true;
+        savedVideo.watched = 'watched';
       }
       return savedVideo;
     });
@@ -40,7 +40,7 @@ export const video = {
 
   formatter(datasetElementsArray) {
     const datasetObject = datasetElementsArray.reduce((acc, val) => ({ ...acc, ...val }), {});
-    const formattedObject = { ...datasetObject, watched: false };
+    const formattedObject = { ...datasetObject, watched: 'notWatched' };
 
     return formattedObject;
   },
