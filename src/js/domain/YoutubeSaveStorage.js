@@ -11,7 +11,7 @@ class YoutubeSaveStorage {
 
   get() {
     if (!this.#cacheData) {
-      this.#cacheData = JSON.parse(localStorage.getItem(this.#STORAGE_NAME)) ?? '[]';
+      this.#cacheData = JSON.parse(localStorage.getItem(this.#STORAGE_NAME)) ?? [];
     }
 
     return this.#cacheData;
