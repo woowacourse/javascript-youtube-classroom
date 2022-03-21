@@ -1,4 +1,5 @@
 import { ERROR_MESSAGE, VIDEO_LIST } from '../utils/constants.js';
+import validator from '../utils/validator.js';
 import ApiUtil from './ApiUtil.js';
 
 const videoApiCaller = {
@@ -28,6 +29,7 @@ const videoApiCaller = {
   async getSearchVideoListData(inputValue) {
     try {
       this.searchQueryItems.q = inputValue;
+      validator.checkParamsEmpty(this.searchQueryItems);
       const requestURL = ApiUtil.createQueryString(
         this.endPoint + this.implementations.search,
         this.searchQueryItems
@@ -42,6 +44,7 @@ const videoApiCaller = {
   async getStoreVideoListData(videoIdList) {
     try {
       this.storeVideoQueryItems.id = videoIdList.join(',');
+      validator.checkParamsEmpty(this.storeVideoQueryItems);
       const requestURL = ApiUtil.createQueryString(
         this.endPoint + this.implementations.videos,
         this.storeVideoQueryItems
