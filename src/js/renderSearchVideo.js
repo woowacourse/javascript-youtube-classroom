@@ -99,13 +99,12 @@ class RenderSearchVideo extends RenderVideo {
 
     if (!searchVideo.length) {
       this.videoListContainer.replaceChildren();
-      insertHtmlToElement(this.videoListContainer, 'afterbegin', videoNotFoundTemplate);
+      insertHtmlToElement(this.videoListContainer, videoNotFoundTemplate);
       return;
     }
 
     insertHtmlToElement(
       this.videoListContainer,
-      'beforeend',
       searchVideo
         .map((video) =>
           videoTemplate(
@@ -113,7 +112,8 @@ class RenderSearchVideo extends RenderVideo {
             this.saveVideo.saveVideoList.some((saveVideo) => saveVideo.videoId === video.id.videoId)
           )
         )
-        .join(' ')
+        .join(' '),
+      'beforeend'
     );
   }
 
@@ -121,7 +121,7 @@ class RenderSearchVideo extends RenderVideo {
     hideElement(this.skeletonListContainer, false);
     if (this.skeletonListContainer.children.length > 0) return;
 
-    insertHtmlToElement(this.skeletonListContainer, 'afterbegin', totalVideoSkeletonTemplate);
+    insertHtmlToElement(this.skeletonListContainer, totalVideoSkeletonTemplate);
   }
 
   async #loadVideo() {

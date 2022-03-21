@@ -78,7 +78,7 @@ class RenderSaveVideo extends RenderVideo {
   #renderUpdatedVideoList(targetVideo) {
     targetVideo.remove();
     if (!this.savedVideoListContainer.children.length) {
-      insertHtmlToElement(this.savedVideoListContainer, 'afterbegin', emptyVideoListTemplate);
+      insertHtmlToElement(this.savedVideoListContainer, emptyVideoListTemplate);
     }
   }
 }

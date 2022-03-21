@@ -19,12 +19,11 @@ class RenderVideo {
 
     this.savedVideoListContainer.replaceChildren();
     if (!videoList.length) {
-      insertHtmlToElement(this.savedVideoListContainer, 'afterbegin', emptyVideoListTemplate);
+      insertHtmlToElement(this.savedVideoListContainer, emptyVideoListTemplate);
       return;
     }
     insertHtmlToElement(
       this.savedVideoListContainer,
-      'afterbegin',
       videoList.map((video) => savedVideoTemplate(video)).join(' ')
     );
   };

@@ -2,8 +2,9 @@ import { CLASSNAME } from '../constants/contants';
 
 const selectDom = (element, parent = document) => parent.querySelector(element);
 const addEvent = (element, eventName, callback) => element.addEventListener(eventName, callback);
-const insertHtmlToElement = (element, position, insertHtmlString) =>
+const insertHtmlToElement = (element, insertHtmlString, position = 'afterbegin') =>
   element.insertAdjacentHTML(position, insertHtmlString);
+
 const hideElement = ({ classList: elementClassList }, isHidden = true) =>
   isHidden
     ? elementClassList.add(CLASSNAME.HIDE_ELEMENT)
