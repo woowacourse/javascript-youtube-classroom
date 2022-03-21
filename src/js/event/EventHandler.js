@@ -93,19 +93,18 @@ export default class EventHandler {
     this.mainView.updateVideoItems(videoData);
   }
 
-  onVideoItemButtonsClick(buttonId, videoId, storeType) {
+  onVideoItemButtonsClick({ buttonId, videoId, storeType, videoItemElement }) {
     switch (buttonId) {
-      case DOM_STRING.CHECK_WILL_SEE_BUTTON:
-        videoStore.changeVideoStoreType(videoId, storeType);
-        break;
-      case DOM_STRING.CHECK_SAW_BUTTON:
-        videoStore.changeVideoStoreType(videoId, storeType);
-        break;
       case DOM_STRING.DELETE_STORE_BUTTON:
         if (confirm(CONFIRM_MESSAGE.DELETE_STORED_VIDEO)) {
           videoStore.deleteVideoWithId(videoId);
           this.onStoreTypeButtonsClick(this.mainView.getCurrentStoreType());
+          this.mainView.deleteVideoItem(videoItemElement);
         }
+        break;
+      default:
+        videoStore.changeVideoStoreType(videoId, storeType);
+        this.mainView.deleteVideoItem(videoItemElement);
     }
   }
 }

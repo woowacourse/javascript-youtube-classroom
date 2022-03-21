@@ -43,8 +43,12 @@ export default class MainView {
       videoList.addEventListener('click', event => {
         if ([...event.target.classList].includes(DOM_STRING.VIDEO_ITEM_BUTTON)) {
           const videoId = event.target.closest(SELECTOR.VIDEO_ITEM).dataset.videoid;
-          callback(event.target.id, videoId, this.currentStoreType);
-          this.deleteVideoItem(event.target.closest(SELECTOR.VIDEO_ITEM));
+          callback({
+            buttonId: event.target.id,
+            videoId,
+            storeType: this.currentStoreType,
+            videoItemElement: event.target.closest(SELECTOR.VIDEO_ITEM),
+          });
         }
       })
     );
