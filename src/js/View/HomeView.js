@@ -1,7 +1,7 @@
 import { $, hideElement, showElement, showSnackbar } from '../dom';
 import SearchModalView from './SearchModalView';
 import { template } from './template';
-import { ALERT_MESSAGE } from '../constants';
+import { ALERT_MESSAGE, ERROR_MESSAGE } from '../constants';
 
 export default class HomeView {
   constructor(searchVideoManager, saveVideoManager) {
@@ -93,6 +93,10 @@ export default class HomeView {
 
   changeWatchState(e) {
     const target = e.target.closest('.video-item');
+    if (!this.saveVideoManager.findVideoById(target.dataset.videoId)) {
+      return alert(ERROR_MESSAGE.CANNOT_CHANGE_STATE);
+    }
+
     e.target.classList.toggle('selected');
     this.saveVideoManager.changeWatchState(target.dataset.videoId);
     if (this.tab === 'watched') {
@@ -109,6 +113,10 @@ export default class HomeView {
 
   deleteVideo(e) {
     const target = e.target.parentNode.parentNode;
+    if (!this.saveVideoManager.findVideoById(target.dataset.videoId)) {
+      return alert(ERROR_MESSAGE.CANNOT_SAVE);
+    }
+
     showElement($('#confirm-container'));
     $('#confirm-dimmer').addEventListener('click', this.closeConfirmModal);
     $('#yes-button').addEventListener('click', () => this.onClickYesButton(target));

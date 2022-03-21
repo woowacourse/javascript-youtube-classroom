@@ -10,6 +10,8 @@ export const ERROR_MESSAGE = {
   ALREADY_SAVE: '이미 저장한 동영상입니다',
   NO_MORE_API: 'API키를 모두 사용했습니다',
   SERVER_ERROR: '서버에 문제가 생겼습니다. 관리자에게 문의주세요',
+  CANNOT_CHANGE_STATE: '저장 오류 발생! 영상을 전환할 수 없습니다.',
+  CANNOT_SAVE: '저장 오류 발생! 영상을 삭제할 수 없습니다.',
 };
 
 export const ALERT_MESSAGE = {
