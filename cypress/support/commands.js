@@ -23,3 +23,15 @@
 //
 // -- This will overwrite an existing command --
 // Cypress.Commands.overwrite('visit', (originalFn, url, options) => { ... })
+
+Cypress.Commands.add('hasCountVideoItems', ($container, count) => {
+  cy.get($container).find('.video-item').should('have.length', count);
+});
+
+Cypress.Commands.add('watchVideo', ($container) => {
+  cy.get($container).find('.video-item').first().find('.video-item__watch-button').click();
+});
+
+Cypress.Commands.add('deleteVideo', ($container) => {
+  cy.get($container).find('.video-item').first().find('.video-item__delete-button').click();
+});
