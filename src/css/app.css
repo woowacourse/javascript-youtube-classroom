@@ -18,7 +18,8 @@ body {
 
 .nav {
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
+  margin-bottom: 39px;
 }
 
 .button {
@@ -32,11 +33,82 @@ body {
 }
 
 .nav__button {
-  width: 80px;
   height: 36px;
   background: #f5f5f5;
+  padding: 9px 10px;
 }
 
 .nav__button:hover {
   background: #ebebeb;
+}
+
+.video-filter-button-container {
+  display: flex;
+}
+
+.my-videos-container {
+  display: flex;
+  justify-content: center;
+}
+
+.my-video-list,
+.video-list {
+  display: grid;
+  grid-gap: 20px;
+}
+
+@media (max-width: 599px) {
+  .my-video-list,
+  .video-list {
+    grid-template-columns: 1fr;
+  }
+
+  .nav {
+    padding: 0 10%;
+  }
+}
+
+@media (min-width: 600px) and (max-width: 959px) {
+  .my-video-list,
+  .video-list {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .nav {
+    padding: 0 10%;
+  }
+}
+
+@media (min-width: 960px) and (max-width: 1279px) {
+  .my-video-list,
+  .video-list {
+    grid-template-columns: 1fr 1fr 1fr;
+  }
+
+  .nav {
+    padding: 0 10%;
+  }
+}
+
+@media (min-width: 1280px) {
+  .my-video-list,
+  .video-list {
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+  }
+}
+
+.video-item__view-uncheck-button {
+  filter: grayscale(1);
+}
+
+.video-item__button-container {
+  display: flex;
+  justify-content: end;
+  column-gap: 10px;
+}
+
+.video-item__view-check-button,
+.video-item__delete-button,
+.video-item__view-uncheck-button {
+  padding: 10px;
 }

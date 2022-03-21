@@ -5,6 +5,7 @@ const Dotenv = require('dotenv-webpack');
 const webpack = require('webpack');
 
 module.exports = {
+  mode: 'development',
   entry: ['@babel/polyfill', './src/js/index.js'],
   output: {
     path: path.resolve(__dirname, 'dist'),
