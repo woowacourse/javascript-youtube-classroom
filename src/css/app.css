@@ -28,7 +28,7 @@ body {
 }
 
 .button.clicked {
-  background: var(--nav-button-clicked-color);
+  background: var(--button-clicked-color);
 }
 
 .nav {
@@ -43,7 +43,7 @@ body {
 }
 
 .nav__button:hover {
-  background: var(--nav-button-clicked-color);
+  background: var(--button-clicked-color);
 }
 
 .nav__button:last-child {

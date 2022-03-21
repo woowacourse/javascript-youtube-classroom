@@ -72,7 +72,7 @@ const notFoundTemplate = `
   <div>
 `;
 
-const getVideoTemplate = video => {
+const getVideoTemplate = (video, watched) => {
   const { videoId, publishedAt, channelId, title, thumbnailURL, channelTitle } =
     video;
   return `
@@ -108,15 +108,17 @@ const getVideoTemplate = video => {
         type="button"
         data-video-id=${videoId}
         onclick="reverseWatchVideo(event);"
-        class="save-video-item__button button"
+        class="save-video-item__button button ${watched ? 'clicked' : ''}"
         title="체크"
       >✅</button>
     </li>
   `;
 };
 
-const getAllVideoTemplate = videos => {
-  const template = videos.map(video => getVideoTemplate(video)).join('');
+const getAllVideoTemplate = (videos, watched) => {
+  const template = videos
+    .map(video => getVideoTemplate(video, watched))
+    .join('');
   return template;
 };
 

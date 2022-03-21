@@ -59,7 +59,7 @@ export default class Main {
       this.#renderNoSavedVideo();
       return;
     }
-    this.#createVideoList(getAllVideoTemplate(filteredVideos));
+    this.#createVideoList(getAllVideoTemplate(filteredVideos, watched));
   }
 
   #addNavButtonClickEvent() {
