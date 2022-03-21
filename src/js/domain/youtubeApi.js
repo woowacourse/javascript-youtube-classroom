@@ -1,7 +1,7 @@
 import 'regenerator-runtime';
 import { GET_VIDEO_UNIT, MESSAGE } from '../constants';
 
-const request = async (searchText, nextPageToken = '') => {
+const searchVideos = async (searchText, nextPageToken = '') => {
   let searchResult;
 
   await fetch(
@@ -15,10 +15,11 @@ const request = async (searchText, nextPageToken = '') => {
       }
     })
     .catch(error => {
+      console.error(error);
       throw Error(MESSAGE.ERROR_GET_REQUEST);
     });
 
   return searchResult;
 };
 
-export { request };
+export { searchVideos };

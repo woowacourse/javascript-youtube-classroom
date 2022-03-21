@@ -8,12 +8,39 @@
 
   <body>
     <main id="app" class="classroom-container">
-      <h1 class="classroom-container__title">👩🏻‍💻 나만의 유튜브 강의실 👨🏻‍💻</h1>
-      <nav class="nav">
-        <button id="search-modal-button" class="button nav__button">
-          🔍 검색
-        </button>
-      </nav>
+      <header>
+        <h1 class="classroom-container__title">👩🏻‍💻 나만의 유튜브 강의실 👨🏻‍💻</h1>
+        <nav class="nav">
+          <button
+            type="button"
+            id="will-watch-video-button"
+            class="button nav__button clicked"
+          >
+            👁️ 볼 영상
+          </button>
+          <button
+            type="button"
+            id="watched-video-button"
+            class="button nav__button"
+          >
+            ✅ 본 영상
+          </button>
+          <button
+            type="button"
+            id="search-modal-button"
+            class="button nav__button"
+          >
+            🔍 검색
+          </button>
+        </nav>
+      </header>
+      <button type="button" id="all-delete" class="button all-option-button">
+        모두 🗑️
+      </button>
+      <button type="button" id="all-check" class="button all-option-button">
+        모두 ✅
+      </button>
+      <div class="video-container"></div>
     </main>
     <div class="modal-container hide">
       <div class="dimmer"></div>
@@ -28,12 +55,17 @@
         <section class="search-input">
           <h3 hidden>검색어 입력</h3>
           <form id="search-form">
-            <input
-              id="search-input-keyword"
-              type="text"
-              placeholder="검색"
-              class="search-input__keyword"
-            />
+            <div class="search-input-box">
+              <input
+                id="search-input-keyword"
+                type="text"
+                placeholder="검색"
+                class="search-input__keyword"
+              />
+              <button type="button" class="search-input__clear button">
+                ✕
+              </button>
+            </div>
             <button
               type="submit"
               id="search-button"
@@ -42,10 +74,10 @@
               검색
             </button>
           </form>
+          <div class="recent-search"></div>
         </section>
         <section class="search-result">
           <h3 hidden>검색 결과</h3>
-          <ul class="video-list"></ul>
         </section>
       </div>
     </div>

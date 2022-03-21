@@ -1,28 +1,34 @@
-import { getFoundResultTemplate, notFoundTemplate } from './template';
 import { skeletonUI } from './loading';
-import { store } from '../domain/store';
-import { request } from '../domain/youtubeApi';
-import { MESSAGE, STORAGE_KEY } from '../constants';
-import { $, $$ } from '../utils/dom';
+import { searchVideos } from '../domain/youtubeApi';
+import { $ } from '../utils/dom';
 import { delay } from '../utils/common';
 import { showExceptionSnackBar } from '../utils/snackBar';
+import { getFoundResultTemplate, notFoundTemplate } from './template';
 
-export default class Result {
-  renderVideoList(json) {
+export default class SearchResult {
+  constructor() {
+    this.$searchResult = $('.search-result');
+  }
+
+  #renderVideoList(json) {
+    if (!json.items.length) {
+      this.$searchResult.insertAdjacentHTML('beforeend', notFoundTemplate);
+      return;
+    }
     $('.video-list').insertAdjacentHTML(
       'beforeend',
-      json.items.length ? getFoundResultTemplate(json.items) : notFoundTemplate,
+      getFoundResultTemplate(json.items),
     );
     if (json && json.nextPageToken) {
-      this.scrollObserver(json.nextPageToken);
+      this.#scrollObserver(json.nextPageToken);
     }
   }
 
   renderInitialVideoList(searchText) {
-    request(searchText)
+    searchVideos(searchText)
       .then(json => {
         $('.video-list').replaceChildren();
-        this.renderVideoList(json);
+        this.#renderVideoList(json);
       })
       .catch(async ({ message }) => {
         await delay(700);
@@ -31,11 +37,11 @@ export default class Result {
       });
   }
 
-  renderNextVideoList(nextPageToken) {
-    request($('#search-input-keyword').value, nextPageToken)
+  #renderNextVideoList(nextPageToken) {
+    searchVideos($('#search-input-keyword').value, nextPageToken)
       .then(json => {
         skeletonUI.remove();
-        this.renderVideoList(json);
+        this.#renderVideoList(json);
       })
       .catch(async ({ message }) => {
         await delay(700);
@@ -43,15 +49,15 @@ export default class Result {
       });
   }
 
-  scrollObserver(nextPageToken) {
-    let $li = $('li:last-child');
+  #scrollObserver(nextPageToken) {
+    let $li = $('.video-item:last-child');
 
     const io = new IntersectionObserver(
       entry => {
         if (entry[0].isIntersecting) {
           io.unobserve($li);
           skeletonUI.render();
-          this.renderNextVideoList(nextPageToken);
+          this.#renderNextVideoList(nextPageToken);
         }
       },
       {
@@ -63,6 +69,6 @@ export default class Result {
   }
 
   resetVideoList() {
-    $('.video-list').replaceChildren();
+    this.$searchResult.replaceChildren();
   }
 }
