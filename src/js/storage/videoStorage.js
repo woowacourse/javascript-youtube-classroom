@@ -10,30 +10,25 @@ class VideoStorage extends LocalStorage {
   }
 
   saveVideo(videoId) {
-    const videoSet = this.load({});
-    if (Object.keys(videoSet).length === this.maxCount) {
+    if (Object.keys(this.cache).length === this.maxCount) {
       throw new ValidationError(ERROR_MESSAGE.OVER_MAX_SAVABLE_VIDEO_COUNT);
     }
-    videoSet[videoId] = { watched: false };
-    this.save(videoSet);
-    this.cache = videoSet;
+    this.cache[videoId] = { watched: false };
+    this.save(this.cache);
   }
 
   toggleWatchStatus(videoId) {
-    const videoSet = this.load({});
-    videoSet[videoId] = { watched: !videoSet[videoId].watched };
-    this.save(videoSet);
-    this.cache = videoSet;
+    this.cache[videoId] = { watched: !this.cache[videoId].watched };
+    this.save(this.cache);
   }
 
   removeVideo(videoId) {
-    const videoSet = this.load({});
-    delete videoSet[videoId];
-    this.save(videoSet);
-    this.cache = videoSet;
+    delete this.cache[videoId];
+    this.save(this.cache);
   }
 
   clear() {
+    this.cache = {};
     this.save({});
   }
 }
