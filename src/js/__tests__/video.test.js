@@ -18,9 +18,9 @@ describe('검색어를 정상적으로 입력해야 한다.', () => {
 // dummyObject는 '우아한테크코스'로 youtube API에 검색하여 fetch했을 때 받아서 저장해둔 데이터입니다.
 describe('API에서 데이터가 불러졌을 경우(또는 dummy), 입력된 검색어에 부합하는 데이터를 가져와야한다.', () => {
   class LocalStorageMock {
-    constructor() {
-      this.store = {};
-    }
+    store = {};
+
+    constructor() {}
 
     clear() {
       this.store = {};
