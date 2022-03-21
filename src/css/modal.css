@@ -1,3 +1,4 @@
+@import url('./color.css');
 .modal-container {
   display: flex;
   align-items: center;
@@ -149,4 +150,17 @@
 
 .video-item__save-button:hover {
   background: var(--save-button-hover-color);
+}
+
+.search-modal-close-button {
+  position: absolute;
+  top: 30px;
+  right: 30px;
+  font-size: 30px;
+  padding: 2px;
+  background-color: #fff;
+}
+
+.search-modal-close-button:hover {
+  color: var(--search-modal-close-button-hover-color);
 }

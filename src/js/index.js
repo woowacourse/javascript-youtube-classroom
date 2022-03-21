@@ -34,7 +34,7 @@ export default function App() {
   $('.video-list').addEventListener('click', handleSearchEvent.handleSaveButtonClick);
 
   $('.dimmer').addEventListener('click', quickModalElement);
-
+  $('.search-modal-close-button').addEventListener('click', quickModalElement);
   $('.watch-later-nav-button').addEventListener('click', handleWatchLaterEvent.handleWatchLater);
   $('.watched-nav-button').addEventListener('click', handleWatchedVideoEvent.handleWatchedVideo);
 
