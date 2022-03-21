@@ -1,6 +1,2 @@
-@apikey = AIzaSyBEACRIrkPt_L3f1vj-1_xWCR8bnQr3oFA
-AIzaSyBont2LnhVYyMI4wd6JFZ6AuiJlVxiVrB4
-AIzaSyBLDIRVSDZ25pHWp8hldwGmLMY2r1bH-Vc
-
 GET https://www.googleapis.com/youtube/v3/search?part=snippet&type=video&maxResults=10&q=kpop+music&pageToken=CIcBEAA&key={{apikey}} HTTP/1.1
 content-type: application/json
