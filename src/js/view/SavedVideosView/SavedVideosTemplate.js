@@ -26,9 +26,10 @@ function savedVideoElementButtons(currentTabName) {
 
 export function savedVideoElementTemplate(resultItem, currentTabName) {
   const videoElement = videoElementTemplate(resultItem);
+  const buttonDiv = savedVideoElementButtons(currentTabName);
+
   videoElement.dataset.videoId = resultItem.videoId;
 
-  const buttonDiv = savedVideoElementButtons(currentTabName);
   videoElement.append(buttonDiv);
   return videoElement;
 }
