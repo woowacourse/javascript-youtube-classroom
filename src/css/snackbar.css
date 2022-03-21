@@ -1,0 +1,59 @@
+#snackbar-container {
+  display: flex;
+  flex-direction: column-reverse;
+  width: 300px;
+  position: absolute;
+  bottom: 10px;
+  left: 50%;
+  transform: translate(-50%, 0%);
+}
+
+.snackbar-item {
+  width: 250px;
+  height: 28px;
+  background-color: black;
+  color: aliceblue;
+  font-size: 13px;
+  position: relative;
+  text-align: center;
+  margin: 4px;
+
+  animation: show 2s;
+}
+
+@keyframes show {
+  0% {
+    opacity: 0%;
+    top: 30px;
+  }
+
+  100% {
+    top: 0;
+  }
+}
+
+.snackbar-rollback-button {
+  background-color: transparent;
+  color: rgb(166, 234, 255);
+  border: none;
+  font-size: 12px;
+  margin-left: 5px;
+}
+
+.snackbar-close-button {
+  color: aliceblue;
+  width: 12px;
+  height: 12px;
+  border: none;
+  background-color: transparent;
+}
+
+.snackbar-close-button:after {
+  content: '\00d7';
+  font-size: 12pt;
+}
+
+.snackbar-close-button:active {
+  background-color: black;
+  border-radius: 50%;
+}

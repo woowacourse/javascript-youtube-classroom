@@ -64,3 +64,12 @@ export const noClassroomContentsTemplate = () => {
   ░░░░░░░░░░░░░▀▀▀▀▀▀▀▀▀▀░░░░░░░░░░░░░░░░
   ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░</div>`;
 };
+
+export const makeSnackbarThumbnailTemplate = (e, comment) => {
+  return `
+  <div id = ${e.target.id} class="snackbar-item">
+    <span>${comment}</span>
+    <button class = "snackbar-rollback-button" type="submit">실행취소</button>
+    <button class = "snackbar-close-button" type="submit"></button>
+  </div>`;
+};
