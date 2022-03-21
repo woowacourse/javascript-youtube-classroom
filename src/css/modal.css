@@ -253,5 +253,12 @@
 }
 
 #close-modal-button {
+  position: absolute;
+  left: 1010px;
+  top: 40px;
+  width: 15px;
+  height: 15px;
   float: right;
+  border-color: transparent;
+  background-color: transparent;
 }
