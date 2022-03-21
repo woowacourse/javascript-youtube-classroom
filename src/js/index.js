@@ -3,11 +3,9 @@ import HomePage from './screen/homePage';
 import MessageBot from './screen/messageModal';
 import SearchVideoModal from './screen/searchVideoModal';
 
-const DOM = {
-  render() {
-    const args = [...arguments];
-    args.forEach((arg) => new arg());
-  },
+const generateInstance = function () {
+  const args = [...arguments];
+  args.forEach((arg) => new arg());
 };
 
-DOM.render(HomePage, SearchVideoModal, MessageBot);
+generateInstance(HomePage, SearchVideoModal, MessageBot);
