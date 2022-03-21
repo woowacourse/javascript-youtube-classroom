@@ -148,13 +148,9 @@ export default class MainView {
 
   decideRenderEmptyImage() {
     const checkRendering = [...this.$storedVideoList.children].every(el =>
-      [...el.classList].includes(DOM_STRING.HIDE)
+      el.classList.contains(DOM_STRING.HIDE)
     );
 
-    if (checkRendering) {
-      this.$emptyListImage.classList.remove(DOM_STRING.HIDE);
-      return;
-    }
-    this.$emptyListImage.classList.add(DOM_STRING.HIDE);
+    this.$emptyListImage.classList.toggle(DOM_STRING.HIDE, !checkRendering);
   }
 }
