@@ -32,6 +32,21 @@
   }
 }
 
+.disappear {
+  animation: test 2s;
+}
+
+@keyframes test {
+  0% {
+    top: 0;
+  }
+
+  100% {
+    opacity: 0%;
+    top: 30px;
+  }
+}
+
 .snackbar-rollback-button {
   background-color: transparent;
   color: rgb(166, 234, 255);

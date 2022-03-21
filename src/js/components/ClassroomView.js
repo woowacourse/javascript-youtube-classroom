@@ -4,6 +4,7 @@ import {
   makeSnackbarThumbnailTemplate,
 } from '../utils/templates.js';
 import { Classroom } from '../model/Classroom.js';
+import { delay } from '../utils/common.js';
 
 export class ClassroomView {
   constructor(props) {
@@ -67,45 +68,48 @@ export class ClassroomView {
   }
 
   handleContentsButton = (e) => {
-    this.addSnackBar(e);
-
     if (e.target.classList.contains('already-watch-button')) {
+      this.addSnackBar(e);
       this.toggleAlreadyWatchButton(e);
     }
 
     if (e.target.classList.contains('discard-button')) {
+      this.addSnackBar(e);
       this.discardVideoCard(e);
     }
   };
 
   addSnackBar(e) {
+    this.renderSnackBar(e);
+    this.snackbarContainer.addEventListener('click', this.handleSnackBar);
+  }
+
+  renderSnackBar(e) {
     if (e.target.classList.contains('already-watch-button')) {
       if (e.target.classList.contains('clicked')) {
         this.snackbarContainer.insertAdjacentHTML(
           'afterbegin',
-          makeSnackbarThumbnailTemplate(e, '본 영상으로 이동했습니다.'),
+          makeSnackbarThumbnailTemplate(e, '볼 영상으로 이동했습니다.'),
         );
       } else {
         this.snackbarContainer.insertAdjacentHTML(
           'afterbegin',
-          makeSnackbarThumbnailTemplate(e, '볼 영상으로 이동했습니다.'),
+          makeSnackbarThumbnailTemplate(e, '본 영상으로 이동했습니다.'),
         );
       }
+      return true;
     }
     if (e.target.classList.contains('discard-button')) {
       this.snackbarContainer.insertAdjacentHTML('afterbegin', makeSnackbarThumbnailTemplate(e, '영상을 삭제했습니다.'));
+      return true;
     }
-
-    setTimeout(() => {
-      this.snackbarContainer.lastChild.remove();
-    }, 3000);
-
-    this.snackbarContainer.addEventListener('click', this.handleSnackBar);
+    return false;
   }
 
-  handleSnackBar = (e) => {
+  handleSnackBar = async (e) => {
     if (e.target.classList.contains('snackbar-close-button')) {
-      // TODO : 사라지는 animation 넣기
+      e.target.parentNode.classList.add('disappear');
+      await delay(2000);
       e.target.parentNode.remove();
     }
 
@@ -123,9 +127,10 @@ export class ClassroomView {
         delete rollbackItem.removed;
         this.classroom.saveVideoToVideoList(rollbackItem);
       }
+
       this.clearClassroomContentsContainer();
       this.classroom.getVideoItems();
-      this.renderContents('alreadyWatched');
+      this.renderContents(rollbackItem.watchLater ? 'watchLater' : 'alreadyWatched');
       e.target.parentNode.remove();
     }
   };
