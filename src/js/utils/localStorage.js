@@ -13,3 +13,11 @@ export const saveVideoIdToLocalStorage = (data) => {
 export const getVideoIdFromLocalStorage = () => {
   return JSON.parse(localStorage.getItem('videoId')) || [];
 };
+
+export const saveVideoItemToLocalStorage = (data) => {
+  saveLocalStorage('video', data);
+};
+
+export const getVideoItemsFromLocalStorage = () => {
+  return JSON.parse(localStorage.getItem('video')) || [];
+};

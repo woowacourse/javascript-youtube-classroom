@@ -69,6 +69,26 @@
   color: #ffffff;
 }
 
+#search-input-clear-button {
+  position: absolute;
+  left: 666px;
+  top: 132px;
+  width: 25px;
+  height: 25px;
+  border: none;
+  background-color: transparent;
+}
+
+#search-input-clear-button:after {
+  content: '\00d7';
+  font-size: 12pt;
+}
+
+#search-input-clear-button:active {
+  background-color: #f3f3f3;
+  border-radius: 50%;
+}
+
 #no-result {
   display: flex;
   flex-direction: column;
@@ -90,13 +110,43 @@
 }
 
 #video-list {
+  display: grid;
   width: 1040px;
   height: 479px;
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-  gap: 62px 20px;
+  gap: 100px 20px;
+  grid-auto-flow: dense;
+  justify-items: center;
+  grid-template-columns: repeat(4, 1fr);
   overflow-y: auto;
+}
+
+@media (max-width: 1280px) {
+  #video-list {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+@media (max-width: 960px) {
+  #video-list {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+@media (max-width: 600px) {
+  #video-list {
+    grid-template-columns: repeat(1, 1fr);
+  }
+}
+
+#video-list::-webkit-scrollbar {
+  width: 6px;
+}
+#video-list::-webkit-scrollbar-thumb {
+  width: 4px;
+  height: 17%;
+  background-color: rgb(61, 61, 61);
+  border-radius: 10px;
+}
+#video-list::-webkit-scrollbar-track {
+  background-color: transparent;
 }
 
 .video-item-container {
@@ -141,12 +191,15 @@
   letter-spacing: 0.5px;
 }
 
+.button-container {
+  float: right;
+}
+
 .video-item__save-button {
   position: relative;
   width: 70px;
   height: 30px;
   background: #f9f9f9;
-  float: right;
 }
 
 .video-item__save-button:hover {
@@ -174,13 +227,18 @@
 }
 
 .skeleton .line {
-  height: 20px;
-  margin: 2px;
+  height: 12px;
+  margin-top: 2px;
+}
+
+.skeleton .pblsh-date {
+  width: 80%;
 }
 
 .skeleton .skeleton-button {
   width: 25%;
   height: 25px;
+  margin-top: 5px;
   float: right;
 }
 
@@ -195,5 +253,12 @@
 }
 
 #close-modal-button {
+  position: absolute;
+  left: 1010px;
+  top: 40px;
+  width: 15px;
+  height: 15px;
   float: right;
+  border-color: transparent;
+  background-color: transparent;
 }
