@@ -111,25 +111,25 @@ export default class App {
     if (target.localName !== 'button') return;
     if (target.classList.contains('active')) {
       target.classList.remove('active');
-      const filter = target.getAttribute('data-filter');
+      const { filter } = target.dataset;
       this.$videoListContainer.classList.remove(`visible-${filter}`);
       return;
     }
     [...target.parentElement.children].forEach(e => {
-      const filter = e.getAttribute('data-filter');
+      const { filter } = e.dataset;
       this.$videoListContainer.classList.remove(`visible-${filter}`);
       e.classList.remove('active');
     });
     target.classList.add('active');
-    const filter = target.getAttribute('data-filter');
+    const { filter } = target.dataset;
     this.$videoListContainer.classList.add(`visible-${filter}`);
   };
 
   handleClickVideoList = ({ target }) => {
     if (target.localName !== 'button') return;
-    const purpose = target.getAttribute('data-purpose');
+    const { purpose } = target.dataset;
     const $videoItem = target.closest('.video-item');
-    const videoId = $videoItem.getAttribute('data-video-id');
+    const { videoId } = $videoItem.dataset;
     if (purpose === 'status-change') {
       target.classList.toggle('active');
       const isWatched = this.storage.cache[videoId].watched;

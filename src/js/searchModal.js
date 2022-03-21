@@ -92,7 +92,7 @@ class SearchModal {
   handleClickSaveButton = event => {
     const { target } = event;
     const $videoItem = target.closest('.video-item');
-    const videoId = $videoItem.getAttribute('data-video-id');
+    const { videoId } = $videoItem.dataset;
     try {
       this.storage.saveVideo(videoId);
       target.setAttribute('disabled', true);
