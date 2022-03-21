@@ -56,7 +56,7 @@ describe('영상을 검색한다.', () => {
       .find('[data-action=remove]')
       .click({ force: true })
       .then(() => {
-        cy.get('#watched-video-list').find('.video-item').should('not.exist');
+        cy.get('#watched-video-list').find(`[data-video-id=${videoId}]`).should('not.exist');
       });
   });
 });
