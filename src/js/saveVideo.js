@@ -11,7 +11,11 @@ class SaveVideo {
   }
 
   #getStorageVideoList() {
-    return JSON.parse(localStorage.getItem(VIDEO_ID_LIST_KEY)) || [];
+    try {
+      return JSON.parse(localStorage.getItem(VIDEO_ID_LIST_KEY)) || [];
+    } catch (error) {
+      return [];
+    }
   }
 
   removeVideoFromStorage({ videoId }) {
@@ -25,6 +29,7 @@ class SaveVideo {
         video.isChecked = !video.isChecked;
         return true;
       }
+      return false;
     });
     localStorage.setItem(VIDEO_ID_LIST_KEY, JSON.stringify(this.saveVideoList));
   }
