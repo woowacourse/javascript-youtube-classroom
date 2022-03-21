@@ -117,26 +117,26 @@ export default class ModalView {
   renderSkeletonUI() {
     this.videoItemList
       .slice(-VIDEO_LIST.RENDER_SIZE)
-      .forEach(videoItem => videoItem.setSkeletonTemplate());
+      .forEach(videoItem => videoItem.renderSkeletonList());
   }
 
-  renderVideoList(data) {
+  renderVideoList(videoList) {
     this.showResult();
-    if (data.length === 0) {
+    if (videoList.length === 0) {
       this.showNoResult();
       return;
     }
-    this.hideSkeletonTemplates(data);
+    this.hideSkeletonTemplates(videoList);
     this.videoItemList
-      .slice(-data.length)
-      .forEach((videoItem, index) => videoItem.setVideoItemTemplate(data[index]));
+      .slice(-videoList.length)
+      .forEach((videoItem, index) => videoItem.renderSearchVideoList(videoList[index]));
   }
 
-  hideSkeletonTemplates(data) {
-    if (data.length < VIDEO_LIST.RENDER_SIZE) {
+  hideSkeletonTemplates(videoList) {
+    if (videoList.length < VIDEO_LIST.RENDER_SIZE) {
       this.videoItemList
         .slice(-VIDEO_LIST.RENDER_SIZE)
-        .slice(0, data.length)
+        .slice(0, videoList.length)
         .forEach(el => {
           el.$element.classList.add('hide');
         });
