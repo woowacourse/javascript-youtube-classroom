@@ -136,6 +136,19 @@
   }
 }
 
+#video-list::-webkit-scrollbar {
+  width: 6px;
+}
+#video-list::-webkit-scrollbar-thumb {
+  width: 4px;
+  height: 17%;
+  background-color: rgb(61, 61, 61);
+  border-radius: 10px;
+}
+#video-list::-webkit-scrollbar-track {
+  background-color: transparent;
+}
+
 .video-item-container {
   height: 300px;
   width: 240px;
