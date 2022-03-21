@@ -20,19 +20,18 @@ class RenderSearchVideo extends RenderVideo {
     super();
     this.searchVideo = searchVideo;
     this.saveVideo = saveVideo;
-
-    this.modalOutside = selectDom('.dimmer', this.modalContainer);
+    this.scrollThrottle = null;
+    // Dom 선택
+    this.searchModalOutside = selectDom('.dimmer', this.modalContainer);
     this.searchForm = selectDom('#search-form', this.modalContainer);
     this.searchInput = selectDom('#search-input-keyword', this.searchForm);
     this.searchResultSection = selectDom('.search-result', this.modalContainer);
     this.skeletonListContainer = selectDom('.skeleton-list', this.searchResultSection);
-
-    addEvent(this.modalOutside, 'click', this.#onCloseModal);
+    // 이벤트 등록
+    addEvent(this.searchModalOutside, 'click', this.#onCloseModal);
     addEvent(this.searchForm, 'submit', this.#onSearchFormSubmit);
     addEvent(this.searchResultSection, 'scroll', this.#onScrollVideoList);
     addEvent(this.videoListContainer, 'click', this.#onSaveButtonClick);
-
-    this.throttle = null;
   }
 
   #onCloseModal = () => {
@@ -70,9 +69,9 @@ class RenderSearchVideo extends RenderVideo {
       return;
     }
 
-    if (!this.throttle) {
-      this.throttle = setTimeout(() => {
-        this.throttle = null;
+    if (!this.scrollThrottle) {
+      this.scrollThrottle = setTimeout(() => {
+        this.scrollThrottle = null;
         const { scrollHeight, offsetHeight, scrollTop } = this.searchResultSection;
         if (scrollHeight - offsetHeight === scrollTop) {
           this.#loadVideo();

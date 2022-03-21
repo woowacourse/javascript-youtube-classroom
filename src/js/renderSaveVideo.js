@@ -8,10 +8,10 @@ class RenderSaveVideo extends RenderVideo {
   constructor(saveVideo) {
     super();
     this.saveVideo = saveVideo;
-
+    // 이벤트 등록
     addEvent(this.navSection, 'click', this.#onNavButtonClick);
     addEvent(this.savedVideoListContainer, 'click', this.#onCheckOrDeleteButtonClick);
-
+    // 초기 화면 - 볼 영상 탭
     this.onTabButtonClick(
       this.unwatchedTabButton,
       this.watchedTabButton,
@@ -67,7 +67,6 @@ class RenderSaveVideo extends RenderVideo {
         `[data-video-id="${targetVideo.dataset.videoId}"] > button`,
         this.videoListContainer
       );
-      // eslint-disable-next-line no-unused-expressions
       deletedVideoSaveButtonInSearchResult &&
         deletedVideoSaveButtonInSearchResult.replaceWith(
           new DOMParser().parseFromString(saveButtonTemplate, 'text/html').body.childNodes[0]
