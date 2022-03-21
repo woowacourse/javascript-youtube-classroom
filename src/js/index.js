@@ -7,8 +7,7 @@ import '@Style/App.scss';
 import '@Style/YoutubeClassRoom.scss';
 
 document.addEventListener('DOMContentLoaded', () => {
-  Modal.enable('#app');
-
+  new Modal();
   new Navigation();
   new SaveList();
   new SearchForm();

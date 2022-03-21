@@ -2,34 +2,32 @@ import { SELECTOR } from '@Constants/Selector';
 import { $ } from '@Utils/Dom';
 import { addEventDelegate, addEventOnce } from '@Utils/CustomEvent';
 
-class Modal {
+export default class Modal {
   $activeModal;
-  $container;
   $modal = $(SELECTOR.ID.MODAL_CONTAINER);
   $modalDimmer = $(SELECTOR.CLASS.MODAL_DIMMER);
 
-  enable(container) {
-    this.$container = $(container);
+  constructor() {
+    this.$container = $(SELECTOR.ID.APP);
 
     addEventDelegate(this.$modal, SELECTOR.CLASS.MODAL_DIMMER, {
       eventType: 'click',
       handler: this.handleCloseModal,
     });
 
-    addEventDelegate(this.$container, '*[data-modal]', {
+    addEventDelegate(this.$container, '*[data-open-modal]', {
       eventType: 'click',
       handler: this.handleOpenModal,
     });
   }
 
   handleOpenModal = ({ target: $target }) => {
-    const modalId = $target.dataset.modal;
-    const beforeModal = this.$activeModal;
+    const modalSelector = $target.dataset.openModal;
 
     this.$modal.classList.remove('hide');
-    !!beforeModal && beforeModal.classList.remove('show');
+    !!this.$activeModal && this.$activeModal.classList.remove('show');
 
-    this.$activeModal = $(`#${modalId}`);
+    this.$activeModal = $(`${modalSelector}`);
     this.$activeModal.classList.add('show');
 
     document.body.classList.add('scroll-lock');
@@ -47,5 +45,3 @@ class Modal {
     });
   };
 }
-
-export default new Modal();

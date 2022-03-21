@@ -1,5 +1,6 @@
 export const SELECTOR = {
   ID: {
+    APP: '#app',
     MODAL_CONTAINER: '#modal',
     SNACKBAR: '#snackbar',
     CLASSROOM_NAVIGATION: '#classroom-navigation',
