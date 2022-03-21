@@ -22,7 +22,6 @@
 
 .search-modal {
   position: relative;
-  width: 1080px;
   height: 727px;
   background: #ffffff;
   border: 1px solid rgba(0, 0, 0, 0.12);
@@ -65,15 +64,18 @@
   color: #ffffff;
 }
 
-.search-result.search-result--no-result {
+.search-result-no-result {
+  margin: auto;
+  display: flex;
   justify-content: center;
-  align-items: center;
+  margin-top: 80px;
 }
 
 .no-result__image {
   width: 190px;
   height: 140px;
   margin-bottom: 32px;
+  
 }
 
 .no-result__description {
@@ -84,24 +86,20 @@
 }
 
 .video-list {
-  width: 1040px;
-  height: 493px;
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-  gap: 32px 20px;
-  overflow-y: scroll;
+  display: grid;
 }
 
 .video-item {
   position: relative;
   width: 240px;
   height: 255px;
+  margin-bottom: 20px;
 }
 
 .video-item__thumbnail {
   width: 100%;
   height: 135px;
+  background-color: #000000;
 }
 
 .video-item__title {
@@ -144,7 +142,9 @@
 }
 
 .search-result {
-  margin: auto;
+  width: auto;
+  height: 490px;
+  overflow-y: scroll;
 }
 
 .video-item__save-button:disabled {

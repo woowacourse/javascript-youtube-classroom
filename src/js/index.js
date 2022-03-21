@@ -1,13 +1,13 @@
 import '../css/index.css';
+import ControlVideo from './controlVideo';
 import RenderVideo from './renderVideo.js';
-import SaveVideo from './saveVideo.js';
 import SearchVideo from './searchVideo.js';
 
 function startYoutude() {
   const searchVideo = new SearchVideo();
-  const saveVideo = new SaveVideo();
+  const controlVideo = new ControlVideo();
 
-  new RenderVideo(searchVideo, saveVideo);
+  new RenderVideo(searchVideo, controlVideo);
 }
 
 document.addEventListener('DOMContentLoaded', startYoutude);

@@ -35,7 +35,11 @@
   width: 80%;
 }
 
-.hide-skeleton {
+.skeleton-list {
+  display: grid;
+}
+
+.hide-element {
   display: none;
 }
 
