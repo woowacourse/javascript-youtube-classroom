@@ -18,10 +18,10 @@
 
 .search-modal {
     position: relative;
-    width: 1080px;
+    width: 94vw;
     height: 727px;
-    background: var(--search-modal-background-color);
-    border: 1px solid var(--search-modal-border-color);
+    background: var(--modal-background-color);
+    border: 1px solid var(--border-color);
     border-radius: 4px;
     padding: 50px 30px 32px 30px;
 }
@@ -35,17 +35,23 @@
 }
 
 .search-input {
-    display: flex;
-    justify-content: center;
+    margin: auto;
     margin-bottom: 40px;
+    width: var(--xlarge-list-size);
+}
+
+#search-form{
+    display: flex;
+    justify-content: space-around;
+    align-items: stretch;
 }
 
 .search-input__keyword {
-    width: 400px;
+    flex-grow: 1;
     height: 36px;
     margin-right: 20px;
     padding: 4px 8px;
-    border: 1px solid var(--search-input-border-color);
+    border: 1px solid var(--border-color);
     border-radius: 4px;
 }
 
@@ -89,13 +95,15 @@
 }
 
 .video-list {
-    width: 1040px;
+    display: grid;
+    width: var(--xlarge-list-size);
     height: 493px;
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-    gap: 32px 20px;
+    grid-row-gap: 32px;
+    grid-column-gap: 20px;
+    grid-template-columns: repeat(4, 1fr);
+    justify-content: space-around;
     overflow-y: scroll;
+    margin: auto;
 }
 
 .video-item {
@@ -148,6 +156,10 @@
     background: var(--video-save-button-hover-color);
 }
 
+.homepage-list{
+    height: 500px;
+}
+
 .skeleton {
     width: 240px;
 }
@@ -192,4 +204,35 @@
 
 .hide {
     display: none;
-}
+  }
+
+  
+  @media screen and (max-width: 1280px) {
+    .search-input{
+        width: var(--large-list-size);
+    }
+    .video-list {
+        width: var(--large-list-size);
+        grid-template-columns: repeat(3, 1fr);
+    }
+  }
+
+  @media screen and (max-width: 960px) {
+    .search-input{
+        width: var(--medium-list-size);
+    }
+    .video-list {
+        width: var(--medium-list-size);
+        grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media screen and (max-width: 600px) {
+    .search-input{
+        width: var(--small-list-size);
+    }
+    .video-list {
+        width: var(--small-list-size);
+        grid-template-columns: repeat(1, 1fr);
+    }
+  }

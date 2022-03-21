@@ -4,7 +4,7 @@ body {
 }
 
 #app {
-    max-width: 1020px;
+    max-width: var(--xlarge-list-size);
     margin: 0 auto;
 }
 
@@ -18,7 +18,8 @@ body {
 
 .nav {
     display: flex;
-    justify-content: center;
+    justify-content: space-between;
+    margin-bottom: 39px;
 }
 
 .button {
@@ -39,4 +40,135 @@ body {
 
 .nav__button:hover {
     background: var(--nav-button-hover-color);
+}
+
+.button-group{
+    display: inline-flex;
+}
+
+.no-saved-video__image, .no-watched-video__image{
+    width: 70%;
+}
+
+#will-watch{
+    width: 117px;
+    border: 1px solid var(--border-color);
+    border-radius: 4px 0px 0px 4px;
+}
+
+#watched {
+    width: 117px;
+    border: 1px solid var(--border-color);
+    border-radius: 0px 4px 4px 0px;
+}
+
+.selected {
+    background-color: var(--selected-background-color);
+}
+
+.block-toggle {
+    pointer-events: none;
+}
+
+#main-homepage-body {
+    display: flex;
+    justify-content: center;
+}
+
+#main-page {
+    display: flex;
+    justify-content: center;
+}
+
+.watch-delete-button{
+    position: absolute;
+    right: 0;
+}
+
+.video-item__watched-button,
+.video-item__delete-button{
+    width: 36px;
+    height: 36px;
+}
+
+.video-item__watched-button:hover,
+.video-item__delete-button:hover{
+    background:  var(--nav-button-hover-color);
+}
+
+.no-saved-video {
+    text-align: center;
+    font-size: 30px;
+    color: gray;
+}
+
+#snackbar {
+    visibility: hidden;
+    min-width: 250px;
+    margin-left: -125px;
+    background-color: #333;
+    color: #fff;
+    text-align: center; 
+    border-radius: 2px;
+    padding: 16px;
+    position: fixed; 
+    z-index: 1; 
+    left: 50%; 
+    bottom: 30px; 
+  }
+  
+#snackbar.show {
+  visibility: visible; 
+  -webkit-animation: fadein 0.5s, fadeout 0.5s 2.5s;
+  animation: fadein 0.5s, fadeout 0.5s 2.5s;
+}
+  
+@-webkit-keyframes fadein {
+  from {bottom: 0; opacity: 0;}
+  to {bottom: 30px; opacity: 1;}
+}
+  
+@keyframes fadein {
+  from {bottom: 0; opacity: 0;}
+  to {bottom: 30px; opacity: 1;}
+}
+  
+@-webkit-keyframes fadeout {
+  from {bottom: 30px; opacity: 1;}
+  to {bottom: 0; opacity: 0;}
+}
+  
+@keyframes fadeout {
+  from {bottom: 30px; opacity: 1;}
+  to {bottom: 0; opacity: 0;}
+}
+
+@media screen and (max-width: 1280px) {
+  #app {
+      width: var(--large-list-size);
+  }
+}
+
+@media screen and (max-width: 960px) {
+  #app {
+      width: var(--medium-list-size);
+  }
+}
+
+@media screen and (max-width: 600px) {
+  #app {
+      width: var(--small-list-size);
+  }
+  .classroom-container__title{
+      font-size: 23px;
+  }
+  #will-watch, #watched{
+      width: 90px;
+  }
+  .nav__button {
+      width: 40px;
+  }
+  .search-text{
+      display: none;
+  }
 }

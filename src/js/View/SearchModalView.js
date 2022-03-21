@@ -1,5 +1,4 @@
-import { $, debounce } from '../util';
-import SearchKeywordFormView from './SearchKeywordFormView';
+import { $, debounce, showSnackbar } from '../dom';
 import SearchResultView from './SearchResultView';
 import { ALERT_MESSAGE, SCROLL_BUFFER_SECOND, SCROLL_BUFFER_HEIGHT } from '../constants';
 import { validateSearchKeyword } from '../validation';
@@ -7,23 +6,21 @@ import { validateSearchKeyword } from '../validation';
 export default class SearchModalView {
   #modal;
 
-  constructor(searchManager, saveManager) {
+  constructor(searchManager, saveVideoManager) {
     this.#modal = $('#search-modal');
 
-    this.searchKeywordFormView = new SearchKeywordFormView();
     this.searchResultView = new SearchResultView();
 
     this.searchManager = searchManager;
-    this.saveManager = saveManager;
+    this.saveVideoManager = saveVideoManager;
 
     this.bindEvents();
   }
 
   bindEvents() {
-    $('.dimmer').addEventListener('click', this.closeModal);
-    this.#modal.addEventListener('searchKeyword', this.onSubmitSearchKeyword.bind(this));
+    $('#modal-dimmer').addEventListener('click', this.closeModal);
+    $('#search-form').addEventListener('submit', this.onSubmitSearchKeyword.bind(this));
     this.#modal.addEventListener('searchOnScroll', debounce(this.searchOnScroll.bind(this), SCROLL_BUFFER_SECOND));
-    this.#modal.addEventListener('saveVideo', this.onClickVideoSaveButton.bind(this));
   }
 
   closeModal() {
@@ -31,24 +28,14 @@ export default class SearchModalView {
   }
 
   onSubmitSearchKeyword(e) {
-    const { keyword } = e.detail;
+    e.preventDefault();
+    const keyword = $('#search-input-keyword').value;
     try {
       validateSearchKeyword(keyword);
     } catch ({ message }) {
       return alert(message);
     }
     this.searchOnSubmitKeyword(keyword);
-  }
-
-  onClickVideoSaveButton(e) {
-    const { target } = e.detail;
-    const { videoId } = target.parentNode.dataset;
-    try {
-      this.saveManager.saveVideoById(videoId);
-    } catch ({ message }) {
-      return alert(message);
-    }
-    target.remove();
   }
 
   searchOnSubmitKeyword(keyword) {
@@ -70,15 +57,15 @@ export default class SearchModalView {
         const checkedVideos = this.addSavedInfoToVideos(videos);
         this.searchResultView.updateOnSearchDataReceived(checkedVideos);
       })
-      .catch(() => {
-        this.searchResultView.showErrorResult();
+      .catch(({ message }) => {
+        showSnackbar(message);
       });
   }
 
   addSavedInfoToVideos(videos) {
     return videos.map((video) => ({
       ...video,
-      saved: this.saveManager.findVideoById(video.id),
+      saved: this.saveVideoManager.findVideoById(video.id),
     }));
   }
 
@@ -86,9 +73,13 @@ export default class SearchModalView {
     const { scrollTop, clientHeight, scrollHeight } = e.detail;
     if (scrollTop + clientHeight + SCROLL_BUFFER_HEIGHT < scrollHeight) return true;
     if (this.searchManager.isLastPage) {
-      alert(ALERT_MESSAGE.NO_MORE_SEARCH_RESULT);
+      showSnackbar(ALERT_MESSAGE.NO_MORE_SEARCH_RESULT);
       return true;
     }
     return false;
+  }
+
+  addSaveButton(id) {
+    this.searchResultView.addSaveButton(id);
   }
 }

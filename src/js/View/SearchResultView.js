@@ -1,4 +1,4 @@
-import { $, $$ } from '../util';
+import { $, $$, hideElement, showElement } from '../dom';
 import { template, MESSAGE } from './template';
 
 export default class SearchResultView {
@@ -38,37 +38,39 @@ export default class SearchResultView {
 
   resetSearchResultVideoList() {
     this.searchResultVideoList.scrollTo(0, 0);
-    this.searchResultVideoList.innerHTML = '';
+    this.searchResultVideoList.innerHTML = template.skeletonListItem();
   }
 
   updateOnLoading() {
-    this.searchResultVideoList.insertAdjacentHTML('beforeend', template.skeletonListItem());
+    $$('.skeleton', this.searchResultVideoList).forEach((listItem) => {
+      showElement(listItem);
+    });
   }
 
   removeSkeletonListItem() {
     $$('.skeleton', this.searchResultVideoList).forEach((listItem) => {
-      listItem.remove();
+      hideElement(listItem);
     });
   }
 
   showSearchResultVideoList() {
-    this.noResultContainer.classList.add('hide');
-    this.searchResultVideoList.classList.remove('hide');
+    hideElement(this.noResultContainer);
+    showElement(this.searchResultVideoList);
     this.searchResultSection.classList.remove('search-result--no-result');
     this.isShownNoResult = false;
   }
 
-  showErrorResult(message = MESSAGE.ERROR_RESULT) {
-    this.noResultContainer.classList.remove('hide');
-    this.searchResultVideoList.classList.add('hide');
+  showNoResult() {
+    hideElement(this.searchResultVideoList);
+    showElement(this.noResultContainer);
     this.searchResultSection.classList.add('search-result--no-result');
-    this.noResultDescription.innerHTML = message;
+    this.noResultDescription.innerHTML = MESSAGE.NO_RESULT;
     this.isShownNoResult = true;
   }
 
   updateOnSearchDataReceived(videos) {
     if (videos.length === 0) {
-      this.showErrorResult(MESSAGE.NO_RESULT);
+      this.showNoResult();
       return;
     }
     if (this.isShownNoResult) {
@@ -77,6 +79,15 @@ export default class SearchResultView {
     const listItems = videos.map((video) => template.videoListItem(video)).join('');
 
     this.removeSkeletonListItem();
-    this.searchResultVideoList.insertAdjacentHTML('beforeend', listItems);
+    $('.skeleton').insertAdjacentHTML('beforebegin', listItems);
+  }
+
+  addSaveButton(id) {
+    const resultList = this.searchResultVideoList.children;
+    [...resultList].forEach((item) => {
+      if (item.dataset.videoId === id) {
+        item.lastElementChild.classList.remove('hide');
+      }
+    });
   }
 }

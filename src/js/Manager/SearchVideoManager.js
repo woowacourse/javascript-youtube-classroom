@@ -1,5 +1,7 @@
 import fetch from 'node-fetch';
 import { YOUTUBE_API_ENDPOINT } from '../youtubeApi';
+import { parseVideoInfo } from '../util';
+import { ERROR_MESSAGE } from '../constants';
 
 export default class SearchVideoManager {
   #isLastPage;
@@ -8,6 +10,7 @@ export default class SearchVideoManager {
     this.keyword = '';
     this.nextPageToken = '';
     this.#isLastPage = false;
+    this.totalVideoData = [];
   }
 
   get isLastPage() {
@@ -26,25 +29,25 @@ export default class SearchVideoManager {
     this.#isLastPage = false;
   }
 
-  fetchYoutubeData(keyword) {
-    return fetch(YOUTUBE_API_ENDPOINT(keyword, this.nextPageToken)).then((response) => {
+  async fetchYoutubeData(keyword) {
+    try {
+      const response = await fetch(YOUTUBE_API_ENDPOINT(keyword, this.nextPageToken));
       if (!response.ok) {
-        throw new Error(response.status);
+        if (response.status === 403) {
+          throw new Error(ERROR_MESSAGE.NO_MORE_API);
+        }
+        throw new Error(ERROR_MESSAGE.SERVER_ERROR);
       }
       this.keyword = keyword;
       return response.json();
-    });
+    } catch (error) {
+      throw new Error(error.message);
+    }
   }
 
   processVideoData(result) {
     if (!result.nextPageToken) this.#isLastPage = true;
     this.nextPageToken = result.nextPageToken;
-    return result.items.map((item) => ({
-      id: item.id.videoId,
-      thumbnail: item.snippet.thumbnails.medium.url,
-      title: item.snippet.title,
-      channelName: item.snippet.channelTitle,
-      publishedDate: new Date(item.snippet.publishedAt),
-    }));
+    return parseVideoInfo(result);
   }
 }

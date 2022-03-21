@@ -11,23 +11,44 @@
   <main id="app" class="classroom-container">
     <h1 class="classroom-container__title">👩🏻‍💻 나만의 유튜브 강의실 👨🏻‍💻</h1>
     <nav class="nav">
-      <button id="search-modal-button" class="button nav__button">🔍 검색</button>
+      <div class="button-group">
+        <button id="will-watch" class="button nav__button" data-toggle-id="will-watch-video-list">👁 볼 영상</button>
+        <button id="watched" class="button nav__button" data-toggle-id="watched-video-list">✅ 본 영상</button>
+      </div>
+      <button id="search-modal-button" class="button nav__button">🔍 <span class="search-text">검색</span></button>
     </nav>
+    <section id="main-homepage-body">
+      <h2 hidden>메인 페이지</h2>
+      <div id="main-page">
+        <ul id="will-watch-video-list" class="video-list homepage-list" data-no-image-class="no-saved-video__image"></ul>
+        <ul id="watched-video-list" class="video-list homepage-list" data-no-image-class="no-watched-video__image"></ul>
+        <img src="./no_saved_video.png" alt="no saved video image" class="no-saved-video__image hide">
+        <img src="./no_watched_video.png" alt="no watched video image" class="no-watched-video__image hide">
+      </div>
+    </section>
   </main>
-  <!-- 1 검색 버튼을 누르면 아래와 같은 검색 모달을 보여줍니다.-->
+  <div id="confirm-container" class="confirm-container hide">
+    <div id="confirm-dimmer" class="dimmer"></div>
+    <div id="confirm-modal" class="confirm-modal" role="dialog" aria-labelledby="confirm-modal-title">
+      <h2 id="confirm-modal-title" class="confirm-modal__title">정말로 삭제하시겠습니까?</h2>
+      <p>삭제한 비디오는 다시 복구할 수 없습니다</p>
+      <div class="confirm-buttons">
+        <button id="yes-button">예</button>
+        <button id="no-button">아니오</button>
+      </div>
+    </div>
+  </div>
   <div id="modal-container" class="modal-container hide">
-    <div class="dimmer"></div>
+    <div id="modal-dimmer" class="dimmer"></div>
     <div id="search-modal" class="search-modal" role="dialog" aria-labelledby="search-modal-title">
       <h2 id="search-modal-title" class="search-modal__title">🔍 보고싶은 영상 찾기 🔍</h2>
       <section class="search-input">
         <h3 hidden>검색어 입력</h3>
         <form id="search-form">
-          <input id="search-input-keyword" type="text" placeholder="검색" class="search-input__keyword">
+          <input id="search-input-keyword" type="search" placeholder="검색" class="search-input__keyword">
           <button id="search-button" class="search-input__search-button button">검색</button>
         </form>
       </section>
-      <!-- 2-1 검색 결과가 있을 경우, 아래와 같은 검색 결과 목록을 보여줍니다.-->
-      <!-- 2-2 검색 결과가 없을 경우, `search-result--no-result` class를 붙이고 아래와 같은 no-result를 보여줍니다.-->
       <section id="search-result-section" class="search-result">
         <h3 hidden>검색 결과</h3>
         <ul id="search-result-video-list" class="video-list"></ul>
@@ -41,6 +62,7 @@
       </section>
     </div>
   </div>
+  <div id="snackbar"></div>
 </body>
 
 </html>
