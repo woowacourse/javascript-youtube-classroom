@@ -3,7 +3,7 @@ name: Build and GH-Page Deploy
 on:
   push:
     branches:
-      - lokba-step1
+      - lokba-step2
 
 jobs:
   build:

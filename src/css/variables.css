@@ -1,17 +1,30 @@
 :root {
+  --white-color: #ffffff;
+  --black-color: #000000;
+
   --nav-btn-bg-color: #f5f5f5;
-  --nav-btn-bg-hover-color: #ebebeb;
+  --btn-bg-stress-color: #e6fcf5;
 
   --dimmer-bg-color: #000000;
 
-  --modal-bg-color: #ffffff;
-
-  --search-input-text-color: #8b8b8b;
+  --search-input-text-color: #110e0e;
   --search-btn-bg-color: #00bcd4;
-  --search-btn-text-color: #ffffff;
 
   --save-btn-bg-color: #3bc9db;
   --save-btn-bg-hover-color: #c5f6fa;
   --save-btn-bg-hide-color: #e3fafc;
-  --save-btn-text-color: #000000;
+
+  --short-message-bg-color: #b2f2bb;
+  --short-message-img-bg-color: #40c057;
+  --short-message-count-bg-color: #ff0000;
+
+  --long-message-bg-color: #f8f9fa;
+  --long-message-footer-text-color: #495057;
+
+  --remove-message-bg-color: #51cf66;
+  --not-found-message-bg-color: #22b8cf;
+  --store-message-bg-color: #fcc419;
+  --error-message-bg-color: #cc5de8;
+  --full-storage-message-bg-color: #ff6b6b;
+  --already-stored-message-bg-color: #845ef7;
 }
