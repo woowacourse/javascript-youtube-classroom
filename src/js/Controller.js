@@ -126,6 +126,11 @@ export default class Controller {
 
     this.tabView.renderUnwatchedVideoItems(unwatchedVideoItems);
     this.tabView.showUnwatchedTab();
+    if (unwatchedVideoItems.length === 0) {
+      this.tabView.showEmptyTab();
+    } else {
+      this.tabView.hideEmptyTab();
+    }
   }
 
   #renderWatchedTab() {
@@ -133,6 +138,11 @@ export default class Controller {
 
     this.tabView.renderWatchedVideoItems(watchedVideoItems, this.tabView.$watchedTab);
     this.tabView.showWatchedTab();
+    if (watchedVideoItems.length === 0) {
+      this.tabView.showEmptyTab();
+    } else {
+      this.tabView.hideEmptyTab();
+    }
   }
 
   #checkWatchedVideo = (event) => {
@@ -162,5 +172,6 @@ export default class Controller {
     this.tabView.removeVideo(deletedVideoId);
     this.tabView.hideConfirmModal();
     this.mainView.toastNotification('success', SUCCESS_MESSAGE.DELETED);
+    this.#renderUnwatchedTab();
   };
 }

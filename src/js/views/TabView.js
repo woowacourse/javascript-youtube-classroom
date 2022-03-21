@@ -11,6 +11,7 @@ export default class TabView {
     this.$unwatchedTab = $('.unwatched-tab');
     this.$watchedTab = $('.watched-tab');
     this.$confirmModalContainer = $('.confirm-modal-container');
+    this.$noResult = $('.no-result');
     this.#bindEvents();
   }
 
@@ -75,15 +76,15 @@ export default class TabView {
   };
 
   showUnwatchedTab() {
-    this.$unwatchedButton.classList.add('active');
-    this.$watchedButton.classList.remove('active');
+    this.$unwatchedButton.classList.add('clicked');
+    this.$watchedButton.classList.remove('clicked');
     this.$unwatchedTab.classList.remove('hide');
     this.$watchedTab.classList.add('hide');
   }
 
   showWatchedTab() {
-    this.$unwatchedButton.classList.remove('active');
-    this.$watchedButton.classList.add('active');
+    this.$unwatchedButton.classList.remove('clicked');
+    this.$watchedButton.classList.add('clicked');
     this.$watchedTab.classList.remove('hide');
     this.$unwatchedTab.classList.add('hide');
   }
@@ -116,5 +117,13 @@ export default class TabView {
 
   #showConfirmModal() {
     this.$confirmModalContainer.classList.remove('hide');
+  }
+
+  showEmptyTab() {
+    this.$noResult.classList.remove('hide');
+  }
+
+  hideEmptyTab() {
+    this.$noResult.classList.add('hide');
   }
 }

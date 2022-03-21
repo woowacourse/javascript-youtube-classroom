@@ -100,7 +100,7 @@ body {
   gap: 30px 36px;
 }
 
-.active {
+.clicked {
   background: var(--active);
 }
 

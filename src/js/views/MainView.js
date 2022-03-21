@@ -14,7 +14,7 @@ export default class MainView {
 
   #bindEvents() {
     on(this.$searchModalButton, 'click', this.#openSearchModal.bind(this));
-    on(this.$toggleSwitch, 'change', (event) => this.switchTheme(event));
+    on(this.$toggleSwitch, 'change', (event) => this.#switchTheme(event));
   }
 
   #openSearchModal() {
@@ -38,20 +38,15 @@ export default class MainView {
 
   #watchDarkMode() {
     if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
-      console.log('dark');
       document.documentElement.setAttribute('user-theme', 'dark');
       this.$toggleSwitch.checked = true;
     } else {
-      console.log('else');
       document.documentElement.setAttribute('user-theme', 'light');
       this.$toggleSwitch.checked = false;
     }
   }
 
-  switchTheme(event) {
-    // const toggleChecked = event.target.checked;
-
-    // console.log('dark', dark);
+  #switchTheme(event) {
     if (event.target.checked) {
       document.documentElement.setAttribute('user-theme', 'dark');
       this.$toggleSwitch.checked = true;
@@ -59,7 +54,5 @@ export default class MainView {
       document.documentElement.setAttribute('user-theme', 'light');
       this.$toggleSwitch.checked = false;
     }
-    console.log(event.target.checked);
-    // document.body.classList.toggle('dark-mode');
   }
 }
