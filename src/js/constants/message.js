@@ -4,3 +4,5 @@ export const ERROR_MESSAGE = {
   ALREADY_SAVED_VIDEO: '이미 저장한 비디오입니다.',
   EMPTY_KEYWORD: '키워드를 입력해주세요',
 };
+
+export const DELETE_CHECK_MESSAGE = '정말로 삭제하시겠습니까?';

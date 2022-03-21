@@ -23,16 +23,13 @@ class Video {
     const { video } = this.props;
     const { videoId } = video.getVideoInfo();
 
-    const savedVideo = getState(STATE_STORE_KEY.SAVED_VIDEO);
-
-    if (savedVideo.includes(videoId)) {
+    if (this.#isSavedVideo(videoId)) {
       this.$saveButton.setAttribute('hidden', true);
     }
   }
 
   #mount() {
-    const { video } = this.props;
-    const template = this.#generateTemplate(video);
+    const template = this.#generateTemplate();
     this.#parentElement.insertAdjacentHTML('beforeend', template);
   }
 
@@ -57,15 +54,27 @@ class Video {
     const { videoId, videoTitle, channelTitle, publishTime, thumbnail } = video.getVideoInfo();
 
     return `
-    <li class="video-item" data-video-id="${videoId}">
-    <img
-      src="${thumbnail}" class="video-item__thumbnail">
-    <h4 class="video-item__title">${videoTitle}</h4>
-    <p class="video-item__channel-name">${channelTitle}</p>
-    <p class="video-item__published-date">${parseTimeStamp(publishTime)}</p>
-    <button class="video-item__save-button button">⬇ 저장</button>
-  </li>
-      `;
+      <li class="video-item" data-video-id="${videoId}">
+        <img
+          src="${thumbnail}" class="video-item__thumbnail" loading="lazy">
+        <h4 class="video-item__title">${videoTitle}</h4>
+        <p class="video-item__channel-name">${channelTitle}</p>
+        <p class="video-item__published-date">${parseTimeStamp(publishTime)}</p>
+        <button class="video-item__save-button button">⬇ 저장</button>
+      </li>
+    `;
+  }
+
+  #isSavedVideo(currentVideoId) {
+    const savedVideoList = getState(STATE_STORE_KEY.SAVED_VIDEO);
+
+    const savedVideo = savedVideoList.find((video) => {
+      const { videoId } = video.getVideoInfo();
+
+      return videoId === currentVideoId;
+    });
+
+    return savedVideo !== undefined;
   }
 }
 

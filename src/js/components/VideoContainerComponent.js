@@ -64,9 +64,11 @@ class VideoContainer {
           dataset: { videoId },
         } = e.target.closest('.video-item');
 
+        const targetVideo = this.#findVideoByVideoId(videoId);
+
         dispatch(CUSTOM_EVENT_KEY.CLICK_SAVE_BUTTON, {
           detail: {
-            saveVideoId: videoId,
+            targetVideo,
           },
         });
       }
@@ -88,7 +90,7 @@ class VideoContainer {
       this.skeletonList = new SkeletonList(this.$videoList);
       return;
     }
-    /** 하위컴포넌트의 메소드를 직접 수행하고 싶지 않습니다.. unmount 되도록 하는게 좋겟져 ?! */
+
     this.skeletonList?.unmount();
   }
 
@@ -126,19 +128,16 @@ class VideoContainer {
 
   #generateTemplate() {
     return `
-    <section class="search-result">
-    <h3 hidden>검색 결과</h3>
+      <section class="search-result">
+        <h3 hidden>검색 결과</h3>
 
-    <ul class="video-list"></ul>
+        <ul class="video-list"></ul>
 
-    <div class="no-result">
-      <img src="./not_found.png" alt="no result image" class="no-result__image">
-      <p class="no-result__description">
-        검색 결과가 없습니다<br />
-        다른 키워드로 검색해보세요
-      </p>
-    </div>
-    </section>
+        <div class="no-result">
+          <img src="./not_found.png" alt="no result image" class="no-result__image">
+          <p class="no-result__description">검색 결과가 없습니다.<br />다른 키워드로 검색해보세요.</p>
+        </div>
+      </section>
     `;
   }
 
@@ -149,6 +148,14 @@ class VideoContainer {
         dispatch(CUSTOM_EVENT_KEY.LOAD_NEW_VIDEO_LIST);
       }
     });
+  }
+
+  #findVideoByVideoId(targetVideoId) {
+    const { videoList } = getState(STATE_STORE_KEY.SEARCH_RESULT);
+
+    const targetVideo = videoList.find((video) => video.getVideoInfo().videoId === targetVideoId);
+
+    return targetVideo;
   }
 }
 export default VideoContainer;

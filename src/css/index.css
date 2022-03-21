@@ -1,5 +1,7 @@
 @import './app.css';
+@import './savedVideoList.css';
 @import './modal.css';
+@import './videoItem.css';
 @import './skeleton.css';
 * {
   margin: 0;

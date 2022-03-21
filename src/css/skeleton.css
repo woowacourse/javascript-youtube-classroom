@@ -1,5 +1,6 @@
 .skeleton-item {
-  width: 236px;
+  display: grid;
+  align-items: start;
 }
 
 .skeleton-item * {
@@ -45,5 +46,12 @@
   40%,
   100% {
     background-position: 320px;
+  }
+}
+
+@media (max-width: 599px) {
+  .skeleton-item {
+    width: 240px;
+    justify-self: center;
   }
 }

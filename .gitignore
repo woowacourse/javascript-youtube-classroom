@@ -105,3 +105,8 @@ dist
 
 # vscode setting
 .vscode
+
+# cypress
+cypress.json
+cypress/videos
+cypress/screenshots

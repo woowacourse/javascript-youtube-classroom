@@ -1,0 +1,81 @@
+.video-item {
+  height: 255px;
+  display: grid;
+  grid-template-rows: 135px 28px 24px 24px;
+}
+
+.video-item__thumbnail {
+  width: 100%;
+  height: 135px;
+}
+
+.video-item__title {
+  height: 24px;
+  font-weight: bold;
+  font-size: 16px;
+  line-height: 24px;
+  letter-spacing: 0.5px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin: 4px 0;
+}
+
+.video-item__channel-name {
+  font-size: 16px;
+  line-height: 24px;
+  letter-spacing: 0.5px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.video-item__published-date {
+  font-size: 12px;
+  line-height: 24px;
+  letter-spacing: 0.5px;
+}
+
+.video-item__save-button {
+  justify-self: end;
+  width: 80px;
+  height: 36px;
+  background: #f9f9f9;
+  margin-top: 4px;
+}
+
+.video-item__save-button:hover {
+  background: #efefef;
+}
+
+.video-item__button-wrapper {
+  display: flex;
+  justify-content: flex-end;
+  column-gap: 8px;
+  margin-top: 4px;
+}
+
+.video-item__button-item {
+  width: 36px;
+  height: 36px;
+  background: #f9f9f9;
+}
+
+.video-item__button-item:hover {
+  background: #efefef;
+}
+
+.video-item__button-item.watched {
+  background: rgba(0, 188, 212, 0.12);
+}
+
+.video-item__button-item:hover {
+  background: rgba(0, 188, 212, 0.24);
+}
+
+@media (max-width: 599px) {
+  .video-item {
+    width: 240px;
+    justify-self: center;
+  }
+}

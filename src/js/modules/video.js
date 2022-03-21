@@ -1,4 +1,4 @@
-import { ERROR_MESSAGE } from '../constants/errorMessage.js';
+import { ERROR_MESSAGE } from '../constants/message.js';
 import { VIDEO_PROPERTIES } from '../constants/video.js';
 import { hasMissingProperty } from '../utils/validation.js';
 
@@ -13,8 +13,15 @@ class Video {
 
   #thumbnail = null;
 
-  constructor(videoInfo) {
-    this.#init(videoInfo);
+  #isWatched = false;
+
+  constructor({ videoId, videoTitle, channelTitle, publishTime, thumbnail, isWatched }) {
+    this.#videoId = videoId;
+    this.#videoTitle = videoTitle;
+    this.#channelTitle = channelTitle;
+    this.#publishTime = publishTime;
+    this.#thumbnail = thumbnail;
+    this.#isWatched = isWatched ?? false;
   }
 
   getVideoInfo() {
@@ -24,15 +31,12 @@ class Video {
       channelTitle: this.#channelTitle,
       publishTime: this.#publishTime,
       thumbnail: this.#thumbnail,
+      isWatched: this.#isWatched,
     };
   }
 
-  #init({ videoId, videoTitle, channelTitle, publishTime, thumbnail }) {
-    this.#videoId = videoId;
-    this.#videoTitle = videoTitle;
-    this.#channelTitle = channelTitle;
-    this.#publishTime = publishTime;
-    this.#thumbnail = thumbnail;
+  toggleWatchState() {
+    this.#isWatched = !this.#isWatched;
   }
 
   static create(videoInfo) {

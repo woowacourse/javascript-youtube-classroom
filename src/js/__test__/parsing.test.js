@@ -9,7 +9,7 @@ describe('데이터 파싱 테스트', () => {
     const expectedItems = [
       {
         videoId: 'LsOPJhe8pjY',
-        thumbnail: 'https://i.ytimg.com/vi/LsOPJhe8pjY/default.jpg',
+        thumbnail: 'https://i.ytimg.com/vi/LsOPJhe8pjY/hqdefault.jpg',
         publishTime: '2022-03-05T05:00:06Z',
         channelTitle: '퀴즈코리아',
         videoTitle: '성격테스트 - 가장 어려운 밸런스 게임으로 알아보는 당신의 성격 유형',

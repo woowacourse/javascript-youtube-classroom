@@ -6,4 +6,6 @@ const runApp = () => {
   new AppBusiness();
 };
 
-export default runApp;
+window.addEventListener('DOMContentLoaded', () => {
+  runApp();
+});

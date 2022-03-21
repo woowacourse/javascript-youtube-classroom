@@ -5,3 +5,8 @@ export const VIDEO_PROPERTIES = [
   'publishTime',
   'thumbnail',
 ];
+
+export const SAVED_VIDEO_FILTER_TYPE = {
+  WATCH_LATER: 'watchLater',
+  WATCHED: 'watched',
+};

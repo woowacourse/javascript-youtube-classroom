@@ -9,7 +9,7 @@ import webStore from '../modules/webStore';
 import { bind } from '../modules/eventFactory';
 import { CUSTOM_EVENT_KEY } from '../constants/events';
 import { WEB_STORE_KEY } from '../constants/webStore';
-import { ERROR_MESSAGE } from '../constants/errorMessage';
+import { ERROR_MESSAGE } from '../constants/message';
 class AppBusiness {
   constructor() {
     bind(CUSTOM_EVENT_KEY.CLICK_SEARCH_MODAL_BUTTON, this.onClickSearchModalButton);
@@ -17,6 +17,9 @@ class AppBusiness {
     bind(CUSTOM_EVENT_KEY.SUBMIT_SEARCH_KEYWORD, this.onSubmitSearchKeyword);
     bind(CUSTOM_EVENT_KEY.LOAD_NEW_VIDEO_LIST, this.onLoadNewVideoList);
     bind(CUSTOM_EVENT_KEY.CLICK_SAVE_BUTTON, this.onClickSaveButton);
+    bind(CUSTOM_EVENT_KEY.CLICK_SAVED_VIDEO_FILTER_BUTTON, this.onClickSavedVideoFilterButton);
+    bind(CUSTOM_EVENT_KEY.CLICK_WATCHED_BUTTON, this.onClickWatchedButton);
+    bind(CUSTOM_EVENT_KEY.CLICK_DELETE_BUTTON, this.onClickDeleteButton);
   }
 
   onClickSearchModalButton = () => {
@@ -73,21 +76,45 @@ class AppBusiness {
     }
   };
 
-  onClickSaveButton = ({ detail: { saveVideoId } }) => {
+  onClickSaveButton = ({ detail: { targetVideo } }) => {
     try {
-      const savedVideoList = webStore.getData(WEB_STORE_KEY.SAVED_VIDEO_LIST_KEY) ?? [];
+      const savedVideoInfoList = webStore.getData(WEB_STORE_KEY.SAVED_VIDEO_LIST_KEY) ?? [];
+      const savedVideoList = savedVideoInfoList.map((videoInfo) => Video.create(videoInfo));
 
-      if (savedVideoList.length === 100) {
+      if (savedVideoInfoList.length === 100) {
         throw new Error(ERROR_MESSAGE.SAVE_VIDEO_COUNT_OVER);
       }
 
-      const updatedVideoList = [...savedVideoList, saveVideoId];
+      const targetVideoInfo = targetVideo.getVideoInfo();
 
-      webStore.setData(WEB_STORE_KEY.SAVED_VIDEO_LIST_KEY, updatedVideoList);
+      const updatedVideoInfoList = [...savedVideoInfoList, targetVideoInfo];
+      const updatedVideoList = [...savedVideoList, targetVideo];
+
+      webStore.setData(WEB_STORE_KEY.SAVED_VIDEO_LIST_KEY, updatedVideoInfoList);
       setState(STATE_STORE_KEY.SAVED_VIDEO, updatedVideoList);
     } catch ({ message }) {
       alert(message);
     }
+  };
+
+  onClickSavedVideoFilterButton = ({ detail: { savedVideoFilterType } }) => {
+    setState(STATE_STORE_KEY.SAVED_VIDEO_FILTER, savedVideoFilterType);
+  };
+
+  onClickWatchedButton = ({ detail: { targetVideoId } }) => {
+    const updatedVideoList = this.updateWatchedState(targetVideoId);
+    const updatedVideoInfoList = this.convertToVideoInfoList(updatedVideoList);
+
+    webStore.setData(WEB_STORE_KEY.SAVED_VIDEO_LIST_KEY, updatedVideoInfoList);
+    setState(STATE_STORE_KEY.SAVED_VIDEO, updatedVideoList);
+  };
+
+  onClickDeleteButton = ({ detail: { targetVideoId } }) => {
+    const updatedVideoList = this.deleteVideo(targetVideoId);
+    const updatedVideoInfoList = this.convertToVideoInfoList(updatedVideoList);
+
+    webStore.setData(WEB_STORE_KEY.SAVED_VIDEO_LIST_KEY, updatedVideoInfoList);
+    setState(STATE_STORE_KEY.SAVED_VIDEO, updatedVideoList);
   };
 
   async requestVideo(keyword, pageToken) {
@@ -109,13 +136,39 @@ class AppBusiness {
     return searchResult;
   }
 
-  /** 검색 API 결과로 부터, videoList - nextPageToken 값을 추출한다. */
-
   extractSearchResult(searchResult) {
     const { items: videoInfos, nextPageToken } = parserVideos(searchResult);
     const videoList = videoInfos.map((videoInfo) => Video.create(videoInfo));
 
     return { nextPageToken, videoList };
+  }
+
+  updateWatchedState(targetVideoId) {
+    const savedVideoList = getState(STATE_STORE_KEY.SAVED_VIDEO);
+
+    return savedVideoList.map((savedVideo) => {
+      const { videoId } = savedVideo.getVideoInfo();
+
+      if (videoId === targetVideoId) {
+        savedVideo.toggleWatchState();
+      }
+
+      return savedVideo;
+    });
+  }
+
+  convertToVideoInfoList(videoList) {
+    return videoList.map((video) => video.getVideoInfo());
+  }
+
+  deleteVideo(targetVideoId) {
+    const savedVideoList = getState(STATE_STORE_KEY.SAVED_VIDEO);
+
+    return savedVideoList.filter((savedVideo) => {
+      const { videoId } = savedVideo.getVideoInfo();
+
+      return videoId !== targetVideoId;
+    });
   }
 }
 
