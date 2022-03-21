@@ -5,35 +5,46 @@ export default class HomeView {
   constructor({ saveVideoManager }) {
     this.savedVideoListView = new SavedVideoListView({ saveVideoManager });
 
+    this.initDOMs();
     this.bindEvents();
   }
 
+  initDOMs() {
+    this.$app = $('#app');
+    this.$modalContainer = $('#modal-container');
+    this.$searchModalButton = $('#search-modal-button', this.$app);
+    this.$unwatchedVideoListButton = $('#unwatched-video-list-button', this.$app);
+    this.$watchedVideoListButton = $('#watched-video-list-button', this.$app);
+    this.$unwatchedVideoList = $('#unwatched-video-list', this.$app);
+    this.$watchedVideoList = $('#watched-video-list', this.$app);
+  }
+
   bindEvents() {
-    $('#unwatched-video-list-button').addEventListener('click', this.onClickUnwatchedVideoListButton);
-    $('#watched-video-list-button').addEventListener('click', this.onClickWatchedVideoListButton);
-    $('#search-modal-button').addEventListener('click', this.openModal);
+    this.$unwatchedVideoListButton.addEventListener('click', this.onClickUnwatchedVideoListButton);
+    this.$watchedVideoListButton.addEventListener('click', this.onClickWatchedVideoListButton);
+    this.$searchModalButton.addEventListener('click', this.openModal);
   }
 
   onClickUnwatchedVideoListButton = () => {
-    if ($('#unwatched-video-list').classList.contains('hide')) {
+    if (this.$unwatchedVideoList.classList.contains('hide')) {
       this.toggleVideoList();
     }
   }
 
   onClickWatchedVideoListButton = () => {
-    if ($('#watched-video-list').classList.contains('hide')) {
+    if (this.$watchedVideoList.classList.contains('hide')) {
       this.toggleVideoList();
     }
   }
     
   toggleVideoList = () => {
-    $('#unwatched-video-list').classList.toggle('hide');
-    $('#watched-video-list').classList.toggle('hide');
-    $('#unwatched-video-list-button').classList.toggle('selected');
-    $('#watched-video-list-button').classList.toggle('selected');
+    this.$unwatchedVideoList.classList.toggle('hide');
+    this.$watchedVideoList.classList.toggle('hide');
+    this.$unwatchedVideoListButton.classList.toggle('selected');
+    this.$watchedVideoListButton.classList.toggle('selected');
   }
 
   openModal = () => {
-    $('#modal-container').classList.remove('hide');
+    this.$modalContainer.classList.remove('hide');
   }
 }

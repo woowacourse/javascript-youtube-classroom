@@ -6,13 +6,20 @@ export default class SavedVideoListView {
   constructor({ saveVideoManager }) {
     this.saveVideoManager = saveVideoManager;
 
+    this.initDOMs();
     this.bindEvents();
   }
 
+  initDOMs() {
+    this.$app = $('#app');
+    this.$unwatchedVideoList = $('#unwatched-video-list', this.$app);
+    this.$watchedVideoList = $('#watched-video-list', this.$app);
+  }
+
   bindEvents() {
-    $('#unwatched-video-list').addEventListener('click', this.onClickIconButton);
-    $('#watched-video-list').addEventListener('click', this.onClickIconButton);
-    $('#app').addEventListener(EVENT.UPDATE_SAVED_VIDEO_LIST, this.updateOnSavedVideoList);
+    this.$unwatchedVideoList .addEventListener('click', this.onClickIconButton);
+    this.$watchedVideoList.addEventListener('click', this.onClickIconButton);
+    this.$app.addEventListener(EVENT.UPDATE_SAVED_VIDEO_LIST, this.updateOnSavedVideoList);
   }
 
   onClickIconButton = (e) => {
@@ -44,28 +51,28 @@ export default class SavedVideoListView {
   updateOnUnwatchedVideoList = (e) => {
     const { response, unwatchedVideos } = e.detail;
     if ( response !== RESULT.SUCCESS ) {
-      $('#unwatched-video-list').innerHTML = template.failToReadSavedVideo;
+      this.$unwatchedVideoList .innerHTML = template.failToReadSavedVideo;
       return;
     }
     if (unwatchedVideos.length === 0) {
-      $('#unwatched-video-list').innerHTML = template.noUnwatchedVideo;
+      this.$unwatchedVideoList .innerHTML = template.noUnwatchedVideo;
       return;
     }
     const unwatchedVideoListItems = unwatchedVideos.map((video) => template.savedVideoListItem(video)).join('');
-    $('#unwatched-video-list').innerHTML = unwatchedVideoListItems;
+    this.$unwatchedVideoList .innerHTML = unwatchedVideoListItems;
   }
 
   updateOnWatchedVideoList = (e) => {
     const { response, watchedVideos } = e.detail;
     if ( response !== RESULT.SUCCESS ) {
-      $('#watched-video-list').innerHTML = template.failToReadSavedVideo;
+      this.$watchedVideoList.innerHTML = template.failToReadSavedVideo;
       return;
     }
     if (watchedVideos.length === 0) {
-      $('#watched-video-list').innerHTML = template.noWatchedVideo;
+      this.$watchedVideoList.innerHTML = template.noWatchedVideo;
       return;
     }
     const watchedVideoListItems = watchedVideos.map((video) => template.savedVideoListItem(video)).join('');
-    $('#watched-video-list').innerHTML = watchedVideoListItems;
+    this.$watchedVideoList.innerHTML = watchedVideoListItems;
   }
 }

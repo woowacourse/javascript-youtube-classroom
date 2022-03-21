@@ -7,21 +7,27 @@ export default class SearchModalView {
     this.searchKeywordFormView = new SearchKeywordFormView({ searchVideoManager });
     this.searchResultView = new SearchResultView({ searchVideoManager, saveVideoManager });
 
+    this.initDOMs();
     this.bindEvents();
   }
 
+  initDOMs() {
+    this.$modalContainer = $('#modal-container');
+    this.$dimmer = $('.dimmer', this.$modalContainer);
+  }
+
   bindEvents() {
-    $('.dimmer').addEventListener('click', this.closeModal);
+    this.$dimmer.addEventListener('click', this.closeModal);
     window.addEventListener('keydown', this.onKeyDown);
   }
 
   onKeyDown = (e) => {
-    if (e.key === 'Escape' && !$('#modal-container').classList.contains('hide')) {
+    if (e.key === 'Escape' && !this.$modalContainer.classList.contains('hide')) {
       this.closeModal();
     }
   }
 
   closeModal = () => {
-    $('#modal-container').classList.add('hide');
+    this.$modalContainer.classList.add('hide');
   }
 }

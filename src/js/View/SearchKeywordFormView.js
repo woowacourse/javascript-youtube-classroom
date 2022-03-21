@@ -4,16 +4,23 @@ export default class SearchKeywordFormView {
   constructor({ searchVideoManager }) {
     this.searchVideoManager = searchVideoManager;
     
+    this.initDOMs();
     this.bindEvents();
   }
 
+  initDOMs() {
+    this.$modalContainer = $('#modal-container');
+    this.$searchForm = $('#search-form', this.$modalContainer);
+    this.$searchKeywordInput = $('#search-input-keyword', this.$searchForm);
+  }
+
   bindEvents() {
-    $('#search-form').addEventListener('submit', this.onSubmitSearchForm);
+    this.$searchForm.addEventListener('submit', this.onSubmitSearchForm);
   }
 
   onSubmitSearchForm = (e) => {
     e.preventDefault();
-    const keyword = $('#search-input-keyword').value;
+    const keyword = this.$searchKeywordInput.value;
     this.searchVideoManager.searchWithKeyword(keyword);
   }
 }

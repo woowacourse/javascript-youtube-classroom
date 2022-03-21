@@ -7,18 +7,22 @@ export default class SearchResultView {
     this.searchVideoManager = searchVideoManager;
     this.saveVideoManager = saveVideoManager;
 
+    this.initDOMs()
+    this.bindEvents();
+  }
+
+  initDOMs() {
+    this.$modalContainer = $('#modal-container');
     this.$searchResultSection = $('#search-result-section');
     this.$searchResultVideoList = $('#search-result-video-list', this.$searchResultSection);
     this.$noResultContainer = $('#no-result-container', this.$searchResultSection);
     this.$noResultDescription = $('#no-result-description', this.$noResultContainer);
-
-    this.bindEvents();
   }
 
   bindEvents() {
     this.$searchResultVideoList.addEventListener('scroll', debounce(this.onScrollVideoList, 500));
     this.$searchResultVideoList.addEventListener('click', this.onClickVideoSaveButton);
-    $('#modal-container').addEventListener(EVENT.UPDATE_SEARCH_STATE, this.updateOnSearchState);
+    this.$modalContainer.addEventListener(EVENT.UPDATE_SEARCH_STATE, this.updateOnSearchState);
   }
 
   onScrollVideoList = () => {
@@ -48,6 +52,8 @@ export default class SearchResultView {
   resetSearchResult = () => {
     this.$searchResultVideoList.scrollTo(0, 0);
     this.$searchResultVideoList.innerHTML = template.skeletonListItem();
+
+    this.$$skeletonItems = $$('.skeleton', this.$searchResultVideoList);
     this.$firstSkeletonListItem = $('.skeleton', this.$searchResultVideoList);
   }
   
@@ -70,7 +76,7 @@ export default class SearchResultView {
   }
 
   toggleSkeletonListItemVisibility = () => {
-    $$('.skeleton', this.$searchResultVideoList).forEach((item) => {
+    this.$$skeletonItems.forEach((item) => {
       item.classList.toggle('hide');
     });
   }
