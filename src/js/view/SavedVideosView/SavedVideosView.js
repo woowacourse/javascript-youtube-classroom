@@ -1,4 +1,8 @@
-import { DELETE_CONFIRM_MESSAGE, TAB_NAMES } from '../../constants/constants';
+import {
+  DELETE_CONFIRM_MESSAGE,
+  SAVED_VIDEO_PAGINATION_COUNT,
+  TAB_NAMES,
+} from '../../constants/constants';
 import {
   toggleWatchStatus,
   removeFromStorage,
@@ -52,7 +56,7 @@ class SavedVideosView {
   }
 
   renderVideoList = () => {
-    const videos = this.#unrenderedVideoIdArray.splice(0, 10);
+    const videos = this.#unrenderedVideoIdArray.splice(0, SAVED_VIDEO_PAGINATION_COUNT);
 
     if (this.#renderedVideoIdArray.length === 0 && videos.length === 0) {
       this.#renderNoSavedVideoTemplate();

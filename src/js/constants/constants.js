@@ -1,6 +1,8 @@
 export const SEARCH_URL_BASE = 'https://pensive-fermat-630884.netlify.app/youtube/v3/search?';
 export const MAX_SEARCH_RESULT = 10;
 
+export const SAVED_VIDEO_PAGINATION_COUNT = 10;
+
 export const VIDEO_LIST_URL_BASE = 'https://pensive-fermat-630884.netlify.app/youtube/v3/videos?';
 
 export const MAX_SAVE_AMOUNT = 100;
