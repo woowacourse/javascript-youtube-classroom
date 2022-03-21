@@ -1,0 +1,53 @@
+{
+  "kind": "youtube#videoListResponse",
+  "etag": "__nGR9KA7PleVeb__t5Z46ivdCQ",
+  "items": [
+      {
+          "kind": "youtube#video",
+          "etag": "ytiikATZonwtScwZQJstjIPhIlo",
+          "id": "RfgwpRcKmv0",
+          "snippet": {
+              "publishedAt": "2012-08-06T14:45:50Z",
+              "channelId": "UCAAiIkfLtTkMLNh31-yzxXw",
+              "title": "포지션 - 하루",
+              "description": " ",
+              "thumbnails": {
+                  "default": {
+                      "url": "https://i.ytimg.com/vi/RfgwpRcKmv0/default.jpg",
+                      "width": 120,
+                      "height": 90
+                  },
+                  "medium": {
+                      "url": "https://i.ytimg.com/vi/RfgwpRcKmv0/mqdefault.jpg",
+                      "width": 320,
+                      "height": 180
+                  },
+                  "high": {
+                      "url": "https://i.ytimg.com/vi/RfgwpRcKmv0/hqdefault.jpg",
+                      "width": 480,
+                      "height": 360
+                  },
+                  "standard": {
+                      "url": "https://i.ytimg.com/vi/RfgwpRcKmv0/sddefault.jpg",
+                      "width": 640,
+                      "height": 480
+                  }
+              },
+              "channelTitle": "Lee Lionhearts",
+              "tags": [
+                  "동영상"
+              ],
+              "categoryId": "22",
+              "liveBroadcastContent": "none",
+              "localized": {
+                  "title": "포지션 - 하루",
+                  "description": " "
+              }
+          }
+      }
+  ],
+  "pageInfo": {
+      "totalResults": 1,
+      "resultsPerPage": 1
+  }
+}
