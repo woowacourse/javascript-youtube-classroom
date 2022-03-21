@@ -104,8 +104,8 @@ dist
 .tern-port
 
 # cypress
-.cypress/videos
-.cypress/downloads
+.cypress/videos/
+.cypress/downloads/
 .cypress/.DS_Store
 
 .DS_Store
