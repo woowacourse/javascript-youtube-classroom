@@ -1,4 +1,5 @@
-import { MESSAGE } from '../../src/js/constants';
+import { MESSAGE, STORAGE_KEY } from '../../src/js/constants';
+import { video } from '../../src/js/domain/video';
 
 describe('동영상 검색, 저장, 삭제 UI를 테스트한다.', () => {
   before(() => {
@@ -35,6 +36,7 @@ describe('동영상 검색, 저장, 삭제 UI를 테스트한다.', () => {
     cy.get('.video-item__save-button').first().click();
     cy.get('#snack-bar').then(element => {
       expect(element).to.have.text(MESSAGE.SAVE_SUCCESS);
+      expect(video.getVideoList().length).equal(1);
       expect(element).to.have.class('show');
     });
   });
@@ -51,6 +53,7 @@ describe('동영상 검색, 저장, 삭제 UI를 테스트한다.', () => {
     cy.get('.empty-result').find('.empty-result__description');
     cy.get('#snack-bar').then(element => {
       expect(element).to.have.text(MESSAGE.REMOVE_SUCCESS);
+      expect(video.getVideoList()[0]).equal(undefined);
       expect(element).to.have.class('show');
     });
   });

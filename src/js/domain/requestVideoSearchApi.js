@@ -1,7 +1,7 @@
 import 'regenerator-runtime';
 import { MESSAGE } from '../constants';
 
-const BASE_URL = 'https://mincho-youtube.netlify.app/dummy/youtube/v3/search';
+const BASE_URL = 'https://mincho-youtube.netlify.app/youtube/v3/search';
 const parameters = {
   part: 'snippet',
   maxResults: 10,
