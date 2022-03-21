@@ -12,7 +12,7 @@ import Snackbar from '@Display/Element/Snackbar';
 
 export default class SearchResult {
   $container = $(SELECTOR.ID.SEARCH_RESULT_CONTAINER);
-  #drawList = [];
+  #renderMethodList = [];
 
   constructor() {
     this.setDefaultElements();
@@ -22,13 +22,13 @@ export default class SearchResult {
   }
 
   render(state) {
-    this.#drawList.forEach(drawEvent => {
-      drawEvent(state);
+    this.#renderMethodList.forEach(renderMethod => {
+      renderMethod(state);
     });
   }
 
-  addDrawList(drawEvent) {
-    this.#drawList.push(drawEvent);
+  addRenderMethod(renderMethod) {
+    this.#renderMethodList.push(renderMethod);
   }
 
   setSubscribeStores() {
@@ -36,8 +36,8 @@ export default class SearchResult {
   }
 
   setRenderList() {
-    this.addDrawList(this.drawVideoList.bind(this));
-    this.addDrawList(this.drawLoadingStatus.bind(this));
+    this.addRenderMethod(this.drawVideoList.bind(this));
+    this.addRenderMethod(this.drawLoadingStatus.bind(this));
   }
 
   setDefaultElements() {

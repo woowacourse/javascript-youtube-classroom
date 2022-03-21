@@ -9,7 +9,7 @@ import Snackbar from '@Display/Element/Snackbar';
 
 export default class SaveList {
   $container = $(SELECTOR.ID.SAVE_LIST_CONTENT);
-  #drawList = [];
+  #renderMethodList = [];
 
   constructor() {
     this.setBindEvents();
@@ -19,13 +19,13 @@ export default class SaveList {
   }
 
   render(state) {
-    this.#drawList.forEach(drawEvent => {
-      drawEvent(state);
+    this.#renderMethodList.forEach(renderMethod => {
+      renderMethod(state);
     });
   }
 
-  addDrawList(drawEvent) {
-    this.#drawList.push(drawEvent);
+  addRenderMethod(renderMethod) {
+    this.#renderMethodList.push(renderMethod);
   }
 
   setSubscribeStores() {
@@ -33,7 +33,7 @@ export default class SaveList {
   }
 
   setRenderList() {
-    this.addDrawList(this.drawVideoList.bind(this));
+    this.addRenderMethod(this.drawVideoList.bind(this));
   }
 
   setBindEvents() {
