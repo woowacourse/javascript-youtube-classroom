@@ -15,8 +15,13 @@ class Video {
 
   #isWatched = false;
 
-  constructor(videoInfo) {
-    this.#init(videoInfo);
+  constructor({ videoId, videoTitle, channelTitle, publishTime, thumbnail, isWatched }) {
+    this.#videoId = videoId;
+    this.#videoTitle = videoTitle;
+    this.#channelTitle = channelTitle;
+    this.#publishTime = publishTime;
+    this.#thumbnail = thumbnail;
+    this.#isWatched = isWatched ?? false;
   }
 
   getVideoInfo() {
@@ -32,15 +37,6 @@ class Video {
 
   toggleWatchState() {
     this.#isWatched = !this.#isWatched;
-  }
-
-  #init({ videoId, videoTitle, channelTitle, publishTime, thumbnail, isWatched }) {
-    this.#videoId = videoId;
-    this.#videoTitle = videoTitle;
-    this.#channelTitle = channelTitle;
-    this.#publishTime = publishTime;
-    this.#thumbnail = thumbnail;
-    this.#isWatched = isWatched ?? false;
   }
 
   static create(videoInfo) {
