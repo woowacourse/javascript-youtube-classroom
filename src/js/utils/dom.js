@@ -4,8 +4,19 @@ export const bindEventListener = (element, type, callback) => {
   element.addEventListener(type, callback);
 };
 
-export const findTargetDataset = (target, parentSelector) => {
-  return target.closest(parentSelector).dataset;
+export const getTargetVideoData = (target, parentSelector) => {
+  const parentElement = target.closest(parentSelector);
+  const videoDataObject = {
+    videoId: parentElement.dataset.videoId,
+    channel: parentElement.querySelector(".video-item__channel-name").innerText,
+    thumbnail: parentElement.querySelector(".video-item__thumbnail").src,
+    title: parentElement.querySelector(".video-item__title").innerText,
+    publishTime: parentElement.querySelector(".video-item__published-date")
+      .innerText,
+    isWatched: false,
+  };
+
+  return videoDataObject;
 };
 
 export const scrollToTop = (element = document.querySelector("body")) => {

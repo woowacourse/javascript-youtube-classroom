@@ -9,8 +9,7 @@
   left: 0;
 }
 
-.video-item__save-button.hide,
-.modal-container.hide {
+.hide {
   display: none;
 }
 
@@ -36,7 +35,6 @@
 
 .search-modal__title {
   font-weight: bold;
-  font-size: 34px;
   line-height: 36px;
   text-align: center;
   margin-bottom: 40px;
@@ -69,14 +67,6 @@
   color: #ffffff;
 }
 
-.search-result.search-result--no-result {
-  flex-grow: 1;
-
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
 .no-result__image {
   width: 190px;
   height: 140px;
@@ -91,7 +81,7 @@
 }
 
 .video-list {
-  width: 1040px;
+  width: 102%;
   height: 493px;
   display: flex;
   flex-direction: row;

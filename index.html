@@ -9,12 +9,34 @@
     <main id="app" class="classroom-container">
       <h1 class="classroom-container__title">👩🏻‍💻 나만의 유튜브 강의실 👨🏻‍💻</h1>
       <nav class="nav">
+        <button
+          id="watch-later-video-button"
+          class="button nav__button saved-video__button selected"
+        >
+          👁️ 볼 영상
+        </button>
+        <button
+          id="watched-video-button"
+          class="button nav__button saved-video__button"
+        >
+          ✅ 본 영상
+        </button>
         <button id="search-modal-button" class="button nav__button">
           🔍 검색
         </button>
       </nav>
+      <section class="saved-video__section">
+        <h3 hidden>저장된 영상</h3>
+        <ul class="saved-video-list"></ul>
+        <div class="no-result hide">
+          <img src="" alt="no result image" class="no-result__image" />
+          <p class="no-result__description">
+            저장된 영상이 없습니다<br />나만의 영상을 검색하여 저장해보세요
+          </p>
+        </div>
+      </section>
     </main>
-    <!-- 1 검색 버튼을 누르면 아래와 같은 검색 모달을 보여줍니다.-->
+
     <div class="modal-container hide">
       <div class="dimmer"></div>
       <div
@@ -45,6 +67,17 @@
         <section class="search-result">
           <h3 hidden>검색 결과</h3>
           <ul class="video-list"></ul>
+          <div class="no-result hide">
+            <img
+              src=""
+              id="search-modal-no-result__image"
+              alt="no result image"
+              class="no-result__image"
+            />
+            <p class="no-result__description">
+              검색 결과가 없습니다<br />다른 키워드로 검색해보세요
+            </p>
+          </div>
         </section>
       </div>
     </div>

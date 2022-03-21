@@ -13,14 +13,20 @@
     "sourceType": "module"
   },
   "rules": {
+    "no-new": 0,
     "no-var": "error",
     "max-depth": ["error", 2],
+    "no-alert": 0,
+    "default-case": 0,
     "no-console": "warn",
     "no-param-reassign": "error",
     "no-undefined": 0,
     "no-constant-condition": 0,
     "no-unused-private-class-members": 0,
+    "class-methods-use-this": 0,
     "lines-between-class-members": 0,
-    "no-useless-escape": 0
+    "no-useless-escape": 0,
+    "import/no-unresolved": 0,
+    "import/extensions": 0
   }
 }

@@ -1,12 +1,26 @@
-import { ITEMS_PER_REQUEST } from "../constants/constants";
+import { ITEMS_PER_REQUEST, DEVELOP_MODE } from "../constants/constants";
+import mockObject from "../mockObject";
+
+let isProgressing = false;
 
 export default async function getSearchResult(
   searchKeyword,
   nextPageToken = ""
 ) {
-  const usageRedirect = "https://unruffled-turing-aacdf7.netlify.app";
-  const kkojaeRedirect = "https://clever-aryabhata-ff1fc1.netlify.app";
-  const REDIRECT_SERVER_HOST = usageRedirect;
+  if (isProgressing) {
+    return null;
+  }
+
+  if (DEVELOP_MODE) {
+    return {
+      items: mockObject(),
+      nextPageToken: "ABCDEF",
+    };
+  }
+
+  isProgressing = true;
+
+  const REDIRECT_SERVER_HOST = "https://unruffled-turing-aacdf7.netlify.app";
 
   const url = new URL("youtube/v3/search", REDIRECT_SERVER_HOST);
   const parameters = new URLSearchParams({
@@ -29,8 +43,18 @@ export default async function getSearchResult(
       throw new Error(data.error.message);
     }
 
+    isProgressing = false;
     return data;
   } catch (error) {
-    console.error(error);
+    switch (error.message) {
+      case "Failed to fetch":
+        alert("인터넷 연결이 원활하지 않습니다. 잠시 후 다시 시도해주세요.");
+        break;
+      case "":
+        break;
+    }
+
+    isProgressing = false;
+    return null;
   }
 }
