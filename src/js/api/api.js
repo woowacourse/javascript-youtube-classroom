@@ -30,12 +30,8 @@ export const getSearchAPI = async (
   url.search = parameters.toString();
 
   const response = await fetch(url);
-
-  console.log('response', response);
   const data = await response.json();
 
-  console.log('data', data);
-  console.log('data.stringify()', JSON.stringify(data));
   if (response.ok) {
     return [null, data];
   }
