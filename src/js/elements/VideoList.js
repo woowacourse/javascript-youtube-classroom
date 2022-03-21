@@ -43,6 +43,8 @@ class VideoList extends HTMLUListElement {
   }
 
   insertLoading(type) {
+    if ($$('.skeleton', this).length) return;
+
     if (type === 'search') {
       this.resetResult();
     }
