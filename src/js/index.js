@@ -1,5 +1,5 @@
 import './elements/MyClassroom';
-import './elements/SearchModal';
+import './elements/SearchVideo/SearchModal';
 
 import '../css/index.css';
 

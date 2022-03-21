@@ -1,7 +1,7 @@
-import SearchVideoStore from '../stores/SearchVideoStore';
-import CustomElement from '../abstract/CustomElement';
-import { $ } from '../utils';
-import NotFoundImage from '../../assets/images/not_found.png';
+import SearchVideoStore from '../../stores/SearchVideoStore';
+import CustomElement from '../../abstract/CustomElement';
+import { $ } from '../../utils';
+import NotFoundImage from '../../../assets/images/not_found.png';
 
 import './SearchVideoList';
 

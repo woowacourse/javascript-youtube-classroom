@@ -1,7 +1,7 @@
 import CustomElement from '../abstract/CustomElement';
 import { addEvent, $ } from '../utils';
 
-import './MyVideos';
+import './MyVideo/MyVideos';
 
 class MyClassroom extends CustomElement {
   template() {

@@ -1,7 +1,7 @@
-import SearchVideoStore from '../stores/SearchVideoStore';
-import MyVideoStore from '../stores/MyVideoStore';
-import { addEvent, emit, $, $$ } from '../utils';
-import { SKELETONS } from '../templates';
+import SearchVideoStore from '../../stores/SearchVideoStore';
+import MyVideoStore from '../../stores/MyVideoStore';
+import { addEvent, emit, $, $$ } from '../../utils';
+import { SKELETONS } from '../../templates';
 
 import './SearchVideoItem';
 

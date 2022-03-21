@@ -1,4 +1,4 @@
-import CustomElement from '../abstract/CustomElement';
+import CustomElement from '../../abstract/CustomElement';
 
 import './MyVideoList';
 

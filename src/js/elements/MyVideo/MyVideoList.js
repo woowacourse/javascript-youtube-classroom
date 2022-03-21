@@ -1,6 +1,6 @@
-import MyVideoStore from '../stores/MyVideoStore';
-import { $, $$ } from '../utils';
-import { EMPTY_MY_VIDEOS } from '../templates';
+import MyVideoStore from '../../stores/MyVideoStore';
+import { $, $$ } from '../../utils';
+import { EMPTY_MY_VIDEOS } from '../../templates';
 
 import './MyVideoItem';
 

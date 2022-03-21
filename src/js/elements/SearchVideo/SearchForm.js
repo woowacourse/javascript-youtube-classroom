@@ -1,5 +1,5 @@
-import CustomElement from '../abstract/CustomElement';
-import { addEvent, emit, $ } from '../utils';
+import CustomElement from '../../abstract/CustomElement';
+import { addEvent, emit, $ } from '../../utils';
 
 class SearchForm extends CustomElement {
   template() {

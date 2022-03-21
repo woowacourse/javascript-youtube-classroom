@@ -1,8 +1,8 @@
-import MyVideoStore from '../stores/MyVideoStore';
-import CustomElement from '../abstract/CustomElement';
-import Watch from '../domains/Watch';
-import Delete from '../domains/Delete';
-import { addEvent, emit, formatDate } from '../utils';
+import MyVideoStore from '../../stores/MyVideoStore';
+import CustomElement from '../../abstract/CustomElement';
+import Watch from '../../domains/Watch';
+import Delete from '../../domains/Delete';
+import { addEvent, emit, formatDate } from '../../utils';
 
 class MyVideoItem extends CustomElement {
   render() {

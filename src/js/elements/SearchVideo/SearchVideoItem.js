@@ -1,11 +1,11 @@
-import SearchVideoStore from '../stores/SearchVideoStore';
-import MyVideoStore from '../stores/MyVideoStore';
+import SearchVideoStore from '../../stores/SearchVideoStore';
+import MyVideoStore from '../../stores/MyVideoStore';
 
-import CustomElement from '../abstract/CustomElement';
-import Save from '../domains/Save';
+import CustomElement from '../../abstract/CustomElement';
+import Save from '../../domains/Save';
 
-import { addEvent, emit, formatDate } from '../utils';
-import { VIDEO } from '../constants';
+import { addEvent, emit, formatDate } from '../../utils';
+import { VIDEO } from '../../constants';
 
 class SearchVideoItem extends CustomElement {
   render() {

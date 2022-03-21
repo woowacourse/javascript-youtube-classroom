@@ -1,5 +1,5 @@
-import CustomElement from '../abstract/CustomElement';
-import { addEvent, $ } from '../utils';
+import CustomElement from '../../abstract/CustomElement';
+import { addEvent, $ } from '../../utils';
 
 import './SearchForm';
 import './SearchResult';
