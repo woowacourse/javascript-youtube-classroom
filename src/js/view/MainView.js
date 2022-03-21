@@ -42,7 +42,7 @@ export default class MainView {
   }
 
   renderStoredVideoList() {
-    const template = videoStorage.getVideoDataList().map(videoData => {
+    const template = videoStorage.getVideoList().map(videoData => {
       return `
         <li class="video-item ${videoData.type}">
           <img
@@ -96,7 +96,7 @@ export default class MainView {
 
   switchRenderingType(e) {
     e.target.parentElement.remove();
-    const storedList = videoStorage.getVideoDataList();
+    const storedList = videoStorage.getVideoList();
     this.renderSwitchedVideoData(storedList[storedList.length - 1]);
     this.decideRenderEmptyImage();
   }

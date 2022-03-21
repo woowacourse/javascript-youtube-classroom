@@ -5,53 +5,53 @@ const videoStorage = {
     VIDEO_LIST: 'videoList',
   },
 
-  storeVideoData: function (videoData) {
-    if (!this.hasVideoData(videoData.videoId)) {
-      const videoList = this.getVideoDataList();
+  storeVideo: function (videoData) {
+    if (!this.hasVideo(videoData.videoId)) {
+      const videoList = this.getVideoList();
       videoList.push(videoData);
       localStorage.setItem(this.KEYS.VIDEO_LIST, JSON.stringify(videoList));
     }
   },
 
-  getVideoDataList: function () {
+  getVideoList: function () {
     const videoList = JSON.parse(localStorage.getItem(this.KEYS.VIDEO_LIST));
     return videoList || [];
   },
 
-  hasVideoData: function (videoId) {
-    const videoList = this.getVideoDataList();
+  hasVideo: function (videoId) {
+    const videoList = this.getVideoList();
     return videoList.some(videoData => videoData.videoId === videoId);
   },
 
   checkOverMaxLength: function () {
-    if (this.getVideoDataList().length >= STORE.MAX_LENGTH) {
+    if (this.getVideoList().length >= STORE.MAX_LENGTH) {
       throw new Error(ERROR_MESSAGE.OVER_MAX_STORE_LENGTH);
     }
   },
 
-  deleteVideoData(videoId) {
-    if (this.hasVideoData(videoId)) {
-      const deletedList = this.getVideoDataList();
-      deletedList.splice(this.getDataIndexInList(videoId), 1);
+  deleteVideo(videoId) {
+    if (this.hasVideo(videoId)) {
+      const deletedList = this.getVideoList();
+      deletedList.splice(this.findVideoIndex(videoId), 1);
       localStorage.setItem(this.KEYS.VIDEO_LIST, JSON.stringify(deletedList));
     }
   },
 
-  getDataIndexInList(videoId) {
-    return this.getVideoDataList().findIndex(videoData => videoData.videoId === videoId);
+  findVideoIndex(videoId) {
+    return this.getVideoList().findIndex(videoData => videoData.videoId === videoId);
   },
 
-  switchType(videoId) {
-    const selectedVideoIndex = this.getDataIndexInList(videoId);
-    const selectedVideo = this.getVideoDataList()[selectedVideoIndex];
+  swtichVideoType(videoId) {
+    const selectedVideoIndex = this.findVideoIndex(videoId);
+    const selectedVideo = this.getVideoList()[selectedVideoIndex];
     selectedVideo.type =
       selectedVideo.type === VIDEO_TYPE.WATCH_LATER ? VIDEO_TYPE.WATCHED : VIDEO_TYPE.WATCH_LATER;
 
-    this.deleteVideoData(videoId);
+    this.deleteVideo(videoId);
 
     localStorage.setItem(
       this.KEYS.VIDEO_LIST,
-      JSON.stringify([...this.getVideoDataList(), selectedVideo])
+      JSON.stringify([...this.getVideoList(), selectedVideo])
     );
   },
 };

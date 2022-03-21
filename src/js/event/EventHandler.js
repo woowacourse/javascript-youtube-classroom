@@ -35,7 +35,7 @@ export default class EventHandler {
   clickSwitchButton(e) {
     if ([...e.target.classList].includes('switch-show-type')) {
       const { videoId } = e.target.dataset;
-      videoStorage.switchType(videoId);
+      videoStorage.swtichVideoType(videoId);
       this.mainView.switchRenderingType(e);
     }
   }
@@ -44,7 +44,7 @@ export default class EventHandler {
     if ([...e.target.classList].includes('delete-button')) {
       if (window.confirm(USER_MESSAGE.WANT_DELETE)) {
         const { videoId } = e.target.dataset;
-        videoStorage.deleteVideoData(videoId);
+        videoStorage.deleteVideo(videoId);
         this.mainView.deleteSelectedVideo(e);
       }
     }
@@ -59,7 +59,7 @@ export default class EventHandler {
   }
 
   clickStoreButton(videoData) {
-    videoStorage.storeVideoData(videoData);
+    videoStorage.storeVideo(videoData);
     this.mainView.renderAddedVideoData(videoData);
     this.mainView.decideRenderEmptyImage();
   }
