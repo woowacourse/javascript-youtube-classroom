@@ -78,6 +78,7 @@
 
 .search-result {
   width: 100%;
+  overflow: scroll;
 }
 
 .search-result.search-result--no-result {
@@ -103,7 +104,7 @@
 }
 
 .video-list {
-  height: 493px;
+  height: 100%;
   display: grid;
   grid-template-columns: repeat(4, minmax(290px, 393px));
   grid-gap: 16px;
