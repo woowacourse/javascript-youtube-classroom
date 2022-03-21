@@ -72,8 +72,8 @@ export default class App {
         <div class="video-item__management">
           <button type="button" class="btn btn-square ${
             isWatched ? 'active' : ''
-          }" for="status-change" data-testid="video-status-change-button">✅</button>
-          <button type="button" class="btn btn-square" for="delete" data-testid="delete-video-button">🗑️</button>
+          }" data-purpose="status-change" data-testid="video-status-change-button">✅</button>
+          <button type="button" class="btn btn-square" data-purpose="delete" data-testid="delete-video-button">🗑️</button>
         </div>
       </li>`;
   }
@@ -111,23 +111,23 @@ export default class App {
     if (target.localName !== 'button') return;
     if (target.classList.contains('active')) {
       target.classList.remove('active');
-      const filter = target.getAttribute('for');
+      const filter = target.getAttribute('data-filter');
       this.$videoListContainer.classList.remove(`visible-${filter}`);
       return;
     }
     [...target.parentElement.children].forEach(e => {
-      const filter = e.getAttribute('for');
+      const filter = e.getAttribute('data-filter');
       this.$videoListContainer.classList.remove(`visible-${filter}`);
       e.classList.remove('active');
     });
     target.classList.add('active');
-    const filter = target.getAttribute('for');
+    const filter = target.getAttribute('data-filter');
     this.$videoListContainer.classList.add(`visible-${filter}`);
   };
 
   handleClickVideoList = ({ target }) => {
     if (target.localName !== 'button') return;
-    const purpose = target.getAttribute('for');
+    const purpose = target.getAttribute('data-purpose');
     const $videoItem = target.closest('.video-item');
     const videoId = $videoItem.getAttribute('data-video-id');
     if (purpose === 'status-change') {
