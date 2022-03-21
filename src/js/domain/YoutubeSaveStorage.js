@@ -2,6 +2,7 @@ import { getTimeStamp } from '@Utils/ManageData';
 
 class YoutubeSaveStorage {
   #STORAGE_NAME = 'YOUTUBE_CLASSROOM_SAVE_VIDEO_LIST';
+  #cacheData;
 
   #getVideoIdToIndex(target) {
     const videoIdList = this.get().map(({ id: videoId }) => videoId);
@@ -9,8 +10,16 @@ class YoutubeSaveStorage {
   }
 
   get() {
-    const item = localStorage.getItem(this.#STORAGE_NAME) ?? '[]';
-    return JSON.parse(item);
+    if (!this.#cacheData) {
+      this.#cacheData = JSON.parse(localStorage.getItem(this.#STORAGE_NAME)) ?? '[]';
+    }
+
+    return this.#cacheData;
+  }
+
+  set(updateItems) {
+    this.#cacheData = updateItems;
+    localStorage.setItem(this.#STORAGE_NAME, JSON.stringify(updateItems));
   }
 
   add(videoId, videoData) {
@@ -21,7 +30,7 @@ class YoutubeSaveStorage {
       updateTime: getTimeStamp(),
     };
 
-    localStorage.setItem(this.#STORAGE_NAME, JSON.stringify([...this.get(), insertItem]));
+    this.set([...this.get(), insertItem]);
   }
 
   has(videoId) {
@@ -33,7 +42,7 @@ class YoutubeSaveStorage {
     const updateList = this.get();
     updateList.splice(videoIndex, 1);
 
-    localStorage.setItem(this.#STORAGE_NAME, JSON.stringify(updateList));
+    this.set(updateList);
   }
 
   update(videoId, videoData) {
@@ -42,7 +51,8 @@ class YoutubeSaveStorage {
 
     updateList[videoIndex].content = videoData;
     updateList[videoIndex].updateTime = getTimeStamp();
-    localStorage.setItem(this.#STORAGE_NAME, JSON.stringify(updateList));
+
+    this.set(updateList);
   }
 
   watched(videoId, isWatched) {
@@ -50,7 +60,7 @@ class YoutubeSaveStorage {
     const updateList = this.get();
 
     updateList[videoIndex].watched = isWatched;
-    localStorage.setItem(this.#STORAGE_NAME, JSON.stringify(updateList));
+    this.set(updateList);
   }
 }
 
