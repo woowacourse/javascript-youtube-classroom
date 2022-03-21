@@ -19,7 +19,7 @@ describe('유튜브 검색 및 비디오 저장 정상 작동 테스트', () => 
     it('검색창에 검색어를 입력하고 검색 버튼을 클릭하면 결과물을 확인할 수 있다', () => {
       const keyword = 'javascript';
 
-      cy.intercept('GET', 'https://www.googleapis.com/youtube/v3/search?*').as('getInitialVideos');
+      cy.intercept('GET', 'https://www.googleapis.com/youtube/v3/search?*').as('searchVideos');
 
       // 검색
       cy.get('#search-input-keyword').type(keyword);
@@ -27,7 +27,7 @@ describe('유튜브 검색 및 비디오 저장 정상 작동 테스트', () => 
       // 스켈레톤 UI
       cy.get('.video-list').children('.skeleton').should('be.visible');
 
-      cy.wait('@getInitialVideos');
+      cy.wait('@searchVideos');
 
       // 결과값 보여주기
       cy.get('.video-list')
@@ -38,13 +38,16 @@ describe('유튜브 검색 및 비디오 저장 정상 작동 테스트', () => 
     });
 
     it('결과물의 맨 밑까지 스크롤을 내리면 추가적인 결과물을 확인할 수 있다', () => {
-      cy.intercept('GET', 'https://www.googleapis.com/youtube/v3/search?*').as('getNextVideos');
+      cy.intercept('GET', 'https://www.googleapis.com/youtube/v3/search?*').as(
+        'searchAdditionalVideos'
+      );
 
       // 스크롤 내리기
       cy.get('.video-list').scrollTo('bottom');
 
       // 무한스크롤에 의한 결과값 보여주기
-      cy.wait('@getNextVideos');
+      cy.wait('@searchAdditionalVideos');
+
       cy.get('.video-list')
         .children('.video-item')
         .should('have.length', VIDEO_COUNT * 2);
@@ -66,6 +69,11 @@ describe('유튜브 검색 및 비디오 저장 정상 작동 테스트', () => 
 });
 
 describe('저장한 영상 확인 /볼 영상 확인/ 본 영상 확인 / 영상 삭제 기능 테스트', () => {
+  before(() => {
+    cy.clearLocalStorage();
+    cy.searchSaveVideo();
+  });
+
   beforeEach(() => {
     cy.restoreLocalStorage();
   });
@@ -80,16 +88,14 @@ describe('저장한 영상 확인 /볼 영상 확인/ 본 영상 확인 / 영상
 
       cy.get('.my-video-list').children().should('have.length', 1);
 
-      cy.get('.my-video-list').children('.video-item').first().as('myVideoItem');
-      cy.get('@myVideoItem').find('.video-item__view-check-button').should('be.visible');
-      cy.get('@myVideoItem').find('.video-item__delete-button').should('be.visible');
+      cy.get('.my-video-list').children('.video-item').first().as('videoToView');
+      cy.get('@videoToView').find('.video-item__view-check-button').should('be.visible');
+      cy.get('@videoToView').find('.video-item__delete-button').should('be.visible');
     });
 
     it('체크 버튼을 클릭하여 본 영상을 체크할 수 있다', () => {
-      cy.get('.my-video-list')
-        .children('.video-item')
-        .find('.video-item__view-check-button')
-        .click();
+      cy.get('.my-video-list').children('.video-item').first().as('viewedVideo');
+      cy.get('@viewedVideo').find('.video-item__view-check-button').click();
 
       cy.get('.my-video-list > .video-item').should('not.exist');
     });
@@ -98,19 +104,15 @@ describe('저장한 영상 확인 /볼 영상 확인/ 본 영상 확인 / 영상
       cy.get('#viewed-videos-filter-button').click();
       cy.get('.my-video-list').children().should('have.length', 1);
 
-      cy.get('.my-video-list')
-        .children('.video-item')
-        .find('.video-item__view-uncheck-button')
-        .should('be.visible');
+      cy.get('.my-video-list').children('.video-item').first().as('videoToView');
+      cy.get('@videoToView').find('.video-item__view-uncheck-button').should('be.visible');
     });
   });
 
   context('본 영상을 체크 해제하여, 볼 영상으로 바꾸고 볼 영상을 확인할 수 있다', () => {
     it('체크 해제 버튼을 클릭하여 본 영상을 볼 영상으로 바꿀 수 있다', () => {
-      cy.get('.my-video-list')
-        .children('.video-item')
-        .find('.video-item__view-uncheck-button')
-        .click();
+      cy.get('.my-video-list').children('.video-item').first().as('viewedVideo');
+      cy.get('@viewedVideo').find('.video-item__view-uncheck-button').click();
 
       cy.get('.my-video-list > .video-item').should('not.exist');
     });
