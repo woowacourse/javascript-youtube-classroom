@@ -175,7 +175,7 @@
   cursor: pointer;
 }
 
-.x-shape:after {
+.x-shape::after {
   content: '\00d7';
   font-size: 20pt;
   font-weight: bolder;
