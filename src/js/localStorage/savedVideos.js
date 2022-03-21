@@ -1,4 +1,5 @@
 import { ALERT_MESSAGE, MAX_SAVE_COUNT } from '../constant';
+import { rootStore } from '../store/rootStore';
 import RootLocalStorage from './rootLocalStorage';
 
 export default class SavedVideos extends RootLocalStorage {
@@ -43,6 +44,15 @@ export default class SavedVideos extends RootLocalStorage {
   deleteVideoInLocalStorage(videoId) {
     const payload = this.cached.filter(video => video.videoId !== videoId);
     this.save(payload);
+
+    const videos = rootStore.state.videos;
+    const newVideos = videos.map(video => {
+      if (video.videoId === videoId) {
+        video.saved = false;
+      }
+      return video;
+    });
+    rootStore.setState({ videos: newVideos });
   }
 }
 
