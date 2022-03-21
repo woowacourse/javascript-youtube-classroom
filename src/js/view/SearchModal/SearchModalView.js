@@ -28,28 +28,30 @@ class SearchModalView {
 
   #errorImage;
 
-  constructor() {
+  #renderOnModalClose;
+
+  constructor(renderOnModalClose) {
     this.#body = selectDom('body');
     this.#modalContainer = selectDom('.modal-container');
-    this.#searchForm = selectDom('#search-form', this.#modalContainer);
-    this.#searchInputKeyword = selectDom('#search-input-keyword', this.#searchForm);
+    this.#searchInputKeyword = selectDom('#search-input-keyword');
     this.#searchResult = selectDom('.search-result', this.#modalContainer);
     this.#videoList = selectDom('.video-list', this.#searchResult);
-
     this.#search = new SearchVideos();
+    this.#errorImage = errorImageTemplate();
+    this.#renderOnModalClose = renderOnModalClose;
 
     this.#observer = this.#loadMoreObserver();
-    this.#searchForm.addEventListener('submit', this.#handleSearch);
-
-    this.#errorImage = errorImageTemplate();
+    selectDom('#search-form', this.#modalContainer).addEventListener('submit', this.#handleSearch);
+    selectDom('#search-modal-button').addEventListener('click', this.#toggleModal);
+    selectDom('.dimmer').addEventListener('click', this.#toggleModal);
   }
 
-  toggleModal = (renderOnModalClose) => {
+  #toggleModal = () => {
     this.#body.classList.toggle('modal-open');
     const modalClassList = this.#modalContainer.classList;
     modalClassList.toggle('hide');
 
-    if (modalClassList.contains('hide') && renderOnModalClose) renderOnModalClose();
+    if (modalClassList.contains('hide')) this.#renderOnModalClose();
   };
 
   #handleSearch = async (event) => {

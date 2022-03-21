@@ -1,4 +1,4 @@
-import View from './view/View';
+import YoutubeClassRoomView from './view/YoutubeClassRoomView';
 
 // eslint-disable-next-line
-new View();
+new YoutubeClassRoomView();

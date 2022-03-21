@@ -29,6 +29,8 @@ class SavedVideosView {
 
   #observer;
 
+  #tabButtons;
+
   constructor() {
     this.#savedVideos = selectDom('.saved-videos');
     this.#videoList = selectDom('.video-list', this.#savedVideos);
@@ -37,21 +39,39 @@ class SavedVideosView {
     this.#renderedVideoIdArray = [];
     this.#endOfList = selectDom('.end-of-list');
     this.#observer = this.#loadMoreObserver();
-    this.renderVideoList();
+    this.#renderVideoList();
     this.#observer.observe(this.#endOfList);
+    this.#tabButtons = document.querySelectorAll('.tab-button');
+    this.#tabButtons.forEach((button) => button.addEventListener('click', this.handleTabSwitch));
   }
 
-  renderTab(tabName) {
+  handleTabSwitch = ({ target }) => {
+    const { dataset } = target;
+
+    this.#tabButtons.forEach((button) => {
+      button.classList.remove('current');
+      button.disabled = true;
+    });
+
+    this.#renderTab(dataset.tabName);
+    target.classList.add('current');
+
+    this.#tabButtons.forEach((button) => {
+      button.disabled = false;
+    });
+  };
+
+  #renderTab(tabName) {
     if (tabName === this.#currentTabName) return;
 
     [this.#currentTabName, this.#otherTabName] = [this.#otherTabName, this.#currentTabName];
     this.#removeAllVideos();
 
-    this.renderVideoList();
+    this.#renderVideoList();
     this.#observer.observe(this.#endOfList);
   }
 
-  renderVideoList = () => {
+  #renderVideoList = () => {
     const videos = this.#unrenderedVideoIdArray.splice(0, SAVED_VIDEO_PAGINATION_COUNT);
 
     if (this.#renderedVideoIdArray.length === 0 && videos.length === 0) {
@@ -66,9 +86,9 @@ class SavedVideosView {
     this.#renderNewVideos(newVideoIdArray);
   };
 
-  renderOnModalClose = () => {
+  renderVideoListUpdate = () => {
     this.#unrenderedVideoIdArray = this.#getCurrentTabIds();
-    this.renderVideoList();
+    this.#renderVideoList();
   };
 
   #loadMoreObserver() {
@@ -79,7 +99,7 @@ class SavedVideosView {
           return;
         }
         if (entries[0].isIntersecting) {
-          this.renderVideoList();
+          this.#renderVideoList();
         }
       },
       { threshold: 1 }
