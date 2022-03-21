@@ -11,9 +11,10 @@ describe('Storage 기능 테스트', () => {
 
   it('localStorage에 영상 정보를 저장한다.', () => {
     const newVideo = { id: 'testVideoID', watched: false };
-    storage.saveVideo(newVideo);
 
-    expect(JSON.parse(localStorage.getItem('videos')).find((video) => video.id === newVideo.id)).toBeTruthy();
+    expect(storage.findVideoById(newVideo.id)).toBeUndefined()
+    storage.saveVideo(newVideo);
+    expect(storage.findVideoById(newVideo.id)).toBeDefined();
   });
 
   it('localStorage에 저장된 영상인지 ID로 확인할 수 있다.', () => {
