@@ -1,40 +1,40 @@
 module.exports = {
   types: [
-    { value: ':sparkles: feat', name: '✨ feat:\tAdding a new feature' },
-    { value: ':bug: fix', name: '🐛 fix:\tFixing a bug' },
-    { value: ':memo: docs', name: '📝 docs:\tAdd or update documentation' },
+    { value: ':sparkles', name: '✨ feat:\tAdding a new feature' },
+    { value: ':bug', name: '🐛 fix:\tFixing a bug' },
+    { value: ':memo', name: '📝 docs:\tAdd or update documentation' },
     {
-      value: ':lipstick: style',
+      value: ':lipstick',
       name: '💄 style:\tAdd or update styles, ui or ux',
     },
     {
-      value: ':recycle: refactor',
+      value: ':recycle',
       name: '♻️ refactor:\tCode change that neither fixes a bug nor adds a feature',
     },
     {
-      value: ':pencil2: typo',
+      value: ':pencil2',
       name: '✏️ typo:\tFix typo',
     },
     {
-      value: ':zap: perf',
+      value: ':zap',
       name: '⚡️ perf:\tCode change that improves performance',
     },
     {
-      value: ':white_check_mark: test',
+      value: ':white_check_mark',
       name: '✅ test:\tAdding tests cases',
     },
     {
-      value: ':truck: chore',
+      value: ':truck',
       name: '🚚 chore:\tChanges to the build process or auxiliary tools\n\t\tand libraries such as documentation generation',
     },
-    { value: ':rewind: revert', name: '⏪️ revert:\tRevert to a commit' },
-    { value: ':construction: wip', name: '🚧 wip:\tWork in progress' },
+    { value: ':rewind', name: '⏪️ revert:\tRevert to a commit' },
+    { value: ':construction', name: '🚧 wip:\tWork in progress' },
     {
-      value: ':construction_worker: build',
+      value: ':construction_worker',
       name: '👷 build:\tAdd or update regards to build process',
     },
     {
-      value: ':green_heart: ci',
+      value: ':green_heart',
       name: '💚 ci:\tAdd or update regards to build process',
     },
   ],
