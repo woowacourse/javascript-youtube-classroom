@@ -1,7 +1,7 @@
 import { getSearchAPI } from '../../api/api.js';
 import Component from '../../core/Component.js';
 import { rootStore } from '../../store/rootStore.js';
-import { webStore } from '../../store/WebStore.js';
+import { savedVideosStorage } from '../../store/WebStore.js';
 
 export default class SearchBar extends Component {
   template() {
@@ -62,7 +62,7 @@ export default class SearchBar extends Component {
           query,
           pageToken: nextPageToken,
         },
-        videos: makeCardData(items, webStore.load()),
+        videos: makeCardData(items, savedVideosStorage.load()),
         status: { notFound: false, statusCode: 200 },
         isLoading: false,
       });
@@ -70,7 +70,6 @@ export default class SearchBar extends Component {
   }
 }
 
-// TODO: test
 export function makeCardData(rawVideos, savedVideos) {
   return addSavedToVideos(extractCardData(rawVideos), savedVideos);
 }

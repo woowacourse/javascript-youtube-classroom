@@ -1,7 +1,7 @@
 import { LOAD_VIDEOS_COUNT } from '../../constant.js';
 import Component from '../../core/Component.js';
-import { webStore } from '../../store/WebStore.js';
 import VideoCard from '../SearchModal/SearchResult/VideoCard.js';
+import { savedVideosStorage } from '../../localStorage/savedVideos';
 
 export default class SavedVideoCardList extends Component {
   setup() {
@@ -18,7 +18,7 @@ export default class SavedVideoCardList extends Component {
   }
 
   template() {
-    const savedVideos = webStore.load();
+    const savedVideos = savedVideosStorage.load();
     this.videos = savedVideos
       .filter(video => video.watched === this.props.watchedMode)
       .reverse();

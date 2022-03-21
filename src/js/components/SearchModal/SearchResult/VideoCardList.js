@@ -5,7 +5,7 @@ import { getSearchAPI } from '../../../api/api.js';
 import { makeCardData } from '../SearchBar.js';
 import SkeletonCard from './SkeletonCard.js';
 import { LOAD_VIDEOS_COUNT } from '../../../constant.js';
-import { webStore } from '../../../store/WebStore.js';
+import { savedVideosStorage } from '../../../localStorage/savedVideos';
 
 export default class VideoCardList extends Component {
   setup() {
@@ -99,6 +99,6 @@ export default class VideoCardList extends Component {
       },
     });
 
-    return makeCardData(items, webStore.load());
+    return makeCardData(items, savedVideosStorage.load());
   }
 }

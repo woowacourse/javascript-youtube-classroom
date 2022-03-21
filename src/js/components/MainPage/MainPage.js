@@ -1,13 +1,13 @@
 import { EXCEPTION_MESSAGE } from '../../constant.js';
 import Component from '../../core/Component.js';
 import { rootStore } from '../../store/rootStore.js';
-import { webStore } from '../../store/WebStore.js';
 import NotFound from '../SearchModal/NotFound.js';
 import SavedVideoCardList from './SavedVideoCardList.js';
+import { savedVideosStorage } from '../../localStorage/savedVideos';
 
 export default class MainPage extends Component {
   setup() {
-    const savedVideos = webStore.load();
+    const savedVideos = savedVideosStorage.load();
     const watchedVideos = savedVideos.filter(video => video.watched === true);
 
     this.state = { watchedMode: false };
