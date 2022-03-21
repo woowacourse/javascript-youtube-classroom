@@ -1,5 +1,5 @@
+import { SNACK_BAR_MESSAGE } from "../constants";
 import { getTargetData, confirmRemoveVideo, $ } from "../view/dom";
-import generateTemplate from "../view/templates";
 
 export default class YoutubeMainApp {
   #navSaveVideoButton = $(".nav__save-video-button");
@@ -98,6 +98,8 @@ export default class YoutubeMainApp {
       return;
     }
 
+    this.#view.renderSnackBar(SNACK_BAR_MESSAGE.VIDEO_WATCHED);
+
     this.#videoStorage.addChecked(getTargetData(targetParentElement));
     target.classList.add("video-item__watched-video-button--focused");
   };
@@ -113,6 +115,8 @@ export default class YoutubeMainApp {
     if (confirmRemoveVideo(targetParentElement)) {
       return;
     }
+
+    this.#view.renderSnackBar(SNACK_BAR_MESSAGE.VIDEO_DELETE);
 
     this.#videoStorage.removeVideo(getTargetData(targetParentElement));
     targetGrandParentElement.removeChild(targetParentElement);

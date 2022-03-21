@@ -9,6 +9,13 @@ export const ERROR_MESSAGE = {
     "이미 저장된 영상입니다. 중복된 영상은 저장할 수 없습니다.",
 };
 
+export const SNACK_BAR_MESSAGE = {
+  VIDEO_DELETE: "해당 영상이 삭제(🗑) 되었습니다.",
+  VIDEO_SAVE: "해당 영상이 볼 영상(👁)으로 저장 되었습니다.",
+  VIDEO_WATCHED: "해당 영상이 본 영상(✅)으로 체크 되었습니다.",
+};
+export const SNACK_BAR_DELAY_TIME = 3000;
+
 export const DELAY_TIME = 500;
 export const ITEMS_PER_REQUEST = 10;
 export const ALLOCATE_FOR_RENDER_PX = 40;

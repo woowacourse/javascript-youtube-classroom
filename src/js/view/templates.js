@@ -82,6 +82,13 @@ const generateTemplate = {
     </div>
   </li>`;
   },
+  snackBar(message) {
+    return `
+    <div class="snack-bar-container__snack-bar">
+      <p class="snack-bar-container__message">${message}</p>
+    </div>
+    `;
+  },
 };
 
 export default generateTemplate;

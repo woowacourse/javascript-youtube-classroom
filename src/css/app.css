@@ -3,6 +3,58 @@ body {
   font-size: 16px;
 }
 
+.snack-bar-container {
+  position: fixed;
+  bottom: 0;
+  left: 50%;
+  margin-bottom: 30px;
+  transform: translate(-50%);
+  z-index: 1;
+}
+
+.snack-bar-container__snack-bar {
+  min-width: 300px;
+  background-color: rgba(0, 188, 212);
+  padding: 15px;
+  margin-top: 3px;
+  border-radius: 4px;
+  opacity: 1;
+  animation: fadein 0.5s fadeout 0.5s 2.5s;
+  -webkit-animation: fadein 0.5s, fadeout 0.5s 2.5s;
+}
+
+.snack-bar-container__message {
+  font-weight: 600;
+  text-align: center;
+  color: #fff;
+}
+
+.snack-bar-container__snack-bar.hide {
+  display: none;
+}
+
+@keyframes fadein {
+  from {
+    bottom: 0;
+    opacity: 0;
+  }
+  to {
+    bottom: 30px;
+    opacity: 1;
+  }
+}
+
+@keyframes fadeout {
+  from {
+    bottom: 30px;
+    opacity: 1;
+  }
+  to {
+    bottom: 0;
+    opacity: 0;
+  }
+}
+
 #app {
   max-width: 1020px;
   margin: 0 auto;

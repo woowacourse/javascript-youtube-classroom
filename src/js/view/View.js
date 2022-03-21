@@ -1,4 +1,5 @@
 import notFoundImage from "../../assets/images/not_found.png";
+import { SNACK_BAR_DELAY_TIME } from "../constants";
 
 import { $, $$, scrollToTop } from "./dom";
 import generateTemplate from "./templates";
@@ -6,6 +7,7 @@ import generateTemplate from "./templates";
 export default class View {
   #saveVideoContainerVideoList = $(".save-video-container__video-list");
   #saveVideoContainerNoVideoList = $(".save-video-container__no-video-list");
+  #snackBarContainer = $(".snack-bar-container");
   #searchResult = $(".search-result");
   #noResult = $(".no-result");
   #videoStorage;
@@ -58,6 +60,18 @@ export default class View {
   renderSearchResult({ element, position, template }) {
     this.removeChildElements(element, $$(".skeleton"));
     element.insertAdjacentHTML(position, template);
+  }
+
+  renderSnackBar(message) {
+    const snackBarTemplate = generateTemplate.snackBar(message);
+
+    this.#snackBarContainer.insertAdjacentHTML("beforeend", snackBarTemplate);
+
+    setTimeout(() => {
+      const snackBar = $(".snack-bar-container__snack-bar");
+      snackBar.classList.add("hide");
+      this.#snackBarContainer.removeChild(snackBar);
+    }, SNACK_BAR_DELAY_TIME);
   }
 
   hideNotFoundImage(videoList) {

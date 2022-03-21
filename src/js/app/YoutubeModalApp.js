@@ -1,5 +1,5 @@
 import getSearchResult from "../api/getSearchResult";
-import { DELAY_TIME } from "../constants";
+import { DELAY_TIME, SNACK_BAR_MESSAGE } from "../constants";
 import generateTemplate from "../view/templates";
 import { throttle, validateInput } from "../utils";
 import {
@@ -39,6 +39,7 @@ export default class YoutubeModalApp {
       alert(message);
     }
 
+    this.#view.renderSnackBar(SNACK_BAR_MESSAGE.VIDEO_SAVE);
     target.classList.add("hide");
   };
 
