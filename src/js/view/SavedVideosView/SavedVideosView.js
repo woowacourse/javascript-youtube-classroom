@@ -5,7 +5,7 @@ import {
   getFilteredIdFromStorage,
   getAllFromStorage,
 } from '../../domain/storage';
-import { removeArrayIntersection, removeElementList, selectDom } from '../util/util';
+import { removeCommonElements, removeElementList, selectDom } from '../util/util';
 import {
   errorTemplate,
   noSavedVideosTemplate,
@@ -62,7 +62,7 @@ class SavedVideosView {
     const noSavedVideos = selectDom('.no-saved-videos', this.#savedVideos);
     noSavedVideos?.remove();
 
-    const newVideoIdArray = removeArrayIntersection(videos, this.#renderedVideoIdArray);
+    const newVideoIdArray = removeCommonElements(videos, this.#renderedVideoIdArray);
     this.#renderNewVideos(newVideoIdArray);
   };
 
@@ -112,15 +112,16 @@ class SavedVideosView {
     this.#renderedVideoIdArray = [];
   }
 
-  #removeDeletedVideos(videos) {
-    const videosIdArray = videos || this.#getCurrentTabIds();
+  #removeDeletedVideos() {
+    const videosIdArray = this.#getCurrentTabIds();
 
-    const deletedVideoIdArray = removeArrayIntersection(this.#renderedVideoIdArray, videosIdArray);
+    const deletedVideoIdArray = removeCommonElements(this.#renderedVideoIdArray, videosIdArray);
     const toDeleteArray = [...this.#videoList.childNodes].filter((child) =>
       deletedVideoIdArray.includes(child.dataset.videoId)
     );
+
     removeElementList(toDeleteArray);
-    this.#renderedVideoIdArray = removeArrayIntersection(
+    this.#renderedVideoIdArray = removeCommonElements(
       this.#renderedVideoIdArray,
       deletedVideoIdArray
     );
