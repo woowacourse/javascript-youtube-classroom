@@ -31,18 +31,18 @@ class View {
     this.searchInputKeyword.addEventListener('keyup', this.#handleValidInput);
   };
 
-  #closeModalHandler = (event) => {
+  #handleCloseModal = (event) => {
     if (!this.searchModal.contains(event.target)) {
       this.#closeModal();
       this.mainView.renderSavedVideo(false);
-      document.removeEventListener('click', this.#closeModalHandler);
+      document.removeEventListener('click', this.#handleCloseModal);
     }
   };
 
   #openModal = (event) => {
     event.stopPropagation();
     this.modalContainer.classList.remove('hide');
-    document.addEventListener('click', this.#closeModalHandler);
+    document.addEventListener('click', this.#handleCloseModal);
   };
 
   #closeModal = () => {
