@@ -22,12 +22,12 @@ class SavedVideo {
     this.#subscribers.push(element);
   }
 
-  dispatch(action, data) {
+  dispatch(action, data, target) {
     localStorage.setItem('videos', JSON.stringify(data));
     this.#videos = this.loadVideos();
 
     this.#subscribers.forEach((subscriber) => {
-      subscriber.notify(action, data);
+      subscriber.notify(action, data, target);
     });
   }
 
