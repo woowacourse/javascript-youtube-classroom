@@ -55,14 +55,13 @@ class SearchModalView {
   #handleSearch = async (event) => {
     event.preventDefault();
     const { value: keyword } = this.#searchInputKeyword;
+
     if (isBlankValue(keyword)) {
       alert(ERROR_MESSAGES.NO_SEARCH_KEYWORD);
       return;
     }
 
-    const searchKeyword = selectDom('.search-result-keyword', this.#searchResult);
-    searchKeyword.textContent = keyword;
-    selectDom('.search-result-title', this.#searchResult).classList.remove('hide');
+    this.#renderSearchKeyword(keyword);
 
     this.#clearPreviousRender();
     this.#sendSearchRequest(keyword);
@@ -98,6 +97,12 @@ class SearchModalView {
       alert(e.message);
     }
   };
+
+  #renderSearchKeyword(keyword) {
+    const searchKeyword = selectDom('.search-result-keyword', this.#searchResult);
+    searchKeyword.textContent = keyword;
+    selectDom('.search-result-title', this.#searchResult).classList.remove('hide');
+  }
 
   #renderSearchResult({ searchResultArray, hasNextPage }) {
     removeAllSkeletons(this.#videoList);
