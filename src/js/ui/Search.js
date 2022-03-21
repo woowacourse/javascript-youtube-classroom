@@ -59,7 +59,8 @@ export default class Search {
     $$('.recent-search__button').forEach(button => {
       button.onclick = e => {
         this.reset();
-        this.#renderSearchResult(e.target.textContent);
+        this.input.value = e.target.innerText;
+        this.#renderSearchResult(e.target.innerText);
       };
     });
   }
