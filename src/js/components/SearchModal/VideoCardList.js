@@ -75,9 +75,10 @@ class VideoCardList extends Component {
 
       try {
         await videoService.loadNextPage();
-        this.removeSkeletons();
       } catch (err) {
         alert(err);
+      } finally {
+        this.removeSkeletons();
       }
     });
   }
