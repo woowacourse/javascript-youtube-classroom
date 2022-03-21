@@ -4,6 +4,7 @@ import SearchModalVideoList from '../common/SearchModal/SearchModalVideoList';
 import throttle from '../utils/throttle';
 import ErrorContainer from '../common/SearchModal/ErrorContainer';
 import { timeFormatter } from '../utils';
+import MainVideoList from '../common/Main/MainVideoList';
 
 const isEmptyKeyword = (keyword) => keyword.trim().length === 0;
 
@@ -157,7 +158,7 @@ export default class SearchModal {
       const videosRawInfo = await fetchVideoList(URLquery);
       const videos = makeVideoCardProps(videosRawInfo);
 
-      this.SearchModalVideoList.setState({ videos });
+      this.SearchModalVideoList.setVideos({ videos });
 
       this.showSearchResult(videos);
 

@@ -1,21 +1,13 @@
 import { RULES } from '../../constants';
-import { snakeCaseToCamelCase } from '../../utils';
 import { getStorage, STORAGE_KEY, setStorage } from '../../utils/localStorage';
 import VideoCardTemplate from '../VideoCard/VideoCard';
-
-const extractInnerHTML = (object, element) => {
-  object[snakeCaseToCamelCase(element.className.replace('video-item__', ''))] =
-    element.src ?? element.innerHTML;
-
-  return object;
-};
 
 export default class SearchModalVideoList {
   #state;
 
-  constructor(element, props) {
+  constructor(element) {
     this.element = element;
-    this.#state = props;
+    this.#state = { allVideos: [] };
     this.element.addEventListener('click', this.storeVideoIdHandler);
   }
 
@@ -30,9 +22,7 @@ export default class SearchModalVideoList {
 
       const clickedVideo = e.target.closest('.video-item');
       const { videoId: clickedVideoId } = clickedVideo.dataset;
-      const videoInfo = Array.from(clickedVideo.children)
-        .filter((element) => element.tagName !== 'BUTTON')
-        .reduce((info, element) => extractInnerHTML(info, element), { clickedVideoId });
+      const videoInfo = this.#state.allVideos.find((video) => video.videoId === clickedVideoId);
 
       setStorage(STORAGE_KEY.WATCH_LATER_VIDEOS, storedVideoIDs.concat(videoInfo));
 
@@ -61,8 +51,9 @@ export default class SearchModalVideoList {
     this.element.insertAdjacentHTML('beforeend', this.template());
   }
 
-  setState(newState) {
+  setVideos(newState) {
     this.#state = { ...this.#state, ...newState };
+    this.#state.allVideos = this.#state.allVideos.concat(newState.videos);
     this.render();
   }
 }
