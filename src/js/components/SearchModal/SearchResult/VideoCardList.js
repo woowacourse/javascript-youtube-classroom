@@ -38,16 +38,14 @@ export default class VideoCardList extends Component {
 
   afterMounted() {
     const { videos, isLoading } = rootStore.state;
-    const videoCards = this.target.querySelectorAll('.video-card.real');
+    const videoCards = this.$$('.video-card.real');
     videoCards.forEach((videoCard, index) => {
       index < videos.length &&
         new VideoCard(videoCard, { video: videos[index] });
     });
 
     if (isLoading) {
-      const skeletonCards = this.target.querySelectorAll(
-        '.video-card.skeleton'
-      );
+      const skeletonCards = this.$$('.video-card.skeleton');
       skeletonCards.forEach(skeletonCard => {
         new SkeletonCard(skeletonCard);
       });

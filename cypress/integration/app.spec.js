@@ -1,7 +1,5 @@
 import { BASE_URL, OPTIONS } from '../../src/js/api/api';
-
-const $ = (selector, target = document) => target.querySelector(selector);
-const $$ = (selector, target = document) => target.querySelectorAll(selector);
+import { $$ } from '../../src/js/utils/DOM';
 
 describe('유튜브 App 태스트', () => {
   beforeEach(() => {

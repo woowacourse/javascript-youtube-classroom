@@ -35,7 +35,7 @@ export default class SavedVideoCardList extends Component {
   }
 
   afterMounted() {
-    const videoCards = this.target.querySelectorAll('.video-card.real');
+    const videoCards = this.$$('.video-card.real');
     videoCards.forEach((videoCard, index) => {
       index < this.videos.length &&
         new VideoCard(videoCard, { video: this.renderedVideos[index] });

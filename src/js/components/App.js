@@ -13,10 +13,10 @@ export default class App extends Component {
   afterMounted() {
     this.$searchModal = this.$('#search-modal');
 
-    new MainPage(document.querySelector('#main-page'), {
+    new MainPage(this.$('#main-page'), {
       toggleSearchModal: this.toggleSearchModal.bind(this),
     });
-    new SearchModal(document.querySelector('#search-modal'), {
+    new SearchModal(this.$('#search-modal'), {
       toggleSearchModal: this.toggleSearchModal.bind(this),
     });
   }
