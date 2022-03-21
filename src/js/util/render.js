@@ -23,6 +23,11 @@ export const videoItemTemplate = {
     '<div class="empty-img-container"><label for="empty-img" hidden>저장된 비디오가 없습니다! 비디오를 저장해주세요</label><img id="empty-img" name="empty-img" src="./assets/empty_img.png"/></div>',
 };
 
+export const removeSearchInput = () => {
+  $('.search-input__keyword').textContent = '';
+  $('.search-input__keyword').focus();
+};
+
 export const removeDeleteVideoItem = (selector, videoId) => {
   $$(selector).forEach(element => {
     if (element.dataset.videoId === videoId) {

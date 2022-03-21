@@ -40,7 +40,7 @@ export default class YoutubeMachine {
       const searchResult = await response.json();
       return searchResult;
     }
-    throw new Error('search error');
+    throw new Error(response.status);
   }
   updateSearchResult(response) {
     this.#searchResult = response;

@@ -3,6 +3,7 @@ import YoutubeMachine from '../domain/YoutubeMachine.js';
 import searchModalInterface from '../ui/serachModalInterface.js';
 import { $, toggleSnackBar } from '../util/general.js';
 import { SNACK_BAR } from '../constants/constants.js';
+import { removeSearchInput } from '../util/render.js';
 
 export class SearchEventHandler {
   youtubeMachine = new YoutubeMachine();
@@ -20,8 +21,9 @@ export class SearchEventHandler {
       this.youtubeMachine.updateSearchResult(response);
 
       searchModalInterface.renderSearchResult(this.youtubeMachine.searchResult);
-    } catch (error) {
-      alert(error.message);
+    } catch ({ message: status }) {
+      toggleSnackBar(status);
+      removeSearchInput();
     }
   };
 
