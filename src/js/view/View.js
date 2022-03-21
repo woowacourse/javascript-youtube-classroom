@@ -7,9 +7,10 @@ import {
 } from '../util/util';
 import { MAX_SEARCH_RESULT } from '../constants/constants';
 import storage from '../domain/storage';
+import search from '../domain/search';
 
 class View {
-  constructor(search, mainView) {
+  constructor(mainView) {
     this.search = search;
     this.mainView = mainView;
     this.searchModalButton = selectDom('#search-modal-button');

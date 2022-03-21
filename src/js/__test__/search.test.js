@@ -1,4 +1,4 @@
-import Search from '../domain/Search';
+import search from '../domain/search';
 import LocalStorageMock from './LocalStorageMock';
 import fetch from './fetchMock';
 
@@ -6,17 +6,14 @@ global.localStorage = new LocalStorageMock();
 global.fetch = fetch;
 
 describe('검색어 검색 테스트', () => {
-  function properFormDataTest(data) {
+  const properFormDataTest = (data) => {
     ['videoId', 'thumbnail', 'title', 'channelTitle', 'publishedAt', 'isSaved'].forEach((key) => {
       expect(data[key]).not.toEqual(undefined);
     });
-  }
-
-  const search = new Search();
+  };
 
   test('검색 요청했을 때 올바른 형태로 데이터를 반환할 수 있다.', async () => {
-    const search = new Search();
-    const { searchResultArray } = await search.handleSearchRequest('dummy-keyword');
+    const searchResultArray = await search.getSearchResultArray('dummy-keyword');
 
     searchResultArray.forEach((searchResult) => {
       properFormDataTest(searchResult);
@@ -26,7 +23,7 @@ describe('검색어 검색 테스트', () => {
   test('추가 데이터를 올바른 형태로 반환할 수 있다.', async () => {
     search.keyword = 'dummy-keyword';
 
-    const searchResultArray = await search.handleLoadMoreRequest();
+    const searchResultArray = await search.getLoadMoreResultArray();
 
     searchResultArray.forEach((searchResult) => {
       properFormDataTest(searchResult);
