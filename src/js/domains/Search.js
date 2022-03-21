@@ -30,9 +30,9 @@ class Search {
     if (videos instanceof Error) return;
 
     this.keyword = keyword;
-    this.nextPageToken = videos.nextPageToken ?? '';
+    this.nextPageToken = videos.nextPageToken;
 
-    SearchVideoStore.instance.dispatch(type, this.preprocessor(videos));
+    SearchVideoStore.instance.dispatch(type, this.removeDuplicateVideos(this.preprocessor(videos)));
   }
 
   async fetchVideo(keyword) {
@@ -58,6 +58,12 @@ class Search {
       pageToken: this.nextPageToken,
       q: keyword,
     }).toString();
+  }
+
+  removeDuplicateVideos(videos) {
+    const storeVideoIds = SearchVideoStore.instance.getVideos().map((video) => video.id);
+
+    return videos.filter((video) => !storeVideoIds.includes(video.id));
   }
 
   preprocessor(videos) {
