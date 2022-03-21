@@ -2,7 +2,11 @@ import StorageEngine from '../domain/storageEngine.js';
 
 import { $ } from '../util/domHelper.js';
 import { myVideoTemplate } from '../util/template.js';
-import { DELETE_VIDEO_CONFIRM_MESSAGE, NO_SAVED_VIDEOS_MESSAGE } from '../util/constants.js';
+import {
+  DELETE_VIDEO_CONFIRM_MESSAGE,
+  NO_SAVED_VIDEOS_MESSAGE,
+  VIDEOS_TYPE,
+} from '../util/constants.js';
 
 export default class MyVideosScreen {
   #nav;
@@ -23,7 +27,7 @@ export default class MyVideosScreen {
     this.#myVideoList.addEventListener('click', this.#handleDeleteVideo);
     this.#nav.addEventListener('click', this.#renderFilteredVideos);
 
-    const videosToView = this.#storageEngine.getFilteredVideos(false);
+    const videosToView = this.#storageEngine.getVideosToView();
     this.render(videosToView);
   }
 
@@ -33,7 +37,9 @@ export default class MyVideosScreen {
 
   render(videos) {
     if (videos.length > 0) {
-      const myVideosTemplate = videos.map((datum) => myVideoTemplate(datum)).join('');
+      const myVideosTemplate = videos
+        .map((datum) => myVideoTemplate(datum, this.#currentFilter))
+        .join('');
 
       this.#myVideoList.insertAdjacentHTML('beforeend', myVideosTemplate);
 
@@ -51,11 +57,11 @@ export default class MyVideosScreen {
       const video = e.target.closest('.video-item');
       const { videoId } = video.dataset;
 
-      const viewStatus = e.target.classList.contains('video-item__view-uncheck-button')
-        ? false
-        : true;
+      const currentVideoType = e.target.classList.contains('video-item__view-uncheck-button')
+        ? VIDEOS_TYPE.VIEWED_VIDEOS
+        : VIDEOS_TYPE.VIDEOS_TO_VIEW;
 
-      this.#storageEngine.changeVideoViewed(videoId, viewStatus);
+      this.#storageEngine.changeVideoViewed(videoId, currentVideoType);
 
       this.#myVideoList.removeChild(video);
 
@@ -72,11 +78,15 @@ export default class MyVideosScreen {
     ) {
       this.clear();
 
-      this.#currentFilter =
-        e.target.id === 'viewed-videos-filter-button' ? 'viewedVideos' : 'videosToView';
+      const filteredVideos =
+        e.target.id === 'viewed-videos-filter-button'
+          ? this.#storageEngine.getViewedVideos()
+          : this.#storageEngine.getVideosToView();
 
-      const viewStatus = e.target.id === 'viewed-videos-filter-button' ? true : false;
-      const filteredVideos = this.#storageEngine.getFilteredVideos(viewStatus);
+      this.#currentFilter =
+        e.target.id === 'viewed-videos-filter-button'
+          ? VIDEOS_TYPE.VIEWED_VIDEOS
+          : VIDEOS_TYPE.VIDEOS_TO_VIEW;
 
       this.render(filteredVideos);
     }
@@ -90,7 +100,7 @@ export default class MyVideosScreen {
       const video = e.target.closest('.video-item');
       const { videoId } = video.dataset;
 
-      this.#storageEngine.removeVideo(videoId);
+      this.#storageEngine.removeVideo(videoId, this.#currentFilter);
 
       this.#myVideoList.removeChild(video);
 

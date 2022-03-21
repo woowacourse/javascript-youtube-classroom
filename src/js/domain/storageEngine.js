@@ -1,8 +1,4 @@
-import {
-  ERROR_MESSAGE,
-  MAX_SAVED_VIDEOS_COUNT,
-  STORAGE_KEY_SAVED_VIDEOS,
-} from '../util/constants.js';
+import { ERROR_MESSAGE, MAX_SAVED_VIDEOS_COUNT, VIDEOS_TYPE } from '../util/constants.js';
 
 export default class StorageEngine {
   static _instance = null;
@@ -15,49 +11,64 @@ export default class StorageEngine {
     return StorageEngine._instance;
   }
 
-  getSavedVideos() {
-    return JSON.parse(localStorage.getItem(STORAGE_KEY_SAVED_VIDEOS)) ?? [];
+  getVideosToView() {
+    return JSON.parse(localStorage.getItem(VIDEOS_TYPE.VIDEOS_TO_VIEW)) ?? [];
   }
 
-  saveVideo(video) {
-    const savedVideos = this.getSavedVideos() ?? [];
+  getViewedVideos() {
+    return JSON.parse(localStorage.getItem(VIDEOS_TYPE.VIEWED_VIDEOS)) ?? [];
+  }
 
-    if (savedVideos.length >= MAX_SAVED_VIDEOS_COUNT)
+  saveVideo(video, videoType) {
+    const targetVideos = this.#getTargetVideos(videoType);
+
+    if (targetVideos.length >= MAX_SAVED_VIDEOS_COUNT)
       throw new Error(ERROR_MESSAGE.NO_MORE_VIDEO_SAVABLE);
 
-    const newVideo = {
-      ...video,
-      isViewed: false,
-    };
+    const storageKey = this.#getStorageKey(videoType);
 
-    localStorage.setItem(STORAGE_KEY_SAVED_VIDEOS, JSON.stringify([...savedVideos, newVideo]));
+    localStorage.setItem(storageKey, JSON.stringify([...targetVideos, video]));
   }
 
-  removeVideo(videoId) {
-    const savedVideos = this.getSavedVideos();
+  removeVideo(videoId, videoType) {
+    const targetVideos = this.#getTargetVideos(videoType);
 
-    const restSavedVideos = savedVideos.filter((video) => video.videoId !== videoId);
+    const restTargetVideos = targetVideos.filter((video) => video.videoId !== videoId);
 
-    localStorage.setItem(STORAGE_KEY_SAVED_VIDEOS, JSON.stringify(restSavedVideos));
+    const storageKey = this.#getStorageKey(videoType);
+
+    localStorage.setItem(storageKey, JSON.stringify(restTargetVideos));
   }
 
-  changeVideoViewed(videoId, viewStatus) {
-    const savedVideos = this.getSavedVideos();
+  changeVideoViewed(videoId, currentVideoType) {
+    const targetVideo = this.getSpecificVideo(videoId, currentVideoType);
 
-    const targetVideo = savedVideos.find((video) => video.videoId === videoId);
-    targetVideo.isViewed = viewStatus; // 여기서는 이미 복사한 object니까 이렇게 변경해도 다른 곳에 영향 안끼쳐서 괜찮아보임
+    this.removeVideo(videoId, currentVideoType);
 
-    localStorage.setItem(STORAGE_KEY_SAVED_VIDEOS, JSON.stringify(savedVideos));
+    const targetVideoType = this.#getTargetVideoType(currentVideoType);
+
+    this.saveVideo(targetVideo, targetVideoType);
   }
 
-  getSpecificVideo(videoId) {
-    const savedVideos = this.getSavedVideos() || [];
+  getSpecificVideo(videoId, videoType) {
+    const targetVideos = this.#getTargetVideos(videoType);
 
-    return savedVideos.find((video) => video.videoId === videoId);
+    return targetVideos.find((video) => video.videoId === videoId);
   }
 
-  getFilteredVideos(viewStatus) {
-    return this.getSavedVideos().filter(({ isViewed }) => isViewed === viewStatus);
+  #getTargetVideos(videoType) {
+    if (videoType === VIDEOS_TYPE.VIDEOS_TO_VIEW) return this.getVideosToView();
+    if (videoType === VIDEOS_TYPE.VIEWED_VIDEOS) return this.getViewedVideos();
+  }
+
+  #getStorageKey(videoType) {
+    if (videoType === VIDEOS_TYPE.VIDEOS_TO_VIEW) return VIDEOS_TYPE.VIDEOS_TO_VIEW;
+    if (videoType === VIDEOS_TYPE.VIEWED_VIDEOS) return VIDEOS_TYPE.VIEWED_VIDEOS;
+  }
+
+  #getTargetVideoType(currentVideoType) {
+    if (currentVideoType === VIDEOS_TYPE.VIDEOS_TO_VIEW) return VIDEOS_TYPE.VIEWED_VIDEOS;
+    if (currentVideoType === VIDEOS_TYPE.VIEWED_VIDEOS) return VIDEOS_TYPE.VIDEOS_TO_VIEW;
   }
 
   init() {

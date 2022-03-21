@@ -15,4 +15,15 @@ export const NO_SAVED_VIDEOS_MESSAGE = '저장된 영상이 없습니다';
 
 export const STORAGE_KEY_SAVED_VIDEOS = 'savedVideos';
 
+export const STORAGE_KEY = {
+  SAVED_VIDEOS: 'savedVideos',
+  // VIEWED_VIDEOS: 'viewedVideos',
+  // VIDEOS_TO_VIEW: 'videosToView',
+};
+
 export const VIDEO_COUNT = 10;
+
+export const VIDEOS_TYPE = {
+  VIDEOS_TO_VIEW: 'videosToView',
+  VIEWED_VIDEOS: 'viewedVideos',
+};
