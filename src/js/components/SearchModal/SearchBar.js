@@ -85,7 +85,7 @@ export function makeCardData(rawVideos, savedVideos) {
 function addSavedToVideos(videos, savedVideos) {
   // TODO: 이중 for문 해결
   return videos.map(video => {
-    const saved = !!savedVideos.find(
+    const saved = savedVideos.some(
       savedVideo => savedVideo.videoId === video.videoId
     );
     return { ...video, saved };
