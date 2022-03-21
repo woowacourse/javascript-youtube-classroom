@@ -17,7 +17,11 @@ export default class MessageBot {
     this.#longMessage.classList.toggle('hide');
   };
 
-  static dispatchMessage(type, message) {
+  dispatchMessage(type, message) {
+    if (this.#longMessage.classList.contains('hide')) {
+      this.handleMessageModal();
+    }
+
     const $messageList = $('.message-list');
     $messageList.insertAdjacentHTML('beforeend', getMessageTemplate(type, message));
 

@@ -11,6 +11,9 @@ import { $, $$ } from '../util/domHelper';
 export default class SearchVideoModal {
   #searchEngine = new SearchEngine();
   #storageEngine = new StorageEngine();
+
+  #messageBot = new MessageBot();
+
   #searchButton = $('#search-button');
   #searchInputKeyword = $('#search-input-keyword');
   #searchResult = $('.search-result');
@@ -71,7 +74,7 @@ export default class SearchVideoModal {
       if (eventType === '@scroll') return;
 
       this.#showNoResultView();
-      MessageBot.dispatchMessage(MESSAGE_TYPE.NOT_FOUND, MESSAGE.NOT_FOUND);
+      this.#messageBot.dispatchMessage(MESSAGE_TYPE.NOT_FOUND, MESSAGE.NOT_FOUND);
       return;
     }
 
@@ -139,7 +142,7 @@ export default class SearchVideoModal {
   handleError(status) {
     if (isServerError(status)) {
       this.#renderServerErrorResult();
-      MessageBot.dispatchMessage(MESSAGE_TYPE.ERROR, MESSAGE.ERROR);
+      this.#messageBot.dispatchMessage(MESSAGE_TYPE.ERROR, MESSAGE.ERROR);
     }
   }
 
@@ -160,16 +163,16 @@ export default class SearchVideoModal {
         this.#storageEngine.saveVideo(data);
       } catch (error) {
         if (error.name === MESSAGE_TYPE.ALREADY_STORED) {
-          MessageBot.dispatchMessage(MESSAGE_TYPE.ALREADY_STORED, error.message);
+          this.#messageBot.dispatchMessage(MESSAGE_TYPE.ALREADY_STORED, error.message);
           return;
         }
-        MessageBot.dispatchMessage(MESSAGE_TYPE.FULL_STORAGE, error.message);
+        this.#messageBot.dispatchMessage(MESSAGE_TYPE.FULL_STORAGE, error.message);
         return;
       }
 
       $saveButton.classList.add('saved');
       $saveButton.textContent = '저장 됨';
-      MessageBot.dispatchMessage(MESSAGE_TYPE.STORE, MESSAGE.STORE);
+      this.#messageBot.dispatchMessage(MESSAGE_TYPE.STORE, MESSAGE.STORE);
     }
   };
 

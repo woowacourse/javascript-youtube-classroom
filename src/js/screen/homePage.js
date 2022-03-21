@@ -9,6 +9,8 @@ import { $ } from '../util/domHelper';
 export default class HomePage {
   #storageEngine = new StorageEngine();
 
+  #messageBot = new MessageBot();
+
   #modalContainer = $('.modal-container');
   #watchLaterContainer = $('.watch-later-container');
   #watchedContainer = $('.watched-container');
@@ -104,7 +106,7 @@ export default class HomePage {
       const { videoId } = e.target.closest('.video-item').dataset;
       this.#storageEngine.removeVideo(videoId);
       this.renderVideoList();
-      MessageBot.dispatchMessage(MESSAGE_TYPE.REMOVE, MESSAGE.REMOVE);
+      this.#messageBot.dispatchMessage(MESSAGE_TYPE.REMOVE, MESSAGE.REMOVE);
     }
   };
 }
