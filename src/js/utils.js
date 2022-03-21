@@ -49,3 +49,15 @@ export const formatDate = (dateString) => {
 
   return `${year}년 ${month}월 ${day}일`;
 };
+
+export const confirm = (text, callback) => {
+  if (window.confirm(text)) {
+    callback();
+  }
+};
+
+export const deduplicate = (array) => {
+  return array.filter(
+    (element, index, array) => array.findIndex((target) => target.id === element.id) === index
+  );
+};

@@ -1,5 +1,7 @@
+import SavedVideo from '../stores/SavedVideo';
+import SearchedVideo from '../stores/SearchedVideo';
 import { on } from '../utils';
-import { ERROR_MESSAGE, VIDEO } from '../constants';
+import { ERROR_MESSAGE } from '../constants';
 
 class Save {
   static _instance = null;
@@ -11,10 +13,8 @@ class Save {
     return Save._instance;
   }
 
-  #videos;
-
-  constructor() {
-    this.#videos = this.loadVideos();
+  subscribe(videoItem) {
+    this.subscribeEvents(videoItem);
   }
 
   subscribeEvents(videoItem) {
@@ -23,27 +23,17 @@ class Save {
 
   saveVideo(videoId) {
     try {
-      if (this.#videos.length >= VIDEO.MAX_SAVABLE_COUNT) {
+      if (!SavedVideo.instance.isStorable()) {
         throw new Error(ERROR_MESSAGE.EXCEED_MAX_SAVABLE_COUNT);
       }
 
-      localStorage.setItem('videos', JSON.stringify([...this.#videos, { videoId }]));
-      this.#setVideos();
+      const videoInfo = SearchedVideo.instance.findVideo(videoId);
+      const videos = SavedVideo.instance.getVideos();
+
+      SavedVideo.instance.dispatch('save', [...videos, { ...videoInfo, isWatched: false }]);
     } catch (error) {
       alert(error.message);
     }
-  }
-
-  getVideos() {
-    return this.#videos;
-  }
-
-  #setVideos() {
-    this.#videos = this.loadVideos();
-  }
-
-  loadVideos() {
-    return JSON.parse(localStorage.getItem('videos')) ?? [];
   }
 }
 

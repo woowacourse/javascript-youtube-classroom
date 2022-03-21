@@ -1,7 +1,7 @@
-import VideoStore from '../VideoStore';
-import Save from '../domains/Save';
-import { addEvent, emit, $, $$ } from '../utils';
 import TEMPLATE from '../templates';
+import SearchedVideo from '../stores/SearchedVideo';
+import SavedVideo from '../stores/SavedVideo';
+import { addEvent, emit, $, $$ } from '../utils';
 
 import './VideoItem';
 
@@ -9,7 +9,7 @@ class VideoList extends HTMLUListElement {
   constructor() {
     super();
     this.setEvent();
-    this.subscribe();
+    SearchedVideo.instance.subscribe(this);
   }
 
   setEvent() {
@@ -25,13 +25,15 @@ class VideoList extends HTMLUListElement {
     }
   }
 
-  subscribe() {
-    VideoStore.instance.subscribe(this);
+  render(videos) {
+    videos.forEach((video) => {
+      this.insertAdjacentHTML('beforeend', `<video-item data-id=${video.id}></video-item>`);
+    });
   }
 
   notify(_, data) {
-    this.removeSkeleton();
-    this.insertVideoItems(data);
+    this.removeLoading();
+    this.render(data);
     this.hideStoredVideoSaveButton(data);
   }
 
@@ -40,7 +42,9 @@ class VideoList extends HTMLUListElement {
     this.scrollTop = 0;
   }
 
-  insertSkeleton(type) {
+  insertLoading(type) {
+    if ($$('.skeleton', this).length) return;
+
     if (type === 'search') {
       this.resetResult();
     }
@@ -48,21 +52,13 @@ class VideoList extends HTMLUListElement {
     this.insertAdjacentHTML('beforeend', TEMPLATE.SKELETON.repeat(10));
   }
 
-  removeSkeleton() {
-    $$('.skeleton').forEach((e) => e.remove());
-  }
-
-  insertVideoItems(videos) {
-    videos.forEach((video) => {
-      this.insertAdjacentHTML('beforeend', `<video-item data-id=${video.id}></video-item>`);
-    });
+  removeLoading() {
+    $$('.skeleton', this).forEach((e) => e.remove());
   }
 
   hideStoredVideoSaveButton(videos) {
-    const storedVideoIds = Save.instance.getVideos().map((video) => video.videoId);
-
     videos.forEach((video) => {
-      if (storedVideoIds.includes(video.id)) {
+      if (SavedVideo.instance.findVideo(video.id)) {
         $(`#${video.id}-save-button`).hidden = true;
       }
     });

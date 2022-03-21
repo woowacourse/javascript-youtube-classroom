@@ -3,7 +3,7 @@ name: Build and GH-Page Deploy
 on:
   push:
     branches:
-      - byhhh2
+      - byhhh2-step2
 
 jobs:
   build:

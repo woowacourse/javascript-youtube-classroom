@@ -1,0 +1,14 @@
+my-result {
+  display: flex;
+  margin: 39px 0 0 0;
+}
+
+my-result ul {
+  width: 1280px;
+  height: 550px;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 32px 20px;
+  overflow-y: scroll;
+}

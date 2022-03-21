@@ -1,16 +1,15 @@
-import VideoStore from '../VideoStore';
 import CustomElement from '../abstract/CustomElement';
-import Save from '../domains/Save';
-import { addEvent, emit } from '../utils';
 import TEMPLATE from '../templates';
-import { VIDEO } from '../constants';
+import SearchedVideo from '../stores/SearchedVideo';
+import SavedVideo from '../stores/SavedVideo';
+import Save from '../domains/Save';
+import { $, addEvent, emit } from '../utils';
 
 class VideoItem extends CustomElement {
   render() {
-    const video = VideoStore.instance.findVideo(this.dataset.id);
-
-    this.innerHTML = this.template(video);
-    Save.instance.subscribeEvents(this);
+    this.innerHTML = this.template(SearchedVideo.instance.findVideo(this.dataset.id));
+    Save.instance.subscribe(this);
+    SavedVideo.instance.subscribe(this);
   }
 
   template(video) {
@@ -29,12 +28,22 @@ class VideoItem extends CustomElement {
     emit('.video-item__save-button', '@save', { videoId }, this);
   }
 
-  hideSaveButton(e) {
-    const videos = Save.instance.getVideos();
+  notify(action, _, target) {
+    if (action !== 'remove') return;
 
-    if (videos.length >= VIDEO.MAX_SAVABLE_COUNT) return;
+    this.showSaveButton(target);
+  }
+
+  hideSaveButton(e) {
+    if (!SavedVideo.instance.isStorable()) return;
 
     e.target.hidden = true;
+  }
+
+  showSaveButton(videoId) {
+    if (this.dataset.id !== videoId) return;
+
+    $('.video-item__save-button', this).hidden = false;
   }
 }
 

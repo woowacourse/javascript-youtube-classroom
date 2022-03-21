@@ -1,30 +1,25 @@
-import VideoStore from '../VideoStore';
 import CustomElement from '../abstract/CustomElement';
-import { $ } from '../utils';
 import TEMPLATE from '../templates';
+import SearchedVideo from '../stores/SearchedVideo';
+import { $ } from '../utils';
 
 import './VideoList';
 
 class SearchResult extends CustomElement {
   connectedCallback() {
     super.connectedCallback();
-    this.subscribe();
+    SearchedVideo.instance.subscribe(this);
   }
 
   template() {
     return TEMPLATE.SEARCH_RESULT;
   }
 
-  subscribe() {
-    VideoStore.instance.subscribe(this);
-  }
-
   notify(type, data) {
     if (type !== 'search') return;
 
-    if (data.length === 0) {
+    if (!data.length) {
       this.showNoResult();
-
       return;
     }
 
@@ -32,12 +27,12 @@ class SearchResult extends CustomElement {
   }
 
   showNoResult() {
-    $('.search-result--no-result').classList.remove('hidden');
+    $('.search-result--no-result', this).classList.remove('hidden');
     $('ul', this).classList.add('hidden');
   }
 
   showResult() {
-    $('.search-result--no-result').classList.add('hidden');
+    $('.search-result--no-result', this).classList.add('hidden');
     $('ul', this).classList.remove('hidden');
   }
 }

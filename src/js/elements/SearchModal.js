@@ -1,6 +1,6 @@
 import CustomElement from '../abstract/CustomElement';
-import { addEvent, $ } from '../utils';
 import TEMPLATE from '../templates';
+import { addEvent, $ } from '../utils';
 
 import './SearchForm';
 import './SearchResult';
@@ -11,11 +11,11 @@ class SearchModal extends CustomElement {
   }
 
   setEvent() {
-    addEvent(this, 'click', '.dimmer', this.hideSearchModal);
+    addEvent(this, 'click', '.dimmer', () => this.hideSearchModal());
   }
 
   hideSearchModal() {
-    $('.modal-container').classList.add('hide');
+    $('.modal-container', this).classList.add('hide');
   }
 }
 

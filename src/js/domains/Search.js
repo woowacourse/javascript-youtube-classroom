@@ -1,4 +1,4 @@
-import VideoStore from '../VideoStore';
+import SearchedVideo from '../stores/SearchedVideo';
 import { on, $, fetchData } from '../utils';
 import { ERROR_MESSAGE, SEARCH_API } from '../constants';
 
@@ -17,7 +17,7 @@ class Search {
   }
 
   loading(type) {
-    $('ul', $('search-result')).insertSkeleton(type);
+    $('ul', $('search-result')).insertLoading(type);
   }
 
   debounceSearch(type, keyword = this.keyword) {
@@ -40,7 +40,7 @@ class Search {
       this.keyword = keyword;
       this.nextPageToken = videos.nextPageToken ?? '';
 
-      VideoStore.instance.dispatch(type, this.preprocessor(videos));
+      SearchedVideo.instance.dispatch(type, this.preprocessor(videos));
     } catch (e) {
       alert(ERROR_MESSAGE.FAIL_TO_REQUEST_API);
       $('ul', $('search-result')).resetResult();

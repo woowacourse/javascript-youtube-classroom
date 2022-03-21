@@ -1,6 +1,8 @@
 import CustomElement from '../abstract/CustomElement';
-import { addEvent, $ } from '../utils';
 import TEMPLATE from '../templates';
+import { addEvent, $ } from '../utils';
+
+import './MyResult';
 
 class MyClassroom extends CustomElement {
   template() {
@@ -9,6 +11,7 @@ class MyClassroom extends CustomElement {
 
   setEvent() {
     addEvent(this, 'click', '#search-modal-button', this.showSearchModal);
+    addEvent(this, 'click', '.menu', (e) => $('my-result', this).switchMenu(e));
   }
 
   showSearchModal() {
