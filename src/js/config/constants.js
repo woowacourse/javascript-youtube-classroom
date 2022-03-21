@@ -17,6 +17,9 @@ export const SAVED_VIDEO = {
   SAVE_LIMIT: 100,
 };
 
+export const COMMON_MESSAGES = {
+  REMOVE_SAVED_VIDEO: '정말 삭제하시겠습니까?',
+};
 export const ERROR_MESSAGES = {
   REQUEST_FAIL: 'API 요청에 실패했습니다.',
   SAVED_VIDEOS_OUT_OF_LIMIT: `영상 저장에 실패했습니다. 영상은 ${SAVED_VIDEO.SAVE_LIMIT}개까지 저장할 수 있습니다.`,

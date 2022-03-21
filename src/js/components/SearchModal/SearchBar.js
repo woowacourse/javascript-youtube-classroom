@@ -1,10 +1,10 @@
 import Component from '../../core/Component.js';
-import api from '../../api/api.js';
-import { debounce } from '../../utils/commons.js';
+import videoService from '../../services/VideoService.js';
+import { throttle } from '../../utils/commons.js';
 import { SUBMIT_WAIT } from '../../config/constants.js';
 import { queryStringValidator, validate } from '../../utils/validator.js';
 
-export default class SearchBar extends Component {
+class SearchBar extends Component {
   template() {
     return `
       <form id="search-form" >
@@ -15,6 +15,7 @@ export default class SearchBar extends Component {
           placeholder="검색"
           class="search-input__keyword"
           name="searchInput"
+          autofocus
         />
         <button
           type="submit"
@@ -31,7 +32,7 @@ export default class SearchBar extends Component {
     this.addEvent(
       'submit',
       '#search-form',
-      debounce(this.onSubmitSearchInput.bind(this), SUBMIT_WAIT)
+      throttle(this.onSubmitSearchInput.bind(this), SUBMIT_WAIT)
     );
   }
 
@@ -43,9 +44,13 @@ export default class SearchBar extends Component {
         log: process.env.NODE_ENV === 'development',
       });
 
-      await api.searchVideos(query);
+      await videoService.searchVideos(query);
     } catch (err) {
       alert(err);
     }
   }
 }
+
+customElements.define('search-bar', SearchBar);
+
+export default SearchBar;

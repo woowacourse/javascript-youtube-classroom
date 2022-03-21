@@ -1,59 +1,68 @@
-import api from '../api/api.js';
+import videoService, { useStore } from '../services/VideoService.js';
 import requestMock from '../__mocks__/requestMock.js';
 import { ERROR_MESSAGES, SAVED_VIDEO } from '../config/constants.js';
 import { validate, queryStringValidator } from '../utils/validator.js';
+import { deepEqual } from '../utils/commons.js';
 
-describe('api', () => {
+describe('VideoService', () => {
   beforeEach(() => {
-    api.clear();
+    videoService.clear();
   });
 
   describe('searchVideos', () => {
     test('주어진 검색어에 대한 결과가 rootStore에 저장되어야 한다.', async () => {
-      await api.searchVideos('some string', null, requestMock.success);
+      await videoService.searchVideos('some string', null, requestMock.success);
 
-      expect(api.rootStore.state.searchOption.query).toEqual('some string');
-      expect(api.rootStore.state.searchOption.nextPageToken).exists;
-      expect(api.rootStore.state.searchResult).toHaveLength(10);
+      expect(useStore((state) => state.searchOption.query)).toEqual(
+        'some string'
+      );
+      expect(useStore((state) => state.searchOption.nextPageToken)).exists;
+      expect(useStore((state) => state.searchResult)).toHaveLength(10);
 
-      await api.searchVideos('!@#!@$#$!#@!#', null, requestMock.fail);
+      await videoService.searchVideos('!@#!@$#$!#@!#', null, requestMock.fail);
 
-      expect(api.rootStore.state.searchResult).toHaveLength(0);
+      expect(useStore((state) => state.searchResult)).toHaveLength(0);
     });
   });
 
   describe('loadNextPage', () => {
     test('10개의 영상이 rootStore에 추가되어야 한다.', async () => {
-      const prevSearchResult = api.rootStore.state.searchResult;
+      await videoService.searchVideos('some string', null, requestMock.success);
 
-      await api.loadNextPage(requestMock.success);
+      const prevSearchResult = useStore((state) => state.searchResult);
 
-      expect(api.rootStore.state.searchResult).toHaveLength(
+      await videoService.loadNextPage(requestMock.success);
+
+      expect(useStore((state) => state.searchResult)).toHaveLength(
         prevSearchResult.length + 10
       );
     });
   });
 
   describe('saveVideo', () => {
-    test('localStorage에 videoId를 저장해야한다.', () => {
+    test('localStorage에 video를 저장해야한다.', () => {
       const videoId = 'new_video_id';
+      const video = {
+        videoId: 'new_video_id',
+      };
 
-      api.saveVideo(videoId);
+      videoService.saveVideo(video);
 
-      expect(JSON.parse(localStorage.getItem(SAVED_VIDEO.KEY)).pop()).toEqual(
-        videoId
-      );
+      expect(
+        JSON.parse(localStorage.getItem(SAVED_VIDEO.KEY)).savedVideos.pop()
+          .videoId
+      ).toEqual(videoId);
     });
 
     test('100를 초과하여 저장하려고 하면 에러를 throw해야 한다.', () => {
       expect(() => {
         Array.from({ length: 100 }).forEach((_, index) => {
-          api.saveVideo(`video_${index}`);
+          videoService.saveVideo({ videoId: `video_${index}` });
         });
       }).not.toThrow();
 
       expect(() => {
-        api.saveVideo('video_100');
+        videoService.saveVideo({ videoId: 'video_100' });
       }).toThrow(ERROR_MESSAGES.SAVED_VIDEOS_OUT_OF_LIMIT);
     });
   });
@@ -89,6 +98,71 @@ describe('utils', () => {
       expect(validateTest(testCases, queryStringValidator)).toThrow(
         ERROR_MESSAGES.QUERY_STRING.TOO_LONG
       );
+    });
+  });
+
+  describe.only('deepEqual', () => {
+    const randomMapA = new Map();
+    const randomMapB = new Map();
+    const randomMapC = new Map();
+
+    randomMapA.set(1, 'one');
+    randomMapB.set(1, 'one');
+    randomMapC.set(1, 'two');
+
+    test('두 오브젝트가 같으면 true를 반환해야 한다.', () => {
+      const a = {
+        AA: {
+          AAA: {
+            A: 1,
+            B: ['wow', new Set([1, 2])],
+          },
+        },
+        BB: 0,
+        CC: NaN,
+        DD: randomMapA,
+      };
+
+      const b = {
+        AA: {
+          AAA: {
+            A: 1,
+            B: ['wow', new Set([1, 2])],
+          },
+        },
+        BB: 0,
+        CC: NaN,
+        DD: randomMapB,
+      };
+
+      expect(deepEqual(a, b)).toEqual(true);
+    });
+
+    test('두 오브젝트가 다르면 false를 반환해야 한다.', () => {
+      const a = {
+        AA: {
+          AAA: {
+            A: 1,
+            B: ['wow', new Set([1, 2])],
+          },
+        },
+        BB: 0,
+        CC: NaN,
+        DD: randomMapA,
+      };
+      const b = {
+        AA: {
+          AAA: {
+            A: 1,
+            B: ['wow', new Set([1, 2])],
+          },
+        },
+        BB: 0,
+        CC: NaN,
+        DD: randomMapC,
+      };
+
+      expect(deepEqual(a, b)).toEqual(false);
     });
   });
 });

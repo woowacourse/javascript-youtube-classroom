@@ -1,20 +1,24 @@
 import { ERROR_MESSAGES, QUERY_STRING } from '../config/constants';
-import { logger } from './commons.js';
+import { grouper } from './commons.js';
 
-export const validate = (target, validator, log = false) => {
+export const validate = (target, validator) => {
   const { subject, rules } = validator;
 
-  rules.every(({ description, test, errorMessage }) => {
-    const doTest = () => {
-      if (!test(target)) throw new Error(errorMessage);
+  grouper(
+    (logger) => {
+      rules.every(({ description, test, errorMessage }) => {
+        const result = test(target);
 
-      return true;
-    };
+        logger(subject, description, result ? '✓' : '✗');
 
-    return log
-      ? logger(doTest, subject, description, test(target) ? '✓' : '✗')
-      : doTest();
-  });
+        if (!result) throw new Error(errorMessage);
+
+        return true;
+      });
+    },
+    subject,
+    true
+  );
 };
 
 export const queryStringValidator = {

@@ -1,16 +1,20 @@
 import Component from '../../core/Component.js';
-import videoService, { useStore } from '../../services/VideoService.js';
+import videoService from '../../services/VideoService.js';
 import { convertTime } from '../../utils/customDate.js';
+import { COMMON_MESSAGES } from '../../config/constants.js';
 
 class VideoCard extends Component {
+  setup() {
+    this.state = { watched: this.getAttribute('watched') === 'true' };
+  }
+
   template() {
     const videoId = this.getAttribute('videoId');
     const thumbnailUrl = this.getAttribute('thumbnailUrl');
     const title = this.getAttribute('title');
     const channelTitle = this.getAttribute('channelTitle');
     const publishTime = this.getAttribute('publishTime');
-    const savedVideos = useStore((state) => state.savedVideos);
-    const isSaved = savedVideos.map((video) => video.videoId).includes(videoId);
+    const { watched } = this.state;
 
     return `
       <li class="video-item" data-video-id="${videoId}">
@@ -25,11 +29,10 @@ class VideoCard extends Component {
           publishTime
         )}</p>
         <div class="video-item__button-menu">
-          ${
-            isSaved
-              ? ''
-              : '<button class="video-item__save-button button">⬇ 저장</button>'
-          }
+          <button class="video-item__watched-button button ${
+            watched ? 'watched' : ''
+          }">✅</button>
+          <button class="video-item__remove-button button">🗑️</button>
         </div>
       </li>
     `;
@@ -37,27 +40,20 @@ class VideoCard extends Component {
 
   setEvent() {
     const videoId = this.getAttribute('videoId');
-    const thumbnailUrl = this.getAttribute('thumbnailUrl');
-    const title = this.getAttribute('title');
-    const channelTitle = this.getAttribute('channelTitle');
-    const publishTime = this.getAttribute('publishTime');
 
-    this.addEvent('click', '.video-item__save-button', () => {
-      try {
-        videoService.saveVideo({
-          videoId,
-          thumbnailUrl,
-          title,
-          channelTitle,
-          publishTime,
-        });
-      } catch (err) {
-        alert(err);
-      }
+    this.addEvent('click', '.video-item__watched-button', () => {
+      videoService.toggleVideoWatched(videoId);
+
+      this.setState({ watched: !this.state.watched });
+    });
+
+    this.addEvent('click', '.video-item__remove-button', () => {
+      if (window.confirm(COMMON_MESSAGES.REMOVE_SAVED_VIDEO))
+        videoService.removeSavedVideo(videoId);
     });
   }
 }
 
-customElements.define('video-card', VideoCard);
+customElements.define('saved-card', VideoCard);
 
 export default VideoCard;

@@ -1,48 +1,45 @@
 import Component from '../../core/Component.js';
-import SearchBar from './SearchBar.js';
-import SearchResult from './SearchResult.js';
-import NotFound from './NotFound.js';
-import api from '../../api/api.js';
+import './SearchBar.js';
+import './SearchResult.js';
+import './NotFound.js';
+import videoService, { useStore } from '../../services/VideoService.js';
 
-export default class SearchModal extends Component {
+class SearchModal extends Component {
   template() {
-    const { isSearchQuerySubmitted, isNoResult } = api.rootStore.state;
+    const { isSearchQuerySubmitted, isNoResult } = useStore((state) => ({
+      isSearchQuerySubmitted: state.isSearchQuerySubmitted,
+      isNoResult: state.isNoResult,
+    }));
 
     return `
-    <div id="modal-background" class="dimmer"></div>
-    <div
-      class="search-modal"
-      role="dialog"
-      aria-labelledby="search-modal-title"
-    >
-      <h2 id="search-modal-title" class="search-modal__title">
-        🔍 보고싶은 영상 찾기 🔍
-      </h2>
-      <section id="search-input" class="search-input"></section>
-      ${
-        (isSearchQuerySubmitted &&
-          (isNoResult
-            ? '<section id="not-found" class="search-result search-result--no-result"></section>'
-            : '<section id="search-result" class="search-result"></section>')) ||
-        ''
-      }
-    </div>
+      <div id="modal-background" class="dimmer"></div>
+      <div
+        class="search-modal"
+        role="dialog"
+        aria-labelledby="search-modal-title"
+      >
+        <h2 id="search-modal-title" class="search-modal__title">
+          🔍 보고싶은 영상 찾기 🔍
+        </h2>
+        <search-bar class="search-input"></search-bar>
+        ${
+          (isSearchQuerySubmitted &&
+            (isNoResult
+              ? '<not-found class="search-result search-result--no-result"></not-found>'
+              : '<search-result class="search-result"></search-result>')) ||
+          ''
+        }
+      </div>
     `;
   }
 
-  afterMounted() {
-    const { isSearchQuerySubmitted, isNoResult } = api.rootStore.state;
-
-    new SearchBar(this.$('#search-input'));
-    isSearchQuerySubmitted &&
-      (isNoResult
-        ? new NotFound(this.$('#not-found'))
-        : new SearchResult(this.$('#search-result')));
-  }
-
   setEvent() {
-    const { hideSearchModal } = this.props;
-
-    this.addEvent('click', '#modal-background', hideSearchModal);
+    this.addEvent('click', '#modal-background', () => {
+      videoService.toggleSearchModal();
+    });
   }
 }
+
+customElements.define('search-modal', SearchModal);
+
+export default SearchModal;

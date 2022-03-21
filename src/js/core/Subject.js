@@ -1,3 +1,5 @@
+import { deepEqual } from '../utils/commons';
+
 export default class Subject {
   static #private = Symbol('subject checker');
 
@@ -44,11 +46,7 @@ export default class Subject {
   }
 
   setState(newState) {
-    if (
-      this.state === newState ||
-      JSON.stringify(this.state) === JSON.stringify(newState)
-    )
-      return;
+    if (deepEqual(newState, this.state)) return;
 
     this.state = newState;
     this.#updated = true;

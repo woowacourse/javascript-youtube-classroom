@@ -1,59 +1,62 @@
 import Component from '../../core/Component.js';
-import VideoCard from './VideoCard.js';
-import SkeletonCard from './SkeletonCard.js';
-import api from '../../api/api.js';
+import './VideoCard.js';
+import './SkeletonCard.js';
+import videoService, { useStore } from '../../services/VideoService.js';
 import {
   INTERSECTION_OBSERVER,
   QUERY_OPTIONS,
 } from '../../config/constants.js';
 
-export default class VideoCardList extends Component {
+class VideoCardList extends Component {
   setup() {
     this.observer = new IntersectionObserver(
       this.onLastChildVisible.bind(this),
       {
-        root: this.target,
+        root: this,
         rootMargin: INTERSECTION_OBSERVER.ROOT_MARGIN.NO_MARGIN,
         threshold: INTERSECTION_OBSERVER.THRESHOLD.IMMEDIATELY,
       }
     );
-
     this.state = { isLoading: false, skeletonCount: 0 };
   }
 
   template() {
-    const { searchResult } = api.rootStore.state;
+    const searchResult = useStore((state) => state.searchResult);
     const { skeletonCount } = this.state;
 
     return `
       ${
         !searchResult.length
-          ? '<div class="skeleton-card"></div>'.repeat(10)
+          ? '<skeleton-card class="skeleton-card"></skeleton-card>'.repeat(10)
           : ''
       }
-      ${searchResult.map(() => '<div class="video-card"></div>').join('')}
-      ${'<div class="skeleton-card"></div>'.repeat(skeletonCount)}
+      ${searchResult
+        .map(
+          (video) =>
+            `<video-card
+              class="video-card"
+              videoId="${video.videoId}"
+              thumbnailUrl="${video.thumbnailUrl}"
+              title="${video.title}"
+              channelTitle="${video.channelTitle}"
+              publishTime="${video.publishTime}"
+            >
+            </video-card>`
+        )
+        .join('')}
+      ${'<skeleton-card class="skeleton-card"></skeleton-card>'.repeat(
+        skeletonCount
+      )}
     `;
   }
 
   afterMounted() {
-    const { searchResult } = api.rootStore.state;
-    const skeletonCards = this.target.querySelectorAll('.skeleton-card');
-    const videoCards = this.target.querySelectorAll('.video-card');
-
-    skeletonCards.forEach((videoCard) => {
-      new SkeletonCard(videoCard);
-    });
-    videoCards.forEach((videoCard, index) => {
-      new VideoCard(videoCard, { video: searchResult[index] });
-    });
-
     this.observeLastChild();
   }
 
   observeLastChild() {
-    if (this.target.lastElementChild) {
-      this.observer.observe(this.target.lastElementChild);
+    if (this.lastElementChild) {
+      this.observer.observe(this.lastElementChild);
     }
   }
 
@@ -62,7 +65,7 @@ export default class VideoCardList extends Component {
       if (
         !entry.isIntersecting ||
         this.state.isLoading ||
-        !api.rootStore.state.searchResult.length
+        !videoService.rootStore.state.searchResult.length
       )
         return;
 
@@ -71,10 +74,11 @@ export default class VideoCardList extends Component {
       this.addSkeletons(QUERY_OPTIONS.SEARCH.maxResults);
 
       try {
-        await api.loadNextPage();
-        this.removeSkeletons();
+        await videoService.loadNextPage();
       } catch (err) {
         alert(err);
+      } finally {
+        this.removeSkeletons();
       }
     });
   }
@@ -87,3 +91,7 @@ export default class VideoCardList extends Component {
     this.setState({ isLoading: false, skeletonCount: 0 });
   }
 }
+
+customElements.define('video-list', VideoCardList);
+
+export default VideoCardList;

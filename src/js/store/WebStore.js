@@ -1,27 +1,24 @@
-export default class WebStore {
-  #key;
+import Store from '../core/Store.js';
+import { deepClone } from '../utils/commons.js';
 
-  #cached;
+export default class WebStore extends Store {
+  init() {
+    this.state =
+      JSON.parse(localStorage.getItem(this.key)) || deepClone(this.initState);
 
-  constructor(key) {
-    this.#key = key;
-    this.#cached = JSON.parse(localStorage.getItem(this.#key)) || [];
+    Object.seal();
   }
 
-  #cache(data) {
-    this.#cached = [...data];
-  }
+  update(newState) {
+    Object.entries(newState).forEach(([key, value]) => {
+      if (!Object.prototype.hasOwnProperty.call(this.state, key)) return;
+      this.state[key] = value;
+    });
 
-  load() {
-    return [...this.#cached];
-  }
-
-  save(data) {
-    this.#cache(data);
-    localStorage.setItem(this.#key, JSON.stringify(data));
+    localStorage.setItem(this.key, JSON.stringify(this.state));
   }
 
   clear() {
-    this.save([]);
+    this.update(this.initState);
   }
 }

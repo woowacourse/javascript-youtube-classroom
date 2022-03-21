@@ -1,37 +1,23 @@
 import Component from '../core/Component.js';
-import MainPage from './MainPage/MainPage.js';
-import SearchModal from './SearchModal/SearchModal.js';
+import { useStore } from '../services/VideoService.js';
+import './MainPage/MainPage.js';
+import './SearchModal/SearchModal.js';
 
-export default class App extends Component {
-  setup() {
-    this.state = { isSearchModalOpened: false };
-  }
-
+class App extends Component {
   template() {
-    const { isSearchModalOpened } = this.state;
+    const isSearchModalOpened = useStore((state) => state.isSearchModalOpened);
 
     return `
-      <main id="main-page" class="classroom-container"></main>
-      <div id="search-modal" class="modal-container ${
-        isSearchModalOpened ? '' : 'hide'
-      }"></div>
+      <main-page class="classroom-container"></main-page>
+      <search-modal
+        class="modal-container
+        ${isSearchModalOpened ? '' : 'hide'}"
+      >
+      </search-modal>
     `;
   }
-
-  afterMounted() {
-    new MainPage(document.querySelector('#main-page'), {
-      showSearchModal: this.showSearchModal.bind(this),
-    });
-    new SearchModal(document.querySelector('#search-modal'), {
-      hideSearchModal: this.hideSearchModal.bind(this),
-    });
-  }
-
-  showSearchModal() {
-    this.setState({ isSearchModalOpened: true });
-  }
-
-  hideSearchModal() {
-    this.setState({ isSearchModalOpened: false });
-  }
 }
+
+customElements.define('app-wrapper', App);
+
+export default App;
