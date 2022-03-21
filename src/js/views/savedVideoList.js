@@ -15,8 +15,8 @@ const savedVideoTemplate = {
         <p class="video-item__channel-name">${item.channelTitle}</p>
         <p class="video-item__published-date">${item.publishTime}</p>
         <div class="video-manage-button">
-          <button class="video-watched-button">✅</button>
-          <button class="video-remove-button">🗑</button>
+          <button type="button" class="video-watched-button">✅</button>
+          <button type="button" class="video-remove-button">🗑</button>
         </div>
       </li>
     `;
