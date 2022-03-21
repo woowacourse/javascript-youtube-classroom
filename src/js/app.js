@@ -59,7 +59,9 @@ export default class App {
     const className = isWatched ? 'video-item--watched' : 'video-item--watch-later';
     return `
       <li class="video-item ${className}" data-video-id="${video.id}" data-testid="saved-video-item">
-        <iframe width="100%" height="auto" src="https://www.youtube.com/embed/${video.id}" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+        <div class="video-container">
+          <iframe width="100%" height="auto" src="https://www.youtube.com/embed/${video.id}" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+        </div>
         <h4 class="video-item__title">
           <a href="https://www.youtube.com/watch?v=${video.id}" target="_blank">${video.title}</a>
         </h4>

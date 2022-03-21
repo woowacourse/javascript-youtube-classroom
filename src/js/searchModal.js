@@ -50,7 +50,9 @@ class SearchModal {
         const isSavedVideo = hasProperty(this.storage.cache, video.id);
         const disabled = isSavedVideo ? 'disabled' : '';
         return `<li class="video-item" data-video-id="${video.id}" data-testid="search-result-video-item">
-          <iframe width="100%" height="auto" src="https://www.youtube.com/embed/${video.id}" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+          <div class="video-container">
+            <iframe width="100%" height="auto" src="https://www.youtube.com/embed/${video.id}" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+          </div>
           <h4 class="video-item__title">
             <a href="https://www.youtube.com/watch?v=${video.id}" target="_blank">${video.title}</a>
           </h4>
