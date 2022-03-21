@@ -1,9 +1,11 @@
-import VideoStore from '../VideoStore';
-import Save from '../domains/Save';
-import { addEvent, emit, $, $$ } from '../utils';
-import SKELETONS from '../templates';
+import SearchVideoStore from '../../stores/SearchVideoStore';
+import MyVideoStore from '../../stores/MyVideoStore';
+import { addEvent, emit, $, $$ } from '../../utils';
+import { SKELETONS } from '../../templates';
 
-class VideoList extends HTMLUListElement {
+import './SearchVideoItem';
+
+class SearchVideoList extends HTMLUListElement {
   constructor() {
     super();
     addEvent({
@@ -12,7 +14,7 @@ class VideoList extends HTMLUListElement {
       selector: 'ul',
       callback: (e) => this.emitEvent(e),
     });
-    VideoStore.instance.subscribe(this);
+    SearchVideoStore.instance.subscribe(this);
   }
 
   emitEvent(e) {
@@ -47,12 +49,15 @@ class VideoList extends HTMLUListElement {
 
   insertVideoItems(videos) {
     videos.forEach((video) => {
-      this.insertAdjacentHTML('beforeend', `<video-item data-id=${video.id}></video-item>`);
+      this.insertAdjacentHTML(
+        'beforeend',
+        `<search-video-item data-id=${video.id}></search-video-item>`
+      );
     });
   }
 
   hideStoredVideoSaveButton(videos) {
-    const storedVideoIds = Save.instance.getVideos().map((video) => video.videoId);
+    const storedVideoIds = MyVideoStore.instance.getVideos().map((video) => video.videoId);
 
     videos.forEach((video) => {
       if (storedVideoIds.includes(video.id)) {
@@ -62,6 +67,6 @@ class VideoList extends HTMLUListElement {
   }
 }
 
-customElements.define('video-list', VideoList, { extends: 'ul' });
+customElements.define('search-video-list', SearchVideoList, { extends: 'ul' });
 
-export default VideoList;
+export default SearchVideoList;

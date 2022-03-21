@@ -1,23 +1,10 @@
+import SearchVideoStore from '../stores/SearchVideoStore';
+import MyVideoStore from '../stores/MyVideoStore';
 import { on } from '../utils';
-import { ERROR_MESSAGE, VIDEO } from '../constants';
+import { ERROR_MESSAGE } from '../constants';
 
 class Save {
-  static _instance = null;
-
-  static get instance() {
-    if (!Save._instance) {
-      Save._instance = new Save();
-    }
-    return Save._instance;
-  }
-
-  #videos;
-
-  constructor() {
-    this.#videos = this.loadVideos();
-  }
-
-  subscribeEvents(videoItem) {
+  constructor(videoItem) {
     on({
       selector: '.video-item__save-button',
       eventName: '@save',
@@ -27,24 +14,20 @@ class Save {
   }
 
   saveVideo(videoId) {
+    const myVideos = MyVideoStore.instance.getVideos();
+
     try {
-      if (this.#videos.length >= VIDEO.MAX_SAVABLE_COUNT) {
+      if (!MyVideoStore.instance.canSaveVideo()) {
         throw new Error(ERROR_MESSAGE.EXCEED_MAX_SAVABLE_COUNT);
       }
 
-      localStorage.setItem('videos', JSON.stringify([...this.#videos, { videoId }]));
-      this.#videos = this.loadVideos();
+      const details = SearchVideoStore.instance.findVideo(videoId);
+      const newVideos = [...myVideos, { details, isWatched: false }];
+
+      MyVideoStore.instance.dispatch(newVideos);
     } catch (error) {
       alert(error.message);
     }
-  }
-
-  getVideos() {
-    return this.#videos;
-  }
-
-  loadVideos() {
-    return JSON.parse(localStorage.getItem('videos')) ?? [];
   }
 }
 

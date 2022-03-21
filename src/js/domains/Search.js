@@ -1,9 +1,8 @@
-import VideoStore from '../VideoStore';
-import { fetchData, on, throttle, $ } from '../utils';
+import SearchVideoStore from '../stores/SearchVideoStore';
+import { debounce, fetchData, on, throttle, $ } from '../utils';
 import { ERROR_MESSAGE, SEARCH_API } from '../constants';
 
 class Search {
-  // eslint-disable-next-line max-lines-per-function
   constructor() {
     this.keyword = '';
     this.nextPageToken = '';
@@ -11,7 +10,7 @@ class Search {
     on({
       selector: '.search-form',
       eventName: '@search',
-      handler: throttle((e) => this.search('search', e.detail.keyword), 500),
+      handler: debounce((e) => this.search('search', e.detail.keyword)),
       component: $('search-form'),
     });
     on({
@@ -28,13 +27,14 @@ class Search {
 
     const videos = await this.fetchVideo(keyword);
 
-    this.keyword = keyword;
-    this.nextPageToken = videos.nextPageToken ?? '';
+    if (videos instanceof Error) return;
 
-    VideoStore.instance.dispatch(type, this.preprocessor(videos));
+    this.keyword = keyword;
+    this.nextPageToken = videos.nextPageToken;
+
+    SearchVideoStore.instance.dispatch(type, this.removeDuplicateVideos(this.preprocessor(videos)));
   }
 
-  // eslint-disable-next-line max-lines-per-function
   async fetchVideo(keyword) {
     try {
       SEARCH_API.URL.search = this.#generateSearchParams(keyword);
@@ -58,6 +58,12 @@ class Search {
       pageToken: this.nextPageToken,
       q: keyword,
     }).toString();
+  }
+
+  removeDuplicateVideos(videos) {
+    const searchStoreVideoIds = SearchVideoStore.instance.getVideos().map((video) => video.id);
+
+    return videos.filter((video) => !searchStoreVideoIds.includes(video.id));
   }
 
   preprocessor(videos) {

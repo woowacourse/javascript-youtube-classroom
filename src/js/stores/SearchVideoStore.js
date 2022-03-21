@@ -1,11 +1,11 @@
-class VideoStore {
+class SearchVideoStore {
   static _instance = null;
 
   static get instance() {
-    if (!VideoStore._instance) {
-      VideoStore._instance = new VideoStore();
+    if (!SearchVideoStore._instance) {
+      SearchVideoStore._instance = new SearchVideoStore();
     }
-    return VideoStore._instance;
+    return SearchVideoStore._instance;
   }
 
   #videos = [];
@@ -35,4 +35,4 @@ class VideoStore {
   }
 }
 
-export default VideoStore;
+export default SearchVideoStore;
