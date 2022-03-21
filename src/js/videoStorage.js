@@ -48,7 +48,8 @@ const videoStorage = {
   },
 
   switchType(videoId) {
-    const selectedVideo = this.getVideoDataList()[this.getDataIndexInList(videoId)];
+    const selectedVideoIndex = this.getDataIndexInList(videoId);
+    const selectedVideo = this.getVideoDataList()[selectedVideoIndex];
     selectedVideo.type =
       selectedVideo.type === VIDEO_TYPE.WATCH_LATER ? VIDEO_TYPE.WATCHED : VIDEO_TYPE.WATCH_LATER;
 
