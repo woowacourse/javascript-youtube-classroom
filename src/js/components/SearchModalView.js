@@ -11,7 +11,8 @@ import { NUM } from '../../const/consts.js';
 import { SearchModal } from '../model/SearchModal.js';
 
 export class SearchModalView {
-  constructor() {
+  constructor(props) {
+    this.props = props;
     this.searchModal = new SearchModal();
 
     this.modalContainer = document.getElementById('modal-container');
@@ -150,6 +151,7 @@ export class SearchModalView {
 
   handleCloseButton = () => {
     this.modalContainer.classList.add('hide');
+    this.props.closeModal();
   };
 
   handleEnterKeyEvent = (event) => {

@@ -4,7 +4,7 @@ import { SearchModalView } from './SearchModalView.js';
 export class App {
   constructor() {
     this.classroom = new ClassroomView({ openModal: this.openModal });
-    this.searchModal = new SearchModalView();
+    this.searchModal = new SearchModalView({ closeModal: this.classroom.handleWillSeeVideoNav });
   }
 
   openModal = () => {
