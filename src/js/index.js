@@ -8,14 +8,14 @@ import { applyThrottle } from './util/throttle.js';
 import { SearchEventHandler } from './modules/handleSearchEvent.js';
 import { WatchLaterVideoEventHandler } from './modules/handleWatchLaterVideoEvent.js';
 import { WatchedVideoEventHandler } from './modules/handleWatchedVideoEvent.js';
-import watchLaterInterface from './ui/watchLaterInterface.js';
+import watchLaterView from './ui/watchLaterView.js';
 
 export default function App() {
   const handleSearchEvent = new SearchEventHandler();
   const handleWatchLaterEvent = new WatchLaterVideoEventHandler();
   const handleWatchedVideoEvent = new WatchedVideoEventHandler();
 
-  watchLaterInterface.renderWatchLaterVideos();
+  watchLaterView.renderWatchLaterVideos();
   $('#search-modal-button').addEventListener('click', () => {
     $('.modal-container').classList.toggle('hidden');
   });

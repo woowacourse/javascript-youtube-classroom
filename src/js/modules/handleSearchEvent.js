@@ -1,6 +1,6 @@
 import storage from '../storage/storage.js';
 import YoutubeMachine from '../domain/YoutubeMachine.js';
-import searchModalInterface from '../ui/serachModalInterface.js';
+import searchModalView from '../ui/serachModalView.js';
 import { $, toggleSnackBar } from '../util/general.js';
 import { SNACK_BAR } from '../constants/constants.js';
 import { removeSearchInput } from '../util/render.js';
@@ -10,17 +10,17 @@ export class SearchEventHandler {
   handleSearch = async () => {
     try {
       this.youtubeMachine.resetSearchResult();
-      searchModalInterface.resetVideoList();
+      searchModalView.resetVideoList();
 
       const searchInput = $('#search-input-keyword').value.trim();
       this.youtubeMachine.search(searchInput);
 
-      searchModalInterface.renderSkeletonUI();
+      searchModalView.renderSkeletonUI();
 
       const response = await this.youtubeMachine.callSearchAPI();
       this.youtubeMachine.updateSearchResult(response);
 
-      searchModalInterface.renderSearchResult(this.youtubeMachine.searchResult);
+      searchModalView.renderSearchResult(this.youtubeMachine.searchResult);
     } catch ({ message: status }) {
       toggleSnackBar(status);
       removeSearchInput();
@@ -29,11 +29,11 @@ export class SearchEventHandler {
 
   handleScroll = async e => {
     if (e.target.scrollHeight - e.target.scrollTop === e.target.clientHeight) {
-      searchModalInterface.renderSkeletonUI();
+      searchModalView.renderSkeletonUI();
       const response = await this.youtubeMachine.callSearchAPI();
 
       this.youtubeMachine.updateSearchResult(response);
-      searchModalInterface.renderNextSearchResult(this.youtubeMachine.searchResult);
+      searchModalView.renderNextSearchResult(this.youtubeMachine.searchResult);
     }
   };
 

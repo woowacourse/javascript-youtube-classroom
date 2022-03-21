@@ -1,13 +1,13 @@
 import { SNACK_BAR } from '../constants/constants.js';
 import storage from '../storage/storage.js';
-import watchedVideoInterface from '../ui/watchedVideoInterface.js';
+import watchedVideoView from '../ui/watchedVideoView.js';
 import { $, checkHasHiddenClass, confrimVideoDelete, toggleSnackBar } from '../util/general.js';
 import { removeCheckedVideoItem, removeDeleteVideoItem } from '../util/render.js';
 export class WatchedVideoEventHandler {
   handleWatchedVideo = () => {
     this.toggleWatchedVideoContent();
 
-    watchedVideoInterface.renderWatchedVideos();
+    watchedVideoView.renderWatchedVideos();
   };
 
   toggleWatchedVideoContent = () => {
@@ -30,7 +30,7 @@ export class WatchedVideoEventHandler {
       '.watched-video-item',
       e.target.parentElement.parentElement.dataset.videoId,
     );
-    watchedVideoInterface.renderEmptyImg();
+    watchedVideoView.renderEmptyImg();
     toggleSnackBar(SNACK_BAR.WATCH_LATER_MESSAGE);
   };
 
@@ -44,7 +44,7 @@ export class WatchedVideoEventHandler {
         '.watched-video-item',
         e.target.parentElement.parentElement.dataset.videoId,
       );
-      watchedVideoInterface.renderEmptyImg();
+      watchedVideoView.renderEmptyImg();
       toggleSnackBar(SNACK_BAR.DELETE_MESSAGE);
     }
   };

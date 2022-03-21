@@ -7,7 +7,7 @@ import {
   removeEmptyImg,
 } from '../util/render.js';
 
-const watchLaterInterface = {
+const watchLaterView = {
   renderEmptyImg() {
     const savedVideoData = storage.getLocalStorage();
     if (!savedVideoData) {
@@ -49,4 +49,4 @@ const watchLaterInterface = {
   },
 };
 
-export default watchLaterInterface;
+export default watchLaterView;

@@ -24,7 +24,7 @@ const searchVideoTemplate = {
   },
 };
 
-const searchModalInterface = {
+const searchModalView = {
   resetVideoList() {
     $('.video-list').replaceChildren();
   },
@@ -72,4 +72,4 @@ const searchModalInterface = {
   },
 };
 
-export default searchModalInterface;
+export default searchModalView;

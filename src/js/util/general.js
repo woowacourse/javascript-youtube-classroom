@@ -1,6 +1,6 @@
 import { ALERT, ERROR, SNACK_BAR_DELAY_TIME } from '../constants/constants.js';
-import watchedVideoInterface from '../ui/watchedVideoInterface.js';
-import watchLaterInterface from '../ui/watchLaterInterface.js';
+import watchedVideoView from '../ui/watchedVideoView.js';
+import watchLaterView from '../ui/watchLaterView.js';
 
 export const $ = selector => document.querySelector(selector);
 
@@ -21,10 +21,10 @@ export const quickModalElement = e => {
   if (!checkHasHiddenClass('.modal-container')) {
     $('.modal-container').classList.toggle('hidden');
     if (checkHasHiddenClass('.watch-later-videos')) {
-      watchedVideoInterface.renderWatchedVideos();
+      watchedVideoView.renderWatchedVideos();
     }
     if (checkHasHiddenClass('.watched-videos')) {
-      watchLaterInterface.renderWatchLaterVideos();
+      watchLaterView.renderWatchLaterVideos();
     }
   }
 };
