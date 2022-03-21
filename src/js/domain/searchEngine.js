@@ -52,7 +52,7 @@ export default class SearchEngine {
 
   preprocessData(data) {
     const preprocessedData = data.map((datum) => {
-      const thumbnails = datum.snippet.thumbnails.high.url;
+      const thumbnails = datum.snippet.thumbnails.medium.url;
       const { title, channelTitle, publishTime } = datum.snippet;
       const { videoId } = datum.id;
 
