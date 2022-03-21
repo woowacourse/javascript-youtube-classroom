@@ -14,10 +14,6 @@ class ManageVideoStorage {
     return { ...this.#storedVideoObjects };
   }
 
-  #getNewFromStorage() {
-    return JSON.parse(localStorage.getItem(this.#key)) || {};
-  }
-
   getFilteredIdFromStorage(filterBy, value) {
     const videoObjects = this.#storedVideoObjects;
 
@@ -47,6 +43,10 @@ class ManageVideoStorage {
     const videoObject = this.#storedVideoObjects[id];
     videoObject.watched = !videoObject.watched;
     this.saveToStorage(videoObject);
+  }
+
+  #getNewFromStorage() {
+    return JSON.parse(localStorage.getItem(this.#key)) || {};
   }
 
   #overwriteStorage(videoObjects) {
