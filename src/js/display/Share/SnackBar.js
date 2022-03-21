@@ -1,28 +1,29 @@
-import { $ } from '@Utils/dom';
+import { $, createElement } from '@Utils/dom';
 import { SNACKBAR_TYPE, SNACKBAR_CONSIST_TIME } from '@Constants';
 
 class SnackBar {
   constructor() {
-    this.container = $('#snackbar');
-    this.$description = $('#snackbar-description', this.container);
+    this.container = $('#snackbar-container');
     this.timer;
   }
 
   open(message, type) {
-    this.container.classList.add('show');
-    type === SNACKBAR_TYPE.ERROR
-      ? this.container.classList.add('error')
-      : this.container.classList.remove('error');
-    this.$description.textContent = message;
+    if (this.container.childElementCount >= 3) {
+      this.close();
+    }
+    const snackbar = createElement('DIV', {
+      className: `snackbar show ${type === SNACKBAR_TYPE.ERROR ? 'error' : 'primary'}`,
+      textContent: message,
+    });
 
+    this.container.append(snackbar);
     this.timer = setTimeout(() => {
       this.close();
     }, SNACKBAR_CONSIST_TIME);
   }
 
   close() {
-    this.container.classList.remove('show');
-    clearTimeout(this.timer);
+    this.container.children[0].remove();
   }
 }
 
