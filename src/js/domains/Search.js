@@ -61,9 +61,9 @@ class Search {
   }
 
   removeDuplicateVideos(videos) {
-    const storeVideoIds = SearchVideoStore.instance.getVideos().map((video) => video.id);
+    const searchStoreVideoIds = SearchVideoStore.instance.getVideos().map((video) => video.id);
 
-    return videos.filter((video) => !storeVideoIds.includes(video.id));
+    return videos.filter((video) => !searchStoreVideoIds.includes(video.id));
   }
 
   preprocessor(videos) {
