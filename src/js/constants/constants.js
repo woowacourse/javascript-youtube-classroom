@@ -14,6 +14,12 @@ export const API = {
   MAX_RESULT: 10,
   SEARCH_TYPE: 'video',
 };
+
+export const SNACK_BAR = {
+  SAVE_MESSAGE: '영상이 저장되었습니다✅',
+};
 export const THROTTLE_DELAY = 1000;
 
 export const LIMIT_VIDEO_COUNTS = 100;
+
+export const SNACK_BAR_DELAY_TIME = 1500;

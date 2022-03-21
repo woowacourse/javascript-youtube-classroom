@@ -1,7 +1,8 @@
 import storage from '../storage/storage.js';
 import YoutubeMachine from '../domain/YoutubeMachine.js';
 import searchModalInterface from '../ui/serachModalInterface.js';
-import { $ } from '../util/general.js';
+import { $, toggleSnackBar } from '../util/general.js';
+import { SNACK_BAR } from '../constants/constants.js';
 
 export class SearchEventHandler {
   youtubeMachine = new YoutubeMachine();
@@ -39,6 +40,7 @@ export class SearchEventHandler {
       return;
     }
     e.target.closest('button').hidden = true;
+    toggleSnackBar(SNACK_BAR.SAVE_MESSAGE);
     this.youtubeMachine.searchResult.items.forEach(item => {
       if (item.id.videoId === e.target.parentElement.dataset.videoId) {
         storage.saveVideo(item);

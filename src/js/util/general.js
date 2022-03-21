@@ -1,4 +1,4 @@
-import { ALERT, ERROR } from '../constants/constants.js';
+import { ALERT, ERROR, SNACK_BAR_DELAY_TIME } from '../constants/constants.js';
 import watchedVideoInterface from '../ui/watchedVideoInterface.js';
 import watchLaterInterface from '../ui/watchLaterInterface.js';
 
@@ -24,6 +24,12 @@ export const quickModalElement = e => {
       watchLaterInterface.renderWatchLaterVideos();
     }
   }
+};
+
+export const toggleSnackBar = mention => {
+  $('.snack-bar').textContent = mention;
+  $('.snack-bar').classList.toggle('is-active');
+  setTimeout(() => $('.snack-bar').classList.toggle('is-active'), SNACK_BAR_DELAY_TIME);
 };
 
 export const confrimVideoDelete = () => {
