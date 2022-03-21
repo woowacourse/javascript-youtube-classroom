@@ -50,8 +50,8 @@ class Search {
     );
   }
 
-  #getVideoObjectArray(items) {
-    return items.map((item) => {
+  #getVideoObjectArray(itemArray) {
+    return itemArray.map((item) => {
       const { snippet, id } = item;
       return {
         videoId: id.videoId,

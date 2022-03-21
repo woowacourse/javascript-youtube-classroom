@@ -5,7 +5,7 @@ import { DELETE_CONFIRM_MESSAGE } from '../constants/constants';
 class MainView {
   constructor() {
     this.savedVideosContainer = selectDom('.saved-videos-container');
-    this.noSavedVideos = selectDom('.no-saved-videos');
+    this.noSavedVideo = selectDom('.no-saved-video');
     this.renderSavedVideo(false);
 
     selectDom('#to-watch-tab').addEventListener('click', () => this.renderSavedVideo(false));
@@ -13,21 +13,21 @@ class MainView {
   }
 
   #renderNoSavedVideo() {
-    if (this.noSavedVideos) {
-      this.noSavedVideos.classList.remove('hide');
+    if (this.noSavedVideo) {
+      this.noSavedVideo.classList.remove('hide');
     }
   }
 
   #handleCheck = (event) => {
-    const savedVideos = storage.getSavedVideos();
-    const watchedVideo = savedVideos.find(
+    const savedVideoArray = storage.getSavedVideos();
+    const watchedVideo = savedVideoArray.find(
       (video) => video.videoId === event.target.dataset.videoId
     );
     watchedVideo.isWatched = !watchedVideo.isWatched;
-    storage.setSavedVideos(savedVideos);
+    storage.setSavedVideos(savedVideoArray);
     event.target.parentNode.parentNode.remove();
     if (
-      savedVideos.filter((video) => String(video.isWatched) === event.target.dataset.isWatched)
+      savedVideoArray.filter((video) => String(video.isWatched) === event.target.dataset.isWatched)
         .length === 0
     ) {
       this.#renderNoSavedVideo();
@@ -36,15 +36,16 @@ class MainView {
 
   #handleDelete = (event) => {
     if (window.confirm(DELETE_CONFIRM_MESSAGE)) {
-      const savedVideos = storage.getSavedVideos();
-      const newVideoList = savedVideos.filter(
+      const savedVideoArray = storage.getSavedVideos();
+      const newVideoList = savedVideoArray.filter(
         (video) => video.videoId !== event.target.dataset.videoId
       );
       storage.setSavedVideos(newVideoList);
       event.target.parentNode.parentNode.remove();
       if (
-        savedVideos.filter((video) => String(video.isWatched) === event.target.dataset.isWatched)
-          .length === 1
+        savedVideoArray.filter(
+          (video) => String(video.isWatched) === event.target.dataset.isWatched
+        ).length === 1
       ) {
         this.#renderNoSavedVideo();
       }
@@ -82,19 +83,19 @@ class MainView {
     if (videoListElement) {
       videoListElement.remove();
     }
-    this.noSavedVideos.classList.add('hide');
+    this.noSavedVideo.classList.add('hide');
   };
 
   renderSavedVideo(isWatched) {
     this.#removeFormerView();
-    const videoList = storage.getSavedVideos().filter((video) => video.isWatched === isWatched);
-    if (videoList.length === 0) {
+    const videoArray = storage.getSavedVideos().filter((video) => video.isWatched === isWatched);
+    if (videoArray.length === 0) {
       this.#renderNoSavedVideo();
       return;
     }
     const savedVideoList = document.createElement('ul');
     savedVideoList.className = 'saved-video-list';
-    const videoElementArray = videoList.map((video) =>
+    const videoElementArray = videoArray.map((video) =>
       this.#createSavedVideoElement(video, isWatched)
     );
     savedVideoList.append(...videoElementArray);

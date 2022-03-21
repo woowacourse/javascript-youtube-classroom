@@ -1,15 +1,15 @@
 import { MAX_SAVE_AMOUNT, STORAGE_KEY, ERROR_MESSAGES } from '../constants/constants';
 
-function getSavedVideos() {
+function getSavedVideoArray() {
   return JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
 }
 
-function setSavedVideos(videoArray) {
+function setSavedVideoArray(videoArray) {
   localStorage.setItem(STORAGE_KEY, JSON.stringify(videoArray));
 }
 
 function addSavedVideos(video) {
-  const savedVideos = getSavedVideos();
+  const savedVideos = getSavedVideoArray();
   if (savedVideos.length >= MAX_SAVE_AMOUNT) {
     throw new Error(ERROR_MESSAGES.EXCEED_MAX_SAVE_AMOUNT);
   }
@@ -19,14 +19,14 @@ function addSavedVideos(video) {
 }
 
 function isSavedVideo(id) {
-  return getSavedVideos().find((savedVideo) => savedVideo.videoId === id);
+  return getSavedVideoArray().find((savedVideo) => savedVideo.videoId === id);
 }
 
 const storage = {
-  getSavedVideos,
+  getSavedVideoArray,
   addSavedVideos,
   isSavedVideo,
-  setSavedVideos,
+  setSavedVideoArray,
 };
 
 export default storage;
