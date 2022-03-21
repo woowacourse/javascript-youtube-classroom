@@ -1,6 +1,6 @@
 import { ERROR_MESSAGE } from '../utils/constants.js';
 
-const APIManager = {
+const ApiUtil = {
   async fetchData(requestURL) {
     try {
       const response = await fetch(requestURL);
@@ -15,8 +15,14 @@ const APIManager = {
   },
 
   createQueryString(endPoint, params) {
-    return endPoint + '?' + new URLSearchParams(params).toString();
+    return (
+      endPoint +
+      '?' +
+      Object.entries(params)
+        .map(pair => pair[0] + '=' + pair[1])
+        .join('&')
+    );
   },
 };
 
-export default APIManager;
+export default ApiUtil;

@@ -1,0 +1,182 @@
+{
+    "kind": "youtube#searchListResponse",
+    "etag": "AauJ9C6tmqpuTX0bXSzJSWUCnMY",
+    "nextPageToken": "CAUQAA",
+    "regionCode": "KR",
+    "pageInfo": {
+        "totalResults": 1000000,
+        "resultsPerPage": 5
+    },
+    "items": [
+        {
+            "kind": "youtube#searchResult",
+            "etag": "8SfxHzi1C8OzVh3wXEn8xLdW8Z4",
+            "id": {
+                "kind": "youtube#video",
+                "videoId": "RfgwpRcKmv0"
+            },
+            "snippet": {
+                "publishedAt": "2012-08-06T14:45:50Z",
+                "channelId": "UCAAiIkfLtTkMLNh31-yzxXw",
+                "title": "포지션 - 하루",
+                "description": "",
+                "thumbnails": {
+                    "default": {
+                        "url": "https://i.ytimg.com/vi/RfgwpRcKmv0/default.jpg",
+                        "width": 120,
+                        "height": 90
+                    },
+                    "medium": {
+                        "url": "https://i.ytimg.com/vi/RfgwpRcKmv0/mqdefault.jpg",
+                        "width": 320,
+                        "height": 180
+                    },
+                    "high": {
+                        "url": "https://i.ytimg.com/vi/RfgwpRcKmv0/hqdefault.jpg",
+                        "width": 480,
+                        "height": 360
+                    }
+                },
+                "channelTitle": "Lee Lionhearts",
+                "liveBroadcastContent": "none",
+                "publishTime": "2012-08-06T14:45:50Z"
+            }
+        },
+        {
+            "kind": "youtube#searchResult",
+            "etag": "jwtri_qxv_VKjbfXcy9ngMTXovI",
+            "id": {
+                "kind": "youtube#video",
+                "videoId": "EouXSoZrJbE"
+            },
+            "snippet": {
+                "publishedAt": "2020-12-28T03:24:00Z",
+                "channelId": "UCazoNZzjhpe0-Pg8Z5HTxvw",
+                "title": "하루",
+                "description": "Provided to YouTube by CONSALAD 하루 · Kim Bum Soo Remember (So Long) ℗ G1 Creative Released on: 2006-04-04 ...",
+                "thumbnails": {
+                    "default": {
+                        "url": "https://i.ytimg.com/vi/EouXSoZrJbE/default.jpg",
+                        "width": 120,
+                        "height": 90
+                    },
+                    "medium": {
+                        "url": "https://i.ytimg.com/vi/EouXSoZrJbE/mqdefault.jpg",
+                        "width": 320,
+                        "height": 180
+                    },
+                    "high": {
+                        "url": "https://i.ytimg.com/vi/EouXSoZrJbE/hqdefault.jpg",
+                        "width": 480,
+                        "height": 360
+                    }
+                },
+                "channelTitle": "Kim Bum-soo - Topic",
+                "liveBroadcastContent": "none",
+                "publishTime": "2020-12-28T03:24:00Z"
+            }
+        },
+        {
+            "kind": "youtube#searchResult",
+            "etag": "-Rq-J0PjDLTaNAhiQSgN28h0cok",
+            "id": {
+                "kind": "youtube#video",
+                "videoId": "yepWJVgVWAY"
+            },
+            "snippet": {
+                "publishedAt": "2021-12-26T11:15:53Z",
+                "channelId": "UCED128hXe5sUgL9W22PZzTA",
+                "title": "[1시간]포맨 (4MEN)-하루( 불가살 OST Part.1)",
+                "description": "앨범 소개 육백 년 동안 사람으로 죽음과 환생을 반복하고, 전생을 기억하는 여자. 육백 년 동안 귀물 불가살이 되어 죽지 못하는 남자.",
+                "thumbnails": {
+                    "default": {
+                        "url": "https://i.ytimg.com/vi/yepWJVgVWAY/default.jpg",
+                        "width": 120,
+                        "height": 90
+                    },
+                    "medium": {
+                        "url": "https://i.ytimg.com/vi/yepWJVgVWAY/mqdefault.jpg",
+                        "width": 320,
+                        "height": 180
+                    },
+                    "high": {
+                        "url": "https://i.ytimg.com/vi/yepWJVgVWAY/hqdefault.jpg",
+                        "width": 480,
+                        "height": 360
+                    }
+                },
+                "channelTitle": "싸뮤 Sound Of Music",
+                "liveBroadcastContent": "none",
+                "publishTime": "2021-12-26T11:15:53Z"
+            }
+        },
+        {
+            "kind": "youtube#searchResult",
+            "etag": "h6-kpiKXo1jMnvMfHPaYqAf8DC4",
+            "id": {
+                "kind": "youtube#video",
+                "videoId": "e9OyUiTEtXI"
+            },
+            "snippet": {
+                "publishedAt": "2010-08-04T15:04:01Z",
+                "channelId": "UCZpHfpYWqs0w1tFNFTFHIQQ",
+                "title": "김범수 - 하루 (MV - 지진희, 송혜교, 송승헌)",
+                "description": "김범수 - 하루 (MV - 지진희, 송혜교, 송승헌) / Kim Bum Soo - Once Upon A Day.",
+                "thumbnails": {
+                    "default": {
+                        "url": "https://i.ytimg.com/vi/e9OyUiTEtXI/default.jpg",
+                        "width": 120,
+                        "height": 90
+                    },
+                    "medium": {
+                        "url": "https://i.ytimg.com/vi/e9OyUiTEtXI/mqdefault.jpg",
+                        "width": 320,
+                        "height": 180
+                    },
+                    "high": {
+                        "url": "https://i.ytimg.com/vi/e9OyUiTEtXI/hqdefault.jpg",
+                        "width": 480,
+                        "height": 360
+                    }
+                },
+                "channelTitle": "soya i",
+                "liveBroadcastContent": "none",
+                "publishTime": "2010-08-04T15:04:01Z"
+            }
+        },
+        {
+            "kind": "youtube#searchResult",
+            "etag": "MKAJVENM2lEYp737108cFiC1kMo",
+            "id": {
+                "kind": "youtube#video",
+                "videoId": "S80pk-UAioE"
+            },
+            "snippet": {
+                "publishedAt": "2017-10-25T11:31:05Z",
+                "channelId": "UCzQIlCb0t4zpQ_6-gwElj2A",
+                "title": "김범수   하루",
+                "description": "",
+                "thumbnails": {
+                    "default": {
+                        "url": "https://i.ytimg.com/vi/S80pk-UAioE/default.jpg",
+                        "width": 120,
+                        "height": 90
+                    },
+                    "medium": {
+                        "url": "https://i.ytimg.com/vi/S80pk-UAioE/mqdefault.jpg",
+                        "width": 320,
+                        "height": 180
+                    },
+                    "high": {
+                        "url": "https://i.ytimg.com/vi/S80pk-UAioE/hqdefault.jpg",
+                        "width": 480,
+                        "height": 360
+                    }
+                },
+                "channelTitle": "7080뮤직비디오",
+                "liveBroadcastContent": "none",
+                "publishTime": "2017-10-25T11:31:05Z"
+            }
+        }
+    ]
+}

@@ -1,5 +1,5 @@
 import VideoItemView from './VideoItemView.js';
-import { DOM_STRING, VIDEO_LIST, CLASS_NAME_STRING, SCROLL, KEY_CODE } from '../utils/constants.js';
+import { SELECTOR, VIDEO_LIST, DOM_STRING, SCROLL, KEY_CODE } from '../utils/constants.js';
 import { $, throttle } from '../utils/common.js';
 
 export default class ModalView {
@@ -11,31 +11,36 @@ export default class ModalView {
   }
 
   registerDOM() {
-    this.$modalContainer = $(DOM_STRING.MODAL_CONTAINER);
-    this.$dimmer = $(DOM_STRING.DIMMER);
-    this.$videoList = $(DOM_STRING.VIDEO_LIST);
-    this.$searchButton = $(DOM_STRING.SEARCH_BUTTOM);
-    this.$searchInput = $(DOM_STRING.SEARCH_INPUT);
-    this.$searchNoResult = $(DOM_STRING.SEARCH_NO_RESULT);
+    this.$modalContainer = $(SELECTOR.MODAL_CONTAINER);
+    this.$dimmer = $(SELECTOR.DIMMER);
+    this.$videoList = $(SELECTOR.VIDEO_LIST);
+    this.$searchButton = $(SELECTOR.SEARCH_BUTTOM);
+    this.$searchInput = $(SELECTOR.SEARCH_INPUT);
+    this.$searchNoResult = $(SELECTOR.SEARCH_NO_RESULT);
   }
 
   showModal() {
-    this.$modalContainer.classList.remove(CLASS_NAME_STRING.HIDE);
-    this.$searchNoResult.classList.add(CLASS_NAME_STRING.HIDE);
+    this.$modalContainer.classList.remove(DOM_STRING.HIDE);
+    this.$searchNoResult.classList.add(DOM_STRING.HIDE);
     this.$searchInput.value = '';
     this.$searchInput.focus();
   }
 
   hideModal() {
-    this.$modalContainer.classList.add(CLASS_NAME_STRING.HIDE);
+    this.$modalContainer.classList.add(DOM_STRING.HIDE);
   }
 
   controlScrollSearch(value) {
     this.enabledScrollSearch = value;
   }
 
-  bindOnClickDimmer(callback) {
+  bindOnClickClose(callback) {
     this.$dimmer.addEventListener('click', callback);
+    this.$modalContainer.addEventListener('keyup', event => {
+      if (event.keyCode === KEY_CODE.ESC) {
+        callback();
+      }
+    });
   }
 
   bindOnClickSearchButton(callback) {
@@ -59,6 +64,7 @@ export default class ModalView {
             this.$videoList.offsetHeight + SCROLL.ADDITIONAL_OFFSET &&
           this.enabledScrollSearch
         ) {
+          this.controlScrollSearch(false);
           callback(this.searchInputValue);
         }
       });
@@ -67,23 +73,23 @@ export default class ModalView {
 
   bindVideoListClickStoreButton(callback) {
     this.$videoList.addEventListener('click', event => {
-      if ([...event.target.classList].includes(CLASS_NAME_STRING.VIDEO_ITEM_SAVE_BUTTON)) {
-        event.target.classList.add(CLASS_NAME_STRING.HIDE);
+      if ([...event.target.classList].includes(DOM_STRING.VIDEO_ITEM_SAVE_BUTTON)) {
+        event.target.classList.add(DOM_STRING.HIDE);
         callback(event.target.dataset.videoid);
       }
     });
   }
 
   resetVideoList() {
-    this.$searchNoResult.classList.add(CLASS_NAME_STRING.HIDE);
-    this.$videoList.classList.remove(CLASS_NAME_STRING.HIDE);
+    this.$searchNoResult.classList.add(DOM_STRING.HIDE);
+    this.$videoList.classList.remove(DOM_STRING.HIDE);
     this.$videoList.textContent = '';
     this.videoItemList = [];
   }
 
   showNoResult() {
-    this.$searchNoResult.classList.remove(CLASS_NAME_STRING.HIDE);
-    this.$videoList.classList.add(CLASS_NAME_STRING.HIDE);
+    this.$searchNoResult.classList.remove(DOM_STRING.HIDE);
+    this.$videoList.classList.add(DOM_STRING.HIDE);
   }
 
   updateVideoItems(videoListData) {
@@ -105,7 +111,7 @@ export default class ModalView {
   #appendEmptyList() {
     this.$videoList.insertAdjacentHTML(
       'beforeend',
-      `<li class=${CLASS_NAME_STRING.VIDEO_ITEM}></li>`.repeat(VIDEO_LIST.RENDER_SIZE)
+      `<li class=${DOM_STRING.VIDEO_ITEM}></li>`.repeat(VIDEO_LIST.RENDER_SIZE)
     );
   }
 

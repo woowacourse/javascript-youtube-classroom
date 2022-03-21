@@ -10,7 +10,8 @@
     "test": "jest --watch --no-cache",
     "build": "webpack",
     "start": "webpack serve --open",
-    "deploy": "npm run build&&gh-pages -d dist"
+    "deploy": "npm run build&&gh-pages -d dist",
+    "cypress::run": "cypress run"
   },
   "repository": {
     "type": "git",
@@ -29,6 +30,8 @@
     "babel-loader": "^8.2.3",
     "clean-webpack-plugin": "^4.0.0",
     "css-loader": "^6.7.0",
+    "cypress": "^9.5.2",
+    "cypress-localstorage-commands": "^1.7.0",
     "eslint": "^8.10.0",
     "eslint-config-prettier": "^8.5.0",
     "eslint-plugin-import": "^2.25.4",
@@ -50,6 +53,7 @@
   "jest": {
     "transform": {
       "^.+\\.js$": "babel-jest"
-    }
+    },
+    "modulePathIgnorePatterns": ["cypress"]
   }
 }

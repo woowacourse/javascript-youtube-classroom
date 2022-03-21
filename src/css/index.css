@@ -1,5 +1,21 @@
 @import './app.css';
 @import './modal.css';
+@import './main.css';
+
+:root {
+  --color-button-background: #f5f5f5;
+  --color-button-hover-background: #ebebeb;
+  --color-button-clicked-background: #00bcd41f;
+  --color-button-search-background: #00bcd4;
+  --color-button-gray-background: #f9f9f9;
+  --color-button-gray-hover-background: #efefef;
+  --color-button-border: rgb(226, 226, 226);
+  --color-dimmer: rgba(0, 0, 0, 0.5);
+  --color-modal-border: rgba(0, 0, 0, 0.12);
+  --color-white: #ffffff;
+  --color-placeholder: #8b8b8b;
+  --color-search-keyword: #b4b4b4;
+}
 
 * {
   margin: 0;

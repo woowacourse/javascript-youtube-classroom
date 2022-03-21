@@ -6,9 +6,14 @@ const validator = {
       throw new Error(ERROR_MESSAGE.EMPTY_INPUT);
     }
   },
-  checkOverVideoIdListMaxLength: videoIdList => {
-    if (isOverVideoIdListMaxLength(videoIdList)) {
+  checkStoredVideoListOverMaxLength: videoList => {
+    if (isOverVideoListMaxLength(videoList)) {
       throw new Error(ERROR_MESSAGE.OVER_MAX_STORE_LENGTH);
+    }
+  },
+  checkParamsEmpty: params => {
+    if (isEmptyParams(params)) {
+      throw new Error(ERROR_MESSAGE.REQUEST_ERROR);
     }
   },
 };
@@ -17,8 +22,12 @@ function isEmptyInput(searchInput) {
   return searchInput.trim() === '';
 }
 
-function isOverVideoIdListMaxLength(videoIdList) {
-  return videoIdList.length >= STORE.VIDEO_ID_LIST_MAX_LENGTH;
+function isOverVideoListMaxLength(videoList) {
+  return videoList.length >= STORE.VIDEO_LIST_MAX_LENGTH;
+}
+
+function isEmptyParams(params) {
+  return Object.keys(params).length === 0;
 }
 
 export default validator;

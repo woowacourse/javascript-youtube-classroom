@@ -1,0 +1,73 @@
+.main-video-list {
+  display: grid;
+  row-gap: 20px;
+  column-gap: 19px;
+  margin-top: 39px;
+  place-items: center;
+}
+
+.video-item-button-container {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+}
+
+.video-item-button {
+  width: 36px;
+  height: 36px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.video-item-button:hover {
+  background-color: var(--color-button-hover-background);
+}
+
+@media screen and (min-width: 1280px) {
+  .main-video-list {
+    grid: '. . . .';
+  }
+}
+
+@media screen and (min-width: 960px) and (max-width: 1279px) {
+  .main-video-list {
+    grid: '. . .';
+  }
+}
+
+@media screen and (min-width: 600px) and (max-width: 959px) {
+  .main-video-list {
+    grid: '. .';
+  }
+}
+
+@media screen and (max-width: 599px) {
+  .main-video-list {
+    grid: '.';
+  }
+}
+
+#empty-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.empty-image {
+  width: 350px;
+  height: 350px;
+}
+
+#empty-container > p {
+  font-size: x-large;
+  font-weight: bold;
+}
+
+.check-will-see-button {
+  background-color: var(--color-button-clicked-background);
+}
+
+.check-will-see-button:hover {
+  background-color: var(--color-button-background);
+}
