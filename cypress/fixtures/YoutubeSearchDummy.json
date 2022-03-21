@@ -1,0 +1,420 @@
+{
+  "kind": "youtube#searchListResponse",
+  "etag": "bRFM22LiTtyDVnhchMWdxrdc7lw",
+  "nextPageToken": "CAwQAA",
+  "regionCode": "KR",
+  "pageInfo": {
+    "totalResults": 2671,
+    "resultsPerPage": 12
+  },
+  "items": [
+    {
+      "kind": "youtube#searchResult",
+      "etag": "O8FOY5zo6TPXvopqpExl48G0DWE",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "DkUbPhejy7A"
+      },
+      "snippet": {
+        "publishedAt": "2022-03-07T15:47:14Z",
+        "channelId": "UC68WPMGvA3Zj4qmqAuS8-ow",
+        "title": "React 쇼핑몰 만들기 #1",
+        "description": "3월 20일 (일) 까지 공개] 프론트엔드 주니어 개발자/취준생 대상으로 하는 라이브코딩 스터디 2022년 3월 7일, 첫번째 시간입니다.",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/DkUbPhejy7A/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/DkUbPhejy7A/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/DkUbPhejy7A/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "FE재남",
+        "liveBroadcastContent": "none",
+        "publishTime": "2022-03-07T15:47:14Z"
+      }
+    },
+    {
+      "kind": "youtube#searchResult",
+      "etag": "fyWdJanmCqYgbvpa1BKRD5wP3xA",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "4PJG-CzxUAk"
+      },
+      "snippet": {
+        "publishedAt": "2022-03-08T15:38:35Z",
+        "channelId": "UC68WPMGvA3Zj4qmqAuS8-ow",
+        "title": "React 쇼핑몰 만들기 #2",
+        "description": "3월 20일 (일) 까지 공개] 프론트엔드 주니어 개발자/취준생 대상으로 하는 라이브코딩 스터디 2022년 3월 8일, 두번째 시간입니다.",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/4PJG-CzxUAk/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/4PJG-CzxUAk/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/4PJG-CzxUAk/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "FE재남",
+        "liveBroadcastContent": "none",
+        "publishTime": "2022-03-08T15:38:35Z"
+      }
+    },
+    {
+      "kind": "youtube#searchResult",
+      "etag": "fCabZzDvp_n6wMtTX3FNkP6k2u0",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "nP6EaErZOFU"
+      },
+      "snippet": {
+        "publishedAt": "2022-03-09T15:10:44Z",
+        "channelId": "UC68WPMGvA3Zj4qmqAuS8-ow",
+        "title": "React 쇼핑몰 만들기 #3",
+        "description": "3월 20일 (일) 까지 공개] 프론트엔드 주니어 개발자/취준생 대상으로 하는 라이브코딩 스터디 2022년 3월 9일, 세번째 시간입니다.",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/nP6EaErZOFU/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/nP6EaErZOFU/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/nP6EaErZOFU/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "FE재남",
+        "liveBroadcastContent": "none",
+        "publishTime": "2022-03-09T15:10:44Z"
+      }
+    },
+    {
+      "kind": "youtube#searchResult",
+      "etag": "7MLth9WgIu1M_IvZQ7GzQjhnwtk",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "b5BH7kPboMk"
+      },
+      "snippet": {
+        "publishedAt": "2021-03-19T14:50:22Z",
+        "channelId": "UCvq75ScX_9cwIKic376vp5A",
+        "title": "[React 강의] 리액트(react)로  아마존 웹사이트 만들기",
+        "description": "Github : https://github.com/reactbacksu/amazon-clone 사용한 에디터는 Intellij 입니다 + 미흡한 부분 보충 설명 flex-end : 플렉스 ...",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/b5BH7kPboMk/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/b5BH7kPboMk/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/b5BH7kPboMk/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "리액트 깎는 노인",
+        "liveBroadcastContent": "none",
+        "publishTime": "2021-03-19T14:50:22Z"
+      }
+    },
+    {
+      "kind": "youtube#searchResult",
+      "etag": "ShJWpe9lzE6PZDbiknUDUj6Bsk8",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "dhY3X5wGwug"
+      },
+      "snippet": {
+        "publishedAt": "2020-05-24T09:46:33Z",
+        "channelId": "UCoIGXCqf2U1dTetloCYF46Q",
+        "title": "리엑트 네이티브 - 간단한 쇼핑몰 앱 만들기 (1강 - 개발환경 셋팅, 개발 템플릿 셋팅)",
+        "description": "리엑트 네이티브 간단한 쇼핑몰 앱만들기 첫 강의입니다. 스피드 잡스 카카오톡 방 : https://open.kakao.com/o/gioOEBJb.",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/dhY3X5wGwug/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/dhY3X5wGwug/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/dhY3X5wGwug/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "스피드 잡스",
+        "liveBroadcastContent": "none",
+        "publishTime": "2020-05-24T09:46:33Z"
+      }
+    },
+    {
+      "kind": "youtube#searchResult",
+      "etag": "C65C4Xv5bxP8JvHsx40Zr_8sPCQ",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "mJ64l_iONqw"
+      },
+      "snippet": {
+        "publishedAt": "2019-04-02T04:35:01Z",
+        "channelId": "UCvc8kv-i5fvFTJBFAk6n1SA",
+        "title": "React.js로 웹앱 만들기",
+        "description": "React.js 온라인 / 오프라인을 준비하기 위해서 수련하는 과정을 편하게 녹화해봤습니다. 처음부터 끝까지 롱테이크로 한번에 쭉 진행 ...",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/mJ64l_iONqw/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/mJ64l_iONqw/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/mJ64l_iONqw/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "생활코딩",
+        "liveBroadcastContent": "none",
+        "publishTime": "2019-04-02T04:35:01Z"
+      }
+    },
+    {
+      "kind": "youtube#searchResult",
+      "etag": "AvRGNo8yjwvclxrDKBvd_KRPKf4",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "kg7xPNcZW8o"
+      },
+      "snippet": {
+        "publishedAt": "2021-02-17T11:46:45Z",
+        "channelId": "UCe7edTlmeSqTYcBuG7QO8Ew",
+        "title": "[React Natvie] 1. 카운터 앱 만들기(with EXPO)",
+        "description": "react native와 expo를 이용한 카운터 앱을 만들어 보겠습니다. (볼륨이 작아서 재업합니다.)",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/kg7xPNcZW8o/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/kg7xPNcZW8o/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/kg7xPNcZW8o/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "서기",
+        "liveBroadcastContent": "none",
+        "publishTime": "2021-02-17T11:46:45Z"
+      }
+    },
+    {
+      "kind": "youtube#searchResult",
+      "etag": "wyjL7rTl6SIgmFHgKp6SF-mAnns",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "sM2p1EqTlw4"
+      },
+      "snippet": {
+        "publishedAt": "2017-09-13T09:14:57Z",
+        "channelId": "UCUpJs89fSBXNolQGOYKn0YQ",
+        "title": "리액트 기초 배우기 #1 ReactJS로 웹 서비스 만들기",
+        "description": "리액트 #프로그래밍 #코딩 #프로그래밍초보 . Introduction to React / 한글자막을 켜주세요! 리액트 기본기 제대로 배우기 시리¦ ...",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/sM2p1EqTlw4/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/sM2p1EqTlw4/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/sM2p1EqTlw4/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "ë¸ë§ë ì½ë Nomad Coders",
+        "liveBroadcastContent": "none",
+        "publishTime": "2017-09-13T09:14:57Z"
+      }
+    },
+    {
+      "kind": "youtube#searchResult",
+      "etag": "gniFVRLshsQ7r-_wtCnclX4HNjk",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "na9g6xaQ_ps"
+      },
+      "snippet": {
+        "publishedAt": "2019-06-25T15:52:25Z",
+        "channelId": "UCp-vBtwvBmDiGqjvLjChaJw",
+        "title": "ìì²­ì ì½ë ë¦¬ë·° - ë¦¬ì¡í¸ ì¼íëª°(with typescript)",
+        "description": "ì´ë² ì½ë ë¦¬ë·° ëìì ë¦¬ì¡í¸ë¡ êµ¬íí ì¼íëª°ìëë¤!",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/na9g6xaQ_ps/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/na9g6xaQ_ps/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/na9g6xaQ_ps/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "ZeroCho TV",
+        "liveBroadcastContent": "none",
+        "publishTime": "2019-06-25T15:52:25Z"
+      }
+    },
+    {
+      "kind": "youtube#searchResult",
+      "etag": "ROL1VSwn6BM3jsXPOnF4LzfHTJw",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "OP9-ZXgB2Rk"
+      },
+      "snippet": {
+        "publishedAt": "2020-07-08T12:00:18Z",
+        "channelId": "UCax1DP6hqZowNWF2lquKk0w",
+        "title": "FIGMA TO HTML 101 [ ëª¨ë°ì¼ ì¼íëª° #1 ] í¼ê·¸ë§ ì°¸ì¡° ëª¨ë°ì¼ ì¼íëª° êµ¬ííê¸° PART 1 - ë©ì¸íì´ì§ HTML, SWIPER SLIDE",
+        "description": "Buy the Base Sample https://bit.ly/2ZFioTz í¼ê·¸ë§ ì°¸ê³  ëª¨ë°ì¼ ì¼íëª° ë§ë¤ê¸° - ë©ì¸íì´ì§ html - ì¹í°í¸ ë¡ë - swiper js ì¬ë¼ì´ë ...",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/OP9-ZXgB2Rk/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/OP9-ZXgB2Rk/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/OP9-ZXgB2Rk/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "Rock's Easyweb",
+        "liveBroadcastContent": "none",
+        "publishTime": "2020-07-08T12:00:18Z"
+      }
+    },
+    {
+      "kind": "youtube#searchResult",
+      "etag": "MkEGsYRGJF4tlUBiCTwXp6JjRok",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "f2ozq36gnxA"
+      },
+      "snippet": {
+        "publishedAt": "2020-12-02T04:31:43Z",
+        "channelId": "UCU2RDu6Vhlgu3YV0puxz66A",
+        "title": "MERN Stack 2ê° - React ë¥¼ íµí ê¸°ì´ Layout ë§ë¤ê¸°",
+        "description": "ìëíì¸ì ì´ë² ê°ìììë React ë¥¼ íµí´ì íë¡ í¸ ìëìë¤ì´ê° ê¸°ì´ Layout ì ë§ë¤ê² ìµëë¤. React-Boostrap ...",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/f2ozq36gnxA/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/f2ozq36gnxA/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/f2ozq36gnxA/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "Danny TWLC",
+        "liveBroadcastContent": "none",
+        "publishTime": "2020-12-02T04:31:43Z"
+      }
+    },
+    {
+      "kind": "youtube#searchResult",
+      "etag": "iP_kt_0aEoCrYPydSjdHwOnbfv8",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "LSTVOuyF6zE"
+      },
+      "snippet": {
+        "publishedAt": "2016-08-13T15:41:16Z",
+        "channelId": "UCmMgRlN-3GKQ_CH7cOtLdvg",
+        "title": "[React.js] ê°ì¢ 4-1í¸: Contact ê²ìê¸°ë¥ êµ¬í | input, sort, filter",
+        "description": "Contact ì´íë¦¬ì¼ì´ìì ê²ìê¸°ë¥ì êµ¬íí´ë´ìë¤. ì´ ëììììëinputì ë¤ë£¨ë ë°©ë², ê·¸ë¦¬ê³  ë°ì´í°ë°°ì´ì sort íê³  filter íë ...",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/LSTVOuyF6zE/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/LSTVOuyF6zE/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/LSTVOuyF6zE/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "Minjun Kim",
+        "liveBroadcastContent": "none",
+        "publishTime": "2016-08-13T15:41:16Z"
+      }
+    }
+  ]
+}

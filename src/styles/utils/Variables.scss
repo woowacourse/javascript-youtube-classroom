@@ -1,0 +1,47 @@
+$border-radius: 0.35rem;
+
+/*
+  반응형 화면 기준 세팅
+*/
+$breakpoint-desktop: 1280px;
+$breakpoint-tablet: 960px;
+$breakpoint-mobile: 600px;
+
+/*
+  컬러 세팅
+    * 컬러 이름 지정 기준
+    : https://marketplace.visualstudio.com/items?itemName=volynetsserhii.get-color-name
+*/
+
+/* 무채색 계열 */
+$color-white: #fff;
+$color-white-30: rgba(255, 255, 255, 0.3);
+$color-wild-sand: #f5f5f5;
+
+$color-gallery: #ededed;
+$color-alto: #ddd;
+$color-nobel: #b4b4b4;
+$color-gray: #8b8b8b;
+$color-mine-shaft: #363636;
+$color-black: #000;
+$color-black-20: rgba(0, 0, 0, 0.2);
+$color-black-30: rgba(0, 0, 0, 0.3);
+$color-black-50: rgba(0, 0, 0, 0.5);
+
+/* 파란색 계열 */
+$color-dodger-blue: #2575fc;
+$color-robins-egg-blue: #00bcd4;
+$color-robins-egg-blue-12: #e3f4f9;
+
+/* 보라색 계열 */
+$color-purple-heart: #7424dd;
+
+/* 디자인 시안 주요 컬러 */
+$brand-base-color: $color-white;
+$brand-base-color-font: $color-black;
+$brand-accent-color: $color-robins-egg-blue;
+$brand-accent-color-font: $color-white;
+$brand-interaction-color: $color-wild-sand;
+$brand-interaction-color-font: $color-black;
+$brand-disabled-color: $color-wild-sand;
+$brand-disabled-color-font: $color-alto;

@@ -1,0 +1,41 @@
+@import './utils/Variables.scss';
+@import './utils/Animation.scss';
+@import './utils/Responsive.scss';
+@import './utils/Fontawesome.css';
+@import './layout/Font.scss';
+@import './layout/Layout.scss';
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  line-height: 140%;
+}
+
+ol,
+ul {
+  list-style: none;
+}
+
+html {
+  font-size: 15px;
+
+  @include mobile {
+    font-size: 3vw;
+  }
+}
+
+html,
+body {
+  letter-spacing: 0.1rem;
+  height: 100%;
+  -webkit-font-smoothing: antialiased;
+  font-family: 'NanumBarunGothic', sans-serif;
+}
+
+input,
+button,
+textarea,
+select {
+  font: inherit;
+}

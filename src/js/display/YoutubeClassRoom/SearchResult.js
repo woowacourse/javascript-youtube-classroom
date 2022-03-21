@@ -1,16 +1,18 @@
 import { $, createElement } from '@Utils/Dom';
 import { getParsedTime } from '@Utils/ManageData';
-import { onObserveElement, addEventDelegate } from '@Utils/ElementControl';
+import { onObserveElement } from '@Utils/ElementControl';
+import { addEventDelegate } from '@Utils/CustomEvent';
 import { CLASS_ROOM_SETTING } from '@Constants/Setting';
-import { ERROR_MESSAGE, ACTION_TYPE } from '@Constants/String';
+import { ERROR_MESSAGE, ALERT_MESSAGE, ACTION_TYPE } from '@Constants/String';
 import { SELECTOR, DOM_NAME } from '@Constants/Selector';
-import YoutubeSearchStore from '@Domain/YoutubeSearchStore';
+import YoutubeSearchStore from '@Domain/Store/YoutubeSearchStore';
+import YoutubeSaveListStore from '@Domain/Store/YoutubeSaveListStore';
 import YoutubeSaveStorage from '@Domain/YoutubeSaveStorage';
-import notFoundImage from '@Images/not_found.png';
+import Snackbar from '@Display/Share/Snackbar';
 
 export default class SearchResult {
   $container = $(SELECTOR.ID.SEARCH_RESULT_CONTAINER);
-  drawList = [];
+  #renderMethodList = [];
 
   constructor() {
     this.setDefaultElements();
@@ -19,35 +21,38 @@ export default class SearchResult {
     this.setSubscribeStores();
   }
 
-  render(state) {
-    this.drawList.forEach(drawEvent => {
-      drawEvent(state);
+  render = state => {
+    this.#renderMethodList.forEach(renderMethod => {
+      renderMethod(state);
     });
+  };
+
+  addRenderMethod(renderMethod) {
+    this.#renderMethodList.push(renderMethod);
   }
 
   setSubscribeStores() {
-    YoutubeSearchStore.addSubscriber(this.render.bind(this));
-  }
-
-  addDrawList(drawEvent) {
-    this.drawList.push(drawEvent);
+    YoutubeSearchStore.addSubscriber(this.render);
   }
 
   setRenderList() {
-    this.addDrawList(this.drawVideoList.bind(this));
-    this.addDrawList(this.drawLoadingStatus.bind(this));
+    this.addRenderMethod(this.drawVideoList);
+    this.addRenderMethod(this.drawLoadingStatus);
   }
 
   setDefaultElements() {
     this.$videoResult = $(SELECTOR.ID.VIDEO_RESULT, this.$container);
     this.$scrollObserver = $(SELECTOR.ID.SEARCH_RESULT_SCROLL_OBSERVER, this.$container);
 
-    this.$skeletonList = $('#skeleton-list', this.$container);
+    this.$skeletonList = $(SELECTOR.ID.SKELETON_LIST, this.$container);
     this.drawSkeletonList();
   }
 
   setBindEvents() {
     onObserveElement(this.$scrollObserver, () => {
+      const { nextPageToken: previousNextPageToken } = YoutubeSearchStore.getState();
+      if (!previousNextPageToken) return;
+
       YoutubeSearchStore.dispatch(ACTION_TYPE.UPDATE_SEARCH_LOADING_STATUS);
       YoutubeSearchStore.dispatch(ACTION_TYPE.UPDATE_SEARCH_RESULT);
     });
@@ -59,10 +64,15 @@ export default class SearchResult {
   }
 
   handleToggleSaveButton = ({ target: $target }) => {
-    const { videoId } = $target.closest(SELECTOR.CLASS.VIDEO_ITEM).dataset;
+    const { items: videoList } = YoutubeSearchStore.getState();
+    const { videoId, primaryKey } = $target.closest(SELECTOR.CLASS.VIDEO_ITEM).dataset;
+
     if (YoutubeSaveStorage.has(videoId)) {
       YoutubeSaveStorage.remove(videoId);
+      YoutubeSaveListStore.dispatch(ACTION_TYPE.UPDATE_SAVE_LIST);
       $target.textContent = '⬇ 저장';
+
+      Snackbar(ALERT_MESSAGE.SAVE_LIST_REMOVE);
       return;
     }
 
@@ -72,11 +82,14 @@ export default class SearchResult {
       return;
     }
 
-    YoutubeSaveStorage.add(videoId);
+    YoutubeSaveStorage.add(videoId, videoList[primaryKey]);
+    YoutubeSaveListStore.dispatch(ACTION_TYPE.UPDATE_SAVE_LIST);
     $target.textContent = '🗑 저장 취소';
+
+    Snackbar(ALERT_MESSAGE.SAVE_LIST_ADD);
   };
 
-  drawSkeletonList() {
+  drawSkeletonList = () => {
     const $fragment = document.createDocumentFragment();
     Array.from({ length: CLASS_ROOM_SETTING.MAX_VIDEO_NUMBER }).map(() => {
       const $skeleton = createElement('LI', {
@@ -92,51 +105,46 @@ export default class SearchResult {
       $fragment.append($skeleton);
     });
     this.$skeletonList.replaceChildren($fragment);
-  }
+  };
 
-  #getResultNotFound() {
+  #getResultNotFound(searchKeyword) {
     return createElement('DIV', {
-      className: DOM_NAME.CLASS.SEARCH_RESULT_NOT_FOUND,
+      className: DOM_NAME.CLASS.EMPTY_CONTENT,
       insertAdjacentHTML: [
         'afterbegin',
-        ` <img src="${notFoundImage}" alt="no result image" class="no-result__image">
-          <p class="no-result__description">
-            검색 결과가 없습니다<br />
-            다른 키워드로 검색해보세요
-          </p>`,
+        ` <i class="fa-solid fa-face-rolling-eyes"></i>
+          <p class="title">검색 결과가 없어요!</p>
+          <p class="description">${searchKeyword} 키워드의 검색 결과가 없습니다. 다른 키워드로 검색해보아주세요!</p>`,
       ],
     });
   }
 
   #getResultServerError() {
     return createElement('DIV', {
-      className: DOM_NAME.CLASS.SEARCH_RESULT_NOT_FOUND,
-      src: notFoundImage,
+      className: DOM_NAME.CLASS.EMPTY_CONTENT,
       insertAdjacentHTML: [
         'afterbegin',
-        ` <img src="${notFoundImage}" alt="no result image" class="no-result__image">
-          <p class="no-result__description">
-            서버에서 오류가 발생하였습니다.<br />
-            잠시 후 다시 시도해주세요.
-          </p>`,
+        ` <i class="fa-solid fa-face-sad-tear"></i>
+          <p class="title">엇! 서버 오류가 발생했어요!</p>
+          <p class="description">네트워크 환경을 확인하시거나, 잠시 후 다시 시도해주세요.</p>`,
       ],
     });
   }
 
   #getVideoElementList(items) {
-    return items.reduce(($previous, video) => {
+    return items.reduce(($previous, video, index) => {
       const buttonText = YoutubeSaveStorage.has(video.id.videoId) ? '🗑 저장 취소' : '⬇ 저장';
       const $list = createElement('LI', {
-        dataset: { 'video-id': video.id.videoId },
+        dataset: { 'video-id': video.id.videoId, 'primary-key': index },
         className: DOM_NAME.CLASS.VIDEO_ITEM,
         insertAdjacentHTML: [
           'afterbegin',
           ` <img src="${video.snippet.thumbnails.medium.url}"
-              alt="video-item-thumbnail" class="video-item__thumbnail">
-            <h4 class="video-item__title">${video.snippet.title}</h4>
-            <p class="video-item__channel-name">${video.snippet.channelTitle}</p>
-            <p class="video-item__published-date">${getParsedTime(video.snippet.publishTime)}</p>
-            <button class="video-item__save-button button">${buttonText}</button>`,
+              alt="${video.snippet.title} 썸네일" class="thumbnail">
+            <h4 class="title">${video.snippet.title}</h4>
+            <p class="channel-name">${video.snippet.channelTitle}</p>
+            <p class="published-date">${getParsedTime(video.snippet.publishedAt)}</p>
+            <button class="save-button button">${buttonText}</button>`,
         ],
       });
 
@@ -145,14 +153,14 @@ export default class SearchResult {
     }, document.createDocumentFragment());
   }
 
-  drawVideoList({ items, isLoaded, error }) {
+  drawVideoList = ({ items, searchKeyword, isLoaded, error }) => {
     if (error) {
       this.$videoResult.replaceChildren(this.#getResultServerError());
       return;
     }
 
     if (items.length === 0 && isLoaded === true) {
-      this.$videoResult.replaceChildren(this.#getResultNotFound());
+      this.$videoResult.replaceChildren(this.#getResultNotFound(searchKeyword));
       return;
     }
 
@@ -164,10 +172,10 @@ export default class SearchResult {
 
     const $videoList = this.#getVideoElementList(items);
     this.$videoResult.replaceChildren($videoList);
-  }
+  };
 
-  drawLoadingStatus({ searchKeyword, isLoading }) {
+  drawLoadingStatus = ({ searchKeyword, isLoading }) => {
     this.$scrollObserver.classList.toggle('enable', !!searchKeyword);
     this.$container.classList.toggle('loading', isLoading);
-  }
+  };
 }

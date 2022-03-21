@@ -8,58 +8,67 @@
 </head>
 
 <body>
-  <main id="app" class="classroom-container">
-    <h1 class="classroom-container__title">👩🏻‍💻 나만의 유튜브 강의실 👨🏻‍💻</h1>
-    <nav id="classroom-navigation" class="nav">
-      <button id="search-modal-button" class="button nav__button" data-modal="search-modal">🔍 검색</button>
-    </nav>
-  </main>
-  <!-- 1 검색 버튼을 누르면 아래와 같은 검색 모달을 보여줍니다.-->
-  <div id="modal" class="modal-container hide">
-    <div class="dimmer"></div>
-    <div id="search-modal" class="modal-content show" role="dialog" aria-labelledby="modal-content-title">
-      <h2 id="search-modal-title" class="modal-content__title">🔍 보고싶은 영상 찾기 🔍</h2>
-      <form id="search-form" class="search-input">
-        <h3 hidden>검색어 입력</h3>
-        <input id="search-input-keyword" type="text" placeholder="검색" class="search-input__keyword">
-        <button id="search-button" class="search-input__search-button button" disabled>검색</button>
-      </form>
-      <!-- 2-1 검색 결과가 있을 경우, 아래와 같은 검색 결과 목록을 보여줍니다.-->
-      <section id="search-result" class="search-result">
-        <h3 hidden>검색 결과</h3>
-        <div id="video-list" class="video-list">
-          <ul id="video-result">
-
-          </ul>
-
-          <ul id="skeleton-list">
-
-          </ul>
-
-          <div id="search-result-scroll-observer"></div>
-          <!-- <li class="video-item" data-video-id="">
-            <img
-              src="https://i.ytimg.com/vi/ECfuKi5-Cfs/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLDvmIcX-TgdcH2g_Bd4AUxw6hjmvQ"
-              alt="video-item-thumbnail" class="video-item__thumbnail">
-            <h4 class="video-item__title">[Playlist] 너무 좋은데 괜찮으시겠어요?</h4>
-            <p class="video-item__channel-name">essential;</p>
-            <p class="video-item__published-date">2022년 3월 2일</p>
-            <button class="video-item__save-button button">⬇ 저장</button>
-          </li> -->
+  <div id="app">
+    <header>
+      <h1 class="classroom-title">👩🏻‍💻 나만의 유튜브 강의실 👨🏻‍💻</h1>
+      <nav id="classroom-navigation" class="navigation">
+        <div id="classroom-watched-filter-button" class="button-group" data-focus="unwatched">
+          <button class="button focus" data-filter="unwatched">볼 영상</button>
+          <button class="button" data-filter="watched">본 영상</button>
         </div>
-      </section>
-      <!-- 2-2 검색 결과가 없을 경우, `search-result--no-result` class를 붙이고 아래와 같은 no-result를 보여줍니다.-->
-      <!-- <section class="search-result search-result--no-result">
-        <h3 hidden>검색 결과</h3>
-        <div class="no-result">
-          <img src="./src/assets/images/not_found.png" alt="no result image" class="no-result__image">
-          <p class="no-result__description">
-            검색 결과가 없습니다<br />
-            다른 키워드로 검색해보세요
-          </p>
+
+        <button id="search-modal-button" class="button" data-open-modal="#search-modal">🔍 검색</button>
+      </nav>
+    </header>
+  
+    <main class="classroom-container">
+      <ul id="save-video-result" class="video-result">
+        <div class="empty-content">
+          <i class="fa-solid fa-video-slash"></i>
+          <p class="title">볼 영상으로 저장된 동영상이 없어요!</p>
+          <p class="description">화면 우측 상단의 검색 버튼을 눌러 동영상을 추가해주세요.</p>
         </div>
-      </section> -->
+
+      </ul>
+    </main>
+
+    <div id="modal" class="modal-container hide">
+      <div class="dimmer"></div>
+
+      <div id="search-modal" class="modal-content modal-video-search show" role="dialog" aria-labelledby="modal-content-title">
+        <h2 id="search-modal-title" class="modal-content-title">🔍 보고싶은 영상 찾기 🔍</h2>
+        <form id="search-form" class="search-input-form">
+          <h3 hidden>검색어 입력</h3>
+          <input id="search-input-keyword" type="text" placeholder="검색어를 입력해주세요" class="search-input-keyword">
+          <button id="search-button" class="button search-button" disabled>검색</button>
+        </form>
+
+        <section id="search-result" class="search-result">
+          <h3 hidden>검색 결과</h3>
+          <div id="video-list" class="video-list">
+            <ul id="search-video-result" class="video-result">
+              <div class="empty-content">
+                <i class="fa-solid fa-face-laugh-squint"></i>
+                <p class="title">검색어를 입력해주세요.</p>
+                <p class="description">상단의 입력란을 통해 검색어를 입력한 후 엔터 또는 검색 버튼을 누르면 검색할 수 있어요!</p>
+              </div>
+  
+            </ul>
+  
+            <ul id="skeleton-list">
+              <div class="skeleton">
+                <div class="image"></div>
+                <p class="line"></p>
+                <p class="line"></p>
+              </div>
+            </ul>
+  
+            <div id="search-result-scroll-observer"></div>
+          </div>
+        </section>
+      </div>
     </div>
+
   </div>
 </body>
 

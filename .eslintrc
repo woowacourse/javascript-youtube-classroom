@@ -3,7 +3,7 @@
         "browser": true,
         "es2021": true
     },
-    "ignorePatterns": ["*.test.js", "*.config.js"],
+    "ignorePatterns": ["*.test.js", "*.config.js", "*.spec.js", "*.d.js"],
     "extends": ["eslint:recommended", "airbnb-base"],
     "parser": "@babel/eslint-parser",
     "parserOptions": {
@@ -26,6 +26,9 @@
         "object-curly-newline":"off",
         "operator-linebreak":"off",
         "lines-between-class-members":"off",
-        "array-callback-return":"off"
+        "array-callback-return":"off",
+        "no-extra-boolean-cast":"off",
+        "no-await-in-loop":"off",
+        "no-restricted-globals": "off"
     }
 }

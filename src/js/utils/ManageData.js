@@ -4,5 +4,10 @@ export const getParsedTime = timeString => {
   return `${time.getFullYear()}년 ${time.getMonth() + 1}월 ${time.getDate()}일`;
 };
 
+export const getTimeStamp = (targetDate = new Date()) => Math.round(targetDate.getTime() / 1000);
+
 export const getUrlSearchParams = (url, params) =>
   `${url}?${new URLSearchParams(params).toString()}`;
+
+export const getTimeDiffToPercent = (startTime, currentTime, totalTime = 1000) =>
+  Math.ceil((currentTime - startTime) * (100 / totalTime));

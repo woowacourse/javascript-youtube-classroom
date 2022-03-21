@@ -1,4 +1,5 @@
-export const CLASS_ROOM_SETTING = Object.freeze({
+export const CLASS_ROOM_SETTING = {
   MAX_VIDEO_NUMBER: 12,
   MAX_SAVE_NUMBER: 100,
-});
+  VIDEO_DATA_CACHE_EXPIRE_TIME: 60 * 60 * 24,
+};
