@@ -90,10 +90,10 @@ class SearchModalView {
     }
   }
 
-  #handleVideoSaveClick = (event, item) => {
+  #handleVideoSaveClick = (target, item) => {
     try {
       saveToStorage(item);
-      event.target.disabled = true;
+      target.disabled = true;
     } catch (e) {
       alert(e.message);
     }
@@ -102,7 +102,7 @@ class SearchModalView {
   #renderSearchResult({ searchResultArray, hasNextPage }) {
     removeAllSkeletons(this.#videoList);
     const resultElementArray = searchResultArray.map((resultItem) => {
-      const saveHandler = (event) => this.#handleVideoSaveClick(event, resultItem);
+      const saveHandler = ({ target }) => this.#handleVideoSaveClick(target, resultItem);
       const videoElement = searchVideoElementTemplate(resultItem);
       selectDom('.video-item__save-button', videoElement).addEventListener('click', saveHandler);
       return videoElement;
