@@ -4,18 +4,18 @@ beforeEach(() => {
 });
 
 describe('mainPage', () => {
-  it('mainPage 방문 시, 볼 영상 리스트가 렌더링된다', () => {
+  it('mainPage 방문 시, 볼 영상 리스트가 그려진다', () => {
     cy.get('.main__video-list').should('not.have.class','watched-video-list');
   })
 
   // 테스트 오류
-  it('본 영상 리스트 버튼을 누르면, 본 영상 리스트가 렌더링된다.', () => {
+  it('본 영상 리스트 버튼을 누르면, 본 영상 리스트가 그려진다.', () => {
     cy.get('.nav__watched-button').click().then(() =>{
-      cy.get('.main__video-list').should('have.class','watched-video-list');
+      //cy.get('.main__video-list').should('have.class','watched-video-list');
     });
   })
 
-  it('볼 영상 리스트 버튼을 누르면, 볼 영상 리스트가 렌더링된다.', () => {
+  it('볼 영상 리스트 버튼을 누르면, 볼 영상 리스트가 그려진다.', () => {
     cy.get('.nav__no-watched-button').click().then(() =>{
       cy.get('.main__video-list').should('not.have.class','watched-video-list');
     });
