@@ -10,11 +10,7 @@ import {
   getAllFromStorage,
 } from '../../domain/storeVideos';
 import { removeCommonElements, removeElementList, selectDom } from '../util/util';
-import {
-  errorTemplate,
-  noSavedVideosTemplate,
-  savedVideoElementTemplate,
-} from './SavedVideosTemplate';
+import { noSavedVideosTemplate, savedVideoElementTemplate } from './SavedVideosTemplate';
 
 class SavedVideosView {
   #savedVideos;
@@ -91,16 +87,12 @@ class SavedVideosView {
   }
 
   #renderNewVideos(newVideoIdArray) {
-    try {
-      if (newVideoIdArray.length !== 0) {
-        const videoObjectArray = newVideoIdArray.map((id) => getAllFromStorage()[id]);
-        const videoElementList = this.#createVideoElements(videoObjectArray);
-        this.#videoList.append(...videoElementList);
-        this.#renderedVideoIdArray = [...this.#renderedVideoIdArray, ...newVideoIdArray];
-      }
-    } catch (e) {
-      this.#savedVideos.append(errorTemplate());
-    }
+    if (newVideoIdArray.length === 0) return;
+
+    const videoObjectArray = newVideoIdArray.map((id) => getAllFromStorage()[id]);
+    const videoElementList = this.#createVideoElements(videoObjectArray);
+    this.#videoList.append(...videoElementList);
+    this.#renderedVideoIdArray = [...this.#renderedVideoIdArray, ...newVideoIdArray];
   }
 
   #renderNoSavedVideoTemplate() {
