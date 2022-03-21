@@ -4,12 +4,27 @@ import videoStorage from '../videoStorage.js';
 import emptyImage from '../../assets/images/empty.png';
 
 export default class MainView {
+  #showType = VIDEO_TYPE.WATCH_LATER;
+
   constructor() {
     this.registerDOM();
     this.renderStoredVideoList();
-    this.showType = VIDEO_TYPE.WATCH_LATER;
     this.renderWatchLaterVideos();
     this.decideRenderEmptyImage();
+  }
+
+  get showType() {
+    return this.#showType;
+  }
+
+  set showType(type) {
+    if (this.#showType === type) {
+      return;
+    }
+    if (type !== VIDEO_TYPE.WATCH_LATER && type !== VIDEO_TYPE.WATCHED) {
+      return;
+    }
+    this.#showType = type;
   }
 
   registerDOM() {
