@@ -23,7 +23,7 @@
 //
 // -- This will overwrite an existing command --
 // Cypress.Commands.overwrite('visit', (originalFn, url, options) => { ... })
-import videoStorage from "../../src/js/videoStorage";
+import VideoStorage from "../../src/js/VideoStorage";
 
 Cypress.Commands.add("searchKeyword", (searchKeyword) => {
   cy.get("#search-input-keyword").clear().type(searchKeyword);
@@ -31,6 +31,7 @@ Cypress.Commands.add("searchKeyword", (searchKeyword) => {
 });
 
 Cypress.Commands.add("addVideo", (videoId, boolean) => {
+  const videoStorage = new VideoStorage();
   videoStorage.addVideo({
     videoId,
     thumbnailUrl: "https:",

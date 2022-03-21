@@ -81,10 +81,6 @@ describe("보고싶은 영상 찾기 모달창 전체 로직 테스트", () => {
 
     cy.get("#search-modal-button").click();
     cy.searchKeyword(searchKeyword);
-    cy.get(".video-item__save-button").eq(0).click();
-    cy.get(".dimmer").click({ force: true });
-    cy.get("#search-modal-button").click();
-    cy.searchKeyword(searchKeyword);
     cy.get(".video-item__save-button").eq(0).should("be.not.visible");
   });
 });
