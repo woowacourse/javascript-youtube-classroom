@@ -1,4 +1,4 @@
-export default class WebStore {
+export default class RootLocalStorage {
   constructor(key) {
     this.key = key;
     this.cached = JSON.parse(localStorage.getItem(this.key)) || [];

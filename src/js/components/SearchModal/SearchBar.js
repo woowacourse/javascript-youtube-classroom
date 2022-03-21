@@ -1,7 +1,7 @@
 import { getSearchAPI } from '../../api/api.js';
 import Component from '../../core/Component.js';
+import { savedVideosStorage } from '../../localStorage/savedVideos.js';
 import { rootStore } from '../../store/rootStore.js';
-import { savedVideosStorage } from '../../store/WebStore.js';
 
 export default class SearchBar extends Component {
   template() {

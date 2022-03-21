@@ -1,7 +1,7 @@
 import { ALERT_MESSAGE, MAX_SAVE_COUNT } from '../constant';
-import WebStore from '../store/WebStore';
+import RootLocalStorage from './rootLocalStorage';
 
-export default class SavedVideos extends WebStore {
+export default class SavedVideos extends RootLocalStorage {
   constructor(key) {
     super(key);
   }
