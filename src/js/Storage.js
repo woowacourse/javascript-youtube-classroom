@@ -1,4 +1,4 @@
-import { ERROR_MESSAGE, MAX_VIDEO_SAVE } from './constants';
+import { ERROR_MESSAGE, MAX_VIDEO_SAVE, RESULT } from './constants';
 
 const setData = (key, data) => { localStorage.setItem(key, JSON.stringify(data)) };
 const getData = (key) => JSON.parse(localStorage.getItem(key));
@@ -6,19 +6,27 @@ const getData = (key) => JSON.parse(localStorage.getItem(key));
 export default class Storage {
   #videos;
 
+  #status;
+
   constructor() {
+    this.#status = null;
     this.#videos = this.#getLocalStorageVideos();
   }
 
   get videos() { return this.#videos; }
+
+  get status() { return this.#status; }
 
   #getLocalStorageVideos() {
     let videos;
     try {
       videos = getData('videos') || [];
     } catch (err) {
-      videos = 'ERROR';
+      this.#status = RESULT.FAIL;
+      console.error(ERROR_MESSAGE.FAIL_TO_READ_SAVED_VIDEO_INFO);
+      return [];
     }
+    this.#status = RESULT.SUCCESS;
     return videos;
   }
 

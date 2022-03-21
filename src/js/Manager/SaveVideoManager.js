@@ -8,11 +8,10 @@ export default class SaveVideoManager {
   }
 
   updateSavedVideos() {
-    const { videos } = this.storage;
-    const response = Array.isArray(videos) ? RESULT.SUCCESS : RESULT.FAIL;
-    const unwatchedVideos = Array.isArray(videos) ? videos.filter((video) => video.watched === false) : [];
-    const watchedVideos = Array.isArray(videos) ? videos.filter((video) => video.watched === true) : [];
-    dispatch(EVENT.UPDATE_SAVED_VIDEO_LIST, { response, unwatchedVideos, watchedVideos }, $('#app'));
+    const { videos, status } = this.storage;
+    const unwatchedVideos = videos.filter((video) => video.watched === false);
+    const watchedVideos = videos.filter((video) => video.watched === true);
+    dispatch(EVENT.UPDATE_SAVED_VIDEO_LIST, { response: status, unwatchedVideos, watchedVideos }, $('#app'));
   }
 
   saveVideo(video) {
