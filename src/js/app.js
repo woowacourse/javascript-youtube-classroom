@@ -166,12 +166,12 @@ export default class App {
 
   showErrorEmoji = () => {
     this.$errorEmoji.innerText = randomErrorEmoji();
-    this.$noSavedVideo.removeAttribute('hidden');
+    this.$noSavedVideo.classList.remove('hide');
   };
 
   observeVideoListContainerForErrorEmoji() {
     const observer = new MutationObserver(() => {
-      this.$noSavedVideo.setAttribute('hidden', true);
+      this.$noSavedVideo.classList.add('hide');
       if (this.$videoList.children.length === 0) {
         return this.showErrorEmoji();
       }

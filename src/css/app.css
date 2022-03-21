@@ -112,6 +112,10 @@ header > h1 {
   text-align: center;
 }
 
+.no-saved-video.hide {
+  display: none;
+}
+
 .no-saved-video .error-emoji {
   font-size: 200px;
 }
