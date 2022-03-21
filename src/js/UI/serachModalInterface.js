@@ -61,7 +61,7 @@ const searchModalInterface = {
     $('.video-list').classList.add('hide');
   },
   renderSearchResult(response) {
-    if (response.length === 0) {
+    if (response.items.length === 0) {
       this.renderNoResult();
       return;
     }
