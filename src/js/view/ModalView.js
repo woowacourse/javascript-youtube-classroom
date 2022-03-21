@@ -1,7 +1,7 @@
 import VideoItemView from './VideoItemView.js';
 import videoStorage from '../videoStorage.js';
 import { DOM_STRING, EVENT, VIDEO_LIST, VIDEO_TYPE } from '../utils/constants.js';
-import { $, throttleFunc } from '../utils/common.js';
+import { $, throttle } from '../utils/common.js';
 import notFoundImage from '../../assets/images/not_found.png';
 
 export default class ModalView {
@@ -9,7 +9,6 @@ export default class ModalView {
     this.registerDOM();
     this.registerImage();
     this.videoItemList = [];
-    this.throttleSearch = throttleFunc(this.doWhencScrollBottom.bind(this));
   }
 
   registerDOM() {
@@ -73,9 +72,10 @@ export default class ModalView {
   }
 
   bindVideoListScroll(callback) {
-    this.$videoList.addEventListener('scroll', () => {
-      this.throttleSearch(callback);
-    });
+    this.$videoList.addEventListener(
+      'scroll',
+      throttle(this.doWhencScrollBottom.bind(this, callback))
+    );
   }
 
   bindVideoListClickStoreButton(callback) {

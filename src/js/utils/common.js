@@ -5,12 +5,12 @@ export const transformDate = dateString => {
   return `${year}년 ${month}월 ${date}일`;
 };
 
-export const throttleFunc = (callback, delayTime = 1000) => {
-  let throttle = null;
+export const throttle = (callback, delayTime = 1000) => {
+  let throttleTimer = null;
   return function (...parameters) {
-    if (!throttle) {
-      throttle = setTimeout(async () => {
-        throttle = null;
+    if (!throttleTimer) {
+      throttleTimer = setTimeout(async () => {
+        throttleTimer = null;
         callback(...parameters);
       }, delayTime);
     }
