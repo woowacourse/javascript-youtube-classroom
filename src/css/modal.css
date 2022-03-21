@@ -19,7 +19,7 @@
 .search-modal {
   position: relative;
   width: 90vw;
-  height: 727px;
+  height: 80vh;
   background: #ffffff;
   border: 1px solid rgba(0, 0, 0, 0.12);
   border-radius: 4px;
@@ -130,6 +130,7 @@
 @media only screen and (min-width: 500px) {
   .search-modal {
     width: 448px;
+    height: 727px;
   }
   .search-input__keyword {
     width: 280px;

@@ -85,7 +85,7 @@ body {
 }
 
 .video-list.search {
-  height: 493px;
+  height: calc(80vh - 250px);
   overflow-y: scroll;
 }
 
@@ -179,6 +179,9 @@ body {
   }
   .video-list {
     grid-template-columns: repeat(2, 1fr);
+  }
+  .video-list.search {
+    height: 493px;
   }
 }
 
