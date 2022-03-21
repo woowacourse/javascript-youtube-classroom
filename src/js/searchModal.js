@@ -50,13 +50,19 @@ class SearchModal {
         const isSavedVideo = hasProperty(this.storage.cache, video.id);
         const disabled = isSavedVideo ? 'disabled' : '';
         return `<li class="video-item" data-video-id="${video.id}" data-testid="search-result-video-item">
-          <img
-            src="${video.thumbnailUrl}"
-            alt="video-item-thumbnail" class="video-item__thumbnail" />
-          <h4 class="video-item__title">${video.title}</h4>
-          <p class="video-item__channel-name">${video.channelTitle}</p>
-          <p class="video-item__published-date">${video.publishedAt}</p>
-          '<button ${disabled} class="btn video-item__save-button" data-testid="save-video-button">⬇ 저장</button>'
+          <iframe width="100%" height="auto" src="https://www.youtube.com/embed/${video.id}" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+          <h4 class="video-item__title">
+            <a href="https://www.youtube.com/watch?v=${video.id}" target="_blank">${video.title}</a>
+          </h4>
+          <p class="video-item__channel-name">
+            <a href="https://www.youtube.com/channel/${video.channelId}" target="_blank">
+              ${video.channelTitle}
+            </a>
+          </p>
+          <p class="video-item__published-date">
+            <time datetime="${video.publishedAtAsDateTime}">${video.publishedAt}</time>
+          </p>
+          <button ${disabled} class="btn video-item__save-button" data-testid="save-video-button">⬇ 저장</button>
         </li>`;
       })
       .join('');

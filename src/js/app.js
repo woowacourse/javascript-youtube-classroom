@@ -58,12 +58,18 @@ export default class App {
     const className = isWatched ? 'video-item--watched' : 'video-item--watch-later';
     return `
       <li class="video-item ${className}" data-video-id="${video.id}" data-testid="saved-video-item">
-        <img
-          src="${video.thumbnailUrl}"
-          alt="video-item-thumbnail" class="video-item__thumbnail" />
-        <h4 class="video-item__title">${video.title}</h4>
-        <p class="video-item__channel-name">${video.channelTitle}</p>
-        <p class="video-item__published-date">${video.publishedAt}</p>
+        <iframe width="100%" height="auto" src="https://www.youtube.com/embed/${video.id}" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+        <h4 class="video-item__title">
+          <a href="https://www.youtube.com/watch?v=${video.id}" target="_blank">${video.title}</a>
+        </h4>
+        <p class="video-item__channel-name">
+          <a href="https://www.youtube.com/channel/${video.channelId}" target="_blank">
+            ${video.channelTitle}
+          </a>
+        </p>
+        <p class="video-item__published-date">
+          <time datetime="${video.publishedAtAsDateTime}">${video.publishedAt}</time>
+        </p>
         <div class="video-item__management">
           <button type="button" class="btn btn-square ${
             isWatched ? 'active' : ''
