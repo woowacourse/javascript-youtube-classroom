@@ -14,22 +14,26 @@ class SaveInterferer {
   }
 
   init() {
-    on(this.$videoListContainer, '@save', (e) => this.saveVideo(e.detail.newVideo));
-    on(this.$watchLaterVideoList, '@watched', (e) => this.saveWatchedVideo(e.detail.watchedVideo));
-    on(this.$watchedVideoList, '@watchlater', (e) => this.saveVideo(e.detail.newVideo));
+    on(this.$videoListContainer, '@save', (e) => this.saveVideo(e.detail.id));
+    on(this.$watchLaterVideoList, '@watched', (e) => this.saveWatchedVideo(e.detail.id));
+    on(this.$watchedVideoList, '@watchlater', (e) => this.saveWatchLaterVideo(e.detail.id));
   }
 
-  saveVideo(newVideo) {
+  saveVideo(id) {
     try {
-      saveMachine.saveToLocalStorage(LOCALSTORAGE_KEY_SAVE, newVideo);
+      this.saveWatchLaterVideo(id);
       this.mainInterferer.loadSavedItemsPage();
     } catch (err) {
       alert(err.message);
     }
   }
 
-  saveWatchedVideo(watchedVideo) {
-    saveMachine.saveToLocalStorage(LOCALSTORAGE_KEY_WATCHED, watchedVideo);
+  saveWatchLaterVideo(id) {
+    saveMachine.saveToLocalStorage(LOCALSTORAGE_KEY_SAVE, id);
+  }
+
+  saveWatchedVideo(id) {
+    saveMachine.saveToLocalStorage(LOCALSTORAGE_KEY_WATCHED, id);
   }
 }
 

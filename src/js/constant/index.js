@@ -2,6 +2,8 @@ export const LOCALSTORAGE_KEY_SAVE = 'save';
 
 export const LOCALSTORAGE_KEY_WATCHED = 'watched';
 
+export const LOCALSTORAGE_KEY_SEARCHED = 'searched';
+
 export const ERROR_403 = '403 Error';
 
 export const REQUEST_VIDEO_QUANTITY = 10;

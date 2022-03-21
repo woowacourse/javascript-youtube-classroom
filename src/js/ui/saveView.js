@@ -20,7 +20,7 @@ class SaveView {
 
     const parentTarget = target.closest('li');
     emit(currentTarget, '@save', {
-      newVideo: convertDOMToSaveObject(parentTarget),
+      id: parentTarget.dataset.videoId,
     });
   }
 }

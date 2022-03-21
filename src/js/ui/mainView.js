@@ -1,5 +1,4 @@
 import { CONFIRM_MESSAGE } from '../constant';
-import { convertDOMToSaveObject } from '../util/converter';
 import { emit, on } from '../util/event';
 import template from './templates';
 
@@ -54,7 +53,7 @@ class MainView {
 
       parentTarget.remove();
       emit(this.$watchLaterVideoList, '@watched', {
-        watchedVideo: convertDOMToSaveObject(parentTarget),
+        id: parentTarget.dataset.videoId,
       });
       emit(this.$watchLaterVideoList, '@delete', { id: parentTarget.dataset.videoId });
     }
@@ -81,7 +80,7 @@ class MainView {
       parentTarget.remove();
 
       emit(this.$watchedVideoList, '@watchlater', {
-        newVideo: convertDOMToSaveObject(parentTarget),
+        id: parentTarget.dataset.videoId,
       });
       emit(this.$watchedVideoList, '@delete', { id: parentTarget.dataset.videoId });
     }

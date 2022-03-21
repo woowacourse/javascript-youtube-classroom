@@ -56,15 +56,15 @@ const template = {
 
   watchLaterVideoItem: (savedItems, isWatched) => `
   ${savedItems
-    .map(({ videoId, videoThumbnail, videoDate, videoTitle, videoChannelTitle }) => {
+    .map(({ id, thumbnails, publishTime, title, channelTitle }) => {
       return `
-    <section class="video-item" data-video-id=${videoId}>
+    <section class="video-item" data-video-id=${id}>
       <img
-        src=${videoThumbnail}
+        src=${thumbnails}
         alt="video-item-thumbnail" class="video-item__thumbnail" />
-      <h4 class="video-item__title" >${videoTitle}</h4>
-      <p class="video-item__channel-name" >${videoChannelTitle}</p>
-      <p class="video-item__published-date" >${videoDate}</p>
+      <h4 class="video-item__title" >${title}</h4>
+      <p class="video-item__channel-name" >${channelTitle}</p>
+      <p class="video-item__published-date" >${convertDataToDateString(publishTime)}</p>
       <div class="video-watch-controller">
         ${
           isWatched

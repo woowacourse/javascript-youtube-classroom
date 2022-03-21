@@ -5,6 +5,8 @@ import ModalView from '../ui/modalView';
 import SearchResultView from '../ui/searchResultView';
 import SkeletonView from '../ui/skeletonView';
 import { $ } from '../util/selector';
+import saveMachine from '../domain/saveMachine';
+import { LOCALSTORAGE_KEY_SEARCHED } from '../constant';
 
 class ModalInterferer {
   #keyword;
@@ -80,10 +82,12 @@ class ModalInterferer {
     searchMachine
       .searchByKeyword(this.#keyword, this.#pageToken)
       .then(({ videos, nextPageToken }) => {
+        saveMachine.saveSearchedResult(LOCALSTORAGE_KEY_SEARCHED, videos);
         this.searchResultView.renderSearchResult(videos);
         this.#pageToken = nextPageToken;
       })
       .catch((err) => {
+        console.log(err);
         this.scrollHandler.setError(true);
         this.errorView.renderNetworkError(err);
       })

@@ -1,4 +1,5 @@
 import { LOCALSTORAGE_KEY_SAVE, LOCALSTORAGE_KEY_WATCHED } from '../constant';
+import saveMachine from '../domain/saveMachine';
 import { getLocalStorage, setLocalStorage } from '../store/localStorage';
 import MainView from '../ui/mainView';
 import { on } from '../util/event';
@@ -32,17 +33,17 @@ class MainInterferer {
   }
 
   loadSavedItemsPage() {
-    this.#savedItems = getLocalStorage(LOCALSTORAGE_KEY_SAVE);
+    this.#savedItems = saveMachine.getItemsById(getLocalStorage(LOCALSTORAGE_KEY_SAVE));
     this.mainView.renderItems(this.#savedItems);
   }
 
   loadWatchedItemsPage() {
-    this.#watchedItems = getLocalStorage(LOCALSTORAGE_KEY_WATCHED);
+    this.#watchedItems = saveMachine.getItemsById(getLocalStorage(LOCALSTORAGE_KEY_WATCHED));
     this.mainView.renderItems(this.#watchedItems);
   }
 
   requestDeleteWatchLaterItem(key, id) {
-    const filteredItems = getLocalStorage(key).filter((item) => item.videoId !== id);
+    const filteredItems = getLocalStorage(key).filter((videoId) => videoId !== id);
     setLocalStorage(key, filteredItems);
   }
 }
