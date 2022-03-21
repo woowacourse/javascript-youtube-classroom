@@ -21,23 +21,23 @@ export default class SearchResult {
     this.setSubscribeStores();
   }
 
-  render(state) {
+  render = state => {
     this.#renderMethodList.forEach(renderMethod => {
       renderMethod(state);
     });
-  }
+  };
 
   addRenderMethod(renderMethod) {
     this.#renderMethodList.push(renderMethod);
   }
 
   setSubscribeStores() {
-    YoutubeSearchStore.addSubscriber(this.render.bind(this));
+    YoutubeSearchStore.addSubscriber(this.render);
   }
 
   setRenderList() {
-    this.addRenderMethod(this.drawVideoList.bind(this));
-    this.addRenderMethod(this.drawLoadingStatus.bind(this));
+    this.addRenderMethod(this.drawVideoList);
+    this.addRenderMethod(this.drawLoadingStatus);
   }
 
   setDefaultElements() {
@@ -86,7 +86,7 @@ export default class SearchResult {
     Snackbar(ALERT_MESSAGE.SAVE_LIST_ADD);
   };
 
-  drawSkeletonList() {
+  drawSkeletonList = () => {
     const $fragment = document.createDocumentFragment();
     Array.from({ length: CLASS_ROOM_SETTING.MAX_VIDEO_NUMBER }).map(() => {
       const $skeleton = createElement('LI', {
@@ -102,7 +102,7 @@ export default class SearchResult {
       $fragment.append($skeleton);
     });
     this.$skeletonList.replaceChildren($fragment);
-  }
+  };
 
   #getResultNotFound(searchKeyword) {
     return createElement('DIV', {
@@ -150,7 +150,7 @@ export default class SearchResult {
     }, document.createDocumentFragment());
   }
 
-  drawVideoList({ items, searchKeyword, isLoaded, error }) {
+  drawVideoList = ({ items, searchKeyword, isLoaded, error }) => {
     if (error) {
       this.$videoResult.replaceChildren(this.#getResultServerError());
       return;
@@ -169,10 +169,10 @@ export default class SearchResult {
 
     const $videoList = this.#getVideoElementList(items);
     this.$videoResult.replaceChildren($videoList);
-  }
+  };
 
-  drawLoadingStatus({ searchKeyword, isLoading }) {
+  drawLoadingStatus = ({ searchKeyword, isLoading }) => {
     this.$scrollObserver.classList.toggle('enable', !!searchKeyword);
     this.$container.classList.toggle('loading', isLoading);
-  }
+  };
 }

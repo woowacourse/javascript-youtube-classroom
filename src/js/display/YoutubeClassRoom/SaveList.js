@@ -18,22 +18,22 @@ export default class SaveList {
     YoutubeSaveListStore.dispatch(ACTION_TYPE.UPDATE_SAVE_LIST);
   }
 
-  render(state) {
+  render = state => {
     this.#renderMethodList.forEach(renderMethod => {
       renderMethod(state);
     });
-  }
+  };
 
   addRenderMethod(renderMethod) {
     this.#renderMethodList.push(renderMethod);
   }
 
   setSubscribeStores() {
-    YoutubeSaveListStore.addSubscriber(this.render.bind(this));
+    YoutubeSaveListStore.addSubscriber(this.render);
   }
 
   setRenderList() {
-    this.addRenderMethod(this.drawVideoList.bind(this));
+    this.addRenderMethod(this.drawVideoList);
   }
 
   setBindEvents() {
@@ -107,7 +107,7 @@ export default class SaveList {
     });
   }
 
-  drawVideoList({ items, listType }) {
+  drawVideoList = ({ items, listType }) => {
     if (items.length === 0) {
       this.$container.replaceChildren(this.#getEmptyVideoList(listType));
       return;
@@ -115,5 +115,5 @@ export default class SaveList {
 
     const $videoList = this.#getVideoElementList(items, listType);
     this.$container.replaceChildren($videoList);
-  }
+  };
 }
