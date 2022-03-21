@@ -11,11 +11,16 @@
   <main id="app" class="classroom-container">
     <h1 class="classroom-container__title">👩🏻‍💻 나만의 유튜브 강의실 👨🏻‍💻</h1>
     <nav class="nav">
-      <button id="search-modal-button" class="button nav__button">🔍 검색</button>
+      <button id="stored-video-filter-button" class="button nav__button clicked" type="button">👁️ 볼 영상</button>
+      <button id="watched-video-filter-button" class="button nav__button" type="button">✅ 본 영상</button>
+      <button id="search-modal-button" class="button nav__button" type="button">🔍 검색</button>
     </nav>
+    <section class="stored-result">
+      <h3 hidden>저장된 영상</h3>
+      <ul class="video-list"></ul>
+    </section>
   </main>
   <div class="modal-container hide">
-    <div class="dimmer"></div>
     <div class="search-modal" role="dialog" aria-labelledby="search-modal-title">
       <h2 id="search-modal-title" class="search-modal__title">🔍 보고싶은 영상 찾기 🔍</h2>
       <section class="search-input">
@@ -43,6 +48,7 @@
     </div>
   </div>
   <div id="toast"></div>
+  <div class="dimmer hide"></div>
 </body>
 
 </html>

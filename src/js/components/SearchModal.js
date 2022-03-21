@@ -1,9 +1,9 @@
 import { fetchData } from '../api';
 import { ERROR_MESSAGE, RULES, THROTTLE_PENDING_MILLISECOND } from '../constants';
 
-import { SKELETON_TEMPLATE } from '../common/template';
-import toast from '../common/toast';
-import VideoCardContainer from '../common/VideosCardContainer';
+import TEMPLATE from './common/template';
+import toast from './common/toast';
+import VideoCardContainer from './common/VideosCardContainer';
 
 import { throttle } from '../utils/throttle';
 import { validateKeyword } from '../utils/validator';
@@ -13,38 +13,31 @@ const toastPopup = toast();
 export default class SearchModal {
   constructor(element) {
     this.element = element;
-    this.configureDOMs();
-    this.bindEvents();
+
+    // configureDOMs
+    this.searchInputKeyword = this.element.querySelector('#search-input-keyword');
+    this.searchErrorMessage = this.element.querySelector('#search-error-message');
+    this.videoListWrapper = this.element.querySelector('.video-list');
+    this.searchForm = this.element.querySelector('#search-form');
+    [this.resultContainer, this.noResultContainer] = this.element.querySelectorAll('.search-result');
+    this.renderSkeletonUI(this.videoListWrapper);
+    this.skeletons = this.videoListWrapper.querySelectorAll('.skeleton');
+
+    // bindEvents
+    this.searchForm.addEventListener('submit', this.searchHandler);
+    this.videoListWrapper.addEventListener('scroll', throttle(this.scrollHandler, THROTTLE_PENDING_MILLISECOND));
+
     this.VideoCardContainer = new VideoCardContainer(
       this.videoListWrapper,
-      { skeletonElement: this.skeletons[0] }
+      {
+        skeletonElement: this.skeletons[0],
+        currentPage: 'SearchModal',
+      }
     );
     this.pageToken = '';
   }
 
-  configureDOMs() {
-    this.searchInputKeyword = this.element.querySelector('#search-input-keyword');
-    this.searchErrorMessage = this.element.querySelector('#search-error-message');
-    this.videoListWrapper = this.element.querySelector('.video-list');
-    this.dimmer = this.element.querySelector('.dimmer');
-    this.searchForm = this.element.querySelector('#search-form');
-    [this.resultContainer, this.noResultContainer] = this.element.querySelectorAll('.search-result');
-
-    this.renderSkeletonUI(this.videoListWrapper);
-    this.skeletons = this.videoListWrapper.querySelectorAll('.skeleton');
-  }
-
-  bindEvents() {
-    this.dimmer.addEventListener('click', this.closeModalHandler.bind(this));
-    this.searchForm.addEventListener('submit', this.searchHandler.bind(this));
-    this.videoListWrapper.addEventListener('scroll', throttle(this.scrollHandler.bind(this), THROTTLE_PENDING_MILLISECOND));
-  }
-
-  closeModalHandler() {
-    this.element.classList.add('hide');
-  }
-
-  scrollHandler(e) {
+  scrollHandler = (e) => {
     const { scrollTop, offsetHeight, scrollHeight } = e.target;
     const isNextScroll = scrollTop + offsetHeight >= scrollHeight;
     const isNotEndPage = this.pageToken !== null;
@@ -55,7 +48,7 @@ export default class SearchModal {
         pageToken: this.pageToken,
       });
     }
-  }
+  };
 
   reSearch() {
     this.videoListWrapper.scrollTo({ top: 0 });
@@ -63,28 +56,29 @@ export default class SearchModal {
     this.pageToken = '';
   }
 
-  searchHandler(e) {
+  searchHandler = (e) => {
     e.preventDefault();
 
     try {
       validateKeyword(this.searchInputKeyword.value);
 
+      this.showResultContainer();
       this.reSearch();
-
       this.renderVideoList({
         keyword: this.searchInputKeyword.value,
         pageToken: this.pageToken,
       });
+
       this.searchErrorMessage.textContent = '';
     } catch (error) {
       this.searchErrorMessage.textContent = ERROR_MESSAGE.EMPTY_KEYWORD;
     }
-  }
+  };
 
   renderSkeletonUI(element) {
     element.insertAdjacentHTML(
       'beforeend',
-      SKELETON_TEMPLATE.repeat(RULES.MAX_VIDEO_AMOUNT_PER_REQUEST)
+      TEMPLATE.SKELETON.repeat(RULES.MAX_VIDEO_AMOUNT_PER_REQUEST)
     );
   }
 
@@ -102,14 +96,6 @@ export default class SearchModal {
     this.noResultContainer.classList.add('hidden');
   }
 
-  showSearchResult(videoList) {
-    if (this.hasVideoList(videoList)) {
-      this.showResultContainer();
-      return;
-    }
-    this.showNoResultContainer();
-  }
-
   showSkeletons() {
     this.skeletons.forEach((skeleton) => skeleton.classList.remove('hidden'));
   }
@@ -121,17 +107,17 @@ export default class SearchModal {
   async renderVideoList(queryProps) {
     this.showSkeletons();
 
-    const { videoList, error = false } = await fetchData({ ...queryProps });
+    const { videoList, error = false, nextPageToken } = await fetchData({ ...queryProps });
 
     if (error) {
-      toastPopup(ERROR_MESSAGE.API_CALLS_QUOTA_EXCEEDED);
+      toastPopup(error.message);
       this.hideSkeletons();
+      this.showNoResultContainer();
       return;
     }
 
-    this.VideoCardContainer.setState({ items: videoList.items });
-    this.showSearchResult(videoList.items);
+    this.VideoCardContainer.setState({ videoList });
     this.hideSkeletons();
-    this.pageToken = videoList.nextPageToken || null;
+    this.pageToken = nextPageToken || null;
   }
 }

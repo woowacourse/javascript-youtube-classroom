@@ -1,4 +1,4 @@
-import { RULES } from './constants';
+import { ERROR_MESSAGE, RULES } from './constants';
 
 const HOME_URL = YOUTUBE_URL;
 const TEST_URL = YOUTUBE_URL_DUMMY;
@@ -8,11 +8,10 @@ const OPTIONS = {
   part: 'snippet',
   maxResults: RULES.MAX_VIDEO_AMOUNT_PER_REQUEST,
   type: 'video',
-  key: 'AIzaSyAQD6Xy3mRw72FwG6m38yP2b8fvLK4BoB8'
 };
 
 const stringQuery = (props) => {
-  const { url = BASE_URL, keyword, pageToken, options = OPTIONS } = props;
+  const { url = HOME_URL, keyword, pageToken, options = OPTIONS } = props;
   const query = Object.entries(options).reduce(
     (acc, [key, value]) => (acc += `${key}=${value}&`),
     `${url}q=${keyword}&`
@@ -24,6 +23,34 @@ const stringQuery = (props) => {
   return `${query}pageToken=${pageToken}`;
 };
 
+const videoListFormatter = (item) => {
+  try {
+    const {
+      id: { videoId },
+      snippet: {
+        publishTime,
+        channelTitle,
+        title,
+      },
+    } = item;
+
+    const thumbnailURL = item.snippet.thumbnails.medium.url || '';
+
+    const date = new Date(publishTime);
+    const dateText = `${date.getFullYear()}년 ${date.getMonth() + 1}월 ${date.getDate()}일`;
+
+    return {
+      videoId,
+      thumbnailURL,
+      title,
+      channelTitle,
+      publishedDate: dateText,
+    };
+  } catch (err) {
+    throw new Error(ERROR_MESSAGE.NOT_RESULT);
+  }
+};
+
 const fetchData = async (props) => {
   try {
     const response = await fetch(stringQuery(props));
@@ -32,9 +59,11 @@ const fetchData = async (props) => {
       throw new Error(response.ok);
     }
 
-    const videoList = await response.json();
+    const result = await response.json();
+    const { nextPageToken } = result;
+    const videoList = result.items.map((item) => videoListFormatter(item));
 
-    return { videoList };
+    return { videoList, nextPageToken };
   } catch (error) {
     return { error };
   }

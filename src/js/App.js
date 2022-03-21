@@ -1,10 +1,10 @@
 import '../css/index.css';
-import Index from './pages/Index';
-import SearchModal from './pages/SearchModal';
+import Home from './components/Home';
+import SearchModal from './components/SearchModal';
 
 class App {
   constructor() {
-    this.Index = new Index(document.querySelector('#app'));
+    this.Home = new Home(document.querySelector('#app'));
     this.SearchModal = new SearchModal(
       document.querySelector('.modal-container')
     );
