@@ -24,10 +24,10 @@
   position: relative;
   width: 1080px;
   height: 727px;
-  background: #ffffff;
+  background: var(--white);
   border: 1px solid var(--secondary);
   border-radius: 4px;
-  padding: 20px 30px 20px 30px;
+  padding: 20px 30px;
 }
 
 .search-modal__title {

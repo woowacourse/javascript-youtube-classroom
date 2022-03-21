@@ -13,8 +13,8 @@
 .confirm-modal__form {
   margin-top: 150px;
   display: inline-block;
-  background-color: #fefefe;
-  border: 1px solid #888;
+  background-color: var(--secondary-lighten);
+  border: 1px solid var(--secondary-darken);
   border-radius: 10px;
   width: 400px;
 }
@@ -42,7 +42,7 @@
   color: var(--white);
   font-size: 16px;
   height: 30px;
-  margin: 20px 3px 0 3px;
+  margin: 20px 3px 0;
 }
 
 .confirm-modal__cancel-button {

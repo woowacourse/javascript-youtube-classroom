@@ -92,7 +92,7 @@ body {
 .video-grid {
   max-width: 1020px;
   padding: 0;
-  margin: 39px 0;
+  margin: 40px 0;
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: 30px 36px;
@@ -146,7 +146,7 @@ body {
   }
   .video-item {
     width: 340px !important;
-    margin: 0 0 30px 0;
+    margin: 0 0 30px;
   }
   .video-grid {
     grid-template-columns: 1fr;
@@ -159,7 +159,7 @@ body {
     width: 50%;
   }
   .nav-right__button {
-    margin: 7px 0 0 0;
+    margin: 7px 0 0;
     width: 100%;
   }
   .classroom-container__title {

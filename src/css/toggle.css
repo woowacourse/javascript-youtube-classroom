@@ -1,5 +1,9 @@
+.switch-wrapper {
+  display: flex;
+  justify-content: space-between;
+}
+
 .switch {
-  float: right;
   top: 11px;
   position: relative;
   width: 34px;
