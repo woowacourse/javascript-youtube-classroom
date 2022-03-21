@@ -1,6 +1,7 @@
 body {
   padding: 64px 0;
   font-size: 16px;
+  background-color: var(--background);
 }
 
 .classroom-container {
@@ -67,11 +68,12 @@ body {
 .nav-right__button {
   height: 36px;
   padding: 10px;
-  background: var(--secondary-lighten);
+  background: var(--primary);
+  color: var(--white);
 }
 
 .nav-right__button:hover {
-  background: var(--secondary);
+  background: var(--primary-darken);
 }
 
 .video-item__button {

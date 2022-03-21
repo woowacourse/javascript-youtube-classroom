@@ -7,13 +7,14 @@ export default class MainView {
     this.$modalContainer = $('.modal-container');
 
     this.$toastWrapper = $('.toast-wrapper');
-    this.$darkToggle = $('.classroom__toggle');
+    this.$toggleSwitch = $('.classroom__toggle');
     this.#bindEvents();
+    this.#watchDarkMode();
   }
 
   #bindEvents() {
     on(this.$searchModalButton, 'click', this.#openSearchModal.bind(this));
-    on(this.$darkToggle, 'click', this.toggleDarkMode);
+    on(this.$toggleSwitch, 'change', (event) => this.switchTheme(event));
   }
 
   #openSearchModal() {
@@ -35,7 +36,30 @@ export default class MainView {
     }, 3000);
   };
 
-  toggleDarkMode() {
-    document.body.classList.toggle('dark-mode');
+  #watchDarkMode() {
+    if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+      console.log('dark');
+      document.documentElement.setAttribute('user-theme', 'dark');
+      this.$toggleSwitch.checked = true;
+    } else {
+      console.log('else');
+      document.documentElement.setAttribute('user-theme', 'light');
+      this.$toggleSwitch.checked = false;
+    }
+  }
+
+  switchTheme(event) {
+    // const toggleChecked = event.target.checked;
+
+    // console.log('dark', dark);
+    if (event.target.checked) {
+      document.documentElement.setAttribute('user-theme', 'dark');
+      this.$toggleSwitch.checked = true;
+    } else {
+      document.documentElement.setAttribute('user-theme', 'light');
+      this.$toggleSwitch.checked = false;
+    }
+    console.log(event.target.checked);
+    // document.body.classList.toggle('dark-mode');
   }
 }

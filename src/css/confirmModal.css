@@ -50,7 +50,7 @@
 }
 
 .confirm-modal__cancel-button:hover {
-  background-color: var(--secondary-darken);
+  background-color: var(--secondary-darkest);
 }
 
 .confirm-modal__delete-button {

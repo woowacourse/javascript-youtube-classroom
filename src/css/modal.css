@@ -24,7 +24,7 @@
   position: relative;
   width: 1080px;
   height: 727px;
-  background: var(--white);
+  background: var(--background);
   border: 1px solid var(--secondary);
   border-radius: 4px;
   padding: 20px 30px;
@@ -63,6 +63,10 @@
   height: 36px;
   background: var(--primary);
   color: var(--white);
+}
+
+.search-input__search-button:hover {
+  background-color: var(--primary-darken);
 }
 
 .search-result.search-result--no-result {
@@ -153,7 +157,7 @@
 }
 
 .video-item__save-button:hover {
-  background-color: var(--secondary);
+  background-color: var(--primary);
 }
 
 .saved-button {
