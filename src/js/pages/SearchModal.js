@@ -4,7 +4,6 @@ import SearchModalVideoList from '../common/SearchModal/SearchModalVideoList';
 import throttle from '../utils/throttle';
 import ErrorContainer from '../common/SearchModal/ErrorContainer';
 import { timeFormatter } from '../utils';
-import MainVideoList from '../common/Main/MainVideoList';
 
 const isEmptyKeyword = (keyword) => keyword.trim().length === 0;
 
@@ -66,6 +65,8 @@ export default class SearchModal {
   }
 
   closeModalHandler = () => {
+    this.videoList.replaceChildren();
+    this.searchInputKeyword.value = '';
     this.element.classList.add('hide');
   };
 

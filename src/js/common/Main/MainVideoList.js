@@ -27,6 +27,7 @@ export default class MainVideoList {
 
   constructor(element) {
     this.element = element;
+    this.#state = { activeTab: 'watch-later-videos' };
     this.element.addEventListener('click', this.clickButtonHandler);
   }
 
