@@ -62,24 +62,18 @@ export default class ModalView {
     });
   }
 
-  checkScrollBottom() {
-    return (
+  scrollToBottom(callback) {
+    const isScrollBottom =
       this.$videoList.scrollHeight - this.$videoList.scrollTop <=
-      this.$videoList.offsetHeight + EVENT.SCROLL.OFFSET
-    );
-  }
+      this.$videoList.offsetHeight + EVENT.SCROLL.OFFSET;
 
-  doWhencScrollBottom(callback) {
-    if (this.checkScrollBottom) {
+    if (isScrollBottom) {
       callback(this.$searchInput.value);
     }
   }
 
   bindVideoListScroll(callback) {
-    this.$videoList.addEventListener(
-      'scroll',
-      throttle(this.doWhencScrollBottom.bind(this, callback))
-    );
+    this.$videoList.addEventListener('scroll', throttle(this.scrollToBottom.bind(this, callback)));
   }
 
   bindVideoListClickStoreButton(callback) {
