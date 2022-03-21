@@ -72,6 +72,15 @@
   margin-bottom: 20px;
   text-align: left;
   width: 100%;
+  font-size: 1.2rem;
+  display: flex;
+}
+
+.search-result-keyword {
+  width: 300px;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
 }
 
 .no-result {

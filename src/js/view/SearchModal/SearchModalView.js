@@ -60,9 +60,9 @@ class SearchModalView {
       return;
     }
 
-    const searchResultTitle = selectDom('.search-result-title', this.#searchResult);
-    const formattedKeyword = keyword.length > 15 ? `${keyword.slice(0, 12)}...` : keyword;
-    searchResultTitle.textContent = `'${formattedKeyword}' 검색 결과입니다`;
+    const searchKeyword = selectDom('.search-result-keyword', this.#searchResult);
+    searchKeyword.textContent = keyword;
+    selectDom('.search-result-title', this.#searchResult).classList.remove('hide');
 
     this.#clearPreviousRender();
     this.#sendSearchRequest(keyword);
