@@ -1,48 +1,54 @@
-import { REDIRECT_SERVER_HOST } from './constants.js';
+import { _ } from '../utils/fx.js';
+import { fetchByGet } from '../utils/index.js';
 import { YOUTUBE_API_REQUEST_COUNT } from '../constants/index.js';
 
-export default class YoutubeAPI {
-  #nextPageToken;
-  #keyword;
+const PRIVATE_VARIABLE = {
+  nextPageToken: '',
+  keyword: '',
+};
 
-  #makeURL() {
-    const url = new URL(REDIRECT_SERVER_HOST);
-    const parameters = new URLSearchParams({
-      part: 'snippet',
-      type: 'video',
-      maxResults: YOUTUBE_API_REQUEST_COUNT,
-      regionCode: 'kr',
-      safeSearch: 'strict',
-      pageToken: this.#nextPageToken || '',
-      q: this.#keyword,
-    });
-    url.search = parameters.toString();
-    return url;
-  }
+const makeParameters = () =>
+  new URLSearchParams({
+    part: 'snippet',
+    type: 'video',
+    maxResults: YOUTUBE_API_REQUEST_COUNT,
+    regionCode: 'kr',
+    safeSearch: 'strict',
+    pageToken: PRIVATE_VARIABLE.nextPageToken,
+    q: PRIVATE_VARIABLE.keyword,
+  });
 
-  #refresh(keyword) {
-    this.#nextPageToken = '';
-    this.#keyword = keyword;
-  }
+const makeURL = (host) => {
+  const url = new URL(host);
 
-  #checkEndPage() {
-    return this.#nextPageToken === undefined;
-  }
+  url.search = makeParameters().toString();
 
-  async videos() {
-    if (this.#checkEndPage()) return [];
+  return url;
+};
 
-    const response = await fetch(this.#makeURL(), { method: 'GET' });
-    const body = await response.json();
+const checkEndPage = () => PRIVATE_VARIABLE.nextPageToken === undefined;
 
-    if (!response.ok) throw new Error(body.error.message);
+const YoutubeAPI = {
+  getVideos(host) {
+    if (checkEndPage()) return [];
 
-    this.#nextPageToken = body.nextPageToken;
-    return body.items;
-  }
+    return _.go(
+      host,
+      makeURL,
+      fetchByGet,
+      (response) => (response.ok ? response.json() : Promise.reject(new Error())),
+      (body) => {
+        PRIVATE_VARIABLE.nextPageToken = body.nextPageToken;
 
-  async search(keyword) {
-    this.#refresh(keyword);
-    return await this.videos();
-  }
-}
+        return body.items;
+      },
+    );
+  },
+
+  readyToFetch(keyword) {
+    PRIVATE_VARIABLE.nextPageToken = '';
+    PRIVATE_VARIABLE.keyword = keyword;
+  },
+};
+
+export default YoutubeAPI;

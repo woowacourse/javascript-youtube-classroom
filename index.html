@@ -5,16 +5,38 @@
     <title>나만의 유튜브 강의실</title>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link rel="stylesheet" href="./src/css/index.css" />
-  </head>
-
+    <script defer src="bundle.js"></script></head>
   <body>
-    <main id="app" class="classroom-container">
+    <main id="app" class="classroom-container unseen">
       <h1 class="classroom-container__title">👩🏻‍💻 나만의 유튜브 강의실 👨🏻‍💻</h1>
+
       <nav class="nav">
-        <button id="search-modal-button" class="button nav__button">🔍 검색</button>
+        <div class="nav__button-wrap">
+          <button type="button" id="unseen-button" class="switch-button button nav__button" data-tab="unseen">👁️ 볼 영상</button>
+          <button type="button" id="seen-button" class="switch-button button nav__button" data-tab="seen">✅ 본 영상</button>
+        </div>
+
+        <div class="nav__button-wrap">
+          <button type="button" id="search-modal-button" class="button nav__button">🔍 검색</button>
+        </div>
       </nav>
+
+      <section class="save-video-list unseen">
+        <div id="unseen-empty-screen" class="no-result">
+          <p class="no-result__message">볼 영상이 없습니다.</p>
+        </div>
+        <ul id="unseen-videos" class="video-list">
+        </ul>
+      </section>
+
+      <section class="save-video-list seen">
+        <div id="seen-empty-sceen" class="no-result">
+          <p class="no-result__message">본 영상이 없습니다.</p>
+        </div>
+        <ul id="seen-videos" class="video-list"></ul>
+      </section>
     </main>
-    <!-- 1 검색 버튼을 누르면 아래와 같은 검색 모달을 보여줍니다.-->
+
     <div id="search-modal" class="modal-container hide">
       <div id="modal-background" class="dimmer"></div>
       <div class="search-modal" role="dialog" aria-labelledby="search-modal-title">
@@ -22,9 +44,8 @@
         <form id="search-form" class="search-input">
           <h3 hidden>검색어 입력</h3>
           <input id="search-input-keyword" type="text" placeholder="검색" class="search-input__keyword" />
-          <button id="search-button" class="search-input__search-button button">검색</button>
+          <button type="submit" id="search-button" class="search-input__search-button button">검색</button>
         </form>
-        <!-- 2-1 검색 결과가 있을 경우, 아래와 같은 검색 결과 목록을 보여줍니다.-->
         <section id="empty-screen" class="search-result search-result--no-result">
           <h3 hidden>검색 결과</h3>
           <div class="no-result">
@@ -42,6 +63,5 @@
         </section>
       </div>
     </div>
-    <script type="module" src="./src/js/index.js"></script>
   </body>
 </html>

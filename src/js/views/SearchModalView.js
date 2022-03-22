@@ -1,9 +1,11 @@
-import { $ } from './utils.js';
+import { $ } from '../utils/index.js';
 import { SELECTOR } from '../constants/index.js';
 
 export default class SearchModalView {
   #$modal;
+
   #$searchModalButton;
+
   #$modalBackground;
 
   constructor() {
@@ -12,8 +14,9 @@ export default class SearchModalView {
     this.#$modalBackground = $(SELECTOR.MODAL_BACKGROUND);
   }
 
-  bindShowModal() {
+  bindShowModal(handler) {
     this.#$searchModalButton.addEventListener('click', () => {
+      handler();
       this.#controllModal('remove');
     });
   }

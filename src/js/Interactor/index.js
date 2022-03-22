@@ -1,72 +1,97 @@
-import YoutubeAPI from '../YoutubeAPI/index.js';
-import ValidationError from '../ValidationError/index.js';
+import Validator from './Validator.js';
+import Helper from './Helper.js';
 
-import KeywordInputView from '../views/KeywordInputView.js';
-import VideoView from '../views/VideoView.js';
-import SearchModalView from '../views/SearchModalView.js';
-import UserStorage from '../UserStorage/index.js';
+import KeywordInputView from '../Views/KeywordInputView.js';
+import VideoView from '../Views/VideoView.js';
+import SearchModalView from '../Views/SearchModalView.js';
+import SwitchVideoView from '../Views/SwitchVideoView.js';
+import UnseenVideoListView from '../Views/UnseenVideoListView.js';
+import SeenVideoListView from '../Views/SeenVideoListView.js';
 
-import { checkKeyword } from '../Validator/index.js';
-
-export const convertYYYYMMDD = (publishTime) => {
-  const videoTime = new Date(publishTime.slice(0, 10));
-  return (
-    videoTime.getFullYear().toString() +
-    '년 ' +
-    (videoTime.getMonth() + 1).toString().padStart(2, '0') +
-    '월 ' +
-    videoTime.getDate().toString().padStart(2, '0') +
-    '일'
-  );
-};
-
-const youtubeAPI = new YoutubeAPI();
-
-const polishVideos = (videos) => {
-  const savedVideoIds = UserStorage.getVideoIds();
-
-  return videos.map(({ id, snippet }) => ({
-    id: id.videoId,
-    thumbnail: snippet.thumbnails.default.url,
-    title: snippet.title,
-    channelTitle: snippet.channelTitle, 
-    date: convertYYYYMMDD(snippet.publishTime),
-    saved: savedVideoIds.includes(id.videoId),
-  }));
-};
+import { _ } from '../utils/fx.js';
 
 const keywordInputView = new KeywordInputView();
 const searchModalView = new SearchModalView();
-const videoView = new VideoView(async () => polishVideos(await youtubeAPI.videos()));
+const videoView = new VideoView(Helper.fetchVideo);
+const switchVideoView = new SwitchVideoView();
+const unseenVideoListView = new UnseenVideoListView();
+const seenVideoListView = new SeenVideoListView();
 
-const handleKeywordInputSubmit = async (keyword) => {
+const handleKeywordInputSubmit = (keyword) => {
   try {
-    checkKeyword(keyword);
+    Validator.checkKeyword(keyword);
+
     videoView.refreshVideoScreen();
     videoView.onSkeleton();
-    const videos = polishVideos(await youtubeAPI.search(keyword));
-    videoView.offSkeleton();
-    videoView.renderScreenByVideos(videos);
-  } catch (error) {
-    if (error instanceof ValidationError) return alert(error.message);
-    throw error;
+    _.go(keyword, Helper.searchVideo, (videos) => {
+      videoView.renderScreenByVideos(videos);
+      videoView.offSkeleton();
+    });
+  } catch ({ message }) {
+    alert(message);
   }
 };
 
-const handleSaveVideoButtonClick = (videoId) => {
+const handleSearchModalButtonClick = () => {
+  keywordInputView.refreshInput();
+  videoView.refreshVideoScreen();
+};
+
+const handleSwitchUnseenButtonClick = _.pipe(
+  Helper.loadVideo,
+  _.filter(({ checked }) => !checked),
+  unseenVideoListView.renderScreenByVideos.bind(unseenVideoListView),
+);
+
+const handleSwitchSeenButtonClick = _.pipe(
+  Helper.loadVideo,
+  _.filter(({ checked }) => checked),
+  seenVideoListView.renderScreenByVideos.bind(seenVideoListView),
+);
+
+const handleSaveVideoButtonClick = (video) => {
   try {
-    UserStorage.addVideoId(videoId);
-  } catch (error) {
-    if (error instanceof ValidationError) return alert(error.message);
-    throw error;
+    Validator.checkFullOfDatabase();
+
+    Helper.saveVideo(video);
+    handleSwitchUnseenButtonClick();
+  } catch ({ message }) {
+    alert(message);
   }
 };
+
+const handleUnseenCheckButtonClick = (id) => {
+  const videos = Helper.loadVideo();
+
+  Helper.findVideoById(id, videos).checked = true;
+  Helper.overiteVideos(videos);
+  handleSwitchUnseenButtonClick();
+};
+
+const handleVideoDeleteButtonClick = _.curry((render, id) => {
+  const videos = Helper.loadVideo();
+
+  videos.splice(Helper.findVideoIndexById(id), 1);
+  Helper.overiteVideos(videos);
+  render();
+});
 
 const runApp = () => {
   keywordInputView.bindSubmitKeyword(handleKeywordInputSubmit);
-  searchModalView.bindShowModal();
+  searchModalView.bindShowModal(handleSearchModalButtonClick);
   searchModalView.bindCloseModal();
   videoView.bindSaveVideo(handleSaveVideoButtonClick);
+  switchVideoView.bindSwitchToSeenScreen(handleSwitchSeenButtonClick);
+  switchVideoView.bindSwitchToUnseenScreen(handleSwitchUnseenButtonClick);
+  unseenVideoListView.bindClickButtons(
+    handleUnseenCheckButtonClick,
+    handleVideoDeleteButtonClick(handleSwitchUnseenButtonClick),
+  );
+  seenVideoListView.bindClickButtons(
+    _.noop,
+    handleVideoDeleteButtonClick(handleSwitchSeenButtonClick),
+  );
+  handleSwitchUnseenButtonClick();
 };
 
 export default runApp;
