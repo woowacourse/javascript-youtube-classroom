@@ -73,7 +73,7 @@ export default class EventHandler {
       this.modalView.appendEmptyList();
       this.modalView.appendVideoItem();
       this.modalView.renderSkeletonUI();
-      const videoListData = await videoAPI.getVideoListData(searchInput);
+      const videoListData = await videoAPI.searchVideos(searchInput);
       this.modalView.renderVideoList(videoListData);
     } catch (error) {
       alert(error.message);
@@ -86,7 +86,7 @@ export default class EventHandler {
       this.modalView.appendEmptyList();
       this.modalView.appendVideoItem();
       this.modalView.renderSkeletonUI();
-      const videoListData = await videoAPI.getVideoListData(searchInput);
+      const videoListData = await videoAPI.searchVideos(searchInput);
       this.modalView.renderVideoList(videoListData);
     } catch (error) {
       alert(error.message);

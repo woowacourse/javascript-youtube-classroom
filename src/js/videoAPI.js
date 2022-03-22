@@ -43,13 +43,9 @@ const videoAPI = {
     }
   },
 
-  getVideoListData: async function (searchInput) {
-    try {
-      const rawData = await this.fetchData(searchInput);
-      return this.parsingVideoData(rawData);
-    } catch (error) {
-      throw new Error(error);
-    }
+  searchVideos: async function (searchInput) {
+    const rawData = await this.fetchData(searchInput);
+    return this.parsingVideoData(rawData);
   },
 
   parseTemplate(item) {
