@@ -15,7 +15,7 @@ export default class Controller {
     this.appView = new AppView();
     this.searchInputView = new SearchInputView();
     this.searchResultView = new SearchResultView();
-    this.SearchCloseView = new SearchCloseView();
+    this.searchCloseView = new SearchCloseView();
 
     this.videoModel.savedVideoItems = this.videoModel.getItemsLocalStorage();
     this.appView.renderSavedVideo(this.videoModel.getItemsLocalStorage());
@@ -31,7 +31,7 @@ export default class Controller {
     on(this.searchResultView.$searchTarget, '@scroll-bottom', this.#scrollNextVideos.bind(this));
     on(this.searchResultView.$searchTarget, '@save-video', this.#saveVideo.bind(this));
 
-    on(this.SearchCloseView.$closeButton, '@close-modal', this.#closeModal.bind(this));
+    on(this.searchCloseView.$closeButton, '@close-modal', this.#closeModal.bind(this));
   }
 
   async #searchVideo(event) {
