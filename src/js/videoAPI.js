@@ -32,15 +32,11 @@ const videoAPI = {
   },
 
   parsingVideoData: function (responseData) {
-    try {
-      this.checkResponseError(responseData);
-      this.pageToken = responseData.nextPageToken;
-      return responseData.items.map(item => {
-        return this.parseTemplate(item);
-      });
-    } catch (error) {
-      throw new Error(error);
-    }
+    this.checkResponseError(responseData);
+    this.pageToken = responseData.nextPageToken;
+    return responseData.items.map(item => {
+      return this.parseTemplate(item);
+    });
   },
 
   searchVideos: async function (searchInput) {
