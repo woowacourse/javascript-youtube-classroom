@@ -82,7 +82,7 @@ export default class VideoModel {
     }
   }
 
-  IsIncludedSavedItem(newItem) {
+  isIncludedSavedItem(newItem) {
     let isfindSavedItem = false;
     for (const savedItem of this.#savedVideoItems) {
       if (newItem.videoId === savedItem.videoId) {
@@ -95,7 +95,7 @@ export default class VideoModel {
 
   updateNewVideoItems() {
     const updatedNewVideoItems = this.#newVideoItems.map((newItem) => {
-      return this.IsIncludedSavedItem(newItem);
+      return this.isIncludedSavedItem(newItem);
     });
 
     if (updatedNewVideoItems.length) {
