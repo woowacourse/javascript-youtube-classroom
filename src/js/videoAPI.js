@@ -1,5 +1,5 @@
 import { transformDate } from './utils/common.js';
-import { ERROR_MESSAGE, VIDEO_LIST } from './utils/constants.js';
+import { ERROR_MESSAGE, VIDEO_LIST, VIDEO_TYPE } from './utils/constants.js';
 
 const videoAPI = {
   baseURL: 'https://keen-lamport-feb29e.netlify.app/youtube/v3/search',
@@ -55,7 +55,7 @@ const videoAPI = {
       title: item.snippet.title,
       url: item.snippet.thumbnails.medium.url,
       channelTitle: item.snippet.channelTitle,
-      type: 'watch-later',
+      type: VIDEO_TYPE.WATCH_LATER,
     };
   },
 };
