@@ -51,7 +51,7 @@ class SavedVideosView {
       button.disabled = true;
     });
 
-    this.#renderTab(dataset.tabName);
+    this.#switchTab(dataset.tabName);
     target.classList.add('current');
 
     this.#tabButtons.forEach((button) => {
@@ -59,7 +59,7 @@ class SavedVideosView {
     });
   };
 
-  #renderTab(tabName) {
+  #switchTab(tabName) {
     if (tabName === this.#currentTabName) return;
 
     [this.#currentTabName, this.#otherTabName] = [this.#otherTabName, this.#currentTabName];
