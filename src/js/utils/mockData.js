@@ -1,4 +1,4 @@
-export const mockData = [
+export const MOCK_DATA = [
   {
     url: 'https://i.ytimg.com/vi/ECfuKi5-Cfs/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLDvmIcX-TgdcH2g_Bd4AUxw6hjmvQ',
     title: '[Playlist] 너무 좋은데 괜찮으시겠어요?',
@@ -81,7 +81,7 @@ export const mockData = [
   },
 ];
 
-export const fetchData = {
+export const FETCH_DATA = {
   kind: 'youtube#searchListResponse',
   etag: 'lQ-VEF9lgCYrZErL9nEFN1I1-_U',
   nextPageToken: 'CAoQAA',
@@ -444,7 +444,7 @@ export const fetchData = {
   ],
 };
 
-export const errorData = {
+export const ERROR_DATA = {
   error: {
     code: 400,
     message: 'API key not valid. Please pass a valid API key.',
@@ -469,7 +469,7 @@ export const errorData = {
   },
 };
 
-export const parseData = [
+export const PARSE_DATA = [
   {
     videoId: 'mQhgF7RoUCA',
     publishedAt: '2021-10-14T19:06:42Z',

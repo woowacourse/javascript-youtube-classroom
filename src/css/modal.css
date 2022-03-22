@@ -17,22 +17,22 @@
   position: absolute;
   width: 100%;
   height: 100%;
-  background: rgba(0, 0, 0, 0.5);
+  background: var(--dimmer-color);
 }
 
 .search-modal {
   position: relative;
-  width: 1080px;
-  height: 727px;
-  background: #ffffff;
-  border: 1px solid rgba(0, 0, 0, 0.12);
+  width: 80vw;
+  height: 98vh;
+  background: var(--white-color);
+  border: 1px solid var(--modalBorder-color);
   border-radius: 4px;
   padding: 50px 30px 32px 30px;
 }
 
 .search-modal__title {
   font-weight: bold;
-  font-size: 34px;
+  font-size: max(2.5vw, 24px);
   line-height: 36px;
   text-align: center;
   margin-bottom: 40px;
@@ -45,24 +45,24 @@
 }
 
 .search-input__keyword {
-  width: 400px;
+  width: 30vw;
   height: 36px;
   margin-right: 20px;
   padding: 4px 8px;
-  border: 1px solid #b4b4b4;
+  border: 1px solid var(--inputBoxBorder-color);
   border-radius: 4px;
 }
 
 .search-input__keyword::placeholder {
-  color: #8b8b8b;
+  color: var(--inputPlaceHolder-color);
   font-size: 16px;
 }
 
 .search-input__search-button {
   width: 72px;
   height: 36px;
-  background: #00bcd4;
-  color: #ffffff;
+  background: var(--primary-color);
+  color: var(--white-color);
 }
 
 .search-result.search-result--no-result {
@@ -92,13 +92,13 @@
 }
 
 .video-list {
-  width: 1040px;
-  height: 493px;
+  max-height: 65vh;
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
   gap: 32px 20px;
   overflow-y: scroll;
+  margin-bottom: 10vh;
 }
 
 .video-item {
@@ -146,17 +146,22 @@
   right: 0;
   width: 80px;
   height: 36px;
-  background: #f9f9f9;
+  background: var(--saveButton-color);
   margin-top: 4px;
 }
 
 .video-item__save-button:hover {
-  background: #efefef;
+  background: var(--saveButtonHover-color);
 }
 
 /* Skeleton UI */
 .skeleton {
-  background-image: linear-gradient(90deg, #e0e0e0 0px, #ededed 30px, #e0e0e0 60px);
+  background-image: linear-gradient(
+    90deg,
+    var(--skeletonDefault-color) 0px,
+    var(--skeletonMoving-color) 30px,
+    var(--skeletonDefault-color) 60px
+  );
   animation: refresh 2s infinite ease-out;
 }
 

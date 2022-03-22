@@ -1,6 +1,8 @@
 import videoAPI from '../videoAPI.js';
 import validator from '../utils/validator.js';
 import videoStorage from '../videoStorage.js';
+import { USER_MESSAGE } from '../utils/constants.js';
+import { preprocessVideoInfo } from '../utils/common.js';
 
 export default class EventHandler {
   constructor(mainView, modalView) {
@@ -10,11 +12,45 @@ export default class EventHandler {
   }
 
   setBindEvents() {
-    this.mainView.bindModalOpenButton(this.clickModalOpenButton.bind(this));
+    this.mainView.$modalOpenButton.addEventListener('click', this.clickModalOpenButton.bind(this));
+    this.mainView.$watchLaterButton.addEventListener(
+      'click',
+      this.clickWatchLaterButton.bind(this)
+    );
+    this.mainView.$watchedButton.addEventListener('click', this.clickWatchedButton.bind(this));
+    this.mainView.$storedVideoList.addEventListener('click', this.clickSwitchButton.bind(this));
+    this.mainView.$storedVideoList.addEventListener('click', this.clickDeleteButton.bind(this));
+
     this.modalView.bindOnClickSearchButton(this.clickSearchButton.bind(this));
     this.modalView.bindOnClickDimmer(this.clickDimmer.bind(this));
     this.modalView.bindVideoListScroll(this.videoListScroll.bind(this));
-    this.modalView.bindVideoListClickStoreButton(this.clickStoreButton.bind(this));
+    this.modalView.bindOnClickStoreButton(this.clickStoreButton.bind(this));
+  }
+
+  clickWatchLaterButton() {
+    this.mainView.renderWatchLaterVideos();
+  }
+
+  clickWatchedButton() {
+    this.mainView.renderWatchedVideos();
+  }
+
+  clickSwitchButton(e) {
+    if (e.target.classList.contains('switch-show-type')) {
+      const { videoId } = e.target.dataset;
+      videoStorage.swtichVideoType(videoId);
+      this.mainView.switchRenderingType(e);
+    }
+  }
+
+  clickDeleteButton(e) {
+    if (e.target.classList.contains('delete-button')) {
+      if (window.confirm(USER_MESSAGE.WANT_DELETE)) {
+        const { videoId } = e.target.dataset;
+        videoStorage.deleteVideo(videoId);
+        this.mainView.deleteSelectedVideo(e);
+      }
+    }
   }
 
   clickModalOpenButton() {
@@ -25,19 +61,21 @@ export default class EventHandler {
     this.modalView.hideModal();
   }
 
-  clickStoreButton(videoId) {
-    videoStorage.storeVideoId(videoId);
+  clickStoreButton(videoData) {
+    videoStorage.storeVideo(videoData);
+    this.mainView.renderAddedVideo(videoData);
+    this.mainView.decideRenderEmptyImage();
   }
 
   async clickSearchButton(searchInput) {
     try {
-      validator.checkValidSearchInput(searchInput);
+      validator.validateSearchInput(searchInput);
       this.modalView.resetVideoList();
       this.modalView.appendEmptyList();
       this.modalView.appendVideoItem();
       this.modalView.renderSkeletonUI();
-      const videoListData = await this.getVideoListData(searchInput);
-      this.modalView.renderVideoList(videoListData);
+      const videoListData = await videoAPI.searchVideos(searchInput);
+      this.modalView.renderVideoList(preprocessVideoInfo(videoListData));
     } catch (error) {
       alert(error.message);
       this.modalView.focusSearch();
@@ -49,19 +87,10 @@ export default class EventHandler {
       this.modalView.appendEmptyList();
       this.modalView.appendVideoItem();
       this.modalView.renderSkeletonUI();
-      const videoListData = await this.getVideoListData(searchInput);
-      this.modalView.renderVideoList(videoListData);
+      const videoListData = await videoAPI.searchVideos(searchInput);
+      this.modalView.renderVideoList(preprocessVideoInfo(videoListData));
     } catch (error) {
       alert(error.message);
-    }
-  }
-
-  async getVideoListData(searchInput) {
-    try {
-      const rawData = await videoAPI.fetchData(searchInput);
-      return videoAPI.parsingVideoData(rawData);
-    } catch (error) {
-      throw new Error(error);
     }
   }
 }

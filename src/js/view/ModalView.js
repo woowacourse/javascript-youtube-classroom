@@ -1,7 +1,7 @@
 import VideoItemView from './VideoItemView.js';
 import videoStorage from '../videoStorage.js';
-import { DOM_STRING, EVENT, VIDEO_LIST } from '../utils/constants.js';
-import { $ } from '../utils/common.js';
+import { DOM_STRING, EVENT, VIDEO_LIST, VIDEO_TYPE } from '../utils/constants.js';
+import { $, throttle } from '../utils/common.js';
 import notFoundImage from '../../assets/images/not_found.png';
 
 export default class ModalView {
@@ -9,7 +9,6 @@ export default class ModalView {
     this.registerDOM();
     this.registerImage();
     this.videoItemList = [];
-    this.throttle = null;
   }
 
   registerDOM() {
@@ -64,33 +63,32 @@ export default class ModalView {
   }
 
   bindVideoListScroll(callback) {
-    this.$videoList.addEventListener('scroll', () => {
-      if (!this.throttle) {
-        this.throttle = setTimeout(async () => {
-          this.throttle = null;
-          if (
-            this.$videoList.scrollHeight - this.$videoList.scrollTop <=
-            this.$videoList.offsetHeight + EVENT.SCROLL.OFFSET
-          ) {
-            callback(this.$searchInput.value);
-          }
-        }, 1000);
-      }
-    });
+    this.$videoList.addEventListener('scroll', throttle(this.scrollToBottom.bind(this, callback)));
   }
 
-  bindVideoListClickStoreButton(callback) {
+  bindOnClickStoreButton(callback) {
     this.$videoList.addEventListener('click', event => {
       try {
-        if ([...event.target.classList].includes(DOM_STRING.VIDEO_ITEM_SAVE_BUTTON)) {
+        if (event.target.classList.contains(DOM_STRING.VIDEO_ITEM_SAVE_BUTTON)) {
           videoStorage.checkOverMaxLength();
+          const clickedVideo = event.target.parentElement;
           event.target.classList.add(DOM_STRING.HIDE);
-          callback(event.target.dataset.videoid);
+          callback(this.parseVideoInfo(clickedVideo));
         }
       } catch (error) {
         alert(error.message);
       }
     });
+  }
+
+  scrollToBottom(callback) {
+    const isScrollBottom =
+      this.$videoList.scrollHeight - this.$videoList.scrollTop <=
+      this.$videoList.offsetHeight + EVENT.SCROLL.OFFSET;
+
+    if (isScrollBottom) {
+      callback(this.$searchInput.value);
+    }
   }
 
   resetVideoList() {
@@ -113,23 +111,45 @@ export default class ModalView {
   renderSkeletonUI() {
     this.videoItemList
       .slice(-VIDEO_LIST.RENDER_SIZE)
-      .forEach(videoItem => videoItem.getSkeletonTemplate());
+      .forEach(videoItem => videoItem.renderSkeletonList());
   }
 
-  renderVideoList(data) {
-    if (data.size === 0) {
+  renderVideoList(videoList) {
+    this.showResult();
+    if (videoList.length === 0) {
       this.showNoResult();
       return;
     }
-
+    this.hideSkeletonTemplates(videoList);
     this.videoItemList
-      .slice(-VIDEO_LIST.RENDER_SIZE)
-      .forEach((videoItem, index) => videoItem.getVideoItemTemplate(data[index]));
+      .slice(-videoList.length)
+      .forEach((videoItem, index) => videoItem.renderSearchVideoList(videoList[index]));
+  }
 
-    this.showResult();
+  hideSkeletonTemplates(videoList) {
+    if (videoList.length < VIDEO_LIST.RENDER_SIZE) {
+      this.videoItemList
+        .slice(-VIDEO_LIST.RENDER_SIZE)
+        .slice(0, videoList.length)
+        .forEach(el => {
+          el.$element.classList.add('hide');
+        });
+    }
   }
 
   focusSearch() {
     this.$searchInput.focus();
+  }
+
+  parseVideoInfo(videoInfo) {
+    const [thumbnailImg, title, channelTitle, publishedAt, videoId] = videoInfo.children;
+    return {
+      videoId: videoId.dataset.videoId,
+      publishedAt: publishedAt.textContent,
+      title: title.textContent,
+      url: thumbnailImg.src,
+      channelTitle: channelTitle.textContent,
+      type: VIDEO_TYPE.WATCH_LATER,
+    };
   }
 }

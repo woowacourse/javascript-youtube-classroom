@@ -11,6 +11,10 @@ export const DOM_STRING = {
   VIDEO_ITEM_SAVE_BUTTON: 'video-item__save-button',
   NO_RESULT_IMAGE: '.no-result__image',
   SEARCH_RESULT: '.search-result',
+  WATCH_LATER_BUTTON: '#watch-later-button',
+  WATCHED_BUTTON: '#watched-button',
+  STORED_VIDEO_LIST: '.stored-video-list',
+  EMPTY_LIST_IMAGE: '.empty-list-image',
 };
 
 export const ERROR_MESSAGE = {
@@ -35,4 +39,13 @@ export const EVENT = {
   SCROLL: {
     OFFSET: 50,
   },
+};
+
+export const VIDEO_TYPE = {
+  WATCH_LATER: 'watch-later',
+  WATCHED: 'watched',
+};
+
+export const USER_MESSAGE = {
+  WANT_DELETE: '정말 삭제 하시겠습니까?',
 };
