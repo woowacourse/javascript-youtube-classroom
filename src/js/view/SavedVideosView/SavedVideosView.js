@@ -32,7 +32,7 @@ class SavedVideosView {
     this.#manageVideoStorage = manageVideoStorage;
     this.#savedVideos = selectDom('.saved-videos');
     this.#videoList = selectDom('.video-list', this.#savedVideos);
-    [this.#currentTabName, this.#otherTabName] = TAB_NAMES;
+    [this.#currentTabName, this.#otherTabName] = [TAB_NAMES.UNWATCHED, TAB_NAMES.WATCHED];
     this.#unrenderedVideoIdArray = this.#getCurrentTabIds();
     this.#renderedVideoIdArray = [];
     this.#endOfList = selectDom('.end-of-list');

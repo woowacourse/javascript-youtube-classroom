@@ -18,4 +18,7 @@ export const ERROR_MESSAGES = Object.freeze({
 
 export const DELETE_CONFIRM_MESSAGE = '해당 영상의 저장을 취소합니다. 계속하시겠습니까?';
 
-export const TAB_NAMES = ['unwatched', 'watched'];
+export const TAB_NAMES = {
+  UNWATCHED: 'unwatched',
+  WATCHED: 'watched',
+};
