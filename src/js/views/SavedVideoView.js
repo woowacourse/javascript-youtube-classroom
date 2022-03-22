@@ -37,11 +37,8 @@ export default class SavedVideoView {
   }
 
   #setEmptyListDesign(kind, setting) {
-    if (kind === 'playList') {
-      this.#$playList.classList[setting]('empty-savedList');
-      return;
-    }
-    this.#$watchedList.classList[setting]('empty-savedList');
+    if (kind === 'playList') this.#$playList.classList[setting]('empty-savedList');
+    if (kind === 'watchedList') this.#$watchedList.classList[setting]('empty-savedList');
   }
 
   #makeSavedVideoListTemplate(kind, videos) {
