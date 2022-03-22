@@ -18,10 +18,6 @@
             "error",
             2
         ],
-        "max-lines-per-function": [
-            "error",
-            30
-        ],
         // console.log는 제거
         "no-console": "warn",
         // param을 재할당하는 것은 anti-pattern이라고 생각함 
@@ -40,6 +36,7 @@
         "object-curly-newline": "off",
         "class-methods-use-this": "off",
         "implicit-arrow-linebreak": "off",
-        "consistent-return": "off"
+        "consistent-return": "off",
+        "object-shorthand": "off"
     }
 }

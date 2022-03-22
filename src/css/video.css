@@ -1,0 +1,155 @@
+.video-list {
+  display: grid;
+  grid-template-columns: repeat(4, 15em);
+  gap: 2em 2em;
+}
+
+.video-item {
+  position: relative;
+  width: 15em;
+  height: 16em;
+}
+
+.video-item__thumbnail {
+  width: 100%;
+  height: 8.44em;
+}
+
+.video-item__title {
+  font-weight: bold;
+  font-size: 1rem;
+  line-height: 1.5rem;
+  letter-spacing: 0.03rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+
+  margin: 0.25rem 0;
+}
+
+.video-item__channel-name {
+  font-size: 1rem;
+  line-height: 1.5rem;
+  letter-spacing: 0.03rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.video-item__published-date {
+  font-size: 0.75rem;
+  line-height: 1.5rem;
+  letter-spacing: 0.03rem;
+}
+
+.video-item__save-button {
+  position: absolute;
+  right: 0;
+  width: 5.7em;
+  height: 2.58em;
+  background: #f9f9f9;
+  margin-top: 0.29em;
+}
+
+.video-item__save-button:hover {
+  background: #efefef;
+}
+
+.video-item__save-button:disabled {
+  background-color: #f9f9f9;
+}
+
+.video-item__check-button {
+  position: absolute;
+  right: 3.14em;
+  width: 2.57em;
+  height: 2.57em;
+
+  background-color: #f5f5f5;
+  margin-top: 0.29em;
+}
+
+.video-item__check-button.selected {
+  background-color: #00bcd41f;
+}
+
+.video-item__delete-button {
+  position: absolute;
+  right: 0;
+  width: 2.57em;
+  height: 2.57em;
+
+  background-color: #f5f5f5;
+  margin-top: 0.29em;
+}
+
+.video-item__check-button:hover {
+  background: #efefef;
+}
+
+.video-item__delete-button:hover {
+  background: #efefef;
+}
+
+.saved-video-list {
+  overflow-y: scroll;
+}
+
+/* no Result Image */
+.save-result {
+  margin: auto;
+}
+
+.save-result.save-result--no-result {
+  justify-content: center;
+  align-items: center;
+  grid-column: 1 / -1;
+}
+
+.search-result {
+  display: flex;
+  flex-direction: column;
+  margin: auto;
+  overflow-y: scroll;
+  height: 31em;
+}
+
+.search-result.search-result--no-result {
+  justify-content: center;
+  align-items: center;
+  grid-column: 1 / -1;
+  overflow: hidden;
+}
+
+.no-result__image {
+  width: 11.875em;
+  height: 8.75em;
+  margin-bottom: 2em;
+}
+
+.no-result__description {
+  font-size: 1rem;
+  line-height: 150%;
+  text-align: center;
+  letter-spacing: 0.03rem;
+}
+
+@media only screen and (max-width: 1280px) {
+  .video-list {
+    grid-template-columns: repeat(3, 15em);
+  }
+}
+
+@media only screen and (max-width: 960px) {
+  .video-list {
+    grid-template-columns: repeat(2, 15em);
+  }
+}
+
+@media only screen and (max-width: 600px) {
+  .video-list {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+}

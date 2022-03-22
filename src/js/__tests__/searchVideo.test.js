@@ -1,6 +1,6 @@
-import { ERROR_MESSAGE, MAX_VIDEO_COUNT } from '../constants/contants.js';
+import { ERROR_MESSAGE, MAX_VIDEO_REQUEST_COUNT } from '../constants/contants.js';
 import SearchVideo from '../searchVideo.js';
-import mockDatas from '../Utils/mock.js';
+import mockDatas from '../utils/mock.js';
 
 global.fetch = jest.fn(() =>
   Promise.resolve({
@@ -20,11 +20,7 @@ describe('동영상 검색 테스트', () => {
   });
 
   test('검색하면 검색한 데이터(10개)가 오는지 확인한다.', async () => {
-    try {
-      await searchVideo.handleSearchVideo('playlist');
-      expect(searchVideo.searchResults.length).toEqual(MAX_VIDEO_COUNT);
-    } catch (error) {
-      expect(error.message).toEqual(ERROR_MESSAGE.CANNOT_GET_YOUTUBE_VIDEO);
-    }
+    await searchVideo.handleSearchVideo('playlist');
+    expect(searchVideo.searchResults.length).toEqual(MAX_VIDEO_REQUEST_COUNT);
   });
 });

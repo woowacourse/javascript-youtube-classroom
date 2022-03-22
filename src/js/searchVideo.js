@@ -11,14 +11,13 @@ class SearchVideo {
 
   initSearchVideo() {
     this.prevSearchKeyword = '';
-    this.searchResults = [];
     this.nextPageToken = '';
   }
 
   async handleSearchVideo(searchKeyword) {
     this.#validateSearchInput(searchKeyword);
-    this.searchResults = await this.#getYoutubeVideos(searchKeyword);
     this.prevSearchKeyword = searchKeyword;
+    return this.#getYoutubeVideos(searchKeyword);
   }
 
   #getYoutubeVideos = async (searchKeyword) => {
@@ -33,13 +32,17 @@ class SearchVideo {
     });
     url.search = params.toString();
 
-    const response = await fetch(url);
-    if (!response.ok) {
+    try {
+      const response = await fetch(url);
+      if (!response.ok) {
+        throw new Error();
+      }
+      const { items, nextPageToken } = await response.json();
+      this.nextPageToken = nextPageToken ?? '';
+      return items;
+    } catch (err) {
       throw new Error(ERROR_MESSAGE.CANNOT_GET_YOUTUBE_VIDEO);
     }
-    const { items, nextPageToken } = await response.json();
-    this.nextPageToken = nextPageToken ?? '';
-    return items;
   };
 
   #validateSearchInput = (searchKeyword) => {
