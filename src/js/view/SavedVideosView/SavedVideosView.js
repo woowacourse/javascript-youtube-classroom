@@ -117,14 +117,14 @@ class SavedVideosView {
   }
 
   #renderNoSavedVideoTemplate() {
-    this.#videoList.childNodes.removeAllChildren();
+    this.#videoList.replaceChildren();
     if (!selectDom('.no-saved-videos', this.#savedVideos)) {
       this.#savedVideos.append(noSavedVideosTemplate());
     }
   }
 
   #removeAllVideos() {
-    this.#videoList.childNodes.removeAllChildren();
+    this.#videoList.replaceChildren();
     this.#unrenderedVideoIdArray = this.#getCurrentTabIds();
     this.#renderedVideoIdArray = [];
   }

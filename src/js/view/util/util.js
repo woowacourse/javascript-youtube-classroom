@@ -11,10 +11,6 @@ export function removeElementList(childNodesArray) {
   childNodesArray.forEach((element) => element.remove());
 }
 
-export function removeAllChildren(parentElement) {
-  parentElement.replaceChildren();
-}
-
 export function selectDom(selector, baseElement = document) {
   return baseElement.querySelector(selector);
 }

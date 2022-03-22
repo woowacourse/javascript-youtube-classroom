@@ -125,7 +125,7 @@ class SearchModalView {
   #clearPreviousRender() {
     this.#clearNoResult();
     scrollToTop(this.#videoList);
-    this.#videoList.childNodes.removeAllChildren();
+    this.#videoList.replaceChildren();
   }
 
   #clearNoResult() {
