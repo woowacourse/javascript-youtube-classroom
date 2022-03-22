@@ -8,6 +8,12 @@ export default class GoogleSuggestAPI {
     const URL = this.convertToCorsUrl(
       `https://suggestqueries.google.com/complete/search?output=firefox&q=${targetKeyword}`,
     );
-    return fetch(URL).then(response => response.json());
+    return fetch(URL)
+      .then(response => {
+        if (response.ok) {
+          return response.json();
+        }
+      })
+      .catch(error => alert(error));
   }
 }

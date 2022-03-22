@@ -27,8 +27,8 @@ export const handleDeleteButtonClick = e => {
       savedVideo => savedVideo.id !== targetVideo.dataset.videoId,
     );
 
-    // 삭제 후 더이상 비디오가 없는 경우
-    if (newSavedVideos.length === 0) {
+    const noVideo = newSavedVideos.length === 0;
+    if (noVideo) {
       videoStorage.removeSavedVideo();
 
       $('.saved-video').hidden = true;
