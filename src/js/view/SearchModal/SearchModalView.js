@@ -1,5 +1,5 @@
 import { ERROR_MESSAGES, MAX_SEARCH_RESULT } from '../../constants/constants';
-import { isBlankValue, removeElementList, scrollToTop, selectDom } from '../util/util';
+import { isBlankValue, scrollToTop, selectDom } from '../util/util';
 import {
   errorImageTemplate,
   errorTemplate,
@@ -125,7 +125,7 @@ class SearchModalView {
   #clearPreviousRender() {
     this.#clearNoResult();
     scrollToTop(this.#videoList);
-    removeElementList([...this.#videoList.childNodes]);
+    this.#videoList.childNodes.removeAllChildren();
   }
 
   #clearNoResult() {
