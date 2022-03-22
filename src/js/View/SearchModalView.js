@@ -3,14 +3,31 @@ import SearchKeywordFormView from './SearchKeywordFormView';
 import SearchResultView from './SearchResultView';
 
 export default class SearchModalView {
-  constructor() {
-    this.searchKeywordFormView = new SearchKeywordFormView();
-    this.searchResultView = new SearchResultView();
+  constructor({ searchVideoManager, saveVideoManager }) {
+    this.searchKeywordFormView = new SearchKeywordFormView({ searchVideoManager });
+    this.searchResultView = new SearchResultView({ searchVideoManager, saveVideoManager });
 
-    $('.dimmer').addEventListener('click', this.closeModal);
+    this.initDOMs();
+    this.bindEvents();
   }
 
-  closeModal() {
-    $('#modal-container').classList.add('hide');
+  initDOMs() {
+    this.$modalContainer = $('#modal-container');
+    this.$dimmer = $('.dimmer', this.$modalContainer);
+  }
+
+  bindEvents() {
+    this.$dimmer.addEventListener('click', this.closeModal);
+    window.addEventListener('keydown', this.onKeyDown);
+  }
+
+  onKeyDown = (e) => {
+    if (e.key === 'Escape' && !this.$modalContainer.classList.contains('hide')) {
+      this.closeModal();
+    }
+  }
+
+  closeModal = () => {
+    this.$modalContainer.classList.add('hide');
   }
 }

@@ -9,13 +9,3 @@ export const debounce = (callback, delay) => {
     timerId = setTimeout(callback, delay, event);
   };
 };
-
-export const event = {
-  dispatch: (eventName, detail = {}, target = document) => {
-    const customEvent = new CustomEvent(eventName, { detail });
-    target.dispatchEvent(customEvent);
-  },
-  addListener: (eventName, handler, target = document) => {
-    target.addEventListener(eventName, handler);
-  }
-}

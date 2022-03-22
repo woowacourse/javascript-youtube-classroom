@@ -1,32 +1,51 @@
-import { ERROR_MESSAGE, MAX_VIDEO_SAVE } from './constants';
-import { event } from '../util';
+import { EVENT, RESULT } from '../constants';
+import { $ } from '../util';
+import { dispatch } from '../util/event';
 
 export default class SaveVideoManager {
-  #videoIds;
-
-  constructor(storage) {
+  constructor({ storage }) {
     this.storage = storage;
-    this.#videoIds = this.storage.videoIds;
-
-    event.addListener('saveVideo', this.saveVideo.bind(this));
   }
 
-  saveVideo(e) {
-    const { videoId, target } = e.detail
-    if ( !videoId ) return;
+  updateSavedVideos() {
+    const { videos, status } = this.storage;
+    const unwatchedVideos = videos.filter((video) => video.watched === false);
+    const watchedVideos = videos.filter((video) => video.watched === true);
+    dispatch(EVENT.UPDATE_SAVED_VIDEO_LIST, { response: status, unwatchedVideos, watchedVideos }, $('#app'));
+  }
+
+  saveVideo(video) {
+    if ( !video ) return RESULT.FAIL;
     try {
-      this.saveVideoById(videoId);
+      this.storage.saveVideo({ ...video, watched: false })
     } catch (err) {
-      return alert(message);
+      alert(err.message);
+      return RESULT.FAIL;
     }
-    event.dispatch('saveVideoSuccess', { target });
+    this.updateSavedVideos();
+    return RESULT.SUCCESS;
   }
 
-  saveVideoById(id) {
-    if (this.#videoIds.length >= MAX_VIDEO_SAVE) {
-      throw new Error(ERROR_MESSAGE.MAX_VIDEO_SAVE);
+  changeWatched(videoId) {
+    const video = this.storage.findVideoById(videoId);
+    try {
+      this.storage.updateVideo({ ...video, watched: !video.watched });
+    } catch (err) {
+      alert(err.message);
+      return RESULT.FAIL;
     }
-    this.storage.saveVideoById(id);
-    this.#videoIds = this.storage.videoIds;
+    this.updateSavedVideos();
+    return RESULT.SUCCESS;
+  }
+
+  deleteVideo(videoId) {
+    try {
+      this.storage.deleteVideoById(videoId);
+    } catch (err) {
+      alert(err.message);
+      return RESULT.FAIL;
+    }
+    this.updateSavedVideos();
+    return RESULT.SUCCESS;
   }
 }
