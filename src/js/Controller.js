@@ -51,7 +51,7 @@ export default class Controller {
 
     try {
       this.videoModel.setVideoInfo();
-    } catch (error) {
+    } catch {
       this.searchResultView.removeVideo();
       this.searchResultView.showNotFound();
       return;
