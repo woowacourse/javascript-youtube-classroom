@@ -21,6 +21,7 @@
 #snack-bar.show {
   visibility: visible;
   animation: fadein 0.5s, fadeout 0.5s 1.5s;
+  animation-fill-mode: forwards;
 }
 
 @keyframes fadein {

@@ -23,7 +23,7 @@ body {
 
 .nav {
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
 }
 
 .button {
@@ -44,4 +44,55 @@ body {
 
 .nav__button:hover {
   background: var(--nav__button-hover-background-color);
+}
+
+.nav__tab .nav__button {
+  width: 100px;
+}
+
+@media (max-width: 599px) {
+  .video-list,
+  .classroom-video__list {
+    grid-template-columns: repeat(1, 240px);
+    justify-content: center;
+  }
+
+  .search-input__keyword {
+    max-width: 300px;
+  }
+
+  .nav {
+    justify-content: space-around;
+  }
+}
+
+@media (min-width: 600px) and (max-width: 959px) {
+  .video-list,
+  .classroom-video__list {
+    grid-template-columns: repeat(2, 240px);
+    justify-content: center;
+  }
+
+  #app {
+    width: 550px;
+  }
+}
+
+@media (min-width: 960px) and (max-width: 1279px) {
+  .video-list,
+  .classroom-video__list {
+    grid-template-columns: repeat(3, 240px);
+    justify-content: center;
+  }
+
+  #app {
+    width: 800px;
+  }
+}
+
+@media (min-width: 1280px) {
+  .video-list,
+  .classroom-video__list {
+    grid-template-columns: repeat(4, 240px);
+  }
 }

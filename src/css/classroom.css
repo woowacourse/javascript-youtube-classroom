@@ -1,0 +1,96 @@
+:root {
+  --video-item__check-button-background-color: #f9f9f9;
+  --video-item__check-button-hover-color: #efefef;
+  --video-item__remove-button-background-color: #f9f9f9;
+  --video-item__remove-button-hover-color: #efefef;
+  --button__highlighted-color: rgba(0, 188, 212, 0.12);
+}
+
+.video-item__check-button {
+  position: absolute;
+  right: 40px;
+  width: 36px;
+  height: 36px;
+  background: var(--video-item__check-button-background-color);
+  margin-top: 4px;
+}
+
+.video-item__check-button:hover {
+  background: var(--video-item__check-button-hover-color);
+}
+
+.video-item__remove-button {
+  position: absolute;
+  right: 0;
+  width: 36px;
+  height: 36px;
+  background: var(--video-item__remove-button-background-color);
+  margin-top: 4px;
+}
+
+.video-item__remove-button:hover {
+  background: var(--video-item__remove-button-hover-color);
+}
+
+.empty-result {
+  position: relative;
+  width: 100%;
+  height: 600px;
+}
+
+.empty-result__description {
+  position: absolute;
+  top: 60%;
+  left: 50%;
+  transform: translate(-50%, 50%);
+  font-size: 20px;
+  line-height: 150%;
+  text-align: center;
+  letter-spacing: 0.5px;
+}
+
+.highlight {
+  background: var(--button__highlighted-color);
+}
+
+#will-watch-video-button:hover,
+#watched-video-button:hover {
+  background: var(--button__highlighted-color);
+}
+
+.classroom-video {
+  margin-top: 40px;
+}
+
+.classroom-video__list {
+  display: grid;
+  gap: 32px 14px;
+  justify-items: center;
+  overflow-y: scroll;
+}
+
+.empty-result {
+  position: absolute;
+  top: 0%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 190px;
+  height: 140px;
+  margin-bottom: 32px;
+}
+
+.empty-result__description {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, 50%);
+  font-size: 30px;
+  width: 400px;
+  line-height: 150%;
+  text-align: center;
+  letter-spacing: 0.5px;
+}
+
+.empty-result img {
+  transform: scale(0.7);
+}

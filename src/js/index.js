@@ -1,4 +1,6 @@
 import '../css/index.css';
-import YoutubeSearchModal from './ui/YoutubeSearchModal';
+import ClassRoom from './ui/ClassRoom';
+import videoSearchModal from './ui/videoSearchModal';
 
-new YoutubeSearchModal();
+new videoSearchModal();
+new ClassRoom();

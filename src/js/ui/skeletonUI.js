@@ -1,7 +1,9 @@
 import { $, $$ } from '../utils/dom';
 
-export const skeleton = {
-  skeletonTemplate() {
+export const skeletonUI = {
+  $videoList: $('.video-list'),
+
+  template() {
     return `
       <div class="skeleton">
         <div class="skeleton__image"></div>
@@ -12,12 +14,11 @@ export const skeleton = {
     `;
   },
 
-  renderSkeletonUI() {
-    const $videoList = $('.video-list');
-    $videoList.insertAdjacentHTML('beforeend', this.skeletonTemplate().repeat(10));
+  render() {
+    this.$videoList.insertAdjacentHTML('beforeend', this.template().repeat(10));
   },
 
-  removeSkeletonUI() {
+  remove() {
     $$('.skeleton').forEach(skeleton => skeleton.remove());
   },
 };
