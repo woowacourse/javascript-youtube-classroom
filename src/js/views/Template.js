@@ -1,3 +1,5 @@
+import getRelativeDate from '../utils/date';
+
 export default class Template {
   getThumbnail(imgUrl, videoId) {
     return `
@@ -25,7 +27,7 @@ export default class Template {
           background: gray;
           border-radius: 50% / 10%;
           color: #FFFFFF;
-          font-size: 1em; /* change this to change size */
+          font-size: 1em;
           height: 3em;
           padding: 0;
           text-align: center;
@@ -64,7 +66,7 @@ export default class Template {
 
       </style>
       <a href='https://www.youtube.com/embed/${videoId}?autoplay=1&mute=1'>
-      <img src=${imgUrl}>
+      <img src=${imgUrl} loading='lazy'>
         <div class='play'></div>
       </a>
     `;
@@ -72,12 +74,13 @@ export default class Template {
 
   getSkeleton() {
     return `
-      <li class="video-item skeleton" data-video-id="">
+      <li class="video-item skeleton">
         <iframe 
           class="video-item__thumbnail" 
           srcdoc="" 
           frameborder="0"
           allow="autoplay"
+          loading="lazy"
           allowfullscreen>
         </iframe>
         <h4 class="video-item__title"></h4>
@@ -88,18 +91,41 @@ export default class Template {
     `.repeat(10);
   }
 
-  getNotFound() {
+  getVideoItem({ title, channelTitle, publishTime, videoId, thumbnailUrl }) {
     return `
-    <section class="search-result search-result--no-result">
-        <h3 hidden>검색 결과 없음</h3>
-        <div class="no-result">
-          <img src="./src/assets/images/not_found.png" alt="no result image" class="no-result__image">
-          <p class="no-result__description">
-            검색 결과가 없습니다<br />
-            다른 키워드로 검색해보세요
-          </p>
-        </div>
-      </section>
+      <div id="${videoId}" class="video-item">
+        <iframe 
+          class="video-item__thumbnail" 
+          srcdoc="${this.getThumbnail(thumbnailUrl, videoId)}" 
+          frameborder="0"
+          allow="autoplay"
+          loading="lazy"
+          allowfullscreen>
+        </iframe>
+        <h4 class="video-item__title">${title}</h4>
+        <p class="video-item__channel-name">${channelTitle}</p>
+        <p class="video-item__published-date">${getRelativeDate(publishTime)}</p>
+        <button id="${videoId}" class="button video-item__button  video-item__button--watched">✅</button>
+        <button id="${videoId}" class="button video-item__button video-item__button--delete">🗑️</button>
+      </div>
+    `;
+  }
+
+  getConfirmModal(title) {
+    return `
+      <div class="confirm-modal">
+        <form class="confirm-modal__form">
+          <div class="confirm-modal__content">
+            <span class="confirm-modal__span">[${title}]
+            <br/>해당 영상을 저장 목록에서<br />삭제하시겠습니까?</span>
+          
+            <div class="confirm-modal__clear-fix">
+              <button type="button" class="button confirm-modal__cancel-button">취소하기</button>
+              <button type="button" class="button confirm-modal__delete-button">삭제하기</button>
+            </div>
+          </div>
+        </form>
+      </div>
     `;
   }
 }

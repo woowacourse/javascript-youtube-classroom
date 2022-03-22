@@ -1,17 +1,18 @@
 import Template from './Template.js';
 import { $, $$ } from '../utils/dom.js';
 import { emit } from '../utils/event.js';
+import getRelativeDate from '../utils/date.js';
 
 export default class SearchResultView {
   constructor() {
-    this.$videoList = $('.video-list');
     this.template = new Template();
-    this.$searchTarget = $('#search-target');
-    this.$searchNoResult = $('#search-no-result');
+    this.$videoList = $('.video-list');
+    this.$searchTarget = $('.search-target');
+    this.$searchNoResult = $('.search-result--no-result');
 
     this.observer = new IntersectionObserver(
-      (entries) => {
-        if (entries[0].isIntersecting) {
+      ([lastEntry]) => {
+        if (lastEntry.isIntersecting) {
           emit(this.$searchTarget, '@scroll-bottom');
         }
       },
@@ -24,21 +25,28 @@ export default class SearchResultView {
 
   renderVideo(newVideoItems) {
     this.$videoItems = $$('.skeleton');
+
     this.$videoItems.forEach(($item, idx) => {
-      $item.classList.remove('skeleton');
       $('.video-item__thumbnail', $item).setAttribute(
         'srcdoc',
         this.template.getThumbnail(newVideoItems[idx].thumbnailUrl, newVideoItems[idx].videoId),
       );
+      $item.classList.remove('skeleton');
       $('.video-item__title', $item).innerText = newVideoItems[idx].title;
       $('.video-item__channel-name', $item).innerText = newVideoItems[idx].channelTitle;
-      $('.video-item__published-date', $item).innerText = newVideoItems[idx].publishTime;
+      $('.video-item__published-date', $item).innerText = getRelativeDate(newVideoItems[idx].publishTime);
       const $savedButton = $('.video-item__save-button', $item);
       $savedButton.innerText = newVideoItems[idx].saved ? '저장됨' : '⬇ 저장';
       $savedButton.classList.add(newVideoItems[idx].saved ? 'saved-button' : 'button');
       $savedButton.disabled = newVideoItems[idx].saved;
       $savedButton.addEventListener('click', this.handleSaveButton.bind(this));
       $savedButton.dataset.id = newVideoItems[idx].videoId;
+    });
+  }
+
+  hideSkeleton() {
+    $$('.skeleton').forEach((element) => {
+      element.classList.add('hide');
     });
   }
 

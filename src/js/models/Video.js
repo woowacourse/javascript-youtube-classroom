@@ -1,4 +1,3 @@
-import EXCEPTION from '../../constants/exception';
 import { checkLengthExist, checkEmpty } from '../utils/validator';
 
 export default class Video {
@@ -14,10 +13,9 @@ export default class Video {
 
   #savedVideoItems; // length:미상(최대100), type:array,저장된 비디오 items, localStorage 상호작용
 
-  constructor(dummyObject = {}) {
-    this.#fetchedVideos = dummyObject; // API 사용량 초과될 경우, 데모 확인을 위해 dummyObject가 기본으로 할당된다.
+  constructor() {
     this.savedIdList = [];
-    this.#savedVideoItems = [];
+    this.#savedVideoItems = this.getItemsLocalStorage();
   }
 
   set keyword(value) {
@@ -69,22 +67,22 @@ export default class Video {
   updateNewVideoItems() {
     const updatedNewVideoItems = [];
     for (const newItem of this.#newVideoItems) {
-      let isFindSavedItem = false;
-      for (const savedItem of this.#savedVideoItems) {
-        if (newItem.videoId === savedItem.videoId) {
-          isFindSavedItem = true;
-          updatedNewVideoItems.push(savedItem);
-          break;
-        }
-      }
-      if (isFindSavedItem === false) {
-        updatedNewVideoItems.push(newItem);
-      }
+      const savedNewItem = this.#getSavedNewItem(newItem);
+      updatedNewVideoItems.push(savedNewItem);
     }
 
     if (updatedNewVideoItems.length) {
       this.#newVideoItems = updatedNewVideoItems;
     }
+  }
+
+  #getSavedNewItem(newItem) {
+    for (const savedItem of this.#savedVideoItems) {
+      if (newItem.videoId === savedItem.videoId) {
+        return savedItem;
+      }
+    }
+    return newItem;
   }
 
   setVideoInfo(fetchedVideos) {
@@ -99,8 +97,47 @@ export default class Video {
       publishTime: item.snippet.publishTime,
       thumbnailUrl: item.snippet.thumbnails.high.url,
       saved: false,
+      watched: false,
     }));
 
     this.#nextPageToken = fetchedVideos.nextPageToken;
+  }
+
+  #saveLocalStorage() {
+    localStorage.setItem('saved-video', JSON.stringify(this.savedVideoItems));
+  }
+
+  setWatchedVideoItem(watchedVideoId) {
+    this.savedVideoItems = this.#savedVideoItems.map((item) => {
+      const newItem = item;
+      if (newItem.videoId === watchedVideoId) {
+        newItem.watched = true;
+      }
+      return newItem;
+    });
+
+    this.#saveLocalStorage();
+  }
+
+  setUnwatchedVideoItem(watchedVideoId) {
+    this.savedVideoItems = this.#savedVideoItems.map((item) => {
+      const newItem = item;
+      if (newItem.videoId === watchedVideoId) {
+        newItem.watched = false;
+      }
+      return newItem;
+    });
+
+    this.#saveLocalStorage();
+  }
+
+  setDeletedVideoItem(deletedVideoId) {
+    this.savedVideoItems = this.#savedVideoItems.filter((item) => item.videoId !== deletedVideoId);
+
+    this.#saveLocalStorage();
+  }
+
+  getVideoTitleBy(videoId) {
+    return this.#savedVideoItems.find((item) => item.videoId === videoId).title;
   }
 }

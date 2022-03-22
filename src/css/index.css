@@ -2,6 +2,10 @@
 @import './app.css';
 @import './modal.css';
 @import './skeleton.css';
+@import './confirmModal.css';
+@import './toast.css';
+@import './toggle.css';
+@import './scrollBar.css';
 
 * {
   margin: 0;
@@ -18,6 +22,7 @@ html,
 body {
   height: 100%;
   -webkit-font-smoothing: antialiased;
+  color: var(--font);
 }
 
 input,
@@ -25,4 +30,10 @@ button,
 textarea,
 select {
   font: inherit;
+  background-color: var(--secondary-lighten);
+  color: var(--font);
+}
+
+button:hover {
+  background-color: var(--secondary-darken);
 }

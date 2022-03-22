@@ -4,33 +4,61 @@
     <meta charset="UTF-8" />
     <title>나만의 유튜브 강의실</title>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <!-- <link rel="stylesheet" href="./src/css/index.css"> -->
   </head>
-
   <body>
-    <main id="app" class="classroom-container">
-      <h1 class="classroom-container__title">👩🏻‍💻 나만의 유튜브 강의실 👨🏻‍💻</h1>
+    <main class="classroom-container">
+      <div class="switch-wrapper">
+        <div></div>
+        <h1 class="classroom-container__title">👩🏻‍💻 나만의 유튜브 강의실 👨🏻‍💻</h1>
+        <label class="switch">
+          <input class="classroom__toggle" type="checkbox" />
+          <span class="slider round"></span>
+        </label>
+      </div>
+
       <nav class="nav">
-        <button id="search-modal-button" class="button nav__button">🔍 검색</button>
+        <nav class="nav-left">
+          <button class="button nav-left__button nav-left__button--unwatched">👁️ 볼 영상</button>
+          <button class="button nav-left__button nav-left__button--watched">✅ 본 영상</button>
+        </nav>
+        <nav class="nav-right">
+          <button class="button nav-right__button">🔍 검색</button>
+        </nav>
       </nav>
+      <div class="saved-list-container">
+        <h2 hidden>저장된 영상 목록</h2>
+        <section class="unwatched-tab video-grid hide">
+          <h3 hidden>볼 영상 목록</h3>
+          볼 영상
+        </section>
+        <section class="watched-tab video-grid hide">
+          <h3 hidden>본 영상 목록</h3>
+          본 영상
+        </section>
+        <div class="no-result">
+          <img src="./not_found.png" alt="no result image" class="no-result__image" />
+          <p class="no-result__description">저장된 영상이 없습니다<br /></p>
+        </div>
+      </div>
     </main>
-    <!-- 1 검색 버튼을 누르면 아래와 같은 검색 모달을 보여줍니다.-->
+
+    <div class="confirm-modal-container"></div>
+
     <div class="modal-container hide">
       <div class="dimmer"></div>
       <div class="search-modal" role="dialog" aria-labelledby="search-modal-title">
-        <h2 id="search-modal-title" class="search-modal__title">🔍 보고싶은 영상 찾기 🔍</h2>
+        <div class="x-shape"></div>
+        <h2 class="search-modal__title">🔍 보고싶은 영상 찾기 🔍</h2>
         <section class="search-input">
           <h3 hidden>검색어 입력</h3>
-          <input id="search-input-keyword" type="text" placeholder="검색" class="search-input__keyword" />
-          <button id="search-button" class="search-input__search-button button">검색</button>
+          <input type="text" placeholder="검색" class="search-input__keyword" />
+          <button class="search-input__search-button button">검색</button>
         </section>
-        <!-- 2-1 검색 결과가 있을 경우, 아래와 같은 검색 결과 목록을 보여줍니다.-->
-        <section id="search-target" class="search-result">
+        <section class="search-target">
           <h3 hidden>검색 결과</h3>
           <ul class="video-list scroll"></ul>
         </section>
-        <!-- 2-2 검색 결과가 없을 경우, `search-result--no-result` class를 붙이고 아래와 같은 no-result를 보여줍니다.-->
-        <section id="search-no-result" class="search-result search-result--no-result hide">
+        <section class="search-result search-result--no-result hide">
           <h3 hidden>검색 결과 없음</h3>
           <div class="no-result">
             <img src="./not_found.png" alt="no result image" class="no-result__image" />
@@ -42,6 +70,7 @@
         </section>
       </div>
     </div>
-    <!-- <script type="module" src="./src/js/index.js"></script> -->
+
+    <div class="toast-wrapper"></div>
   </body>
 </html>

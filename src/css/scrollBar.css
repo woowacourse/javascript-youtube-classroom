@@ -1,0 +1,39 @@
+::-webkit-scrollbar {
+  background-color: var(--dimmer);
+}
+::-webkit-scrollbar-button {
+  display: none;
+}
+::-webkit-scrollbar-track {
+  background-color: var(--background);
+}
+::-webkit-scrollbar-thumb {
+  background-color: var(--dimmer);
+  border-radius: 5px;
+}
+::-webkit-scrollbar-button:start:decrement,
+::-webkit-scrollbar-button:end:increment {
+  width: 16px;
+  height: 16px;
+  background: var(--background);
+}
+
+.search-modal ::-webkit-scrollbar {
+  width: 16px;
+}
+.search-modal ::-webkit-scrollbar-button {
+  display: none;
+}
+.search-modal ::-webkit-scrollbar-track {
+  background-color: var(--background);
+}
+.search-modal ::-webkit-scrollbar-thumb {
+  background-color: var(--dimmer);
+  border-radius: 5px;
+}
+.search-modal ::-webkit-scrollbar-button:start:decrement,
+.search-modal ::-webkit-scrollbar-button:end:increment {
+  width: 16px;
+  height: 16px;
+  background: var(--background);
+}
