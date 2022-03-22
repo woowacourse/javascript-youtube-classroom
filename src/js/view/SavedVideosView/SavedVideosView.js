@@ -4,7 +4,7 @@ import {
   TAB_NAMES,
 } from '../../constants/constants';
 
-import { removeCommonElements, removeElementList, selectDom } from '../util/util';
+import { filterCommonElementsFromArray, removeElementList, selectDom } from '../util/util';
 import { noSavedVideosTemplate, savedVideoElementTemplate } from './SavedVideosTemplate';
 
 class SavedVideosView {
@@ -80,7 +80,7 @@ class SavedVideosView {
     const noSavedVideos = selectDom('.no-saved-videos', this.#savedVideos);
     noSavedVideos?.remove();
 
-    const newVideoIdArray = removeCommonElements(videos, this.#renderedVideoIdArray);
+    const newVideoIdArray = filterCommonElementsFromArray(videos, this.#renderedVideoIdArray);
     this.#renderNewVideos(newVideoIdArray);
   };
 
@@ -132,13 +132,16 @@ class SavedVideosView {
   #removeDeletedVideos() {
     const videosIdArray = this.#getCurrentTabIds();
 
-    const deletedVideoIdArray = removeCommonElements(this.#renderedVideoIdArray, videosIdArray);
+    const deletedVideoIdArray = filterCommonElementsFromArray(
+      this.#renderedVideoIdArray,
+      videosIdArray
+    );
     const toDeleteArray = [...this.#videoList.childNodes].filter((child) =>
       deletedVideoIdArray.includes(child.dataset.videoId)
     );
 
     removeElementList(toDeleteArray);
-    this.#renderedVideoIdArray = removeCommonElements(
+    this.#renderedVideoIdArray = filterCommonElementsFromArray(
       this.#renderedVideoIdArray,
       deletedVideoIdArray
     );

@@ -19,6 +19,6 @@ export function scrollToTop(element) {
   element.scrollTop = 0;
 }
 
-export function removeCommonElements(fromArray, compareArray) {
+export function filterCommonElementsFromArray(fromArray, compareArray) {
   return fromArray.filter((element) => !compareArray.includes(element));
 }
