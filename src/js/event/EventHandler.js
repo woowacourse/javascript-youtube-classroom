@@ -72,6 +72,7 @@ export default class EventHandler {
       this.modalView.resetVideoList();
       this.modalView.appendEmptyList();
       this.modalView.appendVideoItem();
+      this.modalView.renderSkeletonUI();
       const videoListData = await videoAPI.getVideoListData(searchInput);
       this.modalView.renderVideoList(videoListData);
     } catch (error) {
