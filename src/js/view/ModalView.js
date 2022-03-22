@@ -62,16 +62,6 @@ export default class ModalView {
     });
   }
 
-  scrollToBottom(callback) {
-    const isScrollBottom =
-      this.$videoList.scrollHeight - this.$videoList.scrollTop <=
-      this.$videoList.offsetHeight + EVENT.SCROLL.OFFSET;
-
-    if (isScrollBottom) {
-      callback(this.$searchInput.value);
-    }
-  }
-
   bindVideoListScroll(callback) {
     this.$videoList.addEventListener('scroll', throttle(this.scrollToBottom.bind(this, callback)));
   }
@@ -89,6 +79,16 @@ export default class ModalView {
         alert(error.message);
       }
     });
+  }
+
+  scrollToBottom(callback) {
+    const isScrollBottom =
+      this.$videoList.scrollHeight - this.$videoList.scrollTop <=
+      this.$videoList.offsetHeight + EVENT.SCROLL.OFFSET;
+
+    if (isScrollBottom) {
+      callback(this.$searchInput.value);
+    }
   }
 
   resetVideoList() {

@@ -38,7 +38,7 @@ export default class MainView {
   }
 
   renderStoredVideoList() {
-    const template = videoStorage.getVideoList().map(videoData => {
+    const template = videoStorage.savedVideoList.map(videoData => {
       return storedVideoListTemplate(videoData);
     });
 
@@ -79,7 +79,7 @@ export default class MainView {
 
   switchRenderingType(e) {
     const selectedVideoDOM = e.target.parentElement;
-    const storedList = videoStorage.getVideoList();
+    const storedList = videoStorage.savedVideoList;
     const switchedVideo = storedList[storedList.length - 1];
 
     selectedVideoDOM.remove();

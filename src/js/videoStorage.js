@@ -5,54 +5,46 @@ const videoStorage = {
     VIDEO_LIST: 'videoList',
   },
 
+  savedVideoList: JSON.parse(localStorage.getItem('videoList')) || [],
+
   storeVideo: function (videoData) {
     if (!this.hasVideo(videoData.videoId)) {
-      const videoList = this.getVideoList();
-      videoList.push(videoData);
-      localStorage.setItem(this.KEYS.VIDEO_LIST, JSON.stringify(videoList));
+      this.savedVideoList.push(videoData);
+      localStorage.setItem(this.KEYS.VIDEO_LIST, JSON.stringify(this.savedVideoList));
     }
   },
 
-  getVideoList: function () {
-    const videoList = JSON.parse(localStorage.getItem(this.KEYS.VIDEO_LIST));
-    return videoList || [];
-  },
-
   hasVideo: function (videoId) {
-    const videoList = this.getVideoList();
-    return videoList.some(videoData => videoData.videoId === videoId);
+    return this.savedVideoList.some(videoData => videoData.videoId === videoId);
   },
 
   checkOverMaxLength: function () {
-    if (this.getVideoList().length >= STORE.MAX_LENGTH) {
+    if (this.savedVideoList.length >= STORE.MAX_LENGTH) {
       throw new Error(ERROR_MESSAGE.OVER_MAX_STORE_LENGTH);
     }
   },
 
   deleteVideo(videoId) {
     if (this.hasVideo(videoId)) {
-      const deletedList = this.getVideoList();
-      deletedList.splice(this.findVideoIndex(videoId), 1);
-      localStorage.setItem(this.KEYS.VIDEO_LIST, JSON.stringify(deletedList));
+      this.savedVideoList.splice(this.findVideoIndex(videoId), 1);
+      localStorage.setItem(this.KEYS.VIDEO_LIST, JSON.stringify(this.savedVideoList));
     }
   },
 
   findVideoIndex(videoId) {
-    return this.getVideoList().findIndex(videoData => videoData.videoId === videoId);
+    return this.savedVideoList.findIndex(videoData => videoData.videoId === videoId);
   },
 
   swtichVideoType(videoId) {
     const selectedVideoIndex = this.findVideoIndex(videoId);
-    const selectedVideo = this.getVideoList()[selectedVideoIndex];
+    const selectedVideo = this.savedVideoList[selectedVideoIndex];
     selectedVideo.type =
       selectedVideo.type === VIDEO_TYPE.WATCH_LATER ? VIDEO_TYPE.WATCHED : VIDEO_TYPE.WATCH_LATER;
-
     this.deleteVideo(videoId);
+    const newVideoList = [...this.savedVideoList, selectedVideo];
 
-    localStorage.setItem(
-      this.KEYS.VIDEO_LIST,
-      JSON.stringify([...this.getVideoList(), selectedVideo])
-    );
+    this.savedVideoList = newVideoList;
+    localStorage.setItem(this.KEYS.VIDEO_LIST, JSON.stringify(newVideoList));
   },
 };
 
