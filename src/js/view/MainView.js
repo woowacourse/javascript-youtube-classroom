@@ -109,7 +109,7 @@ export default class MainView {
     const checkRendering = [...this.$storedVideoList.children].every(el =>
       el.classList.contains(DOM_STRING.HIDE)
     );
-
+    this.$storedVideoList.classList.toggle(DOM_STRING.HIDE, checkRendering);
     this.$emptyListImage.classList.toggle(DOM_STRING.HIDE, !checkRendering);
   }
 }

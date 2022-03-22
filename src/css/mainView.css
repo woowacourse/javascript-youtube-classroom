@@ -36,7 +36,6 @@ main {
   .stored-video-list,
   .video-list {
     grid-template-columns: 240px 240px 240px 240px;
-    grid-template-rows: 255px 255px 255px 255px;
   }
 }
 
@@ -44,7 +43,6 @@ main {
   .stored-video-list,
   .video-list {
     grid-template-columns: 240px 240px 240px;
-    grid-template-rows: 255px 255px 255px;
   }
 }
 
@@ -52,7 +50,6 @@ main {
   .stored-video-list,
   .video-list {
     grid-template-columns: 240px 240px;
-    grid-template-rows: 255px 255px;
   }
 }
 
@@ -60,7 +57,6 @@ main {
   .stored-video-list,
   .video-list {
     grid-template-columns: 240px;
-    grid-template-rows: 255px;
   }
 }
 
@@ -86,5 +82,5 @@ main {
 }
 .empty-list-image {
   margin-top: 10vh;
-  width: 50vw;
+  width: 30vw;
 }
