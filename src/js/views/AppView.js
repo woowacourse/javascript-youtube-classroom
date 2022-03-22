@@ -50,7 +50,7 @@ export default class AppView {
   }
 
   #handleClickUserButton({ target }) {
-    if (target.className === 'user-delete-button') {
+    if (target.classList.contains('user-delete-button')) {
       const deleteVideoId = target.closest('li').dataset.videoId;
 
       emit(this.$willSeeWrapper, '@delete-video', { deleteVideoId });
