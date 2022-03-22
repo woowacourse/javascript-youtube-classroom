@@ -20,13 +20,11 @@ export const handleSaveButtonClick = e => {
     const saveTargetVideo = getVideoObjectFromElement(e.target.parentElement);
     const savedVideos = videoStorage.getSavedVideos();
 
-    // 저장된 비디오가 없는 경우, 바로 저장
     if (!savedVideos) {
       videoStorage.setSavedVideos([saveTargetVideo]);
       return;
     }
 
-    // 저장된 비디오가 있는 경우, 뒤에 추가
     validateAbleToSaveVideo(savedVideos, saveTargetVideo);
     videoStorage.setSavedVideos([...savedVideos, saveTargetVideo]);
   } catch (error) {

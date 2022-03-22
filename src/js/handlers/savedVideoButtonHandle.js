@@ -19,23 +19,25 @@ export const handleWatchedButtonClick = e => {
 };
 
 export const handleDeleteButtonClick = e => {
-  const targetVideo = e.target.parentElement.parentElement;
-  const savedVideos = videoStorage.getSavedVideos();
+  if (confirm('정말로 삭제하시겠습니까?')) {
+    const targetVideo = e.target.parentElement.parentElement;
+    const savedVideos = videoStorage.getSavedVideos();
 
-  const newSavedVideos = savedVideos.filter(
-    savedVideo => savedVideo.id !== targetVideo.dataset.videoId,
-  );
+    const newSavedVideos = savedVideos.filter(
+      savedVideo => savedVideo.id !== targetVideo.dataset.videoId,
+    );
 
-  // 삭제 후 더이상 비디오가 없는 경우
-  if (newSavedVideos.length === 0) {
-    videoStorage.removeSavedVideo();
+    // 삭제 후 더이상 비디오가 없는 경우
+    if (newSavedVideos.length === 0) {
+      videoStorage.removeSavedVideo();
 
-    $('.saved-video').hidden = true;
-    mainPageUI.renderNothingSavedImage();
-    return;
+      $('.saved-video').hidden = true;
+      mainPageUI.renderNothingSavedImage();
+      return;
+    }
+
+    videoStorage.setSavedVideos(newSavedVideos);
+
+    targetVideo.remove();
   }
-
-  videoStorage.setSavedVideos(newSavedVideos);
-
-  targetVideo.remove();
 };

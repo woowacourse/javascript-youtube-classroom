@@ -11,8 +11,8 @@ const mainPageUI = {
     $('.nothing-saved-image-container').replaceChildren();
 
     $('.saved-video').hidden = false;
-    const isWatchedVideoList = $('.saved-video-list').classList.contains('watched-list');
-    if (isWatchedVideoList) {
+    const hasWatchedVideoList = $('.saved-video-list').classList.contains('watched-list');
+    if (hasWatchedVideoList) {
       mainPageUI.renderWatchedVideos(savedVideos);
       return;
     }
