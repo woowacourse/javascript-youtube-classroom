@@ -1,4 +1,3 @@
-import { transformDate } from './utils/common.js';
 import { ERROR_MESSAGE, VIDEO_LIST, VIDEO_TYPE } from './utils/constants.js';
 
 const videoAPI = {
@@ -47,11 +46,10 @@ const videoAPI = {
   parseTemplate(item) {
     return {
       videoId: item.id.videoId,
-      publishedAt: transformDate(item.snippet.publishedAt),
+      publishedAt: item.snippet.publishedAt,
       title: item.snippet.title,
       url: item.snippet.thumbnails.medium.url,
       channelTitle: item.snippet.channelTitle,
-      type: VIDEO_TYPE.WATCH_LATER,
     };
   },
 };

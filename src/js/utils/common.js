@@ -1,3 +1,5 @@
+import { VIDEO_TYPE } from './constants';
+
 export const $ = selector => document.querySelector(selector);
 
 export const transformDate = dateString => {
@@ -15,4 +17,17 @@ export const throttle = (callback, delayTime = 1000) => {
       }, delayTime);
     }
   };
+};
+
+export const preprocessVideoInfo = videos => {
+  return videos.map(video => {
+    return {
+      videoId: video.videoId,
+      publishedAt: transformDate(video.publishedAt),
+      title: video.title,
+      url: video.url,
+      channelTitle: video.channelTitle,
+      type: VIDEO_TYPE.WATCH_LATER,
+    };
+  });
 };
