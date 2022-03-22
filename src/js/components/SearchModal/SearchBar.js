@@ -47,11 +47,7 @@ export default class SearchBar extends Component {
 
     rootStore.setState({ isLoading: true });
 
-    const [error, data] = await getSearchAPI(
-      query,
-      null,
-      requestMockData.success
-    );
+    const [error, data] = await getSearchAPI(query);
 
     if (error) {
       rootStore.setState({

@@ -8,7 +8,7 @@ export default class SavedVideos extends RootLocalStorage {
   }
 
   save(data) {
-    if (this.cached.length >= MAX_SAVE_COUNT) {
+    if (data.length > MAX_SAVE_COUNT) {
       throw new Error(ALERT_MESSAGE.EXCEED_MAX_SAVE_VOLUME);
     }
     this.cache(data);

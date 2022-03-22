@@ -81,11 +81,7 @@ export default class VideoCardList extends Component {
 
   async loadNextVideos() {
     const { query, pageToken: prevPageToken } = rootStore.state.searchOption;
-    const [error, data] = await getSearchAPI(
-      query,
-      prevPageToken,
-      requestMockData.success
-    );
+    const [error, data] = await getSearchAPI(query, prevPageToken);
 
     if (error) {
       alert(`${error.message}, status: ${error.statusCode}`);
