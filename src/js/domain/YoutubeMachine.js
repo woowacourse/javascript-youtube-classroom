@@ -17,11 +17,6 @@ export default class YoutubeMachine {
   search(searchInput) {
     validateInput(searchInput);
     this.#searchTarget = searchInput;
-    this.updateSearchResult(this.callSearchAPI());
-  }
-
-  searchScrollingResult() {
-    this.updateSearchResult(this.callSearchAPI());
   }
 
   getURL(nextPageToken) {
@@ -41,8 +36,11 @@ export default class YoutubeMachine {
   async callSearchAPI() {
     const URL = this.#searchResult ? this.getURL(this.#searchResult.nextPageToken) : this.getURL();
     const response = await fetch(URL);
-    const searchResult = await response.json();
-    return searchResult;
+    if (response.ok) {
+      const searchResult = await response.json();
+      return searchResult;
+    }
+    throw new Error(response.status);
   }
   updateSearchResult(response) {
     this.#searchResult = response;

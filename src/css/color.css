@@ -13,4 +13,6 @@
   --skeleton-background-linear-start-color: #e0e0e0;
   --skeleton-background-linear-medium-color: #ededed;
   --skeleton-background-linear-end-color: #e0e0e0;
+  --is-active-color: #00bcd41f;
+  --search-modal-close-button-hover-color: #8b8b8b;
 }

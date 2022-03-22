@@ -17,9 +17,11 @@ const storage = {
     }
     this.setLocalStorage([...savedStorage, data]);
   },
-  saveVideo(videoId) {
+  saveVideo(item) {
     const video = {
-      id: videoId,
+      id: item.id.videoId,
+      snippet: item.snippet,
+      watched: false,
     };
     const savedStorage = this.getLocalStorage();
 
@@ -28,6 +30,35 @@ const storage = {
       return;
     }
     this.setLocalStorage([video]);
+  },
+  toggleWatchedVideo(videoId) {
+    const savedVideoStorage = this.getLocalStorage();
+    const updatedVideoStorage = savedVideoStorage.map(item => {
+      const video = {
+        id: item.id,
+        snippet: item.snippet,
+        watched: item.watched,
+      };
+      if (item.id === videoId) {
+        video.watched = !item.watched;
+      }
+      return video;
+    });
+    this.setLocalStorage(updatedVideoStorage);
+  },
+  deleteSavedVideo(videoId) {
+    const savedVideoStorage = this.getLocalStorage();
+    const updatedVideoStorage = savedVideoStorage.filter(item => {
+      if (videoId !== item.id) {
+        const video = {
+          id: item.id,
+          snippet: item.snippet,
+          watched: item.watched,
+        };
+        return video;
+      }
+    });
+    this.setLocalStorage(updatedVideoStorage);
   },
 };
 

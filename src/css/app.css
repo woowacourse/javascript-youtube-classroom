@@ -19,7 +19,7 @@ body {
 
 .nav {
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
 }
 
 .button {
@@ -40,4 +40,38 @@ body {
 
 .nav__button:hover {
   background: var(--nav-button-hover-color);
+}
+
+.hidden {
+  display: none;
+  visibility: hidden;
+}
+
+.videos-button-container button {
+  width: 117px;
+}
+
+.snack-bar {
+  display: flex;
+  flex-direction: row;
+  position: fixed;
+  left: 50%;
+  top: 80%;
+
+  visibility: hidden;
+  transform: translateX(-50%) translate3d(0, 100%, 0);
+  border: 1px solid var(--search-modal-border-color);
+  border-radius: 4px;
+
+  width: fit-content;
+  height: fit-content;
+  padding: 10px;
+  color: var(--search-button-font-color);
+  font-size: 18px;
+}
+.snack-bar.is-active {
+  visibility: visible;
+  transform: translateX(-50%) translate3d(0, 0, 0);
+  transition: transform 300ms ease-in-out;
+  background-color: var(--search-button-background-color);
 }

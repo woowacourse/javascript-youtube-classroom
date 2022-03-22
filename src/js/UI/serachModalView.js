@@ -1,7 +1,7 @@
 import { $, $$ } from '../util/general.js';
 import storage from '../storage/storage.js';
 
-const template = {
+const searchVideoTemplate = {
   skeletonUI: `<li class="skeleton">
   <div class="image"></div>
   <p class="line"></p>
@@ -24,19 +24,15 @@ const template = {
   },
 };
 
-const userInterface = {
-  resetSearchInput() {
-    $('#search-input-keyword').value = '';
-  },
+const searchModalView = {
   resetVideoList() {
     $('.video-list').replaceChildren();
   },
   renderSkeletonUI() {
     $('.search-result').classList.remove('search-result--no-result');
     $('.no-result').hidden = true;
-    $('.video-list').classList.remove('hide');
-    $('.video-list').insertAdjacentHTML('beforeEnd', template.skeletonUI.repeat(10));
-    this.resetSearchInput();
+    $('.video-list').classList.remove('hidden');
+    $('.video-list').insertAdjacentHTML('beforeEnd', searchVideoTemplate.skeletonUI.repeat(10));
   },
   removeSkeletonUI() {
     $$('.skeleton').forEach(element => element.remove());
@@ -54,7 +50,7 @@ const userInterface = {
   renderVideoItems({ items }) {
     this.removeSkeletonUI();
     items.forEach(item => {
-      $('.video-list').insertAdjacentHTML('beforeEnd', template.videoItem(item));
+      $('.video-list').insertAdjacentHTML('beforeEnd', searchVideoTemplate.videoItem(item));
       this.removeSavedVideoButton();
     });
   },
@@ -62,22 +58,18 @@ const userInterface = {
     this.removeSkeletonUI();
     $('.search-result').classList.add('search-result--no-result');
     $('.no-result').hidden = false;
-    $('.video-list').classList.add('hide');
+    $('.video-list').classList.add('hidden');
   },
   renderSearchResult(response) {
-    response.then(data => {
-      if (data.items.length === 0) {
-        this.renderNoResult();
-        return;
-      }
-      this.renderVideoItems(data);
-    });
+    if (response.items.length === 0) {
+      this.renderNoResult();
+      return;
+    }
+    this.renderVideoItems(response);
   },
   renderNextSearchResult(response) {
-    response.then(data => {
-      this.renderVideoItems(data);
-    });
+    this.renderVideoItems(response);
   },
 };
 
-export default userInterface;
+export default searchModalView;

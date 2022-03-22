@@ -1,0 +1,55 @@
+@import url('./color.css');
+.is-active {
+  background-color: var(--is-active-color);
+}
+
+.watch-later-videos-container {
+  margin-top: 40px;
+}
+
+.watched-videos-container {
+  margin-top: 40px;
+  width: 100%;
+}
+.empty-img-container {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  justify-items: center;
+  flex-wrap: wrap;
+}
+
+#empty-img {
+  width: 700px;
+  height: auto;
+}
+
+.watch-later-video-item {
+  margin-bottom: 20px;
+}
+
+.watched-video-item {
+  margin-bottom: 20px;
+}
+
+.button-container {
+  display: flex;
+  justify-content: end;
+}
+
+.button-container button {
+  width: 36px;
+  height: 36px;
+}
+
+.button-container button:hover {
+  background-color: var(--nav-button-hover-color);
+}
+
+.video-item__watched-button {
+  margin-right: 8px;
+}
+
+.watched-video-item-button-group > .video-item__watched-button {
+  background-color: var(--is-active-color);
+}
