@@ -1,18 +1,5 @@
 import element from '../util/createElement';
-import videoElementTemplate from '../shared/VideoElement';
 import '../../../assets/images/not_found.png';
-
-export function searchVideoElementTemplate(resultItem) {
-  const videoElement = videoElementTemplate(resultItem);
-  const button = element({
-    tag: 'button',
-    className: 'video-item__save-button button',
-    props: { disabled: resultItem.isSaved, type: 'button' },
-    children: '⬇ 저장',
-  });
-  videoElement.append(button);
-  return videoElement;
-}
 
 export function errorTemplate(errorImage, errorMessage) {
   return element({

@@ -1,12 +1,10 @@
 import { ERROR_MESSAGES, MAX_SEARCH_RESULT } from '../../constants/constants';
 import { isBlankValue, scrollToTop, selectDom } from '../util/util';
-import {
-  errorImageTemplate,
-  errorTemplate,
-  searchVideoElementTemplate,
-} from './SearchModalTemplates';
+import { errorImageTemplate, errorTemplate } from './SearchModalTemplates';
 import SearchVideos from '../../domain/SearchVideos';
 import { addSkeletonsToContainer, removeAllSkeletons } from '../shared/Skeleton';
+import videoElementTemplate from '../shared/VideoElement';
+import element from '../util/createElement';
 
 class SearchModalView {
   #body;
@@ -107,7 +105,7 @@ class SearchModalView {
     removeAllSkeletons(this.#videoList);
     const resultElementArray = searchResultArray.map((resultItem) => {
       const saveHandler = ({ target }) => this.#handleVideoSaveClick(target, resultItem);
-      const videoElement = searchVideoElementTemplate(resultItem);
+      const videoElement = this.#searchVideoElementTemplate(resultItem);
       selectDom('.video-item__save-button', videoElement).addEventListener('click', saveHandler);
       return videoElement;
     });
@@ -135,6 +133,18 @@ class SearchModalView {
       this.#searchResult.classList.remove('search-result--no-result');
       noResult.remove();
     }
+  }
+
+  #searchVideoElementTemplate(resultItem) {
+    const videoElement = videoElementTemplate(resultItem);
+    const button = element({
+      tag: 'button',
+      className: 'video-item__save-button button',
+      props: { disabled: resultItem.isSaved, type: 'button' },
+      children: '⬇ 저장',
+    });
+    videoElement.append(button);
+    return videoElement;
   }
 }
 

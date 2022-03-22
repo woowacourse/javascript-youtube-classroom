@@ -3,9 +3,10 @@ import {
   SAVED_VIDEO_PAGINATION_COUNT,
   TAB_NAMES,
 } from '../../constants/constants';
+import videoElementTemplate from '../shared/VideoElement';
 
 import { filterCommonElementsFromArray, removeElementList, selectDom } from '../util/util';
-import { noSavedVideosTemplate, savedVideoElementTemplate } from './SavedVideosTemplate';
+import { noSavedVideosTemplate, savedVideoElementButtons } from './SavedVideosTemplate';
 
 class SavedVideosView {
   #savedVideos;
@@ -150,7 +151,7 @@ class SavedVideosView {
 
   #createVideoElements(videoObjectArray) {
     return videoObjectArray.map((object) => {
-      const element = savedVideoElementTemplate(object, this.#currentTabName);
+      const element = this.#savedVideoElementTemplate(object, this.#currentTabName);
       const videoButtonHandler = (e) => this.#handleVideoItemButtons(e, object.videoId);
       element.addEventListener('click', videoButtonHandler);
       return element;
@@ -183,6 +184,16 @@ class SavedVideosView {
       'watched',
       this.#currentTabName === 'watched'
     );
+  }
+
+  #savedVideoElementTemplate(resultItem, currentTabName) {
+    const videoElement = videoElementTemplate(resultItem);
+    const buttonDiv = savedVideoElementButtons(currentTabName);
+
+    videoElement.dataset.videoId = resultItem.videoId;
+
+    videoElement.append(buttonDiv);
+    return videoElement;
   }
 }
 

@@ -1,9 +1,8 @@
 /* eslint-disable max-lines-per-function */
 import { ERROR_MESSAGES } from '../../constants/constants';
 import element from '../util/createElement';
-import videoElementTemplate from '../shared/VideoElement';
 
-function savedVideoElementButtons(currentTabName) {
+export function savedVideoElementButtons(currentTabName) {
   return element({
     tag: 'div',
     className: 'video-item__button-wrapper',
@@ -22,16 +21,6 @@ function savedVideoElementButtons(currentTabName) {
       }),
     ],
   });
-}
-
-export function savedVideoElementTemplate(resultItem, currentTabName) {
-  const videoElement = videoElementTemplate(resultItem);
-  const buttonDiv = savedVideoElementButtons(currentTabName);
-
-  videoElement.dataset.videoId = resultItem.videoId;
-
-  videoElement.append(buttonDiv);
-  return videoElement;
 }
 
 export function noSavedVideosTemplate() {
