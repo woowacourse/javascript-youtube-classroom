@@ -1,6 +1,6 @@
 import { $ } from '../utils/querySelector.js';
 import mainPageUI from '../views/mainPage/mainPageUI.js';
-import videoStorage from '../localStorage/videoStorage.js';
+import data from '../data/data.js';
 
 export const handleModalClose = () => {
   $('.modal-container').classList.toggle('hide');
@@ -13,6 +13,5 @@ export const handleModalClose = () => {
   $('.suggestion').hidden = true;
 
   $('.saved-video-list').replaceChildren();
-  const savedVideos = videoStorage.getSavedVideos();
-  mainPageUI.renderSavedVideoItems(savedVideos);
+  mainPageUI.renderSavedVideoItems(data.savedVideos);
 };

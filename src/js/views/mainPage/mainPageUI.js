@@ -3,7 +3,8 @@ import { $ } from '../../utils/querySelector.js';
 
 const mainPageUI = {
   renderSavedVideoItems: savedVideos => {
-    if (!savedVideos) {
+    const hasSavedVideo = savedVideos.length !== 0;
+    if (!hasSavedVideo) {
       mainPageUI.renderNothingSavedImage();
       return;
     }

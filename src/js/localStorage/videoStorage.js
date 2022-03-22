@@ -5,9 +5,7 @@ const videoStorage = {
     localStorage.setItem(LOCAL_STORAGE_KEY__SAVED_VIDEO, JSON.stringify(video));
   },
   getSavedVideos() {
-    const savedVideos = JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEY__SAVED_VIDEO));
-    if (savedVideos) return false;
-    return JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEY__SAVED_VIDEO));
+    return JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEY__SAVED_VIDEO)) ?? [];
   },
   removeSavedVideo() {
     localStorage.removeItem(LOCAL_STORAGE_KEY__SAVED_VIDEO);

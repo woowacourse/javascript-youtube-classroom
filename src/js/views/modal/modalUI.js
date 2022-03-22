@@ -1,6 +1,6 @@
 import template from './template.js';
 import { $, $$ } from '../../utils/querySelector.js';
-import videoStorage from '../../localStorage/videoStorage.js';
+import data from '../../data/data.js';
 
 const modalUI = {
   resetVideoList() {
@@ -19,9 +19,9 @@ const modalUI = {
   },
 
   removeSavedVideoButton() {
-    const savedVideos = videoStorage.getSavedVideos();
-    if (savedVideos) {
-      savedVideos.forEach(video => {
+    const hasSavedVideos = data.savedVideos.length !== 0;
+    if (hasSavedVideos) {
+      data.savedVideos.forEach(video => {
         const isSavedVideo = $('.video-list').lastElementChild.dataset.videoId === video.id;
         if (isSavedVideo) {
           $('.video-list').lastElementChild.lastElementChild.disabled = true;

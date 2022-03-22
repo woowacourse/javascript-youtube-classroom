@@ -1,5 +1,6 @@
 import videoStorage from '../localStorage/videoStorage.js';
 import { validateAbleToSaveVideo } from '../validates/validate.js';
+import data from '../data/data.js';
 
 const getVideoObjectFromElement = element => {
   return {
@@ -18,15 +19,17 @@ export const handleSaveButtonClick = e => {
   }
   try {
     const saveTargetVideo = getVideoObjectFromElement(e.target.parentElement);
-    const savedVideos = videoStorage.getSavedVideos();
 
-    if (!savedVideos) {
+    const hasSavedVideo = data.savedVideos.length !== 0;
+    if (!hasSavedVideo) {
+      data.savedVideos = [saveTargetVideo];
       videoStorage.setSavedVideos([saveTargetVideo]);
       return;
     }
 
-    validateAbleToSaveVideo(savedVideos, saveTargetVideo);
-    videoStorage.setSavedVideos([...savedVideos, saveTargetVideo]);
+    validateAbleToSaveVideo(data.savedVideos, saveTargetVideo);
+    data.savedVideos = [...data.savedVideos, saveTargetVideo];
+    videoStorage.setSavedVideos([...data.savedVideos, saveTargetVideo]);
   } catch (error) {
     alert(error.message);
   } finally {
