@@ -2,7 +2,6 @@ import videoAPI from '../videoAPI.js';
 import validator from '../utils/validator.js';
 import videoStorage from '../videoStorage.js';
 import { USER_MESSAGE } from '../utils/constants.js';
-import { PARSE_DATA } from '../utils/mockData.js';
 
 export default class EventHandler {
   constructor(mainView, modalView) {
@@ -12,16 +11,19 @@ export default class EventHandler {
   }
 
   setBindEvents() {
-    this.mainView.bindModalOpenButton(this.clickModalOpenButton.bind(this));
-    this.mainView.bindOnClickWatchLaterButton(this.clickWatchLaterButton.bind(this));
-    this.mainView.bindOnClickWatchedButton(this.clickWatchedButton.bind(this));
-    this.mainView.bindOnClickSwitchButton(this.clickSwitchButton.bind(this));
-    this.mainView.bindOnClickDeleteButton(this.clickDeleteButton.bind(this));
+    this.mainView.$modalOpenButton.addEventListener('click', this.clickModalOpenButton.bind(this));
+    this.mainView.$watchLaterButton.addEventListener(
+      'click',
+      this.clickWatchLaterButton.bind(this)
+    );
+    this.mainView.$watchedButton.addEventListener('click', this.clickWatchedButton.bind(this));
+    this.mainView.$storedVideoList.addEventListener('click', this.clickSwitchButton.bind(this));
+    this.mainView.$storedVideoList.addEventListener('click', this.clickDeleteButton.bind(this));
 
     this.modalView.bindOnClickSearchButton(this.clickSearchButton.bind(this));
     this.modalView.bindOnClickDimmer(this.clickDimmer.bind(this));
     this.modalView.bindVideoListScroll(this.videoListScroll.bind(this));
-    this.modalView.bindVideoListClickStoreButton(this.clickStoreButton.bind(this));
+    this.modalView.bindOnClickStoreButton(this.clickStoreButton.bind(this));
   }
 
   clickWatchLaterButton() {
@@ -60,7 +62,7 @@ export default class EventHandler {
 
   clickStoreButton(videoData) {
     videoStorage.storeVideo(videoData);
-    this.mainView.renderAddedVideoData(videoData);
+    this.mainView.renderAddedVideo(videoData);
     this.mainView.decideRenderEmptyImage();
   }
 
@@ -70,7 +72,6 @@ export default class EventHandler {
       this.modalView.resetVideoList();
       this.modalView.appendEmptyList();
       this.modalView.appendVideoItem();
-      this.modalView.renderSkeletonUI();
       const videoListData = await videoAPI.getVideoListData(searchInput);
       this.modalView.renderVideoList(videoListData);
     } catch (error) {

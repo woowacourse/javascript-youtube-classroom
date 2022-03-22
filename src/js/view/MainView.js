@@ -37,26 +37,6 @@ export default class MainView {
     this.$emptyListImage.src = emptyImage;
   }
 
-  bindModalOpenButton(callback) {
-    this.$modalOpenButton.addEventListener('click', callback);
-  }
-
-  bindOnClickWatchLaterButton(callback) {
-    this.$watchLaterButton.addEventListener('click', callback);
-  }
-
-  bindOnClickWatchedButton(callback) {
-    this.$watchedButton.addEventListener('click', callback);
-  }
-
-  bindOnClickSwitchButton(callback) {
-    this.$storedVideoList.addEventListener('click', callback);
-  }
-
-  bindOnClickDeleteButton(callback) {
-    this.$storedVideoList.addEventListener('click', callback);
-  }
-
   renderStoredVideoList() {
     const template = videoStorage.getVideoList().map(videoData => {
       return storedVideoListTemplate(videoData);
