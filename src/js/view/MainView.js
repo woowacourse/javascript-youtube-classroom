@@ -2,6 +2,7 @@ import { DOM_STRING, VIDEO_TYPE } from '../utils/constants.js';
 import { $ } from '../utils/common.js';
 import videoStorage from '../videoStorage.js';
 import emptyImage from '../../assets/images/empty.png';
+import { showVideoTemplate, storedVideoListTemplate, hideVideoTemplate } from './template.js';
 
 export default class MainView {
   #showType = VIDEO_TYPE.WATCH_LATER;
@@ -58,20 +59,7 @@ export default class MainView {
 
   renderStoredVideoList() {
     const template = videoStorage.getVideoList().map(videoData => {
-      return `
-        <li class="video-item ${videoData.type}">
-          <img
-            src=${videoData.url}
-            alt="video-item-thumbnail" class="video-item__thumbnail"
-            loading="lazy" />
-          <h4 class="video-item__title">${videoData.title}</h4>
-          <p class="video-item__channel-name">${videoData.channelTitle}</p>
-          <p class="video-item__published-date">${videoData.publishedAt}</p>
-          <button data-video-id=${videoData.videoId} class="switch-show-type button ${
-        videoData.type === VIDEO_TYPE.WATCH_LATER ? '' : 'clicked'
-      }">✅</button>
-          <button data-video-id=${videoData.videoId} class="delete-button button">🗑️</button>
-        </li>`;
+      return storedVideoListTemplate(videoData);
     });
 
     this.$storedVideoList.insertAdjacentHTML('beforeend', template.join(''));
@@ -125,41 +113,14 @@ export default class MainView {
   }
 
   renderAddedVideo(video) {
-    const template = `
-    <li class="video-item ${video.type} ${
-      this.showType === VIDEO_TYPE.WATCH_LATER ? '' : DOM_STRING.HIDE
-    }">
-      <img
-        src=${video.url}
-        alt="video-item-thumbnail" class="video-item__thumbnail"
-        loading="lazy" />
-      <h4 class="video-item__title">${video.title}</h4>
-      <p class="video-item__channel-name">${video.channelTitle}</p>
-      <p class="video-item__published-date">${video.publishedAt}</p>
-      <button data-video-id=${video.videoId} class="switch-show-type button ${
-      video.type === VIDEO_TYPE.WATCH_LATER ? '' : 'clicked'
-    }">✅</button>
-      <button data-video-id=${video.videoId} class="delete-button button">🗑️</button>
-    </li>`;
+    const template =
+      this.showType === VIDEO_TYPE.WATCHED ? hideVideoTemplate(video) : showVideoTemplate(video);
 
     this.$storedVideoList.insertAdjacentHTML('beforeend', template);
   }
 
   renderSwitchedVideo(video) {
-    const template = `
-    <li class="video-item ${video.type} hide">
-      <img
-        src=${video.url}
-        alt="video-item-thumbnail" class="video-item__thumbnail"
-        loading="lazy" />
-      <h4 class="video-item__title">${video.title}</h4>
-      <p class="video-item__channel-name">${video.channelTitle}</p>
-      <p class="video-item__published-date">${video.publishedAt}</p>
-      <button data-video-id=${video.videoId} class="button switch-show-type ${
-      video.type === VIDEO_TYPE.WATCH_LATER ? '' : 'clicked'
-    }">✅</button>
-      <button data-video-id=${video.videoId} class="delete-button button">🗑️</button>
-    </li>`;
+    const template = hideVideoTemplate(video);
 
     this.$storedVideoList.insertAdjacentHTML('beforeend', template);
   }
