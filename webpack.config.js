@@ -1,7 +1,5 @@
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const path = require('path');
-const webpack = require('webpack');
-const dotenv = require('dotenv').config();
 
 module.exports = {
   mode: 'development',
@@ -44,7 +42,7 @@ module.exports = {
           options: {
             name: 'assets/[name].[ext]',
             fallback: 'file-loader',
-            limit: 5000, // 5kb 미만 파일만 data url로 처리
+            limit: 5000,
           },
         },
       },
@@ -54,6 +52,5 @@ module.exports = {
     new HtmlWebpackPlugin({
       template: './index.html',
     }),
-    new webpack.EnvironmentPlugin(Object.keys(dotenv.parsed || {})),
   ],
 };

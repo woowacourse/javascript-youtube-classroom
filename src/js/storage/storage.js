@@ -1,28 +1,31 @@
-import { MAX_VIDEO_COUNT } from '../constants/constants.js';
+import { VIDEO, STORAGE_KEY } from '../constants/constants.js';
 
 const storage = {
   setLocalStorage(video) {
-    localStorage.setItem('data', JSON.stringify(video));
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(video));
   },
   getLocalStorage() {
-    return JSON.parse(localStorage.getItem('data'));
+    return JSON.parse(localStorage.getItem(STORAGE_KEY));
   },
-  updateLocalStorage(videoId) {
-    const savedStorage = this.getLocalStorage();
-    if (savedStorage.length > MAX_VIDEO_COUNT) {
+  updateLocalStorage(savedVideoData, videoData) {
+    if (savedVideoData.length > VIDEO.MAX_SAVE_COUNT) {
       return;
     }
-    if (savedStorage.some(savedId => savedId === videoId)) {
+    if (savedVideoData.some((video) => video.videoId === videoData.videoId)) {
       return;
     }
-    this.setLocalStorage([...savedStorage, videoId]);
+    this.setLocalStorage([...savedVideoData, videoData]);
   },
-  saveVideo(videoId) {
-    if (this.getLocalStorage()) {
-      this.updateLocalStorage(videoId);
+  saveVideo(videoData) {
+    const savedVideoData = this.getLocalStorage();
+    if (savedVideoData) {
+      this.updateLocalStorage(savedVideoData, videoData);
       return;
     }
-    this.setLocalStorage([videoId]);
+    this.setLocalStorage([videoData]);
+  },
+  resetLocalStorage() {
+    localStorage.clear();
   },
 };
 

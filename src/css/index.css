@@ -2,6 +2,17 @@
 @import './modal.css';
 @import './skeleton.css';
 
+:root {
+  --color-white: #ffffff;
+  --color-light-white: #f5f5f5;
+  --color-dark-white: #ebebeb;
+  --color-light-gray: #b4b4b4;
+  --color-dark-gray: #8b8b8b;
+  --color-sky-blue: rgba(0, 188, 212, 0.12);
+  --color-light-blue: #00bcd4;
+  --color-black: rgba(0, 0, 0, 0.5);
+}
+
 * {
   margin: 0;
   padding: 0;

@@ -1,14 +1,14 @@
-import { ERROR } from '../constants/constants.js';
+import { MESSAGE } from '../constants/constants.js';
 
-export const $ = selector => document.querySelector(selector);
+export const scrollToTop = (element) => {
+  element.scrollTo(0, 0);
+};
 
-export const $$ = selector => document.querySelectorAll(selector);
-
-export const isEndOfScroll = element =>
+export const isEndOfScroll = (element) =>
   element.scrollHeight - element.scrollTop === element.clientHeight;
 
-export const validateInput = input => {
+export const validateInput = (input) => {
   if (!input) {
-    throw new Error(ERROR.MESSAGE.EMPTY_INPUT);
+    throw new Error(MESSAGE.ERROR.EMPTY_INPUT);
   }
 };

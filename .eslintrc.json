@@ -18,7 +18,8 @@
     "no-new": "off",
     "lines-between-class-members": "off",
     "no-return-assign": "off",
-    "no-use-before-define": "off"
+    "no-use-before-define": "off",
+    "no-param-reassign": "off"
   },
   "plugins": ["prettier"]
 }
