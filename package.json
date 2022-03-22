@@ -8,13 +8,15 @@
     "start": "webpack serve --open",
     "build": "webpack",
     "predeploy": "npm run build",
-    "deploy": "gh-pages -d dist"
+    "deploy": "gh-pages -d dist",
+    "cypress:open": "cypress open",
+    "cypress:run": "cypress run —browser chrome"
   },
   "jest": {
     "moduleNameMapper": {
-      "^@Core(.*)$": "<rootDir>/src/js/core$1",
       "^@Constants(.*)$": "<rootDir>/src/js/constants.js",
-      "^@Domain(.*)$": "<rootDir>/src/js/domain$1",
+      "^@Store(.*)$": "<rootDir>/src/js/store$1",
+      "^@Storage(.*)$": "<rootDir>/src/js/storage$1",
       "^@Utils(.*)$": "<rootDir>/src/js/utils$1",
       "^@Images(.*)$": "<rootDir>/src/assets/image$1",
       "^@Api(.*)$": "<rootDir>/src/js/api.js"
@@ -30,6 +32,7 @@
     "babel-loader": "^8.2.3",
     "clean-webpack-plugin": "^4.0.0",
     "css-loader": "^6.7.0",
+    "cypress": "^9.5.2",
     "dotenv": "^16.0.0",
     "eslint": "^8.10.0",
     "eslint-config-airbnb-base": "^15.0.0",
@@ -39,7 +42,6 @@
     "html-webpack-plugin": "^5.5.0",
     "jest": "^27.5.1",
     "mini-css-extract-plugin": "^2.6.0",
-    "sass-loader": "^12.6.0",
     "style-loader": "^3.3.1",
     "webpack": "^5.70.0",
     "webpack-cli": "^4.9.2",

@@ -15,10 +15,10 @@ module.exports = () => {
       extensions: ['.js', '.css'],
       alias: {
         '@Display': path.resolve(__dirname, 'src/js/display/'),
-        '@Domain': path.resolve(__dirname, 'src/js/domain/'),
+        '@Store': path.resolve(__dirname, 'src/js/Store/'),
         '@Utils': path.resolve(__dirname, 'src/js/utils/'),
-        '@Core': path.resolve(__dirname, 'src/js/core/'),
         '@Constants': path.resolve(__dirname, 'src/js/constants.js'),
+        '@Storage': path.resolve(__dirname, 'src/js/storage/'),
         '@Images': path.resolve(__dirname, 'src/assets/images'),
         '@Api': path.resolve(__dirname, 'src/js/api.js'),
       },
@@ -46,8 +46,8 @@ module.exports = () => {
           ],
         },
         {
-          test: /\.s[ac]ss$/i,
-          use: [MiniCssExtractPlugin.loader, 'css-loader', 'sass-loader'],
+          test: /\.css$/i,
+          use: [MiniCssExtractPlugin.loader, 'css-loader'],
           exclude: /node_modules/,
         },
         {

@@ -5,9 +5,31 @@ export const YOUTUBE_SEARCH_ACTION = {
   UPDATE_SEARCH_RESULT_FAIL: 'UPDATE_SEARCH_RESULT_FAIL',
 };
 
-export const ERROR_MESSAGE = {
-  EMPTY_SEARCH_KEYWORD: '검색어를 입력해주세요.',
-  MAX_SAVE_VIDEO: '동영상은 최대 100개까지 저장할 수 있습니다.',
+export const UI_ACTION = {
+  OPEN_MODAL: 'OPEN_MODAL',
+  CLOSE_MODAL: 'CLOSE_MODAL',
+  SELECT_PAGE: 'SELECT_PAGE',
+};
+
+export const LIBRARY_ACTION = {
+  TOGGLE_WATCH_STATUS: 'TOGGLE_WATCH_STATUS',
+  SAVE_VIDEO: 'SAVE_VIDEO',
+  REMOVE_VIDEO: 'REMOVE_VIDEO',
+};
+
+export const NAVIGATION = {
+  WATCH_LATER: 'watchLater',
+  WATCHED: 'watched',
+  SEARCH_MODAL: 'searchModal',
+};
+
+export const MESSAGE = {
+  SERVER_ERROR: '서버에서 에러가 발생했어요!',
+  EMPTY_SEARCH_KEYWORD: '검색어를 입력해주세요!',
+  MAX_SAVE_VIDEO: '동영상은 최대 100개까지 저장할 수 있습니다.💦',
+  SAVE_COMPLETE: '성공적으로 저장되었습니다!🥳',
+  CONFIRM_REMOVE_VIDEO: '정말 삭제하시겠습니까?',
+  REMOVE_COMPLETE: '동영상이 삭제되었습니다.👻',
 };
 
 export const YOUTUBE_SETTING = {
@@ -21,3 +43,10 @@ export const EVENT_TYPE = {
   INPUT: 'input',
   SUBMIT: 'submit',
 };
+
+export const SNACKBAR_TYPE = {
+  ERROR: 'ERROR',
+  ALERT: 'ALERT',
+};
+
+export const SNACKBAR_CONSIST_TIME = 4000;

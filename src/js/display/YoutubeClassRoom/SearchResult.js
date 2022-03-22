@@ -1,10 +1,18 @@
 import { $, addEvent, createElement } from '@Utils/dom';
 import { getParsedTime } from '@Utils/dataManager';
 import { onObserveElement } from '@Utils/elementController';
-import { YOUTUBE_SETTING, YOUTUBE_SEARCH_ACTION, ERROR_MESSAGE } from '@Constants';
-import YoutubeSearchStore from '@Domain/YoutubeSearchStore';
-import YoutubeSaveStorage from '@Domain/YoutubeSaveStorage';
-import notFoundImage from '@Images/not_found.png';
+import {
+  YOUTUBE_SETTING,
+  YOUTUBE_SEARCH_ACTION,
+  MESSAGE,
+  EVENT_TYPE,
+  SNACKBAR_TYPE,
+  LIBRARY_ACTION,
+} from '@Constants';
+import YoutubeSearchStore from '@Store/YoutubeSearchStore';
+import LibraryStore from '@Store/LibraryStore';
+import notFoundImage from '@Images/not_found.jpeg';
+import SnackBar from '../Share/SnackBar';
 
 export default class SearchResult {
   constructor() {
@@ -30,43 +38,46 @@ export default class SearchResult {
 
   bindEvents() {
     onObserveElement(this.$scrollObserver, () => {
-      const { isLoading } = YoutubeSearchStore.getState();
-      if (isLoading) return;
+      const { isLoading, isEnded, error } = YoutubeSearchStore.getState();
+      if (isLoading || isEnded || error) return;
       YoutubeSearchStore.dispatch(YOUTUBE_SEARCH_ACTION.UPDATE_SEARCH_RESULT_REQUEST);
     });
     addEvent(this.container, {
-      eventType: 'click',
-      selector: '.video-item__save-button',
-      handler: this.handleToggleSaveButton,
+      eventType: EVENT_TYPE.CLICK,
+      selector: '.list-item__save-button',
+      handler: this.handleClickSaveButton,
     });
   }
 
-  handleToggleSaveButton = ({ target: $target }) => {
-    const { videoId } = $target.closest('.video-item').dataset;
-    if (YoutubeSaveStorage.has(videoId)) {
-      YoutubeSaveStorage.remove(videoId);
-      $target.textContent = '⬇ 저장';
-      return;
+  handleClickSaveButton = ({ target: $target }) => {
+    try {
+      const { videoId, videoTitle, videoChanneltitle, videoPublishtime, videoThumbnail } =
+        $target.closest('.list-item').dataset;
+      LibraryStore.dispatch(LIBRARY_ACTION.SAVE_VIDEO, {
+        id: videoId,
+        videoData: {
+          videoTitle,
+          videoChanneltitle,
+          videoPublishtime,
+          videoThumbnail,
+        },
+        watched: false,
+      });
+      $target.classList.add('hide');
+      SnackBar.open(MESSAGE.SAVE_COMPLETE, SNACKBAR_TYPE.ALERT);
+    } catch (error) {
+      SnackBar.open(error, SNACKBAR_TYPE.ERROR);
     }
-
-    const saveItemsCount = YoutubeSaveStorage.get().length;
-    if (saveItemsCount === YOUTUBE_SETTING.MAX_SAVE_NUMBER) {
-      alert(ERROR_MESSAGE.MAX_SAVE_VIDEO);
-      return;
-    }
-
-    YoutubeSaveStorage.add(videoId);
-    $target.textContent = '🗑 저장 취소';
   };
 
-  render = ({ isLoading, isLoaded, items, error }) => {
-    this.$videoList.innerHTML = ''; // TODO: replaceChildren으로 변경
+  render = () => {
+    const { isLoading, isLoaded, items, isEnded, error } = YoutubeSearchStore.getState();
+    this.$videoList.replaceChildren();
     if (error) {
-      this.$videoList.append(this.getResultServerError());
-      return;
+      SnackBar.open(MESSAGE.SERVER_ERROR, SNACKBAR_TYPE.ERROR);
     }
 
-    if (items.length < 0 && isLoaded) {
+    if (items.length <= 0 && isLoaded) {
       this.$videoList.append(this.getResultNotFound());
       return;
     }
@@ -75,7 +86,7 @@ export default class SearchResult {
     if (items.length > 0) {
       $fragment.append(...this.getVideoList(items));
     }
-    if (isLoading) {
+    if (isLoading && !isEnded && !error) {
       $fragment.append(...this.$skeleton);
     }
 
@@ -84,46 +95,40 @@ export default class SearchResult {
   };
 
   getResultNotFound() {
-    return createElement('DIV', {
-      className: 'no-result',
-      innerHTML: `
-        <img src="${notFoundImage}" alt="no result image" class="no-result__image">
-        <p class="no-result__description">
-          검색 결과가 없습니다<br />
-          다른 키워드로 검색해보세요
-        </p>
-      `,
-    });
-  }
-
-  getResultServerError() {
-    return createElement('DIV', {
-      className: 'no-result',
-      innerHTML: `
-        <img src="${notFoundImage}" alt="no result image" class="no-result__image">
-        <p class="no-result__description">
-          서버에서 오류가 발생하였습니다.<br />
-          잠시 후 다시 시도해주세요.
-        </p>
-      `,
+    return createElement('IMG', {
+      className: 'no-result__image',
+      alt: 'no result image',
+      src: notFoundImage,
     });
   }
 
   getVideoList(items) {
-    return items.map(video => {
-      const buttonText = YoutubeSaveStorage.has(video.id.videoId) ? '🗑 저장 취소' : '⬇ 저장';
+    return items.map(({ videoId, title, channelTitle, publishTime, thumbnails }) => {
+      const { videoList } = LibraryStore.getState();
+      const isSaved = videoList.some(({ id }) => id === videoId);
+
       return createElement('LI', {
-        dataset: { 'video-id': video.id.videoId },
-        className: 'video-item',
+        dataset: {
+          'video-id': videoId,
+          'video-title': title,
+          'video-channelTitle': channelTitle,
+          'video-publishTime': publishTime,
+          'video-thumbnail': thumbnails,
+        },
+        className: 'list-item',
         innerHTML: `<img
-          src="${video.snippet.thumbnails.medium.url}"
-          alt="video-item-thumbnail" class="video-item__thumbnail"
+          src="${thumbnails}"
+          alt="video-item-thumbnail" class="list-item__thumbnail"
           loading="lazy"
           >
-        <h4 class="video-item__title">${video.snippet.title}</h4>
-        <p class="video-item__channel-name">${video.snippet.channelTitle}</p>
-        <p class="video-item__published-date">${getParsedTime(video.snippet.publishTime)}</p>
-        <button class="video-item__save-button button">${buttonText}</button>`,
+        <h4 class="list-item__title">${title}</h4>
+        <p class="list-item__channel-name">${channelTitle}</p>
+        <p class="list-item__published-date">${getParsedTime(publishTime)}</p>
+        ${
+          isSaved
+            ? ''
+            : '<button class="list-item__save-button button" type="button" aria-label="save video">⬇ 저장</button>'
+        }`,
       });
     });
   }

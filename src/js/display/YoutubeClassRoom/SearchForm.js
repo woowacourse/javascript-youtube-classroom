@@ -1,8 +1,8 @@
 import { $, addEvent } from '@Utils/dom';
 import { isEmptyString, isSameKeyword } from '@Utils/validator';
-import { YOUTUBE_SEARCH_ACTION, ERROR_MESSAGE, EVENT_TYPE } from '@Constants';
+import { YOUTUBE_SEARCH_ACTION, MESSAGE, EVENT_TYPE } from '@Constants';
 import { onEnableButton } from '@Utils/elementController';
-import YoutubeSearchStore from '@Domain/YoutubeSearchStore';
+import YoutubeSearchStore from '@Store/YoutubeSearchStore';
 
 export default class SearchForm {
   constructor() {
@@ -30,11 +30,11 @@ export default class SearchForm {
 
   handleSubmitForm = event => {
     event.preventDefault();
-    const newKeyword = $('#search-input-keyword', this.container).value;
+    const newKeyword = $('#search-input-keyword', this.container).value.trim();
     const { isLoading, keyword: beforeKeyword } = YoutubeSearchStore.getState();
 
     if (isEmptyString(newKeyword)) {
-      alert(ERROR_MESSAGE.EMPTY_SEARCH_KEYWORD);
+      alert(MESSAGE.EMPTY_SEARCH_KEYWORD);
       return;
     }
 

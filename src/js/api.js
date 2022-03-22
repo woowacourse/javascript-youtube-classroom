@@ -1,6 +1,6 @@
 import { YOUTUBE_SETTING, YOUTUBE_SEARCH_ACTION } from '@Constants';
 import { uriBuilder } from '@Utils/dataManager';
-import YoutubeSearchStore from '@Domain/YoutubeSearchStore';
+import YoutubeSearchStore from '@Store/YoutubeSearchStore';
 
 const controller = new AbortController();
 const { signal } = controller;

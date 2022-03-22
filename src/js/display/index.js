@@ -1,10 +1,12 @@
 import Navigation from './YoutubeClassRoom/Navigation';
-import Modal from './Share/Modal';
+import Modal from './YoutubeClassRoom/Modal';
 import SearchForm from './YoutubeClassRoom/SearchForm';
 import SearchResult from './YoutubeClassRoom/SearchResult';
+import MainContents from './YoutubeClassRoom/MainContents';
 
 const initDisplays = () => {
   new Modal();
+  new MainContents();
   new Navigation();
   new SearchForm();
   new SearchResult();

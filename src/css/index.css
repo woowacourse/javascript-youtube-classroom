@@ -1,6 +1,8 @@
-@import './font.scss';
-@import './app.scss';
-@import './modal.scss';
+@import './app.css';
+@import './modal.css';
+@import './snackbar.css';
+@import './classroomMain.css';
+@import './search.css';
 
 * {
     margin: 0;
@@ -15,7 +17,6 @@ ol,ul {
 html, body {
     height: 100%;
     -webkit-font-smoothing: antialiased;
-    font-family: 'NanumBarunGothic', sans-serif;
 }
 
 input, button, textarea, select {
