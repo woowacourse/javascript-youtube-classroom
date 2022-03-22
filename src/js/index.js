@@ -1,4 +1,11 @@
-import MainPage from './ui/mainPage.js';
+import SaveInterferer from './interferer/saveInterferer';
+import ModalInterferer from './interferer/modalInterferer';
+import MainInterferer from './interferer/mainInterferer';
 
-const mainPage = new MainPage();
-mainPage.init();
+const mainInterferer = new MainInterferer();
+const saveInterferer = new SaveInterferer(mainInterferer);
+const modalInterferer = new ModalInterferer();
+
+saveInterferer.init();
+modalInterferer.init();
+mainInterferer.loadSavedItemsPage();

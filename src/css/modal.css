@@ -18,7 +18,7 @@
 
 .search-modal {
   position: relative;
-  width: 1080px;
+  width: 82%;
   height: 727px;
   background: #ffffff;
   border: 1px solid rgba(0, 0, 0, 0.12);
@@ -89,13 +89,14 @@
 }
 
 .video-list {
-  width: 1040px;
+  width: 99%;
   height: 493px;
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
   gap: 32px 20px;
   overflow-y: scroll;
+  justify-content: center;
 }
 
 .video-item {

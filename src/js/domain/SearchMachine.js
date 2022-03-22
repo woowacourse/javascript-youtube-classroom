@@ -1,40 +1,19 @@
 import youtubeSearchAPI from '../api/youtubeSearchapi.js';
-import { LOCALSTORAGE_KEY_SAVE } from '../constant/index.js';
-import { checkValidSearchInput, checkMaxStorageVolume } from '../util/validator.js';
-import { getLocalStorage, setLocalStorage } from './localStorage.js';
+import { checkValidSearchInput } from '../util/validator.js';
 import VideoFactory from './VideoFactory.js';
 
-export default class SearchMachine {
-  #keyword;
-
-  #pageToken;
-
-  constructor() {
-    this.#pageToken = '';
-    this.#keyword = '';
-  }
-
-  set keyword(value) {
+const searchMachine = {
+  changeKeyword(value) {
     checkValidSearchInput(value);
-    this.#keyword = value;
-  }
+    return value;
+  },
 
-  async search() {
-    const data = await youtubeSearchAPI.searchByPage(this.#keyword, this.#pageToken);
-    this.#pageToken = data.nextPageToken;
+  async searchByKeyword(keyword, pageToken) {
+    const data = await youtubeSearchAPI.searchByApi(keyword, pageToken);
     const videos = data.items.map((item) => VideoFactory.generate(item));
 
-    return videos;
-  }
+    return { videos, nextPageToken: data.nextPageToken };
+  },
+};
 
-  initPageToken() {
-    this.#pageToken = '';
-  }
-
-  saveVideoToLocalStorage(newVideo) {
-    checkMaxStorageVolume();
-    const savedVideos = getLocalStorage(LOCALSTORAGE_KEY_SAVE);
-
-    setLocalStorage(LOCALSTORAGE_KEY_SAVE, savedVideos.concat(newVideo));
-  }
-}
+export default searchMachine;

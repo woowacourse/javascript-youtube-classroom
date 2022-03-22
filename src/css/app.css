@@ -4,7 +4,7 @@ body {
 }
 
 #app {
-  max-width: 1020px;
+  max-width: 1200px;
   margin: 0 auto;
 }
 
@@ -18,7 +18,11 @@ body {
 
 .nav {
   display: flex;
-  justify-content: center;
+  margin-bottom: 50px;
+}
+
+#search-modal-button {
+  margin-left: auto;
 }
 
 .button {
@@ -38,5 +42,83 @@ body {
 }
 
 .nav__button:hover {
-  background: #ebebeb;
+  background-color: #e5e5e5;
+  transform: scale(1.05);
+}
+
+.nav__button.selected:hover {
+  background-color: #8b8b8b;
+}
+
+.video-watch-controller {
+  display: flex;
+  justify-content: end;
+  gap: 15px;
+}
+
+.watch-video-button,
+.delete-watch-video-button,
+.watch-later-video-button {
+  font-size: 18px;
+  margin: 0 5px;
+}
+
+.watch-later-video-list,
+.watched-video-list {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  row-gap: 50px;
+  place-items: center;
+}
+
+.hide {
+  display: none;
+}
+
+.no-saved-videos,
+.no-watched-videos {
+  font-size: 25px;
+  font-weight: 600;
+  font-family: cursive;
+  margin: 0 auto;
+}
+
+#watch-later-video-button {
+  margin-right: 15px;
+}
+
+.selected {
+  background-color: #9b9b9b;
+  color: white;
+}
+
+@media screen and (max-width: 1280px) {
+  .watch-later-video-list,
+  .watched-video-list {
+    grid-template-columns: 1fr 1fr 1fr;
+  }
+
+  #app {
+    max-width: 960px;
+  }
+}
+
+@media screen and (max-width: 960px) {
+  .watch-later-video-list,
+  .watched-video-list {
+    grid-template-columns: 1fr 1fr;
+  }
+  #app {
+    max-width: 700px;
+  }
+}
+
+@media screen and (max-width: 600px) {
+  .watch-later-video-list,
+  .watched-video-list {
+    grid-template-columns: 1fr;
+  }
+  #app {
+    max-width: 500px;
+  }
 }

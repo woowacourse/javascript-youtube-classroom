@@ -1,5 +1,9 @@
 export const LOCALSTORAGE_KEY_SAVE = 'save';
 
+export const LOCALSTORAGE_KEY_WATCHED = 'watched';
+
+export const LOCALSTORAGE_KEY_SEARCHED = 'searched';
+
 export const ERROR_403 = '403 Error';
 
 export const REQUEST_VIDEO_QUANTITY = 10;
@@ -20,4 +24,8 @@ export const ERROR_MESSAGE = {
   WRONG_INPUT: '잘못된 값이 입력되었습니다.',
 
   NOT_RESPONCE_OK: '네트워크 요청이 실패하였습니다',
+};
+
+export const CONFIRM_MESSAGE = {
+  DELETE: '정말로 삭제하시겠습니까?',
 };

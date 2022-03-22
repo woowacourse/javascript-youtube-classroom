@@ -1,4 +1,4 @@
-import { getLocalStorage } from '../domain/localStorage';
+import { getLocalStorage } from '../store/localStorage';
 import { ERROR_MESSAGE, LOCALSTORAGE_KEY_SAVE, MAX_STOARGE_CAPACITY } from '../constant';
 
 const validator = {
@@ -17,4 +17,5 @@ export const checkMaxStorageVolume = () => {
   }
 };
 
-export const checkSavedVideo = (id) => getLocalStorage(LOCALSTORAGE_KEY_SAVE).includes(id);
+export const checkSavedVideo = (id) =>
+  getLocalStorage(LOCALSTORAGE_KEY_SAVE).some((videoId) => videoId === id);

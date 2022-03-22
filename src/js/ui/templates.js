@@ -8,14 +8,14 @@ const template = {
     <img
       src=${thumbnails}
       alt="video-item-thumbnail" class="video-item__thumbnail" />
-    <h4 class="video-item__title">${title}</h4>
-    <p class="video-item__channel-name">${channelTitle}</p>
-    <p class="video-item__published-date">${convertDataToDateString(publishTime)}</p>
+    <h4 class="video-item__title" >${title}</h4>
+    <p class="video-item__channel-name" >${channelTitle}</p>
+    <p class="video-item__published-date" >${convertDataToDateString(publishTime)}</p>
     ${isSaved ? '' : '<button class="video-item__save-button button">⬇ 저장</button>'}
   </li>
   `,
 
-  noSearchResult: () => `
+  emptySearchResult: () => `
     <div class="no-result">
       <img src="https://hwangstar156.github.io/javascript-youtube-classroom/not_found.png" alt="no result image" class="no-result__image" alt="검색결과 없음">
       <p class="no-result__description">
@@ -52,6 +52,39 @@ const template = {
       다시 요청해주세요
     </p>
   </div>
+  `,
+
+  watchLaterVideoItem: (savedItems, isWatched) => `
+  ${savedItems
+    .map(({ id, thumbnails, publishTime, title, channelTitle }) => {
+      return `
+    <section class="video-item" data-video-id=${id}>
+      <img
+        src=${thumbnails}
+        alt="video-item-thumbnail" class="video-item__thumbnail" />
+      <h4 class="video-item__title" >${title}</h4>
+      <p class="video-item__channel-name" >${channelTitle}</p>
+      <p class="video-item__published-date" >${convertDataToDateString(publishTime)}</p>
+      <div class="video-watch-controller">
+        ${
+          isWatched
+            ? '<button class="watch-later-video-button button">👁️</button>'
+            : '<button class="watch-video-button button">✅</button>'
+        } 
+        <button class="delete-watch-video-button button">🗑️</button>
+      </div>
+    </section>
+      `;
+    })
+    .join('')}
+  `,
+
+  emptyItem: (isWatched) => `
+  ${
+    isWatched
+      ? '<p class="no-watched-videos">아직 본 영상이 없습니다~</P>'
+      : '<p class="no-saved-videos">저장된 영상이 없습니다~</p>'
+  }
   `,
 };
 
