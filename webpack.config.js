@@ -3,7 +3,7 @@ const path = require('path');
 
 module.exports = {
   mode: 'development',
-  entry: './src/js/index.js',
+  entry: './src/index.js',
   resolve: {
     extensions: ['.js', '.css'],
   },
@@ -50,6 +50,7 @@ module.exports = {
   plugins: [
     new HtmlWebpackPlugin({
       template: './index.html',
+      favicon: 'src/assets/images/favicon.png',
     }),
   ],
 };

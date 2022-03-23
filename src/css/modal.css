@@ -1,9 +1,36 @@
+@media (min-width: 1280px) {
+  .search-result {
+    width: 1030px;
+  }
+}
+
+@media (min-width: 960px) and (max-width: 1280px) {
+  .search-result {
+    width: 770px;
+  }
+}
+
+@media (min-width: 640px) and (max-width: 960px) {
+  .search-result {
+    width: 510px;
+  }
+}
+
+@media (max-width: 640px) {
+  .search-result {
+    width: 260px;
+  }
+  .search-input {
+    display: none;
+  }
+}
+
 .modal-container {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 100vw;
-  height: 100vh;
+  width: 100%;
+  height: 100%;
   position: fixed;
   top: 0;
   left: 0;
@@ -22,12 +49,17 @@
 
 .search-modal {
   position: relative;
-  width: 1080px;
+  max-width: 1100px;
+  width: 84vw;
   height: 727px;
   background: #ffffff;
   border: 1px solid rgba(0, 0, 0, 0.12);
   border-radius: 4px;
   padding: 50px 30px 32px 30px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
 
 .search-modal__title {
@@ -42,10 +74,17 @@
   display: flex;
   justify-content: center;
   margin-bottom: 40px;
+  width: 60%;
+  max-width: 500px;
+}
+
+.search-input-container {
+  position: relative;
+  width: 100%;
 }
 
 .search-input__keyword {
-  width: 400px;
+  width: 95%;
   height: 36px;
   margin-right: 20px;
   padding: 4px 8px;
@@ -71,6 +110,19 @@
   align-items: center;
 }
 
+.video-list::-webkit-scrollbar {
+  width: 5px;
+  border-radius: 5px;
+}
+
+.video-list::-webkit-scrollbar-track {
+  background-color: #00bbd413;
+}
+
+.video-list::-webkit-scrollbar-thumb {
+  box-shadow: inset 0 0 4px #00bbd478;
+}
+
 .no-result__image {
   width: 190px;
   height: 140px;
@@ -85,7 +137,6 @@
 }
 
 .video-list {
-  width: 1040px;
   height: 493px;
   display: flex;
   flex-direction: row;
@@ -96,7 +147,7 @@
 
 .video-item {
   position: relative;
-  width: 240px;
+  width: 236px;
   height: 255px;
 }
 
@@ -144,6 +195,14 @@
   margin-top: 4px;
 }
 
-.video-item__save-button:hover {
+.video-item__save-button:enabled:hover {
   background: #efefef;
+}
+
+.video-item__save-button:disabled {
+  cursor: default;
+}
+
+.wrapper {
+  overflow: hidden;
 }

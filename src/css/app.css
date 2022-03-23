@@ -1,42 +1,158 @@
+@media (min-width: 1280px) {
+  .saved-video-list {
+    width: 1020px;
+  }
+}
+
+@media (min-width: 960px) and (max-width: 1280px) {
+  .saved-video-list {
+    width: 765px;
+  }
+}
+
+@media (min-width: 600px) and (max-width: 960px) {
+  .saved-video-list {
+    width: 510px;
+  }
+}
+
+@media (max-width: 600px) {
+  .saved-video-list {
+    width: 255px;
+  }
+}
+
+@media (max-width: 310px) {
+  body {
+    display: none;
+  }
+}
+
 body {
-    padding: 64px 0;
-    font-size: 16px;
+  padding: 64px 0;
+  font-size: 16px;
 }
 
 #app {
-    max-width: 1020px;
-    margin: 0 auto;
+  max-width: 1020px;
+  width: 80vw;
+  margin: 0 auto;
 }
 
 .classroom-container__title {
-    text-align: center;
-    font-weight: bold;
-    font-size: 34px;
-    line-height: 36px;
-    margin-bottom: 64px;
+  text-align: center;
+  font-weight: bold;
+  font-size: 34px;
+  line-height: 36px;
+  margin-bottom: 64px;
 }
 
 .nav {
-    display: flex;
-    justify-content: center;
+  display: flex;
+  justify-content: space-between;
 }
 
 .button {
-    cursor: pointer;
-    border-radius: 4px;
-    border: none;
-    font-style: normal;
-    font-weight: bold;
-    font-size: 14px;
-    letter-spacing: 1.25px;
+  cursor: pointer;
+  border-radius: 4px;
+  border: none;
+  font-style: normal;
+  font-weight: bold;
+  font-size: 14px;
+  letter-spacing: 1.25px;
+}
+
+.gonna-watch {
+  border-radius: 4px 0 0 4px;
+}
+
+.watched-button {
+  border-radius: 0 4px 4px 0;
+  margin-left: -5px;
+}
+
+.select__button {
+  width: 120px;
+  background: rgba(0, 188, 212, 0.12);
+  border: 1px solid rgba(0, 0, 0, 0.12);
+  height: 36px;
+  background: #f5f5f5;
+  cursor: pointer;
+  margin-bottom: 39px;
 }
 
 .nav__button {
-    width: 80px;
-    height: 36px;
-    background: #F5F5F5;
+  width: 80px;
+  height: 36px;
+  background: #f5f5f5;
 }
 
 .nav__button:hover {
-    background: #ebebeb;
+  background: #ebebeb;
+}
+
+.saved-video-list {
+  /* width: 1040px; */
+  height: 493px;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 32px 20px;
+}
+
+.video-item-buttons {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.video-item__watched-button {
+  width: 36px;
+  height: 36px;
+  padding: 6px 2px;
+  margin: 4px;
+}
+
+.video-item__watched-button:hover {
+  background: #ebebeb;
+}
+
+.video-item__watched-button:active {
+  background-color: rgba(0, 188, 212, 0.12);
+}
+
+.video-item__delete-button {
+  width: 36px;
+  height: 36px;
+  padding: 6px 2px;
+  margin: 4px;
+}
+
+.video-item__delete-button:hover {
+  background: #ebebeb;
+}
+
+.video-item__delete-button:active {
+  background-color: rgba(0, 188, 212, 0.12);
+}
+
+.nothing-saved-image-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.nothing-saved-image-container .nothing-saved__image {
+  width: 80%;
+  height: 40%;
+  margin-bottom: 32px;
+}
+
+.checked {
+  background-color: rgba(0, 188, 212, 0.12);
+}
+
+.center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }

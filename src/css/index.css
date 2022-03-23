@@ -1,6 +1,7 @@
 @import './app.css';
 @import './modal.css';
 @import './skeleton.css';
+@import './suggestion.css';
 
 * {
   margin: 0;
