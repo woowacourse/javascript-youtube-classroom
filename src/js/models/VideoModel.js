@@ -75,12 +75,13 @@ export default class VideoModel {
   }
 
   deleteVideo(deleteVideoId) {
-    for (let idx = 0; idx < this.#savedVideoItems.length; idx += 1) {
-      if (this.#savedVideoItems[idx].videoId === deleteVideoId) {
+    this.#savedVideoItems.some((item, idx) => {
+      console.log('삭제');
+      if (item.videoId === deleteVideoId) {
         this.#savedVideoItems.splice(idx, 1);
-        return;
       }
-    }
+      return item.videoId === deleteVideoId;
+    });
   }
 
   isIncludedSavedItem(newItem) {
