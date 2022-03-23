@@ -1,4 +1,4 @@
-import { checkLengthExist, checkEmpty, checkAnswerYes } from '../utils/validator';
+import { checkLengthExist, checkEmpty, checkEmptyApi } from '../utils/validator';
 
 export default class VideoModel {
   #keyword;
@@ -151,12 +151,12 @@ export default class VideoModel {
       const body = await response.json();
 
       if (!response.ok) {
-        throw new Error(body.error.message);
+        throw new Error(response.status);
       }
 
       this.#fetchedVideos = body;
     } catch (error) {
-      return error;
+      checkEmptyApi(error);
     }
   }
 }

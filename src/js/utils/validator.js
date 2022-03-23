@@ -12,6 +12,12 @@ export const checkEmpty = (value) => {
   }
 };
 
+export const checkEmptyApi = ({ message }) => {
+  if (message === '403') {
+    alert(EXCEPTION.API_IS_EMPTY);
+  }
+};
+
 export const checkLengthExist = (value) => {
   if (isLengthZero(value)) {
     throw new Error(EXCEPTION.NOT_FOUND_ERROR_MESSAGE);
