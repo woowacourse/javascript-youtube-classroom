@@ -62,16 +62,25 @@ export default class AppView {
     }
   }
 
-  renderSavedVideo(savedVideos) {
+  resetSavedVideoList() {
     this.$willSeeList.replaceChildren();
     this.$sawList.replaceChildren();
+  }
 
-    if (savedVideos.length === 0) {
-      this.$isEmptyWillSee.classList.remove('hide');
-      this.$isEmptySaw.classList.remove('hide');
-      return;
-    }
+  hideSavedVideoList() {
+    this.$isEmptyWillSee.classList.remove('hide');
+    this.$isEmptySaw.classList.remove('hide');
+  }
 
+  showEmptyWillSeeList() {
+    this.$isEmptyWillSee.classList.remove('hide');
+  }
+
+  showEmptySawList() {
+    this.$isEmptySaw.classList.remove('hide');
+  }
+
+  inputSavedVideoList(savedVideos) {
     for (const video of savedVideos) {
       if (video.saw) {
         this.$isEmptySaw.classList.add('hide');
@@ -81,12 +90,23 @@ export default class AppView {
       this.$isEmptyWillSee.classList.add('hide');
       this.$willSeeList.insertAdjacentHTML('beforeend', this.template.getSavedVideo(video));
     }
+  }
+
+  renderSavedVideo(savedVideos) {
+    this.resetSavedVideoList();
+
+    if (savedVideos.length === 0) {
+      this.hideSavedVideoList();
+      return;
+    }
+
+    this.inputSavedVideoList(savedVideos);
 
     if (this.$willSeeList.childElementCount === 0) {
-      this.$isEmptyWillSee.classList.remove('hide');
+      this.showEmptyWillSeeList();
     }
     if (this.$sawList.childElementCount === 0) {
-      this.$isEmptySaw.classList.remove('hide');
+      this.showEmptySawList();
     }
   }
 }
