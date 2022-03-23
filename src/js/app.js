@@ -1,8 +1,18 @@
-import View from './view/View';
+import ManageVideoStorage from './domain/ManageVideoStorage';
+import SavedVideosView from './view/SavedVideosView/SavedVideosView';
+import SearchModalView from './view/SearchModal/SearchModalView';
 
-import Search from './domain/Search';
-import storage from './domain/storage';
+class YoutubeClassRoomApp {
+  constructor() {
+    this.manageVideoStorage = new ManageVideoStorage();
+    this.savedVideosView = new SavedVideosView(this.manageVideoStorage);
+    this.searchModalView = new SearchModalView(this.renderOnModalClose, this.manageVideoStorage);
+  }
 
-const search = new Search();
+  renderOnModalClose = () => {
+    this.savedVideosView.renderVideoListUpdate();
+  };
+}
+
 // eslint-disable-next-line
-const view = new View(search, storage.saveVideos);
+new YoutubeClassRoomApp();

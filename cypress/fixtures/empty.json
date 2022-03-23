@@ -1,0 +1,12 @@
+{
+ "kind": "youtube#searchListResponse",
+ "etag": "9ysKSMUNGqqgykOhmzeunQ-wN-4",
+ "nextPageToken": "CCgQAA",
+ "prevPageToken": "CB4QAQ",
+ "regionCode": "KR",
+ "pageInfo": {
+  "totalResults": 0,
+  "resultsPerPage": 10
+ },
+ "items": []
+}

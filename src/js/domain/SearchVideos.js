@@ -1,14 +1,17 @@
-import storage from './storage';
 import { SEARCH_URL_BASE, MAX_SEARCH_RESULT, ERROR_MESSAGES } from '../constants/constants';
+import getVideoObjectArray from './utils/getVideoObjectArray';
 
-class Search {
+class SearchVideos {
   #keyword;
 
   #nextPageToken;
 
-  constructor() {
+  #manageVideoStorage;
+
+  constructor(manageVideoStorage) {
     this.#keyword = null;
     this.#nextPageToken = null;
+    this.#manageVideoStorage = manageVideoStorage;
   }
 
   async handleSearchRequest(keyword = this.#keyword) {
@@ -16,11 +19,11 @@ class Search {
       const { items, nextPageToken } = await this.#getSearchResult(keyword, this.#nextPageToken);
       this.#keyword = keyword;
       this.#nextPageToken = nextPageToken;
-      const savedVideos = storage.getSavedVideos();
-      return {
-        searchResultArray: this.#getVideoObjectArray(items, savedVideos),
-        hasNextPage: !!nextPageToken,
-      };
+
+      const savedVideos = Object.keys(this.#manageVideoStorage.getCachedVideoObjects());
+      const searchResultArray = getVideoObjectArray(items, savedVideos);
+
+      return { searchResultArray, hasNextPage: !!nextPageToken };
     } catch (error) {
       throw new Error(error.message);
     }
@@ -28,9 +31,13 @@ class Search {
 
   async #getSearchResult(keyword, pageToken) {
     const queryString = this.#generateQueryString(keyword, pageToken);
+
     try {
       const response = await fetch(`${SEARCH_URL_BASE}${queryString}`);
+      if (!response.ok) throw new Error(response);
+
       const { items, nextPageToken } = await response.json();
+
       return { items, nextPageToken };
     } catch (error) {
       throw new Error(ERROR_MESSAGES.SERVER_ERROR);
@@ -38,33 +45,18 @@ class Search {
   }
 
   #generateQueryString(keyword, pageToken) {
-    const query = {
-      q: keyword,
-      pageToken,
-      maxResults: MAX_SEARCH_RESULT,
+    const queryString = new URLSearchParams({
+      part: 'snippet',
       type: 'video',
       regionCode: 'KR',
-    };
-    return Object.keys(query).reduce(
-      (str, key) => (query[key] ? `${str}&${key}=${query[key]}` : `${str}`),
-      ''
-    );
-  }
-
-  #getVideoObjectArray(items, savedVideos) {
-    if (items.length === 0) throw new Error(ERROR_MESSAGES.NO_RESULT);
-    return items.map((item) => {
-      const { snippet, id } = item;
-      return {
-        videoId: id.videoId,
-        thumbnail: snippet.thumbnails.medium.url,
-        title: snippet.title,
-        channelTitle: snippet.channelTitle,
-        publishedAt: snippet.publishedAt,
-        isSaved: !!savedVideos.includes(id.videoId),
-      };
+      maxResults: MAX_SEARCH_RESULT,
+      q: keyword,
     });
+
+    if (pageToken) queryString.append('pageToken', pageToken);
+
+    return queryString;
   }
 }
 
-export default Search;
+export default SearchVideos;
