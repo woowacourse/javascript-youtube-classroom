@@ -1,11 +1,13 @@
+const visitUrl = 'http://localhost:9000/';
+
 it('초기화면에서는 저장된 영상을 확인할 수 없다.', () => {
-  cy.visit('http://localhost:9000/');
+  cy.visit(visitUrl);
   cy.get('#will-see-list').children().should('have.length', 0);
 });
 
 describe('영상을 관리할 수 있다.', () => {
   beforeEach(() => {
-    cy.visit('http://localhost:9000/');
+    cy.visit(visitUrl);
     cy.get('#search-modal-button').click();
     cy.get('#search-input-keyword').type('위니');
     cy.get('#search-button').click();
