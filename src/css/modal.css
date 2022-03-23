@@ -25,8 +25,8 @@
   flex-direction: column;
   align-items: center;
   position: relative;
-  width: 1080px;
-  height: 727px;
+  width: 85%;
+  height: 95%;
   background: #ffffff;
   border: 1px solid rgba(0, 0, 0, 0.12);
   border-radius: 4px;
@@ -44,11 +44,19 @@
 .search-input {
   display: flex;
   justify-content: center;
+  width: 100%;
   margin-bottom: 40px;
 }
 
+#search-form {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
 .search-input__keyword {
-  width: 400px;
+  max-width: 400px;
+  flex: 1;
   height: 36px;
   margin-right: 20px;
   padding: 4px 8px;
@@ -70,6 +78,7 @@
 
 .search-result {
   width: 100%;
+  overflow: scroll;
 }
 
 .search-result.search-result--no-result {
@@ -95,11 +104,51 @@
 }
 
 .video-list {
-  height: 493px;
+  height: 100%;
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  grid-template-columns: repeat(4, minmax(290px, 393px));
   grid-gap: 16px;
   overflow-y: scroll;
+  justify-content: center;
+}
+
+/* saved-video-list 반응형 */
+@media screen and (max-width: 1280px) {
+  #saved-video-list {
+    grid-template-columns: repeat(3, minmax(290px, 393px));
+  }
+}
+
+@media screen and (max-width: 960px) {
+  #saved-video-list {
+    grid-template-columns: repeat(2, minmax(290px, 393px));
+  }
+}
+
+@media screen and (max-width: 600px) {
+  #saved-video-list {
+    grid-template-columns: repeat(1, minmax(290px, 393px));
+  }
+}
+
+/* video-list 반응형 */
+/* modal은 전체의 85%를 차지하기 떄문에, 100/85 를 곱해준다. */
+@media screen and (max-width: calc(1280 * 100 / 85 * 1px)) {
+  #video-list {
+    grid-template-columns: repeat(3, minmax(290px, 393px));
+  }
+}
+
+@media screen and (max-width: calc(960 * 100 / 85 * 1px)) {
+  #video-list {
+    grid-template-columns: repeat(2, minmax(290px, 393px));
+  }
+}
+
+@media screen and (max-width: calc(600 * 100 / 85 * 1px)) {
+  #video-list {
+    grid-template-columns: repeat(1, minmax(290px, 393px));
+  }
 }
 
 .video-item__thumbnail {
@@ -134,7 +183,8 @@
   letter-spacing: 0.5px;
 }
 
-.video-item__save-button {
+.video-item__save-button,
+.video-item__buttons {
   float: right;
   width: 80px;
   height: 36px;
@@ -144,4 +194,23 @@
 
 .video-item__save-button:hover {
   background: #efefef;
+}
+
+.video-item__buttons {
+  background-color: white;
+}
+
+.video-item__watched-button,
+.video-item__delete-button {
+  border: none;
+  background: #f9f9f9;
+  margin-top: 4px;
+  width: 36px;
+  height: 36px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.video-item__watched-button.watched {
+  background-color: rgba(0, 188, 212, 0.12);
 }

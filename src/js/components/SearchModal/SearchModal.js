@@ -3,6 +3,7 @@ import SearchBar from './SearchBar.js';
 import SearchResult from './SearchResult/SearchResult.js';
 import NotFound from './NotFound.js';
 import { rootStore } from '../../store/rootStore.js';
+import { EXCEPTION_MESSAGE } from '../../constant.js';
 
 export default class SearchModal extends Component {
   template() {
@@ -34,7 +35,9 @@ export default class SearchModal extends Component {
     new SearchBar(this.$('#search-input'));
 
     if (notFound || statusCode !== 200) {
-      new NotFound(this.$('#not-found'));
+      new NotFound(this.$('#not-found'), {
+        message: `${EXCEPTION_MESSAGE[statusCode] || EXCEPTION_MESSAGE.OTHERS}`,
+      });
 
       return;
     }
@@ -43,8 +46,6 @@ export default class SearchModal extends Component {
   }
 
   setEvent() {
-    const { toggleSearchModal } = this.props;
-
-    this.addEvent('click', '#modal-background', toggleSearchModal);
+    this.addEvent('click', '#modal-background', this.props.toggleSearchModal);
   }
 }

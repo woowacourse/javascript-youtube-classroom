@@ -1,4 +1,5 @@
 import { setCurrentObserver } from '../store/rootStore.js';
+import { $, $$ } from '../utils/DOM.js';
 
 export default class Component {
   constructor(target, props) {
@@ -46,6 +47,10 @@ export default class Component {
   }
 
   $(selector) {
-    return this.target.querySelector(selector);
+    return $(selector, this.target);
+  }
+
+  $$(selector) {
+    return $$(selector, this.target);
   }
 }

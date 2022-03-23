@@ -1,16 +1,26 @@
 import 'regenerator-runtime/runtime.js';
+import { LOAD_VIDEOS_COUNT } from '../constant';
 
-const BASE_URL =
+export const BASE_URL =
   'https://trusting-bardeen-f1fc38.netlify.app/youtube/v3/search';
-const OPTIONS = {
+export const OPTIONS = {
   part: 'snippet',
   type: 'video',
-  maxResults: 10,
+  maxResults: `${LOAD_VIDEOS_COUNT}`,
   q: null,
   pageToken: '',
 };
 
-export const getSearchAPI = async (query, pageToken = '') => {
+export const getSearchAPI = async (
+  query,
+  pageToken = '',
+  requestMockData = null
+) => {
+  if (requestMockData) {
+    const mockData = await requestMockData;
+    return [null, mockData];
+  }
+
   const url = new URL(BASE_URL);
   const parameters = new URLSearchParams({
     ...OPTIONS,

@@ -29,12 +29,16 @@ const observable = target => {
 
 export const rootStore = {
   state: observable({
+    isSearchModalOpened: false,
     isLoading: false,
     searchOption: {
       query: '',
       pageToken: null,
     },
     videos: [],
+    savedVideos: [],
+    hasWatchedVideo: false,
+    hasWatchingVideo: false,
     status: {
       notFound: false,
       statusCode: 200,
