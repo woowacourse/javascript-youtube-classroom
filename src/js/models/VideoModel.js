@@ -54,15 +54,16 @@ export default class VideoModel {
   }
 
   setItemsLocalStorage(savedId) {
-    for (const item of this.#allVideoItems) {
+    this.#allVideoItems.some((item) => {
+      console.log('도는중');
       if (item.videoId === savedId) {
         item.saved = true;
         const allSavedVideoItems = [...this.#savedVideoItems, item];
         this.#savedVideoItems = allSavedVideoItems;
         localStorage.setItem('saved-video', JSON.stringify(allSavedVideoItems));
-        return;
       }
-    }
+      return item.videoId === savedId;
+    });
   }
 
   getItemsLocalStorage() {
