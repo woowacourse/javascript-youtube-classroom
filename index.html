@@ -5,15 +5,30 @@
   <meta charset="UTF-8" />
   <title>나만의 유튜브 강의실</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <link rel="stylesheet" href="./src/css/index.css">
+  <link href="/src/css/index.css">
 </head>
 
 <body>
   <main id="app" class="classroom-container">
     <h1 class="classroom-container__title">👩🏻‍💻 나만의 유튜브 강의실 👨🏻‍💻</h1>
     <nav class="nav">
+      <div class="nav__button-container">
+        <button class="button nav__button nav__no-watched-button button-active">👁️ 볼 영상</button>
+        <button class="button nav__button nav__watched-button">✅ 본 영상</button>
+      </div>
       <button id="search-modal-button" class="button nav__button">🔍 검색</button>
     </nav>
+    <section class="search-result main__search-result">
+      <ul class="video-list main__video-list">
+      </ul>
+      <div class="no-result main__no-result">
+        <img src="https://lh3.googleusercontent.com/9U6PgIOXBeaR5miCaVwvu_VKBYLHubJyAUHlceIHTLGl15v1RybzvcGuGiE7CxNKBiJC=s107" alt="no result image" class="no-result__image">
+        <p class="no-result__description">
+          검색 결과가 없습니다<br/>
+          다른 키워드로 검색해보세요
+        </p>
+      </div>
+    </section>
   </main>
   <div class="modal-container hide">
     <div class="dimmer"></div>
@@ -23,6 +38,17 @@
         <h3 hidden>검색어 입력</h3>
         <input id="search-input-keyword" type="text" placeholder="검색" class="search-input__keyword">
         <button id="search-button" class="search-input__search-button button">검색</button>
+      </section>
+      <section class="search-result modal__search-result">
+        <ul class="video-list modal__video-list">
+        </ul>
+        <div class="no-result modal__no-result">
+          <img src="https://lh3.googleusercontent.com/9U6PgIOXBeaR5miCaVwvu_VKBYLHubJyAUHlceIHTLGl15v1RybzvcGuGiE7CxNKBiJC=s107" alt="no result image" class="no-result__image">
+          <p class="no-result__description">
+            검색 결과가 없습니다<br/>
+            다른 키워드로 검색해보세요
+          </p>
+        </div>
       </section>
     </div>
   </div>

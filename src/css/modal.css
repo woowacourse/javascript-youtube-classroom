@@ -66,7 +66,7 @@
 }
 
 .search-result .no-result {
-  text-align: center;
+    text-align: center;
 }
 
 .search-result.search-result--no-result {
@@ -95,6 +95,37 @@
     flex-wrap: wrap;
     gap: 32px 20px;
     overflow-y: scroll;
+}
+
+@media (min-width: 960px) and (max-width: 1280px) {
+    #app {
+        width: 760px;
+    }
+    .video-list {
+        width: 900px;
+    }
+}
+
+@media (min-width: 600px) and (max-width: 960px)  {
+    #app {
+        width: 500px;
+    }
+    .video-list {
+        width: 600px;
+    }
+}
+
+@media (max-width: 600px) {
+    #app {
+        width: 400px;
+    }
+    .video-list {
+        width: 300px;
+    }
+}
+
+.video-list::-webkit-scrollbar {
+    display: none; 
 }
 
 .video-item {
