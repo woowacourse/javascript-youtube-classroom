@@ -1,4 +1,5 @@
 import { checkLengthExist, checkEmpty, checkEmptyApi } from '../utils/validator';
+import SERVER from '../../constants/server.js';
 
 export default class VideoModel {
   #keyword;
@@ -133,9 +134,7 @@ export default class VideoModel {
 
   async fetchYoutubeApi(query, nextPageToken) {
     try {
-      const REDIRECT_SERVER_HOST = 'https://thirsty-ritchie-0c8419.netlify.app/';
-
-      const url = new URL('youtube/v3/search', REDIRECT_SERVER_HOST);
+      const url = new URL('youtube/v3/search', SERVER.REDIRECT_HOST2);
       const parameters = new URLSearchParams({
         part: 'snippet',
         type: 'video',
