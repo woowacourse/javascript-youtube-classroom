@@ -4,15 +4,31 @@
     <meta charset="UTF-8" />
     <title>나만의 유튜브 강의실</title>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <link rel="stylesheet" href="./src/css/index.css" />
   </head>
-
   <body>
-    <main id="app" class="classroom-container">
+    <main id="app" class="classroom-container hide_videolist">
       <h1 class="classroom-container__title">👩🏻‍💻 나만의 유튜브 강의실 👨🏻‍💻</h1>
       <nav class="nav">
-        <button id="search-modal-button" class="button nav__button" type="button">🔍 검색</button>
+        <div class="select_saved_video_option">
+          <input type="radio" id="display-playlist-section" name="select_saved_video" checked />
+          <label for="display-playlist-section" class="nav__button_border left_round_button button nav__button">👁️ 볼 영상</label>
+        </div>
+        <div class="select_saved_video_option">
+          <input type="radio" id="display-watched-section" name="select_saved_video" />
+          <label for="display-watched-section" class="nav__button_border right_round_button button nav__button">✅ 본 영상</label>
+        </div>
+        <button id="search-modal-button" class="margin_left_auto button nav__button" type="button">🔍 검색</button>
       </nav>
+      <div id="saved-video-list">
+        <section id="playlist" class="playlist_display">
+          <h3 hidden>볼 영상 리스트</h3>
+          <ul id="playlist-video" class="video-list"></ul>
+        </section>
+        <section id="watched" class="watched_display">
+          <h3 hidden>본 영상 리스트</h3>
+          <ul id="watched-video" class="video-list"></ul>
+        </section>
+      </div>
     </main>
     <div id="search-modal" class="modal-container hide">
       <div id="modal-background" class="dimmer"></div>
@@ -25,21 +41,18 @@
         </form>
         <section id="empty-screen" class="search-result search-result--no-result">
           <h3 hidden>검색 결과</h3>
-          <div class="no-result">
-            <img src="./src/assets/images/not_found.png" alt="no result image" class="no-result__image" />
+          <div id="no-result-div" class="no-result">
             <p class="no-result__description">
               검색 결과가 없습니다<br />
               다른 키워드로 검색해보세요
             </p>
           </div>
         </section>
-
         <section class="search-result">
           <h3 hidden>검색 결과</h3>
           <ul id="videos" class="video-list"></ul>
         </section>
       </div>
     </div>
-    <script type="module" src="./src/js/index.js"></script>
   </body>
 </html>

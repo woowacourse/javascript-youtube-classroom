@@ -1,0 +1,31 @@
+.video-list-button {
+  position: absolute;
+  width: 36px;
+  height: 36px;
+  background: #f9f9f9;
+  margin-top: 4px;
+}
+
+.check-watched-button {
+  right: 44px;
+}
+
+.delete-button {
+  right: 0;
+}
+
+.video-item__save-button:hover,
+.delete-button:hover {
+  background: #efefef;
+}
+
+.watched {
+  background: rgba(0, 188, 212, 0.12);
+}
+
+.empty-savedList {
+  text-align: center;
+  line-height: 400px;
+  font-size: xx-large;
+  grid-template-columns: repeat(1, 1fr) !important;
+}

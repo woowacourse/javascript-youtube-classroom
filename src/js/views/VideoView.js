@@ -1,6 +1,8 @@
 import { $, intersectionObserver } from './utils.js';
 import { YOUTUBE_API_REQUEST_COUNT, SELECTOR } from '../constants/index.js';
 
+import notFoundImg from '../../assets/images/not_found.png';
+
 export default class VideoView {
   #io;
   #videoAPI;
@@ -12,6 +14,7 @@ export default class VideoView {
     this.#videoAPI = videoAPI;
     this.#io = intersectionObserver(this.#findObserverElement.bind(this), { root: this.#$container });
     this.#$emptyScreen = $(SELECTOR.EMPTY_SCREEN);
+    this.#connectEmptyImg();
   }
 
   refreshVideoScreen() {
@@ -41,15 +44,30 @@ export default class VideoView {
     this.#$container.querySelectorAll('.skeleton').forEach((node) => node.remove());
   }
 
-  bindSaveVideo(handler) {
+  bindSaveVideo(handler, reRenderSavedVideoView) {
     this.#$container.addEventListener('click', (e) => {
-      const videoId = e.target.dataset.videoId;
+      const element = e.target;
+      const children = element.parentNode.children;
+      const videoData = this.#makeVideoDataObject(element, children);
 
-      if (videoId) {
-        handler(videoId);
+      if (videoData.id) {
+        handler(videoData);
+        reRenderSavedVideoView();
         e.target.classList.add('saved');
       }
     });
+  }
+
+  #makeVideoDataObject(element, children) {
+    return {
+      id: element.dataset.videoId,
+      thumbnail: children[0].currentSrc,
+      title: children[1].textContent,
+      channelTitle: children[2].textContent,
+      date: children[3].textContent,
+      saved: children[4].textContent,
+      watched: false,
+    };
   }
 
   async #findObserverElement() {
@@ -84,5 +102,10 @@ export default class VideoView {
 
   #lastVideoItem() {
     return this.#$container.lastChild;
+  }
+
+  #connectEmptyImg() {
+    const html = `<img src=${notFoundImg} alt="no result image" class="no-result__image" />`;
+    $('#no-result-div').insertAdjacentHTML('afterbegin', html);
   }
 }

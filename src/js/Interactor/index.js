@@ -1,9 +1,10 @@
 import YoutubeAPI from '../YoutubeAPI/index.js';
-import ValidationError from '../ValidationError/index.js';
 
 import KeywordInputView from '../views/KeywordInputView.js';
-import VideoView from '../views/VideoView.js';
+import SavedVideoView from '../views/SavedVideoView.js';
 import SearchModalView from '../views/SearchModalView.js';
+import VideoView from '../views/VideoView.js';
+
 import UserStorage from '../UserStorage/index.js';
 
 import { checkKeyword } from '../Validator/index.js';
@@ -13,7 +14,8 @@ import { formatDate } from '../utils/index.js';
 const youtubeAPI = new YoutubeAPI();
 
 const polishVideos = (videos) => {
-  const savedVideoIds = UserStorage.getVideoIds();
+  const savedVideoDataList = UserStorage.getVideoData();
+  const savedVideoIds = savedVideoDataList.map((video) => video.id);
 
   return videos.map(({ id, snippet }) => ({
     id: id.videoId,
@@ -26,6 +28,7 @@ const polishVideos = (videos) => {
 };
 
 const keywordInputView = new KeywordInputView();
+const savedVideoView = new SavedVideoView();
 const searchModalView = new SearchModalView();
 const videoView = new VideoView(async () => polishVideos(await youtubeAPI.getVideosInfo()));
 
@@ -42,18 +45,22 @@ const handleKeywordInputSubmit = async (keyword) => {
   }
 };
 
-const handleSaveVideoButtonClick = (videoId) => {
+const handleSaveVideoButtonClick = (videoData) => {
   try {
-    UserStorage.addVideoId(videoId);
+    UserStorage.addVideoData(videoData);
   } catch (error) {
     alert(error.message);
   }
 };
 
+const handleReRender = () => {
+  savedVideoView.appendVideos();
+};
+
 const runApp = () => {
   keywordInputView.bindSubmitKeyword(handleKeywordInputSubmit);
   searchModalView.bindModal();
-  videoView.bindSaveVideo(handleSaveVideoButtonClick);
+  videoView.bindSaveVideo(handleSaveVideoButtonClick, handleReRender);
 };
 
 export default runApp;

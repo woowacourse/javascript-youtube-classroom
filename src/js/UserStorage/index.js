@@ -2,17 +2,21 @@ import ValidationError from '../ValidationError/index.js';
 import { MAX_STORE_CAPACITY, ERROR_MESSAGE } from '../constants/index.js';
 
 const UserStorage = {
-  getVideoIds() {
-    return JSON.parse(localStorage.getItem('videoIds')) || [];
+  getVideoData() {
+    return JSON.parse(localStorage.getItem('video')) || [];
   },
 
-  addVideoId(videoId) {
-    const videoIds = this.getVideoIds();
+  addVideoData(videoData) {
+    const videoDataList = this.getVideoData();
 
-    if (videoIds.length >= MAX_STORE_CAPACITY) throw new ValidationError(ERROR_MESSAGE.EXCEED_MAX_STORE_CAPACITY);
-		
-    videoIds.push(videoId);
-    localStorage.setItem('videoIds', JSON.stringify(videoIds));
+    if (videoDataList.length >= MAX_STORE_CAPACITY) throw new ValidationError(ERROR_MESSAGE.EXCEED_MAX_STORE_CAPACITY);
+
+    videoDataList.push(videoData);
+    this.editVideoData(videoDataList);
+  },
+
+  editVideoData(videoDataList) {
+    localStorage.setItem('video', JSON.stringify(videoDataList));
   },
 };
 
