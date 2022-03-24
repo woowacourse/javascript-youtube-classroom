@@ -20,11 +20,18 @@ const makeURLQuery = (props) => {
   return pageToken ? `${query}pageToken=${pageToken}` : query;
 };
 
+const convertStatusToMessage = (status) => {
+  if (status === 403) {
+    return 'EXCEEDED_QUOTA_TEMPLATE';
+  }
+  return 'NO_SEARCH_RESULT';
+};
+
 const fetchData = async (query) => {
   const response = await fetch(query);
 
   if (!response.ok) {
-    throw response.status;
+    throw new Error(convertStatusToMessage(response.status));
   }
 
   const json = await response.json();
@@ -32,4 +39,16 @@ const fetchData = async (query) => {
   return json;
 };
 
-export { OPTIONS, makeURLQuery, fetchData, YOUTUBE_URL };
+const isNoSearchResult = (videoList) => videoList.items.some((item) => !item.snippet);
+
+const fetchVideoList = async (query) => {
+  const videoList = await fetchData(query);
+
+  if (isNoSearchResult(videoList)) {
+    throw new Error('NO_SEARCH_RESULT');
+  }
+
+  return videoList;
+};
+
+export { OPTIONS, makeURLQuery, fetchData, YOUTUBE_URL, fetchVideoList };

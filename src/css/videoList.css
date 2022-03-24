@@ -1,0 +1,122 @@
+.video-list {
+  width: 1040px;
+  height: 493px;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  flex-wrap: wrap;
+  gap: 32px 0;
+  overflow-y: auto;
+}
+
+.video-list::-webkit-scrollbar {
+  width: 7px;
+}
+.video-list::-webkit-scrollbar-thumb {
+  border-radius: 10px;
+  background-color: #00bcd4;
+}
+.video-list::-webkit-scrollbar-track {
+  background-color: transparent;
+}
+
+.video-item {
+  position: relative;
+  width: 240px;
+  height: 255px;
+}
+
+.video-item__thumbnail {
+  width: 100%;
+  height: 135px;
+}
+
+.video-item__title {
+  font-weight: bold;
+  font-size: 16px;
+  line-height: 24px;
+  letter-spacing: 0.5px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin: 4px 0;
+}
+
+.video-item__channel_title {
+  font-size: 16px;
+  line-height: 24px;
+  letter-spacing: 0.5px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.video-item__publish_time {
+  font-size: 12px;
+  line-height: 24px;
+  letter-spacing: 0.5px;
+}
+
+.video-item__save-button {
+  position: absolute;
+  right: 0;
+  width: 80px;
+  height: 36px;
+  background: #f9f9f9;
+  margin-top: 4px;
+}
+
+.watch-later-video-list {
+  width: 1020px;
+  list-style: none;
+  margin-top: 100px;
+}
+
+.video-item__button_wrapper {
+  text-align: right;
+}
+.video-item__button_wrapper > .button {
+  padding: 5px;
+}
+.video-item__button_wrapper > .button:hover {
+  background-color: #00bbd427;
+}
+
+.video-item__save-button:hover {
+  background: #efefef;
+}
+
+@media screen and (max-width: 1280px) {
+  .video-list {
+    width: 100%;
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media screen and (max-width: 960px) {
+  .video-list {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .search-input {
+    width: 100%;
+  }
+
+  .search-input__keyword {
+    width: 80%;
+  }
+
+  #search-form {
+    display: flex;
+    justify-content: center;
+  }
+}
+
+@media screen and (max-width: 600px) {
+  .video-list {
+    grid-template-columns: repeat(1, 1fr);
+  }
+
+  .video-item {
+    margin: 0 auto;
+  }
+}

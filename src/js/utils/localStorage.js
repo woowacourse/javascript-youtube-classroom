@@ -1,8 +1,11 @@
 import { ERROR } from '../constants';
 
-const LOCALSTORAGE_KEY = 'VIDEO_IDS';
+const STORAGE_KEY = {
+  WATCH_LATER_VIDEOS: 'WATCH_LATER_VIDEOS',
+  WATCHED_VIDEOS: 'WATCHED_VIDEOS',
+};
 
-const getStorageVideoIDs = (key) => {
+const getStorage = (key) => {
   try {
     return JSON.parse(localStorage.getItem(key)) ?? [];
   } catch (error) {
@@ -10,8 +13,8 @@ const getStorageVideoIDs = (key) => {
   }
 };
 
-const setStorageVideoIDs = (key, value) => {
+const setStorage = (key, value) => {
   localStorage.setItem(key, JSON.stringify(value));
 };
 
-export { getStorageVideoIDs, setStorageVideoIDs, LOCALSTORAGE_KEY };
+export { getStorage, setStorage, STORAGE_KEY };

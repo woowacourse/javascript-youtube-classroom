@@ -1,7 +1,9 @@
-import { OPTIONS, fetchData, makeURLQuery, YOUTUBE_URL } from '../api';
+import { OPTIONS, makeURLQuery, YOUTUBE_URL, fetchVideoList } from '../api';
 import { RULES, THROTTLE_PENDING_MILLISECOND } from '../constants';
-import VideoCardContainer from '../common/VideosCardContainer';
+import SearchModalVideoList from '../common/SearchModal/SearchModalVideoList';
 import throttle from '../utils/throttle';
+import ErrorContainer from '../common/SearchModal/ErrorContainer';
+import { timeFormatter } from '../utils';
 
 const isEmptyKeyword = (keyword) => keyword.trim().length === 0;
 
@@ -21,15 +23,15 @@ const SKELETON_TEMPLATE = `
   </div>
 `;
 
-const NO_SEARCH_RESULT_TEMPLATE = `
-  검색 결과가 없습니다<br />
-  다른 키워드로 검색해보세요
-  `;
+const makeVideoCardProps = (videosRawInfo) =>
+  videosRawInfo.items.map((item) => ({
+    ...{ videoId: item.id.videoId },
+    ...item.snippet,
+    thumbnail: item.snippet.thumbnails.medium.url,
+    publishTime: timeFormatter(item.snippet.publishTime),
+  }));
 
-const EXCEEDED_QUOTA_TEMPLATE = `
-  오늘 검색 할당량을 모두 소진했습니다<br />
-  내일 다시 찾아주세요.
-`;
+const KEYCODE_ESC = 27;
 
 export default class SearchModal {
   constructor(element) {
@@ -46,25 +48,35 @@ export default class SearchModal {
       this.element.querySelectorAll('.search-result');
 
     //bindEvent
-    this.dimmer.addEventListener('click', this.closeModalHandler.bind(this));
-    this.searchForm.addEventListener('submit', this.searchHandler.bind(this));
+    document.querySelector('#app').addEventListener('keyup', this.escHandler);
+    this.dimmer.addEventListener('click', this.closeModalHandler);
+
+    this.searchForm.addEventListener('submit', this.searchHandler);
     this.videoList.addEventListener(
       'scroll',
-      throttle(this.scrollHandler.bind(this), THROTTLE_PENDING_MILLISECOND),
+      throttle(this.scrollHandler, THROTTLE_PENDING_MILLISECOND),
     );
 
-    this.VideoCardContainer = new VideoCardContainer(this.videoList, {
-      items: [],
-    });
+    this.SearchModalVideoList = new SearchModalVideoList(this.videoList);
+    this.ErrorContainer = new ErrorContainer(this.noResultDescription);
+
     this.pageToken = '';
     this.keyword = '';
   }
 
-  closeModalHandler() {
+  closeModalHandler = () => {
+    this.videoList.replaceChildren();
+    this.searchInputKeyword.value = '';
     this.element.classList.add('hide');
-  }
+  };
 
-  scrollHandler(e) {
+  escHandler = (e) => {
+    if (e.keyCode === KEYCODE_ESC) {
+      this.closeModalHandler();
+    }
+  };
+
+  scrollHandler = (e) => {
     const { scrollTop, offsetHeight, scrollHeight } = e.target;
 
     const isEndOfScroll = scrollTop + offsetHeight >= scrollHeight;
@@ -77,9 +89,9 @@ export default class SearchModal {
         pageToken: this.pageToken,
       });
     }
-  }
+  };
 
-  async searchHandler(e) {
+  searchHandler = async (e) => {
     e.preventDefault();
 
     try {
@@ -101,7 +113,7 @@ export default class SearchModal {
     } catch (error) {
       this.searchErrorMessage.textContent = '검색어를 입력해 주세요.';
     }
-  }
+  };
 
   renderSkeletonUI(element) {
     element.insertAdjacentHTML(
@@ -133,6 +145,10 @@ export default class SearchModal {
   }
 
   async renderVideoList(options) {
+    if (this.pageToken === 'NO_NEXT_PAGE') {
+      return;
+    }
+
     this.renderSkeletonUI(this.videoList);
 
     const URLquery = makeURLQuery({
@@ -140,25 +156,19 @@ export default class SearchModal {
     });
 
     try {
-      const videos = await fetchData(URLquery);
+      const videosRawInfo = await fetchVideoList(URLquery);
+      const videos = makeVideoCardProps(videosRawInfo);
 
-      this.VideoCardContainer.setState({ items: videos.items });
+      this.SearchModalVideoList.setVideos({ videos });
 
-      this.showSearchResult(videos.items);
+      this.showSearchResult(videos);
 
-      this.pageToken = videos.nextPageToken || '';
-    } catch (status) {
-      this.noResultDescription.innerHTML = this.getNoResultDescription(status);
+      this.pageToken = videosRawInfo.nextPageToken ?? 'NO_NEXT_PAGE';
+    } catch ({ message }) {
+      this.ErrorContainer.setState({ status: message });
       this.showNoResultContainer();
     }
 
     this.removeSkeletonUI(this.videoList);
-  }
-
-  getNoResultDescription(status) {
-    if (status === 403) {
-      return EXCEEDED_QUOTA_TEMPLATE;
-    }
-    return NO_SEARCH_RESULT_TEMPLATE;
   }
 }
