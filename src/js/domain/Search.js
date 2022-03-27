@@ -1,31 +1,31 @@
 import storage from './storage';
 import { SEARCH_URL_BASE, MAX_SEARCH_RESULT, ERROR_MESSAGES } from '../constants/constants';
 
-class Search {
-  constructor() {
-    this.keyword = null;
-    this.nextPageToken = null;
-  }
+const search = {
+  keyword: null,
+  nextPageToken: null,
 
-  async getSearchResultArray(keyword, pageToken = undefined) {
+  getSearchResultArray: async (keyword, pageToken = undefined) => {
     try {
-      const { items, nextPageToken } = await this.#getSearchResult(keyword, pageToken);
-      this.keyword = keyword;
-      this.nextPageToken = nextPageToken;
-      const savedVideos = storage.getSavedVideos() || {};
-      return this.#getVideoObjectArray(items, savedVideos);
+      const { items, nextPageToken } = await search.getSearchResult(keyword, pageToken);
+      search.keyword = keyword;
+      search.nextPageToken = nextPageToken;
+      return search.getVideoObjectArray(items);
     } catch (error) {
       throw new Error(error.message);
     }
-  }
+  },
 
-  async getLoadMoreResultArray() {
-    const searchResultArray = await this.getSearchResultArray(this.keyword, this.nextPageToken);
-    if (this.nextPageToken === undefined) return null;
+  getLoadMoreResultArray: async () => {
+    const searchResultArray = await search.getSearchResultArray(
+      search.keyword,
+      search.nextPageToken
+    );
+    if (search.nextPageToken === undefined) return null;
     return searchResultArray;
-  }
+  },
 
-  async #getSearchResult(keyword, pageToken) {
+  getSearchResult: async (keyword, pageToken) => {
     const query = {
       q: keyword,
       maxResults: MAX_SEARCH_RESULT,
@@ -35,24 +35,23 @@ class Search {
       pageToken,
     };
     try {
-      const queryString = this.#generateQueryString(query);
+      const queryString = search.generateQueryString(query);
       const response = await fetch(`${SEARCH_URL_BASE}${queryString}`);
       const { items, nextPageToken } = await response.json();
       return { items, nextPageToken };
     } catch (error) {
       throw new Error(ERROR_MESSAGES.SERVER_MALFUNCTION);
     }
-  }
+  },
 
-  #generateQueryString(query) {
-    return Object.keys(query).reduce(
+  generateQueryString: (query) =>
+    Object.keys(query).reduce(
       (str, key) => (query[key] ? `${str}&${key}=${query[key]}` : `${str}`),
       ''
-    );
-  }
+    ),
 
-  #getVideoObjectArray(items, savedVideos) {
-    return items.map((item) => {
+  getVideoObjectArray: (itemArray) =>
+    itemArray.map((item) => {
       const { snippet, id } = item;
       return {
         videoId: id.videoId,
@@ -60,10 +59,9 @@ class Search {
         title: snippet.title,
         channelTitle: snippet.channelTitle,
         publishedAt: snippet.publishedAt,
-        isSaved: !!savedVideos[id.videoId],
+        isSaved: !!storage.isSavedVideo(id.videoId),
       };
-    });
-  }
-}
+    }),
+};
 
-export default Search;
+export default search;
