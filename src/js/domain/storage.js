@@ -3,6 +3,7 @@ import { MAX_SAVE_AMOUNT, STORAGE_KEY, ERROR_MESSAGES } from '../constants/const
 const getSavedVideoArray = () => JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
 
 const setSavedVideoArray = (videoArray) => {
+  if (!videoArray) return;
   localStorage.setItem(STORAGE_KEY, JSON.stringify(videoArray));
 };
 
