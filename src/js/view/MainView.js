@@ -1,15 +1,19 @@
 import { selectDom, formatDateString } from '../util/util';
 import storage from '../domain/storage';
-import { DELETE_CONFIRM_MESSAGE } from '../constants/constants';
+import { DELETE_CONFIRM_MESSAGE, FLAG } from '../constants/constants';
 
 class MainView {
   constructor() {
     this.savedVideosContainer = selectDom('.saved-videos-container');
     this.noSavedVideo = selectDom('.no-saved-video');
-    this.renderSavedVideo(false);
+    this.renderSavedVideo(FLAG.IS_NOT_WATCHED);
 
-    selectDom('#to-watch-tab').addEventListener('click', () => this.renderSavedVideo(false));
-    selectDom('#watched-tab').addEventListener('click', () => this.renderSavedVideo(true));
+    selectDom('#to-watch-tab').addEventListener('click', () =>
+      this.renderSavedVideo(FLAG.IS_NOT_WATCHED)
+    );
+    selectDom('#watched-tab').addEventListener('click', () =>
+      this.renderSavedVideo(FLAG.IS_WATCHED)
+    );
   }
 
   renderNoSavedVideo = () => {

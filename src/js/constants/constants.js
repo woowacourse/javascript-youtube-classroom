@@ -11,3 +11,7 @@ export const ERROR_MESSAGES = Object.freeze({
 });
 
 export const DELETE_CONFIRM_MESSAGE = '정말 삭제하시겠습니까?';
+export const FLAG = {
+  IS_WATCHED: true,
+  IS_NOT_WATCHED: false,
+};
