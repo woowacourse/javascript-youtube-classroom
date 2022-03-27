@@ -13,7 +13,7 @@ const addSavedVideo = (video) => {
   }
   const videoToSave = { ...video, isSaved: true, isWatched: false };
   savedVideos.push(videoToSave);
-  localStorage.setItem(STORAGE_KEY, JSON.stringify([...savedVideos]));
+  setSavedVideoArray(savedVideos);
 };
 
 const isSavedVideo = (id) => getSavedVideoArray().find((savedVideo) => savedVideo.videoId === id);
