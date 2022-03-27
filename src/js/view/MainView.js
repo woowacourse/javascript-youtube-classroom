@@ -18,6 +18,9 @@ class MainView {
     }
   };
 
+  isNothingToRender = (videoArray, isWatched, legnth) =>
+    videoArray.filter((video) => String(video.isWatched) === isWatched).length === legnth;
+
   handleCheck = (event) => {
     const savedVideoArray = storage.getSavedVideoArray();
     const watchedVideo = savedVideoArray.find(
@@ -26,10 +29,7 @@ class MainView {
     watchedVideo.isWatched = !watchedVideo.isWatched;
     storage.setSavedVideoArray(savedVideoArray);
     event.target.parentNode.parentNode.remove();
-    if (
-      savedVideoArray.filter((video) => String(video.isWatched) === event.target.dataset.isWatched)
-        .length === 0
-    ) {
+    if (this.isNothingToRender(savedVideoArray, event.target.dataset.isWatched, 0)) {
       this.renderNoSavedVideo();
     }
   };
@@ -42,11 +42,7 @@ class MainView {
       );
       storage.setSavedVideoArray(newVideoList);
       event.target.parentNode.parentNode.remove();
-      if (
-        savedVideoArray.filter(
-          (video) => String(video.isWatched) === event.target.dataset.isWatched
-        ).length === 1
-      ) {
+      if (this.isNothingToRender(savedVideoArray, event.target.dataset.isWatched, 1)) {
         this.renderNoSavedVideo();
       }
     }
