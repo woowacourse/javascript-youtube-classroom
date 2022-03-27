@@ -12,13 +12,13 @@ class MainView {
     selectDom('#watched-tab').addEventListener('click', () => this.renderSavedVideo(true));
   }
 
-  #renderNoSavedVideo = () => {
+  renderNoSavedVideo = () => {
     if (this.noSavedVideo) {
       this.noSavedVideo.classList.remove('hide');
     }
   };
 
-  #handleCheck = (event) => {
+  handleCheck = (event) => {
     const savedVideoArray = storage.getSavedVideoArray();
     const watchedVideo = savedVideoArray.find(
       (video) => video.videoId === event.target.dataset.videoId
@@ -30,11 +30,11 @@ class MainView {
       savedVideoArray.filter((video) => String(video.isWatched) === event.target.dataset.isWatched)
         .length === 0
     ) {
-      this.#renderNoSavedVideo();
+      this.renderNoSavedVideo();
     }
   };
 
-  #handleDelete = (event) => {
+  handleDelete = (event) => {
     if (window.confirm(DELETE_CONFIRM_MESSAGE)) {
       const savedVideoArray = storage.getSavedVideoArray();
       const newVideoList = savedVideoArray.filter(
@@ -47,12 +47,12 @@ class MainView {
           (video) => String(video.isWatched) === event.target.dataset.isWatched
         ).length === 1
       ) {
-        this.#renderNoSavedVideo();
+        this.renderNoSavedVideo();
       }
     }
   };
 
-  #savedVideoElementTemplate = (video, isWatched) => `
+  savedVideoElementTemplate = (video, isWatched) => `
       <img src="${video.thumbnail}" alt="video-item-thumbnail" class="video-item__thumbnail">
       <h4 class="video-item__title">${video.title}</h4>
       <p class="video-item__channel-name">${video.channelTitle}</p>
@@ -69,16 +69,16 @@ class MainView {
       </div>
     `;
 
-  #createSavedVideoElement = (video, isWatched) => {
+  createSavedVideoElement = (video, isWatched) => {
     const videoElement = document.createElement('li');
     videoElement.className = 'saved-video-item';
-    videoElement.insertAdjacentHTML('beforeend', this.#savedVideoElementTemplate(video, isWatched));
-    selectDom('.check-button', videoElement).addEventListener('click', this.#handleCheck);
-    selectDom('.delete-button', videoElement).addEventListener('click', this.#handleDelete);
+    videoElement.insertAdjacentHTML('beforeend', this.savedVideoElementTemplate(video, isWatched));
+    selectDom('.check-button', videoElement).addEventListener('click', this.handleCheck);
+    selectDom('.delete-button', videoElement).addEventListener('click', this.handleDelete);
     return videoElement;
   };
 
-  #removeFormerView = () => {
+  removeFormerView = () => {
     const videoListElement = selectDom('.saved-video-list');
     if (videoListElement) {
       videoListElement.remove();
@@ -87,18 +87,18 @@ class MainView {
   };
 
   renderSavedVideo = (isWatched) => {
-    this.#removeFormerView();
+    this.removeFormerView();
     const videoArray = storage
       .getSavedVideoArray()
       .filter((video) => video.isWatched === isWatched);
     if (videoArray.length === 0) {
-      this.#renderNoSavedVideo();
+      this.renderNoSavedVideo();
       return;
     }
     const savedVideoList = document.createElement('ul');
     savedVideoList.className = 'saved-video-list';
     const videoElementArray = videoArray.map((video) =>
-      this.#createSavedVideoElement(video, isWatched)
+      this.createSavedVideoElement(video, isWatched)
     );
     savedVideoList.append(...videoElementArray);
     this.savedVideosContainer.append(savedVideoList);

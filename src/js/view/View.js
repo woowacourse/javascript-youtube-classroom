@@ -21,36 +21,36 @@ class View {
     this.searchButton = selectDom('#search-button', this.searchForm);
     this.searchResult = selectDom('.search-result', this.searchModal);
     this.videoList = selectDom('.video-list', this.searchResult);
-    this.observer = this.#handleScrollToLastItem();
+    this.observer = this.handleScrollToLastItem();
 
     this.addEventListeners();
   }
 
   addEventListeners = () => {
-    this.searchModalButton.addEventListener('click', this.#openModal);
-    this.searchForm.addEventListener('submit', this.#handleSearch);
-    this.searchInputKeyword.addEventListener('keyup', this.#handleValidInput);
+    this.searchModalButton.addEventListener('click', this.openModal);
+    this.searchForm.addEventListener('submit', this.handleSearch);
+    this.searchInputKeyword.addEventListener('keyup', this.handleValidInput);
   };
 
-  #handleCloseModal = (event) => {
+  handleCloseModal = (event) => {
     if (!this.searchModal.contains(event.target)) {
-      this.#closeModal();
+      this.closeModal();
       this.mainView.renderSavedVideo(false);
-      document.removeEventListener('click', this.#handleCloseModal);
+      document.removeEventListener('click', this.handleCloseModal);
     }
   };
 
-  #openModal = (event) => {
+  openModal = (event) => {
     event.stopPropagation();
     this.modalContainer.classList.remove('hide');
-    document.addEventListener('click', this.#handleCloseModal);
+    document.addEventListener('click', this.handleCloseModal);
   };
 
-  #closeModal = () => {
+  closeModal = () => {
     this.modalContainer.classList.add('hide');
   };
 
-  #handleValidInput = (event) => {
+  handleValidInput = (event) => {
     if (isEmptyValue(event.target.value)) {
       this.searchButton.disabled = true;
       this.searchButton.classList.add('disabled-button');
@@ -60,30 +60,30 @@ class View {
     this.searchButton.classList.remove('disabled-button');
   };
 
-  #handleSearch = async (event) => {
+  handleSearch = async (event) => {
     event.preventDefault();
-    this.#clearNoResult();
+    this.clearNoResult();
     scrollToTop(this.videoList);
     const { value: keyword } = this.searchInputKeyword;
     removeElementList([...this.videoList.childNodes]);
-    this.#loadSkeleton();
+    this.loadSkeleton();
     try {
       const searchResultArray = await this.search.getSearchResultArray(keyword);
-      this.#renderSearchResult(searchResultArray);
+      this.renderSearchResult(searchResultArray);
     } catch (error) {
       alert(error.message);
     }
   };
 
-  #handleScrollToLastItem = () => {
+  handleScrollToLastItem = () => {
     return new IntersectionObserver(
       async (entries) => {
         if (entries[0].isIntersecting) {
           this.observer.unobserve(entries[0].target);
-          this.#loadSkeleton();
+          this.loadSkeleton();
           try {
             const searchResultArray = await this.search.getLoadMoreResultArray();
-            this.#renderSearchResult(searchResultArray);
+            this.renderSearchResult(searchResultArray);
           } catch (error) {
             alert(error.message);
           }
@@ -93,7 +93,7 @@ class View {
     );
   };
 
-  #handleVideoSaveClick = (event) => {
+  handleVideoSaveClick = (event) => {
     try {
       storage.addSavedVideo(event.target.dataset);
       event.target.disabled = true;
@@ -102,40 +102,40 @@ class View {
     }
   };
 
-  #renderSearchResult = (searchResultArray) => {
+  renderSearchResult = (searchResultArray) => {
     const skeletonList = this.videoList.querySelectorAll('.skeleton');
     removeElementList(skeletonList);
 
-    if (this.#isEndOfResult(searchResultArray)) return;
-    if (this.#isNoResult(searchResultArray)) {
-      this.#renderNoResult();
+    if (this.isEndOfResult(searchResultArray)) return;
+    if (this.isNoResult(searchResultArray)) {
+      this.renderNoResult();
       return;
     }
 
-    const resultElementArray = this.#createElementFromObject(searchResultArray);
+    const resultElementArray = this.createElementFromObject(searchResultArray);
     this.videoList.append(...resultElementArray);
     this.observer.observe(this.videoList.lastChild);
   };
 
-  #isEndOfResult = (searchResultArray) => searchResultArray === null;
+  isEndOfResult = (searchResultArray) => searchResultArray === null;
 
-  #isNoResult = (searchResultArray) => searchResultArray.length === 0;
+  isNoResult = (searchResultArray) => searchResultArray.length === 0;
 
-  #createElementFromObject = (searchResultArray) =>
-    searchResultArray.map((resultItem) => this.#createVideoElement(resultItem));
+  createElementFromObject = (searchResultArray) =>
+    searchResultArray.map((resultItem) => this.createVideoElement(resultItem));
 
-  #createVideoElement = (resultItem) => {
+  createVideoElement = (resultItem) => {
     const videoElement = document.createElement('li');
     videoElement.className = 'video-item';
-    videoElement.insertAdjacentHTML('beforeend', this.#videoElementTemplate(resultItem));
+    videoElement.insertAdjacentHTML('beforeend', this.videoElementTemplate(resultItem));
     selectDom('.video-item__save-button', videoElement).addEventListener(
       'click',
-      this.#handleVideoSaveClick
+      this.handleVideoSaveClick
     );
     return videoElement;
   };
 
-  #videoElementTemplate = ({ thumbnail, title, channelTitle, publishedAt, videoId, isSaved }) => {
+  videoElementTemplate = ({ thumbnail, title, channelTitle, publishedAt, videoId, isSaved }) => {
     return `
       <img src="${thumbnail}" alt="video-item-thumbnail" class="video-item__thumbnail">
       <h4 class="video-item__title">${title}</h4>
@@ -156,11 +156,11 @@ class View {
     `;
   };
 
-  #loadSkeleton = () => {
-    this.videoList.insertAdjacentHTML('beforeend', this.#skeletonTemplate());
+  loadSkeleton = () => {
+    this.videoList.insertAdjacentHTML('beforeend', this.skeletonTemplate());
   };
 
-  #skeletonTemplate = () =>
+  skeletonTemplate = () =>
     `
       <div class="skeleton">
         <div class="image"></div>
@@ -169,7 +169,7 @@ class View {
       </div>
     `.repeat(MAX_SEARCH_RESULT);
 
-  #renderNoResult = () => {
+  renderNoResult = () => {
     this.videoList.classList.add('hide');
     this.searchResult.classList.add('search-result--no-result');
     this.searchResult.insertAdjacentHTML(
@@ -184,7 +184,7 @@ class View {
     );
   };
 
-  #clearNoResult = () => {
+  clearNoResult = () => {
     const noResult = selectDom('.no-result');
     if (noResult) {
       this.videoList.classList.remove('hide');
