@@ -27,6 +27,7 @@ module.exports = {
     'max-depth': ['error', 2],
     'no-alert': 'off',
     'consistent-return': 'off',
+    'no-continue': 'off',
     'max-classes-per-file': ['error', { ignoreExpressions: true, max: 2 }],
     'no-restricted-syntax': ['error', 'ForInStatement', 'LabeledStatement', 'WithStatement'],
   },

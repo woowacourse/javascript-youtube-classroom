@@ -37,7 +37,7 @@
     width: 1080px;
     height: 727px;
     background-color: var(--white);
-    border: 1px solid var(--search-modal-border);
+    border: 1px solid var(--gray-border);
     border-radius: 4px;
     padding: 50px 30px 32px 30px;
 }
@@ -74,7 +74,7 @@
     width: 72px;
     height: 36px;
     background: var(--button-color);
-    color: #FFFFFF;
+    color: var(--white);
 }
 
 .search-result.search-result--no-result {

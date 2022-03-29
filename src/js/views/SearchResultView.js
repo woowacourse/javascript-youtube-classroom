@@ -19,7 +19,7 @@ export default class SearchResultView {
       },
       {
         root: this.$videoList,
-        threshold: 1.0,
+        threshold: 1,
       },
     );
   }
@@ -31,6 +31,8 @@ export default class SearchResultView {
     }
     this.$videoItems = $$('.skeleton');
     this.$videoItems.forEach(($item, idx) => {
+      const [year, month, day] = newVideoItems[idx].publishTime.substr(0, 10).split('-');
+
       $item.classList.remove('skeleton');
       $('.video-item__thumbnail', $item).setAttribute(
         'srcdoc',
@@ -38,7 +40,7 @@ export default class SearchResultView {
       );
       $('.video-item__title', $item).innerText = newVideoItems[idx].title;
       $('.video-item__channel-name', $item).innerText = newVideoItems[idx].channelTitle;
-      $('.video-item__published-date', $item).innerText = newVideoItems[idx].publishTime;
+      $('.video-item__published-date', $item).innerText = `${year}년 ${month}월 ${day}일`;
       $('.video-item__save-button', $item).innerText = newVideoItems[idx].saved ? '저장됨' : '⬇ 저장';
       $('.video-item__save-button', $item).classList.add(newVideoItems[idx].saved ? 'saved-button' : 'button');
       $('.video-item__save-button', $item).disabled = newVideoItems[idx].saved;

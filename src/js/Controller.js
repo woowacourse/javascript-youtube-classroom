@@ -1,5 +1,5 @@
 import { on } from './utils/event.js';
-import { checkExceedLimit, checkVideoIsNone } from './utils/validator.js';
+import { checkAnswerYes, checkExceedLimit, checkVideoIsNone } from './utils/validator.js';
 
 import AppView from './views/AppView.js';
 import SearchInputView from './views/SearchInputView.js';
@@ -11,22 +11,27 @@ import dummyObject from './dummy/dummyObject.js';
 
 export default class Controller {
   constructor() {
-    this.video = new VideoModel(dummyObject);
-    this.video.savedVideoItems = this.video.getItemsLocalStorage();
+    this.videoModel = new VideoModel(dummyObject);
     this.appView = new AppView();
     this.searchInputView = new SearchInputView();
     this.searchResultView = new SearchResultView();
-    this.SearchCloseView = new SearchCloseView();
+    this.searchCloseView = new SearchCloseView();
+
+    this.videoModel.savedVideoItems = this.videoModel.getItemsLocalStorage();
+    this.appView.renderSavedVideo(this.videoModel.getItemsLocalStorage());
     this.#subscribeViewEvents();
   }
 
   #subscribeViewEvents() {
+    on(this.appView.$willSeeWrapper, '@delete-video', this.#deleteVideo.bind(this));
+    on(this.appView.$willSeeWrapper, '@check-saw-video', this.#checkSawVideo.bind(this));
+
     on(this.searchInputView.$searchButton, '@search', this.#searchVideo.bind(this));
 
     on(this.searchResultView.$searchTarget, '@scroll-bottom', this.#scrollNextVideos.bind(this));
     on(this.searchResultView.$searchTarget, '@save-video', this.#saveVideo.bind(this));
 
-    on(this.SearchCloseView.$closeButton, '@close-modal', this.#closeModal.bind(this));
+    on(this.searchCloseView.$closeButton, '@close-modal', this.#closeModal.bind(this));
   }
 
   async #searchVideo(event) {
@@ -35,27 +40,27 @@ export default class Controller {
     const { keyword } = event.detail;
 
     try {
-      this.video.keyword = keyword;
+      this.videoModel.keyword = keyword;
     } catch (error) {
       alert(error.message);
       return;
     }
 
     this.searchResultView.showSkeleton();
-    await this.video.fetchYoutubeApi(keyword);
+    await this.videoModel.fetchYoutubeApi(keyword);
 
     try {
-      this.video.setVideoInfo();
-    } catch (error) {
+      this.videoModel.setVideoInfo();
+    } catch {
       this.searchResultView.removeVideo();
       this.searchResultView.showNotFound();
       return;
     }
 
-    this.video.updateNewVideoItems();
-    this.video.accumulateVideoItems();
-    this.searchResultView.renderVideo(this.video.newVideoItems);
+    this.videoModel.updateNewVideoItems();
+    this.videoModel.accumulateVideoItems();
     this.searchResultView.startObserve();
+    this.searchResultView.renderVideo(this.videoModel.newVideoItems);
   }
 
   async #scrollNextVideos() {
@@ -66,34 +71,50 @@ export default class Controller {
       return;
     }
     this.searchResultView.showSkeleton();
-    await this.video.fetchYoutubeApi(this.video.keyword, this.video.nextPageToken);
+    await this.videoModel.fetchYoutubeApi(this.videoModel.keyword, this.videoModel.nextPageToken);
 
     try {
-      this.video.setVideoInfo();
+      this.videoModel.setVideoInfo();
     } catch (error) {
       return;
     }
-    this.video.updateNewVideoItems();
-    this.video.accumulateVideoItems();
-    this.searchResultView.renderVideo(this.video.newVideoItems);
+    this.videoModel.updateNewVideoItems();
+    this.videoModel.accumulateVideoItems();
     this.searchResultView.startObserve();
+    this.searchResultView.renderVideo(this.videoModel.newVideoItems);
   }
 
   #saveVideo(event) {
     try {
-      checkExceedLimit(this.video.savedVideoItems);
+      checkExceedLimit(this.videoModel.savedVideoItems);
     } catch (error) {
       alert(error.message);
       return;
     }
     this.searchResultView.changeSaveButtonStyle(event.detail.buttonElement);
     const { savedId } = event.detail;
-    this.video.setItemsLocalStorage(savedId);
+    this.videoModel.setItemsLocalStorage(savedId);
   }
 
   #closeModal() {
+    this.videoModel.resetAllVideoItems();
     this.searchInputView.resetSearchInputKeyword();
     this.searchResultView.hideModal();
     this.searchResultView.removeVideo();
+    this.appView.renderSavedVideo(this.videoModel.getItemsLocalStorage());
+  }
+
+  #deleteVideo(event) {
+    if (checkAnswerYes()) {
+      this.videoModel.deleteVideo(event.detail.deleteVideoId);
+      this.videoModel.updateItemsLocalStorage();
+      this.appView.renderSavedVideo(this.videoModel.getItemsLocalStorage());
+    }
+  }
+
+  #checkSawVideo(event) {
+    this.videoModel.updateSawAttribute(event.detail.sawVideoId);
+    this.videoModel.updateItemsLocalStorage();
+    this.appView.renderSavedVideo(this.videoModel.getItemsLocalStorage());
   }
 }

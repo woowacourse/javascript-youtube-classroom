@@ -83,7 +83,7 @@ export default class Template {
         <h4 class="video-item__title"></h4>
         <p class="video-item__channel-name"></p>
         <p class="video-item__published-date"></p>
-        <button data-id="" class="video-item__save-button button"></button>
+        <button class="video-item__save-button button"></button>
       </li>
     `.repeat(10);
   }
@@ -100,6 +100,28 @@ export default class Template {
           </p>
         </div>
       </section>
+    `;
+  }
+
+  getSavedVideo(savedVideo) {
+    const [year, month, day] = savedVideo.publishTime.substr(0, 10).split('-');
+    return `
+      <li class="video-item" data-video-id=${savedVideo.videoId}>
+          <iframe 
+            class="video-item__thumbnail" 
+            srcdoc="${this.getThumbnail(savedVideo.thumbnailUrl, savedVideo.videoId)}"
+            frameborder="0"
+            allow="autoplay"
+            allowfullscreen>
+          </iframe>
+          <h4 class="video-item__title">${savedVideo.title}</h4>
+          <p class="video-item__channel-name">${savedVideo.channelTitle}</p>
+          <p class="video-item__published-date">${year}년 ${month}월 ${day}일</p>
+          <div class="user-button-wrapper">
+            <button class="user-saw-button">✅</button>
+            <button class="user-delete-button">🗑️</button>
+          </div>
+      </li>
     `;
   }
 }

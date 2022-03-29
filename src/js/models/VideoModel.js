@@ -1,4 +1,5 @@
-import { checkLengthExist, checkEmpty } from '../utils/validator';
+import { checkLengthExist, checkEmpty, checkEmptyApi } from '../utils/validator';
+import SERVER from '../../constants/server.js';
 
 export default class VideoModel {
   #keyword;
@@ -45,27 +46,46 @@ export default class VideoModel {
     this.#savedVideoItems = items;
   }
 
+  resetAllVideoItems() {
+    this.#allVideoItems = [];
+  }
+
   accumulateVideoItems() {
     this.#allVideoItems = [...this.#allVideoItems, ...this.#newVideoItems];
   }
 
   setItemsLocalStorage(savedId) {
-    for (const item of this.#allVideoItems) {
+    this.#allVideoItems.some((item) => {
+      console.log('도는중');
       if (item.videoId === savedId) {
         item.saved = true;
         const allSavedVideoItems = [...this.#savedVideoItems, item];
         this.#savedVideoItems = allSavedVideoItems;
         localStorage.setItem('saved-video', JSON.stringify(allSavedVideoItems));
-        return;
       }
-    }
+      return item.videoId === savedId;
+    });
   }
 
   getItemsLocalStorage() {
     return JSON.parse(localStorage.getItem('saved-video')) ?? [];
   }
 
-  IsIncludedSavedItem(newItem) {
+  updateItemsLocalStorage() {
+    localStorage.setItem('saved-video', JSON.stringify(this.#savedVideoItems));
+  }
+
+  deleteVideo(deleteVideoId) {
+    this.#savedVideoItems.some((item, idx) => {
+      console.log('삭제');
+      if (item.videoId === deleteVideoId) {
+        this.#savedVideoItems.splice(idx, 1);
+      }
+      return item.videoId === deleteVideoId;
+    });
+  }
+
+  isIncludedSavedItem(newItem) {
     let isfindSavedItem = false;
     for (const savedItem of this.#savedVideoItems) {
       if (newItem.videoId === savedItem.videoId) {
@@ -73,16 +93,12 @@ export default class VideoModel {
         return savedItem;
       }
     }
-    if (isfindSavedItem === false) {
-      return newItem;
-    }
+    return isfindSavedItem || newItem;
   }
 
   updateNewVideoItems() {
-    const updatedNewVideoItems = [];
-
-    this.#newVideoItems.forEach((newItem) => {
-      updatedNewVideoItems.push(this.IsIncludedSavedItem(newItem));
+    const updatedNewVideoItems = this.#newVideoItems.map((newItem) => {
+      return this.isIncludedSavedItem(newItem);
     });
 
     if (updatedNewVideoItems.length) {
@@ -91,7 +107,6 @@ export default class VideoModel {
   }
 
   setVideoInfo() {
-    console.log(this.#fetchedVideos);
     this.#newVideoItems = this.#fetchedVideos.items.map((item) => ({
       videoId: item.id.videoId,
       description: item.snippet.description,
@@ -101,18 +116,25 @@ export default class VideoModel {
       publishTime: item.snippet.publishTime,
       thumbnailUrl: item.snippet.thumbnails.high.url,
       saved: false,
+      saw: false,
     }));
     checkLengthExist(this.#newVideoItems);
 
     this.#nextPageToken = this.#fetchedVideos.nextPageToken;
-    console.log(this.#newVideoItems);
+  }
+
+  updateSawAttribute(sawVideoId) {
+    for (const video of this.#savedVideoItems) {
+      if (video.videoId === sawVideoId) {
+        video.saw = !video.saw;
+        return;
+      }
+    }
   }
 
   async fetchYoutubeApi(query, nextPageToken) {
     try {
-      const REDIRECT_SERVER_HOST = 'https://upbeat-payne-6f096c.netlify.app/';
-
-      const url = new URL('youtube/v3/search', REDIRECT_SERVER_HOST);
+      const url = new URL('youtube/v3/search', SERVER.REDIRECT_HOST2);
       const parameters = new URLSearchParams({
         part: 'snippet',
         type: 'video',
@@ -128,12 +150,12 @@ export default class VideoModel {
       const body = await response.json();
 
       if (!response.ok) {
-        throw new Error(body.error.message);
+        throw new Error(response.status);
       }
 
       this.#fetchedVideos = body;
     } catch (error) {
-      console.error(error);
+      checkEmptyApi(error);
     }
   }
 }

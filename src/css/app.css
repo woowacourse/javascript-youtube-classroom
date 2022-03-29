@@ -1,5 +1,5 @@
 body {
-    padding: 64px 0;
+    padding: 64px 50px;
     font-size: 16px;
 }
 
@@ -18,7 +18,8 @@ body {
 
 .nav {
     display: flex;
-    justify-content: center;
+    justify-content: space-between;
+    margin-bottom: 50px;
 }
 
 .button {
@@ -41,8 +42,110 @@ body {
     background-color: var(--nav-hover);
 }
 
+.empty-img {
+    width: 300px;
+    display: block;
+    margin: 0 auto;
+}
+
+h2  {
+    text-align: center;
+    margin-top: 20px;
+}
+
+#will-see-button {
+    width: 118px;
+    border: 1px solid var(--gray-border);
+    border-radius: 4px 0px 0px 4px;
+}
+
+#saw-button {
+    width: 118px;
+    margin-left: -5px;
+    border: 1px solid var(--gray-border);;
+    border-radius: 0px 4px 4px 0px;
+    border-collapse: collapse;
+}
+
+.clicked {
+    background-color: var( --nav-clicked);
+}
+
+.clicked:hover {
+    background-color: var(--nav-clicked-hover);
+}
+
 .bottom-target {
-    /* visibility: hidden; */
     margin-top: 100px;
     height: 100px;       
+}
+
+.user-button-wrapper {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.user-saw-button, 
+.user-delete-button {
+    width: 36px;
+    height: 36px;
+    padding: 6px 2px;
+    background: var(--user-button);
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-left: 10px;
+}
+
+.user-saw-button:hover, 
+.user-delete-button:hover {
+    background: var(--user-button-hover);
+    animation: shake 0.6s infinite;
+}
+
+#will-see-list, 
+#saw-list {
+    display: grid;
+    justify-content: center;
+    grid-template-columns: repeat(4, 240px);
+    grid-template-rows: 255px;
+    gap: 1em;
+}
+
+@keyframes shake {
+    0% {
+        transform: translate(0px, 0px) rotate(0deg);
+    }
+    25% {
+        transform: translate(1px, 1px) rotate(1deg);
+    }
+    50% {
+        transform: translate(-1px, -1px) rotate(-1deg);
+    }
+    75% {
+        transform: translate(2px, -1px) rotate(2deg);
+    }
+    100% {
+        transform: translate(-1px, 1px) rotate(-1deg);
+    }
+}
+
+@media (min-width: 960px) and (max-width: 1279px) {
+    #will-see-list, 
+    #saw-list {
+        grid-template-columns: repeat(3, 240px);
+
+    }
+}
+@media (min-width: 600px) and (max-width: 959px) {
+    #will-see-list, 
+    #saw-list {
+        grid-template-columns: repeat(2, 240px);
+    }
+}
+@media screen and (max-width: 599px) {
+    #will-see-list, 
+    #saw-list {
+        grid-template-columns: 240px;
+    }
 }
